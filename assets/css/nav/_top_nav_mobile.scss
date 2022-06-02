@@ -1,7 +1,40 @@
+.m-top-nav-mobile__right-items,
+.m-top-nav-mobile__left-items {
+  display: flex;
+
+  :not(:last-child) {
+    padding-right: 1.5rem;
+  }
+}
+
+.m-top-nav-mobile__right-items, .m-top-nav-mobile__left-items {
+  @include button-icon(1.5rem);
+  color: $color-gray-600;
+
+  & span svg {
+    stroke: none;
+  }
+
+  &:hover {
+    color: $color-gray-500;
+  }
+
+  &.m-top-nav__right-item--active {
+    color: $color-eggplant-800;
+  }
+
+
+}
+
+.m-top-nav-mobile__left-items .m-top-nav-mobile__icon { /* Center the hamburger */
+  display: block;
+  height: 1rem;
+}
+
 .m-top-nav-mobile__content {
   display: flex;
   box-sizing: border-box;
-  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
+  padding: 0.625rem 1.5rem 0.625rem 1.5rem;
   justify-content: space-between;
   background-color: $color-gray-50;
   border-bottom: 1px solid $color-gray-300;

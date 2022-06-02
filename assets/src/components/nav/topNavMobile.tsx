@@ -152,9 +152,9 @@ const topNavMobile = (): JSX.Element => {
           "m-top-nav-mobile__content" + (mobileMenuIsOpen ? " blurred" : "")
         }
       >
-        <div className="m-top-nav__left-items">
+        <div className="m-top-nav-mobile__left-items">
           <button
-            className="m-top-nav__left-item"
+            className="m-top-nav=mobile__left-item"
             onClick={toggleVisibility}
             title="Menu"
           >
@@ -166,9 +166,9 @@ const topNavMobile = (): JSX.Element => {
           {pageOrTabName(location, routeTabs)}
         </div>
 
-        <div className="m-top-nav__right-items">
+        <div className="m-top-nav-mobile__right-items">
           <button
-            className="m-top-nav__right-item"
+            className="m-top-nav-mobile__right-item"
             onClick={() => dispatch(toggleNotificationDrawer())}
             title="Notifications"
           >
