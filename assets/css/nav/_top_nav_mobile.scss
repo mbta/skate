@@ -7,7 +7,8 @@
   }
 }
 
-.m-top-nav-mobile__right-items, .m-top-nav-mobile__left-items {
+.m-top-nav-mobile__right-items,
+.m-top-nav-mobile__left-items {
   @include button-icon(1.5rem);
   color: $color-gray-600;
 
@@ -22,11 +23,10 @@
   &.m-top-nav__right-item--active {
     color: $color-eggplant-800;
   }
-
-
 }
 
-.m-top-nav-mobile__left-items .m-top-nav-mobile__icon { /* Center the hamburger */
+.m-top-nav-mobile__left-items .m-top-nav-mobile__icon {
+  /* Center the hamburger */
   display: block;
   height: 1rem;
 }
