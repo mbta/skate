@@ -84,7 +84,7 @@ const topNavMobile = (): JSX.Element => {
           <li>
             <button
               className="m-top-nav-mobile__menu-button"
-              onClick={() => reload()}
+              onClick={reload}
               title="Refresh"
             >
               {refreshIcon("m-top-nav-mobile__menu-icon")}
@@ -95,7 +95,7 @@ const topNavMobile = (): JSX.Element => {
           <li>
             <button
               className="m-top-nav-mobile__menu-button"
-              onClick={openDrift}
+              onClick={() => { openDrift(); toggleVisibility() }}
               title="Support"
             >
               {speechBubbleIcon("m-top-nav-mobile__menu-icon")}
@@ -106,7 +106,7 @@ const topNavMobile = (): JSX.Element => {
           <li>
             <button
               className="m-top-nav-mobile__menu-button"
-              onClick={() => displayHelp(location)}
+              onClick={() => { displayHelp(location); toggleVisibility() }}
               title="About Skate"
             >
               {questionMarkIcon("m-top-nav-mobile__menu-icon")}
