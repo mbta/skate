@@ -39,7 +39,7 @@
 
 .m-top-nav__right-item,
 .m-top-nav__left-item {
-  @include button-icon(1.5rem);
+  @include button-icon(1rem);
   color: $color-gray-600;
 
   & span svg {
