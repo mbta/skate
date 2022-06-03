@@ -33,7 +33,6 @@
     display: block;
     height: 1rem;
   }
-
 }
 
 .m-top-nav-mobile__content {
@@ -131,12 +130,12 @@
 }
 
 .m-top-nav-mobile__menu-header {
-  max-height: 3rem;
   margin-bottom: 0.5rem;
   padding: 0.625rem 1.5rem 0.625rem 1.5rem;
   background-color: $color-gray-100;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .m-top-nav-mobile__close {
@@ -156,6 +155,7 @@
   svg {
     fill: $color-eggplant-900;
     max-width: 100%;
+    height: 100%;
   }
 }
 
