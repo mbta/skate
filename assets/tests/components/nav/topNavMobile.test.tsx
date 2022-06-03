@@ -183,6 +183,22 @@ describe("TopNavMobile", () => {
     expect(openDrift).toHaveBeenCalled()
   })
 
+  test("clicking the Support button closes the mobile menu", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <TopNavMobile />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Support"))
+
+    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+  })
+
   test("clicking About Skate button displays help", async () => {
     const user = userEvent.setup()
     const result = render(
@@ -194,6 +210,22 @@ describe("TopNavMobile", () => {
     await user.click(result.getByTitle("About Skate"))
 
     expect(displayHelp).toHaveBeenCalled()
+  })
+
+  test("clicking the About button closes the mobile menu", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <TopNavMobile />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("About Skate"))
+
+    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
   })
 
   test("clicking the settings button closes the mobile menu", async () => {
