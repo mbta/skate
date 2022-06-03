@@ -230,4 +230,26 @@ describe("useChannel", () => {
     expect(reloadSpy).toHaveBeenCalled()
     reloadSpy.mockRestore()
   })
+
+  test("returns data from the initial join with closeAfterFirstRead, leaves", () => {
+    const parser = jest.fn(() => "parsed")
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: "raw" })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { result } = renderHook(() =>
+      useChannel({
+        socket: mockSocket,
+        topic: "topic",
+        event: "event",
+        parser,
+        loadingState: "loading",
+        closeAfterFirstRead: true,
+      })
+    )
+
+    expect(parser).toHaveBeenCalledWith("raw")
+    expect(result.current).toEqual("parsed")
+    expect(mockChannel.leave).toHaveBeenCalled()
+  })
 })
