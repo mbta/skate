@@ -42,6 +42,8 @@ import greenLineEIconSvg from "../../static/images/icon-green-line-e.svg"
 // @ts-ignore
 import greenLineIconSvg from "../../static/images/icon-green-line.svg"
 // @ts-ignore
+import hamburgerIconSvg from "../../static/images/icon-hamburger.svg"
+// @ts-ignore
 import hiddenIconSvg from "../../static/images/icon-hidden.svg"
 // @ts-ignore
 import ladderIconSvg from "../../static/images/icon-ladder.svg"
@@ -170,6 +172,9 @@ export const greenLineEIcon = (className = ""): JSX.Element =>
 
 export const greenLineIcon = (className = ""): JSX.Element =>
   renderSvg(className, greenLineIconSvg)
+
+export const hamburgerIcon = (className = ""): JSX.Element =>
+  renderSvg(className, hamburgerIconSvg)
 
 export const hiddenIcon = (className = ""): JSX.Element =>
   renderSvg(className, hiddenIconSvg)

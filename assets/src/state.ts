@@ -86,6 +86,7 @@ export interface State {
   selectedNotification?: Notification
   openView: OpenView
   openInputModal: OpenInputModal | null
+  mobileMenuIsOpen: boolean
 }
 
 export const initialState: State = {
@@ -103,6 +104,7 @@ export const initialState: State = {
   selectedNotification: undefined,
   openView: OpenView.None,
   openInputModal: null,
+  mobileMenuIsOpen: false,
 }
 
 interface CreateRouteTabAction {
@@ -532,6 +534,14 @@ export const closeInputModal = (): CloseInputModalAction => ({
   type: "CLOSE_INPUT_MODAL",
 })
 
+interface ToggleMobileMenuAction {
+  type: "TOGGLE_MOBILE_MENU"
+}
+
+export const toggleMobileMenu = (): ToggleMobileMenuAction => ({
+  type: "TOGGLE_MOBILE_MENU",
+})
+
 export type Action =
   // Route tabs and ladder management in tabs
   | CreateRouteTabAction
@@ -584,6 +594,8 @@ export type Action =
   | PromptToOverwritePresetAction
   // Input modals
   | CloseInputModalAction
+  // Mobile Menu
+  | ToggleMobileMenuAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -917,6 +929,15 @@ const openViewAndNotificationDrawerReducer = (
   }
 }
 
+const mobileMenuReducer = (state: boolean, action: Action): boolean => {
+  switch (action.type) {
+    case "TOGGLE_MOBILE_MENU":
+      return !state
+    default:
+      return state
+  }
+}
+
 const userSettingsReducer = (
   state: UserSettings,
   action: Action
@@ -1074,5 +1095,6 @@ export const reducer = (state: State, action: Action): State => {
     ),
     openView,
     openInputModal: openInputModalReducer(state.openInputModal, action),
+    mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
   }
 }

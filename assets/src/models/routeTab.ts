@@ -75,6 +75,15 @@ export const isEditedPreset = (routeTab: RouteTab): boolean =>
 export const isOpenTab = (routeTab: RouteTab): boolean =>
   routeTab.ordering !== undefined
 
+export const tabName = (routeTab: RouteTab): string =>
+  routeTab?.presetName || "Untitled"
+
+export const currentTabName = (routeTabs: RouteTab[]): string => {
+  const currentTab = currentRouteTab(routeTabs)
+  if (currentTab !== undefined) return tabName(currentTab)
+  return "Untitled"
+}
+
 export const selectTabByUUID = (
   routeTabs: RouteTab[],
   uuid: string

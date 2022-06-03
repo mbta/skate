@@ -21,10 +21,13 @@ import {
 import RightPanel from "./rightPanel"
 
 const SettingsPage = (): ReactElement<HTMLDivElement> => {
-  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings, mobileMenuIsOpen }, dispatch] =
+    useContext(StateDispatchContext)
+
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
-    <div className="c-page c-page--settings">
+    <div className={`c-page c-page--settings ${mobileMenuClass}`}>
       <div className="c-page__container">
         <h1 className="c-page__title">Settings</h1>
 

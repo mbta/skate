@@ -8,6 +8,7 @@ import {
   isOpenTab,
   isEditedPreset,
   isPreset,
+  tabName,
 } from "../models/routeTab"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
@@ -60,7 +61,7 @@ const LadderTab = ({
   showSaveIcon: boolean
   saveTab: () => void
 }): ReactElement<HTMLDivElement> => {
-  const title = tab.presetName || "Untitled"
+  const title = tabName(tab)
   return (
     <div
       className={
@@ -131,7 +132,12 @@ const AddTabButton = ({
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
-  const { routeTabs, selectedVehicleOrGhost, pickerContainerIsVisible } = state
+  const {
+    routeTabs,
+    selectedVehicleOrGhost,
+    pickerContainerIsVisible,
+    mobileMenuIsOpen,
+  } = state
 
   useEffect(() => {
     if (routeTabs.filter((routeTab) => isOpenTab(routeTab)).length === 0) {
@@ -161,8 +167,12 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     ? "m-ladder-page--picker-container-visible"
     : "m-ladder-page--picker-container-hidden"
 
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
+
   return (
-    <div className={`m-ladder-page ${pickerContainerVisibleClass}`}>
+    <div
+      className={`m-ladder-page ${pickerContainerVisibleClass} ${mobileMenuClass}`}
+    >
       <Notifications />
 
       <PickerContainer>

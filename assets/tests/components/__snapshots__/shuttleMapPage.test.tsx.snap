@@ -2,7 +2,7 @@
 
 exports[`Shuttle Map Page renders 1`] = `
 <div
-  className="m-shuttle-map"
+  className="m-shuttle-map "
 >
   <div
     className="m-shuttle-picker-container visible"
@@ -217,7 +217,7 @@ exports[`Shuttle Map Page renders 1`] = `
 
 exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
 <div
-  className="m-shuttle-map"
+  className="m-shuttle-map "
 >
   <div
     className="m-shuttle-picker-container visible"
@@ -657,7 +657,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
 
 exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
 <div
-  className="m-shuttle-map"
+  className="m-shuttle-map "
 >
   <div
     className="m-shuttle-picker-container visible"
@@ -872,7 +872,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
 
 exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 <div
-  className="m-shuttle-map"
+  className="m-shuttle-map "
 >
   <div
     className="m-shuttle-picker-container visible"
@@ -1087,7 +1087,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 
 exports[`Shuttle Map Page renders with shapes selected 1`] = `
 <div
-  className="m-shuttle-map"
+  className="m-shuttle-map "
 >
   <div
     className="m-shuttle-picker-container visible"
@@ -1133,7 +1133,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
 
 exports[`Shuttle Map Page renders with train vehicles 1`] = `
 <div
-  className="m-shuttle-map"
+  className="m-shuttle-map "
 >
   <div
     className="m-shuttle-picker-container visible"
