@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
-import useVehicleForRunIds from "../../src/hooks/useVehiclesForRunIds"
+import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import { VehicleData } from "../../src/models/vehicleData"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
@@ -71,7 +71,7 @@ describe("useVehiclesForRunIds", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { result } = renderHook(() => {
-      return useVehicleForRunIds(mockSocket, ["123-456"])
+      return useVehiclesForRunIds(mockSocket, ["123-456"])
     })
     expect(result.current).toEqual([
       {
