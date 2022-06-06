@@ -1,4 +1,5 @@
 import {
+  equalByElements,
   flatten,
   intersperseString,
   partition,
@@ -73,5 +74,23 @@ describe("intersperseString", () => {
 
   test("intersperses the delimiter", () => {
     expect(intersperseString("abc", "--")).toEqual("a--b--c")
+  })
+})
+
+describe("equalByElements", () => {
+  test("returns true with equal elements", () => {
+    expect(equalByElements(["a", "b"], ["a", "b"])).toBeTruthy()
+  })
+
+  test("returns false with the same elements in different order", () => {
+    expect(equalByElements(["a", "b"], ["b", "a"])).toBeFalsy()
+  })
+
+  test("returns false with same length but different elements", () => {
+    expect(equalByElements(["a", "b"], ["c", "d"])).toBeFalsy()
+  })
+
+  test("returns false with different length", () => {
+    expect(equalByElements(["a", "b"], ["c"])).toBeFalsy()
   })
 })
