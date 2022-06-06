@@ -1,5 +1,5 @@
 import { Channel, Socket } from "phoenix"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reload } from "../models/browser"
@@ -9,6 +9,8 @@ import {
 } from "../models/notificationData"
 import { Notification } from "../realtime.d"
 import { allOpenRouteIds } from "../models/routeTab"
+import { RouteId } from "../schedule"
+import { equalByElements } from "../helpers/array"
 
 export const useNotifications = (
   handleNewNotification: (notification: Notification) => void,
@@ -18,6 +20,15 @@ export const useNotifications = (
   const topic = "notifications"
   const event = "notification"
   const [{ routeTabs }] = useContext(StateDispatchContext)
+  const [routeIds, setRouteIds] = useState<RouteId[]>(
+    allOpenRouteIds(routeTabs)
+  )
+
+  const newRouteIds = allOpenRouteIds(routeTabs)
+
+  if (!equalByElements(routeIds, newRouteIds)) {
+    setRouteIds(newRouteIds)
+  }
 
   useEffect(() => {
     let channel: Channel | undefined
@@ -49,5 +60,5 @@ export const useNotifications = (
         channel = undefined
       }
     }
-  }, [socket, JSON.stringify(allOpenRouteIds(routeTabs))])
+  }, [socket, routeIds])
 }
