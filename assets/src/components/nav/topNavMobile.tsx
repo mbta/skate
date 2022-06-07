@@ -39,7 +39,7 @@ export const pageOrTabName = (
   return tabName
 }
 
-const topNavMobile = (): JSX.Element => {
+const TopNavMobile = (): JSX.Element => {
   const location = useLocation()
 
   const [state, dispatch] = useContext(StateDispatchContext)
@@ -180,4 +180,4 @@ const topNavMobile = (): JSX.Element => {
   )
 }
 
-export default topNavMobile
+export default TopNavMobile
