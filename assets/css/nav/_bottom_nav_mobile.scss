@@ -13,14 +13,11 @@
 
 .m-bottom-nav-mobile__link,
 .m-bottom-nav-mobile__button {
-  @include button-icon(1.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 2rem;
-  height: 2rem;
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 0.5rem;
   border-radius: 0.375rem;
 
   font-weight: 400;
@@ -34,33 +31,25 @@
     font-weight: 500;
   }
 
+  svg {
+    width: 2rem;
+    height: 2rem;
+    fill: $color-gray-600;
+    stroke: none;
+  }
+
   &.m-bottom-nav-mobile__link--active {
     background-color: $color-eggplant-100;
-
     font-weight: 500;
     color: $color-eggplant-800;
+
+    svg {
+      fill: $color-eggplant-800;
+    }
   }
 }
 
 .m-bottom-nav-mobile__icon {
-  &.m-left-nav__icon--late-view svg {
-    fill: $color-gray-50;
-    stroke: $color-gray-600;
-
-    circle {
-      fill: $color-gray-600;
-    }
-
-    .clock {
-      stroke-width: 2;
-    }
-
-    .bang {
-      fill: $color-gray-50;
-      stroke: none;
-    }
-  }
-
   &.m-bottom-nav-mobile__icon--swings-view svg {
     transform: scaleX(-1);
     fill: $color-gray-50;

@@ -1,11 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import {
-  ladderMobileIcon,
-  mapIcon,
-  searchMobileIcon,
-  swingIcon,
-} from "../../helpers/icon"
+import { ladderIcon, mapIcon, searchIcon, swingIcon } from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
 import { toggleSwingsView } from "../../state"
 
@@ -23,7 +18,7 @@ const BottomNavMobile = (): JSX.Element => {
             title="Route Ladders"
             to="/"
           >
-            {ladderMobileIcon("m-bottom-nav-mobile__icon")}
+            {ladderIcon("m-bottom-nav-mobile__icon")}
           </NavLink>
         </li>
 
@@ -47,7 +42,7 @@ const BottomNavMobile = (): JSX.Element => {
             title="Search"
             to="/search"
           >
-            {searchMobileIcon("m-bottom-nav-mobile__icon")}
+            {searchIcon("m-bottom-nav-mobile__icon")}
           </NavLink>
         </li>
 
