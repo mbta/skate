@@ -7,14 +7,8 @@ import {
   hideLatestNotification,
   toggleReadState,
 } from "../hooks/useNotificationsReducer"
-import useSocket from "../hooks/useSocket"
-import useVehicleForNotification from "../hooks/useVehicleForNotification"
 import { Notification, NotificationReason } from "../realtime.d"
-import {
-  Dispatch as StateDispatch,
-  selectVehicleFromNotification,
-  setNotification,
-} from "../state"
+import { Dispatch as StateDispatch, setNotification } from "../state"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
@@ -22,8 +16,7 @@ export const Notifications = () => {
     useContext(NotificationsContext)
   const currentTime = useCurrentTime()
 
-  const [state, stateDispatch] = useContext(StateDispatchContext)
-  const { selectedNotification } = state
+  const [, stateDispatch] = useContext(StateDispatchContext)
 
   const notificationToShow =
     showLatestNotification && notifications.length > 0 ? notifications[0] : null
@@ -36,21 +29,9 @@ export const Notifications = () => {
     }
   }, [notificationToShow])
 
-  const { socket } = useSocket()
-  const vehicleForNotification = useVehicleForNotification(
-    selectedNotification,
-    socket
-  )
-
   const openVPPForCurrentVehicle = (notification: Notification) => {
     openVPPForNotification(notification, stateDispatch, dispatch)
   }
-
-  useEffect(() => {
-    if (selectedNotification) {
-      stateDispatch(selectVehicleFromNotification(vehicleForNotification))
-    }
-  }, [selectedNotification, vehicleForNotification])
 
   return (
     <div className="m-notifications">

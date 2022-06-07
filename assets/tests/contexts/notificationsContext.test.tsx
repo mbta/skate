@@ -1,15 +1,22 @@
 import { act as hooksAct, renderHook } from "@testing-library/react-hooks"
 import { mount } from "enzyme"
-import React, { useContext } from "react"
+import React, { ReactNode, useContext } from "react"
 import { act as testUtilsAct } from "react-dom/test-utils"
 import {
   NotificationsContext,
   NotificationsProvider,
   otherNotificationReadState,
 } from "../../src/contexts/notificationsContext"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { useNotifications } from "../../src/hooks/useNotifications"
 import { Notification, NotificationState } from "../../src/realtime.d"
+import {
+  initialState,
+  selectVehicleFromNotification,
+  State,
+} from "../../src/state"
+import vehicleFactory from "../factories/vehicle"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -24,6 +31,13 @@ jest.mock("../../src/hooks/useNotifications", () => ({
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: () => true,
+}))
+
+const vehicle = vehicleFactory.build()
+
+jest.mock("../../src/hooks/useVehicleForNotification", () => ({
+  __esModule: true,
+  default: jest.fn(() => vehicle),
 }))
 
 const notification: Notification = {
@@ -41,7 +55,7 @@ const notification: Notification = {
   state: "unread" as NotificationState,
 }
 
-describe("Notification", () => {
+describe("NotificationsProvider", () => {
   test("starts empty", () => {
     const { result } = renderHook(() => useContext(NotificationsContext), {
       wrapper: NotificationsProvider,
@@ -119,6 +133,35 @@ describe("Notification", () => {
       jest.runOnlyPendingTimers()
     })
     expect(result.current.notifications).toHaveLength(0)
+  })
+
+  test("selects vehicle from notification", () => {
+    const stateDispatch = jest.fn()
+
+    const wrapper = ({
+      children,
+      state,
+    }: {
+      children?: ReactNode
+      state: State
+    }) => (
+      <StateDispatchProvider state={state} dispatch={stateDispatch}>
+        <NotificationsProvider>
+          <> {children} </>
+        </NotificationsProvider>
+      </StateDispatchProvider>
+    )
+
+    const { rerender } = renderHook(() => useContext(NotificationsContext), {
+      wrapper,
+      initialProps: { state: initialState },
+    })
+
+    rerender({ state: { ...initialState, selectedNotification: notification } })
+
+    expect(stateDispatch).toHaveBeenCalledWith(
+      selectVehicleFromNotification(vehicle)
+    )
   })
 })
 

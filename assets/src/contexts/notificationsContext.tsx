@@ -3,6 +3,7 @@ import React, {
   Dispatch,
   ReactElement,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react"
@@ -16,7 +17,11 @@ import useNotificationsReducer, {
   setNotifications,
   State as ReducerState,
 } from "../hooks/useNotificationsReducer"
+import useSocket from "../hooks/useSocket"
+import useVehicleForNotification from "../hooks/useVehicleForNotification"
 import { NotificationId, NotificationState } from "../realtime.d"
+import { selectVehicleFromNotification } from "../state"
+import { StateDispatchContext } from "./stateDispatchContext"
 
 export const otherNotificationReadState = (state: NotificationState) => {
   if (state === "unread") {
@@ -59,6 +64,8 @@ export const NotificationsProvider = ({
   children: ReactElement<HTMLElement>
 }) => {
   const [state, dispatch] = useNotificationsReducer()
+  const [{ selectedNotification }, stateDispatch] =
+    useContext(StateDispatchContext)
   const { notifications, showLatestNotification } = state
   const [scrollPosition, setScrollPosition] = useState<number>(0)
   const now = useCurrentTime()
@@ -79,6 +86,18 @@ export const NotificationsProvider = ({
 
   const [notificationWithOpenSubmenuId, setNotificationWithOpenSubmenuId] =
     useState<NotificationId | null>(null)
+
+  const { socket } = useSocket()
+  const vehicleForNotification = useVehicleForNotification(
+    selectedNotification,
+    socket
+  )
+
+  useEffect(() => {
+    if (selectedNotification) {
+      stateDispatch(selectVehicleFromNotification(vehicleForNotification))
+    }
+  }, [selectedNotification, vehicleForNotification])
 
   return (
     <NotificationsContext.Provider
