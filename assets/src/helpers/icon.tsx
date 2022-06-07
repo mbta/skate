@@ -48,6 +48,8 @@ import hiddenIconSvg from "../../static/images/icon-hidden.svg"
 // @ts-ignore
 import ladderIconSvg from "../../static/images/icon-ladder.svg"
 // @ts-ignore
+import ladderMobileIconSvg from "../../static/images/icon-ladder-mobile.svg"
+// @ts-ignore
 import lateIconSvg from "../../static/images/icon-late.svg"
 // @ts-ignore
 import lateViewGhostIconSvg from "../../static/images/icon-late-view-ghost.svg"
@@ -85,6 +87,8 @@ import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.sv
 import saveIconSvg from "../../static/images/icon-save.svg"
 // @ts-ignore
 import searchIconSvg from "../../static/images/icon-search.svg"
+// @ts-ignore
+import searchMobileIconSvg from "../../static/images/icon-search-mobile.svg"
 // @ts-ignore
 import settingsIconSvg from "../../static/images/icon-settings.svg"
 // @ts-ignore
@@ -182,6 +186,9 @@ export const hiddenIcon = (className = ""): JSX.Element =>
 export const ladderIcon = (className = ""): JSX.Element =>
   renderSvg(className, ladderIconSvg)
 
+export const ladderMobileIcon = (className = ""): JSX.Element =>
+  renderSvg(className, ladderMobileIconSvg)  
+
 export const lateIcon = (className = ""): JSX.Element =>
   renderSvg(className, lateIconSvg)
 
@@ -238,6 +245,9 @@ export const saveIcon = (className = ""): JSX.Element =>
 
 export const searchIcon = (className = ""): JSX.Element =>
   renderSvg(className, searchIconSvg)
+
+export const searchMobileIcon = (className = ""): JSX.Element =>
+  renderSvg(className, searchMobileIconSvg)  
 
 export const settingsIcon = (className = ""): JSX.Element =>
   renderSvg(className, settingsIconSvg)
