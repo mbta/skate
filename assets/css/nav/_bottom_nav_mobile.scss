@@ -1,17 +1,18 @@
 .m-bottom-nav-mobile {
-  	background-color: $color-gray-50;
-  	border-top: 1px solid $color-gray-300;
-	padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  background-color: $color-gray-50;
+  border-top: 1px solid $color-gray-300;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 
 .m-bottom-nav-mobile__links {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
 }
 
-.m-bottom-nav-mobile__link, .m-bottom-nav-mobile__button {
+.m-bottom-nav-mobile__link,
+.m-bottom-nav-mobile__button {
   @include button-icon(1.25rem);
   display: flex;
   align-items: center;

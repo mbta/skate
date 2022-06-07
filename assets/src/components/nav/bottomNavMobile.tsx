@@ -1,22 +1,15 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import {
-  ladderIcon,
-  mapIcon,
-  searchIcon,
-  swingIcon
-} from "../../helpers/icon"
+import { ladderIcon, mapIcon, searchIcon, swingIcon } from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
 import { toggleSwingsView } from "../../state"
 
 const BottomNavMobile = (): JSX.Element => {
-
-const [, dispatch] = useContext(StateDispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
 
   return (
     <div className="m-bottom-nav-mobile" data-testid="bottom-nav-mobile">
       <ul className="m-bottom-nav-mobile__links">
-
         <li>
           <NavLink
             className="m-bottom-nav-mobile__link"
@@ -59,10 +52,11 @@ const [, dispatch] = useContext(StateDispatchContext)
             onClick={() => dispatch(toggleSwingsView())}
             title="Swings View"
           >
-            {swingIcon("m-bottom-nav-mobile__icon m-bottom-nav-mobile__icon--swings-view")}
+            {swingIcon(
+              "m-bottom-nav-mobile__icon m-bottom-nav-mobile__icon--swings-view"
+            )}
           </button>
         </li>
-
       </ul>
     </div>
   )
