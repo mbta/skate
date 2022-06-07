@@ -33,25 +33,23 @@ export const useChannel = <T>({
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
         setState(parser(data))
-        if (closeAfterFirstRead) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          channel!.leave()
-          channel = undefined
-        }
       })
 
-      const push = channel.join()
-      if (!closeAfterFirstRead) {
-        push
-          .receive("ok", ({ data: data }) => {
-            setState(parser(data))
-          })
-          .receive("error", ({ reason }) =>
-            // eslint-disable-next-line no-console
-            console.error(`joining topic ${topic} failed`, reason)
-          )
-          .receive("timeout", reload)
-      }
+      channel
+        .join()
+        .receive("ok", ({ data: data }) => {
+          setState(parser(data))
+          if (closeAfterFirstRead) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            channel!.leave()
+            channel = undefined
+          }
+        })
+        .receive("error", ({ reason }) =>
+          // eslint-disable-next-line no-console
+          console.error(`joining topic ${topic} failed`, reason)
+        )
+        .receive("timeout", reload)
     }
 
     return () => {

@@ -40,10 +40,14 @@ export const makeMockChannel = (
 }
 
 export const makeMockOneShotChannel = (dataOnJoin?: any) => {
-  const result: { join: any; on: any; leave: any } = {
-    join: jest.fn(),
-    on: (_: any, handler: ({ data }: { data: any }) => void) => {
-      result.join = () => handler({ data: dataOnJoin })
+  const result: { join: any; on: any; receive: any; leave: any } = {
+    join: () => result,
+    on: jest.fn(),
+    receive: (event: any, handler: ({ data }: { data: any }) => void) => {
+      if (event === "ok") {
+        handler({ data: dataOnJoin })
+      }
+      return result
     },
     leave: jest.fn(),
   }
