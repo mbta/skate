@@ -1,6 +1,11 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { ladderMobileIcon, mapIcon, searchMobileIcon, swingIcon } from "../../helpers/icon"
+import {
+  ladderMobileIcon,
+  mapIcon,
+  searchMobileIcon,
+  swingIcon,
+} from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
 import { toggleSwingsView } from "../../state"
 

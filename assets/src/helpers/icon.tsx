@@ -187,7 +187,7 @@ export const ladderIcon = (className = ""): JSX.Element =>
   renderSvg(className, ladderIconSvg)
 
 export const ladderMobileIcon = (className = ""): JSX.Element =>
-  renderSvg(className, ladderMobileIconSvg)  
+  renderSvg(className, ladderMobileIconSvg)
 
 export const lateIcon = (className = ""): JSX.Element =>
   renderSvg(className, lateIconSvg)
@@ -247,7 +247,7 @@ export const searchIcon = (className = ""): JSX.Element =>
   renderSvg(className, searchIconSvg)
 
 export const searchMobileIcon = (className = ""): JSX.Element =>
-  renderSvg(className, searchMobileIconSvg)  
+  renderSvg(className, searchMobileIconSvg)
 
 export const settingsIcon = (className = ""): JSX.Element =>
   renderSvg(className, settingsIconSvg)
