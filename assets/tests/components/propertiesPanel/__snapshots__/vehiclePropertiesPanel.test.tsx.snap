@@ -136,82 +136,91 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       role="tablist"
     >
       <li
-        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
@@ -470,82 +479,91 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       role="tablist"
     >
       <li
-        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
@@ -1022,82 +1040,91 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       role="tablist"
     >
       <li
-        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
@@ -1451,82 +1478,91 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       role="tablist"
     >
       <li
-        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
@@ -1785,82 +1821,91 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       role="tablist"
     >
       <li
-        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
@@ -2133,82 +2178,91 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       role="tablist"
     >
       <li
-        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        aria-selected={false}
         className="m-tabs__tab"
-        onClick={[Function]}
-        role="tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="m-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="m-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="m-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>

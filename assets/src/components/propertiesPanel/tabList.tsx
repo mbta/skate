@@ -40,19 +40,16 @@ const Tab = ({
   const clickCallback = () => setActiveTab(tabName)
 
   return (
-    <>
-      {/* eslint-disable jsx-a11y/click-events-have-key-events */}
-      <li
-        className={classes}
+    <li className={classes}>
+      <button
         onClick={clickCallback}
         role="tab"
         aria-selected={tabName === activeTab}
       >
         <TabStatusIcon />
         {tabTitle}
-      </li>
-      {/* eslint-enable jsx-a11y/click-events-have-key-events */}
-    </>
+      </button>
+    </li>
   )
 }
 
