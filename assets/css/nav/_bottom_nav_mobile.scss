@@ -19,17 +19,13 @@
   box-sizing: border-box;
   padding: 0.75rem;
   border-radius: 0.375rem;
-  font-weight: 400;
-  @include font-body;
   color: $color-gray-600;
-  text-decoration: none;
   height: 2.25rem;
   width: 2.25rem;
 
   &:hover {
     background-color: $color-gray-100;
     color: $color-gray-700;
-    font-weight: 500;
   }
 
   svg {
