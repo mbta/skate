@@ -14,7 +14,7 @@
   display: grid;
   gap: 0;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: max-content minmax(0, 2fr);
+  grid-template-rows: max-content minmax(0, 1fr) max-content;
   grid-template-areas:
     "top"
     "content"
