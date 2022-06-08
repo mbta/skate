@@ -79,6 +79,15 @@ describe("useMinischeduleRuns", () => {
     expect(mockFetchScheduleRun).toHaveBeenCalledTimes(1)
   })
 
+  test("doesn't refetch with same trip IDs", () => {
+    const mockFetchScheduleRun: jest.Mock = Api.fetchScheduleRun as jest.Mock
+    const { rerender } = renderHook(() => {
+      return useMinischeduleRuns(["trip"])
+    })
+    rerender(["trip"])
+    expect(mockFetchScheduleRun).toHaveBeenCalledTimes(1)
+  })
+
   test("does refetch when trip IDs changed", () => {
     const mockFetchScheduleRun: jest.Mock = Api.fetchScheduleRun as jest.Mock
     const { rerender } = renderHook(

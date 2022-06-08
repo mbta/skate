@@ -96,6 +96,38 @@ describe("useSwings", () => {
     expect(mockFetchSwings).toHaveBeenCalledTimes(1)
   })
 
+  test("doesn't refetch swings when route Ids don't change", () => {
+    const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+    const { rerender } = renderHook(
+      () => {
+        useSwings()
+      },
+
+      {
+        wrapper,
+        initialProps: {
+          routeTabs: [
+            routeTabFactory.build({
+              selectedRouteIds: ["1"],
+              isCurrentTab: true,
+            }),
+            routeTabFactory.build({
+              selectedRouteIds: ["2"],
+              isCurrentTab: false,
+            }),
+          ],
+        },
+      }
+    )
+    rerender({
+      routeTabs: [
+        routeTabFactory.build({ selectedRouteIds: ["1"], isCurrentTab: false }),
+        routeTabFactory.build({ selectedRouteIds: ["2"], isCurrentTab: true }),
+      ],
+    })
+    expect(mockFetchSwings).toHaveBeenCalledTimes(1)
+  })
+
   test("does refetch swings when selected routes change", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
     const { rerender } = renderHook(

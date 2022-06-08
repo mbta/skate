@@ -140,10 +140,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   } = state
 
   useEffect(() => {
-    if (routeTabs.filter((routeTab) => isOpenTab(routeTab)).length === 0) {
+    if (routeTabs.filter(isOpenTab).length === 0) {
       dispatch(createRouteTab())
     }
-  }, [JSON.stringify(routeTabs)])
+  }, [dispatch, routeTabs])
 
   const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
     currentRouteTab(routeTabs) || {

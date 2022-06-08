@@ -160,6 +160,29 @@ describe("useNotifications", () => {
         initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
       }
     )
+    rerender()
+
+    expect(mockChannel.join).toHaveBeenCalledTimes(1)
+  })
+
+  test("doesn't rejoin channel when route IDs don't change", () => {
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: [],
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      () => {
+        useNotifications(mockAddNotification, mockSetNotifications)
+      },
+      {
+        wrapper,
+        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+      }
+    )
     rerender({ socket: mockSocket, selectedRouteIds: ["route"] })
 
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
