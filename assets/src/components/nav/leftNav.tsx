@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
+import { tagManagerEvent } from "../../helpers/googleTagManager"
 import {
   ladderIcon,
   mapIcon,
@@ -62,7 +63,10 @@ const LeftNav = ({
             icon={swingIcon("m-left-nav__icon m-left-nav__icon--swings-view")}
             name="Swings View"
             viewIsOpen={openView === OpenView.Swings}
-            toggleView={() => dispatch(toggleSwingsView())}
+            toggleView={() => {
+              tagManagerEvent("swings_view_toggled")
+              dispatch(toggleSwingsView())
+            }}
             collapsed={collapsed}
           />
         </li>
