@@ -37,6 +37,7 @@
 
 .m-nav__nav-bar--bottom {
   grid-area: bottom;
+  z-index: 1000;
 }
 
 .m-nav__app-content {

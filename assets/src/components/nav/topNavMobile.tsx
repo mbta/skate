@@ -149,7 +149,8 @@ const TopNavMobile = (): JSX.Element => {
 
       <div
         className={
-          "m-top-nav-mobile__inner" + (mobileMenuIsOpen ? " blurred" : "")
+          "m-top-nav-mobile__inner" +
+          (mobileMenuIsOpen ? " blurred-mobile" : "")
         }
       >
         <div className="m-top-nav-mobile__left-items">

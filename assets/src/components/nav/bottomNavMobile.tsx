@@ -5,10 +5,17 @@ import { NavLink } from "react-router-dom"
 import { toggleSwingsView } from "../../state"
 
 const BottomNavMobile = (): JSX.Element => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [state, dispatch] = useContext(StateDispatchContext)
+
+  const { mobileMenuIsOpen } = state
 
   return (
-    <div className="m-bottom-nav-mobile" data-testid="bottom-nav-mobile">
+    <div
+      data-testid="bottom-nav-mobile"
+      className={
+        "m-bottom-nav-mobile" + (mobileMenuIsOpen ? " blurred-mobile" : "")
+      }
+    >
       <ul className="m-bottom-nav-mobile__links">
         <li>
           <NavLink
