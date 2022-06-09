@@ -164,8 +164,7 @@ const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
         tabIndex={0}
       >
         {/* eslint-enable jsx-a11y/click-events-have-key-events */}
-        {/* eslint-disable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events */}
-        <a
+        <button
           onClick={(event) => {
             event.stopPropagation()
             dispatch(toggleReadState(notification))
@@ -176,8 +175,7 @@ const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
           tabIndex={-1}
         >
           mark as {otherReadState}
-        </a>
-        {/* eslint-enable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events */}
+        </button>
       </div>
     </>
   )
