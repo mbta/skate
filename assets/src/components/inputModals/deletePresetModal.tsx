@@ -2,6 +2,7 @@ import React, { useContext } from "react"
 import InputModal from "../inputModal"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { Action, closeInputModal } from "../../state"
+import { tagManagerEvent } from "../../helpers/googleTagManager"
 
 const DeletePresetModal = ({
   presetName,
@@ -32,6 +33,7 @@ const DeletePresetModal = ({
             if (window.FS) {
               window.FS.event("Preset deleted")
             }
+            tagManagerEvent("preset_deleted")
 
             deleteCallback(dispatch)
             dispatch(closeInputModal())

@@ -212,6 +212,7 @@ describe("LadderPage", () => {
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
     expect(window.FS!.event).toHaveBeenCalledWith("Preset saved")
+    expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
   })
 
   test("can save an edited preset from the save icon", () => {

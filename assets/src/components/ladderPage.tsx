@@ -98,6 +98,7 @@ const LadderTab = ({
               if (window.FS) {
                 window.FS.event("Preset saved")
               }
+              tagManagerEvent("preset_saved")
 
               saveTab()
             }}

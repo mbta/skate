@@ -11,6 +11,12 @@ import {
 import Presets from "../../src/components/presets"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import routeTabFactory from "../factories/routeTab"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 describe("Presets", () => {
   test("renders current presets", () => {
@@ -83,6 +89,9 @@ describe("Presets", () => {
     )
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Preset saved from presets panel"
+    )
+    expect(tagManagerEvent).toHaveBeenCalledWith(
+      "preset_saved_from_presets_panel"
     )
   })
 
