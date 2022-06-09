@@ -47,6 +47,8 @@
 }
 
 .m-bottom-nav-mobile__icon {
+  line-height: 0;
+
   &.m-bottom-nav-mobile__icon--swings-view svg {
     transform: scaleX(-1);
     fill: $color-gray-50;
