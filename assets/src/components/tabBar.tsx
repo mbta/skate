@@ -118,6 +118,7 @@ const TabBar = ({
                 if (window.FS) {
                   window.FS.event("Late view toggled")
                 }
+                tagManagerEvent("late_view_toggled")
                 dispatch(toggleLateView())
               }}
               data-testid="late-view-icon"

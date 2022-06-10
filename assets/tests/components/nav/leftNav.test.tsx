@@ -116,6 +116,7 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Late View"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+    expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 
   test("clicking swings view button toggles swing view", async () => {

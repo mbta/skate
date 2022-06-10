@@ -53,7 +53,10 @@ const LeftNav = ({
               icon={lateIcon("m-left-nav__icon m-left-nav__icon--late-view")}
               name="Late View"
               viewIsOpen={openView === OpenView.Late}
-              toggleView={() => dispatch(toggleLateView())}
+              toggleView={() => {
+                tagManagerEvent("late_view_toggled")
+                dispatch(toggleLateView())
+              }}
               collapsed={collapsed}
             />
           </li>

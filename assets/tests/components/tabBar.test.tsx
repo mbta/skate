@@ -220,6 +220,7 @@ describe("tabBar", () => {
     expect(dispatch).toHaveBeenCalledWith(toggleLateView())
 
     expect(window.FS!.event).toHaveBeenCalledWith("Late view toggled")
+    expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 
   it("opens drift when you click on the chat icon", () => {
