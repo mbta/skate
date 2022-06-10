@@ -8,6 +8,12 @@ import {
   filterRoutesByGarage,
   GarageFilterData,
 } from "../../src/hooks/useGarageFilter"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 describe("useGarageFilter", () => {
   test("defaults to no garages selected", () => {
@@ -106,6 +112,7 @@ describe("GarageFilter", () => {
     expect(window.FS!.event).toHaveBeenCalledWith(
       "User filtered routes by garage"
     )
+    expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
   })
 
   test("can hide / show the filters", () => {

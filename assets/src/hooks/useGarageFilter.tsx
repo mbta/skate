@@ -8,6 +8,7 @@ import {
   toggleOnIcon,
   toggleOffIcon,
 } from "../helpers/icon"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 export interface GarageFilterData {
   filteredGarages: GarageName[]
@@ -82,6 +83,7 @@ export const GarageFilter = ({
                 onClick={() => {
                   if (!filteredGarages.includes(garage) && window.FS) {
                     window.FS.event("User filtered routes by garage")
+                    tagManagerEvent("filtered_routes_by_garage")
                   }
                   toggleGarage(garage)
                 }}
