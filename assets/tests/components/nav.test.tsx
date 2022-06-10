@@ -72,8 +72,7 @@ describe("Nav", () => {
     )
 
     expect(result.getByTestId("top-nav-mobile")).not.toBeNull()
-    expect(result.queryByTitle("Route Ladders")).toBeNull()
-    expect(result.queryByText("Route Ladders")).toBeNull()
+    expect(result.getByTestId("bottom-nav-mobile")).not.toBeNull()
   })
 
   test("renders tablet placeholder for new nav content", () => {

@@ -35,7 +35,7 @@
   }
 }
 
-.m-top-nav-mobile__content {
+.m-top-nav-mobile__inner {
   display: flex;
   box-sizing: border-box;
   padding: 0.625rem 1.5rem 0.625rem 1.5rem;
@@ -56,6 +56,8 @@
   display: block;
   z-index: 109;
   background: rgba(88, 88, 88, 0.23);
+  height: 100%;
+  width: 100%;
 }
 
 .m-top-nav-mobile__icon svg,
@@ -123,6 +125,7 @@
   z-index: 110;
   padding: 0px;
   background-color: $color-gray-50;
+  border-right: 1px solid $color-gray-300;
 }
 
 .m-top-nav-mobile__menu--closed {

@@ -15,7 +15,7 @@ import {
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
-import { openDrift } from "../../../src/helpers/drift"
+//import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
 import { locationForPath } from "../../testHelpers/locationHelpers"
 
@@ -170,20 +170,41 @@ describe("TopNavMobile", () => {
     expect(reloadSpy).toHaveBeenCalled()
   })
 
-  test("clicking Support button opens Drift", async () => {
-    const user = userEvent.setup()
-    const result = render(
-      <BrowserRouter>
-        <TopNavMobile />
-      </BrowserRouter>
-    )
+  {
+    /* commenting out until drift is upgraded 
+    test("clicking Support button opens Drift", async () => {
+      const user = userEvent.setup()
+      const result = render(
+        <BrowserRouter>
+          <TopNavMobile />
+        </BrowserRouter>
+      )
 
-    await user.click(result.getByTitle("Support"))
+      await user.click(result.getByTitle("Support"))
 
-    expect(openDrift).toHaveBeenCalled()
-  })
+      expect(openDrift).toHaveBeenCalled()
+    })
 
-  test("clicking the Support button closes the mobile menu", async () => {
+    test("clicking the Support button closes the mobile menu", async () => {
+      const dispatch = jest.fn()
+      const user = userEvent.setup()
+      const result = render(
+        <StateDispatchProvider state={initialState} dispatch={dispatch}>
+          <BrowserRouter>
+            <TopNavMobile />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
+
+      await user.click(result.getByTitle("Support"))
+
+      expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    })
+
+  */
+  }
+
+  test("clicking the settings button closes the mobile menu", async () => {
     const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
@@ -194,7 +215,7 @@ describe("TopNavMobile", () => {
       </StateDispatchProvider>
     )
 
-    await user.click(result.getByTitle("Support"))
+    await user.click(result.getByTitle("Settings"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
   })
@@ -224,22 +245,6 @@ describe("TopNavMobile", () => {
     )
 
     await user.click(result.getByTitle("About Skate"))
-
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
-  })
-
-  test("clicking the settings button closes the mobile menu", async () => {
-    const dispatch = jest.fn()
-    const user = userEvent.setup()
-    const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    await user.click(result.getByTitle("Settings"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
   })

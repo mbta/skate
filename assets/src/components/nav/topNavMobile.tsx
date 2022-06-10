@@ -10,12 +10,12 @@ import {
   questionMarkIcon,
   refreshIcon,
   settingsIcon,
-  speechBubbleIcon,
+  //speechBubbleIcon,
 } from "../../helpers/icon"
 import { toggleMobileMenu, toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
-import { openDrift } from "../../helpers/drift"
+//import { openDrift } from "../../helpers/drift"
 import { reload } from "../../models/browser"
 
 export const toTitleCase = (str: string): string => {
@@ -39,7 +39,7 @@ export const pageOrTabName = (
   return tabName
 }
 
-const topNavMobile = (): JSX.Element => {
+const TopNavMobile = (): JSX.Element => {
   const location = useLocation()
 
   const [state, dispatch] = useContext(StateDispatchContext)
@@ -92,6 +92,7 @@ const topNavMobile = (): JSX.Element => {
             </button>
           </li>
 
+          {/* commenting out support until drift is upgraded 
           <li>
             <button
               className="m-top-nav-mobile__menu-button"
@@ -105,6 +106,7 @@ const topNavMobile = (): JSX.Element => {
               Support
             </button>
           </li>
+          */}
 
           <li>
             <button
@@ -149,7 +151,8 @@ const topNavMobile = (): JSX.Element => {
 
       <div
         className={
-          "m-top-nav-mobile__content" + (mobileMenuIsOpen ? " blurred" : "")
+          "m-top-nav-mobile__inner" +
+          (mobileMenuIsOpen ? " blurred-mobile" : "")
         }
       >
         <div className="m-top-nav-mobile__left-items">
@@ -180,4 +183,4 @@ const topNavMobile = (): JSX.Element => {
   )
 }
 
-export default topNavMobile
+export default TopNavMobile

@@ -13,11 +13,12 @@
 .m-nav--narrow {
   display: grid;
   gap: 0;
-  grid-template-columns: max-content minmax(0, 1fr);
-  grid-template-rows: max-content minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: max-content minmax(0, 1fr) max-content;
   grid-template-areas:
-    "top top"
-    "left content";
+    "top"
+    "content"
+    "bottom";
   width: 100%;
   height: 100%;
 }
@@ -32,6 +33,11 @@
 
 .m-nav__nav-bar--top {
   grid-area: top;
+}
+
+.m-nav__nav-bar--bottom {
+  grid-area: bottom;
+  z-index: 1000;
 }
 
 .m-nav__app-content {

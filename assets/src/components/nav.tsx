@@ -7,6 +7,7 @@ import featureIsEnabled from "../laboratoryFeatures"
 import LeftNav from "./nav/leftNav"
 import TopNav from "./nav/topNav"
 import TopNavMobile from "./nav/topNavMobile"
+import BottomNavMobile from "./nav/bottomNavMobile"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -29,6 +30,9 @@ const Nav: React.FC<Props> = ({
               <TopNavMobile />
             </div>
             <div className="m-nav__app-content">{children}</div>
+            <div className="m-nav__nav-bar m-nav__nav-bar--bottom">
+              <BottomNavMobile />
+            </div>
           </div>
         )
       case "tablet":
