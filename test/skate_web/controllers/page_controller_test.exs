@@ -105,6 +105,16 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "includes UUID in HTML", %{conn: conn, user: user} do
+      user_struct = Skate.Settings.User.get_or_create(user)
+
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~
+               "<meta name=\"user-uuid\" content=\"#{user_struct.uuid}\">"
+    end
+
+    @tag :authenticated
     test "correct tag manager ID set", %{conn: conn} do
       reassign_env(:skate, :google_tag_manager_id, "test_id")
 

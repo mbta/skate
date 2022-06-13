@@ -1,6 +1,7 @@
 defmodule SkateWeb.PageController do
   require Logger
   use SkateWeb, :controller
+  alias Skate.Settings.User
   alias Skate.Settings.UserSettings
   alias Skate.Settings.RouteTab
   alias SkateWeb.AuthManager
@@ -11,6 +12,7 @@ defmodule SkateWeb.PageController do
     username = AuthManager.Plug.current_resource(conn)
     _ = Logger.info("uid=#{username}")
 
+    user = User.get_or_create(username)
     user_settings = UserSettings.get_or_create(username)
     route_tabs = RouteTab.get_all_for_user(username)
 
@@ -22,6 +24,7 @@ defmodule SkateWeb.PageController do
 
     conn
     |> assign(:username, username)
+    |> assign(:user_uuid, user.uuid)
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
     |> assign(:user_settings, user_settings)
     |> assign(:route_tabs, route_tabs)
