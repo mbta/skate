@@ -4,7 +4,7 @@ defmodule Report do
   """
   @type t :: module()
 
-  @report_modules [Report.UserSettings]
+  @report_modules [Report.UserSettings, Report.UserNamesAndUuids]
 
   @callback run() :: {:ok, [map()]} | :error
   @callback short_name() :: String.t()
