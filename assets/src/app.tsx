@@ -22,6 +22,7 @@ import AppStateWrapper from "./components/appStateWrapper"
 // @ts-ignore
 import clarityInit from "./helpers/clarityInit"
 import clarityIdentify from "./helpers/clarityIdentify"
+import { tagManagerIdentify } from "./helpers/googleTagManager"
 
 sentryInit(window.sentry, window.username)
 
@@ -33,11 +34,13 @@ if (clarityTag) {
   clarityInit(clarityTag)
 }
 
-const username = document
-  .querySelector("meta[name=username]")
+const userUuid = document
+  .querySelector("meta[name=user-uuid]")
   ?.getAttribute("content")
 
-clarityIdentify(window.clarity, username)
+clarityIdentify(window.clarity, userUuid)
+
+tagManagerIdentify(userUuid)
 
 if (window.FS && window.username) {
   window.FS.identify(window.username, { displayName: window.username })
