@@ -10,12 +10,12 @@ import {
   questionMarkIcon,
   refreshIcon,
   settingsIcon,
-  //speechBubbleIcon,
+  speechBubbleIcon,
 } from "../../helpers/icon"
 import { toggleMobileMenu, toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
-//import { openDrift } from "../../helpers/drift"
+import { openDrift } from "../../helpers/drift"
 import { reload } from "../../models/browser"
 
 export const toTitleCase = (str: string): string => {
@@ -91,8 +91,6 @@ const TopNavMobile = (): JSX.Element => {
               Refresh
             </button>
           </li>
-
-          {/* commenting out support until drift is upgraded 
           <li>
             <button
               className="m-top-nav-mobile__menu-button"
@@ -106,8 +104,6 @@ const TopNavMobile = (): JSX.Element => {
               Support
             </button>
           </li>
-          */}
-
           <li>
             <button
               className="m-top-nav-mobile__menu-button"
