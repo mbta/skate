@@ -26,5 +26,10 @@ drift.load('xhxx5rayxher');
 
 drift.on('ready', function(api) {
   api.widget.hide();
+
+  // don't leave the widget open and taking up screen space
+  drift.on('chatClose', function(e) {
+    api.widget.hide()
+  })
 })
 </script>
