@@ -56,7 +56,7 @@ export const useTripShape = (tripId: TripId | null): Shape[] => {
         setShape(shapeResult)
       )
     }
-  }, [])
+  }, [tripId])
 
   return shape === null ? [] : [shape]
 }
