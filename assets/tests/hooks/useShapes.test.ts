@@ -3,7 +3,6 @@ import * as Api from "../../src/api"
 import shapesRed from "../../src/data/shapesRed"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import { Shape } from "../../src/schedule.d"
-import { TripId } from "../../src/schedule"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/api", () => ({
@@ -144,11 +143,8 @@ describe("useTripShape", () => {
 
   test("doesn't refetch shape when trip Ids don't change", () => {
     const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
-    const { rerender } = renderHook((tripId: TripId | null) => {
-      useTripShape(tripId),
-      {
-        initialProps: "1"
-      }
+    const { rerender } = renderHook((tripId) => useTripShape(tripId), {
+      initialProps: "1",
     })
     rerender("1")
     expect(mockFetchShape).toHaveBeenCalledTimes(1)
@@ -156,11 +152,8 @@ describe("useTripShape", () => {
 
   test("does refetch shape when the trip Id changes", () => {
     const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
-    const { rerender } = renderHook((tripId: TripId | null) => {
-      useTripShape(tripId),
-      {
-        initialProps: "1"
-      }
+    const { rerender } = renderHook((tripId) => useTripShape(tripId), {
+      initialProps: "1",
     })
     rerender("2")
     expect(mockFetchShape).toHaveBeenCalledTimes(2)
