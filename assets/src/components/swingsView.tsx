@@ -16,6 +16,7 @@ import { ByRunId, VehicleOrGhost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
 import { selectVehicle, toggleSwingsView } from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
   const [{ mobileMenuIsOpen }, dispatch] = useContext(StateDispatchContext)
@@ -235,6 +236,7 @@ const SwingRow = ({
             vehicleOrGhost={swingOnVehicleOrGhost}
             runId={swing.toRunId}
             fsEventText={"Clicked on swing-on from swings view"}
+            tagManagerEventText="clicked_swing_on"
           />
         </div>
       </th>
@@ -244,6 +246,7 @@ const SwingRow = ({
             vehicleOrGhost={swingOffVehicleOrGhost}
             runId={swing.fromRunId}
             fsEventText={"Clicked on swing-off from swings view"}
+            tagManagerEventText="clicked_swing_off"
           />
           <div className="m-swings-view__route-pill">
             <div className="m-swings-view__route">
@@ -267,10 +270,12 @@ const SwingCellContent = ({
   vehicleOrGhost,
   runId,
   fsEventText,
+  tagManagerEventText,
 }: {
   vehicleOrGhost?: VehicleOrGhost
   runId: string
   fsEventText: string
+  tagManagerEventText: string
 }): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
 
@@ -291,6 +296,7 @@ const SwingCellContent = ({
               if (window.FS) {
                 window.FS.event(fsEventText)
               }
+              tagManagerEvent(tagManagerEventText)
               dispatch(selectVehicle(vehicleOrGhost))
             }}
           >

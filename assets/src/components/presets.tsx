@@ -8,6 +8,7 @@ import CloseButton from "./closeButton"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
 import { plusThinIcon } from "../helpers/icon"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 const Presets = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
@@ -42,6 +43,7 @@ const Presets = () => {
             if (window.FS) {
               window.FS.event("Preset saved from presets panel")
             }
+            tagManagerEvent("preset_saved_from_presets_panel")
             dispatch(promptToSaveOrCreatePreset(currentTab))
           }
         }}

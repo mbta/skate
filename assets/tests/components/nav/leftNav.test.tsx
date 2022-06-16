@@ -13,6 +13,7 @@ import {
 } from "../../../src/state"
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
+import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -22,6 +23,10 @@ jest.mock("../../../src/helpers/drift", () => ({
 jest.mock("../../../src/helpers/appCue", () => ({
   __esModule: true,
   displayHelp: jest.fn(),
+}))
+jest.mock("../../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
 }))
 
 describe("LeftNav", () => {
@@ -111,6 +116,7 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Late View"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+    expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 
   test("clicking swings view button toggles swing view", async () => {
@@ -127,6 +133,7 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Swings View"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+    expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
   })
 
   test("view button displays selected state when that view is enabled", async () => {

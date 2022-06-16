@@ -92,7 +92,6 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "correct clarity tag set", %{conn: conn} do
-      reassign_env(:skate, :record_clarity, true)
       reassign_env(:skate, :clarity_tag, "test_tag")
 
       conn = get(conn, "/")
@@ -103,6 +102,26 @@ defmodule SkateWeb.PageControllerTest do
     test "correct username set", %{conn: conn} do
       conn = get(conn, "/")
       assert html_response(conn, 200) =~ "<meta name=\"username\" content=\"test_user\">"
+    end
+
+    @tag :authenticated
+    test "includes UUID in HTML", %{conn: conn, user: user} do
+      user_struct = Skate.Settings.User.get_or_create(user)
+
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~
+               "<meta name=\"user-uuid\" content=\"#{user_struct.uuid}\">"
+    end
+
+    @tag :authenticated
+    test "correct tag manager ID set", %{conn: conn} do
+      reassign_env(:skate, :google_tag_manager_id, "test_id")
+
+      html = conn |> get("/") |> html_response(200)
+
+      assert html =~ ~r/<script>.*test_id.*<\/script>/s
+      assert html =~ ~r/<noscript>.*test_id.*<\/noscript>/s
     end
   end
 end

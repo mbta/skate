@@ -5,6 +5,9 @@
     static_href = fn conn, path -> apply(static_href_module, static_href_fn, [conn, path]) end
   %>
   <head>
+    <%= if @google_tag_manager_id do %>
+      <%= render "_google_tag_manager.html", assigns %>
+    <% end %>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, minimum-scale=1"/>
@@ -13,11 +16,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <%= if @clarity_tag do %>
-        <meta name="clarity-tag" content="<%= @clarity_tag %>">
+      <meta name="clarity-tag" content="<%= @clarity_tag %>">
     <% end %>
 
     <%= if @username do %>
-        <meta name="username" content="<%= @username %>">
+      <meta name="username" content="<%= @username %>">
+    <% end %>
+
+    <%= if @user_uuid do %>
+      <meta name="user-uuid" content="<%= @user_uuid %>">
     <% end %>
 
     <title>Skate</title>
@@ -40,6 +47,9 @@
   </head>
 
   <body>
+    <%= if @google_tag_manager_id do %>
+      <%= render "_google_tag_manager_noscript.html", assigns %>
+    <% end %>
     <main role="main" class="container">
       <%= @inner_content %>
     </main>

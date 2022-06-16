@@ -4,13 +4,20 @@ defmodule Skate.Settings.User do
   import Ecto.Query
 
   def get_or_create(username) do
-    Skate.Repo.insert!(
-      DbUser.changeset(%DbUser{}, %{username: username}),
-      returning: true,
-      conflict_target: [:username],
-      # update a row with no effect so the returning works
-      on_conflict: {:replace, [:username]}
-    )
+    user =
+      Skate.Repo.insert!(
+        DbUser.changeset(%DbUser{}, %{username: username}),
+        returning: true,
+        conflict_target: [:username],
+        # update a row with no effect so the returning works
+        on_conflict: {:replace, [:username]}
+      )
+
+    if is_nil(user.uuid) do
+      user |> Ecto.Changeset.change(%{uuid: Ecto.UUID.generate()}) |> Skate.Repo.update!()
+    else
+      user
+    end
   end
 
   def user_ids_for_route_ids(route_ids) do

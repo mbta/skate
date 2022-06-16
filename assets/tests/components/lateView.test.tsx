@@ -16,6 +16,12 @@ import {
 import blockWaiverFactory from "../factories/blockWaiver"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 jest.spyOn(Date, "now").mockImplementation(() => {
   return 18000 * 1000
@@ -163,6 +169,9 @@ describe("LateView", () => {
     expect(window.FS!.event).toHaveBeenCalledWith(
       "User selected late view run number - ghost bus"
     )
+    expect(tagManagerEvent).toHaveBeenCalledWith(
+      "selected_late_view_run_number_ghost"
+    )
   })
 
   test("clicking vehicle run number opens vehicle and sends Fullstory event", () => {
@@ -195,6 +204,9 @@ describe("LateView", () => {
 
     expect(window.FS!.event).toHaveBeenCalledWith(
       "User selected late view run number"
+    )
+    expect(tagManagerEvent).toHaveBeenCalledWith(
+      "selected_late_view_run_number"
     )
   })
 
@@ -858,6 +870,7 @@ describe("LateView", () => {
     expect(
       wrapper.find('.m-late-view__data-row input[type="checkbox"]')
     ).toHaveLength(2)
+    expect(tagManagerEvent).toHaveBeenCalledWith("clicked_eye_toggle")
   })
 
   test("persist hidden rows between page loads", () => {

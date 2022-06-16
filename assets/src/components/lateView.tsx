@@ -34,6 +34,7 @@ import {
 } from "../util/dateTime"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { routeNameOrId } from "../util/route"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 // all these times are in seconds
 const unhidePopupVisibilityPeriod = 5
@@ -449,6 +450,7 @@ const LateGhostRow = ({
             if (window.FS) {
               window.FS.event("User selected late view run number - ghost bus")
             }
+            tagManagerEvent("selected_late_view_run_number_ghost")
             dispatch(selectVehicle(ghost))
           }}
         >
@@ -512,6 +514,7 @@ const LateBusRow = ({
             if (window.FS) {
               window.FS.event("User selected late view run number")
             }
+            tagManagerEvent("selected_late_view_run_number")
             dispatch(selectVehicle(vehicle))
           }}
         >
@@ -652,6 +655,7 @@ const UnhideToggle = ({
       if (window && window.FS) {
         window.FS.event("User clicked eye toggle")
       }
+      tagManagerEvent("clicked_eye_toggle")
       toggleViewHidden()
     }}
   >

@@ -31,6 +31,7 @@ import {
 } from "../state"
 import CloseButton from "./closeButton"
 import { saveIcon, plusThinIcon } from "../helpers/icon"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 type DrawerContent = "route_picker" | "presets"
 
@@ -97,6 +98,7 @@ const LadderTab = ({
               if (window.FS) {
                 window.FS.event("Preset saved")
               }
+              tagManagerEvent("preset_saved")
 
               saveTab()
             }}
@@ -122,6 +124,7 @@ const AddTabButton = ({
         if (window.FS) {
           window.FS.event("New tab added")
         }
+        tagManagerEvent("new_tab_added")
         addTab()
       }}
     >

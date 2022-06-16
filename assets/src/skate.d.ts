@@ -19,6 +19,8 @@ declare global {
     }
     // we only need this for providing username
     clarity?(action: "identify", username: string): void
+    // for Google Tag Manager
+    dataLayer?: Record<string, any>[]
     drift: {
       api: {
         sidebar: {

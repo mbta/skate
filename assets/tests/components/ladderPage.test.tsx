@@ -25,6 +25,7 @@ import {
   closeRouteTab,
   promptToSaveOrCreatePreset,
 } from "../../src/state"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import routeTabFactory from "../factories/routeTab"
@@ -40,6 +41,10 @@ jest.mock("../../src/hooks/useVehicles", () => ({
 jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => undefined),
+}))
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
 }))
 
 const mockDispatch = jest.fn()
@@ -207,6 +212,7 @@ describe("LadderPage", () => {
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
     expect(window.FS!.event).toHaveBeenCalledWith("Preset saved")
+    expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
   })
 
   test("can save an edited preset from the save icon", () => {
@@ -296,6 +302,7 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(window.FS!.event).toHaveBeenCalledWith("New tab added")
+    expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
   })
 
   test("can toggle to presets view in picker and back", () => {

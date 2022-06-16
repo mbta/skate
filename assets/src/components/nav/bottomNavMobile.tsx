@@ -3,6 +3,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { ladderIcon, mapIcon, searchIcon, swingIcon } from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
 import { toggleSwingsView } from "../../state"
+import { tagManagerEvent } from "../../helpers/googleTagManager"
 
 const BottomNavMobile = (): JSX.Element => {
   const [state, dispatch] = useContext(StateDispatchContext)
@@ -56,7 +57,10 @@ const BottomNavMobile = (): JSX.Element => {
         <li>
           <button
             className="m-bottom-nav-mobile__button"
-            onClick={() => dispatch(toggleSwingsView())}
+            onClick={() => {
+              tagManagerEvent("swings_view_toggled")
+              dispatch(toggleSwingsView())
+            }}
             title="Swings View"
           >
             {swingIcon(

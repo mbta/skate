@@ -21,6 +21,7 @@ import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
 import { displayHelp } from "../helpers/appCue"
 import { openDrift } from "../helpers/drift"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -97,6 +98,7 @@ const TabBar = ({
               if (window.FS) {
                 window.FS.event("Swings view toggled")
               }
+              tagManagerEvent("swings_view_toggled")
               dispatch(toggleSwingsView())
             }}
           >
@@ -116,6 +118,7 @@ const TabBar = ({
                 if (window.FS) {
                   window.FS.event("Late view toggled")
                 }
+                tagManagerEvent("late_view_toggled")
                 dispatch(toggleLateView())
               }}
               data-testid="late-view-icon"

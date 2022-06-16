@@ -18,6 +18,7 @@ import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import userEvent from "@testing-library/user-event"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 
 jest.mock("../../src/hooks/useSwings", () => ({
   __esModule: true,
@@ -32,6 +33,11 @@ jest.mock("../../src/hooks/useVehiclesForRunIds", () => ({
 jest.mock("../../src/hooks/useVehiclesForBlockIds", () => ({
   __esModule: true,
   default: jest.fn(),
+}))
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
 }))
 
 jest.spyOn(dateTime, "now").mockImplementation(() => {
@@ -245,6 +251,7 @@ describe("SwingsView", () => {
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Clicked on swing-off from swings view"
     )
+    expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_off")
   })
 
   test("opens VPP when clicking an active swing-on and sends Fullstory event", async () => {
@@ -286,6 +293,7 @@ describe("SwingsView", () => {
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Clicked on swing-on from swings view"
     )
+    expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_on")
   })
 
   test("links to both swing-on and swing-off if both are active", () => {

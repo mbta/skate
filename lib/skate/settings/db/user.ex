@@ -11,6 +11,7 @@ defmodule Skate.Settings.Db.User do
 
   schema "users" do
     field(:username, :string)
+    field(:uuid, :binary_id)
     has_one(:user_settings, DbUserSettings)
     timestamps()
 
