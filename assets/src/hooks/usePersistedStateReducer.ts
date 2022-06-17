@@ -26,8 +26,12 @@ const APP_STATE_KEY = "mbta-skate-state"
 type Key = string[]
 
 const LOCALLY_PERSISTED_KEYS: Key[] = [
+  ["notificationDrawerIsOpen"],
+  ["openView"],
+  ["pickerContainerIsVisible"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
+  ["selectedVehicleOrGhost"],
   ["searchPageState", "savedQueries"],
 ]
 
