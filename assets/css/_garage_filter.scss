@@ -68,6 +68,10 @@
 }
 
 .m-garage-filter__button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
   span {
     display: inline-block;
     width: 1.6875rem;

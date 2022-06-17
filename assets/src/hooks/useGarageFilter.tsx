@@ -84,7 +84,6 @@ export const GarageFilter = ({
         <ul className="m-garage-filter__garages">
           {sortedGarages.map((garage) => (
             <li key={garage} className="m-garage-filter__garage">
-              {garage}
               <button
                 title={"Toggle Garage: " + garage}
                 onClick={() => {
@@ -98,6 +97,7 @@ export const GarageFilter = ({
                 }}
                 className="m-garage-filter__button"
               >
+                {garage}
                 {filteredGarages.includes(garage)
                   ? toggleOnIcon()
                   : toggleOffIcon()}

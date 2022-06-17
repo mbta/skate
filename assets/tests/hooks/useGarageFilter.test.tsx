@@ -12,10 +12,7 @@ import {
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { BrowserRouter } from "react-router-dom"
-import { 
-  initialState,
-  toggleShowGaragesFilter 
-} from "../../src/state"
+import { initialState, toggleShowGaragesFilter } from "../../src/state"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -90,7 +87,6 @@ describe("filterRoutesByGarage", () => {
 })
 
 describe("GarageFilter", () => {
-
   const dispatch = jest.fn()
 
   const mockGarageFilter: GarageFilterData = {
@@ -100,7 +96,6 @@ describe("GarageFilter", () => {
   }
 
   test("click the button to toggle the global to hide / show the filters", async () => {
-
     const user = userEvent.setup()
 
     const result = render(
@@ -109,33 +104,29 @@ describe("GarageFilter", () => {
           <GarageFilter {...mockGarageFilter} />
         </BrowserRouter>
       </StateDispatchProvider>
-    )  
+    )
 
     await user.click(result.getByTitle("Toggle Garage Filter"))
     expect(dispatch).toHaveBeenCalledWith(toggleShowGaragesFilter())
-
   })
 
   test("Garage filter does not render by default", () => {
-
     const result = render(
-        <StateDispatchProvider state={initialState} dispatch={dispatch}>
-          <BrowserRouter>
-            <GarageFilter {...mockGarageFilter} />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      ) 
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <GarageFilter {...mockGarageFilter} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
 
-      expect(result.queryByText("Garage A")).toBeFalsy() 
-
+    expect(result.queryByText("Garage A")).toBeFalsy()
   })
 
   test("Garage filter renders when showGaragesFilter is true, and individual garages are clickable", async () => {
-
     const user = userEvent.setup()
 
     const result = render(
-      <StateDispatchProvider 
+      <StateDispatchProvider
         state={{ ...initialState, showGaragesFilter: true }}
         dispatch={dispatch}
       >
@@ -143,7 +134,7 @@ describe("GarageFilter", () => {
           <GarageFilter {...mockGarageFilter} />
         </BrowserRouter>
       </StateDispatchProvider>
-    )  
+    )
 
     expect(result.getByText("Garage A")).toBeTruthy()
 
@@ -159,7 +150,5 @@ describe("GarageFilter", () => {
       "User filtered routes by garage"
     )
     expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
-
   })
-
 })
