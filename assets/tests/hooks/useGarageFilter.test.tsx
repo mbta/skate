@@ -1,5 +1,4 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { mount } from "enzyme"
 import React from "react"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -91,49 +90,18 @@ describe("filterRoutesByGarage", () => {
 })
 
 describe("GarageFilter", () => {
-  test("clicking a button updates the garage filter", () => {
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
 
-    const mockGarageFilter: GarageFilterData = {
-      filteredGarages: [],
-      allGarages: ["Garage A", "Garage B"],
-      toggleGarage: jest.fn(),
-    }
+  const dispatch = jest.fn()
 
-    const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
+  const mockGarageFilter: GarageFilterData = {
+    filteredGarages: [],
+    allGarages: ["Garage A", "Garage B"],
+    toggleGarage: jest.fn(),
+  }
 
-    garageFilter
-      .find(".m-garage-filter__show-hide-button")
-      .first()
-      .simulate("click")
-
-    garageFilter
-      .find(".m-garage-filter__button")
-      .first()
-      .simulate("click")
-
-    expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "User filtered routes by garage"
-    )
-    expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
-  })
-
-  test("can hide / show the filters", async () => {
-
-    const dispatch = jest.fn()
+  test("click the button to toggle the global to hide / show the filters", async () => {
 
     const user = userEvent.setup()
-
-    const mockGarageFilter: GarageFilterData = {
-      filteredGarages: [],
-      allGarages: ["Garage A", "Garage B"],
-      toggleGarage: jest.fn(),
-    }
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
@@ -143,16 +111,55 @@ describe("GarageFilter", () => {
       </StateDispatchProvider>
     )  
 
-    expect(result.getByTitle("Toggle Garage Filter")).toBeTruthy();
-    expect(result.getByTitle("Garage A")).toBeFalsy();
-
     await user.click(result.getByTitle("Toggle Garage Filter"))
     expect(dispatch).toHaveBeenCalledWith(toggleShowGaragesFilter())
 
+  })
+
+  test("Garage filter does not render by default", () => {
+
+    const result = render(
+        <StateDispatchProvider state={initialState} dispatch={dispatch}>
+          <BrowserRouter>
+            <GarageFilter {...mockGarageFilter} />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      ) 
+
+      expect(result.queryByText("Garage A")).toBeFalsy() 
+
+  })
+
+  test("Garage filter renders when showGaragesFilter is true, and individual garages are clickable", async () => {
+
+    const user = userEvent.setup()
+
+    const result = render(
+      <StateDispatchProvider 
+        state={{ ...initialState, showGaragesFilter: true }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <GarageFilter {...mockGarageFilter} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )  
+
     expect(result.getByText("Garage A")).toBeTruthy()
 
-    await user.click(result.getByTestId("m-garage-filter__show-hide-button"))
-    expect(dispatch).toHaveBeenCalledWith(toggleShowGaragesFilter())
-    expect(result.getByText("Garage A")).toBeFalsy()
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
+    await user.click(result.getByTitle("Toggle Garage: Garage A"))
+    expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User filtered routes by garage"
+    )
+    expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
+
   })
+
 })

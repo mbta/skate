@@ -83,9 +83,10 @@ export const GarageFilter = ({
       {showGaragesFilter ? (
         <ul className="m-garage-filter__garages">
           {sortedGarages.map((garage) => (
-            <li key={garage} data-testid={garage} className="m-garage-filter__garage">
+            <li key={garage} className="m-garage-filter__garage">
               {garage}
               <button
+                title={"Toggle Garage: " + garage}
                 onClick={() => {
                   if (!filteredGarages.includes(garage) && window.FS) {
                     window.FS.event("User filtered routes by garage")
