@@ -33,6 +33,7 @@ const LOCALLY_PERSISTED_KEYS: Key[] = [
   ["selectedShuttleRunIds"],
   ["selectedVehicleOrGhost"],
   ["searchPageState", "savedQueries"],
+  ["showGaragesFilter"],
 ]
 
 const routeTabsPushRetries = 2

@@ -254,12 +254,17 @@ exports[`renders 1`] = `
             className="m-garage-filter"
           >
             <button
-              className="m-garage-filter__header"
+              className="m-garage-filter__show-hide-button"
               onClick={[Function]}
+              title="Toggle Garage Filter"
             >
-              Filter garages
               <div
-                className="m-garage-filter__show-hide-button"
+                className="m-garage-filter__header"
+              >
+                Filter garages
+              </div>
+              <div
+                className="m-garage-filter__show-hide-icon"
               >
                 <span
                   className=""

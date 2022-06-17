@@ -174,6 +174,17 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("toggleShowGaragesFilter", () => {
+    const expectedState: State.State = {
+      ...initialState,
+      showGaragesFilter: true,
+    }
+
+    const newState = reducer(initialState, State.toggleShowGaragesFilter())
+
+    expect(newState).toEqual(expectedState)
+  })
+
   describe("notification drawer", () => {
     test("openNotificationDrawer opens the drawer", () => {
       const state = {

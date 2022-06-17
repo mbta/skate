@@ -1,6 +1,8 @@
 import { act, renderHook } from "@testing-library/react-hooks"
 import { mount } from "enzyme"
 import React from "react"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import routeFactory from "../factories/route"
 import {
   GarageFilter,
@@ -9,6 +11,12 @@ import {
   GarageFilterData,
 } from "../../src/hooks/useGarageFilter"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { BrowserRouter } from "react-router-dom"
+import { 
+  initialState,
+  toggleShowGaragesFilter 
+} from "../../src/state"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -104,7 +112,7 @@ describe("GarageFilter", () => {
       .simulate("click")
 
     garageFilter
-      .find(".m-garage-filter__garage > button")
+      .find(".m-garage-filter__button")
       .first()
       .simulate("click")
 
@@ -115,29 +123,36 @@ describe("GarageFilter", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
   })
 
-  test("can hide / show the filters", () => {
+  test("can hide / show the filters", async () => {
+
+    const dispatch = jest.fn()
+
+    const user = userEvent.setup()
+
     const mockGarageFilter: GarageFilterData = {
       filteredGarages: [],
       allGarages: ["Garage A", "Garage B"],
       toggleGarage: jest.fn(),
     }
 
-    const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <GarageFilter {...mockGarageFilter} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )  
 
-    expect(garageFilter.text().includes("Garage A")).toBeFalsy()
+    expect(result.getByTitle("Toggle Garage Filter")).toBeTruthy();
+    expect(result.getByTitle("Garage A")).toBeFalsy();
 
-    garageFilter
-      .find(".m-garage-filter__show-hide-button")
-      .first()
-      .simulate("click")
+    await user.click(result.getByTitle("Toggle Garage Filter"))
+    expect(dispatch).toHaveBeenCalledWith(toggleShowGaragesFilter())
 
-    expect(garageFilter.text().includes("Garage A")).toBeTruthy()
+    expect(result.getByText("Garage A")).toBeTruthy()
 
-    garageFilter
-      .find(".m-garage-filter__show-hide-button")
-      .first()
-      .simulate("click")
-
-    expect(garageFilter.text().includes("Garage A")).toBeFalsy()
+    await user.click(result.getByTestId("m-garage-filter__show-hide-button"))
+    expect(dispatch).toHaveBeenCalledWith(toggleShowGaragesFilter())
+    expect(result.getByText("Garage A")).toBeFalsy()
   })
 })
