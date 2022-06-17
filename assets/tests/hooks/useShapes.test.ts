@@ -140,4 +140,22 @@ describe("useTripShape", () => {
 
     expect(result.current).toEqual([shape])
   })
+
+  test("doesn't refetch shape when trip Ids don't change", () => {
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+    const { rerender } = renderHook((tripId) => useTripShape(tripId), {
+      initialProps: "1",
+    })
+    rerender("1")
+    expect(mockFetchShape).toHaveBeenCalledTimes(1)
+  })
+
+  test("does refetch shape when the trip Id changes", () => {
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+    const { rerender } = renderHook((tripId) => useTripShape(tripId), {
+      initialProps: "1",
+    })
+    rerender("2")
+    expect(mockFetchShape).toHaveBeenCalledTimes(2)
+  })
 })
