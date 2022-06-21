@@ -82,12 +82,24 @@ describe("equalByElements", () => {
     expect(equalByElements(["a", "b"], ["a", "b"])).toBeTruthy()
   })
 
+  test("returns true with equal elements according to provided function", () => {
+    expect(
+      equalByElements([3, 7], [13, 17], (x, y) => x % 10 === y % 10)
+    ).toBeTruthy()
+  })
+
   test("returns false with the same elements in different order", () => {
     expect(equalByElements(["a", "b"], ["b", "a"])).toBeFalsy()
   })
 
   test("returns false with same length but different elements", () => {
     expect(equalByElements(["a", "b"], ["c", "d"])).toBeFalsy()
+  })
+
+  test("returns false with same length but different elements according to provided function", () => {
+    expect(
+      equalByElements([3, 7], [14, 18], (x, y) => x % 10 === y % 10)
+    ).toBeFalsy()
   })
 
   test("returns false with different length", () => {
