@@ -51,6 +51,7 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
   const [routeTabsPushRetriesLeft, setRouteTabsPushRetriesLeft] =
     useState(routeTabsPushRetries)
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (routeTabsToPush && !routeTabsPushInProgress) {
       dispatch(startingRouteTabsPush())
@@ -78,6 +79,7 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
         })
     }
   }, [routeTabsToPush, routeTabsPushInProgress])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return [state, dispatch]
 }

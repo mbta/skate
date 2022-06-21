@@ -448,7 +448,13 @@ const useAutoCenter = (
       isAutoCentering.current = true
       autoCenter(leafletMap, currentLatLngs, pickerContainerIsVisible)
     }
-  }, [shouldAutoCenter, currentLatLngs, pickerContainerIsVisible])
+  }, [
+    shouldAutoCenter,
+    isAutoCentering,
+    reactLeafletMapRef,
+    currentLatLngs,
+    pickerContainerIsVisible,
+  ])
 }
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
@@ -462,6 +468,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 const MapWithLeaflet = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<ReactLeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)

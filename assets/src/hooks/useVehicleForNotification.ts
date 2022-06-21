@@ -19,6 +19,7 @@ const useVehicleForNotification = (
 
   const [clickthroughLogged, setClickthroughLogged] = useState<boolean>(false)
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (window.FS) {
       if (!clickthroughLogged) {
@@ -40,6 +41,7 @@ const useVehicleForNotification = (
       }
     }
   }, [newVehicleOrGhost, notification])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return newVehicleOrGhost
 }

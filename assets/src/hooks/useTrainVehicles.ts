@@ -160,6 +160,7 @@ const useTrainVehicles = (
   const [state, dispatch] = useReducer(reducer, initialState)
   const { channelsByRouteId, trainVehiclesByRouteId } = state
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (socket) {
       // Unsubscribe from any routes we don't care about anymore
@@ -179,6 +180,7 @@ const useTrainVehicles = (
       })
     }
   }, [socket, selectedTrainRouteIds])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return trainVehiclesByRouteId
 }

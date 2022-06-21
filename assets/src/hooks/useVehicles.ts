@@ -154,6 +154,7 @@ const useVehicles = (
   const [invalidVehicleIds, setInvalidVehicleIds] = useState<VehicleId[]>([])
   const { channelsByRouteId, vehiclesByRouteId } = state
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (socket) {
       // Unsubscribe from any routes we don't care about anymore
@@ -173,7 +174,9 @@ const useVehicles = (
       })
     }
   }, [socket, selectedRouteIds])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const newInvalidVehicles = flatten(Object.values(vehiclesByRouteId)).filter(
       (vehicleOrGhost) =>
@@ -198,6 +201,7 @@ const useVehicles = (
 
     setInvalidVehicleIds(newInvalidVehicles.map((vehicle) => vehicle.id))
   }, [vehiclesByRouteId])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return vehiclesByRouteId
 }

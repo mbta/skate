@@ -30,9 +30,12 @@ const NotificationDrawer = () => {
 
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useLayoutEffect(() => {
     const restoreScrollPosition = isInitialRender
     setIsInitialRender(false)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const currentElement = elementRef.current!
 
     if (restoreScrollPosition && elementRef) {
       const element = elementRef.current
@@ -42,10 +45,10 @@ const NotificationDrawer = () => {
     }
 
     return () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      rememberScrollPosition(elementRef.current!.scrollTop)
+      rememberScrollPosition(currentElement.scrollTop)
     }
   }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <div className="m-notification-drawer" ref={elementRef}>
@@ -135,6 +138,7 @@ const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
   const submenuRef = useRef<HTMLDivElement | null>(null)
   const otherReadState = otherNotificationReadState(notification.state)
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const closeOnClickOutside = (event: MouseEvent) => {
       if (
@@ -152,6 +156,7 @@ const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
       document.removeEventListener("mousedown", closeOnClickOutside)
     }
   }, [submenuRef])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <>
