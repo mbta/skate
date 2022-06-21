@@ -80,7 +80,7 @@ export const NotificationsProvider = ({
       dispatch(setNotifications(notificationsData, isInitialLoad))
     }
   )
-  useEffect(() => setIsInitialLoad(false))
+  useEffect(() => setIsInitialLoad(false), [])
 
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 
