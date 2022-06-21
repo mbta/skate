@@ -77,7 +77,7 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
           }
         })
     }
-  }, [JSON.stringify(routeTabsToPush), routeTabsPushInProgress])
+  }, [routeTabsToPush, routeTabsPushInProgress])
 
   return [state, dispatch]
 }
