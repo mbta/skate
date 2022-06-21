@@ -31,7 +31,6 @@ const LOCALLY_PERSISTED_KEYS: Key[] = [
   ["pickerContainerIsVisible"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
-  ["selectedVehicleOrGhost"],
   ["searchPageState", "savedQueries"],
   ["showGaragesFilter"],
 ]
