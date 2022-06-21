@@ -1,19 +1,12 @@
 import { Channel, Socket } from "phoenix"
-import {
-  Dispatch as ReactDispatch,
-  useEffect,
-  useReducer,
-  useState,
-} from "react"
+import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import { reload } from "../models/browser"
 import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
 } from "../models/vehicleData"
-import { isVehicle } from "../models/vehicle"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, RouteId } from "../schedule.d"
-import { flatten } from "../helpers/array"
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
@@ -151,7 +144,6 @@ const useVehicles = (
   selectedRouteIds: RouteId[]
 ): ByRouteId<VehicleOrGhost[]> => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [invalidVehicleIds, setInvalidVehicleIds] = useState<VehicleId[]>([])
   const { channelsByRouteId, vehiclesByRouteId } = state
 
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -174,33 +166,6 @@ const useVehicles = (
       })
     }
   }, [socket, selectedRouteIds])
-  /* eslint-enable react-hooks/exhaustive-deps */
-
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    const newInvalidVehicles = flatten(Object.values(vehiclesByRouteId)).filter(
-      (vehicleOrGhost) =>
-        isVehicle(vehicleOrGhost) &&
-        vehicleOrGhost.isOffCourse &&
-        vehicleOrGhost.isRevenue
-    )
-
-    const oldInvalidVehicleIds = new Set(invalidVehicleIds)
-
-    newInvalidVehicles.forEach((vehicle) => {
-      if (
-        !oldInvalidVehicleIds.has(vehicle.id) &&
-        window.FS &&
-        window.username
-      ) {
-        window.FS.event("Vehicle went invalid", {
-          route_id: vehicle.routeId,
-        })
-      }
-    })
-
-    setInvalidVehicleIds(newInvalidVehicles.map((vehicle) => vehicle.id))
-  }, [vehiclesByRouteId])
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return vehiclesByRouteId

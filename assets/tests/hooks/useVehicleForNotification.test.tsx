@@ -116,11 +116,6 @@ describe("useVehicleForNotification", () => {
   }
 
   test("parses vehicle data from channel", () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel([vehicleData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -190,17 +185,9 @@ describe("useVehicleForNotification", () => {
       tripId: "12345678",
       viaVariant: "3",
     })
-    expect(window.FS!.event).toHaveBeenCalledWith("Notification linked to VPP")
-    window.FS = originalFS
-    window.username = originalUsername
   })
 
   test("parses ghost data from channel", () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel([ghostData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -233,19 +220,9 @@ describe("useVehicleForNotification", () => {
       currentPieceStartPlace: null,
       incomingTripDirectionId: null,
     })
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "Notification linked to ghost"
-    )
-    window.FS = originalFS
-    window.username = originalUsername
   })
 
   test("handles missing data from channel for a current or past notification", () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -263,17 +240,9 @@ describe("useVehicleForNotification", () => {
       { wrapper }
     )
     expect(result.current).toBeNull()
-    expect(window.FS!.event).toHaveBeenCalledWith("Notification link failed")
-    window.FS = originalFS
-    window.username = originalUsername
   })
 
   test("handles missing data from channel for an upcoming notification", () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -291,19 +260,9 @@ describe("useVehicleForNotification", () => {
       { wrapper }
     )
     expect(result.current).toBeNull()
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "Notification link failed upcoming"
-    )
-    window.FS = originalFS
-    window.username = originalUsername
   })
 
   test("handles empty result from channel", () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel([])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -321,8 +280,5 @@ describe("useVehicleForNotification", () => {
       { wrapper }
     )
     expect(result.current).toBeNull()
-    expect(window.FS!.event).toHaveBeenCalledWith("Notification link failed")
-    window.FS = originalFS
-    window.username = originalUsername
   })
 })
