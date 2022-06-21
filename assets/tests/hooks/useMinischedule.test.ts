@@ -43,6 +43,30 @@ describe("useMinischeduleRun", () => {
     rerender()
     expect(mockFetchShuttles).toHaveBeenCalledTimes(1)
   })
+
+  test("refetches when trip changes", () => {
+    const mockFetchShuttles: jest.Mock = Api.fetchScheduleRun as jest.Mock
+    const { rerender } = renderHook(
+      ({ trip, run }) => useMinischeduleRun(trip, run),
+      {
+        initialProps: { trip: "trip1", run: "run1" },
+      }
+    )
+    rerender({ trip: "trip2", run: "run1" })
+    expect(mockFetchShuttles).toHaveBeenCalledTimes(2)
+  })
+
+  test("refetches when run changes", () => {
+    const mockFetchShuttles: jest.Mock = Api.fetchScheduleRun as jest.Mock
+    const { rerender } = renderHook(
+      ({ trip, run }) => useMinischeduleRun(trip, run),
+      {
+        initialProps: { trip: "trip1", run: "run1" },
+      }
+    )
+    rerender({ trip: "trip1", run: "run2" })
+    expect(mockFetchShuttles).toHaveBeenCalledTimes(2)
+  })
 })
 
 describe("useMinischeduleRuns", () => {
