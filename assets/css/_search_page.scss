@@ -44,7 +44,6 @@
 @media screen and (max-width: $mobile-max-width) {
   .m-search-page {
     flex-direction: column;
-    overflow: auto; /* Unset overflow: visible to prevent showing map below */
   }
 
   .m-search-page--show-list {
