@@ -70,12 +70,17 @@ exports[`LadderPage renders the empty state 1`] = `
         className="m-garage-filter"
       >
         <button
-          className="m-garage-filter__header"
+          className="m-garage-filter__show-hide-button"
           onClick={[Function]}
+          title="Toggle Garage Filter"
         >
-          Filter garages
           <div
-            className="m-garage-filter__show-hide-button"
+            className="m-garage-filter__header"
+          >
+            Filter garages
+          </div>
+          <div
+            className="m-garage-filter__show-hide-icon"
           >
             <span
               className=""
@@ -204,12 +209,17 @@ exports[`LadderPage renders with route tabs 1`] = `
         className="m-garage-filter"
       >
         <button
-          className="m-garage-filter__header"
+          className="m-garage-filter__show-hide-button"
           onClick={[Function]}
+          title="Toggle Garage Filter"
         >
-          Filter garages
           <div
-            className="m-garage-filter__show-hide-button"
+            className="m-garage-filter__header"
+          >
+            Filter garages
+          </div>
+          <div
+            className="m-garage-filter__show-hide-icon"
           >
             <span
               className=""
@@ -484,12 +494,17 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         className="m-garage-filter"
       >
         <button
-          className="m-garage-filter__header"
+          className="m-garage-filter__show-hide-button"
           onClick={[Function]}
+          title="Toggle Garage Filter"
         >
-          Filter garages
           <div
-            className="m-garage-filter__show-hide-button"
+            className="m-garage-filter__header"
+          >
+            Filter garages
+          </div>
+          <div
+            className="m-garage-filter__show-hide-icon"
           >
             <span
               className=""
@@ -782,12 +797,17 @@ exports[`LadderPage renders with timepoints 1`] = `
         className="m-garage-filter"
       >
         <button
-          className="m-garage-filter__header"
+          className="m-garage-filter__show-hide-button"
           onClick={[Function]}
+          title="Toggle Garage Filter"
         >
-          Filter garages
           <div
-            className="m-garage-filter__show-hide-button"
+            className="m-garage-filter__header"
+          >
+            Filter garages
+          </div>
+          <div
+            className="m-garage-filter__show-hide-icon"
           >
             <span
               className=""
@@ -1324,12 +1344,17 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
         className="m-garage-filter"
       >
         <button
-          className="m-garage-filter__header"
+          className="m-garage-filter__show-hide-button"
           onClick={[Function]}
+          title="Toggle Garage Filter"
         >
-          Filter garages
           <div
-            className="m-garage-filter__show-hide-button"
+            className="m-garage-filter__header"
+          >
+            Filter garages
+          </div>
+          <div
+            className="m-garage-filter__show-hide-icon"
           >
             <span
               className=""

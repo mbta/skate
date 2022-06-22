@@ -1,5 +1,5 @@
 import React from "react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Route, GarageName } from "../schedule.d"
 import { flatten, uniq } from "../helpers/array"
 import {
@@ -9,6 +9,8 @@ import {
   toggleOffIcon,
 } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { toggleShowGaragesFilter } from "../state"
 
 export interface GarageFilterData {
   filteredGarages: GarageName[]
@@ -60,17 +62,21 @@ export const GarageFilter = ({
   allGarages,
   toggleGarage,
 }: GarageFilterData) => {
-  const [showGaragesFilter, setShowGaragesFilter] = useState<boolean>(false)
+  const [{ showGaragesFilter }, dispatch] = useContext(StateDispatchContext)
+
   const sortedGarages = allGarages.sort((a, b) => a.localeCompare(b))
+
+  const toggleVisibility = () => dispatch(toggleShowGaragesFilter())
 
   return (
     <div className="m-garage-filter">
       <button
-        className="m-garage-filter__header"
-        onClick={() => setShowGaragesFilter(!showGaragesFilter)}
+        className="m-garage-filter__show-hide-button"
+        title="Toggle Garage Filter"
+        onClick={toggleVisibility}
       >
-        Filter garages
-        <div className="m-garage-filter__show-hide-button">
+        <div className="m-garage-filter__header">Filter garages</div>
+        <div className="m-garage-filter__show-hide-icon">
           {showGaragesFilter ? collapseIcon() : expandIcon()}
         </div>
       </button>
@@ -78,8 +84,8 @@ export const GarageFilter = ({
         <ul className="m-garage-filter__garages">
           {sortedGarages.map((garage) => (
             <li key={garage} className="m-garage-filter__garage">
-              {garage}
               <button
+                title={"Toggle Garage: " + garage}
                 onClick={() => {
                   if (!filteredGarages.includes(garage) && window.FS) {
                     window.FS.event("User filtered routes by garage")
@@ -91,6 +97,7 @@ export const GarageFilter = ({
                 }}
                 className="m-garage-filter__button"
               >
+                {garage}
                 {filteredGarages.includes(garage)
                   ? toggleOnIcon()
                   : toggleOffIcon()}

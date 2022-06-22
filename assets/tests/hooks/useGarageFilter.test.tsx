@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { mount } from "enzyme"
 import React from "react"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import routeFactory from "../factories/route"
 import {
   GarageFilter,
@@ -9,6 +10,9 @@ import {
   GarageFilterData,
 } from "../../src/hooks/useGarageFilter"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { BrowserRouter } from "react-router-dom"
+import { initialState, toggleShowGaragesFilter } from "../../src/state"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -83,61 +87,68 @@ describe("filterRoutesByGarage", () => {
 })
 
 describe("GarageFilter", () => {
-  test("clicking a button updates the garage filter", () => {
+  const dispatch = jest.fn()
+
+  const mockGarageFilter: GarageFilterData = {
+    filteredGarages: [],
+    allGarages: ["Garage A", "Garage B"],
+    toggleGarage: jest.fn(),
+  }
+
+  test("click the button to toggle the global to hide / show the filters", async () => {
+    const user = userEvent.setup()
+
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <GarageFilter {...mockGarageFilter} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Toggle Garage Filter"))
+    expect(dispatch).toHaveBeenCalledWith(toggleShowGaragesFilter())
+  })
+
+  test("Garage filter does not render by default", () => {
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <GarageFilter {...mockGarageFilter} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.queryByText("Garage A")).toBeFalsy()
+  })
+
+  test("Garage filter renders when showGaragesFilter is true, and individual garages are clickable", async () => {
+    const user = userEvent.setup()
+
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, showGaragesFilter: true }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <GarageFilter {...mockGarageFilter} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByText("Garage A")).toBeTruthy()
+
     const originalFS = window.FS
     window.FS = { event: jest.fn(), identify: jest.fn() }
     afterEach(() => {
       window.FS = originalFS
     })
 
-    const mockGarageFilter: GarageFilterData = {
-      filteredGarages: [],
-      allGarages: ["Garage A", "Garage B"],
-      toggleGarage: jest.fn(),
-    }
-
-    const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
-
-    garageFilter
-      .find(".m-garage-filter__show-hide-button")
-      .first()
-      .simulate("click")
-
-    garageFilter
-      .find(".m-garage-filter__garage > button")
-      .first()
-      .simulate("click")
-
+    await user.click(result.getByTitle("Toggle Garage: Garage A"))
     expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
     expect(window.FS!.event).toHaveBeenCalledWith(
       "User filtered routes by garage"
     )
     expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
-  })
-
-  test("can hide / show the filters", () => {
-    const mockGarageFilter: GarageFilterData = {
-      filteredGarages: [],
-      allGarages: ["Garage A", "Garage B"],
-      toggleGarage: jest.fn(),
-    }
-
-    const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
-
-    expect(garageFilter.text().includes("Garage A")).toBeFalsy()
-
-    garageFilter
-      .find(".m-garage-filter__show-hide-button")
-      .first()
-      .simulate("click")
-
-    expect(garageFilter.text().includes("Garage A")).toBeTruthy()
-
-    garageFilter
-      .find(".m-garage-filter__show-hide-button")
-      .first()
-      .simulate("click")
-
-    expect(garageFilter.text().includes("Garage A")).toBeFalsy()
   })
 })

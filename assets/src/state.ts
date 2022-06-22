@@ -87,6 +87,7 @@ export interface State {
   openView: OpenView
   openInputModal: OpenInputModal | null
   mobileMenuIsOpen: boolean
+  showGaragesFilter: boolean
 }
 
 export const initialState: State = {
@@ -105,6 +106,7 @@ export const initialState: State = {
   openView: OpenView.None,
   openInputModal: null,
   mobileMenuIsOpen: false,
+  showGaragesFilter: false,
 }
 
 interface CreateRouteTabAction {
@@ -542,6 +544,14 @@ export const toggleMobileMenu = (): ToggleMobileMenuAction => ({
   type: "TOGGLE_MOBILE_MENU",
 })
 
+interface ToggleShowGaragesFilterAction {
+  type: "TOGGLE_SHOW_GARAGES_FILTER"
+}
+
+export const toggleShowGaragesFilter = (): ToggleShowGaragesFilterAction => ({
+  type: "TOGGLE_SHOW_GARAGES_FILTER",
+})
+
 export type Action =
   // Route tabs and ladder management in tabs
   | CreateRouteTabAction
@@ -596,6 +606,8 @@ export type Action =
   | CloseInputModalAction
   // Mobile Menu
   | ToggleMobileMenuAction
+  // Routepicker Garage Filter
+  | ToggleShowGaragesFilterAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -938,6 +950,15 @@ const mobileMenuReducer = (state: boolean, action: Action): boolean => {
   }
 }
 
+const garageFilterReducer = (state: boolean, action: Action): boolean => {
+  switch (action.type) {
+    case "TOGGLE_SHOW_GARAGES_FILTER":
+      return !state
+    default:
+      return state
+  }
+}
+
 const userSettingsReducer = (
   state: UserSettings,
   action: Action
@@ -1096,5 +1117,6 @@ export const reducer = (state: State, action: Action): State => {
     openView,
     openInputModal: openInputModalReducer(state.openInputModal, action),
     mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
+    showGaragesFilter: garageFilterReducer(state.showGaragesFilter, action),
   }
 }

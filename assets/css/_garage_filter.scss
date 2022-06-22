@@ -16,7 +16,7 @@
   }
 }
 
-.m-garage-filter__header {
+.m-garage-filter__show-hide-button {
   height: 2.25rem;
   padding: 0 0.5rem 0 1rem;
   width: 100%;
@@ -30,13 +30,13 @@
     border-bottom: 1px solid $color-gray-300;
   }
 
-  &:focus .m-garage-filter__show-hide-button {
+  &:focus .m-garage-filter__show-hide-icon {
     background-color: $color-gray-200;
     border-radius: 4px;
   }
 }
 
-.m-garage-filter__show-hide-button {
+.m-garage-filter__show-hide-icon {
   @include button-icon(0.5625rem);
   transform: rotate(90deg);
   width: 1.5rem;
@@ -68,6 +68,10 @@
 }
 
 .m-garage-filter__button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
   span {
     display: inline-block;
     width: 1.6875rem;
