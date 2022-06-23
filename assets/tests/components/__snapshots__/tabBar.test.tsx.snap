@@ -29,7 +29,6 @@ exports[`tabBar renders 1`] = `
         className="m-tab-bar__link m-tab-bar__link--active"
         href="/"
         onClick={[Function]}
-        style={Object {}}
         title="Routes"
       >
         <span
@@ -44,7 +43,6 @@ exports[`tabBar renders 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/shuttle-map"
         onClick={[Function]}
@@ -62,7 +60,6 @@ exports[`tabBar renders 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/settings"
         onClick={[Function]}
@@ -84,7 +81,6 @@ exports[`tabBar renders 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/search"
         onClick={[Function]}
@@ -223,7 +219,6 @@ exports[`tabBar renders with late view icon 1`] = `
         className="m-tab-bar__link m-tab-bar__link--active"
         href="/"
         onClick={[Function]}
-        style={Object {}}
         title="Routes"
       >
         <span
@@ -238,7 +233,6 @@ exports[`tabBar renders with late view icon 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/shuttle-map"
         onClick={[Function]}
@@ -256,7 +250,6 @@ exports[`tabBar renders with late view icon 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/settings"
         onClick={[Function]}
@@ -278,7 +271,6 @@ exports[`tabBar renders with late view icon 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/search"
         onClick={[Function]}
@@ -417,7 +409,6 @@ exports[`tabBar renders with late view icon when dispatcher flag is set 1`] = `
         className="m-tab-bar__link m-tab-bar__link--active"
         href="/"
         onClick={[Function]}
-        style={Object {}}
         title="Routes"
       >
         <span
@@ -432,7 +423,6 @@ exports[`tabBar renders with late view icon when dispatcher flag is set 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/shuttle-map"
         onClick={[Function]}
@@ -450,7 +440,6 @@ exports[`tabBar renders with late view icon when dispatcher flag is set 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/settings"
         onClick={[Function]}
@@ -472,7 +461,6 @@ exports[`tabBar renders with late view icon when dispatcher flag is set 1`] = `
     </li>
     <li>
       <a
-        aria-current={null}
         className="m-tab-bar__link"
         href="/search"
         onClick={[Function]}

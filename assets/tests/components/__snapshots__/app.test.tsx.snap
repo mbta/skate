@@ -38,7 +38,6 @@ exports[`App renders 1`] = `
             className="m-tab-bar__link m-tab-bar__link--active"
             href="/"
             onClick={[Function]}
-            style={Object {}}
             title="Routes"
           >
             <span
@@ -53,7 +52,6 @@ exports[`App renders 1`] = `
         </li>
         <li>
           <a
-            aria-current={null}
             className="m-tab-bar__link"
             href="/shuttle-map"
             onClick={[Function]}
@@ -71,7 +69,6 @@ exports[`App renders 1`] = `
         </li>
         <li>
           <a
-            aria-current={null}
             className="m-tab-bar__link"
             href="/settings"
             onClick={[Function]}
@@ -93,7 +90,6 @@ exports[`App renders 1`] = `
         </li>
         <li>
           <a
-            aria-current={null}
             className="m-tab-bar__link"
             href="/search"
             onClick={[Function]}
@@ -373,7 +369,6 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
             className="m-tab-bar__link m-tab-bar__link--active"
             href="/"
             onClick={[Function]}
-            style={Object {}}
             title="Routes"
           >
             <span
@@ -388,7 +383,6 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         </li>
         <li>
           <a
-            aria-current={null}
             className="m-tab-bar__link"
             href="/shuttle-map"
             onClick={[Function]}
@@ -406,7 +400,6 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         </li>
         <li>
           <a
-            aria-current={null}
             className="m-tab-bar__link"
             href="/settings"
             onClick={[Function]}
@@ -428,7 +421,6 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         </li>
         <li>
           <a
-            aria-current={null}
             className="m-tab-bar__link"
             href="/search"
             onClick={[Function]}

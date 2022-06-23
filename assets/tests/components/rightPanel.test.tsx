@@ -1,5 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
+import { BrowserRouter } from "react-router-dom"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -25,7 +26,7 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 
 describe("rightPanel", () => {
   test("shows nothing if nothing is selected", () => {
-    const tree = renderer.create(<RightPanel />).toJSON()
+    const tree = renderer.create(<BrowserRouter><RightPanel /></BrowserRouter>).toJSON()
     expect(tree).toEqual(null)
   })
 
@@ -33,7 +34,9 @@ describe("rightPanel", () => {
     const state: State = { ...initialState, selectedVehicleOrGhost: vehicle }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <RightPanel selectedVehicleOrGhost={vehicle} />
+        <BrowserRouter>
+          <RightPanel selectedVehicleOrGhost={vehicle} />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain(vehicle.runId)
@@ -43,7 +46,9 @@ describe("rightPanel", () => {
     const state: State = { ...initialState, selectedVehicleOrGhost: ghost }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <RightPanel selectedVehicleOrGhost={ghost} />
+        <BrowserRouter>
+          <RightPanel selectedVehicleOrGhost={ghost} />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain(ghost.runId)
@@ -53,7 +58,9 @@ describe("rightPanel", () => {
     const state: State = { ...initialState, notificationDrawerIsOpen: true }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <RightPanel />
+        <BrowserRouter>
+          <RightPanel />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain("m-notification-drawer")
@@ -67,7 +74,9 @@ describe("rightPanel", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <RightPanel selectedVehicleOrGhost={vehicle} />
+        <BrowserRouter>
+          <RightPanel selectedVehicleOrGhost={vehicle} />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain("m-vehicle-properties-panel")
@@ -78,7 +87,9 @@ describe("rightPanel", () => {
     const state: State = { ...initialState, openView: OpenView.Swings }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <RightPanel />
+        <BrowserRouter>
+          <RightPanel />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain("Swings view")
@@ -92,7 +103,9 @@ describe("rightPanel", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <RightPanel selectedVehicleOrGhost={vehicle} />
+        <BrowserRouter>
+          <RightPanel selectedVehicleOrGhost={vehicle} />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain("m-vehicle-properties-panel")

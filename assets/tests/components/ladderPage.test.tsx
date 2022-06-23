@@ -2,6 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import { render, fireEvent } from "@testing-library/react"
+import { BrowserRouter } from "react-router-dom"
 import LadderPage, {
   findRouteById,
   findSelectedVehicleOrGhost,
@@ -51,7 +52,7 @@ const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
-    const tree = renderer.create(<LadderPage />).toJSON()
+    const tree = renderer.create(<BrowserRouter><LadderPage /></BrowserRouter>).toJSON()
     expect(tree).toMatchSnapshot()
   })
 
@@ -79,9 +80,11 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesProvider routes={routes}>
-            <LadderPage />
-          </RoutesProvider>
+          <BrowserRouter>
+            <RoutesProvider routes={routes}>
+              <LadderPage />
+            </RoutesProvider>
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -106,9 +109,11 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -140,9 +145,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -166,9 +173,11 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -200,9 +209,11 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -237,9 +248,11 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -265,9 +278,11 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -292,9 +307,11 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -319,9 +336,11 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -349,9 +368,11 @@ describe("LadderPage", () => {
 
     mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <RoutesProvider routes={routes}>
-          <LadderPage />
-        </RoutesProvider>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 
@@ -372,9 +393,11 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesProvider routes={routes}>
-            <LadderPage />
-          </RoutesProvider>
+          <BrowserRouter>
+            <RoutesProvider routes={routes}>
+              <LadderPage />
+            </RoutesProvider>
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -398,9 +421,11 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesProvider routes={routes}>
-            <LadderPage />
-          </RoutesProvider>
+          <BrowserRouter>
+            <RoutesProvider routes={routes}>
+              <LadderPage />
+            </RoutesProvider>
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -443,9 +468,11 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesProvider routes={routes}>
-            <LadderPage />
-          </RoutesProvider>
+          <BrowserRouter>
+            <RoutesProvider routes={routes}>
+              <LadderPage />
+            </RoutesProvider>
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -460,7 +487,9 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <LadderPage />
+        <BrowserRouter>
+          <LadderPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.find("#m-properties-panel").exists()).toBeFalsy()
@@ -474,7 +503,9 @@ describe("LadderPage", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <LadderPage />
+        <BrowserRouter>
+          <LadderPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     expect(wrapper.find("#m-properties-panel").exists()).toBeFalsy()
