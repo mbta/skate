@@ -58,6 +58,6 @@ export const useChannel = <T>({
         channel = undefined
       }
     }
-  }, [socket, topic, event, loadingState])
+  }, [socket, topic, event, loadingState, parser, closeAfterFirstRead])
   return state
 }

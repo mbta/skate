@@ -191,96 +191,6 @@ describe("useVehicles", () => {
       crowding: null,
     },
   ]
-  const vehiclesDataWithInvalid: VehicleData[] = [
-    vehicleDataFactory.build({
-      bearing: 33,
-      block_id: "block-1",
-      data_discrepancies: [
-        {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: "swiftly-trip-id",
-            },
-            {
-              id: "busloc",
-              value: "busloc-trip-id",
-            },
-          ],
-        },
-        {
-          attribute: "route_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: null,
-            },
-            {
-              id: "busloc",
-              value: "busloc-route-id",
-            },
-          ],
-        },
-      ],
-      direction_id: 0,
-      headsign: "Forest Hills",
-      id: "v1",
-      is_shuttle: false,
-      is_overload: false,
-      is_off_course: true,
-      is_revenue: true,
-      layover_departure_time: null,
-      label: "v1-label",
-      latitude: 0,
-      longitude: 0,
-      operator_id: "op1",
-      operator_first_name: "PATTI",
-      operator_last_name: "SMITH",
-      operator_logon_time: 1_534_340_301,
-      previous_vehicle_id: "v2",
-      route_id: "39",
-      run_id: "run-1",
-      schedule_adherence_secs: 0,
-      scheduled_location: {
-        route_id: "39",
-        direction_id: 0,
-        trip_id: "scheduled trip",
-        run_id: "scheduled run",
-        time_since_trip_start_time: 0,
-        headsign: "scheduled headsign",
-        via_variant: "scheduled via variant",
-        timepoint_status: {
-          fraction_until_timepoint: 0.5,
-          timepoint_id: "tp1",
-        },
-      },
-      sources: ["swiftly", "busloc"],
-      stop_status: {
-        stop_id: "s1",
-        stop_name: "Stop Name",
-      },
-      timepoint_status: {
-        fraction_until_timepoint: 0.5,
-        timepoint_id: "tp1",
-      },
-      timestamp: 123,
-      trip_id: "t1",
-      via_variant: "X",
-      route_status: "on_route",
-      end_of_trip_type: "another_trip",
-      block_waivers: [
-        {
-          start_time: 1_534_340_301,
-          end_time: 1_534_340_321,
-          cause_id: 0,
-          cause_description: "Block Waiver",
-          remark: null,
-        },
-      ],
-      crowding: null,
-    }),
-  ]
 
   test("vehicles is empty to start with", () => {
     const { result } = renderHook(() => useVehicles(undefined, []))
@@ -423,27 +333,5 @@ describe("useVehicles", () => {
 
     expect(reloadSpy).toHaveBeenCalled()
     reloadSpy.mockRestore()
-  })
-
-  test("makes a FullStory event when a bus goes invalid", async () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {
-      data: vehiclesDataWithInvalid,
-    })
-    mockSocket.channel.mockImplementation(() => mockChannel)
-
-    renderHook(() => useVehicles(mockSocket, ["39"]))
-
-    expect(window.FS!.event).toHaveBeenCalledWith("Vehicle went invalid", {
-      route_id: "39",
-    })
-
-    window.FS = originalFS
-    window.username = originalUsername
   })
 })

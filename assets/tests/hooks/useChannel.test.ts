@@ -145,13 +145,14 @@ describe("useChannel", () => {
     mockSocket.channel.mockImplementationOnce(() => channel1)
     mockSocket.channel.mockImplementationOnce(() => channel2)
 
+    const parser = jest.fn(() => "parsed")
     const { rerender, result } = renderHook(
       (topic) =>
         useChannel({
           socket: mockSocket,
           topic,
           event: "event",
-          parser: jest.fn(() => "parsed"),
+          parser,
           loadingState: "loading",
         }),
       { initialProps: "topic1" }
@@ -165,18 +166,75 @@ describe("useChannel", () => {
     expect(channel2.join).toHaveBeenCalled()
   })
 
+  test("leaves the channel, removes old data, and joins new channel when the parser changes", () => {
+    const mockSocket = makeMockSocket()
+    const channel1 = makeMockChannel("ok", { data: "raw" })
+    const channel2 = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => channel1)
+    mockSocket.channel.mockImplementationOnce(() => channel2)
+
+    const { rerender, result } = renderHook(
+      (parser: (data: any) => string) =>
+        useChannel({
+          socket: mockSocket,
+          topic: "topic",
+          event: "event",
+          parser,
+          loadingState: "loading",
+        }),
+      { initialProps: jest.fn(() => "parsed") }
+    )
+
+    expect(result.current).toEqual("parsed")
+    rerender(jest.fn(() => "parsed2"))
+
+    expect(channel1.leave).toHaveBeenCalled()
+    expect(result.current).toEqual("loading")
+    expect(channel2.join).toHaveBeenCalled()
+  })
+
+  test("leaves the channel, removes old data, and joins new channel when closeAfterFirstRead changes", () => {
+    const mockSocket = makeMockSocket()
+    const channel1 = makeMockChannel("ok", { data: "raw" })
+    const channel2 = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => channel1)
+    mockSocket.channel.mockImplementationOnce(() => channel2)
+
+    const parser = jest.fn(() => "parsed")
+    const { rerender, result } = renderHook(
+      (closeAfterFirstRead: boolean) =>
+        useChannel({
+          socket: mockSocket,
+          topic: "topic",
+          event: "event",
+          parser,
+          loadingState: "loading",
+          closeAfterFirstRead,
+        }),
+      { initialProps: false }
+    )
+
+    expect(result.current).toEqual("parsed")
+    rerender(true)
+
+    expect(channel1.leave).toHaveBeenCalled()
+    expect(result.current).toEqual("loading")
+    expect(channel2.join).toHaveBeenCalled()
+  })
+
   test("leaves the channel and removes old data when topic is changed to null", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: "raw" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
+    const parser = jest.fn(() => "parsed")
     const { rerender, result } = renderHook<string | null, any>(
       (topic) =>
         useChannel({
           socket: mockSocket,
           topic,
           event: "event",
-          parser: jest.fn(() => "parsed"),
+          parser,
           loadingState: "loading",
         }),
       { initialProps: "topic" }

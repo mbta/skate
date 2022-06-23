@@ -80,7 +80,7 @@ export const NotificationsProvider = ({
       dispatch(setNotifications(notificationsData, isInitialLoad))
     }
   )
-  useEffect(() => setIsInitialLoad(false))
+  useEffect(() => setIsInitialLoad(false), [])
 
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 
@@ -93,11 +93,13 @@ export const NotificationsProvider = ({
     socket
   )
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (selectedNotification) {
       stateDispatch(selectVehicleFromNotification(vehicleForNotification))
     }
   }, [selectedNotification, vehicleForNotification])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <NotificationsContext.Provider

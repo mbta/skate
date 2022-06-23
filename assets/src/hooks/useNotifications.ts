@@ -30,6 +30,7 @@ export const useNotifications = (
     setRouteIds(newRouteIds)
   }
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     let channel: Channel | undefined
 
@@ -61,4 +62,5 @@ export const useNotifications = (
       }
     }
   }, [socket, routeIds])
+  /* eslint-enable react-hooks/exhaustive-deps */
 }

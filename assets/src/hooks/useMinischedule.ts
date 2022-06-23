@@ -16,7 +16,7 @@ export const useMinischeduleRun = (
   const [run, setRun] = useState<Run | null | undefined>(undefined)
   useEffect(() => {
     fetchScheduleRun(tripId, runId).then(setRun)
-  }, [tripId])
+  }, [tripId, runId])
   return run
 }
 

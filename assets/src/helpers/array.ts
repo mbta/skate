@@ -51,9 +51,17 @@ export const intersperseString = (s: string, delimiter: string): string => {
   return result
 }
 
-export const equalByElements = <T>(array1: T[], array2: T[]): boolean => {
+export const equalByElements = <T>(
+  array1: T[],
+  array2: T[],
+  fun?: (v1: T, v2: T) => boolean
+): boolean => {
   if (array1.length === array2.length) {
-    return array1.every((element, index) => array2[index] === element)
+    if (fun) {
+      return array1.every((element, index) => fun(array2[index], element))
+    } else {
+      return array1.every((element, index) => array2[index] === element)
+    }
   } else {
     return false
   }

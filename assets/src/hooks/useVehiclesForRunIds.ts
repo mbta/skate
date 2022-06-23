@@ -10,6 +10,7 @@ import { useChannel } from "./useChannel"
 
 const parser = (data: VehicleOrGhostData[]): VehicleOrGhost[] =>
   data.map(vehicleOrGhostFromData)
+const parserWithNull = nullableParser(parser)
 
 const useVehiclesForRunIds = (
   socket: Socket | undefined,
@@ -23,7 +24,7 @@ const useVehiclesForRunIds = (
     socket,
     topic,
     event: "vehicles",
-    parser: nullableParser(parser),
+    parser: parserWithNull,
     loadingState: undefined,
     closeAfterFirstRead,
   })

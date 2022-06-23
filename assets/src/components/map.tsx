@@ -1,4 +1,4 @@
-import Leaflet, { LatLngExpression, Map as LeafletMap } from "leaflet"
+import Leaflet, { LatLng, LatLngExpression, Map as LeafletMap } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -36,6 +36,7 @@ import { Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { UserSettings } from "../userSettings"
 import featureIsEnabled from "../laboratoryFeatures"
+import { equalByElements } from "../helpers/array"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -426,22 +427,32 @@ const useAutoCenter = (
   reactLeafletMapRef: MutableRefObject<ReactLeafletMap | null>,
   shouldAutoCenter: boolean,
   isAutoCentering: MutableRefObject<boolean>,
-  latLngs: LatLngExpression[]
+  latLngs: LatLng[]
 ) => {
   const [appState] = useContext(StateDispatchContext)
+  const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(latLngs)
   const pickerContainerIsVisible: boolean = appState.pickerContainerIsVisible
+
+  if (
+    !equalByElements(latLngs, currentLatLngs, (latLng1, latLng2) =>
+      latLng1.equals(latLng2)
+    )
+  ) {
+    setCurrentLatLngs(latLngs)
+  }
+
   useEffect(() => {
     const reactLeafletMap: ReactLeafletMap | null = reactLeafletMapRef.current
     if (reactLeafletMap !== null && shouldAutoCenter) {
       const leafletMap: LeafletMap = reactLeafletMap.leafletElement
       isAutoCentering.current = true
-      autoCenter(leafletMap, latLngs, pickerContainerIsVisible)
+      autoCenter(leafletMap, currentLatLngs, pickerContainerIsVisible)
     }
   }, [
     shouldAutoCenter,
-    // useEffect uses ===, which doesn't work on arrays.
-    // convert the array to a string so useEffect can tell if it doesn't change.
-    JSON.stringify(latLngs),
+    isAutoCentering,
+    reactLeafletMapRef,
+    currentLatLngs,
     pickerContainerIsVisible,
   ])
 }
@@ -457,12 +468,13 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 const MapWithLeaflet = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<ReactLeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
-  const latLngs: LatLngExpression[] = props.vehicles.map(
-    ({ latitude, longitude }) => Leaflet.latLng(latitude, longitude)
+  const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
+    Leaflet.latLng(latitude, longitude)
   )
   useAutoCenter(mapRef, shouldAutoCenter, isAutoCentering, latLngs)
 
