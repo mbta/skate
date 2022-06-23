@@ -52,18 +52,16 @@ const AppRoutes = () => {
             pickerContainerIsVisible={pickerContainerIsVisible}
             openView={openView}
           >
-            <BrowserRoute exact={true} path="/" component={LadderPage} />
+            <BrowserRoute path="/*" component={LadderPage} />
             <BrowserRoute
-              exact={true}
-              path="/shuttle-map"
+              path="/shuttle-map/*"
               component={ShuttleMapPage}
             />
             <BrowserRoute
-              exact={true}
-              path="/settings"
+              path="/settings/*"
               component={SettingsPage}
             />
-            <BrowserRoute exact={true} path="/search" component={SearchPage} />
+            <BrowserRoute path="/search/*" component={SearchPage} />
             {openView === OpenView.Late ? <LateView /> : null}
           </Nav>
           <Modal />
