@@ -37,12 +37,6 @@ const TabBar = ({
   const location = useLocation()
   const [, dispatch] = useContext(StateDispatchContext)
 
-  const linkClassName = ({ isActive }) => {
-          const linkClasses = ["m-tab-bar__link"]
-          if(isActive) linkClasses.push "m-tab-bar__link--active"
-          return linkClasses.join(" ")
-        }
-
   return (
     <div
       className={`m-tab-bar ${pickerContainerIsVisible ? "visible" : "hidden"}`}
@@ -53,25 +47,25 @@ const TabBar = ({
       <ul className="m-tab-bar__links">
         <li>
           <NavLink
-            className={linkClassName}
+            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
             title="Routes"
-            to="/*"
+            to="/"
           >
             {ladderIcon("m-tab-bar__icon")}
           </NavLink>
         </li>
         <li>
           <NavLink
-            className={linkClassName}
+            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
             title="Shuttle Map"
-            to="/shuttle-map/*"
+            to="/shuttle-map"
           >
             {mapIcon("m-tab-bar__icon")}
           </NavLink>
         </li>
         <li>
           <NavLink
-            className={linkClassName}
+            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
             title="Settings"
             to="/settings"
           >
@@ -80,7 +74,7 @@ const TabBar = ({
         </li>
         <li>
           <NavLink
-            className={linkClassName}
+            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
             title="Search"
             to="/search"
           >

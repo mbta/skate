@@ -52,12 +52,6 @@ const TopNavMobile = (): JSX.Element => {
     ? ["m-top-nav__notifications-icon", "m-top-nav__notifications-icon--active"]
     : ["m-top-nav__notifications-icon"]
 
-   const linkClassName = ({ isActive }) => {
-          const linkClasses = ["m-top-nav-mobile__menu-link"]
-          if(isActive) linkClasses.push "m-top-nav-mobile__menu-link--active"
-          return linkClasses.join(" ")
-        } 
-
   return (
     <div className="m-top-nav-mobile" data-testid="top-nav-mobile">
       <div
@@ -126,9 +120,9 @@ const TopNavMobile = (): JSX.Element => {
 
           <li>
             <NavLink
-              className={linkClassName}
+              className={({ isActive }) => "m-top-nav-mobile__menu-link" + (isActive ? " m-top-nav-mobile__menu-link--active" : "")}
               title="Settings"
-              to="/settings/*"
+              to="/settings"
               onClick={toggleVisibility}
             >
               {settingsIcon("m-top-nav-mobile__menu-icon")}
