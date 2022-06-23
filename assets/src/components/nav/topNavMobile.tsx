@@ -1,5 +1,4 @@
 import React, { useContext } from "react"
-import { Location } from "history"
 import { useLocation, Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
@@ -27,14 +26,14 @@ export const toTitleCase = (str: string): string => {
 }
 
 export const pageOrTabName = (
-  location: Location<unknown>,
+  pathname: string,
   routeTabs: RouteTab[]
 ): string => {
   let tabName = "Skate"
 
-  if (location.pathname === "/") tabName = currentTabName(routeTabs)
+  if (pathname === "/") tabName = currentTabName(routeTabs)
   else
-    tabName = toTitleCase(location.pathname.replace("/", "").replace("-", " "))
+    tabName = toTitleCase(pathname.replace("/", "").replace("-", " "))
 
   return tabName
 }
@@ -160,7 +159,7 @@ const TopNavMobile = (): JSX.Element => {
         </div>
 
         <div className="m-top-nav-mobile__header-text">
-          {pageOrTabName(location, routeTabs)}
+          {pageOrTabName(location.pathname, routeTabs)}
         </div>
 
         <div className="m-top-nav-mobile__right-items">
