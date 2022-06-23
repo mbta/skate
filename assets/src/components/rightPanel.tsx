@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext } from "react"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehicleOrGhost } from "../realtime.d"
 import { setNotification, OpenView } from "../state"
@@ -16,10 +16,10 @@ const RightPanel = ({
 
   // close notification if you move away from ladder page
   // TODO delete when notifications are viewable from anywhere
-  const history = useHistory()
-  if (history) {
+  const navigate = useNavigate()
+  if (navigate) {
     /* istanbul ignore next */
-    history.listen(() => dispatch(setNotification(undefined)))
+    navigate.listen(() => dispatch(setNotification(undefined)))
   }
 
   if (selectedVehicleOrGhost) {
