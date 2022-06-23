@@ -10,6 +10,12 @@ const BottomNavMobile = (): JSX.Element => {
 
   const { mobileMenuIsOpen } = state
 
+  const linkClassName = ({ isActive }) => {
+            const linkClasses = ["m-bottom-nav-mobile__link"]
+            if(isActive) linkClasses.push "m-bottom-nav-mobile__link--active"
+            return linkClasses.join(" ")
+          }
+
   return (
     <div
       data-testid="bottom-nav-mobile"
@@ -20,11 +26,9 @@ const BottomNavMobile = (): JSX.Element => {
       <ul className="m-bottom-nav-mobile__links">
         <li>
           <NavLink
-            className="m-bottom-nav-mobile__link"
-            activeClassName="m-bottom-nav-mobile__link--active"
-            exact={true}
+            className={linkClassName}
             title="Route Ladders"
-            to="/"
+            to="/*"
           >
             {ladderIcon("m-bottom-nav-mobile__icon")}
           </NavLink>
@@ -32,11 +36,9 @@ const BottomNavMobile = (): JSX.Element => {
 
         <li>
           <NavLink
-            className="m-bottom-nav-mobile__link"
-            activeClassName="m-bottom-nav-mobile__link--active"
-            exact={true}
+            className={linkClassName}
             title="Shuttle Map"
-            to="/shuttle-map"
+            to="/shuttle-map/*"
           >
             {mapIcon("m-bottom-nav-mobile__icon")}
           </NavLink>
@@ -44,11 +46,9 @@ const BottomNavMobile = (): JSX.Element => {
 
         <li>
           <NavLink
-            className="m-bottom-nav-mobile__link"
-            activeClassName="m-bottom-nav-mobile__link--active"
-            exact={true}
+            className={linkClassName}
             title="Search"
-            to="/search"
+            to="/search/*"
           >
             {searchIcon("m-bottom-nav-mobile__icon")}
           </NavLink>

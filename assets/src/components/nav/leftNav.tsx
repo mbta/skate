@@ -32,16 +32,20 @@ const LeftNav = ({
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
 
+  const linkClassName = ({ isActive }) => {
+        const linkClasses = ["m-left-nav__link"]
+        if(isActive) linkClasses.push "m-left-nav__link--active"
+        return linkClasses.join(" ")
+      }
+
   return (
     <div className={"m-left-nav" + (collapsed ? " m-left-nav--collapsed" : "")}>
       <ul className="m-left-nav__links">
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={linkClassName}
             title="Route Ladders"
-            to="/"
+            to="/*"
           >
             {ladderIcon("m-left-nav__icon")}
             {collapsed ? null : "Route Ladders"}
@@ -75,11 +79,9 @@ const LeftNav = ({
         </li>
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={linkClassName}
             title="Shuttle Map"
-            to="/shuttle-map"
+            to="/shuttle-map/*"
           >
             {mapIcon("m-left-nav__icon")}
             {collapsed ? null : "Shuttle Map"}
@@ -87,11 +89,9 @@ const LeftNav = ({
         </li>
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={linkClassName}
             title="Search"
-            to="/search"
+            to="/search/*"
           >
             {searchIcon("m-left-nav__icon")}
             {collapsed ? null : "Search"}
@@ -121,11 +121,9 @@ const LeftNav = ({
         </li>
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={linkClassName}
             title="Settings"
-            to="/settings"
+            to="/settings/*"
           >
             {settingsIcon("m-left-nav__icon")}
             {collapsed ? null : "Settings"}
