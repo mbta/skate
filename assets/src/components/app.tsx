@@ -55,19 +55,19 @@ const AppRoutes = () => {
           >
             <Routes>
               <BrowserRoute 
-                path="/*" 
+                path="/" 
                 element={<LadderPage />} 
               />
               <BrowserRoute
-                path="/shuttle-map/*"
+                path="/shuttle-map"
                 element={<ShuttleMapPage />}
               />
               <BrowserRoute
-                path="/settings/*"
+                path="/settings"
                 element={<SettingsPage />}
               />
               <BrowserRoute 
-                path="/search/*" 
+                path="/search" 
                 element={<SearchPage />} 
               />
             </Routes>
