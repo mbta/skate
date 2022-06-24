@@ -33,7 +33,6 @@ jobs:
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-          restore-keys: ${{ runner.os }}-mix-
       - name: Install dependencies
         if: steps.deps-cache-outputs-cache-hit != 'true'
         run: |
@@ -82,27 +81,17 @@ jobs:
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-          restore-keys: ${{ runner.os }}-mix-
       - name: Compile (warnings as errors)
         run: mix compile --force --warnings-as-errors
       - name: Check formatting
         run: mix format --check-formatted
       - name: Run tests
-        run: mix test --cover
+        run: mix coveralls.github
         env:
           POSTGRES_USERNAME: ${{env.DATABASE_USER}}
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
           POSTGRES_HOSTNAME: ${{env.DATABASE_HOST}}
-      - name: Save PR information
-        run: |
-          echo "${{ github.event.pull_request.number }}" > cover/PR_NUMBER
-          echo "${{ github.event.pull_request.head.sha }}" > cover/PR_SHA
-        if: github.event.pull_request
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: elixir-lcov
-          path: cover/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: mbta/actions/dialyzer@v1
 
   build_typescript:

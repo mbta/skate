@@ -10,7 +10,14 @@ defmodule Skate.MixProject do
       compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      test_coverage: [tool: LcovEx],
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        "coveralls.github": :test
+      ],
       elixirc_options: [warnings_as_errors: true],
       dialyzer: [
         plt_add_apps: [:mix, :laboratory]
@@ -60,7 +67,7 @@ defmodule Skate.MixProject do
       {:ueberauth_cognito, "~> 0.4.0"},
       {:guardian, "~> 2.0"},
       {:guardian_phoenix, "~> 2.0"},
-      {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.10", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ehmon, github: "mbta/ehmon", only: :prod},
       {:diskusage_logger, "~> 0.2.0"},
