@@ -54,22 +54,10 @@ const AppRoutes = () => {
             openView={openView}
           >
             <Routes>
-              <BrowserRoute 
-                path="/" 
-                element={<LadderPage />} 
-              />
-              <BrowserRoute
-                path="/shuttle-map"
-                element={<ShuttleMapPage />}
-              />
-              <BrowserRoute
-                path="/settings"
-                element={<SettingsPage />}
-              />
-              <BrowserRoute 
-                path="/search" 
-                element={<SearchPage />} 
-              />
+              <BrowserRoute path="/" element={<LadderPage />} />
+              <BrowserRoute path="/shuttle-map" element={<ShuttleMapPage />} />
+              <BrowserRoute path="/settings" element={<SettingsPage />} />
+              <BrowserRoute path="/search" element={<SearchPage />} />
             </Routes>
             {openView === OpenView.Late ? <LateView /> : null}
           </Nav>

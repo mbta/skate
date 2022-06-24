@@ -47,7 +47,9 @@ const TabBar = ({
       <ul className="m-tab-bar__links">
         <li>
           <NavLink
-            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
+            className={({ isActive }) =>
+              "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")
+            }
             title="Routes"
             to="/"
           >
@@ -56,7 +58,9 @@ const TabBar = ({
         </li>
         <li>
           <NavLink
-            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
+            className={({ isActive }) =>
+              "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")
+            }
             title="Shuttle Map"
             to="/shuttle-map"
           >
@@ -65,7 +69,9 @@ const TabBar = ({
         </li>
         <li>
           <NavLink
-            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
+            className={({ isActive }) =>
+              "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")
+            }
             title="Settings"
             to="/settings"
           >
@@ -74,7 +80,9 @@ const TabBar = ({
         </li>
         <li>
           <NavLink
-            className={({ isActive }) => "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")}
+            className={({ isActive }) =>
+              "m-tab-bar__link" + (isActive ? " m-tab-bar__link--active" : "")
+            }
             title="Search"
             to="/search"
           >

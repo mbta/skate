@@ -32,8 +32,7 @@ export const pageOrTabName = (
   let tabName = "Skate"
 
   if (pathname === "/") tabName = currentTabName(routeTabs)
-  else
-    tabName = toTitleCase(pathname.replace("/", "").replace("-", " "))
+  else tabName = toTitleCase(pathname.replace("/", "").replace("-", " "))
 
   return tabName
 }
@@ -119,7 +118,10 @@ const TopNavMobile = (): JSX.Element => {
 
           <li>
             <NavLink
-              className={({ isActive }) => "m-top-nav-mobile__menu-link" + (isActive ? " m-top-nav-mobile__menu-link--active" : "")}
+              className={({ isActive }) =>
+                "m-top-nav-mobile__menu-link" +
+                (isActive ? " m-top-nav-mobile__menu-link--active" : "")
+              }
               title="Settings"
               to="/settings"
               onClick={toggleVisibility}

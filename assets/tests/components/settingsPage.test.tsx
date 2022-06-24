@@ -198,7 +198,7 @@ describe("SettingsPage", () => {
       >
         <BrowserRouter>
           <SettingsPage />
-        </BrowserRouter> 
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 

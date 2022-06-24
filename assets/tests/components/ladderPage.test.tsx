@@ -52,7 +52,13 @@ const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
-    const tree = renderer.create(<BrowserRouter><LadderPage /></BrowserRouter>).toJSON()
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <LadderPage />
+        </BrowserRouter>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 

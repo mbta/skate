@@ -289,8 +289,6 @@ describe("pageOrTabName", () => {
   })
 
   test("returns page name for shuttle map", () => {
-    expect(pageOrTabName("/shuttle-map", [])).toEqual(
-      "Shuttle Map"
-    )
+    expect(pageOrTabName("/shuttle-map", [])).toEqual("Shuttle Map")
   })
 })

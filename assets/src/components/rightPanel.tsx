@@ -16,12 +16,12 @@ const RightPanel = ({
 
   // close notification if you move away from ladder page
   // TODO delete when notifications are viewable from anywhere
-  const location = useLocation();
+  const location = useLocation()
   if (location) {
     /* istanbul ignore next */
     useEffect(() => {
-        dispatch(setNotification(undefined))
-      }, [location]);
+      dispatch(setNotification(undefined))
+    }, [location])
   }
 
   if (selectedVehicleOrGhost) {

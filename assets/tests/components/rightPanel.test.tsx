@@ -26,7 +26,13 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 
 describe("rightPanel", () => {
   test("shows nothing if nothing is selected", () => {
-    const tree = renderer.create(<BrowserRouter><RightPanel /></BrowserRouter>).toJSON()
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <RightPanel />
+        </BrowserRouter>
+      )
+      .toJSON()
     expect(tree).toEqual(null)
   })
 

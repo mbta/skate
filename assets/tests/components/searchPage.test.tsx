@@ -98,13 +98,21 @@ describe("SearchPage", () => {
   })
 
   test("on mobile, shows the results list initially", () => {
-    const wrapper = mount(<BrowserRouter><SearchPage /></BrowserRouter>)
+    const wrapper = mount(
+      <BrowserRouter>
+        <SearchPage />
+      </BrowserRouter>
+    )
 
     expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
   })
 
   test("on mobile, allows you to toggle to the map view and back again", () => {
-    const wrapper = mount(<BrowserRouter><SearchPage /></BrowserRouter>)
+    const wrapper = mount(
+      <BrowserRouter>
+        <SearchPage />
+      </BrowserRouter>
+    )
 
     wrapper
       .find(".m-search-page__toggle-mobile-display-button")

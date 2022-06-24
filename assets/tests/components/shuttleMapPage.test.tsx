@@ -86,14 +86,26 @@ const shape: Shape = {
 describe("Shuttle Map Page", () => {
   test("renders", () => {
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer.create(<BrowserRouter><ShuttleMapPage /></BrowserRouter>).toJSON()
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders with shapes selected", () => {
     ;(useRouteShapes as jest.Mock).mockImplementationOnce(() => [shape])
     ;(useTripShape as jest.Mock).mockImplementationOnce(() => [shape])
-    const tree = renderer.create(<BrowserRouter><ShuttleMapPage /></BrowserRouter>).toJSON()
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
@@ -109,7 +121,13 @@ describe("Shuttle Map Page", () => {
       [trainVehicle.id]: trainVehicle,
     }))
 
-    const tree = renderer.create(<BrowserRouter><ShuttleMapPage /></BrowserRouter>).toJSON()
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
