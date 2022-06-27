@@ -114,6 +114,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           className="m-close-button"
           data-testid="close-button"
           onClick={[Function]}
+          title="Close"
         >
           <span
             className=""
@@ -457,6 +458,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           className="m-close-button"
           data-testid="close-button"
           onClick={[Function]}
+          title="Close"
         >
           <span
             className=""
@@ -767,6 +769,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
           className="m-close-button"
           data-testid="close-button"
           onClick={[Function]}
+          title="Close"
         >
           <span
             className=""
@@ -1018,6 +1021,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           className="m-close-button"
           data-testid="close-button"
           onClick={[Function]}
+          title="Close"
         >
           <span
             className=""
@@ -1456,6 +1460,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           className="m-close-button"
           data-testid="close-button"
           onClick={[Function]}
+          title="Close"
         >
           <span
             className=""
@@ -1799,6 +1804,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           className="m-close-button"
           data-testid="close-button"
           onClick={[Function]}
+          title="Close"
         >
           <span
             className=""
@@ -2156,6 +2162,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           className="m-close-button"
           data-testid="close-button"
           onClick={[Function]}
+          title="Close"
         >
           <span
             className=""

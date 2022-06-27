@@ -295,6 +295,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
               className="m-close-button"
               data-testid="close-button"
               onClick={[Function]}
+              title="Close"
             >
               <span
                 className=""
