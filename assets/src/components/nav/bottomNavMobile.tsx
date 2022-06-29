@@ -20,9 +20,10 @@ const BottomNavMobile = (): JSX.Element => {
       <ul className="m-bottom-nav-mobile__links">
         <li>
           <NavLink
-            className="m-bottom-nav-mobile__link"
-            activeClassName="m-bottom-nav-mobile__link--active"
-            exact={true}
+            className={({ isActive }) =>
+              "m-bottom-nav-mobile__link" +
+              (isActive ? " m-bottom-nav-mobile__link--active" : "")
+            }
             title="Route Ladders"
             to="/"
           >
@@ -32,9 +33,10 @@ const BottomNavMobile = (): JSX.Element => {
 
         <li>
           <NavLink
-            className="m-bottom-nav-mobile__link"
-            activeClassName="m-bottom-nav-mobile__link--active"
-            exact={true}
+            className={({ isActive }) =>
+              "m-bottom-nav-mobile__link" +
+              (isActive ? " m-bottom-nav-mobile__link--active" : "")
+            }
             title="Shuttle Map"
             to="/shuttle-map"
           >
@@ -44,9 +46,10 @@ const BottomNavMobile = (): JSX.Element => {
 
         <li>
           <NavLink
-            className="m-bottom-nav-mobile__link"
-            activeClassName="m-bottom-nav-mobile__link--active"
-            exact={true}
+            className={({ isActive }) =>
+              "m-bottom-nav-mobile__link" +
+              (isActive ? " m-bottom-nav-mobile__link--active" : "")
+            }
             title="Search"
             to="/search"
           >

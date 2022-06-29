@@ -1,5 +1,4 @@
 import React, { useContext } from "react"
-import { Location } from "history"
 import { useLocation, Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
@@ -27,14 +26,13 @@ export const toTitleCase = (str: string): string => {
 }
 
 export const pageOrTabName = (
-  location: Location<unknown>,
+  pathname: string,
   routeTabs: RouteTab[]
 ): string => {
   let tabName = "Skate"
 
-  if (location.pathname === "/") tabName = currentTabName(routeTabs)
-  else
-    tabName = toTitleCase(location.pathname.replace("/", "").replace("-", " "))
+  if (pathname === "/") tabName = currentTabName(routeTabs)
+  else tabName = toTitleCase(pathname.replace("/", "").replace("-", " "))
 
   return tabName
 }
@@ -120,9 +118,10 @@ const TopNavMobile = (): JSX.Element => {
 
           <li>
             <NavLink
-              className="m-top-nav-mobile__menu-link"
-              activeClassName="m-top-nav-mobile__menu-link--active"
-              exact={true}
+              className={({ isActive }) =>
+                "m-top-nav-mobile__menu-link" +
+                (isActive ? " m-top-nav-mobile__menu-link--active" : "")
+              }
               title="Settings"
               to="/settings"
               onClick={toggleVisibility}
@@ -162,7 +161,7 @@ const TopNavMobile = (): JSX.Element => {
         </div>
 
         <div className="m-top-nav-mobile__header-text">
-          {pageOrTabName(location, routeTabs)}
+          {pageOrTabName(location.pathname, routeTabs)}
         </div>
 
         <div className="m-top-nav-mobile__right-items">

@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import { BrowserRouter } from "react-router-dom"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
@@ -48,7 +49,9 @@ describe("SearchPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-          <SearchPage />
+          <BrowserRouter>
+            <SearchPage />
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -62,7 +65,9 @@ describe("SearchPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-          <SearchPage />
+          <BrowserRouter>
+            <SearchPage />
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -82,7 +87,9 @@ describe("SearchPage", () => {
           state={selectedVehicleState}
           dispatch={jest.fn()}
         >
-          <SearchPage />
+          <BrowserRouter>
+            <SearchPage />
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -91,13 +98,21 @@ describe("SearchPage", () => {
   })
 
   test("on mobile, shows the results list initially", () => {
-    const wrapper = mount(<SearchPage />)
+    const wrapper = mount(
+      <BrowserRouter>
+        <SearchPage />
+      </BrowserRouter>
+    )
 
     expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
   })
 
   test("on mobile, allows you to toggle to the map view and back again", () => {
-    const wrapper = mount(<SearchPage />)
+    const wrapper = mount(
+      <BrowserRouter>
+        <SearchPage />
+      </BrowserRouter>
+    )
 
     wrapper
       .find(".m-search-page__toggle-mobile-display-button")

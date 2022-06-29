@@ -1,8 +1,7 @@
 import React, { ReactElement, useContext } from "react"
-import { useHistory } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehicleOrGhost } from "../realtime.d"
-import { setNotification, OpenView } from "../state"
+import { OpenView } from "../state"
 import NotificationDrawer from "./notificationDrawer"
 import PropertiesPanel from "./propertiesPanel"
 import SwingsView from "./swingsView"
@@ -12,15 +11,7 @@ const RightPanel = ({
 }: {
   selectedVehicleOrGhost?: VehicleOrGhost | null
 }): ReactElement<HTMLElement> | null => {
-  const [state, dispatch] = useContext(StateDispatchContext)
-
-  // close notification if you move away from ladder page
-  // TODO delete when notifications are viewable from anywhere
-  const history = useHistory()
-  if (history) {
-    /* istanbul ignore next */
-    history.listen(() => dispatch(setNotification(undefined)))
-  }
+  const [state] = useContext(StateDispatchContext)
 
   if (selectedVehicleOrGhost) {
     return <PropertiesPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />

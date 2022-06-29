@@ -2,6 +2,7 @@ import React, { ReactElement, useContext } from "react"
 import { Socket } from "phoenix"
 import {
   BrowserRouter,
+  Routes,
   Route as BrowserRoute,
   useLocation,
 } from "react-router-dom"
@@ -52,18 +53,12 @@ const AppRoutes = () => {
             pickerContainerIsVisible={pickerContainerIsVisible}
             openView={openView}
           >
-            <BrowserRoute exact={true} path="/" component={LadderPage} />
-            <BrowserRoute
-              exact={true}
-              path="/shuttle-map"
-              component={ShuttleMapPage}
-            />
-            <BrowserRoute
-              exact={true}
-              path="/settings"
-              component={SettingsPage}
-            />
-            <BrowserRoute exact={true} path="/search" component={SearchPage} />
+            <Routes>
+              <BrowserRoute path="/" element={<LadderPage />} />
+              <BrowserRoute path="/shuttle-map" element={<ShuttleMapPage />} />
+              <BrowserRoute path="/settings" element={<SettingsPage />} />
+              <BrowserRoute path="/search" element={<SearchPage />} />
+            </Routes>
             {openView === OpenView.Late ? <LateView /> : null}
           </Nav>
           <Modal />

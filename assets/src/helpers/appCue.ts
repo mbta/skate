@@ -1,6 +1,4 @@
-import { Location } from "history"
-
-export const displayHelp = (location: Location<unknown>): void => {
+export const displayHelp = (location: { pathname: string }): void => {
   switch (location.pathname) {
     case "/":
       showAppcue("-M2dVpHSaOJ4PddV1K9i")

@@ -1,5 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
+import { BrowserRouter } from "react-router-dom"
 import { render } from "@testing-library/react"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
@@ -40,7 +41,9 @@ describe("SettingsPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-          <SettingsPage />
+          <BrowserRouter>
+            <SettingsPage />
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -59,7 +62,9 @@ describe("SettingsPage", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     const vehicleNumberOptionChecked = wrapper
@@ -75,7 +80,9 @@ describe("SettingsPage", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     const testEvent = {
@@ -107,7 +114,9 @@ describe("SettingsPage", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     const runNumberOptionChecked = wrapper
@@ -123,7 +132,9 @@ describe("SettingsPage", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     const testEvent = {
@@ -154,7 +165,9 @@ describe("SettingsPage", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
     const testEvent = {
@@ -183,7 +196,9 @@ describe("SettingsPage", () => {
         state={{ ...initialState, selectedVehicleOrGhost: vehicle }}
         dispatch={mockDispatch}
       >
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 

@@ -37,9 +37,9 @@ const LeftNav = ({
       <ul className="m-left-nav__links">
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
             title="Route Ladders"
             to="/"
           >
@@ -75,9 +75,9 @@ const LeftNav = ({
         </li>
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
             title="Shuttle Map"
             to="/shuttle-map"
           >
@@ -87,9 +87,9 @@ const LeftNav = ({
         </li>
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
             title="Search"
             to="/search"
           >
@@ -121,9 +121,9 @@ const LeftNav = ({
         </li>
         <li>
           <NavLink
-            activeClassName="m-left-nav__link--active"
-            className="m-left-nav__link"
-            exact={true}
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
             title="Settings"
             to="/settings"
           >

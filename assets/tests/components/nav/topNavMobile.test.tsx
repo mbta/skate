@@ -17,7 +17,6 @@ import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
-import { locationForPath } from "../../testHelpers/locationHelpers"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -286,12 +285,10 @@ describe("toTitleCase", () => {
 
 describe("pageOrTabName", () => {
   test("returns Untitled for route ladder page without tabs", () => {
-    expect(pageOrTabName(locationForPath("/"), [])).toEqual("Untitled")
+    expect(pageOrTabName("/", [])).toEqual("Untitled")
   })
 
   test("returns page name for shuttle map", () => {
-    expect(pageOrTabName(locationForPath("/shuttle-map"), [])).toEqual(
-      "Shuttle Map"
-    )
+    expect(pageOrTabName("/shuttle-map", [])).toEqual("Shuttle Map")
   })
 })
