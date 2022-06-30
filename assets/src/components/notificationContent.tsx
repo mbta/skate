@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import { Notification, NotificationReason } from "../realtime.d"
 import { Route } from "../schedule"
@@ -6,7 +6,33 @@ import {
   formattedTime,
   formattedTimeDiffUnderThreshold,
 } from "../util/dateTime"
+import { Card, CardBody } from "./card"
 import PropertiesList from "./propertiesList"
+
+export const NotificationCard = ({
+  notification,
+  currentTime,
+  openVPPForCurrentVehicle,
+}: {
+  notification: Notification
+  currentTime: Date
+  openVPPForCurrentVehicle: (notification: Notification) => void
+}): ReactElement<HTMLElement> => {
+  const routes = useRoutes(notification.routeIds)
+  const routeAtCreation = useRoute(notification.routeIdAtCreation)
+
+  return (
+    <Card
+      currentTime={currentTime}
+      title={title(notification.reason)}
+      isUnread={notification.state === "unread"}
+      openCallback={() => openVPPForCurrentVehicle(notification)}
+      time={notification.createdAt}
+    >
+      <CardBody>{description(notification, routes, routeAtCreation)}</CardBody>
+    </Card>
+  )
+}
 
 export const NotificationContent = ({
   notification,
@@ -61,15 +87,15 @@ export const NotificationContent = ({
 export const title = (reason: NotificationReason): string => {
   switch (reason) {
     case "manpower":
-      return "NO OPERATOR"
+      return "No Operator"
     case "diverted":
-      return "DIVERSION"
+      return "Diversion"
     case "chelsea_st_bridge_raised":
-      return "CHELSEA ST BRIDGE RAISED"
+      return "Chelsea St Bridge Raised"
     case "chelsea_st_bridge_lowered":
-      return "CHELSEA ST BRIDGE LOWERED"
+      return "Chelsea St Bridge Lowered"
     default:
-      return reason.toUpperCase().replace("_", " ")
+      return reason.replace("_", " ")
   }
 }
 

@@ -1,27 +1,14 @@
-import React, {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react"
-import {
-  NotificationsContext,
-  otherNotificationReadState,
-} from "../contexts/notificationsContext"
+import React, { useContext, useLayoutEffect, useRef, useState } from "react"
+import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { ellipsisIcon } from "../helpers/icon"
 import useCurrentTime from "../hooks/useCurrentTime"
-import {
-  markAllAsRead,
-  toggleReadState,
-} from "../hooks/useNotificationsReducer"
+import { markAllAsRead } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
 import { closeNotificationDrawer } from "../state"
 import CloseButton from "./closeButton"
-import { isChelseaBridgeReason, openVPPForNotification } from "./notifications"
+import { openVPPForNotification } from "./notifications"
 import NotificationBellIcon from "./notificationBellIcon"
-import { NotificationContent } from "./notificationContent"
+import { NotificationCard } from "./notificationContent"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
@@ -131,113 +118,5 @@ const EmptyMessage = () => (
     </p>
   </>
 )
-
-const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
-  const { dispatch, setNotificationWithOpenSubmenuId } =
-    useContext(NotificationsContext)
-  const submenuRef = useRef<HTMLDivElement | null>(null)
-  const otherReadState = otherNotificationReadState(notification.state)
-
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    const closeOnClickOutside = (event: MouseEvent) => {
-      if (
-        submenuRef &&
-        submenuRef.current &&
-        !event.composedPath().includes(submenuRef.current)
-      ) {
-        setNotificationWithOpenSubmenuId(null)
-      }
-    }
-
-    document.addEventListener("mousedown", closeOnClickOutside)
-
-    return () => {
-      document.removeEventListener("mousedown", closeOnClickOutside)
-    }
-  }, [submenuRef])
-  /* eslint-enable react-hooks/exhaustive-deps */
-
-  return (
-    <>
-      {/* eslint-disable jsx-a11y/click-events-have-key-events */}
-      <div
-        className="m-notification-drawer__submenu"
-        ref={submenuRef}
-        onClick={(event) => event.stopPropagation()}
-        role="menu"
-        tabIndex={0}
-      >
-        {/* eslint-enable jsx-a11y/click-events-have-key-events */}
-        {/* eslint-disable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events */}
-        <a
-          onClick={(event) => {
-            event.stopPropagation()
-            dispatch(toggleReadState(notification))
-            setNotificationWithOpenSubmenuId(null)
-          }}
-          className={`m-notification-drawer__submenu-mark-${otherReadState}`}
-          role="menuitem"
-          tabIndex={-1}
-        >
-          mark as {otherReadState}
-        </a>
-        {/* eslint-enable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events */}
-      </div>
-    </>
-  )
-}
-
-const NotificationCard = ({
-  notification,
-  currentTime,
-  openVPPForCurrentVehicle,
-}: {
-  notification: Notification
-  currentTime: Date
-  openVPPForCurrentVehicle: (notification: Notification) => void
-}) => {
-  const { notificationWithOpenSubmenuId, setNotificationWithOpenSubmenuId } =
-    useContext(NotificationsContext)
-  const showSubmenu = notification.id === notificationWithOpenSubmenuId
-  const toggleShowSubmenu = () => {
-    if (showSubmenu) {
-      setNotificationWithOpenSubmenuId(null)
-    } else {
-      setNotificationWithOpenSubmenuId(notification.id)
-    }
-  }
-
-  return (
-    <button
-      className={`m-notification-drawer__card m-notification-drawer__card--${notification.state}`}
-      onClick={() => {
-        if (window && window.FS) {
-          if (isChelseaBridgeReason(notification.reason)) {
-            window.FS.event("Chelsea bridge notification clicked")
-          }
-        }
-        openVPPForCurrentVehicle(notification)
-      }}
-    >
-      <NotificationContent
-        notification={notification}
-        currentTime={currentTime}
-      />
-      {showSubmenu && <EllipsisSubmenu notification={notification} />}
-      {/* eslint-disable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <a
-        className="m-notification-drawer__submenu-icon-anchor"
-        onClick={(event) => {
-          event.stopPropagation()
-          toggleShowSubmenu()
-        }}
-      >
-        {ellipsisIcon("m-notification-drawer__submenu-icon")}
-      </a>
-      {/* eslint-enable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-    </button>
-  )
-}
 
 export default NotificationDrawer

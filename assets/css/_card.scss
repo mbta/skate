@@ -2,12 +2,12 @@
   display: flex;
   flex-direction: column;
 
-  width: 23.125rem;
-  max-width: 100%;
+  max-width: Min(23.125rem, 100%);
 
   background-color: $color-kiwi-50;
   border: 1px solid $color-kiwi-400;
   border-radius: 0.5rem;
+  padding: 0.3125rem 0.3125rem 1rem 1rem;
 
   &:hover {
     background-color: $white;
@@ -19,10 +19,15 @@
   }
 }
 
+.m-card--clickable {
+  cursor: pointer;
+}
+
 .m-card__top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 2.5rem;
 
   button {
     display: flex;

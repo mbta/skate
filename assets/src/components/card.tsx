@@ -22,9 +22,14 @@ export const Card: React.FC<CardProps> = ({
   title,
   time,
 }) => {
+  /* eslint-disable jsx-a11y/no-static-element-interactions */
   return (
     <div
-      className={"m-card" + (additionalClass ? " " + additionalClass : "")}
+      className={
+        "m-card" +
+        (additionalClass ? " " + additionalClass : "") +
+        (openCallback ? " m-card--clickable" : "")
+      }
       onClick={openCallback}
       onKeyDown={
         openCallback
@@ -52,9 +57,10 @@ export const Card: React.FC<CardProps> = ({
       <div className="m-card__contents">{children}</div>
     </div>
   )
+  /* eslint-enable jsx-a11y/no-static-element-interactions */
 }
 
-export const CardBody: React.FC<Record<string, never>> = ({ children }) => (
+export const CardBody: React.FC = ({ children }) => (
   <div className="m-card__body">{children}</div>
 )
 
