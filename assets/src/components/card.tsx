@@ -67,6 +67,7 @@ export const CardBody: React.FC = ({ children }) => (
 export interface Property {
   label: string
   value: string | null
+  sensitive?: boolean
 }
 
 export interface CardPropertiesProps {
@@ -83,7 +84,16 @@ export const CardProperties: React.VFC<CardPropertiesProps> = ({
           {properties.map((property) => (
             <tr key={property.label}>
               <td className="m-card__properties-label">{property.label}</td>
-              <td className="m-card__properties-value">{property.value}</td>
+              <td
+                className={
+                  "m-card__properties-value" +
+                  (property.sensitive
+                    ? " m-card__properties-value--sensitive"
+                    : "")
+                }
+              >
+                {property.value}
+              </td>
             </tr>
           ))}
         </tbody>
