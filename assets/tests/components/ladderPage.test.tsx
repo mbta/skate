@@ -197,12 +197,6 @@ describe("LadderPage", () => {
   })
 
   test("can save a route tab as a preset from the save icon", () => {
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
-
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -228,7 +222,6 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
-    expect(window.FS!.event).toHaveBeenCalledWith("Preset saved")
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
   })
 
@@ -296,11 +289,6 @@ describe("LadderPage", () => {
   })
 
   test("can add a new route tab", () => {
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -324,7 +312,6 @@ describe("LadderPage", () => {
     wrapper.find(".m-ladder-page__add-tab-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
-    expect(window.FS!.event).toHaveBeenCalledWith("New tab added")
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
   })
 

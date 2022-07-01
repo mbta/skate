@@ -40,9 +40,6 @@ const Presets = () => {
         className="m-presets-panel__save-as-preset-button"
         onClick={() => {
           if (currentTab) {
-            if (window.FS) {
-              window.FS.event("Preset saved from presets panel")
-            }
             tagManagerEvent("preset_saved_from_presets_panel")
             dispatch(promptToSaveOrCreatePreset(currentTab))
           }

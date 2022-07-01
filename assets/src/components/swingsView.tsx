@@ -235,7 +235,6 @@ const SwingRow = ({
           <SwingCellContent
             vehicleOrGhost={swingOnVehicleOrGhost}
             runId={swing.toRunId}
-            fsEventText={"Clicked on swing-on from swings view"}
             tagManagerEventText="clicked_swing_on"
           />
         </div>
@@ -245,7 +244,6 @@ const SwingRow = ({
           <SwingCellContent
             vehicleOrGhost={swingOffVehicleOrGhost}
             runId={swing.fromRunId}
-            fsEventText={"Clicked on swing-off from swings view"}
             tagManagerEventText="clicked_swing_off"
           />
           <div className="m-swings-view__route-pill">
@@ -269,7 +267,6 @@ const SwingRow = ({
 const SwingCellContent = ({
   vehicleOrGhost,
   runId,
-  fsEventText,
   tagManagerEventText,
 }: {
   vehicleOrGhost?: VehicleOrGhost
@@ -293,9 +290,6 @@ const SwingCellContent = ({
 
           <button
             onClick={() => {
-              if (window.FS) {
-                window.FS.event(fsEventText)
-              }
               tagManagerEvent(tagManagerEventText)
               dispatch(selectVehicle(vehicleOrGhost))
             }}

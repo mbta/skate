@@ -158,15 +158,6 @@ describe("tabBar", () => {
   })
 
   test("clicking the swings icon toggles the swings view and sends Fullstory event", () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
-    afterEach(() => {
-      window.FS = originalFS
-      window.username = originalUsername
-    })
     const dispatch = jest.fn()
 
     const wrapper = mount(
@@ -183,8 +174,6 @@ describe("tabBar", () => {
 
     wrapper.find(".m-tab-bar__swings").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
-
-    expect(window.FS!.event).toHaveBeenCalledWith("Swings view toggled")
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
   })
 
@@ -192,15 +181,6 @@ describe("tabBar", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
       (feature) => feature === "late_view"
     )
-
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-
-    afterEach(() => {
-      window.FS = originalFS
-      window.username = originalUsername
-    })
 
     const dispatch = jest.fn()
 
@@ -218,8 +198,6 @@ describe("tabBar", () => {
 
     wrapper.find(".m-tab-bar__late_view").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(toggleLateView())
-
-    expect(window.FS!.event).toHaveBeenCalledWith("Late view toggled")
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 

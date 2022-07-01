@@ -138,17 +138,8 @@ describe("GarageFilter", () => {
 
     expect(result.getByText("Garage A")).toBeTruthy()
 
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
-
     await user.click(result.getByTitle("Toggle Garage: Garage A"))
     expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "User filtered routes by garage"
-    )
     expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
   })
 })

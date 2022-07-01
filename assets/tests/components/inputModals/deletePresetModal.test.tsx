@@ -13,12 +13,6 @@ jest.mock("../../../src/helpers/googleTagManager", () => ({
 
 describe("DeletePresetModal", () => {
   test("can confirm deletion", async () => {
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
-
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
@@ -36,7 +30,6 @@ describe("DeletePresetModal", () => {
 
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
-    expect(window.FS!.event).toHaveBeenCalledWith("Preset deleted")
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_deleted")
   })
 

@@ -97,9 +97,6 @@ const TabBar = ({
               (openView === OpenView.Swings ? " m-tab-bar__link--active" : "")
             }
             onClick={() => {
-              if (window.FS) {
-                window.FS.event("Swings view toggled")
-              }
               tagManagerEvent("swings_view_toggled")
               dispatch(toggleSwingsView())
             }}
@@ -117,9 +114,6 @@ const TabBar = ({
                 (openView === OpenView.Late ? " m-tab-bar__link--active" : "")
               }
               onClick={() => {
-                if (window.FS) {
-                  window.FS.event("Late view toggled")
-                }
                 tagManagerEvent("late_view_toggled")
                 dispatch(toggleLateView())
               }}

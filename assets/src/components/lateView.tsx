@@ -135,10 +135,6 @@ const LateView = (): ReactElement<HTMLElement> => {
   }
 
   const hideSelectedRows: () => void = () => {
-    if (window && window.FS) {
-      window.FS.event("User hid row")
-    }
-
     setRecentlyHiddenIds(selectedIds)
     setSelectedIds([])
     const newHidingTimestamps = selectedIds.reduce(
@@ -447,9 +443,6 @@ const LateGhostRow = ({
         <button
           className="m-late-view__run-link"
           onClick={() => {
-            if (window.FS) {
-              window.FS.event("User selected late view run number - ghost bus")
-            }
             tagManagerEvent("selected_late_view_run_number_ghost")
             dispatch(selectVehicle(ghost))
           }}
@@ -511,9 +504,6 @@ const LateBusRow = ({
         <button
           className="m-late-view__run-link"
           onClick={() => {
-            if (window.FS) {
-              window.FS.event("User selected late view run number")
-            }
             tagManagerEvent("selected_late_view_run_number")
             dispatch(selectVehicle(vehicle))
           }}
@@ -652,9 +642,6 @@ const UnhideToggle = ({
       viewHidden ? "unhidden" : "hidden"
     }`}
     onClick={() => {
-      if (window && window.FS) {
-        window.FS.event("User clicked eye toggle")
-      }
       tagManagerEvent("clicked_eye_toggle")
       toggleViewHidden()
     }}
