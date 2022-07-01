@@ -99,9 +99,8 @@ const Content = () => {
       </div>
       <ul>
         {notifications.map((notification) => (
-          <li>
+          <li key={notification.id}>
             <NotificationCard
-              key={notification.id}
               notification={notification}
               currentTime={currentTime}
               openVPPForCurrentVehicle={openVPPForCurrentVehicle}
