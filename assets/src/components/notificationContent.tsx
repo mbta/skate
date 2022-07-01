@@ -6,7 +6,7 @@ import {
   formattedTime,
   formattedTimeDiffUnderThreshold,
 } from "../util/dateTime"
-import { Card, CardBody } from "./card"
+import { Card, CardBody, CardProperties } from "./card"
 import PropertiesList from "./propertiesList"
 
 export const NotificationCard = ({
@@ -30,6 +30,26 @@ export const NotificationCard = ({
       time={notification.createdAt}
     >
       <CardBody>{description(notification, routes, routeAtCreation)}</CardBody>
+      <CardProperties
+        properties={[
+          {
+            label: "Run",
+            value:
+              notification.runIds.length > 0
+                ? notification.runIds.join(", ")
+                : null,
+          },
+          {
+            label: "Operator",
+            value:
+              notification.operatorName !== null &&
+              notification.operatorId !== null
+                ? `${notification.operatorName} #${notification.operatorId}`
+                : null,
+            sensitive: true,
+          },
+        ]}
+      />
     </Card>
   )
 }
@@ -95,7 +115,11 @@ export const title = (reason: NotificationReason): string => {
     case "chelsea_st_bridge_lowered":
       return "Chelsea St Bridge Lowered"
     default:
-      return reason.replace("_", " ")
+      return reason
+        .replace("_", " ")
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
   }
 }
 

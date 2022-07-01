@@ -59,19 +59,28 @@
 }
 
 .m-card__properties {
-  border-spacing: 0;
+  margin-top: 1.25rem;
+  margin-bottom: 0;
+
+  li {
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+
+    &:not(:last-child) {
+      padding-bottom: 0.5rem;
+    }
+  }
 }
 
 .m-card__properties-label {
   width: 6rem;
+  display: inline-block;
 
-  font-size: 0.875rem;
   font-weight: 500;
   color: $color-gray-700;
 }
 
 .m-card__properties-value {
-  font-size: 0.875rem;
   font-weight: 400;
   color: $color-gray-600;
 }

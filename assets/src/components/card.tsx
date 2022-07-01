@@ -78,26 +78,20 @@ export const CardProperties: React.VFC<CardPropertiesProps> = ({
   properties,
 }: CardPropertiesProps) => {
   return (
-    <div className="m-card__properties">
-      <table>
-        <tbody>
-          {properties.map((property) => (
-            <tr key={property.label}>
-              <td className="m-card__properties-label">{property.label}</td>
-              <td
-                className={
-                  "m-card__properties-value" +
-                  (property.sensitive
-                    ? " m-card__properties-value--sensitive"
-                    : "")
-                }
-              >
-                {property.value}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <ul className="m-card__properties">
+      {properties.map((property) => (
+        <li key={property.label}>
+          <span className="m-card__properties-label">{property.label}</span>
+          <span
+            className={
+              "m-card__properties-value" +
+              (property.sensitive ? " m-card__properties-value--sensitive" : "")
+            }
+          >
+            {property.value}
+          </span>
+        </li>
+      ))}
+    </ul>
   )
 }
