@@ -97,14 +97,18 @@ const Content = () => {
           </button>
         ) : null}
       </div>
-      {notifications.map((notification) => (
-        <NotificationCard
-          key={notification.id}
-          notification={notification}
-          currentTime={currentTime}
-          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-        />
-      ))}
+      <ul>
+        {notifications.map((notification) => (
+          <li>
+            <NotificationCard
+              key={notification.id}
+              notification={notification}
+              currentTime={currentTime}
+              openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
