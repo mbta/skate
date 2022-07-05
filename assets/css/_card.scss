@@ -22,10 +22,14 @@
   cursor: pointer;
 }
 
-.m-card--left {
+.m-card__left {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+
+.m-card__right {
+  min-width: 2.5rem;
 }
 
 .m-card__top-row {
@@ -58,7 +62,8 @@
 }
 
 .m-card__unread-icon {
-  @include button-icon(0.5rem) span {
+  @include button-icon(0.5rem);
+  span {
     width: 2.5rem;
     height: 2.5rem;
   }

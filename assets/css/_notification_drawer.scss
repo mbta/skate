@@ -54,7 +54,7 @@
 }
 
 .m-notification-drawer__cards {
-  ul li {
+  & > ul > li {
     &:not(:last-child) {
       margin-bottom: 0.5rem;
     }
