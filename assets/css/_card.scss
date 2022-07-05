@@ -1,6 +1,5 @@
 .m-card {
   display: flex;
-  flex-direction: column;
 
   max-width: Min(23.125rem, 100%);
 
@@ -21,6 +20,12 @@
 
 .m-card--clickable {
   cursor: pointer;
+}
+
+.m-card--left {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .m-card__top-row {
@@ -70,7 +75,7 @@
 }
 
 .m-card__properties {
-  margin-top: 1.25rem;
+  margin-top: 1rem;
 
   li {
     font-size: 0.875rem;

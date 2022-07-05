@@ -31,31 +31,37 @@ export const Card: React.FC<CardProps> = ({
         (additionalClass ? " " + additionalClass : "") +
         (openCallback ? " m-card--clickable" : "")
       }
-      onClick={openCallback}
-      onKeyDown={
-        openCallback
-          ? (event) => {
-              if (event.key === "Enter") {
-                openCallback()
-              }
-            }
-          : undefined
-      }
     >
-      <div className="m-card__top-row">
-        <div className="m-card__title">{title}</div>
-        {time ? (
-          <div className="m-card__time">
-            {formattedTimeDiffUnderThreshold(currentTime, time, 60)}
-          </div>
-        ) : null}
+      <div
+        className="m-card__left"
+        onClick={openCallback}
+        onKeyDown={
+          openCallback
+            ? (event) => {
+                if (event.key === "Enter") {
+                  openCallback()
+                }
+              }
+            : undefined
+        }
+      >
+        <div className="m-card__top-row">
+          <div className="m-card__title">{title}</div>
+          {time ? (
+            <div className="m-card__time">
+              {formattedTimeDiffUnderThreshold(currentTime, time, 60)}
+            </div>
+          ) : null}
+        </div>
+        <div className="m-card__contents">{children}</div>
+      </div>
+      <div className="m-card__right">
         {isUnread ? (
           <div className="m-card__unread-icon">{unreadIcon()}</div>
         ) : closeCallback ? (
           <CloseButton onClick={closeCallback} />
         ) : null}
       </div>
-      <div className="m-card__contents">{children}</div>
     </div>
   )
   /* eslint-enable jsx-a11y/no-static-element-interactions */
