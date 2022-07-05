@@ -1,6 +1,7 @@
 import React from "react"
 import CloseButton from "./closeButton"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
+import { unreadIcon } from "../helpers/icon"
 
 interface CardProps {
   currentTime: Date
@@ -49,7 +50,7 @@ export const Card: React.FC<CardProps> = ({
           </div>
         ) : null}
         {isUnread ? (
-          <div className="m-card__unread-marker">U</div>
+          <div className="m-card__unread-icon">{unreadIcon()}</div>
         ) : closeCallback ? (
           <CloseButton onClick={closeCallback} />
         ) : null}

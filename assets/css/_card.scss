@@ -52,6 +52,17 @@
   color: $color-kiwi-800;
 }
 
+.m-card__unread-icon {
+  @include button-icon(0.5rem) span {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.m-card__contents {
+  margin-top: 0.3125rem;
+}
+
 .m-card__body {
   font-size: 0.875rem;
   font-weight: 400;
@@ -60,7 +71,6 @@
 
 .m-card__properties {
   margin-top: 1.25rem;
-  margin-bottom: 0;
 
   li {
     font-size: 0.875rem;
