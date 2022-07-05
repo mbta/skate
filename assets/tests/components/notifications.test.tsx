@@ -221,7 +221,7 @@ describe("NotificationCard", () => {
         />
       </RoutesProvider>
     )
-    expect(wrapper.html()).toContain("OPERATOR ERROR")
+    expect(wrapper.html()).toContain("Operator Error")
   })
 
   test("uses custom titles if available", () => {
@@ -236,7 +236,7 @@ describe("NotificationCard", () => {
         />
       </RoutesProvider>
     )
-    expect(wrapper.html()).toContain("NO OPERATOR")
+    expect(wrapper.html()).toContain("No Operator")
   })
 
   test("renders a notification with an unexpected reason", () => {
