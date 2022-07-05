@@ -26,7 +26,7 @@ exports[`Notification renders latest notification 1`] = `
           <div
             className="m-notification-content__title"
           >
-            NO OPERATOR
+            No Operator
           </div>
           <div
             className="m-notification-content__age"
@@ -92,7 +92,7 @@ exports[`NotificationCard renders a notification with an unexpected reason 1`] =
         <div
           className="m-notification-content__title"
         >
-          OTHER
+          Other
         </div>
         <div
           className="m-notification-content__age"
@@ -157,7 +157,7 @@ exports[`NotificationCard renders notification with matched vehicle 1`] = `
         <div
           className="m-notification-content__title"
         >
-          NO OPERATOR
+          No Operator
         </div>
         <div
           className="m-notification-content__age"
@@ -236,7 +236,7 @@ exports[`NotificationCard renders notification with reason accident 1`] = `
         <div
           className="m-notification-content__title"
         >
-          ACCIDENT
+          Accident
         </div>
         <div
           className="m-notification-content__age"
@@ -301,7 +301,7 @@ exports[`NotificationCard renders notification with reason adjusted 1`] = `
         <div
           className="m-notification-content__title"
         >
-          ADJUSTED
+          Adjusted
         </div>
         <div
           className="m-notification-content__age"
@@ -366,7 +366,7 @@ exports[`NotificationCard renders notification with reason chelsea_st_bridge_low
         <div
           className="m-notification-content__title"
         >
-          CHELSEA ST BRIDGE LOWERED
+          Chelsea St Bridge Lowered
         </div>
         <div
           className="m-notification-content__age"
@@ -416,7 +416,7 @@ exports[`NotificationCard renders notification with reason chelsea_st_bridge_rai
         <div
           className="m-notification-content__title"
         >
-          CHELSEA ST BRIDGE RAISED
+          Chelsea St Bridge Raised
         </div>
         <div
           className="m-notification-content__age"
@@ -466,7 +466,7 @@ exports[`NotificationCard renders notification with reason disabled 1`] = `
         <div
           className="m-notification-content__title"
         >
-          DISABLED
+          Disabled
         </div>
         <div
           className="m-notification-content__age"
@@ -531,7 +531,7 @@ exports[`NotificationCard renders notification with reason diverted 1`] = `
         <div
           className="m-notification-content__title"
         >
-          DIVERSION
+          Diversion
         </div>
         <div
           className="m-notification-content__age"
@@ -596,7 +596,7 @@ exports[`NotificationCard renders notification with reason manpower 1`] = `
         <div
           className="m-notification-content__title"
         >
-          NO OPERATOR
+          No Operator
         </div>
         <div
           className="m-notification-content__age"
@@ -661,7 +661,7 @@ exports[`NotificationCard renders notification with reason operator_error 1`] = 
         <div
           className="m-notification-content__title"
         >
-          OPERATOR ERROR
+          Operator Error
         </div>
         <div
           className="m-notification-content__age"
@@ -726,7 +726,7 @@ exports[`NotificationCard renders notification with reason other 1`] = `
         <div
           className="m-notification-content__title"
         >
-          OTHER
+          Other
         </div>
         <div
           className="m-notification-content__age"
@@ -791,7 +791,7 @@ exports[`NotificationCard renders notification with reason traffic 1`] = `
         <div
           className="m-notification-content__title"
         >
-          TRAFFIC
+          Traffic
         </div>
         <div
           className="m-notification-content__age"
