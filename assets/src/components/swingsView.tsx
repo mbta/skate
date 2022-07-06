@@ -271,7 +271,6 @@ const SwingCellContent = ({
 }: {
   vehicleOrGhost?: VehicleOrGhost
   runId: string
-  fsEventText: string
   tagManagerEventText: string
 }): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
