@@ -112,10 +112,9 @@ exports[`NotificationDrawer renders notifications 1`] = `
           <div
             className="m-card m-card--clickable"
           >
-            <div
+            <button
               className="m-card__left"
               onClick={[Function]}
-              onKeyDown={[Function]}
             >
               <div
                 className="m-card__top-row"
@@ -156,7 +155,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
                   </li>
                 </ul>
               </div>
-            </div>
+            </button>
             <div
               className="m-card__right"
             >

@@ -1,46 +1,8 @@
 .m-notifications {
-  box-sizing: border-box;
-  max-width: 100vw;
+  max-width: Min(23.125rem, 100vw);
   padding: 1rem;
   position: absolute;
   right: 0;
   top: 0;
   z-index: 900;
-}
-
-.m-notifications__card {
-  background-color: $color-secondary-light;
-  border: 1px solid $color-secondary-dark;
-  border-radius: 4px;
-  box-shadow: $box-shadow-secondary;
-  display: flex;
-  margin-bottom: 0.5rem;
-  max-width: 100%;
-  transition: transform 0.25s;
-  width: 25rem;
-}
-
-.m-notifications__card--new {
-  transform: scale(0.1, 0.1);
-}
-
-.m-notifications__card-info {
-  flex: 1 1 20rem;
-  text-align: left;
-
-  &:focus,
-  &:hover {
-    background-color: $color-secondary-medium;
-  }
-}
-
-.m-notifications__close {
-  border-left: 1px solid $color-secondary-dark;
-  color: $color-font-grey;
-  flex: 0 1 5rem;
-
-  &:focus,
-  &:hover {
-    background-color: $color-secondary-medium;
-  }
 }

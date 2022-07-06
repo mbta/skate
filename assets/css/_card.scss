@@ -2,6 +2,7 @@
   display: flex;
 
   max-width: Min(23.125rem, 100%);
+  box-sizing: border-box;
 
   background-color: $color-kiwi-50;
   border: 1px solid $color-kiwi-400;
@@ -30,13 +31,6 @@
 
 .m-card__right {
   min-width: 2.5rem;
-}
-
-.m-card__top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 2.5rem;
 
   button {
     display: flex;
@@ -46,6 +40,13 @@
     width: 2.5rem;
     height: 2.5rem;
   }
+}
+
+.m-card__top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2.5rem;
 }
 
 .m-card__title {

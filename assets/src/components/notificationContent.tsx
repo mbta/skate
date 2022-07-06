@@ -13,10 +13,12 @@ export const NotificationCard = ({
   notification,
   currentTime,
   openVPPForCurrentVehicle,
+  hideLatestNotification,
 }: {
   notification: Notification
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
+  hideLatestNotification?: () => void
 }): ReactElement<HTMLElement> => {
   const routes = useRoutes(notification.routeIds)
   const routeAtCreation = useRoute(notification.routeIdAtCreation)
@@ -25,8 +27,15 @@ export const NotificationCard = ({
     <Card
       currentTime={currentTime}
       title={title(notification.reason)}
-      isUnread={notification.state === "unread"}
-      openCallback={() => openVPPForCurrentVehicle(notification)}
+      isUnread={!hideLatestNotification && notification.state === "unread"}
+      openCallback={() => {
+        openVPPForCurrentVehicle(notification)
+
+        if (hideLatestNotification) {
+          hideLatestNotification()
+        }
+      }}
+      closeCallback={hideLatestNotification}
       time={notification.createdAt}
     >
       <CardBody>{description(notification, routes, routeAtCreation)}</CardBody>

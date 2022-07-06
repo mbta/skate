@@ -23,7 +23,6 @@ export const Card: React.FC<CardProps> = ({
   title,
   time,
 }) => {
-  /* eslint-disable jsx-a11y/no-static-element-interactions */
   return (
     <div
       className={
@@ -32,19 +31,7 @@ export const Card: React.FC<CardProps> = ({
         (openCallback ? " m-card--clickable" : "")
       }
     >
-      <div
-        className="m-card__left"
-        onClick={openCallback}
-        onKeyDown={
-          openCallback
-            ? (event) => {
-                if (event.key === "Enter") {
-                  openCallback()
-                }
-              }
-            : undefined
-        }
-      >
+      <button className="m-card__left" onClick={openCallback}>
         <div className="m-card__top-row">
           <div className="m-card__title">{title}</div>
           {time ? (
@@ -54,7 +41,7 @@ export const Card: React.FC<CardProps> = ({
           ) : null}
         </div>
         <div className="m-card__contents">{children}</div>
-      </div>
+      </button>
       <div className="m-card__right">
         {isUnread ? (
           <div className="m-card__unread-icon">{unreadIcon()}</div>
@@ -64,7 +51,6 @@ export const Card: React.FC<CardProps> = ({
       </div>
     </div>
   )
-  /* eslint-enable jsx-a11y/no-static-element-interactions */
 }
 
 export const CardBody: React.FC = ({ children }) => (
@@ -101,9 +87,7 @@ export const CardProperties: React.VFC<CardPropertiesProps> = ({
               {property.value}
             </span>
           </li>
-        ) : (
-          <></>
-        )
+        ) : null
       )}
     </ul>
   )
