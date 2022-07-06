@@ -120,9 +120,7 @@ describe("Notification", () => {
     await user.click(result.getByTitle("Close"))
     expect(dispatch).toHaveBeenCalledWith(hideLatestNotification())
   })
-})
 
-describe("NotificationCard", () => {
   /* test("renders notification with matched vehicle", () => {
    *   const tree = renderer
    *     .create(

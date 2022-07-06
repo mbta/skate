@@ -17,6 +17,10 @@
   &:focus {
     background-color: $color-kiwi-100;
   }
+
+  button {
+    text-align: start;
+  }
 }
 
 .m-card--clickable {
