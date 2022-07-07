@@ -28,7 +28,8 @@ export const Card: React.FC<CardProps> = ({
       className={
         "m-card" +
         (additionalClass ? " " + additionalClass : "") +
-        (openCallback ? " m-card--clickable" : "")
+        (openCallback ? " m-card--clickable" : "") +
+        (!isUnread ? " m-card--read" : "")
       }
     >
       <button className="m-card__left" onClick={openCallback}>
@@ -44,9 +45,11 @@ export const Card: React.FC<CardProps> = ({
       </button>
       <div className="m-card__right">
         {isUnread ? (
-          <div className="m-card__unread-icon">{unreadIcon()}</div>
-        ) : closeCallback ? (
-          <CloseButton onClick={closeCallback} />
+          closeCallback ? (
+            <CloseButton onClick={closeCallback} />
+          ) : (
+            <div className="m-card__unread-icon">{unreadIcon()}</div>
+          )
         ) : null}
       </div>
     </div>

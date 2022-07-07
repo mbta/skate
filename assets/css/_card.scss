@@ -24,6 +24,11 @@
   }
 }
 
+.m-card--read {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-400;
+}
+
 .m-card--clickable {
   cursor: pointer;
 }

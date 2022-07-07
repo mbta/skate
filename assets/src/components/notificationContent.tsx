@@ -27,7 +27,7 @@ export const NotificationCard = ({
     <Card
       currentTime={currentTime}
       title={title(notification.reason)}
-      isUnread={!hideLatestNotification && notification.state === "unread"}
+      isUnread={notification.state === "unread"}
       openCallback={() => {
         openVPPForCurrentVehicle(notification)
 
