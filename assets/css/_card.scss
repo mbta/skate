@@ -29,10 +29,6 @@
   border: 1px solid $color-gray-400;
 }
 
-.m-card--clickable {
-  cursor: pointer;
-}
-
 .m-card__left {
   display: flex;
   flex-direction: column;
@@ -42,6 +38,10 @@
   &:last-child {
     padding-right: 0.3125rem;
   }
+}
+
+.m-card__left--clickable {
+  cursor: pointer;
 }
 
 .m-card__right {

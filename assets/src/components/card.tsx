@@ -28,11 +28,15 @@ export const Card: React.FC<CardProps> = ({
       className={
         "m-card" +
         (additionalClass ? " " + additionalClass : "") +
-        (openCallback ? " m-card--clickable" : "") +
         (!isUnread ? " m-card--read" : "")
       }
     >
-      <button className="m-card__left" onClick={openCallback}>
+      <button
+        className={
+          "m-card__left" + (openCallback ? " m-card__left--clickable" : "")
+        }
+        onClick={openCallback}
+      >
         <div className="m-card__top-row">
           <div className="m-card__title">
             {isUnread ? unreadIcon() : null}

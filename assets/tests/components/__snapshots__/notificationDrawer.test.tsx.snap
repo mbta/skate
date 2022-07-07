@@ -110,10 +110,10 @@ exports[`NotificationDrawer renders notifications 1`] = `
       <ul>
         <li>
           <div
-            className="m-card m-card--clickable"
+            className="m-card"
           >
             <button
-              className="m-card__left"
+              className="m-card__left m-card__left--clickable"
               onClick={[Function]}
             >
               <div
