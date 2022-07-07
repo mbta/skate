@@ -122,6 +122,14 @@ exports[`NotificationDrawer renders notifications 1`] = `
                 <div
                   className="m-card__title"
                 >
+                  <span
+                    className=""
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "SVG",
+                      }
+                    }
+                  />
                   No Operator
                 </div>
                 <div
@@ -156,22 +164,6 @@ exports[`NotificationDrawer renders notifications 1`] = `
                 </ul>
               </div>
             </button>
-            <div
-              className="m-card__right"
-            >
-              <div
-                className="m-card__unread-icon"
-              >
-                <span
-                  className=""
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </div>
-            </div>
           </div>
         </li>
       </ul>

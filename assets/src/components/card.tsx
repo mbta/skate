@@ -34,7 +34,10 @@ export const Card: React.FC<CardProps> = ({
     >
       <button className="m-card__left" onClick={openCallback}>
         <div className="m-card__top-row">
-          <div className="m-card__title">{title}</div>
+          <div className="m-card__title">
+            {isUnread ? unreadIcon() : null}
+            {title}
+          </div>
           {time ? (
             <div className="m-card__time">
               {formattedTimeDiffUnderThreshold(currentTime, time, 60)}
@@ -43,15 +46,11 @@ export const Card: React.FC<CardProps> = ({
         </div>
         <div className="m-card__contents">{children}</div>
       </button>
-      <div className="m-card__right">
-        {isUnread ? (
-          closeCallback ? (
-            <CloseButton onClick={closeCallback} />
-          ) : (
-            <div className="m-card__unread-icon">{unreadIcon()}</div>
-          )
-        ) : null}
-      </div>
+      {closeCallback ? (
+        <div className="m-card__right">
+          <CloseButton onClick={closeCallback} />
+        </div>
+      ) : null}
     </div>
   )
 }

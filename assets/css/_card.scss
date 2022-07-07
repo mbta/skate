@@ -38,6 +38,10 @@
   flex-direction: column;
   flex-grow: 1;
   position: relative;
+
+  &:last-child {
+    padding-right: 0.3125rem;
+  }
 }
 
 .m-card__right {
@@ -58,14 +62,26 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 2.5rem;
+  height: 1.625rem;
+  margin-top: 0.3125rem;
 }
 
 .m-card__title {
+  @include button-icon(0.5rem);
   flex-grow: 1;
+
+  display: flex;
+  align-items: center;
+
   font-size: 1rem;
   font-weight: 600;
   color: $color-kiwi-800;
+
+  span {
+    display: inline-flex;
+    margin-right: 0.75rem;
+    margin-left: 0.1875rem;
+  }
 }
 
 .m-card__time {
@@ -75,7 +91,6 @@
 }
 
 .m-card__unread-icon {
-  @include button-icon(0.5rem);
   span {
     width: 2.5rem;
     height: 2.5rem;
@@ -83,7 +98,7 @@
 }
 
 .m-card__contents {
-  margin-top: 0.3125rem;
+  margin-top: 0.625rem;
 }
 
 .m-card__body {

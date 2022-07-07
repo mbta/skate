@@ -23,6 +23,14 @@ exports[`Notification renders latest notification 1`] = `
         <div
           className="m-card__title"
         >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
           No Operator
         </div>
         <div
