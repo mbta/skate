@@ -14,11 +14,13 @@ export const NotificationCard = ({
   currentTime,
   openVPPForCurrentVehicle,
   hideLatestNotification,
+  noFocusOrHover,
 }: {
   notification: Notification
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
   hideLatestNotification?: () => void
+  noFocusOrHover?: boolean
 }): ReactElement<HTMLElement> => {
   const routes = useRoutes(notification.routeIds)
   const routeAtCreation = useRoute(notification.routeIdAtCreation)
@@ -37,6 +39,7 @@ export const NotificationCard = ({
       }}
       closeCallback={hideLatestNotification}
       time={notification.createdAt}
+      noFocusOrHover={noFocusOrHover}
     >
       <CardBody>{description(notification, routes, routeAtCreation)}</CardBody>
       <CardProperties

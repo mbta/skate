@@ -11,6 +11,7 @@ interface CardProps {
   additionalClass?: string
   title: string
   time?: Date
+  noFocusOrHover?: boolean
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -22,12 +23,14 @@ export const Card: React.FC<CardProps> = ({
   additionalClass,
   title,
   time,
+  noFocusOrHover,
 }) => {
   return (
     <div
       className={
         "m-card" +
         (additionalClass ? " " + additionalClass : "") +
+        (noFocusOrHover ? " m-card--no-focus-or-hover" : "") +
         (!isUnread ? " m-card--read" : "")
       }
     >

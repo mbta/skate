@@ -9,12 +9,12 @@
   border-radius: 0.5rem;
   padding: 0.3125rem 0.3125rem 1rem 1rem;
 
-  &:hover {
+  &:hover:not(.m-card--no-focus-or-hover) {
     background-color: $white;
     border: 1px solid $color-kiwi-300;
   }
 
-  &:focus {
+  &:focus:not(.m-card--no-focus-or-hover) {
     background-color: $color-kiwi-100;
   }
 

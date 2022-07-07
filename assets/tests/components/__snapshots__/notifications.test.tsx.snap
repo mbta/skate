@@ -11,7 +11,7 @@ exports[`Notification renders latest notification 1`] = `
   className="m-notifications"
 >
   <div
-    className="m-card"
+    className="m-card m-card--no-focus-or-hover"
   >
     <button
       className="m-card__left m-card__left--clickable"

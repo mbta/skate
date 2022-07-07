@@ -33,6 +33,7 @@ export const Notifications = () => {
           currentTime={currentTime}
           openVPPForCurrentVehicle={openVPPForCurrentVehicle}
           hideLatestNotification={() => dispatch(hideLatestNotification())}
+          noFocusOrHover={true}
         />
       )}
     </div>
