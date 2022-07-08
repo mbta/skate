@@ -12,6 +12,7 @@
   &:hover:not(.m-card--no-focus-or-hover) {
     background-color: $white;
     border: 1px solid $color-kiwi-300;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
   }
 
   &:focus:not(.m-card--no-focus-or-hover) {
@@ -27,6 +28,11 @@
 .m-card--read {
   background-color: $color-gray-50;
   border: 1px solid $color-gray-400;
+
+  &:hover:not(.m-card--no-focus-or-hover) {
+    background-color: $color-gray-50;
+    border: 1px solid $color-kiwi-300;
+  }
 }
 
 .m-card__left {
