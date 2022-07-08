@@ -8,7 +8,7 @@ import { closeNotificationDrawer } from "../state"
 import CloseButton from "./closeButton"
 import { openVPPForNotification } from "./notifications"
 import NotificationBellIcon from "./notificationBellIcon"
-import { NotificationCard } from "./notificationContent"
+import { NotificationCard } from "./notificationCard"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)

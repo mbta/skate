@@ -9,7 +9,7 @@ import {
 } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
 import { Dispatch as StateDispatch, setNotification } from "../state"
-import { NotificationCard } from "./notificationContent"
+import { NotificationCard } from "./notificationCard"
 
 export const Notifications = () => {
   const { notifications, showLatestNotification, dispatch } =
