@@ -2,12 +2,8 @@ import React, { ReactElement } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import { Notification, NotificationReason } from "../realtime.d"
 import { Route } from "../schedule"
-import {
-  formattedTime,
-  formattedTimeDiffUnderThreshold,
-} from "../util/dateTime"
+import { formattedTime } from "../util/dateTime"
 import { Card, CardBody, CardProperties } from "./card"
-import PropertiesList from "./propertiesList"
 
 export const NotificationCard = ({
   notification,
@@ -63,56 +59,6 @@ export const NotificationCard = ({
         ]}
       />
     </Card>
-  )
-}
-
-export const NotificationContent = ({
-  notification,
-  currentTime,
-}: {
-  notification: Notification
-  currentTime: Date
-}) => {
-  const routes = useRoutes(notification.routeIds)
-  const routeAtCreation = useRoute(notification.routeIdAtCreation)
-  return (
-    <div className="m-notification-content">
-      <div className="m-notification-content__title-row">
-        <div className="m-notification-content__title">
-          {title(notification.reason)}
-        </div>
-        <div className="m-notification-content__age">
-          {formattedTimeDiffUnderThreshold(
-            currentTime,
-            notification.createdAt,
-            60
-          )}
-        </div>
-      </div>
-      <div className="m-notification-content__description">
-        {description(notification, routes, routeAtCreation)}
-      </div>
-      <PropertiesList
-        properties={[
-          {
-            label: "Run",
-            value:
-              notification.runIds.length > 0
-                ? notification.runIds.join(", ")
-                : null,
-          },
-          {
-            label: "Operator",
-            value:
-              notification.operatorName !== null &&
-              notification.operatorId !== null
-                ? `${notification.operatorName} #${notification.operatorId}`
-                : null,
-            classNameModifier: "operator",
-          },
-        ]}
-      />
-    </div>
   )
 }
 
