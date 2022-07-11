@@ -134,7 +134,7 @@ const stopsGreen: Stop[] = [
   { id: "place-kencl", name: "Kenmore", lat: 42.348949, lon: -71.095169 },
   { id: "place-kntst", name: "Kent Street", lat: 42.344074, lon: -71.114197 },
   { id: "place-lake", name: "Boston College", lat: 42.340081, lon: -71.166769 },
-  { id: "place-lech", name: "Lechmere", lat: 42.370772, lon: -71.076536 },
+  { id: "place-lech", name: "Lechmere", lat: 42.371572, lon: -71.076584 },
   {
     id: "place-lngmd",
     name: "Longwood Medical Area",
@@ -203,6 +203,7 @@ const stopsGreen: Stop[] = [
   { id: "place-sumav", name: "Summit Avenue", lat: 42.34111, lon: -71.12561 },
   { id: "place-symcl", name: "Symphony", lat: 42.342687, lon: -71.085056 },
   { id: "place-tapst", name: "Tappan Street", lat: 42.338459, lon: -71.138702 },
+  { id: "place-unsqu", name: "Union Square", lat: 42.377359, lon: -71.094761 },
   { id: "place-waban", name: "Waban", lat: 42.325943, lon: -71.230728 },
   {
     id: "place-wascm",
