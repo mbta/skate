@@ -21,7 +21,6 @@ exports[`SearchPage renders a selected vehicle 1`] = `
             className="m-search-form__text"
           >
             <input
-              autoFocus={true}
               className="m-search-form__input"
               onChange={[Function]}
               placeholder="Search"
@@ -553,7 +552,6 @@ exports[`SearchPage renders the empty state 1`] = `
             className="m-search-form__text"
           >
             <input
-              autoFocus={true}
               className="m-search-form__input"
               onChange={[Function]}
               placeholder="Search"
@@ -734,7 +732,6 @@ exports[`SearchPage renders vehicle data 1`] = `
             className="m-search-form__text"
           >
             <input
-              autoFocus={true}
               className="m-search-form__input"
               onChange={[Function]}
               placeholder="Search"

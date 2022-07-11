@@ -42,16 +42,13 @@ const SearchForm = () => {
     <form onSubmit={subscribeToSearch} className="m-search-form">
       <div className="m-search-form__row">
         <div className="m-search-form__text">
-          {/* eslint-disable jsx-a11y/no-autofocus */}
           <input
             type="text"
             className="m-search-form__input"
             placeholder="Search"
             value={query.text}
             onChange={handleTextInput}
-            autoFocus={true}
           />
-          {/* eslint-enable jsx-a11y/no-autofocus */}
           <button
             type="reset"
             className="m-search-form__clear"
