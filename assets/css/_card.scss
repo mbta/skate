@@ -4,7 +4,7 @@
   width: 100%;
   box-sizing: border-box;
 
-  background-color: $color-kiwi-50;
+  background-color: $color-kiwi-100;
   border: 1px solid $color-kiwi-400;
   border-radius: 0.5rem;
   padding: 0.3125rem 0.3125rem 1rem 1rem;
@@ -16,7 +16,7 @@
   }
 
   &:focus:not(.m-card--no-focus-or-hover) {
-    background-color: $color-kiwi-100;
+    background-color: $color-kiwi-200;
     border: 2px solid $color-kiwi-400;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
   }
