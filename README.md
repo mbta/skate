@@ -76,6 +76,32 @@ If you see the “data outage” banner when you open your local version of Skat
 - Run Elixir tests with `` mix test ``
 - Run Javascript tests with `cd assets && npm test`
 
+## Browser Support Policy
+
+We strive to support all users – but the variety of browsers, operating systems and devices available necessitates a more intentioned approach. These differences could potentially cause bugs and harm your experience with Skate. Ensure you have the best possible experience with Skate by updating your browser to the latest version.
+
+### Compatible Browsers
+
+Generally speaking, Skate supports the stable latest releases of all major web browsers:
+* Chrome (version 84+)
+* Safari (version 14+)
+* Firefox (version 78+)
+* Microsoft Edge (version 84+)
+
+Other interfaces using the underlying engines of the aforementioned browsers – that's WebKit, Blink, Gecko – are not explicitly supported but are expected to function correctly.
+* Windows 10 - Edge
+* Android - Chrome
+* MacOS / iOS - Safari
+
+### Incompatible Browsers
+
+Skate does not work with:
+* Internet Explorer
+* Opera
+* Developer or Beta versions of supported browsers
+
+Use of Skate on these browsers will potentially lead to bugs and a poor experience with the app. We encourage you to use one of our compatible browsers instead.
+
 ## Team Conventions
 
 ### Editing Code
