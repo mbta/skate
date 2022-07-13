@@ -27,7 +27,7 @@
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
-    "pigeon-maps": "^0.19.7",
+    "pigeon-maps": "^0.21.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-leaflet": "^2.8.0",
