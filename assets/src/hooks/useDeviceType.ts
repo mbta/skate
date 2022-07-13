@@ -3,7 +3,7 @@ import { DeviceType } from "../skate"
 
 const maxMobileWidth = 480
 const minTabletWidth = maxMobileWidth + 1
-const maxTabletWidth = 800
+const maxTabletWidth = 1340
 
 const useDeviceType = (): DeviceType => {
   const { matches } = useMediaQueries({
