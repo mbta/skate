@@ -7,7 +7,7 @@ import { Activity, Run, Piece, Trip } from "../minischedule"
 import { Notification, RunId } from "../realtime.d"
 import { setNotification } from "../state"
 import { now, serviceDaySeconds } from "../util/dateTime"
-import { title } from "./notificationContent"
+import { title } from "./notificationCard"
 
 type RunScheduleRelationship = "current" | "break" | "past"
 

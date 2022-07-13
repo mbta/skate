@@ -1,0 +1,143 @@
+.m-card {
+  display: flex;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  background-color: $color-kiwi-100;
+  border: 1px solid $color-kiwi-400;
+  border-radius: 0.5rem;
+  padding: 0.3125rem 0.3125rem 1rem 1rem;
+
+  &:hover:not(.m-card--no-focus-or-hover) {
+    background-color: $white;
+    border: 1px solid $color-kiwi-300;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  &:focus:not(.m-card--no-focus-or-hover) {
+    background-color: $color-kiwi-200;
+    border: 2px solid $color-kiwi-400;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+  }
+
+  button {
+    text-align: start;
+    margin: 0;
+  }
+}
+
+.m-card--read {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-400;
+
+  &:hover:not(.m-card--no-focus-or-hover) {
+    background-color: $color-gray-50;
+    border: 1px solid $color-kiwi-300;
+  }
+}
+
+.m-card__left {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+
+  &:last-child {
+    padding-right: 0.3125rem;
+  }
+}
+
+.m-card__left--clickable {
+  cursor: pointer;
+}
+
+.m-card__right {
+  min-width: 2.5rem;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.m-card__top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 1.625rem;
+  margin-top: 0.3125rem;
+}
+
+.m-card__title {
+  @include button-icon(0.5rem);
+  flex-grow: 1;
+
+  display: flex;
+  align-items: center;
+
+  font-size: 1rem;
+  font-weight: 600;
+  color: $color-kiwi-800;
+
+  span {
+    display: inline-flex;
+    margin-right: 0.75rem;
+    margin-left: 0.1875rem;
+  }
+}
+
+.m-card__time {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $color-kiwi-800;
+}
+
+.m-card__unread-icon {
+  span {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.m-card__contents {
+  margin-top: 0.625rem;
+}
+
+.m-card__body {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: $color-gray-700;
+}
+
+.m-card__properties {
+  margin-top: 1rem;
+  margin-bottom: 0;
+
+  li {
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+
+    &:not(:last-child) {
+      padding-bottom: 0.5rem;
+    }
+  }
+}
+
+.m-card__properties-label {
+  width: 6rem;
+  display: inline-block;
+
+  font-weight: 500;
+  color: $color-gray-700;
+}
+
+.m-card__properties-value {
+  font-weight: 400;
+  color: $color-gray-600;
+}

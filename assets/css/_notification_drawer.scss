@@ -53,27 +53,12 @@
   padding: 1rem;
 }
 
-.m-notification-drawer__card {
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-  position: relative;
-  text-align: left;
-  width: 100%;
-
-  &:hover {
-    background-color: $color-secondary-medium;
+.m-notification-drawer__cards {
+  & > ul > li {
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
   }
-}
-
-.m-notification-drawer__card--read {
-  background-color: $white;
-  box-shadow: $subtle-box-shadow;
-}
-
-.m-notification-drawer__card--unread {
-  background-color: $color-secondary-light;
-  border: 1px solid $color-secondary-dark;
-  box-shadow: $box-shadow-secondary;
 }
 
 .m-notification-drawer__mark-all-read-button {
@@ -95,46 +80,4 @@
 .m-notification-drawer__header {
   margin-bottom: 0.5rem;
   position: relative;
-}
-
-.m-notification-drawer__submenu {
-  background-color: $white;
-  border-radius: 4px;
-  bottom: 1.5rem;
-  box-shadow: $submenu-box-shadow;
-  padding: 1rem 2rem 1rem 1rem;
-  position: absolute;
-  right: 1rem;
-  text-align: left;
-  z-index: 1000;
-
-  a {
-    color: $color-secondary-dark;
-
-    &:hover {
-      font-weight: 700;
-    }
-  }
-}
-
-.m-notification-drawer__submenu-icon {
-  bottom: 0.5rem;
-  position: absolute;
-  right: 1rem;
-
-  // expand the clickable area of the ellipsis icon
-  &::after {
-    content: "";
-    position: absolute;
-    top: -0.5rem;
-    bottom: -0.5rem;
-    left: -1rem;
-    right: -1rem;
-  }
-
-  svg {
-    fill: $color-component-medium;
-    height: 1rem;
-    width: 1rem;
-  }
 }

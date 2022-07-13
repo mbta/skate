@@ -111,6 +111,7 @@ exports[`Header renders a header 1`] = `
         className="m-close-button"
         data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""
@@ -315,6 +316,7 @@ exports[`Header renders for a ghost 1`] = `
         className="m-close-button"
         data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""
@@ -533,6 +535,7 @@ exports[`Header renders for a late vehicle 1`] = `
         className="m-close-button"
         data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""
@@ -723,6 +726,7 @@ exports[`Header renders for a shuttle 1`] = `
         className="m-close-button"
         data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""
@@ -854,6 +858,7 @@ exports[`Header renders for an early vehicle 1`] = `
         className="m-close-button"
         data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""
@@ -1077,6 +1082,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
         className="m-close-button"
         data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""
@@ -1300,6 +1306,7 @@ exports[`Header renders with route data 1`] = `
         className="m-close-button"
         data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""

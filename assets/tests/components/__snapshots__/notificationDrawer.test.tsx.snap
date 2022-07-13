@@ -24,6 +24,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
       className="m-close-button"
       data-testid="close-button"
       onClick={[Function]}
+      title="Close"
     >
       <span
         className=""
@@ -72,6 +73,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
       className="m-close-button"
       data-testid="close-button"
       onClick={[Function]}
+      title="Close"
     >
       <span
         className=""
@@ -105,71 +107,66 @@ exports[`NotificationDrawer renders notifications 1`] = `
           Mark all as read
         </button>
       </div>
-      <button
-        className="m-notification-drawer__card m-notification-drawer__card--unread"
-        onClick={[Function]}
-      >
-        <div
-          className="m-notification-content"
-        >
+      <ul>
+        <li>
           <div
-            className="m-notification-content__title-row"
+            className="m-card"
           >
-            <div
-              className="m-notification-content__title"
+            <button
+              className="m-card__left m-card__left--clickable"
+              onClick={[Function]}
             >
-              NO OPERATOR
-            </div>
-            <div
-              className="m-notification-content__age"
-            >
-              0 min
-            </div>
-          </div>
-          <div
-            className="m-notification-content__description"
-          >
-            OCC reported that an operator is not available on the r1, r2.
-          </div>
-          <div
-            className="m-properties-list"
-          >
-            <table
-              className="m-properties-list__table"
-            >
-              <tbody>
-                <tr
-                  className="m-properties-list__property "
+              <div
+                className="m-card__top-row"
+              >
+                <div
+                  className="m-card__title"
                 >
-                  <td
-                    className="m-properties-list__property-label"
-                  >
-                    Run
-                  </td>
-                  <td
-                    className="m-properties-list__property-value"
-                  >
-                    run1, run2
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  <span
+                    className=""
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "SVG",
+                      }
+                    }
+                  />
+                  No Operator
+                </div>
+                <div
+                  className="m-card__time"
+                >
+                  0 min
+                </div>
+              </div>
+              <div
+                className="m-card__contents"
+              >
+                <div
+                  className="m-card__body"
+                >
+                  OCC reported that an operator is not available on the r1, r2.
+                </div>
+                <ul
+                  className="m-card__properties"
+                >
+                  <li>
+                    <span
+                      className="m-card__properties-label"
+                    >
+                      Run
+                    </span>
+                    <span
+                      className="m-card__properties-value"
+                    >
+                      run1, run2
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </button>
           </div>
-        </div>
-        <a
-          className="m-notification-drawer__submenu-icon-anchor"
-          onClick={[Function]}
-        >
-          <span
-            className="m-notification-drawer__submenu-icon"
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </a>
-      </button>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

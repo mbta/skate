@@ -1,40 +1,44 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import { Notification, NotificationReason } from "../realtime.d"
 import { Route } from "../schedule"
-import {
-  formattedTime,
-  formattedTimeDiffUnderThreshold,
-} from "../util/dateTime"
-import PropertiesList from "./propertiesList"
+import { formattedTime } from "../util/dateTime"
+import { Card, CardBody, CardProperties } from "./card"
 
-export const NotificationContent = ({
+export const NotificationCard = ({
   notification,
   currentTime,
+  openVPPForCurrentVehicle,
+  hideLatestNotification,
+  noFocusOrHover,
 }: {
   notification: Notification
   currentTime: Date
-}) => {
+  openVPPForCurrentVehicle: (notification: Notification) => void
+  hideLatestNotification?: () => void
+  noFocusOrHover?: boolean
+}): ReactElement<HTMLElement> => {
   const routes = useRoutes(notification.routeIds)
   const routeAtCreation = useRoute(notification.routeIdAtCreation)
+
   return (
-    <div className="m-notification-content">
-      <div className="m-notification-content__title-row">
-        <div className="m-notification-content__title">
-          {title(notification.reason)}
-        </div>
-        <div className="m-notification-content__age">
-          {formattedTimeDiffUnderThreshold(
-            currentTime,
-            notification.createdAt,
-            60
-          )}
-        </div>
-      </div>
-      <div className="m-notification-content__description">
-        {description(notification, routes, routeAtCreation)}
-      </div>
-      <PropertiesList
+    <Card
+      currentTime={currentTime}
+      title={title(notification.reason)}
+      isUnread={notification.state === "unread"}
+      openCallback={() => {
+        openVPPForCurrentVehicle(notification)
+
+        if (hideLatestNotification) {
+          hideLatestNotification()
+        }
+      }}
+      closeCallback={hideLatestNotification}
+      time={notification.createdAt}
+      noFocusOrHover={noFocusOrHover}
+    >
+      <CardBody>{description(notification, routes, routeAtCreation)}</CardBody>
+      <CardProperties
         properties={[
           {
             label: "Run",
@@ -50,26 +54,30 @@ export const NotificationContent = ({
               notification.operatorId !== null
                 ? `${notification.operatorName} #${notification.operatorId}`
                 : null,
-            classNameModifier: "operator",
+            sensitive: true,
           },
         ]}
       />
-    </div>
+    </Card>
   )
 }
 
 export const title = (reason: NotificationReason): string => {
   switch (reason) {
     case "manpower":
-      return "NO OPERATOR"
+      return "No Operator"
     case "diverted":
-      return "DIVERSION"
+      return "Diversion"
     case "chelsea_st_bridge_raised":
-      return "CHELSEA ST BRIDGE RAISED"
+      return "Chelsea St Bridge Raised"
     case "chelsea_st_bridge_lowered":
-      return "CHELSEA ST BRIDGE LOWERED"
+      return "Chelsea St Bridge Lowered"
     default:
-      return reason.toUpperCase().replace("_", " ")
+      return reason
+        .replace("_", " ")
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
   }
 }
 

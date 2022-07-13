@@ -8,6 +8,7 @@ interface Props {
 const CloseButton = ({ onClick }: Props) => (
   <button
     data-testid="close-button"
+    title="Close"
     className="m-close-button"
     onClick={(e) => {
       e.stopPropagation()
