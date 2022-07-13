@@ -71,6 +71,18 @@ defmodule Schedule.Gtfs.Route do
     row["route_type"] == "3"
   end
 
+  @spec bus_route_mbta?(Csv.row()) :: boolean
+  def bus_route_mbta?(row) do
+    # Verify that route number is not one of the private carriers: 710, 712, 713, 714, 716
+    row["route_id"] not in ["710", "712", "713", "714", "716"]
+  end
+
+  @spec bus_route_validrow?(Csv.row()) :: boolean
+  def bus_route_validrow?(row) do
+    # Run all filters on the bus route row
+    bus_route_row?(row) and bus_route_mbta?(row)
+  end
+
   @spec shuttle_route?(t) :: boolean
   def shuttle_route?(%__MODULE__{description: "Rail Replacement Bus"}), do: true
   def shuttle_route?(%__MODULE__{}), do: false
