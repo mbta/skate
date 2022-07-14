@@ -1,0 +1,99 @@
+$non-mobile-min-width: 768px;
+$mobile-max-width: $non-mobile-min-width - 1;
+$tab-bar-width: 3rem;
+$drawer-tab-width: 2rem;
+$route-picker-width: 21.875rem;
+$mobile-route-picker-width: 18.125rem;
+$shuttle-picker-width: 12.6rem;
+
+@import "base";
+@import "inter";
+@import "ui_kit";
+@import "leaflet";
+@import "pigeon";
+
+@import "close_button";
+@import "crowding";
+@import "data_status_banner";
+@import "disconnected_modal";
+@import "drawer_tab";
+@import "garage_filter";
+@import "icon_alert_circle";
+@import "incoming_box";
+@import "inactive_notification_modal";
+@import "input_modal";
+@import "ladder";
+@import "ladder_page";
+@import "late_view";
+@import "loading_modal";
+@import "loading_spinner";
+@import "minischedule";
+@import "modal";
+@import "nav";
+@import "nav/left_nav";
+@import "nav/top_nav";
+@import "nav/top_nav_mobile";
+@import "nav/bottom_nav_mobile";
+@import "notifications";
+@import "notification_bell_icon";
+@import "notification_content";
+@import "notification_drawer";
+@import "page";
+@import "picker_container";
+@import "presets";
+@import "properties_list";
+@import "properties_panel";
+@import "properties_panel/block_waiver_banner";
+@import "properties_panel/ghost_properties_panel";
+@import "properties_panel/header";
+@import "properties_panel/headway_diagram";
+@import "properties_panel/tab_panels";
+@import "properties_panel/vehicle_properties_panel";
+@import "recent_searches";
+@import "route_ladder";
+@import "route_ladders";
+@import "route_picker";
+@import "route_filter";
+@import "search_form";
+@import "search_page";
+@import "search_results";
+@import "settings_page";
+@import "shuttle_map";
+@import "shuttle_picker";
+@import "shuttle_picker_container";
+@import "swings_view";
+@import "tab_bar";
+@import "vehicle_icon";
+@import "vehicle_map";
+
+html,
+body,
+main,
+#app,
+.m-app {
+  height: 100%;
+}
+
+body {
+  background-color: $color-bg-base;
+  color: $color-font-dark;
+  font-family: $font-family;
+  font-size: 16px;
+}
+
+.m-app {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+
+.m-app__banner {
+  width: 100%;
+  flex: 0 0 0;
+}
+
+.m-app__main {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+}
