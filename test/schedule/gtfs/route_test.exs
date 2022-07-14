@@ -50,7 +50,7 @@ defmodule Schedule.Gtfs.RouteTest do
     end
   end
 
-  describe "bus_route_row?/1" do
+  describe "bus_route_valid_row?/1" do
     test "returns whether or not this row represents a bus route" do
       bus_csv_row = %{
         "route_id" => "39",
@@ -84,8 +84,25 @@ defmodule Schedule.Gtfs.RouteTest do
         "listed_route" => ""
       }
 
-      assert Route.bus_route_row?(bus_csv_row)
-      refute Route.bus_route_row?(subway_csv_row)
+      private_carrier_csv_row = %{
+        "route_id" => "710",
+        "agency_id" => "1",
+        "route_short_name" => "710",
+        "route_long_name" => "North Medford - Wellington Station",
+        "route_desc" => "Local Bus",
+        "route_type" => "3",
+        "route_url" => "https://www.mbta.com/schedules/710",
+        "route_color" => "FFC72C",
+        "route_text_color" => "000000",
+        "route_sort_order" => "57100",
+        "route_fare_class" => "Local Bus",
+        "line_id" => "line-710",
+        "listed_route" => ""
+      }
+
+      assert Route.bus_route_valid_row?(bus_csv_row)
+      refute Route.bus_route_valid_row?(subway_csv_row)
+      refuse(Route.bus_route_valid_row?(private_carrier_csv_row))
     end
 
     test "ensures a `route_type` property" do
@@ -106,7 +123,7 @@ defmodule Schedule.Gtfs.RouteTest do
       }
 
       assert_raise ArgumentError, fn ->
-        Route.bus_route_row?(bad_csv_row)
+        Route.bus_route_valid_row?(bad_csv_row)
       end
     end
   end
