@@ -12,6 +12,7 @@ $shuttle-picker-width: 12.6rem;
 @import "leaflet";
 @import "pigeon";
 
+@import "card";
 @import "close_button";
 @import "crowding";
 @import "data_status_banner";
@@ -71,7 +72,7 @@ body,
 main,
 #app,
 .m-app {
-  height: 100%;
+  height: 100vh;
 }
 
 body {
