@@ -102,7 +102,7 @@ defmodule Schedule.Gtfs.RouteTest do
 
       assert Route.bus_route_valid_row?(bus_csv_row)
       refute Route.bus_route_valid_row?(subway_csv_row)
-      refute(Route.bus_route_valid_row?(private_carrier_csv_row))
+      refute Route.bus_route_valid_row?(private_carrier_csv_row)
     end
 
     test "ensures a `route_type` property" do
