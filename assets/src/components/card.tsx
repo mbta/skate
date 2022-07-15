@@ -4,7 +4,7 @@ import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { unreadIcon } from "../helpers/icon"
 
 interface CardProps {
-  currentTime: Date
+  currentTime?: Date
   openCallback?: () => void
   closeCallback?: () => void
   isUnread?: boolean
@@ -32,7 +32,7 @@ export const Card: React.FC<CardProps> = ({
           {isUnread ? unreadIcon() : null}
           {title}
         </div>
-        {time ? (
+        {currentTime && time ? (
           <div className="m-card__time">
             {formattedTimeDiffUnderThreshold(currentTime, time, 60)}
           </div>
