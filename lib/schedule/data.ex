@@ -306,7 +306,7 @@ defmodule Schedule.Data do
     bus_routes =
       Csv.parse(
         gtfs_files["routes.txt"],
-        filter: &Route.bus_route_row?/1,
+        filter: &Route.bus_route_valid_row?/1,
         parse: &Route.from_csv_row(&1, directions_by_route_id)
       )
 
