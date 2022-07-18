@@ -1,10 +1,15 @@
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Vehicle } from "../../realtime"
-import Header from "./header"
 import BlockWaiverList from "./blockWaiverList"
 import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
+import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { deselectVehicle } from "../../state"
+import vehicleLabel from "../../helpers/vehicleLabel"
+import CloseButton from "../closeButton"
+import TabList from "./tabList"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -15,7 +20,7 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
 
   return (
     <div className="m-stale-data-properties-panel">
-      <Header
+      <StaleDataHeader
         vehicle={selectedVehicle}
         tabMode={tabMode}
         setTabMode={setTabMode}
@@ -28,6 +33,43 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
           statusContent={<StaleContent selectedVehicle={selectedVehicle} />}
           mode={tabMode}
         />
+      )}
+    </div>
+  )
+}
+
+const StaleDataHeader: React.FC<{
+  vehicle: Vehicle
+  tabMode: TabMode
+  setTabMode: Dispatch<SetStateAction<TabMode>>
+}> = ({ vehicle, tabMode, setTabMode }) => {
+  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
+
+  const hideMe = () => dispatch(deselectVehicle())
+
+  return (
+    <div className="m-properties-panel__header-wrapper">
+      <div className="m-properties-panel__header">
+        <div className="m-properties-panel__label">
+          <VehicleIcon
+            size={Size.Large}
+            orientation={Orientation.Up}
+            label={vehicleLabel(vehicle, userSettings)}
+            variant={vehicle.viaVariant}
+            status={"plain"}
+            userSettings={userSettings}
+          />
+        </div>
+        <div className="m-properties-panel__variant">
+          <div className="m-properties-panel__inbound-outbound">N/A</div>
+          <div className="m-route-variant-name">Not Available</div>
+        </div>
+        <div className="m-properties-panel__close-ping">
+          <CloseButton onClick={hideMe} />
+        </div>
+      </div>
+      {vehicle.isShuttle || (
+        <TabList activeTab={tabMode} setActiveTab={setTabMode} />
       )}
     </div>
   )
