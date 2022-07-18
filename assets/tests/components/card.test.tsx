@@ -86,8 +86,8 @@ describe("Card", () => {
       </Card>
     )
 
-    expect(result.getByText(/Contents/).parentElement?.className).toMatch(
-      /m-card__left--clickable/
+    expect(result.getByText(/Contents/).parentElement?.tagName).toEqual(
+      "BUTTON"
     )
 
     await user.click(result.getByText(/Contents/))
