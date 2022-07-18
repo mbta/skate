@@ -44,6 +44,7 @@ const StaleContent: React.FC<{ selectedVehicle: Vehicle }> = ({
     )}
     <Card
       title={`No active run on vehicle ${selectedVehicle.label}`}
+      style="white"
       noFocusOrHover={true}
     >
       <CardBody>

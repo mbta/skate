@@ -110,7 +110,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
       <ul>
         <li>
           <div
-            className="m-card"
+            className="m-card m-card--kiwi"
           >
             <button
               className="m-card__left"

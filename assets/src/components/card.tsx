@@ -3,7 +3,10 @@ import CloseButton from "./closeButton"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { unreadIcon } from "../helpers/icon"
 
+export type CardStyle = "kiwi" | "white"
+
 interface CardProps {
+  style: CardStyle
   currentTime?: Date
   openCallback?: () => void
   closeCallback?: () => void
@@ -16,6 +19,7 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({
   children,
+  style,
   currentTime,
   openCallback,
   closeCallback,
@@ -45,7 +49,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       className={
-        "m-card" +
+        `m-card m-card--${style}` +
         (additionalClass ? " " + additionalClass : "") +
         (noFocusOrHover ? " m-card--no-focus-or-hover" : "") +
         (!isUnread ? " m-card--read" : "")
