@@ -12,7 +12,6 @@ exports[`SearchForm renders 1`] = `
       className="m-search-form__text"
     >
       <input
-        autoFocus={true}
         className="m-search-form__input"
         onChange={[Function]}
         placeholder="Search"
