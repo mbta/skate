@@ -30,23 +30,18 @@ window.Appcues = {
   show: jest.fn(),
 }
 
-const usernameWithPrefix = "mbta-active-directory_jdoe"
-
 describe("useAppcues", () => {
   test("calls Appcues page on load", () => {
-    renderHook(() => useAppcues(usernameWithPrefix))
+    renderHook(() => useAppcues())
     expect(window.Appcues!.page).toHaveBeenCalled()
   })
-
-  test("calls Appcues indentify with the clean username on load", () => {
-    renderHook(() => useAppcues(usernameWithPrefix))
-    expect(window.Appcues!.identify).toHaveBeenCalledWith("jdoe")
   })
 })
 
 describe("cleanUsername", () => {
   test("strips the prefix from the ActiveDirectory username", () => {
     
+    const usernameWithPrefix = "mbta-active-directory_jdoe"
     const expected = "jdoe"
     expect(cleanUsername(usernameWithPrefix)).toEqual(expected)
   })

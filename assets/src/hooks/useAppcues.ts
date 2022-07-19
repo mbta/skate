@@ -4,7 +4,12 @@ import { useLocation } from "react-router-dom"
 export const cleanUsername = (usernameWithPrefix: string): string =>
   usernameWithPrefix.replace(/^mbta-active-directory_/, "")
 
-const useAppcues = (username: string): void => {
+const useAppcues = () => {
+
+  const username = document
+    .querySelector("meta[name=username]")
+    ?.getAttribute("content")
+
   const location = useLocation()
   useEffect(() => {
     if (window.Appcues) {
