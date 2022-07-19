@@ -1,4 +1,3 @@
-import { ReactElement } from "react"
 import { renderHook } from "@testing-library/react-hooks"
 import useAppcues, { cleanUsername } from "../../src/hooks/useAppcues"
 
@@ -32,14 +31,15 @@ window.Appcues = {
   show: jest.fn(),
 }
 
-const wrapper = ({ children }: { children: ReactElement<HTMLElement> }) => (
-  <div>
-    <meta name="username" content="jdoe" />
-    {children}
-  </div>
-)
-
 describe("useAppcues", () => {
+
+  const originalQuerySelector = document.querySelector
+
+  afterEach(() => {
+    document.querySelector = originalQuerySelector
+  })
+
+
   test("calls Appcues page on load", () => {
     renderHook(() => useAppcues())
 
@@ -48,7 +48,9 @@ describe("useAppcues", () => {
 
   test("calls Appcues indentify with the clean username on load", () => {
 
-    const { result } = renderHook(() => useAppcues(), { wrapper })
+    document.querySelector = () => ({ getAttribute: () => "jdoe" })
+
+    renderHook(() => useAppcues())
 
     expect(window.Appcues!.identify).toHaveBeenCalledWith("jdoe")
   })
