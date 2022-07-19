@@ -91,7 +91,6 @@ describe("Notification", () => {
     expect(tree).toMatchSnapshot()
   })
 
-
   test("can hide notification", async () => {
     const dispatch = jest.fn()
     const user = userEvent.setup()
