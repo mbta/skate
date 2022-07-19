@@ -24,7 +24,11 @@ import clarityInit from "./helpers/clarityInit"
 import clarityIdentify from "./helpers/clarityIdentify"
 import { tagManagerIdentify } from "./helpers/googleTagManager"
 
-sentryInit(window.sentry, window.username)
+const username = document
+  .querySelector("meta[name=username]")
+  ?.getAttribute("content")
+
+sentryInit(window.sentry, username || undefined)
 
 const clarityTag = document
   .querySelector("meta[name=clarity-tag]")

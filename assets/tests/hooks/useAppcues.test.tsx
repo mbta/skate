@@ -25,7 +25,6 @@ jest.mock("react-router-dom", () => ({
   useLocation: jest.fn().mockImplementation(() => mockLocation),
 }))
 
-window.username = "mbta-active-directory_jdoe"
 window.Appcues = {
   identify: jest.fn(),
   page: jest.fn(),
@@ -33,6 +32,12 @@ window.Appcues = {
 }
 
 describe("useAppcues", () => {
+  const originalQuerySelector = document.querySelector
+
+  afterEach(() => {
+    document.querySelector = originalQuerySelector
+  })
+
   test("calls Appcues page on load", () => {
     renderHook(() => useAppcues())
 
@@ -40,6 +45,8 @@ describe("useAppcues", () => {
   })
 
   test("calls Appcues indentify with the clean username on load", () => {
+    document.querySelector = () => ({ getAttribute: () => "jdoe" })
+
     renderHook(() => useAppcues())
 
     expect(window.Appcues!.identify).toHaveBeenCalledWith("jdoe")
