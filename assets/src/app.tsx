@@ -28,7 +28,7 @@ const username = document
   .querySelector("meta[name=username]")
   ?.getAttribute("content")
 
-sentryInit(window.sentry, username)
+sentryInit(window.sentry, username || undefined)
 
 const clarityTag = document
   .querySelector("meta[name=clarity-tag]")
