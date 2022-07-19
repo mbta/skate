@@ -7,7 +7,7 @@ import { Card, CardBody } from "../card"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { deselectVehicle } from "../../state"
-import vehicleLabel from "../../helpers/vehicleLabel"
+import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import CloseButton from "../closeButton"
 import TabList from "./tabList"
 
@@ -54,7 +54,7 @@ const StaleDataHeader: React.FC<{
           <VehicleIcon
             size={Size.Large}
             orientation={Orientation.Up}
-            label={vehicleLabel(vehicle, userSettings)}
+            label={runOrBusNumberLabel(vehicle, userSettings)}
             variant={vehicle.viaVariant}
             status={"plain"}
             userSettings={userSettings}
