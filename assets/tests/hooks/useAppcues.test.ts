@@ -25,7 +25,6 @@ jest.mock("react-router-dom", () => ({
   useLocation: jest.fn().mockImplementation(() => mockLocation),
 }))
 
-window.username = "mbta-active-directory_jdoe"
 window.Appcues = {
   identify: jest.fn(),
   page: jest.fn(),
