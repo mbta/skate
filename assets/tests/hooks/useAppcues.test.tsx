@@ -32,13 +32,11 @@ window.Appcues = {
 }
 
 describe("useAppcues", () => {
-
   const originalQuerySelector = document.querySelector
 
   afterEach(() => {
     document.querySelector = originalQuerySelector
   })
-
 
   test("calls Appcues page on load", () => {
     renderHook(() => useAppcues())
@@ -47,7 +45,6 @@ describe("useAppcues", () => {
   })
 
   test("calls Appcues indentify with the clean username on load", () => {
-
     document.querySelector = () => ({ getAttribute: () => "jdoe" })
 
     renderHook(() => useAppcues())
