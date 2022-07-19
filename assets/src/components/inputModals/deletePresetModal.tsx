@@ -30,9 +30,6 @@ const DeletePresetModal = ({
           autoFocus={true}
           className="m-input-modal__button-danger"
           onClick={() => {
-            if (window.FS) {
-              window.FS.event("Preset deleted")
-            }
             tagManagerEvent("preset_deleted")
 
             deleteCallback(dispatch)

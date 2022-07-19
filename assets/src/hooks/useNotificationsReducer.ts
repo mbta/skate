@@ -170,14 +170,6 @@ export const reducer: Reducer = (state: State, action: Action): State => ({
   ),
 })
 
-const deliverFullstoryEvent = (numStacked: number): void => {
-  if (window.FS && window.username) {
-    window.FS.event("Notification delivered", {
-      num_stacked_int: numStacked,
-    })
-  }
-}
-
 const persistMarkAllAsRead = (notifications: Notification[]): void => {
   const notificationIds = notifications.map((notification) => notification.id)
   putNotificationReadState("read", notificationIds)
@@ -196,9 +188,6 @@ export const useNotificationsReducer = (): [State, Dispatch] => {
 
   const dispatchWithSideEffects: Dispatch = (action: Action): void => {
     switch (action.type) {
-      case "ADD_NOTIFICATION":
-        deliverFullstoryEvent(state.notifications.length + 1)
-        break
       case "MARK_ALL_AS_READ":
         persistMarkAllAsRead(state.notifications)
         break

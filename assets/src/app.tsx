@@ -42,10 +42,6 @@ clarityIdentify(window.clarity, userUuid)
 
 tagManagerIdentify(userUuid)
 
-if (window.FS && window.username) {
-  window.FS.identify(window.username, { displayName: window.username })
-}
-
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:

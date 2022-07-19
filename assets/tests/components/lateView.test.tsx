@@ -144,15 +144,6 @@ describe("LateView", () => {
       currentPieceStartPlace: "garage",
     })
 
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-
-    afterEach(() => {
-      window.FS = originalFS
-      window.username = originalUsername
-    })
-
     const mockDispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
@@ -166,9 +157,6 @@ describe("LateView", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(ghost))
 
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "User selected late view run number - ghost bus"
-    )
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number_ghost"
     )
@@ -178,15 +166,6 @@ describe("LateView", () => {
     const vehicle = vehicleFactory.build({
       routeId: "route",
       scheduleAdherenceSecs: 901,
-    })
-
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-
-    afterEach(() => {
-      window.FS = originalFS
-      window.username = originalUsername
     })
 
     const mockDispatch = jest.fn()
@@ -202,9 +181,6 @@ describe("LateView", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
 
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "User selected late view run number"
-    )
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number"
     )

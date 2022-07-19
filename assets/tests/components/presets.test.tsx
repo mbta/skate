@@ -55,12 +55,6 @@ describe("Presets", () => {
   })
 
   test("saves current tab as preset", async () => {
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
-
     const mockDispatch = jest.fn()
     const mockState = {
       ...initialState,
@@ -87,21 +81,12 @@ describe("Presets", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "Preset saved from presets panel"
-    )
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "preset_saved_from_presets_panel"
     )
   })
 
   test("saves changes to current tab if it's edited", async () => {
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
-
     const mockDispatch = jest.fn()
     const mockState = {
       ...initialState,
@@ -135,9 +120,6 @@ describe("Presets", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
-    )
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "Preset saved from presets panel"
     )
   })
 

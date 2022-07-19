@@ -87,9 +87,6 @@ export const GarageFilter = ({
               <button
                 title={"Toggle Garage: " + garage}
                 onClick={() => {
-                  if (!filteredGarages.includes(garage) && window.FS) {
-                    window.FS.event("User filtered routes by garage")
-                  }
                   if (!filteredGarages.includes(garage)) {
                     tagManagerEvent("filtered_routes_by_garage")
                   }

@@ -1,7 +1,5 @@
 import { act as hooksAct, renderHook } from "@testing-library/react-hooks"
-import { mount } from "enzyme"
 import React, { ReactNode, useContext } from "react"
-import { act as testUtilsAct } from "react-dom/test-utils"
 import {
   NotificationsContext,
   NotificationsProvider,
@@ -76,30 +74,6 @@ describe("NotificationsProvider", () => {
       handler!(notification)
     })
     expect(result.current.notifications).toHaveLength(1)
-  })
-
-  test("makes a fullstory event when a notification arrives", () => {
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
-    mount(
-      <NotificationsProvider>
-        <></>
-      </NotificationsProvider>
-    )
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-    testUtilsAct(() => {
-      handler!(notification)
-    })
-    expect(window.FS!.event).toHaveBeenCalledWith("Notification delivered", {
-      num_stacked_int: 1,
-    })
-    window.FS = originalFS
-    window.username = originalUsername
   })
 
   test("expires notifications after 8 hours", () => {

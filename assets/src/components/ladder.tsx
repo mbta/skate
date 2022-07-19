@@ -273,14 +273,6 @@ const LadderTimepoint = React.memo(
         content={timepoint.name}
         trigger="click"
         className="m-ladder__timepoint-name-tooltip"
-        /* istanbul ignore next */
-        onShow={() => {
-          /* istanbul ignore next */
-          if (window.FS) {
-            /* istanbul ignore next */
-            window.FS.event("Timepoint names tooltip opened")
-          }
-        }}
       >
         <text
           className="m-ladder__timepoint-name"

@@ -95,9 +95,6 @@ const LadderTab = ({
             onClick={(e) => {
               e.stopPropagation()
 
-              if (window.FS) {
-                window.FS.event("Preset saved")
-              }
               tagManagerEvent("preset_saved")
 
               saveTab()
@@ -121,9 +118,6 @@ const AddTabButton = ({
     <button
       className="m-ladder-page__add-tab-button"
       onClick={() => {
-        if (window.FS) {
-          window.FS.event("New tab added")
-        }
         tagManagerEvent("new_tab_added")
         addTab()
       }}

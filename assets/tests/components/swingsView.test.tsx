@@ -217,15 +217,6 @@ describe("SwingsView", () => {
   })
 
   test("opens VPP when clicking an active swing-off and sends Fullstory event", async () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
-    afterEach(() => {
-      window.FS = originalFS
-      window.username = originalUsername
-    })
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 19000 }),
     ])
@@ -248,22 +239,10 @@ describe("SwingsView", () => {
 
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "Clicked on swing-off from swings view"
-    )
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_off")
   })
 
   test("opens VPP when clicking an active swing-on and sends Fullstory event", async () => {
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-
-    afterEach(() => {
-      window.FS = originalFS
-      window.username = originalUsername
-    })
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       swingFactory.build({
         fromRunId: "123-789",
@@ -290,9 +269,6 @@ describe("SwingsView", () => {
 
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "Clicked on swing-on from swings view"
-    )
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_on")
   })
 

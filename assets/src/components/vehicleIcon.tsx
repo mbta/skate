@@ -97,14 +97,6 @@ export const VehicleTooltip = ({
     <Tippy
       delay={[250, 0]}
       touch={false}
-      /* istanbul ignore next */
-      onShown={() => {
-        /* istanbul ignore next */
-        if (window.FS) {
-          /* istanbul ignore next */
-          window.FS.event("Vehicle tooltip seen")
-        }
-      }}
       content={
         <TooltipContent
           blockId={vehicleOrGhost.blockId}
