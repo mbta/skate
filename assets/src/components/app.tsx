@@ -25,7 +25,6 @@ import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 
 const AppRoutes = () => {
-
   useAppcues()
 
   const [{ pickerContainerIsVisible, openView, routeTabs }] =
