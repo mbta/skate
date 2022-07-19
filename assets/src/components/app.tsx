@@ -25,7 +25,12 @@ import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 
 const AppRoutes = () => {
-  useAppcues()
+
+  const username = document
+    .querySelector("meta[name=username]")
+    ?.getAttribute("content")
+
+  useAppcues(username)
 
   const [{ pickerContainerIsVisible, openView, routeTabs }] =
     useContext(StateDispatchContext)

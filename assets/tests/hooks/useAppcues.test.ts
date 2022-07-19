@@ -11,7 +11,6 @@ declare global {
       page: () => void
       show: (id: string) => void
     }
-    username: string
   }
 }
 
@@ -25,32 +24,30 @@ jest.mock("react-router-dom", () => ({
   useLocation: jest.fn().mockImplementation(() => mockLocation),
 }))
 
-window.username = "mbta-active-directory_jdoe"
 window.Appcues = {
   identify: jest.fn(),
   page: jest.fn(),
   show: jest.fn(),
 }
 
+const usernameWithPrefix = "mbta-active-directory_jdoe"
+
 describe("useAppcues", () => {
   test("calls Appcues page on load", () => {
-    renderHook(() => useAppcues())
-
+    renderHook(() => useAppcues(usernameWithPrefix))
     expect(window.Appcues!.page).toHaveBeenCalled()
   })
 
   test("calls Appcues indentify with the clean username on load", () => {
-    renderHook(() => useAppcues())
-
+    renderHook(() => useAppcues(usernameWithPrefix))
     expect(window.Appcues!.identify).toHaveBeenCalledWith("jdoe")
   })
 })
 
 describe("cleanUsername", () => {
   test("strips the prefix from the ActiveDirectory username", () => {
-    const usernameWithPrefix = "mbta-active-directory_jdoe"
+    
     const expected = "jdoe"
-
     expect(cleanUsername(usernameWithPrefix)).toEqual(expected)
   })
 
