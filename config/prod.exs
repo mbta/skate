@@ -6,7 +6,7 @@ config :skate,
   redirect_http?: true,
   record_appcues: true,
   record_sentry: true,
-  secret_key_base: {:system, "SECRET-KEY-BASE"},
+  secret_key_base: {:system, "SECRET_KEY_BASE"},
   static_href: {SkateWeb.Router.Helpers, :static_url}
 
 # For production, don't forget to configure the url host
