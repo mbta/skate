@@ -2,7 +2,7 @@ import Config
 
 config :skate,
   geonames_url_base: "https://ba-secure.geonames.net",
-  geonames_token: {:system, "geonames-token"},
+  geonames_token: {:system, "GEONAMES_TOKEN"},
   redirect_http?: true,
   record_appcues: true,
   record_sentry: true,
