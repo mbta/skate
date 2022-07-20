@@ -6,7 +6,6 @@ defmodule Skate.Application do
   use Application
 
   alias Skate.Migrate
-  alias Skate.SecretsManager
 
   @impl true
   def start(_type, _args) do
@@ -47,13 +46,11 @@ defmodule Skate.Application do
   end
 
   @doc """
-  Check system environment variables or SecretsManager secrets at runtime and load them into the application environment.
+  Check system environment variables at runtime and load them into the application environment.
 
   Will recursively check the keys below in the application config for any {:system, "ENVIRONMENT_VARIABLE"},
   and replace them with the value in the given environment variable.
 
-  Will recursively check the keys below in the application config for any {:secret, "secret-variable"},
-  and replace them with the value in the given value from SecretsManager.
   """
   @spec load_runtime_config() :: :ok
   def load_runtime_config() do
@@ -105,10 +102,6 @@ defmodule Skate.Application do
 
   defp runtime_config({:system, environment_variable}) do
     System.get_env(environment_variable)
-  end
-
-  defp runtime_config({:secret, secret_variable}) do
-    SecretsManager.fetch!(secret_variable)
   end
 
   defp runtime_config(value) do

@@ -1,17 +1,12 @@
 import Config
 
 config :skate,
-  api_key: {:secret, "ENV-api-key"},
-  bridge_api_username: {:secret, "ENV-bridge-api-username"},
-  bridge_api_password: {:secret, "ENV-bridge-api-password"},
   geonames_url_base: "https://ba-secure.geonames.net",
-  geonames_token: {:secret, "geonames-token"},
+  geonames_token: {:system, "GEONAMES_TOKEN"},
   redirect_http?: true,
   record_appcues: true,
   record_sentry: true,
-  secret_key_base: {:secret, "ENV-secret-key-base"},
-  static_href: {SkateWeb.Router.Helpers, :static_url},
-  swiftly_authorization_key: {:secret, "ENV-swiftly-authorization-key"}
+  static_href: {SkateWeb.Router.Helpers, :static_url}
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information

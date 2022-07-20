@@ -1,6 +1,5 @@
 defmodule Skate.ApplicationTest do
   use ExUnit.Case, async: true
-  import Test.Support.Helpers
 
   describe "load_runtime_config" do
     test "replaces {:system, \"VAR\"} with environment variable" do
@@ -10,22 +9,6 @@ defmodule Skate.ApplicationTest do
       Skate.Application.load_runtime_config()
 
       assert Application.get_env(:skate, :gtfs_url) == "TEST VALUE"
-    end
-
-    test "replaces {:secret, var_name} with secret from AWS SecretsManager" do
-      System.put_env("ENVIRONMENT_NAME", "TEST")
-      System.put_env("USE_SECRETS_MANAGER", "true")
-
-      reassign_env(:skate, :get_secret_value_fn, fn "TEST-test-variable" ->
-        "mock aws operation"
-      end)
-
-      reassign_env(:skate, :aws_request_fn, fn _ -> %{"SecretString" => "TEST VALUE"} end)
-      Application.put_env(:skate, :swiftly_authorization_key, {:secret, "ENV-test-variable"})
-
-      Skate.Application.load_runtime_config()
-
-      assert Application.get_env(:skate, :swiftly_authorization_key) == "TEST VALUE"
     end
 
     test "leaves other values alone" do
