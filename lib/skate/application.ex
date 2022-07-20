@@ -70,6 +70,7 @@ defmodule Skate.Application do
       :bridge_url,
       :bridge_api_username,
       :bridge_api_password,
+      :secret_key_base,
       :sentry_frontend_dsn,
       :sentry_environment,
       SkateWeb.Endpoint,
