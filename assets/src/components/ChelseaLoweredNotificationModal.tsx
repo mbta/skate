@@ -1,5 +1,4 @@
 import React, { useContext } from "react"
-import Loading from "./loading"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { closeIcon } from "../helpers/icon"
 import { setNotification } from "../state"
