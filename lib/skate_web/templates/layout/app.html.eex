@@ -52,6 +52,5 @@
     </main>
     <script type="text/javascript" src="<%= static_href.(@conn, "/js/app.js") %>"></script>
     <%= render "_drift.html" %>
-    <%= render "_informizely.html" %>
   </body>
 </html>
