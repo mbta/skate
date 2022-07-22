@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { closeIcon } from "../helpers/icon"
-import { setNotification } from "../state"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { closeIcon } from "../../helpers/icon"
+import { setNotification } from "../../state"
 
 const ChelseaLoweredNotificationModal = () => {
   const [, dispatch] = useContext(StateDispatchContext)

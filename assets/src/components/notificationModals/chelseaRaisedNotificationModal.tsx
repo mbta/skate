@@ -1,8 +1,9 @@
 import React, { useContext } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { closeIcon } from "../helpers/icon"
-import { setNotification } from "../state"
-import { formattedTime } from "../util/dateTime"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { closeIcon } from "../../helpers/icon"
+import { setNotification } from "../../state"
+import { Notification } from "../realtime.d"
+import { formattedTime } from "../../util/dateTime"
 
 const ChelseaRaisedNotificationModal = ({
   notification,
