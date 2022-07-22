@@ -23,7 +23,7 @@ const InactiveNotificationModal = ({
   )
 
   const closeModal = () => {
-    dispatch(setNotification(undefined))
+    dispatch(setNotification())
   }
 
   if (runs !== undefined) {
@@ -41,7 +41,9 @@ const InactiveNotificationModal = ({
       <>
         <div className="c-modal">
           <div className="m-inactive-notification-modal__close-button">
-            <button onClick={closeModal}>{closeIcon()}</button>
+            <button title="Close" onClick={closeModal}>
+              {closeIcon()}
+            </button>
           </div>
           <div className="m-notification__title">
             {title(notification.reason)} NOTIFICATION

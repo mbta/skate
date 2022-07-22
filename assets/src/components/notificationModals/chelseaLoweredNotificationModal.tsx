@@ -7,14 +7,16 @@ const ChelseaLoweredNotificationModal = () => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const closeModal = () => {
-    dispatch(setNotification(undefined))
+    dispatch(setNotification())
   }
 
   return (
     <>
       <div className="c-modal">
         <div className="m-inactive-notification-modal__close-button">
-          <button onClick={closeModal}>{closeIcon()}</button>
+          <button title="Close" onClick={closeModal}>
+            {closeIcon()}
+          </button>
         </div>
         <div className="m-notification__title">Chelsea St Bridge Lowered</div>
         <div className="m-inactive-notification-modal__body">

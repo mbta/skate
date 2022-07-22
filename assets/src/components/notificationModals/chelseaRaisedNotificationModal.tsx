@@ -13,7 +13,7 @@ const ChelseaRaisedNotificationModal = ({
   const [, dispatch] = useContext(StateDispatchContext)
 
   const closeModal = () => {
-    dispatch(setNotification(undefined))
+    dispatch(setNotification())
   }
 
   const contentString = (endDate: Date | null): string => {
@@ -30,7 +30,9 @@ const ChelseaRaisedNotificationModal = ({
     <>
       <div className="c-modal">
         <div className="m-inactive-notification-modal__close-button">
-          <button onClick={closeModal}>{closeIcon()}</button>
+          <button title="Close" onClick={closeModal}>
+            {closeIcon()}
+          </button>
         </div>
         <div className="m-notification__title">Chelsea St Bridge Raised</div>
         <div className="m-inactive-notification-modal__body">

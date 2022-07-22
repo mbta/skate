@@ -10,6 +10,7 @@ Array [
     >
       <button
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""

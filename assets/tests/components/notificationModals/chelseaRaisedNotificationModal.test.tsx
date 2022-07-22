@@ -1,7 +1,11 @@
 import React from "react"
 import { mount } from "enzyme"
-import ChelseaRaisedNotificationModal from "../../../src/components/notificationModals/chelseaRaisedNotificationModal"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
+import { initialState, setNotification } from "../../../src/state"
 import { Notification, NotificationState } from "../../../src/realtime.d"
+import ChelseaRaisedNotificationModal from "../../../src/components/notificationModals/chelseaRaisedNotificationModal"
 
 describe("ChelseaRaisedNotificationModal", () => {
   const notification: Notification = {
@@ -27,5 +31,19 @@ describe("ChelseaRaisedNotificationModal", () => {
     expect(result.find(".m-inactive-notification-modal__body").text()).toBe(
       "OCC reported that the Chelsea St Bridge will be raised until 7:45 AM."
     )
+  })
+
+  test("close button unsets notification", async () => {
+    const mockDispatch = jest.fn()
+
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <ChelseaRaisedNotificationModal notification={notification} />
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Close"))
+    expect(mockDispatch).toHaveBeenCalledWith(setNotification())
   })
 })
