@@ -6,6 +6,18 @@ import {
   VehicleLabelSetting,
 } from "../userSettings"
 
+export const runOrBusNumberLabel = (
+  vehicleOrGhost: VehicleOrGhost,
+  settings: UserSettings
+): string => {
+  switch (vehicleLabelSetting(settings, vehicleOrGhost)) {
+    case VehicleLabelSetting.RunNumber:
+      return runIdToLabel(vehicleOrGhost.runId)
+    case VehicleLabelSetting.VehicleNumber:
+      return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label : "N/A"
+  }
+}
+
 const vehicleLabel = (
   vehicleOrGhost: VehicleOrGhost,
   settings: UserSettings
@@ -26,12 +38,7 @@ const vehicleLabel = (
     return "PULL-B"
   }
 
-  switch (vehicleLabelSetting(settings, vehicleOrGhost)) {
-    case VehicleLabelSetting.RunNumber:
-      return runIdToLabel(vehicleOrGhost.runId)
-    case VehicleLabelSetting.VehicleNumber:
-      return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label : "N/A"
-  }
+  return runOrBusNumberLabel(vehicleOrGhost, settings)
 }
 
 export const runIdToLabel = (runId: RunId | null): string => {

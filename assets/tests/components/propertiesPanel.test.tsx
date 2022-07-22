@@ -1,21 +1,28 @@
 import React from "react"
 import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import PropertiesPanel, {
   hideMeIfNoCrowdingTooltip,
 } from "../../src/components/propertiesPanel"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
+import useVehicleForId from "../../src/hooks/useVehicleForId"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+jest.mock("../../src/hooks/useVehicleForId", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
 const route: Route = routeFactory.build({
   id: "39",
@@ -94,29 +101,51 @@ const ghost: Ghost = ghostFactory.build({
   blockWaivers: [],
 })
 
+const PropertiesPanelWrapper: React.FC<{ vehicleOrGhost: VehicleOrGhost }> = ({
+  vehicleOrGhost,
+}) => {
+  const routes = [route]
+
+  return (
+    <RoutesProvider routes={routes}>
+      <PropertiesPanel selectedVehicleOrGhost={vehicleOrGhost} />
+    </RoutesProvider>
+  )
+}
+
 describe("PropertiesPanel", () => {
   test("renders a vehicle", () => {
     const tree = renderer
-      .create(
-        <RoutesProvider routes={[route]}>
-          <PropertiesPanel selectedVehicleOrGhost={vehicle} />
-        </RoutesProvider>
-      )
+      .create(<PropertiesPanelWrapper vehicleOrGhost={vehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders a vehicle with updated live information", () => {
+    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
+
+    const result = render(<PropertiesPanelWrapper vehicleOrGhost={vehicle} />)
+
+    expect(result.queryByText(/PATTI/)).not.toBeNull()
+  })
+
   test("renders a ghost", () => {
     const tree = renderer
-      .create(
-        <RoutesProvider routes={[route]}>
-          <PropertiesPanel selectedVehicleOrGhost={ghost} />
-        </RoutesProvider>
-      )
+      .create(<PropertiesPanelWrapper vehicleOrGhost={ghost} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("renders stale data message", () => {
+    ;(useVehicleForId as jest.Mock)
+      .mockImplementationOnce(() => null)
+      .mockImplementationOnce(() => null)
+
+    const result = render(<PropertiesPanelWrapper vehicleOrGhost={vehicle} />)
+
+    expect(result.queryByText(/Status data is not available/)).not.toBeNull()
   })
 })
 

@@ -25,6 +25,7 @@ export const NotificationCard = ({
     <Card
       currentTime={currentTime}
       title={title(notification.reason)}
+      style="kiwi"
       isUnread={notification.state === "unread"}
       openCallback={() => {
         openVPPForCurrentVehicle(notification)

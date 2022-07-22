@@ -1,4 +1,7 @@
-import vehicleLabel, { runIdToLabel } from "../../src/helpers/vehicleLabel"
+import vehicleLabel, {
+  runOrBusNumberLabel,
+  runIdToLabel,
+} from "../../src/helpers/vehicleLabel"
 import { Vehicle } from "../../src/realtime"
 import { UserSettings, VehicleLabelSetting } from "../../src/userSettings"
 import vehicleFactory from "../factories/vehicle"
@@ -156,6 +159,62 @@ describe("vehicleLabel", () => {
   test("shows N/A for ghost vehicle number", () => {
     expect(
       vehicleLabel(ghostFactory.build(), {
+        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      } as UserSettings)
+    ).toEqual("N/A")
+  })
+})
+
+describe("runOrBusNumberLabel", () => {
+  test("uses the vehicle run ID for the label given the run number setting and not overloaded", () => {
+    expect(
+      runOrBusNumberLabel(vehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      } as UserSettings)
+    ).toEqual("2000")
+  })
+
+  test("uses the vehicle label for the label given the vehicle number setting", () => {
+    expect(
+      runOrBusNumberLabel(vehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      } as UserSettings)
+    ).toEqual("0479")
+  })
+
+  test("uses the shuttle vehicle label setting if the vehicle is a shuttle", () => {
+    const shuttle = {
+      ...vehicle,
+      isShuttle: true,
+    }
+
+    expect(
+      runOrBusNumberLabel(shuttle, {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      } as UserSettings)
+    ).toEqual("0479")
+  })
+
+  test("shows ghost run id without area", () => {
+    expect(
+      runOrBusNumberLabel(ghostFactory.build({ runId: "123-1234" }), {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      } as UserSettings)
+    ).toEqual("1234")
+  })
+
+  test("shows N/A for ghost run id if it's missing", () => {
+    expect(
+      runOrBusNumberLabel(ghostFactory.build({ runId: null }), {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      } as UserSettings)
+    ).toEqual("N/A")
+  })
+
+  test("shows N/A for ghost vehicle number", () => {
+    expect(
+      runOrBusNumberLabel(ghostFactory.build(), {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       } as UserSettings)
     ).toEqual("N/A")

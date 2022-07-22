@@ -4,36 +4,20 @@
   width: 100%;
   box-sizing: border-box;
 
-  background-color: $color-kiwi-100;
-  border: 1px solid $color-kiwi-400;
   border-radius: 0.5rem;
   padding: 0.3125rem 0.3125rem 1rem 1rem;
 
   &:hover:not(.m-card--no-focus-or-hover) {
-    background-color: $white;
-    border: 1px solid $color-kiwi-300;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
   }
 
   &:focus:not(.m-card--no-focus-or-hover) {
-    background-color: $color-kiwi-200;
-    border: 2px solid $color-kiwi-400;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
   }
 
   button {
     text-align: start;
     margin: 0;
-  }
-}
-
-.m-card--read {
-  background-color: $color-gray-50;
-  border: 1px solid $color-gray-400;
-
-  &:hover:not(.m-card--no-focus-or-hover) {
-    background-color: $color-gray-50;
-    border: 1px solid $color-kiwi-300;
   }
 }
 
@@ -46,10 +30,6 @@
   &:last-child {
     padding-right: 0.3125rem;
   }
-}
-
-.m-card__left--clickable {
-  cursor: pointer;
 }
 
 .m-card__right {
@@ -83,7 +63,6 @@
 
   font-size: 1rem;
   font-weight: 600;
-  color: $color-kiwi-800;
 
   span {
     display: inline-flex;
@@ -140,4 +119,46 @@
 .m-card__properties-value {
   font-weight: 400;
   color: $color-gray-600;
+}
+
+.m-card--kiwi {
+  &.m-card {
+    background-color: $color-kiwi-100;
+    border: 1px solid $color-kiwi-400;
+
+    &:hover:not(.m-card--no-focus-or-hover) {
+      background-color: $white;
+      border: 1px solid $color-kiwi-300;
+    }
+
+    &:focus:not(.m-card--no-focus-or-hover) {
+      background-color: $color-kiwi-200;
+      border: 2px solid $color-kiwi-400;
+    }
+  }
+
+  &.m-card--read {
+    background-color: $color-gray-50;
+    border: 1px solid $color-gray-400;
+
+    &:hover:not(.m-card--no-focus-or-hover) {
+      background-color: $color-gray-50;
+      border: 1px solid $color-kiwi-300;
+    }
+  }
+
+  &.m-card__title {
+    color: $color-kiwi-800;
+  }
+}
+
+.m-card--white {
+  &.m-card {
+    background-color: $white;
+    border: 1px solid $color-gray-400;
+  }
+
+  &.m-card__title {
+    color: $color-gray-900;
+  }
 }

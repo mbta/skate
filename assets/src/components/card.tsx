@@ -3,8 +3,11 @@ import CloseButton from "./closeButton"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { unreadIcon } from "../helpers/icon"
 
+export type CardStyle = "kiwi" | "white"
+
 interface CardProps {
-  currentTime: Date
+  style: CardStyle
+  currentTime?: Date
   openCallback?: () => void
   closeCallback?: () => void
   isUnread?: boolean
@@ -16,6 +19,7 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({
   children,
+  style,
   currentTime,
   openCallback,
   closeCallback,
@@ -25,34 +29,39 @@ export const Card: React.FC<CardProps> = ({
   time,
   noFocusOrHover,
 }) => {
+  const innerLeftContent = (
+    <>
+      <div className="m-card__top-row">
+        <div className="m-card__title">
+          {isUnread ? unreadIcon() : null}
+          {title}
+        </div>
+        {currentTime && time ? (
+          <div className="m-card__time">
+            {formattedTimeDiffUnderThreshold(currentTime, time, 60)}
+          </div>
+        ) : null}
+      </div>
+      <div className="m-card__contents">{children}</div>
+    </>
+  )
+
   return (
     <div
       className={
-        "m-card" +
+        `m-card m-card--${style}` +
         (additionalClass ? " " + additionalClass : "") +
         (noFocusOrHover ? " m-card--no-focus-or-hover" : "") +
         (!isUnread ? " m-card--read" : "")
       }
     >
-      <button
-        className={
-          "m-card__left" + (openCallback ? " m-card__left--clickable" : "")
-        }
-        onClick={openCallback}
-      >
-        <div className="m-card__top-row">
-          <div className="m-card__title">
-            {isUnread ? unreadIcon() : null}
-            {title}
-          </div>
-          {time ? (
-            <div className="m-card__time">
-              {formattedTimeDiffUnderThreshold(currentTime, time, 60)}
-            </div>
-          ) : null}
-        </div>
-        <div className="m-card__contents">{children}</div>
-      </button>
+      {openCallback ? (
+        <button className="m-card__left" onClick={openCallback}>
+          {innerLeftContent}
+        </button>
+      ) : (
+        <div className="m-card__left">{innerLeftContent}</div>
+      )}
       {closeCallback ? (
         <div className="m-card__right">
           <CloseButton onClick={closeCallback} />

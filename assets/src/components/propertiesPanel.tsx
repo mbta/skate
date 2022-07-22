@@ -6,6 +6,7 @@ import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
 import { deselectVehicle } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
+import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
 interface Props {
@@ -28,9 +29,17 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
   const [vehicleToDisplay, setVehicleToDisplay] = useState<VehicleOrGhost>(
     liveVehicle || selectedVehicleOrGhost
   )
+  const [dataIsStale, setDataIsStale] = useState<boolean>(false)
+
   useEffect(() => {
     if (liveVehicle) {
       setVehicleToDisplay(liveVehicle)
+    }
+
+    if (liveVehicle === null) {
+      setDataIsStale(true)
+    } else {
+      setDataIsStale(false)
     }
   }, [liveVehicle])
 
@@ -39,7 +48,9 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
   return (
     <>
       <div id="m-properties-panel" className="m-properties-panel">
-        {isVehicle(vehicleToDisplay) ? (
+        {dataIsStale && isVehicle(vehicleToDisplay) ? (
+          <StaleDataPropertiesPanel selectedVehicle={vehicleToDisplay} />
+        ) : isVehicle(vehicleToDisplay) ? (
           <VehiclePropertiesPanel selectedVehicle={vehicleToDisplay} />
         ) : (
           <GhostPropertiesPanel selectedGhost={vehicleToDisplay} />

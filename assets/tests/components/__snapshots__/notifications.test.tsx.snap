@@ -11,10 +11,10 @@ exports[`Notification renders latest notification 1`] = `
   className="m-notifications"
 >
   <div
-    className="m-card m-card--no-focus-or-hover"
+    className="m-card m-card--kiwi m-card--no-focus-or-hover"
   >
     <button
-      className="m-card__left m-card__left--clickable"
+      className="m-card__left"
       onClick={[Function]}
     >
       <div

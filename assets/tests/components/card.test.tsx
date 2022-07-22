@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event"
 describe("Card", () => {
   test("renders content", () => {
     const result = render(
-      <Card title="My Card" currentTime={new Date()}>
+      <Card title="My Card" currentTime={new Date()} style="kiwi">
         Foo
       </Card>
     )
@@ -21,7 +21,12 @@ describe("Card", () => {
 
   test("omits read class when unread", () => {
     const result = render(
-      <Card title="My Card" currentTime={new Date()} isUnread={true}>
+      <Card
+        title="My Card"
+        currentTime={new Date()}
+        style="kiwi"
+        isUnread={true}
+      >
         Foo
       </Card>
     )
@@ -36,6 +41,7 @@ describe("Card", () => {
       <Card
         title="My Card"
         currentTime={new Date()}
+        style="kiwi"
         additionalClass="my-custom-class"
       >
         Foo
@@ -49,7 +55,12 @@ describe("Card", () => {
 
   test("can disable focus / hover states", () => {
     const result = render(
-      <Card title="My Card" currentTime={new Date()} noFocusOrHover={true}>
+      <Card
+        title="My Card"
+        currentTime={new Date()}
+        style="kiwi"
+        noFocusOrHover={true}
+      >
         Foo
       </Card>
     )
@@ -65,6 +76,7 @@ describe("Card", () => {
         title="My Card"
         currentTime={new Date("2022-07-01T10:00:00Z")}
         time={new Date("2022-07-01T10:10:00Z")}
+        style="kiwi"
       >
         Foo
       </Card>
@@ -80,14 +92,15 @@ describe("Card", () => {
       <Card
         title="My Card"
         currentTime={new Date()}
+        style="kiwi"
         openCallback={openCallback}
       >
         Contents
       </Card>
     )
 
-    expect(result.getByText(/Contents/).parentElement?.className).toMatch(
-      /m-card__left--clickable/
+    expect(result.getByText(/Contents/).parentElement?.tagName).toEqual(
+      "BUTTON"
     )
 
     await user.click(result.getByText(/Contents/))
@@ -102,6 +115,7 @@ describe("Card", () => {
       <Card
         title="My Card"
         currentTime={new Date()}
+        style="kiwi"
         closeCallback={closeCallback}
       >
         Contents
