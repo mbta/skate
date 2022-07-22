@@ -25,11 +25,19 @@ const Modal = (): ReactElement | null => {
     return <InactiveNotificationModal notification={selectedNotification} />
   }
 
-  if(selectedNotification && selectedNotification.reason == 'chelsea_st_bridge_raised'){
-    return <ChelseaRaisedNotificationModal notification={selectedNotification} />
+  if (
+    selectedNotification &&
+    selectedNotification.reason == "chelsea_st_bridge_raised"
+  ) {
+    return (
+      <ChelseaRaisedNotificationModal notification={selectedNotification} />
+    )
   }
 
-  if(selectedNotification && selectedNotification.reason == 'chelsea_st_bridge_lowered'){
+  if (
+    selectedNotification &&
+    selectedNotification.reason == "chelsea_st_bridge_lowered"
+  ) {
     return <ChelseaLoweredNotificationModal />
   }
 

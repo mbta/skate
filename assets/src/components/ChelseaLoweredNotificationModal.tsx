@@ -11,22 +11,20 @@ const ChelseaLoweredNotificationModal = () => {
     dispatch(setNotification(undefined))
   }
 
-    return (
-      <>
-        <div className="c-modal">
-          <div className="m-inactive-notification-modal__close-button">
-            <button onClick={closeModal}>{closeIcon()}</button>
-          </div>
-          <div className="m-notification__title">
-            Chelsea St Bridge Lowered
-          </div>
-          <div className="m-inactive-notification-modal__body">
-            OCC reports that the Chelsea St Bridge has been lowered.
-          </div>
+  return (
+    <>
+      <div className="c-modal">
+        <div className="m-inactive-notification-modal__close-button">
+          <button onClick={closeModal}>{closeIcon()}</button>
         </div>
-        <div className="c-modal-overlay" aria-hidden={true} />
-      </>
-    )
+        <div className="m-notification__title">Chelsea St Bridge Lowered</div>
+        <div className="m-inactive-notification-modal__body">
+          OCC reports that the Chelsea St Bridge has been lowered.
+        </div>
+      </div>
+      <div className="c-modal-overlay" aria-hidden={true} />
+    </>
+  )
 }
 
 export default ChelseaLoweredNotificationModal

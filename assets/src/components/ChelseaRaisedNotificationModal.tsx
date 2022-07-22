@@ -18,22 +18,20 @@ const ChelseaRaisedNotificationModal = ({
 
   const endTime = formattedTime(notification.endTime)
 
-    return (
-      <>
-        <div className="c-modal">
-          <div className="m-inactive-notification-modal__close-button">
-            <button onClick={closeModal}>{closeIcon()}</button>
-          </div>
-          <div className="m-notification__title">
-            Chelsea St Bridge Raised
-          </div>
-          <div className="m-inactive-notification-modal__body">
-            OCC reports that the Chelsea St Bridge has been raised until { endTime }.
-          </div>
+  return (
+    <>
+      <div className="c-modal">
+        <div className="m-inactive-notification-modal__close-button">
+          <button onClick={closeModal}>{closeIcon()}</button>
         </div>
-        <div className="c-modal-overlay" aria-hidden={true} />
-      </>
-    )
+        <div className="m-notification__title">Chelsea St Bridge Raised</div>
+        <div className="m-inactive-notification-modal__body">
+          OCC reports that the Chelsea St Bridge will be raised until {endTime}.
+        </div>
+      </div>
+      <div className="c-modal-overlay" aria-hidden={true} />
+    </>
+  )
 }
 
 export default ChelseaRaisedNotificationModal
