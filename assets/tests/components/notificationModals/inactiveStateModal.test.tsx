@@ -1,12 +1,12 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import InactiveNotificationModal from "../../src/components/inactiveNotificationModal"
-import { Break, Piece, Run, Trip } from "../../src/minischedule"
-import { useMinischeduleRuns } from "../../src/hooks/useMinischedule"
-import { Notification, NotificationState } from "../../src/realtime.d"
-import * as dateTime from "../../src/util/dateTime"
+import InactiveNotificationModal from "../../../src/components/notificationModals/inactiveNotificationModal"
+import { Break, Piece, Run, Trip } from "../../../src/minischedule"
+import { useMinischeduleRuns } from "../../../src/hooks/useMinischedule"
+import { Notification, NotificationState } from "../../../src/realtime.d"
+import * as dateTime from "../../../src/util/dateTime"
 
-jest.mock("../../src/hooks/useMinischedule", () => ({
+jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
   useMinischeduleRuns: jest.fn(),
 }))
