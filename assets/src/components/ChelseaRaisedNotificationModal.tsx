@@ -26,7 +26,7 @@ const ChelseaRaisedNotificationModal = ({
         </div>
         <div className="m-notification__title">Chelsea St Bridge Raised</div>
         <div className="m-inactive-notification-modal__body">
-          OCC reports that the Chelsea St Bridge will be raised until {endTime}.
+          OCC reported that the Chelsea St Bridge will be raised until {endTime}.
         </div>
       </div>
       <div className="c-modal-overlay" aria-hidden={true} />
