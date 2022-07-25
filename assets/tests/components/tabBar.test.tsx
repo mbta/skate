@@ -8,9 +8,9 @@ import * as browser from "../../src/models/browser"
 import {
   initialState,
   toggleNotificationDrawer,
-  toggleSwingsView,
   toggleLateView,
   OpenView,
+  openSwingsView,
 } from "../../src/state"
 import featureIsEnabled from "../../src/laboratoryFeatures"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
@@ -173,7 +173,7 @@ describe("tabBar", () => {
     )
 
     wrapper.find(".m-tab-bar__swings").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+    expect(dispatch).toHaveBeenCalledWith(openSwingsView())
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
   })
 

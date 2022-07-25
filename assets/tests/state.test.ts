@@ -398,18 +398,18 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleSwingsView enables swings view when other views are closed", () => {
+  test("openSwingsView enables swings view when other views are closed", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Swings,
     }
 
-    const newState = reducer(initialState, State.toggleSwingsView())
+    const newState = reducer(initialState, State.openSwingsView())
 
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleSwingsView enables swings view when late view is open", () => {
+  test("openSwingsView enables swings view when late view is open", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Swings,
@@ -417,16 +417,16 @@ describe("reducer", () => {
 
     const newState = reducer(
       { ...initialState, openView: State.OpenView.Late },
-      State.toggleSwingsView()
+      State.openSwingsView()
     )
 
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleSwingsView disables swings view when swings view is open", () => {
+  test("closeSwingsView disables swings view when swings view is open", () => {
     const newState = reducer(
       { ...initialState, openView: State.OpenView.Swings },
-      State.toggleSwingsView()
+      State.closeSwingsView()
     )
 
     expect(newState).toEqual(initialState)

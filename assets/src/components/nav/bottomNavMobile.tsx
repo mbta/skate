@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { ladderIcon, mapIcon, searchIcon, swingIcon } from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
-import { toggleSwingsView } from "../../state"
+import { openSwingsView } from "../../state"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 
 const BottomNavMobile = (): JSX.Element => {
@@ -62,7 +62,7 @@ const BottomNavMobile = (): JSX.Element => {
             className="m-bottom-nav-mobile__button"
             onClick={() => {
               tagManagerEvent("swings_view_toggled")
-              dispatch(toggleSwingsView())
+              dispatch(openSwingsView())
             }}
             title="Swings View"
           >

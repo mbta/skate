@@ -7,9 +7,9 @@ import { BrowserRouter } from "react-router-dom"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import {
   initialState,
+  openSwingsView,
   OpenView,
   toggleLateView,
-  toggleSwingsView,
 } from "../../../src/state"
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
@@ -132,7 +132,7 @@ describe("LeftNav", () => {
 
     await user.click(result.getByTitle("Swings View"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+    expect(dispatch).toHaveBeenCalledWith(openSwingsView())
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
   })
 

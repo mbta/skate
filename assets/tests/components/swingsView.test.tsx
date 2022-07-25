@@ -13,7 +13,7 @@ import useSwings from "../../src/hooks/useSwings"
 import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
 import { Route, Swing } from "../../src/schedule"
-import { initialState, selectVehicle, toggleSwingsView } from "../../src/state"
+import { closeSwingsView, initialState, selectVehicle } from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
@@ -316,6 +316,6 @@ describe("SwingsView", () => {
     )
 
     wrapper.find(".m-close-button").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+    expect(dispatch).toHaveBeenCalledWith(closeSwingsView())
   })
 })

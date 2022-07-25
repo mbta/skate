@@ -415,12 +415,20 @@ export const setNotification = (
   },
 })
 
-interface ToggleSwingsViewAction {
-  type: "TOGGLE_SWINGS_VIEW"
+interface OpenSwingsViewAction {
+  type: "OPEN_SWINGS_VIEW"
 }
 
-export const toggleSwingsView = (): ToggleSwingsViewAction => ({
-  type: "TOGGLE_SWINGS_VIEW",
+export const openSwingsView = (): OpenSwingsViewAction => ({
+  type: "OPEN_SWINGS_VIEW",
+})
+
+interface CloseSwingsViewAction {
+  type: "CLOSE_SWINGS_VIEW"
+}
+
+export const closeSwingsView = (): CloseSwingsViewAction => ({
+  type: "CLOSE_SWINGS_VIEW",
 })
 
 interface ToggleLateViewAction {
@@ -591,7 +599,8 @@ export type Action =
   | SetNotificationAction
   | SelectVehicleFromNotificationAction
   // Views
-  | ToggleSwingsViewAction
+  | OpenSwingsViewAction
+  | CloseSwingsViewAction
   | ToggleLateViewAction
   // Presets
   | CreatePresetAction
@@ -924,12 +933,10 @@ const openViewAndNotificationDrawerReducer = (
         openView === OpenView.Late ? OpenView.Late : OpenView.None,
         !notificationDrawerIsOpen,
       ]
-    case "TOGGLE_SWINGS_VIEW":
-      if (openView === OpenView.Swings) {
-        return [OpenView.None, notificationDrawerIsOpen]
-      } else {
-        return [OpenView.Swings, false]
-      }
+    case "OPEN_SWINGS_VIEW":
+      return [OpenView.Swings, false]
+    case "CLOSE_SWINGS_VIEW":
+      return [OpenView.None, notificationDrawerIsOpen]
     case "TOGGLE_LATE_VIEW":
       if (openView === OpenView.Late) {
         return [OpenView.None, notificationDrawerIsOpen]

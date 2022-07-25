@@ -13,9 +13,9 @@ import {
 import { reload } from "../models/browser"
 import {
   toggleNotificationDrawer,
-  toggleSwingsView,
   toggleLateView,
   OpenView,
+  openSwingsView,
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -98,7 +98,7 @@ const TabBar = ({
             }
             onClick={() => {
               tagManagerEvent("swings_view_toggled")
-              dispatch(toggleSwingsView())
+              dispatch(openSwingsView())
             }}
           >
             {swingIcon("m-tab-bar__icon")}

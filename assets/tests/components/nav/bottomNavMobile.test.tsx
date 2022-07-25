@@ -3,7 +3,7 @@ import { render } from "@testing-library/react"
 import BottomNavMobile from "../../../src/components/nav/bottomNavMobile"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { initialState, toggleSwingsView } from "../../../src/state"
+import { initialState, openSwingsView } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 
@@ -26,7 +26,7 @@ describe("BottomNavMobile", () => {
 
     await user.click(result.getByTitle("Swings View"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+    expect(dispatch).toHaveBeenCalledWith(openSwingsView())
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
   })
 })

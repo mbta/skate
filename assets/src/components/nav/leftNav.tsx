@@ -17,7 +17,7 @@ import {
   settingsIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
-import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
+import { openSwingsView, OpenView, toggleLateView } from "../../state"
 
 interface Props {
   defaultToCollapsed: boolean
@@ -68,7 +68,7 @@ const LeftNav = ({
             viewIsOpen={openView === OpenView.Swings}
             toggleView={() => {
               tagManagerEvent("swings_view_toggled")
-              dispatch(toggleSwingsView())
+              dispatch(openSwingsView())
             }}
             collapsed={collapsed}
           />
