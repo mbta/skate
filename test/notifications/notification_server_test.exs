@@ -541,7 +541,7 @@ defmodule Notifications.NotificationServerTest do
 
       db_notification_users = Skate.Repo.all(DbNotificationUser)
 
-      assert(length(db_notification_users) == 0)
+      assert Enum.empty?(db_notification_users)
 
       expected_route_ids_value =
         @chelsea_bridge_route_ids |> Enum.map(&("\"" <> &1 <> "\"")) |> Enum.join(", ")
