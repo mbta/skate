@@ -64,7 +64,7 @@ defmodule Skate.Settings.RouteTab do
   @spec tab_open?(t()) :: boolean()
   def tab_open?(route_tab), do: !is_nil(route_tab.ordering)
 
-  @spec db_route_tab_to_route_tab(%DbRouteTab{}) :: t()
+  @spec db_route_tab_to_route_tab(DbRouteTab.t()) :: t()
   defp db_route_tab_to_route_tab(db_route_tab) do
     %__MODULE__{
       uuid: db_route_tab.uuid,
