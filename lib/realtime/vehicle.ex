@@ -269,9 +269,9 @@ defmodule Realtime.Vehicle do
   @spec active_block?(boolean(), Block.t() | nil, Util.Time.timestamp()) :: boolean()
   def active_block?(_is_off_course, nil, _now), do: false
 
-  def active_block?(_is_off_course = false, _block, _now), do: true
+  def active_block?(false = _is_off_course, _block, _now), do: true
 
-  def active_block?(_is_off_course = true, block, now) do
+  def active_block?(true = _is_off_course, block, now) do
     one_hour_in_seconds = 1 * 60 * 60
     now_time_of_day = Util.Time.time_of_day_for_timestamp(now, Util.Time.date_of_timestamp(now))
 
