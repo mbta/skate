@@ -7,7 +7,7 @@ defmodule Schedule.Health.Checker do
 
   alias Schedule.Health.Checkers.{RoutesChecker, TimepointsChecker, TripStopTimesChecker}
 
-  @checkers Application.get_env(:skate, :schedule_health_checks)
+  @checkers Application.compile_env(:skate, :schedule_health_checks)
 
   @spec healthy?() :: boolean
   def healthy? do
