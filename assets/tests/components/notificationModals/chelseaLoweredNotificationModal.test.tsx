@@ -6,9 +6,8 @@ import { initialState, setNotification } from "../../../src/state"
 import ChelseaLoweredNotificationModal from "../../../src/components/notificationModals/chelseaLoweredNotificationModal"
 
 describe("ChelseaLoweredNotificationModal", () => {
-
   const mockDispatch = jest.fn()
-  
+
   test("renders notification message", () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
