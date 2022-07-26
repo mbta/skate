@@ -6,8 +6,7 @@ import useDeviceType from "../hooks/useDeviceType"
 import featureIsEnabled from "../laboratoryFeatures"
 import LeftNav from "./nav/leftNav"
 import TopNav from "./nav/topNav"
-import TopNavMobile from "./nav/topNavMobile"
-import BottomNavMobile from "./nav/bottomNavMobile"
+import MobilePortraitNav from "./nav/mobilePortraitNav"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -24,17 +23,7 @@ const Nav: React.FC<Props> = ({
   if (readNavBetaFlag() || featureIsEnabled("nav_beta")) {
     switch (deviceType) {
       case "mobile":
-        return (
-          <div className="m-nav--narrow">
-            <div className="m-nav__nav-bar m-nav__nav-bar--top">
-              <TopNavMobile />
-            </div>
-            <div className="m-nav__app-content">{children}</div>
-            <div className="m-nav__nav-bar m-nav__nav-bar--bottom">
-              <BottomNavMobile />
-            </div>
-          </div>
-        )
+        return <MobilePortraitNav>{children}</MobilePortraitNav>
       case "tablet":
         return (
           <div className="m-nav--wide">

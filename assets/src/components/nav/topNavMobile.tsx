@@ -1,6 +1,5 @@
-import React, { useContext } from "react"
+import React from "react"
 import { useLocation, Link, NavLink } from "react-router-dom"
-import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
 import {
   closeIcon,
@@ -11,7 +10,6 @@ import {
   settingsIcon,
   speechBubbleIcon,
 } from "../../helpers/icon"
-import { openNotificationDrawer, toggleMobileMenu } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
 import { openDrift } from "../../helpers/drift"
@@ -37,14 +35,22 @@ export const pageOrTabName = (
   return tabName
 }
 
-const TopNavMobile = (): JSX.Element => {
+interface Props {
+  toggleMobileMenu: () => void
+  openNotificationDrawer: () => void
+  routeTabs: RouteTab[]
+  notificationDrawerIsOpen: boolean
+  mobileMenuIsOpen: boolean
+}
+
+const TopNavMobile: React.FC<Props> = ({
+  toggleMobileMenu,
+  openNotificationDrawer,
+  routeTabs,
+  notificationDrawerIsOpen,
+  mobileMenuIsOpen,
+}) => {
   const location = useLocation()
-
-  const [state, dispatch] = useContext(StateDispatchContext)
-
-  const toggleVisibility = () => dispatch(toggleMobileMenu())
-
-  const { routeTabs, notificationDrawerIsOpen, mobileMenuIsOpen } = state
 
   const bellIconClasses = notificationDrawerIsOpen
     ? ["m-top-nav__notifications-icon", "m-top-nav__notifications-icon--active"]
@@ -63,7 +69,7 @@ const TopNavMobile = (): JSX.Element => {
         <div className="m-top-nav-mobile__menu-header">
           <Link
             className="m-top-nav__logo"
-            onClick={toggleVisibility}
+            onClick={toggleMobileMenu}
             to="/"
             title="Skate"
           >
@@ -72,7 +78,7 @@ const TopNavMobile = (): JSX.Element => {
 
           <button
             className="m-top-nav-mobile__close"
-            onClick={toggleVisibility}
+            onClick={toggleMobileMenu}
             title="Close"
           >
             {closeIcon("m-top-nav-mobile__close-icon")}
@@ -94,7 +100,7 @@ const TopNavMobile = (): JSX.Element => {
               className="m-top-nav-mobile__menu-button"
               onClick={() => {
                 openDrift()
-                toggleVisibility()
+                toggleMobileMenu()
               }}
               title="Support"
             >
@@ -107,7 +113,7 @@ const TopNavMobile = (): JSX.Element => {
               className="m-top-nav-mobile__menu-button"
               onClick={() => {
                 displayHelp(location)
-                toggleVisibility()
+                toggleMobileMenu()
               }}
               title="About Skate"
             >
@@ -124,7 +130,7 @@ const TopNavMobile = (): JSX.Element => {
               }
               title="Settings"
               to="/settings"
-              onClick={toggleVisibility}
+              onClick={toggleMobileMenu}
             >
               {settingsIcon("m-top-nav-mobile__menu-icon")}
               Settings
@@ -139,8 +145,8 @@ const TopNavMobile = (): JSX.Element => {
           "m-top-nav-mobile__overlay" +
           (mobileMenuIsOpen ? " m-top-nav-mobile__overlay--open" : "")
         }
-        onClick={toggleVisibility}
-        onKeyDown={toggleVisibility}
+        onClick={toggleMobileMenu}
+        onKeyDown={toggleMobileMenu}
         aria-hidden={true}
       />
 
@@ -153,7 +159,7 @@ const TopNavMobile = (): JSX.Element => {
         <div className="m-top-nav-mobile__left-items">
           <button
             className="m-top-nav=mobile__left-item"
-            onClick={toggleVisibility}
+            onClick={toggleMobileMenu}
             title="Menu"
           >
             {hamburgerIcon("m-top-nav-mobile__icon")}
@@ -167,7 +173,7 @@ const TopNavMobile = (): JSX.Element => {
         <div className="m-top-nav-mobile__right-items">
           <button
             className="m-top-nav-mobile__right-item"
-            onClick={() => dispatch(openNotificationDrawer())}
+            onClick={openNotificationDrawer}
             title="Notifications"
           >
             <NotificationBellIcon extraClasses={bellIconClasses} />
