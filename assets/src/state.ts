@@ -343,14 +343,6 @@ export const closeNotificationDrawer = (): CloseNotificationDrawerAction => ({
   type: "CLOSE_NOTIFICATION_DRAWER",
 })
 
-interface ToggleNotificationDrawerAction {
-  type: "TOGGLE_NOTIFICATION_DRAWER"
-}
-
-export const toggleNotificationDrawer = (): ToggleNotificationDrawerAction => ({
-  type: "TOGGLE_NOTIFICATION_DRAWER",
-})
-
 interface SetLadderVehicleLabelSettingAction {
   type: "SET_LADDER_VEHICLE_LABEL_SETTING"
   payload: {
@@ -596,7 +588,6 @@ export type Action =
   // Notifications
   | OpenNotificationDrawerAction
   | CloseNotificationDrawerAction
-  | ToggleNotificationDrawerAction
   // Settings
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
@@ -937,11 +928,6 @@ const openViewAndNotificationDrawerReducer = (
       return [openView === OpenView.Late ? OpenView.Late : OpenView.None, true]
     case "CLOSE_NOTIFICATION_DRAWER":
       return [openView, false]
-    case "TOGGLE_NOTIFICATION_DRAWER":
-      return [
-        openView === OpenView.Late ? OpenView.Late : OpenView.None,
-        !notificationDrawerIsOpen,
-      ]
     case "OPEN_SWINGS_VIEW":
       return [OpenView.Swings, false]
     case "CLOSE_SWINGS_VIEW":

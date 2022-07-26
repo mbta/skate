@@ -12,10 +12,10 @@ import {
 } from "../helpers/icon"
 import { reload } from "../models/browser"
 import {
-  toggleNotificationDrawer,
   OpenView,
   openSwingsView,
   openLateView,
+  openNotificationDrawer,
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -130,7 +130,7 @@ const TabBar = ({
         <button
           className="m-tab-bar__notifications"
           onClick={() => {
-            dispatch(toggleNotificationDrawer())
+            dispatch(openNotificationDrawer())
           }}
         >
           <NotificationBellIcon extraClasses={["m-tab-bar__icon"]} />

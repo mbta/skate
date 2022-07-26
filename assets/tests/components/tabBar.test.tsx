@@ -7,10 +7,10 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import * as browser from "../../src/models/browser"
 import {
   initialState,
-  toggleNotificationDrawer,
   OpenView,
   openSwingsView,
   openLateView,
+  openNotificationDrawer,
 } from "../../src/state"
 import featureIsEnabled from "../../src/laboratoryFeatures"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
@@ -154,7 +154,7 @@ describe("tabBar", () => {
     )
 
     wrapper.find(".m-tab-bar__notifications").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
+    expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
   })
 
   test("clicking the swings icon toggles the swings view and sends Fullstory event", () => {

@@ -3,7 +3,7 @@ import { render } from "@testing-library/react"
 import TopNav from "../../../src/components/nav/topNav"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { initialState, toggleNotificationDrawer } from "../../../src/state"
+import { initialState, openNotificationDrawer } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
@@ -22,7 +22,7 @@ describe("TopNav", () => {
 
     await user.click(result.getByTitle("Notifications"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
+    expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
   })
 
   test("notifications icon gets active class when notifications drawer is open", () => {

@@ -9,8 +9,8 @@ import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import {
   initialState,
-  toggleNotificationDrawer,
   toggleMobileMenu,
+  openNotificationDrawer,
 } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
@@ -110,7 +110,7 @@ describe("TopNavMobile", () => {
 
     await user.click(result.getByTitle("Notifications"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
+    expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
   })
 
   test("notifications icon gets active class when notifications drawer is open", () => {

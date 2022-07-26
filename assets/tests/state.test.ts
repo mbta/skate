@@ -253,66 +253,6 @@ describe("reducer", () => {
         expectedState
       )
     })
-
-    test("toggleNotificationDrawer opens the drawer if it's closed", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("toggleNotificationDrawer closes the drawer if it's open", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("toggleNotificationDrawer closes swings view when opening notifications drawer", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-        openView: State.OpenView.Swings,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-        openView: State.OpenView.None,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("toggleNotificationDrawer leaves late view open when opening notifications drawer", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-        openView: State.OpenView.Late,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-        openView: State.OpenView.Late,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
   })
 
   test("setLadderVehicleLabelSetting", () => {

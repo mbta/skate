@@ -11,7 +11,7 @@ import {
   settingsIcon,
   speechBubbleIcon,
 } from "../../helpers/icon"
-import { toggleMobileMenu, toggleNotificationDrawer } from "../../state"
+import { openNotificationDrawer, toggleMobileMenu } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
 import { openDrift } from "../../helpers/drift"
@@ -167,7 +167,7 @@ const TopNavMobile = (): JSX.Element => {
         <div className="m-top-nav-mobile__right-items">
           <button
             className="m-top-nav-mobile__right-item"
-            onClick={() => dispatch(toggleNotificationDrawer())}
+            onClick={() => dispatch(openNotificationDrawer())}
             title="Notifications"
           >
             <NotificationBellIcon extraClasses={bellIconClasses} />
