@@ -8,9 +8,9 @@ import * as browser from "../../src/models/browser"
 import {
   initialState,
   toggleNotificationDrawer,
-  toggleLateView,
   OpenView,
   openSwingsView,
+  openLateView,
 } from "../../src/state"
 import featureIsEnabled from "../../src/laboratoryFeatures"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
@@ -197,7 +197,7 @@ describe("tabBar", () => {
     )
 
     wrapper.find(".m-tab-bar__late_view").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+    expect(dispatch).toHaveBeenCalledWith(openLateView())
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 

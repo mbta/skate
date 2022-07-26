@@ -26,7 +26,7 @@ import { saveState, loadState } from "../localStorage"
 import { isVehicle, isGhost } from "../models/vehicle"
 import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
 import { ByRouteId } from "../schedule"
-import { Action, selectVehicle, toggleLateView } from "../state"
+import { Action, closeLateView, selectVehicle } from "../state"
 import {
   secondsToMinutes,
   formattedTime,
@@ -384,7 +384,7 @@ const LateView = (): ReactElement<HTMLElement> => {
         </div>
         <DrawerTab
           isVisible={true}
-          toggleVisibility={() => dispatch(toggleLateView())}
+          toggleVisibility={() => dispatch(closeLateView())}
         />
       </div>
       {anyRowsSelected && (

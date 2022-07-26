@@ -11,7 +11,7 @@ import {
   OpenView,
   State,
   selectVehicle,
-  toggleLateView,
+  closeLateView,
 } from "../../src/state"
 import blockWaiverFactory from "../factories/blockWaiver"
 import vehicleFactory from "../factories/vehicle"
@@ -132,7 +132,7 @@ describe("LateView", () => {
       .first()
       .simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(toggleLateView())
+    expect(mockDispatch).toHaveBeenCalledWith(closeLateView())
   })
 
   test("clicking ghost run number opens ghost and sends Fullstory event", () => {

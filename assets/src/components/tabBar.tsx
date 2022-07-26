@@ -13,9 +13,9 @@ import {
 import { reload } from "../models/browser"
 import {
   toggleNotificationDrawer,
-  toggleLateView,
   OpenView,
   openSwingsView,
+  openLateView,
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -115,7 +115,7 @@ const TabBar = ({
               }
               onClick={() => {
                 tagManagerEvent("late_view_toggled")
-                dispatch(toggleLateView())
+                dispatch(openLateView())
               }}
               data-testid="late-view-icon"
             >

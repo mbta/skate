@@ -7,9 +7,9 @@ import { BrowserRouter } from "react-router-dom"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import {
   initialState,
+  openLateView,
   openSwingsView,
   OpenView,
-  toggleLateView,
 } from "../../../src/state"
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
@@ -115,7 +115,7 @@ describe("LeftNav", () => {
 
     await user.click(result.getByTitle("Late View"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+    expect(dispatch).toHaveBeenCalledWith(openLateView())
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 
