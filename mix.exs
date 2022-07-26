@@ -60,6 +60,7 @@ defmodule Skate.MixProject do
       {:ueberauth_cognito, "~> 0.4.0"},
       {:guardian, "~> 2.0"},
       {:guardian_phoenix, "~> 2.0"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ehmon, github: "mbta/ehmon", only: :prod},

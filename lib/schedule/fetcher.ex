@@ -243,10 +243,10 @@ defmodule Schedule.Fetcher do
           {:ok, Data.files() | nil, String.t() | nil} | {:error, any()}
   def fetch_zip(url, file_names, latest_timestamp) do
     request_headers =
-      if !is_nil(latest_timestamp) do
-        [{"if-modified-since", latest_timestamp}]
-      else
+      if is_nil(latest_timestamp) do
         []
+      else
+        [{"if-modified-since", latest_timestamp}]
       end
 
     case HTTPoison.get(

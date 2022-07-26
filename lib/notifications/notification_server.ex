@@ -167,8 +167,6 @@ defmodule Notifications.NotificationServer do
     end
   end
 
-  @spec convert_bridge_movement_to_notification(Bridge.bridge_movement()) ::
-          %Notifications.Notification{}
   defp convert_bridge_movement_to_notification(bridge_movement) do
     bridge_movement
     |> get_db_values_from_bridge_movement

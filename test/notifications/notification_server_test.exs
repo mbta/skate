@@ -452,7 +452,7 @@ defmodule Notifications.NotificationServerTest do
       assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
 
       expected_route_ids_value =
-        @chelsea_bridge_route_ids |> Enum.map(&("\"" <> &1 <> "\"")) |> Enum.join(", ")
+        Enum.map_join(@chelsea_bridge_route_ids, ", ", &("\"" <> &1 <> "\""))
 
       assert String.contains?(log, "reason: :chelsea_st_bridge_lowered")
       assert String.contains?(log, "route_ids: [#{expected_route_ids_value}]")
@@ -505,7 +505,7 @@ defmodule Notifications.NotificationServerTest do
       assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
 
       expected_route_ids_value =
-        @chelsea_bridge_route_ids |> Enum.map(&("\"" <> &1 <> "\"")) |> Enum.join(", ")
+        Enum.map_join(@chelsea_bridge_route_ids, ", ", &("\"" <> &1 <> "\""))
 
       assert String.contains?(log, "reason: :chelsea_st_bridge_raised")
       assert String.contains?(log, "route_ids: [#{expected_route_ids_value}]")
@@ -541,10 +541,10 @@ defmodule Notifications.NotificationServerTest do
 
       db_notification_users = Skate.Repo.all(DbNotificationUser)
 
-      assert(length(db_notification_users) == 0)
+      assert Enum.empty?(db_notification_users)
 
       expected_route_ids_value =
-        @chelsea_bridge_route_ids |> Enum.map(&("\"" <> &1 <> "\"")) |> Enum.join(", ")
+        Enum.map_join(@chelsea_bridge_route_ids, ", ", &("\"" <> &1 <> "\""))
 
       assert String.contains?(log, "reason: :chelsea_st_bridge_raised")
       assert String.contains?(log, "route_ids: [#{expected_route_ids_value}]")
