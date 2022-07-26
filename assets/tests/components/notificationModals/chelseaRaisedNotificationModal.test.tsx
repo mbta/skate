@@ -1,5 +1,4 @@
 import React from "react"
-import { mount } from "enzyme"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
@@ -23,26 +22,30 @@ describe("ChelseaRaisedNotificationModal", () => {
     state: "unread" as NotificationState,
   }
 
+  const mockDispatch = jest.fn()
+
   test("renders notification message", () => {
-    const result = mount(
-      <ChelseaRaisedNotificationModal notification={notification} />
-    )
-
-    expect(result.find(".m-inactive-notification-modal__body").text()).toBe(
-      "OCC reported that the Chelsea St Bridge will be raised until 7:45 AM."
-    )
-  })
-
-  test("close button unsets notification", async () => {
-    const mockDispatch = jest.fn()
-
-    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <ChelseaRaisedNotificationModal notification={notification} />
       </StateDispatchProvider>
     )
 
+    expect(
+      result.getByText(
+        "OCC reported that the Chelsea St Bridge will be raised until 7:45 AM."
+      )
+    ).toBeTruthy()
+  })
+
+  test("close button unsets notification", async () => {
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <ChelseaRaisedNotificationModal notification={notification} />
+      </StateDispatchProvider>
+    )
+
+    const user = userEvent.setup()
     await user.click(result.getByTitle("Close"))
     expect(mockDispatch).toHaveBeenCalledWith(setNotification())
   })
