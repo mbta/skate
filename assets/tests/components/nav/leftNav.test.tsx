@@ -181,6 +181,104 @@ describe("LeftNav", () => {
     expect(displayHelp).toHaveBeenCalled()
   })
 
+  test("Navlinks active classes assigned correctly", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByTitle("Route Ladders")).toHaveClass(
+      "m-left-nav__link m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Shuttle Map")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Search")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Settings")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    await user.click(result.getByTitle("Shuttle Map"))
+
+    expect(result.getByTitle("Route Ladders")).not.toHaveClass(
+      "m-left-nav__link m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Shuttle Map")).toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Search")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Settings")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    await user.click(result.getByTitle("Search"))
+
+    expect(result.getByTitle("Route Ladders")).not.toHaveClass(
+      "m-left-nav__link m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Shuttle Map")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Search")).toHaveClass("m-left-nav__link--active")
+
+    expect(result.getByTitle("Settings")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    await user.click(result.getByTitle("Settings"))
+
+    expect(result.getByTitle("Route Ladders")).not.toHaveClass(
+      "m-left-nav__link m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Shuttle Map")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Search")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Settings")).toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    await user.click(result.getByTitle("Route Ladders"))
+
+    expect(result.getByTitle("Route Ladders")).toHaveClass(
+      "m-left-nav__link m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Shuttle Map")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Search")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+
+    expect(result.getByTitle("Settings")).not.toHaveClass(
+      "m-left-nav__link--active"
+    )
+  })
+
   test("clicking notifications icon toggles notifications drawer", async () => {
     const dispatch = jest.fn()
     const user = userEvent.setup()
