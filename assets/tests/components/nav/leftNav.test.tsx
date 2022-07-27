@@ -150,7 +150,7 @@ describe("LeftNav", () => {
     )
 
     expect(result.getByTitle("Late View")).toHaveClass(
-      "m-left-nav__link--active"
+      "m-left-nav__view m-left-nav__view--active"
     )
   })
 
@@ -178,5 +178,57 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("About Skate"))
 
     expect(displayHelp).toHaveBeenCalled()
+  })
+
+  test("clicking notifications icon toggles notifications drawer", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Notifications"))
+
+    expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
+  })
+
+  test("notifications icon gets active class when notifications drawer is open", () => {
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, notificationDrawerIsOpen: true }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByTitle("Notifications").children[0]).toHaveClass(
+      "m-left-nav__notifications-icon--active"
+    )
+  })
+
+  test("notifications icon doesn't get active class when notifications drawer is close", () => {
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, notificationDrawerIsOpen: false }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
+      "m-left-nav__notifications-icon--active"
+    )
   })
 })
