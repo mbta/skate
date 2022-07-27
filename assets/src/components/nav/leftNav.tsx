@@ -19,7 +19,7 @@ import {
   settingsIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
-import { OpenView, notificationDrawerIsOpen, toggleLateView, toggleSwingsView } from "../../state"
+import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
 
 interface Props {
   defaultToCollapsed: boolean
@@ -30,15 +30,18 @@ const LeftNav = ({
   defaultToCollapsed,
   dispatcherFlag,
 }: Props): JSX.Element => {
-  const [{ openView }, dispatch] = useContext(StateDispatchContext)
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
 
-    const [{ notificationDrawerIsOpen }, dispatch] =
+  const [{ openView, notificationDrawerIsOpen }, dispatch] =
     useContext(StateDispatchContext)
 
   const bellIconClasses = notificationDrawerIsOpen
-    ? ["m-left-nav__icon", "m-left-nav__notifications-icon", "m-left-nav__notifications-icon--active"]
+    ? [
+        "m-left-nav__icon",
+        "m-left-nav__notifications-icon",
+        "m-left-nav__notifications-icon--active",
+      ]
     : ["m-left-nav__icon", "m-left-nav__notifications-icon"]
 
   return (
@@ -114,7 +117,7 @@ const LeftNav = ({
         <li>
           <ViewToggle
             icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
-            viewIsOpen={ notificationDrawerIsOpen }
+            viewIsOpen={notificationDrawerIsOpen}
             toggleView={() => {
               dispatch(toggleNotificationDrawer())
             }}
