@@ -21,6 +21,10 @@
   @media screen and (max-width: 480px) {
     .m-nav__app-content & {
       width: 100%;
+
+      .m-swings-view__table {
+        width: 100%;
+      }
     }
   }
 }
@@ -194,9 +198,15 @@
 }
 
 .m-swings-view__run-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   &.m-swings-view__run-icon-arrow {
     padding-right: 0.375rem;
     stroke: $color-primary-dark;
+    width: 0.5rem;
+    height: 0.5rem;
 
     svg {
       width: 0.5rem;
@@ -205,9 +215,9 @@
   }
 
   &.m-swings-view__run-icon-ghost {
-    position: absolute;
-    left: 1.5625rem;
-    top: 0.875rem;
+    padding-right: 0.375rem;
+    width: 1.1875rem;
+    height: 1.1875rem;
 
     svg {
       width: 1.1875rem;
