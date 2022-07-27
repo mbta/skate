@@ -3,8 +3,10 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { ConnectionStatus } from "../hooks/useSocket"
 import DisconnectedModal from "./disconnectedModal"
-import InactiveNotificationModal from "./inactiveNotificationModal"
-import NotificationLoadingModal from "./notificationLoadingModal"
+import InactiveNotificationModal from "./notificationModals/inactiveNotificationModal"
+import NotificationLoadingModal from "./notificationModals/notificationLoadingModal"
+import ChelseaRaisedNotificationModal from "./notificationModals/chelseaRaisedNotificationModal"
+import ChelseaLoweredNotificationModal from "./notificationModals/chelseaLoweredNotificationModal"
 import CreatePresetModal from "./inputModals/createPresetModal"
 import SavePresetModal from "./inputModals/savePresetModal"
 import DeletePresetModal from "./inputModals/deletePresetModal"
@@ -21,6 +23,22 @@ const Modal = (): ReactElement | null => {
 
   if (selectedNotification && selectedVehicleOrGhost === null) {
     return <InactiveNotificationModal notification={selectedNotification} />
+  }
+
+  if (
+    selectedNotification &&
+    selectedNotification.reason == "chelsea_st_bridge_raised"
+  ) {
+    return (
+      <ChelseaRaisedNotificationModal notification={selectedNotification} />
+    )
+  }
+
+  if (
+    selectedNotification &&
+    selectedNotification.reason == "chelsea_st_bridge_lowered"
+  ) {
+    return <ChelseaLoweredNotificationModal />
   }
 
   if (selectedNotification && selectedVehicleOrGhost === undefined) {

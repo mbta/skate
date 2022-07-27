@@ -1,13 +1,13 @@
 import React, { useContext } from "react"
-import Loading from "./loading"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { useMinischeduleRuns } from "../hooks/useMinischedule"
-import { closeIcon } from "../helpers/icon"
-import { Activity, Run, Piece, Trip } from "../minischedule"
-import { Notification, RunId } from "../realtime.d"
-import { setNotification } from "../state"
-import { now, serviceDaySeconds } from "../util/dateTime"
-import { title } from "./notificationCard"
+import Loading from "../loading"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { useMinischeduleRuns } from "../../hooks/useMinischedule"
+import { closeIcon } from "../../helpers/icon"
+import { Activity, Run, Piece, Trip } from "../../minischedule"
+import { Notification, RunId } from "../../realtime.d"
+import { setNotification } from "../../state"
+import { now, serviceDaySeconds } from "../../util/dateTime"
+import { title } from "../notificationCard"
 
 type RunScheduleRelationship = "current" | "break" | "past"
 
@@ -23,7 +23,7 @@ const InactiveNotificationModal = ({
   )
 
   const closeModal = () => {
-    dispatch(setNotification(undefined))
+    dispatch(setNotification())
   }
 
   if (runs !== undefined) {
@@ -41,7 +41,9 @@ const InactiveNotificationModal = ({
       <>
         <div className="c-modal">
           <div className="m-inactive-notification-modal__close-button">
-            <button onClick={closeModal}>{closeIcon()}</button>
+            <button title="Close" onClick={closeModal}>
+              {closeIcon()}
+            </button>
           </div>
           <div className="m-notification__title">
             {title(notification.reason)} NOTIFICATION

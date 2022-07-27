@@ -156,4 +156,62 @@ describe("Modal", () => {
     )
     expect(result.getByText(/A preset named/)).not.toBeNull()
   })
+
+  test("renders Chelsea Raised modal", () => {
+    const notification: Notification = {
+      id: "123",
+      createdAt: new Date(),
+      reason: "chelsea_st_bridge_raised",
+      routeIds: [],
+      runIds: [],
+      tripIds: ["111", "743"],
+      operatorName: null,
+      operatorId: null,
+      routeIdAtCreation: null,
+      startTime: new Date("2020-10-05 07:34"),
+      endTime: new Date("2020-10-06 07:45"),
+      state: "unread" as NotificationState,
+    }
+
+    const state: State = {
+      ...initialState,
+      selectedNotification: notification,
+      selectedVehicleOrGhost: undefined,
+    }
+    const tree = renderer.create(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <Modal />
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders Chelsea Lowered modal", () => {
+    const notification: Notification = {
+      id: "123",
+      createdAt: new Date(),
+      reason: "chelsea_st_bridge_lowered",
+      routeIds: [],
+      runIds: [],
+      tripIds: ["111", "743"],
+      operatorName: null,
+      operatorId: null,
+      routeIdAtCreation: null,
+      startTime: new Date("2020-10-05 07:34"),
+      endTime: new Date("2020-10-06 07:45"),
+      state: "unread" as NotificationState,
+    }
+
+    const state: State = {
+      ...initialState,
+      selectedNotification: notification,
+      selectedVehicleOrGhost: undefined,
+    }
+    const tree = renderer.create(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <Modal />
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
 })

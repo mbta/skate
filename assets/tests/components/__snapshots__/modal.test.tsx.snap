@@ -1,5 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Modal renders Chelsea Lowered modal 1`] = `
+Array [
+  <div
+    className="c-modal"
+  >
+    <div
+      className="m-inactive-notification-modal__close-button"
+    >
+      <button
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-notification__title"
+    >
+      Chelsea St Bridge Lowered
+    </div>
+    <div
+      className="m-inactive-notification-modal__body"
+    >
+      OCC reported that the Chelsea St Bridge has been lowered.
+    </div>
+  </div>,
+  <div
+    aria-hidden={true}
+    className="c-modal-overlay"
+  />,
+]
+`;
+
+exports[`Modal renders Chelsea Raised modal 1`] = `
+Array [
+  <div
+    className="c-modal"
+  >
+    <div
+      className="m-inactive-notification-modal__close-button"
+    >
+      <button
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-notification__title"
+    >
+      Chelsea St Bridge Raised
+    </div>
+    <div
+      className="m-inactive-notification-modal__body"
+    >
+      OCC reported that the Chelsea St Bridge will be raised until 7:45 AM.
+    </div>
+  </div>,
+  <div
+    aria-hidden={true}
+    className="c-modal-overlay"
+  />,
+]
+`;
+
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
 Array [
   <div
@@ -10,6 +90,7 @@ Array [
     >
       <button
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""

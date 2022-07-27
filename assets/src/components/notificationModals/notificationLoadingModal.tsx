@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react"
-import { loadingIcon } from "../helpers/icon"
+import { loadingIcon } from "../../helpers/icon"
 
 const NotificationLoadingModal = (): ReactElement => (
   <>
