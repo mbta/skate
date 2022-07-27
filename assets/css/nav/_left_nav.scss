@@ -84,9 +84,9 @@
   font-weight: 400;
   @include font-body;
   color: $color-gray-600;
-  text-decoration: none;  
-  background: #FFFFFF;
-  border: 1px solid #ECEDEE;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid #ecedee;
 
   &:hover {
     background-color: $color-gray-100;
@@ -103,7 +103,6 @@
     font-weight: 500;
     color: $color-eggplant-800;
   }
-
 }
 
 .m-left-nav__icon {
