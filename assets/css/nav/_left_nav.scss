@@ -54,21 +54,30 @@
   @include font-body;
   color: $color-gray-600;
   text-decoration: none;
+  border: 1px solid transparent;
 
   &:hover {
-    background-color: $color-gray-100;
+    background-color: $color-gray-200;
     color: $color-gray-700;
     font-weight: 500;
   }
 
-  &:focus {
-    border: 1px solid $color-eggplant-300;
+  &:focus-visible {
+    outline: 2px solid $color-eggplant-500;
   }
 
   &.m-left-nav__link--active {
-    background-color: $color-eggplant-100;
+    background-color: $color-eggplant-200;
     font-weight: 500;
-    color: $color-eggplant-800;
+    color: $color-eggplant-700;
+
+    &:hover {
+      background-color: $color-eggplant-300;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-eggplant-500;
+    }
   }
 }
 
@@ -83,25 +92,44 @@
   border-radius: 0.375rem;
   font-weight: 400;
   @include font-body;
-  color: $color-gray-200;
+  color: $color-gray-600;
   text-decoration: none;
   background: $white;
-  border: 1px solid #ecedee;
+  border: 1px solid $color-gray-200;
 
   &:hover {
     background-color: $color-gray-100;
     color: $color-gray-700;
+    border: 1px solid $color-gray-200;
     font-weight: 500;
   }
 
-  &:focus {
-    border: 1px solid $color-eggplant-600;
+  &:focus-visible {
+    outline: 2px solid $color-eggplant-500;
   }
 
   &.m-left-nav__view--active {
-    border: 1px solid $color-eggplant-300;
+    border: 1px solid $color-eggplant-700;
     font-weight: 500;
-    color: $color-eggplant-800;
+    color: $color-eggplant-700;
+    background-color: $white;
+
+    svg {
+      path {
+        stroke: $color-eggplant-700;
+        fill: none;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-eggplant-500;
+    }
+
+    .m-left-nav__icon {
+      circle {
+        fill: $color-eggplant-800;
+      }
+    }
   }
 }
 
@@ -129,6 +157,7 @@
     fill: $color-gray-50;
     stroke: $color-gray-600;
   }
+
 }
 
 .m-left-nav__notifications-icon {
