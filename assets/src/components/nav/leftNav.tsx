@@ -4,6 +4,8 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
+import { toggleNotificationDrawer } from "../../state"
+import NotificationBellIcon from "../notificationBellIcon"
 import {
   ladderIcon,
   mapIcon,
@@ -17,7 +19,7 @@ import {
   settingsIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
-import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
+import { OpenView, notificationDrawerIsOpen, toggleLateView, toggleSwingsView } from "../../state"
 
 interface Props {
   defaultToCollapsed: boolean
@@ -31,6 +33,13 @@ const LeftNav = ({
   const [{ openView }, dispatch] = useContext(StateDispatchContext)
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
+
+    const [{ notificationDrawerIsOpen }, dispatch] =
+    useContext(StateDispatchContext)
+
+  const bellIconClasses = notificationDrawerIsOpen
+    ? ["m-left-nav__icon", "m-left-nav__notifications-icon", "m-left-nav__notifications-icon--active"]
+    : ["m-left-nav__icon", "m-left-nav__notifications-icon"]
 
   return (
     <div className={"m-left-nav" + (collapsed ? " m-left-nav--collapsed" : "")}>
@@ -47,6 +56,35 @@ const LeftNav = ({
             {collapsed ? null : "Route Ladders"}
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
+            title="Shuttle Map"
+            to="/shuttle-map"
+          >
+            {mapIcon("m-left-nav__icon")}
+            {collapsed ? null : "Shuttle Map"}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
+            title="Search"
+            to="/search"
+          >
+            {searchIcon("m-left-nav__icon")}
+            {collapsed ? null : "Search"}
+          </NavLink>
+        </li>
+
+        <li>
+          <hr />
+        </li>
+
         {featureIsEnabled("late_view") || dispatcherFlag ? (
           <li>
             <ViewToggle
@@ -74,28 +112,15 @@ const LeftNav = ({
           />
         </li>
         <li>
-          <NavLink
-            className={({ isActive }) =>
-              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
-            }
-            title="Shuttle Map"
-            to="/shuttle-map"
-          >
-            {mapIcon("m-left-nav__icon")}
-            {collapsed ? null : "Shuttle Map"}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className={({ isActive }) =>
-              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
-            }
-            title="Search"
-            to="/search"
-          >
-            {searchIcon("m-left-nav__icon")}
-            {collapsed ? null : "Search"}
-          </NavLink>
+          <ViewToggle
+            icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
+            viewIsOpen={ notificationDrawerIsOpen }
+            toggleView={() => {
+              dispatch(toggleNotificationDrawer())
+            }}
+            name="Notifications"
+            collapsed={collapsed}
+          />
         </li>
       </ul>
       <ul className="m-left-nav__links">
@@ -164,7 +189,7 @@ const ViewToggle = ({
   return (
     <button
       className={
-        "m-left-nav__link" + (viewIsOpen ? " m-left-nav__link--active" : "")
+        "m-left-nav__view" + (viewIsOpen ? " m-left-nav__view--active" : "")
       }
       onClick={toggleView}
       title={name}
