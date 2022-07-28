@@ -87,7 +87,6 @@ const LeftNav = ({
             {collapsed ? null : "Search"}
           </NavLink>
         </li>
-
         <li>
           <hr />
         </li>
