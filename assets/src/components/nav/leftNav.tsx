@@ -4,7 +4,6 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
-import { toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 import {
   ladderIcon,
@@ -19,7 +18,7 @@ import {
   settingsIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
-import { openLateView, openSwingsView, OpenView, notificationDrawerIsOpen } from "../../state"
+import { openLateView, openSwingsView, OpenView, openNotificationDrawer } from "../../state"
 
 interface Props {
   defaultToCollapsed: boolean
@@ -119,7 +118,7 @@ const LeftNav = ({
             icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
             viewIsOpen={notificationDrawerIsOpen}
             toggleView={() => {
-              dispatch(toggleNotificationDrawer())
+              dispatch(openNotificationDrawer())
             }}
             name="Notifications"
             collapsed={collapsed}
