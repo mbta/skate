@@ -3,13 +3,12 @@ import { render } from "@testing-library/react"
 import TopNav from "../../../src/components/nav/topNav"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { initialState} from "../../../src/state"
+import { initialState } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
 
 describe("TopNav", () => {
-
   test("refresh button reloads the page", async () => {
     const reloadSpy = jest
       .spyOn(browser, "reload")

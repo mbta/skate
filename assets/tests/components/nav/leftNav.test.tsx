@@ -10,7 +10,7 @@ import {
   openLateView,
   openSwingsView,
   openNotificationDrawer,
-  OpenView,
+  OpenView
 } from "../../../src/state"
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
@@ -293,6 +293,7 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Notifications"))
 
     expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
+
   })
 
   test("notifications icon gets active class when notifications drawer is open", () => {
