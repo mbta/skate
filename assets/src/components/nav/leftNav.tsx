@@ -64,17 +64,29 @@ const LeftNav = ({
           </NavLink>
         </li>
         <li>
-          <ViewToggle
-            icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
-            viewIsOpen={notificationDrawerIsOpen}
-            toggleView={() => {
-              dispatch(openNotificationDrawer())
-            }}
-            name="Notifications"
-            collapsed={collapsed}
-          />
+          <NavLink
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
+            title="Shuttle Map"
+            to="/shuttle-map"
+          >
+            {mapIcon("m-left-nav__icon")}
+            {collapsed ? null : "Shuttle Map"}
+          </NavLink>
         </li>
-
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
+            }
+            title="Search"
+            to="/search"
+          >
+            {searchIcon("m-left-nav__icon")}
+            {collapsed ? null : "Search"}
+          </NavLink>
+        </li>
         <li>
           <hr />
         </li>

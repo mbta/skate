@@ -62,13 +62,19 @@
   }
 
   &:focus {
-    border: 1px solid $color-eggplant-300;
+    border: 2px solid $color-eggplant-500;
+    outline: 0;
   }
 
   &.m-left-nav__link--active {
-    background-color: $color-eggplant-100;
+    background-color: $color-eggplant-200;
     font-weight: 500;
-    color: $color-eggplant-800;
+    color: $color-eggplant-700;
+
+    &:focus {
+      border: 2px solid $color-eggplant-500;
+      outline: 0;
+    }
   }
 }
 
@@ -83,25 +89,31 @@
   border-radius: 0.375rem;
   font-weight: 400;
   @include font-body;
-  color: $color-gray-200;
+  color: $color-gray-600;
   text-decoration: none;
   background: $white;
-  border: 1px solid #ecedee;
+  border: 1px solid $color-gray-200;
 
   &:hover {
     background-color: $color-gray-100;
     color: $color-gray-700;
+    border: 1px solid $color-gray-200;
     font-weight: 500;
   }
 
   &:focus {
-    border: 1px solid $color-eggplant-600;
+    border: 2px solid $color-eggplant-500;
   }
 
   &.m-left-nav__view--active {
-    border: 1px solid $color-eggplant-300;
+    border: 1px solid $color-eggplant-200;
     font-weight: 500;
-    color: $color-eggplant-800;
+    color: $color-eggplant-700;
+    background-color: $white;
+
+    &:focus {
+      border: 2px solid $color-eggplant-500;
+    }
   }
 }
 
