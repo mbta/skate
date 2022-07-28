@@ -10,7 +10,7 @@ import {
   openLateView,
   openSwingsView,
   openNotificationDrawer,
-  OpenView
+  OpenView,
 } from "../../../src/state"
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
