@@ -18,7 +18,12 @@ import {
   settingsIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
-import { openLateView, openSwingsView, OpenView, openNotificationDrawer } from "../../state"
+import {
+  openLateView,
+  openSwingsView,
+  OpenView,
+  openNotificationDrawer,
+} from "../../state"
 
 interface Props {
   defaultToCollapsed: boolean
