@@ -902,42 +902,69 @@ const selectedShuttleRunIdsReducer = (
   }
 }
 
-const selectedVehicleOrGhostReducer = (
-  state: VehicleOrGhost | null | undefined,
-  action: Action
-): VehicleOrGhost | null | undefined => {
-  switch (action.type) {
-    case "SELECT_VEHICLE":
-    case "SELECT_VEHICLE_FROM_NOTIFICATION":
-      return action.payload.vehicle
-    case "DESELECT_VEHICLE":
-    case "SET_NOTIFICATION":
-      return undefined
-    default:
-      return state
-  }
-}
-
-const openViewAndNotificationDrawerReducer = (
+const openViewPanelReducer = (
   openView: OpenView,
   notificationDrawerIsOpen: boolean,
+  selectedVehicleOrGhost: VehicleOrGhost | null | undefined,
   action: Action
-): [OpenView, boolean] => {
+): {
+  openView: OpenView
+  notificationDrawerIsOpen: boolean
+  selectedVehicleOrGhost: VehicleOrGhost | null | undefined
+} => {
   switch (action.type) {
     case "OPEN_NOTIFICATION_DRAWER":
-      return [openView === OpenView.Late ? OpenView.Late : OpenView.None, true]
+      return {
+        openView: openView === OpenView.Late ? OpenView.Late : OpenView.None,
+        notificationDrawerIsOpen: true,
+        selectedVehicleOrGhost: undefined,
+      }
     case "CLOSE_NOTIFICATION_DRAWER":
-      return [openView, false]
+      return {
+        openView,
+        notificationDrawerIsOpen: false,
+        selectedVehicleOrGhost,
+      }
     case "OPEN_SWINGS_VIEW":
-      return [OpenView.Swings, false]
+      return {
+        openView: OpenView.Swings,
+        notificationDrawerIsOpen: false,
+        selectedVehicleOrGhost: undefined,
+      }
     case "CLOSE_SWINGS_VIEW":
-      return [OpenView.None, notificationDrawerIsOpen]
+      return {
+        openView: OpenView.None,
+        notificationDrawerIsOpen,
+        selectedVehicleOrGhost,
+      }
     case "OPEN_LATE_VIEW":
-      return [OpenView.Late, notificationDrawerIsOpen]
+      return {
+        openView: OpenView.Late,
+        notificationDrawerIsOpen: false,
+        selectedVehicleOrGhost: undefined,
+      }
     case "CLOSE_LATE_VIEW":
-      return [OpenView.None, notificationDrawerIsOpen]
+      return {
+        openView: OpenView.None,
+        notificationDrawerIsOpen,
+        selectedVehicleOrGhost,
+      }
+    case "SELECT_VEHICLE":
+    case "SELECT_VEHICLE_FROM_NOTIFICATION":
+      return {
+        openView: OpenView.None,
+        notificationDrawerIsOpen: false,
+        selectedVehicleOrGhost: action.payload.vehicle,
+      }
+    case "DESELECT_VEHICLE":
+    case "SET_NOTIFICATION":
+      return {
+        openView,
+        notificationDrawerIsOpen,
+        selectedVehicleOrGhost: undefined,
+      }
     default:
-      return [openView, notificationDrawerIsOpen]
+      return { openView, notificationDrawerIsOpen, selectedVehicleOrGhost }
   }
 }
 
@@ -1076,10 +1103,11 @@ export const reducer = (state: State, action: Action): State => {
     routeTabsPushInProgress,
   } = routeTabsAndPushReducer(state, action)
 
-  const [openView, notificationDrawerIsOpen] =
-    openViewAndNotificationDrawerReducer(
+  const { openView, notificationDrawerIsOpen, selectedVehicleOrGhost } =
+    openViewPanelReducer(
       state.openView,
       state.notificationDrawerIsOpen,
+      state.selectedVehicleOrGhost,
       action
     )
 
@@ -1104,10 +1132,7 @@ export const reducer = (state: State, action: Action): State => {
       state.selectedShuttleRunIds,
       action
     ),
-    selectedVehicleOrGhost: selectedVehicleOrGhostReducer(
-      state.selectedVehicleOrGhost,
-      action
-    ),
+    selectedVehicleOrGhost: selectedVehicleOrGhost,
     notificationDrawerIsOpen,
     userSettings: userSettingsReducer(state.userSettings, action),
     selectedNotification: selectedNotificationReducer(

@@ -136,6 +136,32 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("selectVehicle deselects other view", () => {
+    const vehicle: Vehicle = vehicleFactory.build()
+
+    const state = {
+      ...initialState,
+      openView: State.OpenView.Swings,
+    }
+
+    const newState = reducer(state, State.selectVehicle(vehicle))
+
+    expect(newState.openView).toEqual(State.OpenView.None)
+  })
+
+  test("selectVehicle closes notification drawer", () => {
+    const vehicle: Vehicle = vehicleFactory.build()
+
+    const state = {
+      ...initialState,
+      notificationDrawerIsOpen: true,
+    }
+
+    const newState = reducer(state, State.selectVehicle(vehicle))
+
+    expect(newState.notificationDrawerIsOpen).toBeFalsy()
+  })
+
   test("deselectVehicle", () => {
     const initialVehicleId: VehicleId = "v1"
     const state = {
