@@ -6,12 +6,6 @@ import {
   pageOrTabName,
 } from "../../../src/components/nav/topNavMobile"
 import userEvent from "@testing-library/user-event"
-import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import {
-  initialState,
-  toggleNotificationDrawer,
-  toggleMobileMenu,
-} from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
@@ -30,48 +24,63 @@ jest.mock("../../../src/helpers/appCue", () => ({
 
 describe("TopNavMobile", () => {
   test("clicking the menu hamburger button toggles the mobile menu expanded/collapsed state", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("Menu"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
   test("clicking the overlay expanded/collapsed state", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTestId("mobile-overlay"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
   test("mobile menu is visible", () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, mobileMenuIsOpen: true }}
-        dispatch={dispatch}
-      >
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={true}
+        />
+      </BrowserRouter>
     )
 
     expect(result.getByTestId("top-nav-mobile").children[0]).toHaveClass(
@@ -80,16 +89,19 @@ describe("TopNavMobile", () => {
   })
 
   test("mobile menu is not visible", () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, mobileMenuIsOpen: false }}
-        dispatch={dispatch}
-      >
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     expect(result.getByTestId("top-nav-mobile").children[0]).not.toHaveClass(
@@ -98,32 +110,41 @@ describe("TopNavMobile", () => {
   })
 
   test("clicking notifications icon toggles notifications drawer", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("Notifications"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
+    expect(openNotificationDrawer).toHaveBeenCalled()
   })
 
   test("notifications icon gets active class when notifications drawer is open", () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, notificationDrawerIsOpen: true }}
-        dispatch={dispatch}
-      >
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={true}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     expect(result.getByTitle("Notifications").children[0]).toHaveClass(
@@ -132,16 +153,19 @@ describe("TopNavMobile", () => {
   })
 
   test("notifications icon doesn't get active class when notifications drawer is close", () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, notificationDrawerIsOpen: false }}
-        dispatch={dispatch}
-      >
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
@@ -154,14 +178,20 @@ describe("TopNavMobile", () => {
       .spyOn(browser, "reload")
       .mockImplementationOnce(() => ({}))
 
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("Refresh"))
@@ -170,10 +200,19 @@ describe("TopNavMobile", () => {
   })
 
   test("clicking Support button opens Drift", async () => {
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
       <BrowserRouter>
-        <TopNavMobile />
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
       </BrowserRouter>
     )
 
@@ -183,42 +222,63 @@ describe("TopNavMobile", () => {
   })
 
   test("clicking the Support button closes the mobile menu", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("Support"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
   test("clicking the settings button closes the mobile menu", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={true}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("Settings"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
   test("clicking About Skate button displays help", async () => {
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
       <BrowserRouter>
-        <TopNavMobile />
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={false}
+        />
       </BrowserRouter>
     )
 
@@ -228,51 +288,69 @@ describe("TopNavMobile", () => {
   })
 
   test("clicking the About button closes the mobile menu", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={true}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("About Skate"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
   test("clicking the logo closes the mobile menu", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={true}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("Skate"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
   test("clicking the close button closes the mobile menu", async () => {
-    const dispatch = jest.fn()
+    const toggleMobileMenu = jest.fn()
+    const openNotificationDrawer = jest.fn()
+
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
-          <TopNavMobile />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <TopNavMobile
+          toggleMobileMenu={toggleMobileMenu}
+          openNotificationDrawer={openNotificationDrawer}
+          routeTabs={[]}
+          notificationDrawerIsOpen={false}
+          mobileMenuIsOpen={true}
+        />
+      </BrowserRouter>
     )
 
     await user.click(result.getByTitle("Close"))
 
-    expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 })
 

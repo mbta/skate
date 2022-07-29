@@ -7,10 +7,10 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import * as browser from "../../src/models/browser"
 import {
   initialState,
-  toggleNotificationDrawer,
-  toggleSwingsView,
-  toggleLateView,
   OpenView,
+  openSwingsView,
+  openLateView,
+  openNotificationDrawer,
 } from "../../src/state"
 import featureIsEnabled from "../../src/laboratoryFeatures"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
@@ -154,7 +154,7 @@ describe("tabBar", () => {
     )
 
     wrapper.find(".m-tab-bar__notifications").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
+    expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
   })
 
   test("clicking the swings icon toggles the swings view and sends Fullstory event", () => {
@@ -173,7 +173,7 @@ describe("tabBar", () => {
     )
 
     wrapper.find(".m-tab-bar__swings").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+    expect(dispatch).toHaveBeenCalledWith(openSwingsView())
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
   })
 
@@ -197,7 +197,7 @@ describe("tabBar", () => {
     )
 
     wrapper.find(".m-tab-bar__late_view").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+    expect(dispatch).toHaveBeenCalledWith(openLateView())
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 

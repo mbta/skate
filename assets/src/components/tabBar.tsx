@@ -12,10 +12,10 @@ import {
 } from "../helpers/icon"
 import { reload } from "../models/browser"
 import {
-  toggleNotificationDrawer,
-  toggleSwingsView,
-  toggleLateView,
   OpenView,
+  openSwingsView,
+  openLateView,
+  openNotificationDrawer,
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -98,7 +98,7 @@ const TabBar = ({
             }
             onClick={() => {
               tagManagerEvent("swings_view_toggled")
-              dispatch(toggleSwingsView())
+              dispatch(openSwingsView())
             }}
           >
             {swingIcon("m-tab-bar__icon")}
@@ -115,7 +115,7 @@ const TabBar = ({
               }
               onClick={() => {
                 tagManagerEvent("late_view_toggled")
-                dispatch(toggleLateView())
+                dispatch(openLateView())
               }}
               data-testid="late-view-icon"
             >
@@ -130,7 +130,7 @@ const TabBar = ({
         <button
           className="m-tab-bar__notifications"
           onClick={() => {
-            dispatch(toggleNotificationDrawer())
+            dispatch(openNotificationDrawer())
           }}
         >
           <NotificationBellIcon extraClasses={["m-tab-bar__icon"]} />

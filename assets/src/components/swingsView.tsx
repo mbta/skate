@@ -14,7 +14,7 @@ import useVehiclesForRunIds from "../hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
 import { ByRunId, VehicleOrGhost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
-import { selectVehicle, toggleSwingsView } from "../state"
+import { closeSwingsView, selectVehicle } from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 
@@ -69,7 +69,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
     return { ...map, [route.id]: route }
   }, {})
 
-  const hideMe = () => dispatch(toggleSwingsView())
+  const hideMe = () => dispatch(closeSwingsView())
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 

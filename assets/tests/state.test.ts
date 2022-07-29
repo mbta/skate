@@ -253,66 +253,6 @@ describe("reducer", () => {
         expectedState
       )
     })
-
-    test("toggleNotificationDrawer opens the drawer if it's closed", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("toggleNotificationDrawer closes the drawer if it's open", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("toggleNotificationDrawer closes swings view when opening notifications drawer", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-        openView: State.OpenView.Swings,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-        openView: State.OpenView.None,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("toggleNotificationDrawer leaves late view open when opening notifications drawer", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-        openView: State.OpenView.Late,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-        openView: State.OpenView.Late,
-      }
-      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
   })
 
   test("setLadderVehicleLabelSetting", () => {
@@ -398,18 +338,18 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleSwingsView enables swings view when other views are closed", () => {
+  test("openSwingsView enables swings view when other views are closed", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Swings,
     }
 
-    const newState = reducer(initialState, State.toggleSwingsView())
+    const newState = reducer(initialState, State.openSwingsView())
 
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleSwingsView enables swings view when late view is open", () => {
+  test("openSwingsView enables swings view when late view is open", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Swings,
@@ -417,33 +357,33 @@ describe("reducer", () => {
 
     const newState = reducer(
       { ...initialState, openView: State.OpenView.Late },
-      State.toggleSwingsView()
+      State.openSwingsView()
     )
 
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleSwingsView disables swings view when swings view is open", () => {
+  test("closeSwingsView disables swings view when swings view is open", () => {
     const newState = reducer(
       { ...initialState, openView: State.OpenView.Swings },
-      State.toggleSwingsView()
+      State.closeSwingsView()
     )
 
     expect(newState).toEqual(initialState)
   })
 
-  test("toggleLateView enables late view when other views are closed", () => {
+  test("openLateView enables late view when other views are closed", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Late,
     }
 
-    const newState = reducer(initialState, State.toggleLateView())
+    const newState = reducer(initialState, State.openLateView())
 
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleLateView enables late view when swings views is open", () => {
+  test("openLateView enables late view when swings views is open", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Late,
@@ -451,16 +391,16 @@ describe("reducer", () => {
 
     const newState = reducer(
       { ...initialState, openView: State.OpenView.Swings },
-      State.toggleLateView()
+      State.openLateView()
     )
 
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleLateView disables late view when late view is open", () => {
+  test("closeLateView disables late view when late view is open", () => {
     const newState = reducer(
       { ...initialState, openView: State.OpenView.Late },
-      State.toggleLateView()
+      State.closeLateView()
     )
 
     expect(newState).toEqual(initialState)

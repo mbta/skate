@@ -23,6 +23,11 @@
   height: 100%;
 }
 
+.m-nav--narrow.m-nav--covered {
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "content";
+}
+
 .m-nav__nav-bar {
   z-index: 1100;
 }

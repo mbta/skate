@@ -343,14 +343,6 @@ export const closeNotificationDrawer = (): CloseNotificationDrawerAction => ({
   type: "CLOSE_NOTIFICATION_DRAWER",
 })
 
-interface ToggleNotificationDrawerAction {
-  type: "TOGGLE_NOTIFICATION_DRAWER"
-}
-
-export const toggleNotificationDrawer = (): ToggleNotificationDrawerAction => ({
-  type: "TOGGLE_NOTIFICATION_DRAWER",
-})
-
 interface SetLadderVehicleLabelSettingAction {
   type: "SET_LADDER_VEHICLE_LABEL_SETTING"
   payload: {
@@ -415,20 +407,36 @@ export const setNotification = (
   },
 })
 
-interface ToggleSwingsViewAction {
-  type: "TOGGLE_SWINGS_VIEW"
+interface OpenSwingsViewAction {
+  type: "OPEN_SWINGS_VIEW"
 }
 
-export const toggleSwingsView = (): ToggleSwingsViewAction => ({
-  type: "TOGGLE_SWINGS_VIEW",
+export const openSwingsView = (): OpenSwingsViewAction => ({
+  type: "OPEN_SWINGS_VIEW",
 })
 
-interface ToggleLateViewAction {
-  type: "TOGGLE_LATE_VIEW"
+interface CloseSwingsViewAction {
+  type: "CLOSE_SWINGS_VIEW"
 }
 
-export const toggleLateView = (): ToggleLateViewAction => ({
-  type: "TOGGLE_LATE_VIEW",
+export const closeSwingsView = (): CloseSwingsViewAction => ({
+  type: "CLOSE_SWINGS_VIEW",
+})
+
+interface OpenLateViewAction {
+  type: "OPEN_LATE_VIEW"
+}
+
+export const openLateView = (): OpenLateViewAction => ({
+  type: "OPEN_LATE_VIEW",
+})
+
+interface CloseLateViewAction {
+  type: "CLOSE_LATE_VIEW"
+}
+
+export const closeLateView = (): CloseLateViewAction => ({
+  type: "CLOSE_LATE_VIEW",
 })
 
 interface SelectVehicleFromNotificationAction {
@@ -580,7 +588,6 @@ export type Action =
   // Notifications
   | OpenNotificationDrawerAction
   | CloseNotificationDrawerAction
-  | ToggleNotificationDrawerAction
   // Settings
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
@@ -591,8 +598,10 @@ export type Action =
   | SetNotificationAction
   | SelectVehicleFromNotificationAction
   // Views
-  | ToggleSwingsViewAction
-  | ToggleLateViewAction
+  | OpenSwingsViewAction
+  | CloseSwingsViewAction
+  | OpenLateViewAction
+  | CloseLateViewAction
   // Presets
   | CreatePresetAction
   | InstantiatePresetAction
@@ -919,23 +928,14 @@ const openViewAndNotificationDrawerReducer = (
       return [openView === OpenView.Late ? OpenView.Late : OpenView.None, true]
     case "CLOSE_NOTIFICATION_DRAWER":
       return [openView, false]
-    case "TOGGLE_NOTIFICATION_DRAWER":
-      return [
-        openView === OpenView.Late ? OpenView.Late : OpenView.None,
-        !notificationDrawerIsOpen,
-      ]
-    case "TOGGLE_SWINGS_VIEW":
-      if (openView === OpenView.Swings) {
-        return [OpenView.None, notificationDrawerIsOpen]
-      } else {
-        return [OpenView.Swings, false]
-      }
-    case "TOGGLE_LATE_VIEW":
-      if (openView === OpenView.Late) {
-        return [OpenView.None, notificationDrawerIsOpen]
-      } else {
-        return [OpenView.Late, notificationDrawerIsOpen]
-      }
+    case "OPEN_SWINGS_VIEW":
+      return [OpenView.Swings, false]
+    case "CLOSE_SWINGS_VIEW":
+      return [OpenView.None, notificationDrawerIsOpen]
+    case "OPEN_LATE_VIEW":
+      return [OpenView.Late, notificationDrawerIsOpen]
+    case "CLOSE_LATE_VIEW":
+      return [OpenView.None, notificationDrawerIsOpen]
     default:
       return [openView, notificationDrawerIsOpen]
   }
