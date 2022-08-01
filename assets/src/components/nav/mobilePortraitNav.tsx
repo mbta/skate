@@ -16,19 +16,10 @@ const MobilePortraitNav = ({
 }): JSX.Element => {
   const [state, dispatch] = useContext(StateDispatchContext)
 
-  const {
-    mobileMenuIsOpen,
-    routeTabs,
-    notificationDrawerIsOpen,
-    openView,
-    selectedVehicleOrGhost,
-  } = state
+  const { mobileMenuIsOpen, routeTabs, openView, selectedVehicleOrGhost } =
+    state
 
-  if (
-    openView !== OpenView.None ||
-    selectedVehicleOrGhost ||
-    notificationDrawerIsOpen
-  ) {
+  if (openView !== OpenView.None || selectedVehicleOrGhost) {
     return (
       <div className="m-nav--narrow m-nav--covered">
         <div className="m-nav__app-content">{children}</div>
@@ -42,7 +33,6 @@ const MobilePortraitNav = ({
             toggleMobileMenu={() => dispatch(toggleMobileMenu())}
             openNotificationDrawer={() => dispatch(openNotificationDrawer())}
             routeTabs={routeTabs}
-            notificationDrawerIsOpen={notificationDrawerIsOpen}
             mobileMenuIsOpen={mobileMenuIsOpen}
           />
         </div>

@@ -61,7 +61,10 @@ describe("rightPanel", () => {
   })
 
   test("shows notification drawer", () => {
-    const state: State = { ...initialState, notificationDrawerIsOpen: true }
+    const state: State = {
+      ...initialState,
+      openView: OpenView.NotificationDrawer,
+    }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
@@ -76,7 +79,7 @@ describe("rightPanel", () => {
     const state: State = {
       ...initialState,
       selectedVehicleOrGhost: vehicle,
-      notificationDrawerIsOpen: true,
+      openView: OpenView.NotificationDrawer,
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>

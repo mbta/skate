@@ -17,7 +17,7 @@ const RightPanel = ({
     return <PropertiesPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
   } else if (state.openView === OpenView.Swings) {
     return <SwingsView />
-  } else if (state.notificationDrawerIsOpen) {
+  } else if (state.openView === OpenView.NotificationDrawer) {
     return <NotificationDrawer />
   } else {
     return null

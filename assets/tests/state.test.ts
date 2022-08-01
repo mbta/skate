@@ -154,12 +154,12 @@ describe("reducer", () => {
 
     const state = {
       ...initialState,
-      notificationDrawerIsOpen: true,
+      openView: State.OpenView.NotificationDrawer,
     }
 
     const newState = reducer(state, State.selectVehicle(vehicle))
 
-    expect(newState.notificationDrawerIsOpen).toBeFalsy()
+    expect(newState.openView).toBe(State.OpenView.None)
   })
 
   test("deselectVehicle", () => {
@@ -215,11 +215,11 @@ describe("reducer", () => {
     test("openNotificationDrawer opens the drawer", () => {
       const state = {
         ...initialState,
-        notificationDrawerIsOpen: false,
+        openView: State.OpenView.None,
       }
       const expectedState = {
         ...initialState,
-        notificationDrawerIsOpen: true,
+        openView: State.OpenView.NotificationDrawer,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(
         expectedState
@@ -229,29 +229,11 @@ describe("reducer", () => {
     test("openNotificationDrawer closes swings view", () => {
       const state = {
         ...initialState,
-        notificationDrawerIsOpen: false,
         openView: State.OpenView.Swings,
       }
       const expectedState = {
         ...initialState,
-        notificationDrawerIsOpen: true,
-        openView: State.OpenView.None,
-      }
-      expect(reducer(state, State.openNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("openNotificationDrawer leaves late view open", () => {
-      const state = {
-        ...initialState,
-        notificationDrawerIsOpen: false,
-        openView: State.OpenView.Late,
-      }
-      const expectedState = {
-        ...initialState,
-        notificationDrawerIsOpen: true,
-        openView: State.OpenView.Late,
+        openView: State.OpenView.NotificationDrawer,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(
         expectedState
@@ -261,7 +243,7 @@ describe("reducer", () => {
     test("openNotificationDrawer does nothing if the drawer is already open", () => {
       const state = {
         ...initialState,
-        notificationDrawerIsOpen: true,
+        openView: State.OpenView.NotificationDrawer,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(state)
     })
@@ -269,11 +251,11 @@ describe("reducer", () => {
     test("closeNotificationDrawer closes the drawer", () => {
       const state = {
         ...initialState,
-        notificationDrawerIsOpen: true,
+        openView: State.OpenView.NotificationDrawer,
       }
       const expectedState = {
         ...initialState,
-        notificationDrawerIsOpen: false,
+        openView: State.OpenView.None,
       }
       expect(reducer(state, State.closeNotificationDrawer())).toEqual(
         expectedState

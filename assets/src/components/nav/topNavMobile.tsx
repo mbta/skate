@@ -39,7 +39,6 @@ interface Props {
   toggleMobileMenu: () => void
   openNotificationDrawer: () => void
   routeTabs: RouteTab[]
-  notificationDrawerIsOpen: boolean
   mobileMenuIsOpen: boolean
 }
 
@@ -47,14 +46,9 @@ const TopNavMobile: React.FC<Props> = ({
   toggleMobileMenu,
   openNotificationDrawer,
   routeTabs,
-  notificationDrawerIsOpen,
   mobileMenuIsOpen,
 }) => {
   const location = useLocation()
-
-  const bellIconClasses = notificationDrawerIsOpen
-    ? ["m-top-nav__notifications-icon", "m-top-nav__notifications-icon--active"]
-    : ["m-top-nav__notifications-icon"]
 
   return (
     <div className="m-top-nav-mobile" data-testid="top-nav-mobile">
@@ -176,7 +170,9 @@ const TopNavMobile: React.FC<Props> = ({
             onClick={openNotificationDrawer}
             title="Notifications"
           >
-            <NotificationBellIcon extraClasses={bellIconClasses} />
+            <NotificationBellIcon
+              extraClasses={["m-top-nav__notifications-icon"]}
+            />
           </button>
         </div>
       </div>
