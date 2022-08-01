@@ -486,6 +486,24 @@ describe("reducer", () => {
     expect(newState).toEqual(state)
   })
 
+  test("returnToPreviousView returns to the previous view", () => {
+    const state = {
+      ...initialState,
+      openView: State.OpenView.Swings,
+      previousView: State.OpenView.Late,
+    }
+
+    const expectedState = {
+      ...initialState,
+      openView: State.OpenView.Late,
+      previousView: State.OpenView.None,
+    }
+
+    const newState = reducer(state, State.returnToPreviousView())
+
+    expect(newState).toEqual(expectedState)
+  })
+
   test("selectVehicleFromNotification switches to appropriate route tab", () => {
     const originalRouteTab1 = routeTabFactory.build({
       isCurrentTab: false,

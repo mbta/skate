@@ -441,6 +441,14 @@ export const closeLateView = (): CloseLateViewAction => ({
   type: "CLOSE_LATE_VIEW",
 })
 
+interface ReturnToPreviousViewAction {
+  type: "RETURN_TO_PREVIOUS_VIEW"
+}
+
+export const returnToPreviousView = (): ReturnToPreviousViewAction => ({
+  type: "RETURN_TO_PREVIOUS_VIEW",
+})
+
 interface SelectVehicleFromNotificationAction {
   type: "SELECT_VEHICLE_FROM_NOTIFICATION"
   payload: { vehicle: VehicleOrGhost | null | undefined }
@@ -587,9 +595,6 @@ export type Action =
   | DeselectVehicleAction
   // Opening / closing picker drawer
   | TogglePickerContainerAction
-  // Notifications
-  | OpenNotificationDrawerAction
-  | CloseNotificationDrawerAction
   // Settings
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
@@ -600,10 +605,13 @@ export type Action =
   | SetNotificationAction
   | SelectVehicleFromNotificationAction
   // Views
+  | OpenNotificationDrawerAction
+  | CloseNotificationDrawerAction
   | OpenSwingsViewAction
   | CloseSwingsViewAction
   | OpenLateViewAction
   | CloseLateViewAction
+  | ReturnToPreviousViewAction
   // Presets
   | CreatePresetAction
   | InstantiatePresetAction
@@ -985,6 +993,18 @@ const openViewPanelReducer = (
         previousView: previousView,
         selectedVehicleOrGhost: undefined,
       }
+    case "RETURN_TO_PREVIOUS_VIEW":
+      return previousView !== OpenView.None
+        ? {
+            openView: previousView,
+            previousView: OpenView.None,
+            selectedVehicleOrGhost: undefined,
+          }
+        : {
+            openView,
+            previousView,
+            selectedVehicleOrGhost,
+          }
     default:
       return { openView, previousView, selectedVehicleOrGhost }
   }
