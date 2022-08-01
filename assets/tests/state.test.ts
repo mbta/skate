@@ -13,9 +13,15 @@ import { RouteTab } from "../src/models/routeTab"
 
 import vehicleFactory from "./factories/vehicle"
 import routeTabFactory from "./factories/routeTab"
+import featureIsEnabled from "../src/laboratoryFeatures"
 
 const initialState = State.initialState
 const reducer = State.reducer
+
+jest.mock("../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(() => true),
+}))
 
 describe("reducer", () => {
   test("selectShuttleRun", () => {
@@ -149,6 +155,21 @@ describe("reducer", () => {
     expect(newState.openView).toEqual(State.OpenView.None)
   })
 
+  test("selectVehicle leaves other view open (with nav beta off)", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => false)
+
+    const vehicle: Vehicle = vehicleFactory.build()
+
+    const state = {
+      ...initialState,
+      openView: State.OpenView.Swings,
+    }
+
+    const newState = reducer(state, State.selectVehicle(vehicle))
+
+    expect(newState.openView).toEqual(State.OpenView.Swings)
+  })
+
   test("selectVehicle closes notification drawer", () => {
     const vehicle: Vehicle = vehicleFactory.build()
 
@@ -160,6 +181,21 @@ describe("reducer", () => {
     const newState = reducer(state, State.selectVehicle(vehicle))
 
     expect(newState.openView).toBe(State.OpenView.None)
+  })
+
+  test("selectVehicle leaves notification drawer open (with nav beta off)", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => false)
+
+    const vehicle: Vehicle = vehicleFactory.build()
+
+    const state = {
+      ...initialState,
+      openView: State.OpenView.NotificationDrawer,
+    }
+
+    const newState = reducer(state, State.selectVehicle(vehicle))
+
+    expect(newState.openView).toBe(State.OpenView.NotificationDrawer)
   })
 
   test("deselectVehicle", () => {
@@ -234,6 +270,7 @@ describe("reducer", () => {
       const expectedState = {
         ...initialState,
         openView: State.OpenView.NotificationDrawer,
+        previousView: State.OpenView.Swings,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(
         expectedState
@@ -256,10 +293,21 @@ describe("reducer", () => {
       const expectedState = {
         ...initialState,
         openView: State.OpenView.None,
+        previousView: State.OpenView.NotificationDrawer,
       }
       expect(reducer(state, State.closeNotificationDrawer())).toEqual(
         expectedState
       )
+    })
+
+    test("closeNotificationDrawer does nothing if the drawer is already closed", () => {
+      const state = {
+        ...initialState,
+        openView: State.OpenView.Swings,
+        previousView: State.OpenView.Late,
+      }
+
+      expect(reducer(state, State.closeNotificationDrawer())).toEqual(state)
     })
   })
 
@@ -361,6 +409,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Swings,
+      previousView: State.OpenView.Late,
     }
 
     const newState = reducer(
@@ -377,7 +426,18 @@ describe("reducer", () => {
       State.closeSwingsView()
     )
 
-    expect(newState).toEqual(initialState)
+    expect(newState).toEqual({
+      ...initialState,
+      previousView: State.OpenView.Swings,
+    })
+  })
+
+  test("closeSwingsView does when swings view is closed", () => {
+    const state = { ...initialState, openView: State.OpenView.Late }
+
+    const newState = reducer(state, State.closeSwingsView())
+
+    expect(newState).toEqual(state)
   })
 
   test("openLateView enables late view when other views are closed", () => {
@@ -395,6 +455,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       openView: State.OpenView.Late,
+      previousView: State.OpenView.Swings,
     }
 
     const newState = reducer(
@@ -411,7 +472,18 @@ describe("reducer", () => {
       State.closeLateView()
     )
 
-    expect(newState).toEqual(initialState)
+    expect(newState).toEqual({
+      ...initialState,
+      previousView: State.OpenView.Late,
+    })
+  })
+
+  test("closeLateView does nothing when late view is closed", () => {
+    const state = { ...initialState, openView: State.OpenView.Swings }
+
+    const newState = reducer(state, State.closeLateView())
+
+    expect(newState).toEqual(state)
   })
 
   test("selectVehicleFromNotification switches to appropriate route tab", () => {

@@ -30,6 +30,7 @@ import {
   findFirstOpenTabWith,
   selectTabByUUID,
 } from "./models/routeTab"
+import featureIsEnabled from "./laboratoryFeatures"
 
 export enum OpenView {
   None = 1,
@@ -85,6 +86,7 @@ export interface State {
   userSettings: UserSettings
   selectedNotification?: Notification
   openView: OpenView
+  previousView: OpenView
   openInputModal: OpenInputModal | null
   mobileMenuIsOpen: boolean
   showGaragesFilter: boolean
@@ -103,6 +105,7 @@ export const initialState: State = {
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
   openView: OpenView.None,
+  previousView: OpenView.None,
   openInputModal: null,
   mobileMenuIsOpen: false,
   showGaragesFilter: false,
@@ -903,57 +906,87 @@ const selectedShuttleRunIdsReducer = (
 
 const openViewPanelReducer = (
   openView: OpenView,
+  previousView: OpenView,
   selectedVehicleOrGhost: VehicleOrGhost | null | undefined,
   action: Action
 ): {
   openView: OpenView
+  previousView: OpenView
   selectedVehicleOrGhost: VehicleOrGhost | null | undefined
 } => {
   switch (action.type) {
     case "OPEN_NOTIFICATION_DRAWER":
-      return {
-        openView: OpenView.NotificationDrawer,
-        selectedVehicleOrGhost: undefined,
-      }
+      return openView === OpenView.NotificationDrawer
+        ? { openView, previousView, selectedVehicleOrGhost }
+        : {
+            openView: OpenView.NotificationDrawer,
+            previousView: openView,
+            selectedVehicleOrGhost: undefined,
+          }
     case "CLOSE_NOTIFICATION_DRAWER":
-      return {
-        openView: OpenView.None,
-        selectedVehicleOrGhost,
-      }
+      return openView === OpenView.NotificationDrawer
+        ? {
+            openView: OpenView.None,
+            previousView: openView,
+            selectedVehicleOrGhost,
+          }
+        : {
+            openView,
+            previousView,
+            selectedVehicleOrGhost,
+          }
     case "OPEN_SWINGS_VIEW":
-      return {
-        openView: OpenView.Swings,
-        selectedVehicleOrGhost: undefined,
-      }
+      return openView === OpenView.Swings
+        ? {
+            openView,
+            previousView,
+            selectedVehicleOrGhost,
+          }
+        : {
+            openView: OpenView.Swings,
+            previousView: openView,
+            selectedVehicleOrGhost: undefined,
+          }
     case "CLOSE_SWINGS_VIEW":
-      return {
-        openView: OpenView.None,
-        selectedVehicleOrGhost,
-      }
+      return openView === OpenView.Swings
+        ? {
+            openView: OpenView.None,
+            previousView: openView,
+            selectedVehicleOrGhost,
+          }
+        : { openView, previousView, selectedVehicleOrGhost }
     case "OPEN_LATE_VIEW":
-      return {
-        openView: OpenView.Late,
-        selectedVehicleOrGhost: undefined,
-      }
+      return openView === OpenView.Late
+        ? { openView, previousView, selectedVehicleOrGhost }
+        : {
+            openView: OpenView.Late,
+            previousView: openView,
+            selectedVehicleOrGhost: undefined,
+          }
     case "CLOSE_LATE_VIEW":
-      return {
-        openView: OpenView.None,
-        selectedVehicleOrGhost,
-      }
+      return openView === OpenView.Late
+        ? {
+            openView: OpenView.None,
+            previousView: openView,
+            selectedVehicleOrGhost,
+          }
+        : { openView, previousView, selectedVehicleOrGhost }
     case "SELECT_VEHICLE":
     case "SELECT_VEHICLE_FROM_NOTIFICATION":
       return {
-        openView: OpenView.None,
+        openView: featureIsEnabled("nav_beta") ? OpenView.None : openView,
+        previousView: openView === OpenView.None ? previousView : openView,
         selectedVehicleOrGhost: action.payload.vehicle,
       }
     case "DESELECT_VEHICLE":
     case "SET_NOTIFICATION":
       return {
         openView,
+        previousView: previousView,
         selectedVehicleOrGhost: undefined,
       }
     default:
-      return { openView, selectedVehicleOrGhost }
+      return { openView, previousView, selectedVehicleOrGhost }
   }
 }
 
@@ -1092,11 +1125,13 @@ export const reducer = (state: State, action: Action): State => {
     routeTabsPushInProgress,
   } = routeTabsAndPushReducer(state, action)
 
-  const { openView, selectedVehicleOrGhost } = openViewPanelReducer(
-    state.openView,
-    state.selectedVehicleOrGhost,
-    action
-  )
+  const { openView, previousView, selectedVehicleOrGhost } =
+    openViewPanelReducer(
+      state.openView,
+      state.previousView,
+      state.selectedVehicleOrGhost,
+      action
+    )
 
   return {
     pickerContainerIsVisible: pickerContainerIsVisibleReducer(
@@ -1126,6 +1161,7 @@ export const reducer = (state: State, action: Action): State => {
       action
     ),
     openView,
+    previousView,
     openInputModal: openInputModalReducer(state.openInputModal, action),
     mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
     showGaragesFilter: garageFilterReducer(state.showGaragesFilter, action),
