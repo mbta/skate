@@ -8,6 +8,30 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -108,23 +132,8 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="m-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
           className="m-properties-panel__last-gps-ping"
         >
@@ -352,6 +361,30 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -452,23 +485,8 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="m-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
           className="m-properties-panel__last-gps-ping"
         >
@@ -696,6 +714,30 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -763,23 +805,8 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="m-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
           className="m-properties-panel__last-gps-ping"
         >
@@ -915,6 +942,30 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -1015,23 +1066,8 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="m-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
           className="m-properties-panel__last-gps-ping"
         >
@@ -1354,6 +1390,30 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -1454,23 +1514,8 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="m-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
           className="m-properties-panel__last-gps-ping"
         >
@@ -1698,6 +1743,30 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -1798,23 +1867,8 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="m-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
           className="m-properties-panel__last-gps-ping"
         >
@@ -2056,6 +2110,30 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -2156,23 +2234,8 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="m-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
           className="m-properties-panel__last-gps-ping"
         >

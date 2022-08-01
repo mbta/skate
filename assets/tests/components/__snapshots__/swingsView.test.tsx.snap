@@ -5,30 +5,29 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
   className="m-swings-view "
   id="m-swings-view"
 >
-  <button
-    className="m-close-button"
-    data-testid="close-button"
-    onClick={[Function]}
-    title="Close"
+  <div
+    className="m-view-header"
   >
-    <span
-      className=""
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <div
+      className="m-view-header__title"
+    >
+      Swings
+    </div>
+    <button
+      className="m-close-button"
+      data-testid="close-button"
+      onClick={[Function]}
+      title="Close"
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-  </button>
-  <div
-    className="m-swings-view__header"
-  >
-    Swings view
-  </div>
-  <div
-    className="m-swings-view__description"
-  >
-    Upcoming swings on your selected routes
+      />
+    </button>
   </div>
   <div
     className="m-swings-view__table-container"
@@ -174,30 +173,29 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
   className="m-swings-view "
   id="m-swings-view"
 >
-  <button
-    className="m-close-button"
-    data-testid="close-button"
-    onClick={[Function]}
-    title="Close"
+  <div
+    className="m-view-header"
   >
-    <span
-      className=""
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <div
+      className="m-view-header__title"
+    >
+      Swings
+    </div>
+    <button
+      className="m-close-button"
+      data-testid="close-button"
+      onClick={[Function]}
+      title="Close"
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-  </button>
-  <div
-    className="m-swings-view__header"
-  >
-    Swings view
-  </div>
-  <div
-    className="m-swings-view__description"
-  >
-    Upcoming swings on your selected routes
+      />
+    </button>
   </div>
   <div
     className="m-swings-view__table-container"
@@ -341,30 +339,29 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
   className="m-swings-view "
   id="m-swings-view"
 >
-  <button
-    className="m-close-button"
-    data-testid="close-button"
-    onClick={[Function]}
-    title="Close"
+  <div
+    className="m-view-header"
   >
-    <span
-      className=""
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <div
+      className="m-view-header__title"
+    >
+      Swings
+    </div>
+    <button
+      className="m-close-button"
+      data-testid="close-button"
+      onClick={[Function]}
+      title="Close"
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-  </button>
-  <div
-    className="m-swings-view__header"
-  >
-    Swings view
-  </div>
-  <div
-    className="m-swings-view__description"
-  >
-    Upcoming swings on your selected routes
+      />
+    </button>
   </div>
   <div
     className="m-swings-view__table-container"
@@ -534,30 +531,29 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
   className="m-swings-view "
   id="m-swings-view"
 >
-  <button
-    className="m-close-button"
-    data-testid="close-button"
-    onClick={[Function]}
-    title="Close"
+  <div
+    className="m-view-header"
   >
-    <span
-      className=""
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <div
+      className="m-view-header__title"
+    >
+      Swings
+    </div>
+    <button
+      className="m-close-button"
+      data-testid="close-button"
+      onClick={[Function]}
+      title="Close"
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-  </button>
-  <div
-    className="m-swings-view__header"
-  >
-    Swings view
-  </div>
-  <div
-    className="m-swings-view__description"
-  >
-    Upcoming swings on your selected routes
+      />
+    </button>
   </div>
   <div
     className="m-swings-view__table-container"
@@ -654,30 +650,29 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
   className="m-swings-view "
   id="m-swings-view"
 >
-  <button
-    className="m-close-button"
-    data-testid="close-button"
-    onClick={[Function]}
-    title="Close"
+  <div
+    className="m-view-header"
   >
-    <span
-      className=""
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <div
+      className="m-view-header__title"
+    >
+      Swings
+    </div>
+    <button
+      className="m-close-button"
+      data-testid="close-button"
+      onClick={[Function]}
+      title="Close"
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-  </button>
-  <div
-    className="m-swings-view__header"
-  >
-    Swings view
-  </div>
-  <div
-    className="m-swings-view__description"
-  >
-    Upcoming swings on your selected routes
+      />
+    </button>
   </div>
   <div
     className="m-swings-view__table-container"
@@ -941,30 +936,29 @@ exports[`SwingsView renders loading message 1`] = `
   className="m-swings-view "
   id="m-swings-view"
 >
-  <button
-    className="m-close-button"
-    data-testid="close-button"
-    onClick={[Function]}
-    title="Close"
+  <div
+    className="m-view-header"
   >
-    <span
-      className=""
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <div
+      className="m-view-header__title"
+    >
+      Swings
+    </div>
+    <button
+      className="m-close-button"
+      data-testid="close-button"
+      onClick={[Function]}
+      title="Close"
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-  </button>
-  <div
-    className="m-swings-view__header"
-  >
-    Swings view
-  </div>
-  <div
-    className="m-swings-view__description"
-  >
-    Upcoming swings on your selected routes
+      />
+    </button>
   </div>
   loading...
 </div>

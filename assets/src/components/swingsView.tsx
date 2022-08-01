@@ -4,7 +4,6 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import Loading from "./loading"
-import CloseButton from "./closeButton"
 import { partition, flatten, uniq } from "../helpers/array"
 import { ghostSwingIcon, upDownIcon, upRightIcon } from "../helpers/icon"
 import { runIdToLabel } from "../helpers/vehicleLabel"
@@ -17,6 +16,7 @@ import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
 import { closeSwingsView, selectVehicle } from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 import { tagManagerEvent } from "../helpers/googleTagManager"
+import ViewHeader from "./viewHeader"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
   const [{ mobileMenuIsOpen }, dispatch] = useContext(StateDispatchContext)
@@ -75,11 +75,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 
   return (
     <div id="m-swings-view" className={`m-swings-view ${mobileMenuClass}`}>
-      <CloseButton onClick={hideMe} />
-      <div className="m-swings-view__header">Swings view</div>
-      <div className="m-swings-view__description">
-        Upcoming swings on your selected routes
-      </div>
+      <ViewHeader title="Swings" closeView={hideMe} />
       {swings ? (
         <SwingsTable
           pastSwings={pastSwings}

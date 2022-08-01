@@ -188,6 +188,30 @@ exports[`SearchPage renders a selected vehicle 1`] = `
         className="m-properties-panel__header-wrapper"
       >
         <div
+          className="m-view-header"
+        >
+          <div
+            className="m-view-header__title"
+          >
+            Vehicles
+          </div>
+          <button
+            className="m-close-button"
+            data-testid="close-button"
+            onClick={[Function]}
+            title="Close"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
+        </div>
+        <div
           className="m-properties-panel__header"
         >
           <div
@@ -288,23 +312,8 @@ exports[`SearchPage renders a selected vehicle 1`] = `
             </div>
           </div>
           <div
-            className="m-properties-panel__close-ping"
+            className="m-properties-panel__ping-container"
           >
-            <button
-              className="m-close-button"
-              data-testid="close-button"
-              onClick={[Function]}
-              title="Close"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-            </button>
             <div
               className="m-properties-panel__last-gps-ping"
             >

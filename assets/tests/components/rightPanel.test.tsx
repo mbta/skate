@@ -101,7 +101,7 @@ describe("rightPanel", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.html()).toContain("Swings view")
+    expect(wrapper.html()).toContain("Swings")
   })
 
   test("prefers VPP to swings view", () => {

@@ -29,24 +29,8 @@
   }
 }
 
-.m-swings-view__header {
-  @include font-header-big;
-  color: $black;
-  font-weight: 900;
-  padding-top: 1.875rem;
-  padding-left: 3rem;
-}
-
-.m-swings-view__description {
-  @include font-small;
-  color: $color-font-dark;
-  padding-left: 3rem;
-  padding-bottom: 1.5rem;
-}
-
 .m-swings-view__table-container {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding: 1.5rem 1.5rem 0 1.5rem;
 }
 
 .m-swings-view__table {

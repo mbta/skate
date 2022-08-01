@@ -21,13 +21,13 @@ import {
 } from "../../models/vehicleStatus"
 import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { Route } from "../../schedule"
-import { deselectVehicle } from "../../state"
-import CloseButton from "../closeButton"
+import { deselectVehicle, returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import TabList from "./tabList"
 import { TabMode } from "./tabPanels"
 import { currentRouteTab } from "../../models/routeTab"
+import ViewHeader from "../viewHeader"
 
 interface Props {
   vehicle: VehicleOrGhost
@@ -115,7 +115,7 @@ const directionName = (
 ): string => (route ? route.directionNames[directionId] : "")
 
 const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
-  const [{ routeTabs, userSettings }, dispatch] =
+  const [{ routeTabs, userSettings, previousView }, dispatch] =
     useContext(StateDispatchContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
@@ -134,6 +134,12 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
 
   return (
     <div className="m-properties-panel__header-wrapper">
+      <ViewHeader
+        title="Vehicles"
+        closeView={hideMe}
+        backlinkToView={previousView}
+        followBacklink={() => dispatch(returnToPreviousView())}
+      />
       <div className="m-properties-panel__header">
         <div className="m-properties-panel__label">
           <VehicleIcon
@@ -156,9 +162,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
             <ScheduleAdherence vehicle={vehicle} />
           )}
         </div>
-        <div className="m-properties-panel__close-ping">
-          <CloseButton onClick={hideMe} />
-
+        <div className="m-properties-panel__ping-container">
           {isVehicle(vehicle) && (
             <div className="m-properties-panel__last-gps-ping">
               {secondsAgo(vehicle.timestamp)}

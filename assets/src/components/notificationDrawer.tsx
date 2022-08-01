@@ -4,16 +4,16 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
 import { markAllAsRead } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
-import { closeNotificationDrawer } from "../state"
-import CloseButton from "./closeButton"
+import { closeNotificationDrawer, returnToPreviousView } from "../state"
 import { openVPPForNotification } from "./notifications"
-import NotificationBellIcon from "./notificationBellIcon"
 import { NotificationCard } from "./notificationCard"
+import ViewHeader from "./viewHeader"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
   const { rememberScrollPosition, scrollPosition } =
     useContext(NotificationsContext)
+  const [{ previousView }, dispatch] = useContext(StateDispatchContext)
 
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
@@ -39,25 +39,15 @@ const NotificationDrawer = () => {
 
   return (
     <div className="m-notification-drawer" ref={elementRef}>
-      <TitleBar />
+      <ViewHeader
+        title="Notifications"
+        closeView={() => dispatch(closeNotificationDrawer())}
+        backlinkToView={previousView}
+        followBacklink={() => dispatch(returnToPreviousView())}
+      />
       <div className="m-notification-drawer__content">
         <Content />
       </div>
-    </div>
-  )
-}
-
-const TitleBar = () => {
-  const [, dispatch] = useContext(StateDispatchContext)
-  return (
-    <div className="m-notification-drawer__title-bar">
-      <NotificationBellIcon />
-      <div className="m-notification-drawer__title">Notifications</div>
-      <CloseButton
-        onClick={() => {
-          dispatch(closeNotificationDrawer())
-        }}
-      />
     </div>
   )
 }

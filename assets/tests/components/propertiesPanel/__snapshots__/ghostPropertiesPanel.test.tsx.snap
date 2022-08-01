@@ -8,6 +8,30 @@ exports[`GhostPropertiesPanel renders 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -89,24 +113,8 @@ exports[`GhostPropertiesPanel renders 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
-      >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
+        className="m-properties-panel__ping-container"
+      />
     </div>
     <ul
       className="m-tabs__tab-list"
@@ -289,6 +297,30 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -370,24 +402,8 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
-      >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
+        className="m-properties-panel__ping-container"
+      />
     </div>
     <ul
       className="m-tabs__tab-list"
@@ -616,6 +632,30 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
+      className="m-view-header"
+    >
+      <div
+        className="m-view-header__title"
+      >
+        Vehicles
+      </div>
+      <button
+        className="m-close-button"
+        data-testid="close-button"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-properties-panel__header"
     >
       <div
@@ -697,24 +737,8 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
-      >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
+        className="m-properties-panel__ping-container"
+      />
     </div>
     <ul
       className="m-tabs__tab-list"
