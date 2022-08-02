@@ -54,16 +54,16 @@
   @include font-body;
   color: $color-gray-600;
   text-decoration: none;
+  border: 1px solid transparent;
 
   &:hover {
-    background-color: $color-gray-100;
+    background-color: $color-gray-200;
     color: $color-gray-700;
     font-weight: 500;
   }
 
-  &:focus {
-    border: 2px solid $color-eggplant-500;
-    outline: 0;
+  &:focus-visible {
+    outline: 2px solid $color-eggplant-500;
   }
 
   &.m-left-nav__link--active {
@@ -71,9 +71,12 @@
     font-weight: 500;
     color: $color-eggplant-700;
 
-    &:focus {
-      border: 2px solid $color-eggplant-500;
-      outline: 0;
+    &:hover {
+      background-color: $color-eggplant-300;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-eggplant-500;
     }
   }
 }
@@ -101,18 +104,18 @@
     font-weight: 500;
   }
 
-  &:focus {
-    border: 2px solid $color-eggplant-500;
+  &:focus-visible {
+    outline: 2px solid $color-eggplant-500;
   }
 
   &.m-left-nav__view--active {
-    border: 1px solid $color-eggplant-200;
+    border: 1px solid $color-eggplant-700;
     font-weight: 500;
     color: $color-eggplant-700;
     background-color: $white;
 
-    &:focus {
-      border: 2px solid $color-eggplant-500;
+    &:focus-visible {
+      outline: 2px solid $color-eggplant-500;
     }
   }
 }
