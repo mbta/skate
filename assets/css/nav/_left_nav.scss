@@ -114,8 +114,21 @@
     color: $color-eggplant-700;
     background-color: $white;
 
+    svg {
+      path {
+        stroke: $color-eggplant-700;
+        fill: none;
+      }
+    }
+
     &:focus-visible {
       outline: 2px solid $color-eggplant-500;
+    }
+
+    .m-left-nav__icon {
+      circle {
+        fill: $color-eggplant-700;
+      }
     }
   }
 }
