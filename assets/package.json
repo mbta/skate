@@ -1,6 +1,11 @@
 {
-  "repository": {},
-  "license": "MIT",
+  "name": "skate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbta/skate.git",
+    "directory": "assets"
+  },
+  "license": "AGPL-3.0-only",
   "scripts": {
     "deploy": "webpack --mode production",
     "build": "webpack --mode development",
@@ -41,7 +46,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
     "@testing-library/react-hooks": "^8.0.1",
-    "@testing-library/user-event": "^14.2.1",
+    "@testing-library/user-event": "^14.4.0",
     "@types/enzyme": "^3.10.11",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^27.4.1",
