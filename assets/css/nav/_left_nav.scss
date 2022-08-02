@@ -108,38 +108,10 @@
     outline: 2px solid $color-eggplant-500;
   }
 
-  &.m-left-nav__view--active {
-    border: 1px solid $color-eggplant-700;
-    font-weight: 500;
-    color: $color-eggplant-700;
-    background-color: $white;
-
+  .m-left-nav__icon {
     svg {
-      path {
-        stroke: $color-eggplant-700;
-        fill: none;
-      }
-    }
-
-    &:focus-visible {
-      outline: 2px solid $color-eggplant-500;
-    }
-
-    .m-left-nav__icon {
-      circle {
-        fill: $color-eggplant-800;
-      }
-    }
-  }
-}
-
-.m-left-nav__icon {
-  &.m-left-nav__icon--late-view svg {
-    fill: $color-gray-50;
-    stroke: $color-gray-600;
-
-    circle {
-      fill: $color-gray-600;
+      fill: $color-gray-50;
+      stroke: $color-gray-600;
     }
 
     .clock {
@@ -152,12 +124,45 @@
     }
   }
 
+  .m-left-nav__icon--late-view {
+    svg {
+      circle {
+        fill: $color-gray-600;
+      }
+    }
+  }
+
+  &.m-left-nav__view--active {
+    border: 1px solid $color-eggplant-700;
+    font-weight: 500;
+    color: $color-eggplant-700;
+    background-color: $white;
+
+    &:focus-visible {
+      outline: 2px solid $color-eggplant-500;
+    }
+
+    svg {
+      path {
+        stroke: $color-eggplant-700;
+        fill: none;
+      }
+    }
+
+    .m-left-nav__icon--late-view {
+      svg {
+        circle {
+          fill: $color-eggplant-800;
+        }
+      }
+    }
+  }
+
   &.m-left-nav__icon--swings-view svg {
     transform: scaleX(-1);
     fill: $color-gray-50;
     stroke: $color-gray-600;
   }
-
 }
 
 .m-left-nav__notifications-icon {
