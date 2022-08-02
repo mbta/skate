@@ -128,7 +128,10 @@ const TabBar = ({
 
       <div className="m-tab-bar__bottom-buttons">
         <button
-          className="m-tab-bar__notifications"
+          className={
+                "m-tab-bar__notifications m-tab-bar__link" +
+                (openView === OpenView.Notifications ? " m-tab-bar__link--active" : "")
+              }
           onClick={() => {
             dispatch(openNotificationDrawer())
           }}
