@@ -8,6 +8,24 @@ exports[`LateView renders missing logons and late buses 1`] = `
     className="m-late-view__content-wrapper"
   >
     <div
+      className="c-drawer-tab"
+    >
+      <button
+        className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
       className="m-late-view__title"
     >
       Late View
@@ -370,24 +388,6 @@ exports[`LateView renders missing logons and late buses 1`] = `
           </tbody>
         </table>
       </div>
-    </div>
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        data-testid="drawer-tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
     </div>
   </div>
 </div>

@@ -1,6 +1,11 @@
 {
-  "repository": {},
-  "license": "MIT",
+  "name": "skate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbta/skate.git",
+    "directory": "assets"
+  },
+  "license": "AGPL-3.0-only",
   "scripts": {
     "deploy": "webpack --mode production",
     "build": "webpack --mode development",

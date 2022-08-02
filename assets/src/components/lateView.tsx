@@ -283,6 +283,10 @@ const LateView = (): ReactElement<HTMLElement> => {
   return (
     <div className={`m-late-view ${mobileMenuClass}`}>
       <div className="m-late-view__content-wrapper">
+        <DrawerTab
+          isVisible={true}
+          toggleVisibility={() => dispatch(closeLateView())}
+        />
         <div className="m-late-view__title">Late View</div>
         <div className="m-late-view__panels">
           <div className="m-late-view__panel m-late-view__missing-logons">
@@ -382,10 +386,6 @@ const LateView = (): ReactElement<HTMLElement> => {
             </table>
           </div>
         </div>
-        <DrawerTab
-          isVisible={true}
-          toggleVisibility={() => dispatch(closeLateView())}
-        />
       </div>
       {anyRowsSelected && (
         <HidePopup

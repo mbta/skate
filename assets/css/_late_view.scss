@@ -1,14 +1,12 @@
 $late-view-background-color: $color-bg-light;
-$late-view-width: 34.5rem;
 
 .m-late-view {
   @include modal-content;
   background-color: $late-view-background-color;
   height: 100%;
   position: absolute;
-  left: 0;
+  right: 0;
   top: 0;
-  width: $late-view-width;
   z-index: 1001;
 
   .m-tab-bar ~ & {
@@ -26,7 +24,8 @@ $late-view-width: 34.5rem;
   box-shadow: $modal-box-shadow;
   clip-path: inset(-2rem -2rem -2rem 0);
   -webkit-clip-path: inset(-2rem -2rem -2rem 0);
-  left: $late-view-width;
+  left: -$drawer-tab-width;
+  transform: scaleX(-1);
 }
 
 .m-late-view__title {
@@ -41,6 +40,7 @@ $late-view-width: 34.5rem;
   display: flex;
   flex-direction: column;
   padding-left: 1.5rem;
+  padding-right: 1.6rem;
 }
 
 .m-late-view__panel {
