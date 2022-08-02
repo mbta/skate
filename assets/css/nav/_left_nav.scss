@@ -67,13 +67,10 @@
   }
 
   &.m-left-nav__link--active {
-    background-color: $color-eggplant-200;
+    background-color: $color-eggplant-700;
     font-weight: 500;
-    color: $color-eggplant-700;
-
-    &:hover {
-      background-color: $color-eggplant-300;
-    }
+    color: $white;
+    border: 1px solid $white;
 
     &:focus-visible {
       outline: 2px solid $color-eggplant-500;
@@ -94,7 +91,7 @@
   @include font-body;
   color: $color-gray-600;
   text-decoration: none;
-  background: $white;
+  background-color: $white;
   border: 1px solid $color-gray-200;
 
   &:hover {
@@ -133,10 +130,10 @@
   }
 
   &.m-left-nav__view--active {
-    border: 1px solid $color-eggplant-700;
+    border: 1px solid $white;
     font-weight: 500;
+    background-color: $color-eggplant-200;
     color: $color-eggplant-700;
-    background-color: $white;
 
     &:focus-visible {
       outline: 2px solid $color-eggplant-500;
