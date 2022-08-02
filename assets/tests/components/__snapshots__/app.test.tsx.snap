@@ -125,7 +125,7 @@ exports[`App renders 1`] = `
         className="m-tab-bar__bottom-buttons"
       >
         <button
-          className="m-tab-bar__notifications"
+          className="m-tab-bar__notifications m-tab-bar__link"
           onClick={[Function]}
         >
           <span
@@ -461,7 +461,7 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         className="m-tab-bar__bottom-buttons"
       >
         <button
-          className="m-tab-bar__notifications"
+          className="m-tab-bar__notifications m-tab-bar__link"
           onClick={[Function]}
         >
           <span

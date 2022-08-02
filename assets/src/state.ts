@@ -35,6 +35,7 @@ export enum OpenView {
   None = 1,
   Swings,
   Late,
+  Notifications,
 }
 
 interface CreatePresetModal {
@@ -925,15 +926,15 @@ const openViewAndNotificationDrawerReducer = (
 ): [OpenView, boolean] => {
   switch (action.type) {
     case "OPEN_NOTIFICATION_DRAWER":
-      return [openView === OpenView.Late ? OpenView.Late : OpenView.None, true]
+      return [OpenView.Notifications, true]
     case "CLOSE_NOTIFICATION_DRAWER":
-      return [openView, false]
+      return [OpenView.None, false]
     case "OPEN_SWINGS_VIEW":
       return [OpenView.Swings, false]
     case "CLOSE_SWINGS_VIEW":
       return [OpenView.None, notificationDrawerIsOpen]
     case "OPEN_LATE_VIEW":
-      return [OpenView.Late, notificationDrawerIsOpen]
+      return [OpenView.Late, false]
     case "CLOSE_LATE_VIEW":
       return [OpenView.None, notificationDrawerIsOpen]
     default:

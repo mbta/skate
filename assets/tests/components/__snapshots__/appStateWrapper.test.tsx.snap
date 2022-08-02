@@ -125,7 +125,7 @@ exports[`renders 1`] = `
         className="m-tab-bar__bottom-buttons"
       >
         <button
-          className="m-tab-bar__notifications"
+          className="m-tab-bar__notifications m-tab-bar__link"
           onClick={[Function]}
         >
           <span

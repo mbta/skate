@@ -193,6 +193,7 @@ describe("reducer", () => {
       }
       const expectedState = {
         ...initialState,
+        openView: State.OpenView.Notifications,
         notificationDrawerIsOpen: true,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(
@@ -209,14 +210,14 @@ describe("reducer", () => {
       const expectedState = {
         ...initialState,
         notificationDrawerIsOpen: true,
-        openView: State.OpenView.None,
+        openView: State.OpenView.Notifications,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(
         expectedState
       )
     })
 
-    test("openNotificationDrawer leaves late view open", () => {
+    test("openNotificationDrawer does not leave late view open", () => {
       const state = {
         ...initialState,
         notificationDrawerIsOpen: false,
@@ -225,7 +226,7 @@ describe("reducer", () => {
       const expectedState = {
         ...initialState,
         notificationDrawerIsOpen: true,
-        openView: State.OpenView.Late,
+        openView: State.OpenView.Notifications,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(
         expectedState
@@ -235,6 +236,7 @@ describe("reducer", () => {
     test("openNotificationDrawer does nothing if the drawer is already open", () => {
       const state = {
         ...initialState,
+        openView: State.OpenView.Notifications,
         notificationDrawerIsOpen: true,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(state)
@@ -243,10 +245,12 @@ describe("reducer", () => {
     test("closeNotificationDrawer closes the drawer", () => {
       const state = {
         ...initialState,
+        openView: State.OpenView.Notifications,
         notificationDrawerIsOpen: true,
       }
       const expectedState = {
         ...initialState,
+        openView: State.OpenView.None,
         notificationDrawerIsOpen: false,
       }
       expect(reducer(state, State.closeNotificationDrawer())).toEqual(

@@ -132,7 +132,7 @@ exports[`tabBar renders 1`] = `
     className="m-tab-bar__bottom-buttons"
   >
     <button
-      className="m-tab-bar__notifications"
+      className="m-tab-bar__notifications m-tab-bar__link"
       onClick={[Function]}
     >
       <span
@@ -322,7 +322,7 @@ exports[`tabBar renders with late view icon 1`] = `
     className="m-tab-bar__bottom-buttons"
   >
     <button
-      className="m-tab-bar__notifications"
+      className="m-tab-bar__notifications m-tab-bar__link"
       onClick={[Function]}
     >
       <span
@@ -512,7 +512,7 @@ exports[`tabBar renders with late view icon when dispatcher flag is set 1`] = `
     className="m-tab-bar__bottom-buttons"
   >
     <button
-      className="m-tab-bar__notifications"
+      className="m-tab-bar__notifications m-tab-bar__link"
       onClick={[Function]}
     >
       <span
