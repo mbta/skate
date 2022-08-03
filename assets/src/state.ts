@@ -1060,6 +1060,7 @@ const selectedNotificationReducer = (
   switch (action.type) {
     case "SELECT_VEHICLE":
     case "DESELECT_VEHICLE":
+    case "RETURN_TO_PREVIOUS_VIEW":
       return undefined
     case "SET_NOTIFICATION":
       return action.payload.selectedNotification

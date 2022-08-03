@@ -13,6 +13,7 @@ import { RouteTab } from "../src/models/routeTab"
 
 import vehicleFactory from "./factories/vehicle"
 import routeTabFactory from "./factories/routeTab"
+import notificationFactory from "./factories/notification"
 import featureIsEnabled from "../src/laboratoryFeatures"
 
 const initialState = State.initialState
@@ -486,17 +487,21 @@ describe("reducer", () => {
     expect(newState).toEqual(state)
   })
 
-  test("returnToPreviousView returns to the previous view", () => {
+  test("returnToPreviousView returns to the previous view, deselects vehicle and notification", () => {
     const state = {
       ...initialState,
       openView: State.OpenView.Swings,
       previousView: State.OpenView.Late,
+      selectedVehicleOrGhost: vehicleFactory.build(),
+      selectedNotification: notificationFactory.build(),
     }
 
     const expectedState = {
       ...initialState,
       openView: State.OpenView.Late,
       previousView: State.OpenView.None,
+      selectedVehicleOrGhost: undefined,
+      selectedNotification: undefined,
     }
 
     const newState = reducer(state, State.returnToPreviousView())
