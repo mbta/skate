@@ -201,7 +201,7 @@ describe("LeftNav", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, notificationDrawerIsOpen: true }}
+        state={{ ...initialState, openView: OpenView.NotificationDrawer }}
         dispatch={dispatch}
       >
         <BrowserRouter>
@@ -211,15 +211,15 @@ describe("LeftNav", () => {
     )
 
     expect(result.getByTitle("Notifications").children[0]).toHaveClass(
-      "m-top-nav__notifications-icon--active"
+      "m-left-nav__notifications-icon--active"
     )
   })
 
-  test("notifications icon doesn't get active class when notifications drawer is close", () => {
+  test("notifications icon doesn't get active class when notifications drawer is closed", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, notificationDrawerIsOpen: false }}
+        state={{ ...initialState, openView: OpenView.None }}
         dispatch={dispatch}
       >
         <BrowserRouter>
@@ -229,7 +229,7 @@ describe("LeftNav", () => {
     )
 
     expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
-      "m-top-nav__notifications-icon--active"
+      "m-left-nav__notifications-icon--active"
     )
   })
 })
