@@ -75,73 +75,74 @@
       }
     }
   }
-}
 
-.m-left-nav__icon {
-  &.m-left-nav__icon svg {
-    fill: $color-gray-50;
-    stroke: $color-gray-600;
-
-    circle {
-      fill: $color-gray-600;
-    }
-
-    .clock {
-      stroke-width: 2;
-    }
-
-    .bang {
+  .m-left-nav__icon {
+    &.m-left-nav__icon svg {
       fill: $color-gray-50;
-      stroke: none;
-    }
-
-    &:hover {
-      svg {
-        path {
-          fill: $color-gray-500;
-          stroke: none;
-        }
-      }
-    }
-  }
-
-  &.m-left-nav__icon--swings-view svg {
-    transform: scaleX(-1);
-  }
-
-  &.m-left-nav__icon--notifications-view {
-    svg {
-      path {
-        fill: $color-gray-600;
-        stroke: none;
-      }
+      stroke: $color-gray-600;
 
       circle {
-        fill: $color-strawberry-500;
-        stroke: $color-strawberry-500;
+        fill: $color-gray-600;
+      }
+
+      .clock {
+        stroke-width: 2;
+      }
+
+      .bang {
+        fill: $color-gray-50;
+        stroke: none;
       }
 
       &:hover {
         svg {
-          circle {
-            fill: $color-strawberry-400;
-            stroke: $color-strawberry-400;
+          path {
+            fill: $color-gray-500;
+            stroke: none;
           }
         }
       }
     }
-  }
 
-  &.m-left-nav__icon--notifications-view--active {
-    svg {
-      path {
-        fill: $color-eggplant-800;
-        stroke: none;
+    &.m-left-nav__icon--swings-view svg {
+      fill: transparent;
+      transform: scaleX(-1);
+    }
+
+    &.m-left-nav__icon--notifications-view {
+      svg {
+        path {
+          fill: $color-gray-600;
+          stroke: none;
+        }
+
+        circle {
+          fill: $color-strawberry-500;
+          stroke: $color-strawberry-500;
+        }
+
+        &:hover {
+          svg {
+            circle {
+              fill: $color-strawberry-400;
+              stroke: $color-strawberry-400;
+            }
+          }
+        }
       }
+    }
 
-      circle {
-        fill: $color-strawberry-500;
-        stroke: $color-strawberry-500;
+    &.m-left-nav__icon--notifications-view--active {
+      svg {
+        path {
+          fill: $color-eggplant-800;
+          stroke: none;
+        }
+
+        circle {
+          fill: $color-strawberry-500;
+          stroke: $color-strawberry-500;
+        }
       }
     }
   }
