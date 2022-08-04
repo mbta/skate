@@ -22,6 +22,7 @@ import {
   openLateView,
   openSwingsView,
   OpenView,
+  openNotificationDrawer,
 } from "../../state"
 
 interface Props {
