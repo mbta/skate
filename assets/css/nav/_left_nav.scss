@@ -90,3 +90,46 @@
     stroke: $color-gray-600;
   }
 }
+
+
+.m-left-nav__notifications-icon {
+  svg {
+    path {
+      fill: $color-gray-600;
+      stroke: none;
+    }
+
+    circle {
+      fill: $color-strawberry-500;
+      stroke: $color-strawberry-500;
+    }
+  }
+
+  &:hover {
+    svg {
+      path {
+        fill: $color-gray-500;
+        stroke: none;
+      }
+
+      circle {
+        fill: $color-strawberry-400;
+        stroke: $color-strawberry-400;
+      }
+    }
+  }
+
+  &.m-left-nav__notifications-icon--active {
+    svg {
+      path {
+        fill: $color-eggplant-800;
+        stroke: none;
+      }
+
+      circle {
+        fill: $color-strawberry-500;
+        stroke: $color-strawberry-500;
+      }
+    }
+  }
+}
