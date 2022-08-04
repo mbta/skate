@@ -42,10 +42,10 @@ const LeftNav = ({
     openView == OpenView.NotificationDrawer
       ? [
           "m-left-nav__icon",
-          "m-left-nav__notifications-icon",
-          "m-left-nav__notifications-icon--active",
+          "m-left-nav__icon--notifications-view",
+          "m-left-nav__icon--notifications-view--active",
         ]
-      : ["m-left-nav__icon", "m-left-nav__notifications-icon"]
+      : ["m-left-nav__icon", "m-left-nav__icon--notifications-view"]
 
   return (
     <div className={"m-left-nav" + (collapsed ? " m-left-nav--collapsed" : "")}>
@@ -193,7 +193,8 @@ const ViewToggle = ({
   return (
     <button
       className={
-        "m-left-nav__link" + (viewIsOpen ? " m-left-nav__link--active" : "")
+        "m-left-nav__link m-left-nav__view" +
+        (viewIsOpen ? " m-left-nav__view--active" : "")
       }
       onClick={toggleView}
       title={name}
