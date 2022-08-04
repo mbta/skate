@@ -1,11 +1,9 @@
 import React, { useContext } from "react"
 import { Link } from "react-router-dom"
-import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { logoIcon, refreshIcon } from "../../helpers/icon"
 import { reload } from "../../models/browser"
 
 const TopNav = (): JSX.Element => {
-  const [dispatch] = useContext(StateDispatchContext)
 
   return (
     <div className="m-top-nav">
