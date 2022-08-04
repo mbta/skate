@@ -34,18 +34,18 @@ const LeftNav = ({
   defaultToCollapsed,
   dispatcherFlag,
 }: Props): JSX.Element => {
-  const [{ openView }, dispatch] =
-    useContext(StateDispatchContext)
+  const [{ openView }, dispatch] = useContext(StateDispatchContext)
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
 
-  const bellIconClasses = openView == OpenView.NotificationDrawer
-    ? [
-        "m-left-nav__icon",
-        "m-left-nav__notifications-icon",
-        "m-left-nav__notifications-icon--active",
-      ]
-    : ["m-left-nav__icon", "m-left-nav__notifications-icon"]
+  const bellIconClasses =
+    openView == OpenView.NotificationDrawer
+      ? [
+          "m-left-nav__icon",
+          "m-left-nav__notifications-icon",
+          "m-left-nav__notifications-icon--active",
+        ]
+      : ["m-left-nav__icon", "m-left-nav__notifications-icon"]
 
   return (
     <div className={"m-left-nav" + (collapsed ? " m-left-nav--collapsed" : "")}>

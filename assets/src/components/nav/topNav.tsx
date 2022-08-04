@@ -4,7 +4,6 @@ import { logoIcon, refreshIcon } from "../../helpers/icon"
 import { reload } from "../../models/browser"
 
 const TopNav = (): JSX.Element => {
-
   return (
     <div className="m-top-nav">
       <Link className="m-top-nav__logo" to="/" title="Skate">
