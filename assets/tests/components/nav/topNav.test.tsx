@@ -9,7 +9,6 @@ import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
 
 describe("TopNav", () => {
-
   test("refresh button reloads the page", async () => {
     const reloadSpy = jest
       .spyOn(browser, "reload")
