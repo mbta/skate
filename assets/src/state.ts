@@ -935,7 +935,7 @@ const openViewPanelReducer = (
       return openView === OpenView.NotificationDrawer
         ? {
             openView: OpenView.None,
-            previousView: openView,
+            previousView: OpenView.None,
             selectedVehicleOrGhost,
           }
         : {
@@ -959,7 +959,7 @@ const openViewPanelReducer = (
       return openView === OpenView.Swings
         ? {
             openView: OpenView.None,
-            previousView: openView,
+            previousView: OpenView.None,
             selectedVehicleOrGhost,
           }
         : { openView, previousView, selectedVehicleOrGhost }
@@ -975,7 +975,7 @@ const openViewPanelReducer = (
       return openView === OpenView.Late
         ? {
             openView: OpenView.None,
-            previousView: openView,
+            previousView: OpenView.None,
             selectedVehicleOrGhost,
           }
         : { openView, previousView, selectedVehicleOrGhost }
@@ -987,6 +987,11 @@ const openViewPanelReducer = (
         selectedVehicleOrGhost: action.payload.vehicle,
       }
     case "DESELECT_VEHICLE":
+      return {
+        openView,
+        previousView: OpenView.None,
+        selectedVehicleOrGhost: undefined,
+      }
     case "SET_NOTIFICATION":
       return {
         openView,
@@ -1060,6 +1065,9 @@ const selectedNotificationReducer = (
   switch (action.type) {
     case "SELECT_VEHICLE":
     case "DESELECT_VEHICLE":
+    case "OPEN_SWINGS_VIEW":
+    case "OPEN_LATE_VIEW":
+    case "OPEN_NOTIFICATION_DRAWER":
     case "RETURN_TO_PREVIOUS_VIEW":
       return undefined
     case "SET_NOTIFICATION":
