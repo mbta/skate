@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { logoIcon, refreshIcon } from "../../helpers/icon"
 import { reload } from "../../models/browser"
-import { openNotificationDrawer, OpenView } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 
 const TopNav = (): JSX.Element => {
@@ -23,15 +22,6 @@ const TopNav = (): JSX.Element => {
         {logoIcon("m-top-nav__logo-icon")}
       </Link>
       <ul className="m-top-nav__right-items">
-        <li>
-          <button
-            className="m-top-nav__right-item"
-            onClick={() => dispatch(openNotificationDrawer())}
-            title="Notifications"
-          >
-            <NotificationBellIcon extraClasses={bellIconClasses} />
-          </button>
-        </li>
         <li>
           <button
             className="m-top-nav__right-item"
