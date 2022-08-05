@@ -49,6 +49,7 @@
   @include font-body;
   color: $color-gray-600;
   text-decoration: none;
+  border: 1px solid transparent;
 
   &:hover {
     background-color: $color-gray-100;
@@ -60,6 +61,11 @@
     background-color: $color-eggplant-700;
     font-weight: 500;
     color: $white;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-eggplant-500;
+    border: 1px solid $white;
   }
 }
 
