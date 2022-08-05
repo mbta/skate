@@ -15,28 +15,10 @@ $late-view-background-color: $color-bg-light;
   overflow-y: scroll;
 }
 
-.m-late-view .c-drawer-tab {
-  background-color: $late-view-background-color;
-  box-shadow: $modal-box-shadow;
-  clip-path: inset(-2rem -2rem -2rem 0);
-  -webkit-clip-path: inset(-2rem -2rem -2rem 0);
-  left: -$drawer-tab-width;
-  transform: scaleX(-1);
-}
-
-.m-late-view__title {
-  font-size: 1.5rem;
-  font-weight: 900;
-  margin-bottom: 1.5rem;
-  margin-top: 1.5rem;
-  padding-left: 3rem;
-}
-
 .m-late-view__panels {
   display: flex;
   flex-direction: column;
-  padding-left: 1.5rem;
-  padding-right: 1.6rem;
+  padding: 2rem 1.5rem 0 1.6rem;
 }
 
 .m-late-view__panel {

@@ -8,12 +8,18 @@ exports[`LateView renders missing logons and late buses 1`] = `
     className="m-late-view__content-wrapper"
   >
     <div
-      className="c-drawer-tab"
+      className="m-view-header"
     >
+      <div
+        className="m-view-header__title"
+      >
+        Late View
+      </div>
       <button
-        className="c-drawer-tab__tab-button"
-        data-testid="drawer-tab-button"
+        className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
+        title="Close"
       >
         <span
           className=""
@@ -24,11 +30,6 @@ exports[`LateView renders missing logons and late buses 1`] = `
           }
         />
       </button>
-    </div>
-    <div
-      className="m-late-view__title"
-    >
-      Late View
     </div>
     <div
       className="m-late-view__panels"

@@ -7,7 +7,6 @@ import React, {
   useRef,
   useState,
 } from "react"
-import DrawerTab from "../components/drawerTab"
 import RoutesContext from "../contexts/routesContext"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -26,7 +25,12 @@ import { saveState, loadState } from "../localStorage"
 import { isVehicle, isGhost } from "../models/vehicle"
 import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
 import { ByRouteId } from "../schedule"
-import { Action, closeLateView, selectVehicle } from "../state"
+import {
+  Action,
+  closeLateView,
+  returnToPreviousView,
+  selectVehicle,
+} from "../state"
 import {
   secondsToMinutes,
   formattedTime,
@@ -35,6 +39,7 @@ import {
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { routeNameOrId } from "../util/route"
 import { tagManagerEvent } from "../helpers/googleTagManager"
+import ViewHeader from "./viewHeader"
 
 // all these times are in seconds
 const unhidePopupVisibilityPeriod = 5
@@ -108,7 +113,8 @@ const saveTimestampsToLocalStorage = (timestamps: {
 }): void => saveState(storedStateKey, timestamps)
 
 const LateView = (): ReactElement<HTMLElement> => {
-  const [{ mobileMenuIsOpen }, dispatch] = useContext(StateDispatchContext)
+  const [{ mobileMenuIsOpen, previousView }, dispatch] =
+    useContext(StateDispatchContext)
   const currentTimeSeconds = useCurrentTimeSeconds()
   const currentTimeMillis = currentTimeSeconds * 1000
 
@@ -283,11 +289,12 @@ const LateView = (): ReactElement<HTMLElement> => {
   return (
     <div className={`m-late-view ${mobileMenuClass}`}>
       <div className="m-late-view__content-wrapper">
-        <DrawerTab
-          isVisible={true}
-          toggleVisibility={() => dispatch(closeLateView())}
+        <ViewHeader
+          title="Late View"
+          closeView={() => dispatch(closeLateView())}
+          backlinkToView={previousView}
+          followBacklink={() => dispatch(returnToPreviousView())}
         />
-        <div className="m-late-view__title">Late View</div>
         <div className="m-late-view__panels">
           <div className="m-late-view__panel m-late-view__missing-logons">
             <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">

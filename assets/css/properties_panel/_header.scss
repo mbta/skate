@@ -83,14 +83,13 @@
   }
 }
 
-.m-properties-panel__close-ping {
+.m-properties-panel__ping-container {
   align-items: flex-end;
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
 
-  .m-close-button,
   .m-properties-panel__last-gps-ping {
     padding-bottom: 1rem;
     padding-right: 1rem;

@@ -7,7 +7,7 @@ import {
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Notification } from "../../src/realtime"
-import { initialState } from "../../src/state"
+import { initialState, OpenView } from "../../src/state"
 
 const unreadNotification: Notification = {
   id: "1",
@@ -43,7 +43,7 @@ const readNotificationState: NotificationsState = {
 
 describe("NotificationBellIcon", () => {
   test("renders when the drawer is closed and there are new notifications", () => {
-    const state = { ...initialState, notificationDrawerIsOpen: false }
+    const state = { ...initialState, openView: OpenView.None }
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
@@ -57,7 +57,7 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when the drawer is open and there are new notifications", () => {
-    const state = { ...initialState, notificationDrawerIsOpen: true }
+    const state = { ...initialState, openView: OpenView.NotificationDrawer }
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
@@ -71,7 +71,7 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when the drawer is closed and there are not new notifications", () => {
-    const state = { ...initialState, notificationDrawerIsOpen: false }
+    const state = { ...initialState, openView: OpenView.None }
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
@@ -85,7 +85,7 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when the drawer is open and there are not new notifications", () => {
-    const state = { ...initialState, notificationDrawerIsOpen: true }
+    const state = { ...initialState, openView: OpenView.NotificationDrawer }
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>

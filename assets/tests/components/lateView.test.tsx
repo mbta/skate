@@ -127,10 +127,7 @@ describe("LateView", () => {
     )
     expect(wrapper.find(".m-late-view"))
 
-    wrapper
-      .find(".m-late-view .c-drawer-tab__tab-button")
-      .first()
-      .simulate("click")
+    wrapper.find(".m-close-button").first().simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(closeLateView())
   })

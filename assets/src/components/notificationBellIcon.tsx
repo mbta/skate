@@ -3,13 +3,14 @@ import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { notificationBellIcon } from "../helpers/icon"
+import { OpenView } from "../state"
 
 const NotificationBellIcon = ({
   extraClasses,
 }: {
   extraClasses?: string[]
 }) => {
-  const [{ notificationDrawerIsOpen }] = useContext(StateDispatchContext)
+  const [{ openView }] = useContext(StateDispatchContext)
   const { notifications } = useContext(NotificationsContext)
   const unreadNotifications = notifications.filter(
     (notification) => notification.state === "unread"
@@ -19,7 +20,7 @@ const NotificationBellIcon = ({
   return notificationBellIcon(
     className([
       "m-notification-bell-icon",
-      notificationDrawerIsOpen
+      openView === OpenView.NotificationDrawer
         ? "m-notification-bell-icon--open"
         : "m-notification-bell-icon--closed",
       unreadBadge

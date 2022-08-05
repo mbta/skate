@@ -3,16 +3,19 @@ import { Link } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { logoIcon, refreshIcon } from "../../helpers/icon"
 import { reload } from "../../models/browser"
-import { openNotificationDrawer } from "../../state"
+import { openNotificationDrawer, OpenView } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 
 const TopNav = (): JSX.Element => {
-  const [{ notificationDrawerIsOpen }, dispatch] =
-    useContext(StateDispatchContext)
+  const [{ openView }, dispatch] = useContext(StateDispatchContext)
 
-  const bellIconClasses = notificationDrawerIsOpen
-    ? ["m-top-nav__notifications-icon", "m-top-nav__notifications-icon--active"]
-    : ["m-top-nav__notifications-icon"]
+  const bellIconClasses =
+    openView === OpenView.NotificationDrawer
+      ? [
+          "m-top-nav__notifications-icon",
+          "m-top-nav__notifications-icon--active",
+        ]
+      : ["m-top-nav__notifications-icon"]
 
   return (
     <div className="m-top-nav">

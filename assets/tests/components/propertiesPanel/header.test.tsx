@@ -301,7 +301,7 @@ describe("Header", () => {
       </StateDispatchProvider>
     )
     wrapper
-      .find(".m-properties-panel__header .m-close-button")
+      .find(".m-properties-panel__header-wrapper .m-close-button")
       .simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())

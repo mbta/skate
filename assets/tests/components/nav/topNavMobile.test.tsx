@@ -34,7 +34,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -56,7 +55,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -77,7 +75,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={true}
         />
       </BrowserRouter>
@@ -98,7 +95,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -120,7 +116,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -129,48 +124,6 @@ describe("TopNavMobile", () => {
     await user.click(result.getByTitle("Notifications"))
 
     expect(openNotificationDrawer).toHaveBeenCalled()
-  })
-
-  test("notifications icon gets active class when notifications drawer is open", () => {
-    const toggleMobileMenu = jest.fn()
-    const openNotificationDrawer = jest.fn()
-
-    const result = render(
-      <BrowserRouter>
-        <TopNavMobile
-          toggleMobileMenu={toggleMobileMenu}
-          openNotificationDrawer={openNotificationDrawer}
-          routeTabs={[]}
-          notificationDrawerIsOpen={true}
-          mobileMenuIsOpen={false}
-        />
-      </BrowserRouter>
-    )
-
-    expect(result.getByTitle("Notifications").children[0]).toHaveClass(
-      "m-top-nav__notifications-icon--active"
-    )
-  })
-
-  test("notifications icon doesn't get active class when notifications drawer is close", () => {
-    const toggleMobileMenu = jest.fn()
-    const openNotificationDrawer = jest.fn()
-
-    const result = render(
-      <BrowserRouter>
-        <TopNavMobile
-          toggleMobileMenu={toggleMobileMenu}
-          openNotificationDrawer={openNotificationDrawer}
-          routeTabs={[]}
-          notificationDrawerIsOpen={false}
-          mobileMenuIsOpen={false}
-        />
-      </BrowserRouter>
-    )
-
-    expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
-      "m-top-nav__notifications-icon--active"
-    )
   })
 
   test("refresh button reloads the page", async () => {
@@ -188,7 +141,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -210,7 +162,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -232,7 +183,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -254,7 +204,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={true}
         />
       </BrowserRouter>
@@ -276,7 +225,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={false}
         />
       </BrowserRouter>
@@ -298,7 +246,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={true}
         />
       </BrowserRouter>
@@ -320,7 +267,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={true}
         />
       </BrowserRouter>
@@ -342,7 +288,6 @@ describe("TopNavMobile", () => {
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
-          notificationDrawerIsOpen={false}
           mobileMenuIsOpen={true}
         />
       </BrowserRouter>

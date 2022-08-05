@@ -3,7 +3,11 @@ import { render } from "@testing-library/react"
 import TopNav from "../../../src/components/nav/topNav"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { initialState, openNotificationDrawer } from "../../../src/state"
+import {
+  initialState,
+  openNotificationDrawer,
+  OpenView,
+} from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
@@ -29,7 +33,7 @@ describe("TopNav", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, notificationDrawerIsOpen: true }}
+        state={{ ...initialState, openView: OpenView.NotificationDrawer }}
         dispatch={dispatch}
       >
         <BrowserRouter>
@@ -43,11 +47,11 @@ describe("TopNav", () => {
     )
   })
 
-  test("notifications icon doesn't get active class when notifications drawer is close", () => {
+  test("notifications icon doesn't get active class when notifications drawer is closed", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, notificationDrawerIsOpen: false }}
+        state={{ ...initialState, openView: OpenView.None }}
         dispatch={dispatch}
       >
         <BrowserRouter>

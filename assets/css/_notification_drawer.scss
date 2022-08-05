@@ -19,36 +19,6 @@
   }
 }
 
-.m-notification-drawer__title-bar {
-  background-color: $color-primary;
-  color: $color-font-light;
-  display: flex;
-  justify-content: space-between;
-  position: sticky;
-  position: -webkit-sticky;
-  // top: -1px prevents a visual glitch in Chrome desktop, where a sliver of
-  // the content that should be obscured by the title bar is visible above it
-  top: -1px;
-  z-index: 1002;
-
-  .m-notification-bell-icon {
-    flex: 0 1 auto;
-    margin: 1rem;
-    width: 1.5rem;
-  }
-
-  .m-notification-drawer__title {
-    @include font-header;
-    flex: 0 1 auto;
-    margin: 1rem;
-  }
-
-  .m-close-button {
-    flex: 0 1 auto;
-    padding: 1rem;
-  }
-}
-
 .m-notification-drawer__content {
   padding: 1rem;
 }

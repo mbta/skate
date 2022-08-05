@@ -64,7 +64,7 @@ describe("MobilePortraitNav", () => {
       <StateDispatchProvider
         state={{
           ...initialState,
-          notificationDrawerIsOpen: true,
+          openView: OpenView.NotificationDrawer,
         }}
         dispatch={dispatch}
       >

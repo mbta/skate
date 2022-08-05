@@ -8,6 +8,8 @@ import busFrontIconSvg from "../../static/images/icon-bus-front.svg"
 // @ts-ignore
 import busRearIconSvg from "../../static/images/icon-bus-rear.svg"
 // @ts-ignore
+import chevronLeftIconSvg from "../../static/images/icon-chevron-left.svg"
+// @ts-ignore
 import collapseIconSvg from "../../static/images/icon-caret-left.svg"
 // @ts-ignore
 import doubleChevronLeftIconSvg from "../../static/images/icon-double-chevron-left.svg"
@@ -123,6 +125,9 @@ export const busFrontIcon = (className = ""): JSX.Element =>
 
 export const busRearIcon = (className = ""): JSX.Element =>
   renderSvg(className, busRearIconSvg)
+
+export const chevronLeftIcon = (className = ""): JSX.Element =>
+  renderSvg(className, chevronLeftIconSvg)
 
 export const circleXIcon = (className = ""): JSX.Element =>
   renderSvg(className, circleXIconSvg)

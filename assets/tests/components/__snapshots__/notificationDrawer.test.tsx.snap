@@ -5,18 +5,10 @@ exports[`NotificationDrawer renders empty state 1`] = `
   className="m-notification-drawer"
 >
   <div
-    className="m-notification-drawer__title-bar"
+    className="m-view-header"
   >
-    <span
-      className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
-        }
-      }
-    />
     <div
-      className="m-notification-drawer__title"
+      className="m-view-header__title"
     >
       Notifications
     </div>
@@ -54,18 +46,10 @@ exports[`NotificationDrawer renders notifications 1`] = `
   className="m-notification-drawer"
 >
   <div
-    className="m-notification-drawer__title-bar"
+    className="m-view-header"
   >
-    <span
-      className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--unread"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
-        }
-      }
-    />
     <div
-      className="m-notification-drawer__title"
+      className="m-view-header__title"
     >
       Notifications
     </div>
