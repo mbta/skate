@@ -453,7 +453,7 @@ describe("reducer", () => {
 
     expect(newState).toEqual({
       ...initialState,
-      previousView: State.OpenView.Swings
+      previousView: State.OpenView.Swings,
     })
   })
 
