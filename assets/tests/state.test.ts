@@ -204,10 +204,12 @@ describe("reducer", () => {
     const state = {
       ...initialState,
       selectedVehicleId: initialVehicleId,
+      previousView: State.OpenView.Swings,
     }
     const expectedState = {
       ...state,
       selectedVehicleId: undefined,
+      previousView: State.OpenView.None,
     }
 
     const newState = reducer(state, State.deselectVehicle())
@@ -261,6 +263,17 @@ describe("reducer", () => {
       expect(reducer(state, State.openNotificationDrawer())).toEqual(
         expectedState
       )
+    })
+
+    test("openNotificationDrawer deselects current notification", () => {
+      const state: State.State = {
+        ...initialState,
+        selectedNotification: notificationFactory.build(),
+      }
+
+      const newState = reducer(state, State.openNotificationDrawer())
+
+      expect(newState.selectedNotification).toBeUndefined()
     })
 
     test("openNotificationDrawer closes swings view", () => {
@@ -406,6 +419,17 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("openSwingsView deselects current notification", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedNotification: notificationFactory.build(),
+    }
+
+    const newState = reducer(state, State.openSwingsView())
+
+    expect(newState.selectedNotification).toBeUndefined()
+  })
+
   test("openSwingsView enables swings view when late view is open", () => {
     const expectedState: State.State = {
       ...initialState,
@@ -429,7 +453,7 @@ describe("reducer", () => {
 
     expect(newState).toEqual({
       ...initialState,
-      previousView: State.OpenView.Swings,
+      previousView: State.OpenView.Swings
     })
   })
 
@@ -450,6 +474,17 @@ describe("reducer", () => {
     const newState = reducer(initialState, State.openLateView())
 
     expect(newState).toEqual(expectedState)
+  })
+
+  test("openLateView deselects current notification", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedNotification: notificationFactory.build(),
+    }
+
+    const newState = reducer(state, State.openLateView())
+
+    expect(newState.selectedNotification).toBeUndefined()
   })
 
   test("openLateView enables late view when swings views is open", () => {

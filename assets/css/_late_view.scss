@@ -8,10 +8,6 @@ $late-view-background-color: $color-bg-light;
   right: 0;
   top: 0;
   z-index: 1001;
-
-  .m-tab-bar ~ & {
-    left: $tab-bar-width;
-  }
 }
 
 .m-late-view__content-wrapper {
