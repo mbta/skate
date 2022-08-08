@@ -152,7 +152,7 @@ const TopNavMobile: React.FC<Props> = ({
       >
         <div className="m-top-nav-mobile__left-items">
           <button
-            className="m-top-nav=mobile__left-item"
+            className="m-top-nav-mobile__left-item"
             onClick={toggleMobileMenu}
             title="Menu"
           >
