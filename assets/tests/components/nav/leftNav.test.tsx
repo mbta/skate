@@ -76,6 +76,21 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Expand")).not.toBeNull()
   })
 
+  test("renders tablet layout", () => {
+    const toggleMobileMenu = jest.fn()
+    const result = render(
+      <BrowserRouter>
+        <LeftNav
+          toggleMobileMenu={toggleMobileMenu}
+          defaultToCollapsed={false}
+          dispatcherFlag={false}
+        />
+      </BrowserRouter>
+    )
+
+    expect(result.queryByTitle("Menu")).not.toBeNull()
+  })
+
   test("can toggle collapsed", async () => {
     const user = userEvent.setup()
     const result = render(
