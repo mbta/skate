@@ -25,6 +25,7 @@ import {
   OpenView,
   openNotificationDrawer,
 } from "../../state"
+import NavMenu from "./navMenu"
 
 interface Props {
   toggleMobileMenu?: () => void
@@ -37,7 +38,8 @@ const LeftNav = ({
   defaultToCollapsed,
   dispatcherFlag,
 }: Props): JSX.Element => {
-  const [{ openView }, dispatch] = useContext(StateDispatchContext)
+  const [{ openView, mobileMenuIsOpen }, dispatch] =
+    useContext(StateDispatchContext)
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
 
@@ -52,6 +54,12 @@ const LeftNav = ({
 
   return (
     <div className={"m-left-nav" + (collapsed ? " m-left-nav--collapsed" : "")}>
+      {toggleMobileMenu ? (
+        <NavMenu
+          mobileMenuIsOpen={mobileMenuIsOpen}
+          toggleMobileMenu={toggleMobileMenu}
+        />
+      ) : null}
       <ul className="m-left-nav__links">
         {toggleMobileMenu ? (
           <>
