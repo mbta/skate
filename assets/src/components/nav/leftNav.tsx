@@ -24,6 +24,7 @@ import {
   openSwingsView,
   OpenView,
   openNotificationDrawer,
+  togglePickerContainer,
 } from "../../state"
 import NavMenu from "./navMenu"
 
@@ -31,14 +32,16 @@ interface Props {
   toggleMobileMenu?: () => void
   defaultToCollapsed: boolean
   dispatcherFlag: boolean
+  closePickerOnViewOpen?: boolean
 }
 
 const LeftNav = ({
   toggleMobileMenu,
   defaultToCollapsed,
   dispatcherFlag,
+  closePickerOnViewOpen,
 }: Props): JSX.Element => {
-  const [{ openView, mobileMenuIsOpen }, dispatch] =
+  const [{ openView, mobileMenuIsOpen, pickerContainerIsVisible }, dispatch] =
     useContext(StateDispatchContext)
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
@@ -125,6 +128,10 @@ const LeftNav = ({
               toggleView={() => {
                 tagManagerEvent("late_view_toggled")
                 dispatch(openLateView())
+
+                if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                  dispatch(togglePickerContainer())
+                }
               }}
               collapsed={collapsed}
             />
@@ -138,6 +145,10 @@ const LeftNav = ({
             toggleView={() => {
               tagManagerEvent("swings_view_toggled")
               dispatch(openSwingsView())
+
+              if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                dispatch(togglePickerContainer())
+              }
             }}
             collapsed={collapsed}
           />
@@ -148,6 +159,10 @@ const LeftNav = ({
             viewIsOpen={openView === OpenView.NotificationDrawer}
             toggleView={() => {
               dispatch(openNotificationDrawer())
+
+              if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                dispatch(togglePickerContainer())
+              }
             }}
             name="Notifications"
             collapsed={collapsed}

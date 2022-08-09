@@ -27,6 +27,20 @@ const Nav: React.FC<Props> = ({
       case "mobile":
         return <MobilePortraitNav>{children}</MobilePortraitNav>
       case "mobile_landscape_tablet_portrait":
+        return (
+          <div className="m-nav--medium">
+            <div className="m-nav__nav-bar m-nav__nav-bar--left">
+              <LeftNav
+                toggleMobileMenu={() => dispatch(toggleMobileMenu())}
+                defaultToCollapsed={true}
+                dispatcherFlag={readDispatcherFlag()}
+                closePickerOnViewOpen={true}
+              />
+            </div>
+            <div className="m-nav__app-content">{children}</div>
+          </div>
+        )
+
       case "tablet":
         return (
           <div className="m-nav--medium">
