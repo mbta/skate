@@ -100,14 +100,20 @@ defmodule Schedule.Swing do
       }
     end)
     |> Enum.filter(fn %{swing_off_trip: trip1, swing_on_trip: trip2} ->
-      trip1.route_id || trip2.route_id
+      !is_nil(trip1) && !is_nil(trip2) && (trip1.route_id || trip2.route_id)
     end)
   end
 
-  @spec trip_or_trip_id_to_trip(Trip.id() | Schedule.Trip.t(), Trip.by_id()) ::
-          Schedule.Trip.t() | Trip.t()
+  @spec trip_or_trip_id_to_trip(
+          Trip.id() | Schedule.Trip.t() | Schedule.AsDirected.t(),
+          Trip.by_id()
+        ) ::
+          Schedule.Trip.t() | Trip.t() | nil
   defp trip_or_trip_id_to_trip(%Schedule.Trip{} = trip, trips_by_id),
     do: Map.get(trips_by_id, trip.id, trip)
+
+  defp trip_or_trip_id_to_trip(%Schedule.AsDirected{}, _trips_by_id),
+    do: nil
 
   defp trip_or_trip_id_to_trip(trip_id, trips_by_id), do: Map.fetch!(trips_by_id, trip_id)
 end

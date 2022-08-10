@@ -370,4 +370,77 @@ defmodule Schedule.SwingTest do
              }
     end
   end
+
+  test "ignores as directed work" do
+    trip1 =
+      build(
+        :trip,
+        id: "0123",
+        service_id: "b",
+        block_id: "A12-34",
+        route_id: "11",
+        headsign: "Somewhere Else",
+        direction_id: 0,
+        run_id: "123-456",
+        start_time: 1,
+        end_time: 100,
+        start_place: "place3",
+        end_place: "place1"
+      )
+
+    trip2 =
+      build(
+        :as_directed,
+        start_time: 101,
+        end_time: 200,
+        start_place: "place1",
+        end_place: "place2"
+      )
+
+    blocks = %{
+      "A12-34" =>
+        build(
+          :block,
+          schedule_id: "a",
+          service_id: "b",
+          start_time: 1,
+          end_time: 500,
+          id: "A12-34",
+          pieces: [
+            build(
+              :piece,
+              schedule_id: "a",
+              run_id: "123-456",
+              block_id: "A12-34",
+              start_time: 1,
+              start_place: "place3",
+              trips: [
+                trip1
+              ],
+              end_time: 100,
+              end_place: "place1",
+              start_mid_route?: nil,
+              end_mid_route?: false
+            ),
+            build(
+              :piece,
+              schedule_id: "a",
+              run_id: "123-789",
+              block_id: "A12-34",
+              start_time: 101,
+              start_place: "place1",
+              trips: [
+                trip2
+              ],
+              end_time: 200,
+              end_place: "place2",
+              start_mid_route?: nil,
+              end_mid_route?: false
+            )
+          ]
+        )
+    }
+
+    assert Swing.from_blocks(blocks, %{}) == %{}
+  end
 end
