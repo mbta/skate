@@ -73,7 +73,7 @@ const TopNavMobile: React.FC<Props> = ({
             title="Notifications"
           >
             <NotificationBellIcon
-              extraClasses={["m-top-nav__notifications-icon"]}
+              extraClasses={["m-top-nav-mobile__notifications-icon"]}
             />
           </button>
         </div>

@@ -55,10 +55,6 @@
   }
 }
 
-.m-top-nav-mobile__notifications-icon svg {
-  fill: $color-eggplant-500;
-}
-
 .m-top-nav-mobile__notifications-icon {
   svg {
     path {
@@ -82,20 +78,6 @@
       circle {
         fill: $color-strawberry-400;
         stroke: $color-strawberry-400;
-      }
-    }
-  }
-
-  &.m-top-nav-mobile__notifications-icon--active {
-    svg {
-      path {
-        fill: $color-eggplant-800;
-        stroke: none;
-      }
-
-      circle {
-        fill: $color-strawberry-500;
-        stroke: $color-strawberry-500;
       }
     }
   }
