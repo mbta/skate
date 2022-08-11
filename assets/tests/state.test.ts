@@ -307,7 +307,7 @@ describe("reducer", () => {
       const expectedState = {
         ...initialState,
         openView: State.OpenView.None,
-        previousView: State.OpenView.None,
+        previousView: State.OpenView.NotificationDrawer,
       }
       expect(reducer(state, State.closeNotificationDrawer())).toEqual(
         expectedState
@@ -453,8 +453,7 @@ describe("reducer", () => {
 
     expect(newState).toEqual({
       ...initialState,
-      openView: State.OpenView.None,
-      previousView: State.OpenView.None,
+      previousView: State.OpenView.Swings,
     })
   })
 
@@ -511,8 +510,7 @@ describe("reducer", () => {
 
     expect(newState).toEqual({
       ...initialState,
-      openView: State.OpenView.None,
-      previousView: State.OpenView.None,
+      previousView: State.OpenView.Late,
     })
   })
 

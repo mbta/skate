@@ -935,7 +935,7 @@ const openViewPanelReducer = (
       return openView === OpenView.NotificationDrawer
         ? {
             openView: OpenView.None,
-            previousView: OpenView.None,
+            previousView: openView,
             selectedVehicleOrGhost,
           }
         : {
@@ -959,7 +959,7 @@ const openViewPanelReducer = (
       return openView === OpenView.Swings
         ? {
             openView: OpenView.None,
-            previousView: OpenView.None,
+            previousView: openView,
             selectedVehicleOrGhost,
           }
         : { openView, previousView, selectedVehicleOrGhost }
@@ -975,7 +975,7 @@ const openViewPanelReducer = (
       return openView === OpenView.Late
         ? {
             openView: OpenView.None,
-            previousView: OpenView.None,
+            previousView: openView,
             selectedVehicleOrGhost,
           }
         : { openView, previousView, selectedVehicleOrGhost }
