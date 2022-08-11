@@ -63,71 +63,85 @@ const LeftNav = ({
           toggleMobileMenu={toggleMobileMenu}
         />
       ) : null}
-      <ul className="m-left-nav__links">
-        {toggleMobileMenu ? (
-          <>
+      {toggleMobileMenu ? (
+        <button
+          className="m-left-nav__menu-button"
+          onClick={toggleMobileMenu}
+          title="Menu"
+        >
+          {hamburgerIcon("m-top-nav-mobile__icon")}
+        </button>
+      ) : null}
+      <div className="m-left-nav__modes-and-views">
+        <ul className="m-left-nav__links">
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                "m-left-nav__link" +
+                (isActive ? " m-left-nav__link--active" : "")
+              }
+              title="Route Ladders"
+              to="/"
+            >
+              {ladderIcon("m-left-nav__icon")}
+              {collapsed ? null : "Route Ladders"}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                "m-left-nav__link" +
+                (isActive ? " m-left-nav__link--active" : "")
+              }
+              title="Shuttle Map"
+              to="/shuttle-map"
+            >
+              {mapIcon("m-left-nav__icon")}
+              {collapsed ? null : "Shuttle Map"}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                "m-left-nav__link" +
+                (isActive ? " m-left-nav__link--active" : "")
+              }
+              title="Search"
+              to="/search"
+            >
+              {searchIcon("m-left-nav__icon")}
+              {collapsed ? null : "Search"}
+            </NavLink>
+          </li>
+          <li>
+            <hr />
+          </li>
+          {featureIsEnabled("late_view") || dispatcherFlag ? (
             <li>
-              <button
-                className="m-left-nav__link"
-                onClick={toggleMobileMenu}
-                title="Menu"
-              >
-                {hamburgerIcon("m-top-nav-mobile__icon")}
-              </button>
+              <ViewToggle
+                icon={lateIcon("m-left-nav__icon m-left-nav__icon--late-view")}
+                name="Late View"
+                viewIsOpen={openView === OpenView.Late}
+                toggleView={() => {
+                  tagManagerEvent("late_view_toggled")
+                  dispatch(openLateView())
+
+                  if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                    dispatch(togglePickerContainer())
+                  }
+                }}
+                collapsed={collapsed}
+              />
             </li>
-            <li>
-              <hr />
-            </li>
-          </>
-        ) : null}
-        <li>
-          <NavLink
-            className={({ isActive }) =>
-              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
-            }
-            title="Route Ladders"
-            to="/"
-          >
-            {ladderIcon("m-left-nav__icon")}
-            {collapsed ? null : "Route Ladders"}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className={({ isActive }) =>
-              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
-            }
-            title="Shuttle Map"
-            to="/shuttle-map"
-          >
-            {mapIcon("m-left-nav__icon")}
-            {collapsed ? null : "Shuttle Map"}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className={({ isActive }) =>
-              "m-left-nav__link" + (isActive ? " m-left-nav__link--active" : "")
-            }
-            title="Search"
-            to="/search"
-          >
-            {searchIcon("m-left-nav__icon")}
-            {collapsed ? null : "Search"}
-          </NavLink>
-        </li>
-        <li>
-          <hr />
-        </li>
-        {featureIsEnabled("late_view") || dispatcherFlag ? (
+          ) : null}
           <li>
             <ViewToggle
-              icon={lateIcon("m-left-nav__icon m-left-nav__icon--late-view")}
-              name="Late View"
-              viewIsOpen={openView === OpenView.Late}
+              icon={swingIcon("m-left-nav__icon m-left-nav__icon--swings-view")}
+              name="Swings View"
+              viewIsOpen={openView === OpenView.Swings}
               toggleView={() => {
-                tagManagerEvent("late_view_toggled")
-                dispatch(openLateView())
+                tagManagerEvent("swings_view_toggled")
+                dispatch(openSwingsView())
 
                 if (closePickerOnViewOpen && pickerContainerIsVisible) {
                   dispatch(togglePickerContainer())
@@ -136,88 +150,72 @@ const LeftNav = ({
               collapsed={collapsed}
             />
           </li>
-        ) : null}
-        <li>
-          <ViewToggle
-            icon={swingIcon("m-left-nav__icon m-left-nav__icon--swings-view")}
-            name="Swings View"
-            viewIsOpen={openView === OpenView.Swings}
-            toggleView={() => {
-              tagManagerEvent("swings_view_toggled")
-              dispatch(openSwingsView())
+          <li>
+            <ViewToggle
+              icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
+              viewIsOpen={openView === OpenView.NotificationDrawer}
+              toggleView={() => {
+                dispatch(openNotificationDrawer())
 
-              if (closePickerOnViewOpen && pickerContainerIsVisible) {
-                dispatch(togglePickerContainer())
-              }
-            }}
-            collapsed={collapsed}
-          />
-        </li>
-        <li>
-          <ViewToggle
-            icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
-            viewIsOpen={openView === OpenView.NotificationDrawer}
-            toggleView={() => {
-              dispatch(openNotificationDrawer())
-
-              if (closePickerOnViewOpen && pickerContainerIsVisible) {
-                dispatch(togglePickerContainer())
-              }
-            }}
-            name="Notifications"
-            collapsed={collapsed}
-          />
-        </li>
-      </ul>
-      {toggleMobileMenu ? null : (
-        <ul className="m-left-nav__links">
-          <li>
-            <button
-              className="m-left-nav__link"
-              onClick={openDrift}
-              title="Support"
-            >
-              {speechBubbleIcon("m-left-nav__icon")}
-              {collapsed ? null : "Support"}
-            </button>
-          </li>
-          <li>
-            <button
-              className="m-left-nav__link"
-              onClick={() => displayHelp(location)}
-              title="About Skate"
-            >
-              {questionMarkIcon("m-left-nav__icon")}
-              {collapsed ? null : "About Skate"}
-            </button>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "m-left-nav__link" +
-                (isActive ? " m-left-nav__link--active" : "")
-              }
-              title="Settings"
-              to="/settings"
-            >
-              {settingsIcon("m-left-nav__icon")}
-              {collapsed ? null : "Settings"}
-            </NavLink>
-          </li>
-          <li>
-            <button
-              className="m-left-nav__link"
-              onClick={() => setCollapsed(!collapsed)}
-              title={collapsed ? "Expand" : "Collapse"}
-            >
-              {collapsed
-                ? doubleChevronRightIcon("m-left-nav__icon")
-                : doubleChevronLeftIcon("m-left-nav__icon")}
-              {collapsed ? null : "Collapse"}
-            </button>
+                if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                  dispatch(togglePickerContainer())
+                }
+              }}
+              name="Notifications"
+              collapsed={collapsed}
+            />
           </li>
         </ul>
-      )}
+        {toggleMobileMenu ? null : (
+          <ul className="m-left-nav__links">
+            <li>
+              <button
+                className="m-left-nav__link"
+                onClick={openDrift}
+                title="Support"
+              >
+                {speechBubbleIcon("m-left-nav__icon")}
+                {collapsed ? null : "Support"}
+              </button>
+            </li>
+            <li>
+              <button
+                className="m-left-nav__link"
+                onClick={() => displayHelp(location)}
+                title="About Skate"
+              >
+                {questionMarkIcon("m-left-nav__icon")}
+                {collapsed ? null : "About Skate"}
+              </button>
+            </li>
+            <li>
+              <NavLink
+                className={({ isActive }) =>
+                  "m-left-nav__link" +
+                  (isActive ? " m-left-nav__link--active" : "")
+                }
+                title="Settings"
+                to="/settings"
+              >
+                {settingsIcon("m-left-nav__icon")}
+                {collapsed ? null : "Settings"}
+              </NavLink>
+            </li>
+            <li>
+              <button
+                className="m-left-nav__link"
+                onClick={() => setCollapsed(!collapsed)}
+                title={collapsed ? "Expand" : "Collapse"}
+              >
+                {collapsed
+                  ? doubleChevronRightIcon("m-left-nav__icon")
+                  : doubleChevronLeftIcon("m-left-nav__icon")}
+                {collapsed ? null : "Collapse"}
+              </button>
+            </li>
+          </ul>
+        )}
+      </div>
     </div>
   )
 }

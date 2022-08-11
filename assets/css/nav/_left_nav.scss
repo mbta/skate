@@ -1,22 +1,11 @@
 .m-left-nav {
   width: calc(11.5rem + 1px);
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-  height: 100%;
-
-  background-color: $color-gray-50;
-
-  border-right: 1px solid $color-gray-300;
-  padding: 1.5rem 1rem;
 
   .m-left-nav__icon {
     padding-right: 0.75rem;
-  }
-
-  hr {
-    border: 1px solid $color-gray-300;
   }
 }
 
@@ -26,6 +15,34 @@
   .m-left-nav__icon {
     padding-right: 0;
   }
+}
+
+.m-left-nav__modes-and-views {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  flex-grow: 1;
+
+  background-color: $color-gray-50;
+
+  border-right: 1px solid $color-gray-300;
+  padding: 1.5rem 1rem;
+
+  hr {
+    border: 1px solid $color-gray-300;
+  }
+}
+
+.m-left-nav__menu-button {
+  @include button-icon(1.25rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 4rem;
+
+  background-color: $color-gray-200;
 }
 
 .m-left-nav__links {
