@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import App from "../../src/components/app"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { SocketProvider } from "../../src/contexts/socketContext"
@@ -41,8 +42,8 @@ describe("App", () => {
 
   test("shows data outage banner if there's a data outage", () => {
     ;(useDataStatus as jest.Mock).mockImplementation(() => "outage")
-    const tree = renderer.create(<App />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(<App />)
+    expect(result.queryByText(/Ongoing MBTA Data Outage/)).not.toBeNull()
   })
 
   test("pulls in vehicles / ghosts for routes in all open tabs", () => {
