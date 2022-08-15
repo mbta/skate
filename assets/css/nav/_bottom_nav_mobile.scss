@@ -1,7 +1,7 @@
 .m-bottom-nav-mobile {
   background-color: $color-gray-50;
   border-top: 1px solid $color-gray-300;
-  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  padding: 0.5rem 1.5rem 1.75rem 1.5rem;
 }
 
 .m-bottom-nav-mobile__links {
@@ -20,8 +20,8 @@
   padding: 0.75rem;
   border-radius: 0.375rem;
   color: $color-gray-600;
-  height: 2.25rem;
-  width: 2.25rem;
+  height: 3rem;
+  width: 3rem;
 
   &:hover {
     background-color: $color-gray-100;
@@ -36,12 +36,12 @@
   }
 
   &.m-bottom-nav-mobile__link--active {
-    background-color: $color-eggplant-100;
+    background-color: $color-eggplant-700;
     font-weight: 500;
-    color: $color-eggplant-800;
+    color: $white;
 
     svg {
-      fill: $color-eggplant-800;
+      fill: $white;
     }
   }
 }
