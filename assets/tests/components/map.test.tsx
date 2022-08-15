@@ -10,7 +10,6 @@ import Map, {
 } from "../../src/components/map"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape } from "../../src/schedule"
-import featureIsEnabled from "../../src/laboratoryFeatures"
 import vehicleFactory from "../factories/vehicle"
 
 jest.unmock("leaflet")
@@ -90,35 +89,6 @@ describe("map", () => {
   })
 
   test("draws train vehicles", () => {
-    const trainVehicle: TrainVehicle = {
-      id: "red1",
-      latitude: 42.24615,
-      longitude: -71.00369,
-      bearing: 15,
-    }
-    const wrapper = mount(<Map vehicles={[]} trainVehicles={[trainVehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__train-icon")
-  })
-
-  test("draws vehicles with Pigeon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
-    const wrapper = mount(<Map vehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
-  })
-
-  test("draws secondary vehicles with Pigeon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
-    const wrapper = mount(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
-  })
-
-  test("draws train vehicles with Pigeon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
     const trainVehicle: TrainVehicle = {
       id: "red1",
       latitude: 42.24615,
