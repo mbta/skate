@@ -10,6 +10,16 @@
   height: 100%;
 }
 
+.m-nav--medium {
+  display: grid;
+  gap: 0;
+  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "left content";
+  width: 100%;
+  height: 100%;
+}
+
 .m-nav--narrow {
   display: grid;
   gap: 0;

@@ -75,7 +75,29 @@ describe("Nav", () => {
     expect(result.getByTestId("bottom-nav-mobile")).not.toBeNull()
   })
 
-  test("renders tablet placeholder for new nav content", () => {
+  test("renders mobile landscape / tablet portrait nav content", () => {
+    ;(appData as jest.Mock).mockImplementation(() => {
+      return {
+        navBetaFlag: "true",
+      }
+    })
+    ;(useDeviceType as jest.Mock).mockImplementationOnce(
+      () => "mobile_landscape_tablet_portrait"
+    )
+
+    const result = render(
+      <BrowserRouter>
+        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+          Hello, world!
+        </Nav>
+      </BrowserRouter>
+    )
+
+    expect(result.queryByTitle("Route Ladders")).not.toBeNull()
+    expect(result.queryByText("Route Ladders")).toBeNull()
+  })
+
+  test("renders tablet nav content", () => {
     ;(appData as jest.Mock).mockImplementation(() => {
       return {
         navBetaFlag: "true",
@@ -95,7 +117,7 @@ describe("Nav", () => {
     expect(result.queryByText("Route Ladders")).toBeNull()
   })
 
-  test("renders desktop placeholder for new nav content", () => {
+  test("renders desktop nav content", () => {
     ;(appData as jest.Mock).mockImplementation(() => {
       return {
         navBetaFlag: "true",
@@ -112,24 +134,5 @@ describe("Nav", () => {
 
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()
     expect(result.queryByText("Route Ladders")).not.toBeNull()
-  })
-
-  test("renders beta version with feature flag", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-    ;(appData as jest.Mock).mockImplementation(() => {
-      return {
-        navBetaFlag: "false",
-      }
-    })
-
-    const result = render(
-      <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-          Hello, world!
-        </Nav>
-      </BrowserRouter>
-    )
-
-    expect(result.queryByTitle("Collapse")).not.toBeNull()
   })
 })

@@ -11,6 +11,7 @@ import {
   openSwingsView,
   openNotificationDrawer,
   OpenView,
+  togglePickerContainer,
 } from "../../../src/state"
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
@@ -76,6 +77,24 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Expand")).not.toBeNull()
   })
 
+  test("can toggle nav menu on tablet layout", async () => {
+    const toggleMobileMenu = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <BrowserRouter>
+        <LeftNav
+          toggleMobileMenu={toggleMobileMenu}
+          defaultToCollapsed={false}
+          dispatcherFlag={false}
+        />
+      </BrowserRouter>
+    )
+
+    await user.click(result.getByTitle("Menu"))
+
+    expect(toggleMobileMenu).toHaveBeenCalled()
+  })
+
   test("can toggle collapsed", async () => {
     const user = userEvent.setup()
     const result = render(
@@ -120,6 +139,29 @@ describe("LeftNav", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
   })
 
+  test("clicking late view button closes picker container when flag is set", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, pickerContainerIsVisible: true }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <LeftNav
+            defaultToCollapsed={true}
+            dispatcherFlag={true}
+            closePickerOnViewOpen={true}
+          />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Late View"))
+
+    expect(dispatch).toHaveBeenCalledWith(togglePickerContainer())
+  })
+
   test("clicking swings view button toggles swing view", async () => {
     const dispatch = jest.fn()
     const user = userEvent.setup()
@@ -135,6 +177,29 @@ describe("LeftNav", () => {
 
     expect(dispatch).toHaveBeenCalledWith(openSwingsView())
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
+  })
+
+  test("clicking swings view button closes picker container when flag is set", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, pickerContainerIsVisible: true }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <LeftNav
+            defaultToCollapsed={true}
+            dispatcherFlag={true}
+            closePickerOnViewOpen={true}
+          />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Swings View"))
+
+    expect(dispatch).toHaveBeenCalledWith(togglePickerContainer())
   })
 
   test("view button displays selected state when that view is enabled", async () => {
@@ -195,6 +260,29 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Notifications"))
 
     expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
+  })
+
+  test("clicking notifications closes picker container when flag is set", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, pickerContainerIsVisible: true }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <LeftNav
+            defaultToCollapsed={true}
+            dispatcherFlag={true}
+            closePickerOnViewOpen={true}
+          />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Notifications"))
+
+    expect(dispatch).toHaveBeenCalledWith(togglePickerContainer())
   })
 
   test("notifications icon gets active class when notifications drawer is open", () => {

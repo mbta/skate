@@ -14,6 +14,7 @@ describe("useDeviceType", () => {
       return {
         matches: {
           mobile: true,
+          mobile_landscape_tablet_portrait: false,
           tablet: false,
         },
         matchesAny: true,
@@ -24,11 +25,28 @@ describe("useDeviceType", () => {
     expect(useDeviceType()).toBe("mobile")
   })
 
+  test("returns mobile landscape / tablet portrair when media query matches", () => {
+    ;(useMediaQueries as jest.Mock).mockImplementationOnce(() => {
+      return {
+        matches: {
+          mobile: false,
+          mobile_landscape_tablet_portrait: true,
+          tablet: false,
+        },
+        matchesAny: true,
+        matchesAll: false,
+      }
+    })
+
+    expect(useDeviceType()).toBe("mobile_landscape_tablet_portrait")
+  })
+
   test("returns tablet when media query matches tablet", () => {
     ;(useMediaQueries as jest.Mock).mockImplementationOnce(() => {
       return {
         matches: {
           mobile: false,
+          mobile_landscape_tablet_portrait: false,
           tablet: true,
         },
         matchesAny: true,
@@ -44,6 +62,7 @@ describe("useDeviceType", () => {
       return {
         matches: {
           mobile: false,
+          mobile_landscape_tablet_portrait: false,
           tablet: false,
         },
         matchesAny: false,
