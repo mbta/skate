@@ -246,7 +246,7 @@ describe("LeftNav", () => {
     expect(displayHelp).toHaveBeenCalled()
   })
 
-  test("clicking notifications icon toggles notifications drawer", async () => {
+  test("clicking notifications icon toggles notifications drawer and logs a tag manager event", async () => {
     const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
@@ -260,6 +260,7 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Notifications"))
 
     expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
+    expect(tagManagerEvent).toHaveBeenCalledWith("notifications_opened")
   })
 
   test("clicking notifications closes picker container when flag is set", async () => {

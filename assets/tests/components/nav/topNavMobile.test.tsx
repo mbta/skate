@@ -8,6 +8,12 @@ import {
 import userEvent from "@testing-library/user-event"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
+import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
+
+jest.mock("../../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 describe("TopNavMobile", () => {
   test("clicking the menu hamburger button toggles the mobile menu expanded/collapsed state", async () => {
@@ -31,7 +37,7 @@ describe("TopNavMobile", () => {
     expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
-  test("clicking notifications icon toggles notifications drawer", async () => {
+  test("clicking notifications icon toggles notifications drawer and logs a tag manager event", async () => {
     const toggleMobileMenu = jest.fn()
     const openNotificationDrawer = jest.fn()
 
@@ -50,6 +56,7 @@ describe("TopNavMobile", () => {
     await user.click(result.getByTitle("Notifications"))
 
     expect(openNotificationDrawer).toHaveBeenCalled()
+    expect(tagManagerEvent).toHaveBeenCalledWith("notifications_opened")
   })
 })
 

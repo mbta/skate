@@ -4,6 +4,7 @@ import { hamburgerIcon } from "../../helpers/icon"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
 import NavMenu from "./navMenu"
+import { tagManagerEvent } from "../../helpers/googleTagManager"
 
 export const toTitleCase = (str: string): string => {
   return str.replace(
@@ -69,7 +70,11 @@ const TopNavMobile: React.FC<Props> = ({
         <div className="m-top-nav-mobile__right-items">
           <button
             className="m-top-nav-mobile__right-item"
-            onClick={openNotificationDrawer}
+            onClick={() => {
+              openNotificationDrawer()
+
+              tagManagerEvent("notifications_opened")
+            }}
             title="Notifications"
           >
             <NotificationBellIcon
