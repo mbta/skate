@@ -107,7 +107,6 @@ config :skate, Skate.Repo,
 config :laboratory,
   features: [
     {:late_view, "Late View", "Grants access to experimental Late View"},
-    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"},
     {:nav_beta, "Improved navigation beta", "New and improved navigation components"}
   ],
   cookie: [
