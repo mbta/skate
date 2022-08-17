@@ -23,7 +23,7 @@
   "dependencies": {
     "@react-hook/media-query": "^1.1.1",
     "@rehooks/component-size": "^1.0.3",
-    "@sentry/react": "^6.18.2",
+    "@sentry/react": "^7.11.1",
     "@tippyjs/react": "^4.2.6",
     "@types/uuid": "^8.3.4",
     "core-js": "^3.21.1",
@@ -32,7 +32,6 @@
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
-    "pigeon-maps": "^0.19.7",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-leaflet": "^2.8.0",
