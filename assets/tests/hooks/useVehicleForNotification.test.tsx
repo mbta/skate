@@ -7,11 +7,18 @@ import { NotificationReason, NotificationState } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
 import {
+  makeMockChannel,
   makeMockOneShotChannel,
   makeMockSocket,
 } from "../testHelpers/socketHelpers"
 import vehicleDataFactory from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 const ghostData: GhostData = ghostDataFactory.build({
   id: "ghost-5678",
@@ -185,6 +192,8 @@ describe("useVehicleForNotification", () => {
       tripId: "12345678",
       viaVariant: "3",
     })
+
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_linked_to_vpp")
   })
 
   test("parses ghost data from channel", () => {
@@ -220,9 +229,35 @@ describe("useVehicleForNotification", () => {
       currentPieceStartPlace: null,
       incomingTripDirectionId: null,
     })
+
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_linked_to_vpp")
   })
 
-  test("handles missing data from channel for a current or past notification", () => {
+  test("only logs event once", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: [vehicleData] })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+    mockChannel.on.mockImplementation((event, handler) => {
+      if (event === "event") {
+        handler({
+          data: [vehicleData],
+        })
+      }
+    })
+
+    const { rerender } = renderHook(
+      () => {
+        return useVehicleForNotification(notification, mockSocket)
+      },
+      { wrapper }
+    )
+
+    rerender()
+
+    expect(tagManagerEvent).toHaveBeenCalledTimes(1)
+  })
+
+  test("handles missing data from channel", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -240,26 +275,9 @@ describe("useVehicleForNotification", () => {
       { wrapper }
     )
     expect(result.current).toBeNull()
-  })
-
-  test("handles missing data from channel for an upcoming notification", () => {
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockOneShotChannel(null)
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    const { result } = renderHook(
-      () => {
-        return useVehicleForNotification(
-          {
-            ...notification,
-            startTime: new Date("20200-10-06"),
-          },
-          mockSocket
-        )
-      },
-      { wrapper }
+    expect(tagManagerEvent).toHaveBeenCalledWith(
+      "notification_linked_to_inactive_modal"
     )
-    expect(result.current).toBeNull()
   })
 
   test("handles empty result from channel", () => {
@@ -280,5 +298,8 @@ describe("useVehicleForNotification", () => {
       { wrapper }
     )
     expect(result.current).toBeNull()
+    expect(tagManagerEvent).toHaveBeenCalledWith(
+      "notification_linked_to_inactive_modal"
+    )
   })
 })
