@@ -15,6 +15,7 @@ import {
   State,
 } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -29,6 +30,11 @@ jest.mock("../../src/hooks/useNotifications", () => ({
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: () => true,
+}))
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
 }))
 
 const vehicle = vehicleFactory.build()
@@ -61,7 +67,7 @@ describe("NotificationsProvider", () => {
     expect(result.current.notifications).toEqual([])
   })
 
-  test("receives incoming notifications", () => {
+  test("receives incoming notifications and logs a tag manager event", () => {
     let handler: (notification: Notification) => void
     ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
       handler = h
@@ -74,6 +80,7 @@ describe("NotificationsProvider", () => {
       handler!(notification)
     })
     expect(result.current.notifications).toHaveLength(1)
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
   })
 
   test("expires notifications after 8 hours", () => {

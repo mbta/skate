@@ -157,6 +157,8 @@ const LeftNav = ({
               toggleView={() => {
                 dispatch(openNotificationDrawer())
 
+                tagManagerEvent("notifications_opened")
+
                 if (closePickerOnViewOpen && pickerContainerIsVisible) {
                   dispatch(togglePickerContainer())
                 }

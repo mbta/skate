@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { useNotifications } from "../hooks/useNotifications"
@@ -74,6 +75,7 @@ export const NotificationsProvider = ({
   /* istanbul ignore next */
   useNotifications(
     (notification) => {
+      tagManagerEvent("notification_delivered")
       dispatch(addNotification(notification))
     },
     (notificationsData) => {
