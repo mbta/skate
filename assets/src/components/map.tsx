@@ -15,6 +15,7 @@ import {
   Polyline,
   TileLayer,
   useMap,
+  useMapEvents,
   ZoomControl,
 } from "react-leaflet"
 import Control from "react-leaflet-custom-control"
@@ -313,6 +314,32 @@ const RecenterControl = ({
 
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
+const EventAdder = ({
+  isAutoCentering,
+  setShouldAutoCenter
+}: {
+  isAutoCentering: MutableRefObject<boolean>
+  setShouldAutoCenter: (arg0: boolean) => void
+}): ReactElement => {
+  useMapEvents({
+    movestart: () => {
+      // If the user drags or zooms, they want manual control of the map.
+      // But don't disable shouldAutoCenter if the move was triggered by an auto center.
+      if (!isAutoCentering.current) {
+        setShouldAutoCenter(false)
+      }
+    },
+    moveend: () => {
+      console.log("moveend")
+      // Wait until the auto centering is finished to start listening for manual moves again.
+      if (isAutoCentering.current) {
+        isAutoCentering.current = false
+      }
+    },
+  })
+  return <></>
+}
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
@@ -343,20 +370,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         zoomControl={false}
         center={defaultCenter}
         zoom={13}
-        onmovestart={() => {
-          // If the user drags or zooms, they want manual control of the map.
-          // But don't disable shouldAutoCenter if the move was triggered by an auto center.
-          if (!isAutoCentering.current) {
-            setShouldAutoCenter(false)
-          }
-        }}
-        onmoveend={() => {
-          // Wait until the auto centering is finished to start listening for manual moves again.
-          if (isAutoCentering.current) {
-            isAutoCentering.current = false
-          }
-        }}
       >
+        <EventAdder
+          isAutoCentering={isAutoCentering}
+          setShouldAutoCenter={setShouldAutoCenter}
+        />
         <ZoomControl position="topright" />
         <FullscreenControl position="topright" />
         <RecenterControl
