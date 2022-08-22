@@ -4,16 +4,10 @@ import ViewHeader from "../../src/components/viewHeader"
 import userEvent from "@testing-library/user-event"
 import { OpenView } from "../../src/state"
 import useDeviceType from "../../src/hooks/useDeviceType"
-import featureIsEnabled from "../../src/laboratoryFeatures"
 
 jest.mock("../../src/hooks/useDeviceType", () => ({
   __esModule: true,
   default: jest.fn(() => "desktop"),
-}))
-
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => true),
 }))
 
 describe("ViewHeader", () => {
@@ -55,25 +49,6 @@ describe("ViewHeader", () => {
         title="My View"
         closeView={close}
         backlinkToView={OpenView.None}
-        followBacklink={followBacklink}
-      />
-    )
-
-    expect(result.queryAllByRole("button").length).toEqual(1)
-  })
-
-  test("backlink doesn't render when nav feature flag is off", () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(() => "mobile")
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => false)
-
-    const close = jest.fn()
-    const followBacklink = jest.fn()
-
-    const result = render(
-      <ViewHeader
-        title="My View"
-        closeView={close}
-        backlinkToView={OpenView.Swings}
         followBacklink={followBacklink}
       />
     )

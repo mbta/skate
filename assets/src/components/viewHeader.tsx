@@ -1,7 +1,6 @@
 import React from "react"
 import { chevronLeftIcon } from "../helpers/icon"
 import useDeviceType from "../hooks/useDeviceType"
-import featureIsEnabled from "../laboratoryFeatures"
 import { OpenView } from "../state"
 import CloseButton from "./closeButton"
 
@@ -36,8 +35,7 @@ const ViewHeader: ViewHeaderType = ({
     <div className="m-view-header">
       {backlinkToView &&
       backlinkToView !== OpenView.None &&
-      deviceType === "mobile" &&
-      featureIsEnabled("nav_beta") ? (
+      deviceType === "mobile" ? (
         <button
           className="m-view-header__backlink"
           onClick={followBacklink}

@@ -30,7 +30,6 @@ import {
   findFirstOpenTabWith,
   selectTabByUUID,
 } from "./models/routeTab"
-import featureIsEnabled from "./laboratoryFeatures"
 
 export enum OpenView {
   None = 1,
@@ -982,7 +981,7 @@ const openViewPanelReducer = (
     case "SELECT_VEHICLE":
     case "SELECT_VEHICLE_FROM_NOTIFICATION":
       return {
-        openView: featureIsEnabled("nav_beta") ? OpenView.None : openView,
+        openView: OpenView.None,
         previousView: openView === OpenView.None ? previousView : openView,
         selectedVehicleOrGhost: action.payload.vehicle,
       }

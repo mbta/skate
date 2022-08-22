@@ -14,15 +14,9 @@ import { RouteTab } from "../src/models/routeTab"
 import vehicleFactory from "./factories/vehicle"
 import routeTabFactory from "./factories/routeTab"
 import notificationFactory from "./factories/notification"
-import featureIsEnabled from "../src/laboratoryFeatures"
 
 const initialState = State.initialState
 const reducer = State.reducer
-
-jest.mock("../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => true),
-}))
 
 describe("reducer", () => {
   test("selectShuttleRun", () => {
@@ -156,21 +150,6 @@ describe("reducer", () => {
     expect(newState.openView).toEqual(State.OpenView.None)
   })
 
-  test("selectVehicle leaves other view open (with nav beta off)", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => false)
-
-    const vehicle: Vehicle = vehicleFactory.build()
-
-    const state = {
-      ...initialState,
-      openView: State.OpenView.Swings,
-    }
-
-    const newState = reducer(state, State.selectVehicle(vehicle))
-
-    expect(newState.openView).toEqual(State.OpenView.Swings)
-  })
-
   test("selectVehicle closes notification drawer", () => {
     const vehicle: Vehicle = vehicleFactory.build()
 
@@ -182,21 +161,6 @@ describe("reducer", () => {
     const newState = reducer(state, State.selectVehicle(vehicle))
 
     expect(newState.openView).toBe(State.OpenView.None)
-  })
-
-  test("selectVehicle leaves notification drawer open (with nav beta off)", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => false)
-
-    const vehicle: Vehicle = vehicleFactory.build()
-
-    const state = {
-      ...initialState,
-      openView: State.OpenView.NotificationDrawer,
-    }
-
-    const newState = reducer(state, State.selectVehicle(vehicle))
-
-    expect(newState.openView).toBe(State.OpenView.NotificationDrawer)
   })
 
   test("deselectVehicle", () => {
