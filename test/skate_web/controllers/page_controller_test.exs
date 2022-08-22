@@ -40,20 +40,6 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
-    test "doesn't set nav beta flag when not in nav beta group", %{conn: conn} do
-      conn = get(conn, "/")
-
-      refute conn.assigns.nav_beta_flag
-    end
-
-    @tag :authenticated_nav_beta
-    test "does set nav beta flag when in nav beta group", %{conn: conn} do
-      conn = get(conn, "/")
-
-      assert conn.assigns.nav_beta_flag
-    end
-
-    @tag :authenticated
     test "includes route tabs in HTML", %{conn: conn, user: user} do
       Skate.Settings.RouteTab.update_all_for_user!(user, [
         build(:route_tab, %{selected_route_ids: ["1"]})

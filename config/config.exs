@@ -106,8 +106,7 @@ config :skate, Skate.Repo,
 
 config :laboratory,
   features: [
-    {:late_view, "Late View", "Grants access to experimental Late View"},
-    {:nav_beta, "Improved navigation beta", "New and improved navigation components"}
+    {:late_view, "Late View", "Grants access to experimental Late View"}
   ],
   cookie: [
     # one month,

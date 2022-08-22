@@ -48,22 +48,4 @@ defmodule SkateWeb.AuthManagerTest do
       refute AuthManager.claims_grant_dispatcher_access?(%{})
     end
   end
-
-  describe "claims_grant_nav_beta_access?/1" do
-    test "grants nav_beta access when in nav beta group" do
-      assert AuthManager.claims_grant_nav_beta_access?(%{"groups" => ["skate-nav-beta"]})
-    end
-
-    test "doesn't grant access with nil groups" do
-      refute AuthManager.claims_grant_nav_beta_access?(%{"groups" => nil})
-    end
-
-    test "doesn't grant access with non-nav beta groups" do
-      refute AuthManager.claims_grant_nav_beta_access?(%{"groups" => ["other-group"]})
-    end
-
-    test "doesn't grant access with no group information present" do
-      refute AuthManager.claims_grant_nav_beta_access?(%{})
-    end
-  end
 end
