@@ -33,7 +33,6 @@ const Nav: React.FC<Props> = ({ children }) => {
           <div className="m-nav__app-content">{children}</div>
         </div>
       )
-
     case "tablet":
       return (
         <div className="m-nav--medium">
