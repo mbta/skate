@@ -21,7 +21,7 @@ Array [
             Vehicles
           </div>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -322,7 +322,7 @@ Array [
             Vehicles
           </div>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"

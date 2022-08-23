@@ -1,5 +1,5 @@
 import React from "react"
-import CloseButton from "./closeButton"
+import OldCloseButton from "./oldCloseButton"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { unreadIcon } from "../helpers/icon"
 
@@ -64,7 +64,7 @@ export const Card: React.FC<CardProps> = ({
       )}
       {closeCallback ? (
         <div className="m-card__right">
-          <CloseButton onClick={closeCallback} />
+          <OldCloseButton onClick={closeCallback} />
         </div>
       ) : null}
     </div>

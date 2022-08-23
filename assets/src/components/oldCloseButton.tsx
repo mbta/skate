@@ -5,11 +5,11 @@ interface Props {
   onClick: () => void
 }
 
-const CloseButton = ({ onClick }: Props) => (
+const OldCloseButton = ({ onClick }: Props) => (
   <button
     data-testid="close-button"
     title="Close"
-    className="m-close-button"
+    className="m-old-close-button"
     onClick={(e) => {
       e.stopPropagation()
       onClick()
@@ -19,4 +19,4 @@ const CloseButton = ({ onClick }: Props) => (
   </button>
 )
 
-export default CloseButton
+export default OldCloseButton

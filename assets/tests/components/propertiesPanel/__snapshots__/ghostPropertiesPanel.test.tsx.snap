@@ -16,7 +16,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
         Vehicles
       </div>
       <button
-        className="m-close-button"
+        className="m-old-close-button"
         data-testid="close-button"
         onClick={[Function]}
         title="Close"
@@ -305,7 +305,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         Vehicles
       </div>
       <button
-        className="m-close-button"
+        className="m-old-close-button"
         data-testid="close-button"
         onClick={[Function]}
         title="Close"
@@ -640,7 +640,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         Vehicles
       </div>
       <button
-        className="m-close-button"
+        className="m-old-close-button"
         data-testid="close-button"
         onClick={[Function]}
         title="Close"

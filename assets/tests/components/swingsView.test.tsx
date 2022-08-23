@@ -295,7 +295,7 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("can close the swings view", () => {
+  test("can close the swings view", async () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 19000 }),
     ])
@@ -307,7 +307,9 @@ describe("SwingsView", () => {
     )
 
     const dispatch = jest.fn()
-    const wrapper = mount(
+
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <RoutesProvider routes={routes}>
           <SwingsView />
@@ -315,7 +317,7 @@ describe("SwingsView", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-close-button").first().simulate("click")
+    await user.click(result.getByTitle("Close"))
     expect(dispatch).toHaveBeenCalledWith(closeSwingsView())
   })
 })

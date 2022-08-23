@@ -29,7 +29,7 @@ import {
   closeRouteTab,
   promptToSaveOrCreatePreset,
 } from "../state"
-import CloseButton from "./closeButton"
+import OldCloseButton from "./oldCloseButton"
 import { saveIcon, plusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 
@@ -103,7 +103,7 @@ const LadderTab = ({
             {saveIcon()}
           </button>
         ) : null}
-        <CloseButton onClick={() => closeTab()} />
+        <OldCloseButton onClick={() => closeTab()} />
       </div>
     </div>
   )

@@ -6,7 +6,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -54,7 +54,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -452,7 +452,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -783,7 +783,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -1038,7 +1038,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -1208,7 +1208,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -1605,7 +1605,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -1935,7 +1935,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -2400,7 +2400,7 @@ Array [
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"

@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
+import { render } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
@@ -15,6 +16,7 @@ import { initialState, selectVehicle } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
+import userEvent from "@testing-library/user-event"
 
 const vehicles: Vehicle[] = [
   vehicleFactory.build({
@@ -490,7 +492,7 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking the close button deselects that route", () => {
+  test("clicking the close button deselects that route", async () => {
     const mockDeselect = jest.fn()
     const route: Route = routeFactory.build({
       id: "28",
@@ -502,7 +504,8 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const wrapper = mount(
+    const user = userEvent.setup()
+    const result = render(
       <RouteLadder
         route={route}
         timepoints={timepoints}
@@ -515,7 +518,7 @@ describe("routeLadder", () => {
         ladderCrowdingToggles={{}}
       />
     )
-    wrapper.find(".m-route-ladder__header .m-close-button").simulate("click")
+    await user.click(result.getByTitle("Close"))
 
     expect(mockDeselect).toHaveBeenCalledWith("28")
   })

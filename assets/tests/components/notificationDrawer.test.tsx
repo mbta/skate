@@ -59,9 +59,11 @@ describe("NotificationDrawer", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("close button closes the drawer", () => {
+  test("close button closes the drawer", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <RoutesProvider routes={routes}>
           <NotificationDrawer />
@@ -69,7 +71,7 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-close-button").first().simulate("click")
+    await user.click(result.getByTitle("Close"))
     expect(dispatch).toHaveBeenCalledWith(closeNotificationDrawer())
   })
 

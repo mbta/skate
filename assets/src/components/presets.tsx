@@ -4,7 +4,7 @@ import {
   promptToSaveOrCreatePreset,
   promptToDeletePreset,
 } from "../state"
-import CloseButton from "./closeButton"
+import OldCloseButton from "./oldCloseButton"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
 import { plusThinIcon } from "../helpers/icon"
@@ -28,7 +28,7 @@ const Presets = () => {
                 {preset.presetName}
               </button>
             </div>
-            <CloseButton
+            <OldCloseButton
               onClick={() => {
                 dispatch(promptToDeletePreset(preset))
               }}

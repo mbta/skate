@@ -8,7 +8,7 @@ import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { deselectVehicle } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
-import CloseButton from "../closeButton"
+import OldCloseButton from "../oldCloseButton"
 import TabList from "./tabList"
 
 interface Props {
@@ -65,7 +65,7 @@ const StaleDataHeader: React.FC<{
           <div className="m-route-variant-name">Not Available</div>
         </div>
         <div className="m-properties-panel__close-ping">
-          <CloseButton onClick={hideMe} />
+          <OldCloseButton onClick={hideMe} />
         </div>
       </div>
       {vehicle.isShuttle || (

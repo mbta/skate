@@ -312,7 +312,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -344,7 +344,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             Untitled
           </div>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -383,7 +383,7 @@ exports[`LadderPage renders with route tabs 1`] = `
         className="m-route-ladder__header"
       >
         <button
-          className="m-close-button"
+          className="m-old-close-button"
           data-testid="close-button"
           onClick={[Function]}
           title="Close"
@@ -607,7 +607,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -646,7 +646,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         className="m-route-ladder__header"
       >
         <button
-          className="m-close-button"
+          className="m-old-close-button"
           data-testid="close-button"
           onClick={[Function]}
           title="Close"
@@ -689,7 +689,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         className="m-route-ladder__header"
       >
         <button
-          className="m-close-button"
+          className="m-old-close-button"
           data-testid="close-button"
           onClick={[Function]}
           title="Close"
@@ -913,7 +913,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -952,7 +952,7 @@ exports[`LadderPage renders with timepoints 1`] = `
         className="m-route-ladder__header"
       >
         <button
-          className="m-close-button"
+          className="m-old-close-button"
           data-testid="close-button"
           onClick={[Function]}
           title="Close"
@@ -1117,7 +1117,7 @@ exports[`LadderPage renders with timepoints 1`] = `
         className="m-route-ladder__header"
       >
         <button
-          className="m-close-button"
+          className="m-old-close-button"
           data-testid="close-button"
           onClick={[Function]}
           title="Close"
@@ -1456,7 +1456,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -1495,7 +1495,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
         className="m-route-ladder__header"
       >
         <button
-          className="m-close-button"
+          className="m-old-close-button"
           data-testid="close-button"
           onClick={[Function]}
           title="Close"
@@ -1555,7 +1555,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             Vehicles
           </div>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"

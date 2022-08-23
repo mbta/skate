@@ -10,7 +10,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -175,7 +175,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     className="m-route-ladder__header"
   >
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"

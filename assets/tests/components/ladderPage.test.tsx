@@ -1,7 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import { render, fireEvent } from "@testing-library/react"
+import { render, fireEvent, within } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import LadderPage, {
   findRouteById,
@@ -30,6 +30,7 @@ import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import routeTabFactory from "../factories/routeTab"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -166,7 +167,7 @@ describe("LadderPage", () => {
     )
   })
 
-  test("can close a route tab", () => {
+  test("can close a route tab", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -177,7 +178,9 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const wrapper = mount(
+
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -187,9 +190,8 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper
-      .find(".m-ladder-page__tab-contents .m-close-button")
-      .simulate("click")
+    const tabElement = result.getByRole("tab")
+    await user.click(within(tabElement).getByTitle("Close"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       closeRouteTab(mockState.routeTabs[0].uuid)

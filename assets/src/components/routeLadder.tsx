@@ -17,7 +17,7 @@ import {
 } from "../models/vehiclesByPosition"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
-import CloseButton from "./closeButton"
+import OldCloseButton from "./oldCloseButton"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
@@ -43,7 +43,7 @@ const Header = ({
 }) => {
   return (
     <div className="m-route-ladder__header">
-      <CloseButton onClick={() => deselectRoute(route.id)} />
+      <OldCloseButton onClick={() => deselectRoute(route.id)} />
 
       <div className="m-route-ladder__route-name">{route.name}</div>
     </div>

@@ -16,7 +16,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
         Late View
       </div>
       <button
-        className="m-close-button"
+        className="m-old-close-button"
         data-testid="close-button"
         onClick={[Function]}
         title="Close"

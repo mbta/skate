@@ -14,7 +14,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
       Swings
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -182,7 +182,7 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
       Swings
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -348,7 +348,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
       Swings
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -540,7 +540,7 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
       Swings
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -659,7 +659,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
       Swings
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -945,7 +945,7 @@ exports[`SwingsView renders loading message 1`] = `
       Swings
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"

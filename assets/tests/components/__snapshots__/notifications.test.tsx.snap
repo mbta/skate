@@ -69,7 +69,7 @@ exports[`Notification renders latest notification 1`] = `
       className="m-card__right"
     >
       <button
-        className="m-close-button"
+        className="m-old-close-button"
         data-testid="close-button"
         onClick={[Function]}
         title="Close"

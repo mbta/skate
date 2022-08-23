@@ -446,7 +446,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             Vehicles
           </div>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"

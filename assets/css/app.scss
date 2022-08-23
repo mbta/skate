@@ -12,7 +12,6 @@ $shuttle-picker-width: 12.6rem;
 @import "leaflet";
 
 @import "card";
-@import "close_button";
 @import "crowding";
 @import "data_status_banner";
 @import "disconnected_modal";
@@ -39,6 +38,7 @@ $shuttle-picker-width: 12.6rem;
 @import "notification_bell_icon";
 @import "notification_content";
 @import "notification_drawer";
+@import "old_close_button";
 @import "page";
 @import "picker_container";
 @import "presets";

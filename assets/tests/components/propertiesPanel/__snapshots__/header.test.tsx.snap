@@ -13,7 +13,7 @@ exports[`Header renders a header 1`] = `
       Vehicles
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -246,7 +246,7 @@ exports[`Header renders for a ghost 1`] = `
       Vehicles
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -454,7 +454,7 @@ exports[`Header renders for a late vehicle 1`] = `
       Vehicles
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -687,7 +687,7 @@ exports[`Header renders for a shuttle 1`] = `
       Vehicles
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -795,7 +795,7 @@ exports[`Header renders for an early vehicle 1`] = `
       Vehicles
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -1028,7 +1028,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
       Vehicles
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"
@@ -1261,7 +1261,7 @@ exports[`Header renders with route data 1`] = `
       Vehicles
     </div>
     <button
-      className="m-close-button"
+      className="m-old-close-button"
       data-testid="close-button"
       onClick={[Function]}
       title="Close"

@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import Header from "../../../src/components/propertiesPanel/header"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
@@ -16,6 +17,7 @@ import vehicleFactory from "../../factories/vehicle"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
 import routeTabFactory from "../../factories/routeTab"
+import userEvent from "@testing-library/user-event"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -292,17 +294,17 @@ describe("Header", () => {
     expect(transform).toEqual(expect.stringContaining("rotate(0)"))
   })
 
-  test("clicking the X close button deselects the vehicle", () => {
+  test("clicking the X close button deselects the vehicle", async () => {
     const mockDispatch = jest.fn()
 
-    const wrapper = mount(
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
       </StateDispatchProvider>
     )
-    wrapper
-      .find(".m-properties-panel__header-wrapper .m-close-button")
-      .simulate("click")
+
+    await user.click(result.getByTitle("Close"))
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
   })
