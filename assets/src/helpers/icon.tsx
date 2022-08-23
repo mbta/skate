@@ -10,6 +10,8 @@ import busRearIconSvg from "../../static/images/icon-bus-rear.svg"
 // @ts-ignore
 import chevronLeftIconSvg from "../../static/images/icon-chevron-left.svg"
 // @ts-ignore
+import closeXIconSvg from "../../static/images/icon-close-x.svg"
+// @ts-ignore
 import collapseIconSvg from "../../static/images/icon-caret-left.svg"
 // @ts-ignore
 import doubleChevronLeftIconSvg from "../../static/images/icon-double-chevron-left.svg"
@@ -131,6 +133,9 @@ export const chevronLeftIcon = (className = ""): JSX.Element =>
 
 export const circleXIcon = (className = ""): JSX.Element =>
   renderSvg(className, circleXIconSvg)
+
+export const closeXIcon = (className = ""): JSX.Element =>
+  renderSvg(className, closeXIconSvg)
 
 export const collapseIcon = (className = ""): JSX.Element =>
   renderSvg(className, collapseIconSvg)
