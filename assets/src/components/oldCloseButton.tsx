@@ -1,5 +1,5 @@
 import React from "react"
-import { closeIcon } from "../helpers/icon"
+import { oldCloseIcon } from "../helpers/icon"
 
 interface Props {
   onClick: () => void
@@ -15,7 +15,7 @@ const OldCloseButton = ({ onClick }: Props) => (
       onClick()
     }}
   >
-    {closeIcon()}
+    {oldCloseIcon()}
   </button>
 )
 

@@ -20,8 +20,6 @@ import expandIconSvg from "../../static/images/icon-caret-right.svg"
 // @ts-ignore
 import circleXIconSvg from "../../static/images/icon-circle-x.svg"
 // @ts-ignore
-import closeIconSvg from "../../static/images/icon-close-x.svg"
-// @ts-ignore
 import commuterRailIconSvg from "../../static/images/icon-commuter-rail.svg"
 // @ts-ignore
 import crowdingIconSvg from "../../static/images/icon-crowding.svg"
@@ -67,6 +65,8 @@ import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
 import minusIconSvg from "../../static/images/icon-minus.svg"
 // @ts-ignore
 import notificationBellIconSvg from "../../static/images/icon-notification-bell.svg"
+// @ts-ignore
+import oldCloseIconSvg from "../../static/images/icon-old-close-x.svg"
 // @ts-ignore
 import orangeLineIconSvg from "../../static/images/icon-orange-line.svg"
 // @ts-ignore
@@ -131,9 +131,6 @@ export const chevronLeftIcon = (className = ""): JSX.Element =>
 
 export const circleXIcon = (className = ""): JSX.Element =>
   renderSvg(className, circleXIconSvg)
-
-export const closeIcon = (className = ""): JSX.Element =>
-  renderSvg(className, closeIconSvg)
 
 export const collapseIcon = (className = ""): JSX.Element =>
   renderSvg(className, collapseIconSvg)
@@ -215,6 +212,9 @@ export const minusIcon = (className = ""): JSX.Element =>
 
 export const notificationBellIcon = (className = ""): JSX.Element =>
   renderSvg(className, notificationBellIconSvg)
+
+export const oldCloseIcon = (className = ""): JSX.Element =>
+  renderSvg(className, oldCloseIconSvg)
 
 export const orangeLineIcon = (className = ""): JSX.Element =>
   renderSvg(className, orangeLineIconSvg)

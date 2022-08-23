@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom"
 import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
 import {
-  closeIcon,
+  oldCloseIcon,
   logoIcon,
   questionMarkIcon,
   refreshIcon,
@@ -42,7 +42,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             onClick={toggleMobileMenu}
             title="Close"
           >
-            {closeIcon("m-nav-menu__close-icon")}
+            {oldCloseIcon("m-nav-menu__close-icon")}
           </button>
         </div>
         <ul className="m-nav-menu__links">
