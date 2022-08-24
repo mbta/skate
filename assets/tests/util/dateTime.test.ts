@@ -124,12 +124,12 @@ describe("formattedScheduledTime", () => {
     expect(formattedScheduledTime(90900)).toEqual("1:15 AM")
   })
   test("applies offset minutes", () => {
-    expect(formattedScheduledTime(34100, 2)).toEqual("9:30 AM")
-    expect(formattedScheduledTime(34100, -3)).toEqual("9:25 AM")
+    expect(formattedScheduledTime(34100, 120)).toEqual("9:30 AM")
+    expect(formattedScheduledTime(34100, -180)).toEqual("9:25 AM")
     expect(formattedScheduledTime(34100, 0)).toEqual("9:28 AM")
-    expect(formattedScheduledTime(46800, 61)).toEqual("2:01 PM")
-    expect(formattedScheduledTime(86399, 2)).toEqual("12:01 AM")
-    expect(formattedScheduledTime(1, -3)).toEqual("11:57 PM")
+    expect(formattedScheduledTime(46800, 3660)).toEqual("2:01 PM")
+    expect(formattedScheduledTime(86399, 120)).toEqual("12:01 AM")
+    expect(formattedScheduledTime(1, -180)).toEqual("11:57 PM")
   })
 })
 

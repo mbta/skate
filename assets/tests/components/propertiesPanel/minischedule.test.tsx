@@ -301,7 +301,7 @@ const vehicle: Vehicle = vehicleFactory.build({
 
 const vehicleWithOffset: Vehicle = {
   ...vehicle,
-  overloadOffset: 8,
+  overloadOffset: 480,
   isOverload: true,
 }
 
