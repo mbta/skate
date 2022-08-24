@@ -123,7 +123,7 @@ describe("formattedScheduledTime", () => {
     expect(formattedScheduledTime(86400)).toEqual("12:00 AM")
     expect(formattedScheduledTime(90900)).toEqual("1:15 AM")
   })
-  test("applies offset minutes", () => {
+  test("applies offset seconds", () => {
     expect(formattedScheduledTime(34100, 120)).toEqual("9:30 AM")
     expect(formattedScheduledTime(34100, -180)).toEqual("9:25 AM")
     expect(formattedScheduledTime(34100, 0)).toEqual("9:28 AM")
