@@ -19,9 +19,6 @@ defmodule SkateWeb.PageController do
     dispatcher_flag =
       conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
 
-    nav_beta_flag =
-      conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_nav_beta_access?()
-
     conn
     |> assign(:username, username)
     |> assign(:user_uuid, user.uuid)
@@ -29,7 +26,6 @@ defmodule SkateWeb.PageController do
     |> assign(:user_settings, user_settings)
     |> assign(:route_tabs, route_tabs)
     |> assign(:dispatcher_flag, dispatcher_flag)
-    |> assign(:nav_beta_flag, nav_beta_flag)
     |> assign(:clarity_tag, Application.get_env(:skate, :clarity_tag))
     |> assign(:google_tag_manager_id, Application.get_env(:skate, :google_tag_manager_id))
     |> render("index.html")

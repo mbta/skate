@@ -5,7 +5,6 @@ defmodule SkateWeb.AuthManager do
 
   @skate_admin_group "skate-admin"
   @skate_dispatcher_group "skate-dispatcher"
-  @skate_nav_beta_group "skate-nav-beta"
 
   def subject_for_token(resource, _claims) do
     {:ok, resource}
@@ -51,15 +50,6 @@ defmodule SkateWeb.AuthManager do
   end
 
   def claims_grant_dispatcher_access?(_claims) do
-    false
-  end
-
-  @spec claims_grant_nav_beta_access?(Guardian.Token.claims()) :: boolean()
-  def claims_grant_nav_beta_access?(%{"groups" => groups}) do
-    not is_nil(groups) and @skate_nav_beta_group in groups
-  end
-
-  def claims_grant_nav_beta_access?(_claims) do
     false
   end
 end

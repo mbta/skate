@@ -63,18 +63,6 @@ defmodule SkateWeb.ConnCase do
 
           {conn, user}
 
-        tags[:authenticated_nav_beta] ->
-          user = "test_user"
-
-          conn =
-            Phoenix.ConnTest.build_conn()
-            |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user, %{
-              "groups" => ["skate-nav-beta"]
-            })
-
-          {conn, user}
-
         true ->
           {Phoenix.ConnTest.build_conn(), nil}
       end

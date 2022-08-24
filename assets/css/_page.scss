@@ -1,10 +1,6 @@
 .c-page {
   height: 100%;
   overflow: scroll;
-
-  .m-tab-bar ~ & {
-    margin-left: $tab-bar-width;
-  }
 }
 
 .c-page__container {

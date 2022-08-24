@@ -6,14 +6,6 @@
   .m-shuttle-picker-container {
     z-index: 620;
   }
-
-  .m-tab-bar.hidden + & {
-    margin-left: 0;
-  }
-
-  .m-tab-bar.visible + & {
-    margin-left: $tab-bar-width;
-  }
 }
 
 .m-shuttle-map__map {

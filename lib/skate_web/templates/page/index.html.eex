@@ -5,5 +5,4 @@
   data-route-tabs="<%= Jason.encode!(@route_tabs) %>"
   data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"
   data-dispatcher-flag="<%= Jason.encode!(@dispatcher_flag) %>"
-  data-nav-beta-flag="<%= Jason.encode!(@nav_beta_flag) %>"
 ></div>

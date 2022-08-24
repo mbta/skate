@@ -11,11 +11,7 @@
   z-index: 1001;
 
   @media screen and (max-width: $mobile-max-width) {
-    width: 100vw;
-
-    .m-nav__app-content & {
-      width: 100%;
-    }
+    width: 100%;
   }
 }
 
