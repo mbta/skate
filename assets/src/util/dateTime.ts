@@ -55,8 +55,8 @@ export const formattedScheduledTime = (
   time: number,
   offset?: number | undefined
 ): string => {
-  const offsetInMinutes = offset ? Math.floor(offset / 60) : 0
-  let minutes = Math.floor(time / 60) + offsetInMinutes
+  const offsetSeconds = offset || 0
+  let minutes = Math.floor((time + offsetSeconds) / 60)
   if (minutes < 0) {
     /* if the offset shifts the time before midnight */
     minutes += 1440
