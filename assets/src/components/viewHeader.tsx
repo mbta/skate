@@ -2,7 +2,7 @@ import React from "react"
 import { chevronLeftIcon } from "../helpers/icon"
 import useDeviceType from "../hooks/useDeviceType"
 import { OpenView } from "../state"
-import OldCloseButton from "./oldCloseButton"
+import CloseButton from "./closeButton"
 
 interface CommonProps {
   title: string
@@ -46,7 +46,7 @@ const ViewHeader: ViewHeaderType = ({
         </button>
       ) : null}
       <div className="m-view-header__title">{title}</div>
-      <OldCloseButton onClick={closeView} />
+      <CloseButton closeButtonType="xl_light" onClick={closeView} />
     </div>
   )
 }

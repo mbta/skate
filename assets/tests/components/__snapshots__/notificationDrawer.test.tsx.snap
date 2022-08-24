@@ -13,8 +13,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
       Notifications
     </div>
     <button
-      className="m-old-close-button"
-      data-testid="close-button"
+      className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
       title="Close"
     >
@@ -54,8 +53,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
       Notifications
     </div>
     <button
-      className="m-old-close-button"
-      data-testid="close-button"
+      className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
       title="Close"
     >

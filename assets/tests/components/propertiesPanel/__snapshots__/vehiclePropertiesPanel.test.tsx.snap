@@ -16,8 +16,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         Vehicles
       </div>
       <button
-        className="m-old-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >
@@ -369,8 +368,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         Vehicles
       </div>
       <button
-        className="m-old-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >
@@ -722,8 +720,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         Vehicles
       </div>
       <button
-        className="m-old-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >
@@ -950,8 +947,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         Vehicles
       </div>
       <button
-        className="m-old-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >
@@ -1398,8 +1394,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         Vehicles
       </div>
       <button
-        className="m-old-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >
@@ -1751,8 +1746,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         Vehicles
       </div>
       <button
-        className="m-old-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >
@@ -2118,8 +2112,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         Vehicles
       </div>
       <button
-        className="m-old-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >

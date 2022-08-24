@@ -19,6 +19,12 @@
     align-items: center;
     padding: 0 1rem;
   }
+
+  .m-close-button {
+    position: absolute;
+    top: 0;
+    right: 0.1875rem;
+  }
 }
 
 .m-view-header__title {

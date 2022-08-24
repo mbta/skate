@@ -196,8 +196,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
             Vehicles
           </div>
           <button
-            className="m-old-close-button"
-            data-testid="close-button"
+            className="m-close-button m-close-button--x-large m-close-button--light"
             onClick={[Function]}
             title="Close"
           >
