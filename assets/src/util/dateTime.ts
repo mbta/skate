@@ -49,13 +49,14 @@ export const formattedTimeDiffUnderThreshold = (
     : formattedTime(b)
 }
 
-/** Takes a time of day in seconds since midnight, offset in minutes (reasonably -720 to 720)
+/** Takes a time of day in seconds since midnight, offset in seconds (reasonably -8640 to 8640 seconds, or -12 to 12 hours)
  */
 export const formattedScheduledTime = (
   time: number,
   offset?: number | undefined
 ): string => {
-  let minutes = Math.floor(time / 60) + (offset ? offset : 0)
+  const offsetSeconds = offset || 0
+  let minutes = Math.floor((time + offsetSeconds) / 60)
   if (minutes < 0) {
     /* if the offset shifts the time before midnight */
     minutes += 1440
