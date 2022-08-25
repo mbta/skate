@@ -58,6 +58,31 @@
   }
 }
 
+.m-close-button--green {
+  background-color: transparent;
+
+  span svg {
+    fill: $color-gray-800;
+  }
+
+  &:hover {
+    background-color: $color-kiwi-200;
+
+    span svg {
+      fill: $color-gray-700;
+    }
+  }
+
+  &:focus-within {
+    background-color: $color-kiwi-300;
+    border: 2px solid $color-kiwi-400;
+
+    span svg {
+      fill: $color-gray-900;
+    }
+  }
+}
+
 .m-close-button {
   display: flex;
   justify-content: center;

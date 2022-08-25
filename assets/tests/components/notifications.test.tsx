@@ -69,26 +69,29 @@ describe("Notification", () => {
       { ...notification, id: "1" },
     ]
 
-    const tree = renderer
-      .create(
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider
-            value={{
-              notifications,
-              showLatestNotification: true,
-              dispatch: jest.fn(),
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
-              notificationWithOpenSubmenuId: null,
-              setNotificationWithOpenSubmenuId: jest.fn(),
-            }}
-          >
-            <Notifications />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <RoutesProvider routes={routes}>
+        <NotificationsContext.Provider
+          value={{
+            notifications,
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <Notifications />
+        </NotificationsContext.Provider>
+      </RoutesProvider>
+    )
+
+    // One button for the card and one for the close interaction
+    expect(result.getAllByRole("button").length).toBe(2)
+    expect(result.queryByText(/No Operator/)).not.toBeNull()
+    expect(result.queryByText(/run1, run2/)).not.toBeNull()
+    expect(result.queryByText(/r1, r2/)).not.toBeNull()
   })
 
   test("can hide notification", async () => {

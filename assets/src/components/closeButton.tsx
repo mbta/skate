@@ -4,18 +4,20 @@ import { closeXIcon } from "../helpers/icon"
 export type CloseButtonType =
   | "s_light"
   | "l_light"
+  | "xl_light"
   | "s_dark"
   | "l_dark"
   | "l_green"
-  | "xl_light"
+  | "xl_green"
 
 const buttonTypeClassNames: Record<CloseButtonType, string[]> = {
   s_light: ["m-close-button--small", "m-close-button--light"],
   l_light: ["m-close-button--large", "m-close-button--light"],
+  xl_light: ["m-close-button--x-large", "m-close-button--light"],
   s_dark: ["m-close-button--small", "m-close-button--dark"],
   l_dark: ["m-close-button--large", "m-close-button--dark"],
   l_green: ["m-close-button--large", "m-close-button--green"],
-  xl_light: ["m-close-button--x-large", "m-close-button--light"],
+  xl_green: ["m-close-button--x-large", "m-close-button--green"],
 }
 
 interface Props {
