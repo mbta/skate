@@ -159,9 +159,9 @@ $color-route-tabs-separator: #9fa2ac;
 }
 
 .m-ladder-page__routes-presets-toggle {
-  @include font-small;
   display: flex;
   border-bottom: 1px solid $color-gray-900;
+  font-size: 0.85rem;
 
   button {
     margin: 0 1rem 0 0;

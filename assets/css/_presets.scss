@@ -12,8 +12,8 @@
 
       .m-presets-panel__preset-button-container {
         button {
-          @include font-small;
           color: #0041ea;
+          font-size: 0.85rem;
           text-decoration-line: underline;
           text-align: start;
           hyphens: auto;
@@ -25,7 +25,7 @@
   }
 
   .m-presets-panel__save-as-preset-button {
-    @include font-small;
+    font-size: 0.85rem;
     font-weight: 700;
     color: $color-gray-50;
     background: $color-primary;
