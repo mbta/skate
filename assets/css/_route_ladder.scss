@@ -13,12 +13,14 @@
   position: relative;
   text-align: center;
 
-  .m-old-close-button {
+  .m-route-ladder__close-button-container {
     height: 100%;
-    padding: 0.625rem;
     position: absolute;
-    right: 0rem;
     top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 

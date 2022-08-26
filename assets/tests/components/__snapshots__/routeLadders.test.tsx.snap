@@ -9,21 +9,24 @@ exports[`RouteLadders renders a route ladder 1`] = `
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-old-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--dark"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -174,21 +177,24 @@ exports[`RouteLadders renders a route ladder 1`] = `
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-old-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--dark"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >

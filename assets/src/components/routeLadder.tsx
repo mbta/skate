@@ -17,10 +17,10 @@ import {
 } from "../models/vehiclesByPosition"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
-import OldCloseButton from "./oldCloseButton"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
+import CloseButton from "./closeButton"
 
 interface Props {
   route: Route
@@ -43,7 +43,12 @@ const Header = ({
 }) => {
   return (
     <div className="m-route-ladder__header">
-      <OldCloseButton onClick={() => deselectRoute(route.id)} />
+      <div className="m-route-ladder__close-button-container">
+        <CloseButton
+          closeButtonType="l_dark"
+          onClick={() => deselectRoute(route.id)}
+        />
+      </div>
 
       <div className="m-route-ladder__route-name">{route.name}</div>
     </div>
