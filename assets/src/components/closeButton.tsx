@@ -5,19 +5,19 @@ export type CloseButtonType =
   | "s_light"
   | "l_light"
   | "xl_light"
-  | "s_dark"
   | "l_dark"
-  | "l_green"
+  | "xl_dark"
   | "s_darker"
   | "l_darker"
+  | "l_green"
   | "xl_green"
 
 const buttonTypeClassNames: Record<CloseButtonType, string[]> = {
   s_light: ["m-close-button--small", "m-close-button--light"],
   l_light: ["m-close-button--large", "m-close-button--light"],
   xl_light: ["m-close-button--x-large", "m-close-button--light"],
-  s_dark: ["m-close-button--small", "m-close-button--dark"],
   l_dark: ["m-close-button--large", "m-close-button--dark"],
+  xl_dark: ["m-close-button--x-large", "m-close-button--dark"],
   s_darker: ["m-close-button--small", "m-close-button--darker"],
   l_darker: ["m-close-button--large", "m-close-button--darker"],
   l_green: ["m-close-button--large", "m-close-button--green"],
