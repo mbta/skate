@@ -58,6 +58,31 @@
   }
 }
 
+.m-close-button--darker {
+  background-color: transparent;
+
+  span svg {
+    fill: $color-gray-50;
+  }
+
+  &:hover {
+    background-color: $color-gray-600;
+
+    span svg {
+      fill: $white;
+    }
+  }
+
+  &:focus-within {
+    background-color: $color-gray-600;
+    border: 2px solid $color-gray-800;
+
+    span svg {
+      fill: $white;
+    }
+  }
+}
+
 .m-close-button--green {
   background-color: transparent;
 

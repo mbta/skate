@@ -45,7 +45,7 @@ const Header = ({
     <div className="m-route-ladder__header">
       <div className="m-route-ladder__close-button-container">
         <CloseButton
-          closeButtonType="l_dark"
+          closeButtonType="l_darker"
           onClick={() => deselectRoute(route.id)}
         />
       </div>

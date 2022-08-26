@@ -386,7 +386,7 @@ exports[`LadderPage renders with route tabs 1`] = `
           className="m-route-ladder__close-button-container"
         >
           <button
-            className="m-close-button m-close-button--large m-close-button--dark"
+            className="m-close-button m-close-button--large m-close-button--darker"
             onClick={[Function]}
             title="Close"
           >
@@ -652,7 +652,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           className="m-route-ladder__close-button-container"
         >
           <button
-            className="m-close-button m-close-button--large m-close-button--dark"
+            className="m-close-button m-close-button--large m-close-button--darker"
             onClick={[Function]}
             title="Close"
           >
@@ -698,7 +698,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           className="m-route-ladder__close-button-container"
         >
           <button
-            className="m-close-button m-close-button--large m-close-button--dark"
+            className="m-close-button m-close-button--large m-close-button--darker"
             onClick={[Function]}
             title="Close"
           >
@@ -964,7 +964,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           className="m-route-ladder__close-button-container"
         >
           <button
-            className="m-close-button m-close-button--large m-close-button--dark"
+            className="m-close-button m-close-button--large m-close-button--darker"
             onClick={[Function]}
             title="Close"
           >
@@ -1132,7 +1132,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           className="m-route-ladder__close-button-container"
         >
           <button
-            className="m-close-button m-close-button--large m-close-button--dark"
+            className="m-close-button m-close-button--large m-close-button--darker"
             onClick={[Function]}
             title="Close"
           >
@@ -1513,7 +1513,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
           className="m-route-ladder__close-button-container"
         >
           <button
-            className="m-close-button m-close-button--large m-close-button--dark"
+            className="m-close-button m-close-button--large m-close-button--darker"
             onClick={[Function]}
             title="Close"
           >

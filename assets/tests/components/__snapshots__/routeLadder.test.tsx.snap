@@ -9,7 +9,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -60,7 +60,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -461,7 +461,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -795,7 +795,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -1053,7 +1053,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -1226,7 +1226,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -1626,7 +1626,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -1959,7 +1959,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
@@ -2427,7 +2427,7 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
-        className="m-close-button m-close-button--large m-close-button--dark"
+        className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
         title="Close"
       >
