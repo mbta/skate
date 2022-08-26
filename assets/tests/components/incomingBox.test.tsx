@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import IncomingBox from "../../src/components/incomingBox"
@@ -9,6 +8,8 @@ import { initialState, selectVehicle } from "../../src/state"
 
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 describe("IncomingBox", () => {
   test("renders empty state", () => {
@@ -290,12 +291,12 @@ describe("IncomingBox", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking an incoming crowding icon selects the associated vehicle", () => {
+  test("clicking an incoming crowding icon selects the associated vehicle", async () => {
     const mockDispatch = jest.fn()
 
     const vehicle: Vehicle = vehicleFactory.build()
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <IncomingBox
           vehiclesAndGhosts={[vehicle]}
@@ -305,8 +306,8 @@ describe("IncomingBox", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-incoming-box__vehicle").simulate("click")
 
+    await userEvent.click(result.getByRole("button"))
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 })

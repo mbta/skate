@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
@@ -27,7 +26,7 @@ describe("App", () => {
   })
 
   test("shows disconnected modal if the socket is disconnected", () => {
-    const wrapper = mount(
+    const result = render(
       <SocketProvider
         socketStatus={{
           socket: undefined,
@@ -37,7 +36,9 @@ describe("App", () => {
         <App />
       </SocketProvider>
     )
-    expect(wrapper.exists(".c-modal")).toBeTruthy()
+    expect(
+      result.queryByText(/Your connection to Skate has expired./)
+    ).not.toBeNull()
   })
 
   test("shows data outage banner if there's a data outage", () => {

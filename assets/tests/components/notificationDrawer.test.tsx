@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import { render } from "@testing-library/react"
 import renderer from "react-test-renderer"
@@ -98,9 +97,9 @@ describe("NotificationDrawer", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a notification tries to open the VPP for it", () => {
+  test("clicking a notification tries to open the VPP for it", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -120,11 +119,11 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-card__left").first().simulate("click")
+    await userEvent.click(result.getByText(/No Operator/))
     expect(dispatch).toHaveBeenCalledWith(setNotification(notification))
   })
 
-  test("clicking through an unread notification makes it read", () => {
+  test("clicking through an unread notification makes it read", async () => {
     const updatedNotification = {
       ...notification,
       tripIds: ["123", "456", "789"],
@@ -132,7 +131,7 @@ describe("NotificationDrawer", () => {
 
     const mockNotificationsDispatch = jest.fn()
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -152,7 +151,7 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-card__left").simulate("click")
+    await userEvent.click(result.getByText(/No Operator/))
     expect(mockNotificationsDispatch).toHaveBeenCalledWith(
       toggleReadState(updatedNotification)
     )
@@ -191,7 +190,7 @@ describe("NotificationDrawer", () => {
     const stateDispatch = jest.fn()
     const notificationsDispatch = jest.fn()
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -211,15 +210,13 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    expect(
-      wrapper.exists(".m-notification-drawer__mark-all-read-link")
-    ).toBeFalsy()
+    expect(result.queryByText(/Mark all as read/)).toBeNull()
   })
 
   test("remembers the scroll position when the component is unmounted", () => {
     const rememberScrollPosition = jest.fn()
 
-    const wrapper = mount(
+    const { unmount } = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -239,7 +236,7 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
     expect(rememberScrollPosition).not.toHaveBeenCalled()
-    wrapper.unmount()
+    unmount()
     expect(rememberScrollPosition).toHaveBeenCalledWith(123)
   })
 })
