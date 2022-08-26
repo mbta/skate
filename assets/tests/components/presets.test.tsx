@@ -172,7 +172,7 @@ describe("Presets", () => {
       </StateDispatchProvider>
     )
 
-    await user.click(result.getByTestId("close-button"))
+    await user.click(result.getByTitle("Close"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToDeletePreset(mockState.routeTabs[0])
