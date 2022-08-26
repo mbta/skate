@@ -6,10 +6,10 @@ import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { deselectVehicle } from "../../state"
+import { deselectVehicle, returnToPreviousView } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
-import OldCloseButton from "../oldCloseButton"
 import TabList from "./tabList"
+import ViewHeader from "../viewHeader"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -43,12 +43,19 @@ const StaleDataHeader: React.FC<{
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
 }> = ({ vehicle, tabMode, setTabMode }) => {
-  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings, previousView }, dispatch] =
+    useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
 
   return (
     <div className="m-properties-panel__header-wrapper">
+      <ViewHeader
+        title="Vehicles"
+        closeView={hideMe}
+        backlinkToView={previousView}
+        followBacklink={() => dispatch(returnToPreviousView())}
+      />
       <div className="m-properties-panel__header">
         <div className="m-properties-panel__label">
           <VehicleIcon
@@ -63,9 +70,6 @@ const StaleDataHeader: React.FC<{
         <div className="m-properties-panel__variant">
           <div className="m-properties-panel__inbound-outbound">N/A</div>
           <div className="m-route-variant-name">Not Available</div>
-        </div>
-        <div className="m-properties-panel__close-ping">
-          <OldCloseButton onClick={hideMe} />
         </div>
       </div>
       {vehicle.isShuttle || (
