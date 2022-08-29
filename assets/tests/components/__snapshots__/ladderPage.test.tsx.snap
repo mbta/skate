@@ -312,7 +312,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -344,7 +344,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             Untitled
           </div>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -382,21 +382,24 @@ exports[`LadderPage renders with route tabs 1`] = `
       <div
         className="m-route-ladder__header"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
+        <div
+          className="m-route-ladder__close-button-container"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button m-close-button--large m-close-button--darker"
+            onClick={[Function]}
+            title="Close"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
         <div
           className="m-route-ladder__route-name"
         >
@@ -607,7 +610,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -645,21 +648,24 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       <div
         className="m-route-ladder__header"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
+        <div
+          className="m-route-ladder__close-button-container"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button m-close-button--large m-close-button--darker"
+            onClick={[Function]}
+            title="Close"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
         <div
           className="m-route-ladder__route-name"
         >
@@ -688,21 +694,24 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       <div
         className="m-route-ladder__header"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
+        <div
+          className="m-route-ladder__close-button-container"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button m-close-button--large m-close-button--darker"
+            onClick={[Function]}
+            title="Close"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
         <div
           className="m-route-ladder__route-name"
         >
@@ -913,7 +922,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -951,21 +960,24 @@ exports[`LadderPage renders with timepoints 1`] = `
       <div
         className="m-route-ladder__header"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
+        <div
+          className="m-route-ladder__close-button-container"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button m-close-button--large m-close-button--darker"
+            onClick={[Function]}
+            title="Close"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
         <div
           className="m-route-ladder__route-name"
         >
@@ -1116,21 +1128,24 @@ exports[`LadderPage renders with timepoints 1`] = `
       <div
         className="m-route-ladder__header"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
+        <div
+          className="m-route-ladder__close-button-container"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button m-close-button--large m-close-button--darker"
+            onClick={[Function]}
+            title="Close"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
         <div
           className="m-route-ladder__route-name"
         >
@@ -1456,7 +1471,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             />
           </button>
           <button
-            className="m-close-button"
+            className="m-old-close-button"
             data-testid="close-button"
             onClick={[Function]}
             title="Close"
@@ -1494,21 +1509,24 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
       <div
         className="m-route-ladder__header"
       >
-        <button
-          className="m-close-button"
-          data-testid="close-button"
-          onClick={[Function]}
-          title="Close"
+        <div
+          className="m-route-ladder__close-button-container"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button m-close-button--large m-close-button--darker"
+            onClick={[Function]}
+            title="Close"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
         <div
           className="m-route-ladder__route-name"
         >
@@ -1555,8 +1573,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             Vehicles
           </div>
           <button
-            className="m-close-button"
-            data-testid="close-button"
+            className="m-close-button m-close-button--x-large m-close-button--light"
             onClick={[Function]}
             title="Close"
           >

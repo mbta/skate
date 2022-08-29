@@ -5,21 +5,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -53,21 +56,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -451,21 +457,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -782,21 +791,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -1037,21 +1049,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -1207,21 +1222,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -1604,21 +1622,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -1934,21 +1955,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >
@@ -2399,21 +2423,24 @@ Array [
   <div
     className="m-route-ladder__header"
   >
-    <button
-      className="m-close-button"
-      data-testid="close-button"
-      onClick={[Function]}
-      title="Close"
+    <div
+      className="m-route-ladder__close-button-container"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button m-close-button--large m-close-button--darker"
+        onClick={[Function]}
+        title="Close"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
     <div
       className="m-route-ladder__route-name"
     >

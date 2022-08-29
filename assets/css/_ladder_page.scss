@@ -113,7 +113,7 @@ $color-route-tabs-separator: #9fa2ac;
     content: "*";
   }
 
-  .m-close-button {
+  .m-old-close-button {
     @include button-icon(0.5rem);
     display: flex;
     justify-content: center;
@@ -159,9 +159,9 @@ $color-route-tabs-separator: #9fa2ac;
 }
 
 .m-ladder-page__routes-presets-toggle {
-  @include font-small;
   display: flex;
   border-bottom: 1px solid $color-gray-900;
+  font-size: 0.85rem;
 
   button {
     margin: 0 1rem 0 0;

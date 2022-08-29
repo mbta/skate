@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import Loading from "../loading"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { useMinischeduleRuns } from "../../hooks/useMinischedule"
-import { closeIcon } from "../../helpers/icon"
+import { oldCloseIcon } from "../../helpers/icon"
 import { Activity, Run, Piece, Trip } from "../../minischedule"
 import { Notification, RunId } from "../../realtime.d"
 import { setNotification } from "../../state"
@@ -42,7 +42,7 @@ const InactiveNotificationModal = ({
         <div className="c-modal">
           <div className="m-inactive-notification-modal__close-button">
             <button title="Close" onClick={closeModal}>
-              {closeIcon()}
+              {oldCloseIcon()}
             </button>
           </div>
           <div className="m-notification__title">

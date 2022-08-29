@@ -1,0 +1,6 @@
+.m-old-close-button {
+  @include button-transparent;
+  @include button-icon(0.9rem);
+  font-size: 1rem;
+  padding: 0;
+}

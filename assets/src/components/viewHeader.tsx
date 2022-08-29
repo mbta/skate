@@ -46,7 +46,7 @@ const ViewHeader: ViewHeaderType = ({
         </button>
       ) : null}
       <div className="m-view-header__title">{title}</div>
-      <CloseButton onClick={closeView} />
+      <CloseButton closeButtonType="xl_light" onClick={closeView} />
     </div>
   )
 }

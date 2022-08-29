@@ -1,7 +1,7 @@
 import React from "react"
-import CloseButton from "./closeButton"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { unreadIcon } from "../helpers/icon"
+import CloseButton from "./closeButton"
 
 export type CardStyle = "kiwi" | "white"
 
@@ -64,7 +64,7 @@ export const Card: React.FC<CardProps> = ({
       )}
       {closeCallback ? (
         <div className="m-card__right">
-          <CloseButton onClick={closeCallback} />
+          <CloseButton closeButtonType="xl_green" onClick={closeCallback} />
         </div>
       ) : null}
     </div>

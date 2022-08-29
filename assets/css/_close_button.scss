@@ -1,6 +1,121 @@
+.m-close-button--small {
+  @include button-icon(0.5rem);
+  width: 1rem;
+  height: 1rem;
+}
+
+.m-close-button--large {
+  @include button-icon(0.75rem);
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.m-close-button--x-large {
+  @include button-icon(1rem);
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.m-close-button--light {
+  background-color: transparent;
+
+  span svg {
+    fill: $color-gray-600;
+  }
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+
+  &:focus-within {
+    background-color: $color-gray-100;
+    border: 2px solid $color-gray-300;
+  }
+}
+
+.m-close-button--dark {
+  background-color: transparent;
+
+  span svg {
+    fill: $color-gray-50;
+  }
+
+  &:hover {
+    background-color: $color-gray-500;
+
+    span svg {
+      fill: $white;
+    }
+  }
+
+  &:focus-within {
+    background-color: $color-gray-500;
+    border: 2px solid $color-gray-700;
+
+    span svg {
+      fill: $white;
+    }
+  }
+}
+
+.m-close-button--darker {
+  background-color: transparent;
+
+  span svg {
+    fill: $color-gray-50;
+  }
+
+  &:hover {
+    background-color: $color-gray-600;
+
+    span svg {
+      fill: $white;
+    }
+  }
+
+  &:focus-within {
+    background-color: $color-gray-600;
+    border: 2px solid $color-gray-800;
+
+    span svg {
+      fill: $white;
+    }
+  }
+}
+
+.m-close-button--green {
+  background-color: transparent;
+
+  span svg {
+    fill: $color-gray-800;
+  }
+
+  &:hover {
+    background-color: $color-kiwi-200;
+
+    span svg {
+      fill: $color-gray-700;
+    }
+  }
+
+  &:focus-within {
+    background-color: $color-kiwi-300;
+    border: 2px solid $color-kiwi-400;
+
+    span svg {
+      fill: $color-gray-900;
+    }
+  }
+}
+
 .m-close-button {
-  @include button-transparent;
-  @include button-icon(0.9rem);
-  font-size: 1rem;
-  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 4px;
+
+  span svg {
+    stroke: none;
+  }
 }

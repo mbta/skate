@@ -16,8 +16,7 @@ exports[`Presets renders current presets 1`] = `
         </button>
       </div>
       <button
-        className="m-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >
@@ -42,8 +41,7 @@ exports[`Presets renders current presets 1`] = `
         </button>
       </div>
       <button
-        className="m-close-button"
-        data-testid="close-button"
+        className="m-close-button m-close-button--large m-close-button--light"
         onClick={[Function]}
         title="Close"
       >

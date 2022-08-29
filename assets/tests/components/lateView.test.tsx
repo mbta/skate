@@ -1,6 +1,7 @@
 import { mount, ReactWrapper } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
+import { render } from "@testing-library/react"
 
 import App from "../../src/components/app"
 import LateView from "../../src/components/lateView"
@@ -17,6 +18,7 @@ import blockWaiverFactory from "../factories/blockWaiver"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -116,18 +118,19 @@ describe("LateView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking tab closes late view", () => {
+  test("clicking close button closes late view", async () => {
     const mockDispatch = jest.fn()
-    const wrapper = mount(
+
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{}}>
           <App />
         </VehiclesByRouteIdProvider>
       </StateDispatchProvider>
     )
-    expect(wrapper.find(".m-late-view"))
 
-    wrapper.find(".m-close-button").first().simulate("click")
+    await user.click(result.getByTitle("Close"))
 
     expect(mockDispatch).toHaveBeenCalledWith(closeLateView())
   })

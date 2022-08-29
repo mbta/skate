@@ -6,14 +6,14 @@
     li {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
       padding-bottom: 1rem;
       line-height: 0.75rem;
 
       .m-presets-panel__preset-button-container {
         button {
-          @include font-small;
           color: #0041ea;
+          font-size: 0.85rem;
           text-decoration-line: underline;
           text-align: start;
           hyphens: auto;
@@ -21,15 +21,11 @@
           word-break: break-all;
         }
       }
-
-      .m-close-button {
-        @include button-icon(0.625rem);
-      }
     }
   }
 
   .m-presets-panel__save-as-preset-button {
-    @include font-small;
+    font-size: 0.85rem;
     font-weight: 700;
     color: $color-gray-50;
     background: $color-primary;

@@ -4,11 +4,11 @@ import {
   promptToSaveOrCreatePreset,
   promptToDeletePreset,
 } from "../state"
-import CloseButton from "./closeButton"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
 import { plusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
+import CloseButton from "./closeButton"
 
 const Presets = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
@@ -29,6 +29,7 @@ const Presets = () => {
               </button>
             </div>
             <CloseButton
+              closeButtonType="l_light"
               onClick={() => {
                 dispatch(promptToDeletePreset(preset))
               }}
