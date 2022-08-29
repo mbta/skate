@@ -185,6 +185,39 @@ describe("vehicleProperties", () => {
       properties.find((prop) => prop.label === "Last Login")!.value
     ).toEqual("Not Available")
   })
+
+  test("operator information is 'Not Available' if all fields are missing", () => {
+    /* The type for Vehicle doesn't actually allow nulls, but the way we coerce values we
+     *  receive from the backend doesn't account for this fact. One more reason to adopt
+     *  Superstruct to handle the translation of data from the backend to JS values. */
+    const vehicleSansOperator = {
+      ...vehicle,
+      operatorId: null,
+      operatorFirstName: null,
+      operatorLastName: null,
+    } as unknown
+
+    const properties = vehicleProperties(vehicleSansOperator as Vehicle)
+
+    expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
+      "Not Available"
+    )
+  })
+
+  test("operator information gives last name if that's all that's available", () => {
+    const vehicleSansOperator = {
+      ...vehicle,
+      operatorId: "1234",
+      operatorFirstName: null,
+      operatorLastName: "SMITH",
+    } as unknown
+
+    const properties = vehicleProperties(vehicleSansOperator as Vehicle)
+
+    expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
+      "SMITH #1234"
+    )
+  })
 })
 
 describe("Highlighted", () => {

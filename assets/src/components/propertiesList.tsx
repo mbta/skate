@@ -33,6 +33,11 @@ export const vehicleProperties = (vehicle: Vehicle): Property[] => {
     operatorLogonTime,
   } = vehicle
 
+  const operatorValue =
+    [operatorFirstName, operatorLastName, operatorId ? `#${operatorId}` : null]
+      .filter((e) => e !== null)
+      .join(" ") || "Not Available"
+
   return [
     {
       label: "Run",
@@ -48,7 +53,7 @@ export const vehicleProperties = (vehicle: Vehicle): Property[] => {
     },
     {
       label: "Operator",
-      value: `${operatorFirstName} ${operatorLastName} #${operatorId}`,
+      value: operatorValue,
       classNameModifier: "operator",
     },
     {
