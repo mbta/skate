@@ -182,6 +182,7 @@ $late-view-background-color: $color-bg-light;
 }
 
 .m-late-view__operator-header {
+  padding-left: 0.5rem;
   width: 35%;
 }
 
@@ -192,6 +193,10 @@ $late-view-background-color: $color-bg-light;
   a {
     cursor: pointer;
   }
+}
+
+.m-late-view__operator-name {
+  padding-left: 0.5rem;
 }
 
 .m-late-view__route-pill {
