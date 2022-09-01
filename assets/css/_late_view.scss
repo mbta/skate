@@ -4,10 +4,15 @@ $late-view-background-color: $color-bg-light;
   @include modal-content;
   background-color: $late-view-background-color;
   height: 100%;
+  width: 33.5rem;
   position: absolute;
   right: 0;
   top: 0;
   z-index: 1001;
+
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
 }
 
 .m-late-view__content-wrapper {
@@ -22,6 +27,7 @@ $late-view-background-color: $color-bg-light;
 }
 
 .m-late-view__panel {
+  overflow-x: scroll;
   background-color: $white;
   border-radius: 0.5rem;
   filter: drop-shadow(0px 8px 25px rgba(23, 31, 38, 0.14))
@@ -31,6 +37,12 @@ $late-view-background-color: $color-bg-light;
   height: fit-content;
 
   margin-bottom: 2.25rem;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .m-late-view__panel-header {
     font: inherit;
@@ -43,6 +55,7 @@ $late-view-background-color: $color-bg-light;
   table {
     border-collapse: collapse;
     font-size: 0.75rem;
+    width: 100%;
 
     thead {
       background-color: $color-bg-light;
@@ -80,20 +93,15 @@ $late-view-background-color: $color-bg-light;
       padding-bottom: 1rem;
       padding-top: 1rem;
     }
-
-    th:first-child,
-    td:first-child {
-      padding-left: 1.5rem;
-    }
   }
 }
 
 .m-late-view__missing-logons {
-  width: 29.5rem;
+  width: 100%;
 }
 
 .m-late-view__late-buses {
-  width: 29.5rem;
+  width: 100%;
 }
 
 .m-late-view__run-link {
@@ -142,35 +150,40 @@ $late-view-background-color: $color-bg-light;
 }
 
 .m-late-view__hide-check-header {
-  width: 3rem;
+  width: 5%;
+  min-width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .m-late-view__adherence-header {
-  width: 5rem;
+  width: 15%;
 }
 
 .m-late-view__route-header {
-  width: 5rem;
+  width: 15%;
 }
 
 .m-late-view__vehicle-header {
-  width: 5rem;
+  width: 15%;
 }
 
 .m-late-view__run-number-header {
-  width: 5rem;
+  width: 15%;
 }
 
 .m-late-view__scheduled-logon-header {
-  width: 9.5rem;
+  width: 20%;
 }
 
 .m-late-view__location-header {
-  width: 10rem;
+  width: 45%;
 }
 
 .m-late-view__operator-header {
-  width: 14rem;
+  padding-left: 0.5rem;
+  width: 35%;
 }
 
 .m-late-view__run-number-cell {
@@ -182,8 +195,11 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
+.m-late-view__operator-name {
+  padding-left: 0.5rem;
+}
+
 .m-late-view__route-pill {
-  margin-left: 0.5rem;
   background: $color-primary-dark;
   border-radius: 0.25rem;
   font-family: $font-family-route-pill;
@@ -194,15 +210,6 @@ $late-view-background-color: $color-bg-light;
   justify-content: center;
   align-items: center;
   color: $white;
-  position: relative;
-  left: -0.4rem;
-}
-
-.m-late-view__run-number-header--late,
-.m-late-view__run-number-cell--late {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 1.5rem;
 }
 
 .m-late-view__popup {
@@ -258,6 +265,12 @@ $late-view-background-color: $color-bg-light;
 }
 
 .m-late-view__data-row {
+  td:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   input:hover::before {
     background-color: #beede2;
     content: "\000A0";
