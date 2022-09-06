@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import React from "react"
 import renderer from "react-test-renderer"
 import BlockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
@@ -65,7 +66,7 @@ describe("BlockWaiverBanner", () => {
     }
     const result = render(<BlockWaiverBanner blockWaiver={blockWaiver} />)
 
-    expect(result.queryByText("E - Diverted 1106")).not.toBeNull()
+    expect(result.queryByText("E - Diverted 1106")).toBeVisible()
   })
 
   test("includes just the cause description if remark is null", () => {
@@ -78,7 +79,7 @@ describe("BlockWaiverBanner", () => {
     }
     const result = render(<BlockWaiverBanner blockWaiver={blockWaiver} />)
 
-    expect(result.queryByText("D - Disabled Bus")).not.toBeNull()
+    expect(result.queryByText("D - Disabled Bus")).toBeVisible()
   })
 
   test("deduplicates the description if it's included in the remark", () => {

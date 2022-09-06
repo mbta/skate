@@ -17,6 +17,7 @@ import { initialState } from "../../../src/state"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 import vehicleFactory from "../../factories/vehicle"
 import { render, waitFor } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import userEvent from "@testing-library/user-event"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
@@ -700,11 +701,11 @@ describe("Minischedule", () => {
       <Minischedule runOrBlock={block} vehicleOrGhost={vehicle} view="block" />
     )
 
-    expect(result.queryByText(/Show past/)).not.toBeNull()
+    expect(result.queryByText(/Show past/)).toBeVisible()
     userEvent.click(result.getByText(/Show past/))
-    await waitFor(() => expect(result.queryByText(/Hide past/)).not.toBeNull())
+    await waitFor(() => expect(result.queryByText(/Hide past/)).toBeVisible())
     userEvent.click(result.getByText(/Hide past/))
-    await waitFor(() => expect(result.queryByText(/Show past/)).not.toBeNull())
+    await waitFor(() => expect(result.queryByText(/Show past/)).toBeVisible())
   })
 
   test("highlights pullouts if they're active", () => {
@@ -779,8 +780,8 @@ describe("BreakRow", () => {
     const result = render(
       <BreakRow break={splitBreak} index={0} activeIndex={null} />
     )
-    expect(result.queryByText(/Break \(Unpaid\)/)).not.toBeNull()
-    expect(result.queryByText(/Charlie Circle/)).not.toBeNull()
+    expect(result.queryByText(/Break \(Unpaid\)/)).toBeVisible()
+    expect(result.queryByText(/Charlie Circle/)).toBeVisible()
   })
 
   test("Paid breaks show as paid, with place", () => {
@@ -794,8 +795,8 @@ describe("BreakRow", () => {
     const result = render(
       <BreakRow break={paidBreak} index={0} activeIndex={null} />
     )
-    expect(result.queryByText(/Break \(Paid\)/)).not.toBeNull()
-    expect(result.queryByText(/Delta Drive/)).not.toBeNull()
+    expect(result.queryByText(/Break \(Paid\)/)).toBeVisible()
+    expect(result.queryByText(/Delta Drive/)).toBeVisible()
   })
 
   test("Travel times show as paid, with destination", () => {
@@ -809,7 +810,7 @@ describe("BreakRow", () => {
     const result = render(
       <BreakRow break={travelBreak} index={0} activeIndex={null} />
     )
-    expect(result.queryByText("Travel to Echo Avenue (Paid)")).not.toBeNull()
+    expect(result.queryByText("Travel to Echo Avenue (Paid)")).toBeVisible()
   })
 
   test("Unrecognized types show their name and place", () => {
@@ -824,8 +825,8 @@ describe("BreakRow", () => {
       <BreakRow break={unrecognizedBreak} index={0} activeIndex={null} />
     )
 
-    expect(result.queryByText(/Unrecognized break type/)).not.toBeNull()
-    expect(result.queryByText(/Foxtrot Village/)).not.toBeNull()
+    expect(result.queryByText(/Unrecognized break type/)).toBeVisible()
+    expect(result.queryByText(/Foxtrot Village/)).toBeVisible()
     expect(result.queryByText(/\(Paid\)/)).toBeNull()
     expect(result.queryByText(/\(Unpaid\)/)).toBeNull()
   })
