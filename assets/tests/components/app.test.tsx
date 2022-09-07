@@ -1,7 +1,7 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import App from "../../src/components/app"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { SocketProvider } from "../../src/contexts/socketContext"
@@ -27,7 +27,7 @@ describe("App", () => {
   })
 
   test("shows disconnected modal if the socket is disconnected", () => {
-    const wrapper = mount(
+    const result = render(
       <SocketProvider
         socketStatus={{
           socket: undefined,
@@ -37,13 +37,15 @@ describe("App", () => {
         <App />
       </SocketProvider>
     )
-    expect(wrapper.exists(".c-modal")).toBeTruthy()
+    expect(
+      result.queryByText(/Your connection to Skate has expired./)
+    ).toBeVisible()
   })
 
   test("shows data outage banner if there's a data outage", () => {
     ;(useDataStatus as jest.Mock).mockImplementation(() => "outage")
     const result = render(<App />)
-    expect(result.queryByText(/Ongoing MBTA Data Outage/)).not.toBeNull()
+    expect(result.queryByText(/Ongoing MBTA Data Outage/)).toBeVisible()
   })
 
   test("pulls in vehicles / ghosts for routes in all open tabs", () => {

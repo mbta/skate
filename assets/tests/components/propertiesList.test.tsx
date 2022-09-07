@@ -1,4 +1,3 @@
-import { shallow, mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesList, {
@@ -12,6 +11,7 @@ import { Ghost, Vehicle } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
 
 jest
   .spyOn(dateTime, "now")
@@ -134,7 +134,7 @@ describe("PropertiesList", () => {
   })
 
   test("ignores properties with null values", () => {
-    const wrapper = mount(
+    const result = render(
       <PropertiesList
         properties={[
           {
@@ -146,7 +146,7 @@ describe("PropertiesList", () => {
       />
     )
 
-    expect(wrapper.html()).not.toContain("Label")
+    expect(result.queryByText("Label")).toBeNull()
   })
 })
 
@@ -225,56 +225,50 @@ describe("Highlighted", () => {
     const content = "SMITH #20138713820"
     const highlightText = "138"
 
-    const expected =
-      'SMITH #20<span class="highlighted">138</span>7<span class="highlighted">138</span>20'
-
-    const wrapper = shallow(
+    const tree = renderer.create(
       <Highlighted content={content} highlightText={highlightText} />
     )
 
-    expect(wrapper.html()).toEqual(expected)
+    expect(tree).toMatchSnapshot()
   })
 
   test("is insensitive in its matching", () => {
     const content = "SMITH #201387 tmits"
     const highlightText = "mit"
 
-    const expected =
-      'S<span class="highlighted">MIT</span>H #201387 t<span class="highlighted">mit</span>s'
-
-    const wrapper = shallow(
+    const tree = renderer.create(
       <Highlighted content={content} highlightText={highlightText} />
     )
 
-    expect(wrapper.html()).toEqual(expected)
+    expect(tree).toMatchSnapshot()
   })
 
   test("ignores spaces and hyphens", () => {
     const content = "abcde-f gh"
     const highlightText = "b c-defg"
-    const expected = 'a<span class="highlighted">bcde-f g</span>h'
-    const wrapper = shallow(
+    const tree = renderer.create(
       <Highlighted content={content} highlightText={highlightText} />
     )
-    expect(wrapper.html()).toEqual(expected)
+
+    expect(tree).toMatchSnapshot()
   })
 
   test("can highlight the whole string", () => {
     const content = "abc"
     const highlightText = "abc"
-    const expected = '<span class="highlighted">abc</span>'
-    const wrapper = shallow(
+    const tree = renderer.create(
       <Highlighted content={content} highlightText={highlightText} />
     )
-    expect(wrapper.html()).toEqual(expected)
+
+    expect(tree).toMatchSnapshot()
   })
 
   test("renders the original content if no highlight text is specified", () => {
     const content = "SMITH #201387"
 
-    const wrapper = shallow(<Highlighted content={content} />)
+    const tree = renderer.create(<Highlighted content={content} />)
 
-    expect(wrapper.html()).toEqual(content)
+    expect(tree).toMatchSnapshot()
   })
 })
 

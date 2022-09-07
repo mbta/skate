@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import {
@@ -17,6 +16,9 @@ import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 import vehicleFactory from "../../factories/vehicle"
+import { render, waitFor } from "@testing-library/react"
+import "@testing-library/jest-dom"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -693,17 +695,17 @@ describe("Minischedule", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking the show/hide button toggles whether past trips are shown", () => {
+  test("clicking the show/hide button toggles whether past trips are shown", async () => {
     const block = { id: "block", pieces: [] }
-    const wrapper = mount(
+    const result = render(
       <Minischedule runOrBlock={block} vehicleOrGhost={vehicle} view="block" />
     )
 
-    expect(wrapper.html()).toContain("m-minischedule--hide-past")
-    wrapper.find(".m-minischedule__show-past").simulate("click")
-    expect(wrapper.html()).toContain("m-minischedule--show-past")
-    wrapper.find(".m-minischedule__show-past").simulate("click")
-    expect(wrapper.html()).toContain("m-minischedule--hide-past")
+    expect(result.queryByText(/Show past/)).toBeVisible()
+    userEvent.click(result.getByText(/Show past/))
+    await waitFor(() => expect(result.queryByText(/Hide past/)).toBeVisible())
+    userEvent.click(result.getByText(/Hide past/))
+    await waitFor(() => expect(result.queryByText(/Show past/)).toBeVisible())
   })
 
   test("highlights pullouts if they're active", () => {
@@ -775,11 +777,11 @@ describe("BreakRow", () => {
       endPlace: "Charlie Circle",
     }
 
-    const wrapper = mount(
+    const result = render(
       <BreakRow break={splitBreak} index={0} activeIndex={null} />
     )
-    expect(wrapper.html()).toContain("Break (Unpaid)")
-    expect(wrapper.html()).toContain("Charlie Circle")
+    expect(result.queryByText(/Break \(Unpaid\)/)).toBeVisible()
+    expect(result.queryByText(/Charlie Circle/)).toBeVisible()
   })
 
   test("Paid breaks show as paid, with place", () => {
@@ -790,11 +792,11 @@ describe("BreakRow", () => {
       endPlace: "Delta Drive",
     }
 
-    const wrapper = mount(
+    const result = render(
       <BreakRow break={paidBreak} index={0} activeIndex={null} />
     )
-    expect(wrapper.html()).toContain("Break (Paid)")
-    expect(wrapper.html()).toContain("Delta Drive")
+    expect(result.queryByText(/Break \(Paid\)/)).toBeVisible()
+    expect(result.queryByText(/Delta Drive/)).toBeVisible()
   })
 
   test("Travel times show as paid, with destination", () => {
@@ -805,10 +807,10 @@ describe("BreakRow", () => {
       endPlace: "Echo Avenue",
     }
 
-    const wrapper = mount(
+    const result = render(
       <BreakRow break={travelBreak} index={0} activeIndex={null} />
     )
-    expect(wrapper.html()).toContain("Travel to Echo Avenue (Paid)")
+    expect(result.queryByText("Travel to Echo Avenue (Paid)")).toBeVisible()
   })
 
   test("Unrecognized types show their name and place", () => {
@@ -819,12 +821,13 @@ describe("BreakRow", () => {
       endPlace: "Foxtrot Village",
     }
 
-    const wrapper = mount(
+    const result = render(
       <BreakRow break={unrecognizedBreak} index={0} activeIndex={null} />
     )
-    expect(wrapper.html()).toContain("Unrecognized break type")
-    expect(wrapper.html()).toContain("Foxtrot Village")
-    expect(wrapper.html()).not.toContain("(Paid)")
-    expect(wrapper.html()).not.toContain("(Unpaid)")
+
+    expect(result.queryByText(/Unrecognized break type/)).toBeVisible()
+    expect(result.queryByText(/Foxtrot Village/)).toBeVisible()
+    expect(result.queryByText(/\(Paid\)/)).toBeNull()
+    expect(result.queryByText(/\(Unpaid\)/)).toBeNull()
   })
 })

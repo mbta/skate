@@ -1,6 +1,7 @@
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
-import { mount } from "enzyme"
 
 import DrawerTab from "../../src/components/drawerTab"
 
@@ -21,13 +22,13 @@ describe("drawerTab", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("calls callback when clicked", () => {
+  test("calls callback when clicked", async () => {
     const mockCallback = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <DrawerTab isVisible={false} toggleVisibility={mockCallback} />
     )
-    wrapper.find(".c-drawer-tab__tab-button").simulate("click")
 
+    await userEvent.click(result.getByRole("button"))
     expect(mockCallback).toHaveBeenCalled()
   })
 })

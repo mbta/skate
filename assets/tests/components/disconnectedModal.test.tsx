@@ -1,4 +1,5 @@
-import { mount } from "enzyme"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import DisconnectedModal from "../../src/components/disconnectedModal"
@@ -15,9 +16,9 @@ describe("DisconnectedModal", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("refreshes when you click the button", () => {
-    const wrapper = mount(<DisconnectedModal />)
-    wrapper.find("button").simulate("click")
+  test("refreshes when you click the button", async () => {
+    const result = render(<DisconnectedModal />)
+    await userEvent.click(result.getByRole("button"))
     expect(reload).toHaveBeenCalled()
   })
 })
