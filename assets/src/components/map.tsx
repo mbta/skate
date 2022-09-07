@@ -31,6 +31,7 @@ import { Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
+import appData from "../appData"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -306,6 +307,8 @@ const useAutoCenter = (
   ])
 }
 
+const tilesetUrl = (): string => appData()?.tilesetUrl || ""
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<ReactLeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
@@ -355,7 +358,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         <FullscreenControl position="topright" />
         <RecenterControl turnOnAutoCenter={() => setShouldAutoCenter(true)} />
         <TileLayer
-          url="https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png"
+          url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.vehicles.map((vehicle: Vehicle) => (

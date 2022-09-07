@@ -28,6 +28,7 @@ defmodule SkateWeb.PageController do
     |> assign(:dispatcher_flag, dispatcher_flag)
     |> assign(:clarity_tag, Application.get_env(:skate, :clarity_tag))
     |> assign(:google_tag_manager_id, Application.get_env(:skate, :google_tag_manager_id))
+    |> assign(:tileset_url, Application.get_env(:skate, :tileset_url))
     |> render("index.html")
   end
 
