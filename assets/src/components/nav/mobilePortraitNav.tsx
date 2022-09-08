@@ -19,33 +19,33 @@ const MobilePortraitNav = ({
   const { mobileMenuIsOpen, routeTabs, openView, selectedVehicleOrGhost } =
     state
 
-  if (openView !== OpenView.None || selectedVehicleOrGhost) {
-    return (
-      <div className="m-nav--narrow m-nav--covered">
-        <div className="m-nav__app-content">{children}</div>
-      </div>
-    )
-  } else {
-    return (
-      <div className="m-nav--narrow">
-        <div className="m-nav__nav-bar m-nav__nav-bar--top">
+  const isViewOpen = openView !== OpenView.None || selectedVehicleOrGhost
+
+  return (
+    <div className="m-nav--narrow">
+      <div className="m-nav__nav-bar m-nav__nav-bar--top">
+        {!isViewOpen && (
           <TopNavMobile
             toggleMobileMenu={() => dispatch(toggleMobileMenu())}
             openNotificationDrawer={() => dispatch(openNotificationDrawer())}
             routeTabs={routeTabs}
             mobileMenuIsOpen={mobileMenuIsOpen}
           />
-        </div>
-        <div className="m-nav__app-content">{children}</div>
-        <div className="m-nav__nav-bar m-nav__nav-bar--bottom">
+        )}
+      </div>
+
+      <div className="m-nav__app-content">{children}</div>
+
+      <div className="m-nav__nav-bar m-nav__nav-bar--bottom">
+        {!isViewOpen && (
           <BottomNavMobile
             mobileMenuIsOpen={mobileMenuIsOpen}
             openSwingsView={() => dispatch(openSwingsView())}
           />
-        </div>
+        )}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default MobilePortraitNav
