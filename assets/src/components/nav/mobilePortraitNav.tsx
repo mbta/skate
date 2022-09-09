@@ -21,28 +21,32 @@ const MobilePortraitNav = ({
 
   const isViewOpen = openView !== OpenView.None || selectedVehicleOrGhost
 
+  const navVisibilityStyle = isViewOpen ? "hidden" : "visible"
+
   return (
     <div className="m-nav--narrow">
-      <div className="m-nav__nav-bar m-nav__nav-bar--top">
-        {!isViewOpen && (
-          <TopNavMobile
-            toggleMobileMenu={() => dispatch(toggleMobileMenu())}
-            openNotificationDrawer={() => dispatch(openNotificationDrawer())}
-            routeTabs={routeTabs}
-            mobileMenuIsOpen={mobileMenuIsOpen}
-          />
-        )}
+      <div
+        className="m-nav__nav-bar m-nav__nav-bar--top"
+        style={{ visibility: navVisibilityStyle }}
+      >
+        <TopNavMobile
+          toggleMobileMenu={() => dispatch(toggleMobileMenu())}
+          openNotificationDrawer={() => dispatch(openNotificationDrawer())}
+          routeTabs={routeTabs}
+          mobileMenuIsOpen={mobileMenuIsOpen}
+        />
       </div>
 
       <div className="m-nav__app-content">{children}</div>
 
-      <div className="m-nav__nav-bar m-nav__nav-bar--bottom">
-        {!isViewOpen && (
-          <BottomNavMobile
-            mobileMenuIsOpen={mobileMenuIsOpen}
-            openSwingsView={() => dispatch(openSwingsView())}
-          />
-        )}
+      <div
+        className="m-nav__nav-bar m-nav__nav-bar--bottom"
+        style={{ visibility: navVisibilityStyle }}
+      >
+        <BottomNavMobile
+          mobileMenuIsOpen={mobileMenuIsOpen}
+          openSwingsView={() => dispatch(openSwingsView())}
+        />
       </div>
     </div>
   )

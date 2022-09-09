@@ -10,13 +10,18 @@
   top: 0;
   width: 23.5rem;
   z-index: 1002;
-
   @media screen and (max-width: $mobile-max-width) {
     width: 100vw;
-
     .m-nav__app-content & {
       width: 100%;
     }
+  }
+  @media screen and (max-width: $mobile-max-width) {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow-y: scroll;
   }
 }
 
