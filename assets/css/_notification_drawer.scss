@@ -9,6 +9,7 @@
   top: 0;
   width: 23.5rem;
   z-index: 1001;
+
   @media screen and (max-width: $mobile-max-width) {
     width: 100%;
   }
@@ -38,6 +39,7 @@
   cursor: pointer;
   position: absolute;
   right: 0;
+
   &:hover {
     font-weight: 700;
   }
