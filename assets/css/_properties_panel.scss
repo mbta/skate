@@ -18,11 +18,10 @@
       width: 100%;
     }
   }
-  @media screen and (max-width: $mobile-max-width) {
+  @media screen and (max-width: $mobile-portrait-max-width) {
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 100%;
     overflow-y: scroll;
   }
 }
