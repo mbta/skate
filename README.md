@@ -34,6 +34,7 @@ Here are the configuration details defined in `.envrc`:
 - **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
 - **ERL_FLAGS**: Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 - **SKATE_HASTUS_URL**: Source of extended schedule data
+- **TILESET_URL**: Location of map tile images
 - **RELEASE_COOKIE**: Used by Erlang (only required in production)
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
 - **STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT**: CDN details (only required in production)
