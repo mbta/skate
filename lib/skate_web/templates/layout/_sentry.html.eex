@@ -2,5 +2,6 @@
   window.sentry = {
     dsn: "<%= Application.get_env(:skate, :sentry_frontend_dsn) %>",
     environment: "<%= Application.get_env(:skate, :sentry_environment) %>"
+    allowUrls: ["skate.mbtace.com", "skate-*.mbtace.com"]
   }
 </script>

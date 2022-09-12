@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/react"
 interface sentryOptions {
   dsn?: string
   environment?: string
+  allowUrls?: Array<string | RegExp>
 }
 
 const sentryInit = (

@@ -9,6 +9,7 @@ jest.mock("@sentry/react", () => ({
 
 const opts = {
   environment: "test_env",
+  allowedUrls: ["url1", "url2"],
 }
 
 const username = "test_username"

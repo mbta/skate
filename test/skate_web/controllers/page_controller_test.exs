@@ -77,6 +77,15 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "sentry allowed urls set", %{conn: conn} do
+      reassign_env(:skate, :record_sentry, true)
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~
+               "allowUrls: [\"skate.mbtace.com\", \"skate-*.mbtace.com\"]"
+    end
+
+    @tag :authenticated
     test "correct clarity tag set", %{conn: conn} do
       reassign_env(:skate, :clarity_tag, "test_tag")
 
