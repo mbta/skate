@@ -59,6 +59,7 @@ defmodule Skate.Application do
       :api_key,
       :clarity_tag,
       :google_tag_manager_id,
+      :tileset_url,
       :gtfs_url,
       :hastus_url,
       :busloc_url,
