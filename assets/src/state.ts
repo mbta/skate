@@ -86,6 +86,7 @@ export interface State {
   selectedNotification?: Notification
   openView: OpenView
   previousView: OpenView
+  swingsViewScrollPosition: number
   openInputModal: OpenInputModal | null
   mobileMenuIsOpen: boolean
   showGaragesFilter: boolean
@@ -105,6 +106,7 @@ export const initialState: State = {
   selectedNotification: undefined,
   openView: OpenView.None,
   previousView: OpenView.None,
+  swingsViewScrollPosition: 0,
   openInputModal: null,
   mobileMenuIsOpen: false,
   showGaragesFilter: false,
@@ -569,6 +571,22 @@ export const toggleShowGaragesFilter = (): ToggleShowGaragesFilterAction => ({
   type: "TOGGLE_SHOW_GARAGES_FILTER",
 })
 
+interface RememberSwingsScrollPositionAction {
+  type: "REMEMBER_SWINGS_SCROLL_POSITION"
+  payload: {
+    scrollPosition: number
+  }
+}
+
+export const rememberSwingsViewScrollPosition = (
+  scrollPosition: number
+): RememberSwingsScrollPositionAction => ({
+  type: "REMEMBER_SWINGS_SCROLL_POSITION",
+  payload: {
+    scrollPosition,
+  },
+})
+
 export type Action =
   // Route tabs and ladder management in tabs
   | CreateRouteTabAction
@@ -611,6 +629,7 @@ export type Action =
   | OpenLateViewAction
   | CloseLateViewAction
   | ReturnToPreviousViewAction
+  | RememberSwingsScrollPositionAction
   // Presets
   | CreatePresetAction
   | InstantiatePresetAction
@@ -1145,6 +1164,18 @@ const openInputModalReducer = (
   }
 }
 
+const swingsViewScrollPositionReducer = (
+  state: number,
+  action: Action
+): number => {
+  switch (action.type) {
+    case "REMEMBER_SWINGS_SCROLL_POSITION":
+      return action.payload.scrollPosition
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => {
   const {
     routeTabs,
@@ -1190,6 +1221,10 @@ export const reducer = (state: State, action: Action): State => {
     ),
     openView,
     previousView,
+    swingsViewScrollPosition: swingsViewScrollPositionReducer(
+      state.swingsViewScrollPosition,
+      action
+    ),
     openInputModal: openInputModalReducer(state.openInputModal, action),
     mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
     showGaragesFilter: garageFilterReducer(state.showGaragesFilter, action),

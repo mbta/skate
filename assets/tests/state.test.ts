@@ -1117,4 +1117,13 @@ describe("reducer", () => {
         fail("did not receive correct openInputModal type")
     }
   })
+
+  test("rememberSwingsScrollPosition", () => {
+    const newState = reducer(
+      initialState,
+      State.rememberSwingsViewScrollPosition(10)
+    )
+
+    expect(newState.swingsViewScrollPosition).toBe(10)
+  })
 })

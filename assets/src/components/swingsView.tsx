@@ -1,4 +1,10 @@
-import React, { ReactElement, useContext, useState } from "react"
+import React, {
+  ReactElement,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import { useRoutes } from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -13,15 +19,22 @@ import useVehiclesForRunIds from "../hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
 import { ByRunId, VehicleOrGhost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
-import { closeSwingsView, selectVehicle } from "../state"
+import {
+  closeSwingsView,
+  rememberSwingsViewScrollPosition,
+  selectVehicle,
+} from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import ViewHeader from "./viewHeader"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
-  const [{ mobileMenuIsOpen }, dispatch] = useContext(StateDispatchContext)
+  const [{ mobileMenuIsOpen, swingsViewScrollPosition }, dispatch] =
+    useContext(StateDispatchContext)
   const currentTime = useCurrentTime()
   const swings = useSwings()
+  const elementRef = useRef<HTMLDivElement | null>(null)
+  const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
   const pastSwingSecs = 900
 
@@ -73,8 +86,30 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
+  useLayoutEffect(() => {
+    const element = elementRef.current
+
+    // in addition to other criteria, wait until swings are populated so that the
+    // element is tall enough to scroll
+    if (isInitialRender && element && swings) {
+      setIsInitialRender(false)
+
+      element.scrollTop = swingsViewScrollPosition
+    }
+
+    return () => {
+      if (element) {
+        dispatch(rememberSwingsViewScrollPosition(element.scrollTop))
+      }
+    }
+  }, [isInitialRender, swingsViewScrollPosition, dispatch, swings])
+
   return (
-    <div id="m-swings-view" className={`m-swings-view ${mobileMenuClass}`}>
+    <div
+      id="m-swings-view"
+      className={`m-swings-view ${mobileMenuClass}`}
+      ref={elementRef}
+    >
       <ViewHeader title="Swings" closeView={hideMe} />
       {swings ? (
         <SwingsTable
