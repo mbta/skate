@@ -1126,4 +1126,13 @@ describe("reducer", () => {
 
     expect(newState.swingsViewScrollPosition).toBe(10)
   })
+
+  test("toggleShowHidePastSwings", () => {
+    const newState = reducer(
+      { ...initialState, showPastSwings: true },
+      State.toggleShowHidePastSwings()
+    )
+
+    expect(newState).toEqual({ ...initialState, showPastSwings: false })
+  })
 })

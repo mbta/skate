@@ -18,6 +18,7 @@ import {
   initialState,
   rememberSwingsViewScrollPosition,
   selectVehicle,
+  toggleShowHidePastSwings,
 } from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
@@ -126,39 +127,65 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("can click to show past swings", async () => {
+  test("can click to show / hide past swings", async () => {
     const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
     ;(useSwings as jest.Mock)
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
 
+    const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
-      <RoutesProvider routes={routes}>
-        <SwingsView />
-      </RoutesProvider>
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
     )
 
     await user.click(result.getByText("Show past swings"))
+
+    expect(dispatch).toHaveBeenCalledWith(toggleShowHidePastSwings())
+  })
+
+  test("shows past swings", async () => {
+    const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
+    ;(useSwings as jest.Mock)
+      .mockImplementationOnce((): Swing[] => [swing])
+      .mockImplementationOnce((): Swing[] => [swing])
+
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, showPastSwings: true }}
+        dispatch={dispatch}
+      >
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
 
     expect(result.queryByText("4567")).toBeVisible()
   })
 
-  test("can hide past swings after showing them", async () => {
+  test("hides past swings", async () => {
     const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
     ;(useSwings as jest.Mock)
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
 
-    const user = userEvent.setup()
+    const dispatch = jest.fn()
     const result = render(
-      <RoutesProvider routes={routes}>
-        <SwingsView />
-      </RoutesProvider>
+      <StateDispatchProvider
+        state={{ ...initialState, showPastSwings: false }}
+        dispatch={dispatch}
+      >
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
     )
-
-    await user.click(result.getByText("Show past swings"))
-    await user.click(result.getByText("Hide past swings"))
 
     expect(result.queryByText("4567")).toBeNull()
   })

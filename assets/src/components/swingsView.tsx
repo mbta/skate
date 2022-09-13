@@ -23,14 +23,17 @@ import {
   closeSwingsView,
   rememberSwingsViewScrollPosition,
   selectVehicle,
+  toggleShowHidePastSwings,
 } from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import ViewHeader from "./viewHeader"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
-  const [{ mobileMenuIsOpen, swingsViewScrollPosition }, dispatch] =
-    useContext(StateDispatchContext)
+  const [
+    { mobileMenuIsOpen, swingsViewScrollPosition, showPastSwings },
+    dispatch,
+  ] = useContext(StateDispatchContext)
   const currentTime = useCurrentTime()
   const swings = useSwings()
   const elementRef = useRef<HTMLDivElement | null>(null)
@@ -118,6 +121,8 @@ const SwingsView = (): ReactElement<HTMLElement> => {
           swingVehiclesByRunId={swingVehiclesByRunId}
           swingVehiclesByBlockId={swingVehiclesByBlockId}
           swingRoutesById={swingRoutesById}
+          showPastSwings={showPastSwings}
+          toggleShowPastSwings={() => dispatch(toggleShowHidePastSwings())}
         />
       ) : (
         <Loading />
@@ -132,15 +137,17 @@ const SwingsTable = ({
   swingVehiclesByRunId,
   swingVehiclesByBlockId,
   swingRoutesById,
+  showPastSwings,
+  toggleShowPastSwings,
 }: {
   pastSwings: Swing[]
   activeSwings: Swing[]
   swingVehiclesByRunId: ByRunId<VehicleOrGhost>
   swingVehiclesByBlockId: ByBlockId<VehicleOrGhost>
   swingRoutesById: ByRouteId<Route>
+  showPastSwings: boolean
+  toggleShowPastSwings: () => void
 }): ReactElement<HTMLElement> => {
-  const [showPastSwings, setShowPastSwings] = useState<boolean>(false)
-
   return (
     <div className="m-swings-view__table-container">
       <table className="m-swings-view__table">
@@ -188,7 +195,7 @@ const SwingsTable = ({
                   : " m-swings-view__show-past-disabled")
               }
               colSpan={4}
-              onClick={() => setShowPastSwings(!showPastSwings)}
+              onClick={toggleShowPastSwings}
             >
               {upDownIcon("m-swings-view__show-past-icon")}
               {`${showPastSwings ? "Hide" : "Show"} past swings`}
