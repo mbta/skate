@@ -1,5 +1,7 @@
 import React from "react"
 import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
+
 import MobilePortraitNav from "../../../src/components/nav/mobilePortraitNav"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState, OpenView } from "../../../src/state"
@@ -17,8 +19,8 @@ describe("MobilePortraitNav", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTitle("Swings View")).not.toBeNull()
-    expect(result.queryByTitle("Notifications")).not.toBeNull()
+    expect(result.queryByTitle("Swings View")).toBeVisible()
+    expect(result.queryByTitle("Notifications")).toBeVisible()
   })
 
   test("doesn't render top / bottom nav when a view is open", () => {
@@ -34,8 +36,8 @@ describe("MobilePortraitNav", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTitle("Swings View")).toBeNull()
-    expect(result.queryByTitle("Notifications")).toBeNull()
+    expect(result.queryByTitle("Swings View")).not.toBeVisible()
+    expect(result.queryByTitle("Notifications")).not.toBeVisible()
   })
 
   test("doesn't render top / bottom nav when a vehicle is selected", () => {
@@ -54,8 +56,8 @@ describe("MobilePortraitNav", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTitle("Swings View")).toBeNull()
-    expect(result.queryByTitle("Notifications")).toBeNull()
+    expect(result.queryByTitle("Swings View")).not.toBeVisible()
+    expect(result.queryByTitle("Notifications")).not.toBeVisible()
   })
 
   test("doesn't render top / bottom nav when notification drawer is open", () => {
@@ -74,7 +76,7 @@ describe("MobilePortraitNav", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTitle("Swings View")).toBeNull()
-    expect(result.queryByTitle("Notifications")).toBeNull()
+    expect(result.queryByTitle("Swings View")).not.toBeVisible()
+    expect(result.queryByTitle("Notifications")).not.toBeVisible()
   })
 })

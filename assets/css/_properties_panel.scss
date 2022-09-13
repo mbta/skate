@@ -18,6 +18,10 @@
       width: 100%;
     }
   }
+  @media screen and (max-width: $mobile-portrait-max-width) {
+    position: fixed;
+    bottom: 0;
+  }
 }
 
 .m-properties-panel .m-properties-panel__header-wrapper {

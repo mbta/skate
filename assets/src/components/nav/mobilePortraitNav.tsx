@@ -19,33 +19,37 @@ const MobilePortraitNav = ({
   const { mobileMenuIsOpen, routeTabs, openView, selectedVehicleOrGhost } =
     state
 
-  if (openView !== OpenView.None || selectedVehicleOrGhost) {
-    return (
-      <div className="m-nav--narrow m-nav--covered">
-        <div className="m-nav__app-content">{children}</div>
+  const isViewOpen = openView !== OpenView.None || selectedVehicleOrGhost
+
+  const navVisibilityStyle = isViewOpen ? "hidden" : "visible"
+
+  return (
+    <div className="m-nav--narrow">
+      <div
+        className="m-nav__nav-bar m-nav__nav-bar--top"
+        style={{ visibility: navVisibilityStyle }}
+      >
+        <TopNavMobile
+          toggleMobileMenu={() => dispatch(toggleMobileMenu())}
+          openNotificationDrawer={() => dispatch(openNotificationDrawer())}
+          routeTabs={routeTabs}
+          mobileMenuIsOpen={mobileMenuIsOpen}
+        />
       </div>
-    )
-  } else {
-    return (
-      <div className="m-nav--narrow">
-        <div className="m-nav__nav-bar m-nav__nav-bar--top">
-          <TopNavMobile
-            toggleMobileMenu={() => dispatch(toggleMobileMenu())}
-            openNotificationDrawer={() => dispatch(openNotificationDrawer())}
-            routeTabs={routeTabs}
-            mobileMenuIsOpen={mobileMenuIsOpen}
-          />
-        </div>
-        <div className="m-nav__app-content">{children}</div>
-        <div className="m-nav__nav-bar m-nav__nav-bar--bottom">
-          <BottomNavMobile
-            mobileMenuIsOpen={mobileMenuIsOpen}
-            openSwingsView={() => dispatch(openSwingsView())}
-          />
-        </div>
+
+      <div className="m-nav__app-content">{children}</div>
+
+      <div
+        className="m-nav__nav-bar m-nav__nav-bar--bottom"
+        style={{ visibility: navVisibilityStyle }}
+      >
+        <BottomNavMobile
+          mobileMenuIsOpen={mobileMenuIsOpen}
+          openSwingsView={() => dispatch(openSwingsView())}
+        />
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default MobilePortraitNav

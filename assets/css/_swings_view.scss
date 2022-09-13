@@ -27,6 +27,11 @@
       }
     }
   }
+  @media screen and (max-width: $mobile-portrait-max-width) {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+  }
 }
 
 .m-swings-view__table-container {
