@@ -1,10 +1,11 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../factories/route"
 import RoutePicker from "../../src/components/routePicker"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Route, RouteId } from "../../src/schedule.d"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 describe("RoutePicker", () => {
   test("renders a list of routes and presets toggle", () => {
@@ -48,12 +49,12 @@ describe("RoutePicker", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a route selects it", () => {
+  test("clicking a route selects it", async () => {
     const mockSelect = jest.fn()
 
-    const routes = [routeFactory.build({ id: "id", name: "id" })]
+    const routes = [routeFactory.build({ id: "id", name: "test route" })]
 
-    const routePicker = mount(
+    const result = render(
       <RoutesProvider routes={routes}>
         <RoutePicker
           selectedRouteIds={[]}
@@ -63,18 +64,15 @@ describe("RoutePicker", () => {
       </RoutesProvider>
     )
 
-    routePicker
-      .find(".m-route-picker__route-list-button")
-      .first()
-      .simulate("click")
+    await userEvent.click(result.getByRole("button", { name: /test route/ }))
 
     expect(mockSelect).toHaveBeenCalledWith("id")
   })
 
-  test("clicking in the list of selected routes deselects a route", () => {
+  test("clicking in the list of selected routes deselects a route", async () => {
     const mockDeselect = jest.fn()
 
-    const routePicker = mount(
+    const result = render(
       <RoutePicker
         selectedRouteIds={["id"]}
         selectRoute={jest.fn()}
@@ -82,10 +80,7 @@ describe("RoutePicker", () => {
       />
     )
 
-    routePicker
-      .find(".m-route-picker__selected-routes-button")
-      .first()
-      .simulate("click")
+    await userEvent.click(result.getByRole("button", { name: /id/ }))
 
     expect(mockDeselect).toHaveBeenCalledWith("id")
   })
