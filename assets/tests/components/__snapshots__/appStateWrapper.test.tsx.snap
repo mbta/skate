@@ -357,6 +357,7 @@ exports[`renders 1`] = `
             >
               <button
                 className="m-ladder-page__add-tab-button"
+                data-testid="add-tab-button"
                 onClick={[Function]}
               >
                 <span

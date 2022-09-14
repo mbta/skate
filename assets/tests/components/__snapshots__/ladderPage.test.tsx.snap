@@ -118,6 +118,7 @@ exports[`LadderPage renders the empty state 1`] = `
     >
       <button
         className="m-ladder-page__add-tab-button"
+        data-testid="add-tab-button"
         onClick={[Function]}
       >
         <span
@@ -300,6 +301,7 @@ exports[`LadderPage renders with route tabs 1`] = `
           </div>
           <button
             className="m-ladder-page__tab-save-button"
+            data-testid="save-button"
             onClick={[Function]}
           >
             <span
@@ -362,6 +364,7 @@ exports[`LadderPage renders with route tabs 1`] = `
       </div>
       <button
         className="m-ladder-page__add-tab-button"
+        data-testid="add-tab-button"
         onClick={[Function]}
       >
         <span
@@ -598,6 +601,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           </div>
           <button
             className="m-ladder-page__tab-save-button"
+            data-testid="save-button"
             onClick={[Function]}
           >
             <span
@@ -628,6 +632,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       </div>
       <button
         className="m-ladder-page__add-tab-button"
+        data-testid="add-tab-button"
         onClick={[Function]}
       >
         <span
@@ -910,6 +915,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           </div>
           <button
             className="m-ladder-page__tab-save-button"
+            data-testid="save-button"
             onClick={[Function]}
           >
             <span
@@ -940,6 +946,7 @@ exports[`LadderPage renders with timepoints 1`] = `
       </div>
       <button
         className="m-ladder-page__add-tab-button"
+        data-testid="add-tab-button"
         onClick={[Function]}
       >
         <span
@@ -1459,6 +1466,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
           </div>
           <button
             className="m-ladder-page__tab-save-button"
+            data-testid="save-button"
             onClick={[Function]}
           >
             <span
@@ -1489,6 +1497,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
       </div>
       <button
         className="m-ladder-page__add-tab-button"
+        data-testid="add-tab-button"
         onClick={[Function]}
       >
         <span
