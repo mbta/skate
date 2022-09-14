@@ -235,8 +235,10 @@ describe("NotificationDrawer", () => {
         </RoutesProvider>
       </StateDispatchProvider>
     )
-    expect(rememberScrollPosition).not.toHaveBeenCalled()
+    // first call to rememberScrollPosition happens on initial render, it's the second one
+    // that happens on unmount
+    expect(rememberScrollPosition).not.toHaveBeenNthCalledWith(2, 123)
     unmount()
-    expect(rememberScrollPosition).toHaveBeenCalledWith(123)
+    expect(rememberScrollPosition).toHaveBeenNthCalledWith(2, 123)
   })
 })

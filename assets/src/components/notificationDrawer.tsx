@@ -17,25 +17,21 @@ const NotificationDrawer = () => {
 
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
-  /* eslint-disable react-hooks/exhaustive-deps */
   useLayoutEffect(() => {
-    const restoreScrollPosition = isInitialRender
-    setIsInitialRender(false)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const currentElement = elementRef.current!
+    const element = elementRef.current
 
-    if (restoreScrollPosition && elementRef) {
-      const element = elementRef.current
-      if (element) {
-        element.scrollTop = scrollPosition
-      }
+    if (isInitialRender && element) {
+      setIsInitialRender(false)
+
+      element.scrollTop = scrollPosition
     }
 
     return () => {
-      rememberScrollPosition(currentElement.scrollTop)
+      if (element) {
+        rememberScrollPosition(element.scrollTop)
+      }
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  }, [isInitialRender, scrollPosition, rememberScrollPosition])
 
   return (
     <div className="m-notification-drawer" ref={elementRef}>
