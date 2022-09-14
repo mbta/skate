@@ -1,4 +1,5 @@
-import { mount } from "enzyme"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import SearchResults, {
@@ -354,30 +355,29 @@ describe("SearchResults", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a result card selects that vehicle", () => {
+  test("clicking a result card selects that vehicle", async () => {
     const testDispatch = jest.fn()
-    const vehicle: Vehicle = vehicleFactory.build()
-    const wrapper = mount(
+    const vehicle: Vehicle = vehicleFactory.build({ runId: "12345" })
+    const result = render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
         <SearchResults vehicles={[vehicle]} />
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-search-results__card").simulate("click")
+    await userEvent.click(result.getByText("12345"))
 
     expect(testDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 
-  test("clicking the clear search button empties the search text", () => {
+  test("clicking the clear search button empties the search text", async () => {
     const testDispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
         <SearchResults vehicles={[]} />
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-search-results__clear-search-button").simulate("click")
-
+    await userEvent.click(result.getByText("Clear search"))
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
 })

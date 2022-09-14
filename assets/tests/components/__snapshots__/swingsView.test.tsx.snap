@@ -114,6 +114,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
         </tr>
         <tr
           className="m-swings-view__table-row-inactive"
+          data-testid="past-swing"
         >
           <th
             className="m-swings-view__table-cell"
@@ -281,6 +282,7 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
         </tr>
         <tr
           className="m-swings-view__table-row-inactive"
+          data-testid="past-swing"
         >
           <th
             className="m-swings-view__table-cell"
@@ -446,6 +448,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
         </tr>
         <tr
           className="m-swings-view__table-row-active"
+          data-testid="active-swing"
         >
           <th
             className="m-swings-view__table-cell"
@@ -755,6 +758,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
         </tr>
         <tr
           className="m-swings-view__table-row-active"
+          data-testid="active-swing"
         >
           <th
             className="m-swings-view__table-cell"
@@ -816,6 +820,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
         </tr>
         <tr
           className="m-swings-view__table-row-active"
+          data-testid="active-swing"
         >
           <th
             className="m-swings-view__table-cell"
@@ -875,6 +880,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
         </tr>
         <tr
           className="m-swings-view__table-row-inactive"
+          data-testid="past-swing"
         >
           <th
             className="m-swings-view__table-cell"

@@ -1,6 +1,7 @@
-import { mount } from "enzyme"
+import { render } from "@testing-library/react"
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
+import "@testing-library/jest-dom"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -38,26 +39,26 @@ describe("rightPanel", () => {
 
   test("shows a selected vehicle", () => {
     const state: State = { ...initialState, selectedVehicleOrGhost: vehicle }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <RightPanel selectedVehicleOrGhost={vehicle} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.html()).toContain(vehicle.runId)
+    expect(result.queryByText(vehicle.runId!)).toBeVisible()
   })
 
   test("shows a selected ghost", () => {
     const state: State = { ...initialState, selectedVehicleOrGhost: ghost }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <RightPanel selectedVehicleOrGhost={ghost} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.html()).toContain(ghost.runId)
+    expect(result.queryByText(ghost.runId!)).toBeVisible()
   })
 
   test("shows notification drawer", () => {
@@ -65,14 +66,14 @@ describe("rightPanel", () => {
       ...initialState,
       openView: OpenView.NotificationDrawer,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <RightPanel />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.html()).toContain("m-notification-drawer")
+    expect(result.getByText("Notifications")).toBeVisible()
   })
 
   test("prefers VPP to notification drawer", () => {
@@ -81,27 +82,27 @@ describe("rightPanel", () => {
       selectedVehicleOrGhost: vehicle,
       openView: OpenView.NotificationDrawer,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <RightPanel selectedVehicleOrGhost={vehicle} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.html()).toContain("m-vehicle-properties-panel")
-    expect(wrapper.html()).not.toContain("m-notification-drawer")
+    expect(result.queryByText("Vehicles")).toBeVisible()
+    expect(result.queryByText("Notifications")).toBeNull()
   })
 
   test("shows swings view", () => {
     const state: State = { ...initialState, openView: OpenView.Swings }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <RightPanel />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.html()).toContain("Swings")
+    expect(result.queryByText("Swings")).toBeVisible()
   })
 
   test("prefers VPP to swings view", () => {
@@ -110,14 +111,14 @@ describe("rightPanel", () => {
       selectedVehicleOrGhost: vehicle,
       openView: OpenView.Swings,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <RightPanel selectedVehicleOrGhost={vehicle} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.html()).toContain("m-vehicle-properties-panel")
-    expect(wrapper.html()).not.toContain("Swings view")
+    expect(result.queryByText("Vehicles")).toBeVisible()
+    expect(result.queryByText("Swings")).toBeNull()
   })
 })

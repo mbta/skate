@@ -1,4 +1,5 @@
-import { mount } from "enzyme"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import RecentSearches from "../../src/components/recentSearches"
@@ -38,14 +39,14 @@ describe("RecentSearches", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a recent searchPageState sets the searchPageState text", () => {
+  test("clicking a recent searchPageState sets the searchPageState text", async () => {
     const searchWithData = {
       query: { text: "999-555", property: "run" },
       isActive: false,
       savedQueries: [{ text: "poodle" }],
     }
     const mockDispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider
         state={{ ...initialState, searchPageState: searchWithData }}
         dispatch={mockDispatch}
@@ -54,7 +55,7 @@ describe("RecentSearches", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-recent-searches__button").simulate("click")
+    await userEvent.click(result.getByRole("button", { name: "poodle" }))
 
     expect(mockDispatch).toHaveBeenCalledWith(setSearchText("poodle"))
   })
