@@ -60,8 +60,8 @@
   text-align: right;
   background-color: $color-bg-base;
   position: sticky;
-  position: -webkit-sticky;
-  top: -1px;
+  // top offset to stick below the view-header
+  top: $view-header-height;
   z-index: 1002;
 
   .m-swings-view__table-header-cell-subheaders {
