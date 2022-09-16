@@ -92,7 +92,7 @@ const LadderTab = ({
         {tab.isCurrentTab && showSaveIcon ? (
           <button
             className="m-ladder-page__tab-save-button"
-            data-testid="save-button"
+            title="save"
             onClick={(e) => {
               e.stopPropagation()
 
@@ -118,7 +118,7 @@ const AddTabButton = ({
   return (
     <button
       className="m-ladder-page__add-tab-button"
-      data-testid="add-tab-button"
+      title="add tab"
       onClick={() => {
         tagManagerEvent("new_tab_added")
         addTab()
