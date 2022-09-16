@@ -94,6 +94,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -447,6 +448,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -1028,6 +1030,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -1476,6 +1479,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -1829,6 +1833,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -2196,6 +2201,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"

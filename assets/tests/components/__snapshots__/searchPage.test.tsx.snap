@@ -29,8 +29,8 @@ exports[`SearchPage renders a selected vehicle 1`] = `
             />
             <button
               className="m-search-form__clear"
-              data-testid="clear"
               onClick={[Function]}
+              title="clear"
               type="reset"
             >
               <span
@@ -45,9 +45,9 @@ exports[`SearchPage renders a selected vehicle 1`] = `
           </div>
           <button
             className="m-search-form__submit"
-            data-testid="submit"
             disabled={true}
             onClick={[Function]}
+            title="submit"
             type="submit"
           >
             <span
@@ -276,6 +276,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
             </div>
             <div
               className="m-route-variant-name"
+              data-testid="variant-name"
             >
               <span
                 className="m-route-variant-name__route-id"
@@ -571,8 +572,8 @@ exports[`SearchPage renders the empty state 1`] = `
             />
             <button
               className="m-search-form__clear"
-              data-testid="clear"
               onClick={[Function]}
+              title="clear"
               type="reset"
             >
               <span
@@ -587,9 +588,9 @@ exports[`SearchPage renders the empty state 1`] = `
           </div>
           <button
             className="m-search-form__submit"
-            data-testid="submit"
             disabled={true}
             onClick={[Function]}
+            title="submit"
             type="submit"
           >
             <span
@@ -753,8 +754,8 @@ exports[`SearchPage renders vehicle data 1`] = `
             />
             <button
               className="m-search-form__clear"
-              data-testid="clear"
               onClick={[Function]}
+              title="clear"
               type="reset"
             >
               <span
@@ -769,9 +770,9 @@ exports[`SearchPage renders vehicle data 1`] = `
           </div>
           <button
             className="m-search-form__submit"
-            data-testid="submit"
             disabled={true}
             onClick={[Function]}
+            title="submit"
             type="submit"
           >
             <span

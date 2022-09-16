@@ -107,6 +107,7 @@ Array [
             </div>
             <div
               className="m-route-variant-name"
+              data-testid="variant-name"
             >
               <span
                 className="m-route-variant-name__route-id"
@@ -399,6 +400,7 @@ Array [
             </div>
             <div
               className="m-route-variant-name"
+              data-testid="variant-name"
             >
               <span
                 className="m-route-variant-name__route-id"

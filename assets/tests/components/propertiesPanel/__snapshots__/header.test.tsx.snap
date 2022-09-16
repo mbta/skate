@@ -91,6 +91,7 @@ exports[`Header renders a header 1`] = `
       </div>
       <div
         className="m-route-variant-name"
+        data-testid="variant-name"
       >
         <span
           className="m-route-variant-name__route-id"
@@ -332,6 +333,7 @@ exports[`Header renders for a ghost 1`] = `
       </div>
       <div
         className="m-route-variant-name"
+        data-testid="variant-name"
       >
         <span
           className="m-route-variant-name__route-id"
@@ -531,6 +533,7 @@ exports[`Header renders for a late vehicle 1`] = `
       </div>
       <div
         className="m-route-variant-name"
+        data-testid="variant-name"
       >
         <span
           className="m-route-variant-name__route-id"
@@ -872,6 +875,7 @@ exports[`Header renders for an early vehicle 1`] = `
       </div>
       <div
         className="m-route-variant-name"
+        data-testid="variant-name"
       >
         <span
           className="m-route-variant-name__route-id"
@@ -1105,6 +1109,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
       </div>
       <div
         className="m-route-variant-name"
+        data-testid="variant-name"
       >
         <span
           className="m-route-variant-name__route-id"
@@ -1338,6 +1343,7 @@ exports[`Header renders with route data 1`] = `
       </div>
       <div
         className="m-route-variant-name"
+        data-testid="variant-name"
       >
         <span
           className="m-route-variant-name__route-id"
