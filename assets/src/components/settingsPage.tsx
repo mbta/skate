@@ -179,11 +179,11 @@ const ToggleSetting = ({
               : "m-settings-page__option-label-unselected"
           }
           key={option.optionId}
-          data-option-id={option.optionId}
         >
           <input
             type="radio"
             className="m-settings-page__input"
+            data-testid={option.optionId}
             name={settingName}
             value={option.value}
             checked={value === option.value}
