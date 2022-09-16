@@ -215,7 +215,6 @@ const SwingRow = ({
           : "m-swings-view__table-row-inactive") +
         (isLastPast ? " m-swings-view__table-row-last-past" : "")
       }
-      data-testid={vehicleOrGhost && !isPast ? "active-swing" : "past-swing"}
     >
       <th className="m-swings-view__table-cell">
         <div className="m-swings-view__table-cell-contents">

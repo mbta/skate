@@ -1,7 +1,7 @@
+import { mount } from "enzyme"
 import React from "react"
 import { render } from "@testing-library/react"
 import renderer from "react-test-renderer"
-import "@testing-library/jest-dom"
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
 import routeFactory from "../factories/route"
@@ -121,37 +121,37 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("can click to show past swings", async () => {
+  test("can click to show past swings", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       swingFactory.build(),
     ])
 
-    const result = render(
+    const wrapper = mount(
       <RoutesProvider routes={routes}>
         <SwingsView />
       </RoutesProvider>
     )
 
-    expect(result.queryByTestId("past-swing")).toBeNull()
-    await userEvent.click(result.getByText("Show past swings"))
-    expect(result.getByTestId("past-swing")).toBeVisible()
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+
+    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(1)
   })
 
-  test("can hide past swings after showing them", async () => {
+  test("can hide past swings after showing them", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       swingFactory.build(),
     ])
 
-    const result = render(
+    const wrapper = mount(
       <RoutesProvider routes={routes}>
         <SwingsView />
       </RoutesProvider>
     )
 
-    expect(result.queryByTestId("past-swing")).toBeNull()
-    await userEvent.click(result.getByText("Show past swings"))
-    await userEvent.click(result.getByText("Hide past swings"))
-    expect(result.queryByTestId("past-swing")).toBeNull()
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+
+    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(0)
   })
 
   test("renders future swings, active and inactive", () => {
