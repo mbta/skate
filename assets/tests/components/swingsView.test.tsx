@@ -14,7 +14,7 @@ import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
 import { Route, Swing } from "../../src/schedule"
 import {
-  closeSwingsView,
+  closeView,
   initialState,
   rememberSwingsViewScrollPosition,
   selectVehicle,
@@ -356,7 +356,7 @@ describe("SwingsView", () => {
     )
 
     await user.click(result.getByTitle("Close"))
-    expect(dispatch).toHaveBeenCalledWith(closeSwingsView())
+    expect(dispatch).toHaveBeenCalledWith(closeView())
   })
 
   test("remembers scroll position when unmounting", async () => {

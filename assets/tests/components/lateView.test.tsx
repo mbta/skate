@@ -11,7 +11,7 @@ import {
   OpenView,
   State,
   selectVehicle,
-  closeLateView,
+  closeView,
 } from "../../src/state"
 import blockWaiverFactory from "../factories/blockWaiver"
 import vehicleFactory from "../factories/vehicle"
@@ -127,7 +127,7 @@ describe("LateView", () => {
 
     await user.click(result.getByTitle("Close"))
 
-    expect(mockDispatch).toHaveBeenCalledWith(closeLateView())
+    expect(mockDispatch).toHaveBeenCalledWith(closeView())
   })
 
   test("clicking ghost run number opens ghost and sends tag manager event", async () => {

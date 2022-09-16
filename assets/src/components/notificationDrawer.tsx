@@ -4,7 +4,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
 import { markAllAsRead } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
-import { closeNotificationDrawer, returnToPreviousView } from "../state"
+import { closeView, returnToPreviousView } from "../state"
 import { openVPPForNotification } from "./notifications"
 import { NotificationCard } from "./notificationCard"
 import ViewHeader from "./viewHeader"
@@ -37,7 +37,7 @@ const NotificationDrawer = () => {
     <div className="m-notification-drawer" ref={elementRef}>
       <ViewHeader
         title="Notifications"
-        closeView={() => dispatch(closeNotificationDrawer())}
+        closeView={() => dispatch(closeView())}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />

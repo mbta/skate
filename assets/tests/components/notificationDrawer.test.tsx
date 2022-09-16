@@ -12,11 +12,7 @@ import {
 } from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationState } from "../../src/realtime.d"
 import { Route } from "../../src/schedule"
-import {
-  closeNotificationDrawer,
-  initialState,
-  setNotification,
-} from "../../src/state"
+import { closeView, initialState, setNotification } from "../../src/state"
 import { now } from "../../src/util/dateTime"
 import userEvent from "@testing-library/user-event"
 
@@ -71,7 +67,7 @@ describe("NotificationDrawer", () => {
     )
 
     await user.click(result.getByTitle("Close"))
-    expect(dispatch).toHaveBeenCalledWith(closeNotificationDrawer())
+    expect(dispatch).toHaveBeenCalledWith(closeView())
   })
 
   test("renders notifications", () => {

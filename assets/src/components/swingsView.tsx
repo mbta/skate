@@ -20,7 +20,7 @@ import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
 import { ByRunId, VehicleOrGhost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
 import {
-  closeSwingsView,
+  closeView,
   rememberSwingsViewScrollPosition,
   selectVehicle,
   toggleShowHidePastSwings,
@@ -85,7 +85,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
     return { ...map, [route.id]: route }
   }, {})
 
-  const hideMe = () => dispatch(closeSwingsView())
+  const hideMe = () => dispatch(closeView())
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 

@@ -6,7 +6,7 @@ import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { deselectVehicle, returnToPreviousView } from "../../state"
+import { closeView, returnToPreviousView } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
@@ -46,7 +46,7 @@ const StaleDataHeader: React.FC<{
   const [{ userSettings, previousView }, dispatch] =
     useContext(StateDispatchContext)
 
-  const hideMe = () => dispatch(deselectVehicle())
+  const hideMe = () => dispatch(closeView())
 
   return (
     <div className="m-properties-panel__header-wrapper">
