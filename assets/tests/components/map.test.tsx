@@ -1,4 +1,5 @@
-import { mount } from "enzyme"
+import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
 import { act } from "react-dom/test-utils"
@@ -11,6 +12,7 @@ import Map, {
 import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
+import userEvent from "@testing-library/user-event"
 
 jest.unmock("leaflet")
 jest.unmock("react-leaflet-control")
@@ -77,15 +79,15 @@ const vehicle: Vehicle = vehicleFactory.build({
 
 describe("map", () => {
   test("draws vehicles", () => {
-    const wrapper = mount(<Map vehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
+    const result = render(<Map vehicles={[vehicle]} />)
+    expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
+    expect(result.container.innerHTML).toContain("m-vehicle-map__label")
   })
 
   test("draws secondary vehicles", () => {
-    const wrapper = mount(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
+    const result = render(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
+    expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
+    expect(result.container.innerHTML).toContain("m-vehicle-map__label")
   })
 
   test("draws train vehicles", () => {
@@ -95,8 +97,8 @@ describe("map", () => {
       longitude: -71.00369,
       bearing: 15,
     }
-    const wrapper = mount(<Map vehicles={[]} trainVehicles={[trainVehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__train-icon")
+    const result = render(<Map vehicles={[]} trainVehicles={[trainVehicle]} />)
+    expect(result.container.innerHTML).toContain("m-vehicle-map__train-icon")
   })
 
   test("draws shapes", () => {
@@ -115,9 +117,9 @@ describe("map", () => {
         },
       ],
     }
-    const wrapper = mount(<Map vehicles={[]} shapes={[shape]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__route-shape")
-    expect(wrapper.html()).toContain("m-vehicle-map__stop")
+    const result = render(<Map vehicles={[]} shapes={[shape]} />)
+    expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
+    expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
   })
 })
 
@@ -169,7 +171,7 @@ const animationFramePromise = (): Promise<null> => {
 describe("auto centering", () => {
   test("auto centers on a vehicle", async () => {
     const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    mount(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
+    render(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual({ lat: 42, lng: -71 })
   })
@@ -182,7 +184,7 @@ describe("auto centering", () => {
       latitude: oldLatLng.lat,
       longitude: oldLatLng.lng,
     }
-    const wrapper = mount(
+    const { rerender } = render(
       <Map vehicles={[oldVehicle]} reactLeafletRef={mapRef} />
     )
     await animationFramePromise()
@@ -192,24 +194,26 @@ describe("auto centering", () => {
       latitude: newLatLng.lat,
       longitude: newLatLng.lng,
     }
-    wrapper.setProps({ vehicles: [newVehicle] })
+    rerender(<Map vehicles={[newVehicle]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(newLatLng)
   })
 
   test("manual moves disable auto centering", async () => {
     const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    const wrapper = mount(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
+    const { rerender, container } = render(
+      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
+    )
     await animationFramePromise()
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(true)
+    expect(container.firstChild).toHaveClass(
+      "m-vehicle-map-state--auto-centering"
+    )
     const manualLatLng = { lat: 41.9, lng: -70.9 }
+
     act(() => {
       mapRef.current!.leafletElement.panTo(manualLatLng)
     })
+
     await animationFramePromise()
     const newLatLng = { lat: 42.1, lng: -71.1 }
     const newVehicle = {
@@ -217,14 +221,12 @@ describe("auto centering", () => {
       latitude: newLatLng.lat,
       longitude: newLatLng.lng,
     }
-    wrapper!.setProps({ vehicles: [newVehicle] })
+    rerender(<Map vehicles={[newVehicle]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(manualLatLng)
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(false)
+    expect(container.firstChild).not.toHaveClass(
+      "m-vehicle-map-state--auto-centering"
+    )
   })
 
   test("auto recentering does not disable auto centering", async () => {
@@ -247,20 +249,22 @@ describe("auto centering", () => {
       latitude: latLng3.lat,
       longitude: latLng3.lng,
     }
-    const wrapper = mount(
+    const { rerender } = render(
       <Map vehicles={[vehicle1]} reactLeafletRef={mapRef} />
     )
     await animationFramePromise()
-    wrapper.setProps({ vehicles: [vehicle2] })
+    rerender(<Map vehicles={[vehicle2]} reactLeafletRef={mapRef} />)
+
     await animationFramePromise()
-    wrapper.setProps({ vehicles: [vehicle3] })
+    rerender(<Map vehicles={[vehicle3]} reactLeafletRef={mapRef} />)
+
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(latLng3)
   })
 
   test("recenter control turns on auto center", async () => {
     const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    const wrapper = mount(<Map vehicles={[]} reactLeafletRef={mapRef} />)
+    const result = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
 
     // Manual move to turn off auto centering
@@ -269,23 +273,17 @@ describe("auto centering", () => {
       mapRef.current!.leafletElement.panTo(manualLatLng)
     })
     await animationFramePromise()
-    wrapper.update()
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(false)
+    expect(result.container.firstChild).not.toHaveClass(
+      "m-vehicle-map-state--auto-centering"
+    )
     expect(getCenter(mapRef)).toEqual(manualLatLng)
 
     // Click the recenter button
-    wrapper.find(".m-vehicle-map__recenter-button").find("a").simulate("click")
+    await userEvent.click(result.getByTitle("Recenter map"))
     await animationFramePromise()
-    wrapper.update()
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(true)
+    expect(result.container.firstChild).toHaveClass(
+      "m-vehicle-map-state--auto-centering"
+    )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
   })
 })
