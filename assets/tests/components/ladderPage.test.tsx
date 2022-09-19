@@ -219,7 +219,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("save"))
+    await userEvent.click(result.getByTitle("Save"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
@@ -257,7 +257,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("save"))
+    await userEvent.click(result.getByTitle("Save"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
@@ -311,7 +311,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("add tab"))
+    await userEvent.click(result.getByTitle("Add Tab"))
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
