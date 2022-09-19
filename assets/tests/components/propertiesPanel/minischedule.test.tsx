@@ -16,7 +16,7 @@ import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 import vehicleFactory from "../../factories/vehicle"
-import { render, waitFor } from "@testing-library/react"
+import { render } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import userEvent from "@testing-library/user-event"
 
@@ -702,10 +702,10 @@ describe("Minischedule", () => {
     )
 
     expect(result.queryByText(/Show past/)).toBeVisible()
-    userEvent.click(result.getByText(/Show past/))
-    await waitFor(() => expect(result.queryByText(/Hide past/)).toBeVisible())
-    userEvent.click(result.getByText(/Hide past/))
-    await waitFor(() => expect(result.queryByText(/Show past/)).toBeVisible())
+    await userEvent.click(result.getByText(/Show past/))
+    expect(result.queryByText(/Hide past/)).toBeVisible()
+    await userEvent.click(result.getByText(/Hide past/))
+    expect(result.queryByText(/Show past/)).toBeVisible()
   })
 
   test("highlights pullouts if they're active", () => {
