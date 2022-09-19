@@ -36,8 +36,6 @@ export const otherNotificationReadState = (state: NotificationState) => {
 
 export interface State extends ReducerState {
   dispatch: (action: Action) => void
-  rememberScrollPosition: (scrollPosition: number) => void
-  scrollPosition: number
   notificationWithOpenSubmenuId: NotificationId | null
   setNotificationWithOpenSubmenuId: Dispatch<
     SetStateAction<NotificationId | null>
@@ -51,9 +49,6 @@ export const NotificationsContext = createContext<State>({
   showLatestNotification: false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   dispatch: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  rememberScrollPosition: () => {},
-  scrollPosition: 0,
   notificationWithOpenSubmenuId: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setNotificationWithOpenSubmenuId: () => {},
@@ -68,7 +63,6 @@ export const NotificationsProvider = ({
   const [{ selectedNotification }, stateDispatch] =
     useContext(StateDispatchContext)
   const { notifications, showLatestNotification } = state
-  const [scrollPosition, setScrollPosition] = useState<number>(0)
   const now = useCurrentTime()
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
@@ -109,8 +103,6 @@ export const NotificationsProvider = ({
         notifications,
         showLatestNotification,
         dispatch,
-        rememberScrollPosition: setScrollPosition,
-        scrollPosition,
         notificationWithOpenSubmenuId,
         setNotificationWithOpenSubmenuId,
       }}

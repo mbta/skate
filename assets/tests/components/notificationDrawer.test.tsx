@@ -12,7 +12,12 @@ import {
 } from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationState } from "../../src/realtime.d"
 import { Route } from "../../src/schedule"
-import { closeView, initialState, setNotification } from "../../src/state"
+import {
+  closeView,
+  initialState,
+  rememberNotificationDrawerScrollPosition,
+  setNotification,
+} from "../../src/state"
 import { now } from "../../src/util/dateTime"
 import userEvent from "@testing-library/user-event"
 
@@ -79,8 +84,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -103,8 +106,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -135,8 +136,6 @@ describe("NotificationDrawer", () => {
               notifications: [updatedNotification],
               showLatestNotification: true,
               dispatch: mockNotificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -166,8 +165,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: notificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -194,8 +191,6 @@ describe("NotificationDrawer", () => {
               notifications: [readNotification],
               showLatestNotification: true,
               dispatch: notificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -210,18 +205,19 @@ describe("NotificationDrawer", () => {
   })
 
   test("remembers the scroll position when the component is unmounted", () => {
-    const rememberScrollPosition = jest.fn()
+    const dispatch = jest.fn()
 
     const { unmount } = render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+      <StateDispatchProvider
+        state={{ ...initialState, notificationDrawerScrollPosition: 123 }}
+        dispatch={dispatch}
+      >
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
             value={{
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition,
-              scrollPosition: 123,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -233,8 +229,14 @@ describe("NotificationDrawer", () => {
     )
     // first call to rememberScrollPosition happens on initial render, it's the second one
     // that happens on unmount
-    expect(rememberScrollPosition).not.toHaveBeenNthCalledWith(2, 123)
+    expect(dispatch).not.toHaveBeenNthCalledWith(
+      2,
+      rememberNotificationDrawerScrollPosition(123)
+    )
     unmount()
-    expect(rememberScrollPosition).toHaveBeenNthCalledWith(2, 123)
+    expect(dispatch).toHaveBeenNthCalledWith(
+      2,
+      rememberNotificationDrawerScrollPosition(123)
+    )
   })
 })

@@ -488,6 +488,22 @@ describe("reducer", () => {
     })
   })
 
+  test("closeView resets notifications scroll position", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        openView: State.OpenView.NotificationDrawer,
+        notificationDrawerScrollPosition: 10,
+      },
+      State.closeView()
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      notificationDrawerScrollPosition: 0,
+    })
+  })
+
   test("selectVehicleFromNotification switches to appropriate route tab", () => {
     const originalRouteTab1 = routeTabFactory.build({
       isCurrentTab: false,
@@ -1112,5 +1128,14 @@ describe("reducer", () => {
     )
 
     expect(newState).toEqual({ ...initialState, showPastSwings: false })
+  })
+
+  test("rememberNotificationDrawerScrollPosition", () => {
+    const newState = reducer(
+      initialState,
+      State.rememberNotificationDrawerScrollPosition(10)
+    )
+
+    expect(newState.notificationDrawerScrollPosition).toBe(10)
   })
 })

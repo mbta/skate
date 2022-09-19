@@ -88,6 +88,7 @@ export interface State {
   previousView: OpenView
   swingsViewScrollPosition: number
   showPastSwings: boolean
+  notificationDrawerScrollPosition: number
   openInputModal: OpenInputModal | null
   mobileMenuIsOpen: boolean
   showGaragesFilter: boolean
@@ -109,6 +110,7 @@ export const initialState: State = {
   previousView: OpenView.None,
   swingsViewScrollPosition: 0,
   showPastSwings: false,
+  notificationDrawerScrollPosition: 0,
   openInputModal: null,
   mobileMenuIsOpen: false,
   showGaragesFilter: false,
@@ -573,6 +575,20 @@ export const toggleShowHidePastSwings = (): ToggleShowHidePastSwingsAction => ({
   type: "TOGGLE_SHOW_HIDE_PAST_SWINGS",
 })
 
+interface RememberNotificationDrawerScrollPositionAction {
+  type: "REMEMBER_NOTIFICATION_DRAWER_SCROLL_POSITION"
+  payload: {
+    scrollPosition: number
+  }
+}
+
+export const rememberNotificationDrawerScrollPosition = (
+  scrollPosition: number
+): RememberNotificationDrawerScrollPositionAction => ({
+  type: "REMEMBER_NOTIFICATION_DRAWER_SCROLL_POSITION",
+  payload: { scrollPosition },
+})
+
 export type Action =
   // Route tabs and ladder management in tabs
   | CreateRouteTabAction
@@ -614,6 +630,7 @@ export type Action =
   | ReturnToPreviousViewAction
   | RememberSwingsScrollPositionAction
   | ToggleShowHidePastSwingsAction
+  | RememberNotificationDrawerScrollPositionAction
   // Presets
   | CreatePresetAction
   | InstantiatePresetAction
@@ -1147,6 +1164,20 @@ const showPastSwingsReducer = (state: boolean, action: Action): boolean => {
   }
 }
 
+const notificationDrawerScrollPositionReducer = (
+  state: number,
+  action: Action
+): number => {
+  switch (action.type) {
+    case "REMEMBER_NOTIFICATION_DRAWER_SCROLL_POSITION":
+      return action.payload.scrollPosition
+    case "CLOSE_VIEW":
+      return 0
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => {
   const {
     routeTabs,
@@ -1197,6 +1228,10 @@ export const reducer = (state: State, action: Action): State => {
       action
     ),
     showPastSwings: showPastSwingsReducer(state.showPastSwings, action),
+    notificationDrawerScrollPosition: notificationDrawerScrollPositionReducer(
+      state.notificationDrawerScrollPosition,
+      action
+    ),
     openInputModal: openInputModalReducer(state.openInputModal, action),
     mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
     showGaragesFilter: garageFilterReducer(state.showGaragesFilter, action),

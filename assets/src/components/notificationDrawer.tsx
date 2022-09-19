@@ -4,16 +4,19 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
 import { markAllAsRead } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
-import { closeView, returnToPreviousView } from "../state"
+import {
+  closeView,
+  rememberNotificationDrawerScrollPosition,
+  returnToPreviousView,
+} from "../state"
 import { openVPPForNotification } from "./notifications"
 import { NotificationCard } from "./notificationCard"
 import ViewHeader from "./viewHeader"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
-  const { rememberScrollPosition, scrollPosition } =
-    useContext(NotificationsContext)
-  const [{ previousView }, dispatch] = useContext(StateDispatchContext)
+  const [{ previousView, notificationDrawerScrollPosition }, dispatch] =
+    useContext(StateDispatchContext)
 
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
@@ -23,15 +26,15 @@ const NotificationDrawer = () => {
     if (isInitialRender && element) {
       setIsInitialRender(false)
 
-      element.scrollTop = scrollPosition
+      element.scrollTop = notificationDrawerScrollPosition
     }
 
     return () => {
       if (element) {
-        rememberScrollPosition(element.scrollTop)
+        dispatch(rememberNotificationDrawerScrollPosition(element.scrollTop))
       }
     }
-  }, [isInitialRender, scrollPosition, rememberScrollPosition])
+  }, [isInitialRender, notificationDrawerScrollPosition, dispatch])
 
   return (
     <div className="m-notification-drawer" ref={elementRef}>
