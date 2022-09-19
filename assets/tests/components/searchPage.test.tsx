@@ -1,7 +1,7 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import { BrowserRouter } from "react-router-dom"
+import "@testing-library/jest-dom"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
@@ -11,6 +11,8 @@ import * as dateTime from "../../src/util/dateTime"
 
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 jest
   .spyOn(dateTime, "now")
@@ -98,32 +100,32 @@ describe("SearchPage", () => {
   })
 
   test("on mobile, shows the results list initially", () => {
-    const wrapper = mount(
+    const result = render(
       <BrowserRouter>
         <SearchPage />
       </BrowserRouter>
     )
 
-    expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
+    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
   })
 
-  test("on mobile, allows you to toggle to the map view and back again", () => {
-    const wrapper = mount(
+  test("on mobile, allows you to toggle to the map view and back again", async () => {
+    const result = render(
       <BrowserRouter>
         <SearchPage />
       </BrowserRouter>
     )
 
-    wrapper
-      .find(".m-search-page__toggle-mobile-display-button")
-      .simulate("click")
+    await userEvent.click(
+      result.getByRole("button", { name: "Show map instead" })
+    )
 
-    expect(wrapper.exists(".m-search-page--show-map")).toBeTruthy()
+    expect(result.container.firstChild).toHaveClass("m-search-page--show-map")
 
-    wrapper
-      .find(".m-search-page__toggle-mobile-display-button")
-      .simulate("click")
+    await userEvent.click(
+      result.getByRole("button", { name: "Show list instead" })
+    )
 
-    expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
+    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
   })
 })
