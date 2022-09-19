@@ -1129,6 +1129,8 @@ const swingsViewScrollPositionReducer = (
   switch (action.type) {
     case "REMEMBER_SWINGS_SCROLL_POSITION":
       return action.payload.scrollPosition
+    case "CLOSE_VIEW":
+      return 0
     default:
       return state
   }
@@ -1138,6 +1140,8 @@ const showPastSwingsReducer = (state: boolean, action: Action): boolean => {
   switch (action.type) {
     case "TOGGLE_SHOW_HIDE_PAST_SWINGS":
       return !state
+    case "CLOSE_VIEW":
+      return false
     default:
       return state
   }

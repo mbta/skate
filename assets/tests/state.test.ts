@@ -456,6 +456,38 @@ describe("reducer", () => {
     })
   })
 
+  test("closeView resets swings scroll position", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        openView: State.OpenView.Swings,
+        swingsViewScrollPosition: 10,
+      },
+      State.closeView()
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      swingsViewScrollPosition: 0,
+    })
+  })
+
+  test("closeView hides past swings", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        openView: State.OpenView.Swings,
+        showPastSwings: true,
+      },
+      State.closeView()
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      showPastSwings: false,
+    })
+  })
+
   test("selectVehicleFromNotification switches to appropriate route tab", () => {
     const originalRouteTab1 = routeTabFactory.build({
       isCurrentTab: false,
