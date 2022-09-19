@@ -40,7 +40,14 @@ const NotificationDrawer = () => {
     <div className="m-notification-drawer" ref={elementRef}>
       <ViewHeader
         title="Notifications"
-        closeView={() => dispatch(closeView())}
+        closeView={() => {
+          // reset scrollTop to avoid race condition with useEffect cleanup
+          if (elementRef.current) {
+            elementRef.current.scrollTop = 0
+          }
+
+          dispatch(closeView())
+        }}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />

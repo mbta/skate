@@ -85,7 +85,14 @@ const SwingsView = (): ReactElement<HTMLElement> => {
     return { ...map, [route.id]: route }
   }, {})
 
-  const hideMe = () => dispatch(closeView())
+  const hideMe = () => {
+    // reset scrollTop to avoid race condition with useEffect cleanup
+    if (elementRef.current) {
+      elementRef.current.scrollTop = 0
+    }
+
+    dispatch(closeView())
+  }
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
