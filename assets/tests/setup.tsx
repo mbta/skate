@@ -1,10 +1,6 @@
 // mocking createSVGRect does some stuff that typescript doesn't like.
 // @ts-nocheck
-import { configure } from "enzyme"
 import React from "react"
-import Adapter from "enzyme-adapter-react-16"
-
-configure({ adapter: new Adapter() })
 
 jest.mock("react-leaflet-fullscreen", () => ({
   __esModule: true,
