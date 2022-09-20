@@ -1,5 +1,6 @@
-import { mount, shallow } from "enzyme"
 import React from "react"
+import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import routeFactory from "../factories/route"
 import { RouteVariantName } from "../../src/components/routeVariantName"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -64,9 +65,11 @@ const vehicle: Vehicle = vehicleFactory.build({
 
 describe("RouteVariantName", () => {
   test("renders for a vehicle with variant and headsign", () => {
-    const wrapper = shallow(<RouteVariantName vehicle={vehicle} />)
+    const result = render(<RouteVariantName vehicle={vehicle} />)
 
-    expect(wrapper.text()).toEqual("39_X Forest Hills")
+    expect(result.getByTestId("variant-name")).toHaveTextContent(
+      "39_X Forest Hills"
+    )
   })
 
   test("renders for a vehicle missing variant and headsign", () => {
@@ -76,9 +79,9 @@ describe("RouteVariantName", () => {
       viaVariant: null,
     }
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    const result = render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(wrapper.text()).toEqual("39_")
+    expect(result.getByTestId("variant-name")).toHaveTextContent("39_")
   })
 
   test("doesn't show underscore variant character", () => {
@@ -88,9 +91,9 @@ describe("RouteVariantName", () => {
       viaVariant: "_",
     }
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    const result = render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(wrapper.text()).toEqual("39_")
+    expect(result.getByTestId("variant-name")).toHaveTextContent("39_")
   })
 
   test("renders a static label for a shuttle", () => {
@@ -99,9 +102,9 @@ describe("RouteVariantName", () => {
       isShuttle: true,
     }
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    const result = render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(wrapper.text()).toEqual("Shuttle")
+    expect(result.getByText("Shuttle")).toBeInTheDocument()
   })
 
   test("uses route name if available", () => {
@@ -110,11 +113,13 @@ describe("RouteVariantName", () => {
       name: "ThirtyNine",
     })
 
-    const wrapper = mount(
+    const result = render(
       <RoutesProvider routes={[route]}>
         <RouteVariantName vehicle={vehicle} />
       </RoutesProvider>
     )
-    expect(wrapper.text()).toEqual("ThirtyNine_X Forest Hills")
+    expect(result.getByTestId("variant-name")).toHaveTextContent(
+      "ThirtyNine_X Forest Hills"
+    )
   })
 })

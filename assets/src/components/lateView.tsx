@@ -315,6 +315,7 @@ const LateView = (): ReactElement<HTMLElement> => {
                       selectedIds={selectedIds}
                       setSelectedIds={setSelectedIds}
                       hidingTimestamps={hidingTimestamps}
+                      tableName="missing-logons"
                     />
                   </th>
                   <th className="m-late-view__scheduled-logon-header">
@@ -357,6 +358,7 @@ const LateView = (): ReactElement<HTMLElement> => {
                       selectedIds={selectedIds}
                       setSelectedIds={setSelectedIds}
                       hidingTimestamps={hidingTimestamps}
+                      tableName="late-buses"
                     />
                   </th>
                   <th className="m-late-view__adherence-header">Adherence</th>
@@ -430,7 +432,7 @@ const LateGhostRow = ({
     : "m-late-view__data-row--unselected"
 
   return (
-    <tr className={`m-late-view__data-row ${className}`}>
+    <tr className={`m-late-view__data-row ${className}`} data-testid="row-data">
       <td>
         <HideCheckbox
           hidingTimestamps={hidingTimestamps}
@@ -489,7 +491,7 @@ const LateBusRow = ({
     : "m-late-view__data-row--unselected"
 
   return (
-    <tr className={`m-late-view__data-row ${className}`}>
+    <tr className={`m-late-view__data-row ${className}`} data-testid="row-data">
       <td>
         <HideCheckbox
           vehicleOrGhost={vehicle}
@@ -546,7 +548,7 @@ const MissingLogonRow = ({
     : "m-late-view__data-row--unselected"
 
   return (
-    <tr className={`m-late-view__data-row ${className}`}>
+    <tr className={`m-late-view__data-row ${className}`} data-testid="row-data">
       <td>
         <HideCheckbox
           vehicleOrGhost={ghost}
@@ -592,11 +594,13 @@ const HideCheckbox = ({
     return null
   }
 
+  const isChecked = isSelected(selectedIds, vehicleOrGhost)
   return (
     <input
       type="checkbox"
+      data-testid={`row-checkbox-${runId}`}
       readOnly={true}
-      checked={isSelected(selectedIds, vehicleOrGhost)}
+      checked={isChecked}
       onClick={() => toggleCheckedState(runId)}
     />
   )
@@ -652,6 +656,7 @@ const UnhideToggle = ({
       tagManagerEvent("clicked_eye_toggle")
       toggleViewHidden()
     }}
+    title={viewHidden ? "Exclude Hidden" : "Include Hidden"}
   >
     {viewHidden ? unhiddenIcon() : hiddenIcon()}
     <div className="m-late-view__toggle-exterior">
@@ -665,11 +670,13 @@ const MasterCheckbox = ({
   selectedIds,
   setSelectedIds,
   hidingTimestamps,
+  tableName,
 }: {
   attachedVehiclesOrGhosts: VehicleOrGhost[]
   selectedIds: RunId[]
   setSelectedIds: Dispatch<SetStateAction<RunId[]>>
   hidingTimestamps: HidingTimestamps
+  tableName: string
 }): ReactElement<HTMLElement> => {
   const attachedIds = attachedVehiclesOrGhosts
     .map((attachedVehicleOrGhost) => attachedVehicleOrGhost.runId)
@@ -713,6 +720,7 @@ const MasterCheckbox = ({
     <input
       type="checkbox"
       className={`m-late-view__master-checkbox`}
+      data-testid={`${tableName}-master-checkbox`}
       readOnly={true}
       onClick={toggleRows}
       ref={checkRef}

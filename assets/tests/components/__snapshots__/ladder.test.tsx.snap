@@ -92,6 +92,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
         </g>
@@ -167,6 +168,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
         </g>
@@ -619,6 +621,7 @@ exports[`ladder renders a ladder 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
         </g>
@@ -694,6 +697,7 @@ exports[`ladder renders a ladder 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
         </g>
@@ -769,6 +773,7 @@ exports[`ladder renders a ladder 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
         </g>
@@ -967,6 +972,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
         </g>
@@ -1075,6 +1081,7 @@ exports[`ladder renders a laying over vehicle 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.38) rotate(270) translate(-24,-22)"
           />
         </g>
@@ -1280,6 +1287,7 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.38) rotate(270) translate(-24,-22)"
           />
         </g>
@@ -1485,6 +1493,7 @@ exports[`ladder renders a reversed ladder 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
         </g>
@@ -1684,6 +1693,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
           <text
@@ -1891,6 +1901,7 @@ exports[`ladder renders an overload vehicle 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
         </g>
@@ -2096,6 +2107,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
         </g>
@@ -2432,6 +2444,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
           <g
@@ -2537,6 +2550,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
         </g>

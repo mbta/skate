@@ -69,6 +69,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
             <path
               className="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
@@ -93,6 +94,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -421,6 +423,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
             <path
               className="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
@@ -445,6 +448,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -773,6 +777,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
             <path
               className="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
@@ -1000,6 +1005,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             <path
               className="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
@@ -1024,6 +1030,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -1447,6 +1454,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
             <path
               className="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
@@ -1471,6 +1479,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -1799,6 +1808,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             <path
               className="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
@@ -1823,6 +1833,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -2165,6 +2176,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
             <path
               className="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
@@ -2189,6 +2201,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"

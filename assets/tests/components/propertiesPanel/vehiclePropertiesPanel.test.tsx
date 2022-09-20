@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../../factories/route"
@@ -12,6 +11,8 @@ import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory from "../../factories/vehicle"
+import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 
 jest
   .spyOn(dateTime, "now")
@@ -188,8 +189,8 @@ describe("VehiclePropertiesPanel", () => {
     ;(useNearestIntersection as jest.Mock).mockImplementationOnce(
       () => "Atlantic Ave & Summer St"
     )
-    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
-    expect(wrapper.html()).toContain("Atlantic Ave &amp; Summer St")
+    const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
   })
 
   test("renders data discrepancies when in debug mode", () => {
@@ -197,11 +198,9 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => "1")
 
-    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
 
-    expect(
-      wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
-    ).toBeGreaterThan(0)
+    expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(2)
   })
 
   test("does not render data discrepancies when not in debug mode", () => {
@@ -209,11 +208,9 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => null)
 
-    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
 
-    expect(
-      wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
-    ).toBe(0)
+    expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(0)
   })
 
   test("map includes other vehicles on the route", () => {

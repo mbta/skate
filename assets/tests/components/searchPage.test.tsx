@@ -1,7 +1,7 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import { BrowserRouter } from "react-router-dom"
+import "@testing-library/jest-dom"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
@@ -11,6 +11,8 @@ import * as dateTime from "../../src/util/dateTime"
 
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 jest
   .spyOn(dateTime, "now")
@@ -75,6 +77,36 @@ describe("SearchPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("on mobile, shows the results list initially", () => {
+    const result = render(
+      <BrowserRouter>
+        <SearchPage />
+      </BrowserRouter>
+    )
+
+    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+  })
+
+  test("on mobile, allows you to toggle to the map view and back again", async () => {
+    const result = render(
+      <BrowserRouter>
+        <SearchPage />
+      </BrowserRouter>
+    )
+
+    await userEvent.click(
+      result.getByRole("button", { name: "Show map instead" })
+    )
+
+    expect(result.container.firstChild).toHaveClass("m-search-page--show-map")
+
+    await userEvent.click(
+      result.getByRole("button", { name: "Show list instead" })
+    )
+
+    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+  })
+
   test("renders a selected vehicle", () => {
     const selectedVehicleState: State = {
       ...initialState,
@@ -95,35 +127,5 @@ describe("SearchPage", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
-  })
-
-  test("on mobile, shows the results list initially", () => {
-    const wrapper = mount(
-      <BrowserRouter>
-        <SearchPage />
-      </BrowserRouter>
-    )
-
-    expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
-  })
-
-  test("on mobile, allows you to toggle to the map view and back again", () => {
-    const wrapper = mount(
-      <BrowserRouter>
-        <SearchPage />
-      </BrowserRouter>
-    )
-
-    wrapper
-      .find(".m-search-page__toggle-mobile-display-button")
-      .simulate("click")
-
-    expect(wrapper.exists(".m-search-page--show-map")).toBeTruthy()
-
-    wrapper
-      .find(".m-search-page__toggle-mobile-display-button")
-      .simulate("click")
-
-    expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
   })
 })

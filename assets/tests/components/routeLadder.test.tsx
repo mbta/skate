@@ -1,6 +1,5 @@
-import { mount } from "enzyme"
 import React from "react"
-import renderer, { act } from "react-test-renderer"
+import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -523,7 +522,7 @@ describe("routeLadder", () => {
     expect(mockDeselect).toHaveBeenCalledWith("28")
   })
 
-  test("clicking the reverse button reverses the order of the timepoints", () => {
+  test("clicking the reverse button reverses the order of the timepoints", async () => {
     const mockReverse = jest.fn()
     const route: Route = routeFactory.build({
       id: "28",
@@ -535,7 +534,7 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const wrapper = mount(
+    const result = render(
       <RouteLadder
         route={route}
         timepoints={timepoints}
@@ -548,14 +547,12 @@ describe("routeLadder", () => {
         ladderCrowdingToggles={{}}
       />
     )
-    act(() => {
-      wrapper.find(".m-route-ladder__reverse").simulate("click")
-    })
+    await userEvent.click(result.getByRole("button", { name: /Reverse/ }))
 
     expect(mockReverse).toHaveBeenCalledWith("28")
   })
 
-  test("clicking the crowding toggle toggles crowding", () => {
+  test("clicking the crowding toggle toggles crowding", async () => {
     const mockToggle = jest.fn()
     const route: Route = routeFactory.build({
       id: "28",
@@ -569,7 +566,7 @@ describe("routeLadder", () => {
 
     const [v1] = vehicles
 
-    const wrapper = mount(
+    const result = render(
       <RouteLadder
         route={route}
         timepoints={timepoints}
@@ -592,14 +589,12 @@ describe("routeLadder", () => {
         ladderCrowdingToggles={{}}
       />
     )
-    act(() => {
-      wrapper.find(".m-route-ladder__crowding-toggle--show").simulate("click")
-    })
+    await userEvent.click(result.getByRole("button", { name: /Show riders/ }))
 
     expect(mockToggle).toHaveBeenCalledWith("28")
   })
 
-  test("clicking an incoming vehicle selects that vehicle", () => {
+  test("clicking an incoming vehicle selects that vehicle", async () => {
     const mockDispatch = jest.fn()
 
     const route: Route = routeFactory.build({
@@ -652,7 +647,7 @@ describe("routeLadder", () => {
       crowding: null,
     })
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <RouteLadder
           route={route}
@@ -667,7 +662,7 @@ describe("routeLadder", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-incoming-box__vehicle").simulate("click")
+    await userEvent.click(result.getByText("run1"))
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })

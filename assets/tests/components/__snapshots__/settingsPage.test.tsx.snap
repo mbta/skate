@@ -52,11 +52,11 @@ exports[`SettingsPage renders 1`] = `
         >
           <label
             className="m-settings-page__option-label-unselected"
-            data-option-id="shuttle-vehicle-label-run-number"
           >
             <input
               checked={false}
               className="m-settings-page__input"
+              data-testid="shuttle-vehicle-label-run-number"
               name="shuttle-vehicle-label"
               onChange={[Function]}
               type="radio"
@@ -66,11 +66,11 @@ exports[`SettingsPage renders 1`] = `
           </label>
           <label
             className="m-settings-page__option-label-selected"
-            data-option-id="shuttle-vehicle-label-vehicle-number"
           >
             <input
               checked={true}
               className="m-settings-page__input"
+              data-testid="shuttle-vehicle-label-vehicle-number"
               name="shuttle-vehicle-label"
               onChange={[Function]}
               type="radio"
@@ -109,11 +109,11 @@ exports[`SettingsPage renders 1`] = `
         >
           <label
             className="m-settings-page__option-label-selected"
-            data-option-id="ladder-vehicle-label-run-number"
           >
             <input
               checked={true}
               className="m-settings-page__input"
+              data-testid="ladder-vehicle-label-run-number"
               name="ladder-vehicle-label"
               onChange={[Function]}
               type="radio"
@@ -123,11 +123,11 @@ exports[`SettingsPage renders 1`] = `
           </label>
           <label
             className="m-settings-page__option-label-unselected"
-            data-option-id="ladder-vehicle-label-vehicle-number"
           >
             <input
               checked={false}
               className="m-settings-page__input"
+              data-testid="ladder-vehicle-label-vehicle-number"
               name="ladder-vehicle-label"
               onChange={[Function]}
               type="radio"
@@ -166,11 +166,11 @@ exports[`SettingsPage renders 1`] = `
         >
           <label
             className="m-settings-page__option-label-selected"
-            data-option-id="vehicle-adherence-colors-early-red"
           >
             <input
               checked={true}
               className="m-settings-page__input"
+              data-testid="vehicle-adherence-colors-early-red"
               name="vehicle-adherence-colors"
               onChange={[Function]}
               type="radio"
@@ -215,11 +215,11 @@ exports[`SettingsPage renders 1`] = `
           </label>
           <label
             className="m-settings-page__option-label-unselected"
-            data-option-id="vehicle-adherence-colors-early-blue"
           >
             <input
               checked={false}
               className="m-settings-page__input"
+              data-testid="vehicle-adherence-colors-early-blue"
               name="vehicle-adherence-colors"
               onChange={[Function]}
               type="radio"

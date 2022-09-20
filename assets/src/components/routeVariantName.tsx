@@ -14,7 +14,7 @@ export const RouteVariantName = ({ vehicle }: { vehicle: VehicleOrGhost }) => {
   const headsignFormatted = headsign ? ` ${headsign}` : ""
 
   return (
-    <div className="m-route-variant-name">
+    <div className="m-route-variant-name" data-testid="variant-name">
       <span className="m-route-variant-name__route-id">
         {`${route?.name || routeId}_${viaVariantFormatted}`}
       </span>

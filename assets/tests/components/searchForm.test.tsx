@@ -1,6 +1,8 @@
-import { mount } from "enzyme"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
+import "@testing-library/jest-dom"
 import SearchForm from "../../src/components/searchForm"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
@@ -36,14 +38,15 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: invalidSearch,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={invalidSearchState} dispatch={mockDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    expect(wrapper.find(".m-search-form__input").prop("value")).toEqual("1")
-    expect(wrapper.find(".m-search-form__submit").prop("disabled")).toBeTruthy()
+    expect(result.getByPlaceholderText("Search")).toHaveValue("1")
+
+    expect(result.getByTitle("Submit")).toBeDisabled()
   })
 
   test("submit button is enable if there are at least 2 characters in the text field", () => {
@@ -56,17 +59,18 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={validSearchState} dispatch={mockDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    expect(wrapper.find(".m-search-form__input").prop("value")).toEqual("12")
-    expect(wrapper.find(".m-search-form__submit").prop("disabled")).toBeFalsy()
+    expect(result.getByPlaceholderText("Search")).toHaveValue("12")
+
+    expect(result.getByTitle("Submit")).not.toBeDisabled()
   })
 
-  test("clicking the submit button submits the query", () => {
+  test("clicking the submit button submits the query", async () => {
     const testDispatch = jest.fn()
     const validSearch: SearchPageState = {
       query: { text: "12", property: "run" },
@@ -77,36 +81,41 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-search-form__submit").simulate("click")
-
+    await userEvent.click(result.getByTitle("Submit"))
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })
 
-  test("entering text sets it as the search text", () => {
+  test("entering text sets it as the search text", async () => {
+    const validSearch: SearchPageState = {
+      query: { text: "12", property: "run" },
+      isActive: false,
+      savedQueries: [],
+    }
+    const validSearchState = {
+      ...initialState,
+      searchPageState: validSearch,
+    }
+
     const testDispatch = jest.fn()
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+
+    const result = render(
+      <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    const testEvent = {
-      currentTarget: {
-        value: "test input",
-      },
-    } as React.ChangeEvent<HTMLInputElement>
-    wrapper.find(".m-search-form__input").prop("onChange")!(testEvent)
+    await userEvent.type(result.getByPlaceholderText("Search"), "3")
 
-    expect(testDispatch).toHaveBeenCalledWith(setSearchText("test input"))
+    expect(testDispatch).toHaveBeenCalledWith(setSearchText("123"))
   })
 
-  test("clicking the clear button empties the search text", () => {
+  test("clicking the clear button empties the search text", async () => {
     const testDispatch = jest.fn()
     const validSearch: SearchPageState = {
       query: { text: "12", property: "run" },
@@ -117,57 +126,39 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-search-form__clear").simulate("click")
+    await userEvent.click(result.getByTitle("Clear"))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
 
-  test("clicking a search property selects it", () => {
+  test("clicking a search property selects it", async () => {
     const testDispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    const testEvent = {
-      currentTarget: {
-        name: "property",
-        value: "run",
-      },
-    } as React.FormEvent<HTMLInputElement>
-    wrapper
-      .find(".m-search-form__property-input")
-      .at(1)
-      .simulate("change", testEvent)
+    await userEvent.click(result.getByRole("radio", { name: "run" }))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchProperty("run"))
   })
 
-  test("clicking a search property submits the search", () => {
+  test("clicking a search property submits the search", async () => {
     const testDispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    const testEvent = {
-      currentTarget: {
-        name: "property",
-        value: "run",
-      },
-    } as React.FormEvent<HTMLInputElement>
-    wrapper
-      .find(".m-search-form__property-input")
-      .at(1)
-      .simulate("change", testEvent)
+    await userEvent.click(result.getByRole("radio", { name: "run" }))
 
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })

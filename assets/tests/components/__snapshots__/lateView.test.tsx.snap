@@ -49,6 +49,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               >
                 <input
                   className="m-late-view__master-checkbox"
+                  data-testid="missing-logons-master-checkbox"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"
@@ -79,10 +80,12 @@ exports[`LateView renders missing logons and late buses 1`] = `
           <tbody>
             <tr
               className="m-late-view__data-row m-late-view__data-row--unselected"
+              data-testid="row-data"
             >
               <td>
                 <input
                   checked={false}
+                  data-testid="row-checkbox-run6"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"
@@ -107,10 +110,12 @@ exports[`LateView renders missing logons and late buses 1`] = `
             </tr>
             <tr
               className="m-late-view__data-row m-late-view__data-row--unselected"
+              data-testid="row-data"
             >
               <td>
                 <input
                   checked={false}
+                  data-testid="row-checkbox-run7"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"
@@ -152,6 +157,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               >
                 <input
                   className="m-late-view__master-checkbox"
+                  data-testid="late-buses-master-checkbox"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"
@@ -187,10 +193,12 @@ exports[`LateView renders missing logons and late buses 1`] = `
           <tbody>
             <tr
               className="m-late-view__data-row m-late-view__data-row--unselected"
+              data-testid="row-data"
             >
               <td>
                 <input
                   checked={false}
+                  data-testid="row-checkbox-run5"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"
@@ -231,10 +239,12 @@ exports[`LateView renders missing logons and late buses 1`] = `
             </tr>
             <tr
               className="m-late-view__data-row m-late-view__data-row--unselected"
+              data-testid="row-data"
             >
               <td>
                 <input
                   checked={false}
+                  data-testid="row-checkbox-run2"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"
@@ -283,10 +293,12 @@ exports[`LateView renders missing logons and late buses 1`] = `
             </tr>
             <tr
               className="m-late-view__data-row m-late-view__data-row--unselected"
+              data-testid="row-data"
             >
               <td>
                 <input
                   checked={false}
+                  data-testid="row-checkbox-run3"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"
@@ -335,10 +347,12 @@ exports[`LateView renders missing logons and late buses 1`] = `
             </tr>
             <tr
               className="m-late-view__data-row m-late-view__data-row--unselected"
+              data-testid="row-data"
             >
               <td>
                 <input
                   checked={false}
+                  data-testid="row-checkbox-run4"
                   onClick={[Function]}
                   readOnly={true}
                   type="checkbox"

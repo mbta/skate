@@ -114,6 +114,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
         >
           <div
             className="m-route-variant-name"
+            data-testid="variant-name"
           >
             <span
               className="m-route-variant-name__route-id"
@@ -248,6 +249,7 @@ exports[`SearchResults renders a selected result card 1`] = `
         >
           <div
             className="m-route-variant-name"
+            data-testid="variant-name"
           >
             <span
               className="m-route-variant-name__route-id"
@@ -406,6 +408,7 @@ exports[`SearchResults shows the new badge for vehicle that have logged in withi
         >
           <div
             className="m-route-variant-name"
+            data-testid="variant-name"
           >
             <span
               className="m-route-variant-name__route-id"

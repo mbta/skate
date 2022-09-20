@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import Ladder from "../../src/components/ladder"
@@ -16,6 +15,8 @@ import { initialState, selectVehicle } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
@@ -503,7 +504,7 @@ describe("ladder", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a vehicle selects that vehicle", () => {
+  test("clicking a vehicle selects that vehicle", async () => {
     const mockDispatch = jest.fn()
 
     const timepoints: Timepoint[] = [
@@ -554,7 +555,7 @@ describe("ladder", () => {
 
     const ladderDirection = LadderDirection.ZeroToOne
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Ladder
           timepoints={timepoints}
@@ -567,12 +568,12 @@ describe("ladder", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-ladder__vehicle").simulate("click")
+    await userEvent.click(result.getByText("1"))
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 
-  test("clicking an incoming ghost selects the associated vehicle", () => {
+  test("clicking an incoming ghost selects the associated vehicle", async () => {
     const mockDispatch = jest.fn()
 
     const timepoints: Timepoint[] = [
@@ -587,7 +588,7 @@ describe("ladder", () => {
 
     const ladderDirection = LadderDirection.ZeroToOne
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Ladder
           timepoints={timepoints}
@@ -600,12 +601,13 @@ describe("ladder", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-ladder__vehicle").simulate("click")
+
+    await userEvent.click(result.getByText("N/A"))
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(incomingGhost))
   })
 
-  test("clicking a crowding icon selects the associated vehicle", () => {
+  test("clicking a crowding icon selects the associated vehicle", async () => {
     const mockDispatch = jest.fn()
 
     const timepoints: Timepoint[] = [
@@ -661,7 +663,7 @@ describe("ladder", () => {
 
     const ladderDirection = LadderDirection.ZeroToOne
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Ladder
           timepoints={timepoints}
@@ -675,8 +677,8 @@ describe("ladder", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-ladder__vehicle").simulate("click")
 
+    await userEvent.click(result.getByText("0/18"))
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 

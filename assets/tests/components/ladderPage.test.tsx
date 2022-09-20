@@ -1,7 +1,7 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import { render, fireEvent, within } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import { BrowserRouter } from "react-router-dom"
 import LadderPage, {
   findRouteById,
@@ -98,7 +98,7 @@ describe("LadderPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("can select a different route tab by clicking", () => {
+  test("can select a different route tab by clicking", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -106,15 +106,17 @@ describe("LadderPage", () => {
           ordering: 0,
           isCurrentTab: true,
           selectedRouteIds: ["1"],
+          presetName: "Tab 1",
         }),
         routeTabFactory.build({
           ordering: 1,
           isCurrentTab: false,
           selectedRouteIds: ["39"],
+          presetName: "Tab 2",
         }),
       ],
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -124,9 +126,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper
-      .find(".m-ladder-page__tab:not(.m-ladder-page__tab-current)")
-      .simulate("click")
+    await userEvent.click(result.getByText("Tab 2"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       selectRouteTab(mockState.routeTabs[1].uuid)
@@ -198,7 +198,7 @@ describe("LadderPage", () => {
     )
   })
 
-  test("can save a route tab as a preset from the save icon", () => {
+  test("can save a route tab as a preset from the save icon", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -209,7 +209,7 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -219,7 +219,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-ladder-page__tab-save-button").simulate("click")
+    await userEvent.click(result.getByTitle("Save"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
@@ -227,7 +227,7 @@ describe("LadderPage", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
   })
 
-  test("can save an edited preset from the save icon", () => {
+  test("can save an edited preset from the save icon", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -247,7 +247,7 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -257,7 +257,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-ladder-page__tab-save-button").simulate("click")
+    await userEvent.click(result.getByTitle("Save"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
@@ -277,7 +277,7 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -287,10 +287,10 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(wrapper.find(".m-ladder-page__tab-save-button").length).toBe(0)
+    expect(result.queryByTitle("Save")).toBeNull()
   })
 
-  test("can add a new route tab", () => {
+  test("can add a new route tab", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -301,7 +301,7 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -311,13 +311,13 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-ladder-page__add-tab-button").simulate("click")
+    await userEvent.click(result.getByTitle("Add Tab"))
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
   })
 
-  test("can toggle to presets view in picker and back", () => {
+  test("can toggle to presets view in picker and back", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -329,7 +329,7 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -339,13 +339,13 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find("#m-ladder-page__presets_picker_button").simulate("click")
+    await userEvent.click(result.getByRole("button", { name: "Presets" }))
 
-    expect(wrapper.find(".m-presets-panel").length).toBe(1)
+    expect(result.queryByText("Save as preset")).toBeVisible()
 
-    wrapper.find("#m-ladder-page__routes_picker_button").simulate("click")
+    await userEvent.click(result.getByRole("button", { name: "Routes" }))
 
-    expect(wrapper.find(".m-presets-panel").length).toBe(0)
+    expect(result.getByPlaceholderText("Search routes")).toBeVisible()
   })
 
   test("creates a blank route tab if no route tabs are present", () => {
@@ -361,7 +361,7 @@ describe("LadderPage", () => {
       ],
     }
 
-    mount(
+    render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
@@ -480,14 +480,14 @@ describe("LadderPage", () => {
       ...initialState,
       selectedNotification: notification,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <LadderPage />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.find("#m-properties-panel").exists()).toBeFalsy()
+    expect(result.queryByText("Vehicles")).toBeNull()
   })
 
   test("if a vehicle from a notification failed to load, show nothing", () => {
@@ -496,14 +496,14 @@ describe("LadderPage", () => {
       ...initialState,
       selectedNotification: notification,
     }
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
           <LadderPage />
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(wrapper.find("#m-properties-panel").exists()).toBeFalsy()
+    expect(result.queryByText("Vehicles")).toBeNull()
   })
 })
 

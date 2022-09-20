@@ -17,8 +17,10 @@ const SearchForm = () => {
     },
     dispatch,
   ] = useContext(StateDispatchContext)
-  const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
-    dispatch(setSearchText(event.currentTarget.value))
+  const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void => {
+    const value = event.currentTarget.value
+    dispatch(setSearchText(value))
+  }
 
   const clearTextInput = (event: React.FormEvent<EventTarget>): void => {
     event.preventDefault()
@@ -51,6 +53,7 @@ const SearchForm = () => {
           />
           <button
             type="reset"
+            title="Clear"
             className="m-search-form__clear"
             onClick={clearTextInput}
           >
@@ -60,6 +63,7 @@ const SearchForm = () => {
 
         <button
           type="submit"
+          title="Submit"
           className="m-search-form__submit"
           onClick={subscribeToSearch}
           disabled={!isValidSearchQuery(query)}

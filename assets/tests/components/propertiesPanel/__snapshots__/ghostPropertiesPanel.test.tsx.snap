@@ -102,6 +102,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -390,6 +391,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"
@@ -724,6 +726,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         </div>
         <div
           className="m-route-variant-name"
+          data-testid="variant-name"
         >
           <span
             className="m-route-variant-name__route-id"

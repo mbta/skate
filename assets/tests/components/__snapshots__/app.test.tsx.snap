@@ -358,6 +358,7 @@ exports[`App renders 1`] = `
               <button
                 className="m-ladder-page__add-tab-button"
                 onClick={[Function]}
+                title="Add Tab"
               >
                 <span
                   className="m-ladder-page__add-tab-icon"

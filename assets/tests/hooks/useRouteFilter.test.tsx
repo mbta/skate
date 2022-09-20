@@ -1,5 +1,4 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { mount } from "enzyme"
 import React from "react"
 import {
   filterRoutes,
@@ -9,6 +8,8 @@ import {
 } from "../../src/hooks/useRouteFilter"
 import routeFactory from "../factories/route"
 import { Route } from "../../src/schedule.d"
+import userEvent from "@testing-library/user-event"
+import { render } from "@testing-library/react"
 
 describe("useRouteFilter", () => {
   test("defaults filter text to empty string", () => {
@@ -74,33 +75,31 @@ describe("filterRoutes", () => {
 })
 
 describe("RouteFilter", () => {
-  test("inputting filter text updates the route filter", () => {
+  test("inputting filter text updates the route filter", async () => {
     const mockRouteFilter: RouteFilterData = {
       filterText: "",
       handleTextInput: jest.fn(),
       clearTextInput: jest.fn(),
     }
-    const routePicker = mount(<RouteFilter {...mockRouteFilter} />)
+    const result = render(<RouteFilter {...mockRouteFilter} />)
 
-    const testEvent = {
-      currentTarget: {
-        value: "test input",
-      },
-    } as React.ChangeEvent<HTMLInputElement>
-    routePicker.find(".m-route-filter__input").simulate("change", testEvent)
+    await userEvent.type(
+      result.getByPlaceholderText("Search routes"),
+      "test input"
+    )
 
     expect(mockRouteFilter.handleTextInput).toHaveBeenCalled()
   })
 
-  test("the clear button clears the filter text", () => {
+  test("the clear button clears the filter text", async () => {
     const mockRouteFilter: RouteFilterData = {
       filterText: "28",
       handleTextInput: jest.fn(),
       clearTextInput: jest.fn(),
     }
-    const routePicker = mount(<RouteFilter {...mockRouteFilter} />)
+    const result = render(<RouteFilter {...mockRouteFilter} />)
 
-    routePicker.find(".m-route-filter__clear").simulate("click")
+    await userEvent.click(result.getByTitle("Clear"))
 
     expect(mockRouteFilter.clearTextInput).toHaveBeenCalled()
   })

@@ -1,7 +1,7 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import Header from "../../../src/components/propertiesPanel/header"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
@@ -212,15 +212,22 @@ describe("Header", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders pointing sideways for a laying over vehicle", () => {
-    const rightFacing = mount(
+  test("renders pointing right for a laying over vehicle", () => {
+    const result = render(
       <Header
         vehicle={{ ...vehicle, directionId: 0, routeStatus: "laying_over" }}
         tabMode={"status"}
         setTabMode={setTabMode}
       />
     )
-    const leftFacing = mount(
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(90)")
+    )
+  })
+
+  test("renders pointing left for a laying over vehicle", () => {
+    const result = render(
       <Header
         vehicle={{ ...vehicle, directionId: 1, routeStatus: "laying_over" }}
         tabMode={"status"}
@@ -228,19 +235,10 @@ describe("Header", () => {
       />
     )
 
-    const rightFacingTransform = rightFacing
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(rightFacingTransform).toEqual(expect.stringContaining("rotate(90)"))
-
-    const leftFacingTransform = leftFacing
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(leftFacingTransform).toEqual(expect.stringContaining("rotate(270)"))
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(270)")
+    )
   })
 
   test("renders a vehicle that's moving down on the ladder as pointing down", () => {
@@ -249,7 +247,7 @@ describe("Header", () => {
       vehicle.routeId!
     )
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider
         state={{
           ...initialState,
@@ -263,12 +261,10 @@ describe("Header", () => {
       </StateDispatchProvider>
     )
 
-    const transform = wrapper
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(transform).toEqual(expect.stringContaining("rotate(180)"))
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(180)")
+    )
   })
 
   test("renders a shuttle triangle as pointing up", () => {
@@ -278,7 +274,7 @@ describe("Header", () => {
       routeId: null,
       tripId: null,
     }
-    const wrapper = mount(
+    const result = render(
       <Header
         vehicle={shuttleVehicle}
         tabMode={"status"}
@@ -286,12 +282,10 @@ describe("Header", () => {
       />
     )
 
-    const transform = wrapper
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(transform).toEqual(expect.stringContaining("rotate(0)"))
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(0)")
+    )
   })
 
   test("clicking the X close button deselects the vehicle", async () => {

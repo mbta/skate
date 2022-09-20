@@ -128,7 +128,7 @@ const Discrepancy = ({
     <dd>
       <ul>
         {sources.map(({ id, value }) => (
-          <li key={`${attribute}-${id}`}>
+          <li key={`${attribute}-${id}`} data-testid="data-discrepancy">
             <span className="m-vehicle-properties-panel__data-discrepancy-source-id">
               {id}
             </span>
