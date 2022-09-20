@@ -130,7 +130,7 @@ describe("LateView", () => {
     expect(mockDispatch).toHaveBeenCalledWith(closeLateView())
   })
 
-  test("clicking ghost run number opens ghost and sends Fullstory event", async () => {
+  test("clicking ghost run number opens ghost and sends tag manager event", async () => {
     const ghost = ghostFactory.build({
       routeId: "route",
       runId: "12345",
@@ -848,6 +848,9 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
+    result
+      .getAllByTestId(/row-checkbox/)
+      .map((r) => expect(r).toHaveProperty("checked", false))
   })
 
   test("if viewing hidden rows, and we hide a row, turn off eye toggle", async () => {
