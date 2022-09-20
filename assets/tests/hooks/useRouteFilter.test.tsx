@@ -99,7 +99,7 @@ describe("RouteFilter", () => {
     }
     const result = render(<RouteFilter {...mockRouteFilter} />)
 
-    await userEvent.click(result.getByTestId("clear-text"))
+    await userEvent.click(result.getByTitle("Clear"))
 
     expect(mockRouteFilter.clearTextInput).toHaveBeenCalled()
   })

@@ -21,7 +21,7 @@ exports[`SearchForm renders 1`] = `
       <button
         className="m-search-form__clear"
         onClick={[Function]}
-        title="clear"
+        title="Clear"
         type="reset"
       >
         <span
@@ -38,7 +38,7 @@ exports[`SearchForm renders 1`] = `
       className="m-search-form__submit"
       disabled={true}
       onClick={[Function]}
-      title="submit"
+      title="Submit"
       type="submit"
     >
       <span

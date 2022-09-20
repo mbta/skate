@@ -61,7 +61,7 @@ export const RouteFilter = ({
           <button
             className="m-route-filter__clear"
             onClick={clearTextInput}
-            data-testid="clear-text"
+            title="Clear"
           >
             {circleXIcon()}
           </button>

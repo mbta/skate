@@ -53,7 +53,7 @@ const SearchForm = () => {
           />
           <button
             type="reset"
-            title="clear"
+            title="Clear"
             className="m-search-form__clear"
             onClick={clearTextInput}
           >
@@ -63,7 +63,7 @@ const SearchForm = () => {
 
         <button
           type="submit"
-          title="submit"
+          title="Submit"
           className="m-search-form__submit"
           onClick={subscribeToSearch}
           disabled={!isValidSearchQuery(query)}

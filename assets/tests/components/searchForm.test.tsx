@@ -46,7 +46,7 @@ describe("SearchForm", () => {
 
     expect(result.getByPlaceholderText("Search")).toHaveValue("1")
 
-    expect(result.getByTitle("submit")).toBeDisabled()
+    expect(result.getByTitle("Submit")).toBeDisabled()
   })
 
   test("submit button is enable if there are at least 2 characters in the text field", () => {
@@ -67,7 +67,7 @@ describe("SearchForm", () => {
 
     expect(result.getByPlaceholderText("Search")).toHaveValue("12")
 
-    expect(result.getByTitle("submit")).not.toBeDisabled()
+    expect(result.getByTitle("Submit")).not.toBeDisabled()
   })
 
   test("clicking the submit button submits the query", async () => {
@@ -87,7 +87,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("submit"))
+    await userEvent.click(result.getByTitle("Submit"))
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })
 
@@ -132,7 +132,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("clear"))
+    await userEvent.click(result.getByTitle("Clear"))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })

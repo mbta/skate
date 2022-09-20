@@ -95,31 +95,31 @@ describe("RouteVariantName", () => {
 
     expect(result.getByTestId("variant-name")).toHaveTextContent("39_")
   })
-})
 
-test("renders a static label for a shuttle", () => {
-  const testVehicle: Vehicle = {
-    ...vehicle,
-    isShuttle: true,
-  }
+  test("renders a static label for a shuttle", () => {
+    const testVehicle: Vehicle = {
+      ...vehicle,
+      isShuttle: true,
+    }
 
-  const result = render(<RouteVariantName vehicle={testVehicle} />)
+    const result = render(<RouteVariantName vehicle={testVehicle} />)
 
-  expect(result.getByText("Shuttle")).toBeTruthy()
-})
-
-test("uses route name if available", () => {
-  const route: Route = routeFactory.build({
-    id: "39",
-    name: "ThirtyNine",
+    expect(result.getByText("Shuttle")).toBeTruthy()
   })
 
-  const result = render(
-    <RoutesProvider routes={[route]}>
-      <RouteVariantName vehicle={vehicle} />
-    </RoutesProvider>
-  )
-  expect(result.getByTestId("variant-name")).toHaveTextContent(
-    "ThirtyNine_X Forest Hills"
-  )
+  test("uses route name if available", () => {
+    const route: Route = routeFactory.build({
+      id: "39",
+      name: "ThirtyNine",
+    })
+
+    const result = render(
+      <RoutesProvider routes={[route]}>
+        <RouteVariantName vehicle={vehicle} />
+      </RoutesProvider>
+    )
+    expect(result.getByTestId("variant-name")).toHaveTextContent(
+      "ThirtyNine_X Forest Hills"
+    )
+  })
 })
