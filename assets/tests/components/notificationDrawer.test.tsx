@@ -13,8 +13,9 @@ import {
 import { Notification, NotificationState } from "../../src/realtime.d"
 import { Route } from "../../src/schedule"
 import {
-  closeNotificationDrawer,
+  closeView,
   initialState,
+  rememberNotificationDrawerScrollPosition,
   setNotification,
 } from "../../src/state"
 import { now } from "../../src/util/dateTime"
@@ -71,7 +72,7 @@ describe("NotificationDrawer", () => {
     )
 
     await user.click(result.getByTitle("Close"))
-    expect(dispatch).toHaveBeenCalledWith(closeNotificationDrawer())
+    expect(dispatch).toHaveBeenCalledWith(closeView())
   })
 
   test("renders notifications", () => {
@@ -83,8 +84,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -107,8 +106,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -139,8 +136,6 @@ describe("NotificationDrawer", () => {
               notifications: [updatedNotification],
               showLatestNotification: true,
               dispatch: mockNotificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -170,8 +165,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: notificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -198,8 +191,6 @@ describe("NotificationDrawer", () => {
               notifications: [readNotification],
               showLatestNotification: true,
               dispatch: notificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -214,18 +205,19 @@ describe("NotificationDrawer", () => {
   })
 
   test("remembers the scroll position when the component is unmounted", () => {
-    const rememberScrollPosition = jest.fn()
+    const dispatch = jest.fn()
 
     const { unmount } = render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+      <StateDispatchProvider
+        state={{ ...initialState, notificationDrawerScrollPosition: 123 }}
+        dispatch={dispatch}
+      >
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
             value={{
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition,
-              scrollPosition: 123,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -235,8 +227,16 @@ describe("NotificationDrawer", () => {
         </RoutesProvider>
       </StateDispatchProvider>
     )
-    expect(rememberScrollPosition).not.toHaveBeenCalled()
+    // first call to rememberScrollPosition happens on initial render, it's the second one
+    // that happens on unmount
+    expect(dispatch).not.toHaveBeenNthCalledWith(
+      2,
+      rememberNotificationDrawerScrollPosition(123)
+    )
     unmount()
-    expect(rememberScrollPosition).toHaveBeenCalledWith(123)
+    expect(dispatch).toHaveBeenNthCalledWith(
+      2,
+      rememberNotificationDrawerScrollPosition(123)
+    )
   })
 })

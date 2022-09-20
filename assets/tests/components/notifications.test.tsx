@@ -76,8 +76,6 @@ describe("Notification", () => {
             notifications,
             showLatestNotification: true,
             dispatch: jest.fn(),
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
             notificationWithOpenSubmenuId: null,
             setNotificationWithOpenSubmenuId: jest.fn(),
           }}
@@ -103,8 +101,6 @@ describe("Notification", () => {
           notifications: [notification],
           showLatestNotification: true,
           dispatch,
-          rememberScrollPosition: jest.fn(),
-          scrollPosition: 0,
           notificationWithOpenSubmenuId: null,
           setNotificationWithOpenSubmenuId: jest.fn(),
         }}
@@ -133,8 +129,6 @@ describe("Notification", () => {
               notifications: [updatedNotification],
               showLatestNotification: true,
               dispatch: mockNotificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}

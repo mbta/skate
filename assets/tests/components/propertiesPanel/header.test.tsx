@@ -12,7 +12,7 @@ import {
 } from "../../../src/models/ladderDirection"
 import { Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
-import { deselectVehicle, initialState } from "../../../src/state"
+import { closeView, initialState } from "../../../src/state"
 import vehicleFactory from "../../factories/vehicle"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
@@ -300,6 +300,6 @@ describe("Header", () => {
 
     await user.click(result.getByTitle("Close"))
 
-    expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
+    expect(mockDispatch).toHaveBeenCalledWith(closeView())
   })
 })

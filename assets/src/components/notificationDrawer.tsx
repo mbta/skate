@@ -4,44 +4,50 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
 import { markAllAsRead } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
-import { closeNotificationDrawer, returnToPreviousView } from "../state"
+import {
+  closeView,
+  rememberNotificationDrawerScrollPosition,
+  returnToPreviousView,
+} from "../state"
 import { openVPPForNotification } from "./notifications"
 import { NotificationCard } from "./notificationCard"
 import ViewHeader from "./viewHeader"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
-  const { rememberScrollPosition, scrollPosition } =
-    useContext(NotificationsContext)
-  const [{ previousView }, dispatch] = useContext(StateDispatchContext)
+  const [{ previousView, notificationDrawerScrollPosition }, dispatch] =
+    useContext(StateDispatchContext)
 
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
-  /* eslint-disable react-hooks/exhaustive-deps */
   useLayoutEffect(() => {
-    const restoreScrollPosition = isInitialRender
-    setIsInitialRender(false)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const currentElement = elementRef.current!
+    const element = elementRef.current
 
-    if (restoreScrollPosition && elementRef) {
-      const element = elementRef.current
-      if (element) {
-        element.scrollTop = scrollPosition
-      }
+    if (isInitialRender && element) {
+      setIsInitialRender(false)
+
+      element.scrollTop = notificationDrawerScrollPosition
     }
 
     return () => {
-      rememberScrollPosition(currentElement.scrollTop)
+      if (element) {
+        dispatch(rememberNotificationDrawerScrollPosition(element.scrollTop))
+      }
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  }, [isInitialRender, notificationDrawerScrollPosition, dispatch])
 
   return (
     <div className="m-notification-drawer" ref={elementRef}>
       <ViewHeader
         title="Notifications"
-        closeView={() => dispatch(closeNotificationDrawer())}
+        closeView={() => {
+          // reset scrollTop to avoid race condition with useEffect cleanup
+          if (elementRef.current) {
+            elementRef.current.scrollTop = 0
+          }
+
+          dispatch(closeView())
+        }}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />

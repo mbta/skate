@@ -21,7 +21,7 @@ import {
 } from "../../models/vehicleStatus"
 import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { Route } from "../../schedule"
-import { deselectVehicle, returnToPreviousView } from "../../state"
+import { closeView, returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import TabList from "./tabList"
@@ -123,7 +123,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
   const secondsAgo = (epochTime: number): string =>
     `${epochNowInSeconds - epochTime}s ago`
 
-  const hideMe = () => dispatch(deselectVehicle())
+  const hideMe = () => dispatch(closeView())
 
   const vehicleIsShuttle = isVehicle(vehicle) && vehicle.isShuttle
 

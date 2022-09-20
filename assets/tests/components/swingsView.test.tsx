@@ -1,6 +1,6 @@
-import { mount } from "enzyme"
 import React from "react"
 import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import renderer from "react-test-renderer"
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
@@ -13,7 +13,13 @@ import useSwings from "../../src/hooks/useSwings"
 import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
 import { Route, Swing } from "../../src/schedule"
-import { closeSwingsView, initialState, selectVehicle } from "../../src/state"
+import {
+  closeView,
+  initialState,
+  rememberSwingsViewScrollPosition,
+  selectVehicle,
+  toggleShowHidePastSwings,
+} from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
@@ -121,37 +127,67 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("can click to show past swings", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build(),
-    ])
+  test("can click to show / hide past swings", async () => {
+    const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
+    ;(useSwings as jest.Mock)
+      .mockImplementationOnce((): Swing[] => [swing])
+      .mockImplementationOnce((): Swing[] => [swing])
 
-    const wrapper = mount(
-      <RoutesProvider routes={routes}>
-        <SwingsView />
-      </RoutesProvider>
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
     )
 
-    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+    await user.click(result.getByText("Show past swings"))
 
-    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(1)
+    expect(dispatch).toHaveBeenCalledWith(toggleShowHidePastSwings())
   })
 
-  test("can hide past swings after showing them", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build(),
-    ])
+  test("shows past swings", async () => {
+    const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
+    ;(useSwings as jest.Mock)
+      .mockImplementationOnce((): Swing[] => [swing])
+      .mockImplementationOnce((): Swing[] => [swing])
 
-    const wrapper = mount(
-      <RoutesProvider routes={routes}>
-        <SwingsView />
-      </RoutesProvider>
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, showPastSwings: true }}
+        dispatch={dispatch}
+      >
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
     )
 
-    wrapper.find(".m-swings-view__show-past").first().simulate("click")
-    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+    expect(result.queryByText("4567")).toBeVisible()
+  })
 
-    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(0)
+  test("hides past swings", async () => {
+    const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
+    ;(useSwings as jest.Mock)
+      .mockImplementationOnce((): Swing[] => [swing])
+      .mockImplementationOnce((): Swing[] => [swing])
+
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, showPastSwings: false }}
+        dispatch={dispatch}
+      >
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    expect(result.queryByText("4567")).toBeNull()
   })
 
   test("renders future swings, active and inactive", () => {
@@ -217,15 +253,16 @@ describe("SwingsView", () => {
   })
 
   test("opens VPP when clicking an active swing-off and sends Fullstory event", async () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build({ time: 19000 }),
-    ])
-    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
-    )
-    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
-    )
+    const swing = swingFactory.build({ time: 19000 })
+    ;(useSwings as jest.Mock)
+      .mockImplementationOnce((): Swing[] => [swing])
+      .mockImplementationOnce((): Swing[] => [swing])
+    ;(useVehiclesForRunIds as jest.Mock)
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+    ;(useVehiclesForBlockIds as jest.Mock)
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
 
     const dispatch = jest.fn()
     const user = userEvent.setup()
@@ -243,19 +280,20 @@ describe("SwingsView", () => {
   })
 
   test("opens VPP when clicking an active swing-on and sends Fullstory event", async () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build({
-        fromRunId: "123-789",
-        toRunId: "123-456",
-        time: 19000,
-      }),
-    ])
-    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
-    )
-    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
-    )
+    const swing = swingFactory.build({
+      fromRunId: "123-789",
+      toRunId: "123-456",
+      time: 19000,
+    })
+    ;(useSwings as jest.Mock)
+      .mockImplementationOnce((): Swing[] => [swing])
+      .mockImplementationOnce((): Swing[] => [swing])
+    ;(useVehiclesForRunIds as jest.Mock)
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+    ;(useVehiclesForBlockIds as jest.Mock)
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
 
     const dispatch = jest.fn()
     const user = userEvent.setup()
@@ -318,6 +356,23 @@ describe("SwingsView", () => {
     )
 
     await user.click(result.getByTitle("Close"))
-    expect(dispatch).toHaveBeenCalledWith(closeSwingsView())
+    expect(dispatch).toHaveBeenCalledWith(closeView())
+  })
+
+  test("remembers scroll position when unmounting", async () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [])
+
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    result.unmount()
+
+    expect(dispatch).toHaveBeenCalledWith(rememberSwingsViewScrollPosition(0))
   })
 })

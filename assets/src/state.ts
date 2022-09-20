@@ -86,6 +86,9 @@ export interface State {
   selectedNotification?: Notification
   openView: OpenView
   previousView: OpenView
+  swingsViewScrollPosition: number
+  showPastSwings: boolean
+  notificationDrawerScrollPosition: number
   openInputModal: OpenInputModal | null
   mobileMenuIsOpen: boolean
   showGaragesFilter: boolean
@@ -105,6 +108,9 @@ export const initialState: State = {
   selectedNotification: undefined,
   openView: OpenView.None,
   previousView: OpenView.None,
+  swingsViewScrollPosition: 0,
+  showPastSwings: false,
+  notificationDrawerScrollPosition: 0,
   openInputModal: null,
   mobileMenuIsOpen: false,
   showGaragesFilter: false,
@@ -312,14 +318,6 @@ export const selectVehicle = (
   payload: { vehicle },
 })
 
-export interface DeselectVehicleAction {
-  type: "DESELECT_VEHICLE"
-}
-
-export const deselectVehicle = (): DeselectVehicleAction => ({
-  type: "DESELECT_VEHICLE",
-})
-
 interface TogglePickerContainerAction {
   type: "TOGGLE_PICKER_CONTAINER"
 }
@@ -334,14 +332,6 @@ interface OpenNotificationDrawerAction {
 
 export const openNotificationDrawer = (): OpenNotificationDrawerAction => ({
   type: "OPEN_NOTIFICATION_DRAWER",
-})
-
-interface CloseNotificationDrawerAction {
-  type: "CLOSE_NOTIFICATION_DRAWER"
-}
-
-export const closeNotificationDrawer = (): CloseNotificationDrawerAction => ({
-  type: "CLOSE_NOTIFICATION_DRAWER",
 })
 
 interface SetLadderVehicleLabelSettingAction {
@@ -416,14 +406,6 @@ export const openSwingsView = (): OpenSwingsViewAction => ({
   type: "OPEN_SWINGS_VIEW",
 })
 
-interface CloseSwingsViewAction {
-  type: "CLOSE_SWINGS_VIEW"
-}
-
-export const closeSwingsView = (): CloseSwingsViewAction => ({
-  type: "CLOSE_SWINGS_VIEW",
-})
-
 interface OpenLateViewAction {
   type: "OPEN_LATE_VIEW"
 }
@@ -432,20 +414,20 @@ export const openLateView = (): OpenLateViewAction => ({
   type: "OPEN_LATE_VIEW",
 })
 
-interface CloseLateViewAction {
-  type: "CLOSE_LATE_VIEW"
-}
-
-export const closeLateView = (): CloseLateViewAction => ({
-  type: "CLOSE_LATE_VIEW",
-})
-
 interface ReturnToPreviousViewAction {
   type: "RETURN_TO_PREVIOUS_VIEW"
 }
 
 export const returnToPreviousView = (): ReturnToPreviousViewAction => ({
   type: "RETURN_TO_PREVIOUS_VIEW",
+})
+
+interface CloseViewAction {
+  type: "CLOSE_VIEW"
+}
+
+export const closeView = (): CloseViewAction => ({
+  type: "CLOSE_VIEW",
 })
 
 interface SelectVehicleFromNotificationAction {
@@ -569,6 +551,44 @@ export const toggleShowGaragesFilter = (): ToggleShowGaragesFilterAction => ({
   type: "TOGGLE_SHOW_GARAGES_FILTER",
 })
 
+interface RememberSwingsScrollPositionAction {
+  type: "REMEMBER_SWINGS_SCROLL_POSITION"
+  payload: {
+    scrollPosition: number
+  }
+}
+
+export const rememberSwingsViewScrollPosition = (
+  scrollPosition: number
+): RememberSwingsScrollPositionAction => ({
+  type: "REMEMBER_SWINGS_SCROLL_POSITION",
+  payload: {
+    scrollPosition,
+  },
+})
+
+interface ToggleShowHidePastSwingsAction {
+  type: "TOGGLE_SHOW_HIDE_PAST_SWINGS"
+}
+
+export const toggleShowHidePastSwings = (): ToggleShowHidePastSwingsAction => ({
+  type: "TOGGLE_SHOW_HIDE_PAST_SWINGS",
+})
+
+interface RememberNotificationDrawerScrollPositionAction {
+  type: "REMEMBER_NOTIFICATION_DRAWER_SCROLL_POSITION"
+  payload: {
+    scrollPosition: number
+  }
+}
+
+export const rememberNotificationDrawerScrollPosition = (
+  scrollPosition: number
+): RememberNotificationDrawerScrollPositionAction => ({
+  type: "REMEMBER_NOTIFICATION_DRAWER_SCROLL_POSITION",
+  payload: { scrollPosition },
+})
+
 export type Action =
   // Route tabs and ladder management in tabs
   | CreateRouteTabAction
@@ -591,7 +611,6 @@ export type Action =
   | DeselectShuttleRouteAction
   // Vehicle selection
   | SelectVehicleAction
-  | DeselectVehicleAction
   // Opening / closing picker drawer
   | TogglePickerContainerAction
   // Settings
@@ -605,12 +624,13 @@ export type Action =
   | SelectVehicleFromNotificationAction
   // Views
   | OpenNotificationDrawerAction
-  | CloseNotificationDrawerAction
   | OpenSwingsViewAction
-  | CloseSwingsViewAction
   | OpenLateViewAction
-  | CloseLateViewAction
+  | CloseViewAction
   | ReturnToPreviousViewAction
+  | RememberSwingsScrollPositionAction
+  | ToggleShowHidePastSwingsAction
+  | RememberNotificationDrawerScrollPositionAction
   // Presets
   | CreatePresetAction
   | InstantiatePresetAction
@@ -930,18 +950,6 @@ const openViewPanelReducer = (
             previousView: openView,
             selectedVehicleOrGhost: undefined,
           }
-    case "CLOSE_NOTIFICATION_DRAWER":
-      return openView === OpenView.NotificationDrawer
-        ? {
-            openView: OpenView.None,
-            previousView: OpenView.None,
-            selectedVehicleOrGhost,
-          }
-        : {
-            openView,
-            previousView,
-            selectedVehicleOrGhost,
-          }
     case "OPEN_SWINGS_VIEW":
       return openView === OpenView.Swings
         ? {
@@ -954,14 +962,6 @@ const openViewPanelReducer = (
             previousView: openView,
             selectedVehicleOrGhost: undefined,
           }
-    case "CLOSE_SWINGS_VIEW":
-      return openView === OpenView.Swings
-        ? {
-            openView: OpenView.None,
-            previousView: OpenView.None,
-            selectedVehicleOrGhost,
-          }
-        : { openView, previousView, selectedVehicleOrGhost }
     case "OPEN_LATE_VIEW":
       return openView === OpenView.Late
         ? { openView, previousView, selectedVehicleOrGhost }
@@ -970,12 +970,12 @@ const openViewPanelReducer = (
             previousView: openView,
             selectedVehicleOrGhost: undefined,
           }
-    case "CLOSE_LATE_VIEW":
-      return openView === OpenView.Late
+    case "CLOSE_VIEW":
+      return openView !== null
         ? {
             openView: OpenView.None,
             previousView: OpenView.None,
-            selectedVehicleOrGhost,
+            selectedVehicleOrGhost: undefined,
           }
         : { openView, previousView, selectedVehicleOrGhost }
     case "SELECT_VEHICLE":
@@ -984,12 +984,6 @@ const openViewPanelReducer = (
         openView: OpenView.None,
         previousView: openView === OpenView.None ? previousView : openView,
         selectedVehicleOrGhost: action.payload.vehicle,
-      }
-    case "DESELECT_VEHICLE":
-      return {
-        openView,
-        previousView: OpenView.None,
-        selectedVehicleOrGhost: undefined,
       }
     case "SET_NOTIFICATION":
       return {
@@ -1063,7 +1057,7 @@ const selectedNotificationReducer = (
 ): Notification | undefined => {
   switch (action.type) {
     case "SELECT_VEHICLE":
-    case "DESELECT_VEHICLE":
+    case "CLOSE_VIEW":
     case "OPEN_SWINGS_VIEW":
     case "OPEN_LATE_VIEW":
     case "OPEN_NOTIFICATION_DRAWER":
@@ -1145,6 +1139,45 @@ const openInputModalReducer = (
   }
 }
 
+const swingsViewScrollPositionReducer = (
+  state: number,
+  action: Action
+): number => {
+  switch (action.type) {
+    case "REMEMBER_SWINGS_SCROLL_POSITION":
+      return action.payload.scrollPosition
+    case "CLOSE_VIEW":
+      return 0
+    default:
+      return state
+  }
+}
+
+const showPastSwingsReducer = (state: boolean, action: Action): boolean => {
+  switch (action.type) {
+    case "TOGGLE_SHOW_HIDE_PAST_SWINGS":
+      return !state
+    case "CLOSE_VIEW":
+      return false
+    default:
+      return state
+  }
+}
+
+const notificationDrawerScrollPositionReducer = (
+  state: number,
+  action: Action
+): number => {
+  switch (action.type) {
+    case "REMEMBER_NOTIFICATION_DRAWER_SCROLL_POSITION":
+      return action.payload.scrollPosition
+    case "CLOSE_VIEW":
+      return 0
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => {
   const {
     routeTabs,
@@ -1190,6 +1223,15 @@ export const reducer = (state: State, action: Action): State => {
     ),
     openView,
     previousView,
+    swingsViewScrollPosition: swingsViewScrollPositionReducer(
+      state.swingsViewScrollPosition,
+      action
+    ),
+    showPastSwings: showPastSwingsReducer(state.showPastSwings, action),
+    notificationDrawerScrollPosition: notificationDrawerScrollPositionReducer(
+      state.notificationDrawerScrollPosition,
+      action
+    ),
     openInputModal: openInputModalReducer(state.openInputModal, action),
     mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
     showGaragesFilter: garageFilterReducer(state.showGaragesFilter, action),

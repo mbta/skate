@@ -27,7 +27,7 @@ import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
 import { ByRouteId } from "../schedule"
 import {
   Action,
-  closeLateView,
+  closeView,
   returnToPreviousView,
   selectVehicle,
 } from "../state"
@@ -291,7 +291,7 @@ const LateView = (): ReactElement<HTMLElement> => {
       <div className="m-late-view__content-wrapper">
         <ViewHeader
           title="Late View"
-          closeView={() => dispatch(closeLateView())}
+          closeView={() => dispatch(closeView())}
           backlinkToView={previousView}
           followBacklink={() => dispatch(returnToPreviousView())}
         />

@@ -163,7 +163,7 @@ describe("reducer", () => {
     expect(newState.openView).toBe(State.OpenView.None)
   })
 
-  test("deselectVehicle", () => {
+  test("closeView deselects the vehicle", () => {
     const initialVehicleId: VehicleId = "v1"
     const state = {
       ...initialState,
@@ -176,7 +176,7 @@ describe("reducer", () => {
       previousView: State.OpenView.None,
     }
 
-    const newState = reducer(state, State.deselectVehicle())
+    const newState = reducer(state, State.closeView())
 
     expect(newState).toEqual(expectedState)
   })
@@ -261,31 +261,6 @@ describe("reducer", () => {
         openView: State.OpenView.NotificationDrawer,
       }
       expect(reducer(state, State.openNotificationDrawer())).toEqual(state)
-    })
-
-    test("closeNotificationDrawer closes the drawer", () => {
-      const state = {
-        ...initialState,
-        openView: State.OpenView.NotificationDrawer,
-      }
-      const expectedState = {
-        ...initialState,
-        openView: State.OpenView.None,
-        previousView: State.OpenView.None,
-      }
-      expect(reducer(state, State.closeNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("closeNotificationDrawer does nothing if the drawer is already closed", () => {
-      const state = {
-        ...initialState,
-        openView: State.OpenView.Swings,
-        previousView: State.OpenView.Late,
-      }
-
-      expect(reducer(state, State.closeNotificationDrawer())).toEqual(state)
     })
   })
 
@@ -409,27 +384,6 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("closeSwingsView disables swings view when swings view is open", () => {
-    const newState = reducer(
-      { ...initialState, openView: State.OpenView.Swings },
-      State.closeSwingsView()
-    )
-
-    expect(newState).toEqual({
-      ...initialState,
-      openView: State.OpenView.None,
-      previousView: State.OpenView.None,
-    })
-  })
-
-  test("closeSwingsView does when swings view is closed", () => {
-    const state = { ...initialState, openView: State.OpenView.Late }
-
-    const newState = reducer(state, State.closeSwingsView())
-
-    expect(newState).toEqual(state)
-  })
-
   test("openLateView enables late view when other views are closed", () => {
     const expectedState: State.State = {
       ...initialState,
@@ -467,27 +421,6 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("closeLateView disables late view when late view is open", () => {
-    const newState = reducer(
-      { ...initialState, openView: State.OpenView.Late },
-      State.closeLateView()
-    )
-
-    expect(newState).toEqual({
-      ...initialState,
-      openView: State.OpenView.None,
-      previousView: State.OpenView.None,
-    })
-  })
-
-  test("closeLateView does nothing when late view is closed", () => {
-    const state = { ...initialState, openView: State.OpenView.Swings }
-
-    const newState = reducer(state, State.closeLateView())
-
-    expect(newState).toEqual(state)
-  })
-
   test("returnToPreviousView returns to the previous view, deselects vehicle and notification", () => {
     const state = {
       ...initialState,
@@ -508,6 +441,67 @@ describe("reducer", () => {
     const newState = reducer(state, State.returnToPreviousView())
 
     expect(newState).toEqual(expectedState)
+  })
+
+  test("closeView disables the current view", () => {
+    const newState = reducer(
+      { ...initialState, openView: State.OpenView.Swings },
+      State.closeView()
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      openView: State.OpenView.None,
+      previousView: State.OpenView.None,
+    })
+  })
+
+  test("closeView resets swings scroll position", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        openView: State.OpenView.Swings,
+        swingsViewScrollPosition: 10,
+      },
+      State.closeView()
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      swingsViewScrollPosition: 0,
+    })
+  })
+
+  test("closeView hides past swings", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        openView: State.OpenView.Swings,
+        showPastSwings: true,
+      },
+      State.closeView()
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      showPastSwings: false,
+    })
+  })
+
+  test("closeView resets notifications scroll position", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        openView: State.OpenView.NotificationDrawer,
+        notificationDrawerScrollPosition: 10,
+      },
+      State.closeView()
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      notificationDrawerScrollPosition: 0,
+    })
   })
 
   test("selectVehicleFromNotification switches to appropriate route tab", () => {
@@ -1116,5 +1110,32 @@ describe("reducer", () => {
       default:
         fail("did not receive correct openInputModal type")
     }
+  })
+
+  test("rememberSwingsScrollPosition", () => {
+    const newState = reducer(
+      initialState,
+      State.rememberSwingsViewScrollPosition(10)
+    )
+
+    expect(newState.swingsViewScrollPosition).toBe(10)
+  })
+
+  test("toggleShowHidePastSwings", () => {
+    const newState = reducer(
+      { ...initialState, showPastSwings: true },
+      State.toggleShowHidePastSwings()
+    )
+
+    expect(newState).toEqual({ ...initialState, showPastSwings: false })
+  })
+
+  test("rememberNotificationDrawerScrollPosition", () => {
+    const newState = reducer(
+      initialState,
+      State.rememberNotificationDrawerScrollPosition(10)
+    )
+
+    expect(newState.notificationDrawerScrollPosition).toBe(10)
   })
 })

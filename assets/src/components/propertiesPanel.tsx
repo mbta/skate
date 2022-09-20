@@ -4,7 +4,7 @@ import useSocket from "../hooks/useSocket"
 import useVehicleForId from "../hooks/useVehicleForId"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
-import { deselectVehicle } from "../state"
+import { closeView } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
@@ -43,7 +43,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
     }
   }, [liveVehicle])
 
-  const hideMe = () => dispatch(deselectVehicle())
+  const hideMe = () => dispatch(closeView())
 
   return (
     <>
