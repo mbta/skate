@@ -287,7 +287,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTestId("save-button")).toBeNull()
+    expect(result.queryByTitle("Save")).toBeNull()
   })
 
   test("can add a new route tab", async () => {
@@ -487,7 +487,7 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.queryByText(/vehicles/)).toBeNull()
+    expect(result.queryByText("Vehicles")).toBeNull()
   })
 
   test("if a vehicle from a notification failed to load, show nothing", () => {
@@ -503,7 +503,7 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.queryByText(/vehicles/)).toBeNull()
+    expect(result.queryByText("Vehicles")).toBeNull()
   })
 })
 
