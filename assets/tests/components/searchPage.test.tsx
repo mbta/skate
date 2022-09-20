@@ -77,28 +77,6 @@ describe("SearchPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders a selected vehicle", () => {
-    const selectedVehicleState: State = {
-      ...initialState,
-      selectedVehicleOrGhost: vehicle,
-    }
-
-    const tree = renderer
-      .create(
-        <StateDispatchProvider
-          state={selectedVehicleState}
-          dispatch={jest.fn()}
-        >
-          <BrowserRouter>
-            <SearchPage />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
   test("on mobile, shows the results list initially", () => {
     const result = render(
       <BrowserRouter>
@@ -127,5 +105,27 @@ describe("SearchPage", () => {
     )
 
     expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+  })
+
+  test("renders a selected vehicle", () => {
+    const selectedVehicleState: State = {
+      ...initialState,
+      selectedVehicleOrGhost: vehicle,
+    }
+
+    const tree = renderer
+      .create(
+        <StateDispatchProvider
+          state={selectedVehicleState}
+          dispatch={jest.fn()}
+        >
+          <BrowserRouter>
+            <SearchPage />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
   })
 })
