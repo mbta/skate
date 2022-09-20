@@ -157,7 +157,7 @@ describe("LateView", () => {
     )
   })
 
-  test("clicking vehicle run number opens vehicle and sends Fullstory event", async () => {
+  test("clicking vehicle run number opens vehicle and sends tag manager event", async () => {
     const vehicle = vehicleFactory.build({
       routeId: "route",
       runId: "12345",
@@ -261,14 +261,17 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
-    expectIndeterminateValue(result, lateMasterCheckboxTestId, false),
-      expectCheckedValue(result, lateMasterCheckboxTestId, false)
+    expectIndeterminateValue(result, lateMasterCheckboxTestId, false)
+    expectCheckedValue(result, lateMasterCheckboxTestId, false)
 
+    // select 1/2 late vehicle - master checkbox is indeterminate
     await userEvent.click(
       result.getByTestId(`row-checkbox-${lateVehicle1.runId}`)
     )
     expectIndeterminateValue(result, lateMasterCheckboxTestId, true)
     expectCheckedValue(result, lateMasterCheckboxTestId, false)
+
+    // select second late vehicle - master checkbox is checked
 
     await userEvent.click(
       result.getByTestId(`row-checkbox-${lateVehicle2.runId}`)
@@ -277,14 +280,20 @@ describe("LateView", () => {
     expectIndeterminateValue(result, lateMasterCheckboxTestId, false)
     expectCheckedValue(result, lateMasterCheckboxTestId, true)
 
-    expectIndeterminateValue(result, missingMasterCheckboxId, false),
-      expectCheckedValue(result, missingMasterCheckboxId, false)
+    // missing logon master checkbox is unaffected
+
+    expectIndeterminateValue(result, missingMasterCheckboxId, false)
+    expectCheckedValue(result, missingMasterCheckboxId, false)
+
+    // select 1 / 2 missing logon - master checkbox indeterminate
 
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
     expectIndeterminateValue(result, missingMasterCheckboxId, true),
       expectCheckedValue(result, missingMasterCheckboxId, false)
+
+    // select second missing logon - master checkbox checked
 
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost2.runId}`)
@@ -333,8 +342,11 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
+    // late vehicles start unchecked
     expectCheckedValue(result, `row-checkbox-${lateVehicle1.runId}`, false)
     expectCheckedValue(result, `row-checkbox-${lateVehicle2.runId}`, false)
+
+    // click late vehicle master checkbox - both late vehicles are now checked
 
     await userEvent.click(result.getByTestId(lateMasterCheckboxTestId))
     expectCheckedValue(result, `row-checkbox-${lateVehicle1.runId}`, true)
@@ -342,6 +354,8 @@ describe("LateView", () => {
 
     expectIndeterminateValue(result, lateMasterCheckboxTestId, false)
     expectCheckedValue(result, lateMasterCheckboxTestId, true)
+
+    // deselect 1 late vehicle - master checkbox now indeterminate
 
     await userEvent.click(
       result.getByTestId(`row-checkbox-${lateVehicle1.runId}`)
@@ -352,11 +366,14 @@ describe("LateView", () => {
     expectIndeterminateValue(result, lateMasterCheckboxTestId, true)
     expectCheckedValue(result, lateMasterCheckboxTestId, false)
 
+    // select the late vehicle master checkbox
+
     await userEvent.click(result.getByTestId(lateMasterCheckboxTestId))
 
     expectIndeterminateValue(result, lateMasterCheckboxTestId, false)
     expectCheckedValue(result, lateMasterCheckboxTestId, true)
 
+    // deselect the late vehicle master checkbox
     await userEvent.click(result.getByTestId(lateMasterCheckboxTestId))
 
     expectCheckedValue(result, `row-checkbox-${lateVehicle1.runId}`, false)
@@ -404,6 +421,7 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
+    // missing logons start unchecked
     expectCheckedValue(
       result,
       `row-checkbox-${missingLogonGhost1.runId}`,
@@ -415,10 +433,12 @@ describe("LateView", () => {
       false
     )
 
+    // select missing logon master checkbox - both are checked
     await userEvent.click(result.getByTestId(missingMasterCheckboxId))
     expectCheckedValue(result, `row-checkbox-${missingLogonGhost1.runId}`, true)
     expectCheckedValue(result, `row-checkbox-${missingLogonGhost2.runId}`, true)
 
+    // deselect one - master checkbox now indeterminate
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
@@ -433,6 +453,8 @@ describe("LateView", () => {
     expectIndeterminateValue(result, missingMasterCheckboxId, true)
     expectCheckedValue(result, missingMasterCheckboxId, false)
 
+    // select master checkbox - now checked
+
     await userEvent.click(result.getByTestId(missingMasterCheckboxId))
 
     expectCheckedValue(result, `row-checkbox-${missingLogonGhost1.runId}`, true)
@@ -440,6 +462,7 @@ describe("LateView", () => {
     expectIndeterminateValue(result, missingMasterCheckboxId, false)
     expectCheckedValue(result, missingMasterCheckboxId, true)
 
+    // deselect master checkbox - no rows checked
     await userEvent.click(result.getByTestId(missingMasterCheckboxId))
 
     expectCheckedValue(
@@ -505,6 +528,7 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
+    // hide 2 rows / 6 total - 1 missing logon, 1 late vehicle
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
@@ -521,8 +545,10 @@ describe("LateView", () => {
     expectIndeterminateValue(result, missingMasterCheckboxId, false)
     expectCheckedValue(result, missingMasterCheckboxId, false)
 
+    // re-include the 2 hidden rows
     await userEvent.click(result.getAllByTitle("Include Hidden")[0])
 
+    // those hidden rows are present, but don't have check boxes
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(4)
     expect(result.getAllByTestId(/row-data/)).toHaveLength(6)
 
@@ -531,10 +557,13 @@ describe("LateView", () => {
     expectIndeterminateValue(result, missingMasterCheckboxId, false)
     expectCheckedValue(result, missingMasterCheckboxId, false)
 
+    // selecting one master checkbox shows 2 have been selected to hide
     await userEvent.click(result.getByTestId(lateMasterCheckboxTestId))
     expect(result.getByText("2 selected")).toBeTruthy()
+    // deselect master checkbox
     await userEvent.click(result.getByTestId(lateMasterCheckboxTestId))
 
+    // select 2 more rows - 1 late, 1 missing logon. (2/3 late, 2/3 missing have been selected)
     await userEvent.click(
       result.getByTestId(`row-checkbox-${lateVehicle2.runId}`)
     )
@@ -547,6 +576,7 @@ describe("LateView", () => {
     expectIndeterminateValue(result, missingMasterCheckboxId, true)
     expectCheckedValue(result, missingMasterCheckboxId, false)
 
+    // select last 2 unselected rows
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost3.runId}`)
     )
@@ -598,7 +628,7 @@ describe("LateView", () => {
         </VehiclesByRouteIdProvider>
       </StateDispatchProvider>
     )
-
+    // hide 2 / 4 rows - 1 missing logon, 1 late vehicle
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
@@ -614,6 +644,7 @@ describe("LateView", () => {
       result.queryByTestId(`row-checkbox-${lateVehicle1.runId}`)
     ).toBeNull()
 
+    // still 2 unchecked boxes remaining
     const remainingCheckboxes = result.getAllByTestId(/row-checkbox/)
     expect(remainingCheckboxes).toHaveLength(2)
     remainingCheckboxes.map((r) => expect(r).toHaveProperty("checked", false))
@@ -657,6 +688,8 @@ describe("LateView", () => {
         </VehiclesByRouteIdProvider>
       </StateDispatchProvider>
     )
+
+    // hide 2/4 rows - 1 missing logon, 1 late vehicle
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
@@ -667,6 +700,7 @@ describe("LateView", () => {
 
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
 
+    // undo hiding - all 4 rows still have checkboxes
     await userEvent.click(result.getByRole("button", { name: /Undo/ }))
 
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(4)
@@ -711,8 +745,10 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
+    // if no rows have been hidden, no button to include/exclude hidden
     expect(result.queryByTitle("Include Hidden")).toBeNull()
     expect(result.queryByTitle("Exclude Hidden")).toBeNull()
+    // hide 2/4 rows - 1 missing logon, 1 late vehicle
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
@@ -721,20 +757,25 @@ describe("LateView", () => {
     )
     await userEvent.click(result.getByRole("button", { name: /Hide/ }))
 
+    // button to include hidden rows is present on both tables
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
     expect(result.getAllByTitle("Include Hidden")).toHaveLength(2)
     expect(result.queryAllByTitle("Exclude Hidden")).toHaveLength(0)
 
+    // include the hidden rows for both tables by clicking 1 of the buttons
     await userEvent.click(result.getAllByTitle("Include Hidden")[0])
 
+    // hidden rows are visible, but don't have checkboxes
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
     expect(result.getAllByTestId(/row-data/)).toHaveLength(4)
 
+    // click button to re-hide previously hidden rows
     expect(result.queryAllByTitle("Include Hidden")).toHaveLength(0)
     expect(result.getAllByTitle("Exclude Hidden")).toHaveLength(2)
 
     await userEvent.click(result.getAllByTitle("Exclude Hidden")[0])
 
+    // option to include hidden re-appears, the 2 remaiing rows are still visible
     expect(result.getAllByTitle("Include Hidden")).toHaveLength(2)
     expect(result.queryAllByTitle("Exclude Hidden")).toHaveLength(0)
     expect(result.getAllByTestId(/row-data/)).toHaveLength(2)
@@ -782,6 +823,7 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
+    // hide 2/4 rows
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
@@ -790,8 +832,10 @@ describe("LateView", () => {
     )
     await userEvent.click(result.getByRole("button", { name: /Hide/ }))
 
+    // only 2 remaining rows visible
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
 
+    // only 2 rows still visible after re-render
     result.rerender(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
@@ -826,23 +870,29 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
+    // hide 1/2 rows
     await userEvent.click(
       result.getByTestId(`row-checkbox-${lateVehicle1.runId}`)
     )
     await userEvent.click(result.getByRole("button", { name: /Hide/ }))
+    // re-include hidden row
     await userEvent.click(result.getAllByTitle("Include Hidden")[0])
 
+    // button to exclude hidden visible, 2 rows are present
     expect(result.getAllByTitle("Exclude Hidden")).toHaveLength(2)
     expect(result.queryAllByTitle("Include Hidden")).toHaveLength(0)
     expect(result.getAllByTestId(/row-data/)).toHaveLength(2)
 
+    // hide 2nd row
     await userEvent.click(
       result.getByTestId(`row-checkbox-${lateVehicle2.runId}`)
     )
     await userEvent.click(result.getByRole("button", { name: /Hide/ }))
 
+    // no more rows visible
     expect(result.queryAllByTestId(/row-checkbox/)).toHaveLength(0)
     expect(result.queryAllByTitle("Exclude Hidden")).toHaveLength(0)
+    // button to re-include hidden rows visible on both tables
     expect(result.getAllByTitle("Include Hidden")).toHaveLength(2)
   })
 })
