@@ -104,7 +104,7 @@ describe("RouteVariantName", () => {
 
     const result = render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(result.getByText("Shuttle")).toBeTruthy()
+    expect(result.getByText("Shuttle")).toBeInTheDocument()
   })
 
   test("uses route name if available", () => {

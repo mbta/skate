@@ -12,6 +12,7 @@ import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory from "../../factories/vehicle"
 import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
 
 jest
   .spyOn(dateTime, "now")
@@ -189,7 +190,7 @@ describe("VehiclePropertiesPanel", () => {
       () => "Atlantic Ave & Summer St"
     )
     const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
-    expect(result.getByText("Atlantic Ave & Summer St")).toBeTruthy()
+    expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
   })
 
   test("renders data discrepancies when in debug mode", () => {
