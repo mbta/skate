@@ -832,8 +832,12 @@ describe("LateView", () => {
     )
     await userEvent.click(result.getByRole("button", { name: /Hide/ }))
 
-    // only 2 remaining rows visible
+    // only 2 remaining rows visible and are unchecked
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
+
+    result
+      .getAllByTestId(/row-checkbox/)
+      .map((checkbox) => expect(checkbox).toHaveProperty("checked", false))
 
     // only 2 rows still visible after re-render
     result.rerender(
