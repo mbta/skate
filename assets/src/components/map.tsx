@@ -32,6 +32,7 @@ import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import appData from "../appData"
 
+/* eslint no-console: 0 */ // --> OFF
 export interface Props {
   vehicles: Vehicle[]
   shapes?: Shape[]
