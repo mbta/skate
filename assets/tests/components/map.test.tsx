@@ -158,8 +158,7 @@ describe("autoCenter", () => {
 
 const getCenter = (
   LeafletMapRef: MutableRefObject<LeafletMap | null>
-): LatLng | null =>
-  LeafletMapRef.current && LeafletMapRef.current.getCenter()
+): LatLng | null => LeafletMapRef.current && LeafletMapRef.current.getCenter()
 
 const animationFramePromise = (): Promise<null> => {
   return new Promise((resolve) => {

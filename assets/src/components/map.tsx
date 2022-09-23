@@ -1,4 +1,11 @@
-import Leaflet, { LatLng, LatLngExpression, Map as LeafletMap } from "leaflet"
+import Leaflet, {
+  Control,
+  ControlOptions,
+  DomUtil,
+  LatLng,
+  LatLngExpression,
+  Map as LeafletMap,
+} from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -18,7 +25,6 @@ import {
   useMapEvents,
   ZoomControl,
 } from "react-leaflet"
-import Control from "react-leaflet-custom-control"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { FullscreenControl } from "react-leaflet-fullscreen"
@@ -32,6 +38,7 @@ import { selectVehicle } from "../state"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import appData from "../appData"
+import { createControlComponent } from "@react-leaflet/core"
 
 /* eslint no-console: 0 */ // --> OFF
 export interface Props {
@@ -42,6 +49,10 @@ export interface Props {
   // trainVehicles are white, don't get a label, and don't affect autocentering
   trainVehicles?: TrainVehicle[]
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
+}
+
+interface RecenterControlProps extends ControlOptions {
+  recenter: () => void
 }
 
 export const defaultCenter: LatLngExpression = {
@@ -242,13 +253,80 @@ export const autoCenter = (
   }
 }
 
-const RecenterControl = ({
-  turnOnAutoCenter,
+class RecenterControl extends Control {
+  private recenter: () => void
+  constructor(props: ControlOptions, recenter: () => void) {
+    super(props)
+    this.recenter = recenter
+  }
+
+  onAdd() {
+    const img = DomUtil.create(
+      "button",
+      "leaflet-bar m-vehicle-map__recenter-button"
+    )
+    img.title = "Recenter map"
+    img.ariaLabel = "Recenter map"
+    img.onclick = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      console.log("CLICKED")
+      this.recenter()
+    }
+    img.innerHTML = `
+          <svg
+            height="26"
+            viewBox="-5 -5 32 32"
+            width="26"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+              transform="rotate(60, 12, 12)"
+            />
+          </svg>`
+    return img
+  }
+}
+
+export const RecenterControlButton = createControlComponent(
+  ({ position: position, recenter: recenterFn }: RecenterControlProps) =>
+    new RecenterControl({ position: position }, recenterFn)
+)
+
+const tilesetUrl = (): string => appData()?.tilesetUrl || ""
+
+const EventAdder = ({
+  isAutoCentering,
+  setShouldAutoCenter,
+}: {
+  isAutoCentering: MutableRefObject<boolean>
+  setShouldAutoCenter: (arg0: boolean) => void
+}): ReactElement => {
+  useMapEvents({
+    movestart: () => {
+      // If the user drags or zooms, they want manual control of the map.
+      // But don't disable shouldAutoCenter if the move was triggered by an auto center.
+      if (!isAutoCentering.current) {
+        setShouldAutoCenter(false)
+      }
+    },
+    moveend: () => {
+      console.log("moveend")
+      // Wait until the auto centering is finished to start listening for manual moves again.
+      if (isAutoCentering.current) {
+        isAutoCentering.current = false
+      }
+    },
+  })
+  return <></>
+}
+
+const Autocenterer = ({
+  latLngs,
   shouldAutoCenter,
   isAutoCentering,
-  latLngs,
 }: {
-  turnOnAutoCenter: () => void
   shouldAutoCenter: boolean
   isAutoCentering: MutableRefObject<boolean>
   latLngs: LatLng[]
@@ -279,64 +357,6 @@ const RecenterControl = ({
     pickerContainerIsVisible,
   ])
 
-  return (
-    <Control position="topright">
-      <div className="leaflet-bar m-vehicle-map__recenter-button">
-        {/* eslint-disable jsx-a11y/anchor-is-valid */}
-        <a
-          href="#"
-          title="Recenter map"
-          role="button"
-          aria-label="Recenter map"
-          onClick={(e) => {
-            e.stopPropagation()
-            e.preventDefault()
-            turnOnAutoCenter()
-          }}
-        >
-          <svg
-            height="26"
-            viewBox="-5 -5 32 32"
-            width="26"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-              transform="rotate(60, 12, 12)"
-            />
-          </svg>
-        </a>
-        {/* eslint-enable jsx-a11y/anchor-is-valid */}
-      </div>
-    </Control>
-  )
-}
-
-const tilesetUrl = (): string => appData()?.tilesetUrl || ""
-
-const EventAdder = ({
-  isAutoCentering,
-  setShouldAutoCenter
-}: {
-  isAutoCentering: MutableRefObject<boolean>
-  setShouldAutoCenter: (arg0: boolean) => void
-}): ReactElement => {
-  useMapEvents({
-    movestart: () => {
-      // If the user drags or zooms, they want manual control of the map.
-      // But don't disable shouldAutoCenter if the move was triggered by an auto center.
-      if (!isAutoCentering.current) {
-        setShouldAutoCenter(false)
-      }
-    },
-    moveend: () => {
-      console.log("moveend")
-      // Wait until the auto centering is finished to start listening for manual moves again.
-      if (isAutoCentering.current) {
-        isAutoCentering.current = false
-      }
-    },
-  })
   return <></>
 }
 
@@ -375,14 +395,18 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           isAutoCentering={isAutoCentering}
           setShouldAutoCenter={setShouldAutoCenter}
         />
-        <ZoomControl position="topright" />
-        <FullscreenControl position="topright" />
-        <RecenterControl
-          turnOnAutoCenter={() => setShouldAutoCenter(true)}
+        <Autocenterer
           shouldAutoCenter={shouldAutoCenter}
           isAutoCentering={isAutoCentering}
           latLngs={latLngs}
         />
+        <ZoomControl position="topright" />
+        <FullscreenControl position="topright" />
+        <RecenterControlButton
+          position="topright"
+          recenter={() => setShouldAutoCenter(true)}
+        />
+
         <TileLayer
           url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
