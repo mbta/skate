@@ -7,15 +7,11 @@ import React, {
   useEffect,
   useState,
 } from "react"
-import { tagManagerEvent } from "../helpers/googleTagManager"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
-import { useNotifications } from "../hooks/useNotifications"
 import useNotificationsReducer, {
   Action,
-  addNotification,
   expireNotifications,
-  setNotifications,
   State as ReducerState,
 } from "../hooks/useNotificationsReducer"
 import useSocket from "../hooks/useSocket"
@@ -59,24 +55,18 @@ export const NotificationsProvider = ({
 }: {
   children: ReactElement<HTMLElement>
 }) => {
-  const [state, dispatch] = useNotificationsReducer()
   const [{ selectedNotification }, stateDispatch] =
     useContext(StateDispatchContext)
-  const { notifications, showLatestNotification } = state
+
   const now = useCurrentTime()
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
-  /* istanbul ignore next */
-  useNotifications(
-    (notification) => {
-      tagManagerEvent("notification_delivered")
-      dispatch(addNotification(notification))
-    },
-    (notificationsData) => {
-      dispatch(setNotifications(notificationsData, isInitialLoad))
-    }
+
+  const [state, dispatch] = useNotificationsReducer(
+    isInitialLoad,
+    setIsInitialLoad
   )
-  useEffect(() => setIsInitialLoad(false), [])
+  const { notifications, showLatestNotification } = state
 
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 

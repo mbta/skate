@@ -1,5 +1,9 @@
+import React from "react"
 import { act, renderHook } from "@testing-library/react"
-
+import { Socket } from "phoenix"
+import { ReactNode } from "react"
+import { SocketProvider } from "../../src/contexts/socketContext"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import {
   hideLatestNotification,
   markAllAsRead,
@@ -8,9 +12,21 @@ import {
   toggleReadState,
   useNotificationsReducer,
 } from "../../src/hooks/useNotificationsReducer"
+import { ConnectionStatus } from "../../src/hooks/useSocket"
 import { NotificationData } from "../../src/models/notificationData"
 import { Notification, NotificationState } from "../../src/realtime"
+import { RouteId } from "../../src/schedule"
+import { initialState } from "../../src/state"
 import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
+import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import routeTabFactory from "../factories/routeTab"
+import * as browser from "../../src/models/browser"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 const notification1: Notification = {
   id: "0",
@@ -18,7 +34,7 @@ const notification1: Notification = {
   reason: "manpower",
   routeIds: ["route1", "route2"],
   runIds: ["run1", "run2"],
-  tripIds: [],
+  tripIds: ["trip1", "trip2"],
   operatorName: null,
   operatorId: null,
   routeIdAtCreation: null,
@@ -33,7 +49,7 @@ const notification1Data: NotificationData = {
   reason: "manpower",
   route_ids: ["route1", "route2"],
   run_ids: ["run1", "run2"],
-  trip_ids: [],
+  trip_ids: ["trip1", "trip2"],
   operator_name: null,
   operator_id: null,
   route_id_at_creation: null,
@@ -131,6 +147,7 @@ describe("notificationsReducer", () => {
 describe("useNotificationsReducer", () => {
   test("persists to server when mark all as read", () => {
     window.fetch = jest.fn()
+    const mockSetIsInitialLoad = jest.fn()
 
     const initialState = {
       notifications: [notification1, notification2],
@@ -138,7 +155,9 @@ describe("useNotificationsReducer", () => {
     }
     mockUseReducerOnce(reducer, initialState)
 
-    const { result } = renderHook(() => useNotificationsReducer())
+    const { result } = renderHook(() =>
+      useNotificationsReducer(true, mockSetIsInitialLoad)
+    )
 
     const [, dispatch] = result.current
 
@@ -153,6 +172,7 @@ describe("useNotificationsReducer", () => {
 
   test("persists state toggle", () => {
     window.fetch = jest.fn()
+    const mockSetIsInitialLoad = jest.fn()
 
     const initialState = {
       notifications: [notification1, notification2],
@@ -160,7 +180,9 @@ describe("useNotificationsReducer", () => {
     }
     mockUseReducerOnce(reducer, initialState)
 
-    const { result } = renderHook(() => useNotificationsReducer())
+    const { result } = renderHook(() =>
+      useNotificationsReducer(true, mockSetIsInitialLoad)
+    )
 
     const [, dispatch] = result.current
 
@@ -170,4 +192,217 @@ describe("useNotificationsReducer", () => {
 
     expectPut("/api/notification_read_state?new_state=read&notification_ids=1")
   })
+
+  test("opens a channel and processes any initial notifications, unsets the initial render flag via callback", () => {
+    const initialNotifications = [notification1Data]
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: initialNotifications,
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { result } = renderHook(
+      () => useNotificationsReducer(true, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+            {children}
+          </Wrapper>
+        ),
+      }
+    )
+
+    const [state] = result.current
+
+    expect(mockChannel.join).toHaveBeenCalled()
+    expect(state.notifications).toStrictEqual([notification1])
+    expect(mockSetIsInitialLoad).toHaveBeenCalledWith(false)
+  })
+
+  test("adds new notifications", () => {
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    mockChannel.on.mockImplementation((_event, dataHandler) => {
+      dataHandler({
+        data: notification1Data,
+      })
+    })
+
+    const { result } = renderHook(
+      () => useNotificationsReducer(true, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+            {children}
+          </Wrapper>
+        ),
+      }
+    )
+
+    const [state] = result.current
+
+    expect(state.notifications).toStrictEqual([notification1])
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
+  })
+
+  test("leaves the channel on unmount", () => {
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { unmount } = renderHook(
+      () => useNotificationsReducer(false, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={[]}>
+            {children}
+          </Wrapper>
+        ),
+      }
+    )
+
+    expect(mockChannel.join).toHaveBeenCalled()
+
+    unmount()
+
+    expect(mockChannel.leave).toHaveBeenCalled()
+  })
+
+  test("console.error on join error", async () => {
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce((msg) => msg)
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("error")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    renderHook(() => useNotificationsReducer(true, mockSetIsInitialLoad), {
+      wrapper: ({ children }) => (
+        <Wrapper socket={mockSocket} selectedRouteIds={[]}>
+          {children}
+        </Wrapper>
+      ),
+    })
+
+    expect(spyConsoleError).toHaveBeenCalled()
+    spyConsoleError.mockRestore()
+  })
+
+  test("reloads the window on channel timeout", async () => {
+    const reloadSpy = jest.spyOn(browser, "reload")
+    reloadSpy.mockImplementationOnce(() => ({}))
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("timeout")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    renderHook(() => useNotificationsReducer(false, mockSetIsInitialLoad), {
+      wrapper: ({ children }) => (
+        <Wrapper socket={mockSocket} selectedRouteIds={[]}>
+          {children}
+        </Wrapper>
+      ),
+    })
+
+    expect(reloadSpy).toHaveBeenCalled()
+    reloadSpy.mockRestore()
+  })
+
+  test("doesn't rejoin channel on every render", () => {
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: [],
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      () => useNotificationsReducer(false, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+            {children}
+          </Wrapper>
+        ),
+      }
+    )
+    rerender()
+
+    expect(mockChannel.join).toHaveBeenCalledTimes(1)
+  })
+
+  test("doesn't rejoin channel when route IDs don't change", () => {
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: [],
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      () => useNotificationsReducer(false, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+            {children}
+          </Wrapper>
+        ),
+      }
+    )
+    rerender({ socket: mockSocket, selectedRouteIds: ["route"] })
+
+    expect(mockChannel.join).toHaveBeenCalledTimes(1)
+  })
+
+  test("rejoins channel if selected routes change", () => {
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: [],
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      () => useNotificationsReducer(false, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route1"]}>
+            {children}
+          </Wrapper>
+        ),
+      }
+    )
+    rerender({ socket: mockSocket, selectedRouteIds: ["route1", "route2"] })
+
+    expect(mockChannel.join).toHaveBeenCalledTimes(2)
+  })
 })
+
+const Wrapper = ({
+  children,
+  socket,
+  selectedRouteIds,
+}: {
+  children?: ReactNode
+  socket: Socket | undefined
+  selectedRouteIds: RouteId[]
+}) => (
+  <SocketProvider
+    socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
+  >
+    <StateDispatchProvider
+      state={{
+        ...initialState,
+        routeTabs: [routeTabFactory.build({ selectedRouteIds })],
+      }}
+      dispatch={jest.fn()}
+    >
+      <> {children} </>
+    </StateDispatchProvider>
+  </SocketProvider>
+)
