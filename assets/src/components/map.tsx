@@ -27,7 +27,7 @@ import {
 } from "react-leaflet"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import FullscreenControl from "react-leaflet-fullscreen"
+import { FullscreenControl } from "react-leaflet-fullscreen"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"

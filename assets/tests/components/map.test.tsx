@@ -14,14 +14,6 @@ import { Shape } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 
-jest.unmock("leaflet")
-jest.unmock("react-leaflet-control")
-
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => false),
-}))
-
 window.scrollTo = jest.fn()
 
 const vehicle: Vehicle = vehicleFactory.build({
