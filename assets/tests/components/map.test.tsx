@@ -22,6 +22,8 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   default: jest.fn(() => false),
 }))
 
+window.scrollTo = jest.fn()
+
 const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
   label: "1818",

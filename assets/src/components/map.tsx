@@ -27,7 +27,7 @@ import {
 } from "react-leaflet"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { FullscreenControl } from "react-leaflet-fullscreen"
+import FullscreenControl from "react-leaflet-fullscreen"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -40,7 +40,6 @@ import { equalByElements } from "../helpers/array"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 
-/* eslint no-console: 0 */ // --> OFF
 export interface Props {
   vehicles: Vehicle[]
   shapes?: Shape[]
@@ -270,7 +269,6 @@ class RecenterControl extends Control {
     img.onclick = (e) => {
       e.stopPropagation()
       e.preventDefault()
-      console.log("CLICKED")
       this.recenter()
     }
     img.innerHTML = `
@@ -312,7 +310,6 @@ const EventAdder = ({
       }
     },
     moveend: () => {
-      console.log("moveend")
       // Wait until the auto centering is finished to start listening for manual moves again.
       if (isAutoCentering.current) {
         isAutoCentering.current = false
@@ -382,7 +379,6 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       <MapContainer
         className="m-vehicle-map"
         id="id-vehicle-map"
-        ref={mapRef}
         maxBounds={[
           [41.2, -72],
           [43, -69.8],
@@ -390,6 +386,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         zoomControl={false}
         center={defaultCenter}
         zoom={13}
+        // workaround for ref unsupported in react-leaflet v3.
+        // can be replaced with directly passing ref in v4.
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance
+        }}
       >
         <EventAdder
           isAutoCentering={isAutoCentering}
