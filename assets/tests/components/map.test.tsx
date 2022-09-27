@@ -271,7 +271,7 @@ describe("auto centering", () => {
     expect(getCenter(mapRef)).toEqual(manualLatLng)
 
     // Click the recenter button
-    await userEvent.click(result.getByTitle("Recenter map"))
+    await userEvent.click(result.getByTitle("Recenter Map"))
     await animationFramePromise()
     expect(result.container.firstChild).toHaveClass(
       "m-vehicle-map-state--auto-centering"

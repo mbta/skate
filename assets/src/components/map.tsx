@@ -260,18 +260,22 @@ class RecenterControl extends Control {
   }
 
   onAdd() {
-    const img = DomUtil.create(
-      "button",
-      "leaflet-bar m-vehicle-map__recenter-button"
+    const controlContainer = DomUtil.create(
+      "div",
+      "leaflet-control leaflet-bar m-vehicle-map__recenter-button"
     )
-    img.title = "Recenter map"
-    img.ariaLabel = "Recenter map"
-    img.onclick = (e) => {
+    controlContainer.onclick = (e) => {
       e.stopPropagation()
       e.preventDefault()
       this.recenter()
     }
-    img.innerHTML = `
+    controlContainer.innerHTML = `
+        <a
+          href="#"
+          title="Recenter Map"
+          role="button"
+          aria-label="Recenter Map"
+        >
           <svg
             height="26"
             viewBox="-5 -5 32 32"
@@ -282,8 +286,9 @@ class RecenterControl extends Control {
               d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
               transform="rotate(60, 12, 12)"
             />
-          </svg>`
-    return img
+          </svg>
+        </a>`
+    return controlContainer
   }
 }
 
