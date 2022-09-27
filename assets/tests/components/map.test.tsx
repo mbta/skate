@@ -2,7 +2,7 @@ import { render } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
-import { act } from "react-dom/test-utils"
+import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
 import Map, {
   autoCenter,
@@ -13,8 +13,6 @@ import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
-
-window.scrollTo = jest.fn()
 
 const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
@@ -255,6 +253,7 @@ describe("auto centering", () => {
   })
 
   test("recenter control turns on auto center", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const result = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
