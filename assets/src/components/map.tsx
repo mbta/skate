@@ -16,6 +16,7 @@ import React, {
   useState,
 } from "react"
 import {
+  AttributionControl,
   CircleMarker,
   MapContainer,
   Marker,
@@ -396,6 +397,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance
         }}
+        attributionControl={false}
       >
         <EventAdder
           isAutoCentering={isAutoCentering}
@@ -412,6 +414,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           position="topright"
           recenter={() => setShouldAutoCenter(true)}
         />
+        <AttributionControl position="bottomright" prefix={false} />
 
         <TileLayer
           url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
