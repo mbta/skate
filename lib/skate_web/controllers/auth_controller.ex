@@ -2,6 +2,7 @@ defmodule SkateWeb.AuthController do
   use SkateWeb, :controller
   plug(Ueberauth)
 
+  alias Skate.Settings.User
   alias SkateWeb.AuthManager
   alias SkateWeb.Router.Helpers
 
@@ -11,6 +12,8 @@ defmodule SkateWeb.AuthController do
     expiration = credentials.expires_at
 
     current_time = System.system_time(:second)
+
+    User.upsert(username)
 
     conn
     |> Guardian.Plug.sign_in(

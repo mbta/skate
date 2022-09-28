@@ -1,6 +1,5 @@
 defmodule SkateWeb.UserSettingsControllerTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
 
   alias Skate.Settings.UserSettings
 

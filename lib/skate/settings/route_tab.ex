@@ -51,7 +51,7 @@ defmodule Skate.Settings.RouteTab do
       Enum.filter(route_tabs, fn route_tab -> is_nil(route_tab.save_changes_to_tab_uuid) end)
 
     username
-    |> User.get_or_create()
+    |> User.get()
     |> Repo.preload(:route_tabs)
     |> DbUser.changeset(%{route_tabs: Enum.map(unmodified_route_tabs, &Map.from_struct/1)})
     |> Repo.update!()

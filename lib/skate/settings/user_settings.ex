@@ -30,7 +30,7 @@ defmodule Skate.Settings.UserSettings do
 
   @spec get_or_create(String.t()) :: t()
   def get_or_create(username) do
-    user = User.get_or_create(username)
+    user = User.get(username)
 
     user_settings =
       insert!(

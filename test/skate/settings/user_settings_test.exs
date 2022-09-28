@@ -3,20 +3,18 @@ defmodule Skate.Settings.UserSettingsTest do
 
   import Skate.Repo
 
+  alias Skate.Settings.User
   alias Skate.Settings.UserSettings
-  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
+  @username "username"
+
+  setup do
+    {:ok, %{user: User.upsert(@username)}}
+  end
+
   describe "get_or_create" do
-    test "gets settings for an existing user" do
-      username = "username"
-
-      user =
-        insert!(
-          DbUser.changeset(%DbUser{}, %{username: username}),
-          returning: true
-        )
-
+    test "gets settings for an existing user", %{user: user} do
       insert!(
         DbUserSettings.changeset(%DbUserSettings{}, %{
           user_id: user.id,
@@ -27,7 +25,7 @@ defmodule Skate.Settings.UserSettingsTest do
         returning: true
       )
 
-      result = UserSettings.get_or_create(username)
+      result = UserSettings.get_or_create(@username)
 
       assert result == %UserSettings{
                ladder_page_vehicle_label: :vehicle_id,
@@ -37,8 +35,7 @@ defmodule Skate.Settings.UserSettingsTest do
     end
 
     test "for a new user, initializes and stores the default settings" do
-      username = "username"
-      result = UserSettings.get_or_create(username)
+      result = UserSettings.get_or_create(@username)
 
       assert result == %UserSettings{
                ladder_page_vehicle_label: :run_id,
@@ -48,7 +45,9 @@ defmodule Skate.Settings.UserSettingsTest do
 
       # created data for the new user
       assert [user_id] =
-               Repo.all(from(user in "users", where: user.username == ^username, select: user.id))
+               Repo.all(
+                 from(user in "users", where: user.username == ^@username, select: user.id)
+               )
 
       assert [^user_id] =
                Repo.all(
@@ -59,10 +58,9 @@ defmodule Skate.Settings.UserSettingsTest do
 
   describe "set" do
     test "can set a setting" do
-      username = "username"
-      UserSettings.get_or_create(username)
-      UserSettings.set(username, :ladder_page_vehicle_label, :vehicle_id)
-      result = UserSettings.get_or_create(username)
+      UserSettings.get_or_create(@username)
+      UserSettings.set(@username, :ladder_page_vehicle_label, :vehicle_id)
+      result = UserSettings.get_or_create(@username)
       assert result.ladder_page_vehicle_label == :vehicle_id
     end
   end

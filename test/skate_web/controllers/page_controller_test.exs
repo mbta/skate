@@ -1,6 +1,5 @@
 defmodule SkateWeb.PageControllerTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
   import Skate.Factory
   import Test.Support.Helpers
 
@@ -100,7 +99,7 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes UUID in HTML", %{conn: conn, user: user} do
-      user_struct = Skate.Settings.User.get_or_create(user)
+      user_struct = Skate.Settings.User.get(user)
 
       conn = get(conn, "/")
 

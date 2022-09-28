@@ -1,6 +1,5 @@
 defmodule SkateWeb.NotificationReadStatesControllerTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
   import Skate.Factory
   alias Notifications.Notification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
@@ -22,11 +21,11 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
       conn: conn,
       user: username
     } do
-      user = User.get_or_create(username)
+      user = User.get(username)
       route_tab1 = build_test_tab()
       RouteTab.update_all_for_user!(username, [route_tab1])
 
-      User.get_or_create("otheruser")
+      User.upsert("otheruser")
       route_tab2 = build_test_tab()
       RouteTab.update_all_for_user!("otheruser", [route_tab2])
 

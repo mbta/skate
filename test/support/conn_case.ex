@@ -15,6 +15,7 @@ defmodule SkateWeb.ConnCase do
 
   use ExUnit.CaseTemplate
   import Plug.Test
+  alias Skate.Settings.User
 
   using do
     quote do
@@ -29,10 +30,18 @@ defmodule SkateWeb.ConnCase do
   end
 
   setup tags do
+    alias Ecto.Adapters.SQL.Sandbox
+    :ok = Sandbox.checkout(Skate.Repo)
+
+    unless tags[:async] do
+      Sandbox.mode(Skate.Repo, {:shared, self()})
+    end
+
     {conn, user} =
       cond do
         tags[:authenticated] ->
           user = "test_user"
+          User.upsert(user)
 
           conn =
             Phoenix.ConnTest.build_conn()
@@ -43,6 +52,7 @@ defmodule SkateWeb.ConnCase do
 
         tags[:authenticated_admin] ->
           user = "test_user"
+          User.upsert(user)
 
           conn =
             Phoenix.ConnTest.build_conn()
@@ -53,6 +63,7 @@ defmodule SkateWeb.ConnCase do
 
         tags[:authenticated_dispatcher] ->
           user = "test_user"
+          User.upsert(user)
 
           conn =
             Phoenix.ConnTest.build_conn()

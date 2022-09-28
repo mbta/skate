@@ -3,7 +3,11 @@ defmodule Skate.Settings.User do
 
   import Ecto.Query
 
-  def get_or_create(username) do
+  def get(username) do
+    Skate.Repo.get_by!(DbUser, username: username)
+  end
+
+  def upsert(username) do
     user =
       Skate.Repo.insert!(
         DbUser.changeset(%DbUser{}, %{username: username}),
