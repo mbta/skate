@@ -7,7 +7,7 @@ defmodule Report.UserNamesAndUuidsTest do
     test "returns database contents" do
       username = "username"
 
-      user = User.upsert(username)
+      user = User.upsert(username, "user@test.com")
 
       {:ok, result} = Report.UserNamesAndUuids.run()
 

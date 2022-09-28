@@ -32,6 +32,8 @@ defmodule SkateWeb.ConnCase do
   setup tags do
     alias Ecto.Adapters.SQL.Sandbox
     :ok = Sandbox.checkout(Skate.Repo)
+    username = "test_user"
+    email = "test_user@test.com"
 
     unless tags[:async] do
       Sandbox.mode(Skate.Repo, {:shared, self()})
@@ -40,39 +42,38 @@ defmodule SkateWeb.ConnCase do
     {conn, user} =
       cond do
         tags[:authenticated] ->
-          user = "test_user"
-          User.upsert(user)
+          User.upsert(username, email)
 
           conn =
             Phoenix.ConnTest.build_conn()
             |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user, %{})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, username, %{})
 
-          {conn, user}
+          {conn, username}
 
         tags[:authenticated_admin] ->
-          user = "test_user"
-          User.upsert(user)
+          User.upsert(username, email)
 
           conn =
             Phoenix.ConnTest.build_conn()
             |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user, %{"groups" => ["skate-admin"]})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, username, %{
+              "groups" => ["skate-admin"]
+            })
 
-          {conn, user}
+          {conn, username}
 
         tags[:authenticated_dispatcher] ->
-          user = "test_user"
-          User.upsert(user)
+          User.upsert(username, email)
 
           conn =
             Phoenix.ConnTest.build_conn()
             |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user, %{
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, username, %{
               "groups" => ["skate-dispatcher"]
             })
 
-          {conn, user}
+          {conn, username}
 
         true ->
           {Phoenix.ConnTest.build_conn(), nil}

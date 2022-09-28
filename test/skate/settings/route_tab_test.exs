@@ -18,8 +18,8 @@ defmodule Skate.Settings.RouteTabTest do
       route_tab1 = build_test_tab()
       route_tab2 = build_test_tab()
 
-      User.upsert("user1")
-      User.upsert("user2")
+      User.upsert("user1", "user1@test.com")
+      User.upsert("user2", "user2@test.com")
 
       RouteTab.update_all_for_user!("user1", [route_tab1])
       RouteTab.update_all_for_user!("user2", [route_tab2])
@@ -37,7 +37,7 @@ defmodule Skate.Settings.RouteTabTest do
 
   describe "update_all_for_user!/2" do
     setup do
-      User.upsert("charlie")
+      User.upsert("charlie", "charlie@test.com")
       :ok
     end
 

@@ -8,12 +8,13 @@ defmodule SkateWeb.AuthController do
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     username = auth.uid
+    email = auth.info.email
     credentials = auth.credentials
     expiration = credentials.expires_at
 
     current_time = System.system_time(:second)
 
-    User.upsert(username)
+    User.upsert(username, email)
 
     conn
     |> Guardian.Plug.sign_in(

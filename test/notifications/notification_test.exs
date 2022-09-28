@@ -14,9 +14,9 @@ defmodule Notifications.NotificationTest do
 
   describe "get_or_create_from_block_waiver/1" do
     test "associates a new notification with users subscribed to an affected route" do
-      user1 = User.upsert("user1")
-      user2 = User.upsert("user2")
-      User.upsert("user3")
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      User.upsert("user3", "user3@test.com")
 
       route_tab1 =
         build(:route_tab, %{
@@ -70,8 +70,8 @@ defmodule Notifications.NotificationTest do
 
   describe "unexpired_notifications_for_user/2" do
     test "returns all unexpired notifications for the given user, in chronological order by creation timestamp" do
-      User.upsert("user1")
-      User.upsert("user2")
+      User.upsert("user1", "user1@test.com")
+      User.upsert("user2", "user2@test.com")
       baseline_time = 1_000_000_000
       now_fn = fn -> baseline_time end
       naive_now_fn = fn -> baseline_time |> DateTime.from_unix!() |> DateTime.to_naive() end

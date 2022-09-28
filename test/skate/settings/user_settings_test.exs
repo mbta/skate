@@ -8,9 +8,10 @@ defmodule Skate.Settings.UserSettingsTest do
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
   @username "username"
+  @email "user@test.com"
 
   setup do
-    {:ok, %{user: User.upsert(@username)}}
+    {:ok, %{user: User.upsert(@username, @email)}}
   end
 
   describe "get_or_create" do

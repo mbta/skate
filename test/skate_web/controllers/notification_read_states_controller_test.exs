@@ -25,7 +25,7 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
       route_tab1 = build_test_tab()
       RouteTab.update_all_for_user!(username, [route_tab1])
 
-      User.upsert("otheruser")
+      User.upsert("otheruser", "other@email.com")
       route_tab2 = build_test_tab()
       RouteTab.update_all_for_user!("otheruser", [route_tab2])
 

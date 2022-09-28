@@ -3,15 +3,15 @@ defmodule Skate.Settings.UserTest do
 
   alias Skate.Settings.User
   alias Skate.Settings.Db.User, as: DbUser
+  @username "username"
+  @email "user@test.com"
 
   describe "get/1" do
-    test "gets user by email" do
-      username = "username"
-
-      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: username}))
+    test "gets user by username" do
+      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
       Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: "otheruser"}))
 
-      assert %DbUser{username: ^username} = User.get(username)
+      assert %DbUser{username: @username} = User.get(@username)
     end
 
     test "raises if user not found" do
@@ -21,23 +21,45 @@ defmodule Skate.Settings.UserTest do
 
   describe "upsert/1" do
     test "assigns a UUID if none is present" do
-      username = "username"
+      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
 
-      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: username}))
-
-      user = User.upsert(username)
+      user = User.upsert(@username, @email)
 
       refute is_nil(user.uuid)
     end
 
     test "keeps old UUID if present" do
-      username = "username"
+      user = User.upsert(@username, @email)
 
-      user = User.upsert(username)
-
-      new_user = User.upsert(username)
+      new_user = User.upsert(@username, @email)
 
       assert user.uuid == new_user.uuid
+    end
+
+    test "assigns email address to existing user record" do
+      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
+
+      user = User.upsert(@username, @email)
+      assert length(Skate.Repo.all(DbUser)) == 1
+      assert user.email == @email
+    end
+
+    test "if email address is associated with existing user with same username, no new record is inserted" do
+      User.upsert(@username, @email)
+
+      User.upsert(@username, @email)
+
+      assert length(Skate.Repo.all(DbUser)) == 1
+    end
+
+    test "if email address is associated with existing user that has different username, creates new user without email" do
+      originalUser = User.upsert(@username, @email)
+
+      newUser = User.upsert("newusername", @email)
+
+      assert %{username: @username, email: @email} = originalUser
+      assert %{username: "newusername", email: nil} = newUser
+      refute is_nil(newUser.uuid)
     end
   end
 end

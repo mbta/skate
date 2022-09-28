@@ -266,7 +266,7 @@ defmodule Notifications.NotificationServerTest do
           selected_route_ids: ["39"]
         })
 
-      User.upsert("fake_uid")
+      User.upsert("fake_uid", "fakeemail@test.com")
       RouteTab.update_all_for_user!("fake_uid", [route_tab1])
       :ok
     end
@@ -341,7 +341,7 @@ defmodule Notifications.NotificationServerTest do
           selected_route_ids: ["1", "83", "77"]
         })
 
-      User.upsert("fake_uid")
+      User.upsert("fake_uid", "fakeemail@test.com")
       RouteTab.update_all_for_user!("fake_uid", [route_tab1])
 
       set_log_level(:info)
@@ -433,7 +433,7 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        User.upsert(uid)
+        User.upsert(uid, "#{uid}@test.com")
         RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
@@ -474,7 +474,7 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        User.upsert(uid)
+        User.upsert(uid, "#{uid}@test.com")
         RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
@@ -520,7 +520,7 @@ defmodule Notifications.NotificationServerTest do
           selected_route_ids: ["1", "83", "77"]
         })
 
-      User.upsert("fake_uid")
+      User.upsert("fake_uid", "fake_uid@test.com")
       RouteTab.update_all_for_user!("fake_uid", [route_tab1])
 
       set_log_level(:info)
@@ -564,7 +564,7 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        User.upsert(uid)
+        User.upsert(uid, "#{uid}@test.com")
         RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
