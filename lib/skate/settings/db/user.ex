@@ -12,6 +12,7 @@ defmodule Skate.Settings.Db.User do
   schema "users" do
     field(:username, :string)
     field(:uuid, :binary_id)
+    field(:email, :string)
     has_one(:user_settings, DbUserSettings)
     timestamps()
 
@@ -24,7 +25,8 @@ defmodule Skate.Settings.Db.User do
     user
     |> cast(attrs, [
       :id,
-      :username
+      :username,
+      :email
     ])
     |> cast_assoc(:route_tabs, with: &DbRouteTab.changeset/2)
     |> validate_required([
