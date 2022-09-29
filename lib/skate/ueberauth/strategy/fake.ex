@@ -34,7 +34,7 @@ defmodule Skate.Ueberauth.Strategy.Fake do
 
   @impl Ueberauth.Strategy
   def info(_conn) do
-    %Ueberauth.Auth.Info{}
+    %Ueberauth.Auth.Info{email: "fake@email.com"}
   end
 
   @impl Ueberauth.Strategy

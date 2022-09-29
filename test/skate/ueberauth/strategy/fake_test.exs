@@ -16,7 +16,7 @@ defmodule Skate.Ueberauth.Strategy.FakeTest do
   end
 
   test "info returns an empty Info struct" do
-    assert Fake.info(%{}) == %Info{}
+    assert Fake.info(%{}) == %Info{email: "fake@email.com"}
   end
 
   test "extra returns an Extra struct with empty raw_info" do
