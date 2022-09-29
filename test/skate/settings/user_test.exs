@@ -19,7 +19,7 @@ defmodule Skate.Settings.UserTest do
     end
   end
 
-  describe "get_by/1" do
+  describe "get_by_email/1" do
     test "returns nil if no match" do
       assert nil == User.get_by_email("missingemail@test.com")
     end
@@ -81,13 +81,13 @@ defmodule Skate.Settings.UserTest do
     end
 
     test "if email address is associated with existing user that has different username, creates new user without email" do
-      originalUser = User.upsert(@username, @email)
+      original_user = User.upsert(@username, @email)
 
-      newUser = User.upsert("newusername", @email)
+      new_user = User.upsert("newusername", @email)
 
-      assert %{username: @username, email: @email} = originalUser
-      assert %{username: "newusername", email: nil} = newUser
-      refute is_nil(newUser.uuid)
+      assert %{username: @username, email: @email} = original_user
+      assert %{username: "newusername", email: nil} = new_user
+      refute is_nil(new_user.uuid)
     end
   end
 end
