@@ -17,16 +17,20 @@ defmodule Skate.Settings.User do
   Get a user with the matching email, if one exists
   """
   def get_by_email(email) do
-    Skate.Repo.get_by(DbUser, email: email)
+    Skate.Repo.get_by(DbUser, email: String.downcase(email))
   end
 
   @spec upsert(username :: String.t(), email :: String.t()) :: DbUser.t()
+  @doc """
+  Update the user with the given username if one exists, otherwise insert a new one.
+  """
   def upsert(username, email) do
-    userMatchingEmail = get_by_email(email)
+    email = String.downcase(email)
+    user_matching_email = get_by_email(email)
 
     user =
       cond do
-        is_nil(userMatchingEmail) ->
+        is_nil(user_matching_email) ->
           Skate.Repo.insert!(
             DbUser.changeset(%DbUser{}, %{
               username: username,
@@ -38,12 +42,12 @@ defmodule Skate.Settings.User do
           )
 
         # existing user has same username - no update needed
-        userMatchingEmail.username == username ->
-          userMatchingEmail
+        user_matching_email.username == username ->
+          user_matching_email
 
         # username format has changed. Create a new record for this user without an associated email
         # This record will be used only temporarily until user settings are universally fetched by email.
-        userMatchingEmail.username != username ->
+        user_matching_email.username != username ->
           Skate.Repo.insert!(
             DbUser.changeset(%DbUser{}, %{
               username: username

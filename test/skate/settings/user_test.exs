@@ -19,6 +19,26 @@ defmodule Skate.Settings.UserTest do
     end
   end
 
+  describe "get_by/1" do
+    test "returns nil if no match" do
+      assert nil == User.get_by_email("missingemail@test.com")
+    end
+
+    test "returns exact matching email" do
+      username = "user1"
+      email = "user1@test.com"
+      User.upsert(username, email)
+      assert %{username: ^username, email: ^email} = User.get_by_email(email)
+    end
+
+    test "matches ignoring case" do
+      username = "user1"
+      email = "user1@test.com"
+      User.upsert(username, email)
+      assert %{username: ^username, email: ^email} = User.get_by_email(String.capitalize(email))
+    end
+  end
+
   describe "upsert/1" do
     test "assigns a UUID if none is present" do
       Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
@@ -40,6 +60,14 @@ defmodule Skate.Settings.UserTest do
       Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
 
       user = User.upsert(@username, @email)
+      assert length(Skate.Repo.all(DbUser)) == 1
+      assert user.email == @email
+    end
+
+    test "downcases email" do
+      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
+
+      user = User.upsert(@username, String.capitalize(@email))
       assert length(Skate.Repo.all(DbUser)) == 1
       assert user.email == @email
     end
