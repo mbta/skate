@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.leaflet-right {
+  padding-right: env(safe-area-inset-right);
+}
+
 .leaflet-bar.leaflet-control-zoom .leaflet-disabled {
   background-color: $color-button-disabled;
   color: $color-font-grey;
