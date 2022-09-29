@@ -54,7 +54,8 @@ defmodule Skate.Settings.User do
             }),
             returning: true,
             conflict_target: [:username],
-            on_conflict: {:replace, [:email]}
+            # update a row with no effect so the returning works
+            on_conflict: {:replace, [:username]}
           )
       end
 
