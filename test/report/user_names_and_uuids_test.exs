@@ -14,7 +14,8 @@ defmodule Report.UserNamesAndUuidsTest do
       assert result == [
                %{
                  "username" => username,
-                 "uuid" => user.uuid
+                 "uuid" => user.uuid,
+                 "email" => user.email
                }
              ]
     end
