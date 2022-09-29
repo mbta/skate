@@ -9,9 +9,8 @@ defmodule Notifications.NotificationServerTest do
   alias Realtime.BlockWaiver
   alias Realtime.Ghost
   alias Realtime.Vehicle
-  alias Skate.Repo
-  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.RouteTab
+  alias Skate.Settings.User
 
   import Ecto.Query
   import ExUnit.CaptureLog, only: [capture_log: 2]
@@ -267,6 +266,7 @@ defmodule Notifications.NotificationServerTest do
           selected_route_ids: ["39"]
         })
 
+      User.upsert("fake_uid", "fakeemail@test.com")
       RouteTab.update_all_for_user!("fake_uid", [route_tab1])
       :ok
     end
@@ -335,14 +335,13 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "doesn't send notifications to a user not looking at the route in question" do
-      Repo.delete_all(from(DbUser))
-
       route_tab1 =
         build(:route_tab, %{
           preset_name: "some routes",
           selected_route_ids: ["1", "83", "77"]
         })
 
+      User.upsert("fake_uid", "fakeemail@test.com")
       RouteTab.update_all_for_user!("fake_uid", [route_tab1])
 
       set_log_level(:info)
@@ -422,8 +421,6 @@ defmodule Notifications.NotificationServerTest do
     test "broadcasts, saves to the DB, and logs new notifications for users looking at routes affected by the Chelsea drawbridge when bridge is lowered" do
       {:ok, server} = setup_server()
 
-      Repo.delete_all(from(DbUser))
-
       set_log_level(:info)
 
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
@@ -436,6 +433,7 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
+        User.upsert(uid, "#{uid}@test.com")
         RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
@@ -464,8 +462,6 @@ defmodule Notifications.NotificationServerTest do
     test "broadcasts, saves to the DB, and logs new notifications for users looking at routes affected by the Chelsea drawbridge when bridge is raised" do
       {:ok, server} = setup_server()
 
-      Repo.delete_all(from(DbUser))
-
       set_log_level(:info)
 
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
@@ -478,6 +474,7 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
+        User.upsert(uid, "#{uid}@test.com")
         RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
@@ -517,14 +514,13 @@ defmodule Notifications.NotificationServerTest do
     test "doesn't send notifications to a user not looking at the Chelsea bridge routes" do
       {:ok, server} = setup_server()
 
-      Repo.delete_all(from(DbUser))
-
       route_tab1 =
         build(:route_tab, %{
           preset_name: "some routes",
           selected_route_ids: ["1", "83", "77"]
         })
 
+      User.upsert("fake_uid", "fake_uid@test.com")
       RouteTab.update_all_for_user!("fake_uid", [route_tab1])
 
       set_log_level(:info)
@@ -556,8 +552,6 @@ defmodule Notifications.NotificationServerTest do
     test "doesn't log or save a notification within a blackout period after one was created, but does broadcast" do
       {:ok, server} = setup_server()
 
-      Repo.delete_all(from(DbUser))
-
       set_log_level(:info)
 
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
@@ -570,6 +564,7 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
+        User.upsert(uid, "#{uid}@test.com")
         RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 

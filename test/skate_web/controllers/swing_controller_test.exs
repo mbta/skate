@@ -1,6 +1,5 @@
 defmodule SkateWeb.SwingsControllerTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
   import Test.Support.Helpers
 
   alias Schedule.Swing

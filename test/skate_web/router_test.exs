@@ -1,6 +1,5 @@
 defmodule SkateWeb.RouterTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
 
   describe "GET /" do
     @tag :authenticated

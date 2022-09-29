@@ -2,15 +2,19 @@ defmodule SkateWeb.AuthController do
   use SkateWeb, :controller
   plug(Ueberauth)
 
+  alias Skate.Settings.User
   alias SkateWeb.AuthManager
   alias SkateWeb.Router.Helpers
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     username = auth.uid
+    email = auth.info.email
     credentials = auth.credentials
     expiration = credentials.expires_at
 
     current_time = System.system_time(:second)
+
+    User.upsert(username, email)
 
     conn
     |> Guardian.Plug.sign_in(

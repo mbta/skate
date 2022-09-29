@@ -12,7 +12,7 @@ defmodule SkateWeb.PageController do
     username = AuthManager.Plug.current_resource(conn)
     _ = Logger.info("uid=#{username}")
 
-    user = User.get_or_create(username)
+    user = User.get(username)
     user_settings = UserSettings.get_or_create(username)
     route_tabs = RouteTab.get_all_for_user(username)
 

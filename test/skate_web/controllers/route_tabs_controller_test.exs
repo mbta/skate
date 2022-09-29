@@ -1,6 +1,5 @@
 defmodule SkateWeb.RouteTabsControllerTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
 
   alias Skate.Settings.RouteTab
 

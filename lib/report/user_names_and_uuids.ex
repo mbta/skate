@@ -15,7 +15,8 @@ defmodule Report.UserNamesAndUuids do
      from(u in DbUser,
        select: %{
          "username" => u.username,
-         "uuid" => u.uuid
+         "uuid" => u.uuid,
+         "email" => u.email
        }
      )
      |> Skate.Repo.all()}
