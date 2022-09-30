@@ -1,4 +1,11 @@
-import Leaflet, { LatLng, LatLngExpression, Map as LeafletMap } from "leaflet"
+import Leaflet, {
+  Control,
+  ControlOptions,
+  DomUtil,
+  LatLng,
+  LatLngExpression,
+  Map as LeafletMap,
+} from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -9,19 +16,19 @@ import React, {
   useState,
 } from "react"
 import {
+  AttributionControl,
   CircleMarker,
-  Map as ReactLeafletMap,
+  MapContainer,
   Marker,
   Polyline,
   TileLayer,
+  useMap,
+  useMapEvents,
   ZoomControl,
 } from "react-leaflet"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import Control from "react-leaflet-control"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import FullscreenControl from "react-leaflet-fullscreen"
+import { FullscreenControl } from "react-leaflet-fullscreen"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -32,6 +39,7 @@ import { selectVehicle } from "../state"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import appData from "../appData"
+import { createControlComponent } from "@react-leaflet/core"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -40,7 +48,11 @@ export interface Props {
   secondaryVehicles?: Vehicle[]
   // trainVehicles are white, don't get a label, and don't affect autocentering
   trainVehicles?: TrainVehicle[]
-  reactLeafletRef?: MutableRefObject<ReactLeafletMap | null>
+  reactLeafletRef?: MutableRefObject<LeafletMap | null>
+}
+
+interface RecenterControlProps extends ControlOptions {
+  recenter: () => void
 }
 
 export const defaultCenter: LatLngExpression = {
@@ -141,13 +153,17 @@ const LeafletVehicle = ({
       <Marker
         position={position}
         icon={vehicleIcon}
-        onClick={select}
+        eventHandlers={{
+          click: select,
+        }}
         zIndexOffset={zIndexOffset}
       />
       <Marker
         position={position}
         icon={labelIcon}
-        onClick={select}
+        eventHandlers={{
+          click: select,
+        }}
         zIndexOffset={zIndexOffset}
       />
     </>
@@ -237,51 +253,91 @@ export const autoCenter = (
   }
 }
 
-const RecenterControl = ({
-  turnOnAutoCenter,
-}: {
-  turnOnAutoCenter: () => void
-}) => (
-  <Control position="topright">
-    <div className="leaflet-bar m-vehicle-map__recenter-button">
-      {/* eslint-disable jsx-a11y/anchor-is-valid */}
-      <a
-        href="#"
-        title="Recenter map"
-        role="button"
-        aria-label="Recenter map"
-        onClick={(e) => {
-          e.stopPropagation()
-          e.preventDefault()
-          turnOnAutoCenter()
-        }}
-      >
-        <svg
-          height="26"
-          viewBox="-5 -5 32 32"
-          width="26"
-          xmlns="http://www.w3.org/2000/svg"
+class RecenterControl extends Control {
+  private recenter: () => void
+  constructor(props: ControlOptions, recenter: () => void) {
+    super(props)
+    this.recenter = recenter
+  }
+
+  onAdd() {
+    const controlContainer = DomUtil.create(
+      "div",
+      "leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+    )
+    controlContainer.onclick = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      this.recenter()
+    }
+    controlContainer.innerHTML = `
+        <a
+          href="#"
+          title="Recenter Map"
+          role="button"
+          aria-label="Recenter Map"
         >
-          <path
-            d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-            transform="rotate(60, 12, 12)"
-          />
-        </svg>
-      </a>
-      {/* eslint-enable jsx-a11y/anchor-is-valid */}
-    </div>
-  </Control>
+          <svg
+            height="26"
+            viewBox="-5 -5 32 32"
+            width="26"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+              transform="rotate(60, 12, 12)"
+            />
+          </svg>
+        </a>`
+    return controlContainer
+  }
+}
+
+export const RecenterControlButton = createControlComponent(
+  ({ position: position, recenter: recenterFn }: RecenterControlProps) =>
+    new RecenterControl({ position: position }, recenterFn)
 )
 
-const useAutoCenter = (
-  reactLeafletMapRef: MutableRefObject<ReactLeafletMap | null>,
-  shouldAutoCenter: boolean,
-  isAutoCentering: MutableRefObject<boolean>,
+const tilesetUrl = (): string => appData()?.tilesetUrl || ""
+
+const EventAdder = ({
+  isAutoCentering,
+  setShouldAutoCenter,
+}: {
+  isAutoCentering: MutableRefObject<boolean>
+  setShouldAutoCenter: (arg0: boolean) => void
+}): ReactElement => {
+  useMapEvents({
+    movestart: () => {
+      // If the user drags or zooms, they want manual control of the map.
+      // But don't disable shouldAutoCenter if the move was triggered by an auto center.
+      if (!isAutoCentering.current) {
+        setShouldAutoCenter(false)
+      }
+    },
+    moveend: () => {
+      // Wait until the auto centering is finished to start listening for manual moves again.
+      if (isAutoCentering.current) {
+        isAutoCentering.current = false
+      }
+    },
+  })
+  return <></>
+}
+
+const Autocenterer = ({
+  latLngs,
+  shouldAutoCenter,
+  isAutoCentering,
+}: {
+  shouldAutoCenter: boolean
+  isAutoCentering: MutableRefObject<boolean>
   latLngs: LatLng[]
-) => {
-  const [appState] = useContext(StateDispatchContext)
+}) => {
+  const map = useMap()
+
+  const [{ pickerContainerIsVisible }] = useContext(StateDispatchContext)
   const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(latLngs)
-  const pickerContainerIsVisible: boolean = appState.pickerContainerIsVisible
 
   if (
     !equalByElements(latLngs, currentLatLngs, (latLng1, latLng2) =>
@@ -292,25 +348,23 @@ const useAutoCenter = (
   }
 
   useEffect(() => {
-    const reactLeafletMap: ReactLeafletMap | null = reactLeafletMapRef.current
-    if (reactLeafletMap !== null && shouldAutoCenter) {
-      const leafletMap: LeafletMap = reactLeafletMap.leafletElement
+    if (map !== null && shouldAutoCenter) {
       isAutoCentering.current = true
-      autoCenter(leafletMap, currentLatLngs, pickerContainerIsVisible)
+      autoCenter(map, currentLatLngs, pickerContainerIsVisible)
     }
   }, [
+    map,
     shouldAutoCenter,
     isAutoCentering,
-    reactLeafletMapRef,
     currentLatLngs,
     pickerContainerIsVisible,
   ])
+
+  return <></>
 }
 
-const tilesetUrl = (): string => appData()?.tilesetUrl || ""
-
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const mapRef: MutableRefObject<ReactLeafletMap | null> =
+  const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
@@ -320,7 +374,6 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
     Leaflet.latLng(latitude, longitude)
   )
-  useAutoCenter(mapRef, shouldAutoCenter, isAutoCentering, latLngs)
 
   const autoCenteringClass = shouldAutoCenter
     ? "m-vehicle-map-state--auto-centering"
@@ -329,10 +382,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   return (
     <>
       <div className={`m-vehicle-map-state ${autoCenteringClass}`} />
-      <ReactLeafletMap
+      <MapContainer
         className="m-vehicle-map"
         id="id-vehicle-map"
-        ref={mapRef}
         maxBounds={[
           [41.2, -72],
           [43, -69.8],
@@ -340,23 +392,30 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         zoomControl={false}
         center={defaultCenter}
         zoom={13}
-        onmovestart={() => {
-          // If the user drags or zooms, they want manual control of the map.
-          // But don't disable shouldAutoCenter if the move was triggered by an auto center.
-          if (!isAutoCentering.current) {
-            setShouldAutoCenter(false)
-          }
+        // workaround for ref unsupported in react-leaflet v3.
+        // can be replaced with directly passing ref in v4.
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance
         }}
-        onmoveend={() => {
-          // Wait until the auto centering is finished to start listening for manual moves again.
-          if (isAutoCentering.current) {
-            isAutoCentering.current = false
-          }
-        }}
+        attributionControl={false}
       >
+        <EventAdder
+          isAutoCentering={isAutoCentering}
+          setShouldAutoCenter={setShouldAutoCenter}
+        />
+        <Autocenterer
+          shouldAutoCenter={shouldAutoCenter}
+          isAutoCentering={isAutoCentering}
+          latLngs={latLngs}
+        />
         <ZoomControl position="topright" />
         <FullscreenControl position="topright" />
-        <RecenterControl turnOnAutoCenter={() => setShouldAutoCenter(true)} />
+        <RecenterControlButton
+          position="topright"
+          recenter={() => setShouldAutoCenter(true)}
+        />
+        <AttributionControl position="bottomright" prefix={false} />
+
         <TileLayer
           url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -380,7 +439,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.shapes || []).map((shape) => (
           <LeafletShape key={shape.id} shape={shape} />
         ))}
-      </ReactLeafletMap>
+      </MapContainer>
     </>
   )
 }

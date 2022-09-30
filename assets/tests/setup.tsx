@@ -2,11 +2,6 @@
 // @ts-nocheck
 import React from "react"
 
-jest.mock("react-leaflet-fullscreen", () => ({
-  __esModule: true,
-  default: jest.fn(() => null),
-}))
-
 jest.mock("@tippyjs/react", () => ({
   __esModule: true,
   default: jest.fn().mockImplementation((props) => (

@@ -2,8 +2,8 @@ import { render } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
-import { act } from "react-dom/test-utils"
-import { Map as ReactLeafletMap } from "react-leaflet"
+import { act } from "@testing-library/react"
+import { Map as LeafletMap } from "leaflet"
 import Map, {
   autoCenter,
   defaultCenter,
@@ -13,14 +13,6 @@ import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
-
-jest.unmock("leaflet")
-jest.unmock("react-leaflet-control")
-
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => false),
-}))
 
 const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
@@ -157,10 +149,8 @@ describe("autoCenter", () => {
 })
 
 const getCenter = (
-  reactLeafletMapRef: MutableRefObject<ReactLeafletMap | null>
-): LatLng | null =>
-  reactLeafletMapRef.current &&
-  reactLeafletMapRef.current.leafletElement.getCenter()
+  LeafletMapRef: MutableRefObject<LeafletMap | null>
+): LatLng | null => LeafletMapRef.current && LeafletMapRef.current.getCenter()
 
 const animationFramePromise = (): Promise<null> => {
   return new Promise((resolve) => {
@@ -170,14 +160,14 @@ const animationFramePromise = (): Promise<null> => {
 
 describe("auto centering", () => {
   test("auto centers on a vehicle", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     render(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual({ lat: 42, lng: -71 })
   })
 
   test("tracks a vehicle when it moves", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const oldLatLng = { lat: 42, lng: -71 }
     const oldVehicle = {
       ...vehicle,
@@ -200,7 +190,7 @@ describe("auto centering", () => {
   })
 
   test("manual moves disable auto centering", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const { rerender, container } = render(
       <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
     )
@@ -211,7 +201,7 @@ describe("auto centering", () => {
     const manualLatLng = { lat: 41.9, lng: -70.9 }
 
     act(() => {
-      mapRef.current!.leafletElement.panTo(manualLatLng)
+      mapRef.current!.panTo(manualLatLng)
     })
 
     await animationFramePromise()
@@ -230,7 +220,7 @@ describe("auto centering", () => {
   })
 
   test("auto recentering does not disable auto centering", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const latLng1 = { lat: 42, lng: -71 }
     const latLng2 = { lat: 42.1, lng: -71.1 }
     const latLng3 = { lat: 42.2, lng: -71.2 }
@@ -263,14 +253,15 @@ describe("auto centering", () => {
   })
 
   test("recenter control turns on auto center", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const result = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
 
     // Manual move to turn off auto centering
     const manualLatLng = { lat: 41.9, lng: -70.9 }
     act(() => {
-      mapRef.current!.leafletElement.panTo(manualLatLng)
+      mapRef.current!.panTo(manualLatLng)
     })
     await animationFramePromise()
     expect(result.container.firstChild).not.toHaveClass(
@@ -279,7 +270,7 @@ describe("auto centering", () => {
     expect(getCenter(mapRef)).toEqual(manualLatLng)
 
     // Click the recenter button
-    await userEvent.click(result.getByTitle("Recenter map"))
+    await userEvent.click(result.getByTitle("Recenter Map"))
     await animationFramePromise()
     expect(result.container.firstChild).toHaveClass(
       "m-vehicle-map-state--auto-centering"
