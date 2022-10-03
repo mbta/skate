@@ -13,7 +13,7 @@ import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-
+import useVehicleForId from "../../src/hooks/useVehicleForId"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -41,6 +41,27 @@ const ghost: Ghost = ghostFactory.build({
   blockWaivers: [],
 })
 jest.mock("../../src/hooks/useSearchResults", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+// Mocks needed for VPP
+jest.mock("../../src/hooks/useNearestIntersection", () => ({
+  __esModule: true,
+  useNearestIntersection: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useTripShape: jest.fn(() => []),
+}))
+
+jest.mock("../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useTripShape: jest.fn(() => []),
+}))
+
+jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
@@ -87,6 +108,23 @@ describe("SearchPage", () => {
     expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
   })
 
+  test("renders a selected vehicle", () => {
+    const selectedVehicleState: State = {
+      ...initialState,
+      selectedVehicleOrGhost: vehicle,
+    }
+    ;(useVehicleForId as jest.Mock).mockImplementation(() => vehicle)
+
+    const result = render(
+      <StateDispatchProvider state={selectedVehicleState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <SearchPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
+  })
+
   test("on mobile, allows you to toggle to the map view and back again", async () => {
     const result = render(
       <BrowserRouter>
@@ -105,27 +143,5 @@ describe("SearchPage", () => {
     )
 
     expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
-  })
-
-  test("renders a selected vehicle", () => {
-    const selectedVehicleState: State = {
-      ...initialState,
-      selectedVehicleOrGhost: vehicle,
-    }
-
-    const tree = renderer
-      .create(
-        <StateDispatchProvider
-          state={selectedVehicleState}
-          dispatch={jest.fn()}
-        >
-          <BrowserRouter>
-            <SearchPage />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
   })
 })

@@ -1,546 +1,929 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchPage renders a selected vehicle 1`] = `
-<div
-  className="c-page m-search-page m-search-page--show-list "
->
+<DocumentFragment>
   <div
-    className="m-search-page__input-and-results"
+    class="c-page m-search-page m-search-page--show-list "
   >
     <div
-      className="m-search-page__input"
+      class="m-search-page__input-and-results"
     >
-      <form
-        className="m-search-form"
-        onSubmit={[Function]}
+      <div
+        class="m-search-page__input"
       >
-        <div
-          className="m-search-form__row"
+        <form
+          class="m-search-form"
         >
           <div
-            className="m-search-form__text"
+            class="m-search-form__row"
           >
-            <input
-              className="m-search-form__input"
-              onChange={[Function]}
-              placeholder="Search"
-              type="text"
-              value=""
-            />
+            <div
+              class="m-search-form__text"
+            >
+              <input
+                class="m-search-form__input"
+                placeholder="Search"
+                type="text"
+                value=""
+              />
+              <button
+                class="m-search-form__clear"
+                title="Clear"
+                type="reset"
+              >
+                <span
+                  class=""
+                >
+                  SVG
+                </span>
+              </button>
+            </div>
             <button
-              className="m-search-form__clear"
-              onClick={[Function]}
-              title="Clear"
-              type="reset"
+              class="m-search-form__submit"
+              disabled=""
+              title="Submit"
+              type="submit"
             >
               <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
+                class=""
+              >
+                SVG
+              </span>
             </button>
           </div>
-          <button
-            className="m-search-form__submit"
-            disabled={true}
-            onClick={[Function]}
-            title="Submit"
-            type="submit"
+          <div
+            class="m-search-form__row"
           >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
+            <ul
+              class="m-search-form__property-buttons"
+            >
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  checked=""
+                  class="m-search-form__property-input"
+                  id="property-all"
+                  name="property"
+                  type="radio"
+                  value="all"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-all"
+                >
+                  all
+                </label>
+              </li>
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  class="m-search-form__property-input"
+                  id="property-run"
+                  name="property"
+                  type="radio"
+                  value="run"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-run"
+                >
+                  run
+                </label>
+              </li>
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  class="m-search-form__property-input"
+                  id="property-vehicle"
+                  name="property"
+                  type="radio"
+                  value="vehicle"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-vehicle"
+                >
+                  vehicle
+                </label>
+              </li>
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  class="m-search-form__property-input"
+                  id="property-operator"
+                  name="property"
+                  type="radio"
+                  value="operator"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-operator"
+                >
+                  operator
+                </label>
+              </li>
+            </ul>
+          </div>
+        </form>
+        <button
+          class="m-search-page__toggle-mobile-display-button"
+        >
+          Show map instead
+        </button>
+      </div>
+      <div
+        class="m-search-display"
+      >
+        <div
+          class="m-recent-searches"
+        >
+          <div
+            class="m-recent-searches__heading"
+          >
+            Recent Searches
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="m-search-page__map"
+    >
+      <div
+        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 18; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="/16/20061/24522.png"
+                  style="width: 256px; height: 256px; left: -77px; top: -215px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+              tabindex="0"
+            >
+              <svg
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                
+        
+                <path
+                  class="on-time early-red"
+                  d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                  transform="scale(1) rotate(33) translate(-12, -12)"
+                />
+                
+      
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+              tabindex="0"
+            >
+              <svg
+                height="16"
+                viewBox="0 0 40 16"
+                width="40"
+              >
+                
+            
+                <rect
+                  class="m-vehicle-icon__label-background"
+                  height="100%"
+                  rx="5.5px"
+                  ry="5.5px"
+                  width="100%"
+                />
+                
+            
+                <text
+                  class="m-vehicle-icon__label"
+                  dominant-baseline="central"
+                  text-anchor="middle"
+                  x="50%"
+                  y="50%"
+                >
+                  
+              1
+            
+                </text>
+                
+          
+              </svg>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
         </div>
         <div
-          className="m-search-form__row"
+          class="leaflet-control-container"
         >
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+            >
+              
+        
+              <a
+                aria-label="Recenter Map"
+                href="#"
+                role="button"
+                title="Recenter Map"
+              >
+                
+          
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  
+            
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                  
+          
+                </svg>
+                
+        
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="m-properties-panel"
+      id="m-properties-panel"
+    >
+      <div
+        class="m-vehicle-properties-panel"
+      >
+        <div
+          class="m-properties-panel__header-wrapper"
+        >
+          <div
+            class="m-view-header"
+          >
+            <div
+              class="m-view-header__title"
+            >
+              Vehicles
+            </div>
+            <button
+              class="m-close-button m-close-button--x-large m-close-button--light"
+              title="Close"
+            >
+              <span
+                class=""
+              >
+                SVG
+              </span>
+            </button>
+          </div>
+          <div
+            class="m-properties-panel__header"
+          >
+            <div
+              class="m-properties-panel__label"
+            >
+              <svg
+                style="width: 64px; height: 64px;"
+                viewBox="-32 -20 64 64"
+              >
+                <g
+                  class="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+                >
+                  <rect
+                    class="m-vehicle-icon__label-background"
+                    height="24"
+                    rx="12"
+                    ry="12"
+                    width="64"
+                    x="-32"
+                    y="19"
+                  />
+                  <text
+                    class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+                    dominant-baseline="central"
+                    text-anchor="middle"
+                    x="0"
+                    y="31"
+                  >
+                    1
+                  </text>
+                  <path
+                    class="m-vehicle-icon__triangle"
+                    d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                    data-testid="vehicle-triangle"
+                    transform="scale(1) rotate(0) translate(-24,-22)"
+                  />
+                  <text
+                    class="m-vehicle-icon__variant"
+                    dominant-baseline="alphabetic"
+                    text-anchor="middle"
+                    x="0"
+                    y="14"
+                  >
+                    X
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div
+              class="m-properties-panel__variant"
+            >
+              <div
+                class="m-properties-panel__inbound-outbound"
+              />
+              <div
+                class="m-route-variant-name"
+                data-testid="variant-name"
+              >
+                <span
+                  class="m-route-variant-name__route-id"
+                >
+                  39_X
+                </span>
+                 Forest Hills
+              </div>
+              <div
+                class="m-properties-panel__schedule-adherence on-time early-red"
+              >
+                <div
+                  class="m-properties-panel__schedule-adherence-status-icon"
+                >
+                  <svg
+                    height="10"
+                    width="10"
+                  >
+                    <circle
+                      cx="5"
+                      cy="5"
+                      r="5"
+                    />
+                  </svg>
+                </div>
+                <div
+                  class="m-properties-panel__schedule-adherence-status-string"
+                >
+                  on time
+                </div>
+                <div
+                  class="m-properties-panel__schedule-adherence-label"
+                >
+                  (0 min early)
+                </div>
+              </div>
+            </div>
+            <div
+              class="m-properties-panel__ping-container"
+            >
+              <div
+                class="m-properties-panel__last-gps-ping"
+              >
+                111s ago
+              </div>
+            </div>
+          </div>
           <ul
-            className="m-search-form__property-buttons"
+            class="m-tabs__tab-list"
+            role="tablist"
           >
             <li
-              className="m-search-form__property-button"
+              class="m-tabs__tab m-tabs__tab--selected"
             >
-              <input
-                checked={true}
-                className="m-search-form__property-input"
-                id="property-all"
-                name="property"
-                onChange={[Function]}
-                type="radio"
-                value="all"
-              />
-              <label
-                className="m-search-form__property-label"
-                htmlFor="property-all"
+              <button
+                aria-selected="true"
+                role="tab"
               >
-                all
-              </label>
+                <svg
+                  class="m-tabs__tab-status-icon"
+                  height="14"
+                  width="14"
+                >
+                  <circle
+                    class="m-tabs__tab-status-icon-outer-circle"
+                    cx="7"
+                    cy="7"
+                    r="6"
+                  />
+                  <circle
+                    class="m-tabs__tab-status-icon-inner-circle"
+                    cx="7"
+                    cy="7"
+                    r="4"
+                  />
+                </svg>
+                Status
+              </button>
             </li>
             <li
-              className="m-search-form__property-button"
+              class="m-tabs__tab"
             >
-              <input
-                checked={false}
-                className="m-search-form__property-input"
-                id="property-run"
-                name="property"
-                onChange={[Function]}
-                type="radio"
-                value="run"
-              />
-              <label
-                className="m-search-form__property-label"
-                htmlFor="property-run"
+              <button
+                aria-selected="false"
+                role="tab"
               >
-                run
-              </label>
+                <svg
+                  class="m-tabs__tab-status-icon"
+                  height="14"
+                  width="14"
+                >
+                  <circle
+                    class="m-tabs__tab-status-icon-outer-circle"
+                    cx="7"
+                    cy="7"
+                    r="6"
+                  />
+                  <circle
+                    class="m-tabs__tab-status-icon-inner-circle"
+                    cx="7"
+                    cy="7"
+                    r="4"
+                  />
+                </svg>
+                Run
+              </button>
             </li>
             <li
-              className="m-search-form__property-button"
+              class="m-tabs__tab"
             >
-              <input
-                checked={false}
-                className="m-search-form__property-input"
-                id="property-vehicle"
-                name="property"
-                onChange={[Function]}
-                type="radio"
-                value="vehicle"
-              />
-              <label
-                className="m-search-form__property-label"
-                htmlFor="property-vehicle"
+              <button
+                aria-selected="false"
+                role="tab"
               >
-                vehicle
-              </label>
-            </li>
-            <li
-              className="m-search-form__property-button"
-            >
-              <input
-                checked={false}
-                className="m-search-form__property-input"
-                id="property-operator"
-                name="property"
-                onChange={[Function]}
-                type="radio"
-                value="operator"
-              />
-              <label
-                className="m-search-form__property-label"
-                htmlFor="property-operator"
-              >
-                operator
-              </label>
+                <svg
+                  class="m-tabs__tab-status-icon"
+                  height="14"
+                  width="14"
+                >
+                  <circle
+                    class="m-tabs__tab-status-icon-outer-circle"
+                    cx="7"
+                    cy="7"
+                    r="6"
+                  />
+                  <circle
+                    class="m-tabs__tab-status-icon-inner-circle"
+                    cx="7"
+                    cy="7"
+                    r="4"
+                  />
+                </svg>
+                Block
+              </button>
             </li>
           </ul>
         </div>
-      </form>
-      <button
-        className="m-search-page__toggle-mobile-display-button"
-        onClick={[Function]}
-      >
-        Show 
-        map
-         instead
-      </button>
-    </div>
-    <div
-      className="m-search-display"
-    >
-      <div
-        className="m-recent-searches"
-      >
         <div
-          className="m-recent-searches__heading"
-        >
-          Recent Searches
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    className="m-search-page__map"
-  >
-    <div
-      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-    />
-    <div
-      className="m-vehicle-map"
-      id="id-vehicle-map"
-    />
-  </div>
-  <div
-    className="m-properties-panel"
-    id="m-properties-panel"
-  >
-    <div
-      className="m-vehicle-properties-panel"
-    >
-      <div
-        className="m-properties-panel__header-wrapper"
-      >
-        <div
-          className="m-view-header"
+          class="m-tabs__tab-panel"
         >
           <div
-            className="m-view-header__title"
+            class="m-properties-list"
           >
-            Vehicles
-          </div>
-          <button
-            className="m-close-button m-close-button--x-large m-close-button--light"
-            onClick={[Function]}
-            title="Close"
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
-        </div>
-        <div
-          className="m-properties-panel__header"
-        >
-          <div
-            className="m-properties-panel__label"
-          >
-            <svg
-              style={
-                Object {
-                  "height": 64,
-                  "width": 64,
-                }
-              }
-              viewBox="-32 -20 64 64"
+            <table
+              class="m-properties-list__table"
             >
-              <g
-                className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
-              >
-                <rect
-                  className="m-vehicle-icon__label-background"
-                  height={24}
-                  rx={12}
-                  ry={12}
-                  width={64}
-                  x={-32}
-                  y={19}
-                />
-                <text
-                  className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-                  dominantBaseline="central"
-                  textAnchor="middle"
-                  x="0"
-                  y={31}
+              <tbody>
+                <tr
+                  class="m-properties-list__property "
                 >
-                  1
-                </text>
-                <path
-                  className="m-vehicle-icon__triangle"
-                  d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                  data-testid="vehicle-triangle"
-                  transform="scale(1) rotate(0) translate(-24,-22)"
-                />
-                <text
-                  className="m-vehicle-icon__variant"
-                  dominantBaseline="alphabetic"
-                  textAnchor="middle"
-                  x={0}
-                  y={14}
+                  <td
+                    class="m-properties-list__property-label"
+                  >
+                    Run
+                  </td>
+                  <td
+                    class="m-properties-list__property-value"
+                  >
+                    run-1
+                  </td>
+                </tr>
+                <tr
+                  class="m-properties-list__property "
                 >
-                  X
-                </text>
-              </g>
-            </svg>
+                  <td
+                    class="m-properties-list__property-label"
+                  >
+                    Vehicle
+                  </td>
+                  <td
+                    class="m-properties-list__property-value"
+                  >
+                    v1-label
+                  </td>
+                </tr>
+                <tr
+                  class="m-properties-list__property m-properties-list__property--operator"
+                >
+                  <td
+                    class="m-properties-list__property-label"
+                  >
+                    Operator
+                  </td>
+                  <td
+                    class="m-properties-list__property-value"
+                  >
+                    WILL SMITH #op1
+                  </td>
+                </tr>
+                <tr
+                  class="m-properties-list__property m-properties-list__property--last-login"
+                >
+                  <td
+                    class="m-properties-list__property-label"
+                  >
+                    Last Login
+                  </td>
+                  <td
+                    class="m-properties-list__property-value"
+                  >
+                    4 hr 3 min; 1:38 PM
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div
-            className="m-properties-panel__variant"
+            class="m-vehicle-properties-panel__location"
           >
             <div
-              className="m-properties-panel__inbound-outbound"
-            >
-              
-            </div>
-            <div
-              className="m-route-variant-name"
-              data-testid="variant-name"
-            >
-              <span
-                className="m-route-variant-name__route-id"
-              >
-                39_X
-              </span>
-               Forest Hills
-            </div>
-            <div
-              className="m-properties-panel__schedule-adherence on-time early-red"
+              class="m-vehicle-properties-panel__latlng"
             >
               <div
-                className="m-properties-panel__schedule-adherence-status-icon"
+                class="m-vehicle-properties-panel__label"
               >
-                <svg
-                  height="10"
-                  width="10"
+                Current Location
+              </div>
+              <a
+                class="m-vehicle-properties-panel__link"
+                href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Directions
+              </a>
+            </div>
+            <div
+              class="m-vehicle-properties-panel__next-stop"
+            >
+              <div
+                class="m-vehicle-properties-panel__label"
+              >
+                Next Stop
+              </div>
+              <div
+                class="m-vehicle-properties-panel__value"
+              >
+                Stop Name
+              </div>
+            </div>
+            <div
+              class="m-vehicle-properties-panel__map"
+            >
+              <div
+                class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+              />
+              <div
+                class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+                id="id-vehicle-map"
+                style="position: relative;"
+                tabindex="0"
+              >
+                <div
+                  class="leaflet-pane leaflet-map-pane"
+                  style="left: 0px; top: 0px;"
                 >
-                  <circle
-                    cx="5"
-                    cy="5"
-                    r="5"
+                  <div
+                    class="leaflet-pane leaflet-tile-pane"
+                  >
+                    <div
+                      class="leaflet-layer "
+                      style="z-index: 1;"
+                    >
+                      <div
+                        class="leaflet-tile-container leaflet-zoom-animated"
+                        style="z-index: 18; left: 0px; top: 0px;"
+                      >
+                        <img
+                          alt=""
+                          class="leaflet-tile"
+                          src="/16/20061/24522.png"
+                          style="width: 256px; height: 256px; left: -77px; top: -215px;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="leaflet-pane leaflet-overlay-pane"
                   />
-                </svg>
+                  <div
+                    class="leaflet-pane leaflet-shadow-pane"
+                  />
+                  <div
+                    class="leaflet-pane leaflet-marker-pane"
+                  >
+                    <div
+                      class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+                      role="button"
+                      style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+                      tabindex="0"
+                    >
+                      <svg
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        
+        
+                        <path
+                          class="on-time early-red"
+                          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                          transform="scale(1) rotate(33) translate(-12, -12)"
+                        />
+                        
+      
+                      </svg>
+                    </div>
+                    <div
+                      class="leaflet-marker-icon m-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
+                      role="button"
+                      style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+                      tabindex="0"
+                    >
+                      <svg
+                        height="16"
+                        viewBox="0 0 40 16"
+                        width="40"
+                      >
+                        
+            
+                        <rect
+                          class="m-vehicle-icon__label-background"
+                          height="100%"
+                          rx="5.5px"
+                          ry="5.5px"
+                          width="100%"
+                        />
+                        
+            
+                        <text
+                          class="m-vehicle-icon__label"
+                          dominant-baseline="central"
+                          text-anchor="middle"
+                          x="50%"
+                          y="50%"
+                        >
+                          
+              1
+            
+                        </text>
+                        
+          
+                      </svg>
+                    </div>
+                  </div>
+                  <div
+                    class="leaflet-pane leaflet-tooltip-pane"
+                  />
+                  <div
+                    class="leaflet-pane leaflet-popup-pane"
+                  />
+                </div>
+                <div
+                  class="leaflet-control-container"
+                >
+                  <div
+                    class="leaflet-top leaflet-left"
+                  />
+                  <div
+                    class="leaflet-top leaflet-right"
+                  >
+                    <div
+                      class="leaflet-control-zoom leaflet-bar leaflet-control"
+                    >
+                      <a
+                        aria-disabled="false"
+                        aria-label="Zoom in"
+                        class="leaflet-control-zoom-in"
+                        href="#"
+                        role="button"
+                        title="Zoom in"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          +
+                        </span>
+                      </a>
+                      <a
+                        aria-disabled="false"
+                        aria-label="Zoom out"
+                        class="leaflet-control-zoom-out"
+                        href="#"
+                        role="button"
+                        title="Zoom out"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          −
+                        </span>
+                      </a>
+                    </div>
+                    <div
+                      class="leaflet-bar leaflet-control"
+                    >
+                      <a
+                        aria-label="Full Screen"
+                        class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                        href="#"
+                        role="button"
+                        title="Full Screen"
+                      />
+                    </div>
+                    <div
+                      class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+                    >
+                      
+        
+                      <a
+                        aria-label="Recenter Map"
+                        href="#"
+                        role="button"
+                        title="Recenter Map"
+                      >
+                        
+          
+                        <svg
+                          height="26"
+                          viewBox="-5 -5 32 32"
+                          width="26"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          
+            
+                          <path
+                            d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                            transform="rotate(60, 12, 12)"
+                          />
+                          
+          
+                        </svg>
+                        
+        
+                      </a>
+                    </div>
+                  </div>
+                  <div
+                    class="leaflet-bottom leaflet-left"
+                  />
+                  <div
+                    class="leaflet-bottom leaflet-right"
+                  >
+                    <div
+                      class="leaflet-control-attribution leaflet-control"
+                    >
+                      © 
+                      <a
+                        href="http://osm.org/copyright"
+                      >
+                        OpenStreetMap
+                      </a>
+                       contributors
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div
-                className="m-properties-panel__schedule-adherence-status-string"
-              >
-                on time
-              </div>
-              <div
-                className="m-properties-panel__schedule-adherence-label"
-              >
-                (0 min early)
-              </div>
             </div>
-          </div>
-          <div
-            className="m-properties-panel__ping-container"
-          >
-            <div
-              className="m-properties-panel__last-gps-ping"
-            >
-              111s ago
-            </div>
-          </div>
-        </div>
-        <ul
-          className="m-tabs__tab-list"
-          role="tablist"
-        >
-          <li
-            className="m-tabs__tab m-tabs__tab--selected"
-          >
-            <button
-              aria-selected={true}
-              onClick={[Function]}
-              role="tab"
-            >
-              <svg
-                className="m-tabs__tab-status-icon"
-                height="14"
-                width="14"
-              >
-                <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
-                  cx="7"
-                  cy="7"
-                  r="6"
-                />
-                <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
-                  cx="7"
-                  cy="7"
-                  r="4"
-                />
-              </svg>
-              Status
-            </button>
-          </li>
-          <li
-            className="m-tabs__tab"
-          >
-            <button
-              aria-selected={false}
-              onClick={[Function]}
-              role="tab"
-            >
-              <svg
-                className="m-tabs__tab-status-icon"
-                height="14"
-                width="14"
-              >
-                <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
-                  cx="7"
-                  cy="7"
-                  r="6"
-                />
-                <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
-                  cx="7"
-                  cy="7"
-                  r="4"
-                />
-              </svg>
-              Run
-            </button>
-          </li>
-          <li
-            className="m-tabs__tab"
-          >
-            <button
-              aria-selected={false}
-              onClick={[Function]}
-              role="tab"
-            >
-              <svg
-                className="m-tabs__tab-status-icon"
-                height="14"
-                width="14"
-              >
-                <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
-                  cx="7"
-                  cy="7"
-                  r="6"
-                />
-                <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
-                  cx="7"
-                  cy="7"
-                  r="4"
-                />
-              </svg>
-              Block
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div
-        className="m-tabs__tab-panel"
-      >
-        <div
-          className="m-properties-list"
-        >
-          <table
-            className="m-properties-list__table"
-          >
-            <tbody>
-              <tr
-                className="m-properties-list__property "
-              >
-                <td
-                  className="m-properties-list__property-label"
-                >
-                  Run
-                </td>
-                <td
-                  className="m-properties-list__property-value"
-                >
-                  run-1
-                </td>
-              </tr>
-              <tr
-                className="m-properties-list__property "
-              >
-                <td
-                  className="m-properties-list__property-label"
-                >
-                  Vehicle
-                </td>
-                <td
-                  className="m-properties-list__property-value"
-                >
-                  v1-label
-                </td>
-              </tr>
-              <tr
-                className="m-properties-list__property m-properties-list__property--operator"
-              >
-                <td
-                  className="m-properties-list__property-label"
-                >
-                  Operator
-                </td>
-                <td
-                  className="m-properties-list__property-value"
-                >
-                  WILL SMITH #op1
-                </td>
-              </tr>
-              <tr
-                className="m-properties-list__property m-properties-list__property--last-login"
-              >
-                <td
-                  className="m-properties-list__property-label"
-                >
-                  Last Login
-                </td>
-                <td
-                  className="m-properties-list__property-value"
-                >
-                  4 hr 3 min; 1:38 PM
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div
-          className="m-vehicle-properties-panel__location"
-        >
-          <div
-            className="m-vehicle-properties-panel__latlng"
-          >
-            <div
-              className="m-vehicle-properties-panel__label"
-            >
-              Current Location
-            </div>
-            <a
-              className="m-vehicle-properties-panel__link"
-              href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Directions
-            </a>
-          </div>
-          <div
-            className="m-vehicle-properties-panel__next-stop"
-          >
-            <div
-              className="m-vehicle-properties-panel__label"
-            >
-              Next Stop
-            </div>
-            <div
-              className="m-vehicle-properties-panel__value"
-            >
-              Stop Name
-            </div>
-          </div>
-          <div
-            className="m-vehicle-properties-panel__map"
-          >
-            <div
-              className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-            />
-            <div
-              className="m-vehicle-map"
-              id="id-vehicle-map"
-            />
           </div>
         </div>
       </div>
     </div>
+    <div
+      aria-hidden="true"
+      class="m-properties-panel__modal-overlay"
+    />
   </div>
-  <div
-    aria-hidden={true}
-    className="m-properties-panel__modal-overlay"
-    onClick={[Function]}
-  />
-</div>
+</DocumentFragment>
 `;
 
 exports[`SearchPage renders the empty state 1`] = `
