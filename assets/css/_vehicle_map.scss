@@ -46,6 +46,10 @@
   }
 }
 
+.m-vehicle-properties-panel__location .m-vehicle-map .leaflet-right {
+  padding-right: calc(env(safe-area-inset-right) - #{$vpp-location-padding});
+}
+
 .m-vehicle-map__train-icon {
   fill: $white;
   stroke: $color-component-dark;
