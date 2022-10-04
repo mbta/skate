@@ -229,6 +229,36 @@ defmodule Schedule.Data do
     end
   end
 
+  def shape_with_stops_for_all_route_patterns(
+        %__MODULE__{route_patterns: route_patterns} = data,
+        route_id
+      ) do
+    route_patterns
+    |> Enum.filter(&(&1.route_id == route_id))
+    |> Enum.map(& &1.representative_trip_id)
+    |> Enum.map(&shape_with_stops_for_trip(data, &1))
+  end
+
+  def shape_with_stops_for_trip(data, trip_id) do
+    shape_with_stops(shape_for_trip(data, trip_id), stops_for_trip(data, trip_id))
+  end
+
+  defp shape_with_stops(shape, stops) do
+    formatted_stops =
+      stops
+      |> Enum.map(&%{lat: &1.latitude, lon: &1.longitude})
+
+    shape
+    |> Map.from_struct()
+    |> Map.put(:stops, formatted_stops)
+  end
+
+  def stops_for_trip(%__MODULE__{stops: stops, trips: trips}, trip_id) do
+    trip = Map.get(trips, trip_id)
+    stop_ids = Enum.map(trip.stop_times, & &1.stop_id)
+    Enum.map(stop_ids, &Map.get(stops, &1))
+  end
+
   @spec first_route_pattern_for_route_and_direction(t(), Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   def first_route_pattern_for_route_and_direction(

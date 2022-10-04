@@ -142,6 +142,10 @@ defmodule Schedule do
     call_with_data(persistent_term_key, [trip_id], :shape_for_trip, nil)
   end
 
+  def shape_with_stops_for_trip(trip_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [trip_id], :shape_with_stops_for_trip, nil)
+  end
+
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   @spec first_route_pattern_for_route_and_direction(
