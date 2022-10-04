@@ -2,7 +2,9 @@ import { Socket } from "phoenix"
 import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import useRoutes from "../hooks/useRoutes"
 import useSearchResults from "../hooks/useSearchResults"
+import { useRouteShapes } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
@@ -58,6 +60,11 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     searchPageState.isActive ? searchPageState.query : null
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
+  const uniqueRoutes: string[] = Array.from(
+    new Set(onlyVehicles.flatMap((v) => (v.routeId ? v.routeId : [])))
+  )
+  const routeIds = uniqueRoutes //uniqueRoutes.length > 0 ? uniqueRoutes : useRoutes()?.map((r) => r.id) || []
+  const routeShapes = useRouteShapes(routeIds)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 
   const toggleMobileDisplay = () => {
@@ -99,7 +106,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       </div>
 
       <div className="m-search-page__map">
-        <Map vehicles={onlyVehicles} />
+        <Map vehicles={onlyVehicles} shapes={routeShapes} />
       </div>
 
       <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
