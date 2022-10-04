@@ -13,6 +13,7 @@ export interface Stop {
   name: string
   lat: number
   lon: number
+  isStation?: boolean
 }
 
 export type RouteId = string

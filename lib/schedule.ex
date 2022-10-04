@@ -142,6 +142,7 @@ defmodule Schedule do
     call_with_data(persistent_term_key, [trip_id], :shape_for_trip, nil)
   end
 
+  # TODO: new data type for shape w/ stops
   def shape_with_stops_for_trip(trip_id, persistent_term_key \\ __MODULE__) do
     call_with_data(persistent_term_key, [trip_id], :shape_with_stops_for_trip, nil)
   end

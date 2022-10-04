@@ -8,7 +8,8 @@ defmodule Schedule.Gtfs.Stop do
           name: String.t(),
           parent_station_id: id() | nil,
           latitude: float() | nil,
-          longitude: float() | nil
+          longitude: float() | nil,
+          is_station: boolean()
         }
 
   @enforce_keys [
@@ -23,7 +24,8 @@ defmodule Schedule.Gtfs.Stop do
     :name,
     :parent_station_id,
     :latitude,
-    :longitude
+    :longitude,
+    :is_station
   ]
 
   @spec parent_station_id(t() | nil) :: id() | nil
@@ -40,7 +42,8 @@ defmodule Schedule.Gtfs.Stop do
       name: row["stop_name"],
       parent_station_id: parent_station_id,
       latitude: parse_lat_lon(row["stop_lat"]),
-      longitude: parse_lat_lon(row["stop_lon"])
+      longitude: parse_lat_lon(row["stop_lon"]),
+      is_station: row["location_type"] == "1"
     }
   end
 

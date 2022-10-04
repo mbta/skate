@@ -244,13 +244,9 @@ defmodule Schedule.Data do
   end
 
   defp shape_with_stops(shape, stops) do
-    formatted_stops =
-      stops
-      |> Enum.map(&%{lat: &1.latitude, lon: &1.longitude})
-
     shape
     |> Map.from_struct()
-    |> Map.put(:stops, formatted_stops)
+    |> Map.put(:stops, stops)
   end
 
   def stops_for_trip(%__MODULE__{stops: stops, trips: trips}, trip_id) do

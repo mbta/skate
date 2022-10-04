@@ -224,14 +224,19 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
         positions={positions}
         {...strokeOptions(shape)}
       />
-      {(shape.stops || []).map((stop) => (
-        <CircleMarker
+      {(shape.stops || []).map((stop) => {
+        console.log(stop.isStation)
+        return <CircleMarker
           key={stop.id}
-          className="m-vehicle-map__stop"
+          className={stop.isStation ? "m-vehicle-map__station": "m-vehicle-map__stop "}
           center={[stop.lat, stop.lon]}
           radius={3}
-        />
-      ))}
+          
+          
+        >
+          <div>{stop.isStation}</div>
+          </CircleMarker>
+})}
     </>
   )
 }
