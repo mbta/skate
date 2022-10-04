@@ -2,16 +2,17 @@ defmodule SkateWeb.ShapeControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Schedule.Gtfs.Shape
+  alias Schedule.Gtfs.{Shape, Stop}
   alias Schedule.Gtfs.Shape.Point
+  alias Schedule.ShapeWithStops
 
   @shape %Shape{
     id: "shape1",
     points: [
       %Point{
         shape_id: "shape1",
-        lat: "42.413560",
-        lon: "-70.992110",
+        lat: 42.413560,
+        lon: -70.992110,
         sequence: "0"
       }
     ]
@@ -22,9 +23,51 @@ defmodule SkateWeb.ShapeControllerTest do
     "points" => [
       %{
         "shape_id" => "shape1",
-        "lat" => "42.413560",
-        "lon" => "-70.992110",
+        "lat" => 42.413560,
+        "lon" => -70.992110,
         "sequence" => "0"
+      }
+    ]
+  }
+
+  @shape_with_stops %ShapeWithStops{
+    id: "shape1",
+    points: [
+      %Point{
+        shape_id: "shape1",
+        lat: 42.413560,
+        lon: -70.992110,
+        sequence: "0"
+      }
+    ],
+    stops: [
+      %Stop{id: "stop_1", name: "One", latitude: 42.01, longitude: -71.01},
+      %Stop{id: "stop_2", name: "Two", latitude: 42.02, longitude: -71.02}
+    ]
+  }
+
+  @shape_with_stops_json %{
+    "id" => "shape1",
+    "points" => [
+      %{
+        "shape_id" => "shape1",
+        "lat" => 42.413560,
+        "lon" => -70.992110,
+        "sequence" => "0"
+      }
+    ],
+    "stops" => [
+      %{
+        "id" => "stop_1",
+        "name" => "One",
+        "lat" => 42.01,
+        "lon" => -71.01
+      },
+      %{
+        "id" => "stop_2",
+        "name" => "Two",
+        "lat" => 42.02,
+        "lon" => -71.02
       }
     ]
   }
@@ -56,7 +99,7 @@ defmodule SkateWeb.ShapeControllerTest do
 
   describe "GET /api/shapes/trip/:trip_id" do
     setup do
-      reassign_env(:skate_web, :shape_for_trip_fn, fn _trip_id -> @shape end)
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _trip_id -> @shape_with_stops end)
     end
 
     @tag :authenticated
@@ -66,12 +109,12 @@ defmodule SkateWeb.ShapeControllerTest do
         |> api_headers()
         |> get("/api/shapes/trip/1")
 
-      assert json_response(conn, 200) == %{"data" => @shape_json}
+      assert json_response(conn, 200) == %{"data" => @shape_with_stops_json}
     end
 
     @tag :authenticated
     test "returns null if we don't have a shape for this trip", %{conn: conn} do
-      reassign_env(:skate_web, :shape_for_trip_fn, fn _trip_id -> nil end)
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _trip_id -> nil end)
 
       conn =
         conn
