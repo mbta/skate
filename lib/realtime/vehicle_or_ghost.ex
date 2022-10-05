@@ -40,7 +40,7 @@ defmodule Realtime.VehicleOrGhost do
 
   @spec filter_by_prop_matching([t()], atom() | [atom()], String.t()) :: [t()]
   defp filter_by_prop_matching(vehicles, prop_names, text) when is_list(prop_names) do
-    search_terms = text |> clean_for_matching |> Enum.reject(&(String.length(&1) < 2))
+    search_terms = text |> clean_for_matching |> Enum.reject(&(String.length(&1) < 1))
 
     if search_terms == [] do
       []
