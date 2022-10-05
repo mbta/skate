@@ -5,6 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useRoutes from "../hooks/useRoutes"
 import useSearchResults from "../hooks/useSearchResults"
 import { useRouteShapes } from "../hooks/useShapes"
+import { subwayRoutes } from "../models/subwayRoute"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
@@ -65,7 +66,8 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     new Set(onlyVehicles.flatMap((v) => (v.routeId ? v.routeId : [])))
   )
   const routeIds = uniqueRoutes.length > 0 ? uniqueRoutes : allRouteIds || []
-  const routeShapes = useRouteShapes(routeIds)
+  const subwayRouteIds = subwayRoutes.map(route => route.id)
+  const routeShapes = useRouteShapes([...routeIds, ...subwayRouteIds])
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 
   const toggleMobileDisplay = () => {
