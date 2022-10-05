@@ -54,7 +54,8 @@ defmodule Schedule.Gtfs.StopTest do
                name: "Washington St opp Ruggles St",
                parent_station_id: "place-asmnl",
                latitude: 42.330957,
-               longitude: -71.082754
+               longitude: -71.082754,
+               is_station: false
              }
     end
 
@@ -69,7 +70,8 @@ defmodule Schedule.Gtfs.StopTest do
                name: "Washington St opp Ruggles St",
                parent_station_id: nil,
                latitude: nil,
-               longitude: nil
+               longitude: nil,
+               is_station: false
              }
     end
   end

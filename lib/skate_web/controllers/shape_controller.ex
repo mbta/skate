@@ -7,7 +7,7 @@ defmodule SkateWeb.ShapeController do
     shapes_fn =
       Application.get_env(
         :skate_web,
-        :shapes_with_stops_for_route,
+        :shapes_fn,
         &Schedule.shapes_with_stops_for_route/1
       )
 
@@ -24,7 +24,7 @@ defmodule SkateWeb.ShapeController do
     shape_for_trip_fn =
       Application.get_env(
         :skate_web,
-        :shape_with_stops_for_trip,
+        :shape_for_trip_fn,
         &Schedule.shape_with_stops_for_trip/1
       )
 
@@ -38,6 +38,7 @@ defmodule SkateWeb.ShapeController do
     json(conn, %{data: shape})
   end
 
+  defp format_stops(nil), do: nil
   # TODO: this kind of data transformation can happen on the FE
   defp format_stops(shape_with_stops) do
     %{shape_with_stops | stops: Enum.map(shape_with_stops.stops, &format_stop(&1))}

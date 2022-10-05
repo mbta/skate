@@ -2,10 +2,9 @@ defmodule SkateWeb.ShapeControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Schedule.Gtfs.Shape
   alias Schedule.Gtfs.Shape.Point
 
-  @shape %Shape{
+  @shape %{
     id: "shape1",
     points: [
       %Point{
@@ -14,7 +13,8 @@ defmodule SkateWeb.ShapeControllerTest do
         lon: "-70.992110",
         sequence: "0"
       }
-    ]
+    ],
+    stops: []
   }
 
   @shape_json %{
@@ -26,7 +26,8 @@ defmodule SkateWeb.ShapeControllerTest do
         "lon" => "-70.992110",
         "sequence" => "0"
       }
-    ]
+    ],
+    "stops" => []
   }
 
   describe "GET /api/shapes/route/:route_id" do

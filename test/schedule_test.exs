@@ -260,7 +260,8 @@ defmodule ScheduleTest do
                name: "Two",
                parent_station_id: "3",
                latitude: 2.0,
-               longitude: 2.5
+               longitude: 2.5,
+               is_station: false
              }
     end
 
