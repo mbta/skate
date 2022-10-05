@@ -112,13 +112,13 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
       <div className="m-search-page__map">
         <Map vehicles={onlyVehicles} shapes={routeShapes}>
-          <Pane name="garage-pane" style={{ zIndex: 500 }}>
+          <Pane name="garage-pane">
             {garages.map((garage) => (
               <CircleMarker
                 key={garage.name}
                 className="m-vehicle-map__garage"
                 center={[garage.lat, garage.lon]}
-                radius={5}
+                radius={10}
               >
                 <Tooltip>{garage.name}</Tooltip>
               </CircleMarker>

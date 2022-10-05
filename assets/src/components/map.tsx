@@ -20,6 +20,7 @@ import {
   CircleMarker,
   MapContainer,
   Marker,
+  Pane,
   Polyline,
   TileLayer,
   Tooltip,
@@ -225,6 +226,7 @@ const LeafletShape = React.memo(({ shape }: { shape: Shape }) => {
         className="m-vehicle-map__route-shape"
         positions={positions}
         {...strokeOptions(shape)}
+        pane="routes-pane"
       />
       {(shape.stops || []).map((stop) => {
         // List of stops should maybe be de-duped across all route variants.
@@ -237,6 +239,7 @@ const LeafletShape = React.memo(({ shape }: { shape: Shape }) => {
             }
             center={[stop.lat, stop.lon]}
             radius={3}
+            pane="stops-pane"
           >
             <Tooltip>{stop.name}</Tooltip>
           </CircleMarker>
@@ -446,9 +449,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             trainVehicle={trainVehicle}
           />
         ))}
-        {(props.shapes || []).map((shape) => (
-          <LeafletShape key={shape.id} shape={shape} />
-        ))}
+
+        <Pane name="routes-pane">
+          <Pane name="stops-pane">
+            {(props.shapes || []).map((shape) => (
+              <LeafletShape key={shape.id} shape={shape} />
+            ))}
+          </Pane>
+        </Pane>
         {props.children}
       </MapContainer>
     </>
