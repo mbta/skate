@@ -2,6 +2,7 @@ import { Socket } from "phoenix"
 import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import useRoutes from "../hooks/useRoutes"
 import useSearchResults from "../hooks/useSearchResults"
 import { useRouteShapes } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
@@ -54,6 +55,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, selectedVehicleOrGhost, mobileMenuIsOpen }] =
     useContext(StateDispatchContext)
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
+  const allRouteIds = useRoutes()?.map((route) => route.id)
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
@@ -62,7 +64,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const uniqueRoutes: string[] = Array.from(
     new Set(onlyVehicles.flatMap((v) => (v.routeId ? v.routeId : [])))
   )
-  const routeIds = uniqueRoutes //uniqueRoutes.length > 0 ? uniqueRoutes : useRoutes()?.map((r) => r.id) || []
+  const routeIds = uniqueRoutes.length > 0 ? uniqueRoutes : allRouteIds || []
   const routeShapes = useRouteShapes(routeIds)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 

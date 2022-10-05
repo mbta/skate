@@ -22,6 +22,7 @@ import {
   Marker,
   Polyline,
   TileLayer,
+  Tooltip,
   useMap,
   useMapEvents,
   ZoomControl,
@@ -211,7 +212,7 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const LeafletShape = ({ shape }: { shape: Shape }) => {
+const LeafletShape = React.memo(({ shape }: { shape: Shape }) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
@@ -225,21 +226,24 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
         {...strokeOptions(shape)}
       />
       {(shape.stops || []).map((stop) => {
-        console.log(stop.isStation)
-        return <CircleMarker
-          key={stop.id}
-          className={stop.isStation ? "m-vehicle-map__station": "m-vehicle-map__stop "}
-          center={[stop.lat, stop.lon]}
-          radius={3}
-          
-          
-        >
-          <div>{stop.isStation}</div>
+        // List of stops should maybe be de-duped across all route variants.
+        // Route paths rendered separately from route stops
+        return (
+          <CircleMarker
+            key={stop.id}
+            className={
+              stop.isStation ? "m-vehicle-map__station" : "m-vehicle-map__stop "
+            }
+            center={[stop.lat, stop.lon]}
+            radius={3}
+          >
+            <Tooltip>{stop.name}</Tooltip>
           </CircleMarker>
-})}
+        )
+      })}
     </>
   )
-}
+})
 
 export const autoCenter = (
   map: LeafletMap,
