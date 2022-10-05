@@ -7,9 +7,10 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { SocketProvider } from "../../src/contexts/socketContext"
 import useDataStatus from "../../src/hooks/useDataStatus"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
-import { initialState } from "../../src/state"
+import { initialState, State } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
+import vehicle from "../factories/vehicle"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -70,5 +71,20 @@ describe("App", () => {
     const routeIds = (useVehicles as jest.Mock).mock.calls[0][1]
 
     expect(routeIds).toEqual(["1", "15", "22"])
+  })
+
+  test("renders VPP when vehicle is selected", () => {
+    const mockState: State = {
+      ...initialState,
+      selectedVehicleOrGhost: vehicle.build({ routeId: null }),
+    }
+    const mockDispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <App />
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByText("Vehicles")).toBeInTheDocument()
   })
 })

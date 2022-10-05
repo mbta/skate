@@ -17,7 +17,6 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
-import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
@@ -172,22 +171,5 @@ describe("SettingsPage", () => {
     expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=vehicle_adherence_colors&value=early_blue"
     )
-  })
-
-  test("renders vehicle properties panel if a vehicle is selected", () => {
-    const vehicle = vehicleFactory.build({ operatorLastName: "Smith" })
-
-    const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, selectedVehicleOrGhost: vehicle }}
-        dispatch={mockDispatch}
-      >
-        <BrowserRouter>
-          <SettingsPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    expect(result.getByText(/Smith/)).not.toBeNull()
   })
 })
