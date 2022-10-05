@@ -50,6 +50,7 @@ export interface Props {
   // trainVehicles are white, don't get a label, and don't affect autocentering
   trainVehicles?: TrainVehicle[]
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
+  children?: React.ReactNode
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -448,6 +449,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.shapes || []).map((shape) => (
           <LeafletShape key={shape.id} shape={shape} />
         ))}
+        {props.children}
       </MapContainer>
     </>
   )

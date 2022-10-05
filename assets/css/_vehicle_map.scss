@@ -80,6 +80,13 @@
   stroke-width: 1;
 }
 
+.m-vehicle-map__garage {
+  fill: yellow;
+  fill-opacity: 1;
+  stroke: $color-stop-stroke;
+  stroke-width: 1;
+}
+
 .m-vehicle-map__recenter-button {
   path {
     fill: none;

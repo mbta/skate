@@ -1,7 +1,9 @@
 import { Socket } from "phoenix"
 import React, { ReactElement, useContext, useState } from "react"
+import { CircleMarker, Pane, Tooltip } from "react-leaflet"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import garages from "../data/garages"
 import useRoutes from "../hooks/useRoutes"
 import useSearchResults from "../hooks/useSearchResults"
 import { useRouteShapes } from "../hooks/useShapes"
@@ -63,10 +65,10 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const uniqueRoutes: string[] = Array.from(
-    new Set(onlyVehicles.flatMap((v) => (v.routeId ? v.routeId : [])))
+    new Set(onlyVehicles.flatMap((v) => v.routeId || []))
   )
   const routeIds = uniqueRoutes.length > 0 ? uniqueRoutes : allRouteIds || []
-  const subwayRouteIds = subwayRoutes.map(route => route.id)
+  const subwayRouteIds = subwayRoutes.map((route) => route.id)
   const routeShapes = useRouteShapes([...routeIds, ...subwayRouteIds])
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 
@@ -109,7 +111,20 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       </div>
 
       <div className="m-search-page__map">
-        <Map vehicles={onlyVehicles} shapes={routeShapes} />
+        <Map vehicles={onlyVehicles} shapes={routeShapes}>
+          <Pane name="garage-pane" style={{ zIndex: 500 }}>
+            {garages.map((garage) => (
+              <CircleMarker
+                key={garage.name}
+                className="m-vehicle-map__garage"
+                center={[garage.lat, garage.lon]}
+                radius={5}
+              >
+                <Tooltip>{garage.name}</Tooltip>
+              </CircleMarker>
+            ))}
+          </Pane>
+        </Map>
       </div>
 
       <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
