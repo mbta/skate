@@ -1,15 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Highlighted can highlight the whole string 1`] = `
-Array [
-  "",
-  <span
-    className="highlighted"
-  >
-    abc
-  </span>,
-  "",
-]
+<span
+  className="highlighted"
+>
+  abc
+</span>
 `;
 
 exports[`Highlighted ignores spaces and hyphens 1`] = `
@@ -81,7 +77,6 @@ exports[`PropertiesList highlights requested text 1`] = `
         <td
           className="m-properties-list__property-value"
         >
-          
           <span
             className="highlighted"
           >

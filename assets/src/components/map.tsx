@@ -26,9 +26,6 @@ import {
   useMapEvents,
   ZoomControl,
 } from "react-leaflet"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { FullscreenControl } from "react-leaflet-fullscreen"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -392,11 +389,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         zoomControl={false}
         center={defaultCenter}
         zoom={13}
-        // workaround for ref unsupported in react-leaflet v3.
-        // can be replaced with directly passing ref in v4.
-        whenCreated={(mapInstance) => {
-          mapRef.current = mapInstance
-        }}
+        ref={mapRef}
         attributionControl={false}
       >
         <EventAdder
@@ -409,7 +402,6 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           latLngs={latLngs}
         />
         <ZoomControl position="topright" />
-        <FullscreenControl position="topright" />
         <RecenterControlButton
           position="topright"
           recenter={() => setShouldAutoCenter(true)}

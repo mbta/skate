@@ -6,6 +6,7 @@ import CloseButton from "./closeButton"
 export type CardStyle = "kiwi" | "white"
 
 interface CardProps {
+  children?: React.ReactNode
   style: CardStyle
   currentTime?: Date
   openCallback?: () => void
@@ -71,9 +72,9 @@ export const Card: React.FC<CardProps> = ({
   )
 }
 
-export const CardBody: React.FC = ({ children }) => (
-  <div className="m-card__body">{children}</div>
-)
+export const CardBody: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => <div className="m-card__body">{children}</div>
 
 export interface Property {
   label: string

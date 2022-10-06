@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import useVehicles from "../../src/hooks/useVehicles"
 import * as browser from "../../src/models/browser"
 import { VehicleData } from "../../src/models/vehicleData"

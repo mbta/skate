@@ -1,384 +1,360 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders 1`] = `
-<div
-  className="m-app"
->
+<DocumentFragment>
   <div
-    className="m-app__banner"
-  />
-  <div
-    className="m-app__main"
+    class="m-app"
   >
     <div
-      className="m-nav--wide"
+      class="m-app__banner"
+    />
+    <div
+      class="m-app__main"
     >
       <div
-        className="m-nav__nav-bar m-nav__nav-bar--top"
+        class="m-nav--wide"
       >
         <div
-          className="m-top-nav"
-        >
-          <a
-            className="m-top-nav__logo"
-            href="/"
-            onClick={[Function]}
-            title="Skate"
-          >
-            <span
-              className="m-top-nav__logo-icon"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </a>
-          <ul
-            className="m-top-nav__right-items"
-          >
-            <li>
-              <button
-                className="m-top-nav__right-item"
-                onClick={[Function]}
-                title="Refresh"
-              >
-                <span
-                  className="m-top-nav__icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div
-        className="m-nav__nav-bar m-nav__nav-bar--left"
-      >
-        <div
-          className="m-left-nav"
+          class="m-nav__nav-bar m-nav__nav-bar--top"
         >
           <div
-            className="m-left-nav__modes-and-views"
+            class="m-top-nav"
           >
-            <ul
-              className="m-left-nav__links"
+            <a
+              class="m-top-nav__logo"
+              href="/"
+              title="Skate"
             >
-              <li>
-                <a
-                  aria-current="page"
-                  className="m-left-nav__link m-left-nav__link--active"
-                  href="/"
-                  onClick={[Function]}
-                  title="Route Ladders"
-                >
-                  <span
-                    className="m-left-nav__icon"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Route Ladders
-                </a>
-              </li>
-              <li>
-                <a
-                  className="m-left-nav__link"
-                  href="/shuttle-map"
-                  onClick={[Function]}
-                  title="Shuttle Map"
-                >
-                  <span
-                    className="m-left-nav__icon"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Shuttle Map
-                </a>
-              </li>
-              <li>
-                <a
-                  className="m-left-nav__link"
-                  href="/search"
-                  onClick={[Function]}
-                  title="Search"
-                >
-                  <span
-                    className="m-left-nav__icon"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Search
-                </a>
-              </li>
-              <li>
-                <hr />
-              </li>
-              <li>
-                <button
-                  className="m-left-nav__link m-left-nav__view"
-                  onClick={[Function]}
-                  title="Swings View"
-                >
-                  <span
-                    className="m-left-nav__icon m-left-nav__icon--swings-view"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Swings View
-                </button>
-              </li>
-              <li>
-                <button
-                  className="m-left-nav__link m-left-nav__view"
-                  onClick={[Function]}
-                  title="Notifications"
-                >
-                  <span
-                    className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read m-left-nav__icon m-left-nav__icon--notifications-view"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Notifications
-                </button>
-              </li>
-            </ul>
+              <span
+                class="m-top-nav__logo-icon"
+              >
+                SVG
+              </span>
+            </a>
             <ul
-              className="m-left-nav__links"
+              class="m-top-nav__right-items"
             >
               <li>
                 <button
-                  className="m-left-nav__link"
-                  onClick={[Function]}
-                  title="Support"
+                  class="m-top-nav__right-item"
+                  title="Refresh"
                 >
                   <span
-                    className="m-left-nav__icon"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Support
-                </button>
-              </li>
-              <li>
-                <button
-                  className="m-left-nav__link"
-                  onClick={[Function]}
-                  title="About Skate"
-                >
-                  <span
-                    className="m-left-nav__icon"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  About Skate
-                </button>
-              </li>
-              <li>
-                <a
-                  className="m-left-nav__link"
-                  href="/settings"
-                  onClick={[Function]}
-                  title="Settings"
-                >
-                  <span
-                    className="m-left-nav__icon"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Settings
-                </a>
-              </li>
-              <li>
-                <button
-                  className="m-left-nav__link"
-                  onClick={[Function]}
-                  title="Collapse"
-                >
-                  <span
-                    className="m-left-nav__icon"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
-                      }
-                    }
-                  />
-                  Collapse
+                    class="m-top-nav__icon"
+                  >
+                    SVG
+                  </span>
                 </button>
               </li>
             </ul>
           </div>
         </div>
-      </div>
-      <div
-        className="m-nav__app-content"
-      >
         <div
-          className="m-ladder-page m-ladder-page--picker-container-visible "
+          class="m-nav__nav-bar m-nav__nav-bar--left"
         >
           <div
-            className="m-notifications"
-          />
-          <div
-            className="m-picker-container visible"
-            data-testid="picker-container"
+            class="m-left-nav"
           >
             <div
-              className="c-drawer-tab"
+              class="m-left-nav__modes-and-views"
             >
-              <button
-                className="c-drawer-tab__tab-button"
-                data-testid="drawer-tab-button"
-                onClick={[Function]}
+              <ul
+                class="m-left-nav__links"
               >
-                <span
-                  className=""
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
-            </div>
-            <div
-              className="m-ladder-page__routes-presets-toggle"
-            >
-              <button
-                className="m-ladder-page__routes_picker_button_selected"
-                id="m-ladder-page__routes_picker_button"
-                onClick={[Function]}
-              >
-                Routes
-              </button>
-              <button
-                className="m-ladder-page__routes_picker_button_unselected"
-                id="m-ladder-page__presets_picker_button"
-                onClick={[Function]}
-              >
-                Presets
-              </button>
-            </div>
-            <div
-              className="m-route-picker"
-            >
-              <div
-                className="m-route-filter"
-              >
-                <div
-                  className="m-route-filter__text"
-                >
-                  <input
-                    className="m-route-filter__input"
-                    onChange={[Function]}
-                    onKeyDown={[Function]}
-                    placeholder="Search routes"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                className="m-garage-filter"
-              >
-                <button
-                  className="m-garage-filter__show-hide-button"
-                  onClick={[Function]}
-                  title="Toggle Garage Filter"
-                >
-                  <div
-                    className="m-garage-filter__header"
-                  >
-                    Filter garages
-                  </div>
-                  <div
-                    className="m-garage-filter__show-hide-icon"
+                <li>
+                  <a
+                    aria-current="page"
+                    class="m-left-nav__link m-left-nav__link--active"
+                    href="/"
+                    title="Route Ladders"
                   >
                     <span
-                      className=""
-                      dangerouslySetInnerHTML={
-                        Object {
-                          "__html": "SVG",
-                        }
-                      }
-                    />
-                  </div>
+                      class="m-left-nav__icon"
+                    >
+                      SVG
+                    </span>
+                    Route Ladders
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="m-left-nav__link"
+                    href="/shuttle-map"
+                    title="Shuttle Map"
+                  >
+                    <span
+                      class="m-left-nav__icon"
+                    >
+                      SVG
+                    </span>
+                    Shuttle Map
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="m-left-nav__link"
+                    href="/search"
+                    title="Search"
+                  >
+                    <span
+                      class="m-left-nav__icon"
+                    >
+                      SVG
+                    </span>
+                    Search
+                  </a>
+                </li>
+                <li>
+                  <hr />
+                </li>
+                <li>
+                  <button
+                    class="m-left-nav__link m-left-nav__view"
+                    title="Swings View"
+                  >
+                    <span
+                      class="m-left-nav__icon m-left-nav__icon--swings-view"
+                    >
+                      SVG
+                    </span>
+                    Swings View
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="m-left-nav__link m-left-nav__view"
+                    title="Notifications"
+                  >
+                    <span
+                      class="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read m-left-nav__icon m-left-nav__icon--notifications-view"
+                    >
+                      SVG
+                    </span>
+                    Notifications
+                  </button>
+                </li>
+              </ul>
+              <ul
+                class="m-left-nav__links"
+              >
+                <li>
+                  <button
+                    class="m-left-nav__link"
+                    title="Support"
+                  >
+                    <span
+                      class="m-left-nav__icon"
+                    >
+                      SVG
+                    </span>
+                    Support
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="m-left-nav__link"
+                    title="About Skate"
+                  >
+                    <span
+                      class="m-left-nav__icon"
+                    >
+                      SVG
+                    </span>
+                    About Skate
+                  </button>
+                </li>
+                <li>
+                  <a
+                    class="m-left-nav__link"
+                    href="/settings"
+                    title="Settings"
+                  >
+                    <span
+                      class="m-left-nav__icon"
+                    >
+                      SVG
+                    </span>
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <button
+                    class="m-left-nav__link"
+                    title="Collapse"
+                  >
+                    <span
+                      class="m-left-nav__icon"
+                    >
+                      SVG
+                    </span>
+                    Collapse
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="m-nav__app-content"
+        >
+          <div
+            class="m-ladder-page m-ladder-page--picker-container-visible "
+          >
+            <div
+              class="m-notifications"
+            />
+            <div
+              class="m-picker-container visible"
+              data-testid="picker-container"
+            >
+              <div
+                class="c-drawer-tab"
+              >
+                <button
+                  class="c-drawer-tab__tab-button"
+                  data-testid="drawer-tab-button"
+                >
+                  <span
+                    class=""
+                  >
+                    SVG
+                  </span>
                 </button>
               </div>
               <div
-                className="m-route-picker__routes-container"
+                class="m-ladder-page__routes-presets-toggle"
               >
-                loading...
-                <p>
-                  Selected routes will show up here…
-                </p>
+                <button
+                  class="m-ladder-page__routes_picker_button_selected"
+                  id="m-ladder-page__routes_picker_button"
+                >
+                  Routes
+                </button>
+                <button
+                  class="m-ladder-page__routes_picker_button_unselected"
+                  id="m-ladder-page__presets_picker_button"
+                >
+                  Presets
+                </button>
+              </div>
+              <div
+                class="m-route-picker"
+              >
+                <div
+                  class="m-route-filter"
+                >
+                  <div
+                    class="m-route-filter__text"
+                  >
+                    <input
+                      class="m-route-filter__input"
+                      placeholder="Search routes"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="m-garage-filter"
+                >
+                  <button
+                    class="m-garage-filter__show-hide-button"
+                    title="Toggle Garage Filter"
+                  >
+                    <div
+                      class="m-garage-filter__header"
+                    >
+                      Filter garages
+                    </div>
+                    <div
+                      class="m-garage-filter__show-hide-icon"
+                    >
+                      <span
+                        class=""
+                      >
+                        SVG
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  class="m-route-picker__routes-container"
+                >
+                  loading...
+                  <p>
+                    Selected routes will show up here…
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            aria-hidden={true}
-            className="m-picker-container-overlay"
-            data-testid="picker-container-overlay"
-            onClick={[Function]}
-          />
-          <div
-            className="m-ladder-page__tab-bar-and-ladders"
-          >
             <div
-              className="m-ladder-page__route-tab-bar"
-              role="tablist"
-            >
-              <button
-                className="m-ladder-page__add-tab-button"
-                onClick={[Function]}
-                title="Add Tab"
-              >
-                <span
-                  className="m-ladder-page__add-tab-icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
-            </div>
-            <div
-              className="m-route-ladders"
-              data-testid="route-ladders-div"
-              onWheel={[Function]}
+              aria-hidden="true"
+              class="m-picker-container-overlay"
+              data-testid="picker-container-overlay"
             />
+            <div
+              class="m-ladder-page__tab-bar-and-ladders"
+            >
+              <div
+                class="m-ladder-page__route-tab-bar"
+                role="tablist"
+              >
+                <div
+                  class="m-ladder-page__tab m-ladder-page__tab-current"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="m-ladder-page__tab-contents"
+                  >
+                    <div
+                      class="m-ladder-page__tab-title"
+                    >
+                      Untitled
+                    </div>
+                    <button
+                      class="m-ladder-page__tab-save-button"
+                      title="Save"
+                    >
+                      <span
+                        class=""
+                      >
+                        SVG
+                      </span>
+                    </button>
+                    <button
+                      class="m-old-close-button"
+                      data-testid="close-button"
+                      title="Close"
+                    >
+                      <span
+                        class=""
+                      >
+                        SVG
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  class="m-ladder-page__add-tab-button"
+                  title="Add Tab"
+                >
+                  <span
+                    class="m-ladder-page__add-tab-icon"
+                  >
+                    SVG
+                  </span>
+                </button>
+              </div>
+              <div
+                class="m-route-ladders"
+                data-testid="route-ladders-div"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</DocumentFragment>
 `;

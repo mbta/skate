@@ -15,7 +15,7 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet/dist/leaflet.css"
 import "phoenix_html"
 import * as React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -46,9 +46,6 @@ clarityIdentify(window.clarity, userUuid)
 
 tagManagerIdentify(userUuid)
 
-// Import local files
-//
-// Local files can be imported directly using relative paths, for example:
-// import socket from "./socket"
-
-ReactDOM.render(<AppStateWrapper />, document.getElementById("app"))
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(document.getElementById("app")!)
+root.render(<AppStateWrapper />)

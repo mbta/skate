@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import useDataStatus from "../../src/hooks/useDataStatus"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 

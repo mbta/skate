@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react-hooks"
+import { act, renderHook, waitFor } from "@testing-library/react"
 import { putUserSetting, putRouteTabs } from "../../src/api"
 import appData from "../../src/appData"
 import usePersistedStateReducer, {
@@ -299,9 +299,7 @@ describe("usePersistedStateReducer", () => {
       resolve(badResponse)
     })
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      usePersistedStateReducer()
-    )
+    const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
     ;(putRouteTabs as jest.Mock)
@@ -309,10 +307,21 @@ describe("usePersistedStateReducer", () => {
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
 
+    const firstValue = result.current
+
     act(() => {
       dispatch(createRouteTab())
     })
-    await waitForNextUpdate()
+    await waitFor(() => {
+      expect(result.current).not.toBe(firstValue)
+    })
+
+    // wait for changes from dispatch call in catch handler
+    const secondValue = result.current
+
+    await waitFor(() => {
+      expect(result.current).not.toBe(secondValue)
+    })
 
     const [state] = result.current
 
@@ -333,9 +342,7 @@ describe("usePersistedStateReducer", () => {
       reject()
     })
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      usePersistedStateReducer()
-    )
+    const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
     ;(putRouteTabs as jest.Mock)
@@ -346,7 +353,10 @@ describe("usePersistedStateReducer", () => {
     act(() => {
       dispatch(createRouteTab())
     })
-    await waitForNextUpdate()
+    const initialValue = result.current
+    await waitFor(() => {
+      expect(result.current).not.toBe(initialValue)
+    })
 
     const [state] = result.current
 

@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"
 import useShuttleRoutes, { sortByName } from "../../src/hooks/useShuttleRoutes"
 import { Route } from "../../src/schedule"

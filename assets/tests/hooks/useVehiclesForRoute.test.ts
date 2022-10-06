@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
 import { VehicleOrGhostData } from "../../src/models/vehicleData"
 import { VehicleOrGhost } from "../../src/realtime"

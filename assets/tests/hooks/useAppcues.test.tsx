@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import useAppcues, { cleanUsername } from "../../src/hooks/useAppcues"
 
 // Indicate that the file is a module so we can declare global

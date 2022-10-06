@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import { useChannel } from "../../src/hooks/useChannel"
 import * as browser from "../../src/models/browser"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"

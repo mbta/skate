@@ -1,5 +1,5 @@
 import React from "react"
-import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import ShuttleMapPage, {
   allTrainVehicles,
@@ -86,27 +86,23 @@ const shape: Shape = {
 describe("Shuttle Map Page", () => {
   test("renders", () => {
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <ShuttleMapPage />
-        </BrowserRouter>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders with shapes selected", () => {
     ;(useRouteShapes as jest.Mock).mockImplementationOnce(() => [shape])
     ;(useTripShape as jest.Mock).mockImplementationOnce(() => [shape])
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <ShuttleMapPage />
-        </BrowserRouter>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders with train vehicles", () => {
@@ -121,70 +117,44 @@ describe("Shuttle Map Page", () => {
       [trainVehicle.id]: trainVehicle,
     }))
 
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <ShuttleMapPage />
-        </BrowserRouter>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders selected shuttle routes", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer
-      .create(
-        <StateDispatchProvider
-          state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
-          dispatch={dispatch}
-        >
-          <BrowserRouter>
-            <ShuttleMapPage />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders with all shuttles selected", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer
-      .create(
-        <StateDispatchProvider
-          state={{ ...initialState, selectedShuttleRunIds: "all" }}
-          dispatch={dispatch}
-        >
-          <BrowserRouter>
-            <ShuttleMapPage />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders a selected shuttle vehicle", () => {
-    const dispatch = jest.fn()
-    const state = {
-      ...initialState,
-      selectedShuttleRunIds: [shuttle.runId!],
-      selectedVehicleOrGhost: shuttle,
-    }
-    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={dispatch}>
-          <BrowserRouter>
-            <ShuttleMapPage />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 })
 

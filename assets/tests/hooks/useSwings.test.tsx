@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import React, { ReactNode } from "react"
 import * as Api from "../../src/api"
 import useSwings from "../../src/hooks/useSwings"
@@ -52,25 +52,28 @@ describe("useSwings", () => {
         return useSwings()
       },
       {
-        wrapper,
-        initialProps: {
-          routeTabs: [
-            routeTabFactory.build({
-              ordering: 0,
-              isCurrentTab: true,
-              selectedRouteIds: ["1"],
-            }),
-            routeTabFactory.build({
-              ordering: 1,
-              isCurrentTab: false,
-              selectedRouteIds: ["2"],
-            }),
-            routeTabFactory.build({
-              ordering: undefined,
-              selectedRouteIds: ["3"],
-            }),
-          ],
-        },
+        wrapper: ({ children }) => (
+          <Wrapper
+            routeTabs={[
+              routeTabFactory.build({
+                ordering: 0,
+                isCurrentTab: true,
+                selectedRouteIds: ["1"],
+              }),
+              routeTabFactory.build({
+                ordering: 1,
+                isCurrentTab: false,
+                selectedRouteIds: ["2"],
+              }),
+              routeTabFactory.build({
+                ordering: undefined,
+                selectedRouteIds: ["3"],
+              }),
+            ]}
+          >
+            {children}
+          </Wrapper>
+        ),
       }
     )
 
@@ -84,12 +87,14 @@ describe("useSwings", () => {
       () => {
         useSwings()
       },
-
       {
-        wrapper,
-        initialProps: {
-          routeTabs: [routeTabFactory.build({ selectedRouteIds: ["1"] })],
-        },
+        wrapper: ({ children }) => (
+          <Wrapper
+            routeTabs={[routeTabFactory.build({ selectedRouteIds: ["1"] })]}
+          >
+            {children}
+          </Wrapper>
+        ),
       }
     )
     rerender()
@@ -98,57 +103,56 @@ describe("useSwings", () => {
 
   test("doesn't refetch swings when route Ids don't change", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+
+    let routeTabs = [
+      routeTabFactory.build({
+        selectedRouteIds: ["1"],
+        isCurrentTab: true,
+      }),
+      routeTabFactory.build({
+        selectedRouteIds: ["2"],
+        isCurrentTab: false,
+      }),
+    ]
     const { rerender } = renderHook(
       () => {
         useSwings()
       },
-
       {
-        wrapper,
-        initialProps: {
-          routeTabs: [
-            routeTabFactory.build({
-              selectedRouteIds: ["1"],
-              isCurrentTab: true,
-            }),
-            routeTabFactory.build({
-              selectedRouteIds: ["2"],
-              isCurrentTab: false,
-            }),
-          ],
-        },
+        wrapper: ({ children }) => (
+          <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
+        ),
       }
     )
-    rerender({
-      routeTabs: [
-        routeTabFactory.build({ selectedRouteIds: ["1"], isCurrentTab: false }),
-        routeTabFactory.build({ selectedRouteIds: ["2"], isCurrentTab: true }),
-      ],
-    })
+    routeTabs = [
+      routeTabFactory.build({ selectedRouteIds: ["1"], isCurrentTab: false }),
+      routeTabFactory.build({ selectedRouteIds: ["2"], isCurrentTab: true }),
+    ]
+    rerender()
     expect(mockFetchSwings).toHaveBeenCalledTimes(1)
   })
 
   test("does refetch swings when selected routes change", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+
+    let routeTabs = [routeTabFactory.build({ selectedRouteIds: ["1"] })]
     const { rerender } = renderHook(
       () => {
         useSwings()
       },
       {
-        wrapper,
-        initialProps: {
-          routeTabs: [routeTabFactory.build({ selectedRouteIds: ["1"] })],
-        },
+        wrapper: ({ children }) => (
+          <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
+        ),
       }
     )
-    rerender({
-      routeTabs: [routeTabFactory.build({ selectedRouteIds: ["2"] })],
-    })
+    routeTabs = [routeTabFactory.build({ selectedRouteIds: ["2"] })]
+    rerender()
     expect(mockFetchSwings).toHaveBeenCalledTimes(2)
   })
 })
 
-const wrapper = ({
+const Wrapper = ({
   children,
   routeTabs,
 }: {

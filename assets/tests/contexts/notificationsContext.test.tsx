@@ -1,4 +1,4 @@
-import { act as hooksAct, renderHook } from "@testing-library/react-hooks"
+import { act, renderHook } from "@testing-library/react"
 import React, { ReactNode, useContext } from "react"
 import {
   NotificationsContext,
@@ -9,11 +9,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { useNotifications } from "../../src/hooks/useNotifications"
 import { Notification, NotificationState } from "../../src/realtime.d"
-import {
-  initialState,
-  selectVehicleFromNotification,
-  State,
-} from "../../src/state"
+import { initialState, selectVehicleFromNotification } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 
@@ -76,7 +72,7 @@ describe("NotificationsProvider", () => {
       wrapper: NotificationsProvider,
     })
     expect(result.current.notifications).toHaveLength(0)
-    hooksAct(() => {
+    act(() => {
       handler!(notification)
     })
     expect(result.current.notifications).toHaveLength(1)
@@ -98,19 +94,19 @@ describe("NotificationsProvider", () => {
     ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
       return new Date(0)
     })
-    hooksAct(() => {
+    act(() => {
       handler!(notification)
     })
-    hooksAct(() => {
+    act(() => {
       jest.runOnlyPendingTimers()
       // This seems like it should work if we put the mock outside the
-      // hooksAct block, but it doesn't.
+      // act block, but it doesn't.
       ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
         return new Date(maxAge)
       })
     })
     expect(result.current.notifications).toHaveLength(1)
-    hooksAct(() => {
+    act(() => {
       jest.runOnlyPendingTimers()
     })
     expect(result.current.notifications).toHaveLength(0)
@@ -119,13 +115,8 @@ describe("NotificationsProvider", () => {
   test("selects vehicle from notification", () => {
     const stateDispatch = jest.fn()
 
-    const wrapper = ({
-      children,
-      state,
-    }: {
-      children?: ReactNode
-      state: State
-    }) => (
+    let state = initialState
+    const wrapper = ({ children }: { children?: ReactNode }) => (
       <StateDispatchProvider state={state} dispatch={stateDispatch}>
         <NotificationsProvider>
           <> {children} </>
@@ -135,10 +126,10 @@ describe("NotificationsProvider", () => {
 
     const { rerender } = renderHook(() => useContext(NotificationsContext), {
       wrapper,
-      initialProps: { state: initialState },
     })
 
-    rerender({ state: { ...initialState, selectedNotification: notification } })
+    state = { ...initialState, selectedNotification: notification }
+    rerender()
 
     expect(stateDispatch).toHaveBeenCalledWith(
       selectVehicleFromNotification(vehicle)
