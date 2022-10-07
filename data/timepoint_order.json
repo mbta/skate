@@ -20,6 +20,10 @@
   "19": {
     "0": ["brlng", "louis", "hrugg", "rugg", "malcx", "nubn"]
   },
+  "22": {
+    "comment": "insert timepoints for outbound school trips at sensible locations",
+    "0": ["rugg", "malcx", "roxbs", "jasst", "egles", "svrhm", "latac", "ghall", "frnpk"]
+  },
   "23": {
     "comment": "malcx is a timepoint only for school trip short turns",
     "0": ["roxbs", "malcx", "nubn"]
