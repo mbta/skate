@@ -9,7 +9,7 @@
   right: 0;
   top: 0;
   width: 23.5rem;
-  z-index: $right-panel-z-index;
+  z-index: $vpp-z-index;
 
   @media screen and (max-width: $mobile-max-width) {
     width: 100vw;
@@ -38,5 +38,5 @@
 
 .m-properties-panel__modal-overlay {
   @include modal-overlay;
-  z-index: 1000;
+  z-index: $modal-overlay-z-index;
 }

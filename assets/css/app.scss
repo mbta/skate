@@ -9,7 +9,9 @@ $shuttle-picker-width: 12.6rem;
 $view-header-height: 2.5rem;
 $vpp-location-padding: 1rem;
 $navbar-z-index: 1100;
-$right-panel-z-index: $navbar-z-index + 100;
+$modal-overlay-z-index: $navbar-z-index - 100;
+$vpp-z-index: $modal-overlay-z-index + 50;
+
 @import "base";
 @import "inter";
 @import "ui_kit";

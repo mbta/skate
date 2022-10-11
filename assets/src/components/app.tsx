@@ -62,10 +62,9 @@ const AppRoutes = () => {
               <BrowserRoute path="/search" element={<SearchPage />} />
             </Routes>
             {openView === OpenView.Late ? <LateView /> : null}
+            <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
           </Nav>
           <Modal />
-
-          <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
         </div>
       </VehiclesByRouteIdProvider>
     </div>
