@@ -10,7 +10,7 @@ $view-header-height: 2.5rem;
 $vpp-location-padding: 1rem;
 $navbar-z-index: 1100;
 $modal-overlay-z-index: $navbar-z-index - 100;
-$vpp-z-index: $modal-overlay-z-index + 50;
+$vpp-z-index: $modal-overlay-z-index + 2;
 
 @import "base";
 @import "inter";
