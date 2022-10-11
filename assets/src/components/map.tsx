@@ -6,6 +6,7 @@ import Leaflet, {
   LatLngExpression,
   Map as LeafletMap,
 } from "leaflet"
+import L from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -214,6 +215,9 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
+const stopRenderer = L.canvas({ pane: "stops-pane" })
+const routeRenderer = L.canvas({ pane: "routes-pane" })
+
 const LeafletShape = React.memo(({ shape }: { shape: Shape }) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
@@ -227,6 +231,7 @@ const LeafletShape = React.memo(({ shape }: { shape: Shape }) => {
         positions={positions}
         {...strokeOptions(shape)}
         pane="routes-pane"
+        renderer={routeRenderer}
       />
       {(shape.stops || []).map((stop) => {
         // List of stops should maybe be de-duped across all route variants.
@@ -240,6 +245,12 @@ const LeafletShape = React.memo(({ shape }: { shape: Shape }) => {
             center={[stop.lat, stop.lon]}
             radius={3}
             pane="stops-pane"
+            renderer={stopRenderer}
+            fillOpacity={1}
+            fillColor={stop.isStation ? "purple" : "white"}
+            stroke={true}
+            weight={1}
+            color="black"
           >
             <Tooltip>{stop.name}</Tooltip>
           </CircleMarker>
