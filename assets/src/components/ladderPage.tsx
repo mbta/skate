@@ -16,7 +16,6 @@ import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import { Notifications } from "./notifications"
 import Presets from "./presets"
-import RightPanel from "./rightPanel"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 import {
@@ -245,7 +244,6 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           ladderCrowdingToggles={ladderCrowdingToggles}
         />
       </div>
-      <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )
 }

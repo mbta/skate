@@ -23,12 +23,14 @@ import LateView from "./lateView"
 import { OpenView } from "../state"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
+import RightPanel from "./rightPanel"
 
 const AppRoutes = () => {
   useAppcues()
 
-  const [{ pickerContainerIsVisible, openView, routeTabs }] =
-    useContext(StateDispatchContext)
+  const [
+    { pickerContainerIsVisible, openView, routeTabs, selectedVehicleOrGhost },
+  ] = useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
 
@@ -60,6 +62,7 @@ const AppRoutes = () => {
               <BrowserRoute path="/search" element={<SearchPage />} />
             </Routes>
             {openView === OpenView.Late ? <LateView /> : null}
+            <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
           </Nav>
           <Modal />
         </div>

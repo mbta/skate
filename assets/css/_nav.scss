@@ -34,7 +34,7 @@
 }
 
 .m-nav__nav-bar {
-  z-index: 1100;
+  z-index: $navbar-z-index;
 }
 
 .m-nav__nav-bar--left {

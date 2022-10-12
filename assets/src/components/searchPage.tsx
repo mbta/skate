@@ -8,7 +8,6 @@ import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
-import RightPanel from "./rightPanel"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 
@@ -50,7 +49,7 @@ const ToggleMobileDisplayButton = ({
 }
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, selectedVehicleOrGhost, mobileMenuIsOpen }] =
+  const [{ searchPageState, mobileMenuIsOpen }] =
     useContext(StateDispatchContext)
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
@@ -101,8 +100,6 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-search-page__map">
         <Map vehicles={onlyVehicles} />
       </div>
-
-      <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )
 }

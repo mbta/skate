@@ -30,7 +30,9 @@ import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import routeTabFactory from "../factories/routeTab"
+import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
+import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -472,6 +474,44 @@ describe("LadderPage", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+
+  test("can click a vehicle to select it", async () => {
+    ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
+      ["1"]: [vehicle],
+    }))
+    ;(useTimepoints as jest.Mock).mockImplementationOnce(
+      () => timepointsByRouteId
+    )
+
+    const vehicle: VehicleOrGhost = vehicleFactory.build({ runId: "clickMe" })
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["1"],
+          ordering: 0,
+          isCurrentTab: true,
+        }),
+      ],
+      selectedVehicleOrGhost: vehicle,
+    }
+
+    const mockDispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={{ "1": [vehicle] }}>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(result.getByText(vehicle.runId!))
+    expect(mockDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "SELECT_VEHICLE" })
+    )
   })
 
   test("if a vehicle from a notification is loading, show nothing", () => {

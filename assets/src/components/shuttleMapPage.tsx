@@ -10,7 +10,6 @@ import { isASubwayRoute } from "../models/subwayRoute"
 import { RunId, TrainVehicle, Vehicle } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import Map from "./map"
-import RightPanel from "./rightPanel"
 import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
@@ -33,12 +32,8 @@ export const allTrainVehicles = (
 
 const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const {
-    selectedShuttleRouteIds,
-    selectedShuttleRunIds,
-    selectedVehicleOrGhost,
-    mobileMenuIsOpen,
-  } = state
+  const { selectedShuttleRouteIds, selectedShuttleRunIds, mobileMenuIsOpen } =
+    state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
   const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
@@ -69,8 +64,6 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
           trainVehicles={trainVehicles}
         />
       </div>
-
-      <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )
 }

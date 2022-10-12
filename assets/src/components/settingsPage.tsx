@@ -19,10 +19,9 @@ import {
   VehicleAdherenceColorsSetting,
 } from "../userSettings"
 import { Notifications } from "./notifications"
-import RightPanel from "./rightPanel"
 
 const SettingsPage = (): ReactElement<HTMLDivElement> => {
-  const [{ userSettings, mobileMenuIsOpen, selectedVehicleOrGhost }, dispatch] =
+  const [{ userSettings, mobileMenuIsOpen }, dispatch] =
     useContext(StateDispatchContext)
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
@@ -139,7 +138,6 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
       </div>
-      <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )
 }
