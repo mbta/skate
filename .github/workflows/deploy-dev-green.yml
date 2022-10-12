@@ -14,7 +14,7 @@ jobs:
       ECS_SERVICE: skate-dev-green
       AWS_DEFAULT_REGION: us-east-1
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: mbta/actions/build-push-ecr@v1
         id: build-push
         with:
