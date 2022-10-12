@@ -37,6 +37,7 @@ import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
+import "leaflet.fullscreen"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -295,6 +296,8 @@ export const RecenterControlButton = createControlComponent(
     new RecenterControl({ position: position }, recenterFn)
 )
 
+const FullscreenControl = createControlComponent(Leaflet.control.fullscreen)
+
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = ({
@@ -402,6 +405,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           latLngs={latLngs}
         />
         <ZoomControl position="topright" />
+        <FullscreenControl position="topright" />
         <RecenterControlButton
           position="topright"
           recenter={() => setShouldAutoCenter(true)}

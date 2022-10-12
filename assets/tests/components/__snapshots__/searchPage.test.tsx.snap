@@ -243,6 +243,17 @@ exports[`SearchPage renders the empty state 1`] = `
               </a>
             </div>
             <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
               class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
             >
               
@@ -602,6 +613,17 @@ exports[`SearchPage renders vehicle data 1`] = `
                   −
                 </span>
               </a>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
             </div>
             <div
               class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
