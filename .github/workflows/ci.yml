@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # cache the ASDF directory, using the values from .tool-versions
       - name: ASDF cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
@@ -29,7 +29,7 @@ jobs:
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
@@ -61,9 +61,9 @@ jobs:
           POSTGRES_DB: ${{env.DATABASE_NAME}}
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: ASDF cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
@@ -78,7 +78,7 @@ jobs:
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
@@ -112,9 +112,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: ASDF cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
@@ -129,7 +129,7 @@ jobs:
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}

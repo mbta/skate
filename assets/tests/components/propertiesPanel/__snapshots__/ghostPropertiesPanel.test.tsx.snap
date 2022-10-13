@@ -386,9 +386,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
       >
         <div
           className="m-properties-panel__inbound-outbound"
-        >
-          
-        </div>
+        />
         <div
           className="m-route-variant-name"
           data-testid="variant-name"

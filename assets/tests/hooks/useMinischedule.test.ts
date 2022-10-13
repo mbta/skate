@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
 import {
   useMinischeduleBlock,
@@ -86,10 +86,13 @@ describe("useMinischeduleRuns", () => {
     mockFetchScheduleRun
       .mockImplementationOnce(() => instantPromise(run1))
       .mockImplementationOnce(() => instantPromise(run2))
-    const { result, waitForNextUpdate } = renderHook(() => {
+    const { result } = renderHook(() => {
       return useMinischeduleRuns(["trip1", "trip2"])
     })
-    await waitForNextUpdate()
+    const initialValue = result.current
+    await waitFor(() => {
+      expect(result.current).not.toBe(initialValue)
+    })
 
     expect(result.current).toEqual([run1, run2])
   })

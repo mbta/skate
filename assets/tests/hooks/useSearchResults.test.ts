@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"

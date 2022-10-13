@@ -1,5 +1,4 @@
 import React from "react"
-import renderer from "react-test-renderer"
 import { render, fireEvent, within } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import { BrowserRouter } from "react-router-dom"
@@ -27,7 +26,6 @@ import {
   promptToSaveOrCreatePreset,
 } from "../../src/state"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
-import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import routeTabFactory from "../factories/routeTab"
 import vehicleFactory from "../factories/vehicle"
@@ -55,14 +53,12 @@ const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <LadderPage />
-        </BrowserRouter>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <LadderPage />
+      </BrowserRouter>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders with route tabs", () => {
@@ -86,18 +82,16 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <BrowserRouter>
-            <RoutesProvider routes={routes}>
-              <LadderPage />
-            </RoutesProvider>
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("can select a different route tab by clicking", async () => {
@@ -387,18 +381,16 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <BrowserRouter>
-            <RoutesProvider routes={routes}>
-              <LadderPage />
-            </RoutesProvider>
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders with timepoints", () => {
@@ -415,65 +407,16 @@ describe("LadderPage", () => {
     ;(useTimepoints as jest.Mock).mockImplementationOnce(
       () => timepointsByRouteId
     )
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <BrowserRouter>
-            <RoutesProvider routes={routes}>
-              <LadderPage />
-            </RoutesProvider>
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders with vehicles and selected vehicles", () => {
-    const vehicle: VehicleOrGhost = ghostFactory.build({
-      id: "ghost-id",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "hhgat",
-        fractionUntilTimepoint: 0.0,
-      },
-      scheduledLogonTime: null,
-      routeStatus: "on_route",
-      blockWaivers: [],
-    })
-    ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
-      ["1"]: [vehicle],
-    }))
-    const mockState = {
-      ...initialState,
-      routeTabs: [
-        routeTabFactory.build({
-          selectedRouteIds: ["1"],
-          ordering: 0,
-          isCurrentTab: true,
-        }),
-      ],
-      selectedVehicleOrGhost: vehicle,
-    }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <BrowserRouter>
-            <RoutesProvider routes={routes}>
-              <LadderPage />
-            </RoutesProvider>
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("can click a vehicle to select it", async () => {

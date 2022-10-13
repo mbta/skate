@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"
 import shapesRed from "../../src/data/shapesRed"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"

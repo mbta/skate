@@ -26,9 +26,6 @@ import {
   useMapEvents,
   ZoomControl,
 } from "react-leaflet"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { FullscreenControl } from "react-leaflet-fullscreen"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -40,6 +37,7 @@ import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
+import "leaflet.fullscreen"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -298,6 +296,8 @@ export const RecenterControlButton = createControlComponent(
     new RecenterControl({ position: position }, recenterFn)
 )
 
+const FullscreenControl = createControlComponent(Leaflet.control.fullscreen)
+
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = ({
@@ -392,11 +392,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         zoomControl={false}
         center={defaultCenter}
         zoom={13}
-        // workaround for ref unsupported in react-leaflet v3.
-        // can be replaced with directly passing ref in v4.
-        whenCreated={(mapInstance) => {
-          mapRef.current = mapInstance
-        }}
+        ref={mapRef}
         attributionControl={false}
       >
         <EventAdder

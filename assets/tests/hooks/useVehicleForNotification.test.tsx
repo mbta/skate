@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import React, { ReactElement } from "react"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useVehicleForNotification from "../../src/hooks/useVehicleForNotification"

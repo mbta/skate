@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import useVehicleForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
 import { vehicleFromData } from "../../src/models/vehicleData"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"

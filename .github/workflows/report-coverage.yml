@@ -45,7 +45,7 @@ jobs:
           unzip elixir-lcov.zip
           echo "PR_SHA=$(cat PR_SHA)" >> $GITHUB_ENV
           echo "PR_NUMBER=$(cat PR_NUMBER)" >> $GITHUB_ENV
-      - uses: actions/checkout@v2 # UNTRUSTED CODE - do not run scripts from it
+      - uses: actions/checkout@v3 # UNTRUSTED CODE - do not run scripts from it
         with:
           ref: ${{ env.PR_SHA }}
       - name: Upload coverage artifact and post comment

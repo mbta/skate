@@ -1,5 +1,5 @@
 import React from "react"
-import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import TabPanels from "../../../src/components/propertiesPanel/tabPanels"
 import { Vehicle } from "../../../src/realtime"
 import vehicleFactory from "../../factories/vehicle"
@@ -56,44 +56,38 @@ const vehicle: Vehicle = vehicleFactory.build({
 
 describe("TabPanels", () => {
   test("renders the status tab", () => {
-    const tree = renderer
-      .create(
-        <TabPanels
-          statusContent={<>Test content</>}
-          vehicleOrGhost={vehicle}
-          mode="status"
-        />
-      )
-      .toJSON()
+    const result = render(
+      <TabPanels
+        statusContent={<>Test content</>}
+        vehicleOrGhost={vehicle}
+        mode="status"
+      />
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders the run tab", () => {
-    const tree = renderer
-      .create(
-        <TabPanels
-          statusContent={<>Test content</>}
-          vehicleOrGhost={vehicle}
-          mode="run"
-        />
-      )
-      .toJSON()
+    const result = render(
+      <TabPanels
+        statusContent={<>Test content</>}
+        vehicleOrGhost={vehicle}
+        mode="run"
+      />
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders the block tab", () => {
-    const tree = renderer
-      .create(
-        <TabPanels
-          statusContent={<>Test content</>}
-          vehicleOrGhost={vehicle}
-          mode="block"
-        />
-      )
-      .toJSON()
+    const result = render(
+      <TabPanels
+        statusContent={<>Test content</>}
+        vehicleOrGhost={vehicle}
+        mode="block"
+      />
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(result.asFragment()).toMatchSnapshot()
   })
 })

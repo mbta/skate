@@ -8,6 +8,7 @@ import MobilePortraitNav from "./nav/mobilePortraitNav"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 
 interface Props {
+  children?: React.ReactNode
   pickerContainerIsVisible: boolean
   openView: OpenView
 }

@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import { Socket } from "phoenix"
 import React, { ReactNode } from "react"
 import { SocketProvider } from "../../src/contexts/socketContext"
@@ -43,8 +43,11 @@ describe("useNotifications", () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
       {
-        wrapper,
-        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+            {children}
+          </Wrapper>
+        ),
       }
     )
 
@@ -71,8 +74,11 @@ describe("useNotifications", () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
       {
-        wrapper,
-        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+            {children}
+          </Wrapper>
+        ),
       }
     )
 
@@ -92,7 +98,13 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper, initialProps: { socket: mockSocket, selectedRouteIds: [] } }
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={[]}>
+            {children}
+          </Wrapper>
+        ),
+      }
     )
 
     expect(mockChannel.join).toHaveBeenCalled()
@@ -115,7 +127,13 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper, initialProps: { socket: mockSocket, selectedRouteIds: [] } }
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={[]}>
+            {children}
+          </Wrapper>
+        ),
+      }
     )
 
     expect(spyConsoleError).toHaveBeenCalled()
@@ -135,7 +153,13 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper, initialProps: { socket: mockSocket, selectedRouteIds: [] } }
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={[]}>
+            {children}
+          </Wrapper>
+        ),
+      }
     )
 
     expect(reloadSpy).toHaveBeenCalled()
@@ -156,8 +180,11 @@ describe("useNotifications", () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
       {
-        wrapper,
-        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+            {children}
+          </Wrapper>
+        ),
       }
     )
     rerender()
@@ -174,16 +201,21 @@ describe("useNotifications", () => {
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
 
+    let selectedRouteIds = ["route"]
     const { rerender } = renderHook(
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
       {
-        wrapper,
-        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
+            {children}
+          </Wrapper>
+        ),
       }
     )
-    rerender({ socket: mockSocket, selectedRouteIds: ["route"] })
+    selectedRouteIds = ["route"]
+    rerender()
 
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
   })
@@ -197,30 +229,31 @@ describe("useNotifications", () => {
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
 
+    let selectedRouteIds = ["route1"]
     const { rerender } = renderHook(
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
       {
-        wrapper,
-        initialProps: { socket: mockSocket, selectedRouteIds: ["route1"] },
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
+            {children}
+          </Wrapper>
+        ),
       }
     )
-    rerender({ socket: mockSocket, selectedRouteIds: ["route1", "route2"] })
+    selectedRouteIds = ["route1", "route2"]
+    rerender()
 
     expect(mockChannel.join).toHaveBeenCalledTimes(2)
   })
 })
 
-const wrapper = ({
-  children,
-  socket,
-  selectedRouteIds,
-}: {
+const Wrapper: React.FC<{
   children?: ReactNode
   socket: Socket | undefined
   selectedRouteIds: RouteId[]
-}) => (
+}> = ({ children, socket, selectedRouteIds }) => (
   <SocketProvider
     socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
   >

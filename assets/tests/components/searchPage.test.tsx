@@ -1,5 +1,5 @@
 import React from "react"
-import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import SearchPage from "../../src/components/searchPage"
@@ -11,7 +11,6 @@ import * as dateTime from "../../src/util/dateTime"
 
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
-import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 jest
   .spyOn(dateTime, "now")
@@ -47,33 +46,29 @@ jest.mock("../../src/hooks/useSearchResults", () => ({
 describe("SearchPage", () => {
   test("renders the empty state", () => {
     ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-          <BrowserRouter>
-            <SearchPage />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <SearchPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders vehicle data", () => {
     const searchResults: VehicleOrGhost[] = [vehicle, ghost]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-          <BrowserRouter>
-            <SearchPage />
-          </BrowserRouter>
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <SearchPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("on mobile, shows the results list initially", () => {

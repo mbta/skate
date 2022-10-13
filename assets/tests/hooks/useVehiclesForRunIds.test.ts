@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react"
 import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import { VehicleData } from "../../src/models/vehicleData"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"

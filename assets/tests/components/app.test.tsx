@@ -1,5 +1,4 @@
 import React from "react"
-import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import App from "../../src/components/app"
@@ -23,8 +22,8 @@ jest.mock("../../src/hooks/useVehicles", () => ({
 
 describe("App", () => {
   test("renders", () => {
-    const tree = renderer.create(<App />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(<App />)
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("shows disconnected modal if the socket is disconnected", () => {
@@ -62,7 +61,7 @@ describe("App", () => {
       ],
     }
     const mockDispatch = jest.fn()
-    renderer.create(
+    render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <App />
       </StateDispatchProvider>

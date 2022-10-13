@@ -1,5 +1,6 @@
 {
   "name": "skate",
+  "description": "front-end for MBTA bus dispatch application",
   "repository": {
     "type": "git",
     "url": "https://github.com/mbta/skate.git",
@@ -23,37 +24,40 @@
   "dependencies": {
     "@react-hook/media-query": "^1.1.1",
     "@rehooks/component-size": "^1.0.3",
-    "@sentry/react": "^6.18.2",
+    "@sentry/react": "^7.15.0",
     "@tippyjs/react": "^4.2.6",
     "@types/uuid": "^8.3.4",
     "core-js": "^3.21.1",
     "identity-obj-proxy": "^3.0.0",
-    "leaflet": "^1.9.0",
+    "leaflet": "^1.9.2",
     "leaflet-defaulticon-compatibility": "^0.1.1",
+    "leaflet.fullscreen": "^2.4.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-leaflet": "^3.2.5",
-    "react-leaflet-fullscreen": "^2.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.1.0",
     "react-router-dom": "^6.3.0",
     "uuid": "^8.3.2",
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.3",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.5",
-    "@testing-library/react-hooks": "^8.0.1",
+    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.2.1",
     "@types/jest": "^27.4.1",
-    "@types/leaflet": "^1.7.4",
+    "@types/leaflet": "^1.8.0",
+    "@types/leaflet.fullscreen": "^1.6.1",
     "@types/phoenix": "^1.5.4",
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
     "@types/react-leaflet": "^2.8.2",
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
+    "babel-jest": "^29.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.0.0",
@@ -68,8 +72,9 @@
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^7.0.3",
     "prettier": "^2.7.1",
-    "react-test-renderer": "^17.0.2",
+    "react-test-renderer": "^18.2.0",
     "sass-loader": "^13.0.2",
+    "screenfull": "^6.0.2",
     "svg-inline-loader": "^0.8.2",
     "svgo": "^2.8.0",
     "svgo-loader": "^3.0.0",
@@ -83,8 +88,12 @@
   "jest": {
     "clearMocks": true,
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest",
+      "\\.js$": "babel-jest"
     },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(@react-leaflet|react-leaflet|screenfull)/)"
+    ],
     "testRegex": "(src|tests)/.*\\.test\\.tsx?$",
     "modulePaths": [
       "<rootDir>/src"
