@@ -1,5 +1,6 @@
 {
   "name": "skate",
+  "description": "front-end for MBTA bus dispatch application",
   "repository": {
     "type": "git",
     "url": "https://github.com/mbta/skate.git",
