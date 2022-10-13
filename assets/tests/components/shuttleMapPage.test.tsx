@@ -94,6 +94,8 @@ describe("Shuttle Map Page", () => {
     expect(result.asFragment()).toMatchSnapshot()
   })
 
+  // TODO: based on the snapshot, this test does not appear to be correctly testing
+  // the intended functionality
   test("renders with shapes selected", () => {
     ;(useRouteShapes as jest.Mock).mockImplementationOnce(() => [shape])
     ;(useTripShape as jest.Mock).mockImplementationOnce(() => [shape])
