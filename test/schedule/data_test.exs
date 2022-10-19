@@ -532,13 +532,13 @@ defmodule Schedule.DataTest do
     test "returns nil when no trip found", %{trip: trip, shape: shape} do
       data = %Data{trips: %{}, shapes: %{trip.route_id => [shape]}}
 
-      assert nil == Data.shape_with_stops_for_trip(data, trip.id)
+      assert is_nil(Data.shape_with_stops_for_trip(data, trip.id))
     end
 
     test "returns nil when no shape found", %{trip: trip} do
       data = %Data{trips: %{trip.id => trip}, shapes: %{}}
 
-      assert nil == Data.shape_with_stops_for_trip(data, trip.id)
+      assert is_nil(Data.shape_with_stops_for_trip(data, trip.id))
     end
 
     test "returns the shape without stops when no stops found", %{trip: trip, shape: shape} do
