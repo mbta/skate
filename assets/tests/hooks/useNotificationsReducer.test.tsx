@@ -320,12 +320,13 @@ describe("useNotificationsReducer", () => {
       initial_notifications: [],
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
+    let selectedRouteIds = ["route"]
 
     const { rerender } = renderHook(
       () => useNotificationsReducer(false, mockSetIsInitialLoad),
       {
         wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
             {children}
           </Wrapper>
         ),
@@ -343,18 +344,20 @@ describe("useNotificationsReducer", () => {
       initial_notifications: [],
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
+    let selectedRouteIds = ["route"]
 
     const { rerender } = renderHook(
       () => useNotificationsReducer(false, mockSetIsInitialLoad),
       {
         wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
+          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
             {children}
           </Wrapper>
         ),
       }
     )
-    rerender({ socket: mockSocket, selectedRouteIds: ["route"] })
+    selectedRouteIds = ["route"]
+    rerender()
 
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
   })
@@ -366,18 +369,20 @@ describe("useNotificationsReducer", () => {
       initial_notifications: [],
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
+    let selectedRouteIds = ["route1"]
 
     const { rerender } = renderHook(
       () => useNotificationsReducer(false, mockSetIsInitialLoad),
       {
         wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={["route1"]}>
+          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
             {children}
           </Wrapper>
         ),
       }
     )
-    rerender({ socket: mockSocket, selectedRouteIds: ["route1", "route2"] })
+    selectedRouteIds = ["route1", "route2"]
+    rerender()
 
     expect(mockChannel.join).toHaveBeenCalledTimes(2)
   })
