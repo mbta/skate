@@ -548,7 +548,7 @@ defmodule Schedule.DataTest do
                Data.shape_with_stops_for_trip(data, trip.id)
     end
 
-    test "returns  all stops when all stops are found", %{
+    test "returns all stops when all stops are found", %{
       trip: trip,
       stops: [stop1, stop2],
       shape: shape
