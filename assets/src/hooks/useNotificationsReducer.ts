@@ -205,12 +205,12 @@ type ReceivedNotifications = NewNotification | InitialNotifications | null
 const parseNotifications = (
   notificationData: NotificationData | InitialNotificationData
 ): NewNotification | InitialNotifications => {
-  if (notificationData.hasOwnProperty("initial_notifications")) {
+  if ("initial_notifications" in notificationData) {
     return {
       type: "initial",
       payload: (
         notificationData as InitialNotificationData
-      ).initial_notifications!.map(notificationFromData),
+      ).initial_notifications.map(notificationFromData),
     }
   }
   return {
@@ -225,8 +225,8 @@ const useNotifications = (socket: Socket | undefined, routeIds: RouteId[]) => {
     topic: "notifications",
     event: "notification",
     parser: parseNotifications,
+    dependencies: routeIds,
     loadingState: null,
-    dependencies: [routeIds],
   })
 }
 
@@ -247,29 +247,29 @@ export const useNotificationsReducer = (
     setRouteIds(newRouteIds)
   }
 
-  const lateestMessage: ReceivedNotifications = useNotifications(
+  const latestMessage: ReceivedNotifications = useNotifications(
     socket,
     routeIds
   )
 
   useEffect(() => {
-    if (lateestMessage) {
-      if (lateestMessage.type === "initial" && isInitialLoad) {
+    if (latestMessage) {
+      if (latestMessage.type === "initial" && isInitialLoad) {
         dispatch(
           setNotifications(
-            (lateestMessage as InitialNotifications).payload,
+            (latestMessage as InitialNotifications).payload,
             isInitialLoad
           )
         )
         setIsInitialLoad(false)
       }
 
-      if (lateestMessage.type === "new") {
+      if (latestMessage.type === "new") {
         tagManagerEvent("notification_delivered")
-        dispatch(addNotification((lateestMessage as NewNotification).payload))
+        dispatch(addNotification((latestMessage as NewNotification).payload))
       }
     }
-  }, [socket, lateestMessage, isInitialLoad, setIsInitialLoad])
+  }, [socket, latestMessage, isInitialLoad, setIsInitialLoad])
 
   const dispatchWithSideEffects: Dispatch = (action: Action): void => {
     switch (action.type) {

@@ -24,7 +24,7 @@ export const useChannel = <T>({
   parser: (data: any) => T
   loadingState: T
   closeAfterFirstRead?: boolean
-  dependencies?: any[]
+  dependencies?: any
 }): T => {
   const [state, setState] = useState<T>(loadingState)
 
@@ -67,7 +67,7 @@ export const useChannel = <T>({
     loadingState,
     parser,
     closeAfterFirstRead,
-    ...(dependencies || []),
+    dependencies,
   ])
   return state
 }

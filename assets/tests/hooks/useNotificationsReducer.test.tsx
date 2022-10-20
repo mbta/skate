@@ -322,7 +322,7 @@ describe("useNotificationsReducer", () => {
       data: { initial_notifications: [] },
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
-    let selectedRouteIds = ["route"]
+    const selectedRouteIds = ["route"]
 
     const { rerender } = renderHook(
       () => useNotificationsReducer(false, mockSetIsInitialLoad),
