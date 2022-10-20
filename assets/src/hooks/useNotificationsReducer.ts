@@ -1,4 +1,4 @@
-import { Channel, Socket } from "phoenix"
+import { Socket } from "phoenix"
 import {
   Dispatch as ReactDispatch,
   useContext,
@@ -12,7 +12,6 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { equalByElements } from "../helpers/array"
 import { tagManagerEvent } from "../helpers/googleTagManager"
-import { reload } from "../models/browser"
 import {
   NotificationData,
   notificationFromData,
@@ -20,6 +19,7 @@ import {
 import { allOpenRouteIds } from "../models/routeTab"
 import { Notification } from "../realtime.d"
 import { RouteId } from "../schedule"
+import { useChannel } from "./useChannel"
 
 export interface State {
   notifications: Notification[]
@@ -72,17 +72,17 @@ export const markAllAsRead = (): MarkAllAsReadAction => ({
 interface SetNotificationsAction {
   type: "SET_NOTIFICATIONS"
   payload: {
-    notificationsData: NotificationData[]
+    notifications: Notification[]
     isInitialLoad: boolean
   }
 }
 
 export const setNotifications = (
-  notificationsData: NotificationData[],
+  notifications: Notification[],
   isInitialLoad: boolean
 ): SetNotificationsAction => ({
   type: "SET_NOTIFICATIONS",
-  payload: { notificationsData, isInitialLoad },
+  payload: { notifications, isInitialLoad },
 })
 
 interface ToggleReadStateAction {
@@ -132,9 +132,7 @@ export const notificationsReducer = (
         state: "read",
       }))
     case "SET_NOTIFICATIONS": {
-      const notificationsData = (action as SetNotificationsAction).payload
-        .notificationsData
-      return notificationsData.map(notificationFromData)
+      return (action as SetNotificationsAction).payload.notifications
     }
     case "TOGGLE_READ_STATE": {
       const notificationToToggle = (action as ToggleReadStateAction).payload
@@ -197,64 +195,81 @@ const persistToggledNotificationReadState = (
   ])
 }
 
+type InitialNotificationData = { initial_notifications: NotificationData[] }
+
+type InitialNotifications = { type: "initial"; payload: Notification[] }
+type NewNotification = { type: "new"; payload: Notification }
+
+type ReceivedNotifications = NewNotification | InitialNotifications | null
+
+const parseNotifications = (
+  notificationData: NotificationData | InitialNotificationData
+): NewNotification | InitialNotifications => {
+  if (notificationData.hasOwnProperty("initial_notifications")) {
+    return {
+      type: "initial",
+      payload: (
+        notificationData as InitialNotificationData
+      ).initial_notifications!.map(notificationFromData),
+    }
+  }
+  return {
+    type: "new",
+    payload: notificationFromData(notificationData as NotificationData),
+  }
+}
+
+const useNotifications = (socket: Socket | undefined, routeIds: RouteId[]) => {
+  return useChannel<ReceivedNotifications>({
+    socket,
+    topic: "notifications",
+    event: "notification",
+    parser: parseNotifications,
+    loadingState: null,
+    dependencies: [routeIds],
+  })
+}
+
 export const useNotificationsReducer = (
   isInitialLoad: boolean,
   setIsInitialLoad: React.Dispatch<boolean>
 ): [State, Dispatch] => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const topic = "notifications"
-  const event = "notification"
-
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const [{ routeTabs }] = useContext(StateDispatchContext)
   const [routeIds, setRouteIds] = useState<RouteId[]>(
     allOpenRouteIds(routeTabs)
   )
-
   const newRouteIds = allOpenRouteIds(routeTabs)
 
   if (!equalByElements(routeIds, newRouteIds)) {
     setRouteIds(newRouteIds)
   }
 
+  const lateestMessage: ReceivedNotifications = useNotifications(
+    socket,
+    routeIds
+  )
+
   useEffect(() => {
-    let channel: Channel | undefined
-
-    if (socket !== undefined) {
-      channel = socket.channel(topic)
-      channel.on(event, ({ data: data }) => {
-        tagManagerEvent("notification_delivered")
-        const notification: Notification = notificationFromData(data)
-        dispatch(addNotification(notification))
-      })
-      const push = channel
-        .join()
-        .receive("error", ({ reason }) =>
-          // eslint-disable-next-line no-console
-          console.error(`joining topic ${topic} failed`, reason)
+    if (lateestMessage) {
+      if (lateestMessage.type === "initial" && isInitialLoad) {
+        dispatch(
+          setNotifications(
+            (lateestMessage as InitialNotifications).payload,
+            isInitialLoad
+          )
         )
-        .receive("timeout", reload)
+        setIsInitialLoad(false)
+      }
 
-      if (isInitialLoad) {
-        push.receive("ok", (data) => {
-          if (data.initial_notifications) {
-            dispatch(
-              setNotifications(data.initial_notifications, isInitialLoad)
-            )
-            setIsInitialLoad(false)
-          }
-        })
+      if (lateestMessage.type === "new") {
+        tagManagerEvent("notification_delivered")
+        dispatch(addNotification((lateestMessage as NewNotification).payload))
       }
     }
-
-    return () => {
-      if (channel !== undefined) {
-        channel.leave()
-        channel = undefined
-      }
-    }
-  }, [routeIds, socket, isInitialLoad, setIsInitialLoad])
+  }, [socket, lateestMessage, isInitialLoad, setIsInitialLoad])
 
   const dispatchWithSideEffects: Dispatch = (action: Action): void => {
     switch (action.type) {

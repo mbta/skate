@@ -99,7 +99,7 @@ describe("notificationsReducer", () => {
     }
     const resultState = reducer(
       initialState,
-      setNotifications([notification1Data], true)
+      setNotifications([notification1], true)
     )
     expect(resultState.notifications).toEqual([notification1])
     expect(resultState.showLatestNotification).toEqual(true)
@@ -112,7 +112,7 @@ describe("notificationsReducer", () => {
     }
     const resultState = reducer(
       initialState,
-      setNotifications([notification1Data], false)
+      setNotifications([notification1], false)
     )
     expect(resultState.notifications).toEqual([notification1])
     expect(resultState.showLatestNotification).toEqual(false)
@@ -198,9 +198,11 @@ describe("useNotificationsReducer", () => {
     const mockSetIsInitialLoad = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", {
-      initial_notifications: initialNotifications,
+      data: {
+        initial_notifications: initialNotifications,
+      },
     })
-    mockSocket.channel.mockImplementation(() => mockChannel)
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { result } = renderHook(
       () => useNotificationsReducer(true, mockSetIsInitialLoad),
@@ -317,7 +319,7 @@ describe("useNotificationsReducer", () => {
     const mockSetIsInitialLoad = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", {
-      initial_notifications: [],
+      data: { initial_notifications: [] },
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
     let selectedRouteIds = ["route"]
@@ -341,7 +343,9 @@ describe("useNotificationsReducer", () => {
     const mockSetIsInitialLoad = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", {
-      initial_notifications: [],
+      data: {
+        initial_notifications: [],
+      },
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
     let selectedRouteIds = ["route"]
@@ -366,7 +370,9 @@ describe("useNotificationsReducer", () => {
     const mockSetIsInitialLoad = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", {
-      initial_notifications: [],
+      data: {
+        initial_notifications: [],
+      },
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
     let selectedRouteIds = ["route1"]
