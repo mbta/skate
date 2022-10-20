@@ -15,11 +15,9 @@ import {
 import { ConnectionStatus } from "../../src/hooks/useSocket"
 import { NotificationData } from "../../src/models/notificationData"
 import { Notification, NotificationState } from "../../src/realtime"
-import { RouteId } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-import routeTabFactory from "../factories/routeTab"
 import * as browser from "../../src/models/browser"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 
@@ -208,9 +206,7 @@ describe("useNotificationsReducer", () => {
       () => useNotificationsReducer(true, mockSetIsInitialLoad),
       {
         wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
-            {children}
-          </Wrapper>
+          <Wrapper socket={mockSocket}>{children}</Wrapper>
         ),
       }
     )
@@ -238,9 +234,7 @@ describe("useNotificationsReducer", () => {
       () => useNotificationsReducer(true, mockSetIsInitialLoad),
       {
         wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={["route"]}>
-            {children}
-          </Wrapper>
+          <Wrapper socket={mockSocket}>{children}</Wrapper>
         ),
       }
     )
@@ -261,9 +255,7 @@ describe("useNotificationsReducer", () => {
       () => useNotificationsReducer(false, mockSetIsInitialLoad),
       {
         wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={[]}>
-            {children}
-          </Wrapper>
+          <Wrapper socket={mockSocket}>{children}</Wrapper>
         ),
       }
     )
@@ -285,9 +277,7 @@ describe("useNotificationsReducer", () => {
 
     renderHook(() => useNotificationsReducer(true, mockSetIsInitialLoad), {
       wrapper: ({ children }) => (
-        <Wrapper socket={mockSocket} selectedRouteIds={[]}>
-          {children}
-        </Wrapper>
+        <Wrapper socket={mockSocket}>{children}</Wrapper>
       ),
     })
 
@@ -305,9 +295,7 @@ describe("useNotificationsReducer", () => {
 
     renderHook(() => useNotificationsReducer(false, mockSetIsInitialLoad), {
       wrapper: ({ children }) => (
-        <Wrapper socket={mockSocket} selectedRouteIds={[]}>
-          {children}
-        </Wrapper>
+        <Wrapper socket={mockSocket}>{children}</Wrapper>
       ),
     })
 
@@ -322,97 +310,32 @@ describe("useNotificationsReducer", () => {
       data: { initial_notifications: [] },
     })
     mockSocket.channel.mockImplementation(() => mockChannel)
-    const selectedRouteIds = ["route"]
 
     const { rerender } = renderHook(
       () => useNotificationsReducer(false, mockSetIsInitialLoad),
       {
         wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
-            {children}
-          </Wrapper>
+          <Wrapper socket={mockSocket}>{children}</Wrapper>
         ),
       }
     )
     rerender()
 
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
-  })
-
-  test("doesn't rejoin channel when route IDs don't change", () => {
-    const mockSetIsInitialLoad = jest.fn()
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {
-      data: {
-        initial_notifications: [],
-      },
-    })
-    mockSocket.channel.mockImplementation(() => mockChannel)
-    let selectedRouteIds = ["route"]
-
-    const { rerender } = renderHook(
-      () => useNotificationsReducer(false, mockSetIsInitialLoad),
-      {
-        wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
-            {children}
-          </Wrapper>
-        ),
-      }
-    )
-    selectedRouteIds = ["route"]
-    rerender()
-
-    expect(mockChannel.join).toHaveBeenCalledTimes(1)
-  })
-
-  test("rejoins channel if selected routes change", () => {
-    const mockSetIsInitialLoad = jest.fn()
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {
-      data: {
-        initial_notifications: [],
-      },
-    })
-    mockSocket.channel.mockImplementation(() => mockChannel)
-    let selectedRouteIds = ["route1"]
-
-    const { rerender } = renderHook(
-      () => useNotificationsReducer(false, mockSetIsInitialLoad),
-      {
-        wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket} selectedRouteIds={selectedRouteIds}>
-            {children}
-          </Wrapper>
-        ),
-      }
-    )
-    selectedRouteIds = ["route1", "route2"]
-    rerender()
-
-    expect(mockChannel.join).toHaveBeenCalledTimes(2)
   })
 })
 
 const Wrapper = ({
   children,
   socket,
-  selectedRouteIds,
 }: {
   children?: ReactNode
   socket: Socket | undefined
-  selectedRouteIds: RouteId[]
 }) => (
   <SocketProvider
     socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
   >
-    <StateDispatchProvider
-      state={{
-        ...initialState,
-        routeTabs: [routeTabFactory.build({ selectedRouteIds })],
-      }}
-      dispatch={jest.fn()}
-    >
+    <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
       <> {children} </>
     </StateDispatchProvider>
   </SocketProvider>

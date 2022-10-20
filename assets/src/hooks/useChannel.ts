@@ -16,7 +16,6 @@ export const useChannel = <T>({
   parser,
   loadingState,
   closeAfterFirstRead,
-  dependencies,
 }: {
   socket: Socket | undefined
   topic: string | null
@@ -24,7 +23,6 @@ export const useChannel = <T>({
   parser: (data: any) => T
   loadingState: T
   closeAfterFirstRead?: boolean
-  dependencies?: any
 }): T => {
   const [state, setState] = useState<T>(loadingState)
 
@@ -60,14 +58,6 @@ export const useChannel = <T>({
         channel = undefined
       }
     }
-  }, [
-    socket,
-    topic,
-    event,
-    loadingState,
-    parser,
-    closeAfterFirstRead,
-    dependencies,
-  ])
+  }, [socket, topic, event, loadingState, parser, closeAfterFirstRead])
   return state
 }

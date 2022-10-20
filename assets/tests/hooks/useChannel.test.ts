@@ -222,35 +222,6 @@ describe("useChannel", () => {
     expect(channel2.join).toHaveBeenCalled()
   })
 
-  test("leaves the channel, removes old data, and joins new channel when a passed dependency changes", () => {
-    const mockSocket = makeMockSocket()
-    const channel1 = makeMockChannel()
-    const channel2 = makeMockChannel()
-    mockSocket.channel
-      .mockImplementationOnce(() => channel1)
-      .mockImplementationOnce(() => channel2)
-
-    const parser = jest.fn(() => "parsed")
-    const { rerender } = renderHook(
-      (dependencies: any[]) =>
-        useChannel({
-          socket: mockSocket,
-          topic: "topic",
-          event: "event",
-          parser,
-          loadingState: "loading",
-          dependencies: dependencies,
-        }),
-      { initialProps: [["a"]] }
-    )
-
-    expect(channel1.join).toBeCalledTimes(1)
-    rerender([["b"]])
-
-    expect(channel1.leave).toHaveBeenCalled()
-    expect(channel2.join).toHaveBeenCalledTimes(1)
-  })
-
   test("leaves the channel and removes old data when topic is changed to null", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: "raw" })

@@ -4,21 +4,16 @@ import {
   useContext,
   useEffect,
   useReducer,
-  useState,
 } from "react"
 import { putNotificationReadState } from "../api"
 import { otherNotificationReadState } from "../contexts/notificationsContext"
 import { SocketContext } from "../contexts/socketContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { equalByElements } from "../helpers/array"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import {
   NotificationData,
   notificationFromData,
 } from "../models/notificationData"
-import { allOpenRouteIds } from "../models/routeTab"
 import { Notification } from "../realtime.d"
-import { RouteId } from "../schedule"
 import { useChannel } from "./useChannel"
 
 export interface State {
@@ -219,13 +214,12 @@ const parseNotifications = (
   }
 }
 
-const useNotifications = (socket: Socket | undefined, routeIds: RouteId[]) => {
+const useNotifications = (socket: Socket | undefined) => {
   return useChannel<ReceivedNotifications>({
     socket,
     topic: "notifications",
     event: "notification",
     parser: parseNotifications,
-    dependencies: routeIds,
     loadingState: null,
   })
 }
@@ -237,20 +231,7 @@ export const useNotificationsReducer = (
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const [{ routeTabs }] = useContext(StateDispatchContext)
-  const [routeIds, setRouteIds] = useState<RouteId[]>(
-    allOpenRouteIds(routeTabs)
-  )
-  const newRouteIds = allOpenRouteIds(routeTabs)
-
-  if (!equalByElements(routeIds, newRouteIds)) {
-    setRouteIds(newRouteIds)
-  }
-
-  const latestMessage: ReceivedNotifications = useNotifications(
-    socket,
-    routeIds
-  )
+  const latestMessage: ReceivedNotifications = useNotifications(socket)
 
   useEffect(() => {
     if (latestMessage) {
