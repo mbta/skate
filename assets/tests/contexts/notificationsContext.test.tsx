@@ -84,7 +84,7 @@ describe("NotificationsProvider", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
   })
 
-  test.only("expires notifications after 8 hours", () => {
+  test("expires notifications after 8 hours", () => {
     const maxAge = 8 * 60 * 60 * 1000
 
     jest.useFakeTimers()
