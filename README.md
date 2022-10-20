@@ -28,7 +28,7 @@ Here are the configuration details defined in `.envrc`:
 - **API_KEY**: Access key for the API
 - **GTFS_URL**: Location of the GTFS zip file
 - **BUSLOC_URL**: Source of GTFS-realtime enhanced VehiclePositions json data file
-- **POSTGRES_USERNAME**, **POSTGRESS_PASSWORD**, **POSTGRES_HOSTNAME**: Postgres username, password, and hostname
+- **POSTGRES_USERNAME**, **POSTGRES_PASSWORD**, **POSTGRES_HOSTNAME**: Postgres username, password, and hostname
 - **SWIFTLY_AUTHORIZATION_KEY**: for dev only, see below for prod
 - **SWIFTLY_REALTIME_VEHICLES_URL**: Source of Swiftly vehicle data
 - **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
