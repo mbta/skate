@@ -245,64 +245,6 @@ describe("useNotificationsReducer", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
   })
 
-  test("leaves the channel on unmount", () => {
-    const mockSetIsInitialLoad = jest.fn()
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    const { unmount } = renderHook(
-      () => useNotificationsReducer(false, mockSetIsInitialLoad),
-      {
-        wrapper: ({ children }) => (
-          <Wrapper socket={mockSocket}>{children}</Wrapper>
-        ),
-      }
-    )
-
-    expect(mockChannel.join).toHaveBeenCalled()
-
-    unmount()
-
-    expect(mockChannel.leave).toHaveBeenCalled()
-  })
-
-  test("console.error on join error", async () => {
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce((msg) => msg)
-    const mockSetIsInitialLoad = jest.fn()
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("error")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    renderHook(() => useNotificationsReducer(true, mockSetIsInitialLoad), {
-      wrapper: ({ children }) => (
-        <Wrapper socket={mockSocket}>{children}</Wrapper>
-      ),
-    })
-
-    expect(spyConsoleError).toHaveBeenCalled()
-    spyConsoleError.mockRestore()
-  })
-
-  test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(browser, "reload")
-    reloadSpy.mockImplementationOnce(() => ({}))
-    const mockSetIsInitialLoad = jest.fn()
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("timeout")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    renderHook(() => useNotificationsReducer(false, mockSetIsInitialLoad), {
-      wrapper: ({ children }) => (
-        <Wrapper socket={mockSocket}>{children}</Wrapper>
-      ),
-    })
-
-    expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
-  })
-
   test("doesn't rejoin channel on every render", () => {
     const mockSetIsInitialLoad = jest.fn()
     const mockSocket = makeMockSocket()
