@@ -18,7 +18,6 @@ import { Notification, NotificationState } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-import * as browser from "../../src/models/browser"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
