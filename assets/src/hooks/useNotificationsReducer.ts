@@ -9,12 +9,13 @@ import { putNotificationReadState } from "../api"
 import { otherNotificationReadState } from "../contexts/notificationsContext"
 import { SocketContext } from "../contexts/socketContext"
 import { tagManagerEvent } from "../helpers/googleTagManager"
-import {
-  NotificationData,
-  notificationFromData,
-} from "../models/notificationData"
 import { Notification } from "../realtime.d"
-import { useChannel } from "./useChannel"
+import {
+  InitialNotifications,
+  NewNotification,
+  ReceivedNotifications,
+  useNotifications,
+} from "./useNotifications"
 
 export interface State {
   notifications: Notification[]
@@ -157,10 +158,14 @@ const showLatestNotificationReducer = (
     case "HIDE_LATEST_NOTIFICATION":
       return false
     case "SET_NOTIFICATIONS": {
-      const isInitialLoad = (action as SetNotificationsAction).payload
-        .isInitialLoad
+      const { isInitialLoad, notifications } = (
+        action as SetNotificationsAction
+      ).payload
+
       if (isInitialLoad) {
-        return true
+        return (
+          true && notifications.length > 0 && notifications[0].state !== "read"
+        )
       }
       return showLatestNotification
     }
@@ -188,40 +193,6 @@ const persistToggledNotificationReadState = (
   putNotificationReadState(otherNotificationReadState(notification.state), [
     notification.id,
   ])
-}
-
-type InitialNotificationData = { initial_notifications: NotificationData[] }
-
-type InitialNotifications = { type: "initial"; payload: Notification[] }
-type NewNotification = { type: "new"; payload: Notification }
-
-type ReceivedNotifications = NewNotification | InitialNotifications | null
-
-const parseNotifications = (
-  notificationData: NotificationData | InitialNotificationData
-): NewNotification | InitialNotifications => {
-  if ("initial_notifications" in notificationData) {
-    return {
-      type: "initial",
-      payload: (
-        notificationData as InitialNotificationData
-      ).initial_notifications.map(notificationFromData),
-    }
-  }
-  return {
-    type: "new",
-    payload: notificationFromData(notificationData as NotificationData),
-  }
-}
-
-const useNotifications = (socket: Socket | undefined) => {
-  return useChannel<ReceivedNotifications>({
-    socket,
-    topic: "notifications",
-    event: "notification",
-    parser: parseNotifications,
-    loadingState: null,
-  })
 }
 
 export const useNotificationsReducer = (

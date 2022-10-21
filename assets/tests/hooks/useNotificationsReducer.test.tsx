@@ -102,6 +102,24 @@ describe("notificationsReducer", () => {
     expect(resultState.showLatestNotification).toEqual(true)
   })
 
+  test("set notifications on the initial page load doesn't show the latest if the latest has already been read", () => {
+    const initialState = {
+      notifications: [],
+      showLatestNotification: true,
+    }
+
+    const readNotification = {
+      ...notification1,
+      state: "read" as NotificationState,
+    }
+    const resultState = reducer(
+      initialState,
+      setNotifications([readNotification], true)
+    )
+    expect(resultState.notifications).toEqual([readNotification])
+    expect(resultState.showLatestNotification).toEqual(false)
+  })
+
   test("resetting notifications after the initial page load leaves the show-latest flag alone", () => {
     const initialState = {
       notifications: [],
