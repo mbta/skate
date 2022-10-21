@@ -35,6 +35,12 @@ defmodule SkateWeb.NotificationsChannel do
     Notifications.NotificationServer.subscribe(username)
 
     initial_notifications = notification_fetch.(username)
-    {:ok, %{data: %{initial_notifications: initial_notifications}}, socket}
+
+    {:ok,
+     %{
+       data: %{initial_notifications: initial_notifications},
+       # for backwards compatability with format expected by frontend
+       initial_notifications: initial_notifications
+     }, socket}
   end
 end
