@@ -11,7 +11,7 @@ import { Notification, NotificationState } from "../../src/realtime.d"
 import { initialState, selectVehicleFromNotification } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
-import { useChannel } from "../../src/hooks/useChannel"
+import { useNotifications } from "../../src/hooks/useNotifications"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -34,9 +34,9 @@ jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => vehicle),
 }))
-jest.mock("../../src/hooks/useChannel", () => ({
+jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
-  useChannel: jest.fn(),
+  useNotifications: jest.fn(),
 }))
 
 const notification: Notification = {
@@ -63,7 +63,7 @@ describe("NotificationsProvider", () => {
   })
 
   test("receives incoming notifications and logs a tag manager event", () => {
-    ;(useChannel as jest.Mock).mockImplementationOnce(() => ({
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
     }))
@@ -75,7 +75,7 @@ describe("NotificationsProvider", () => {
       }
     )
     expect(result.current.notifications).toHaveLength(0)
-    ;(useChannel as jest.Mock).mockImplementationOnce(() => ({
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "new",
       payload: notification,
     }))
@@ -95,7 +95,7 @@ describe("NotificationsProvider", () => {
     ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
       return new Date(0)
     })
-    ;(useChannel as jest.Mock).mockImplementationOnce(() => ({
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "new",
       payload: notification,
     }))
