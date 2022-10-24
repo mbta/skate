@@ -11,15 +11,3 @@
   background-color: $color-button-disabled;
   color: $color-font-grey;
 }
-
-.fullscreen-icon {
-  background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpolygon points='0 0 0 3.73 0 16.8 3.73 16.8 3.73 3.73 16.8 3.73 16.8 0 3.73 0 0 0'/%3E%3Cpolygon points='3.73 31.2 0 31.2 0 44.27 0 48 3.73 48 16.8 48 16.8 44.27 3.73 44.27 3.73 31.2'/%3E%3Cpolygon points='44.27 0 31.2 0 31.2 3.73 44.27 3.73 44.27 16.8 48 16.8 48 3.73 48 0 44.27 0'/%3E%3Cpolygon points='44.27 44.27 31.2 44.27 31.2 48 44.27 48 48 48 48 44.27 48 31.2 44.27 31.2 44.27 44.27'/%3E%3C/svg%3E");
-  background-size: 16px;
-
-  // You might think that the FullscreenControl library would apply
-  // different CSS classes to the icon depending on if it were in the
-  // expanded or collapsed state. But it doesn't, hence this hack.
-  &[title="Exit Full Screen"] {
-    background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpolygon points='13.07 13.07 0 13.07 0 16.8 13.07 16.8 16.8 16.8 16.8 13.07 16.8 0 13.07 0 13.07 13.07'/%3E%3Cpolygon points='0 31.2 0 34.93 13.07 34.93 13.07 48 16.8 48 16.8 34.93 16.8 31.2 13.07 31.2 0 31.2'/%3E%3Cpolygon points='34.93 13.07 34.93 0 31.2 0 31.2 13.07 31.2 16.8 34.93 16.8 48 16.8 48 13.07 34.93 13.07'/%3E%3Cpolygon points='31.2 31.2 31.2 34.93 31.2 48 34.93 48 34.93 34.93 48 34.93 48 31.2 34.93 31.2 31.2 31.2'/%3E%3C/svg%3E");
-  }
-}

@@ -16,6 +16,7 @@ $vpp-z-index: $modal-overlay-z-index + 2;
 @import "inter";
 @import "ui_kit";
 @import "leaflet";
+@import "leaflet.fullscreen/Control.Fullscreen.css";
 
 @import "card";
 @import "close_button";
