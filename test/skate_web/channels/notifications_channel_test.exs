@@ -28,8 +28,11 @@ defmodule SkateWeb.NotificationsChannelTest do
       mock_fetch = fn _ -> ["fake notification 1", "fake notification 2"] end
       reassign_env(:skate, :unexpired_notifications_for_user, mock_fetch)
 
-      assert {:ok, %{initial_notifications: ["fake notification 1", "fake notification 2"]},
-              %Socket{}} = subscribe_and_join(socket, NotificationsChannel, "notifications")
+      assert {:ok,
+              %{
+                initial_notifications: ["fake notification 1", "fake notification 2"],
+                data: %{initial_notifications: ["fake notification 1", "fake notification 2"]}
+              }, %Socket{}} = subscribe_and_join(socket, NotificationsChannel, "notifications")
     end
   end
 
