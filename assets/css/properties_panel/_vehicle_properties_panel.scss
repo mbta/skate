@@ -1,3 +1,4 @@
+$vpp-header-z-index: 10;
 .m-vehicle-properties-panel {
   display: flex;
   flex: 1 1 auto;
@@ -58,10 +59,15 @@
   flex-direction: column;
   margin-top: 1rem;
   min-height: 320px;
-  z-index: 9;
 
   .m-vehicle-map {
     flex: 1 0 auto;
+    z-index: $vpp-header-z-index - 1;
+  }
+  // Fullscreen on mobile safari not naitively supported - uses 'pseudo-fullscreen' css
+  // Ensure fullscreen VPP map appears above VPP header
+  .m-vehicle-map.leaflet-pseudo-fullscreen {
+    z-index: $vpp-header-z-index + 1;
   }
 }
 
