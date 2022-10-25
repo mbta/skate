@@ -64,22 +64,6 @@ $color-crowding-icon-bg: $color-bg-medium;
 .m-crowding-diagram__status-description {
   font-weight: 500;
   text-transform: uppercase;
-
-  &--empty {
-    color: $color-crowding-empty-text;
-  }
-
-  &--not-crowded {
-    color: $color-crowding-not-crowded;
-  }
-
-  &--some-crowding {
-    color: $color-crowding-some-crowding;
-  }
-
-  &--crowded {
-    color: $color-crowding-crowded;
-  }
 }
 
 .m-crowding-diagram__crowding-icon {
