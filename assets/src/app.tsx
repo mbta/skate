@@ -13,6 +13,7 @@ require("../css/app.scss")
 import "core-js/stable"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet/dist/leaflet.css"
+import "leaflet.fullscreen/Control.Fullscreen.css"
 import "phoenix_html"
 import * as React from "react"
 import { createRoot } from "react-dom/client"
