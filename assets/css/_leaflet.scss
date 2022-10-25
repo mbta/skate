@@ -11,6 +11,9 @@
   background-color: $color-button-disabled;
   color: $color-font-grey;
 }
+
+// Override image from leaflet.fullscreen/Control.Fullscreen.css since the path
+// fails to resolve
 .fullscreen-icon {
   background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpolygon points='0 0 0 3.73 0 16.8 3.73 16.8 3.73 3.73 16.8 3.73 16.8 0 3.73 0 0 0'/%3E%3Cpolygon points='3.73 31.2 0 31.2 0 44.27 0 48 3.73 48 16.8 48 16.8 44.27 3.73 44.27 3.73 31.2'/%3E%3Cpolygon points='44.27 0 31.2 0 31.2 3.73 44.27 3.73 44.27 16.8 48 16.8 48 3.73 48 0 44.27 0'/%3E%3Cpolygon points='44.27 44.27 31.2 44.27 31.2 48 44.27 48 48 48 48 44.27 48 31.2 44.27 31.2 44.27 44.27'/%3E%3C/svg%3E");
   background-size: 16px;
