@@ -3,7 +3,7 @@ import appData from "./appData"
 import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
-import { swingsFromData } from "./models/swingsData"
+import { SwingData, swingsFromData } from "./models/swingsData"
 import { NotificationId, NotificationState, RunId } from "./realtime.d"
 import {
   DirectionName,
@@ -16,6 +16,7 @@ import {
   TripId,
 } from "./schedule.d"
 import { RouteTab } from "./models/routeTab"
+import { array, assert, Struct } from "superstruct"
 
 export interface RouteData {
   id: string
@@ -41,7 +42,7 @@ const checkResponseStatus = (response: Response) => {
   throw new Error(`Response error: ${response.status}`)
 }
 
-const parseJson = (response: Response) => response.json()
+const parseJson = (response: Response) => response.json() as unknown
 
 export const apiCall = <T>({
   url,
@@ -56,8 +57,39 @@ export const apiCall = <T>({
 }): Promise<T> =>
   fetch(url, fetchArgs)
     .then(checkResponseStatus)
-    .then(parseJson)
+    .then((response) => parseJson(response) as any)
     .then(({ data: data }: { data: any }) => parser(data))
+    .catch((error) => {
+      if (defaultResult === undefined) {
+        throw error
+      } else {
+        return defaultResult
+      }
+    })
+
+export const checkedApiCall = <T, U>({
+  url,
+  dataStruct,
+  parser,
+  defaultResult,
+  fetchArgs,
+}: {
+  url: string
+  dataStruct: Struct<T, any>
+  parser: (data: T) => U
+  defaultResult?: U
+  fetchArgs?: RequestInit
+}): Promise<U> =>
+  fetch(url, fetchArgs)
+    .then(checkResponseStatus)
+    .then(
+      (response) =>
+        parseJson(response) as Record<string, unknown> & { data: unknown }
+    )
+    .then(({ data: data }) => {
+      assert(data, dataStruct)
+      return parser(data)
+    })
     .catch((error) => {
       if (defaultResult === undefined) {
         throw error
@@ -154,8 +186,9 @@ export const fetchNearestIntersection = (
   })
 
 export const fetchSwings = (routeIds: RouteId[]): Promise<Swing[] | null> =>
-  apiCall({
+  checkedApiCall<SwingData[], Swing[] | null>({
     url: `/api/swings?route_ids=${routeIds.join(",")}`,
+    dataStruct: array(SwingData),
     parser: nullableParser(swingsFromData),
     defaultResult: null,
   })
