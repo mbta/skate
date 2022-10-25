@@ -1,66 +1,44 @@
-import { Channel, Socket } from "phoenix"
-import { useContext, useEffect, useState } from "react"
-import { SocketContext } from "../contexts/socketContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { reload } from "../models/browser"
+import { Socket } from "phoenix"
 import {
   NotificationData,
   notificationFromData,
 } from "../models/notificationData"
 import { Notification } from "../realtime.d"
-import { allOpenRouteIds } from "../models/routeTab"
-import { RouteId } from "../schedule"
-import { equalByElements } from "../helpers/array"
+import { useChannel } from "./useChannel"
 
-export const useNotifications = (
-  handleNewNotification: (notification: Notification) => void,
-  handleInitialNotifications: (notificationsData: NotificationData[]) => void
-): void => {
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const topic = "notifications"
-  const event = "notification"
-  const [{ routeTabs }] = useContext(StateDispatchContext)
-  const [routeIds, setRouteIds] = useState<RouteId[]>(
-    allOpenRouteIds(routeTabs)
-  )
+type InitialNotificationData = { initial_notifications: NotificationData[] }
 
-  const newRouteIds = allOpenRouteIds(routeTabs)
+export type InitialNotifications = { type: "initial"; payload: Notification[] }
+export type NewNotification = { type: "new"; payload: Notification }
 
-  if (!equalByElements(routeIds, newRouteIds)) {
-    setRouteIds(newRouteIds)
+export type ReceivedNotifications =
+  | NewNotification
+  | InitialNotifications
+  | null
+
+const parseNotifications = (
+  notificationData: NotificationData | InitialNotificationData
+): NewNotification | InitialNotifications => {
+  if ("initial_notifications" in notificationData) {
+    return {
+      type: "initial",
+      payload: (
+        notificationData as InitialNotificationData
+      ).initial_notifications.map(notificationFromData),
+    }
   }
+  return {
+    type: "new",
+    payload: notificationFromData(notificationData as NotificationData),
+  }
+}
 
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    let channel: Channel | undefined
-
-    if (socket !== undefined) {
-      channel = socket.channel(topic)
-      channel.on(event, ({ data: data }) => {
-        const notification: Notification = notificationFromData(data)
-        handleNewNotification(notification)
-      })
-      channel
-        .join()
-        .receive(
-          "ok",
-          (data) =>
-            data.initial_notifications &&
-            handleInitialNotifications(data.initial_notifications)
-        )
-        .receive("error", ({ reason }) =>
-          // eslint-disable-next-line no-console
-          console.error(`joining topic ${topic} failed`, reason)
-        )
-        .receive("timeout", reload)
-    }
-
-    return () => {
-      if (channel !== undefined) {
-        channel.leave()
-        channel = undefined
-      }
-    }
-  }, [socket, routeIds])
-  /* eslint-enable react-hooks/exhaustive-deps */
+export const useNotifications = (socket: Socket | undefined) => {
+  return useChannel<ReceivedNotifications>({
+    socket,
+    topic: "notifications",
+    event: "notification",
+    parser: parseNotifications,
+    loadingState: null,
+  })
 }

@@ -7,20 +7,15 @@ import {
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
-import { useNotifications } from "../../src/hooks/useNotifications"
 import { Notification, NotificationState } from "../../src/realtime.d"
 import { initialState, selectVehicleFromNotification } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { useNotifications } from "../../src/hooks/useNotifications"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
   default: jest.fn(() => new Date(0)),
-}))
-
-jest.mock("../../src/hooks/useNotifications", () => ({
-  __esModule: true,
-  useNotifications: jest.fn(),
 }))
 
 jest.mock("../../src/laboratoryFeatures", () => ({
@@ -38,6 +33,10 @@ const vehicle = vehicleFactory.build()
 jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => vehicle),
+}))
+jest.mock("../../src/hooks/useNotifications", () => ({
+  __esModule: true,
+  useNotifications: jest.fn(),
 }))
 
 const notification: Notification = {
@@ -64,17 +63,23 @@ describe("NotificationsProvider", () => {
   })
 
   test("receives incoming notifications and logs a tag manager event", () => {
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
-    const { result } = renderHook(() => useContext(NotificationsContext), {
-      wrapper: NotificationsProvider,
-    })
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+      type: "initial",
+      payload: [],
+    }))
+
+    const { result, rerender } = renderHook(
+      () => useContext(NotificationsContext),
+      {
+        wrapper: NotificationsProvider,
+      }
+    )
     expect(result.current.notifications).toHaveLength(0)
-    act(() => {
-      handler!(notification)
-    })
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+      type: "new",
+      payload: notification,
+    }))
+    rerender()
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
   })
@@ -84,19 +89,17 @@ describe("NotificationsProvider", () => {
 
     jest.useFakeTimers()
 
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
     const { result } = renderHook(() => useContext(NotificationsContext), {
       wrapper: NotificationsProvider,
     })
     ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
       return new Date(0)
     })
-    act(() => {
-      handler!(notification)
-    })
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+      type: "new",
+      payload: notification,
+    }))
+
     act(() => {
       jest.runOnlyPendingTimers()
       // This seems like it should work if we put the mock outside the

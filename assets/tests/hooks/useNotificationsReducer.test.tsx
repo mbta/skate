@@ -1,5 +1,9 @@
+import React from "react"
 import { act, renderHook } from "@testing-library/react"
-
+import { Socket } from "phoenix"
+import { ReactNode } from "react"
+import { SocketProvider } from "../../src/contexts/socketContext"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import {
   hideLatestNotification,
   markAllAsRead,
@@ -8,9 +12,18 @@ import {
   toggleReadState,
   useNotificationsReducer,
 } from "../../src/hooks/useNotificationsReducer"
+import { ConnectionStatus } from "../../src/hooks/useSocket"
 import { NotificationData } from "../../src/models/notificationData"
 import { Notification, NotificationState } from "../../src/realtime"
+import { initialState } from "../../src/state"
 import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
+import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 const notification1: Notification = {
   id: "0",
@@ -18,7 +31,7 @@ const notification1: Notification = {
   reason: "manpower",
   routeIds: ["route1", "route2"],
   runIds: ["run1", "run2"],
-  tripIds: [],
+  tripIds: ["trip1", "trip2"],
   operatorName: null,
   operatorId: null,
   routeIdAtCreation: null,
@@ -33,7 +46,7 @@ const notification1Data: NotificationData = {
   reason: "manpower",
   route_ids: ["route1", "route2"],
   run_ids: ["run1", "run2"],
-  trip_ids: [],
+  trip_ids: ["trip1", "trip2"],
   operator_name: null,
   operator_id: null,
   route_id_at_creation: null,
@@ -83,10 +96,28 @@ describe("notificationsReducer", () => {
     }
     const resultState = reducer(
       initialState,
-      setNotifications([notification1Data], true)
+      setNotifications([notification1], true)
     )
     expect(resultState.notifications).toEqual([notification1])
     expect(resultState.showLatestNotification).toEqual(true)
+  })
+
+  test("set notifications on the initial page load doesn't show the latest if the latest has already been read", () => {
+    const initialState = {
+      notifications: [],
+      showLatestNotification: true,
+    }
+
+    const readNotification = {
+      ...notification1,
+      state: "read" as NotificationState,
+    }
+    const resultState = reducer(
+      initialState,
+      setNotifications([readNotification], true)
+    )
+    expect(resultState.notifications).toEqual([readNotification])
+    expect(resultState.showLatestNotification).toEqual(false)
   })
 
   test("resetting notifications after the initial page load leaves the show-latest flag alone", () => {
@@ -96,7 +127,7 @@ describe("notificationsReducer", () => {
     }
     const resultState = reducer(
       initialState,
-      setNotifications([notification1Data], false)
+      setNotifications([notification1], false)
     )
     expect(resultState.notifications).toEqual([notification1])
     expect(resultState.showLatestNotification).toEqual(false)
@@ -131,6 +162,7 @@ describe("notificationsReducer", () => {
 describe("useNotificationsReducer", () => {
   test("persists to server when mark all as read", () => {
     window.fetch = jest.fn()
+    const mockSetIsInitialLoad = jest.fn()
 
     const initialState = {
       notifications: [notification1, notification2],
@@ -138,7 +170,9 @@ describe("useNotificationsReducer", () => {
     }
     mockUseReducerOnce(reducer, initialState)
 
-    const { result } = renderHook(() => useNotificationsReducer())
+    const { result } = renderHook(() =>
+      useNotificationsReducer(true, mockSetIsInitialLoad)
+    )
 
     const [, dispatch] = result.current
 
@@ -153,6 +187,7 @@ describe("useNotificationsReducer", () => {
 
   test("persists state toggle", () => {
     window.fetch = jest.fn()
+    const mockSetIsInitialLoad = jest.fn()
 
     const initialState = {
       notifications: [notification1, notification2],
@@ -160,7 +195,9 @@ describe("useNotificationsReducer", () => {
     }
     mockUseReducerOnce(reducer, initialState)
 
-    const { result } = renderHook(() => useNotificationsReducer())
+    const { result } = renderHook(() =>
+      useNotificationsReducer(true, mockSetIsInitialLoad)
+    )
 
     const [, dispatch] = result.current
 
@@ -170,4 +207,95 @@ describe("useNotificationsReducer", () => {
 
     expectPut("/api/notification_read_state?new_state=read&notification_ids=1")
   })
+
+  test("opens a channel and processes any initial notifications, unsets the initial render flag via callback", () => {
+    const initialNotifications = [notification1Data]
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      data: {
+        initial_notifications: initialNotifications,
+      },
+    })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { result } = renderHook(
+      () => useNotificationsReducer(true, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket}>{children}</Wrapper>
+        ),
+      }
+    )
+
+    const [state] = result.current
+
+    expect(mockChannel.join).toHaveBeenCalled()
+    expect(state.notifications).toStrictEqual([notification1])
+    expect(mockSetIsInitialLoad).toHaveBeenCalledWith(false)
+  })
+
+  test("adds new notifications", () => {
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    mockChannel.on.mockImplementation((_event, dataHandler) => {
+      dataHandler({
+        data: notification1Data,
+      })
+    })
+
+    const { result } = renderHook(
+      () => useNotificationsReducer(true, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket}>{children}</Wrapper>
+        ),
+      }
+    )
+
+    const [state] = result.current
+
+    expect(state.notifications).toStrictEqual([notification1])
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
+  })
+
+  test("doesn't rejoin channel on every render", () => {
+    const mockSetIsInitialLoad = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      data: { initial_notifications: [] },
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      () => useNotificationsReducer(false, mockSetIsInitialLoad),
+      {
+        wrapper: ({ children }) => (
+          <Wrapper socket={mockSocket}>{children}</Wrapper>
+        ),
+      }
+    )
+    rerender()
+
+    expect(mockChannel.join).toHaveBeenCalledTimes(1)
+  })
 })
+
+const Wrapper = ({
+  children,
+  socket,
+}: {
+  children?: ReactNode
+  socket: Socket | undefined
+}) => (
+  <SocketProvider
+    socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
+  >
+    <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+      <> {children} </>
+    </StateDispatchProvider>
+  </SocketProvider>
+)

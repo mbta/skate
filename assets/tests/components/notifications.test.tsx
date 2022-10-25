@@ -15,11 +15,6 @@ import { initialState } from "../../src/state"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
-jest.mock("../../src/hooks/useNotifications", () => ({
-  __esModule: true,
-  useNotifications: jest.fn(),
-}))
-
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: () => true,

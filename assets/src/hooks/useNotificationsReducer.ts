@@ -1,11 +1,21 @@
-import { Dispatch as ReactDispatch, useReducer } from "react"
+import { Socket } from "phoenix"
+import {
+  Dispatch as ReactDispatch,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react"
 import { putNotificationReadState } from "../api"
 import { otherNotificationReadState } from "../contexts/notificationsContext"
-import {
-  NotificationData,
-  notificationFromData,
-} from "../models/notificationData"
+import { SocketContext } from "../contexts/socketContext"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 import { Notification } from "../realtime.d"
+import {
+  InitialNotifications,
+  NewNotification,
+  ReceivedNotifications,
+  useNotifications,
+} from "./useNotifications"
 
 export interface State {
   notifications: Notification[]
@@ -58,17 +68,17 @@ export const markAllAsRead = (): MarkAllAsReadAction => ({
 interface SetNotificationsAction {
   type: "SET_NOTIFICATIONS"
   payload: {
-    notificationsData: NotificationData[]
+    notifications: Notification[]
     isInitialLoad: boolean
   }
 }
 
 export const setNotifications = (
-  notificationsData: NotificationData[],
+  notifications: Notification[],
   isInitialLoad: boolean
 ): SetNotificationsAction => ({
   type: "SET_NOTIFICATIONS",
-  payload: { notificationsData, isInitialLoad },
+  payload: { notifications, isInitialLoad },
 })
 
 interface ToggleReadStateAction {
@@ -118,9 +128,7 @@ export const notificationsReducer = (
         state: "read",
       }))
     case "SET_NOTIFICATIONS": {
-      const notificationsData = (action as SetNotificationsAction).payload
-        .notificationsData
-      return notificationsData.map(notificationFromData)
+      return (action as SetNotificationsAction).payload.notifications
     }
     case "TOGGLE_READ_STATE": {
       const notificationToToggle = (action as ToggleReadStateAction).payload
@@ -150,10 +158,14 @@ const showLatestNotificationReducer = (
     case "HIDE_LATEST_NOTIFICATION":
       return false
     case "SET_NOTIFICATIONS": {
-      const isInitialLoad = (action as SetNotificationsAction).payload
-        .isInitialLoad
+      const { isInitialLoad, notifications } = (
+        action as SetNotificationsAction
+      ).payload
+
       if (isInitialLoad) {
-        return true
+        return (
+          true && notifications.length > 0 && notifications[0].state !== "read"
+        )
       }
       return showLatestNotification
     }
@@ -183,8 +195,33 @@ const persistToggledNotificationReadState = (
   ])
 }
 
-export const useNotificationsReducer = (): [State, Dispatch] => {
+export const useNotificationsReducer = (
+  isInitialLoad: boolean,
+  setIsInitialLoad: React.Dispatch<boolean>
+): [State, Dispatch] => {
+  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const [state, dispatch] = useReducer(reducer, initialState)
+
+  const latestMessage: ReceivedNotifications = useNotifications(socket)
+
+  useEffect(() => {
+    if (latestMessage) {
+      if (latestMessage.type === "initial" && isInitialLoad) {
+        dispatch(
+          setNotifications(
+            (latestMessage as InitialNotifications).payload,
+            isInitialLoad
+          )
+        )
+        setIsInitialLoad(false)
+      }
+
+      if (latestMessage.type === "new") {
+        tagManagerEvent("notification_delivered")
+        dispatch(addNotification((latestMessage as NewNotification).payload))
+      }
+    }
+  }, [socket, latestMessage, isInitialLoad, setIsInitialLoad])
 
   const dispatchWithSideEffects: Dispatch = (action: Action): void => {
     switch (action.type) {
