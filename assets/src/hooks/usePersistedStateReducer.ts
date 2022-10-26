@@ -19,7 +19,8 @@ import {
   UserSettings,
   userSettingsFromData,
 } from "../userSettings"
-import { RouteTab, parseRouteTabData } from "../models/routeTab"
+import { RouteTab, parseRouteTabData, RouteTabData } from "../models/routeTab"
+import { array, assert } from "superstruct"
 
 const APP_STATE_KEY = "mbta-skate-state"
 
@@ -130,7 +131,11 @@ const getRouteTabs = (): RouteTab[] => {
 
   const backendSettingsString: string | undefined = appData()?.routeTabs
   if (backendSettingsString !== undefined) {
-    routeTabs = parseRouteTabData(JSON.parse(backendSettingsString))
+    const backendSettings = JSON.parse(backendSettingsString) as unknown
+
+    assert(backendSettings, array(RouteTabData))
+
+    routeTabs = parseRouteTabData(backendSettings)
   }
 
   return routeTabs
