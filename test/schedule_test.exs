@@ -685,6 +685,56 @@ defmodule ScheduleTest do
     end
   end
 
+  describe "shape_with_stops_for_trip" do
+    test "returns the shape with stops for the trip" do
+      pid =
+        Schedule.start_mocked(%{
+          gtfs: %{
+            "routes.txt" => [
+              "route_id,route_type,route_short_name,route_desc",
+              "route,3,route,\"Key Bus\""
+            ],
+            "route_patterns.txt" => [
+              "route_pattern_id,route_id,direction_id,representative_trip_id",
+              "p1,route,1,trip"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+              "route,service,trip,headsign,1,block,route-_-0,shape"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+              "trip,,00:00:01,stop1_id,1,"
+            ],
+            "stops.txt" => [
+              "stop_id,stop_name,stop_lat,stop_lon,parent_station",
+              "stop1_id,One,1.0,1.5,"
+            ],
+            "shapes.txt" => [
+              "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+              "shape,42.373178,-71.118170,0,"
+            ]
+          }
+        })
+
+      assert Schedule.shape_with_stops_for_trip("trip", pid) ==
+               %Schedule.ShapeWithStops{
+                 id: "shape",
+                 points: [
+                   %Point{
+                     shape_id: "shape",
+                     lat: 42.373178,
+                     lon: -71.118170,
+                     sequence: 0
+                   }
+                 ],
+                 stops: [
+                   %Stop{id: "stop1_id", name: "One", latitude: 1.0, longitude: 1.5}
+                 ]
+               }
+    end
+  end
+
   describe "first_route_pattern_for_route_and_direction" do
     test "returns the first route pattern matching the route and direction" do
       pid =

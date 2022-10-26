@@ -12,7 +12,11 @@ defmodule SkateWeb.ShapeController do
   @spec trip(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def trip(conn, %{"trip_id" => trip_id}) do
     shape_for_trip_fn =
-      Application.get_env(:skate_web, :shape_for_trip_fn, &Schedule.shape_for_trip/1)
+      Application.get_env(
+        :skate_web,
+        :shape_with_stops_fn,
+        &Schedule.shape_with_stops_for_trip/1
+      )
 
     shape = shape_for_trip_fn.(trip_id)
 

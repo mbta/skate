@@ -73,6 +73,10 @@
   stroke-width: 1;
 }
 
+.m-vehicle-map__stop:focus {
+  outline: 0;
+}
+
 .m-vehicle-map__recenter-button {
   path {
     fill: none;

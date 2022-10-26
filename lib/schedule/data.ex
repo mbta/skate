@@ -217,6 +217,16 @@ defmodule Schedule.Data do
   @spec shapes(t(), Route.id()) :: [Shape.t()]
   def shapes(%__MODULE__{shapes: shapes}, route_id), do: Map.get(shapes, route_id, [])
 
+  @spec shape_with_stops_for_trip(t(), Schedule.Trip.id()) :: Schedule.ShapeWithStops.t()
+  def shape_with_stops_for_trip(data, trip_id) do
+    stops = stops_for_trip(data, trip_id)
+
+    case shape_for_trip(data, trip_id) do
+      nil -> nil
+      shape -> Schedule.ShapeWithStops.create(shape, stops)
+    end
+  end
+
   @spec shape_for_trip(t(), Schedule.Trip.id()) :: Shape.t() | nil
   def shape_for_trip(%__MODULE__{shapes: shapes, trips: trips}, trip_id) do
     trip = Map.get(trips, trip_id)
@@ -226,6 +236,21 @@ defmodule Schedule.Data do
       Enum.find(route_shapes, fn shape -> shape.id == trip.shape_id end)
     else
       nil
+    end
+  end
+
+  @spec stops_for_trip(t(), Schedule.Trip.id()) :: [Stop.t()]
+  defp stops_for_trip(%__MODULE__{stops: stops_by_id, trips: trips}, trip_id) do
+    case Map.get(trips, trip_id) do
+      nil ->
+        []
+
+      %{stop_times: stop_times} ->
+        Enum.flat_map(stop_times, fn %{stop_id: stop_id} ->
+          stops_by_id
+          |> Map.get(stop_id)
+          |> List.wrap()
+        end)
     end
   end
 

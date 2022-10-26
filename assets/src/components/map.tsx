@@ -21,6 +21,7 @@ import {
   MapContainer,
   Marker,
   Polyline,
+  Popup,
   TileLayer,
   useMap,
   useMapEvents,
@@ -228,7 +229,9 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
           className="m-vehicle-map__stop"
           center={[stop.lat, stop.lon]}
           radius={3}
-        />
+        >
+          <Popup className="m-vehicle-map__stop-tooltip">{stop.name}</Popup>
+        </CircleMarker>
       ))}
     </>
   )

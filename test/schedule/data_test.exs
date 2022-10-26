@@ -14,6 +14,7 @@ defmodule Schedule.DataTest do
   alias Schedule.Hastus.Activity
   alias Schedule.Piece
   alias Schedule.Run
+  alias Schedule.ShapeWithStops
 
   test "all_routes/1 returns all the routes" do
     routes = [
@@ -492,6 +493,89 @@ defmodule Schedule.DataTest do
       }
 
       assert Data.shapes(data, "shapelessRoute") == []
+    end
+  end
+
+  describe "shape_with_stops_for_trip" do
+    setup do
+      trip = %Schedule.Trip{
+        id: "trip",
+        block_id: "block",
+        route_id: "route",
+        shape_id: "shape",
+        stop_times: [
+          %StopTime{stop_id: "stop1", time: 150, timepoint_id: "t1"},
+          %StopTime{stop_id: "stop2", time: 160, timepoint_id: "t2"}
+        ]
+      }
+
+      stops = [
+        %Stop{id: "stop1", name: "Stop 1", latitude: 42.01, longitude: -71.01},
+        %Stop{id: "stop2", name: "Stop 2", latitude: 42.02, longitude: -71.02}
+      ]
+
+      shape = %Shape{
+        id: "shape",
+        points: [
+          %Point{
+            shape_id: "shape",
+            lat: 42.413560,
+            lon: -70.992110,
+            sequence: 0
+          }
+        ]
+      }
+
+      {:ok, %{trip: trip, stops: stops, shape: shape}}
+    end
+
+    test "returns nil when no trip found", %{trip: trip, shape: shape} do
+      data = %Data{trips: %{}, shapes: %{trip.route_id => [shape]}}
+
+      assert is_nil(Data.shape_with_stops_for_trip(data, trip.id))
+    end
+
+    test "returns nil when no shape found", %{trip: trip} do
+      data = %Data{trips: %{trip.id => trip}, shapes: %{}}
+
+      assert is_nil(Data.shape_with_stops_for_trip(data, trip.id))
+    end
+
+    test "returns the shape without stops when no stops found", %{trip: trip, shape: shape} do
+      data = %Data{trips: %{trip.id => trip}, stops: %{}, shapes: %{trip.route_id => [shape]}}
+
+      assert %ShapeWithStops{id: shape.id, points: shape.points, stops: []} ==
+               Data.shape_with_stops_for_trip(data, trip.id)
+    end
+
+    test "returns all stops when all stops are found", %{
+      trip: trip,
+      stops: [stop1, stop2],
+      shape: shape
+    } do
+      data = %Data{
+        trips: %{trip.id => trip},
+        stops: %{stop1.id => stop1, stop2.id => stop2},
+        shapes: %{trip.route_id => [shape]}
+      }
+
+      assert %ShapeWithStops{id: shape.id, points: shape.points, stops: [stop1, stop2]} ==
+               Data.shape_with_stops_for_trip(data, trip.id)
+    end
+
+    test "returns the shape with a subset of stops when not all found", %{
+      trip: trip,
+      stops: [stop1, _stop2],
+      shape: shape
+    } do
+      data = %Data{
+        trips: %{trip.id => trip},
+        stops: %{stop1.id => stop1},
+        shapes: %{trip.route_id => [shape]}
+      }
+
+      assert %ShapeWithStops{id: shape.id, points: shape.points, stops: [stop1]} ==
+               Data.shape_with_stops_for_trip(data, trip.id)
     end
   end
 
