@@ -8,10 +8,17 @@ $mobile-route-picker-width: 18.125rem;
 $shuttle-picker-width: 12.6rem;
 $view-header-height: 2.5rem;
 $vpp-location-padding: 1rem;
-$navbar-z-index: 1100;
-$modal-overlay-z-index: $navbar-z-index - 100;
-$vpp-z-index: $modal-overlay-z-index + 2;
+$z-page-layout-context: (
+  "modal-overlay": 1000,
+  "properties-panel": 1002,
+  "navbar": 1100,
+);
 
+$z-properties-panel-context: (
+  "map": 9,
+  "header": 10,
+  "fullscreen-map": 11,
+);
 @import "base";
 @import "inter";
 @import "ui_kit";

@@ -9,7 +9,7 @@
   right: 0;
   top: 0;
   width: 23.5rem;
-  z-index: $vpp-z-index;
+  z-index: map-get($z-page-layout-context, "properties-panel");
 
   @media screen and (max-width: $mobile-max-width) {
     width: 100vw;
@@ -28,7 +28,7 @@
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 10;
+  z-index: map-get($z-properties-panel-context, "header");
 }
 
 .m-properties-panel .m-properties-panel__header {
@@ -38,5 +38,5 @@
 
 .m-properties-panel__modal-overlay {
   @include modal-overlay;
-  z-index: $modal-overlay-z-index;
+  z-index: map-get($z-page-layout-context, "modal-overlay");
 }

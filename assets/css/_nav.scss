@@ -1,3 +1,4 @@
+@use "sass:map";
 .m-nav--wide {
   display: grid;
   gap: 0;
@@ -34,7 +35,7 @@
 }
 
 .m-nav__nav-bar {
-  z-index: $navbar-z-index;
+  z-index: map-get($z-page-layout-context, "navbar");
 }
 
 .m-nav__nav-bar--left {
