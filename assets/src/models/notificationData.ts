@@ -1,32 +1,46 @@
 import {
-  Notification,
-  NotificationId,
-  NotificationReason,
-  NotificationState,
-  RunId,
-} from "../realtime.d"
-import { RouteId, TripId } from "../schedule.d"
+  array,
+  enums,
+  Infer,
+  nullable,
+  number,
+  object,
+  string,
+} from "superstruct"
+import { Notification } from "../realtime.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
 
-export interface NotificationData {
-  id: NotificationId
-  created_at: number
-  reason: NotificationReason
-  route_ids: RouteId[]
-  run_ids: RunId[]
-  trip_ids: TripId[]
-  operator_name: string | null
-  operator_id: string | null
-  route_id_at_creation: string | null
-  start_time: number
-  end_time: number | null
-  state: NotificationState
-}
+export const NotificationData = object({
+  id: number(),
+  created_at: number(),
+  reason: enums([
+    "manpower",
+    "disabled",
+    "diverted",
+    "accident",
+    "other",
+    "adjusted",
+    "operator_error",
+    "traffic",
+    "chelsea_st_bridge_raised",
+    "chelsea_st_bridge_lowered",
+  ]),
+  route_ids: array(string()),
+  run_ids: array(string()),
+  trip_ids: array(string()),
+  operator_name: nullable(string()),
+  operator_id: nullable(string()),
+  route_id_at_creation: nullable(string()),
+  start_time: number(),
+  end_time: nullable(number()),
+  state: enums(["unread", "read", "deleted"]),
+})
+export type NotificationData = Infer<typeof NotificationData>
 
 export const notificationFromData = (
   notificationData: NotificationData
 ): Notification => ({
-  id: notificationData.id,
+  id: notificationData.id.toString(),
   createdAt: dateFromEpochSeconds(notificationData.created_at),
   reason: notificationData.reason,
   routeIds: notificationData.route_ids,

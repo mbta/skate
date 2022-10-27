@@ -7,7 +7,7 @@ import {
 describe("notificationFromData", () => {
   test("handles a null endTime", () => {
     const data: NotificationData = {
-      id: "1",
+      id: 1,
       created_at: 0,
       reason: "manpower",
       route_ids: [],

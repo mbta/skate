@@ -1,12 +1,21 @@
 import { Socket } from "phoenix"
+import { array, Infer, object, union } from "superstruct"
 import {
   NotificationData,
   notificationFromData,
 } from "../models/notificationData"
 import { Notification } from "../realtime.d"
-import { useChannel } from "./useChannel"
+import { useCheckedChannel } from "./useChannel"
 
-type InitialNotificationData = { initial_notifications: NotificationData[] }
+const InitialNotificationData = object({
+  initial_notifications: array(NotificationData),
+})
+type InitialNotificationData = Infer<typeof InitialNotificationData>
+
+const ReceivedNotificationsData = union([
+  NotificationData,
+  InitialNotificationData,
+])
 
 export type InitialNotifications = { type: "initial"; payload: Notification[] }
 export type NewNotification = { type: "new"; payload: Notification }
@@ -34,10 +43,14 @@ const parseNotifications = (
 }
 
 export const useNotifications = (socket: Socket | undefined) => {
-  return useChannel<ReceivedNotifications>({
+  return useCheckedChannel<
+    NotificationData | InitialNotificationData,
+    ReceivedNotifications
+  >({
     socket,
     topic: "notifications",
     event: "notification",
+    dataStruct: ReceivedNotificationsData,
     parser: parseNotifications,
     loadingState: null,
   })

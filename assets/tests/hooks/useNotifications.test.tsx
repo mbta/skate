@@ -20,7 +20,7 @@ const notification1: Notification = {
 }
 
 const notification1Data: NotificationData = {
-  id: "0",
+  id: 0,
   created_at: 0,
   reason: "manpower",
   route_ids: ["route1", "route2"],
@@ -50,7 +50,7 @@ const notification2: Notification = {
 }
 
 const notification2Data: NotificationData = {
-  id: "1",
+  id: 1,
   created_at: 0,
   reason: "accident",
   route_ids: ["route1", "route2"],
