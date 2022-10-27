@@ -1,7 +1,6 @@
-$color-crowding-empty-text: $color-component-medium;
 $color-crowding-empty-icon: $color-bg-medium;
 $color-crowding-no-data-icon: $color-secondary-light;
-$color-crowding-not-crowded: #5cbf95;
+$color-crowding-not-crowded: #14cc00;
 $color-crowding-some-crowding: #fca400;
 $color-crowding-crowded: #e90d0d;
 $color-crowding-icon-bg: $color-bg-medium;
@@ -64,22 +63,6 @@ $color-crowding-icon-bg: $color-bg-medium;
 .m-crowding-diagram__status-description {
   font-weight: 500;
   text-transform: uppercase;
-
-  &--empty {
-    color: $color-crowding-empty-text;
-  }
-
-  &--not-crowded {
-    color: $color-crowding-not-crowded;
-  }
-
-  &--some-crowding {
-    color: $color-crowding-some-crowding;
-  }
-
-  &--crowded {
-    color: $color-crowding-crowded;
-  }
 }
 
 .m-crowding-diagram__crowding-icon {
