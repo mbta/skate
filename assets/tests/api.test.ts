@@ -1,5 +1,6 @@
 import {
   apiCall,
+  checkedApiCall,
   fetchScheduleBlock,
   fetchScheduleRun,
   fetchNearestIntersection,
@@ -15,6 +16,7 @@ import {
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import * as browser from "../src/models/browser"
+import { string, StructError, unknown } from "superstruct"
 
 declare global {
   interface Window {
@@ -101,6 +103,110 @@ describe("apiCall", () => {
 
     apiCall({
       url: "/",
+      parser: () => null,
+    })
+      .then(() => {
+        done("fetchRoutes did not throw an error")
+      })
+      .catch((error) => {
+        expect(error).toBeDefined()
+        done()
+      })
+  })
+})
+
+describe("checkedApiCall", () => {
+  let browserReloadSpy: jest.SpyInstance
+
+  beforeEach(() => {
+    browserReloadSpy = jest
+      .spyOn(browser, "reload")
+      .mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    browserReloadSpy.mockRestore()
+  })
+
+  test("returns parsed data", (done) => {
+    mockFetch(200, { data: "raw" })
+
+    const parse = jest.fn(() => "parsed")
+
+    checkedApiCall({
+      url: "/",
+      dataStruct: string(),
+      parser: parse,
+    }).then((parsed) => {
+      expect(parse).toHaveBeenCalledWith("raw")
+      expect(parsed).toEqual("parsed")
+      done()
+    })
+  })
+
+  test("handles malformed data", async () => {
+    mockFetch(200, { data: 12 })
+
+    const parse = jest.fn(() => "parsed")
+
+    try {
+      await checkedApiCall({
+        url: "/",
+        dataStruct: string(),
+        parser: parse,
+      })
+      fail("did not raise an error")
+    } catch (error) {
+      expect(error).toBeInstanceOf(StructError)
+    }
+  })
+
+  test("reloads the page if the response status is a redirect (3xx)", (done) => {
+    mockFetch(302, { data: null })
+
+    checkedApiCall({
+      url: "/",
+      dataStruct: unknown(),
+      parser: () => null,
+    }).catch(() => {
+      expect(browser.reload).toHaveBeenCalled()
+      done()
+    })
+  })
+
+  test("reloads the page if the response status is forbidden (403)", (done) => {
+    mockFetch(403, { data: null })
+
+    checkedApiCall({
+      url: "/",
+      dataStruct: unknown(),
+      parser: () => null,
+    }).catch(() => {
+      expect(browser.reload).toHaveBeenCalled()
+      done()
+    })
+  })
+
+  test("returns a default for any other response", (done) => {
+    mockFetch(500, { data: null })
+
+    checkedApiCall({
+      url: "/",
+      dataStruct: unknown(),
+      parser: () => null,
+      defaultResult: "default",
+    }).then((result) => {
+      expect(result).toEqual("default")
+      done()
+    })
+  })
+
+  test("throws an error for any other response status if there's no default", (done) => {
+    mockFetch(500, { data: null })
+
+    checkedApiCall({
+      url: "/",
+      dataStruct: unknown(),
       parser: () => null,
     })
       .then(() => {
