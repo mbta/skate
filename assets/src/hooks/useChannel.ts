@@ -1,6 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
-import { assert, Struct } from "superstruct"
+import { is, Struct } from "superstruct"
 import { reload } from "../models/browser"
 
 /** Opens a channel for the given topic
@@ -71,6 +71,7 @@ export const useCheckedChannel = <T, U>({
   parser,
   loadingState,
   closeAfterFirstRead,
+  onError,
 }: {
   socket: Socket | undefined
   topic: string | null
@@ -79,6 +80,7 @@ export const useCheckedChannel = <T, U>({
   parser: (data: T) => U
   loadingState: U
   closeAfterFirstRead?: boolean
+  onError?: (data: any) => void
 }): U => {
   const [state, setState] = useState<U>(loadingState)
 
@@ -88,17 +90,22 @@ export const useCheckedChannel = <T, U>({
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }: { data: unknown }) => {
-        assert(data, dataStruct)
-
-        setState(parser(data))
+        if (is(data, dataStruct)) {
+          setState(parser(data))
+        } else if (onError) {
+          onError(data)
+        }
       })
 
       channel
         .join()
         .receive("ok", ({ data: data }: { data: unknown }) => {
-          assert(data, dataStruct)
+          if (is(data, dataStruct)) {
+            setState(parser(data))
+          } else if (onError) {
+            onError(data)
+          }
 
-          setState(parser(data))
           if (closeAfterFirstRead) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             channel!.leave()
@@ -126,6 +133,7 @@ export const useCheckedChannel = <T, U>({
     dataStruct,
     parser,
     closeAfterFirstRead,
+    onError,
   ])
   return state
 }
