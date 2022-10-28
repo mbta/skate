@@ -4,13 +4,13 @@ import {
   Infer,
   nullable,
   number,
-  object,
+  type,
   string,
 } from "superstruct"
 import { Notification } from "../realtime.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
 
-export const NotificationData = object({
+export const NotificationData = type({
   id: number(),
   created_at: number(),
   reason: enums([

@@ -1,5 +1,5 @@
 import { Socket } from "phoenix"
-import { array, Infer, object, union } from "superstruct"
+import { array, Infer, type, union } from "superstruct"
 import {
   NotificationData,
   notificationFromData,
@@ -7,7 +7,7 @@ import {
 import { Notification } from "../realtime.d"
 import { useCheckedChannel } from "./useChannel"
 
-const InitialNotificationData = object({
+const InitialNotificationData = type({
   initial_notifications: array(NotificationData),
 })
 type InitialNotificationData = Infer<typeof InitialNotificationData>

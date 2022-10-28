@@ -16,7 +16,7 @@ import {
   Infer,
   nullable,
   number,
-  object,
+  type,
   record,
   string,
 } from "superstruct"
@@ -32,7 +32,7 @@ export interface RouteTab {
   saveChangesToTabUuid?: string
 }
 
-export const RouteTabData = object({
+export const RouteTabData = type({
   uuid: string(),
   preset_name: nullable(string()),
   selected_route_ids: array(string()),

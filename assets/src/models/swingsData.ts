@@ -1,7 +1,7 @@
-import { Infer, number, object, string } from "superstruct"
+import { Infer, number, type, string } from "superstruct"
 import { Swing } from "../schedule"
 
-export const SwingData = object({
+export const SwingData = type({
   block_id: string(),
   from_route_id: string(),
   from_run_id: string(),
