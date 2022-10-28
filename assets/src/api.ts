@@ -82,10 +82,7 @@ export const checkedApiCall = <T, U>({
 }): Promise<U> =>
   fetch(url, fetchArgs)
     .then(checkResponseStatus)
-    .then(
-      (response) =>
-        parseJson(response) as Record<string, unknown> & { data: unknown }
-    )
+    .then((response) => parseJson(response) as { data: unknown })
     .then(({ data: data }) => {
       assert(data, dataStruct)
       return parser(data)
