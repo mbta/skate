@@ -88,10 +88,10 @@ export const checkedApiCall = <T, U>({
       return parser(data)
     })
     .catch((error) => {
-      if (defaultResult === undefined) {
-        throw error
-      } else {
+      if (defaultResult !== undefined) {
         return defaultResult
+      } else {
+        throw error
       }
     })
 
