@@ -187,7 +187,6 @@ export const fetchSwings = (routeIds: RouteId[]): Promise<Swing[] | null> =>
     url: `/api/swings?route_ids=${routeIds.join(",")}`,
     dataStruct: array(SwingData),
     parser: nullableParser(swingsFromData),
-    defaultResult: null,
   })
 
 export const putNotificationReadState = (
