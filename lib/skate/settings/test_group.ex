@@ -12,7 +12,7 @@ defmodule Skate.Settings.TestGroup do
 
   defstruct [:id, :name, users: []]
 
-  @spec create(name :: String.t()) :: __MODULE__.t()
+  @spec create(String.t()) :: __MODULE__.t()
   def create(name) do
     %DbTestGroup{name: name}
     |> Skate.Repo.insert!()
@@ -26,6 +26,39 @@ defmodule Skate.Settings.TestGroup do
     |> Skate.Repo.all()
     |> Skate.Repo.preload(:users)
     |> Enum.map(&convert_from_db_test_group(&1))
+  end
+
+  @spec update(t()) :: t()
+  def update(test_group) do
+    existing_test_group =
+      DbTestGroup |> Skate.Repo.get(test_group.id) |> Skate.Repo.preload(:test_group_users)
+
+    existing_test_group
+    |> DbTestGroup.changeset(
+      test_group
+      |> Map.from_struct()
+      |> Map.put(
+        :test_group_users,
+        Enum.map(test_group.users, fn user ->
+          existing_test_group_user =
+            existing_test_group.test_group_users
+            |> Enum.find(&(&1.user_id == user.id))
+
+          id =
+            if is_nil(existing_test_group_user) do
+              nil
+            else
+              existing_test_group_user.id
+            end
+
+          %{id: id, user_id: user.id, test_group_id: existing_test_group.id}
+        end)
+      )
+      |> Map.delete(:users)
+    )
+    |> Skate.Repo.update!()
+    |> Skate.Repo.preload(:users)
+    |> convert_from_db_test_group()
   end
 
   @spec convert_from_db_test_group(DbTestGroup.t()) :: __MODULE__.t()
