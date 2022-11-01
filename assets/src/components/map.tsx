@@ -323,7 +323,7 @@ const EventAdder = ({
     dragstart() {
       setShouldAutoCenter(false)
     },
-    moveend: () => {
+    moveend() {
       // Wait until the auto centering is finished to start listening for manual moves again.
       if (isAutoCentering.current) {
         isAutoCentering.current = false
