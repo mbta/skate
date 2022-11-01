@@ -1,7 +1,6 @@
 import Config
 
 config :skate,
-  hastus_url: "https://cdn.mbta.com/hastus_export/skate/hastus_skate_dev.zip",
   tileset_url: "https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles",
   geonames_url_base: "http://api.geonames.org",
   log_duration_timing: false
