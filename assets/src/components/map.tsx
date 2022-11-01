@@ -311,7 +311,7 @@ const EventAdder = ({
   setShouldAutoCenter: (arg0: boolean) => void
 }): ReactElement => {
   useMapEvents({
-    movestart: () => {
+    zoomstart() {
       // If the user drags or zooms, they want manual control of the map.
       // But don't disable shouldAutoCenter if the move was triggered by an auto center.
       if (!isAutoCentering.current) {
