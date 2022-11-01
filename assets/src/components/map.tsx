@@ -318,6 +318,11 @@ const EventAdder = ({
         setShouldAutoCenter(false)
       }
     },
+    // `dragstart` is fired when a user drags the map
+    // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
+    dragstart() {
+      setShouldAutoCenter(false)
+    },
     moveend: () => {
       // Wait until the auto centering is finished to start listening for manual moves again.
       if (isAutoCentering.current) {
