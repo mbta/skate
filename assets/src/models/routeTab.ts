@@ -2,6 +2,7 @@ import { RouteId } from "../schedule.d"
 import {
   LadderDirections,
   emptyLadderDirectionsByRouteId,
+  LadderDirectionsData,
 } from "./ladderDirection"
 import {
   LadderCrowdingToggles,
@@ -9,6 +10,16 @@ import {
 } from "./ladderCrowdingToggle"
 import { v4 as uuidv4 } from "uuid"
 import { uniq, flatten } from "../helpers/array"
+import {
+  array,
+  boolean,
+  Infer,
+  nullable,
+  number,
+  type,
+  record,
+  string,
+} from "superstruct"
 
 export interface RouteTab {
   uuid: string
@@ -21,16 +32,17 @@ export interface RouteTab {
   saveChangesToTabUuid?: string
 }
 
-export interface RouteTabData {
-  uuid: string
-  preset_name?: string
-  selected_route_ids: RouteId[]
-  ordering: number
-  ladder_directions: LadderDirections
-  ladder_crowding_toggles: LadderCrowdingToggles
-  is_current_tab?: boolean
-  save_changes_to_tab_uuid?: string
-}
+export const RouteTabData = type({
+  uuid: string(),
+  preset_name: nullable(string()),
+  selected_route_ids: array(string()),
+  ordering: nullable(number()),
+  ladder_directions: LadderDirectionsData,
+  ladder_crowding_toggles: record(string(), boolean()),
+  is_current_tab: nullable(boolean()),
+  save_changes_to_tab_uuid: nullable(string()),
+})
+export type RouteTabData = Infer<typeof RouteTabData>
 
 export const newRouteTab = (ordering: number): RouteTab => ({
   uuid: uuidv4(),

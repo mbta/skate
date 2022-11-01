@@ -100,6 +100,7 @@ describe("usePersistedStateReducer", () => {
           selected_route_ids: ["1"],
           ladder_directions: {},
           ladder_crowding_toggles: {},
+          save_changes_to_tab_uuid: null,
         },
       ]),
     }

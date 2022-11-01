@@ -1,5 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
+import { is, Struct } from "superstruct"
 import { reload } from "../models/browser"
 
 /** Opens a channel for the given topic
@@ -59,5 +60,80 @@ export const useChannel = <T>({
       }
     }
   }, [socket, topic, event, loadingState, parser, closeAfterFirstRead])
+  return state
+}
+
+export const useCheckedChannel = <T, U>({
+  socket,
+  topic,
+  event,
+  dataStruct,
+  parser,
+  loadingState,
+  closeAfterFirstRead,
+  onError,
+}: {
+  socket: Socket | undefined
+  topic: string | null
+  event: string
+  dataStruct: Struct<T, any>
+  parser: (data: T) => U
+  loadingState: U
+  closeAfterFirstRead?: boolean
+  onError?: (data: any) => void
+}): U => {
+  const [state, setState] = useState<U>(loadingState)
+
+  useEffect(() => {
+    setState(loadingState)
+    let channel: Channel | undefined
+    if (socket !== undefined && topic !== null) {
+      channel = socket.channel(topic)
+      channel.on(event, ({ data: data }: { data: unknown }) => {
+        if (is(data, dataStruct)) {
+          setState(parser(data))
+        } else if (onError) {
+          onError(data)
+        }
+      })
+
+      channel
+        .join()
+        .receive("ok", ({ data: data }: { data: unknown }) => {
+          if (is(data, dataStruct)) {
+            setState(parser(data))
+          } else if (onError) {
+            onError(data)
+          }
+
+          if (closeAfterFirstRead) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            channel!.leave()
+            channel = undefined
+          }
+        })
+        .receive("error", ({ reason }) =>
+          // eslint-disable-next-line no-console
+          console.error(`joining topic ${topic} failed`, reason)
+        )
+        .receive("timeout", reload)
+    }
+
+    return () => {
+      if (channel !== undefined) {
+        channel.leave()
+        channel = undefined
+      }
+    }
+  }, [
+    socket,
+    topic,
+    event,
+    loadingState,
+    dataStruct,
+    parser,
+    closeAfterFirstRead,
+    onError,
+  ])
   return state
 }
