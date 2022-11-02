@@ -311,15 +311,25 @@ const EventAdder = ({
   setShouldAutoCenter: (arg0: boolean) => void
 }): ReactElement => {
   useMapEvents({
-    movestart: () => {
-      // If the user drags or zooms, they want manual control of the map.
-      // But don't disable shouldAutoCenter if the move was triggered by an auto center.
+    // If the user drags or zooms, they want manual control of the map.
+
+    // `zoomstart` is fired when the map changes zoom levels
+    // this can be because of animating the zoom change or user input
+    zoomstart() {
+      // But don't disable `shouldAutoCenter` if the zoom was triggered by AutoCenterer.
       if (!isAutoCentering.current) {
         setShouldAutoCenter(false)
       }
     },
-    moveend: () => {
-      // Wait until the auto centering is finished to start listening for manual moves again.
+    // `dragstart` is fired when a user drags the map
+    // it is expected that this event is not fired for anything but user input
+    // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
+    dragstart() {
+      setShouldAutoCenter(false)
+    },
+    // `moveend` is called when the leaflet map has finished animating a pan
+    moveend() {
+      // Wait until the auto centering animation is finished to resume listening for user interaction.
       if (isAutoCentering.current) {
         isAutoCentering.current = false
       }

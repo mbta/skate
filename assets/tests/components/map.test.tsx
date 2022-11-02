@@ -201,6 +201,7 @@ describe("auto centering", () => {
     const manualLatLng = { lat: 41.9, lng: -70.9 }
 
     act(() => {
+      mapRef.current!.fire("dragstart")
       mapRef.current!.panTo(manualLatLng)
     })
 
@@ -261,6 +262,7 @@ describe("auto centering", () => {
     // Manual move to turn off auto centering
     const manualLatLng = { lat: 41.9, lng: -70.9 }
     act(() => {
+      mapRef.current!.fire("dragstart")
       mapRef.current!.panTo(manualLatLng)
     })
     await animationFramePromise()
