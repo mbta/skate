@@ -31,7 +31,7 @@ defmodule Skate.Settings.TestGroup do
   @spec update(t()) :: t()
   def update(test_group) do
     existing_test_group =
-      DbTestGroup |> Skate.Repo.get(test_group.id) |> Skate.Repo.preload(:test_group_users)
+      DbTestGroup |> Skate.Repo.get!(test_group.id) |> Skate.Repo.preload(:test_group_users)
 
     existing_test_group
     |> DbTestGroup.changeset(
