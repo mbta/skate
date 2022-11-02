@@ -52,6 +52,7 @@ defmodule ReportTest do
   describe "all_reports/0" do
     test "returns full list of reports" do
       assert Report.all_reports() == %{
+               "user_configurations" => Report.UserConfigurations,
                "user_settings" => Report.UserSettings,
                "user_names_and_uuids" => Report.UserNamesAndUuids
              }
