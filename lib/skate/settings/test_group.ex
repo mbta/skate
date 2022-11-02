@@ -33,6 +33,8 @@ defmodule Skate.Settings.TestGroup do
     existing_test_group =
       DbTestGroup |> Skate.Repo.get!(test_group.id) |> Skate.Repo.preload(:test_group_users)
 
+    existing_user_id_lookup = Map.new(existing_test_group.test_group_users, &{&1.user_id, &1.id})
+
     existing_test_group
     |> DbTestGroup.changeset(
       test_group
@@ -40,17 +42,7 @@ defmodule Skate.Settings.TestGroup do
       |> Map.put(
         :test_group_users,
         Enum.map(test_group.users, fn user ->
-          existing_test_group_user =
-            existing_test_group.test_group_users
-            |> Enum.find(&(&1.user_id == user.id))
-
-          id =
-            if is_nil(existing_test_group_user) do
-              nil
-            else
-              existing_test_group_user.id
-            end
-
+          id = Map.get(existing_user_id_lookup, user.id)
           %{id: id, user_id: user.id, test_group_id: existing_test_group.id}
         end)
       )
