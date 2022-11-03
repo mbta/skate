@@ -23,7 +23,7 @@ defmodule Report.UserConfigurationsTest do
       tab_1 = %DbRouteTab{
         user_id: user.id,
         uuid: Ecto.UUID.generate(),
-        selected_route_ids: ["1", "2"],
+        selected_route_ids: ["1", "2", "3", "4", "5", "6", "7"],
         ladder_directions: %{},
         ladder_crowding_toggles: %{},
         ordering: 1,
@@ -33,7 +33,7 @@ defmodule Report.UserConfigurationsTest do
 
       tab_2 = %{
         tab_1
-        | selected_route_ids: ["3", "4", "5"],
+        | selected_route_ids: ["1", "2", "3", "4", "5", "6", "7", "8"],
           ordering: 2,
           uuid: Ecto.UUID.generate()
       }
@@ -57,7 +57,7 @@ defmodule Report.UserConfigurationsTest do
                %{
                  email: ^email,
                  ladder_page_vehicle_label: :vehicle_id,
-                 routes_per_tab: "[2, 3]",
+                 routes_per_tab: "7,8",
                  shuttle_page_vehicle_label: :run_id,
                  user_uuid: ^uuid,
                  username: ^username,

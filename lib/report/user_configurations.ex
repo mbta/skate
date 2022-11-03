@@ -27,8 +27,7 @@ defmodule Report.UserConfigurations do
       ladder_page_vehicle_label: user.user_settings.ladder_page_vehicle_label,
       shuttle_page_vehicle_label: user.user_settings.shuttle_page_vehicle_label,
       vehicle_adherence_colors: user.user_settings.vehicle_adherence_colors,
-      routes_per_tab:
-        inspect(Enum.map(user.route_tabs, fn rt -> length(rt.selected_route_ids) end))
+      routes_per_tab: Enum.map_join(user.route_tabs, ",", &length(&1.selected_route_ids))
     }
   end
 
