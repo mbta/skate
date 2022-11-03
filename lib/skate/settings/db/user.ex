@@ -4,8 +4,8 @@ defmodule Skate.Settings.Db.User do
 
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.Db.UserSettings, as: DbUserSettings
   alias Skate.Settings.Db.RouteTab, as: DbRouteTab
+  alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
   @type t :: %__MODULE__{}
 
