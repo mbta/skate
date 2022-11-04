@@ -77,6 +77,7 @@ defmodule SkateWeb.Router do
 
     get "/reports", ReportController, :index
     get "/reports/:short_name", ReportController, :run
+    get "/test_groups", TestGroupController, :index
   end
 
   scope "/api", SkateWeb do

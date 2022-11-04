@@ -1,0 +1,7 @@
+<div>
+    <ul>
+        <%= for test_group <- @test_groups do %>
+            <li><%= test_group.name %></li>
+        <% end %>
+    </ul>
+</div>
