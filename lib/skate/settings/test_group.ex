@@ -20,6 +20,19 @@ defmodule Skate.Settings.TestGroup do
     |> convert_from_db_test_group()
   end
 
+  @spec get(integer()) :: t() | nil
+  def get(id) do
+    test_group = Skate.Repo.get(DbTestGroup, id)
+
+    if test_group do
+      test_group
+      |> Skate.Repo.preload(:users)
+      |> convert_from_db_test_group
+    else
+      nil
+    end
+  end
+
   @spec get_all() :: [t()]
   def get_all() do
     DbTestGroup

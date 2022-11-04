@@ -10,6 +10,17 @@ defmodule Skate.Settings.TestGroupTest do
     end
   end
 
+  describe "get/1" do
+    test "retrieves the test group" do
+      test_group = TestGroup.create("group name")
+      assert %TestGroup{name: "group name"} = TestGroup.get(test_group.id)
+    end
+
+    test "returns nil when no group is found" do
+      assert is_nil(TestGroup.get(123))
+    end
+  end
+
   describe "get_all/1" do
     test "gets all test groups" do
       group1 = TestGroup.create("group 1")

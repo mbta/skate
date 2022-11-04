@@ -1,0 +1,6 @@
+<p><%= @test_group_name %></p>
+<ul>
+    <%= for test_group_user <- @test_group_users do %>
+        <li><%= test_group_user %></li>
+    <% end %>
+</ul>
