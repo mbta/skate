@@ -69,5 +69,77 @@ defmodule SkateWeb.TestGroupControllerTest do
       assert html =~ "group to show"
       assert html =~ user.email
     end
+
+    @tag :authenticated_admin
+    test "returns 404 when no test group found", %{conn: conn} do
+      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :show, 123))
+
+      assert response(conn, 404) =~ "no test group found"
+    end
+  end
+
+  describe "add_user_form/2" do
+    @tag :authenticated
+    test "when not an admin, redirects to unauthorized page", %{conn: conn} do
+      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user_form, "1"))
+
+      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+    end
+
+    @tag :authenticated_admin
+    test "renders form, including users that can be added but not users already in group", %{
+      conn: conn
+    } do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+
+      test_group = TestGroup.create("group to add users to")
+      test_group_with_user = TestGroup.update(%TestGroup{test_group | users: [user1]})
+
+      html =
+        conn
+        |> get(
+          SkateWeb.Router.Helpers.test_group_path(conn, :add_user_form, test_group_with_user.id)
+        )
+        |> html_response(200)
+
+      refute html =~ user1.email
+      assert html =~ user2.email
+    end
+
+    @tag :authenticated_admin
+    test "returns 404 when no test group found", %{conn: conn} do
+      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user_form, 123))
+
+      assert response(conn, 404) =~ "no test group found"
+    end
+  end
+
+  describe "add_user/2" do
+    @tag :authenticated
+    test "when not an admin, redirects to unauthorized page", %{conn: conn} do
+      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, "1"))
+
+      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+    end
+
+    @tag :authenticated_admin
+    test "adds user to test group", %{conn: conn} do
+      user = User.upsert("user", "user@test.com")
+
+      test_group = TestGroup.create("group to add user to")
+
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, test_group.id), %{
+          "user_id" => user.id
+        })
+
+      assert redirected_to(conn) ==
+               SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group.id)
+
+      updated_test_group = TestGroup.get(test_group.id)
+
+      assert updated_test_group.users == [user]
+    end
   end
 end

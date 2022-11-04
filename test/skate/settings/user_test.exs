@@ -39,6 +39,19 @@ defmodule Skate.Settings.UserTest do
     end
   end
 
+  describe "get_all/0" do
+    test "returns all users" do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+
+      users = User.get_all()
+
+      assert length(users) == 2
+      assert user1 in users
+      assert user2 in users
+    end
+  end
+
   describe "upsert/1" do
     test "assigns a UUID if none is present" do
       Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))

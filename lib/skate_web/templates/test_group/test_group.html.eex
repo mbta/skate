@@ -1,6 +1,8 @@
-<p><%= @test_group_name %></p>
+<h1><%= @test_group_name %></h1>
 <ul>
     <%= for test_group_user <- @test_group_users do %>
         <li><%= test_group_user %></li>
     <% end %>
 </ul>
+<%= link "Add user", to: Routes.test_group_path(@conn, :add_user_form, @test_group_id) %>
+<%= link "Back to all test groups", to: Routes.test_group_path(@conn, :index) %>
