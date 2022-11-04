@@ -68,7 +68,9 @@ defmodule SkateWeb.PageControllerTest do
       html = html_response(conn, 200)
 
       json =
-        Jason.encode!(user_struct.test_groups |> Enum.map(& &1.name))
+        user_struct.test_groups
+        |> Enum.map(& &1.name)
+        |> Jason.encode!()
         |> Phoenix.HTML.html_escape()
         |> Phoenix.HTML.safe_to_string()
 
