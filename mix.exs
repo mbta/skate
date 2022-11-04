@@ -67,7 +67,7 @@ defmodule Skate.MixProject do
       {:diskusage_logger, "~> 0.2.0"},
       {:httpoison, "~> 1.8.0"},
       {:bypass, "~> 2.1.0", only: :test},
-      {:csv, "~> 2.4.1"},
+      {:csv, "~> 3.0.3"},
       {:timex, "~> 3.7.5"},
       {:stream_data, "~> 0.5.0", only: :test},
       {:server_sent_event_stage, "~> 1.1.0"},
