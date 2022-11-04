@@ -19,11 +19,12 @@ defmodule SkateWeb.AuthController do
     conn
     |> Guardian.Plug.sign_in(
       AuthManager,
-      %{username: username, user_id: user_id},
+      username,
       %{groups: credentials.other[:groups]},
       ttl: {expiration - current_time, :seconds}
     )
     |> Plug.Conn.put_session(:username, username)
+    |> Plug.Conn.put_session(:user_id, user_id)
     |> redirect(to: Helpers.page_path(conn, :index))
   end
 

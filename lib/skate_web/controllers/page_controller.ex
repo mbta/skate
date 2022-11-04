@@ -9,7 +9,9 @@ defmodule SkateWeb.PageController do
   plug(:laboratory_features)
 
   def index(conn, _params) do
-    %{username: username, user_id: user_id} = AuthManager.Plug.current_resource(conn)
+    username = AuthManager.Plug.current_resource(conn)
+    user_id = get_session(conn, :user_id)
+
     _ = Logger.info("uid=#{username}")
 
     user = User.get(user_id)

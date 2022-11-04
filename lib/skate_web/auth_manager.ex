@@ -10,14 +10,14 @@ defmodule SkateWeb.AuthManager do
     {:ok, resource}
   end
 
-  def resource_from_claims(%{"sub" => %{"username" => username, "user_id" => user_id}}) do
-    {:ok, %{username: username, user_id: user_id}}
+  def resource_from_claims(%{"sub" => username}) do
+    {:ok, username}
   end
 
   def resource_from_claims(_), do: {:error, :invalid_claims}
 
   def username_from_socket!(socket) do
-    {:ok, %{username: username}} =
+    {:ok, username} =
       socket
       |> Guardian.Phoenix.Socket.current_token()
       |> decode_and_verify!()

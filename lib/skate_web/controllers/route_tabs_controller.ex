@@ -1,11 +1,10 @@
 defmodule SkateWeb.RouteTabsController do
   use SkateWeb, :controller
 
-  alias SkateWeb.AuthManager
   alias Skate.Settings.RouteTab
 
   def update(conn, %{"route_tabs" => route_tabs} = _params) do
-    %{user_id: user_id} = AuthManager.Plug.current_resource(conn)
+    user_id = get_session(conn, :user_id)
 
     new_route_tabs = RouteTab.update_all_for_user!(user_id, format_tabs_for_update(route_tabs))
     json(conn, %{data: new_route_tabs})

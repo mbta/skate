@@ -19,7 +19,7 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
     @tag :authenticated
     test "sets read state for a batch of notifications for the user", %{
       conn: conn,
-      user: %{user_id: user_id}
+      user: %{id: user_id}
     } do
       user = User.get(user_id)
       route_tab1 = build_test_tab()

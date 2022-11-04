@@ -3,10 +3,9 @@ defmodule SkateWeb.UserSettingsController do
   alias Skate.Settings.UserSettings
   alias Skate.Settings.VehicleLabel
   alias Skate.Settings.VehicleAdherenceColor
-  alias SkateWeb.AuthManager
 
   def update(conn, %{"field" => field, "value" => value} = _params) do
-    %{user_id: user_id} = AuthManager.Plug.current_resource(conn)
+    user_id = get_session(conn, :user_id)
     field = field(field)
     value = value(field, value)
 

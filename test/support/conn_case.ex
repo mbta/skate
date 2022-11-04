@@ -39,38 +39,37 @@ defmodule SkateWeb.ConnCase do
       Sandbox.mode(Skate.Repo, {:shared, self()})
     end
 
-    %{id: user_id} = User.upsert(username, email)
-    user_resource = %{user_id: user_id, username: username}
+    %{id: user_id} = user = User.upsert(username, email)
 
     {conn, user} =
       cond do
         tags[:authenticated] ->
           conn =
             Phoenix.ConnTest.build_conn()
-            |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user_resource, %{})
+            |> init_test_session(%{user_id: user_id})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, username, %{})
 
-          {conn, user_resource}
+          {conn, user}
 
         tags[:authenticated_admin] ->
           conn =
             Phoenix.ConnTest.build_conn()
-            |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user_resource, %{
+            |> init_test_session(%{user_id: user_id})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, username, %{
               "groups" => ["skate-admin"]
             })
 
-          {conn, user_resource}
+          {conn, user}
 
         tags[:authenticated_dispatcher] ->
           conn =
             Phoenix.ConnTest.build_conn()
-            |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user_resource, %{
+            |> init_test_session(%{user_id: user_id})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, username, %{
               "groups" => ["skate-dispatcher"]
             })
 
-          {conn, user_resource}
+          {conn, user}
 
         true ->
           {Phoenix.ConnTest.build_conn(), nil}

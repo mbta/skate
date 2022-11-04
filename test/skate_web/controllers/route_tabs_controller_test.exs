@@ -5,7 +5,7 @@ defmodule SkateWeb.RouteTabsControllerTest do
 
   describe "PUT /api/route_tabs" do
     @tag :authenticated
-    test "sets route tabs for logged-in user", %{conn: conn, user: %{user_id: user_id}} do
+    test "sets route tabs for logged-in user", %{conn: conn, user: %{id: user_id}} do
       conn =
         put(conn, "/api/route_tabs", %{
           "route_tabs" => [
