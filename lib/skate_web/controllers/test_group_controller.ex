@@ -17,4 +17,11 @@ defmodule SkateWeb.TestGroupController do
     |> put_layout({SkateWeb.LayoutView, "test_groups.html"})
     |> render("index.html")
   end
+
+  @spec post(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def post(conn, params) do
+    TestGroup.create(params["name"])
+
+    redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :index))
+  end
 end

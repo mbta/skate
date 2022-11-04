@@ -4,4 +4,10 @@
             <li><%= test_group.name %></li>
         <% end %>
     </ul>
+    <%= form_for @conn, Routes.test_group_path(@conn, :post), fn f -> %>
+        <%= label do %>
+            Name: <%= text_input f, :name %>
+        <% end %>
+        <%= submit "Create" %>
+    <% end %>
 </div>
