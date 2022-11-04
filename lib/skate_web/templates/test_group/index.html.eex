@@ -1,13 +1,11 @@
-<div>
-    <ul>
-        <%= for test_group <- @test_groups do %>
-            <li><%= link test_group.name, to: Routes.test_group_path(@conn, :show, test_group.id) %></li>
-        <% end %>
-    </ul>
-    <%= form_for @conn, Routes.test_group_path(@conn, :post), fn f -> %>
-        <%= label do %>
-            Name: <%= text_input f, :name %>
-        <% end %>
-        <%= submit "Create" %>
+<ul>
+    <%= for test_group <- @test_groups do %>
+        <li><%= link test_group.name, to: Routes.test_group_path(@conn, :show, test_group.id) %></li>
     <% end %>
-</div>
+</ul>
+<%= form_for @conn, Routes.test_group_path(@conn, :post), fn f -> %>
+    <%= label do %>
+        Name: <%= text_input f, :name %>
+    <% end %>
+    <%= submit "Create" %>
+<% end %>
