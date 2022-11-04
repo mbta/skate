@@ -6,13 +6,13 @@ defmodule SkateWeb.UserSettingsController do
   alias SkateWeb.AuthManager
 
   def update(conn, %{"field" => field, "value" => value} = _params) do
-    username = AuthManager.Plug.current_resource(conn)
+    %{user_id: user_id} = AuthManager.Plug.current_resource(conn)
     field = field(field)
     value = value(field, value)
 
     case {field, value} do
       {field, {:ok, value}} when not is_nil(field) ->
-        UserSettings.set(username, field, value)
+        UserSettings.set(user_id, field, value)
         send_resp(conn, 200, "")
 
       _ ->

@@ -4,12 +4,12 @@ defmodule Skate.Settings.User do
   import Ecto.Query
   require Logger
 
-  @spec get(String.t()) :: DbUser.t()
+  @spec get(DbUser.id()) :: DbUser.t()
   @doc """
   Get a user by their username
   """
-  def get(username) do
-    Skate.Repo.get_by!(DbUser, username: username)
+  def get(user_id) do
+    Skate.Repo.get!(DbUser, user_id)
   end
 
   @spec get_by_email(String.t()) :: DbUser.t() | nil

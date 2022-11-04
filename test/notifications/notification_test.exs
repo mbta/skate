@@ -14,9 +14,9 @@ defmodule Notifications.NotificationTest do
 
   describe "get_or_create_from_block_waiver/1" do
     test "associates a new notification with users subscribed to an affected route" do
-      user1 = User.upsert("user1", "user1@test.com")
-      user2 = User.upsert("user2", "user2@test.com")
-      User.upsert("user3", "user3@test.com")
+      %{id: user_id_1} = User.upsert("user1", "user1@test.com")
+      %{id: user_id_2} = User.upsert("user2", "user2@test.com")
+      %{id: user_id_3} = User.upsert("user3", "user3@test.com")
 
       route_tab1 =
         build(:route_tab, %{
@@ -24,7 +24,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["4", "1"]
         })
 
-      RouteTab.update_all_for_user!("user1", [route_tab1])
+      RouteTab.update_all_for_user!(user_id_1, [route_tab1])
 
       route_tab2 =
         build(:route_tab, %{
@@ -32,7 +32,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["2"]
         })
 
-      RouteTab.update_all_for_user!("user2", [route_tab2])
+      RouteTab.update_all_for_user!(user_id_2, [route_tab2])
 
       route_tab3 =
         build(:route_tab, %{
@@ -40,7 +40,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["4", "5", "6", "7"]
         })
 
-      RouteTab.update_all_for_user!("user3", [route_tab3])
+      RouteTab.update_all_for_user!(user_id_3, [route_tab3])
 
       notification_values = %{
         created_at: 12345,
@@ -63,15 +63,15 @@ defmodule Notifications.NotificationTest do
 
       assert(
         notification_users |> Enum.map(& &1.user_id) |> Enum.sort() ==
-          [user1.id, user2.id] |> Enum.sort()
+          [user_id_1, user_id_2] |> Enum.sort()
       )
     end
   end
 
   describe "unexpired_notifications_for_user/2" do
     test "returns all unexpired notifications for the given user, in chronological order by creation timestamp" do
-      User.upsert("user1", "user1@test.com")
-      User.upsert("user2", "user2@test.com")
+      %{id: user_id_1} = User.upsert("user1", "user1@test.com")
+      %{id: user_id_2} = User.upsert("user2", "user2@test.com")
       baseline_time = 1_000_000_000
       now_fn = fn -> baseline_time end
       naive_now_fn = fn -> baseline_time |> DateTime.from_unix!() |> DateTime.to_naive() end
@@ -84,7 +84,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["1", "2", "112"]
         })
 
-      RouteTab.update_all_for_user!("user1", [route_tab1])
+      RouteTab.update_all_for_user!(user_id_1, [route_tab1])
 
       route_tab2 =
         build(:route_tab, %{
@@ -92,7 +92,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["1", "3", "743"]
         })
 
-      RouteTab.update_all_for_user!("user2", [route_tab2])
+      RouteTab.update_all_for_user!(user_id_2, [route_tab2])
 
       route_1_unexpired =
         Notification.get_or_create_from_block_waiver(%{

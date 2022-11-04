@@ -7,15 +7,16 @@ defmodule Skate.Settings.UserTest do
   @email "user@test.com"
 
   describe "get/1" do
-    test "gets user by username" do
-      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
+    test "gets user by user id" do
+      %{id: user_id_1} = Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
+
       Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: "otheruser"}))
 
-      assert %DbUser{username: @username} = User.get(@username)
+      assert %DbUser{username: @username} = User.get(user_id_1)
     end
 
     test "raises if user not found" do
-      assert_raise Ecto.NoResultsError, fn -> User.get("missinguser") end
+      assert_raise Ecto.NoResultsError, fn -> User.get(1234) end
     end
   end
 

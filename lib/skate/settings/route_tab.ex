@@ -33,15 +33,15 @@ defmodule Skate.Settings.RouteTab do
     :save_changes_to_tab_uuid
   ]
 
-  @spec get_all_for_user(String.t()) :: [t()]
-  def get_all_for_user(username) do
-    from(rt in DbRouteTab, join: u in assoc(rt, :user), where: u.username == ^username)
+  @spec get_all_for_user(DbUser.id()) :: [t()]
+  def get_all_for_user(user_id) do
+    from(rt in DbRouteTab, join: u in assoc(rt, :user), where: u.id == ^user_id)
     |> Repo.all()
     |> Enum.map(&db_route_tab_to_route_tab(&1))
   end
 
-  @spec update_all_for_user!(String.t(), [t()]) :: [t()]
-  def update_all_for_user!(username, route_tabs) do
+  @spec update_all_for_user!(DbUser.id(), [t()]) :: [t()]
+  def update_all_for_user!(user_id, route_tabs) do
     # Do update in two stages to prevent foreign key constaint problem. A route_tabs entry
     # with unsaved modifications will have a save_changes_to_tab_uuid value pointing to the
     # original, unmodified entry (which itself will always be a preset as of currently). An
@@ -50,7 +50,7 @@ defmodule Skate.Settings.RouteTab do
     unmodified_route_tabs =
       Enum.filter(route_tabs, fn route_tab -> is_nil(route_tab.save_changes_to_tab_uuid) end)
 
-    username
+    user_id
     |> User.get()
     |> Repo.preload(:route_tabs)
     |> DbUser.changeset(%{route_tabs: Enum.map(unmodified_route_tabs, &Map.from_struct/1)})

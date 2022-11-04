@@ -19,15 +19,15 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
     @tag :authenticated
     test "sets read state for a batch of notifications for the user", %{
       conn: conn,
-      user: username
+      user: %{user_id: user_id}
     } do
-      user = User.get(username)
+      user = User.get(user_id)
       route_tab1 = build_test_tab()
-      RouteTab.update_all_for_user!(username, [route_tab1])
+      RouteTab.update_all_for_user!(user_id, [route_tab1])
 
-      User.upsert("otheruser", "other@email.com")
+      %{id: other_user_id} = User.upsert("otheruser", "other@email.com")
       route_tab2 = build_test_tab()
-      RouteTab.update_all_for_user!("otheruser", [route_tab2])
+      RouteTab.update_all_for_user!(other_user_id, [route_tab2])
 
       user_notification1 =
         Notification.get_or_create_from_block_waiver(%{

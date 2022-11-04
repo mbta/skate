@@ -8,6 +8,7 @@ defmodule Skate.Settings.Db.User do
   alias Skate.Settings.Db.RouteTab, as: DbRouteTab
 
   @type t :: %__MODULE__{}
+  @type id :: integer()
 
   schema "users" do
     field(:username, :string)

@@ -6,11 +6,12 @@ defmodule SkateWeb.AuthManagerTest do
 
   describe "username_from_socket!/1" do
     test "extracts the username from the given socket's token" do
-      {:ok, token, _claims} = AuthManager.encode_and_sign("charlie")
+      user = %{username: "charlie", user_id: 101}
+      {:ok, token, _claims} = AuthManager.encode_and_sign(user)
 
       {:ok, socket} =
         UserSocket
-        |> socket("charlie", %{})
+        |> socket(user, %{})
         |> Socket.authenticate(AuthManager, token)
 
       assert(AuthManager.username_from_socket!(socket) == "charlie")

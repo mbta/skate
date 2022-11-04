@@ -7,6 +7,7 @@ defmodule Notifications.Notification do
   alias Schedule.Trip
   alias Schedule.Hastus.Run
   alias Skate.Settings.User
+  alias Skate.Settings.Db.User, as: DbUser
   alias Notifications.NotificationReason
   alias Notifications.NotificationState
   alias Notifications.Db.Notification, as: DbNotification
@@ -197,12 +198,14 @@ defmodule Notifications.Notification do
     |> Enum.map(&convert_from_db_notification/1)
   end
 
-  def update_read_states(username, notification_ids, read_state)
+  @spec update_read_states(DbUser.id(), [id()], NotificationState.t()) ::
+          {non_neg_integer(), nil | [t()]}
+  def update_read_states(user_id, notification_ids, read_state)
       when read_state in [:read, :unread, :deleted] do
     query =
       from(nu in DbNotificationUser,
         join: u in assoc(nu, :user),
-        where: u.username == ^username,
+        where: u.id == ^user_id,
         where: nu.notification_id in ^notification_ids
       )
 

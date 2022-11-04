@@ -9,12 +9,12 @@ defmodule SkateWeb.PageController do
   plug(:laboratory_features)
 
   def index(conn, _params) do
-    username = AuthManager.Plug.current_resource(conn)
+    %{username: username, user_id: user_id} = AuthManager.Plug.current_resource(conn)
     _ = Logger.info("uid=#{username}")
 
-    user = User.get(username)
-    user_settings = UserSettings.get_or_create(username)
-    route_tabs = RouteTab.get_all_for_user(username)
+    user = User.get(user_id)
+    user_settings = UserSettings.get_or_create(user_id)
+    route_tabs = RouteTab.get_all_for_user(user_id)
 
     dispatcher_flag =
       conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
