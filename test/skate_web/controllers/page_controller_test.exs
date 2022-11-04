@@ -54,19 +54,25 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes user test groups in HTML", %{conn: conn, user: user} do
-      user_struct = user |> Skate.Settings.User.get() |> Skate.Repo.preload(:test_groups)
+      user_struct = user |> Skate.Settings.User.get()
 
       Skate.Settings.TestGroup.update(%{
         Skate.Settings.TestGroup.create("html-test-group")
         | users: [user_struct]
       })
 
+      user_struct = user |> Skate.Settings.User.get() |> Skate.Repo.preload(:test_groups)
+
       conn = get(conn, "/")
 
       html = html_response(conn, 200)
 
-      assert html =~ "data-user-test-groups"
-      assert html =~ Jason.encode!(user_struct.test_groups |> Enum.map(& &1.name))
+      json =
+        Jason.encode!(user_struct.test_groups |> Enum.map(& &1.name))
+        |> Phoenix.HTML.html_escape()
+        |> Phoenix.HTML.safe_to_string()
+
+      assert html =~ "data-user-test-groups=\"#{json}\""
     end
 
     @tag :authenticated
