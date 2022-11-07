@@ -4,13 +4,13 @@ defmodule SkateWeb.UserSettingsControllerTest do
   alias Skate.Settings.UserSettings
 
   describe "PUT /api/user_settings" do
-    setup %{user: username} do
-      UserSettings.get_or_create(username)
+    setup %{user: user} do
+      UserSettings.get_or_create(user.username)
       :ok
     end
 
     @tag :authenticated
-    test "can set ladder_page_vehicle_label", %{conn: conn, user: username} do
+    test "can set ladder_page_vehicle_label", %{conn: conn, user: user} do
       conn =
         conn
         |> put("/api/user_settings", %{
@@ -19,12 +19,12 @@ defmodule SkateWeb.UserSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = UserSettings.get_or_create(username)
+      result = UserSettings.get_or_create(user.username)
       assert result.ladder_page_vehicle_label == :vehicle_id
     end
 
     @tag :authenticated
-    test "can set shuttle_page_vehicle_label", %{conn: conn, user: username} do
+    test "can set shuttle_page_vehicle_label", %{conn: conn, user: user} do
       conn =
         conn
         |> put("/api/user_settings", %{
@@ -33,12 +33,12 @@ defmodule SkateWeb.UserSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = UserSettings.get_or_create(username)
+      result = UserSettings.get_or_create(user.username)
       assert result.shuttle_page_vehicle_label == :run_id
     end
 
     @tag :authenticated
-    test "can set vehicle_adherence_colors", %{conn: conn, user: username} do
+    test "can set vehicle_adherence_colors", %{conn: conn, user: user} do
       conn =
         conn
         |> put("/api/user_settings", %{
@@ -47,7 +47,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = UserSettings.get_or_create(username)
+      result = UserSettings.get_or_create(user.username)
       assert result.vehicle_adherence_colors == :early_blue
     end
 

@@ -1,21 +1,30 @@
 defmodule SkateWeb.AuthManager do
   use Guardian, otp_app: :skate
+  alias Skate.Settings.Db.User, as: DbUser
+  alias Skate.Settings.User
+  require Logger
 
   @type access_level :: :none | :general | :admin
 
   @skate_admin_group "skate-admin"
   @skate_dispatcher_group "skate-dispatcher"
+  @v2_resource_prefix "v2:"
 
-  def subject_for_token(%{username: username, user_id: user_id}, _claims) do
-    {:ok, %{"username" => username, "user_id" => user_id}}
+  def v2_resource_prefix, do: @v2_resource_prefix
+
+  def subject_for_token(%DbUser{id: user_id}, _claims) do
+    {:ok, "#{@v2_resource_prefix}#{user_id}"}
   end
 
   def subject_for_token(resource, _claims) do
     {:ok, resource}
   end
 
-  def resource_from_claims(%{"sub" => %{"username" => username, "user_id" => user_id}}) do
-    {:ok, %{username: username, user_id: user_id}}
+  def resource_from_claims(%{"sub" => @v2_resource_prefix <> user_id}) do
+    case User.get_by_id(String.to_integer(user_id)) do
+      nil -> {:error, :user_not_found}
+      user -> {:ok, user}
+    end
   end
 
   def resource_from_claims(%{"sub" => username}) do
@@ -34,11 +43,12 @@ defmodule SkateWeb.AuthManager do
     username_from_resource(resource)
   end
 
-  defp username_from_resource(%{username: username}) do
+  def username_from_resource(%DbUser{username: username}) do
     username
   end
 
-  defp username_from_resource(username) when is_binary(username) do
+  def username_from_resource(username) when is_binary(username) do
+    Logger.info("old username resource pattern matched")
     username
   end
 

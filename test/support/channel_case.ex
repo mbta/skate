@@ -26,7 +26,14 @@ defmodule SkateWeb.ChannelCase do
     end
   end
 
-  setup _tags do
+  setup tags do
+    alias Ecto.Adapters.SQL.Sandbox
+    :ok = Sandbox.checkout(Skate.Repo)
+
+    unless tags[:async] do
+      Sandbox.mode(Skate.Repo, {:shared, self()})
+    end
+
     :ok
   end
 end

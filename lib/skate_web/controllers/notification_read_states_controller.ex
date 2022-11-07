@@ -5,7 +5,10 @@ defmodule SkateWeb.NotificationReadStatesController do
   alias SkateWeb.AuthManager
 
   def update(conn, %{"new_state" => new_read_state, "notification_ids" => notification_ids}) do
-    username = AuthManager.Plug.current_resource(conn)
+    username =
+      conn
+      |> AuthManager.Plug.current_resource()
+      |> AuthManager.username_from_resource()
 
     new_read_state = String.to_existing_atom(new_read_state)
     notification_ids = String.split(notification_ids, ",")

@@ -9,7 +9,11 @@ defmodule SkateWeb.PageController do
   plug(:laboratory_features)
 
   def index(conn, _params) do
-    username = AuthManager.Plug.current_resource(conn)
+    username =
+      conn
+      |> AuthManager.Plug.current_resource()
+      |> AuthManager.username_from_resource()
+
     _ = Logger.info("uid=#{username}")
 
     user = username |> User.get() |> Skate.Repo.preload(:test_groups)

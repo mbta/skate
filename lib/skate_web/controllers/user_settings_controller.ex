@@ -6,7 +6,11 @@ defmodule SkateWeb.UserSettingsController do
   alias SkateWeb.AuthManager
 
   def update(conn, %{"field" => field, "value" => value} = _params) do
-    username = AuthManager.Plug.current_resource(conn)
+    username =
+      conn
+      |> AuthManager.Plug.current_resource()
+      |> AuthManager.username_from_resource()
+
     field = field(field)
     value = value(field, value)
 

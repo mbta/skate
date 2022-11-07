@@ -14,12 +14,12 @@ defmodule SkateWeb.AuthController do
 
     current_time = System.system_time(:second)
 
-    User.upsert(username, email)
+    %{id: user_id} = User.upsert(username, email)
 
     conn
     |> Guardian.Plug.sign_in(
       AuthManager,
-      %{username: username, user_id: user_id},
+      "#{AuthManager.v2_resource_prefix()}#{user_id}",
       %{groups: credentials.other[:groups]},
       ttl: {expiration - current_time, :seconds}
     )
