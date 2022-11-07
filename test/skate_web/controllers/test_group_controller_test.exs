@@ -141,6 +141,28 @@ defmodule SkateWeb.TestGroupControllerTest do
 
       assert updated_test_group.users == [user]
     end
+
+    @tag :authenticated_admin
+    test "handles case where no test group is found", %{conn: conn} do
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, 123), %{
+          "user_id" => "456"
+        })
+
+      assert response(conn, 404) =~ "no test group found"
+    end
+
+    @tag :authenticated_admin
+    test "handles case where no user is found", %{conn: conn} do
+      test_group = TestGroup.create("group to add user to")
+
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, test_group.id), %{
+          "user_id" => 123
+        })
+
+      assert response(conn, 400) =~ "no user found"
+    end
   end
 
   describe "remove_server/2" do
