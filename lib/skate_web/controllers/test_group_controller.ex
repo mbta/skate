@@ -11,7 +11,7 @@ defmodule SkateWeb.TestGroupController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    test_groups = TestGroup.get_all()
+    test_groups = TestGroup.get_all() |> Enum.sort_by(& &1.name)
 
     conn
     |> assign(:test_groups, test_groups)
@@ -31,10 +31,16 @@ defmodule SkateWeb.TestGroupController do
     test_group = TestGroup.get(params["id"])
 
     if test_group do
+      test_group_user_emails =
+        test_group.users
+        |> Enum.map(&String.downcase(&1.email))
+        |> Enum.filter(&(!is_nil(&1)))
+        |> Enum.sort()
+
       conn
       |> assign(:test_group_name, test_group.name)
       |> assign(:test_group_id, test_group.id)
-      |> assign(:test_group_users, Enum.map(test_group.users, & &1.email))
+      |> assign(:test_group_users, test_group_user_emails)
       |> put_layout({SkateWeb.LayoutView, "test_groups.html"})
       |> render("test_group.html")
     else
@@ -50,7 +56,10 @@ defmodule SkateWeb.TestGroupController do
       all_users = User.get_all()
       user_ids_already_in_group = test_group.users |> Enum.map(& &1.id) |> MapSet.new()
 
-      users = Enum.filter(all_users, &(&1.id not in user_ids_already_in_group))
+      users =
+        all_users
+        |> Enum.filter(&(!is_nil(&1.email) and &1.id not in user_ids_already_in_group))
+        |> Enum.sort_by(&String.downcase(&1.email))
 
       conn
       |> assign(:test_group_name, test_group.name)
