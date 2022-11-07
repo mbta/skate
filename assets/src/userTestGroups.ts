@@ -16,7 +16,7 @@ const getTestGroups = (): string[] => {
   return testGroups
 }
 
-const inTestGroup = (key: string) => {
+const inTestGroup = (key: string): boolean => {
   return getTestGroups().includes(key)
 }
 
