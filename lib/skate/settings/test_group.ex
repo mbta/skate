@@ -22,12 +22,10 @@ defmodule Skate.Settings.TestGroup do
 
   @spec get(integer()) :: t() | nil
   def get(id) do
-    test_group = Skate.Repo.get(DbTestGroup, id)
+    test_group = DbTestGroup |> Skate.Repo.get(id) |> Skate.Repo.preload(:users)
 
     if test_group do
-      test_group
-      |> Skate.Repo.preload(:users)
-      |> convert_from_db_test_group
+      convert_from_db_test_group(test_group)
     else
       nil
     end

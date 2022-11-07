@@ -165,7 +165,7 @@ defmodule SkateWeb.TestGroupControllerTest do
     end
   end
 
-  describe "remove_server/2" do
+  describe "remove_user/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
       conn = post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, "1"))

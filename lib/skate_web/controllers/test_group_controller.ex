@@ -33,7 +33,7 @@ defmodule SkateWeb.TestGroupController do
     if test_group do
       test_group_users =
         test_group.users
-        |> Enum.map(&{&1.id, String.downcase(&1.email)})
+        |> Enum.map(&{&1.id, &1.email})
         |> Enum.filter(fn {_id, email} -> !is_nil(email) end)
         |> Enum.sort_by(fn {_id, email} -> email end)
 
@@ -59,7 +59,7 @@ defmodule SkateWeb.TestGroupController do
       users =
         all_users
         |> Enum.filter(&(!is_nil(&1.email) and &1.id not in user_ids_already_in_group))
-        |> Enum.sort_by(&String.downcase(&1.email))
+        |> Enum.sort_by(& &1.email)
 
       conn
       |> assign(:test_group_name, test_group.name)
