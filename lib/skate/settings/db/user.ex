@@ -21,7 +21,6 @@ defmodule Skate.Settings.Db.User do
     many_to_many(:notifications, DbNotification, join_through: DbNotificationUser)
     has_many(:route_tabs, DbRouteTab, on_replace: :delete_if_exists)
 
-    # :test_groups goes through :test_group_users to find the :test_group's the user belongs to
     has_many(:test_group_users, DbTestGroupUser, on_replace: :delete_if_exists)
     has_many(:test_groups, through: [:test_group_users, :test_group])
   end
