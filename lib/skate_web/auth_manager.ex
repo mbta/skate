@@ -6,8 +6,16 @@ defmodule SkateWeb.AuthManager do
   @skate_admin_group "skate-admin"
   @skate_dispatcher_group "skate-dispatcher"
 
+  def subject_for_token(%{username: username, user_id: user_id}, _claims) do
+    {:ok, %{"username" => username, "user_id" => user_id}}
+  end
+
   def subject_for_token(resource, _claims) do
     {:ok, resource}
+  end
+
+  def resource_from_claims(%{"sub" => %{"username" => username, "user_id" => user_id}}) do
+    {:ok, %{username: username, user_id: user_id}}
   end
 
   def resource_from_claims(%{"sub" => username}) do
@@ -17,12 +25,20 @@ defmodule SkateWeb.AuthManager do
   def resource_from_claims(_), do: {:error, :invalid_claims}
 
   def username_from_socket!(socket) do
-    {:ok, username} =
+    {:ok, resource} =
       socket
       |> Guardian.Phoenix.Socket.current_token()
       |> decode_and_verify!()
       |> resource_from_claims()
 
+    username_from_resource(resource)
+  end
+
+  defp username_from_resource(%{username: username}) do
+    username
+  end
+
+  defp username_from_resource(username) when is_binary(username) do
     username
   end
 
