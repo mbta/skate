@@ -1,7 +1,13 @@
 <h1><%= @test_group_name %></h1>
 <ul>
-    <%= for test_group_user <- @test_group_users do %>
-        <li><%= test_group_user %></li>
+    <%= for {user_id, user_email} <- @test_group_users do %>
+        <li>
+            <%= user_email %>
+            <%= form_for @conn, Routes.test_group_path(@conn, :remove_user, @test_group_id), fn f -> %>
+                <%= hidden_input f, :user_id, value: user_id %>
+                <%= submit "Remove" %>
+            <% end %>
+        </li>
     <% end %>
 </ul>
 <%= link "Add user", to: Routes.test_group_path(@conn, :add_user_form, @test_group_id) %>

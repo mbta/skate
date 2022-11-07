@@ -142,4 +142,58 @@ defmodule SkateWeb.TestGroupControllerTest do
       assert updated_test_group.users == [user]
     end
   end
+
+  describe "remove_server/2" do
+    @tag :authenticated
+    test "when not an admin, redirects to unauthorized page", %{conn: conn} do
+      conn = post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, "1"))
+
+      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+    end
+
+    @tag :authenticated_admin
+    test "removes user from the group", %{conn: conn} do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+
+      test_group = TestGroup.create("test group")
+      test_group_with_users = TestGroup.update(%TestGroup{test_group | users: [user1, user2]})
+
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, test_group.id), %{
+          "user_id" => Integer.to_string(user2.id)
+        })
+
+      assert %TestGroup{users: [^user1]} = TestGroup.get(test_group_with_users.id)
+
+      assert redirected_to(conn) ==
+               SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group_with_users.id)
+    end
+
+    @tag :authenticated_admin
+    test "handles case where user is not in group", %{conn: conn} do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+
+      test_group = TestGroup.create("test group")
+      TestGroup.update(%TestGroup{test_group | users: [user1]})
+
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, test_group.id), %{
+          "user_id" => Integer.to_string(user2.id)
+        })
+
+      assert response(conn, 400) =~ "user not found in test group"
+    end
+
+    @tag :authenticated_admin
+    test "handles case where test group is not found", %{conn: conn} do
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, 123), %{
+          "user_id" => "456"
+        })
+
+      assert response(conn, 404) =~ "no test group found"
+    end
+  end
 end

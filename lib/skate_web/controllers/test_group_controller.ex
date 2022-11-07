@@ -31,16 +31,16 @@ defmodule SkateWeb.TestGroupController do
     test_group = TestGroup.get(params["id"])
 
     if test_group do
-      test_group_user_emails =
+      test_group_users =
         test_group.users
-        |> Enum.map(&String.downcase(&1.email))
-        |> Enum.filter(&(!is_nil(&1)))
-        |> Enum.sort()
+        |> Enum.map(&{&1.id, String.downcase(&1.email)})
+        |> Enum.filter(fn {_id, email} -> !is_nil(email) end)
+        |> Enum.sort_by(fn {_id, email} -> email end)
 
       conn
       |> assign(:test_group_name, test_group.name)
       |> assign(:test_group_id, test_group.id)
-      |> assign(:test_group_users, test_group_user_emails)
+      |> assign(:test_group_users, test_group_users)
       |> put_layout({SkateWeb.LayoutView, "test_groups.html"})
       |> render("test_group.html")
     else
@@ -87,6 +87,32 @@ defmodule SkateWeb.TestGroupController do
       true ->
         TestGroup.update(%TestGroup{test_group | users: [user | test_group.users]})
         redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group.id))
+    end
+  end
+
+  @spec remove_user(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def remove_user(conn, params) do
+    test_group = TestGroup.get(params["id"])
+
+    if test_group do
+      {new_users, user_found?} =
+        Enum.reduce(test_group.users, {[], false}, fn user, {users, found?} ->
+          if Integer.to_string(user.id) == params["user_id"] do
+            {users, true}
+          else
+            {[user | users], found?}
+          end
+        end)
+
+      if user_found? do
+        TestGroup.update(%TestGroup{test_group | users: new_users})
+
+        redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group.id))
+      else
+        send_resp(conn, :bad_request, "user not found in test group")
+      end
+    else
+      send_resp(conn, :not_found, "no test group found")
     end
   end
 end
