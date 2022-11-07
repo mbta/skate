@@ -8,7 +8,7 @@ jest.mock("../src/appData", () => ({
   __esModule: true,
   default: jest
     .fn()
-    // Ipmlementation sequence matches
+    // Implementation sequence matches
     .mockImplementationOnce(() => ({
       laboratoryFeatures: JSON.stringify(testFeatures),
     }))
