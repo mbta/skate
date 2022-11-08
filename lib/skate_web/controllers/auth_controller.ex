@@ -23,7 +23,6 @@ defmodule SkateWeb.AuthController do
       %{groups: credentials.other[:groups]},
       ttl: {expiration - current_time, :seconds}
     )
-    |> Plug.Conn.put_session(:username, username)
     |> redirect(to: Helpers.page_path(conn, :index))
   end
 
