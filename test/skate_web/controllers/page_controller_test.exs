@@ -53,6 +53,31 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "includes user test groups in HTML", %{conn: conn, user: user} do
+      user_struct = user |> Skate.Settings.User.get()
+
+      Skate.Settings.TestGroup.update(%{
+        Skate.Settings.TestGroup.create("html-test-group")
+        | users: [user_struct]
+      })
+
+      user_struct = user |> Skate.Settings.User.get() |> Skate.Repo.preload(:test_groups)
+
+      conn = get(conn, "/")
+
+      html = html_response(conn, 200)
+
+      json =
+        user_struct.test_groups
+        |> Enum.map(& &1.name)
+        |> Jason.encode!()
+        |> Phoenix.HTML.html_escape()
+        |> Phoenix.HTML.safe_to_string()
+
+      assert html =~ "data-user-test-groups=\"#{json}\""
+    end
+
+    @tag :authenticated
     test "/settings returns 200", %{conn: conn} do
       conn = get(conn, "/settings")
 

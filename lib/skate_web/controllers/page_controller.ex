@@ -12,7 +12,7 @@ defmodule SkateWeb.PageController do
     username = AuthManager.Plug.current_resource(conn)
     _ = Logger.info("uid=#{username}")
 
-    user = User.get(username)
+    user = username |> User.get() |> Skate.Repo.preload(:test_groups)
     user_settings = UserSettings.get_or_create(username)
     route_tabs = RouteTab.get_all_for_user(username)
 
@@ -29,6 +29,7 @@ defmodule SkateWeb.PageController do
     |> assign(:clarity_tag, Application.get_env(:skate, :clarity_tag))
     |> assign(:google_tag_manager_id, Application.get_env(:skate, :google_tag_manager_id))
     |> assign(:tileset_url, Application.get_env(:skate, :tileset_url))
+    |> assign(:user_test_groups, user.test_groups |> Enum.map(& &1.name))
     |> render("index.html")
   end
 
