@@ -17,7 +17,7 @@ describe("User Test Groups API", () => {
     expect(inTestGroup(group_1 + group_2)).toBe(false)
   })
 
-  test.each([{}, { userTestGroup: undefined }])(
+  test.each([undefined, {}, { userTestGroup: undefined }])(
     "returns false if the test group information is not found: case %#",
     (mock) => {
       // Missing data key
