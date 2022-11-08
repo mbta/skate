@@ -20,6 +20,19 @@ defmodule Skate.Settings.User do
     Skate.Repo.get_by(DbUser, email: String.downcase(email))
   end
 
+  @spec get_by_id(integer()) :: DbUser.t() | nil
+  @doc """
+  Get a user by ID, if one exists
+  """
+  def get_by_id(id) do
+    Skate.Repo.get(DbUser, id)
+  end
+
+  @spec get_all() :: [DbUser.t()]
+  def get_all() do
+    Skate.Repo.all(DbUser)
+  end
+
   @spec upsert(username :: String.t(), email :: String.t()) :: DbUser.t()
   @doc """
   Update the user with the given username if one exists, otherwise insert a new one.
