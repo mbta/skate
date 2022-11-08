@@ -17,6 +17,7 @@ defmodule SkateWeb.AuthManager do
   end
 
   def subject_for_token(resource, _claims) do
+    Logger.info("old pattern matched: subject_for_token")
     {:ok, resource}
   end
 
@@ -28,6 +29,7 @@ defmodule SkateWeb.AuthManager do
   end
 
   def resource_from_claims(%{"sub" => username}) do
+    Logger.info("old pattern matched: resource_from_claims")
     {:ok, username}
   end
 
@@ -48,7 +50,7 @@ defmodule SkateWeb.AuthManager do
   end
 
   def username_from_resource(username) when is_binary(username) do
-    Logger.info("old username resource pattern matched")
+    Logger.info("old pattern matched: username_from_resource")
     username
   end
 
