@@ -4,14 +4,6 @@ defmodule Skate.Settings.User do
   import Ecto.Query
   require Logger
 
-  @spec get(String.t()) :: DbUser.t()
-  @doc """
-  Get a user by their username
-  """
-  def get(username) do
-    Skate.Repo.get_by!(DbUser, username: username)
-  end
-
   @spec get_by_email(String.t()) :: DbUser.t() | nil
   @doc """
   Get a user with the matching email, if one exists
