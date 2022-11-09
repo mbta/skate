@@ -17,12 +17,7 @@ defmodule SkateWeb.NotificationsChannel do
 
   @impl true
   def join("notifications", _message, socket) do
-    username_from_socket! =
-      Application.get_env(
-        :skate,
-        :username_from_socket!,
-        &SkateWeb.AuthManager.username_from_socket!/1
-      )
+    %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
 
     notification_fetch =
       Application.get_env(
@@ -31,10 +26,9 @@ defmodule SkateWeb.NotificationsChannel do
         &Notifications.Notification.unexpired_notifications_for_user/1
       )
 
-    username = username_from_socket!.(socket)
-    Notifications.NotificationServer.subscribe(username)
+    Notifications.NotificationServer.subscribe(user_id)
 
-    initial_notifications = notification_fetch.(username)
+    initial_notifications = notification_fetch.(user_id)
 
     {:ok, %{data: %{initial_notifications: initial_notifications}}, socket}
   end

@@ -87,12 +87,9 @@ defmodule Skate.Settings.User do
     end
   end
 
+  @spec user_ids_for_route_ids(any) :: any
   def user_ids_for_route_ids(route_ids) do
     Skate.Repo.all(from(u in users_for_route_ids_query(route_ids), select: u.id))
-  end
-
-  def usernames_for_route_ids(route_ids) do
-    Skate.Repo.all(from(u in users_for_route_ids_query(route_ids), select: u.username))
   end
 
   defp users_for_route_ids_query(route_ids) do

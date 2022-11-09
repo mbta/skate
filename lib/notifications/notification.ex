@@ -6,6 +6,7 @@ defmodule Notifications.Notification do
   alias Schedule.Route
   alias Schedule.Trip
   alias Schedule.Hastus.Run
+  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
   alias Notifications.NotificationReason
   alias Notifications.NotificationState
@@ -172,7 +173,8 @@ defmodule Notifications.Notification do
     notification
   end
 
-  def unexpired_notifications_for_user(username, now_fn \\ &Util.Time.now/0) do
+  @spec unexpired_notifications_for_user(DbUser.id(), (() -> Util.Time.timestamp())) :: [t()]
+  def unexpired_notifications_for_user(user_id, now_fn \\ &Util.Time.now/0) do
     cutoff_time = now_fn.() - @notification_expiration_threshold
 
     query =
@@ -188,7 +190,7 @@ defmodule Notifications.Notification do
           block_waiver: bw,
           bridge_movement: bm
         },
-        where: n.created_at > ^cutoff_time and u.username == ^username,
+        where: n.created_at > ^cutoff_time and u.id == ^user_id,
         order_by: [desc: n.created_at]
       )
 
@@ -197,12 +199,14 @@ defmodule Notifications.Notification do
     |> Enum.map(&convert_from_db_notification/1)
   end
 
-  def update_read_states(username, notification_ids, read_state)
+  @spec update_read_states(DbUser.id(), [id()], NotificationState.t()) ::
+          {non_neg_integer(), nil | [term()]}
+  def update_read_states(user_id, notification_ids, read_state)
       when read_state in [:read, :unread, :deleted] do
     query =
       from(nu in DbNotificationUser,
         join: u in assoc(nu, :user),
-        where: u.username == ^username,
+        where: u.id == ^user_id,
         where: nu.notification_id in ^notification_ids
       )
 

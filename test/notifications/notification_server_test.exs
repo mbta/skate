@@ -10,6 +10,7 @@ defmodule Notifications.NotificationServerTest do
   alias Realtime.Ghost
   alias Realtime.Vehicle
   alias Skate.Settings.RouteTab
+  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
 
   import Ecto.Query
@@ -206,15 +207,26 @@ defmodule Notifications.NotificationServerTest do
     assert String.contains?(log, "start_time: #{start_time}")
   end
 
-  def setup_server(username \\ "fake_uid") do
+  def setup_server(user_id \\ nil) do
     registry_name = :new_notifications_registry
     start_supervised({Registry, keys: :duplicate, name: registry_name})
     reassign_env(:notifications, :registry, registry_name)
 
     {:ok, server} = NotificationServer.start_link(name: :new_notifications)
 
-    NotificationServer.subscribe(username, server)
+    if user_id do
+      NotificationServer.subscribe(user_id, server)
+    end
+
     {:ok, server}
+  end
+
+  @spec create_n_users(non_neg_integer()) :: [DbUser.t()]
+  defp create_n_users(n) do
+    Enum.map(Range.new(0, n - 1), fn i ->
+      username = "fake_uid#{i}"
+      User.upsert(username, "#{username}@test.com")
+    end)
   end
 
   def waiver_map(cause_id, cause_description) do
@@ -271,8 +283,8 @@ defmodule Notifications.NotificationServerTest do
       {:ok, %{user: user}}
     end
 
-    test "broadcasts, saves, and logs nothing if no new block waivers are received" do
-      {:ok, _server} = setup_server()
+    test "broadcasts, saves, and logs nothing if no new block waivers are received", %{user: user} do
+      {:ok, _server} = setup_server(user.id)
 
       set_log_level(:info)
 
@@ -286,12 +298,13 @@ defmodule Notifications.NotificationServerTest do
       assert_n_notifications_in_db(0)
     end
 
-    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for vehicles on selected routes" do
+    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for vehicles on selected routes",
+         %{user: user} do
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@vehicle]
       end)
 
-      {:ok, server} = setup_server()
+      {:ok, server} = setup_server(user.id)
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_block_waiver_notification(cause_atom, cause_description, cause_id, server,
@@ -304,12 +317,13 @@ defmodule Notifications.NotificationServerTest do
       assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
-    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for ghosts on selected routes" do
+    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for ghosts on selected routes",
+         %{user: user} do
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@ghost]
       end)
 
-      {:ok, server} = setup_server()
+      {:ok, server} = setup_server(user.id)
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_block_waiver_notification(cause_atom, cause_description, cause_id, server,
@@ -320,12 +334,13 @@ defmodule Notifications.NotificationServerTest do
       assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
-    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes" do
+    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes",
+         %{user: user} do
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         []
       end)
 
-      {:ok, server} = setup_server()
+      {:ok, server} = setup_server(user.id)
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_block_waiver_notification(cause_atom, cause_description, cause_id, server)
@@ -351,7 +366,7 @@ defmodule Notifications.NotificationServerTest do
         [@vehicle]
       end)
 
-      {:ok, server} = setup_server()
+      {:ok, server} = setup_server(user.id)
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         log =
@@ -366,12 +381,12 @@ defmodule Notifications.NotificationServerTest do
       end
     end
 
-    test "doesn't log or save a duplicate notification, but does broadcast" do
+    test "doesn't log or save a duplicate notification, but does broadcast", %{user: user} do
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@vehicle]
       end)
 
-      {:ok, server} = setup_server()
+      {:ok, server} = setup_server(user.id)
 
       set_log_level(:info)
 
@@ -465,8 +480,9 @@ defmodule Notifications.NotificationServerTest do
 
       set_log_level(:info)
 
-      for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
-        uid = "fake_uid#{i}"
+      [user_0 | others] = users = create_n_users(length(@chelsea_bridge_route_ids))
+
+      for {user, i} <- Enum.with_index(users) do
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
 
         route_tab1 =
@@ -475,11 +491,10 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        %{id: user_id} = User.upsert(uid, "#{uid}@test.com")
-        RouteTab.update_all_for_user!(user_id, [route_tab1])
+        RouteTab.update_all_for_user!(user.id, [route_tab1])
       end
 
-      NotificationServer.subscribe("fake_uid0", server)
+      NotificationServer.subscribe(user_0.id, server)
 
       start_time = DateTime.utc_now() |> DateTime.to_unix()
 
@@ -555,8 +570,9 @@ defmodule Notifications.NotificationServerTest do
 
       set_log_level(:info)
 
-      for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
-        uid = "fake_uid#{i}"
+      [user_0 | others] = users = create_n_users(length(@chelsea_bridge_route_ids))
+
+      for {user, i} <- Enum.with_index(users) do
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
 
         route_tab1 =
@@ -565,11 +581,10 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        %{id: user_id} = User.upsert(uid, "#{uid}@test.com")
-        RouteTab.update_all_for_user!(user_id, [route_tab1])
+        RouteTab.update_all_for_user!(user.id, [route_tab1])
       end
 
-      NotificationServer.subscribe("fake_uid0", server)
+      NotificationServer.subscribe(user_0.id, server)
       NotificationServer.bridge_movement({:lowered, nil}, server)
 
       assert_receive(
