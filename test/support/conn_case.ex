@@ -39,8 +39,8 @@ defmodule SkateWeb.ConnCase do
       Sandbox.mode(Skate.Repo, {:shared, self()})
     end
 
-    %{id: user_id} = user = User.upsert(username, email)
-    resource = "v2:#{user_id}"
+    user = User.upsert(username, email)
+    resource = %{id: user.id}
 
     {conn, user} =
       cond do

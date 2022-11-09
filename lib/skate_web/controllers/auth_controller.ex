@@ -19,7 +19,7 @@ defmodule SkateWeb.AuthController do
     conn
     |> Guardian.Plug.sign_in(
       AuthManager,
-      "#{AuthManager.v2_resource_prefix()}#{user_id}",
+      %{id: user_id},
       %{groups: credentials.other[:groups]},
       ttl: {expiration - current_time, :seconds}
     )
