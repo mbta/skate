@@ -266,9 +266,9 @@ defmodule Notifications.NotificationServerTest do
           selected_route_ids: ["39"]
         })
 
-      User.upsert("fake_uid", "fakeemail@test.com")
-      RouteTab.update_all_for_user!("fake_uid", [route_tab1])
-      :ok
+      user = User.upsert("fake_uid", "fakeemail@test.com")
+      RouteTab.update_all_for_user!(user.id, [route_tab1])
+      {:ok, %{user: user}}
     end
 
     test "broadcasts, saves, and logs nothing if no new block waivers are received" do
@@ -334,15 +334,16 @@ defmodule Notifications.NotificationServerTest do
       assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
-    test "doesn't send notifications to a user not looking at the route in question" do
+    test "doesn't send notifications to a user not looking at the route in question", %{
+      user: user
+    } do
       route_tab1 =
         build(:route_tab, %{
           preset_name: "some routes",
           selected_route_ids: ["1", "83", "77"]
         })
 
-      User.upsert("fake_uid", "fakeemail@test.com")
-      RouteTab.update_all_for_user!("fake_uid", [route_tab1])
+      RouteTab.update_all_for_user!(user.id, [route_tab1])
 
       set_log_level(:info)
 
@@ -433,8 +434,8 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        User.upsert(uid, "#{uid}@test.com")
-        RouteTab.update_all_for_user!(uid, [route_tab1])
+        %{id: user_id} = User.upsert(uid, "#{uid}@test.com")
+        RouteTab.update_all_for_user!(user_id, [route_tab1])
       end
 
       start_time = DateTime.utc_now() |> DateTime.to_unix()
@@ -474,8 +475,8 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        User.upsert(uid, "#{uid}@test.com")
-        RouteTab.update_all_for_user!(uid, [route_tab1])
+        %{id: user_id} = User.upsert(uid, "#{uid}@test.com")
+        RouteTab.update_all_for_user!(user_id, [route_tab1])
       end
 
       NotificationServer.subscribe("fake_uid0", server)
@@ -520,8 +521,8 @@ defmodule Notifications.NotificationServerTest do
           selected_route_ids: ["1", "83", "77"]
         })
 
-      User.upsert("fake_uid", "fake_uid@test.com")
-      RouteTab.update_all_for_user!("fake_uid", [route_tab1])
+      %{id: user_id} = User.upsert("fake_uid", "fake_uid@test.com")
+      RouteTab.update_all_for_user!(user_id, [route_tab1])
 
       set_log_level(:info)
 
@@ -564,8 +565,8 @@ defmodule Notifications.NotificationServerTest do
             selected_route_ids: ["#{route_id}"]
           })
 
-        User.upsert(uid, "#{uid}@test.com")
-        RouteTab.update_all_for_user!(uid, [route_tab1])
+        %{id: user_id} = User.upsert(uid, "#{uid}@test.com")
+        RouteTab.update_all_for_user!(user_id, [route_tab1])
       end
 
       NotificationServer.subscribe("fake_uid0", server)

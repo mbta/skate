@@ -12,19 +12,26 @@ defmodule Notifications.NotificationTest do
 
   @chelsea_st_bridge_route_ids ["112", "743"]
 
-  describe "get_or_create_from_block_waiver/1" do
-    test "associates a new notification with users subscribed to an affected route" do
-      user1 = User.upsert("user1", "user1@test.com")
-      user2 = User.upsert("user2", "user2@test.com")
-      User.upsert("user3", "user3@test.com")
+  setup do
+    user1 = User.upsert("user1", "user1@test.com")
+    user2 = User.upsert("user2", "user2@test.com")
+    user3 = User.upsert("user3", "user3@test.com")
+    {:ok, %{user1: user1, user2: user2, user3: user3}}
+  end
 
+  describe "get_or_create_from_block_waiver/1" do
+    test "associates a new notification with users subscribed to an affected route", %{
+      user1: user1,
+      user2: user2,
+      user3: user3
+    } do
       route_tab1 =
         build(:route_tab, %{
           preset_name: "some routes",
           selected_route_ids: ["4", "1"]
         })
 
-      RouteTab.update_all_for_user!("user1", [route_tab1])
+      RouteTab.update_all_for_user!(user1.id, [route_tab1])
 
       route_tab2 =
         build(:route_tab, %{
@@ -32,7 +39,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["2"]
         })
 
-      RouteTab.update_all_for_user!("user2", [route_tab2])
+      RouteTab.update_all_for_user!(user2.id, [route_tab2])
 
       route_tab3 =
         build(:route_tab, %{
@@ -40,7 +47,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["4", "5", "6", "7"]
         })
 
-      RouteTab.update_all_for_user!("user3", [route_tab3])
+      RouteTab.update_all_for_user!(user3.id, [route_tab3])
 
       notification_values = %{
         created_at: 12345,
@@ -69,9 +76,8 @@ defmodule Notifications.NotificationTest do
   end
 
   describe "unexpired_notifications_for_user/2" do
-    test "returns all unexpired notifications for the given user, in chronological order by creation timestamp" do
-      User.upsert("user1", "user1@test.com")
-      User.upsert("user2", "user2@test.com")
+    test "returns all unexpired notifications for the given user, in chronological order by creation timestamp",
+         %{user1: user1, user2: user2} do
       baseline_time = 1_000_000_000
       now_fn = fn -> baseline_time end
       naive_now_fn = fn -> baseline_time |> DateTime.from_unix!() |> DateTime.to_naive() end
@@ -84,7 +90,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["1", "2", "112"]
         })
 
-      RouteTab.update_all_for_user!("user1", [route_tab1])
+      RouteTab.update_all_for_user!(user1.id, [route_tab1])
 
       route_tab2 =
         build(:route_tab, %{
@@ -92,7 +98,7 @@ defmodule Notifications.NotificationTest do
           selected_route_ids: ["1", "3", "743"]
         })
 
-      RouteTab.update_all_for_user!("user2", [route_tab2])
+      RouteTab.update_all_for_user!(user2.id, [route_tab2])
 
       route_1_unexpired =
         Notification.get_or_create_from_block_waiver(%{

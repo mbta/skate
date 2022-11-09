@@ -15,7 +15,7 @@ defmodule SkateWeb.PageController do
     _ = Logger.info("uid=#{username}")
 
     user_settings = UserSettings.get_or_create(user_id)
-    route_tabs = RouteTab.get_all_for_user(username)
+    route_tabs = RouteTab.get_all_for_user(user_id)
 
     dispatcher_flag =
       conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
