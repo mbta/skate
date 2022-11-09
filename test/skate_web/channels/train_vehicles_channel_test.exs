@@ -29,7 +29,7 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
       end
     end)
 
-    socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
+    socket = socket(UserSocket, "", %{})
 
     {:ok, socket: socket}
   end
