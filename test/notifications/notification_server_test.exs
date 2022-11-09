@@ -480,7 +480,7 @@ defmodule Notifications.NotificationServerTest do
 
       set_log_level(:info)
 
-      [user_0 | others] = users = create_n_users(length(@chelsea_bridge_route_ids))
+      [user_0 | _others] = users = create_n_users(length(@chelsea_bridge_route_ids))
 
       for {user, i} <- Enum.with_index(users) do
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
@@ -570,7 +570,7 @@ defmodule Notifications.NotificationServerTest do
 
       set_log_level(:info)
 
-      [user_0 | others] = users = create_n_users(length(@chelsea_bridge_route_ids))
+      [user_0 | _others] = users = create_n_users(length(@chelsea_bridge_route_ids))
 
       for {user, i} <- Enum.with_index(users) do
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
