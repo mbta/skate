@@ -3,7 +3,6 @@ defmodule SkateWeb.AuthManagerTest do
   alias Guardian.Phoenix.Socket
   alias SkateWeb.AuthManager
   alias SkateWeb.UserSocket
-  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
 
   @username "username1"
@@ -16,26 +15,17 @@ defmodule SkateWeb.AuthManagerTest do
 
     test "returns v2 formatted user id when given user struct" do
       assert {:ok, "v2:#{@user_id}"} ==
-               AuthManager.subject_for_token(%DbUser{username: @username, id: @user_id}, %{})
+               AuthManager.subject_for_token(%{id: @user_id}, %{})
     end
   end
 
   describe "resource_from_claims/2" do
-    test "returns user struct when given v2 formatted user id for a user that exists" do
+    test "returns struct when given v2 formatted user id" do
       %{id: user_id} = User.upsert(@username, "email@test.com")
 
-      assert {:ok, %DbUser{username: @username, id: ^user_id}} =
+      assert {:ok, %{id: ^user_id}} =
                AuthManager.resource_from_claims(%{
                  "sub" => "v2:#{user_id}"
-               })
-    end
-
-    test "returns error when given v2 formatted user id for a user that doesn't exist" do
-      non_existent_id = 1234
-
-      assert {:error, :user_not_found} =
-               AuthManager.resource_from_claims(%{
-                 "sub" => "v2:#{non_existent_id}"
                })
     end
 
@@ -59,8 +49,8 @@ defmodule SkateWeb.AuthManagerTest do
 
   describe "username_from_resource/1" do
     test "returns username from user struct" do
-      assert @username =
-               AuthManager.username_from_resource(%DbUser{username: @username, id: @user_id})
+      %{id: user_id} = User.upsert(@username, "test@email.com")
+      assert @username = AuthManager.username_from_resource(%{id: user_id})
     end
 
     test "returns string when only given username as string" do

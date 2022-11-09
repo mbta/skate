@@ -28,6 +28,14 @@ defmodule Skate.Settings.User do
     Skate.Repo.get(DbUser, id)
   end
 
+  @spec get_by_id!(integer()) :: DbUser.t()
+  @doc """
+  Get a user by ID or raise an error if none found.
+  """
+  def get_by_id!(id) do
+    Skate.Repo.get!(DbUser, id)
+  end
+
   @spec get_all() :: [DbUser.t()]
   def get_all() do
     Skate.Repo.all(DbUser)

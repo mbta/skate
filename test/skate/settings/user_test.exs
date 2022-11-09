@@ -39,6 +39,28 @@ defmodule Skate.Settings.UserTest do
     end
   end
 
+  describe "get_by_id/1" do
+    test "returns user if one is found" do
+      %{id: id} = user = User.upsert(@username, @email)
+      assert user == User.get_by_id(id)
+    end
+
+    test "returns nil if no user found" do
+      assert is_nil(User.get_by_id(1))
+    end
+  end
+
+  describe "get_by_id!/1" do
+    test "returns user if one is found" do
+      %{id: id} = user = User.upsert(@username, @email)
+      assert user == User.get_by_id!(id)
+    end
+
+    test "raises exception if no user found" do
+      assert_raise Ecto.NoResultsError, fn -> User.get_by_id!(1) end
+    end
+  end
+
   describe "get_all/0" do
     test "returns all users" do
       user1 = User.upsert("user1", "user1@test.com")
