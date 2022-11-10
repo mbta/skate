@@ -26,7 +26,7 @@ defmodule SkateWeb.RouteTabsControllerTest do
                  selected_route_ids: ["1", "28"],
                  ordering: 12345
                }
-             ] = RouteTab.get_all_for_user(user)
+             ] = RouteTab.get_all_for_user(user.username)
     end
   end
 end

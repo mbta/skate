@@ -21,7 +21,7 @@ defmodule SkateWeb.PageControllerTest do
     test "assigns the username", %{conn: conn, user: user} do
       conn = get(conn, "/")
 
-      assert conn.assigns.username == user
+      assert conn.assigns.username == user.username
     end
 
     @tag :authenticated
@@ -40,7 +40,7 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes route tabs in HTML", %{conn: conn, user: user} do
-      Skate.Settings.RouteTab.update_all_for_user!(user, [
+      Skate.Settings.RouteTab.update_all_for_user!(user.username, [
         build(:route_tab, %{selected_route_ids: ["1"]})
       ])
 
@@ -54,14 +54,12 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes user test groups in HTML", %{conn: conn, user: user} do
-      user_struct = user |> Skate.Settings.User.get()
-
       Skate.Settings.TestGroup.update(%{
         Skate.Settings.TestGroup.create("html-test-group")
-        | users: [user_struct]
+        | users: [user]
       })
 
-      user_struct = user |> Skate.Settings.User.get() |> Skate.Repo.preload(:test_groups)
+      user_struct = user.username |> Skate.Settings.User.get() |> Skate.Repo.preload(:test_groups)
 
       conn = get(conn, "/")
 
@@ -124,7 +122,7 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes UUID in HTML", %{conn: conn, user: user} do
-      user_struct = Skate.Settings.User.get(user)
+      user_struct = Skate.Settings.User.get(user.username)
 
       conn = get(conn, "/")
 

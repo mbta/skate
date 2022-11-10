@@ -1,6 +1,5 @@
 defmodule SkateWeb.NotificationsChannelTest do
   use SkateWeb.ChannelCase
-  use Skate.DataCase
   import Test.Support.Helpers
 
   alias Phoenix.Socket

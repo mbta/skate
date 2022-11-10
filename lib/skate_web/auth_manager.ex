@@ -1,28 +1,52 @@
 defmodule SkateWeb.AuthManager do
   use Guardian, otp_app: :skate
+  alias Skate.Settings.User
+  require Logger
 
   @type access_level :: :none | :general | :admin
 
   @skate_admin_group "skate-admin"
   @skate_dispatcher_group "skate-dispatcher"
+  @v2_resource_prefix "v2:"
+
+  def v2_resource_prefix, do: @v2_resource_prefix
+
+  def subject_for_token(%{id: user_id}, _claims) do
+    {:ok, "#{@v2_resource_prefix}#{user_id}"}
+  end
 
   def subject_for_token(resource, _claims) do
+    Logger.info("old_pattern_matched function=subject_for_token")
     {:ok, resource}
   end
 
+  def resource_from_claims(%{"sub" => @v2_resource_prefix <> user_id}) do
+    {:ok, %{id: String.to_integer(user_id)}}
+  end
+
   def resource_from_claims(%{"sub" => username}) do
+    Logger.info("old_pattern_matched function=resource_from_claims")
     {:ok, username}
   end
 
   def resource_from_claims(_), do: {:error, :invalid_claims}
 
   def username_from_socket!(socket) do
-    {:ok, username} =
+    {:ok, resource} =
       socket
       |> Guardian.Phoenix.Socket.current_token()
       |> decode_and_verify!()
       |> resource_from_claims()
 
+    username_from_resource(resource)
+  end
+
+  def username_from_resource(%{id: user_id}) do
+    User.get_by_id!(user_id).username
+  end
+
+  def username_from_resource(username) when is_binary(username) do
+    Logger.info("old_pattern_matched function=username_from_resource")
     username
   end
 

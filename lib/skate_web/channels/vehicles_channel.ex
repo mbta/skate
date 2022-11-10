@@ -31,8 +31,17 @@ defmodule SkateWeb.VehiclesChannel do
   def join(
         "vehicles:search:" <> search_params,
         _message,
-        %{assigns: %{guardian_default_resource: username}} = socket
+        socket
       ) do
+    username_from_socket! =
+      Application.get_env(
+        :skate,
+        :username_from_socket!,
+        &SkateWeb.AuthManager.username_from_socket!/1
+      )
+
+    username = username_from_socket!.(socket)
+
     subscribe_args =
       case search_params do
         "all:" <> text ->

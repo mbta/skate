@@ -13,9 +13,7 @@ defmodule SkateWeb.TestGroupControllerTest do
     end
 
     @tag :authenticated_admin
-    test "returns page with test groups listed", %{conn: conn, user: user_name} do
-      user = User.get(user_name)
-
+    test "returns page with test groups listed", %{conn: conn, user: user} do
       test_group = TestGroup.create("test group name")
 
       TestGroup.update(%{test_group | users: [user]})
@@ -56,9 +54,8 @@ defmodule SkateWeb.TestGroupControllerTest do
     end
 
     @tag :authenticated_admin
-    test "renders a test group", %{conn: conn, user: user_name} do
+    test "renders a test group", %{conn: conn, user: user} do
       test_group = TestGroup.create("group to show")
-      user = User.get(user_name)
       test_group_with_user = TestGroup.update(%TestGroup{test_group | users: [user]})
 
       html =
