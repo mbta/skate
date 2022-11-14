@@ -29,10 +29,10 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:bridge_movement, bridge_movement})
   end
 
-  def subscribe(username, server \\ default_name()) do
+  def subscribe(user_id, server \\ default_name()) do
     registry_key = GenServer.call(server, :subscribe)
 
-    Registry.register(Notifications.Supervisor.registry_name(), registry_key, username)
+    Registry.register(Notifications.Supervisor.registry_name(), registry_key, user_id)
     :ok
   end
 
@@ -181,10 +181,10 @@ defmodule Notifications.NotificationServer do
 
   defp broadcast(notification, registry_key) do
     Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
-      usernames = User.usernames_for_route_ids(notification.route_ids)
+      user_ids = User.user_ids_for_route_ids(notification.route_ids)
 
-      Enum.each(entries, fn {pid, username} ->
-        if Enum.member?(usernames, username) do
+      Enum.each(entries, fn {pid, user_id} ->
+        if Enum.member?(user_ids, user_id) do
           send(pid, {:notification, notification})
         end
       end)

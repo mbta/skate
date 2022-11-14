@@ -26,7 +26,7 @@ defmodule Skate.Settings.UserSettingsTest do
         returning: true
       )
 
-      result = UserSettings.get_or_create(@username)
+      result = UserSettings.get_or_create(user.id)
 
       assert result == %UserSettings{
                ladder_page_vehicle_label: :vehicle_id,
@@ -35,8 +35,8 @@ defmodule Skate.Settings.UserSettingsTest do
              }
     end
 
-    test "for a new user, initializes and stores the default settings" do
-      result = UserSettings.get_or_create(@username)
+    test "for a new user, initializes and stores the default settings", %{user: user} do
+      result = UserSettings.get_or_create(user.id)
 
       assert result == %UserSettings{
                ladder_page_vehicle_label: :run_id,
@@ -58,10 +58,10 @@ defmodule Skate.Settings.UserSettingsTest do
   end
 
   describe "set" do
-    test "can set a setting" do
-      UserSettings.get_or_create(@username)
-      UserSettings.set(@username, :ladder_page_vehicle_label, :vehicle_id)
-      result = UserSettings.get_or_create(@username)
+    test "can set a setting", %{user: user} do
+      UserSettings.get_or_create(user.id)
+      UserSettings.set(user.id, :ladder_page_vehicle_label, :vehicle_id)
+      result = UserSettings.get_or_create(user.id)
       assert result.ladder_page_vehicle_label == :vehicle_id
     end
   end

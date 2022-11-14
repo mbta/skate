@@ -7,9 +7,11 @@ defmodule SkateWeb.NotificationsChannelTest do
 
   setup do
     reassign_env(:skate, :valid_token?, fn _socket -> true end)
-    reassign_env(:skate, :username_from_socket!, fn _socket -> "test_uid" end)
 
-    socket = socket(UserSocket, "", %{})
+    socket =
+      UserSocket
+      |> socket("", %{})
+      |> Guardian.Phoenix.Socket.put_current_resource(%{id: 1})
 
     start_supervised({Registry, keys: :duplicate, name: Notifications.Supervisor.registry_name()})
 

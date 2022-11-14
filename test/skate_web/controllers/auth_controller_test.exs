@@ -46,7 +46,8 @@ defmodule SkateWeb.AuthControllerTest do
       |> assign(:ueberauth_auth, mock_auth)
       |> get("/auth/cognito/callback")
 
-      assert %{username: "test_username", email: "test@mbta.com"} = User.get("test_username")
+      assert %{username: "test_username", email: "test@mbta.com"} =
+               User.get_by_email("test@mbta.com")
     end
 
     test "redirects home for an ueberauth failure", %{conn: conn} do

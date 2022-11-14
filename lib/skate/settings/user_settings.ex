@@ -28,9 +28,9 @@ defmodule Skate.Settings.UserSettings do
     :vehicle_adherence_colors
   ]
 
-  @spec get_or_create(String.t()) :: t()
-  def get_or_create(username) do
-    user = User.get(username)
+  @spec get_or_create(DbUser.id()) :: t()
+  def get_or_create(user_id) do
+    user = User.get_by_id!(user_id)
 
     user_settings =
       insert!(
@@ -53,15 +53,15 @@ defmodule Skate.Settings.UserSettings do
     }
   end
 
-  @spec set(String.t(), atom(), any()) :: :ok
-  def set(username, field, value) do
+  @spec set(DbUser.id(), atom(), any()) :: :ok
+  def set(user_id, field, value) do
     {:ok, db_value} = db_value(field, value)
 
     update_all(
       from(user_settings in "user_settings",
         join: user in DbUser,
         on: user.id == user_settings.user_id,
-        where: user.username == ^username
+        where: user.id == ^user_id
       ),
       set: [{field, db_value}]
     )

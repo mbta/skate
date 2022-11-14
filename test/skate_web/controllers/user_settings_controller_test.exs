@@ -5,7 +5,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
 
   describe "PUT /api/user_settings" do
     setup %{user: user} do
-      UserSettings.get_or_create(user.username)
+      UserSettings.get_or_create(user.id)
       :ok
     end
 
@@ -19,7 +19,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = UserSettings.get_or_create(user.username)
+      result = UserSettings.get_or_create(user.id)
       assert result.ladder_page_vehicle_label == :vehicle_id
     end
 
@@ -33,7 +33,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = UserSettings.get_or_create(user.username)
+      result = UserSettings.get_or_create(user.id)
       assert result.shuttle_page_vehicle_label == :run_id
     end
 
@@ -47,7 +47,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = UserSettings.get_or_create(user.username)
+      result = UserSettings.get_or_create(user.id)
       assert result.vehicle_adherence_colors == :early_blue
     end
 

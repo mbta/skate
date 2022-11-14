@@ -40,7 +40,7 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes route tabs in HTML", %{conn: conn, user: user} do
-      Skate.Settings.RouteTab.update_all_for_user!(user.username, [
+      Skate.Settings.RouteTab.update_all_for_user!(user.id, [
         build(:route_tab, %{selected_route_ids: ["1"]})
       ])
 
@@ -59,7 +59,8 @@ defmodule SkateWeb.PageControllerTest do
         | users: [user]
       })
 
-      user_struct = user.username |> Skate.Settings.User.get() |> Skate.Repo.preload(:test_groups)
+      user_struct =
+        user.id |> Skate.Settings.User.get_by_id!() |> Skate.Repo.preload(:test_groups)
 
       conn = get(conn, "/")
 
@@ -122,7 +123,7 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes UUID in HTML", %{conn: conn, user: user} do
-      user_struct = Skate.Settings.User.get(user.username)
+      user_struct = Skate.Settings.User.get_by_id!(user.id)
 
       conn = get(conn, "/")
 

@@ -9,6 +9,7 @@ defmodule Skate.Settings.Db.User do
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
   @type t :: %__MODULE__{}
+  @type id :: integer()
 
   schema "users" do
     field(:username, :string)

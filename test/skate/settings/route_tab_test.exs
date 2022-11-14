@@ -18,11 +18,11 @@ defmodule Skate.Settings.RouteTabTest do
       route_tab1 = build_test_tab()
       route_tab2 = build_test_tab()
 
-      User.upsert("user1", "user1@test.com")
-      User.upsert("user2", "user2@test.com")
+      %{id: user_id_1} = User.upsert("user1", "user1@test.com")
+      %{id: user_id_2} = User.upsert("user2", "user2@test.com")
 
-      RouteTab.update_all_for_user!("user1", [route_tab1])
-      RouteTab.update_all_for_user!("user2", [route_tab2])
+      RouteTab.update_all_for_user!(user_id_1, [route_tab1])
+      RouteTab.update_all_for_user!(user_id_2, [route_tab2])
 
       assert [
                %RouteTab{
@@ -31,17 +31,17 @@ defmodule Skate.Settings.RouteTabTest do
                  ladder_directions: %{"28" => "1"},
                  ladder_crowding_toggles: %{"1" => true}
                }
-             ] = RouteTab.get_all_for_user("user1")
+             ] = RouteTab.get_all_for_user(user_id_1)
     end
   end
 
   describe "update_all_for_user!/2" do
     setup do
-      User.upsert("charlie", "charlie@test.com")
-      :ok
+      user = User.upsert("charlie", "charlie@test.com")
+      {:ok, %{user: user}}
     end
 
-    test "adds a new tab entry" do
+    test "adds a new tab entry", %{user: user} do
       route_tab = build_test_tab()
 
       assert [
@@ -51,7 +51,7 @@ defmodule Skate.Settings.RouteTabTest do
                  ladder_directions: %{"28" => "1"},
                  ladder_crowding_toggles: %{"1" => true}
                }
-             ] = RouteTab.update_all_for_user!("charlie", [route_tab])
+             ] = RouteTab.update_all_for_user!(user.id, [route_tab])
 
       assert [
                %RouteTab{
@@ -60,19 +60,19 @@ defmodule Skate.Settings.RouteTabTest do
                  ladder_directions: %{"28" => "1"},
                  ladder_crowding_toggles: %{"1" => true}
                }
-             ] = RouteTab.get_all_for_user("charlie")
+             ] = RouteTab.get_all_for_user(user.id)
     end
 
-    test "updates an existing tab entry" do
+    test "updates an existing tab entry", %{user: user} do
       route_tab1 = build_test_tab()
       route_tab1_uuid = route_tab1.uuid
       route_tab2 = build_test_tab()
       route_tab2_uuid = route_tab2.uuid
 
-      [persisted_route_tab1] = RouteTab.update_all_for_user!("charlie", [route_tab1])
+      [persisted_route_tab1] = RouteTab.update_all_for_user!(user.id, [route_tab1])
 
       update_results =
-        RouteTab.update_all_for_user!("charlie", [
+        RouteTab.update_all_for_user!(user.id, [
           %{
             persisted_route_tab1
             | preset_name: "some other name",
@@ -96,7 +96,7 @@ defmodule Skate.Settings.RouteTabTest do
                uuid: ^route_tab2_uuid
              } = Enum.find(update_results, fn route_tab -> route_tab.uuid == route_tab2_uuid end)
 
-      get_all_results = RouteTab.get_all_for_user("charlie")
+      get_all_results = RouteTab.get_all_for_user(user.id)
 
       assert Enum.count(get_all_results) == 2
 
@@ -114,14 +114,14 @@ defmodule Skate.Settings.RouteTabTest do
              } = Enum.find(get_all_results, fn route_tab -> route_tab.uuid == route_tab2_uuid end)
     end
 
-    test "deletes a removed tab entry" do
+    test "deletes a removed tab entry", %{user: user} do
       route_tab = build_test_tab()
 
-      [_persisted_route_tab] = RouteTab.update_all_for_user!("charlie", [route_tab])
+      [_persisted_route_tab] = RouteTab.update_all_for_user!(user.id, [route_tab])
 
-      RouteTab.update_all_for_user!("charlie", [])
+      RouteTab.update_all_for_user!(user.id, [])
 
-      assert [] == RouteTab.get_all_for_user("charlie")
+      assert [] == RouteTab.get_all_for_user(user.id)
     end
   end
 
