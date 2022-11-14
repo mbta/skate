@@ -41,6 +41,10 @@ defmodule Realtime.ServerTest do
     "1" => [@vehicle, @ghost]
   }
 
+  @alerts_by_route_id %{
+    "1" => ["Some alert", "Another alert"]
+  }
+
   setup do
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     :ok
@@ -55,6 +59,18 @@ defmodule Realtime.ServerTest do
 
     test "accepts vehicle positions", %{server_pid: server_pid} do
       assert Server.update_vehicles({@vehicles_by_route_id, []}, server_pid) == :ok
+    end
+  end
+
+  describe "update_alerts/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      %{server_pid: server_pid}
+    end
+
+    test "accepts alerts", %{server_pid: server_pid} do
+      assert Server.update_alerts(@alerts_by_route_id, server_pid) == :ok
     end
   end
 
@@ -278,6 +294,29 @@ defmodule Realtime.ServerTest do
     end
   end
 
+  describe "subscribe_to_alerts/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_alerts(@alerts_by_route_id, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get all shuttles upon subscribing", %{server_pid: pid} do
+      assert Server.subscribe_to_alerts("1", pid) == @alerts_by_route_id["1"]
+    end
+
+    test "clients get updated data pushed to them", %{server_pid: pid} do
+      Server.subscribe_to_alerts("1", pid)
+
+      Server.update_alerts(%{"15" => ["Totally different alert"]}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+      assert Server.lookup(lookup_args) == []
+    end
+  end
+
   describe "lookup/2" do
     setup do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
@@ -288,6 +327,7 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
       :ets.insert(ets, {{:block_id, @vehicle.block_id}, @vehicle})
+      :ets.insert(ets, {{:alert, "1"}, ["Some alert"]})
 
       {:ok, %{ets: ets}}
     end
@@ -376,6 +416,10 @@ defmodule Realtime.ServerTest do
       results = Server.lookup({ets, {:search, search_params}})
 
       assert Enum.member?(results, @vehicle)
+    end
+
+    test "fetches alerts by route from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, {:alert, "1"}}) == ["Some alert"]
     end
   end
 

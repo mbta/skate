@@ -27,7 +27,8 @@ defmodule Realtime.Server do
   defstruct ets: nil,
             active_route_ids: [],
             active_run_ids: [],
-            active_block_ids: []
+            active_block_ids: [],
+            active_alert_route_ids: []
 
   @type subscription_key ::
           {:route_id, Route.id()}
@@ -37,6 +38,7 @@ defmodule Realtime.Server do
           | {:vehicle, String.t()}
           | {:run_ids, [Run.id()]}
           | {:block_ids, [Block.id()]}
+          | {:alerts, Route.id()}
 
   @type search_params :: %{
           text: String.t(),
@@ -53,7 +55,8 @@ defmodule Realtime.Server do
            ets: :ets.tid(),
            active_route_ids: [Route.id()],
            active_run_ids: [Run.id()],
-           active_block_ids: [Block.id()]
+           active_block_ids: [Block.id()],
+           active_alert_route_ids: [Route.id()]
          }
 
   # Client functions
@@ -110,6 +113,11 @@ defmodule Realtime.Server do
     subscribe(server, {:block_ids, block_ids})
   end
 
+  @spec subscribe_to_alerts(Route.id(), GenServer.server()) :: [String.t()]
+  def subscribe_to_alerts(route_id, server \\ default_name()) do
+    subscribe(server, {:alerts, route_id})
+  end
+
   def peek_at_vehicles_by_run_ids(run_ids, server \\ default_name()) do
     {_registry_key, ets} = GenServer.call(server, :subscription_info)
     lookup({ets, {:run_ids, run_ids}})
@@ -127,6 +135,7 @@ defmodule Realtime.Server do
   @spec subscribe(GenServer.server(), {:vehicle, String.t()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:run_ids, [Run.id()]}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:block_ids, [Block.id()]}) :: [VehicleOrGhost.t()]
+  @spec subscribe(GenServer.server(), {:alerts, Route.id()}) :: [String.t()]
   defp subscribe(server, subscription_key) do
     {registry_key, ets} = GenServer.call(server, :subscription_info)
     Registry.register(Realtime.Registry, registry_key, subscription_key)
@@ -141,7 +150,12 @@ defmodule Realtime.Server do
   def update_vehicles(update_term, server \\ __MODULE__)
 
   def update_vehicles({vehicles_by_route_id, shuttles}, server) do
-    GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
+    GenServer.cast(server, {:update_vehicles, vehicles_by_route_id, shuttles})
+  end
+
+  @spec update_alerts(Route.by_id([String.t()]), GenServer.server()) :: term()
+  def update_alerts(alerts_by_route_id, server \\ __MODULE__) do
+    GenServer.cast(server, {:update_alerts, alerts_by_route_id})
   end
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
@@ -151,6 +165,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:run_ids, [Run.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:block_ids, [Block.id()]}}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), {:alerts, Route.id()}}) :: [String.t()]
   def lookup({table, {:search, search_params}}) do
     {table, :all_vehicles}
     |> lookup()
@@ -242,7 +257,7 @@ defmodule Realtime.Server do
 
   @impl true
   def handle_cast(
-        {:update, vehicles_by_route_id, shuttles},
+        {:update_vehicles, vehicles_by_route_id, shuttles},
         %__MODULE__{} = state
       ) do
     new_active_route_ids = Map.keys(vehicles_by_route_id)
@@ -282,6 +297,27 @@ defmodule Realtime.Server do
     _ = broadcast(new_state)
 
     {:noreply, new_state}
+  end
+
+  def handle_cast(
+        {:update_alerts, alerts_by_route_id},
+        %__MODULE__{active_alert_route_ids: active_alert_route_ids, ets: ets} = state
+      ) do
+    new_active_route_ids = Map.keys(alerts_by_route_id)
+
+    removed_route_ids = active_alert_route_ids -- new_active_route_ids
+
+    for route_id <- removed_route_ids do
+      :ets.delete(ets, {:alerts, route_id})
+    end
+
+    Enum.each(alerts_by_route_id, fn {route_id, alerts} ->
+      :ets.insert(ets, {{:alerts, route_id}, alerts})
+    end)
+
+    _ = broadcast(state)
+
+    {:noreply, %{state | active_alert_route_ids: new_active_route_ids}}
   end
 
   defp update_vehicle_positions(
