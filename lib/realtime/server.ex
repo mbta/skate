@@ -133,14 +133,14 @@ defmodule Realtime.Server do
     lookup({ets, subscription_key})
   end
 
-  @spec update({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}) :: term()
-  @spec update(
+  @spec update_vehicles({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}) :: term()
+  @spec update_vehicles(
           {Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]},
           GenServer.server()
         ) :: term()
-  def update(update_term, server \\ __MODULE__)
+  def update_vehicles(update_term, server \\ __MODULE__)
 
-  def update({vehicles_by_route_id, shuttles}, server) do
+  def update_vehicles({vehicles_by_route_id, shuttles}, server) do
     GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
   end
 
