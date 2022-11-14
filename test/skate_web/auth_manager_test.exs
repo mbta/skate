@@ -9,10 +9,6 @@ defmodule SkateWeb.AuthManagerTest do
   @user_id 1
 
   describe "subject_for_token/2" do
-    test "returns username string" do
-      assert {:ok, @username} == AuthManager.subject_for_token(@username, %{})
-    end
-
     test "returns v2 formatted user id when given user struct" do
       assert {:ok, "v2:#{@user_id}"} ==
                AuthManager.subject_for_token(%{id: @user_id}, %{})
@@ -28,22 +24,20 @@ defmodule SkateWeb.AuthManagerTest do
                  "sub" => "v2:#{user_id}"
                })
     end
-
-    test "returns username as string when given only username" do
-      assert {:ok, @username} == AuthManager.resource_from_claims(%{"sub" => @username})
-    end
   end
 
   describe "username_from_socket!/1" do
     test "extracts the username from the given socket's token" do
-      {:ok, token, _claims} = AuthManager.encode_and_sign("charlie")
+      user = User.upsert(@username, "test@email.com")
+      resource = %{id: user.id}
+      {:ok, token, _claims} = AuthManager.encode_and_sign(resource)
 
       {:ok, socket} =
         UserSocket
-        |> socket("charlie", %{})
+        |> socket(resource, %{})
         |> Socket.authenticate(AuthManager, token)
 
-      assert(AuthManager.username_from_socket!(socket) == "charlie")
+      assert(AuthManager.username_from_socket!(socket) == @username)
     end
   end
 
@@ -51,10 +45,6 @@ defmodule SkateWeb.AuthManagerTest do
     test "returns username from user struct" do
       %{id: user_id} = User.upsert(@username, "test@email.com")
       assert @username = AuthManager.username_from_resource(%{id: user_id})
-    end
-
-    test "returns string when only given username as string" do
-      assert @username = AuthManager.username_from_resource(@username)
     end
   end
 

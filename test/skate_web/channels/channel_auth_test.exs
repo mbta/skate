@@ -4,30 +4,32 @@ defmodule SkateWeb.ChannelAuthTest do
   alias SkateWeb.{AuthManager, ChannelAuth, UserSocket}
 
   setup do
-    socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
+    socket = socket(UserSocket, "", %{})
 
-    {:ok, socket: socket}
+    {:ok, %{socket: socket, resource: %{id: 1}}}
   end
 
   describe "valid_token?/1" do
     test "returns true when socket is authenticated", %{
-      socket: socket
+      socket: socket,
+      resource: resource
     } do
       {:ok, token, claims} =
-        AuthManager.encode_and_sign("test-authed@mbta.com", %{
+        AuthManager.encode_and_sign(resource, %{
           "exp" => System.system_time(:second) + 500
         })
 
-      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-authed@mbta.com", token, claims)
+      socket = Guardian.Phoenix.Socket.assign_rtc(socket, resource, token, claims)
 
       assert ChannelAuth.valid_token?(socket) == true
     end
 
     test "returns false when socket is not authenticated", %{
-      socket: socket
+      socket: socket,
+      resource: resource
     } do
       {:ok, token, claims} =
-        AuthManager.encode_and_sign("test-not-authed@mbta.com", %{
+        AuthManager.encode_and_sign(resource, %{
           "exp" => System.system_time(:second) - 100
         })
 

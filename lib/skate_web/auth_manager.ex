@@ -15,18 +15,8 @@ defmodule SkateWeb.AuthManager do
     {:ok, "#{@v2_resource_prefix}#{user_id}"}
   end
 
-  def subject_for_token(resource, _claims) do
-    Logger.info("old_pattern_matched function=subject_for_token")
-    {:ok, resource}
-  end
-
   def resource_from_claims(%{"sub" => @v2_resource_prefix <> user_id}) do
     {:ok, %{id: String.to_integer(user_id)}}
-  end
-
-  def resource_from_claims(%{"sub" => username}) do
-    Logger.info("old_pattern_matched function=resource_from_claims")
-    {:ok, username}
   end
 
   def resource_from_claims(_), do: {:error, :invalid_claims}
@@ -43,11 +33,6 @@ defmodule SkateWeb.AuthManager do
 
   def username_from_resource(%{id: user_id}) do
     User.get_by_id!(user_id).username
-  end
-
-  def username_from_resource(username) when is_binary(username) do
-    Logger.info("old_pattern_matched function=username_from_resource")
-    username
   end
 
   defp decode_and_verify!(token) do
