@@ -10,6 +10,8 @@ import { initialState, State } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import vehicle from "../factories/vehicle"
+import appData from "../../src/appData"
+import { MAP_BETA_GROUP_NAME } from "../../src/userTestGroups"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -19,6 +21,8 @@ jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
+
+jest.mock("appData")
 
 describe("App", () => {
   test("renders", () => {
@@ -85,5 +89,24 @@ describe("App", () => {
     )
 
     expect(result.getByText("Vehicles")).toBeInTheDocument()
+  })
+
+  test("renders old search page for users not in map test group", () => {
+    window.history.pushState({}, "", "/search")
+
+    const result = render(<App />)
+
+    expect(result.queryByTestId("map-page")).not.toBeInTheDocument()
+  })
+
+  test("renders new map page for users in map test group", () => {
+    ;(appData as jest.Mock).mockImplementationOnce(() => ({
+      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
+    }))
+    window.history.pushState({}, "", "/search")
+
+    const result = render(<App />)
+
+    expect(result.getByTestId("map-page")).toBeInTheDocument()
   })
 })

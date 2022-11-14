@@ -27,6 +27,7 @@ import {
   togglePickerContainer,
 } from "../../state"
 import NavMenu from "./navMenu"
+import { mapModeForUser } from "../../util/mapMode"
 
 interface Props {
   toggleMobileMenu?: () => void
@@ -45,6 +46,7 @@ const LeftNav = ({
     useContext(StateDispatchContext)
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
+  const mapMode = mapModeForUser()
 
   const bellIconClasses =
     openView == OpenView.NotificationDrawer
@@ -106,11 +108,11 @@ const LeftNav = ({
                 "m-left-nav__link" +
                 (isActive ? " m-left-nav__link--active" : "")
               }
-              title="Search"
-              to="/search"
+              title={mapMode.title}
+              to={mapMode.path}
             >
               {searchIcon("m-left-nav__icon")}
-              {collapsed ? null : "Search"}
+              {collapsed ? null : mapMode.title}
             </NavLink>
           </li>
           <li>
