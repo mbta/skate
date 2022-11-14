@@ -294,7 +294,7 @@ defmodule Realtime.Server do
         active_block_ids: new_active_block_ids
       })
 
-    _ = broadcast(new_state)
+    _ = broadcast(new_state, :vehicles)
 
     {:noreply, new_state}
   end
@@ -315,7 +315,7 @@ defmodule Realtime.Server do
       :ets.insert(ets, {{:alerts, route_id}, alerts})
     end)
 
-    _ = broadcast(state)
+    _ = broadcast(state, :alerts)
 
     {:noreply, %{state | active_alert_route_ids: new_active_route_ids}}
   end
@@ -378,12 +378,17 @@ defmodule Realtime.Server do
     )
   end
 
-  @spec broadcast(t()) :: :ok
-  defp broadcast(state) do
+  @spec broadcast(t(), :vehicles | :alerts) :: :ok
+  defp broadcast(state, data_type) do
     registry_key = self()
 
     Registry.dispatch(Realtime.Supervisor.registry_name(), registry_key, fn entries ->
-      Enum.each(entries, &send_data(&1, state))
+      Enum.each(entries, fn {pid, subscripition_key} ->
+        if (data_type == :alerts and match?({:alerts, _}, subscripition_key)) or
+             (data_type == :vehicles and !match?({:alerts, _}, subscripition_key)) do
+          send_data({pid, subscripition_key}, state)
+        end
+      end)
     end)
   end
 

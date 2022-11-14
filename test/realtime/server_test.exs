@@ -315,6 +315,16 @@ defmodule Realtime.ServerTest do
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == []
     end
+
+    test "clients subscribed to vehicles don't get updated data pushed to them", %{
+      server_pid: pid
+    } do
+      Server.subscribe_to_route("1", pid)
+
+      Server.update_alerts(%{"1" => ["Totally different alert"]}, pid)
+
+      refute_receive {:new_realtime_data, _lookup_args}
+    end
   end
 
   describe "lookup/2" do
