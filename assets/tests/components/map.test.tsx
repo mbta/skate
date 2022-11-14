@@ -13,6 +13,7 @@ import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
+import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 
 const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
@@ -112,6 +113,28 @@ describe("map", () => {
     const result = render(<Map vehicles={[]} shapes={[shape]} />)
     expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
     expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
+  })
+
+  test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
+    const onClick = jest.fn()
+    const result = render(
+      <Map vehicles={[vehicle]} onPrimaryVehicleSelect={onClick} />
+    )
+    await userEvent.click(result.getByText(runIdToLabel(vehicle.runId!)))
+    expect(onClick).toHaveBeenCalledWith(expect.objectContaining(vehicle))
+  })
+
+  test("does not onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
+    const onClick = jest.fn()
+    const result = render(
+      <Map
+        vehicles={[]}
+        secondaryVehicles={[vehicle]}
+        onPrimaryVehicleSelect={onClick}
+      />
+    )
+    await userEvent.click(result.getByText(runIdToLabel(vehicle.runId!)))
+    expect(onClick).not.toHaveBeenCalled()
   })
 })
 

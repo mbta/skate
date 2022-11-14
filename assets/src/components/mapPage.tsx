@@ -3,9 +3,9 @@ import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
+import { useTripShape } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
-import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
@@ -49,8 +49,8 @@ const ToggleMobileDisplayButton = ({
   )
 }
 
-const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
+const MapPage = (): ReactElement<HTMLDivElement> => {
+  const [{ searchPageState, mobileMenuIsOpen }] =
     useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
@@ -60,6 +60,9 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null)
+  const selectedVehicleShapes = useTripShape(selectedVehicle?.tripId || null)
+
   const toggleMobileDisplay = () => {
     setMobileDisplay(
       mobileDisplay === MobileDisplay.List
@@ -101,11 +104,12 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-search-page__map">
         <Map
           vehicles={onlyVehicles}
-          onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
+          onPrimaryVehicleSelect={(vehicle) => setSelectedVehicle(vehicle)}
+          shapes={selectedVehicleShapes}
         />
       </div>
     </div>
   )
 }
 
-export default SearchPage
+export default MapPage

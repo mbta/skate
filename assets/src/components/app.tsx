@@ -24,6 +24,8 @@ import { OpenView } from "../state"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
+import inTestGroup from "../userTestGroups"
+import MapPage from "./mapPage"
 
 const AppRoutes = () => {
   useAppcues()
@@ -44,6 +46,8 @@ const AppRoutes = () => {
     vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
   )
 
+  const hasMapMode = inTestGroup("map-beta")
+
   return (
     <div className="m-app">
       <div className="m-app__banner">
@@ -59,7 +63,10 @@ const AppRoutes = () => {
               <BrowserRoute path="/" element={<LadderPage />} />
               <BrowserRoute path="/shuttle-map" element={<ShuttleMapPage />} />
               <BrowserRoute path="/settings" element={<SettingsPage />} />
-              <BrowserRoute path="/search" element={<SearchPage />} />
+              <BrowserRoute
+                path="/search"
+                element={hasMapMode ? <MapPage /> : <SearchPage />}
+              />
             </Routes>
             {openView === OpenView.Late ? <LateView /> : null}
             <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
