@@ -1397,6 +1397,9 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
             </div>
           </div>
         </div>
+        <div
+          data-testid="routeShape"
+        />
       </div>
     </div>
   </div>

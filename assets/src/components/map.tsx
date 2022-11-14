@@ -212,7 +212,7 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
   ])
 
   return (
-    <>
+    <div data-testid="routeShape">
       <Polyline
         className="m-vehicle-map__route-shape"
         positions={positions}
@@ -228,7 +228,7 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
           <Popup className="m-vehicle-map__stop-tooltip">{stop.name}</Popup>
         </CircleMarker>
       ))}
-    </>
+    </div>
   )
 }
 
