@@ -105,7 +105,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-search-page__map">
         <Map
           vehicles={onlyVehicles}
-          onPrimaryVehicleSelect={(vehicle) => setSelectedVehicle(vehicle)}
+          onPrimaryVehicleSelect={setSelectedVehicle}
           shapes={selectedVehicleShapes}
         />
       </div>
