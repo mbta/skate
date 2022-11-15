@@ -24,6 +24,10 @@ defmodule Skate.Settings.UserTest do
       User.upsert(username, email)
       assert %{username: ^username, email: ^email} = User.get_by_email(String.capitalize(email))
     end
+
+    test "raises error if email is nil" do
+      assert_raise FunctionClauseError, fn -> User.get_by_email(nil) end
+    end
   end
 
   describe "get_by_id/1" do
@@ -111,6 +115,10 @@ defmodule Skate.Settings.UserTest do
       assert length(Skate.Repo.all(DbUser)) == 1
 
       refute is_nil(new_user.uuid)
+    end
+
+    test "raises error if email is nil" do
+      assert_raise FunctionClauseError, fn -> User.upsert(@username, nil) end
     end
   end
 end

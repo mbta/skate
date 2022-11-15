@@ -8,7 +8,7 @@ defmodule Skate.Settings.User do
   @doc """
   Get a user with the matching email, if one exists
   """
-  def get_by_email(email) do
+  def get_by_email(email) when is_binary(email) do
     Skate.Repo.get_by(DbUser, email: String.downcase(email))
   end
 
@@ -37,7 +37,7 @@ defmodule Skate.Settings.User do
   @doc """
   Update the user with the given email if one exists, otherwise insert a new one.
   """
-  def upsert(username, email) do
+  def upsert(username, email) when is_binary(email) do
     email = String.downcase(email)
 
     user =
