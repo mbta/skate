@@ -13,7 +13,7 @@ describe("streetViewUrl", () => {
     )
   })
 
-  test("returns with default heading of 0 when no bearing given", () => {
+  test("returns without heading param when no bearing given", () => {
     expect(
       streetViewUrl({
         latitude: 42.36014757,
