@@ -20,7 +20,7 @@ describe("streetViewUrl", () => {
         longitude: -71.09505978,
       })
     ).toEqual(
-      "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.36014757%2C-71.09505978&heading=0&pitch=0&fov=80"
+      "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.36014757%2C-71.09505978&pitch=0&fov=80"
     )
   })
 })
