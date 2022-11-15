@@ -102,13 +102,14 @@ defmodule Skate.Settings.UserTest do
       assert length(Skate.Repo.all(DbUser)) == 1
     end
 
-    test "if email address is associated with existing user that has different username, creates new user without email" do
-      original_user = User.upsert(@username, @email)
+    test "if email address is associated with existing user that has different username, returns existing user without updating their username" do
+      User.upsert(@username, @email)
 
       new_user = User.upsert("newusername", @email)
 
-      assert %{username: @username, email: @email} = original_user
-      assert %{username: "newusername", email: nil} = new_user
+      assert %{username: @username, email: @email} = new_user
+      assert length(Skate.Repo.all(DbUser)) == 1
+
       refute is_nil(new_user.uuid)
     end
   end
