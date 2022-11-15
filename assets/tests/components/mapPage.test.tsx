@@ -126,7 +126,7 @@ describe("MapPage", () => {
     expect(result.queryByTestId("routeShape")).toBeNull()
 
     await userEvent.click(result.getByText(runId))
-    expect(result.getByTestId("routeShape")).toBeInTheDocument()
+    expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
   })
 
   test("on mobile, allows you to toggle to the map view and back again", async () => {
