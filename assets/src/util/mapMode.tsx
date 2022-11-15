@@ -10,7 +10,7 @@ export interface NavMode {
   element: ReactElement
 }
 
-export const mapModeForUser = (): any =>
+export const mapModeForUser = (): NavMode =>
   inTestGroup(MAP_BETA_GROUP_NAME)
     ? { path: "/search", title: "Map", element: <MapPage /> }
     : { path: "/search", title: "Search", element: <SearchPage /> }
