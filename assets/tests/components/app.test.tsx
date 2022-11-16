@@ -103,7 +103,7 @@ describe("App", () => {
     ;(appData as jest.Mock).mockImplementationOnce(() => ({
       userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
     }))
-    window.history.pushState({}, "", "/search")
+    window.history.pushState({}, "", "/map")
 
     const result = render(<App />)
 

@@ -13,7 +13,7 @@ describe("mapModeForUser", () => {
       userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
     }))
     expect(mapModeForUser()).toEqual({
-      path: "/search",
+      path: "/map",
       title: "Map",
       element: <MapPage />,
     })
