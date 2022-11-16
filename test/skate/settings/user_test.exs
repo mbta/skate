@@ -24,6 +24,10 @@ defmodule Skate.Settings.UserTest do
       User.upsert(username, email)
       assert %{username: ^username, email: ^email} = User.get_by_email(String.capitalize(email))
     end
+
+    test "raises error if email is nil" do
+      assert_raise FunctionClauseError, fn -> User.get_by_email(nil) end
+    end
   end
 
   describe "get_by_id/1" do
@@ -102,14 +106,19 @@ defmodule Skate.Settings.UserTest do
       assert length(Skate.Repo.all(DbUser)) == 1
     end
 
-    test "if email address is associated with existing user that has different username, creates new user without email" do
-      original_user = User.upsert(@username, @email)
+    test "if email address is associated with existing user that has different username, returns existing user without updating their username" do
+      User.upsert(@username, @email)
 
       new_user = User.upsert("newusername", @email)
 
-      assert %{username: @username, email: @email} = original_user
-      assert %{username: "newusername", email: nil} = new_user
+      assert %{username: @username, email: @email} = new_user
+      assert length(Skate.Repo.all(DbUser)) == 1
+
       refute is_nil(new_user.uuid)
+    end
+
+    test "raises error if email is nil" do
+      assert_raise FunctionClauseError, fn -> User.upsert(@username, nil) end
     end
   end
 end

@@ -8,7 +8,7 @@ defmodule Skate.Settings.User do
   @doc """
   Get a user with the matching email, if one exists
   """
-  def get_by_email(email) do
+  def get_by_email(email) when is_binary(email) do
     Skate.Repo.get_by(DbUser, email: String.downcase(email))
   end
 
@@ -35,15 +35,16 @@ defmodule Skate.Settings.User do
 
   @spec upsert(username :: String.t(), email :: String.t()) :: DbUser.t()
   @doc """
-  Update the user with the given username if one exists, otherwise insert a new one.
+  Update the user with the given email if one exists, otherwise insert a new one.
   """
-  def upsert(username, email) do
+  def upsert(username, email) when is_binary(email) do
     email = String.downcase(email)
-    user_matching_email = get_by_email(email)
 
     user =
-      cond do
-        is_nil(user_matching_email) ->
+      case get_by_email(email) do
+        nil ->
+          # If there isn't an existing user with this email address create a new one.
+          # If there is an existing user with the same username, set the email address for that user
           Skate.Repo.insert!(
             DbUser.changeset(%DbUser{}, %{
               username: username,
@@ -54,22 +55,9 @@ defmodule Skate.Settings.User do
             on_conflict: {:replace, [:email]}
           )
 
-        # existing user has same username - no update needed
-        user_matching_email.username == username ->
-          user_matching_email
-
-        # username format has changed. Create a new record for this user without an associated email
-        # This record will be used only temporarily until user settings are universally fetched by email.
-        user_matching_email.username != username ->
-          Skate.Repo.insert!(
-            DbUser.changeset(%DbUser{}, %{
-              username: username
-            }),
-            returning: true,
-            conflict_target: [:username],
-            # update a row with no effect so the returning works
-            on_conflict: {:replace, [:username]}
-          )
+        existing_user_with_email ->
+          # If there is an existing user with this email, return it without modifying the username
+          existing_user_with_email
       end
 
     if is_nil(user.uuid) do
