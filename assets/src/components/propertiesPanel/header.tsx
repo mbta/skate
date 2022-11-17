@@ -6,11 +6,7 @@ import vehicleLabel from "../../helpers/vehicleLabel"
 import { secondsAgoLabel, secondsToMinutes } from "../../util/dateTime"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { emptyLadderDirectionsByRouteId } from "../../models/ladderDirection"
-import {
-  directionName,
-  isVehicle,
-  vehicleOrientation,
-} from "../../models/vehicle"
+import { directionName, isVehicle } from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
@@ -19,7 +15,7 @@ import {
 import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { closeView, returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
-import VehicleIcon, { Size } from "../vehicleIcon"
+import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
 import TabList from "./tabList"
 import { TabMode } from "./tabPanels"
 import { currentRouteTab } from "../../models/routeTab"

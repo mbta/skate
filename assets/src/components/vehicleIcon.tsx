@@ -10,6 +10,13 @@ import { RunId, VehicleOrGhost } from "../realtime.d"
 import { BlockId, ViaVariant } from "../schedule.d"
 import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 import { UserSettings } from "../userSettings"
+import {
+  directionOnLadder,
+  getLadderDirectionForRoute,
+  LadderDirection,
+  LadderDirections,
+  VehicleDirection,
+} from "../models/ladderDirection"
 
 export enum Orientation {
   Up,
@@ -40,6 +47,34 @@ export interface Props extends ViewBoxProps {
 export interface TooltipProps {
   children: ReactElement<HTMLElement>
   vehicleOrGhost: VehicleOrGhost
+}
+
+export const vehicleOrientation = (
+  vehicle: VehicleOrGhost,
+  ladderDirections: LadderDirections
+): Orientation => {
+  if (vehicle.routeId !== null && vehicle.directionId !== null) {
+    const ladderDirection: LadderDirection = getLadderDirectionForRoute(
+      ladderDirections,
+      vehicle.routeId
+    )
+    const vehicleDirection: VehicleDirection = directionOnLadder(
+      vehicle.directionId,
+      ladderDirection
+    )
+
+    if (vehicle.routeStatus === "laying_over") {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Left
+        : Orientation.Right
+    } else {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Down
+        : Orientation.Up
+    }
+  } else {
+    return Orientation.Up
+  }
 }
 
 /*

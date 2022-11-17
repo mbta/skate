@@ -5,14 +5,14 @@ import vehicleLabel from "../helpers/vehicleLabel"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
-import { directionName, vehicleOrientation } from "../models/vehicle"
+import { directionName } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime"
 import { secondsAgoLabel } from "../util/dateTime"
 import CloseButton from "./closeButton"
 import { RouteVariantName } from "./routeVariantName"
 import StreetViewButton from "./streetViewButton"
-import VehicleIcon, { Size } from "./vehicleIcon"
+import VehicleIcon, { Size, vehicleOrientation } from "./vehicleIcon"
 
 const VehicleCard = ({
   vehicle,
