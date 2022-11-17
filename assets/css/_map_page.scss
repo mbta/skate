@@ -1,0 +1,110 @@
+$z-map-container-context: (
+  "map": 1,
+  "vehicle-card": 2,
+);
+.m-map-page {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  height: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.m-map-page__map-container {
+  display: flex;
+  flex: 1 1 auto;
+  position: relative;
+}
+
+.m-map-page__input-and-results {
+  background-color: $color-bg-base;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  width: 22rem;
+}
+
+.m-map-page__input,
+.m-search-display {
+  padding: 1.5rem 1.1875rem;
+}
+
+.m-map-page__input {
+  border-bottom: 1px solid $white;
+}
+
+.m-map-page__toggle-mobile-display-button {
+  @include button-text;
+  display: none;
+  font-size: 0.875rem;
+  margin: 0.5rem auto 0;
+}
+
+.m-search-display {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+}
+
+.m-map-page__map {
+  flex: 1 1 auto;
+  position: relative;
+  z-index: map-get($z-map-container-context, "map");
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .m-map-page {
+    flex-direction: column;
+  }
+
+  .m-map-page__map-container {
+    flex-direction: column;
+  }
+
+  .m-map-page--show-list {
+    .m-map-page__input-and-results {
+      flex: 1 1 auto;
+      height: 100%;
+    }
+
+    .m-map-page__map {
+      // Needs to be hidden instead of not displayed so the map still gets drawn properly
+      position: fixed;
+      top: 100vh;
+    }
+  }
+
+  .m-map-page--show-map {
+    .m-map-page__input-and-results {
+      flex: 0 0 auto;
+      height: auto;
+    }
+
+    .m-search-display {
+      display: none;
+    }
+  }
+
+  .m-map-page__input-and-results {
+    box-sizing: border-box;
+    width: auto;
+  }
+
+  .m-map-page__toggle-mobile-display-button {
+    display: block;
+  }
+
+  .m-map-page__map {
+    box-sizing: border-box;
+    height: 75%;
+    width: 100%;
+  }
+}
+
+.m-map-page__vehicle-card {
+  position: absolute;
+  z-index: map-get($z-map-container-context, "vehicle-card");
+  top: 10px;
+  right: calc(env(safe-area-inset-right) + 55px);
+  background-color: white;
+}

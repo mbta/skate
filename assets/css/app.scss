@@ -19,6 +19,7 @@ $z-properties-panel-context: (
   "header": 10,
   "fullscreen-map": 11,
 );
+
 @import "base";
 @import "inter";
 @import "ui_kit";
@@ -72,6 +73,7 @@ $z-properties-panel-context: (
 @import "route_filter";
 @import "search_form";
 @import "search_page";
+@import "map_page";
 @import "search_results";
 @import "settings_page";
 @import "shuttle_map";

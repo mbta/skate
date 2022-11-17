@@ -11,6 +11,7 @@ import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
+import VehicleCard from "./vehicleCard"
 
 enum MobileDisplay {
   List = 1,
@@ -39,7 +40,7 @@ const ToggleMobileDisplayButton = ({
 
   return (
     <button
-      className="m-search-page__toggle-mobile-display-button"
+      className="m-map-page__toggle-mobile-display-button"
       onClick={onToggleMobileDisplay}
     >
       Show {otherDisplayName} instead
@@ -77,48 +78,59 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileDisplayClass =
     mobileDisplay === MobileDisplay.List
-      ? "m-search-page--show-list"
-      : "m-search-page--show-map"
+      ? "m-map-page--show-list"
+      : "m-map-page--show-map"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
-
   return (
-    <div
-      className={`c-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}
-      data-testid="map-page"
-    >
-      <div className="m-search-page__input-and-results">
-        <div className="m-search-page__input">
-          <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
-
-          <ToggleMobileDisplayButton
-            mobileDisplay={mobileDisplay}
-            onToggleMobileDisplay={toggleMobileDisplay}
-          />
-        </div>
-
-        <div className="m-search-display">
-          {vehicles !== null &&
-          thereIsAnActiveSearch(vehicles, searchPageState) ? (
-            <SearchResults
-              vehicles={vehicles}
-              selectedVehicleId={selectedVehicle?.id || null}
-              onClick={setSelectedVehicle}
+    <>
+      <div
+        className={`c-page m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
+        data-testid="map-page"
+      >
+        <div className="m-map-page__input-and-results">
+          <div className="m-map-page__input">
+            <SearchForm
+              onSubmit={onSearchCallback}
+              onClear={onSearchCallback}
             />
-          ) : (
-            <RecentSearches />
+            <ToggleMobileDisplayButton
+              mobileDisplay={mobileDisplay}
+              onToggleMobileDisplay={toggleMobileDisplay}
+            />
+          </div>
+
+          <div className="m-search-display">
+            {vehicles !== null &&
+            thereIsAnActiveSearch(vehicles, searchPageState) ? (
+              <SearchResults
+                vehicles={vehicles}
+                selectedVehicleId={selectedVehicle?.id || null}
+                onClick={setSelectedVehicle}
+              />
+            ) : (
+              <RecentSearches />
+            )}
+          </div>
+        </div>
+
+        <div className="m-map-page__map-container">
+          {selectedVehicle && isVehicle(selectedVehicle) && (
+            <div className="m-map-page__vehicle-card">
+              <VehicleCard vehicle={selectedVehicle} />
+            </div>
           )}
+
+          <div className="m-map-page__map">
+            <Map
+              vehicles={onlyVehicles}
+              onPrimaryVehicleSelect={setSelectedVehicle}
+              shapes={selectedVehicleShapes}
+            />
+          </div>
         </div>
       </div>
-
-      <div className="m-search-page__map">
-        <Map
-          vehicles={onlyVehicles}
-          onPrimaryVehicleSelect={setSelectedVehicle}
-          shapes={selectedVehicleShapes}
-        />
-      </div>
-    </div>
+    </>
   )
 }
 
