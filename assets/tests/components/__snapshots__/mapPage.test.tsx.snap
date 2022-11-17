@@ -3,14 +3,14 @@
 exports[`MapPage renders the empty state 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-search-page m-search-page--show-list "
+    class="c-page m-map-page m-map-page--show-list "
     data-testid="map-page"
   >
     <div
-      class="m-search-page__input-and-results"
+      class="m-map-page__input-and-results"
     >
       <div
-        class="m-search-page__input"
+        class="m-map-page__input"
       >
         <form
           class="m-search-form"
@@ -131,7 +131,7 @@ exports[`MapPage renders the empty state 1`] = `
           </div>
         </form>
         <button
-          class="m-search-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button"
         >
           Show map instead
         </button>
@@ -151,158 +151,162 @@ exports[`MapPage renders the empty state 1`] = `
       </div>
     </div>
     <div
-      class="m-search-page__map"
+      class="m-map-page__map-container"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-      />
-      <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
-        id="id-vehicle-map"
-        style="position: relative;"
-        tabindex="0"
+        class="m-map-page__map"
       >
         <div
-          class="leaflet-pane leaflet-map-pane"
-          style="left: 0px; top: 0px;"
+          class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        />
+        <div
+          class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+          id="id-vehicle-map"
+          style="position: relative;"
+          tabindex="0"
         >
           <div
-            class="leaflet-pane leaflet-tile-pane"
+            class="leaflet-pane leaflet-map-pane"
+            style="left: 0px; top: 0px;"
           >
             <div
-              class="leaflet-layer "
-              style="z-index: 1;"
+              class="leaflet-pane leaflet-tile-pane"
             >
               <div
-                class="leaflet-tile-container leaflet-zoom-animated"
-                style="z-index: 18; left: 0px; top: 0px;"
+                class="leaflet-layer "
+                style="z-index: 1;"
               >
-                <img
-                  alt=""
-                  class="leaflet-tile"
-                  src="/13/2479/3029.png"
-                  style="width: 256px; height: 256px; left: -4px; top: -239px;"
-                />
+                <div
+                  class="leaflet-tile-container leaflet-zoom-animated"
+                  style="z-index: 18; left: 0px; top: 0px;"
+                >
+                  <img
+                    alt=""
+                    class="leaflet-tile"
+                    src="/13/2479/3029.png"
+                    style="width: 256px; height: 256px; left: -4px; top: -239px;"
+                  />
+                </div>
               </div>
             </div>
+            <div
+              class="leaflet-pane leaflet-overlay-pane"
+            />
+            <div
+              class="leaflet-pane leaflet-shadow-pane"
+            />
+            <div
+              class="leaflet-pane leaflet-marker-pane"
+            />
+            <div
+              class="leaflet-pane leaflet-tooltip-pane"
+            />
+            <div
+              class="leaflet-pane leaflet-popup-pane"
+            />
           </div>
           <div
-            class="leaflet-pane leaflet-overlay-pane"
-          />
-          <div
-            class="leaflet-pane leaflet-shadow-pane"
-          />
-          <div
-            class="leaflet-pane leaflet-marker-pane"
-          />
-          <div
-            class="leaflet-pane leaflet-tooltip-pane"
-          />
-          <div
-            class="leaflet-pane leaflet-popup-pane"
-          />
-        </div>
-        <div
-          class="leaflet-control-container"
-        >
-          <div
-            class="leaflet-top leaflet-left"
-          />
-          <div
-            class="leaflet-top leaflet-right"
+            class="leaflet-control-container"
           >
             <div
-              class="leaflet-control-zoom leaflet-bar leaflet-control"
-            >
-              <a
-                aria-disabled="false"
-                aria-label="Zoom in"
-                class="leaflet-control-zoom-in"
-                href="#"
-                role="button"
-                title="Zoom in"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  +
-                </span>
-              </a>
-              <a
-                aria-disabled="false"
-                aria-label="Zoom out"
-                class="leaflet-control-zoom-out"
-                href="#"
-                role="button"
-                title="Zoom out"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  −
-                </span>
-              </a>
-            </div>
+              class="leaflet-top leaflet-left"
+            />
             <div
-              class="leaflet-bar leaflet-control"
+              class="leaflet-top leaflet-right"
             >
-              <a
-                aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
-                href="#"
-                role="button"
-                title="Full Screen"
-              />
-            </div>
-            <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
-            >
-              
-        
-              <a
-                aria-label="Recenter Map"
-                href="#"
-                role="button"
-                title="Recenter Map"
+              <div
+                class="leaflet-control-zoom leaflet-bar leaflet-control"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-label="Zoom in"
+                  class="leaflet-control-zoom-in"
+                  href="#"
+                  role="button"
+                  title="Zoom in"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </a>
+                <a
+                  aria-disabled="false"
+                  aria-label="Zoom out"
+                  class="leaflet-control-zoom-out"
+                  href="#"
+                  role="button"
+                  title="Zoom out"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    −
+                  </span>
+                </a>
+              </div>
+              <div
+                class="leaflet-bar leaflet-control"
+              >
+                <a
+                  aria-label="Full Screen"
+                  class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                  href="#"
+                  role="button"
+                  title="Full Screen"
+                />
+              </div>
+              <div
+                class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
               >
                 
-          
-                <svg
-                  height="26"
-                  viewBox="-5 -5 32 32"
-                  width="26"
-                  xmlns="http://www.w3.org/2000/svg"
+        
+                <a
+                  aria-label="Recenter Map"
+                  href="#"
+                  role="button"
+                  title="Recenter Map"
                 >
                   
+          
+                  <svg
+                    height="26"
+                    viewBox="-5 -5 32 32"
+                    width="26"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    
             
-                  <path
-                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="rotate(60, 12, 12)"
-                  />
-                  
+                    <path
+                      d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                      transform="rotate(60, 12, 12)"
+                    />
+                    
           
-                </svg>
-                
+                  </svg>
+                  
         
-              </a>
+                </a>
+              </div>
             </div>
-          </div>
-          <div
-            class="leaflet-bottom leaflet-left"
-          />
-          <div
-            class="leaflet-bottom leaflet-right"
-          >
             <div
-              class="leaflet-control-attribution leaflet-control"
+              class="leaflet-bottom leaflet-left"
+            />
+            <div
+              class="leaflet-bottom leaflet-right"
             >
-              © 
-              <a
-                href="http://osm.org/copyright"
+              <div
+                class="leaflet-control-attribution leaflet-control"
               >
-                OpenStreetMap
-              </a>
-               contributors
+                © 
+                <a
+                  href="http://osm.org/copyright"
+                >
+                  OpenStreetMap
+                </a>
+                 contributors
+              </div>
             </div>
           </div>
         </div>
@@ -315,14 +319,14 @@ exports[`MapPage renders the empty state 1`] = `
 exports[`MapPage renders vehicle data 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-search-page m-search-page--show-list "
+    class="c-page m-map-page m-map-page--show-list "
     data-testid="map-page"
   >
     <div
-      class="m-search-page__input-and-results"
+      class="m-map-page__input-and-results"
     >
       <div
-        class="m-search-page__input"
+        class="m-map-page__input"
       >
         <form
           class="m-search-form"
@@ -443,7 +447,7 @@ exports[`MapPage renders vehicle data 1`] = `
           </div>
         </form>
         <button
-          class="m-search-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button"
         >
           Show map instead
         </button>
@@ -463,219 +467,223 @@ exports[`MapPage renders vehicle data 1`] = `
       </div>
     </div>
     <div
-      class="m-search-page__map"
+      class="m-map-page__map-container"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-      />
-      <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
-        id="id-vehicle-map"
-        style="position: relative;"
-        tabindex="0"
+        class="m-map-page__map"
       >
         <div
-          class="leaflet-pane leaflet-map-pane"
-          style="left: 0px; top: 0px;"
+          class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        />
+        <div
+          class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+          id="id-vehicle-map"
+          style="position: relative;"
+          tabindex="0"
         >
           <div
-            class="leaflet-pane leaflet-tile-pane"
+            class="leaflet-pane leaflet-map-pane"
+            style="left: 0px; top: 0px;"
           >
             <div
-              class="leaflet-layer "
-              style="z-index: 1;"
+              class="leaflet-pane leaflet-tile-pane"
             >
               <div
-                class="leaflet-tile-container leaflet-zoom-animated"
-                style="z-index: 18; left: 0px; top: 0px;"
+                class="leaflet-layer "
+                style="z-index: 1;"
               >
-                <img
-                  alt=""
-                  class="leaflet-tile"
-                  src="/16/20061/24522.png"
-                  style="width: 256px; height: 256px; left: -77px; top: -215px;"
-                />
+                <div
+                  class="leaflet-tile-container leaflet-zoom-animated"
+                  style="z-index: 18; left: 0px; top: 0px;"
+                >
+                  <img
+                    alt=""
+                    class="leaflet-tile"
+                    src="/16/20061/24522.png"
+                    style="width: 256px; height: 256px; left: -77px; top: -215px;"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            class="leaflet-pane leaflet-overlay-pane"
-          />
-          <div
-            class="leaflet-pane leaflet-shadow-pane"
-          />
-          <div
-            class="leaflet-pane leaflet-marker-pane"
-          >
             <div
-              class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
-              role="button"
-              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
-              tabindex="0"
-            >
-              <svg
-                height="24"
-                viewBox="0 0 24 24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                
-        
-                <path
-                  class="on-time early-red"
-                  d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                  transform="scale(1) rotate(33) translate(-12, -12)"
-                />
-                
-      
-              </svg>
-            </div>
+              class="leaflet-pane leaflet-overlay-pane"
+            />
             <div
-              class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
-              role="button"
-              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
-              tabindex="0"
-            >
-              <svg
-                height="16"
-                viewBox="0 0 40 16"
-                width="40"
-              >
-                
-            
-                <rect
-                  class="m-vehicle-icon__label-background"
-                  height="100%"
-                  rx="5.5px"
-                  ry="5.5px"
-                  width="100%"
-                />
-                
-            
-                <text
-                  class="m-vehicle-icon__label"
-                  dominant-baseline="central"
-                  text-anchor="middle"
-                  x="50%"
-                  y="50%"
-                >
-                  
-              1
-            
-                </text>
-                
-          
-              </svg>
-            </div>
-          </div>
-          <div
-            class="leaflet-pane leaflet-tooltip-pane"
-          />
-          <div
-            class="leaflet-pane leaflet-popup-pane"
-          />
-        </div>
-        <div
-          class="leaflet-control-container"
-        >
-          <div
-            class="leaflet-top leaflet-left"
-          />
-          <div
-            class="leaflet-top leaflet-right"
-          >
+              class="leaflet-pane leaflet-shadow-pane"
+            />
             <div
-              class="leaflet-control-zoom leaflet-bar leaflet-control"
+              class="leaflet-pane leaflet-marker-pane"
             >
-              <a
-                aria-disabled="false"
-                aria-label="Zoom in"
-                class="leaflet-control-zoom-in"
-                href="#"
+              <div
+                class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
                 role="button"
-                title="Zoom in"
+                style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+                tabindex="0"
               >
-                <span
-                  aria-hidden="true"
-                >
-                  +
-                </span>
-              </a>
-              <a
-                aria-disabled="false"
-                aria-label="Zoom out"
-                class="leaflet-control-zoom-out"
-                href="#"
-                role="button"
-                title="Zoom out"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  −
-                </span>
-              </a>
-            </div>
-            <div
-              class="leaflet-bar leaflet-control"
-            >
-              <a
-                aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
-                href="#"
-                role="button"
-                title="Full Screen"
-              />
-            </div>
-            <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
-            >
-              
-        
-              <a
-                aria-label="Recenter Map"
-                href="#"
-                role="button"
-                title="Recenter Map"
-              >
-                
-          
                 <svg
-                  height="26"
-                  viewBox="-5 -5 32 32"
-                  width="26"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   
-            
+        
                   <path
+                    class="on-time early-red"
                     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="rotate(60, 12, 12)"
+                    transform="scale(1) rotate(33) translate(-12, -12)"
                   />
+                  
+      
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+                tabindex="0"
+              >
+                <svg
+                  height="16"
+                  viewBox="0 0 40 16"
+                  width="40"
+                >
+                  
+            
+                  <rect
+                    class="m-vehicle-icon__label-background"
+                    height="100%"
+                    rx="5.5px"
+                    ry="5.5px"
+                    width="100%"
+                  />
+                  
+            
+                  <text
+                    class="m-vehicle-icon__label"
+                    dominant-baseline="central"
+                    text-anchor="middle"
+                    x="50%"
+                    y="50%"
+                  >
+                    
+              1
+            
+                  </text>
                   
           
                 </svg>
-                
-        
-              </a>
+              </div>
             </div>
+            <div
+              class="leaflet-pane leaflet-tooltip-pane"
+            />
+            <div
+              class="leaflet-pane leaflet-popup-pane"
+            />
           </div>
           <div
-            class="leaflet-bottom leaflet-left"
-          />
-          <div
-            class="leaflet-bottom leaflet-right"
+            class="leaflet-control-container"
           >
             <div
-              class="leaflet-control-attribution leaflet-control"
+              class="leaflet-top leaflet-left"
+            />
+            <div
+              class="leaflet-top leaflet-right"
             >
-              © 
-              <a
-                href="http://osm.org/copyright"
+              <div
+                class="leaflet-control-zoom leaflet-bar leaflet-control"
               >
-                OpenStreetMap
-              </a>
-               contributors
+                <a
+                  aria-disabled="false"
+                  aria-label="Zoom in"
+                  class="leaflet-control-zoom-in"
+                  href="#"
+                  role="button"
+                  title="Zoom in"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </a>
+                <a
+                  aria-disabled="false"
+                  aria-label="Zoom out"
+                  class="leaflet-control-zoom-out"
+                  href="#"
+                  role="button"
+                  title="Zoom out"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    −
+                  </span>
+                </a>
+              </div>
+              <div
+                class="leaflet-bar leaflet-control"
+              >
+                <a
+                  aria-label="Full Screen"
+                  class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                  href="#"
+                  role="button"
+                  title="Full Screen"
+                />
+              </div>
+              <div
+                class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              >
+                
+        
+                <a
+                  aria-label="Recenter Map"
+                  href="#"
+                  role="button"
+                  title="Recenter Map"
+                >
+                  
+          
+                  <svg
+                    height="26"
+                    viewBox="-5 -5 32 32"
+                    width="26"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    
+            
+                    <path
+                      d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                      transform="rotate(60, 12, 12)"
+                    />
+                    
+          
+                  </svg>
+                  
+        
+                </a>
+              </div>
+            </div>
+            <div
+              class="leaflet-bottom leaflet-left"
+            />
+            <div
+              class="leaflet-bottom leaflet-right"
+            >
+              <div
+                class="leaflet-control-attribution leaflet-control"
+              >
+                © 
+                <a
+                  href="http://osm.org/copyright"
+                >
+                  OpenStreetMap
+                </a>
+                 contributors
+              </div>
             </div>
           </div>
         </div>

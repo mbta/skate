@@ -79,3 +79,8 @@ export const formattedHoursMinutes = (
 
 export const secondsToMinutes = (seconds: number): number =>
   Math.abs(Math.floor(seconds / 60))
+
+export const secondsAgoLabel = (
+  epochNowInSeconds: number,
+  epochTime: number
+): string => `${epochNowInSeconds - epochTime}s ago`

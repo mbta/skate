@@ -3,27 +3,23 @@ import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { className } from "../../helpers/dom"
 import vehicleLabel from "../../helpers/vehicleLabel"
-import { secondsToMinutes } from "../../util/dateTime"
+import { secondsAgoLabel, secondsToMinutes } from "../../util/dateTime"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
+import { emptyLadderDirectionsByRouteId } from "../../models/ladderDirection"
 import {
-  directionOnLadder,
-  getLadderDirectionForRoute,
-  LadderDirection,
-  LadderDirections,
-  VehicleDirection,
-  emptyLadderDirectionsByRouteId,
-} from "../../models/ladderDirection"
-import { isVehicle } from "../../models/vehicle"
+  directionName,
+  isVehicle,
+  vehicleOrientation,
+} from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../../models/vehicleStatus"
 import { Vehicle, VehicleOrGhost } from "../../realtime"
-import { Route } from "../../schedule"
 import { closeView, returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
-import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
+import VehicleIcon, { Size } from "../vehicleIcon"
 import TabList from "./tabList"
 import { TabMode } from "./tabPanels"
 import { currentRouteTab } from "../../models/routeTab"
@@ -33,34 +29,6 @@ interface Props {
   vehicle: VehicleOrGhost
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
-}
-
-const vehicleOrientation = (
-  vehicle: VehicleOrGhost,
-  ladderDirections: LadderDirections
-): Orientation => {
-  if (vehicle.routeId !== null && vehicle.directionId !== null) {
-    const ladderDirection: LadderDirection = getLadderDirectionForRoute(
-      ladderDirections,
-      vehicle.routeId
-    )
-    const vehicleDirection: VehicleDirection = directionOnLadder(
-      vehicle.directionId,
-      ladderDirection
-    )
-
-    if (vehicle.routeStatus === "laying_over") {
-      return vehicleDirection === VehicleDirection.Down
-        ? Orientation.Left
-        : Orientation.Right
-    } else {
-      return vehicleDirection === VehicleDirection.Down
-        ? Orientation.Down
-        : Orientation.Up
-    }
-  } else {
-    return Orientation.Up
-  }
 }
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -109,19 +77,11 @@ const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
   )
 }
 
-const directionName = (
-  { directionId }: VehicleOrGhost,
-  route: Route | null
-): string => (route ? route.directionNames[directionId] : "")
-
 const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
   const [{ routeTabs, userSettings, previousView }, dispatch] =
     useContext(StateDispatchContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
-
-  const secondsAgo = (epochTime: number): string =>
-    `${epochNowInSeconds - epochTime}s ago`
 
   const hideMe = () => dispatch(closeView())
 
@@ -165,7 +125,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
         <div className="m-properties-panel__ping-container">
           {isVehicle(vehicle) && (
             <div className="m-properties-panel__last-gps-ping">
-              {secondsAgo(vehicle.timestamp)}
+              {secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}
             </div>
           )}
         </div>

@@ -63,6 +63,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     null
   )
   const selectedVehicleShapes = useTripShape(selectedVehicle?.tripId || null)
+  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(false)
 
   const onSearchCallback = () => {
     setSelectedVehicle(null)
@@ -74,6 +75,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         ? MobileDisplay.Map
         : MobileDisplay.List
     )
+  }
+
+  const selectVehicle = (vehicle: Vehicle): void => {
+    setSelectedVehicle(vehicle)
+    setShowVehicleCard(true)
   }
 
   const mobileDisplayClass =
@@ -115,16 +121,19 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         </div>
 
         <div className="m-map-page__map-container">
-          {selectedVehicle && isVehicle(selectedVehicle) && (
+          {selectedVehicle && isVehicle(selectedVehicle) && showVehicleCard && (
             <div className="m-map-page__vehicle-card">
-              <VehicleCard vehicle={selectedVehicle} />
+              <VehicleCard
+                vehicle={selectedVehicle}
+                onClose={() => setShowVehicleCard(false)}
+              />
             </div>
           )}
 
           <div className="m-map-page__map">
             <Map
               vehicles={onlyVehicles}
-              onPrimaryVehicleSelect={setSelectedVehicle}
+              onPrimaryVehicleSelect={selectVehicle}
               shapes={selectedVehicleShapes}
             />
           </div>
