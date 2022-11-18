@@ -3,6 +3,7 @@ import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
+import { useNearestIntersection } from "../hooks/useNearestIntersection"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
 import { directionName } from "../models/vehicle"
@@ -30,6 +31,12 @@ const VehicleCard = ({
     ? currentTab.ladderDirections
     : emptyLadderDirectionsByRouteId
 
+  const { latitude, longitude } = vehicle
+  const nearestIntersection: string | null = useNearestIntersection(
+    latitude,
+    longitude
+  )
+
   return (
     <div className="m-vehicle-card">
       <div className="m-vehicle-card__icon">
@@ -56,6 +63,14 @@ const VehicleCard = ({
           </div>
         </div>
         <div className="m-vehicle-card__content">
+          {nearestIntersection && (
+            <div className="m-vehicle-card__location">
+              <div className="m-vehicle-card__location-label">
+                Current Location
+              </div>
+              {nearestIntersection}
+            </div>
+          )}
           <StreetViewButton
             latitude={vehicle.latitude}
             longitude={vehicle.longitude}

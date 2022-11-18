@@ -50,6 +50,11 @@ jest.mock("../../src/hooks/useShapes", () => ({
   useTripShape: jest.fn(() => null),
 }))
 
+jest.mock("../../src/hooks/useNearestIntersection", () => ({
+  __esModule: true,
+  useNearestIntersection: jest.fn(() => null),
+}))
+
 describe("MapPage", () => {
   test("renders the empty state", () => {
     ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
@@ -182,6 +187,48 @@ describe("MapPage", () => {
     expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
     await userEvent.click(screen.getByTitle("Submit"))
     expect(container.innerHTML).not.toContain("m-vehicle-map__route-shape")
+  })
+
+  test("clicking a vehicle on the map displays vehicle card", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+    const runId = "clickMe"
+    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    const mockDispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(result.getByText(runId))
+    expect(result.getByText("39_X")).toBeInTheDocument()
+    expect(result.getByText("Forest Hills")).toBeInTheDocument()
+    expect(result.getByText("Go to Street View")).toBeInTheDocument()
+  })
+
+  test("can close the vehicle card", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+    const runId = "clickMe"
+    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    const mockDispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(result.getByText(runId))
+    expect(result.getByText("Forest Hills")).toBeInTheDocument()
+    await userEvent.click(result.getByTitle("Close"))
+    expect(result.queryByText("Forest Hills")).not.toBeInTheDocument()
   })
 
   test("on mobile, allows you to toggle to the map view and back again", async () => {
