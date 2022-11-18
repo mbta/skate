@@ -7,11 +7,11 @@ import { useTripShape } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
+import LiveVehicleCard from "./liveVehicleCard"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
-import VehicleCard from "./vehicleCard"
 
 enum MobileDisplay {
   List = 1,
@@ -118,7 +118,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-map-page__map-container">
         {selectedVehicle && showVehicleCard && (
           <div className="m-map-page__vehicle-card">
-            <VehicleCard
+            <LiveVehicleCard
               vehicle={selectedVehicle}
               onClose={() => setShowVehicleCard(false)}
             />

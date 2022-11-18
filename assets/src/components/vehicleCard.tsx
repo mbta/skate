@@ -23,13 +23,12 @@ const VehicleCard = ({
   onClose: () => void
 }): ReactElement<HTMLElement> => {
   const [{ routeTabs, userSettings }] = useContext(StateDispatchContext)
-  const epochNowInSeconds = useCurrentTimeSeconds()
-  const route = useRoute(vehicle.routeId)
-
   const currentTab = currentRouteTab(routeTabs)
   const ladderDirections = currentTab
     ? currentTab.ladderDirections
     : emptyLadderDirectionsByRouteId
+  const epochNowInSeconds = useCurrentTimeSeconds()
+  const route = useRoute(vehicle.routeId)
 
   const { latitude, longitude } = vehicle
   const nearestIntersection: string | null = useNearestIntersection(

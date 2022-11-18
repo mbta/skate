@@ -14,6 +14,7 @@ import ghostFactory from "../factories/ghost"
 import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
 import { SearchPageState } from "../../src/state/searchPageState"
+import useVehicleForId from "../../src/hooks/useVehicleForId"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -40,6 +41,7 @@ const ghost: Ghost = ghostFactory.build({
   routeStatus: "on_route",
   blockWaivers: [],
 })
+
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(),
@@ -53,6 +55,11 @@ jest.mock("../../src/hooks/useShapes", () => ({
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useVehicleForId", () => ({
+  __esModule: true,
+  default: jest.fn(),
 }))
 
 describe("MapPage", () => {
@@ -191,6 +198,7 @@ describe("MapPage", () => {
 
   test("clicking a vehicle on the map displays vehicle card", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
 
     const runId = "clickMe"
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
@@ -212,6 +220,7 @@ describe("MapPage", () => {
 
   test("can close the vehicle card", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
 
     const runId = "clickMe"
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
