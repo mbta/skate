@@ -5,13 +5,15 @@ const StreetViewButton = (position: {
   latitude: number
   longitude: number
   bearing?: number
-}): ReactElement<HTMLElement> => {
-  const url = streetViewUrl(position)
+}): ReactElement<HTMLElement> => (
+  <a
+    className="m-street-view-button"
+    href={streetViewUrl(position)}
+    target="_blank"
+    rel="noreferrer"
+  >
+    Go to Street View
+  </a>
+)
 
-  return (
-    <a type="button" href={url} target="_blank" rel="noreferrer">
-      Go to Street View
-    </a>
-  )
-}
 export default StreetViewButton

@@ -31,26 +31,38 @@ const VehicleCard = ({
     : emptyLadderDirectionsByRouteId
 
   return (
-    <div className="vehicle-card">
-      <VehicleIcon
-        size={Size.Large}
-        orientation={vehicleOrientation(vehicle, ladderDirections)}
-        label={vehicleLabel(vehicle, userSettings)}
-        variant={vehicle.viaVariant}
-        status={drawnStatus(vehicle)}
-        userSettings={userSettings}
-      />
-      <CloseButton onClick={onClose} closeButtonType={"s_light"} />
-      {directionName(vehicle, route)}
-      {secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}
-
-      <RouteVariantName vehicle={vehicle} />
-
-      <StreetViewButton
-        latitude={vehicle.latitude}
-        longitude={vehicle.longitude}
-        bearing={vehicle.bearing}
-      />
+    <div className="m-vehicle-card">
+      <div className="m-vehicle-card__icon">
+        <VehicleIcon
+          size={Size.Large}
+          orientation={vehicleOrientation(vehicle, ladderDirections)}
+          label={vehicleLabel(vehicle, userSettings)}
+          variant={vehicle.viaVariant}
+          status={drawnStatus(vehicle)}
+          userSettings={userSettings}
+        />
+      </div>
+      <div>
+        <div className="m-vehicle-card__header">
+          <div className="m-vehicle-card__header-contents">
+            <div>
+              {directionName(vehicle, route)}{" "}
+              <RouteVariantName vehicle={vehicle} />
+            </div>
+            <div>{secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}</div>
+          </div>
+          <div>
+            <CloseButton onClick={onClose} closeButtonType={"s_light"} />
+          </div>
+        </div>
+        <div className="m-vehicle-card__content">
+          <StreetViewButton
+            latitude={vehicle.latitude}
+            longitude={vehicle.longitude}
+            bearing={vehicle.bearing}
+          />
+        </div>
+      </div>
     </div>
   )
 }

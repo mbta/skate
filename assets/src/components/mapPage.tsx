@@ -11,7 +11,7 @@ import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
-//import VehicleCard from "./vehicleCard"
+import VehicleCard from "./vehicleCard"
 
 enum MobileDisplay {
   List = 1,
@@ -63,7 +63,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     null
   )
   const selectedVehicleShapes = useTripShape(selectedVehicle?.tripId || null)
-  //const [showVehicleCard, setShowVehicleCard] = useState<boolean>(false)
+  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(false)
 
   const onSearchCallback = () => {
     setSelectedVehicle(null)
@@ -79,7 +79,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const selectVehicle = (vehicle: Vehicle): void => {
     setSelectedVehicle(vehicle)
-    //  setShowVehicleCard(true)
+    setShowVehicleCard(true)
   }
 
   const mobileDisplayClass =
@@ -116,14 +116,14 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         </div>
       </div>
       <div className="m-map-page__map-container">
-        {/*selectedVehicle && showVehicleCard && (
+        {selectedVehicle && showVehicleCard && (
           <div className="m-map-page__vehicle-card">
             <VehicleCard
               vehicle={selectedVehicle}
               onClose={() => setShowVehicleCard(false)}
             />
           </div>
-        )*/}
+        )}
 
         <div className="m-map-page__map">
           <Map
