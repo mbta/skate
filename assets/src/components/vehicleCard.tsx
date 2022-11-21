@@ -52,7 +52,7 @@ const VehicleCard = ({
         <div className="m-vehicle-card__header">
           <div className="m-vehicle-card__header-contents">
             <div>
-              {directionName(vehicle, route)}{" "}
+              <div>{directionName(vehicle, route)}</div>
               <RouteVariantName vehicle={vehicle} />
             </div>
             <div>{secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}</div>
