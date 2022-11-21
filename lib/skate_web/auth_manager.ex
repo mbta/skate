@@ -22,22 +22,13 @@ defmodule SkateWeb.AuthManager do
   def resource_from_claims(_), do: {:error, :invalid_claims}
 
   def username_from_socket!(socket) do
-    {:ok, resource} =
-      socket
-      |> Guardian.Phoenix.Socket.current_token()
-      |> decode_and_verify!()
-      |> resource_from_claims()
-
-    username_from_resource(resource)
+    socket
+    |> Guardian.Phoenix.Socket.current_resource()
+    |> username_from_resource()
   end
 
   def username_from_resource(%{id: user_id}) do
     User.get_by_id!(user_id).username
-  end
-
-  defp decode_and_verify!(token) do
-    {:ok, decoded} = decode_and_verify(token)
-    decoded
   end
 
   @spec claims_access_level(Guardian.Token.claims()) :: access_level()
