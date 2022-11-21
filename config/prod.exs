@@ -48,7 +48,9 @@ config :logger, :console,
   metadata: [:request_id]
 
 # "code" is the secret value returned by AWS to /auth/cognito/callback
-config :logster, :filter_parameters, ~w(password code)
+config :logster,
+       :filter_parameters,
+       ~w(password code, token, guardian_default_claims, guardian_default_resource, guardian_default_token)
 
 # Configure Ueberauth to use Cognito
 config :ueberauth, Ueberauth,
