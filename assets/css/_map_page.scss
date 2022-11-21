@@ -1,6 +1,5 @@
 $z-map-container-context: (
   "map": 1,
-  "vehicle-card": 2,
 );
 .m-map-page {
   display: flex;
@@ -11,7 +10,7 @@ $z-map-container-context: (
   overflow: visible;
 }
 
-.m-map-page__map-container {
+.m-map-page__map {
   display: flex;
   flex: 1 1 auto;
   position: relative;
@@ -46,18 +45,8 @@ $z-map-container-context: (
   overflow-y: scroll;
 }
 
-.m-map-page__map {
-  flex: 1 1 auto;
-  position: relative;
-  z-index: map-get($z-map-container-context, "map");
-}
-
 @media screen and (max-width: $mobile-max-width) {
   .m-map-page {
-    flex-direction: column;
-  }
-
-  .m-map-page__map-container {
     flex-direction: column;
   }
 
@@ -101,9 +90,14 @@ $z-map-container-context: (
   }
 }
 
-.m-map-page__vehicle-card {
+.m-map-page__map .m-vehicle-card {
   position: absolute;
-  z-index: map-get($z-map-container-context, "vehicle-card");
+  z-index: 9999;
   top: 0.5rem;
   right: calc(env(safe-area-inset-right) + 3.5rem);
+  cursor: default;
+  a {
+    text-decoration: none;
+    color: white;
+  }
 }

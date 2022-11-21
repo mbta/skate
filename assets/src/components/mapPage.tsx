@@ -128,23 +128,19 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           )}
         </div>
       </div>
-      <div className="m-map-page__map-container">
-        {selectedVehicle && showVehicleCard && (
-          <div className="m-map-page__vehicle-card">
+      <div className="m-map-page__map">
+        <Map
+          vehicles={onlyVehicles}
+          onPrimaryVehicleSelect={selectVehicle}
+          shapes={selectedVehicleShapes}
+        >
+          {selectedVehicle && showVehicleCard ? (
             <VehicleCard
               vehicle={selectedVehicle}
               onClose={() => setShowVehicleCard(false)}
             />
-          </div>
-        )}
-
-        <div className="m-map-page__map">
-          <Map
-            vehicles={onlyVehicles}
-            onPrimaryVehicleSelect={selectVehicle}
-            shapes={selectedVehicleShapes}
-          />
-        </div>
+          ) : undefined}
+        </Map>
       </div>
     </div>
   )
