@@ -60,7 +60,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
-  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null)
+  const [selectedVehicle, setSelectedVehicle] = useState<VehicleOrGhost | null>(
+    null
+  )
   const selectedVehicleShapes = useTripShape(selectedVehicle?.tripId || null)
 
   const toggleMobileDisplay = () => {
@@ -95,7 +97,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
         <div className="m-search-display">
           {thereIsAnActiveSearch(vehicles, searchPageState) ? (
-            <SearchResults vehicles={vehicles as VehicleOrGhost[]} />
+            <SearchResults
+              vehicles={vehicles as VehicleOrGhost[]}
+              selectedVehicleId={selectedVehicle?.id || null}
+              onClick={setSelectedVehicle}
+            />
           ) : (
             <RecentSearches />
           )}

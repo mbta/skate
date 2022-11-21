@@ -50,8 +50,10 @@ const ToggleMobileDisplayButton = ({
 }
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
-    useContext(StateDispatchContext)
+  const [
+    { searchPageState, mobileMenuIsOpen, selectedVehicleOrGhost },
+    dispatch,
+  ] = useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
@@ -91,7 +93,13 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
         <div className="m-search-display">
           {thereIsAnActiveSearch(vehicles, searchPageState) ? (
-            <SearchResults vehicles={vehicles as VehicleOrGhost[]} />
+            <SearchResults
+              vehicles={vehicles as VehicleOrGhost[]}
+              onClick={(vehicleOrGhost) => {
+                dispatch(selectVehicle(vehicleOrGhost))
+              }}
+              selectedVehicleId={selectedVehicleOrGhost?.id || null}
+            />
           ) : (
             <RecentSearches />
           )}

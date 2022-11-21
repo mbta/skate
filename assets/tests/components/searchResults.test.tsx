@@ -7,7 +7,7 @@ import SearchResults, {
 } from "../../src/components/searchResults"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Ghost, Vehicle } from "../../src/realtime"
-import { initialState, selectVehicle, State } from "../../src/state"
+import { initialState, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -32,7 +32,11 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[]} />
+          <SearchResults
+            vehicles={[]}
+            onClick={jest.fn()}
+            selectedVehicleId={null}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -117,7 +121,11 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle, ghost]} />
+          <SearchResults
+            vehicles={[vehicle, ghost]}
+            onClick={jest.fn()}
+            selectedVehicleId={null}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -184,7 +192,11 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle]} />
+          <SearchResults
+            vehicles={[vehicle]}
+            onClick={jest.fn()}
+            selectedVehicleId={null}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -323,7 +335,11 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[oldVehicle, newVehicle, ghost]} />
+          <SearchResults
+            vehicles={[oldVehicle, newVehicle, ghost]}
+            onClick={jest.fn()}
+            selectedVehicleId={null}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -339,15 +355,14 @@ describe("SearchResults", () => {
     })
     const ghost: Ghost = ghostFactory.build({ runId: "123-0123" })
 
-    const stateWithSelected = {
-      ...state,
-      selectedVehicleOrGhost: vehicle,
-    }
-
     const tree = renderer
       .create(
-        <StateDispatchProvider state={stateWithSelected} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle, ghost]} />
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <SearchResults
+            vehicles={[vehicle, ghost]}
+            onClick={jest.fn()}
+            selectedVehicleId={vehicle.id}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -358,22 +373,31 @@ describe("SearchResults", () => {
   test("clicking a result card selects that vehicle", async () => {
     const testDispatch = jest.fn()
     const vehicle: Vehicle = vehicleFactory.build({ runId: "12345" })
+    const mockOnClick = jest.fn()
     const result = render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
-        <SearchResults vehicles={[vehicle]} />
+        <SearchResults
+          vehicles={[vehicle]}
+          onClick={mockOnClick}
+          selectedVehicleId={null}
+        />
       </StateDispatchProvider>
     )
 
     await userEvent.click(result.getByText("12345"))
 
-    expect(testDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(mockOnClick).toHaveBeenCalledWith(vehicle)
   })
 
   test("clicking the clear search button empties the search text", async () => {
     const testDispatch = jest.fn()
     const result = render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
-        <SearchResults vehicles={[]} />
+        <SearchResults
+          vehicles={[]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
       </StateDispatchProvider>
     )
 
