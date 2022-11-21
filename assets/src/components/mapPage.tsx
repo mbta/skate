@@ -1,5 +1,5 @@
 import { Socket } from "phoenix"
-import React, { ReactElement, useContext, useState } from "react"
+import React, { ReactElement, useContext, useEffect, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
@@ -7,11 +7,11 @@ import { useTripShape } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
-import LiveVehicleCard from "./liveVehicleCard"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
+import VehicleCard from "./vehicleCard"
 
 enum MobileDisplay {
   List = 1,
@@ -68,6 +68,19 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const onSearchCallback = () => {
     setSelectedVehicle(null)
   }
+  useEffect(() => {
+    if (selectedVehicle) {
+      const updatedSelectedVehicle = vehicles?.find(
+        (v) => v.id === selectedVehicle.id
+      )
+      if (updatedSelectedVehicle && isVehicle(updatedSelectedVehicle)) {
+        setSelectedVehicle(updatedSelectedVehicle)
+      } else {
+        setSelectedVehicle(null)
+        setShowVehicleCard(false)
+      }
+    }
+  }, [vehicles])
 
   const toggleMobileDisplay = () => {
     setMobileDisplay(
@@ -118,7 +131,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-map-page__map-container">
         {selectedVehicle && showVehicleCard && (
           <div className="m-map-page__vehicle-card">
-            <LiveVehicleCard
+            <VehicleCard
               vehicle={selectedVehicle}
               onClose={() => setShowVehicleCard(false)}
             />
