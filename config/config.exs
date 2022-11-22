@@ -120,6 +120,14 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# "code" is the secret value returned by AWS to /auth/cognito/callback
+log_filter_params =
+  ~w(password code token guardian_default_claims guardian_default_resource guardian_default_token)
+
+config :logster, :filter_parameters, log_filter_params
+
+config :phoenix, :filter_parameters, log_filter_params
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 

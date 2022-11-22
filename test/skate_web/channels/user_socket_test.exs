@@ -3,6 +3,9 @@ defmodule SkateWeb.UserSocketTest do
 
   alias SkateWeb.{AuthManager, UserSocket}
 
+  import Test.Support.Helpers
+  import ExUnit.CaptureLog
+
   setup do
     %{socket: socket(UserSocket), resource: %{id: 1}}
   end
@@ -31,6 +34,18 @@ defmodule SkateWeb.UserSocketTest do
 
     test "doesn't authenticate without a token", %{socket: socket} do
       assert UserSocket.connect(%{"token" => nil}, socket, %{}) == :error
+    end
+
+    test "doesn't log user token", %{resource: resource} do
+      set_log_level(:info)
+
+      current_time = System.system_time(:second)
+      expiration_time = current_time + 500
+
+      {:ok, token, _claims} = AuthManager.encode_and_sign(resource, %{"exp" => expiration_time})
+
+      log = capture_log(fn -> connect(UserSocket, %{"token" => token}) end)
+      assert log =~ "%{\"token\" => \"[FILTERED]\"}"
     end
   end
 end
