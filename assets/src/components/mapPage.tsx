@@ -65,6 +65,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   const selectedVehicleShapes = useTripShape(selectedVehicle?.tripId || null)
 
+  const onSearchCallback = () => {
+    setSelectedVehicle(null)
+  }
+
   const toggleMobileDisplay = () => {
     setMobileDisplay(
       mobileDisplay === MobileDisplay.List
@@ -87,7 +91,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     >
       <div className="m-search-page__input-and-results">
         <div className="m-search-page__input">
-          <SearchForm />
+          <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
 
           <ToggleMobileDisplayButton
             mobileDisplay={mobileDisplay}
