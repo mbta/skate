@@ -1,5 +1,6 @@
 import React from "react"
 import {
+  alertIcon,
   blueLineIcon,
   busFrontIcon,
   busRearIcon,
@@ -34,6 +35,7 @@ import {
 } from "../../src/helpers/icon"
 
 const testMap: { [index: string]: (className?: string) => JSX.Element } = {
+  alertIcon,
   blueLineIcon,
   busFrontIcon,
   busRearIcon,

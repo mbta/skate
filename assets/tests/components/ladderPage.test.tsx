@@ -40,6 +40,10 @@ jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }))
+jest.mock("../../src/hooks/useAlerts", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
+}))
 jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => undefined),
@@ -404,9 +408,9 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    ;(useTimepoints as jest.Mock).mockImplementationOnce(
-      () => timepointsByRouteId
-    )
+    ;(useTimepoints as jest.Mock)
+      .mockImplementationOnce(() => timepointsByRouteId)
+      .mockImplementationOnce(() => timepointsByRouteId)
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -423,9 +427,9 @@ describe("LadderPage", () => {
     ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
       ["1"]: [vehicle],
     }))
-    ;(useTimepoints as jest.Mock).mockImplementationOnce(
-      () => timepointsByRouteId
-    )
+    ;(useTimepoints as jest.Mock)
+      .mockImplementationOnce(() => timepointsByRouteId)
+      .mockImplementationOnce(() => timepointsByRouteId)
 
     const vehicle: VehicleOrGhost = vehicleFactory.build({ runId: "clickMe" })
     const mockState = {

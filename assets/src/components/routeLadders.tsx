@@ -15,6 +15,7 @@ interface Props {
   toggleCrowding: (routeId: RouteId) => void
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
+  routesWithAlerts: RouteId[]
 }
 
 const RouteLadders = ({
@@ -26,6 +27,7 @@ const RouteLadders = ({
   toggleCrowding,
   ladderDirections,
   ladderCrowdingToggles,
+  routesWithAlerts,
 }: Props) => {
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
@@ -59,6 +61,7 @@ const RouteLadders = ({
           toggleCrowding={toggleCrowding}
           ladderDirections={ladderDirections}
           ladderCrowdingToggles={ladderCrowdingToggles}
+          hasAlert={routesWithAlerts.includes(route.id)}
         />
       ))}
     </div>

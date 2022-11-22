@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
+import alertIconSvg from "../../static/images/icon-alert.svg"
+// @ts-ignore
 import bangIconSvg from "../../static/images/icon-bang.svg"
 // @ts-ignore
 import blueLineIconSvg from "../../static/images/icon-blue-line.svg"
@@ -115,6 +117,9 @@ import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
 /* eslint-enable @typescript-eslint/ban-ts-comment */
 import renderSvg from "./renderSvg"
+
+export const alertIcon = (className = ""): JSX.Element =>
+  renderSvg(className, alertIconSvg)
 
 export const bangIcon = (className = ""): JSX.Element =>
   renderSvg(className, bangIconSvg)
