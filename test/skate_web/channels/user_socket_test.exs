@@ -4,7 +4,6 @@ defmodule SkateWeb.UserSocketTest do
   alias SkateWeb.{AuthManager, UserSocket}
 
   import Test.Support.Helpers
-
   import ExUnit.CaptureLog
 
   setup do
