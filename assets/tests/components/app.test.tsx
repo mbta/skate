@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import App from "../../src/components/app"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -94,9 +94,9 @@ describe("App", () => {
   test("renders old search page for users not in map test group", () => {
     window.history.pushState({}, "", "/search")
 
-    const result = render(<App />)
+    render(<App />)
 
-    expect(result.queryByTestId("map-page")).not.toBeInTheDocument()
+    expect(screen.queryByTestId("map-page")).not.toBeInTheDocument()
   })
 
   test("renders new map page for users in map test group", () => {
@@ -105,8 +105,8 @@ describe("App", () => {
     }))
     window.history.pushState({}, "", "/map")
 
-    const result = render(<App />)
+    render(<App />)
 
-    expect(result.getByTestId("map-page")).toBeInTheDocument()
+    expect(screen.getByTestId("map-page")).toBeInTheDocument()
   })
 })

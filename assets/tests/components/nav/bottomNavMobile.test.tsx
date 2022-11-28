@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import BottomNavMobile from "../../../src/components/nav/bottomNavMobile"
 import userEvent from "@testing-library/user-event"
@@ -40,7 +40,7 @@ describe("BottomNavMobile", () => {
       userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
     }))
 
-    const result = render(
+    render(
       <BrowserRouter>
         <BottomNavMobile
           mobileMenuIsOpen={initialState.mobileMenuIsOpen}
@@ -49,7 +49,7 @@ describe("BottomNavMobile", () => {
       </BrowserRouter>
     )
 
-    expect(result.queryByTitle("Search")).toBeNull()
-    expect(result.queryByTitle("Map")).toBeInTheDocument()
+    expect(screen.queryByTitle("Search")).toBeNull()
+    expect(screen.queryByTitle("Map")).toBeInTheDocument()
   })
 })

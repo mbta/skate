@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import MapPage from "../../src/components/mapPage"
@@ -13,7 +13,6 @@ import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
-import { SearchPageState } from "../../src/state/searchPageState"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -53,7 +52,7 @@ jest.mock("../../src/hooks/useShapes", () => ({
 describe("MapPage", () => {
   test("renders the empty state", () => {
     ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
-    const result = render(
+    const { asFragment } = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
@@ -61,13 +60,13 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.asFragment()).toMatchSnapshot()
+    expect(asFragment()).toMatchSnapshot()
   })
 
   test("renders vehicle data", () => {
     const searchResults: VehicleOrGhost[] = [vehicle, ghost]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const result = render(
+    const { asFragment } = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
@@ -75,17 +74,17 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.asFragment()).toMatchSnapshot()
+    expect(asFragment()).toMatchSnapshot()
   })
 
   test("on mobile, shows the results list initially", () => {
-    const result = render(
+    const { container } = render(
       <BrowserRouter>
         <MapPage />
       </BrowserRouter>
     )
 
-    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(container.firstChild).toHaveClass("m-search-page--show-list")
   })
 
   test("clicking a vehicle on the map displays the route shape", async () => {
@@ -116,7 +115,7 @@ describe("MapPage", () => {
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const mockDispatch = jest.fn()
-    const result = render(
+    const { container } = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <BrowserRouter>
           <MapPage />
@@ -124,85 +123,29 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTestId("routeShape")).toBeNull()
+    expect(screen.queryByTestId("routeShape")).toBeNull()
 
-    await userEvent.click(result.getByText(runId))
-    expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
-  })
-
-  test("clicking a vehicle from a search result displays the route shape", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const activeSearch: SearchPageState = {
-      query: { text: "clickMe", property: "run" },
-      isActive: true,
-      savedQueries: [],
-    }
-    const mockDispatch = jest.fn()
-    const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, searchPageState: activeSearch }}
-        dispatch={mockDispatch}
-      >
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    await userEvent.click(result.getByRole("button", { name: /run/i }))
-    expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
-  })
-
-  test("submitting a new search clears the previously selected route shape", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const activeSearch: SearchPageState = {
-      query: { text: "clickMe", property: "run" },
-      isActive: true,
-      savedQueries: [],
-    }
-    const mockDispatch = jest.fn()
-    const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, searchPageState: activeSearch }}
-        dispatch={mockDispatch}
-      >
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    await userEvent.click(result.getByRole("button", { name: /run/i }))
-    expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
-    await userEvent.click(result.getByTitle("Submit"))
-    expect(result.container.innerHTML).not.toContain(
-      "m-vehicle-map__route-shape"
-    )
+    await userEvent.click(screen.getByText(runId))
+    expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
   })
 
   test("on mobile, allows you to toggle to the map view and back again", async () => {
-    const result = render(
+    const { container } = render(
       <BrowserRouter>
         <MapPage />
       </BrowserRouter>
     )
 
     await userEvent.click(
-      result.getByRole("button", { name: "Show map instead" })
+      screen.getByRole("button", { name: "Show map instead" })
     )
 
-    expect(result.container.firstChild).toHaveClass("m-search-page--show-map")
+    expect(container.firstChild).toHaveClass("m-search-page--show-map")
 
     await userEvent.click(
-      result.getByRole("button", { name: "Show list instead" })
+      screen.getByRole("button", { name: "Show list instead" })
     )
 
-    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(container.firstChild).toHaveClass("m-search-page--show-list")
   })
 })

@@ -1,6 +1,6 @@
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 
 import Nav from "../../src/components/nav"
@@ -75,7 +75,7 @@ describe("Nav", () => {
       userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
     }))
 
-    const result = render(
+    render(
       <BrowserRouter>
         <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
           Hello, world!
@@ -83,8 +83,8 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
-    expect(result.queryByTitle("Search")).toBeNull()
-    expect(result.queryByTitle("Map")).toBeInTheDocument()
+    expect(screen.queryByTitle("Search")).toBeNull()
+    expect(screen.queryByTitle("Map")).toBeInTheDocument()
   })
 
   test("renders desktop nav content", () => {

@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import LeftNav from "../../../src/components/nav/leftNav"
 import userEvent from "@testing-library/user-event"
@@ -86,14 +86,14 @@ describe("LeftNav", () => {
       userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
     }))
 
-    const result = render(
+    render(
       <BrowserRouter>
         <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
       </BrowserRouter>
     )
 
-    expect(result.queryByTitle("Search")).toBeNull()
-    expect(result.getByTitle("Map")).toBeInTheDocument()
+    expect(screen.queryByTitle("Search")).toBeNull()
+    expect(screen.getByTitle("Map")).toBeInTheDocument()
   })
 
   test("can toggle nav menu on tablet layout", async () => {

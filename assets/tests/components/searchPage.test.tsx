@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 import SearchPage from "../../src/components/searchPage"
@@ -113,7 +113,7 @@ describe("SearchPage", () => {
       savedQueries: [],
     }
     const mockDispatch = jest.fn()
-    const result = render(
+    render(
       <StateDispatchProvider
         state={{ ...initialState, searchPageState: activeSearch }}
         dispatch={mockDispatch}
@@ -124,7 +124,7 @@ describe("SearchPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByRole("button", { name: /run/i }))
+    await userEvent.click(screen.getByRole("button", { name: /run/i }))
     expect(mockDispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: "SELECT_VEHICLE" })
     )

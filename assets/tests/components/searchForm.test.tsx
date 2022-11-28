@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
@@ -103,13 +103,13 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const result = render(
+    render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
         <SearchForm onSubmit={onSubmit} />
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("Submit"))
+    await userEvent.click(screen.getByTitle("Submit"))
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
     expect(onSubmit).toHaveBeenCalledTimes(1)
   })
@@ -172,13 +172,13 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const result = render(
+    render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
         <SearchForm onClear={onClear} />
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("Clear"))
+    await userEvent.click(screen.getByTitle("Clear"))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
     expect(onClear).toHaveBeenCalledTimes(1)

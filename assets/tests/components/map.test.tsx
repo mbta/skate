@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
@@ -117,23 +117,21 @@ describe("map", () => {
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
     const onClick = jest.fn()
-    const result = render(
-      <Map vehicles={[vehicle]} onPrimaryVehicleSelect={onClick} />
-    )
-    await userEvent.click(result.getByText(runIdToLabel(vehicle.runId!)))
+    render(<Map vehicles={[vehicle]} onPrimaryVehicleSelect={onClick} />)
+    await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
     expect(onClick).toHaveBeenCalledWith(expect.objectContaining(vehicle))
   })
 
-  test("does not onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
+  test("does not perform onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
     const onClick = jest.fn()
-    const result = render(
+    render(
       <Map
         vehicles={[]}
         secondaryVehicles={[vehicle]}
         onPrimaryVehicleSelect={onClick}
       />
     )
-    await userEvent.click(result.getByText(runIdToLabel(vehicle.runId!)))
+    await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
     expect(onClick).not.toHaveBeenCalled()
   })
 })
