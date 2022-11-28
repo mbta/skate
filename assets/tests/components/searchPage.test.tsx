@@ -12,6 +12,7 @@ import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import userEvent from "@testing-library/user-event"
+import { SearchPageState } from "../../src/state/searchPageState"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -96,6 +97,34 @@ describe("SearchPage", () => {
     )
 
     await userEvent.click(result.getByText(runId))
+    expect(mockDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "SELECT_VEHICLE" })
+    )
+  })
+
+  test("clicking a search result selects that vehicle", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const runId = "clickMe"
+    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    const activeSearch: SearchPageState = {
+      query: { text: "clickMe", property: "run" },
+      isActive: true,
+      savedQueries: [],
+    }
+    const mockDispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, searchPageState: activeSearch }}
+        dispatch={mockDispatch}
+      >
+        <BrowserRouter>
+          <SearchPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(result.getByRole("button", { name: /run/i }))
     expect(mockDispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: "SELECT_VEHICLE" })
     )

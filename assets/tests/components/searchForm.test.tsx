@@ -91,6 +91,29 @@ describe("SearchForm", () => {
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })
 
+  test("clicking the submit button also calls onSubmit when set", async () => {
+    const testDispatch = jest.fn()
+    const onSubmit = jest.fn()
+    const validSearch: SearchPageState = {
+      query: { text: "12", property: "run" },
+      isActive: false,
+      savedQueries: [],
+    }
+    const validSearchState = {
+      ...initialState,
+      searchPageState: validSearch,
+    }
+    const result = render(
+      <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
+        <SearchForm onSubmit={onSubmit} />
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(result.getByTitle("Submit"))
+    expect(testDispatch).toHaveBeenCalledWith(submitSearch())
+    expect(onSubmit).toHaveBeenCalledTimes(1)
+  })
+
   test("entering text sets it as the search text", async () => {
     const validSearch: SearchPageState = {
       query: { text: "12", property: "run" },
@@ -135,6 +158,30 @@ describe("SearchForm", () => {
     await userEvent.click(result.getByTitle("Clear"))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
+  })
+
+  test("clicking the clear button also calls onClear when set", async () => {
+    const testDispatch = jest.fn()
+    const onClear = jest.fn()
+    const validSearch: SearchPageState = {
+      query: { text: "12", property: "run" },
+      isActive: false,
+      savedQueries: [],
+    }
+    const validSearchState = {
+      ...initialState,
+      searchPageState: validSearch,
+    }
+    const result = render(
+      <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
+        <SearchForm onClear={onClear} />
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(result.getByTitle("Clear"))
+
+    expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
+    expect(onClear).toHaveBeenCalledTimes(1)
   })
 
   test("clicking a search property selects it", async () => {
