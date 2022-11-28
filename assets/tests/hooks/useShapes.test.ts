@@ -158,4 +158,23 @@ describe("useTripShape", () => {
     rerender("2")
     expect(mockFetchShape).toHaveBeenCalledTimes(2)
   })
+
+  test("returns null when trip id changes to null", () => {
+    const shape: Shape = {
+      id: "shape",
+      points: [{ lat: 42.41356, lon: -70.99211 }],
+    }
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+    mockFetchShape.mockImplementationOnce(() => instantPromise(shape))
+    const { rerender, result } = renderHook<Shape[], string | null>(
+      (tripId) => useTripShape(tripId),
+      {
+        initialProps: "1",
+      }
+    )
+    expect(result.current).toEqual([shape])
+
+    rerender(null)
+    expect(result.current).toEqual([])
+  })
 })
