@@ -94,6 +94,7 @@ $z-map-container-context: (
   position: absolute;
   z-index: 9999;
   top: 0.5rem;
+  // Adjacent to controls
   right: calc(env(safe-area-inset-right) + 3.5rem);
   cursor: default;
   a {
