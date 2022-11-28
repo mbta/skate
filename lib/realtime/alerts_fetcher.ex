@@ -94,29 +94,11 @@ defmodule Realtime.AlertsFetcher do
             is_detour? = alert.attributes["effect"] == "DETOUR"
 
             if is_detour? do
-              route_ids =
-                Enum.reduce(alert.attributes["informed_entity"], [], fn informed_entity,
-                                                                        route_ids ->
-                  if informed_entity["route"] && informed_entity["route"] not in route_ids do
-                    [informed_entity["route"] | route_ids]
-                  else
-                    route_ids
-                  end
-                end)
+              route_ids = route_ids_from_informed_entities(alert.attributes["informed_entity"])
 
               alert_text = alert.attributes["service_effect"]
 
-              Enum.reduce(route_ids, acc, fn route_id, acc ->
-                {_old_value, acc} =
-                  Map.get_and_update(acc, route_id, fn alerts_for_route ->
-                    case alerts_for_route do
-                      nil -> {alerts_for_route, [alert_text]}
-                      alerts -> {alerts_for_route, [alert_text | alerts]}
-                    end
-                  end)
-
-                acc
-              end)
+              add_alerts_by_routes(route_ids, alert_text, acc)
             else
               acc
             end
@@ -129,5 +111,32 @@ defmodule Realtime.AlertsFetcher do
       {:error, error} ->
         {:error, error}
     end
+  end
+
+  @spec route_ids_from_informed_entities([map()]) :: [Route.id()]
+  defp route_ids_from_informed_entities(informed_entities) do
+    Enum.reduce(informed_entities, [], fn informed_entity, route_ids ->
+      if informed_entity["route"] && informed_entity["route"] not in route_ids do
+        [informed_entity["route"] | route_ids]
+      else
+        route_ids
+      end
+    end)
+  end
+
+  @spec add_alerts_by_routes([Route.id()], String.t(), Route.by_id([String.t()])) ::
+          Route.by_id([String.t()])
+  defp add_alerts_by_routes(route_ids, alert_text, alerts_by_routes) do
+    Enum.reduce(route_ids, alerts_by_routes, fn route_id, acc ->
+      {_old_value, acc} =
+        Map.get_and_update(acc, route_id, fn alerts_for_route ->
+          case alerts_for_route do
+            nil -> {alerts_for_route, [alert_text]}
+            alerts -> {alerts_for_route, [alert_text | alerts]}
+          end
+        end)
+
+      acc
+    end)
   end
 end
