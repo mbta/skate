@@ -3,7 +3,7 @@ defmodule Realtime.AlertsFetcher do
   require Logger
   alias Schedule.Route
 
-  @default_poll_interval_ms 3 * 60 * 1_000
+  @default_poll_interval_ms 60 * 1_000
 
   @type state :: %{
           update_fn: Route.by_id([String.t()]),
