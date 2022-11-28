@@ -25,9 +25,7 @@ const thereIsAnActiveSearch = (
 const filterVehicles = (
   vehiclesOrGhosts: VehicleOrGhost[] | null
 ): Vehicle[] => {
-  return vehiclesOrGhosts === null
-    ? []
-    : (vehiclesOrGhosts.filter((vog) => isVehicle(vog)) as Vehicle[])
+  return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
 }
 
 const ToggleMobileDisplayButton = ({
@@ -100,9 +98,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         </div>
 
         <div className="m-search-display">
-          {thereIsAnActiveSearch(vehicles, searchPageState) ? (
+          {vehicles !== null &&
+          thereIsAnActiveSearch(vehicles, searchPageState) ? (
             <SearchResults
-              vehicles={vehicles as VehicleOrGhost[]}
+              vehicles={vehicles}
               selectedVehicleId={selectedVehicle?.id || null}
               onClick={setSelectedVehicle}
             />
