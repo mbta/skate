@@ -3,9 +3,9 @@ import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
+import { useTripShape } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
-import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
@@ -47,11 +47,9 @@ const ToggleMobileDisplayButton = ({
   )
 }
 
-const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [
-    { searchPageState, mobileMenuIsOpen, selectedVehicleOrGhost },
-    dispatch,
-  ] = useContext(StateDispatchContext)
+const MapPage = (): ReactElement<HTMLDivElement> => {
+  const [{ searchPageState, mobileMenuIsOpen }] =
+    useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
@@ -60,6 +58,15 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
+  const [selectedVehicle, setSelectedVehicle] = useState<VehicleOrGhost | null>(
+    null
+  )
+  const selectedVehicleShapes = useTripShape(selectedVehicle?.tripId || null)
+
+  const onSearchCallback = () => {
+    setSelectedVehicle(null)
+  }
+
   const toggleMobileDisplay = () => {
     setMobileDisplay(
       mobileDisplay === MobileDisplay.List
@@ -78,10 +85,11 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   return (
     <div
       className={`c-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}
+      data-testid="map-page"
     >
       <div className="m-search-page__input-and-results">
         <div className="m-search-page__input">
-          <SearchForm />
+          <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
 
           <ToggleMobileDisplayButton
             mobileDisplay={mobileDisplay}
@@ -90,14 +98,12 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
         </div>
 
         <div className="m-search-display">
-          {vehicles != null &&
+          {vehicles !== null &&
           thereIsAnActiveSearch(vehicles, searchPageState) ? (
             <SearchResults
               vehicles={vehicles}
-              onClick={(vehicleOrGhost) => {
-                dispatch(selectVehicle(vehicleOrGhost))
-              }}
-              selectedVehicleId={selectedVehicleOrGhost?.id || null}
+              selectedVehicleId={selectedVehicle?.id || null}
+              onClick={setSelectedVehicle}
             />
           ) : (
             <RecentSearches />
@@ -108,11 +114,12 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-search-page__map">
         <Map
           vehicles={onlyVehicles}
-          onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
+          onPrimaryVehicleSelect={setSelectedVehicle}
+          shapes={selectedVehicleShapes}
         />
       </div>
     </div>
   )
 }
 
-export default SearchPage
+export default MapPage

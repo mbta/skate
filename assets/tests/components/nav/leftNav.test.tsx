@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import LeftNav from "../../../src/components/nav/leftNav"
 import userEvent from "@testing-library/user-event"
@@ -16,6 +16,8 @@ import {
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
+import appData from "../../../src/appData"
+import { MAP_BETA_GROUP_NAME } from "../../../src/userTestGroups"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -30,6 +32,8 @@ jest.mock("../../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
+
+jest.mock("appData")
 
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
@@ -75,6 +79,21 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Settings")).not.toBeNull()
     expect(result.queryByText("Expand")).toBeNull()
     expect(result.queryByTitle("Expand")).not.toBeNull()
+  })
+
+  test("renders nav item with title 'Map' if in map test group", () => {
+    ;(appData as jest.Mock).mockImplementationOnce(() => ({
+      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
+    }))
+
+    render(
+      <BrowserRouter>
+        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+      </BrowserRouter>
+    )
+
+    expect(screen.queryByTitle("Search")).toBeNull()
+    expect(screen.getByTitle("Map")).toBeInTheDocument()
   })
 
   test("can toggle nav menu on tablet layout", async () => {

@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import App from "../../src/components/app"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -10,6 +10,8 @@ import { initialState, State } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import vehicle from "../factories/vehicle"
+import appData from "../../src/appData"
+import { MAP_BETA_GROUP_NAME } from "../../src/userTestGroups"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -19,6 +21,8 @@ jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
+
+jest.mock("appData")
 
 describe("App", () => {
   test("renders", () => {
@@ -85,5 +89,24 @@ describe("App", () => {
     )
 
     expect(result.getByText("Vehicles")).toBeInTheDocument()
+  })
+
+  test("renders old search page for users not in map test group", () => {
+    window.history.pushState({}, "", "/search")
+
+    render(<App />)
+
+    expect(screen.queryByTestId("map-page")).not.toBeInTheDocument()
+  })
+
+  test("renders new map page for users in map test group", () => {
+    ;(appData as jest.Mock).mockImplementationOnce(() => ({
+      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
+    }))
+    window.history.pushState({}, "", "/map")
+
+    render(<App />)
+
+    expect(screen.getByTestId("map-page")).toBeInTheDocument()
   })
 })

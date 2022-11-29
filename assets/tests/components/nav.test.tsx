@@ -1,14 +1,26 @@
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom"
+
 import Nav from "../../src/components/nav"
 import { OpenView } from "../../src/state"
 import useDeviceType from "../../src/hooks/useDeviceType"
+import appData from "../../src/appData"
+import { MAP_BETA_GROUP_NAME } from "../../src/userTestGroups"
 
 jest.mock("../../src/hooks/useDeviceType", () => ({
   __esModule: true,
   default: jest.fn(() => "desktop"),
 }))
+
+jest.mock("appData")
+
+beforeEach(() => {
+  ;(appData as jest.Mock).mockImplementation(() => ({
+    userTestGroups: JSON.stringify([]),
+  }))
+})
 
 describe("Nav", () => {
   test("renders mobile nav content", () => {
@@ -56,6 +68,23 @@ describe("Nav", () => {
 
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()
     expect(result.queryByText("Route Ladders")).toBeNull()
+  })
+
+  test("renders nav item with title 'Map' if in map test group", () => {
+    ;(appData as jest.Mock).mockImplementation(() => ({
+      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
+    }))
+
+    render(
+      <BrowserRouter>
+        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+          Hello, world!
+        </Nav>
+      </BrowserRouter>
+    )
+
+    expect(screen.queryByTitle("Search")).toBeNull()
+    expect(screen.queryByTitle("Map")).toBeInTheDocument()
   })
 
   test("renders desktop nav content", () => {

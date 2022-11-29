@@ -33,7 +33,6 @@ import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape } from "../schedule"
-import { selectVehicle } from "../state"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import appData from "../appData"
@@ -48,6 +47,7 @@ export interface Props {
   // trainVehicles are white, don't get a label, and don't affect autocentering
   trainVehicles?: TrainVehicle[]
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
+  onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -125,15 +125,14 @@ const makeLeafletLabelIcon = (
 const LeafletVehicle = ({
   vehicle,
   isPrimary,
+  onSelect,
 }: {
   vehicle: Vehicle
   isPrimary: boolean
+  onSelect?: (vehicle: Vehicle) => void
 }) => {
-  const [appState, dispatch] = useContext(StateDispatchContext)
-  const select = isPrimary
-    ? () => dispatch(selectVehicle(vehicle))
-    : // eslint-disable-next-line @typescript-eslint/no-empty-function
-      () => {}
+  const [appState] = useContext(StateDispatchContext)
+  const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
   const vehicleIcon: Leaflet.DivIcon = makeLeafletVehicleIcon(
     vehicle,
@@ -152,17 +151,13 @@ const LeafletVehicle = ({
       <Marker
         position={position}
         icon={vehicleIcon}
-        eventHandlers={{
-          click: select,
-        }}
+        eventHandlers={eventHandlers}
         zIndexOffset={zIndexOffset}
       />
       <Marker
         position={position}
         icon={labelIcon}
-        eventHandlers={{
-          click: select,
-        }}
+        eventHandlers={eventHandlers}
         zIndexOffset={zIndexOffset}
       />
     </>
@@ -430,7 +425,12 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.vehicles.map((vehicle: Vehicle) => (
-          <LeafletVehicle key={vehicle.id} vehicle={vehicle} isPrimary={true} />
+          <LeafletVehicle
+            key={vehicle.id}
+            vehicle={vehicle}
+            isPrimary={true}
+            onSelect={props.onPrimaryVehicleSelect}
+          />
         ))}
         {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
           <LeafletVehicle

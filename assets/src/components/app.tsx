@@ -16,7 +16,6 @@ import useVehicles from "../hooks/useVehicles"
 import DataStatusBanner from "./dataStatusBanner"
 import LadderPage from "./ladderPage"
 import Modal from "./modal"
-import SearchPage from "./searchPage"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
 import LateView from "./lateView"
@@ -24,6 +23,7 @@ import { OpenView } from "../state"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
+import { mapModeForUser } from "../util/mapMode"
 
 const AppRoutes = () => {
   useAppcues()
@@ -44,6 +44,8 @@ const AppRoutes = () => {
     vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
   )
 
+  const mapMode = mapModeForUser()
+
   return (
     <div className="m-app">
       <div className="m-app__banner">
@@ -59,7 +61,7 @@ const AppRoutes = () => {
               <BrowserRoute path="/" element={<LadderPage />} />
               <BrowserRoute path="/shuttle-map" element={<ShuttleMapPage />} />
               <BrowserRoute path="/settings" element={<SettingsPage />} />
-              <BrowserRoute path="/search" element={<SearchPage />} />
+              <BrowserRoute path={mapMode.path} element={mapMode.element} />
             </Routes>
             {openView === OpenView.Late ? <LateView /> : null}
             <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />

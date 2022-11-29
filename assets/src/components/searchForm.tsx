@@ -10,7 +10,13 @@ import {
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
-const SearchForm = () => {
+const SearchForm = ({
+  onSubmit,
+  onClear,
+}: {
+  onSubmit?: () => void
+  onClear?: () => void
+}) => {
   const [
     {
       searchPageState: { query },
@@ -25,6 +31,9 @@ const SearchForm = () => {
   const clearTextInput = (event: React.FormEvent<EventTarget>): void => {
     event.preventDefault()
     dispatch(setSearchText(""))
+    if (onClear) {
+      onClear()
+    }
   }
 
   const handlePropertyChange = (
@@ -38,6 +47,9 @@ const SearchForm = () => {
     event.preventDefault()
 
     dispatch(submitSearch())
+    if (onSubmit) {
+      onSubmit()
+    }
   }
 
   return (
