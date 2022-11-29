@@ -41,12 +41,16 @@ defmodule Realtime.ServerTest do
     "1" => [@vehicle, @ghost]
   }
 
+  @alerts_by_route_id %{
+    "1" => ["Some alert", "Another alert"]
+  }
+
   setup do
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     :ok
   end
 
-  describe "update" do
+  describe "update_vehicles/2" do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
@@ -54,7 +58,19 @@ defmodule Realtime.ServerTest do
     end
 
     test "accepts vehicle positions", %{server_pid: server_pid} do
-      assert Server.update({@vehicles_by_route_id, []}, server_pid) == :ok
+      assert Server.update_vehicles({@vehicles_by_route_id, []}, server_pid) == :ok
+    end
+  end
+
+  describe "update_alerts/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      %{server_pid: server_pid}
+    end
+
+    test "accepts alerts", %{server_pid: server_pid} do
+      assert Server.update_alerts(@alerts_by_route_id, server_pid) == :ok
     end
   end
 
@@ -62,7 +78,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -75,7 +91,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -89,7 +105,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get repeated messages", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, _},
@@ -97,7 +113,7 @@ defmodule Realtime.ServerTest do
         "Client didn't receive vehicle positions the first time"
       )
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -111,7 +127,7 @@ defmodule Realtime.ServerTest do
     test "inactive routes have all their vehicle data removed", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({%{}, []}, server_pid)
+      Server.update_vehicles({%{}, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -125,7 +141,7 @@ defmodule Realtime.ServerTest do
     test "vehicles on inactive blocks are removed", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({%{"1" => [@vehicle_on_inactive_block]}, []}, server_pid)
+      Server.update_vehicles({%{"1" => [@vehicle_on_inactive_block]}, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -141,7 +157,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -161,7 +177,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
       Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -175,7 +191,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to block IDs get repeated messages", %{server_pid: server_pid} do
       Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, _},
@@ -183,7 +199,7 @@ defmodule Realtime.ServerTest do
         "Client didn't receive vehicle positions the first time"
       )
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -197,7 +213,7 @@ defmodule Realtime.ServerTest do
     test "inactive blocks have all their vehicle data removed", %{server_pid: server_pid} do
       Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
 
-      Server.update({%{}, []}, server_pid)
+      Server.update_vehicles({%{}, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -213,7 +229,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update({%{}, [@shuttle]}, server_pid)
+      :ok = Server.update_vehicles({%{}, [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -225,7 +241,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated data pushed to them", %{server_pid: pid} do
       Server.subscribe_to_all_shuttles(pid)
 
-      Server.update({%{}, [@shuttle, @shuttle]}, pid)
+      Server.update_vehicles({%{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
@@ -236,7 +252,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+      :ok = Server.update_vehicles({@vehicles_by_route_id, [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -252,7 +268,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated search results pushed to them", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
-      Server.update({%{}, [@shuttle]}, pid)
+      Server.update_vehicles({%{}, [@shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle]
@@ -261,7 +277,7 @@ defmodule Realtime.ServerTest do
     test "does not receive duplicate vehicles", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
-      Server.update({%{}, [@shuttle, @shuttle]}, pid)
+      Server.update_vehicles({%{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle]
@@ -270,11 +286,44 @@ defmodule Realtime.ServerTest do
     test "vehicles on inactive blocks are included", %{server_pid: pid} do
       Server.subscribe_to_search("v2-label", :vehicle, pid)
 
-      Server.update({%{"1" => [@vehicle_on_inactive_block]}, []}, pid)
+      Server.update_vehicles({%{"1" => [@vehicle_on_inactive_block]}, []}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
 
       assert Server.lookup(lookup_args) == [@vehicle_on_inactive_block]
+    end
+  end
+
+  describe "subscribe_to_alerts/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_alerts(@alerts_by_route_id, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get all shuttles upon subscribing", %{server_pid: pid} do
+      assert Server.subscribe_to_alerts("1", pid) == @alerts_by_route_id["1"]
+    end
+
+    test "clients get updated data pushed to them", %{server_pid: pid} do
+      Server.subscribe_to_alerts("1", pid)
+
+      Server.update_alerts(%{"15" => ["Totally different alert"]}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+      assert Server.lookup(lookup_args) == []
+    end
+
+    test "clients subscribed to vehicles don't get updated data pushed to them", %{
+      server_pid: pid
+    } do
+      Server.subscribe_to_route("1", pid)
+
+      Server.update_alerts(%{"1" => ["Totally different alert"]}, pid)
+
+      refute_receive {:new_realtime_data, _lookup_args}
     end
   end
 
@@ -288,6 +337,7 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
       :ets.insert(ets, {{:block_id, @vehicle.block_id}, @vehicle})
+      :ets.insert(ets, {{:alert, "1"}, ["Some alert"]})
 
       {:ok, %{ets: ets}}
     end
@@ -377,6 +427,10 @@ defmodule Realtime.ServerTest do
 
       assert Enum.member?(results, @vehicle)
     end
+
+    test "fetches alerts by route from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, {:alert, "1"}}) == ["Some alert"]
+    end
   end
 
   describe "backend implementation" do
@@ -411,7 +465,7 @@ defmodule Realtime.ServerTest do
   describe "peek_at_vehicles_by_run_ids/2" do
     test "looks up vehicles active on the given trip IDs" do
       {:ok, server_pid} = Server.start_link([])
-      Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, [@shuttle]}, server_pid)
 
       assert Server.peek_at_vehicles_by_run_ids([], server_pid) == []
       assert Server.peek_at_vehicles_by_run_ids(["no_such_run"], server_pid) == []
@@ -436,7 +490,7 @@ defmodule Realtime.ServerTest do
   describe "peek_at_vehicles_by_id/2" do
     test "looks up the vehicle or ghost with given ID" do
       {:ok, server_pid} = Server.start_link([])
-      Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+      Server.update_vehicles({@vehicles_by_route_id, [@shuttle]}, server_pid)
 
       assert Server.peek_at_vehicle_by_id("no_such_vehicle", server_pid) == []
       assert Server.peek_at_vehicle_by_id("v1", server_pid) == [@vehicle]
