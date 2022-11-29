@@ -1,6 +1,3 @@
-$z-map-container-context: (
-  "map": 1,
-);
 .m-map-page {
   display: flex;
   flex: 1 1 auto;
@@ -92,7 +89,8 @@ $z-map-container-context: (
 
 .m-map-page__map .m-vehicle-card {
   position: absolute;
-  z-index: 9999;
+  // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
+  z-index: 7001;
   top: 0.5rem;
   // Adjacent to controls
   right: calc(env(safe-area-inset-right) + 3.5rem);

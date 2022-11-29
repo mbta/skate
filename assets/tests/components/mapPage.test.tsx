@@ -97,7 +97,7 @@ describe("MapPage", () => {
       </BrowserRouter>
     )
 
-    expect(container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
   test("clicking a vehicle on the map displays the route shape", async () => {
@@ -142,7 +142,7 @@ describe("MapPage", () => {
     expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
   })
 
-  test("clicking a vehicle from a search result displays the route shape", async () => {
+  test("clicking a vehicle from a search result displays the route shape and card", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
@@ -164,8 +164,11 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /run/i }))
+    await userEvent.click(screen.getByRole("cell", { name: runId }))
     expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
+    expect(
+      screen.getByRole("link", { name: "Go to Street View" })
+    ).toBeInTheDocument()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
@@ -190,7 +193,7 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /run/i }))
+    await userEvent.click(screen.getByRole("cell", { name: runId }))
     expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
     await userEvent.click(screen.getByTitle("Submit"))
     expect(container.innerHTML).not.toContain("m-vehicle-map__route-shape")
@@ -204,7 +207,7 @@ describe("MapPage", () => {
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const mockDispatch = jest.fn()
-    const result = render(
+    render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <BrowserRouter>
           <MapPage />
@@ -212,10 +215,10 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByText(runId))
-    expect(result.getByText("39_X")).toBeInTheDocument()
-    expect(result.getByText("Forest Hills")).toBeInTheDocument()
-    expect(result.getByText("Go to Street View")).toBeInTheDocument()
+    await userEvent.click(screen.getByText(runId))
+    expect(screen.getByText("39_X")).toBeInTheDocument()
+    expect(screen.getByText("Forest Hills")).toBeInTheDocument()
+    expect(screen.getByText("Go to Street View")).toBeInTheDocument()
   })
 
   test("can close the vehicle card", async () => {
@@ -226,7 +229,7 @@ describe("MapPage", () => {
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const mockDispatch = jest.fn()
-    const result = render(
+    render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <BrowserRouter>
           <MapPage />
@@ -234,10 +237,10 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByText(runId))
-    expect(result.getByText("Forest Hills")).toBeInTheDocument()
-    await userEvent.click(result.getByTitle("Close"))
-    expect(result.queryByText("Forest Hills")).not.toBeInTheDocument()
+    await userEvent.click(screen.getByText(runId))
+    expect(screen.getByText("Forest Hills")).toBeInTheDocument()
+    await userEvent.click(screen.getByTitle("Close"))
+    expect(screen.queryByText("Forest Hills")).not.toBeInTheDocument()
   })
 
   test("on mobile, allows you to toggle to the map view and back again", async () => {
@@ -251,12 +254,12 @@ describe("MapPage", () => {
       screen.getByRole("button", { name: "Show map instead" })
     )
 
-    expect(container.firstChild).toHaveClass("m-search-page--show-map")
+    expect(container.firstChild).toHaveClass("m-map-page--show-map")
 
     await userEvent.click(
       screen.getByRole("button", { name: "Show list instead" })
     )
 
-    expect(container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 })

@@ -116,6 +116,8 @@ describe("map", () => {
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
     const onClick = jest.fn()
     render(<Map vehicles={[vehicle]} onPrimaryVehicleSelect={onClick} />)
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
@@ -123,6 +125,7 @@ describe("map", () => {
   })
 
   test("does not perform onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const onClick = jest.fn()
     render(
       <Map
