@@ -1,5 +1,5 @@
 import { Socket } from "phoenix"
-import React, { ReactElement, useContext, useEffect, useState } from "react"
+import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
@@ -59,28 +59,19 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
-  const [selectedVehicle, setSelectedVehicle] = useState<VehicleOrGhost | null>(
+  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(
     null
   )
-  const selectedVehicleShapes = useTripShape(selectedVehicle?.tripId || null)
+
+  const liveVehicle: Vehicle | null = selectedVehicleId
+    ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
+    : null
+  const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
   const [showVehicleCard, setShowVehicleCard] = useState<boolean>(false)
 
   const onSearchCallback = () => {
-    setSelectedVehicle(null)
+    setSelectedVehicleId(null)
   }
-  useEffect(() => {
-    if (selectedVehicle) {
-      const updatedSelectedVehicle = vehicles?.find(
-        (v) => v.id === selectedVehicle.id
-      )
-      if (updatedSelectedVehicle && isVehicle(updatedSelectedVehicle)) {
-        setSelectedVehicle(updatedSelectedVehicle)
-      } else {
-        setSelectedVehicle(null)
-        setShowVehicleCard(false)
-      }
-    }
-  }, [vehicles])
 
   const toggleMobileDisplay = () => {
     setMobileDisplay(
@@ -90,8 +81,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     )
   }
 
-  const selectVehicle = (vehicle: Vehicle): void => {
-    setSelectedVehicle(vehicle)
+  const selectVehicle = (vehicle: VehicleOrGhost): void => {
+    setSelectedVehicleId(vehicle.id)
     setShowVehicleCard(true)
   }
 
@@ -120,8 +111,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           thereIsAnActiveSearch(vehicles, searchPageState) ? (
             <SearchResults
               vehicles={vehicles}
-              selectedVehicleId={selectedVehicle?.id || null}
-              onClick={setSelectedVehicle}
+              selectedVehicleId={liveVehicle?.id || null}
+              onClick={selectVehicle}
             />
           ) : (
             <RecentSearches />
@@ -134,9 +125,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           onPrimaryVehicleSelect={selectVehicle}
           shapes={selectedVehicleShapes}
         >
-          {selectedVehicle && showVehicleCard ? (
+          {liveVehicle && showVehicleCard ? (
             <VehicleCard
-              vehicle={selectedVehicle}
+              vehicle={liveVehicle}
               onClose={() => setShowVehicleCard(false)}
             />
           ) : undefined}
