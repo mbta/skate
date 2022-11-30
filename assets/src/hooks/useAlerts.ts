@@ -73,9 +73,13 @@ const useAlerts = (
         })
 
         currentRouteIds.forEach((routeId) => {
-          const channel = subscribe(socket, routeId, setAlertsByRoute)
+          if (routeId in oldChannelsByRouteId) {
+            newChannelsByRouteId[routeId] = oldChannelsByRouteId[routeId]
+          } else {
+            const channel = subscribe(socket, routeId, setAlertsByRoute)
 
-          newChannelsByRouteId[routeId] = channel
+            newChannelsByRouteId[routeId] = channel
+          }
         })
 
         return newChannelsByRouteId
