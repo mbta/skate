@@ -24,6 +24,7 @@ import {
   Popup,
   TileLayer,
   useMap,
+  useMapEvent,
   useMapEvents,
   ZoomControl,
 } from "react-leaflet"
@@ -38,6 +39,13 @@ import { equalByElements } from "../helpers/array"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
+
+import garages, { Garage } from "../data/garages"
+// @ts-ignore
+
+import garageIcon from "../../static/images/icon-bus-garage.svg"
+
+import L from "leaflet"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -371,6 +379,54 @@ const Autocenterer = ({
   return <></>
 }
 
+const garageLeafletIcon = Leaflet.divIcon({
+  html: garageIcon,
+  className: "new",
+})
+
+const Garage = ({
+  garage,
+  zoomLevel,
+}: {
+  garage: Garage
+  zoomLevel: number
+}) => (
+  <>
+    <Marker
+      key={garage.name}
+      position={[garage.lat, garage.lon]}
+      icon={garageLeafletIcon}
+    />
+    {zoomLevel >= 16 && (
+      <Marker
+        position={[garage.lat, garage.lon]}
+        icon={L.divIcon({
+          className: "m-garage-icon__label",
+          html: `<svg height="30" width="100">
+                    <text x="22" y="15">${garage.name}</text>
+                  </svg>`,
+        })}
+      />
+    )}
+  </>
+)
+
+const Garages = () => {
+  const startingZoomLevel = useMap().getZoom()
+  const [zoomLevel, setZoomLevel] = useState(startingZoomLevel)
+  const map = useMapEvent("zoomend", () => {
+    setZoomLevel(map.getZoom())
+  })
+
+  return (
+    <>
+      {garages.map((garage) => (
+        <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
+      ))}
+    </>
+  )
+}
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
@@ -448,6 +504,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.shapes || []).map((shape) => (
           <LeafletShape key={shape.id} shape={shape} />
         ))}
+        <Garages />
       </MapContainer>
     </>
   )

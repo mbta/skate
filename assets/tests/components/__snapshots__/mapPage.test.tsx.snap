@@ -194,7 +194,72 @@ exports[`MapPage renders the empty state 1`] = `
           />
           <div
             class="leaflet-pane leaflet-marker-pane"
-          />
+          >
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -33px; top: 158px; z-index: 158;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -328px; top: 457px; z-index: 457;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -5px; top: 165px; z-index: 165;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -94px; top: -207px; z-index: -207;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -188px; top: -481px; z-index: -481;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: 482px; top: -747px; z-index: -747;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: 272px; top: 801px; z-index: 801;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -56px; top: 222px; z-index: 222;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+          </div>
           <div
             class="leaflet-pane leaflet-tooltip-pane"
           />
@@ -566,6 +631,70 @@ exports[`MapPage renders vehicle data 1`] = `
                 
           
               </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -58933px; top: -71279px; z-index: -71279;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -61292px; top: -68885px; z-index: -68885;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -58706px; top: -71225px; z-index: -71225;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -59423px; top: -74196px; z-index: -74196;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -60172px; top: -76393px; z-index: -76393;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -54815px; top: -78519px; z-index: -78519;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -56490px; top: -66138px; z-index: -66138;"
+              tabindex="0"
+            >
+              SVG
+            </div>
+            <div
+              class="leaflet-marker-icon new leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: -59119px; top: -70770px; z-index: -70770;"
+              tabindex="0"
+            >
+              SVG
             </div>
           </div>
           <div
