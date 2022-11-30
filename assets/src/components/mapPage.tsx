@@ -5,7 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useTripShape } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
@@ -59,7 +59,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
-  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(
+  const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId | null>(
     null
   )
 
