@@ -408,9 +408,9 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    ;(useTimepoints as jest.Mock)
-      .mockImplementationOnce(() => timepointsByRouteId)
-      .mockImplementationOnce(() => timepointsByRouteId)
+    ;(useTimepoints as jest.Mock).mockImplementationOnce(
+      () => timepointsByRouteId
+    )
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -427,9 +427,9 @@ describe("LadderPage", () => {
     ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
       ["1"]: [vehicle],
     }))
-    ;(useTimepoints as jest.Mock)
-      .mockImplementationOnce(() => timepointsByRouteId)
-      .mockImplementationOnce(() => timepointsByRouteId)
+    ;(useTimepoints as jest.Mock).mockImplementationOnce(
+      () => timepointsByRouteId
+    )
 
     const vehicle: VehicleOrGhost = vehicleFactory.build({ runId: "clickMe" })
     const mockState = {

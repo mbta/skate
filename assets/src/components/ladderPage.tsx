@@ -32,7 +32,7 @@ import OldCloseButton from "./oldCloseButton"
 import { saveIcon, plusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import useAlerts from "../hooks/useAlerts"
-import useSocket from "../hooks/useSocket"
+import { SocketContext } from "../contexts/socketContext"
 
 type DrawerContent = "route_picker" | "presets"
 
@@ -156,7 +156,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const timepointsByRouteId: TimepointsByRouteId =
     useTimepoints(selectedRouteIds)
 
-  const { socket } = useSocket()
+  const { socket } = useContext(SocketContext)
   const alerts = useAlerts(socket, selectedRouteIds)
   const routesWithAlerts = []
 
