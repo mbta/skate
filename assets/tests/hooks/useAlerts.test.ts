@@ -13,7 +13,7 @@ describe("useAlerts", () => {
   test("selecting a new route subscribes to the new channel", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockSocket.channel.mockImplementation(() => mockChannel)
 
     const { rerender } = renderHook(() => useAlerts(mockSocket, ["1"]))
 
@@ -28,10 +28,7 @@ describe("useAlerts", () => {
   test("unselecting a route unsubscribes from the channel", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
-    mockSocket.channel
-      .mockImplementationOnce(() => mockChannel)
-      .mockImplementationOnce(() => mockChannel)
-      .mockImplementationOnce(() => mockChannel)
+    mockSocket.channel.mockImplementation(() => mockChannel)
 
     const { rerender } = renderHook(
       (selectedRouteIds: RouteId[]) => useAlerts(mockSocket, selectedRouteIds),
@@ -45,7 +42,7 @@ describe("useAlerts", () => {
   test("returns results from joining a channel", async () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockSocket.channel.mockImplementation(() => mockChannel)
     mockChannel.receive.mockImplementation((event, handler) => {
       if (event === "ok") {
         handler({ data: ["alert text"] })
@@ -63,7 +60,7 @@ describe("useAlerts", () => {
   test("returns results pushed to the channel", async () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockSocket.channel.mockImplementation(() => mockChannel)
     mockChannel.on.mockImplementation((event, handler) => {
       if (event === "alerts") {
         handler({ data: ["alert text"] })
@@ -79,10 +76,10 @@ describe("useAlerts", () => {
 
   test("reloads the window on channel timeout", async () => {
     const reloadSpy = jest.spyOn(browser, "reload")
-    reloadSpy.mockImplementationOnce(() => ({}))
+    reloadSpy.mockImplementation(() => ({}))
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("timeout")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockSocket.channel.mockImplementation(() => mockChannel)
 
     renderHook(() => useAlerts(mockSocket, ["1"]))
 
