@@ -46,6 +46,7 @@ import garages, { Garage } from "../data/garages"
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 
 import L from "leaflet"
+import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userTestGroups"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -381,7 +382,7 @@ const Autocenterer = ({
 
 const garageLeafletIcon = Leaflet.divIcon({
   html: garageIcon,
-  className: "new",
+  className: "m-garage-icon",
 })
 
 const Garage = ({
@@ -504,7 +505,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.shapes || []).map((shape) => (
           <LeafletShape key={shape.id} shape={shape} />
         ))}
-        <Garages />
+        {inTestGroup(MAP_BETA_GROUP_NAME) && <Garages />}
       </MapContainer>
     </>
   )
