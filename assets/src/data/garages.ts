@@ -4,50 +4,62 @@ export interface Garage {
   lon: number
 }
 
-const albany = {
+const albany: Garage = {
   name: "Albany",
-  lat: 42.3406518,
-  lon: -71.0645516,
+  lat: 42.340616,
+  lon: -71.0671051,
 }
 
-const arborway = {
+const arborway: Garage = {
   name: "Arborway",
-  lat: 42.3026822,
-  lon: -71.1151638,
+  lat: 42.3037585,
+  lon: -71.1112559,
 }
-const cabot = {
+const cabot: Garage = {
   name: "Cabot",
   lat: 42.3398069,
-  lon: -71.0596775,
+  lon: -71.0596828,
 }
 
-const charelstown = {
+const charelstown: Garage = {
   name: "Charlestown",
-  lat: 42.386901,
-  lon: -71.0750707,
+  lat: 42.3882827,
+  lon: -71.0734092,
 }
-const fellsway = {
+const fellsway: Garage = {
   name: "Fellsway",
-  lat: 42.4217203,
-  lon: -71.0911386,
+  lat: 42.4217315,
+  lon: -71.0910619,
 }
 
-const lynn = {
+const lynn: Garage = {
   name: "Lynn",
-  lat: 42.45538,
-  lon: -70.9761957,
+  lat: 42.4553619,
+  lon: -70.9766566,
 }
 
-const quincy = {
+const northCambridge: Garage = {
+  name: "North Cambridge",
+  lat: 42.3970497,
+  lon: -71.1309482,
+}
+
+const quincy: Garage = {
   name: "Quincy",
-  lat: 42.2590698,
-  lon: -71.0121292,
+  lat: 42.2597519,
+  lon: -71.0113901,
 }
 
-const southampton = {
+const somerville: Garage = {
+  name: "Somerville",
+  lat: 42.3882827,
+  lon: -71.0734092,
+}
+
+const southampton: Garage = {
   name: "Southampton",
-  lat: 42.3325781,
-  lon: -71.0685377,
+  lat: 42.3317363,
+  lon: -71.0650967,
 }
 
 export default [
@@ -57,6 +69,8 @@ export default [
   charelstown,
   fellsway,
   lynn,
+  northCambridge,
   quincy,
+  somerville,
   southampton,
 ]

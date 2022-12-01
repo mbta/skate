@@ -400,7 +400,7 @@ const Garage = ({
         position={[garage.lat, garage.lon]}
         icon={Leaflet.divIcon({
           className: "m-garage-icon__label",
-          html: `<svg height="30" width="100">
+          html: `<svg height="30" width="200">
                     <text x="22" y="15">${garage.name}</text>
                   </svg>`,
         })}
