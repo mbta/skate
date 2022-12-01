@@ -391,12 +391,14 @@ const Garage = ({
 }) => (
   <>
     <Marker
+      interactive={false}
       key={garage.name}
       position={[garage.lat, garage.lon]}
       icon={garageLeafletIcon}
     />
     {zoomLevel >= 16 && (
       <Marker
+        interactive={false}
         position={[garage.lat, garage.lon]}
         icon={Leaflet.divIcon({
           className: "m-garage-icon__label",
