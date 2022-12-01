@@ -42,10 +42,7 @@ import "leaflet.fullscreen"
 
 import garages, { Garage } from "../data/garages"
 // @ts-ignore
-
 import garageIcon from "../../static/images/icon-bus-garage.svg"
-
-import L from "leaflet"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userTestGroups"
 
 export interface Props {
@@ -401,7 +398,7 @@ const Garage = ({
     {zoomLevel >= 16 && (
       <Marker
         position={[garage.lat, garage.lon]}
-        icon={L.divIcon({
+        icon={Leaflet.divIcon({
           className: "m-garage-icon__label",
           html: `<svg height="30" width="100">
                     <text x="22" y="15">${garage.name}</text>
