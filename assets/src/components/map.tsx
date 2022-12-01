@@ -41,6 +41,7 @@ import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
 
 import garages, { Garage } from "../data/garages"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userTestGroups"
