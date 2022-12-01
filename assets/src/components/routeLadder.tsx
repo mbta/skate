@@ -27,6 +27,7 @@ import Ladder from "./ladder"
 import Loading from "./loading"
 import CloseButton from "./closeButton"
 import Tippy from "@tippyjs/react"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 interface Props {
   route: Route
@@ -53,7 +54,11 @@ const Header = ({
   return (
     <div className="m-route-ladder__header">
       {hasAlert && (
-        <Tippy content="Active detour" trigger="click">
+        <Tippy
+          content="Active detour"
+          trigger="click"
+          onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+        >
           {alertIcon("m-route-ladder__alert-icon")}
         </Tippy>
       )}

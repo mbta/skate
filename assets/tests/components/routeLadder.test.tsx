@@ -17,6 +17,12 @@ import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 const vehicles: Vehicle[] = [
   vehicleFactory.build({
@@ -528,6 +534,38 @@ describe("routeLadder", () => {
     )
 
     expect(result.getByText("Active detour")).toBeInTheDocument()
+  })
+
+  test("clicking alert icon to open tooltip triggers tag manager event", async () => {
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const user = userEvent.setup()
+    const result = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
+    )
+
+    await user.click(result.getByText("Active detour"))
+
+    expect(tagManagerEvent).toHaveBeenCalledWith("alert_tooltip_clicked")
   })
 
   test("clicking the close button deselects that route", async () => {
