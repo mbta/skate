@@ -6,15 +6,17 @@ import userEvent from "@testing-library/user-event"
 import { initialState } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
-import appData from "../../../src/appData"
-import { MAP_BETA_GROUP_NAME } from "../../../src/userTestGroups"
-
+import getTestGroups from "../../../src/userTestGroups"
+import { MAP_BETA_GROUP_NAME } from "../../../src/userInTestGroup"
 jest.mock("../../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
 
-jest.mock("appData")
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
 
 describe("BottomNavMobile", () => {
   test("clicking swings view button toggles swing view", async () => {
@@ -36,9 +38,7 @@ describe("BottomNavMobile", () => {
   })
 
   test("renders nav item with title 'Map' if in map test group", () => {
-    ;(appData as jest.Mock).mockImplementationOnce(() => ({
-      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
-    }))
+    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     render(
       <BrowserRouter>

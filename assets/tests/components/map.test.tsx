@@ -15,7 +15,8 @@ import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 
-import inTestGroup from "../../src/userTestGroups"
+import getTestGroups from "../../src/userTestGroups"
+import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 
 const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
@@ -72,13 +73,13 @@ const vehicle: Vehicle = vehicleFactory.build({
   crowding: null,
 })
 
-jest.mock("../../src/userTestGroups", () => ({
+jest.mock("userTestGroups", () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: jest.fn(() => []),
 }))
 
 beforeEach(() => {
-  ;(inTestGroup as jest.Mock).mockReturnValue(false)
+  ;(getTestGroups as jest.Mock).mockReturnValue([])
 })
 
 describe("map", () => {
@@ -127,13 +128,13 @@ describe("map", () => {
   })
 
   test("draws garage icons only at zoom levels < 16", () => {
-    ;(inTestGroup as jest.Mock).mockReturnValue(true)
+    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
     const { container } = render(<Map vehicles={[vehicle]} />)
     expect(container.innerHTML).toContain("m-garage-icon")
     expect(screen.queryByText("Albany")).toBeNull()
   })
   test("draws garage icons and labels at zoom levels >= 16", async () => {
-    ;(inTestGroup as jest.Mock).mockReturnValue(true)
+    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 

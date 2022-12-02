@@ -2,7 +2,7 @@ import React from "react"
 import { ReactElement } from "react"
 import MapPage from "../components/mapPage"
 import SearchPage from "../components/searchPage"
-import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userTestGroups"
+import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 
 export interface NavMode {
   path: string
