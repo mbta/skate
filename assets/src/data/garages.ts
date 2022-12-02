@@ -21,8 +21,8 @@ const cabot: Garage = {
   lon: -71.0596828,
 }
 
-const charelstown: Garage = {
-  name: "Charlestown",
+const charelstownSomerville: Garage = {
+  name: "Charlestown and Somerville",
   lat: 42.3882827,
   lon: -71.0734092,
 }
@@ -50,12 +50,6 @@ const quincy: Garage = {
   lon: -71.0113901,
 }
 
-const somerville: Garage = {
-  name: "Somerville",
-  lat: 42.3882827,
-  lon: -71.0734092,
-}
-
 const southampton: Garage = {
   name: "Southampton",
   lat: 42.3317363,
@@ -66,11 +60,10 @@ export default [
   albany,
   arborway,
   cabot,
-  charelstown,
+  charelstownSomerville,
   fellsway,
   lynn,
   northCambridge,
   quincy,
-  somerville,
   southampton,
 ]
