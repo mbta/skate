@@ -16,6 +16,13 @@ import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
+import "@testing-library/jest-dom"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
 
 const vehicles: Vehicle[] = [
   vehicleFactory.build({
@@ -158,6 +165,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -207,6 +215,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -239,6 +248,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -274,6 +284,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -321,6 +332,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={ladderCrowdingToggles}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -362,6 +374,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -410,6 +423,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={ladderCrowdingToggles}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -458,6 +472,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={ladderCrowdingToggles}
+          hasAlert={false}
         />
       )
       .toJSON()
@@ -484,11 +499,73 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("renders alert icon on a route ladder with an active detour", () => {
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const result = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
+    )
+
+    expect(result.getByText("Active detour")).toBeInTheDocument()
+  })
+
+  test("clicking alert icon to open tooltip triggers tag manager event", async () => {
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const user = userEvent.setup()
+    const result = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
+    )
+
+    await user.click(result.getByText("Active detour"))
+
+    expect(tagManagerEvent).toHaveBeenCalledWith("alert_tooltip_clicked")
   })
 
   test("clicking the close button deselects that route", async () => {
@@ -515,6 +592,7 @@ describe("routeLadder", () => {
         toggleCrowding={() => {}}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
+        hasAlert={false}
       />
     )
     await user.click(result.getByTitle("Close"))
@@ -545,6 +623,7 @@ describe("routeLadder", () => {
         toggleCrowding={() => {}}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
+        hasAlert={false}
       />
     )
     await userEvent.click(result.getByRole("button", { name: /Reverse/ }))
@@ -587,6 +666,7 @@ describe("routeLadder", () => {
         toggleCrowding={mockToggle}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
+        hasAlert={false}
       />
     )
     await userEvent.click(result.getByRole("button", { name: /Show riders/ }))
@@ -659,6 +739,7 @@ describe("routeLadder", () => {
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       </StateDispatchProvider>
     )

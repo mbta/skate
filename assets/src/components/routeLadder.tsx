@@ -1,5 +1,10 @@
 import React from "react"
-import { crowdingIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
+import {
+  alertIcon,
+  crowdingIcon,
+  reverseIcon,
+  reverseIconReversed,
+} from "../helpers/icon"
 import {
   getLadderCrowdingToggleForRoute,
   LadderCrowdingToggle,
@@ -21,6 +26,8 @@ import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
 import CloseButton from "./closeButton"
+import Tippy from "@tippyjs/react"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 interface Props {
   route: Route
@@ -32,17 +39,29 @@ interface Props {
   toggleCrowding: (routeId: RouteId) => void
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
+  hasAlert: boolean
 }
 
 const Header = ({
   route,
   deselectRoute,
+  hasAlert,
 }: {
   route: Route
   deselectRoute: (routeId: RouteId) => void
+  hasAlert: boolean
 }) => {
   return (
     <div className="m-route-ladder__header">
+      {hasAlert && (
+        <Tippy
+          content="Active detour"
+          trigger="click"
+          onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+        >
+          {alertIcon("m-route-ladder__alert-icon")}
+        </Tippy>
+      )}
       <div className="m-route-ladder__close-button-container">
         <CloseButton
           closeButtonType="l_darker"
@@ -131,6 +150,7 @@ const RouteLadder = ({
   toggleCrowding,
   ladderDirections,
   ladderCrowdingToggles,
+  hasAlert,
 }: Props) => {
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
 
@@ -156,7 +176,7 @@ const RouteLadder = ({
 
   return (
     <>
-      <Header route={route} deselectRoute={deselectRoute} />
+      <Header route={route} deselectRoute={deselectRoute} hasAlert={hasAlert} />
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}

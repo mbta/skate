@@ -4,12 +4,14 @@ import React from "react"
 
 jest.mock("@tippyjs/react", () => ({
   __esModule: true,
+  /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
   default: jest.fn().mockImplementation((props) => (
-    <div className="mock-tippy">
+    <div className="mock-tippy" onClick={props.onShow}>
       <div className="mock-tippy-content">{props.content}</div>
       {props.children}
     </div>
   )),
+  /* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 }))
 
 jest.mock("../src/hooks/useDeviceType", () => ({
