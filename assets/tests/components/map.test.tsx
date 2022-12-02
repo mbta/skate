@@ -14,8 +14,8 @@ import { Shape } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
-import appData from "../../src/appData"
-import { MAP_BETA_GROUP_NAME } from "../../src/userTestGroups"
+
+import inTestGroup from "../../src/userTestGroups"
 
 const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
@@ -72,12 +72,13 @@ const vehicle: Vehicle = vehicleFactory.build({
   crowding: null,
 })
 
-jest.mock("appData")
+jest.mock("../../src/userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
 beforeEach(() => {
-  ;(appData as jest.Mock).mockImplementation(() => ({
-    userTestGroups: JSON.stringify([]),
-  }))
+  ;(inTestGroup as jest.Mock).mockReturnValue(false)
 })
 
 describe("map", () => {
@@ -126,33 +127,32 @@ describe("map", () => {
   })
 
   test("draws garage icons only at zoom levels < 16", () => {
-    ;(appData as jest.Mock).mockImplementation(() => ({
-      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
-    }))
-    const result = render(<Map vehicles={[vehicle]} />)
-    expect(result.container.innerHTML).toContain("m-garage-icon")
-    expect(result.queryByText("Albany")).toBeNull()
+    ;(inTestGroup as jest.Mock).mockReturnValue(true)
+    const { container } = render(<Map vehicles={[vehicle]} />)
+    expect(container.innerHTML).toContain("m-garage-icon")
+    expect(screen.queryByText("Albany")).toBeNull()
   })
   test("draws garage icons and labels at zoom levels >= 16", async () => {
-    ;(appData as jest.Mock).mockImplementation(() => ({
-      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
-    }))
+    ;(inTestGroup as jest.Mock).mockReturnValue(true)
+
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
-    const result = render(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
+    const { container } = render(
+      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
+    )
 
     // Manual zoom
     act(() => {
       mapRef.current!.setZoom(17)
     })
     await animationFramePromise()
-    expect(result.container.innerHTML).toContain("m-garage-icon")
-    expect(result.getByText("Albany")).toBeInTheDocument()
+    expect(container.innerHTML).toContain("m-garage-icon")
+    expect(screen.getByText("Albany")).toBeInTheDocument()
   })
 
   test("no garage icons if not in test group", () => {
-    const result = render(<Map vehicles={[vehicle]} />)
-    expect(result.container.innerHTML).not.toContain("m-garage-icon")
+    const { container } = render(<Map vehicles={[vehicle]} />)
+    expect(container.innerHTML).not.toContain("m-garage-icon")
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
