@@ -7,12 +7,16 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { initialState } from "../../src/state"
+import * as dateTime from "../../src/util/dateTime"
 
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
 import { SearchPageState } from "../../src/state/searchPageState"
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
