@@ -67,7 +67,7 @@ export const defaultCenter: LatLngExpression = {
   lng: -71.05891,
 }
 
-const makeLeafletVehicleIcon = (
+const makeVehicleIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
   userSettings: UserSettings
@@ -99,7 +99,7 @@ const makeLeafletVehicleIcon = (
   })
 }
 
-const makeLeafletLabelIcon = (
+const makeLabelIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
   settings: UserSettings,
@@ -130,7 +130,7 @@ const makeLeafletLabelIcon = (
   })
 }
 
-const LeafletVehicle = ({
+const Vehicle = ({
   vehicle,
   isPrimary,
   onSelect,
@@ -142,12 +142,12 @@ const LeafletVehicle = ({
   const [appState] = useContext(StateDispatchContext)
   const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
-  const vehicleIcon: Leaflet.DivIcon = makeLeafletVehicleIcon(
+  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
     vehicle,
     isPrimary,
     appState.userSettings
   )
-  const labelIcon: Leaflet.DivIcon = makeLeafletLabelIcon(
+  const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
     isPrimary,
     appState.userSettings,
@@ -172,9 +172,7 @@ const LeafletVehicle = ({
   )
 }
 
-const makeLeafletTrainVehicleIcon = ({
-  bearing,
-}: TrainVehicle): Leaflet.DivIcon => {
+const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
   const centerX = 24
   const centerY = 24
   return Leaflet.divIcon({
@@ -187,16 +185,12 @@ const makeLeafletTrainVehicleIcon = ({
   })
 }
 
-const LeafletTrainVehicle = ({
-  trainVehicle,
-}: {
-  trainVehicle: TrainVehicle
-}) => {
+const TrainVehicle = ({ trainVehicle }: { trainVehicle: TrainVehicle }) => {
   const position: LatLngExpression = [
     trainVehicle.latitude,
     trainVehicle.longitude,
   ]
-  const icon: Leaflet.DivIcon = makeLeafletTrainVehicleIcon(trainVehicle)
+  const icon: Leaflet.DivIcon = makeTrainVehicleIcon(trainVehicle)
   return <Marker position={position} icon={icon} />
 }
 
@@ -213,7 +207,7 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const LeafletShape = ({ shape }: { shape: Shape }) => {
+const Shape = ({ shape }: { shape: Shape }) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
@@ -498,7 +492,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.vehicles.map((vehicle: Vehicle) => (
-          <LeafletVehicle
+          <Vehicle
             key={vehicle.id}
             vehicle={vehicle}
             isPrimary={true}
@@ -506,20 +500,13 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           />
         ))}
         {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
-          <LeafletVehicle
-            key={vehicle.id}
-            vehicle={vehicle}
-            isPrimary={false}
-          />
+          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={false} />
         ))}
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
-          <LeafletTrainVehicle
-            key={trainVehicle.id}
-            trainVehicle={trainVehicle}
-          />
+          <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
         ))}
         {(props.shapes || []).map((shape) => (
-          <LeafletShape key={shape.id} shape={shape} />
+          <Shape key={shape.id} shape={shape} />
         ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
           <Garages zoomLevel={zoomLevel} />
