@@ -6,7 +6,7 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
-describe("User Test Groups API", () => {
+describe("inTestGroup", () => {
   test("returns true if user is in test group", () => {
     const group_1 = "user-test-group-1"
     const group_2 = "user-test-group-2"

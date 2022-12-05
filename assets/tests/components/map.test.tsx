@@ -133,6 +133,7 @@ describe("map", () => {
     expect(container.innerHTML).toContain("m-garage-icon")
     expect(screen.queryByText("Albany")).toBeNull()
   })
+
   test("draws garage icons and labels at zoom levels >= 16", async () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
