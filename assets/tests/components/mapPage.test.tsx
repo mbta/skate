@@ -14,6 +14,7 @@ import ghostFactory from "../factories/ghost"
 import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
 import { SearchPageState } from "../../src/state/searchPageState"
+import useVehicleForId from "../../src/hooks/useVehicleForId"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -40,6 +41,7 @@ const ghost: Ghost = ghostFactory.build({
   routeStatus: "on_route",
   blockWaivers: [],
 })
+
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(),
@@ -48,6 +50,16 @@ jest.mock("../../src/hooks/useSearchResults", () => ({
 jest.mock("../../src/hooks/useShapes", () => ({
   __esModule: true,
   useTripShape: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useNearestIntersection", () => ({
+  __esModule: true,
+  useNearestIntersection: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useVehicleForId", () => ({
+  __esModule: true,
+  default: jest.fn(),
 }))
 
 describe("MapPage", () => {
@@ -85,7 +97,7 @@ describe("MapPage", () => {
       </BrowserRouter>
     )
 
-    expect(container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
   test("clicking a vehicle on the map displays the route shape", async () => {
@@ -130,7 +142,7 @@ describe("MapPage", () => {
     expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
   })
 
-  test("clicking a vehicle from a search result displays the route shape", async () => {
+  test("clicking a vehicle from a search result displays the route shape and card", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
@@ -152,8 +164,11 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /run/i }))
+    await userEvent.click(screen.getByRole("cell", { name: runId }))
     expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
+    expect(
+      screen.getByRole("link", { name: "Go to Street View" })
+    ).toBeInTheDocument()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
@@ -178,10 +193,54 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /run/i }))
+    await userEvent.click(screen.getByRole("cell", { name: runId }))
     expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
     await userEvent.click(screen.getByTitle("Submit"))
     expect(container.innerHTML).not.toContain("m-vehicle-map__route-shape")
+  })
+
+  test("clicking a vehicle on the map displays vehicle card", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
+
+    const runId = "clickMe"
+    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    const mockDispatch = jest.fn()
+    render(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByText(runId))
+    expect(screen.getByText("39_X")).toBeInTheDocument()
+    expect(screen.getByText("Forest Hills")).toBeInTheDocument()
+    expect(screen.getByText("Go to Street View")).toBeInTheDocument()
+  })
+
+  test("can close the vehicle card", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
+
+    const runId = "clickMe"
+    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    const mockDispatch = jest.fn()
+    render(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByText(runId))
+    expect(screen.getByText("Forest Hills")).toBeInTheDocument()
+    await userEvent.click(screen.getByTitle("Close"))
+    expect(screen.queryByText("Forest Hills")).not.toBeInTheDocument()
   })
 
   test("on mobile, allows you to toggle to the map view and back again", async () => {
@@ -195,12 +254,12 @@ describe("MapPage", () => {
       screen.getByRole("button", { name: "Show map instead" })
     )
 
-    expect(container.firstChild).toHaveClass("m-search-page--show-map")
+    expect(container.firstChild).toHaveClass("m-map-page--show-map")
 
     await userEvent.click(
       screen.getByRole("button", { name: "Show list instead" })
     )
 
-    expect(container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 })

@@ -55,6 +55,7 @@ export interface Props {
   trainVehicles?: TrainVehicle[]
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
+  children?: JSX.Element | JSX.Element[]
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -508,6 +509,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           <LeafletShape key={shape.id} shape={shape} />
         ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && <Garages />}
+        {props.children}
       </MapContainer>
     </>
   )

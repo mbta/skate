@@ -37,6 +37,7 @@ describe("RouteLadders", () => {
           toggleCrowding={jest.fn()}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
+          routesWithAlerts={[]}
         />
       )
       .toJSON()
@@ -55,6 +56,7 @@ describe("RouteLadders", () => {
         toggleCrowding={jest.fn()}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
+        routesWithAlerts={[]}
       />
     )
 

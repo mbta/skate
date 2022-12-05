@@ -61,7 +61,7 @@ defmodule SkateWeb.VehicleChannelTest do
     test "subscribes to the active vehicle for given run IDs and returns that vehicle", %{
       socket: socket
     } do
-      assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
+      assert Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, []}) == :ok
       assert Realtime.Server.peek_at_vehicles_by_run_ids(["123-4567"]) == [@vehicle]
 
       expected_payload = %{data: @vehicle}
@@ -76,7 +76,7 @@ defmodule SkateWeb.VehicleChannelTest do
       socket: socket
     } do
       ets = GenServer.call(Realtime.Server.default_name(), :ets)
-      assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
+      assert Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, []}) == :ok
 
       {:ok, _, socket} = subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
 

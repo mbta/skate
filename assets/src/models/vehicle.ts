@@ -1,4 +1,5 @@
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Route } from "../schedule"
 import { now } from "../util/dateTime"
 
 export const isVehicle = (
@@ -23,3 +24,8 @@ export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
 
   return timeDiffInMs <= thirtyMinutesInMs
 }
+
+export const directionName = (
+  { directionId }: VehicleOrGhost,
+  route: Route | null
+): string => (route ? route.directionNames[directionId] : "")
