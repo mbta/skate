@@ -3,14 +3,14 @@
 exports[`MapPage renders the empty state 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-search-page m-search-page--show-list "
+    class="c-page m-map-page m-map-page--show-list "
     data-testid="map-page"
   >
     <div
-      class="m-search-page__input-and-results"
+      class="m-map-page__input-and-results"
     >
       <div
-        class="m-search-page__input"
+        class="m-map-page__input"
       >
         <form
           class="m-search-form"
@@ -131,7 +131,7 @@ exports[`MapPage renders the empty state 1`] = `
           </div>
         </form>
         <button
-          class="m-search-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button"
         >
           Show map instead
         </button>
@@ -151,7 +151,7 @@ exports[`MapPage renders the empty state 1`] = `
       </div>
     </div>
     <div
-      class="m-search-page__map"
+      class="m-map-page__map"
     >
       <div
         class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
@@ -315,14 +315,14 @@ exports[`MapPage renders the empty state 1`] = `
 exports[`MapPage renders vehicle data 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-search-page m-search-page--show-list "
+    class="c-page m-map-page m-map-page--show-list "
     data-testid="map-page"
   >
     <div
-      class="m-search-page__input-and-results"
+      class="m-map-page__input-and-results"
     >
       <div
-        class="m-search-page__input"
+        class="m-map-page__input"
       >
         <form
           class="m-search-form"
@@ -443,7 +443,7 @@ exports[`MapPage renders vehicle data 1`] = `
           </div>
         </form>
         <button
-          class="m-search-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button"
         >
           Show map instead
         </button>
@@ -463,7 +463,7 @@ exports[`MapPage renders vehicle data 1`] = `
       </div>
     </div>
     <div
-      class="m-search-page__map"
+      class="m-map-page__map"
     >
       <div
         class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
