@@ -238,6 +238,7 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
             <br></br>
             <a
               target="_blank"
+              rel="noreferrer" /* security issue on _older_ browsers */
               href={streetViewUrl({ latitude: stop.lat, longitude: stop.lon })}
             >
               Go to Street View
