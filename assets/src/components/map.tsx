@@ -38,6 +38,7 @@ import { equalByElements } from "../helpers/array"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
+import { streetViewUrl } from "../util/streetViewUrl"
 
 import garages, { Garage } from "../data/garages"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -232,7 +233,16 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
           center={[stop.lat, stop.lon]}
           radius={3}
         >
-          <Popup className="m-vehicle-map__stop-tooltip">{stop.name}</Popup>
+          <Popup className="m-vehicle-map__stop-tooltip">
+            {stop.name}
+            <br></br>
+            <a
+              target="_blank"
+              href={streetViewUrl({ latitude: stop.lat, longitude: stop.lon })}
+            >
+              Go to Street View
+            </a>
+          </Popup>
         </CircleMarker>
       ))}
     </>
