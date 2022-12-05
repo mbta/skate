@@ -381,6 +381,7 @@ const Autocenterer = ({
 const garageLeafletIcon = Leaflet.divIcon({
   html: garageIcon,
   className: "m-garage-icon",
+  iconAnchor: new Leaflet.Point(10, 25),
 })
 
 const Garage = ({
@@ -402,9 +403,10 @@ const Garage = ({
         interactive={false}
         position={[garage.lat, garage.lon]}
         icon={Leaflet.divIcon({
+          iconAnchor: new Leaflet.Point(-14, 25),
           className: "m-garage-icon__label",
           html: `<svg height="30" width="200">
-                    <text x="22" y="15">${garage.name}</text>
+                    <text y=15>${garage.name}</text>
                   </svg>`,
         })}
       />
