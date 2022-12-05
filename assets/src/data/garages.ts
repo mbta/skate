@@ -6,54 +6,54 @@ export interface Garage {
 
 const albany: Garage = {
   name: "Albany",
-  lat: 42.340616,
-  lon: -71.0671051,
+  lat: 42.34062390934881,
+  lon: -71.06491110199285,
 }
 
 const arborway: Garage = {
   name: "Arborway",
-  lat: 42.3037585,
-  lon: -71.1112559,
+  lat: 42.303766413998346,
+  lon: -71.10907263082902,
 }
 const cabot: Garage = {
   name: "Cabot",
-  lat: 42.3398069,
-  lon: -71.0596828,
+  lat: 42.339806879089416,
+  lon: -71.05748880181748,
 }
 
 const charelstownSomerville: Garage = {
   name: "Charlestown and Somerville",
-  lat: 42.3882827,
-  lon: -71.0734092,
+  lat: 42.38845701224413,
+  lon: -71.07340920181632,
 }
 const fellsway: Garage = {
   name: "Fellsway",
-  lat: 42.4217315,
-  lon: -71.0910619,
+  lat: 42.421755239144375,
+  lon: -71.08885717297913,
 }
 
 const lynn: Garage = {
   name: "Lynn",
-  lat: 42.4553619,
-  lon: -70.9766566,
+  lat: 42.455369794853446,
+  lon: -70.97447333065087,
 }
 
 const northCambridge: Garage = {
   name: "North Cambridge",
-  lat: 42.3970497,
-  lon: -71.1309482,
+  lat: 42.39704175594631,
+  lon: -71.12875420181608,
 }
 
 const quincy: Garage = {
   name: "Quincy",
-  lat: 42.2597519,
-  lon: -71.0113901,
+  lat: 42.25976775999477,
+  lon: -71.0091961019948,
 }
 
 const southampton: Garage = {
   name: "Southampton",
-  lat: 42.3317363,
-  lon: -71.0650967,
+  lat: 42.33174421046923,
+  lon: -71.06510743082846,
 }
 
 export default [
