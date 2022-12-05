@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.m-vehicle-map-state--street-view-enabled + .leaflet-container {
+  cursor: pointer;
+}
+
 .leaflet-right {
   padding-right: env(safe-area-inset-right);
 }

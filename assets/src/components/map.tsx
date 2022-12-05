@@ -12,9 +12,11 @@ import React, {
   ReactElement,
   useContext,
   useEffect,
+  useId,
   useRef,
   useState,
 } from "react"
+import ReactDOM from "react-dom"
 import {
   AttributionControl,
   CircleMarker,
@@ -35,6 +37,7 @@ import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape } from "../schedule"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
+import { streetViewUrl } from "../util/streetViewUrl"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
@@ -55,11 +58,17 @@ export interface Props {
   trainVehicles?: TrainVehicle[]
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
+  allowStreetView?: boolean
   children?: JSX.Element | JSX.Element[]
 }
 
 interface RecenterControlProps extends ControlOptions {
   recenter: () => void
+}
+
+interface StreetViewControlProps extends ControlOptions {
+  streetViewEnabled: boolean
+  setStreetViewEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const defaultCenter: LatLngExpression = {
@@ -259,6 +268,51 @@ export const autoCenter = (
   }
 }
 
+const StreetViewControl = ({
+  streetViewEnabled: streetViewEnabled,
+  setStreetViewEnabled: setStreetViewEnabled,
+}: StreetViewControlProps): JSX.Element | null => {
+  const map = useMap()
+  const portalParent = map
+    .getContainer()
+    .querySelector(".leaflet-control-container")
+  const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
+  const id = useId()
+
+  useEffect(() => {
+    if (!portalParent || !portalElement) {
+      setPortalElement(document.createElement("div"))
+    }
+
+    if (portalParent && portalElement) {
+      portalElement.className =
+        "leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+      portalParent.append(portalElement)
+      Leaflet.DomEvent.disableClickPropagation(portalElement)
+    }
+
+    return () => portalElement?.remove()
+  }, [portalElement, portalParent, setStreetViewEnabled])
+
+  const control = (
+    <>
+      <span id={id}>Street View</span>
+      <div className="form-check form-switch">
+        <input
+          aria-labelledby={id}
+          className="form-check-input"
+          type="checkbox"
+          role="switch"
+          checked={streetViewEnabled}
+          onChange={() => setStreetViewEnabled((enabled) => !enabled)}
+        />
+      </div>
+    </>
+  )
+
+  return portalElement ? ReactDOM.createPortal(control, portalElement) : null
+}
+
 class RecenterControl extends Control {
   private recenter: () => void
   constructor(props: ControlOptions, recenter: () => void) {
@@ -277,24 +331,24 @@ class RecenterControl extends Control {
       this.recenter()
     }
     controlContainer.innerHTML = `
-        <a
-          href="#"
-          title="Recenter Map"
-          role="button"
-          aria-label="Recenter Map"
-        >
-          <svg
-            height="26"
-            viewBox="-5 -5 32 32"
-            width="26"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-              transform="rotate(60, 12, 12)"
-            />
-          </svg>
-        </a>`
+		<a
+		  href="#"
+		  title="Recenter Map"
+		  role="button"
+		  aria-label="Recenter Map"
+		    >
+		    <svg
+			height="26"
+			viewBox="-5 -5 32 32"
+			width="26"
+			xmlns="http://www.w3.org/2000/svg"
+			>
+			<path
+			     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+			     transform="rotate(60, 12, 12)"
+			/>
+		    </svg>
+		</a>`
     return controlContainer
   }
 }
@@ -312,10 +366,12 @@ const EventAdder = ({
   isAutoCentering,
   setShouldAutoCenter,
   setZoomLevel,
+  streetViewMode,
 }: {
   isAutoCentering: MutableRefObject<boolean>
   setShouldAutoCenter: (arg0: boolean) => void
   setZoomLevel: (level: number) => void
+  streetViewMode: boolean
 }): ReactElement => {
   const map = useMap()
   useMapEvents({
@@ -323,7 +379,7 @@ const EventAdder = ({
 
     // `zoomstart` is fired when the map changes zoom levels
     // this can be because of animating the zoom change or user input
-    zoomstart() {
+    zoomstart: () => {
       // But don't disable `shouldAutoCenter` if the zoom was triggered by AutoCenterer.
       if (!isAutoCentering.current) {
         setShouldAutoCenter(false)
@@ -336,16 +392,30 @@ const EventAdder = ({
     // `dragstart` is fired when a user drags the map
     // it is expected that this event is not fired for anything but user input
     // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
-    dragstart() {
+    dragstart: () => {
       setShouldAutoCenter(false)
     },
     // `moveend` is called when the leaflet map has finished animating a pan
-    moveend() {
+    moveend: () => {
       // Wait until the auto centering animation is finished to resume listening for user interaction.
       if (isAutoCentering.current) {
         isAutoCentering.current = false
       }
     },
+
+    ...(streetViewMode
+      ? {
+          click: (e) => {
+            window.open(
+              streetViewUrl({
+                latitude: e.latlng.lat,
+                longitude: e.latlng.lng,
+              }),
+              "_blank"
+            )
+          },
+        }
+      : {}),
   })
   return <></>
 }
@@ -418,8 +488,8 @@ const Garage = ({
             iconAnchor: new Leaflet.Point(-14, 25),
             className: "m-garage-icon__label",
             html: `<svg height="30" width="200">
-                    <text y=15>${garage.name}</text>
-                  </svg>`,
+				    <text y=15>${garage.name}</text>
+				</svg>`,
           })}
         />
       )}
@@ -444,18 +514,23 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const defaultZoom = 13
   const [zoomLevel, setZoomLevel] = useState<number>(defaultZoom)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
+  const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(false)
 
   const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
     Leaflet.latLng(latitude, longitude)
   )
 
-  const autoCenteringClass = shouldAutoCenter
-    ? "m-vehicle-map-state--auto-centering"
-    : ""
+  const stateClasses = [
+    "m-vehicle-map-state",
+    shouldAutoCenter ? "m-vehicle-map-state--auto-centering" : null,
+    streetViewEnabled ? "m-vehicle-map-state--street-view-enabled" : null,
+  ]
+    .filter((c) => c !== null)
+    .join(" ")
 
   return (
     <>
-      <div className={`m-vehicle-map-state ${autoCenteringClass}`} />
+      <div className={stateClasses} />
       <MapContainer
         className="m-vehicle-map"
         id="id-vehicle-map"
@@ -473,12 +548,20 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           isAutoCentering={isAutoCentering}
           setShouldAutoCenter={setShouldAutoCenter}
           setZoomLevel={setZoomLevel}
+          streetViewMode={streetViewEnabled}
         />
         <Autocenterer
           shouldAutoCenter={shouldAutoCenter}
           isAutoCentering={isAutoCentering}
           latLngs={latLngs}
         />
+        {props.allowStreetView && (
+          <StreetViewControl
+            position="topright"
+            streetViewEnabled={streetViewEnabled}
+            setStreetViewEnabled={setStreetViewEnabled}
+          />
+        )}
         <ZoomControl position="topright" />
         <FullscreenControl position="topright" />
         <RecenterControlButton

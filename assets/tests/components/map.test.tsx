@@ -234,6 +234,30 @@ describe("map", () => {
       screen.queryByRole("link", { name: /Go to Street View/ })
     ).not.toBeInTheDocument()
   })
+
+  test("can turn on street view and click on the map", async () => {
+    const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: "Street View" }))
+
+    await userEvent.click(mapRef.current!.getPane("mapPane")!)
+
+    expect(openSpy).toHaveBeenCalled()
+  })
+
+  test("does not show street view when prop is not specified", () => {
+    render(<Map vehicles={[]} />)
+
+    expect(
+      screen.queryByRole("switch", { name: "Street View" })
+    ).not.toBeInTheDocument()
+  })
 })
 
 describe("autoCenter", () => {

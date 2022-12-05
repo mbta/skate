@@ -86,6 +86,16 @@ $z-properties-panel-context: (
 @import "vehicle_map";
 @import "view_header";
 
+// See https://getbootstrap.com/docs/5.2/customize/sass/#importing - import only
+// the parts of Bootstrap that we need
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+@import "../node_modules/bootstrap/scss/forms";
+
 html,
 body,
 main,

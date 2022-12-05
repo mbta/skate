@@ -258,7 +258,7 @@ exports[`MapPage renders the empty state 1`] = `
               class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
             >
               
-        
+		
               <a
                 aria-label="Recenter Map"
                 href="#"
@@ -266,7 +266,7 @@ exports[`MapPage renders the empty state 1`] = `
                 title="Recenter Map"
               >
                 
-          
+		    
                 <svg
                   height="26"
                   viewBox="-5 -5 32 32"
@@ -274,16 +274,16 @@ exports[`MapPage renders the empty state 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   
-            
+			
                   <path
                     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                     transform="rotate(60, 12, 12)"
                   />
                   
-          
+		    
                 </svg>
                 
-        
+		
               </a>
             </div>
           </div>
@@ -303,6 +303,25 @@ exports[`MapPage renders the empty state 1`] = `
                 OpenStreetMap
               </a>
                contributors
+            </div>
+          </div>
+          <div
+            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+          >
+            <span
+              id=":r0:"
+            >
+              Street View
+            </span>
+            <div
+              class="form-check form-switch"
+            >
+              <input
+                aria-labelledby=":r0:"
+                class="form-check-input"
+                role="switch"
+                type="checkbox"
+              />
             </div>
           </div>
         </div>
@@ -631,7 +650,7 @@ exports[`MapPage renders vehicle data 1`] = `
               class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
             >
               
-        
+		
               <a
                 aria-label="Recenter Map"
                 href="#"
@@ -639,7 +658,7 @@ exports[`MapPage renders vehicle data 1`] = `
                 title="Recenter Map"
               >
                 
-          
+		    
                 <svg
                   height="26"
                   viewBox="-5 -5 32 32"
@@ -647,16 +666,16 @@ exports[`MapPage renders vehicle data 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   
-            
+			
                   <path
                     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                     transform="rotate(60, 12, 12)"
                   />
                   
-          
+		    
                 </svg>
                 
-        
+		
               </a>
             </div>
           </div>
@@ -676,6 +695,25 @@ exports[`MapPage renders vehicle data 1`] = `
                 OpenStreetMap
               </a>
                contributors
+            </div>
+          </div>
+          <div
+            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+          >
+            <span
+              id=":r1:"
+            >
+              Street View
+            </span>
+            <div
+              class="form-check form-switch"
+            >
+              <input
+                aria-labelledby=":r1:"
+                class="form-check-input"
+                role="switch"
+                type="checkbox"
+              />
             </div>
           </div>
         </div>
