@@ -223,7 +223,7 @@ describe("map", () => {
     await userEvent.click(stopButton)
 
     expect(
-      screen.getByRole("button", { name: /Go to Street View/ })
+      screen.getByRole("link", { name: /Go to Street View/ })
     ).toBeInTheDocument()
   })
 })
