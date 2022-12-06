@@ -215,12 +215,8 @@ describe("map", () => {
 
     const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
 
-    const stopButton = container.querySelector(".m-vehicle-map__stop")
-    if (!stopButton) {
-      throw new Error("<Map> missing route stop node")
-    }
 
-    await userEvent.click(stopButton)
+    await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
 
     expect(
       screen.getByRole("link", { name: /Go to Street View/ })
