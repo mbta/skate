@@ -73,6 +73,22 @@ const vehicle: Vehicle = vehicleFactory.build({
   crowding: null,
 })
 
+const shape = {
+  id: "shape",
+  points: [
+    { lat: 0, lon: 0 },
+    { lat: 0, lon: 0 },
+  ],
+  stops: [
+    {
+      id: "stop",
+      name: "stop",
+      lat: 0,
+      lon: 0,
+    },
+  ],
+}
+
 jest.mock("userTestGroups", () => ({
   __esModule: true,
   default: jest.fn(() => []),
@@ -107,21 +123,6 @@ describe("map", () => {
   })
 
   test("draws shapes", () => {
-    const shape = {
-      id: "shape",
-      points: [
-        { lat: 0, lon: 0 },
-        { lat: 0, lon: 0 },
-      ],
-      stops: [
-        {
-          id: "stop",
-          name: "stop",
-          lat: 0,
-          lon: 0,
-        },
-      ],
-    }
     const result = render(<Map vehicles={[]} shapes={[shape]} />)
     expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
     expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
@@ -211,22 +212,6 @@ describe("map", () => {
   test("renders street view link if in maps test group", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
-
-    const shape = {
-      id: "shape",
-      points: [
-        { lat: 0, lon: 0 },
-        { lat: 0, lon: 0 },
-      ],
-      stops: [
-        {
-          id: "stop",
-          name: "stop",
-          lat: 0,
-          lon: 0,
-        },
-      ],
-    }
 
     const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
 
