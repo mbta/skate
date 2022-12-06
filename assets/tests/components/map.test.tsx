@@ -127,7 +127,7 @@ describe("map", () => {
     expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
   })
 
-  test("draws garage icons only at zoom levels < 18", async () => {
+  test("doesn't draw garage icons at zoom levels", async () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
@@ -138,14 +138,14 @@ describe("map", () => {
 
     // Manual zoom
     act(() => {
-      mapRef.current!.setZoom(17)
+      mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
     expect(container.innerHTML).toContain("m-garage-icon")
     expect(screen.queryByText("Albany")).toBeNull()
   })
 
-  test("draws garage icons and labels at zoom levels >= 18", async () => {
+  test("draws garage icons only at zoom levels >= 15", async () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
@@ -156,9 +156,24 @@ describe("map", () => {
 
     // Manual zoom
     act(() => {
-      mapRef.current!.setZoom(18)
+      mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
+    expect(container.innerHTML).toContain("m-garage-icon")
+    expect(screen.queryByText("Albany")).toBeNull()
+  })
+
+  test("draws garage icons and labels at zoom levels >= 16", async () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
+
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(16)
+    })
     expect(container.innerHTML).toContain("m-garage-icon")
     expect(screen.getByText("Albany")).toBeInTheDocument()
   })

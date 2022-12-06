@@ -391,29 +391,32 @@ const Garage = ({
 }: {
   garage: Garage
   zoomLevel: number
-}) => (
-  <>
-    <Marker
-      interactive={false}
-      key={garage.name}
-      position={[garage.lat, garage.lon]}
-      icon={garageLeafletIcon}
-    />
-    {zoomLevel >= 18 && (
+}) => {
+  const showLabel = zoomLevel >= 16
+  return (
+    <>
       <Marker
         interactive={false}
+        key={garage.name}
         position={[garage.lat, garage.lon]}
-        icon={Leaflet.divIcon({
-          iconAnchor: new Leaflet.Point(-14, 25),
-          className: "m-garage-icon__label",
-          html: `<svg height="30" width="200">
+        icon={garageLeafletIcon}
+      />
+      {showLabel && (
+        <Marker
+          interactive={false}
+          position={[garage.lat, garage.lon]}
+          icon={Leaflet.divIcon({
+            iconAnchor: new Leaflet.Point(-14, 25),
+            className: "m-garage-icon__label",
+            html: `<svg height="30" width="200">
                     <text y=15>${garage.name}</text>
                   </svg>`,
-        })}
-      />
-    )}
-  </>
-)
+          })}
+        />
+      )}
+    </>
+  )
+}
 
 const Garages = () => {
   const startingZoomLevel = useMap().getZoom()
@@ -421,12 +424,13 @@ const Garages = () => {
   const map = useMapEvent("zoomend", () => {
     setZoomLevel(map.getZoom())
   })
-
+  const showGarages = zoomLevel >= 15
   return (
     <>
-      {garages.map((garage) => (
-        <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
-      ))}
+      {showGarages &&
+        garages.map((garage) => (
+          <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
+        ))}
     </>
   )
 }
