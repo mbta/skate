@@ -215,7 +215,6 @@ describe("map", () => {
 
     const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
 
-
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
 
     expect(
