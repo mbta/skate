@@ -127,7 +127,7 @@ describe("map", () => {
     expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
   })
 
-  test("doesn't draw garage icons at zoom levels", async () => {
+  test("doesn't draw garage icons at zoom levels < 15", async () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
@@ -138,10 +138,10 @@ describe("map", () => {
 
     // Manual zoom
     act(() => {
-      mapRef.current!.setZoom(15)
+      mapRef.current!.setZoom(14)
     })
     await animationFramePromise()
-    expect(container.innerHTML).toContain("m-garage-icon")
+    expect(container.innerHTML).not.toContain("m-garage-icon")
     expect(screen.queryByText("Albany")).toBeNull()
   })
 
@@ -168,12 +168,14 @@ describe("map", () => {
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
-    const { container } = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
-
+    const { container } = render(
+      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
+    )
     // Manual zoom
     act(() => {
       mapRef.current!.setZoom(16)
     })
+
     expect(container.innerHTML).toContain("m-garage-icon")
     expect(screen.getByText("Albany")).toBeInTheDocument()
   })

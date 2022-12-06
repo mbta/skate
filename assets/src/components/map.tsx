@@ -24,7 +24,6 @@ import {
   Popup,
   TileLayer,
   useMap,
-  useMapEvent,
   useMapEvents,
   ZoomControl,
 } from "react-leaflet"
@@ -309,10 +308,13 @@ const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 const EventAdder = ({
   isAutoCentering,
   setShouldAutoCenter,
+  setZoomLevel,
 }: {
   isAutoCentering: MutableRefObject<boolean>
   setShouldAutoCenter: (arg0: boolean) => void
+  setZoomLevel: (level: number) => void
 }): ReactElement => {
+  const map = useMap()
   useMapEvents({
     // If the user drags or zooms, they want manual control of the map.
 
@@ -323,6 +325,10 @@ const EventAdder = ({
       if (!isAutoCentering.current) {
         setShouldAutoCenter(false)
       }
+    },
+
+    zoomend() {
+      setZoomLevel(map.getZoom())
     },
     // `dragstart` is fired when a user drags the map
     // it is expected that this event is not fired for anything but user input
@@ -418,22 +424,13 @@ const Garage = ({
   )
 }
 
-const Garages = () => {
-  const startingZoomLevel = useMap().getZoom()
-  const [zoomLevel, setZoomLevel] = useState(startingZoomLevel)
-  const map = useMapEvent("zoomend", () => {
-    setZoomLevel(map.getZoom())
-  })
-  const showGarages = zoomLevel >= 15
-  return (
-    <>
-      {showGarages &&
-        garages.map((garage) => (
-          <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
-        ))}
-    </>
-  )
-}
+const Garages = ({ zoomLevel }: { zoomLevel: number }) => (
+  <>
+    {garages.map((garage) => (
+      <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
+    ))}
+  </>
+)
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
@@ -441,6 +438,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
+  const defaultZoom = 13
+  const [zoomLevel, setZoomLevel] = useState<number>(defaultZoom)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
   const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
@@ -463,13 +462,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ]}
         zoomControl={false}
         center={defaultCenter}
-        zoom={13}
+        zoom={defaultZoom}
         ref={mapRef}
         attributionControl={false}
       >
         <EventAdder
           isAutoCentering={isAutoCentering}
           setShouldAutoCenter={setShouldAutoCenter}
+          setZoomLevel={setZoomLevel}
         />
         <Autocenterer
           shouldAutoCenter={shouldAutoCenter}
@@ -512,7 +512,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.shapes || []).map((shape) => (
           <LeafletShape key={shape.id} shape={shape} />
         ))}
-        {inTestGroup(MAP_BETA_GROUP_NAME) && <Garages />}
+        {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
+          <Garages zoomLevel={zoomLevel} />
+        )}
         {props.children}
       </MapContainer>
     </>
