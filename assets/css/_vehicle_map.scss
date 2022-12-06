@@ -98,6 +98,8 @@
 .m-garage-icon__label {
   paint-order: stroke;
   stroke: white;
-  font-weight: bold;
-  stroke-width: 4px;
+  stroke-width: 2px;
+  font-family: $font-family;
+  font-weight: 600;
+  color: $color-gray-800;
 }
