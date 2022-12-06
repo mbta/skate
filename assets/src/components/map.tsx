@@ -240,6 +240,8 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
               <>
                 <br></br>
                 <a
+                  role="button"
+                  title="Go to Street View"
                   target="_blank"
                   rel="noreferrer" /* security issue on _older_ browsers */
                   href={streetViewUrl({

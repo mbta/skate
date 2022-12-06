@@ -207,6 +207,32 @@ describe("map", () => {
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
     expect(onClick).not.toHaveBeenCalled()
   })
+
+  test("renders street view link if in maps test group", async () => {
+    const shape = {
+      id: "shape",
+      points: [
+        { lat: 0, lon: 0 },
+        { lat: 0, lon: 0 },
+      ],
+      stops: [
+        {
+          id: "stop",
+          name: "stop",
+          lat: 0,
+          lon: 0,
+        },
+      ],
+    }
+    render(<Map vehicles={[]} shapes={[shape]} />)
+
+    // await userEvent.click(screen.getByRole("button", { name: /Go to Street View/ }))
+    await userEvent.click(
+      screen.getByRole("button", { name: /Go to Street View/ })
+    )
+    expect(screen).toContain("m-vehicle-map__route-shape")
+    expect(screen).toContain("")
+  })
 })
 
 describe("autoCenter", () => {
