@@ -209,6 +209,9 @@ describe("map", () => {
   })
 
   test("renders street view link if in maps test group", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
+
     const shape = {
       id: "shape",
       points: [
@@ -224,14 +227,19 @@ describe("map", () => {
         },
       ],
     }
-    render(<Map vehicles={[]} shapes={[shape]} />)
 
-    // await userEvent.click(screen.getByRole("button", { name: /Go to Street View/ }))
-    await userEvent.click(
+    const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
+
+    const stopButton = container.querySelector(".m-vehicle-map__stop")
+    if (!stopButton) {
+      throw new Error("<Map> missing route stop node")
+    }
+
+    await userEvent.click(stopButton)
+
+    expect(
       screen.getByRole("button", { name: /Go to Street View/ })
-    )
-    expect(screen).toContain("m-vehicle-map__route-shape")
-    expect(screen).toContain("")
+    ).toBeInTheDocument()
   })
 })
 
