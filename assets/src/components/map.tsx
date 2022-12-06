@@ -399,7 +399,7 @@ const Garage = ({
       position={[garage.lat, garage.lon]}
       icon={garageLeafletIcon}
     />
-    {zoomLevel >= 16 && (
+    {zoomLevel >= 18 && (
       <Marker
         interactive={false}
         position={[garage.lat, garage.lon]}
