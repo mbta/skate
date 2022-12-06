@@ -38,8 +38,6 @@ import { equalByElements } from "../helpers/array"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
-import { streetViewUrl } from "../util/streetViewUrl"
-import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userTestGroups"
 import StreetViewButton from "./streetViewButton"
 
 import garages, { Garage } from "../data/garages"
