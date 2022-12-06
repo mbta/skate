@@ -5,6 +5,7 @@ config :skate,
   geonames_token: {:system, "GEONAMES_TOKEN"},
   redirect_http?: true,
   record_appcues: true,
+  record_fullstory: true,
   record_sentry: true,
   static_href: {SkateWeb.Router.Helpers, :static_url}
 

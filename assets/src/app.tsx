@@ -23,12 +23,15 @@ import AppStateWrapper from "./components/appStateWrapper"
 import clarityInit from "./helpers/clarityInit"
 import clarityIdentify from "./helpers/clarityIdentify"
 import { tagManagerIdentify } from "./helpers/googleTagManager"
+import { fullStoryIdentify } from "./helpers/fullStory"
 
 const username = document
   .querySelector("meta[name=username]")
   ?.getAttribute("content")
 
 sentryInit(window.sentry, username || undefined)
+
+fullStoryIdentify(username)
 
 const clarityTag = document
   .querySelector("meta[name=clarity-tag]")
