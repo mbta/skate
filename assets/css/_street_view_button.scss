@@ -15,3 +15,10 @@
   text-decoration: none;
   line-height: 1;
 }
+
+/* Override `.leaflet-container a` */
+// REVIEWERS: Please Pick One
+.leaflet-container .m-street-view-button,
+:root .m-street-view-button {
+  color: white;
+}
