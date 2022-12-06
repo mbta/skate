@@ -221,6 +221,19 @@ describe("map", () => {
       screen.getByRole("link", { name: /Go to Street View/ })
     ).toBeInTheDocument()
   })
+
+  test("does not render street view link if not in maps test group", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(getTestGroups as jest.Mock).mockReturnValue([])
+
+    const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
+
+    await userEvent.click(container.querySelector("e-map__stop")!)
+
+    expect(
+      screen.queryByRole("link", { name: /Go to Street View/ })
+    ).not.toBeInTheDocument()
+  })
 })
 
 describe("autoCenter", () => {
