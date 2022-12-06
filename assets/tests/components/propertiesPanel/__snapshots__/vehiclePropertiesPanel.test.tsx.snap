@@ -272,7 +272,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator"
+            className="m-properties-list__property m-properties-list__property--operator fs-mask"
           >
             <td
               className="m-properties-list__property-label"
@@ -624,7 +624,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator"
+            className="m-properties-list__property m-properties-list__property--operator fs-mask"
           >
             <td
               className="m-properties-list__property-label"
@@ -847,7 +847,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
           </td>
         </tr>
         <tr
-          className="m-properties-list__property m-properties-list__property--operator"
+          className="m-properties-list__property m-properties-list__property--operator fs-mask"
         >
           <td
             className="m-properties-list__property-label"
@@ -1297,7 +1297,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator"
+            className="m-properties-list__property m-properties-list__property--operator fs-mask"
           >
             <td
               className="m-properties-list__property-label"
@@ -1649,7 +1649,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator"
+            className="m-properties-list__property m-properties-list__property--operator fs-mask"
           >
             <td
               className="m-properties-list__property-label"
@@ -2009,7 +2009,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator"
+            className="m-properties-list__property m-properties-list__property--operator fs-mask"
           >
             <td
               className="m-properties-list__property-label"
@@ -2367,7 +2367,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator"
+            className="m-properties-list__property m-properties-list__property--operator fs-mask"
           >
             <td
               className="m-properties-list__property-label"

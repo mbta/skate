@@ -218,6 +218,16 @@ describe("vehicleProperties", () => {
       "SMITH #1234"
     )
   })
+
+  test("operator information is marked sensitive", () => {
+    const vehicle = vehicleFactory.build()
+
+    const properties = vehicleProperties(vehicle)
+
+    expect(
+      properties.find((prop) => prop.label === "Operator")!.sensitive
+    ).toBeTruthy()
+  })
 })
 
 describe("Highlighted", () => {

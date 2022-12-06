@@ -61,7 +61,11 @@ exports[`ladder highlights a selected vehicle 1`] = `
           Operator:
         </b>
          
-        NORA JONES #op2
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op2
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -137,7 +141,11 @@ exports[`ladder highlights a selected vehicle 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle selected "
@@ -337,7 +345,11 @@ exports[`ladder renders a ghost bus 1`] = `
           Operator:
         </b>
          
-        N/A
+        <span
+          className="fs-mask"
+        >
+          N/A
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -590,7 +602,11 @@ exports[`ladder renders a ladder 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -666,7 +682,11 @@ exports[`ladder renders a ladder 1`] = `
           Operator:
         </b>
          
-        NORA JONES #op2
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op2
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -742,7 +762,11 @@ exports[`ladder renders a ladder 1`] = `
           Operator:
         </b>
          
-        SHENGMMO XI #op3
+        <span
+          className="fs-mask"
+        >
+          SHENGMMO XI #op3
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -941,7 +965,11 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1050,7 +1078,11 @@ exports[`ladder renders a laying over vehicle 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1256,7 +1288,11 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1462,7 +1498,11 @@ exports[`ladder renders a reversed ladder 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1662,7 +1702,11 @@ exports[`ladder renders an off-course vehicle 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1870,7 +1914,11 @@ exports[`ladder renders an overload vehicle 1`] = `
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -2076,7 +2124,11 @@ exports[`ladder shows schedule line in the other direction 1`] = `
           Operator:
         </b>
          
-        NORA JONES #op2
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op2
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -2290,7 +2342,11 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
           Operator:
         </b>
          
-        N/A
+        <span
+          className="fs-mask"
+        >
+          N/A
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -2413,7 +2469,11 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
           Operator:
         </b>
          
-        NORA JONES #op
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -2519,7 +2579,11 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
           Operator:
         </b>
          
-        NORA JONES #op
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op
+        </span>
       </div>
       <g
         className="m-ladder__vehicle  "

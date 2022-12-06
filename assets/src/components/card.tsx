@@ -99,7 +99,7 @@ export const CardProperties: React.VFC<CardPropertiesProps> = ({
               className={
                 "m-card__properties-value" +
                 (property.sensitive
-                  ? " m-card__properties-value--sensitive"
+                  ? " m-card__properties-value--sensitive fs-mask"
                   : "")
               }
             >

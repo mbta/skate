@@ -580,7 +580,7 @@ Array [
                 </td>
               </tr>
               <tr
-                className="m-properties-list__property m-properties-list__property--operator"
+                className="m-properties-list__property m-properties-list__property--operator fs-mask"
               >
                 <td
                   className="m-properties-list__property-label"
