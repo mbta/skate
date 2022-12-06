@@ -40,6 +40,7 @@ import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
 import { streetViewUrl } from "../util/streetViewUrl"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userTestGroups"
+import StreetViewButton from "./streetViewButton"
 
 import garages, { Garage } from "../data/garages"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -237,21 +238,10 @@ const LeafletShape = ({ shape }: { shape: Shape }) => {
           <Popup className="m-vehicle-map__stop-tooltip">
             {stop.name}
             {inTestGroup(MAP_BETA_GROUP_NAME) && (
-              <>
-                <br></br>
-                <a
-                  role="button"
-                  title="Go to Street View"
-                  target="_blank"
-                  rel="noreferrer" /* security issue on _older_ browsers */
-                  href={streetViewUrl({
-                    latitude: stop.lat,
-                    longitude: stop.lon,
-                  })}
-                >
-                  Go to Street View
-                </a>
-              </>
+              <StreetViewButton
+                latitude={stop.lat}
+                longitude={stop.lon}
+              ></StreetViewButton>
             )}
           </Popup>
         </CircleMarker>

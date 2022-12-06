@@ -1,7 +1,10 @@
 .m-street-view-button {
   background-color: black;
-  color: white;
+  color: white !important;
   padding: 0.25rem;
   border-radius: 0.5rem;
   text-decoration: none;
+  display: block;
+  line-height: 1;
+  width: fit-content;
 }

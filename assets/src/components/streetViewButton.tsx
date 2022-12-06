@@ -7,6 +7,8 @@ const StreetViewButton = (position: {
   bearing?: number
 }): ReactElement<HTMLElement> => (
   <a
+    role="button"
+    title="Go to Street View"
     className="m-street-view-button"
     href={streetViewUrl(position)}
     target="_blank"
