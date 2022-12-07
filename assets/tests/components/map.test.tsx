@@ -73,6 +73,22 @@ const vehicle: Vehicle = vehicleFactory.build({
   crowding: null,
 })
 
+const shape = {
+  id: "shape",
+  points: [
+    { lat: 0, lon: 0 },
+    { lat: 0, lon: 0 },
+  ],
+  stops: [
+    {
+      id: "stop",
+      name: "stop",
+      lat: 0,
+      lon: 0,
+    },
+  ],
+}
+
 jest.mock("userTestGroups", () => ({
   __esModule: true,
   default: jest.fn(() => []),
@@ -107,21 +123,6 @@ describe("map", () => {
   })
 
   test("draws shapes", () => {
-    const shape = {
-      id: "shape",
-      points: [
-        { lat: 0, lon: 0 },
-        { lat: 0, lon: 0 },
-      ],
-      stops: [
-        {
-          id: "stop",
-          name: "stop",
-          lat: 0,
-          lon: 0,
-        },
-      ],
-    }
     const result = render(<Map vehicles={[]} shapes={[shape]} />)
     expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
     expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
@@ -206,6 +207,32 @@ describe("map", () => {
     )
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
     expect(onClick).not.toHaveBeenCalled()
+  })
+
+  test("renders street view link if in maps test group", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
+
+    const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
+
+    await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
+
+    expect(
+      screen.getByRole("link", { name: /Go to Street View/ })
+    ).toBeInTheDocument()
+  })
+
+  test("does not render street view link if not in maps test group", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(getTestGroups as jest.Mock).mockReturnValue([])
+
+    const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
+
+    await userEvent.click(container.querySelector("e-map__stop")!)
+
+    expect(
+      screen.queryByRole("link", { name: /Go to Street View/ })
+    ).not.toBeInTheDocument()
   })
 })
 
