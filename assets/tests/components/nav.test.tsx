@@ -6,20 +6,21 @@ import "@testing-library/jest-dom"
 import Nav from "../../src/components/nav"
 import { OpenView } from "../../src/state"
 import useDeviceType from "../../src/hooks/useDeviceType"
-import appData from "../../src/appData"
-import { MAP_BETA_GROUP_NAME } from "../../src/userTestGroups"
+import getTestGroups from "../../src/userTestGroups"
+import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/useDeviceType", () => ({
   __esModule: true,
   default: jest.fn(() => "desktop"),
 }))
 
-jest.mock("appData")
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
 
 beforeEach(() => {
-  ;(appData as jest.Mock).mockImplementation(() => ({
-    userTestGroups: JSON.stringify([]),
-  }))
+  ;(getTestGroups as jest.Mock).mockReturnValue([])
 })
 
 describe("Nav", () => {
@@ -71,9 +72,7 @@ describe("Nav", () => {
   })
 
   test("renders nav item with title 'Map' if in map test group", () => {
-    ;(appData as jest.Mock).mockImplementation(() => ({
-      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
-    }))
+    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     render(
       <BrowserRouter>

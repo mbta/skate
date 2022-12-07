@@ -10,8 +10,8 @@ import { initialState, State } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import vehicle from "../factories/vehicle"
-import appData from "../../src/appData"
-import { MAP_BETA_GROUP_NAME } from "../../src/userTestGroups"
+import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
+import getTestGroups from "../../src/userTestGroups"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -22,8 +22,10 @@ jest.mock("../../src/hooks/useVehicles", () => ({
   default: jest.fn(),
 }))
 
-jest.mock("appData")
-
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
 describe("App", () => {
   test("renders", () => {
     const result = render(<App />)
@@ -100,9 +102,7 @@ describe("App", () => {
   })
 
   test("renders new map page for users in map test group", () => {
-    ;(appData as jest.Mock).mockImplementationOnce(() => ({
-      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
-    }))
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
     window.history.pushState({}, "", "/map")
 
     render(<App />)

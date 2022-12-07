@@ -94,3 +94,12 @@
     }
   }
 }
+
+.m-garage-icon__label {
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 2px;
+  font-family: $font-family;
+  font-weight: 600;
+  color: $color-gray-800;
+}

@@ -16,8 +16,8 @@ import {
 import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
-import appData from "../../../src/appData"
-import { MAP_BETA_GROUP_NAME } from "../../../src/userTestGroups"
+import getTestGroups from "../../../src/userTestGroups"
+import { MAP_BETA_GROUP_NAME } from "../../../src/userInTestGroup"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -33,7 +33,10 @@ jest.mock("../../../src/helpers/googleTagManager", () => ({
   tagManagerEvent: jest.fn(),
 }))
 
-jest.mock("appData")
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
 
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
@@ -82,9 +85,7 @@ describe("LeftNav", () => {
   })
 
   test("renders nav item with title 'Map' if in map test group", () => {
-    ;(appData as jest.Mock).mockImplementationOnce(() => ({
-      userTestGroups: JSON.stringify([MAP_BETA_GROUP_NAME]),
-    }))
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
 
     render(
       <BrowserRouter>

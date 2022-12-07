@@ -39,6 +39,12 @@ import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
 
+import garages, { Garage } from "../data/garages"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import garageIcon from "../../static/images/icon-bus-garage.svg"
+import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
+
 export interface Props {
   vehicles: Vehicle[]
   shapes?: Shape[]
@@ -302,10 +308,13 @@ const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 const EventAdder = ({
   isAutoCentering,
   setShouldAutoCenter,
+  setZoomLevel,
 }: {
   isAutoCentering: MutableRefObject<boolean>
   setShouldAutoCenter: (arg0: boolean) => void
+  setZoomLevel: (level: number) => void
 }): ReactElement => {
+  const map = useMap()
   useMapEvents({
     // If the user drags or zooms, they want manual control of the map.
 
@@ -316,6 +325,10 @@ const EventAdder = ({
       if (!isAutoCentering.current) {
         setShouldAutoCenter(false)
       }
+    },
+
+    zoomend() {
+      setZoomLevel(map.getZoom())
     },
     // `dragstart` is fired when a user drags the map
     // it is expected that this event is not fired for anything but user input
@@ -372,12 +385,61 @@ const Autocenterer = ({
   return <></>
 }
 
+const garageLeafletIcon = Leaflet.divIcon({
+  html: garageIcon,
+  className: "m-garage-icon",
+  iconAnchor: new Leaflet.Point(10, 25),
+})
+
+const Garage = ({
+  garage,
+  zoomLevel,
+}: {
+  garage: Garage
+  zoomLevel: number
+}) => {
+  const showLabel = zoomLevel >= 16
+  return (
+    <>
+      <Marker
+        interactive={false}
+        key={garage.name}
+        position={[garage.lat, garage.lon]}
+        icon={garageLeafletIcon}
+      />
+      {showLabel && (
+        <Marker
+          interactive={false}
+          position={[garage.lat, garage.lon]}
+          icon={Leaflet.divIcon({
+            iconAnchor: new Leaflet.Point(-14, 25),
+            className: "m-garage-icon__label",
+            html: `<svg height="30" width="200">
+                    <text y=15>${garage.name}</text>
+                  </svg>`,
+          })}
+        />
+      )}
+    </>
+  )
+}
+
+const Garages = ({ zoomLevel }: { zoomLevel: number }) => (
+  <>
+    {garages.map((garage) => (
+      <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
+    ))}
+  </>
+)
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
+  const defaultZoom = 13
+  const [zoomLevel, setZoomLevel] = useState<number>(defaultZoom)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
   const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
@@ -400,13 +462,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ]}
         zoomControl={false}
         center={defaultCenter}
-        zoom={13}
+        zoom={defaultZoom}
         ref={mapRef}
         attributionControl={false}
       >
         <EventAdder
           isAutoCentering={isAutoCentering}
           setShouldAutoCenter={setShouldAutoCenter}
+          setZoomLevel={setZoomLevel}
         />
         <Autocenterer
           shouldAutoCenter={shouldAutoCenter}
@@ -449,6 +512,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.shapes || []).map((shape) => (
           <LeafletShape key={shape.id} shape={shape} />
         ))}
+        {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
+          <Garages zoomLevel={zoomLevel} />
+        )}
         {props.children}
       </MapContainer>
     </>

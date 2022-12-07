@@ -4,8 +4,6 @@ import appData from "./appData"
 const TestGroups = array(string())
 type TestGroups = Infer<typeof TestGroups>
 
-export const MAP_BETA_GROUP_NAME = "map-beta"
-
 const getTestGroups = (): string[] => {
   const testGroupsJson = appData()?.userTestGroups
 
@@ -18,8 +16,4 @@ const getTestGroups = (): string[] => {
   return testGroups
 }
 
-const inTestGroup = (key: string): boolean => {
-  return getTestGroups().includes(key)
-}
-
-export default inTestGroup
+export default getTestGroups
