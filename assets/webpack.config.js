@@ -74,7 +74,6 @@ module.exports = (env, options) => {
       extensions: [".ts", ".tsx", ".js", ".jsx"],
       modules: ["deps", "node_modules"],
     },
-    plugins: plugins
-,
+    plugins: plugins,
   })
 }
