@@ -12,10 +12,7 @@ defmodule SkateWeb.AlertsChannel do
 
   @impl Phoenix.Channel
   def handle_info({:new_realtime_data, lookup_args}, socket) do
-    valid_token_fn =
-      Application.get_env(:skate, :valid_token_fn, &SkateWeb.ChannelAuth.valid_token?/1)
-
-    if valid_token_fn.(socket) do
+    if SkateWeb.ChannelAuth.valid_token?(socket) do
       data = Server.lookup(lookup_args)
       :ok = push(socket, "alerts", %{data: data})
       {:noreply, socket}
