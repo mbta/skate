@@ -7,8 +7,12 @@ defmodule SkateWeb.VehiclesChannel do
 
   @impl Phoenix.Channel
   def join("vehicles:shuttle:all", _message, socket) do
-    shuttles = Duration.log_duration(Server, :subscribe_to_all_shuttles, [])
-    {:ok, %{data: shuttles}, socket}
+    if SkateWeb.ChannelAuth.valid_token?(socket) do
+      shuttles = Duration.log_duration(Server, :subscribe_to_all_shuttles, [])
+      {:ok, %{data: shuttles}, socket}
+    else
+      {:error, "error"}
+    end
   end
 
   def join("vehicles:route:" <> route_id, _message, socket) do
