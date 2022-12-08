@@ -57,7 +57,7 @@
     "@types/react-leaflet": "^2.8.2",
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
-    "@typescript-eslint/parser": "^5.33.1",
+    "@typescript-eslint/parser": "^5.46.0",
     "babel-jest": "^29.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
