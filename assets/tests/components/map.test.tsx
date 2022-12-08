@@ -222,7 +222,7 @@ describe("map", () => {
     ).toBeInTheDocument()
   })
 
-  test("does not render street view link if not in maps test group", async () => {
+  test("does not render street view link from stop if not in maps test group", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(getTestGroups as jest.Mock).mockReturnValue([])
 
@@ -250,11 +250,9 @@ describe("map", () => {
 
     expect(openSpy).toHaveBeenCalled()
 
-    const switchInput = screen.getByRole("switch", {
-      name: "Street View",
-    }) as HTMLInputElement
-
-    expect(switchInput.checked).toBeFalsy()
+    expect(
+      screen.queryByRole("switch", { name: "Street View", checked: false })
+    ).toBeInTheDocument()
   })
 
   test("clicking on the map with street view off doesn't open link", async () => {
@@ -282,11 +280,9 @@ describe("map", () => {
 
     await userEvent.keyboard("{Escape}")
 
-    const switchInput = screen.getByRole("switch", {
-      name: "Street View",
-    }) as HTMLInputElement
-
-    expect(switchInput.checked).toBeFalsy()
+    expect(
+      screen.queryByRole("switch", { name: "Street View", checked: false })
+    ).toBeInTheDocument()
   })
 
   test("does not show street view when prop is not specified", () => {
