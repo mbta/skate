@@ -9,6 +9,7 @@ import useTrainVehicles from "../hooks/useTrainVehicles"
 import { isASubwayRoute } from "../models/subwayRoute"
 import { RunId, TrainVehicle, Vehicle } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
+import { selectVehicle } from "../state"
 import Map from "./map"
 import ShuttlePicker from "./shuttlePicker"
 
@@ -31,7 +32,7 @@ export const allTrainVehicles = (
 ): TrainVehicle[] => flatten(Object.values(trainVehiclesByRouteId))
 
 const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
-  const [state] = useContext(StateDispatchContext)
+  const [state, dispatch] = useContext(StateDispatchContext)
   const { selectedShuttleRouteIds, selectedShuttleRunIds, mobileMenuIsOpen } =
     state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
@@ -62,6 +63,7 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
           vehicles={selectedShuttles}
           shapes={shapes}
           trainVehicles={trainVehicles}
+          onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
         />
       </div>
     </div>
