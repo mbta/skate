@@ -80,6 +80,10 @@ defmodule SkateWeb.VehiclesChannelTest do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, VehiclesChannel, "rooms:1")
     end
+
+    test "returns an error when trying to join with expired token", %{} do
+      assert false
+    end
   end
 
   describe "handle_info/2" do
