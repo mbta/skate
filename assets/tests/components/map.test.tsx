@@ -251,6 +251,20 @@ describe("map", () => {
     expect(openSpy).toHaveBeenCalled()
   })
 
+  test("clicking on the map with street view off doesn't open link", async () => {
+    const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(mapRef.current!.getPane("mapPane")!)
+
+    expect(openSpy).not.toHaveBeenCalled()
+  })
+
   test("pressing escape leaves street view mode", async () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
