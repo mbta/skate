@@ -38,5 +38,8 @@ defmodule SkateWeb.ChannelAuthTest do
 
       assert ChannelAuth.valid_token?(socket) == false
     end
+
+    # test "when token expires, user should not be able to see data from skate", do end
+    # test "when token expires, user should not be able to subscribe to more topics", do end
   end
 end
