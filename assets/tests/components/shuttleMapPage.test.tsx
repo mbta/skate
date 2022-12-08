@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import ShuttleMapPage, {
   allTrainVehicles,
@@ -166,7 +166,7 @@ describe("Shuttle Map Page", () => {
       { ...shuttle, label: label },
     ])
     const mockDispatch = jest.fn()
-    const result = render(
+    render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
         dispatch={mockDispatch}
@@ -177,7 +177,7 @@ describe("Shuttle Map Page", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByText(label))
+    await userEvent.click(screen.getByText(label))
     expect(mockDispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: "SELECT_VEHICLE" })
     )
