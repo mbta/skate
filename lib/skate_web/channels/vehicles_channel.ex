@@ -6,29 +6,37 @@ defmodule SkateWeb.VehiclesChannel do
   alias Util.Duration
 
   @impl Phoenix.Channel
-  def join("vehicles:shuttle:all", _message, socket) do
+  def join(topic, message, socket) do
+    if SkateWeb.ChannelAuth.valid_token?(socket) do
+      join_authenticated(topic, message, socket)
+    else
+      {:error, :not_authenticated}
+    end
+  end
+
+  def join_authenticated("vehicles:shuttle:all", _message, socket) do
     shuttles = Duration.log_duration(Server, :subscribe_to_all_shuttles, [])
     {:ok, %{data: shuttles}, socket}
   end
 
-  def join("vehicles:route:" <> route_id, _message, socket) do
+  def join_authenticated("vehicles:route:" <> route_id, _message, socket) do
     vehicles_and_ghosts = Duration.log_duration(Server, :subscribe_to_route, [route_id])
     {:ok, %{data: vehicles_and_ghosts}, socket}
   end
 
-  def join("vehicles:run_ids:" <> run_ids, _message, socket) do
+  def join_authenticated("vehicles:run_ids:" <> run_ids, _message, socket) do
     run_ids = String.split(run_ids, ",")
     vehicles_and_ghosts = Duration.log_duration(Server, :subscribe_to_run_ids, [run_ids])
     {:ok, %{data: vehicles_and_ghosts}, socket}
   end
 
-  def join("vehicles:block_ids:" <> block_ids, _message, socket) do
+  def join_authenticated("vehicles:block_ids:" <> block_ids, _message, socket) do
     block_ids = String.split(block_ids, ",")
     vehicles_and_ghosts = Duration.log_duration(Server, :subscribe_to_block_ids, [block_ids])
     {:ok, %{data: vehicles_and_ghosts}, socket}
   end
 
-  def join(
+  def join_authenticated(
         "vehicles:search:" <> search_params,
         _message,
         socket
@@ -66,7 +74,7 @@ defmodule SkateWeb.VehiclesChannel do
     {:ok, %{data: vehicles}, socket}
   end
 
-  def join(topic, _message, _socket) do
+  def join_authenticated(topic, _message, _socket) do
     {:error, %{message: "no such topic \"#{topic}\""}}
   end
 
