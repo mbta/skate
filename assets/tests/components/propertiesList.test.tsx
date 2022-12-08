@@ -226,7 +226,7 @@ describe("vehicleProperties", () => {
 
     expect(
       properties.find((prop) => prop.label === "Operator")!.sensitive
-    ).toBeTruthy()
+    ).toBe(true)
   })
 })
 
