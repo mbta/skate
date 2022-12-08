@@ -160,9 +160,9 @@ defmodule SkateWeb.VehiclesChannelTest do
       ets: ets
     } do
       assert Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, []}) == :ok
-      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
-
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       {:stop, :normal, _socket} =
         VehiclesChannel.handle_info(
