@@ -1,5 +1,7 @@
 defmodule SkateWeb.ChannelAuthTest do
   use SkateWeb.ChannelCase
+  import Test.Support.Helpers
+
 
   alias SkateWeb.{AuthManager, ChannelAuth, UserSocket}
 
@@ -39,6 +41,18 @@ defmodule SkateWeb.ChannelAuthTest do
       assert ChannelAuth.valid_token?(socket) == false
     end
 
+    test "uses :valid_token_fn when present in application env", %{ socket: socket } do
+      assert ChannelAuth.valid_token?(socket) == false
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
+      assert ChannelAuth.valid_token?(socket) == true
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+      assert ChannelAuth.valid_token?(socket) == false
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
+      assert ChannelAuth.valid_token?(socket) == true
+    end
     # test "when token expires, user should not be able to see data from skate", do end
     # test "when token expires, user should not be able to subscribe to more topics", do end
   end
