@@ -13,6 +13,7 @@ import { ByRouteId, Shape } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
+import userEvent from "@testing-library/user-event"
 
 jest
   .spyOn(dateTime, "now")
@@ -157,6 +158,29 @@ describe("Shuttle Map Page", () => {
       </StateDispatchProvider>
     )
     expect(result.asFragment()).toMatchSnapshot()
+  })
+
+  test("clicking a shuttle on the map selects it", async () => {
+    const label = "clickMe"
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [
+      { ...shuttle, label: label },
+    ])
+    const mockDispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={mockDispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(result.getByText(label))
+    expect(mockDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "SELECT_VEHICLE" })
+    )
   })
 })
 
