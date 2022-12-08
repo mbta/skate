@@ -160,7 +160,7 @@ describe("Shuttle Map Page", () => {
     expect(result.asFragment()).toMatchSnapshot()
   })
 
-  test("clicking a shuttle on the map selects it", async () => {
+  test("clicking a shuttle on the map dispatches select event", async () => {
     const label = "clickMe"
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [
       { ...shuttle, label: label },
