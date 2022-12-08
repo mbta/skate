@@ -249,6 +249,12 @@ describe("map", () => {
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
 
     expect(openSpy).toHaveBeenCalled()
+
+    const switchInput = screen.getByRole("switch", {
+      name: "Street View",
+    }) as HTMLInputElement
+
+    expect(switchInput.checked).toBeFalsy()
   })
 
   test("clicking on the map with street view off doesn't open link", async () => {

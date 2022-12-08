@@ -415,6 +415,7 @@ const EventAdder = ({
               }),
               "_blank"
             )
+            setStreetViewMode(false)
           },
 
           keydown: (e) => {
