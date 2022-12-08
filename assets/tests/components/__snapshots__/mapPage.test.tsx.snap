@@ -309,7 +309,7 @@ exports[`MapPage renders the empty state 1`] = `
             class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
           >
             <label
-              for=":r0:"
+              for="street-view-toggle-:r0:"
             >
               Street View
             </label>
@@ -318,7 +318,7 @@ exports[`MapPage renders the empty state 1`] = `
             >
               <input
                 class="form-check-input"
-                id=":r0:"
+                id="street-view-toggle-:r0:"
                 role="switch"
                 type="checkbox"
               />
@@ -701,7 +701,7 @@ exports[`MapPage renders vehicle data 1`] = `
             class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
           >
             <label
-              for=":r1:"
+              for="street-view-toggle-:r1:"
             >
               Street View
             </label>
@@ -710,7 +710,7 @@ exports[`MapPage renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id=":r1:"
+                id="street-view-toggle-:r1:"
                 role="switch"
                 type="checkbox"
               />

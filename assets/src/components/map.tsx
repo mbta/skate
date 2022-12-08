@@ -277,7 +277,7 @@ const StreetViewControl = ({
     .getContainer()
     .querySelector(".leaflet-control-container")
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
-  const id = useId()
+  const id = "street-view-toggle-" + useId()
 
   useEffect(() => {
     if (!portalParent || !portalElement) {
