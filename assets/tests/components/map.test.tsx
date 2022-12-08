@@ -209,7 +209,7 @@ describe("map", () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
-  test("renders street view link if in maps test group", async () => {
+  test("renders street view link from stop if in maps test group", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
@@ -249,6 +249,24 @@ describe("map", () => {
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
 
     expect(openSpy).toHaveBeenCalled()
+  })
+
+  test("pressing escape leaves street view mode", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: "Street View" }))
+
+    await userEvent.keyboard("{Escape}")
+
+    const switchInput = screen.getByRole("switch", {
+      name: "Street View",
+    }) as HTMLInputElement
+
+    expect(switchInput.checked).toBeFalsy()
   })
 
   test("does not show street view when prop is not specified", () => {

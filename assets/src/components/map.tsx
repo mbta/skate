@@ -367,11 +367,13 @@ const EventAdder = ({
   setShouldAutoCenter,
   setZoomLevel,
   streetViewMode,
+  setStreetViewMode,
 }: {
   isAutoCentering: MutableRefObject<boolean>
   setShouldAutoCenter: (arg0: boolean) => void
   setZoomLevel: (level: number) => void
   streetViewMode: boolean
+  setStreetViewMode: React.Dispatch<React.SetStateAction<boolean>>
 }): ReactElement => {
   const map = useMap()
   useMapEvents({
@@ -413,6 +415,12 @@ const EventAdder = ({
               }),
               "_blank"
             )
+          },
+
+          keydown: (e) => {
+            if (e.originalEvent.key === "Escape") {
+              setStreetViewMode(false)
+            }
           },
         }
       : {}),
@@ -549,6 +557,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           setShouldAutoCenter={setShouldAutoCenter}
           setZoomLevel={setZoomLevel}
           streetViewMode={streetViewEnabled}
+          setStreetViewMode={setStreetViewEnabled}
         />
         <Autocenterer
           shouldAutoCenter={shouldAutoCenter}
