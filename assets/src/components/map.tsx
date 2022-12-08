@@ -388,7 +388,7 @@ const EventAdder = ({
       }
     },
 
-    zoomend() {
+    zoomend: () => {
       setZoomLevel(map.getZoom())
     },
     // `dragstart` is fired when a user drags the map
