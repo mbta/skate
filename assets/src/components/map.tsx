@@ -296,10 +296,10 @@ const StreetViewControl = ({
 
   const control = (
     <>
-      <span id={id}>Street View</span>
+      <label htmlFor={id}>Street View</label>
       <div className="form-check form-switch">
         <input
-          aria-labelledby={id}
+          id={id}
           className="form-check-input"
           type="checkbox"
           role="switch"

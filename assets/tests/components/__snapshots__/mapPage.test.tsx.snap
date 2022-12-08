@@ -308,17 +308,17 @@ exports[`MapPage renders the empty state 1`] = `
           <div
             class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
           >
-            <span
-              id=":r0:"
+            <label
+              for=":r0:"
             >
               Street View
-            </span>
+            </label>
             <div
               class="form-check form-switch"
             >
               <input
-                aria-labelledby=":r0:"
                 class="form-check-input"
+                id=":r0:"
                 role="switch"
                 type="checkbox"
               />
@@ -700,17 +700,17 @@ exports[`MapPage renders vehicle data 1`] = `
           <div
             class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
           >
-            <span
-              id=":r1:"
+            <label
+              for=":r1:"
             >
               Street View
-            </span>
+            </label>
             <div
               class="form-check form-switch"
             >
               <input
-                aria-labelledby=":r1:"
                 class="form-check-input"
+                id=":r1:"
                 role="switch"
                 type="checkbox"
               />
