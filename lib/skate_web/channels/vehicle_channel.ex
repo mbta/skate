@@ -1,5 +1,6 @@
 defmodule SkateWeb.VehicleChannel do
   use SkateWeb, :channel
+  use SkateWeb.AuthenticatedChannel
 
   alias Realtime.Server
 
@@ -10,8 +11,6 @@ defmodule SkateWeb.VehicleChannel do
 
     {:noreply, socket}
   end
-
-  use SkateWeb.AuthenticatedChannel
 
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("vehicle:run_ids:" <> run_ids, _message, socket) do

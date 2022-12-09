@@ -1,10 +1,9 @@
 defmodule SkateWeb.AlertsChannel do
   use SkateWeb, :channel
+  use SkateWeb.AuthenticatedChannel
 
   alias Realtime.Server
   alias Util.Duration
-
-  use SkateWeb.AuthenticatedChannel
 
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("alerts:route:" <> route_id, _message, socket) do

@@ -1,9 +1,8 @@
 defmodule SkateWeb.TrainVehiclesChannel do
   use SkateWeb, :channel
+  use SkateWeb.AuthenticatedChannel
 
   alias Realtime.TrainVehiclesPubSub
-
-  use SkateWeb.AuthenticatedChannel
 
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("train_vehicles:" <> route_id, _message, socket) do

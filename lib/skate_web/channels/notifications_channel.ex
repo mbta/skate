@@ -1,5 +1,6 @@
 defmodule SkateWeb.NotificationsChannel do
   use SkateWeb, :channel
+  use SkateWeb.AuthenticatedChannel
 
   @impl Phoenix.Channel
   def handle_info({:notification, notification}, socket) do
@@ -11,8 +12,6 @@ defmodule SkateWeb.NotificationsChannel do
       {:stop, :normal, socket}
     end
   end
-
-  use SkateWeb.AuthenticatedChannel
 
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("notifications", _message, socket) do
