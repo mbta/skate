@@ -11,7 +11,6 @@ defmodule SkateWeb.AuthenticatedChannel do
       @behaviour SkateWeb.AuthenticatedChannel
 
       @impl Phoenix.Channel
-
       def join(topic, message, socket) do
         if SkateWeb.ChannelAuth.valid_token?(socket) do
           join_authenticated(topic, message, socket)
