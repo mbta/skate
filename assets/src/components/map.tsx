@@ -530,13 +530,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     Leaflet.latLng(latitude, longitude)
   )
 
-  const stateClasses = [
+  const stateClasses = className([
     "m-vehicle-map-state",
     shouldAutoCenter ? "m-vehicle-map-state--auto-centering" : null,
     streetViewEnabled ? "m-vehicle-map-state--street-view-enabled" : null,
-  ]
-    .filter((c) => c !== null)
-    .join(" ")
+  ])
 
   return (
     <>
