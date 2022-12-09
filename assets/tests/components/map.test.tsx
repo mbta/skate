@@ -244,14 +244,14 @@ describe("map", () => {
       <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
     )
 
-    await userEvent.click(screen.getByRole("switch", { name: "Street View" }))
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
 
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
 
     expect(openSpy).toHaveBeenCalled()
 
     expect(
-      screen.queryByRole("switch", { name: "Street View", checked: false })
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
     ).toBeInTheDocument()
   })
 
@@ -276,12 +276,12 @@ describe("map", () => {
       <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
     )
 
-    await userEvent.click(screen.getByRole("switch", { name: "Street View" }))
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
 
     await userEvent.keyboard("{Escape}")
 
     expect(
-      screen.queryByRole("switch", { name: "Street View", checked: false })
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
     ).toBeInTheDocument()
   })
 
@@ -289,7 +289,7 @@ describe("map", () => {
     render(<Map vehicles={[]} />)
 
     expect(
-      screen.queryByRole("switch", { name: "Street View" })
+      screen.queryByRole("switch", { name: /Street View/ })
     ).not.toBeInTheDocument()
   })
 })

@@ -311,6 +311,11 @@ exports[`MapPage renders the empty state 1`] = `
             <label
               for="street-view-toggle-:r0:"
             >
+              <span
+                class=""
+              >
+                SVG
+              </span>
               Street View
             </label>
             <div
@@ -703,6 +708,11 @@ exports[`MapPage renders vehicle data 1`] = `
             <label
               for="street-view-toggle-:r1:"
             >
+              <span
+                class=""
+              >
+                SVG
+              </span>
               Street View
             </label>
             <div

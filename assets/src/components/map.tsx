@@ -48,6 +48,7 @@ import garages, { Garage } from "../data/garages"
 // @ts-ignore
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
+import { walkingIcon } from "../helpers/icon"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -296,7 +297,7 @@ const StreetViewControl = ({
 
   const control = (
     <>
-      <label htmlFor={id}>Street View</label>
+      <label htmlFor={id}>{walkingIcon()}Street View</label>
       <div className="form-check form-switch">
         <input
           id={id}

@@ -98,10 +98,17 @@
 
   color: $color-eggplant-700;
   font-size: 1rem;
+  line-height: 1.5rem;
   user-select: none;
   display: flex;
 
   label {
+    span svg {
+      height: 1rem;
+      padding-right: 0.5rem;
+      fill: currentColor;
+    }
+
     padding-right: 0.5rem;
   }
 }
