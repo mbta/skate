@@ -56,9 +56,9 @@ defmodule SkateWeb.DataStatusChannelTest do
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
-      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
-
       {:ok, _, socket} = subscribe_and_join(socket, DataStatusChannel, "data_status")
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       assert {:stop, :normal, _socket} =
                DataStatusChannel.handle_info(
