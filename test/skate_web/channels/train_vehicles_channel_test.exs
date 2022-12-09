@@ -43,6 +43,18 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
 
       assert red_line_trains == @red_train_vehicles
     end
+
+    test "returns an error when trying to join with expired token", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for %{result: result, route: route} <- [
+            %{result: {:error, :not_authenticated}, route: "train_vehicles:Red"},
+            %{result: {:error, :not_authenticated}, route: "train_vehicles:Green"},
+            %{result: {:error, :not_authenticated}, route: "train_vehicles:Blue"},
+            %{result: {:error, :not_authenticated}, route: "random:topic:2"}
+          ],
+          do: assert(^result = subscribe_and_join(socket, TrainVehiclesChannel, route))
+    end
   end
 
   describe "handle_info/2" do

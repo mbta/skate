@@ -30,6 +30,16 @@ defmodule SkateWeb.DataStatusChannelTest do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, DataStatusChannel, "rooms:1")
     end
+
+    test "returns an error when trying to join with expired token", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for %{result: result, route: route} <- [
+            %{result: {:error, :not_authenticated}, route: "data_status"},
+            %{result: {:error, :not_authenticated}, route: "random:topic:2"}
+          ],
+          do: assert(^result = subscribe_and_join(socket, DataStatusChannel, route))
+    end
   end
 
   describe "handle_info/2" do

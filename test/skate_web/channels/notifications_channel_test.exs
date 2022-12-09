@@ -34,6 +34,16 @@ defmodule SkateWeb.NotificationsChannelTest do
                 data: %{initial_notifications: ["fake notification 1", "fake notification 2"]}
               }, %Socket{}} = subscribe_and_join(socket, NotificationsChannel, "notifications")
     end
+
+    test "returns an error when trying to join with expired token", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for %{result: result, route: route} <- [
+            %{result: {:error, :not_authenticated}, route: "notifications"},
+            %{result: {:error, :not_authenticated}, route: "random:topic:2"}
+          ],
+          do: assert(^result = subscribe_and_join(socket, NotificationsChannel, route))
+    end
   end
 
   describe "handle_info/2" do

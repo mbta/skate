@@ -69,6 +69,16 @@ defmodule SkateWeb.VehicleChannelTest do
       assert {:ok, ^expected_payload, %Socket{} = _socket} =
                subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
     end
+
+    test "returns an error when trying to join with expired token", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for %{result: result, route: route} <- [
+            %{result: {:error, :not_authenticated}, route: "vehicle:run_ids:123-4567"},
+            %{result: {:error, :not_authenticated}, route: "random:topic:2"}
+          ],
+          do: assert(^result = subscribe_and_join(socket, VehicleChannel, route))
+    end
   end
 
   describe "handle_info/2" do
