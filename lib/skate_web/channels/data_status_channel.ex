@@ -3,13 +3,14 @@ defmodule SkateWeb.DataStatusChannel do
 
   alias Realtime.DataStatusPubSub
 
-  @impl Phoenix.Channel
-  def join("data_status", _message, socket) do
+  use SkateWeb.AuthenticatedChannel
+  @impl SkateWeb.AuthenticatedChannel
+  def join_authenticated("data_status", _message, socket) do
     data_status = DataStatusPubSub.subscribe()
     {:ok, %{data: data_status}, socket}
   end
 
-  def join(topic, _message, _socket) do
+  def join_authenticated(topic, _message, _socket) do
     {:error, %{message: "no such topic \"#{topic}\""}}
   end
 

@@ -12,8 +12,9 @@ defmodule SkateWeb.NotificationsChannel do
     end
   end
 
-  @impl true
-  def join("notifications", _message, socket) do
+  use SkateWeb.AuthenticatedChannel
+  @impl SkateWeb.AuthenticatedChannel
+  def join_authenticated("notifications", _message, socket) do
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
 
     notification_fetch =

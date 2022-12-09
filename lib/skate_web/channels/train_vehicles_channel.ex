@@ -3,8 +3,9 @@ defmodule SkateWeb.TrainVehiclesChannel do
 
   alias Realtime.TrainVehiclesPubSub
 
-  @impl Phoenix.Channel
-  def join("train_vehicles:" <> route_id, _message, socket) do
+  use SkateWeb.AuthenticatedChannel
+  @impl SkateWeb.AuthenticatedChannel
+  def join_authenticated("train_vehicles:" <> route_id, _message, socket) do
     train_vehicles_subscribe_fn =
       Application.get_env(
         :skate_web,

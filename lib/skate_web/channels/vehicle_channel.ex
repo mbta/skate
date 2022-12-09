@@ -11,8 +11,9 @@ defmodule SkateWeb.VehicleChannel do
     {:noreply, socket}
   end
 
-  @impl Phoenix.Channel
-  def join("vehicle:run_ids:" <> run_ids, _message, socket) do
+  use SkateWeb.AuthenticatedChannel
+  @impl SkateWeb.AuthenticatedChannel
+  def join_authenticated("vehicle:run_ids:" <> run_ids, _message, socket) do
     run_ids = String.split(run_ids, ",")
     vehicle_or_ghost = Realtime.Server.peek_at_vehicles_by_run_ids(run_ids) |> List.first()
 
@@ -23,8 +24,7 @@ defmodule SkateWeb.VehicleChannel do
     {:ok, %{data: vehicle_or_ghost}, socket}
   end
 
-  @impl Phoenix.Channel
-  def join("vehicle:id:" <> vehicle_or_ghost_id, _message, socket) do
+  def join_authenticated("vehicle:id:" <> vehicle_or_ghost_id, _message, socket) do
     vehicle_or_ghost = Realtime.Server.peek_at_vehicle_by_id(vehicle_or_ghost_id) |> List.first()
 
     if vehicle_or_ghost do
