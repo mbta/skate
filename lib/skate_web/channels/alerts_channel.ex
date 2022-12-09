@@ -4,8 +4,9 @@ defmodule SkateWeb.AlertsChannel do
   alias Realtime.Server
   alias Util.Duration
 
-  @impl Phoenix.Channel
-  def join("alerts:route:" <> route_id, _message, socket) do
+  use SkateWeb.AuthenticatedChannel
+  @impl SkateWeb.AuthenticatedChannel
+  def join_authenticated("alerts:route:" <> route_id, _message, socket) do
     alerts = Duration.log_duration(Server, :subscribe_to_alerts, [route_id])
     {:ok, %{data: alerts}, socket}
   end
