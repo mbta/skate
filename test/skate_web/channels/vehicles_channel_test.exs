@@ -83,13 +83,17 @@ defmodule SkateWeb.VehiclesChannelTest do
 
     test "returns an error when trying to join with expired token", %{socket: socket} do
       reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
-      assert {:error, :not_authenticated} = subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
-      assert {:error, :not_authenticated} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:")
-      assert {:error, :not_authenticated} = subscribe_and_join(socket, VehiclesChannel, "vehicles:run_ids:")
-      assert {:error, :not_authenticated} = subscribe_and_join(socket, VehiclesChannel, "vehicles:block_ids:")
-      assert {:error, :not_authenticated} = subscribe_and_join(socket, VehiclesChannel, "vehicles:search:")
-      assert {:error, :not_authenticated} = subscribe_and_join(socket, VehiclesChannel, "random:topic:1")
-      assert {:error, :not_authenticated} = subscribe_and_join(socket, VehiclesChannel, "random:topic:2")
+
+      for %{result: result, route: route} <- [
+            %{result: {:error, :not_authenticated}, route: "vehicles:shuttle:all"},
+            %{result: {:error, :not_authenticated}, route: "vehicles:route:"},
+            %{result: {:error, :not_authenticated}, route: "vehicles:run_ids:"},
+            %{result: {:error, :not_authenticated}, route: "vehicles:block_ids:"},
+            %{result: {:error, :not_authenticated}, route: "vehicles:search:"},
+            %{result: {:error, :not_authenticated}, route: "random:topic:1"},
+            %{result: {:error, :not_authenticated}, route: "random:topic:2"}
+          ],
+          do: assert(^result = subscribe_and_join(socket, VehiclesChannel, route))
     end
   end
 

@@ -6,6 +6,7 @@ defmodule SkateWeb.VehiclesChannel do
   alias Util.Duration
 
   @impl Phoenix.Channel
+
   def join(topic, message, socket) do
     if SkateWeb.ChannelAuth.valid_token?(socket) do
       join_authenticated(topic, message, socket)
@@ -80,7 +81,6 @@ defmodule SkateWeb.VehiclesChannel do
 
   @impl Phoenix.Channel
   def handle_info({:new_realtime_data, lookup_args}, socket) do
-
     if SkateWeb.ChannelAuth.valid_token?(socket) do
       event_name = event_name(lookup_args)
       data = Server.lookup(lookup_args)
