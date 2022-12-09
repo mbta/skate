@@ -35,6 +35,9 @@
 
     <link rel="stylesheet" href="<%= static_href.(@conn, "/css/app.css") %>"/>
 
+    <%= if record_fullstory?() do %>
+      <%= render "_fullstory.html", assigns %>
+    <% end %>
     <%= if record_appcues?() do %>
       <%= render "_appcues.html", assigns %>
     <% end %>

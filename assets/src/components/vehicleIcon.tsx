@@ -175,7 +175,7 @@ const TooltipContent = React.memo(
       <br />
       <b>Adherence:</b> {scheduleAdherenceLabel}
       <br />
-      <b>Operator:</b> {operatorDetails}
+      <b>Operator:</b> <span className="fs-mask">{operatorDetails}</span>
     </>
   )
 )

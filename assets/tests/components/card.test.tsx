@@ -182,7 +182,7 @@ describe("CardProperties", () => {
     )
 
     expect(result.queryByText(/Some sensitive value/)?.className).toMatch(
-      /m-card__properties-value--sensitive/
+      /m-card__properties-value--sensitive fs-mask/
     )
   })
 })

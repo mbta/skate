@@ -44,7 +44,11 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
         Operator:
       </b>
        
-      OPPIE OPERATOR #1
+      <span
+        className="fs-mask"
+      >
+        OPPIE OPERATOR #1
+      </span>
     </div>
     <button
       className="m-incoming-box__vehicle "
@@ -158,7 +162,11 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
         Operator:
       </b>
        
-      OPPIE OPERATOR #1
+      <span
+        className="fs-mask"
+      >
+        OPPIE OPERATOR #1
+      </span>
     </div>
     <button
       className="m-incoming-box__vehicle "
@@ -272,7 +280,11 @@ exports[`IncomingBox renders a ghost 1`] = `
         Operator:
       </b>
        
-      N/A
+      <span
+        className="fs-mask"
+      >
+        N/A
+      </span>
     </div>
     <button
       className="m-incoming-box__vehicle "
@@ -404,7 +416,11 @@ exports[`IncomingBox renders a vehicle 1`] = `
         Operator:
       </b>
        
-      OPPIE OPERATOR #1
+      <span
+        className="fs-mask"
+      >
+        OPPIE OPERATOR #1
+      </span>
     </div>
     <button
       className="m-incoming-box__vehicle "
@@ -497,7 +513,11 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
         Operator:
       </b>
        
-      Fake Operator #1234
+      <span
+        className="fs-mask"
+      >
+        Fake Operator #1234
+      </span>
     </div>
     <button
       className="m-incoming-box__vehicle "

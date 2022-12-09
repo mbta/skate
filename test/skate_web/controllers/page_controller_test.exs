@@ -77,6 +77,26 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "includes fullstory snippet when record_fullstory is true", %{conn: conn} do
+      reassign_env(:skate, :record_fullstory, true)
+      conn = get(conn, "/")
+
+      html = html_response(conn, 200)
+
+      assert html =~ "<script>\nwindow['_fs_host'] = 'fullstory.com';"
+    end
+
+    @tag :authenticated
+    test "doesn't contain fullstory snippet when record_fullstory is false", %{conn: conn} do
+      reassign_env(:skate, :record_fullstory, false)
+      conn = get(conn, "/")
+
+      html = html_response(conn, 200)
+
+      refute html =~ "<script>\nwindow['_fs_host'] = 'fullstory.com';"
+    end
+
+    @tag :authenticated
     test "/settings returns 200", %{conn: conn} do
       conn = get(conn, "/settings")
 

@@ -166,7 +166,11 @@ Array [
             Operator:
           </b>
            
-          PATTI SMITH #op1
+          <span
+            className="fs-mask"
+          >
+            PATTI SMITH #op1
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -381,7 +385,11 @@ Array [
           Operator:
         </b>
          
-        NORA JONES #op2
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op2
+        </span>
       </div>
       <button
         className="m-incoming-box__vehicle "
@@ -553,7 +561,11 @@ Array [
             Operator:
           </b>
            
-          PATTI SMITH #op1
+          <span
+            className="fs-mask"
+          >
+            PATTI SMITH #op1
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -747,7 +759,11 @@ Array [
           Operator:
         </b>
          
-        NORA JONES #op2
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op2
+        </span>
       </div>
       <button
         className="m-incoming-box__vehicle "
@@ -889,7 +905,11 @@ Array [
             Operator:
           </b>
            
-          PATTI SMITH #op1
+          <span
+            className="fs-mask"
+          >
+            PATTI SMITH #op1
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -1335,7 +1355,11 @@ Array [
             Operator:
           </b>
            
-          PATTI SMITH #op1
+          <span
+            className="fs-mask"
+          >
+            PATTI SMITH #op1
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -1441,7 +1465,11 @@ Array [
             Operator:
           </b>
            
-          NORA JONES #op2
+          <span
+            className="fs-mask"
+          >
+            NORA JONES #op2
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -1720,7 +1748,11 @@ Array [
             Operator:
           </b>
            
-          NORA JONES #op2
+          <span
+            className="fs-mask"
+          >
+            NORA JONES #op2
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -1797,7 +1829,11 @@ Array [
             Operator:
           </b>
            
-          PATTI SMITH #op1
+          <span
+            className="fs-mask"
+          >
+            PATTI SMITH #op1
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -2063,7 +2099,11 @@ Array [
             Operator:
           </b>
            
-          PATTI SMITH #op1
+          <span
+            className="fs-mask"
+          >
+            PATTI SMITH #op1
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -2148,7 +2188,11 @@ Array [
             Operator:
           </b>
            
-          N/A
+          <span
+            className="fs-mask"
+          >
+            N/A
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -2276,7 +2320,11 @@ Array [
             Operator:
           </b>
            
-          NORA JONES #op2
+          <span
+            className="fs-mask"
+          >
+            NORA JONES #op2
+          </span>
         </div>
         <g
           className="m-ladder__vehicle  "
@@ -2635,7 +2683,11 @@ Array [
           Operator:
         </b>
          
-        PATTI SMITH #op1
+        <span
+          className="fs-mask"
+        >
+          PATTI SMITH #op1
+        </span>
       </div>
       <button
         className="m-incoming-box__vehicle "
@@ -2720,7 +2772,11 @@ Array [
           Operator:
         </b>
          
-        NORA JONES #op2
+        <span
+          className="fs-mask"
+        >
+          NORA JONES #op2
+        </span>
       </div>
       <button
         className="m-incoming-box__vehicle "

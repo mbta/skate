@@ -15,6 +15,7 @@ export interface Property {
   label: string
   value: string | null
   classNameModifier?: string
+  sensitive?: boolean
 }
 
 export const formattedLogonTime = (logonDate: Date): string => {
@@ -55,6 +56,7 @@ export const vehicleProperties = (vehicle: Vehicle): Property[] => {
       label: "Operator",
       value: operatorValue,
       classNameModifier: "operator",
+      sensitive: true,
     },
     {
       label: "Last Login",
@@ -126,7 +128,7 @@ const modifiedClassName = (classNameModifier?: string): string =>
   classNameModifier ? `m-properties-list__property--${classNameModifier}` : ""
 
 const PropertyRow = ({
-  property: { label, value, classNameModifier },
+  property: { label, value, classNameModifier, sensitive },
   highlightText,
 }: {
   property: Property
@@ -136,7 +138,7 @@ const PropertyRow = ({
     <tr
       className={`m-properties-list__property ${modifiedClassName(
         classNameModifier
-      )}`}
+      )}${sensitive ? " fs-mask" : ""}`}
     >
       <td className="m-properties-list__property-label">{label}</td>
       <td className="m-properties-list__property-value">
