@@ -1,20 +1,12 @@
 defmodule SkateWeb.VehiclesChannel do
   use SkateWeb, :channel
+  use SkateWeb.AuthenticatedChannel
   require Logger
 
   alias Realtime.Server
   alias Util.Duration
 
-  @impl Phoenix.Channel
-
-  def join(topic, message, socket) do
-    if SkateWeb.ChannelAuth.valid_token?(socket) do
-      join_authenticated(topic, message, socket)
-    else
-      {:error, :not_authenticated}
-    end
-  end
-
+  @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("vehicles:shuttle:all", _message, socket) do
     shuttles = Duration.log_duration(Server, :subscribe_to_all_shuttles, [])
     {:ok, %{data: shuttles}, socket}
