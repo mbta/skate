@@ -6,6 +6,7 @@ defmodule SkateWeb.VehiclesChannel do
   alias Util.Duration
 
   use SkateWeb.AuthenticatedChannel
+
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("vehicles:shuttle:all", _message, socket) do
     shuttles = Duration.log_duration(Server, :subscribe_to_all_shuttles, [])

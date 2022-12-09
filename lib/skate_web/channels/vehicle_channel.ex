@@ -12,6 +12,7 @@ defmodule SkateWeb.VehicleChannel do
   end
 
   use SkateWeb.AuthenticatedChannel
+
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("vehicle:run_ids:" <> run_ids, _message, socket) do
     run_ids = String.split(run_ids, ",")

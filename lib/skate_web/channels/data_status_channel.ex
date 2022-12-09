@@ -4,6 +4,7 @@ defmodule SkateWeb.DataStatusChannel do
   alias Realtime.DataStatusPubSub
 
   use SkateWeb.AuthenticatedChannel
+
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("data_status", _message, socket) do
     data_status = DataStatusPubSub.subscribe()

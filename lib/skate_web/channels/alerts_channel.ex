@@ -5,6 +5,7 @@ defmodule SkateWeb.AlertsChannel do
   alias Util.Duration
 
   use SkateWeb.AuthenticatedChannel
+
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("alerts:route:" <> route_id, _message, socket) do
     alerts = Duration.log_duration(Server, :subscribe_to_alerts, [route_id])
