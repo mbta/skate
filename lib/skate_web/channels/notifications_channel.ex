@@ -3,10 +3,7 @@ defmodule SkateWeb.NotificationsChannel do
 
   @impl Phoenix.Channel
   def handle_info({:notification, notification}, socket) do
-    valid_token? =
-      Application.get_env(:skate, :valid_token?, &SkateWeb.ChannelAuth.valid_token?/1)
-
-    if valid_token?.(socket) do
+    if SkateWeb.ChannelAuth.valid_token?(socket) do
       :ok = push(socket, "notification", %{data: notification})
       {:noreply, socket}
     else

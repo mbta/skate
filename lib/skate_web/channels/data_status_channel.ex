@@ -15,10 +15,7 @@ defmodule SkateWeb.DataStatusChannel do
 
   @impl Phoenix.Channel
   def handle_info({:new_data_status, data_status}, socket) do
-    valid_token? =
-      Application.get_env(:skate, :valid_token?, &SkateWeb.ChannelAuth.valid_token?/1)
-
-    if valid_token?.(socket) do
+    if SkateWeb.ChannelAuth.valid_token?(socket) do
       :ok = push(socket, "data_status", %{data: data_status})
       {:noreply, socket}
     else

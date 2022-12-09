@@ -8,7 +8,7 @@ defmodule SkateWeb.DataStatusChannelTest do
   alias SkateWeb.UserSocket
 
   setup do
-    reassign_env(:skate, :valid_token?, fn _socket -> true end)
+    reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
 
     socket = socket(UserSocket, "", %{})
 
@@ -46,7 +46,7 @@ defmodule SkateWeb.DataStatusChannelTest do
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
-      reassign_env(:skate, :valid_token?, fn _socket -> false end)
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       {:ok, _, socket} = subscribe_and_join(socket, DataStatusChannel, "data_status")
 
