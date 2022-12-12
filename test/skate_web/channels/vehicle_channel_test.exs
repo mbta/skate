@@ -70,7 +70,7 @@ defmodule SkateWeb.VehicleChannelTest do
                subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
     end
 
-    test "returns an error when trying to join with expired token", %{socket: socket} do
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
       reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       for route <- [
