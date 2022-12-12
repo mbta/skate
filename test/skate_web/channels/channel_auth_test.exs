@@ -52,8 +52,5 @@ defmodule SkateWeb.ChannelAuthTest do
       reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
       assert ChannelAuth.valid_token?(socket) == true
     end
-
-    # test "when token expires, user should not be able to see data from skate", do end
-    # test "when token expires, user should not be able to subscribe to more topics", do end
   end
 end
