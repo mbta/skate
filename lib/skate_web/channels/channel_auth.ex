@@ -12,8 +12,9 @@ defmodule SkateWeb.ChannelAuth do
 
   @spec valid_socket_token?(Phoenix.Socket.t()) :: boolean()
   defp valid_socket_token?(socket) do
-    token = Guardian.Phoenix.Socket.current_token(socket)
-
-    match?({:ok, _claims}, AuthManager.decode_and_verify(token))
+    socket
+    |> Guardian.Phoenix.Socket.current_token()
+    |> AuthManager.decode_and_verify()
+    |> then(&match?({:ok, _claims}, &1))
   end
 end
