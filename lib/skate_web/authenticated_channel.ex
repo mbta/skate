@@ -21,6 +21,14 @@ defmodule SkateWeb.AuthenticatedChannel do
     end
   end
   ```
+
+  ## Implementation Details
+  `use`ing `SkateWeb.AuthenticatedChannel` will implement the
+  `c:Phoenix.Channel.join/3` callback to return
+  ```
+  {:error, %{reason: :not_authenticated}}
+  ```
+  when the `socket` is not valid per `SkateWeb.ChannelAuth.valid_token?`.
   """
 
   @doc """
@@ -51,7 +59,7 @@ defmodule SkateWeb.AuthenticatedChannel do
         if SkateWeb.ChannelAuth.valid_token?(socket) do
           join_authenticated(topic, payload, socket)
         else
-          {:error, :not_authenticated}
+          {:error, %{reason: :not_authenticated}}
         end
       end
     end

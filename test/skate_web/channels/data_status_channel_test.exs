@@ -38,7 +38,11 @@ defmodule SkateWeb.DataStatusChannelTest do
             %{result: {:error, :not_authenticated}, route: "data_status"},
             %{result: {:error, :not_authenticated}, route: "random:topic:2"}
           ],
-          do: assert(^result = subscribe_and_join(socket, DataStatusChannel, route))
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, DataStatusChannel, route)
+            )
     end
   end
 

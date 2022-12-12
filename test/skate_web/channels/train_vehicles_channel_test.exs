@@ -53,7 +53,11 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
             %{result: {:error, :not_authenticated}, route: "train_vehicles:Blue"},
             %{result: {:error, :not_authenticated}, route: "random:topic:2"}
           ],
-          do: assert(^result = subscribe_and_join(socket, TrainVehiclesChannel, route))
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, TrainVehiclesChannel, route)
+            )
     end
   end
 

@@ -34,7 +34,11 @@ defmodule SkateWeb.AlertsChannelTest do
             %{result: {:error, :not_authenticated}, route: "random:topic:1"},
             %{result: {:error, :not_authenticated}, route: "random:topic:2"}
           ],
-          do: assert(^result = subscribe_and_join(socket, AlertsChannel, route))
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, AlertsChannel, route)
+            )
     end
   end
 
