@@ -323,10 +323,13 @@ const Piece = ({
   pieceIndex: number
   activeIndex: [number, number] | null
 }) => {
+  const startsWithMidRouteTrip = piece.startMidRoute ? true : false
   const isSwingOn: boolean =
     piece.trips.length > 0 &&
     isTrip(piece.trips[0]) &&
-    !isDeadhead(piece.trips[0])
+    !isDeadhead(
+      startsWithMidRouteTrip ? piece.startMidRoute!.trip : piece.trips[0]
+    )
   const isSwingOff: boolean =
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
@@ -396,7 +399,11 @@ const Piece = ({
                   ? previousTrip.endTime
                   : null
               }
-              sequence={getSequence(tripIndex, piece.trips)}
+              sequence={getSequence(
+                tripIndex,
+                piece.trips.length,
+                startsWithMidRouteTrip
+              )}
               tripTimeBasedStyle={tripTimeBasedStyle}
               vehicleOrGhost={vehicleOrGhost}
               view={view}
@@ -461,10 +468,17 @@ const MidRouteSwingOnSecondHalf = ({
   />
 )
 
-const getSequence = (tripIndex: number, pieceTrips: (Trip | AsDirected)[]) => {
-  if (tripIndex === 0) {
+/*
+getSequence: the sequence of a trip within a piece, including the startMidRoute trip if present.
+*/
+const getSequence = (
+  fullTripIndex: number,
+  fullTripCount: number,
+  startsWithMidRouteTrip: boolean
+) => {
+  if (fullTripIndex === 0 && !startsWithMidRouteTrip) {
     return "first"
-  } else if (tripIndex === pieceTrips.length - 1) {
+  } else if (fullTripIndex === fullTripCount - 1) {
     return "last"
   } else {
     return "middle"

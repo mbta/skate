@@ -16,7 +16,7 @@ import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 import vehicleFactory from "../../factories/vehicle"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import userEvent from "@testing-library/user-event"
 
@@ -169,6 +169,33 @@ const midRouteSwingPiece2: Piece = {
   startTime: 120,
   startPlace: "swingplace",
   trips: [midRouteSwingTrip2],
+  endTime: 480,
+  endPlace: "terminal1",
+  startMidRoute: {
+    time: 180,
+    trip: midRouteSwingTrip1,
+  },
+  endMidRoute: false,
+}
+
+const midRouteSwingWithNonRevFirst: Piece = {
+  runId: "run2",
+  blockId: "block",
+  startTime: 120,
+  startPlace: "swingplace",
+  trips: [
+    {
+      ...midRouteSwingTrip2,
+      routeId: null,
+      startPlace: "DH start location",
+      endPlace: "DH end location",
+    },
+    {
+      ...midRouteSwingTrip2,
+      startTime: midRouteSwingTrip2.endTime + 60,
+      endTime: midRouteSwingTrip2.endTime + 120,
+    },
+  ],
   endTime: 480,
   endPlace: "terminal1",
   startMidRoute: {
@@ -509,6 +536,23 @@ describe("MinischeduleRun", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  // TODO
+  test("renders a mid route swing on when the first full trip is a deadhead", () => {
+    // make a piece that starts mid route, has nonrevenue trip next
+    const run: Run = {
+      id: "run2",
+      activities: [midRouteSwingWithNonRevFirst],
+    }
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
+
+    render(<MinischeduleRun vehicleOrGhost={vehicle} />)
+
+    // test that it has deadhead
+    expect(screen.getByText(/deadhead/i)).toBeInTheDocument()
+    // test that it has mid route swing-on
+    expect(screen.getByText(/mid-route/i)).toBeInTheDocument()
   })
 
   test("renders a mid route swing off", () => {
