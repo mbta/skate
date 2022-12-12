@@ -30,6 +30,7 @@ defmodule SkateWeb.AuthenticatedChannel do
   ```
   when the `socket` is not valid per `SkateWeb.ChannelAuth.valid_token?`.
   """
+  @moduledoc since: "https://github.com/mbta/skate/pull/1835"
 
   @doc """
   Handle __authenticated__ socket channel joins by topic.
