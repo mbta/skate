@@ -84,14 +84,14 @@ defmodule SkateWeb.VehiclesChannelTest do
     test "returns an error when trying to join with expired token", %{socket: socket} do
       reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
-      for %{result: result, route: route} <- [
-            %{result: {:error, :not_authenticated}, route: "vehicles:shuttle:all"},
-            %{result: {:error, :not_authenticated}, route: "vehicles:route:"},
-            %{result: {:error, :not_authenticated}, route: "vehicles:run_ids:"},
-            %{result: {:error, :not_authenticated}, route: "vehicles:block_ids:"},
-            %{result: {:error, :not_authenticated}, route: "vehicles:search:"},
-            %{result: {:error, :not_authenticated}, route: "random:topic:1"},
-            %{result: {:error, :not_authenticated}, route: "random:topic:2"}
+      for route <- [
+            "vehicles:shuttle:all",
+            "vehicles:route:",
+            "vehicles:run_ids:",
+            "vehicles:block_ids:",
+            "vehicles:search:",
+            "random:topic:1",
+            "random:topic:2"
           ],
           do:
             assert(
