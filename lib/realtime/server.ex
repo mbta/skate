@@ -71,8 +71,10 @@ defmodule Realtime.Server do
 
   @doc """
   The subscribing process will get a message when there's new data, with the form
+  ```
   {:new_realtime_data, lookup_args}
-  Those lookup_args can be passed into Server.lookup(lookup_args) to get the data.
+  ```
+  Those `lookup_args` can be passed into `RealTime.Server.lookup(lookup_args)/1` to get the data.
   """
   @spec subscribe_to_route(Route.id(), GenServer.server()) :: [VehicleOrGhost.t()]
   def subscribe_to_route(route_id, server \\ default_name()) do

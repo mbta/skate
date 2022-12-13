@@ -17,7 +17,7 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
   ]
 
   setup do
-    reassign_env(:skate, :valid_token?, fn _socket -> true end)
+    reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
 
     reassign_env(:skate_web, :train_vehicles_subscribe_fn, fn route_id ->
       case route_id do
@@ -43,6 +43,22 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
 
       assert red_line_trains == @red_train_vehicles
     end
+
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for route <- [
+            "train_vehicles:Red",
+            "train_vehicles:Green",
+            "train_vehicles:Blue",
+            "random:topic:"
+          ],
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, TrainVehiclesChannel, route)
+            )
+    end
   end
 
   describe "handle_info/2" do
@@ -59,9 +75,9 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
-      reassign_env(:skate, :valid_token?, fn _socket -> false end)
-
       {:ok, _, socket} = subscribe_and_join(socket, TrainVehiclesChannel, "train_vehicles:Red")
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       assert {:stop, :normal, _socket} =
                TrainVehiclesChannel.handle_info(

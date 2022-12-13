@@ -80,6 +80,24 @@ defmodule SkateWeb.VehiclesChannelTest do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, VehiclesChannel, "rooms:1")
     end
+
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for route <- [
+            "vehicles:shuttle:all",
+            "vehicles:route:",
+            "vehicles:run_ids:",
+            "vehicles:block_ids:",
+            "vehicles:search:",
+            "random:topic:"
+          ],
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, VehiclesChannel, route)
+            )
+    end
   end
 
   describe "handle_info/2" do
@@ -149,9 +167,9 @@ defmodule SkateWeb.VehiclesChannelTest do
       ets: ets
     } do
       assert Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, []}) == :ok
-      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
-
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       {:stop, :normal, _socket} =
         VehiclesChannel.handle_info(

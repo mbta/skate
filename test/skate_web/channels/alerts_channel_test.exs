@@ -24,6 +24,20 @@ defmodule SkateWeb.AlertsChannelTest do
       assert {:ok, %{data: ["Some alert"]}, _socket} =
                subscribe_and_join(socket, AlertsChannel, "alerts:route:" <> route_id)
     end
+
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for route <- [
+            "alerts:route:",
+            "random:topic:"
+          ],
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, AlertsChannel, route)
+            )
+    end
   end
 
   describe "handle_info/2" do

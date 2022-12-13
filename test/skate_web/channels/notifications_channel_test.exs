@@ -6,7 +6,7 @@ defmodule SkateWeb.NotificationsChannelTest do
   alias SkateWeb.{NotificationsChannel, UserSocket}
 
   setup do
-    reassign_env(:skate, :valid_token?, fn _socket -> true end)
+    reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
 
     socket =
       UserSocket
@@ -34,6 +34,20 @@ defmodule SkateWeb.NotificationsChannelTest do
                 data: %{initial_notifications: ["fake notification 1", "fake notification 2"]}
               }, %Socket{}} = subscribe_and_join(socket, NotificationsChannel, "notifications")
     end
+
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for route <- [
+            "notifications",
+            "random:topic:"
+          ],
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, NotificationsChannel, route)
+            )
+    end
   end
 
   describe "handle_info/2" do
@@ -50,9 +64,9 @@ defmodule SkateWeb.NotificationsChannelTest do
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
-      reassign_env(:skate, :valid_token?, fn _socket -> false end)
-
       {:ok, _, socket} = subscribe_and_join(socket, NotificationsChannel, "notifications")
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       assert {:stop, :normal, _socket} =
                NotificationsChannel.handle_info(

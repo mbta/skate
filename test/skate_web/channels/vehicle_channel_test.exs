@@ -69,6 +69,20 @@ defmodule SkateWeb.VehicleChannelTest do
       assert {:ok, ^expected_payload, %Socket{} = _socket} =
                subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
     end
+
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for route <- [
+            "vehicle:run_ids:123-4567",
+            "random:topic:"
+          ],
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, VehicleChannel, route)
+            )
+    end
   end
 
   describe "handle_info/2" do
