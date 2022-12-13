@@ -21,20 +21,25 @@ defmodule Geonames do
     url =
       "#{geonames_url_base}/findNearestIntersectionOSMJSON?lat=#{latitude}&lng=#{longitude}&username=mbta_busloc#{token_param}"
 
+    sanitized_url =
+      if geonames_token do
+        String.replace(url, geonames_token, "SECRET")
+      else
+        url
+      end
+
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        Logger.info("#{__MODULE__} got_intersection_response url=#{sanitized_url}")
+
         body
         |> Jason.decode!(strings: :copy)
 
       response ->
-        sanitized_url =
-          if geonames_token do
-            String.replace(url, geonames_token, "SECRET")
-          else
-            url
-          end
+        Logger.warn(
+          "#{__MODULE__} unexpected_response url=#{sanitized_url} response=#{inspect(response)}"
+        )
 
-        Logger.warn(fn -> "Unexpected response from #{sanitized_url} : #{inspect(response)}" end)
         nil
     end
   end
