@@ -75,7 +75,7 @@ defmodule SkateWeb.VehicleChannelTest do
 
       for route <- [
             "vehicle:run_ids:123-4567",
-            "random:topic:2"
+            "random:topic:"
           ],
           do:
             assert(

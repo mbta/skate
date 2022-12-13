@@ -51,7 +51,7 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
             "train_vehicles:Red",
             "train_vehicles:Green",
             "train_vehicles:Blue",
-            "random:topic:2"
+            "random:topic:"
           ],
           do:
             assert(

@@ -90,8 +90,7 @@ defmodule SkateWeb.VehiclesChannelTest do
             "vehicles:run_ids:",
             "vehicles:block_ids:",
             "vehicles:search:",
-            "random:topic:1",
-            "random:topic:2"
+            "random:topic:",
           ],
           do:
             assert(

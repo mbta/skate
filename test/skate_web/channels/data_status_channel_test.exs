@@ -36,7 +36,7 @@ defmodule SkateWeb.DataStatusChannelTest do
 
       for route <- [
             "data_status",
-            "random:topic:2"
+            "random:topic:"
           ],
           do:
             assert(

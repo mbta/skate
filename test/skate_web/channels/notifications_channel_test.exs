@@ -40,7 +40,7 @@ defmodule SkateWeb.NotificationsChannelTest do
 
       for route <- [
             "notifications",
-            "random:topic:2"
+            "random:topic:"
           ],
           do:
             assert(
