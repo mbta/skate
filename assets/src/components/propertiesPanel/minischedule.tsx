@@ -392,14 +392,12 @@ const Piece = ({
           const previousTrip: Trip | AsDirected | null =
             piece.trips[tripIndex - 1] || piece.startMidRoute?.trip
 
-          // KB: Was struggling to use getNonRevenueStatus at this level -
-          // I think we'd want to call it at this level since one level lower, <Trip/> doesn't know its positioning relative to the other trips.
-          // However, not every trip is a nonRevenue trip, so I'm not sure it makes sense to change the sequence field to nonRevenueStatus field on Trip. Unless maybe we expand it to
-          // include revenue trip types too?
-          const sequence = getSequence(
-            startsWithMidRouteTrip ? tripIndex + 1 : tripIndex,
-            startsWithMidRouteTrip ? piece.trips.length + 1 : piece.trips.length
-          )
+          const sequence = startsWithMidRouteTrip
+            ? // tripIndex and trips.length don't include the startWithMidRoute trip. Add one to
+              // account for the startsWIthMidRouteTrip as the actual first trip of the piece.
+              getSequence(tripIndex + 1, piece.trips.length + 1)
+            : getSequence(tripIndex, piece.trips.length)
+
           return (
             <Trip
               trip={trip}

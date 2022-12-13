@@ -90,7 +90,17 @@ defmodule Schedule.Swing do
     end)
     |> Enum.map(fn {piece1, piece2, block_id} ->
       trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
-      trip2 = piece2.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
+      trip2 = piece2
+       |> first_trip_from_peice()
+       |> trip_or_trip_id_to_trip(trips_by_id)
+       |> then(&with(
+        %{} = first_trip <- piece2.trips
+          |> List.first()
+          |> trip_or_trip_id_to_trip(trips_by_id)
+        ) do
+
+        %{ &1 | :run_id => first_trip.run_id }
+      end)
 
       %{
         swing_off_trip: trip1,
@@ -116,4 +126,16 @@ defmodule Schedule.Swing do
     do: nil
 
   defp trip_or_trip_id_to_trip(trip_id, trips_by_id), do: Map.fetch!(trips_by_id, trip_id)
+
+  @spec first_trip_from_peice(Schedule.Piece.t()) :: Trip.id() | Schedule.Trip.t() | Schedule.AsDirected.t()
+  defp first_trip_from_peice(peice) do
+    case peice.start_mid_route? do
+      # %{ trip: trip } when is_binary(trip) -> %{ trip | run_id: :asdf}
+      %{ trip: trip } -> trip
+      nil -> peice.trips |> List.first()
+      # _ -> peice.trips |> List.first()
+    end
+
+  end
+
 end

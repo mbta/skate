@@ -538,9 +538,7 @@ describe("MinischeduleRun", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  // TODO
   test("renders a mid route swing on when the first full trip is a deadhead", () => {
-    // make a piece that starts mid route, has nonrevenue trip next
     const run: Run = {
       id: "run2",
       activities: [midRouteSwingWithNonRevFirst],
@@ -549,10 +547,8 @@ describe("MinischeduleRun", () => {
 
     render(<MinischeduleRun vehicleOrGhost={vehicle} />)
 
-    // test that it has deadhead
-    expect(screen.getByText(/deadhead/i)).toBeInTheDocument()
-    // test that it has mid route swing-on
-    expect(screen.getByText(/mid-route/i)).toBeInTheDocument()
+    expect(screen.getByText("Mid-route report time")).toBeInTheDocument()
+    expect(screen.getByText("Deadhead")).toBeInTheDocument()
   })
 
   test("renders a mid route swing off", () => {
