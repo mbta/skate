@@ -30,7 +30,7 @@ defmodule SkateWeb.AlertsChannelTest do
 
       for route <- [
             "alerts:route:",
-            "random:topic:",
+            "random:topic:"
           ],
           do:
             assert(
