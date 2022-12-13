@@ -209,7 +209,7 @@ describe("map", () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
-  test("renders street view link if in maps test group", async () => {
+  test("renders street view link from stop if in maps test group", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
@@ -222,7 +222,7 @@ describe("map", () => {
     ).toBeInTheDocument()
   })
 
-  test("does not render street view link if not in maps test group", async () => {
+  test("does not render street view link from stop if not in maps test group", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(getTestGroups as jest.Mock).mockReturnValue([])
 
@@ -232,6 +232,64 @@ describe("map", () => {
 
     expect(
       screen.queryByRole("link", { name: /Go to Street View/ })
+    ).not.toBeInTheDocument()
+  })
+
+  test("can turn on street view and click on the map", async () => {
+    const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    await userEvent.click(mapRef.current!.getPane("mapPane")!)
+
+    expect(openSpy).toHaveBeenCalled()
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
+    ).toBeInTheDocument()
+  })
+
+  test("clicking on the map with street view off doesn't open link", async () => {
+    const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(mapRef.current!.getPane("mapPane")!)
+
+    expect(openSpy).not.toHaveBeenCalled()
+  })
+
+  test("pressing escape leaves street view mode", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    await userEvent.keyboard("{Escape}")
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
+    ).toBeInTheDocument()
+  })
+
+  test("does not show street view when prop is not specified", () => {
+    render(<Map vehicles={[]} />)
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/ })
     ).not.toBeInTheDocument()
   })
 })

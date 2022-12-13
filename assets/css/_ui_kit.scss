@@ -70,6 +70,8 @@ $color-gray-200: #ecedee;
 $color-gray-100: #f4f4f5;
 $color-gray-50: #fafafa;
 
+$color-text-blue: #0041ea;
+
 $color-button-simple: $color-component-light;
 $color-button-simple-focus: $color-secondary-medium;
 $color-button-primary: $color-primary;
@@ -332,7 +334,7 @@ select {
   }
 }
 
-input {
+input:not(.form-check-input) {
   background-color: $white;
   border: 2px solid transparent;
   border-radius: 0.5rem;

@@ -32,6 +32,7 @@ import {
   triangleDownIcon,
   triangleUpIcon,
   upDownIcon,
+  walkingIcon,
 } from "../../src/helpers/icon"
 
 const testMap: { [index: string]: (className?: string) => JSX.Element } = {
@@ -67,6 +68,7 @@ const testMap: { [index: string]: (className?: string) => JSX.Element } = {
   triangleDownIcon,
   triangleUpIcon,
   upDownIcon,
+  walkingIcon,
 }
 
 for (const key in testMap) {

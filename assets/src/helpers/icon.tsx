@@ -115,6 +115,8 @@ import unreadIconSvg from "../../static/images/icon-unread.svg"
 import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 // @ts-ignore
 import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
+// @ts-ignore
+import walkingIconSvg from "../../static/images/icon-walking.svg"
 /* eslint-enable @typescript-eslint/ban-ts-comment */
 import renderSvg from "./renderSvg"
 
@@ -291,3 +293,6 @@ export const upDownIcon = (className = ""): JSX.Element =>
 
 export const upRightIcon = (className = ""): JSX.Element =>
   renderSvg(className, upRightIconSvg)
+
+export const walkingIcon = (className = ""): JSX.Element =>
+  renderSvg(className, walkingIconSvg)
