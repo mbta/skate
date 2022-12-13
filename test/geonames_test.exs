@@ -1,15 +1,23 @@
 defmodule GeonamesTest do
   use ExUnit.Case, async: true
   import Test.Support.Helpers
+  import ExUnit.CaptureLog
 
   alias Geonames
 
   describe "nearest_intersection" do
-    test "returns nil if the request fails" do
+    test "returns nil if the request fails and logs" do
       bypass = Bypass.open()
       reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")
-      Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 500, "") end)
-      assert Geonames.nearest_intersection("0.0", "0.0") == nil
+
+      log =
+        capture_log(fn ->
+          Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 500, "") end)
+
+          assert Geonames.nearest_intersection("0.0", "0.0") == nil
+        end)
+
+      assert log =~ "unexpected_response"
     end
 
     test "passes all query params" do
@@ -29,7 +37,9 @@ defmodule GeonamesTest do
       assert Geonames.nearest_intersection("40.0", "-70.0") == nil
     end
 
-    test "parses the street names out" do
+    test "parses the street names out and logs success" do
+      set_log_level(:info)
+
       bypass = Bypass.open()
       reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")
 
@@ -55,8 +65,16 @@ defmodule GeonamesTest do
         }
       }
 
-      Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
-      assert Geonames.nearest_intersection("40", "-70") == "Roble Ave & Curtis St"
+      log =
+        capture_log(
+          [level: :info],
+          fn ->
+            Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
+            assert Geonames.nearest_intersection("40", "-70") == "Roble Ave & Curtis St"
+          end
+        )
+
+      assert log =~ "got_intersection_response"
     end
 
     test "returns nil if there is no nearby intersection" do
