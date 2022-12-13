@@ -440,6 +440,6 @@ defmodule Schedule.SwingTest do
         )
     }
 
-    assert Swing.from_blocks(blocks, %{}) == %{}
+    assert %{} == Swing.from_blocks(blocks, %{})
   end
 end
