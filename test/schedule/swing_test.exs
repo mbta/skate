@@ -360,7 +360,7 @@ defmodule Schedule.SwingTest do
              } = Swing.from_blocks(blocks, trips_by_id)
     end
 
-    test "handles mid route swing with as directed first trip" do
+    test "handles mid route swing with `as directed` trip as only trip" do
       route_id_during_swing = "route-id-during-swing"
       trip_id_during_swing = "trip-id-during-swing"
       run_id_during_swing = "run-id-during-swing"
