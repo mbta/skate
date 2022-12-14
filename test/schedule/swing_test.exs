@@ -369,7 +369,7 @@ defmodule Schedule.SwingTest do
              } = Swing.from_blocks(blocks, trips_by_id)
     end
 
-    test "handles mid-route swing" do
+    test "handles mid route swing with as directed first trip" do
       route_id_during_swing = "route-id-during-swing"
       trip_id_during_swing = "trip-id-during-swing"
       run_id_during_swing = "run-id-during-swing"
@@ -377,6 +377,15 @@ defmodule Schedule.SwingTest do
       route_id_after_swing = "route-after-swing"
       run_id_after_swing = "run-after-swing"
       trip_id_after_swing = "trip-id-after-swing"
+
+      as_directed_trip =
+        build(
+          :as_directed,
+          start_time: 101,
+          end_time: 200,
+          start_place: "place1",
+          end_place: "place2"
+        )
 
       blocks = %{
         "A12-34" =>
@@ -407,6 +416,7 @@ defmodule Schedule.SwingTest do
                 run_id: run_id_after_swing,
                 block_id: "A12-34",
                 trips: [
+                  as_directed_trip,
                   trip_id_after_swing
                 ],
                 start_mid_route?: %{
