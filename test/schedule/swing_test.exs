@@ -416,8 +416,7 @@ defmodule Schedule.SwingTest do
                 run_id: run_id_after_swing,
                 block_id: "A12-34",
                 trips: [
-                  as_directed_trip,
-                  trip_id_after_swing
+                  as_directed_trip
                 ],
                 start_mid_route?: %{
                   time: 150,
