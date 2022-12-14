@@ -133,7 +133,7 @@ defmodule Schedule.Swing do
 
       {_, %{trip: mid_route_trip}} ->
         with %{} = first_trip <- mid_route_trip |> trip_or_trip_id_to_trip(trips_by_id) do
-          %{first_trip | :run_id => first_full_trip.run_id}
+          %{first_trip | run_id: first_full_trip.run_id}
         end
 
       {_, nil} ->
