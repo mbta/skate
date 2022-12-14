@@ -90,7 +90,7 @@ defmodule Schedule.Swing do
     end)
     |> Enum.map(fn {piece1, piece2, block_id} ->
       trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
-      trip2 = piece2 |> first_trip_from_peice(trips_by_id)
+      trip2 = piece2 |> first_trip_from_piece(trips_by_id)
 
       %{
         swing_off_trip: trip1,
@@ -117,12 +117,12 @@ defmodule Schedule.Swing do
 
   defp trip_or_trip_id_to_trip(trip_id, trips_by_id), do: Map.fetch!(trips_by_id, trip_id)
 
-  @spec first_trip_from_peice(Schedule.Piece.t(), Trip.by_id()) ::
+  @spec first_trip_from_piece(Schedule.Piece.t(), Trip.by_id()) ::
           Trip.id() | Schedule.Trip.t() | Schedule.AsDirected.t()
-  defp first_trip_from_peice(peice, trips_by_id) do
-    first_full_trip = peice.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
+  defp first_trip_from_piece(piece, trips_by_id) do
+    first_full_trip = piece.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
 
-    case peice.start_mid_route? do
+    case piece.start_mid_route? do
       %{trip: trip} ->
         with %{} = first_trip <- trip |> trip_or_trip_id_to_trip(trips_by_id) do
           # TODO: What if first_full_trip is nil?
