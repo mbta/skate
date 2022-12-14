@@ -271,12 +271,6 @@ defmodule Schedule.SwingTest do
       assert Swing.from_blocks(blocks, trips_by_id) == %{}
     end
 
-    test "the to_X values are set correctly when there is a mid-route swing" do
-      blocks = %{}
-    end
-
-    # TODO: Is this test working? Should we change or add another test?
-    # Maybe use block & trip factories to simplify data readability here
     test "handles mid-route swing" do
       route_id_during_swing = "route-id-during-swing"
       trip_id_during_swing = "trip-id-during-swing"
@@ -359,11 +353,8 @@ defmodule Schedule.SwingTest do
                    from_trip_id: ^trip_id_during_swing,
                    time: 150,
                    to_route_id: ^route_id_during_swing,
-                   # to_route_id: "12", # ISSUE: Route ID is same for both trips in postured data
                    to_trip_id: ^trip_id_during_swing,
-                   # to_trip_id: "5678", # ISSUE: should be the trip ID of the mid_route trip
                    to_run_id: ^run_id_after_swing
-                   # to_run_id: "123-789", # CORRECT: should be the run_id of the first FULL run (not the start_mid_route run_id, which would always be the same as the from_run_id)
                  }
                ]
              } = Swing.from_blocks(blocks, trips_by_id)
@@ -460,11 +451,8 @@ defmodule Schedule.SwingTest do
                    from_trip_id: ^trip_id_during_swing,
                    time: 150,
                    to_route_id: ^route_id_during_swing,
-                   # to_route_id: "12", # ISSUE: Route ID is same for both trips in postured data
                    to_trip_id: ^trip_id_during_swing,
-                   # to_trip_id: "5678", # ISSUE: should be the trip ID of the mid_route trip
                    to_run_id: ^run_id_after_swing
-                   # to_run_id: "123-789", # CORRECT: should be the run_id of the first FULL run (not the start_mid_route run_id, which would always be the same as the from_run_id)
                  }
                ]
              } = Swing.from_blocks(blocks, trips_by_id)
