@@ -473,10 +473,7 @@ const MidRouteSwingOnSecondHalf = ({
 
 type Sequence = "first" | "middle" | "last"
 type NonRevenueStatus = "pull-out" | "pull-back" | "deadhead"
-/*
-Potential alternative way to represent getSequence, pushes startsWithMidRouteTrip up 
-out of this function, maybe clearer?
-*/
+
 const getSequence = (tripIndex: number, tripCount: number): Sequence => {
   if (tripIndex === 0) {
     return "first"
@@ -486,20 +483,6 @@ const getSequence = (tripIndex: number, tripCount: number): Sequence => {
     return "middle"
   }
 }
-
-/*const getSequence = (
-  fullTripIndex: number,
-  fullTripCount: number,
-  startsWithMidRouteTrip: boolean
-): NonRevenueStatus => {
-  if (fullTripIndex === 0 && !startsWithMidRouteTrip) {
-    return "first"
-  } else if (fullTripIndex === fullTripCount - 1) {
-    return "last"
-  } else {
-    return "middle"
-  }
-}*/
 
 const sequenceToNonRevenueStatus = (sequence: Sequence): NonRevenueStatus => {
   switch (sequence) {
@@ -511,19 +494,6 @@ const sequenceToNonRevenueStatus = (sequence: Sequence): NonRevenueStatus => {
       return "pull-back"
   }
 }
-/*const getNonRevenueStatus = (
-  fullTripIndex: number,
-  fullTripCount: number,
-  startsWithMidRouteTrip: boolean
-): NonRevenueStatus => {
-  if (fullTripIndex === 0 && !startsWithMidRouteTrip) {
-    return "pull-out"
-  } else if (fullTripIndex === fullTripCount - 1) {
-    return "pull-back"
-  } else {
-    return "deadhead"
-  }
-}*/
 
 const Trip = ({
   trip,
