@@ -360,6 +360,7 @@ defmodule Schedule.SwingTest do
              } = Swing.from_blocks(blocks, trips_by_id)
     end
 
+    @tag :skip
     test "handles mid route swing with `as directed` trip as only trip" do
       route_id_during_swing = "route-id-during-swing"
       trip_id_during_swing = "trip-id-during-swing"
