@@ -81,7 +81,8 @@ defmodule Skate.MixProject do
       {:fast_local_datetime, "~> 1.0"},
       {:ex_machina, "~> 2.7.0", only: :test},
       {:logster, "~> 1.0"},
-      {:ssl_verify_fun, "~> 1.1"}
+      {:ssl_verify_fun, "~> 1.1"},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
     ]
   end
 end
