@@ -15,7 +15,7 @@ import { RouteVariantName } from "./routeVariantName"
 import StreetViewButton from "./streetViewButton"
 import VehicleIcon, { Size, vehicleOrientation } from "./vehicleIcon"
 
-const VehicleCard = ({
+const VehiclePropertiesCard = ({
   vehicle,
   onClose,
 }: {
@@ -80,4 +80,4 @@ const VehicleCard = ({
     </div>
   )
 }
-export default VehicleCard
+export default VehiclePropertiesCard

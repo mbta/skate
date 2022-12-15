@@ -8,7 +8,7 @@ import vehicleFactory from "../factories/vehicle"
 import routeFactory from "../factories/route"
 
 import userEvent from "@testing-library/user-event"
-import VehicleCard from "../../src/components/vehicleCard"
+import VehicleCard from "../../src/components/vehiclePropertiesCard"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 jest

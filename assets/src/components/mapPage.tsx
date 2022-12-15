@@ -11,7 +11,7 @@ import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
-import VehicleCard from "./vehicleCard"
+import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 enum MobileDisplay {
   List = 1,
@@ -129,7 +129,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           includeStopCard={true}
         >
           {liveVehicle && showVehicleCard ? (
-            <VehicleCard
+            <VehiclePropertiesCard
               vehicle={liveVehicle}
               onClose={() => setShowVehicleCard(false)}
             />
