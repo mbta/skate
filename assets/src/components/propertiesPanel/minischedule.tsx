@@ -323,13 +323,10 @@ const Piece = ({
   pieceIndex: number
   activeIndex: [number, number] | null
 }) => {
-  const startsWithMidRouteTrip = piece.startMidRoute ? true : false
   const isSwingOn: boolean =
     piece.trips.length > 0 &&
     isTrip(piece.trips[0]) &&
-    !isDeadhead(
-      startsWithMidRouteTrip ? piece.startMidRoute!.trip : piece.trips[0]
-    )
+    !isDeadhead(piece.startMidRoute ? piece.startMidRoute.trip : piece.trips[0])
   const isSwingOff: boolean =
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
@@ -392,7 +389,7 @@ const Piece = ({
           const previousTrip: Trip | AsDirected | null =
             piece.trips[tripIndex - 1] || piece.startMidRoute?.trip
 
-          const sequence = startsWithMidRouteTrip
+          const sequence = piece.startMidRoute
             ? // tripIndex and trips.length don't include the startWithMidRoute trip. Add one to
               // account for the startsWIthMidRouteTrip as the actual first trip of the piece.
               getSequence(tripIndex + 1, piece.trips.length + 1)
