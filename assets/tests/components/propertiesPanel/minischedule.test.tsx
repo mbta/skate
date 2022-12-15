@@ -16,9 +16,11 @@ import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 import vehicleFactory from "../../factories/vehicle"
+import pieceFactory from "../../factories/piece"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import userEvent from "@testing-library/user-event"
+import tripFactory from "../../factories/trip"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -178,32 +180,33 @@ const midRouteSwingPiece2: Piece = {
   endMidRoute: false,
 }
 
-const midRouteSwingWithNonRevFirst: Piece = {
-  runId: "run2",
-  blockId: "block",
-  startTime: 120,
-  startPlace: "swingplace",
-  trips: [
-    {
-      ...midRouteSwingTrip2,
-      routeId: null,
-      startPlace: "DH start location",
-      endPlace: "DH end location",
-    },
-    {
-      ...midRouteSwingTrip2,
-      startTime: midRouteSwingTrip2.endTime + 60,
-      endTime: midRouteSwingTrip2.endTime + 120,
-    },
-  ],
-  endTime: 480,
-  endPlace: "terminal1",
-  startMidRoute: {
-    time: 180,
-    trip: midRouteSwingTrip1,
-  },
-  endMidRoute: false,
-}
+const midRouteSwingWithNonRevFirst: Piece = pieceFactory.build()
+// const midRouteSwingWithNonRevFirst: Piece = {
+//   runId: "run2",
+//   blockId: "block",
+//   startTime: 120,
+//   startPlace: "swingplace",
+//   trips: [
+//     {
+//       ...midRouteSwingTrip2,
+//       routeId: null,
+//       startPlace: "DH start location",
+//       endPlace: "DH end location",
+//     },
+//     {
+//       ...midRouteSwingTrip2,
+//       startTime: midRouteSwingTrip2.endTime + 60,
+//       endTime: midRouteSwingTrip2.endTime + 120,
+//     },
+//   ],
+//   endTime: 480,
+//   endPlace: "terminal1",
+//   startMidRoute: {
+//     time: 180,
+//     trip: midRouteSwingTrip1,
+//   },
+//   endMidRoute: false,
+// }
 
 const piece1: Piece = {
   runId: "multiPieceRun",
@@ -333,7 +336,18 @@ const vehicleWithOffset: Vehicle = {
   overloadOffset: 480,
   isOverload: true,
 }
+describe("fishery", () => {
+  test.only("fishery", () => {
+    const discard = tripFactory.build()
+    expect(pieceFactory.build({
+      trips: [],
+      // startTime: 100
+    })).toBe({ trips: [{ startTime: -100 }], startTime: -100})
+    // expect(pieceFactory.build()).toBe({})
 
+    expect(discard).toBe(discard)
+  })
+})
 describe("MinischeduleRun", () => {
   test("renders the loading state", () => {
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => undefined)
