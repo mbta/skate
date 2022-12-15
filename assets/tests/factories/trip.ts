@@ -1,7 +1,7 @@
-import { Factory } from "fishery";
-import { Trip } from "../../src/minischedule";
+import { Factory } from "fishery"
+import { Trip } from "../../src/minischedule"
 
-export default Factory.define<Trip>(({sequence}) => ({
+export default Factory.define<Trip>(({ sequence }) => ({
   id: `trip-${sequence}`,
   blockId: "block",
   routeId: "R",
@@ -13,4 +13,4 @@ export default Factory.define<Trip>(({sequence}) => ({
   endTime: 1,
   startPlace: "Red Square",
   endPlace: "Blue Triangle",
-}));
+}))

@@ -1,6 +1,6 @@
-import { Factory } from "fishery";
-import { Piece } from "../../src/minischedule";
-import trip from "./trip";
+import { Factory } from "fishery"
+import { Piece } from "../../src/minischedule"
+import trip from "./trip"
 /*
 const midRouteSwingWithNonRevFirst: Piece = {
   runId: "run2",
@@ -33,9 +33,7 @@ export default Factory.define<Piece>(({ sequence }) => {
   let piece = {
     runId: `run-id-${sequence}`,
     blockId: "block-id",
-    trips: [
-      trip.build()
-    ],
+    trips: [trip.build()],
     startMidRoute: null,
     endMidRoute: false,
 
@@ -43,7 +41,7 @@ export default Factory.define<Piece>(({ sequence }) => {
     startPlace: `start-place-${sequence}`,
     endTime: 10,
     endPlace: `end-place-${sequence}`,
-  };
+  }
 
   piece = {
     ...piece,
@@ -54,7 +52,7 @@ export default Factory.define<Piece>(({ sequence }) => {
   }
 
   return piece
-});
+})
 
 // const piece: Piece = {
 //   runId: "run",

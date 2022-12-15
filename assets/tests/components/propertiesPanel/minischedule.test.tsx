@@ -339,10 +339,12 @@ const vehicleWithOffset: Vehicle = {
 describe("fishery", () => {
   test.only("fishery", () => {
     const discard = tripFactory.build()
-    expect(pieceFactory.build({
-      trips: [],
-      // startTime: 100
-    })).toBe({ trips: [{ startTime: -100 }], startTime: -100})
+    expect(
+      pieceFactory.build({
+        trips: [],
+        // startTime: 100
+      })
+    ).toBe({ trips: [{ startTime: -100 }], startTime: -100 })
     // expect(pieceFactory.build()).toBe({})
 
     expect(discard).toBe(discard)
