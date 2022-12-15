@@ -336,20 +336,7 @@ const vehicleWithOffset: Vehicle = {
   overloadOffset: 480,
   isOverload: true,
 }
-describe("fishery", () => {
-  test.only("fishery", () => {
-    const discard = tripFactory.build()
-    expect(
-      pieceFactory.build({
-        trips: [],
-        // startTime: 100
-      })
-    ).toBe({ trips: [{ startTime: -100 }], startTime: -100 })
-    // expect(pieceFactory.build()).toBe({})
 
-    expect(discard).toBe(discard)
-  })
-})
 describe("MinischeduleRun", () => {
   test("renders the loading state", () => {
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => undefined)
