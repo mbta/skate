@@ -90,7 +90,7 @@ defmodule Schedule.Swing do
     end)
     |> Enum.map(fn {piece1, piece2, block_id} ->
       trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
-      trip2 = piece2 |> first_trip_from_piece(trips_by_id)
+      trip2 = first_trip_from_piece(piece2, trips_by_id)
 
       %{
         swing_off_trip: trip1,
