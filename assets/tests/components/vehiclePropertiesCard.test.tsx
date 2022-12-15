@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import { Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
@@ -31,43 +31,43 @@ describe("VehicleCard", () => {
     ;(useNearestIntersection as jest.Mock).mockImplementationOnce(
       () => intersection
     )
-    const result = render(
+    render(
       <RoutesProvider routes={[route]}>
         <VehicleCard vehicle={vehicle} onClose={jest.fn()} />
       </RoutesProvider>
     )
 
-    expect(result.getByText("Outbound")).toBeInTheDocument()
-    expect(result.getByText("39_X")).toBeInTheDocument()
-    expect(result.getByText("Forest Hills")).toBeInTheDocument()
-    expect(result.getByText("Current Location")).toBeInTheDocument()
-    expect(result.getByText(intersection)).toBeInTheDocument()
-    expect(result.getByText("111s ago")).toBeInTheDocument()
+    expect(screen.getByText("Outbound")).toBeInTheDocument()
+    expect(screen.getByText("39_X")).toBeInTheDocument()
+    expect(screen.getByText("Forest Hills")).toBeInTheDocument()
+    expect(screen.getByText("Current Location")).toBeInTheDocument()
+    expect(screen.getByText(intersection)).toBeInTheDocument()
+    expect(screen.getByText("111s ago")).toBeInTheDocument()
   })
 
   test("location not displayed if not known", () => {
-    const result = render(<VehicleCard vehicle={vehicle} onClose={jest.fn()} />)
+    render(<VehicleCard vehicle={vehicle} onClose={jest.fn()} />)
 
     ;(useNearestIntersection as jest.Mock).mockImplementationOnce(() => null)
 
-    expect(result.queryByText("Current Location")).not.toBeInTheDocument()
+    expect(screen.queryByText("Current Location")).not.toBeInTheDocument()
   })
 
   test("clicking close button calls on close", async () => {
     const mockOnClose = jest.fn()
-    const result = render(
+    render(
       <VehicleCard vehicle={vehicle} onClose={mockOnClose} />
     )
-    await userEvent.click(result.getByTitle("Close"))
+    await userEvent.click(screen.getByTitle("Close"))
 
     expect(mockOnClose).toHaveBeenCalled()
   })
 
   test("has link to street view", async () => {
-    const result = render(<VehicleCard vehicle={vehicle} onClose={jest.fn()} />)
+    render(<VehicleCard vehicle={vehicle} onClose={jest.fn()} />)
 
     expect(
-      result.getByRole("link", { name: "Go to Street View" })
+      screen.getByRole("link", { name: "Go to Street View" })
     ).toBeInTheDocument()
   })
 })
