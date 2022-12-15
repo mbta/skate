@@ -6,6 +6,28 @@ defmodule GeonamesTest do
 
   alias Geonames
 
+  @json %{
+    "credits" => "1.0",
+    "intersection" => %{
+      "mtfcc1" => "S1400",
+      "mtfcc2" => "S1400",
+      "adminCode1" => "CA",
+      "lng" => "-122.180842",
+      "distance" => "0.08",
+      "bearing" => "242",
+      "placename" => "Menlo Park",
+      "street1Bearing" => "213",
+      "street2Bearing" => "303",
+      "adminName2" => "San Mateo",
+      "postalcode" => "94025",
+      "countryCode" => "US",
+      "street1" => "Roble Ave",
+      "street2" => "Curtis St",
+      "adminName1" => "California",
+      "lat" => "37.450649"
+    }
+  }
+
   describe "nearest_intersection" do
     test "returns nil if the request fails and logs" do
       bypass = Bypass.open()
@@ -44,33 +66,11 @@ defmodule GeonamesTest do
       bypass = Bypass.open()
       reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")
 
-      json = %{
-        "credits" => "1.0",
-        "intersection" => %{
-          "mtfcc1" => "S1400",
-          "mtfcc2" => "S1400",
-          "adminCode1" => "CA",
-          "lng" => "-122.180842",
-          "distance" => "0.08",
-          "bearing" => "242",
-          "placename" => "Menlo Park",
-          "street1Bearing" => "213",
-          "street2Bearing" => "303",
-          "adminName2" => "San Mateo",
-          "postalcode" => "94025",
-          "countryCode" => "US",
-          "street1" => "Roble Ave",
-          "street2" => "Curtis St",
-          "adminName1" => "California",
-          "lat" => "37.450649"
-        }
-      }
-
       log =
         capture_log(
           [level: :info],
           fn ->
-            Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
+            Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(@json)) end)
             assert Geonames.nearest_intersection("40", "-70") == "Roble Ave & Curtis St"
           end
         )
@@ -84,28 +84,6 @@ defmodule GeonamesTest do
       bypass = Bypass.open()
       reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")
 
-      json = %{
-        "credits" => "1.0",
-        "intersection" => %{
-          "mtfcc1" => "S1400",
-          "mtfcc2" => "S1400",
-          "adminCode1" => "CA",
-          "lng" => "-122.180842",
-          "distance" => "0.08",
-          "bearing" => "242",
-          "placename" => "Menlo Park",
-          "street1Bearing" => "213",
-          "street2Bearing" => "303",
-          "adminName2" => "San Mateo",
-          "postalcode" => "94025",
-          "countryCode" => "US",
-          "street1" => "Roble Ave",
-          "street2" => "Curtis St",
-          "adminName1" => "California",
-          "lat" => "37.450649"
-        }
-      }
-
       {:ok, agent} = response_agent()
 
       agent
@@ -113,7 +91,7 @@ defmodule GeonamesTest do
         send_resp(conn, 500, "")
       end)
       |> add_response(fn conn ->
-        send_resp(conn, 200, Jason.encode!(json))
+        send_resp(conn, 200, Jason.encode!(@json))
       end)
 
       log =
@@ -134,28 +112,6 @@ defmodule GeonamesTest do
       bypass = Bypass.open()
       reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")
 
-      json = %{
-        "credits" => "1.0",
-        "intersection" => %{
-          "mtfcc1" => "S1400",
-          "mtfcc2" => "S1400",
-          "adminCode1" => "CA",
-          "lng" => "-122.180842",
-          "distance" => "0.08",
-          "bearing" => "242",
-          "placename" => "Menlo Park",
-          "street1Bearing" => "213",
-          "street2Bearing" => "303",
-          "adminName2" => "San Mateo",
-          "postalcode" => "94025",
-          "countryCode" => "US",
-          "street1" => "Roble Ave",
-          "street2" => "Curtis St",
-          "adminName1" => "California",
-          "lat" => "37.450649"
-        }
-      }
-
       {:ok, agent} = response_agent()
 
       agent
@@ -166,7 +122,7 @@ defmodule GeonamesTest do
         send_resp(conn, 500, "")
       end)
       |> add_response(fn conn ->
-        send_resp(conn, 200, Jason.encode!(json))
+        send_resp(conn, 200, Jason.encode!(@json))
       end)
 
       log =
@@ -185,11 +141,11 @@ defmodule GeonamesTest do
       bypass = Bypass.open()
       reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")
 
-      json = %{
+      empty_json = %{
         "credits" => "1.0"
       }
 
-      Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
+      Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(empty_json)) end)
       assert Geonames.nearest_intersection("40", "-70") == nil
     end
   end
