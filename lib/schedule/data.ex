@@ -326,7 +326,14 @@ defmodule Schedule.Data do
     |> FeedInfo.parse()
     |> FeedInfo.log_gtfs_version()
 
-    directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
+    %{
+      calendar: calendar,
+      stops: stops,
+      timepoints_by_id: timepoints_by_id,
+      directions_by_route_id: directions_by_route_id
+    } = parse_gtfs_all_modes(gtfs_files)
+
+    timepoint_names_by_id = timepoint_names_for_ids(timepoints_by_id)
 
     bus_routes =
       Csv.parse(
@@ -347,9 +354,6 @@ defmodule Schedule.Data do
       |> Hastus.Trip.expand_through_routed_trips(gtfs_trip_ids)
 
     route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
-
-    timepoints_by_id = all_timepoints_by_id(gtfs_files["checkpoints.txt"])
-    timepoint_names_by_id = timepoint_names_for_ids(timepoints_by_id)
 
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
 
@@ -383,12 +387,21 @@ defmodule Schedule.Data do
         ),
       timepoint_names_by_id: timepoint_names_by_id,
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
-      stops: all_stops_by_id(gtfs_files["stops.txt"]),
+      stops: stops,
       trips: schedule_trips_by_id,
       blocks: blocks,
-      calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
+      calendar: calendar,
       runs: runs,
       swings: Swing.from_blocks(blocks, schedule_trips_by_id)
+    }
+  end
+
+  def parse_gtfs_all_modes(gtfs_files) do
+    %{
+      calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
+      stops: all_stops_by_id(gtfs_files["stops.txt"]),
+      timepoints_by_id: all_timepoints_by_id(gtfs_files["checkpoints.txt"]),
+      directions_by_route_id: directions_by_route_id(gtfs_files["directions.txt"])
     }
   end
 
