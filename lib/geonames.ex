@@ -28,16 +28,22 @@ defmodule Geonames do
         url
       end
 
-    case HTTPoison.get(url) do
+    {time, result} = :timer.tc(HTTPoison, :get, [url])
+
+    time_in_ms = time / :timer.seconds(1)
+
+    case result do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        Logger.info("#{__MODULE__} got_intersection_response url=#{sanitized_url}")
+        Logger.info(
+          "#{__MODULE__} got_intersection_response url=#{sanitized_url} time=#{time_in_ms}"
+        )
 
         body
         |> Jason.decode!(strings: :copy)
 
       response ->
         Logger.warn(
-          "#{__MODULE__} unexpected_response url=#{sanitized_url} response=#{inspect(response)}"
+          "#{__MODULE__} unexpected_response url=#{sanitized_url} response=#{inspect(response)} time=#{time_in_ms}"
         )
 
         nil
