@@ -1,6 +1,6 @@
 import { Factory } from "fishery"
 import { Piece } from "../../src/minischedule"
-import trip from "./trip"
+import { TripFactory } from "./trip"
 /*
 const midRouteSwingWithNonRevFirst: Piece = {
   runId: "run2",
@@ -30,26 +30,34 @@ const midRouteSwingWithNonRevFirst: Piece = {
 }
  */
 export default Factory.define<Piece>(({ sequence }) => {
+  const numTrips = 10
+  const duration = 10
   let piece = {
     runId: `run-id-${sequence}`,
     blockId: "block-id",
-    trips: [trip.build()],
+
+    trips: TripFactory.buildList(numTrips),
+
     startMidRoute: null,
     endMidRoute: false,
 
-    startTime: 1,
+    startTime: sequence * duration,
+    endTime: (sequence + 1) * duration,
+
     startPlace: `start-place-${sequence}`,
-    endTime: 10,
     endPlace: `end-place-${sequence}`,
   }
 
-  piece = {
-    ...piece,
-    startTime: piece.trips[0].startTime,
-    startPlace: piece.trips[0].startPlace,
-    endPlace: piece.trips[0].endPlace,
-    endTime: piece.trips[-1].endTime,
-  }
+  // const firstTrip = piece.trips[0]
+  // const lastTrip = piece.trips[-1]
+  // const [firstTrip, ..., lastTrip] = piece.trips
+  // piece = {
+  //   ...piece,
+  //   startTime: firstTrip.startTime,
+  //   startPlace: firstTrip.startPlace,
+  //   endPlace: lastTrip.endPlace,
+  //   endTime: lastTrip.endTime,
+  // }
 
   return piece
 })

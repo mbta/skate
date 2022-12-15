@@ -1,3 +1,6 @@
+import "@testing-library/jest-dom"
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import {
@@ -14,13 +17,11 @@ import {
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
-import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
-import vehicleFactory from "../../factories/vehicle"
 import pieceFactory from "../../factories/piece"
-import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
-import userEvent from "@testing-library/user-event"
-import tripFactory from "../../factories/trip"
+import { RunFactory } from "../../factories/run"
+import { DeadheadTripFactory, TripFactory } from "../../factories/trip"
+import vehicleFactory from "../../factories/vehicle"
+import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -179,34 +180,6 @@ const midRouteSwingPiece2: Piece = {
   },
   endMidRoute: false,
 }
-
-const midRouteSwingWithNonRevFirst: Piece = pieceFactory.build()
-// const midRouteSwingWithNonRevFirst: Piece = {
-//   runId: "run2",
-//   blockId: "block",
-//   startTime: 120,
-//   startPlace: "swingplace",
-//   trips: [
-//     {
-//       ...midRouteSwingTrip2,
-//       routeId: null,
-//       startPlace: "DH start location",
-//       endPlace: "DH end location",
-//     },
-//     {
-//       ...midRouteSwingTrip2,
-//       startTime: midRouteSwingTrip2.endTime + 60,
-//       endTime: midRouteSwingTrip2.endTime + 120,
-//     },
-//   ],
-//   endTime: 480,
-//   endPlace: "terminal1",
-//   startMidRoute: {
-//     time: 180,
-//     trip: midRouteSwingTrip1,
-//   },
-//   endMidRoute: false,
-// }
 
 const piece1: Piece = {
   runId: "multiPieceRun",
@@ -542,10 +515,16 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a mid route swing on when the first full trip is a deadhead", () => {
-    const run: Run = {
-      id: "run2",
-      activities: [midRouteSwingWithNonRevFirst],
-    }
+    const run: Run = RunFactory.build({
+      activities: [
+        pieceFactory.build({
+          startMidRoute: {
+            trip: TripFactory.build(),
+          },
+          trips: [DeadheadTripFactory.build(), TripFactory.build()],
+        }),
+      ],
+    })
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
 
     render(<MinischeduleRun vehicleOrGhost={vehicle} />)
