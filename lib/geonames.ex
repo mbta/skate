@@ -12,8 +12,8 @@ defmodule Geonames do
     end
   end
 
-  @spec get(String.t(), String.t()) :: map() | nil
-  defp get(latitude, longitude) do
+  @spec get(String.t(), String.t(), boolean()) :: map() | nil
+  defp get(latitude, longitude, retry? \\ true) do
     geonames_url_base = Application.get_env(:skate, :geonames_url_base)
     geonames_token = Application.get_env(:skate, :geonames_token)
     token_param = if geonames_token, do: "&token=#{geonames_token}", else: ""
@@ -43,10 +43,14 @@ defmodule Geonames do
 
       response ->
         Logger.warn(
-          "#{__MODULE__} unexpected_response url=#{sanitized_url} response=#{inspect(response)} time=#{time_in_ms}"
+          "#{__MODULE__} unexpected_response url=#{sanitized_url} response=#{inspect(response)} time=#{time_in_ms} retry=#{retry?}"
         )
 
-        nil
+        if retry? do
+          get(latitude, longitude, false)
+        else
+          nil
+        end
     end
   end
 
