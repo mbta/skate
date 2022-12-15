@@ -38,6 +38,13 @@ defmodule Schedule.Gtfs.RoutePattern do
     :representative_trip_id
   ]
 
+  def from_file(file_binary) do
+    Csv.parse(
+      file_binary,
+      parse: &from_csv_row/1
+    )
+  end
+
   @spec from_csv_row(Csv.row()) :: t()
   def from_csv_row(row) do
     %__MODULE__{

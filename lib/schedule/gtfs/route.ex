@@ -11,6 +11,8 @@ defmodule Schedule.Gtfs.Route do
           garages: MapSet.t(Garage.id())
         }
 
+  @type route_type :: number()
+
   @type direction_names :: %{
           0 => String.t(),
           1 => String.t()
@@ -30,14 +32,25 @@ defmodule Schedule.Gtfs.Route do
     :description,
     :direction_names,
     :name,
+    type: 3,
     garages: MapSet.new([])
   ]
+
+  @spec from_file(binary() | nil, Data.directions_by_route_and_id()) :: [t()]
+  def from_file(file_binary, directions_by_route_id) do
+    Csv.parse(
+      file_binary,
+      filter: &row_has_route_type?/1,
+      parse: &from_csv_row(&1, directions_by_route_id)
+    )
+  end
 
   @spec from_csv_row(Csv.row(), Data.directions_by_route_and_id()) :: t()
   def from_csv_row(row, directions_by_route_id) do
     id = row["route_id"]
     description = row["route_desc"]
     route_directions = Map.get(directions_by_route_id, id)
+    type = String.to_integer(row["route_type"])
 
     name = name(row)
 
@@ -48,6 +61,7 @@ defmodule Schedule.Gtfs.Route do
         0 => route_directions[0] && route_directions[0].direction_name,
         1 => route_directions[1] && route_directions[1].direction_name
       },
+      type: type,
       name: name
     }
   end
@@ -61,26 +75,25 @@ defmodule Schedule.Gtfs.Route do
     short_name
   end
 
-  @spec bus_route_row?(Csv.row()) :: boolean
-  defp bus_route_row?(row) do
-    # Verify that "route_type" exists on the row, especially to prevent issues while testing
-    if row["route_type"] == nil do
-      raise ArgumentError, message: "route_type is required on route rows"
-    end
-
-    row["route_type"] == "3"
+  @spec row_has_route_type?(Csv.row()) :: boolean()
+  # Verify that "route_type" exists on the row, especially to prevent issues while testing
+  defp row_has_route_type?(%{"route_type" => nil}) do
+    raise ArgumentError, message: "route_type is required on route rows"
   end
 
-  @spec bus_route_mbta?(Csv.row()) :: boolean
-  defp bus_route_mbta?(row) do
+  defp row_has_route_type?(_route_row) do
+    true
+  end
+
+  @spec bus_route?(t()) :: boolean
+  def bus_route?(route) do
+    route.type == 3
+  end
+
+  @spec bus_route_mbta?(t()) :: boolean
+  def bus_route_mbta?(route) do
     # Verify that route number is not one of the private carriers: 710, 712, 713, 714, 716
-    row["route_id"] not in ["710", "712", "713", "714", "716"]
-  end
-
-  @spec bus_route_valid_row?(Csv.row()) :: boolean
-  def bus_route_valid_row?(row) do
-    # Run all filters on the bus route row
-    bus_route_row?(row) and bus_route_mbta?(row)
+    bus_route?(route) && route.id not in ["710", "712", "713", "714", "716"]
   end
 
   @spec shuttle_route?(t) :: boolean

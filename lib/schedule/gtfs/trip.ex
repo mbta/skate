@@ -40,6 +40,14 @@ defmodule Schedule.Gtfs.Trip do
     :shape_id
   ]
 
+  @spec parse(binary()) :: [t()]
+  def parse(file_binary) do
+    Csv.parse(
+      file_binary,
+      parse: &from_csv_row/1
+    )
+  end
+
   @spec parse(binary() | nil, MapSet.t(Route.id())) :: [t()]
   def parse(file_binary, route_ids) do
     Csv.parse(
