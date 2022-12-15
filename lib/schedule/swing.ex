@@ -120,24 +120,14 @@ defmodule Schedule.Swing do
   @spec first_trip_from_piece(Schedule.Piece.t(), Trip.by_id()) ::
           Trip.id() | Schedule.Trip.t() | Schedule.AsDirected.t()
   defp first_trip_from_piece(piece, trips_by_id) do
-    first_full_trip =
-      piece.trips
-      |> Stream.map(&trip_or_trip_id_to_trip(&1, trips_by_id))
-      |> Stream.filter(fn trip -> !is_nil(trip) end)
-      |> Enum.take(1)
-      |> List.first()
-
-    case {first_full_trip, piece.start_mid_route?} do
-      {nil, %{trip: mid_route_trip}} ->
-        mid_route_trip |> trip_or_trip_id_to_trip(trips_by_id)
-
-      {_, %{trip: mid_route_trip}} ->
+    case piece.start_mid_route? do
+      %{trip: mid_route_trip} ->
         with %{} = first_trip <- mid_route_trip |> trip_or_trip_id_to_trip(trips_by_id) do
-          %{first_trip | run_id: first_full_trip.run_id}
+          %{first_trip | run_id: piece.run_id}
         end
 
-      {_, nil} ->
-        first_full_trip
+      nil ->
+        piece.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
     end
   end
 end
