@@ -50,10 +50,6 @@ defmodule Schedule.Gtfs.RouteTest do
     end
   end
 
-  # TEST: test from_file/1 pulled out to Route
-  # * parses all routes (including non-bus)
-  # * raises error if route_type is missing on a route
-
   describe "shuttle_route?/1" do
     test "returns true if this route is a 'Rail Replacement Bus'" do
       shuttle_route = %Route{

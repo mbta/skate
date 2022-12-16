@@ -47,6 +47,8 @@ defmodule Schedule.Data do
 
   @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
+  @typep map_with_route_id :: %{required(:route_id) => Route.id(), optional(atom()) => any()}
+
   defstruct routes: [],
             route_patterns: [],
             timepoints_by_route: %{},
@@ -331,8 +333,6 @@ defmodule Schedule.Data do
       route_patterns: all_route_patterns
     } = parse_gtfs_all_modes(gtfs_files)
 
-    # TODO: use all_route_patterns & gtfs_all_trips to get a map of stop => routes
-
     bus_routes = Enum.filter(all_routes, &Route.bus_route_mbta?/1)
     bus_route_ids = bus_route_ids(bus_routes)
 
@@ -381,9 +381,15 @@ defmodule Schedule.Data do
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       timepoints_by_id: all_timepoints_by_id(gtfs_files["checkpoints.txt"]),
-      routes: Route.from_file(gtfs_files["routes.txt"], directions_by_route_id),
-      trips: Gtfs.Trip.parse(gtfs_files["trips.txt"]),
-      route_patterns: RoutePattern.from_file(gtfs_files["route_patterns.txt"])
+      routes:
+        Csv.parse(
+          gtfs_files["routes.txt"],
+          filter: &Route.row_has_route_type?/1,
+          parse: &Route.from_csv_row(&1, directions_by_route_id)
+        ),
+      trips: Csv.parse(gtfs_files["trips.txt"], parse: &Gtfs.Trip.from_csv_row/1),
+      route_patterns:
+        Csv.parse(gtfs_files["route_patterns.txt"], parse: &RoutePattern.from_csv_row/1)
     }
   end
 
@@ -535,7 +541,7 @@ defmodule Schedule.Data do
   @spec bus_route_ids([Route.t()]) :: MapSet.t(Route.id())
   defp bus_route_ids(bus_routes), do: MapSet.new(bus_routes, & &1.id)
 
-  @spec filter_by_route_id([struct()], MapSet.t(Route.id())) :: [struct()]
+  @spec filter_by_route_id([map_with_route_id()], MapSet.t(Route.id())) :: [map_with_route_id()]
   def filter_by_route_id(structs_with_route, valid_route_ids) do
     Enum.filter(structs_with_route, &MapSet.member?(valid_route_ids, &1.route_id))
   end

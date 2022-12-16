@@ -27,23 +27,16 @@ defmodule Schedule.Gtfs.Route do
 
   @derive Jason.Encoder
 
+  @bus_route_type 3
+
   defstruct [
     :id,
     :description,
     :direction_names,
     :name,
-    type: 3,
+    type: @bus_route_type,
     garages: MapSet.new([])
   ]
-
-  @spec from_file(binary() | nil, Data.directions_by_route_and_id()) :: [t()]
-  def from_file(file_binary, directions_by_route_id) do
-    Csv.parse(
-      file_binary,
-      filter: &row_has_route_type?/1,
-      parse: &from_csv_row(&1, directions_by_route_id)
-    )
-  end
 
   @spec from_csv_row(Csv.row(), Data.directions_by_route_and_id()) :: t()
   def from_csv_row(row, directions_by_route_id) do
@@ -66,6 +59,18 @@ defmodule Schedule.Gtfs.Route do
     }
   end
 
+  @spec row_has_route_type?(Csv.row()) :: boolean()
+  @doc """
+  Verify that "route_type" exists on the row, especially to prevent issues while testing
+  """
+  def row_has_route_type?(%{"route_type" => nil}) do
+    raise ArgumentError, message: "route_type is required on route rows"
+  end
+
+  def row_has_route_type?(_route_row) do
+    true
+  end
+
   @spec name(Csv.row()) :: String.t()
   defp name(%{"route_short_name" => "", "route_long_name" => long_name}) do
     long_name
@@ -75,19 +80,9 @@ defmodule Schedule.Gtfs.Route do
     short_name
   end
 
-  @spec row_has_route_type?(Csv.row()) :: boolean()
-  # Verify that "route_type" exists on the row, especially to prevent issues while testing
-  defp row_has_route_type?(%{"route_type" => nil}) do
-    raise ArgumentError, message: "route_type is required on route rows"
-  end
-
-  defp row_has_route_type?(_route_row) do
-    true
-  end
-
   @spec bus_route?(t()) :: boolean
   def bus_route?(route) do
-    route.type == 3
+    route.type == @bus_route_type
   end
 
   @spec bus_route_mbta?(t()) :: boolean
