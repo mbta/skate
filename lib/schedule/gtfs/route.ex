@@ -80,15 +80,13 @@ defmodule Schedule.Gtfs.Route do
     short_name
   end
 
-  @spec bus_route?(t()) :: boolean
-  def bus_route?(route) do
-    route.type == @bus_route_type
-  end
-
   @spec bus_route_mbta?(t()) :: boolean
+  @doc """
+  Is this an mbta bus route?
+  """
   def bus_route_mbta?(route) do
     # Verify that route number is not one of the private carriers: 710, 712, 713, 714, 716
-    bus_route?(route) && route.id not in ["710", "712", "713", "714", "716"]
+    route.type == @bus_route_type && route.id not in ["710", "712", "713", "714", "716"]
   end
 
   @spec shuttle_route?(t) :: boolean
