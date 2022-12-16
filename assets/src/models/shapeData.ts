@@ -1,0 +1,34 @@
+import { array, Infer, number, optional, string, type } from "superstruct"
+import { Shape } from "../schedule"
+
+export const ShapeData = type({
+  id: string(),
+  points: array(
+    type({
+      shape_id: string(),
+      sequence: number(),
+      lat: number(),
+      lon: number(),
+    })
+  ),
+  stops: optional(
+    array(
+      type({
+        id: string(),
+        name: string(),
+        lat: number(),
+        lon: number(),
+      })
+    )
+  ),
+})
+export type ShapeData = Infer<typeof ShapeData>
+
+export const shapeFromData = (shapeData: ShapeData): Shape => ({
+  id: shapeData.id,
+  points: shapeData.points,
+  stops: shapeData.stops,
+})
+
+export const shapesFromData = (shapesData: ShapeData[]): Shape[] =>
+  shapesData.map((shapeData) => shapeFromData(shapeData))

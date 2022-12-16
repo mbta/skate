@@ -17,6 +17,7 @@ import {
 } from "./schedule.d"
 import { RouteTab } from "./models/routeTab"
 import { array, assert, Struct } from "superstruct"
+import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
 
 export interface RouteData {
   id: string
@@ -117,16 +118,18 @@ export const fetchRoutes = (): Promise<Route[]> =>
   })
 
 export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
-  apiCall({
+  checkedApiCall({
     url: `/api/shapes/route/${routeId}`,
-    parser: (shapes: Shape[]) => shapes,
+    parser: shapesFromData,
+    dataStruct: array(ShapeData),
     defaultResult: [],
   })
 
 export const fetchShapeForTrip = (tripId: TripId): Promise<Shape | null> =>
-  apiCall({
+  checkedApiCall({
     url: `/api/shapes/trip/${tripId}`,
-    parser: (shape: Shape | null) => shape,
+    parser: shapeFromData,
+    dataStruct: ShapeData,
     defaultResult: null,
   })
 
