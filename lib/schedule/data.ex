@@ -324,87 +324,92 @@ defmodule Schedule.Data do
 
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
-    %{
-      calendar: calendar,
-      routes: all_routes,
-      route_patterns: all_route_patterns,
-      stops: stops,
-      stop_times_by_trip_id: all_stop_times_by_trip_id,
-      timepoints_by_id: timepoints_by_id
-    } = parse_gtfs_all_modes(gtfs_files)
+    gtfs_data = parse_gtfs_files(gtfs_files)
 
-    _connections_by_stop = connections_by_stop(all_route_patterns, all_stop_times_by_trip_id)
-
-    bus_routes = Enum.filter(all_routes, &Route.bus_route_mbta?/1)
-    bus_route_ids = bus_route_ids(bus_routes)
-
-    %{shapes: bus_route_shapes, trips: gtfs_bus_trips} =
-      parse_gtfs_bus_only(gtfs_files, bus_route_ids)
-
-    gtfs_bus_trip_ids = MapSet.new(gtfs_bus_trips, & &1.id)
-
-    bus_stop_times_by_id =
-      Map.filter(all_stop_times_by_trip_id, fn {trip_id, _stop_times} ->
-        MapSet.member?(gtfs_bus_trip_ids, trip_id)
-      end)
-
-    bus_route_patterns = filter_by_route_id(all_route_patterns, bus_route_ids)
-    timepoint_names_by_id = timepoint_names_for_ids(timepoints_by_id)
+    timepoint_names_by_id = timepoint_names_for_ids(gtfs_data.all_modes.timepoints_by_id)
 
     %{blocks: blocks, runs: runs, schedule_trips_by_id: schedule_trips_by_id} =
       hastus_files
-      |> parse_hastus_files(gtfs_bus_trip_ids)
-      |> merge_hastus_gtfs_data(gtfs_bus_trips, bus_stop_times_by_id, timepoint_names_by_id)
+      |> parse_hastus_files(gtfs_data.bus_only.trip_ids)
+      |> merge_hastus_gtfs_data(
+        gtfs_data.bus_only.trips,
+        gtfs_data.bus_only.stop_times_by_trip_id,
+        timepoint_names_by_id
+      )
 
-    bus_routes = Garage.add_garages_to_routes(bus_routes, schedule_trips_by_id)
+    bus_routes = Garage.add_garages_to_routes(gtfs_data.bus_only.routes, schedule_trips_by_id)
 
     %__MODULE__{
       routes: bus_routes,
-      route_patterns: bus_route_patterns,
+      route_patterns: gtfs_data.bus_only.route_patterns,
       timepoints_by_route:
         TimepointOrder.timepoints_for_routes(
-          bus_route_patterns,
-          bus_stop_times_by_id,
-          timepoints_by_id
+          gtfs_data.bus_only.route_patterns,
+          gtfs_data.bus_only.stop_times_by_trip_id,
+          gtfs_data.all_modes.timepoints_by_id
         ),
       timepoint_names_by_id: timepoint_names_by_id,
-      shapes: bus_route_shapes,
-      stops: stops,
+      shapes: gtfs_data.bus_only.shapes,
+      stops: gtfs_data.all_modes.stops_by_id,
       trips: schedule_trips_by_id,
       blocks: blocks,
-      calendar: calendar,
+      calendar: gtfs_data.all_modes.calendar,
       runs: runs,
       swings: Swing.from_blocks(blocks, schedule_trips_by_id)
     }
   end
 
-  defp parse_gtfs_all_modes(gtfs_files) do
+  defp parse_gtfs_files(gtfs_files) do
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
     |> FeedInfo.log_gtfs_version()
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
 
+    all_routes =
+      Csv.parse(
+        gtfs_files["routes.txt"],
+        filter: &Route.row_has_route_type?/1,
+        parse: &Route.from_csv_row(&1, directions_by_route_id)
+      )
+
+    all_route_patterns =
+      Csv.parse(gtfs_files["route_patterns.txt"], parse: &RoutePattern.from_csv_row/1)
+
+    all_stop_times_by_trip_id = StopTime.parse(gtfs_files["stop_times.txt"])
+
+    bus_routes = Enum.filter(all_routes, &Route.bus_route_mbta?/1)
+    bus_route_ids = bus_route_ids(bus_routes)
+    bus_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
+    bus_trip_ids = MapSet.new(bus_trips, & &1.id)
+
+    bus_stop_times_by_trip_id =
+      Map.filter(all_stop_times_by_trip_id, fn {trip_id, _stop_times} ->
+        MapSet.member?(bus_trip_ids, trip_id)
+      end)
+
+    bus_shapes = shapes_by_route_id(gtfs_files["shapes.txt"], bus_trips)
+
     %{
-      calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
-      routes:
-        Csv.parse(
-          gtfs_files["routes.txt"],
-          filter: &Route.row_has_route_type?/1,
-          parse: &Route.from_csv_row(&1, directions_by_route_id)
-        ),
-      route_patterns:
-        Csv.parse(gtfs_files["route_patterns.txt"], parse: &RoutePattern.from_csv_row/1),
-      stops: all_stops_by_id(gtfs_files["stops.txt"]),
-      stop_times_by_trip_id: StopTime.parse(gtfs_files["stop_times.txt"]),
-      timepoints_by_id: all_timepoints_by_id(gtfs_files["checkpoints.txt"])
+      bus_only: %{
+        routes: bus_routes,
+        route_ids: bus_route_ids,
+        route_patterns: filter_by_route_id(all_route_patterns, bus_route_ids),
+        shapes: bus_shapes,
+        trips: bus_trips,
+        trip_ids: bus_trip_ids,
+        stop_times_by_trip_id: bus_stop_times_by_trip_id
+      },
+      all_modes: %{
+        calendar:
+          Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
+        routes: all_routes,
+        route_patterns: all_route_patterns,
+        stops_by_id: all_stops_by_id(gtfs_files["stops.txt"]),
+        stop_times_by_trip_id: all_stop_times_by_trip_id,
+        timepoints_by_id: all_timepoints_by_id(gtfs_files["checkpoints.txt"])
+      }
     }
-  end
-
-  defp parse_gtfs_bus_only(gtfs_files, bus_route_ids) do
-    trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
-
-    %{shapes: shapes_by_route_id(gtfs_files["shapes.txt"], trips), trips: trips}
   end
 
   defp parse_hastus_files(hastus_files, gtfs_bus_trip_ids) do
@@ -444,13 +449,12 @@ defmodule Schedule.Data do
   end
 
   # TODO tighter spec
-  @spec connections_by_stop([RoutePattern.t()], [Gtfs.Trip.t()]) :: map()
-  defp connections_by_stop(_route_patterns, _trips) do
-    #   stops_by_trip_id = Map.new(trips, fn trip -> {trip.id, trip.})
+  # defp connections_by_stop(_route_patterns, _stops_by_id, _stoptimes) do
+  #   stops_by_trip_id = Map.new(trips, fn trip -> {trip.id, trip.})
 
-    # Enum.map()
-    # TODO
-  end
+  # Enum.map()
+  # TODO
+  #  end
 
   @spec runs_from_hastus(
           [Hastus.Activity.t()],
