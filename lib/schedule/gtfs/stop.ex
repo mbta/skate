@@ -1,6 +1,6 @@
 defmodule Schedule.Gtfs.Stop do
   alias Schedule.Csv
-  alias Schedule.Gtfs.Route
+  alias Schedule.Gtfs.{Route, RoutePattern, StopTime}
 
   @type id :: String.t()
 
@@ -12,6 +12,7 @@ defmodule Schedule.Gtfs.Stop do
           longitude: float() | nil,
           connections: [Route.t()]
         }
+  @type by_id :: %{id() => t()}
 
   @enforce_keys [
     :id,
@@ -47,8 +48,65 @@ defmodule Schedule.Gtfs.Stop do
     }
   end
 
+  @spec reject_connections_for_route(t(), Route.id()) :: t()
+  @doc """
+  Remove any stop connections with the given route_id
+  """
   def reject_connections_for_route(stop, route_id) do
     %{stop | connections: Enum.reject(stop.connections, &(&1.id == route_id))}
+  end
+
+  @doc """
+  Add connections to a map of stops by id based on the given route, pattern, and stop time data.
+  The list of connections for a stop will include connections for all sibling and parent stops.
+  """
+  @spec stops_with_connections(by_id(), [Route.t()], [RoutePattern.t()], StopTime.by_trip_id()) ::
+          by_id()
+  def stops_with_connections(stops_by_id, routes, route_patterns, stop_times_by_trip_id) do
+    routes_by_id = Map.new(routes, &{&1.id, &1})
+
+    connections_by_stop_id =
+      route_patterns
+      |> Enum.reduce(%{}, fn route_pattern, acc_stop_id_to_routes ->
+        route_pattern
+        |> stop_id_to_routes_for_pattern(routes_by_id, stop_times_by_trip_id)
+        |> Map.merge(acc_stop_id_to_routes, fn _stop_id, new_routes, acc_routes ->
+          MapSet.union(acc_routes, new_routes)
+        end)
+      end)
+
+    Map.new(stops_by_id, fn {stop_id, stop} ->
+      {
+        stop_id,
+        # TODO: connections for parent stop id
+        %{
+          stop
+          | connections:
+              connections_by_stop_id
+              |> Map.get(stop_id, MapSet.new())
+              |> MapSet.to_list()
+        }
+      }
+    end)
+  end
+
+  @spec stop_id_to_routes_for_pattern(
+          RoutePattern.t(),
+          %{Route.id() => Route.t()},
+          StopTime.by_trip_id()
+        ) :: %{id() => MapSet.t(Route.t())}
+  defp stop_id_to_routes_for_pattern(route_pattern, routes_by_id, stop_times_by_trip_id) do
+    case Map.get(routes_by_id, route_pattern.route_id) do
+      nil ->
+        %{}
+
+      route ->
+        stop_times_by_trip_id
+        |> Map.get(route_pattern.representative_trip_id, [])
+        |> Map.new(fn stop_time -> {stop_time.stop_id, MapSet.new([route])} end)
+
+        # TODO: use parent_id in grouping
+    end
   end
 
   @spec parse_lat_lon(String.t()) :: float() | nil

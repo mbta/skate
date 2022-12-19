@@ -373,7 +373,7 @@ defmodule Schedule.Data do
       timepoint_names_by_id: timepoint_names_by_id,
       shapes: gtfs_data.bus_only.shapes,
       stops:
-        stops_with_connections(
+        Stop.stops_with_connections(
           gtfs_data.all_modes.stops_by_id,
           gtfs_data.all_modes.routes,
           gtfs_data.all_modes.route_patterns,
@@ -662,33 +662,5 @@ defmodule Schedule.Data do
     stops_data
     |> Csv.parse(parse: &Stop.from_csv_row/1)
     |> Map.new(fn stop -> {stop.id, stop} end)
-  end
-
-  defp stops_with_connections(stops_by_id, routes, route_patterns, stop_times_by_trip_id) do
-    routes_by_id = Map.new(routes, &{&1.id, &1})
-
-    connections_by_stop_id =
-      route_patterns
-      |> Enum.flat_map(fn route_pattern ->
-        case Map.get(routes_by_id, route_pattern.route_id) do
-          nil ->
-            []
-
-          route ->
-            stop_times_by_trip_id
-            |> Map.get(route_pattern.representative_trip_id, [])
-            # TODO: map to parent stop id
-            |> Enum.map(fn stop_time -> {route, stop_time.stop_id} end)
-        end
-      end)
-      |> Enum.group_by(fn {_route, stop_id} -> stop_id end, fn {route, _stop_id} -> route end)
-
-    Map.new(stops_by_id, fn {stop_id, stop} ->
-      {
-        stop_id,
-        # TODO: connections for parent stop id
-        %{stop | connections: Map.get(connections_by_stop_id, stop_id, [])}
-      }
-    end)
   end
 end

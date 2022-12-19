@@ -268,6 +268,14 @@ defmodule ScheduleTest do
       pid = Schedule.start_mocked(%{})
       assert Schedule.stop("id", pid) == nil
     end
+
+    test "bus stop has included bus and subway connections" do
+      # TODO
+    end
+
+    test "bus stop has connections for parent and sibling stops" do
+      # TODO
+    end
   end
 
   describe "trip" do
@@ -686,7 +694,7 @@ defmodule ScheduleTest do
   end
 
   describe "shape_with_stops_for_trip" do
-    test "returns the shape with stops and connections for the trip" do
+    test "returns the shape for the trip with stops and connections excluding the trip's route" do
       pid =
         Schedule.start_mocked(%{
           gtfs: %{
