@@ -19,6 +19,37 @@ describe("shapeFromData", () => {
 
     expect(shapeFromData(data)).toEqual(expectedResult)
   })
+
+  test("handles data with connections", () => {
+    const shapeId = "shape1"
+    const data: ShapeData = shapeDataFactory.build({
+      id: shapeId,
+      stops: [
+        {
+          id: "1",
+          name: "Some Stop",
+          lat: 0,
+          lon: 0,
+          connections: [{ type: 3, id: "747", name: "CT2" }],
+        },
+      ],
+    })
+
+    const expectedResult = shapeFactory.build({
+      id: shapeId,
+      stops: [
+        {
+          id: "1",
+          name: "Some Stop",
+          lat: 0,
+          lon: 0,
+          connections: [{ type: 3, id: "747", name: "CT2" }],
+        },
+      ],
+    })
+
+    expect(shapeFromData(data)).toEqual(expectedResult)
+  })
 })
 
 describe("shapesFromData", () => {

@@ -13,6 +13,7 @@ export interface Stop {
   name: string
   lat: number
   lon: number
+  connections?: { type: number; id: RouteId; name: string }[]
 }
 
 export type RouteId = string
