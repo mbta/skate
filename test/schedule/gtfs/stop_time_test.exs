@@ -145,17 +145,6 @@ defmodule Schedule.Gtfs.StopTimeTest do
     end
   end
 
-  describe "row_in_trip_id_set?/2" do
-    test "returns whether the row's trip id is in the given set" do
-      assert StopTime.row_in_trip_id_set?(
-               List.first(@csv_rows),
-               MapSet.new(["39770779", "39770780"])
-             )
-
-      refute StopTime.row_in_trip_id_set?(List.first(@csv_rows), MapSet.new(["1", "2"]))
-    end
-  end
-
   describe "stop_sequence_integer/1" do
     test "returns the stop_sequence value as an integer" do
       assert StopTime.stop_sequence_integer(List.first(@csv_rows)) == 1
