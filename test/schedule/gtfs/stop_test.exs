@@ -189,12 +189,65 @@ defmodule Schedule.Gtfs.StopTest do
                )
     end
 
-    test "connections include routes that stop at sibling stops" do
-      # TODO
+    test "connections include routes that stop at sibling stops", data do
+      sibling_stop_1_id = data.child_stop_1.id
+      sibling_stop_2_id = data.child_stop_2.id
+
+      route_1 = data.route_1
+      route_2 = data.route_2
+
+      route_1_trip_id = data.route_1_pattern_1.representative_trip_id
+      route_2_trip_id = data.route_2_pattern_1.representative_trip_id
+
+      assert %{
+               ^sibling_stop_1_id => %{connections: [^route_1, ^route_2]},
+               ^sibling_stop_2_id => %{connections: [^route_1, ^route_2]}
+             } =
+               Stop.stops_with_connections(
+                 %{
+                   sibling_stop_1_id => data.child_stop_1,
+                   sibling_stop_2_id => data.child_stop_2
+                 },
+                 [data.route_1, data.route_2],
+                 [data.route_1_pattern_1, data.route_2_pattern_1],
+                 %{
+                   # Route 1 hits only sibling 1 stop
+                   route_1_trip_id => [
+                     %StopTime{stop_id: sibling_stop_1_id, time: 60}
+                   ],
+                   # Route 2 hits only sibling 2 stop
+                   route_2_trip_id => [%StopTime{stop_id: sibling_stop_2_id, time: 180}]
+                 }
+               )
     end
 
-    test "connections include routes that stop at parent stops" do
-      # TODO
+    test "connections include routes that stop at parent stops", data do
+      child_stop_id = data.child_stop_1.id
+      parent_stop_id = data.parent_stop.id
+
+      route_1 = data.route_1
+      route_2 = data.route_2
+
+      route_1_trip_id = data.route_1_pattern_1.representative_trip_id
+      route_2_trip_id = data.route_2_pattern_1.representative_trip_id
+
+      assert %{
+               ^child_stop_id => %{connections: [^route_1, ^route_2]},
+               ^parent_stop_id => %{connections: [^route_1, ^route_2]}
+             } =
+               Stop.stops_with_connections(
+                 %{child_stop_id => data.child_stop_1, parent_stop_id => data.parent_stop},
+                 [data.route_1, data.route_2],
+                 [data.route_1_pattern_1, data.route_2_pattern_1],
+                 %{
+                   # Route 1 hits only parent stop
+                   route_1_trip_id => [
+                     %StopTime{stop_id: parent_stop_id, time: 60}
+                   ],
+                   # Route 2 hits only child stop
+                   route_2_trip_id => [%StopTime{stop_id: child_stop_id, time: 180}]
+                 }
+               )
     end
 
     test "connections are unique when multiple route patterns go to same stop", data do

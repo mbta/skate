@@ -270,11 +270,60 @@ defmodule ScheduleTest do
     end
 
     test "bus stop has included bus and subway connections" do
-      # TODO
-    end
+      pid =
+        Schedule.start_mocked(%{
+          gtfs: %{
+            "routes.txt" => [
+              "route_id,route_type,route_short_name,route_desc",
+              "route,3,route,\"Key Bus\"",
+              "subway_route,1,subway_route_name,\"Subway Route\""
+            ],
+            "route_patterns.txt" => [
+              "route_pattern_id,route_id,direction_id,representative_trip_id",
+              "p1,route,1,trip",
+              "p2,subway_route,1,trip_2"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+              "route,service,trip,headsign,1,block,route-_-0,shape",
+              "subway_route,service,trip_2,headsign,1,block,p2,shape"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+              "trip,,00:00:01,stop1_id,1,",
+              "trip_2,,00:00:01,stop1_id,1,"
+            ],
+            "stops.txt" => [
+              "stop_id,stop_name,stop_lat,stop_lon,parent_station",
+              "stop1_id,One,1.0,1.5,"
+            ],
+            "shapes.txt" => [
+              "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+              "shape,42.373178,-71.118170,0,"
+            ]
+          }
+        })
 
-    test "bus stop has connections for parent and sibling stops" do
-      # TODO
+      %Stop{
+        id: "stop1_id",
+        name: "One",
+        connections: [
+          %Route{
+            id: "route",
+            name: "route",
+            description: "Key Bus",
+            direction_names: %{0 => nil, 1 => nil},
+            type: 3
+          },
+          %Route{
+            id: "subway_route",
+            name: "subway_route_name",
+            description: "Subway Route",
+            direction_names: %{0 => nil, 1 => nil},
+            type: 1
+          }
+        ]
+      } = Schedule.stop("stop1_id", pid)
     end
   end
 

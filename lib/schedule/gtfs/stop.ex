@@ -65,37 +65,51 @@ defmodule Schedule.Gtfs.Stop do
   def stops_with_connections(stops_by_id, routes, route_patterns, stop_times_by_trip_id) do
     routes_by_id = Map.new(routes, &{&1.id, &1})
 
-    connections_by_stop_id =
+    connections_by_parent_or_stop_id =
       route_patterns
       |> Enum.reduce(%{}, fn route_pattern, acc_stop_id_to_routes ->
         route_pattern
-        |> stop_id_to_routes_for_pattern(routes_by_id, stop_times_by_trip_id)
+        |> parent_or_stop_id_to_routes_for_pattern(
+          routes_by_id,
+          stop_times_by_trip_id,
+          stops_by_id
+        )
         |> Map.merge(acc_stop_id_to_routes, fn _stop_id, new_routes, acc_routes ->
           MapSet.union(acc_routes, new_routes)
         end)
       end)
 
+    stops_with_connections(stops_by_id, connections_by_parent_or_stop_id)
+  end
+
+  @spec stops_with_connections(by_id(), %{id() => MapSet.t(Route.t())}) :: by_id()
+  defp stops_with_connections(stops_by_id, connections_by_parent_or_stop_id) do
     Map.new(stops_by_id, fn {stop_id, stop} ->
       {
         stop_id,
-        # TODO: connections for parent stop id
         %{
           stop
           | connections:
-              connections_by_stop_id
-              |> Map.get(stop_id, MapSet.new())
+              connections_by_parent_or_stop_id
+              |> Map.get(stop_id_for_route_association(stop), MapSet.new())
               |> MapSet.to_list()
         }
       }
     end)
   end
 
-  @spec stop_id_to_routes_for_pattern(
+  @spec parent_or_stop_id_to_routes_for_pattern(
           RoutePattern.t(),
           %{Route.id() => Route.t()},
-          StopTime.by_trip_id()
+          StopTime.by_trip_id(),
+          by_id()
         ) :: %{id() => MapSet.t(Route.t())}
-  defp stop_id_to_routes_for_pattern(route_pattern, routes_by_id, stop_times_by_trip_id) do
+  defp parent_or_stop_id_to_routes_for_pattern(
+         route_pattern,
+         routes_by_id,
+         stop_times_by_trip_id,
+         stops_by_id
+       ) do
     case Map.get(routes_by_id, route_pattern.route_id) do
       nil ->
         %{}
@@ -103,9 +117,24 @@ defmodule Schedule.Gtfs.Stop do
       route ->
         stop_times_by_trip_id
         |> Map.get(route_pattern.representative_trip_id, [])
-        |> Map.new(fn stop_time -> {stop_time.stop_id, MapSet.new([route])} end)
+        # For child stops, associate all routes with the parent stop to easily get all connections for a family of stops.
+        |> Map.new(fn stop_time ->
+          {stop_id_for_route_association(stop_time.stop_id, stops_by_id), MapSet.new([route])}
+        end)
+    end
+  end
 
-        # TODO: use parent_id in grouping
+  @spec stop_id_for_route_association(t()) :: id()
+  defp stop_id_for_route_association(stop) do
+    stop.parent_station_id || stop.id
+  end
+
+  @spec stop_id_for_route_association(id(), by_id()) :: id()
+  defp stop_id_for_route_association(stop_id, stops_by_id) do
+    case Map.get(stops_by_id, stop_id) do
+      nil -> stop_id
+      %{parent_station_id: nil} -> stop_id
+      %{parent_station_id: parent_id} -> parent_id
     end
   end
 
