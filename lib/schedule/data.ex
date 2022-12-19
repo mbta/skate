@@ -4,6 +4,7 @@ defmodule Schedule.Data do
   """
   require Logger
 
+  alias Schedule.Hastus.Activity
   alias Schedule.Block
   alias Schedule.Csv
   alias Schedule.TimepointOrder
@@ -67,6 +68,10 @@ defmodule Schedule.Data do
           gtfs: %{String.t() => binary()},
           hastus: %{String.t() => binary()}
         }
+
+  @typep gtfs_files :: %{String.t() => binary()}
+  @typep hastus_files :: %{String.t() => binary()}
+  @typep hastus_data :: %{activities: [Activity.t()], trips: [Hastus.Trip.t()]}
 
   @spec all_routes(t()) :: [Route.t()]
   def all_routes(%__MODULE__{routes: routes}), do: routes
@@ -364,6 +369,7 @@ defmodule Schedule.Data do
   # Parse GTFS files. Returns files parsed without filtering under the key `all_modes`.
   # Data filtered to only include bus is under the key `bus_only`. Data may appear under one or both
   # keys depending on how it needs to be used.
+  @spec parse_gtfs_files(gtfs_files()) :: %{bus_only: map(), all_modes: map()}
   defp parse_gtfs_files(gtfs_files) do
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
@@ -417,6 +423,7 @@ defmodule Schedule.Data do
     }
   end
 
+  @spec parse_hastus_files(hastus_files(), MapSet.t(Gtfs.Trip.id())) :: hastus_data()
   defp parse_hastus_files(hastus_files, gtfs_bus_trip_ids) do
     %{
       activities: Hastus.Activity.parse(hastus_files["activities.csv"]),
@@ -428,11 +435,22 @@ defmodule Schedule.Data do
   end
 
   # Merge GTFS and HASTUS representation of trips
+  @spec merge_hastus_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], StopTime.by_trip_id()) ::
+          Schedule.Trip.by_id()
   defp merge_hastus_trips(gtfs_bus_trips, hastus_trips, stop_times_by_id) do
     Schedule.Trip.merge_trips(gtfs_bus_trips, hastus_trips, stop_times_by_id)
   end
 
   # Get runs, blocks, and swings from HASTUS, using the `schedule_trips_by_id` that incorporate GTFS trip data
+  @spec hastus_data_with_schedule_trips(
+          hastus_data(),
+          Schedule.Trip.by_id(),
+          Timepoint.timepoint_names_by_id()
+        ) :: %{
+          blocks: Block.by_id(),
+          runs: Run.by_id(),
+          swings: Swing.by_schedule_id_and_route_id()
+        }
   defp hastus_data_with_schedule_trips(
          %{activities: hastus_activities, trips: hastus_trips},
          schedule_trips_by_id,
@@ -454,8 +472,8 @@ defmodule Schedule.Data do
     blocks = Block.blocks_from_pieces(pieces)
 
     %{
-      runs: runs,
       blocks: blocks,
+      runs: runs,
       swings: Swing.from_blocks(blocks, schedule_trips_by_id)
     }
   end
