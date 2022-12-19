@@ -337,7 +337,7 @@ defmodule Schedule.Data do
     timepoint_names_by_id = timepoint_names_for_ids(gtfs_data.all_modes.timepoints_by_id)
 
     %{blocks: blocks, runs: runs, swings: swings} =
-      hastus_schedule_data(hastus_data, schedule_trips_by_id, timepoint_names_by_id)
+      hastus_data_with_schedule_trips(hastus_data, schedule_trips_by_id, timepoint_names_by_id)
 
     bus_routes = Garage.add_garages_to_routes(gtfs_data.bus_only.routes, schedule_trips_by_id)
 
@@ -361,6 +361,9 @@ defmodule Schedule.Data do
     }
   end
 
+  # Parse GTFS files. Returns files parsed without filtering under the key `all_modes`.
+  # Data filtered to only include bus is under the key `bus_only`. Data may appear under one or both
+  # keys depending on how it needs to be used.
   defp parse_gtfs_files(gtfs_files) do
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
@@ -424,11 +427,13 @@ defmodule Schedule.Data do
     }
   end
 
+  # Merge GTFS and HASTUS representation of trips
   defp merge_hastus_trips(gtfs_bus_trips, hastus_trips, stop_times_by_id) do
     Schedule.Trip.merge_trips(gtfs_bus_trips, hastus_trips, stop_times_by_id)
   end
 
-  defp hastus_schedule_data(
+  # Get runs, blocks, and swings from HASTUS, using the `schedule_trips_by_id` that incorporate GTFS trip data
+  defp hastus_data_with_schedule_trips(
          %{activities: hastus_activities, trips: hastus_trips},
          schedule_trips_by_id,
          timepoint_names_by_id
