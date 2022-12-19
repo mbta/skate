@@ -38,13 +38,6 @@ defmodule Schedule.Gtfs.StopTime do
     |> trip_stop_times_from_csv()
   end
 
-  @spec parse(binary(), MapSet.t(Trip.id())) :: by_trip_id()
-  def parse(file_binary, trip_ids) do
-    file_binary
-    |> Csv.parse(filter: &row_in_trip_id_set?(&1, trip_ids))
-    |> trip_stop_times_from_csv()
-  end
-
   @spec trip_stop_times_from_csv([Csv.row()]) :: by_trip_id()
   def trip_stop_times_from_csv(stop_times_csv) do
     stop_times_csv
@@ -73,9 +66,6 @@ defmodule Schedule.Gtfs.StopTime do
       end)
     end)
   end
-
-  @spec row_in_trip_id_set?(Csv.row(), MapSet.t(Trip.id())) :: boolean
-  def row_in_trip_id_set?(row, trip_id_set), do: MapSet.member?(trip_id_set, row["trip_id"])
 
   @spec stop_sequence_integer(Csv.row()) :: integer()
   def stop_sequence_integer(stop_time_row), do: String.to_integer(stop_time_row["stop_sequence"])
