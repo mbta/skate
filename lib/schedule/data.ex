@@ -45,7 +45,7 @@ defmodule Schedule.Data do
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
-
+  S
   @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
   @typep map_with_route_id :: %{required(:route_id) => Route.id(), optional(atom()) => any()}
@@ -56,6 +56,7 @@ defmodule Schedule.Data do
             timepoint_names_by_id: %{},
             shapes: %{},
             stops: %{},
+            connections_by_stop_id: %{},
             trips: %{},
             blocks: %{},
             calendar: %{},
@@ -89,7 +90,6 @@ defmodule Schedule.Data do
 
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
-
   @spec trip(t(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
@@ -357,7 +357,13 @@ defmodule Schedule.Data do
         ),
       timepoint_names_by_id: timepoint_names_by_id,
       shapes: gtfs_data.bus_only.shapes,
-      stops: gtfs_data.all_modes.stops_by_id,
+      stops:
+        stops_with_connections(
+          gtfs_data.all_modes.stops_by_id,
+          gtfs_data.all_modes.routes,
+          gtfs_data.all_modes.route_patterns,
+          gtfs_data.all_modes.stop_times_by_trip_id
+        ),
       trips: schedule_trips_by_id,
       blocks: blocks,
       calendar: gtfs_data.all_modes.calendar,
@@ -643,5 +649,31 @@ defmodule Schedule.Data do
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
 
-  # Add connections_by_stop_id(routes, route_patterns, stop_times_by_trip_id)
+  defp stops_with_connections(stops_by_id, routes, route_patterns, stop_times_by_trip_id) do
+    routes_by_id = Map.new(routes, &{&1.id, &1})
+
+    connections_by_stop_id =
+      route_patterns
+      |> Enum.flat_map(fn route_pattern ->
+        case Map.get(routes_by_id, route_pattern.route_id) do
+          nil ->
+            []
+
+          route ->
+            stop_times_by_trip_id
+            |> Map.get(route_pattern.representative_trip_id, [])
+            # TODO: map to parent stop id
+            |> Enum.map(fn stop_time -> {route, stop_time.stop_id} end)
+        end
+      end)
+      |> Enum.group_by(fn {_route, stop_id} -> stop_id end, fn {route, _stop_id} -> route end)
+
+    Map.new(stops_by_id, fn {stop_id, stop} ->
+      {
+        stop_id,
+        # TODO: connections for parent stop id
+        %{stop | connections: Map.get(connections_by_stop_id, stop_id, [])}
+      }
+    end)
+  end
 end

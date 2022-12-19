@@ -717,8 +717,7 @@ defmodule ScheduleTest do
           }
         })
 
-      assert Schedule.shape_with_stops_for_trip("trip", pid) ==
-               %Schedule.ShapeWithStops{
+      assert  %Schedule.ShapeWithStops{
                  id: "shape",
                  points: [
                    %Point{
@@ -731,7 +730,8 @@ defmodule ScheduleTest do
                  stops: [
                    %Stop{id: "stop1_id", name: "One", latitude: 1.0, longitude: 1.5}
                  ]
-               }
+               } = Schedule.shape_with_stops_for_trip("trip", pid)
+
     end
   end
 

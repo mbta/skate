@@ -1,5 +1,6 @@
 defmodule Schedule.Gtfs.Stop do
   alias Schedule.Csv
+  alias Schedule.Gtfs.Route
 
   @type id :: String.t()
 
@@ -8,7 +9,8 @@ defmodule Schedule.Gtfs.Stop do
           name: String.t(),
           parent_station_id: id() | nil,
           latitude: float() | nil,
-          longitude: float() | nil
+          longitude: float() | nil,
+          connections: [Route.t()]
         }
 
   @enforce_keys [
@@ -23,7 +25,8 @@ defmodule Schedule.Gtfs.Stop do
     :name,
     :parent_station_id,
     :latitude,
-    :longitude
+    :longitude,
+    connections: []
   ]
 
   @spec parent_station_id(t() | nil) :: id() | nil
