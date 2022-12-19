@@ -74,13 +74,24 @@ defmodule SkateWeb.ShapeControllerTest do
         "id" => "stop_1",
         "name" => "One",
         "lat" => 42.01,
-        "lon" => -71.01
+        "lon" => -71.01,
+        "connections" => [
+          %{
+            "id" => "route_1",
+            "name" => "route_1_name",
+            "description" => "Key Route",
+            "direction_names" => %{},
+            "garages" => [],
+            "type" => 3
+          }
+        ]
       },
       %{
         "id" => "stop_2",
         "name" => "Two",
         "lat" => 42.02,
-        "lon" => -71.02
+        "lon" => -71.02,
+        "connections" => []
       }
     ]
   }
