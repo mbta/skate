@@ -45,7 +45,7 @@ defmodule Schedule.Data do
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
-  S
+
   @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
   @typep map_with_route_id :: %{required(:route_id) => Route.id(), optional(atom()) => any()}
@@ -56,7 +56,6 @@ defmodule Schedule.Data do
             timepoint_names_by_id: %{},
             shapes: %{},
             stops: %{},
-            connections_by_stop_id: %{},
             trips: %{},
             blocks: %{},
             calendar: %{},
