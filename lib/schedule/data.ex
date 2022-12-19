@@ -325,17 +325,19 @@ defmodule Schedule.Data do
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
     gtfs_data = parse_gtfs_files(gtfs_files)
+    hastus_data = parse_hastus_files(hastus_files, gtfs_data.bus_only.trip_ids)
+
+    schedule_trips_by_id =
+      merge_hastus_trips(
+        gtfs_data.bus_only.trips,
+        hastus_data.trips,
+        gtfs_data.bus_only.stop_times_by_trip_id
+      )
 
     timepoint_names_by_id = timepoint_names_for_ids(gtfs_data.all_modes.timepoints_by_id)
 
-    %{blocks: blocks, runs: runs, schedule_trips_by_id: schedule_trips_by_id} =
-      hastus_files
-      |> parse_hastus_files(gtfs_data.bus_only.trip_ids)
-      |> merge_hastus_gtfs_data(
-        gtfs_data.bus_only.trips,
-        gtfs_data.bus_only.stop_times_by_trip_id,
-        timepoint_names_by_id
-      )
+    %{blocks: blocks, runs: runs, swings: swings} =
+      hastus_schedule_data(hastus_data, schedule_trips_by_id, timepoint_names_by_id)
 
     bus_routes = Garage.add_garages_to_routes(gtfs_data.bus_only.routes, schedule_trips_by_id)
 
@@ -355,7 +357,7 @@ defmodule Schedule.Data do
       blocks: blocks,
       calendar: gtfs_data.all_modes.calendar,
       runs: runs,
-      swings: Swing.from_blocks(blocks, schedule_trips_by_id)
+      swings: swings
     }
   end
 
@@ -422,15 +424,15 @@ defmodule Schedule.Data do
     }
   end
 
-  defp merge_hastus_gtfs_data(
+  defp merge_hastus_trips(gtfs_bus_trips, hastus_trips, stop_times_by_id) do
+    Schedule.Trip.merge_trips(gtfs_bus_trips, hastus_trips, stop_times_by_id)
+  end
+
+  defp hastus_schedule_data(
          %{activities: hastus_activities, trips: hastus_trips},
-         gtfs_bus_trips,
-         stop_times_by_id,
+         schedule_trips_by_id,
          timepoint_names_by_id
        ) do
-    schedule_trips_by_id =
-      Schedule.Trip.merge_trips(gtfs_bus_trips, hastus_trips, stop_times_by_id)
-
     runs =
       runs_from_hastus(
         hastus_activities,
@@ -445,16 +447,13 @@ defmodule Schedule.Data do
       |> Enum.flat_map(&Run.pieces/1)
 
     blocks = Block.blocks_from_pieces(pieces)
-    %{schedule_trips_by_id: schedule_trips_by_id, runs: runs, blocks: blocks}
+
+    %{
+      runs: runs,
+      blocks: blocks,
+      swings: Swing.from_blocks(blocks, schedule_trips_by_id)
+    }
   end
-
-  # TODO tighter spec
-  # defp connections_by_stop(_route_patterns, _stops_by_id, _stoptimes) do
-  #   stops_by_trip_id = Map.new(trips, fn trip -> {trip.id, trip.})
-
-  # Enum.map()
-  # TODO
-  #  end
 
   @spec runs_from_hastus(
           [Hastus.Activity.t()],
@@ -620,4 +619,6 @@ defmodule Schedule.Data do
     |> Csv.parse(parse: &Stop.from_csv_row/1)
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
+
+  # Add connections_by_stop_id(routes, route_patterns, stop_times_by_trip_id)
 end
