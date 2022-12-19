@@ -1,7 +1,7 @@
 defmodule Schedule.Gtfs.StopTest do
   use ExUnit.Case, async: true
 
-  alias Schedule.Gtfs.Stop
+  alias Schedule.Gtfs.{Route, Stop}
 
   @csv_row %{
     "stop_id" => "1",
@@ -71,6 +71,34 @@ defmodule Schedule.Gtfs.StopTest do
                latitude: nil,
                longitude: nil
              }
+    end
+  end
+
+  describe "reject_connections_for_route/2" do
+    test "only rejects connections with the matching route id " do
+      matching_route = %Route{
+        id: "39",
+        name: "first_bus",
+        description: "bus_route",
+        direction_names: %{}
+      }
+
+      other_route = %Route{
+        id: "86",
+        name: "second_bus",
+        description: "bus_route",
+        direction_names: %{}
+      }
+
+      stop = %Stop{
+        id: "1",
+        name: "name",
+        parent_station_id: nil,
+        connections: [matching_route, other_route]
+      }
+
+      assert %{connections: [other_route]} =
+               Stop.reject_connections_for_route(stop, matching_route.id)
     end
   end
 end

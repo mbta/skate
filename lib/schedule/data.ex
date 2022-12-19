@@ -226,11 +226,26 @@ defmodule Schedule.Data do
 
   @spec shape_with_stops_for_trip(t(), Schedule.Trip.id()) :: Schedule.ShapeWithStops.t()
   def shape_with_stops_for_trip(data, trip_id) do
-    stops = stops_for_trip(data, trip_id)
+    %{trips: trips_by_id} = data
+
+    trip = Map.get(trips_by_id, trip_id)
+    trip_route_id = if trip, do: trip.route_id, else: nil
+
+    stops_for_trip =
+      case trip_route_id do
+        # This trip doesn't have a route - no connections to filter
+        nil ->
+          stops_for_trip(data, trip_id)
+
+        trip_route_id ->
+          data
+          |> stops_for_trip(trip_id)
+          |> Enum.map(&Stop.reject_connections_for_route(&1, trip_route_id))
+      end
 
     case shape_for_trip(data, trip_id) do
       nil -> nil
-      shape -> Schedule.ShapeWithStops.create(shape, stops)
+      shape -> Schedule.ShapeWithStops.create(shape, stops_for_trip)
     end
   end
 

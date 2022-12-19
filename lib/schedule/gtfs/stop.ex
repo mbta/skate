@@ -47,6 +47,10 @@ defmodule Schedule.Gtfs.Stop do
     }
   end
 
+  def reject_connections_for_route(stop, route_id) do
+    %{stop | connections: Enum.reject(stop.connections, &(&1.id == route_id))}
+  end
+
   @spec parse_lat_lon(String.t()) :: float() | nil
   defp parse_lat_lon(""), do: nil
   defp parse_lat_lon(s), do: String.to_float(s)
