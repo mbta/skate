@@ -18,6 +18,15 @@ export const ShapeData = type({
         name: string(),
         lat: number(),
         lon: number(),
+        connections: optional(
+          array(
+            type({
+              type: number(),
+              id: string(),
+              name: string(),
+            })
+          )
+        ),
       })
     )
   ),
