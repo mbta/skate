@@ -31,6 +31,13 @@ defmodule Schedule.Gtfs.StopTime do
 
   @type timepoint_id :: String.t()
 
+  @spec parse(binary()) :: by_trip_id()
+  def parse(file_binary) do
+    file_binary
+    |> Csv.parse()
+    |> trip_stop_times_from_csv()
+  end
+
   @spec parse(binary(), MapSet.t(Trip.id())) :: by_trip_id()
   def parse(file_binary, trip_ids) do
     file_binary
