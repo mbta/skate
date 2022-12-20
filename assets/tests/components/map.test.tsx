@@ -94,8 +94,16 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
+const originalScrollTo = global.scrollTo
+// Clicking/moving map calls scrollTo under the hood
+jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
 beforeEach(() => {
   ;(getTestGroups as jest.Mock).mockReturnValue([])
+})
+
+afterAll(() => {
+  global.scrollTo = originalScrollTo
 })
 
 describe("map", () => {
@@ -187,8 +195,6 @@ describe("map", () => {
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-
     const onClick = jest.fn()
     render(<Map vehicles={[vehicle]} onPrimaryVehicleSelect={onClick} />)
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
@@ -196,7 +202,6 @@ describe("map", () => {
   })
 
   test("does not perform onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const onClick = jest.fn()
     render(
       <Map
@@ -210,7 +215,6 @@ describe("map", () => {
   })
 
   test("renders street view link from stop if in maps test group", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
@@ -223,7 +227,6 @@ describe("map", () => {
   })
 
   test("does not render street view link from stop if not in maps test group", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(getTestGroups as jest.Mock).mockReturnValue([])
 
     const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
@@ -237,7 +240,7 @@ describe("map", () => {
 
   test("can turn on street view and click on the map", async () => {
     const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
@@ -257,7 +260,7 @@ describe("map", () => {
 
   test("clicking on the map with street view off doesn't open link", async () => {
     const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
@@ -433,7 +436,6 @@ describe("auto centering", () => {
   })
 
   test("recenter control turns on auto center", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const result = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
