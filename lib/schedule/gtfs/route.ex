@@ -63,12 +63,12 @@ defmodule Schedule.Gtfs.Route do
   @doc """
   Verify that "route_type" exists on the row, especially to prevent issues while testing
   """
-  def row_has_route_type?(%{"route_type" => nil}) do
-    raise ArgumentError, message: "route_type is required on route rows"
+  def row_has_route_type?(%{"route_type" => route_id}) when not is_nil(route_id) do
+    true
   end
 
   def row_has_route_type?(_route_row) do
-    true
+    raise ArgumentError, message: "route_type is required on route rows"
   end
 
   @spec name(Csv.row()) :: String.t()
