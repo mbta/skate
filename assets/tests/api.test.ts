@@ -580,6 +580,25 @@ describe("fetchNearestIntersection", () => {
 })
 
 describe("fetchSwings", () => {
+  test("throws superstruct error if either route_id field is null", async () => {
+    const data: any = [
+      {
+        from_route_id: null,
+        to_route_id: null,
+        block_id: "A12-34",
+        from_run_id: "123-456",
+        from_trip_id: "1234",
+        to_run_id: "123-789",
+        to_trip_id: "5678",
+        time: 100,
+      },
+    ]
+
+    mockFetch(200, data)
+
+    await expect(fetchSwings([])).rejects.toThrowError(StructError)
+  })
+
   test("parses swings", (done) => {
     const swing = {
       block_id: "B1",
