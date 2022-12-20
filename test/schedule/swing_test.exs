@@ -272,59 +272,48 @@ defmodule Schedule.SwingTest do
     end
 
     test "handles mid-route swing" do
+      route_id_during_swing = "route-id-during-swing"
+      trip_id_during_swing = "trip-id-during-swing"
+      run_id_during_swing = "run-id-during-swing"
+
+      route_id_after_swing = "route-after-swing"
+      run_id_after_swing = "run-after-swing"
+      trip_id_after_swing = "trip-id-after-swing"
+
       blocks = %{
         "A12-34" =>
           build(
             :block,
-            schedule_id: "a",
             service_id: "b",
-            start_time: 1,
-            end_time: 2,
             id: "A12-34",
             pieces: [
               build(
                 :piece,
-                schedule_id: "a",
-                run_id: "123-456",
+                run_id: run_id_during_swing,
                 block_id: "A12-34",
-                start_time: 101,
-                start_place: "place1",
                 trips: [
                   build(
                     :trip,
-                    id: "1234",
+                    id: trip_id_during_swing,
                     service_id: "b",
                     block_id: "A12-34",
-                    route_id: "12",
-                    headsign: "Somewhere",
-                    direction_id: 0,
-                    run_id: "123-456",
-                    start_time: 101,
-                    end_time: 200,
-                    start_place: "place1",
-                    end_place: "place2"
+                    route_id: route_id_during_swing,
+                    run_id: run_id_during_swing
                   )
                 ],
-                end_time: 150,
-                end_place: "place2",
                 start_mid_route?: nil,
                 end_mid_route?: true
               ),
               build(
                 :piece,
-                schedule_id: "a",
-                run_id: "123-789",
+                run_id: run_id_after_swing,
                 block_id: "A12-34",
-                start_time: 200,
-                start_place: "place2",
                 trips: [
-                  "5678"
+                  trip_id_after_swing
                 ],
-                end_time: 300,
-                end_place: "place1",
                 start_mid_route?: %{
                   time: 150,
-                  trip: "1234"
+                  trip: trip_id_during_swing
                 },
                 end_mid_route?: false
               )
@@ -333,41 +322,140 @@ defmodule Schedule.SwingTest do
       }
 
       trips_by_id = %{
-        "5678" =>
+        trip_id_after_swing =>
           build(
             :trip,
-            id: "5678",
+            id: trip_id_after_swing,
             block_id: "A12-34",
-            route_id: "12",
+            route_id: route_id_after_swing,
             service_id: "b",
-            headsign: "Somewhere Else",
-            direction_id: 1,
-            route_pattern_id: "12-1",
-            shape_id: nil,
-            schedule_id: "a",
-            stop_times: [],
-            run_id: "123-789",
-            start_time: 200,
-            end_time: 300,
-            start_place: "place2",
-            end_place: "place1"
+            run_id: run_id_after_swing
+          ),
+        trip_id_during_swing =>
+          build(
+            :trip,
+            id: trip_id_during_swing,
+            block_id: "A12-34",
+            route_id: route_id_during_swing,
+            service_id: "b",
+            run_id: run_id_during_swing
           )
       }
 
-      assert Swing.from_blocks(blocks, trips_by_id) == %{
-               {"b", "12"} => [
+      key = {"b", route_id_during_swing}
+
+      assert %{
+               ^key => [
                  %Swing{
                    block_id: "A12-34",
-                   from_route_id: "12",
-                   from_run_id: "123-456",
-                   from_trip_id: "1234",
-                   to_route_id: "12",
-                   to_run_id: "123-789",
-                   to_trip_id: "5678",
-                   time: 150
+                   from_route_id: ^route_id_during_swing,
+                   from_run_id: ^run_id_during_swing,
+                   from_trip_id: ^trip_id_during_swing,
+                   time: 150,
+                   to_route_id: ^route_id_during_swing,
+                   to_trip_id: ^trip_id_during_swing,
+                   to_run_id: ^run_id_after_swing
                  }
                ]
-             }
+             } = Swing.from_blocks(blocks, trips_by_id)
+    end
+
+    test "handles mid route swing with `as directed` trip as only trip" do
+      route_id_during_swing = "route-id-during-swing"
+      trip_id_during_swing = "trip-id-during-swing"
+      run_id_during_swing = "run-id-during-swing"
+
+      route_id_after_swing = "route-after-swing"
+      run_id_after_swing = "run-after-swing"
+      trip_id_after_swing = "trip-id-after-swing"
+
+      as_directed_trip =
+        build(
+          :as_directed,
+          start_time: 101,
+          end_time: 200,
+          start_place: "place1",
+          end_place: "place2"
+        )
+
+      blocks = %{
+        "A12-34" =>
+          build(
+            :block,
+            service_id: "b",
+            id: "A12-34",
+            pieces: [
+              build(
+                :piece,
+                run_id: run_id_during_swing,
+                block_id: "A12-34",
+                trips: [
+                  build(
+                    :trip,
+                    id: trip_id_during_swing,
+                    service_id: "b",
+                    block_id: "A12-34",
+                    route_id: route_id_during_swing,
+                    run_id: run_id_during_swing
+                  )
+                ],
+                start_mid_route?: nil,
+                end_mid_route?: true
+              ),
+              build(
+                :piece,
+                run_id: run_id_after_swing,
+                block_id: "A12-34",
+                trips: [
+                  as_directed_trip
+                ],
+                start_mid_route?: %{
+                  time: 150,
+                  trip: trip_id_during_swing
+                },
+                end_mid_route?: false
+              )
+            ]
+          )
+      }
+
+      trips_by_id = %{
+        trip_id_after_swing =>
+          build(
+            :trip,
+            id: trip_id_after_swing,
+            block_id: "A12-34",
+            route_id: route_id_after_swing,
+            service_id: "b",
+            run_id: run_id_after_swing
+          ),
+        trip_id_during_swing =>
+          build(
+            :trip,
+            id: trip_id_during_swing,
+            block_id: "A12-34",
+            route_id: route_id_during_swing,
+            service_id: "b",
+            run_id: run_id_during_swing
+          )
+      }
+
+      key = {"b", route_id_during_swing}
+
+      assert %{
+               ^key => [
+                 %Swing{
+                   block_id: "A12-34",
+                   from_route_id: ^route_id_during_swing,
+                   from_run_id: ^run_id_during_swing,
+                   from_trip_id: ^trip_id_during_swing,
+                   time: 150,
+                   to_route_id: ^route_id_during_swing,
+                   to_trip_id: ^trip_id_during_swing,
+                   to_run_id: ^run_id_after_swing
+                 }
+               ]
+             } = Swing.from_blocks(blocks, trips_by_id)
     end
   end
 
@@ -441,6 +529,6 @@ defmodule Schedule.SwingTest do
         )
     }
 
-    assert Swing.from_blocks(blocks, %{}) == %{}
+    assert %{} == Swing.from_blocks(blocks, %{})
   end
 end

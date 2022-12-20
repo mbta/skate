@@ -326,7 +326,7 @@ const Piece = ({
   const isSwingOn: boolean =
     piece.trips.length > 0 &&
     isTrip(piece.trips[0]) &&
-    !isDeadhead(piece.trips[0])
+    !isDeadhead(piece.startMidRoute ? piece.startMidRoute.trip : piece.trips[0])
   const isSwingOff: boolean =
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
@@ -388,15 +388,22 @@ const Piece = ({
               : pieceTimeBasedStyle
           const previousTrip: Trip | AsDirected | null =
             piece.trips[tripIndex - 1] || piece.startMidRoute?.trip
+
+          const sequence = piece.startMidRoute
+            ? // tripIndex and trips.length don't include the startWithMidRoute trip. Add one to
+              // account for the startsWIthMidRouteTrip as the actual first trip of the piece.
+              getSequence(tripIndex + 1, piece.trips.length + 1)
+            : getSequence(tripIndex, piece.trips.length)
+
           return (
             <Trip
               trip={trip}
+              sequence={sequence}
               previousEndTime={
                 previousTrip && !isDeadhead(previousTrip)
                   ? previousTrip.endTime
                   : null
               }
-              sequence={getSequence(tripIndex, piece.trips)}
               tripTimeBasedStyle={tripTimeBasedStyle}
               vehicleOrGhost={vehicleOrGhost}
               view={view}
@@ -461,13 +468,27 @@ const MidRouteSwingOnSecondHalf = ({
   />
 )
 
-const getSequence = (tripIndex: number, pieceTrips: (Trip | AsDirected)[]) => {
+type Sequence = "first" | "middle" | "last"
+type NonRevenueStatus = "pull-out" | "pull-back" | "deadhead"
+
+const getSequence = (tripIndex: number, tripCount: number): Sequence => {
   if (tripIndex === 0) {
     return "first"
-  } else if (tripIndex === pieceTrips.length - 1) {
+  } else if (tripIndex === tripCount - 1) {
     return "last"
   } else {
     return "middle"
+  }
+}
+
+const sequenceToNonRevenueStatus = (sequence: Sequence): NonRevenueStatus => {
+  switch (sequence) {
+    case "first":
+      return "pull-out"
+    case "middle":
+      return "deadhead"
+    case "last":
+      return "pull-back"
   }
 }
 
@@ -523,7 +544,7 @@ const Trip = ({
         isDeadhead(trip) ? (
           <DeadheadTrip
             trip={trip}
-            sequence={sequence}
+            status={sequenceToNonRevenueStatus(sequence)}
             timeBasedStyle={deadheadTimeBasedStyle}
             activeStatus={deadheadActiveStatus}
             overloadOffset={overloadOffset}
@@ -549,13 +570,13 @@ const Trip = ({
 
 const DeadheadTrip = ({
   trip,
-  sequence,
+  status,
   timeBasedStyle,
   activeStatus,
   overloadOffset,
 }: {
   trip: Trip
-  sequence: "first" | "middle" | "last"
+  status: NonRevenueStatus
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
   overloadOffset: number | undefined
@@ -564,39 +585,41 @@ const DeadheadTrip = ({
     trip.startTime,
     overloadOffset
   )
-  if (sequence === "first") {
-    return (
-      <Row
-        icon={busFrontIcon()}
-        text={"Pull out"}
-        rightText={startTime}
-        belowText={trip.startPlace}
-        timeBasedStyle={timeBasedStyle}
-        activeStatus={activeStatus}
-      />
-    )
-  } else if (sequence === "last") {
-    return (
-      <Row
-        icon={busRearIcon()}
-        text={"Pull back"}
-        rightText={startTime}
-        belowText={trip.endPlace}
-        timeBasedStyle={timeBasedStyle}
-        activeStatus={activeStatus}
-      />
-    )
-  } else {
-    return (
-      <Row
-        icon={filledCircleIcon()}
-        text={"Deadhead"}
-        rightText={startTime}
-        belowText={trip.endPlace}
-        timeBasedStyle={timeBasedStyle}
-        activeStatus={activeStatus}
-      />
-    )
+
+  switch (status) {
+    case "pull-out":
+      return (
+        <Row
+          icon={busFrontIcon()}
+          text={"Pull out"}
+          rightText={startTime}
+          belowText={trip.startPlace}
+          timeBasedStyle={timeBasedStyle}
+          activeStatus={activeStatus}
+        />
+      )
+    case "pull-back":
+      return (
+        <Row
+          icon={busRearIcon()}
+          text={"Pull back"}
+          rightText={startTime}
+          belowText={trip.endPlace}
+          timeBasedStyle={timeBasedStyle}
+          activeStatus={activeStatus}
+        />
+      )
+    case "deadhead":
+      return (
+        <Row
+          icon={filledCircleIcon()}
+          text={"Deadhead"}
+          rightText={startTime}
+          belowText={trip.endPlace}
+          timeBasedStyle={timeBasedStyle}
+          activeStatus={activeStatus}
+        />
+      )
   }
 }
 

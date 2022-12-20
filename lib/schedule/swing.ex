@@ -90,7 +90,7 @@ defmodule Schedule.Swing do
     end)
     |> Enum.map(fn {piece1, piece2, block_id} ->
       trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
-      trip2 = piece2.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
+      trip2 = first_trip_from_piece(piece2, trips_by_id)
 
       %{
         swing_off_trip: trip1,
@@ -116,4 +116,18 @@ defmodule Schedule.Swing do
     do: nil
 
   defp trip_or_trip_id_to_trip(trip_id, trips_by_id), do: Map.fetch!(trips_by_id, trip_id)
+
+  @spec first_trip_from_piece(Schedule.Piece.t(), Trip.by_id()) ::
+          Trip.id() | Schedule.Trip.t() | Schedule.AsDirected.t()
+  defp first_trip_from_piece(piece, trips_by_id) do
+    case piece.start_mid_route? do
+      %{trip: mid_route_trip} ->
+        with %{} = first_trip <- mid_route_trip |> trip_or_trip_id_to_trip(trips_by_id) do
+          %{first_trip | run_id: piece.run_id}
+        end
+
+      nil ->
+        piece.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
+    end
+  end
 end

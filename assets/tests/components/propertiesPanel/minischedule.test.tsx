@@ -1,3 +1,6 @@
+import "@testing-library/jest-dom"
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import {
@@ -14,11 +17,11 @@ import {
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
-import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
+import pieceFactory from "../../factories/piece"
+import { RunFactory } from "../../factories/run"
+import { DeadheadTripFactory, TripFactory } from "../../factories/trip"
 import vehicleFactory from "../../factories/vehicle"
-import { render } from "@testing-library/react"
-import "@testing-library/jest-dom"
-import userEvent from "@testing-library/user-event"
+import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -509,6 +512,25 @@ describe("MinischeduleRun", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a mid route swing on when the first full trip is a deadhead", () => {
+    const run: Run = RunFactory.build({
+      activities: [
+        pieceFactory.build({
+          startMidRoute: {
+            trip: TripFactory.build(),
+          },
+          trips: [DeadheadTripFactory.build(), TripFactory.build()],
+        }),
+      ],
+    })
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
+
+    render(<MinischeduleRun vehicleOrGhost={vehicle} />)
+
+    expect(screen.getByText("Mid-route report time")).toBeInTheDocument()
+    expect(screen.getByText("Deadhead")).toBeInTheDocument()
   })
 
   test("renders a mid route swing off", () => {
