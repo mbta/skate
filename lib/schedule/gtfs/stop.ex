@@ -41,18 +41,21 @@ defmodule Schedule.Gtfs.Stop do
   def from_csv_row(row) do
     parent_station_id = if row["parent_station"] == "", do: nil, else: row["parent_station"]
 
-    location_type =
-      if row["location_type"] == "", do: 0, else: String.to_integer(row["location_type"])
-
     %__MODULE__{
       id: row["stop_id"],
       name: row["stop_name"],
       parent_station_id: parent_station_id,
       latitude: parse_lat_lon(row["stop_lat"]),
       longitude: parse_lat_lon(row["stop_lon"]),
-      location_type: location_type
+      location_type: parse_location_type(row["location_type"])
     }
   end
+
+  @doc """
+  Returns true when the stop is a station.
+  """
+  @spec is_station?(t()) :: boolean()
+  def is_station?(stop), do: stop.location_type == 1
 
   @doc """
   Remove any stop connections with the given route_id
@@ -147,4 +150,9 @@ defmodule Schedule.Gtfs.Stop do
   @spec parse_lat_lon(String.t()) :: float() | nil
   defp parse_lat_lon(""), do: nil
   defp parse_lat_lon(s), do: String.to_float(s)
+
+  @spec parse_location_type(String.t() | nil) :: integer()
+  defp parse_location_type(""), do: 0
+  defp parse_location_type(nil), do: 0
+  defp parse_location_type(location_type), do: String.to_integer(location_type)
 end
