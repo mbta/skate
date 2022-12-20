@@ -16,7 +16,7 @@ defmodule Schedule.Gtfs.StopTest do
     "stop_address" => "",
     "stop_url" => "https://www.mbta.com/stops/1",
     "level_id" => "",
-    "location_type" => "0",
+    "location_type" => "1",
     "parent_station" => "place-asmnl",
     "wheelchair_boarding" => "1"
   }
@@ -54,7 +54,8 @@ defmodule Schedule.Gtfs.StopTest do
                name: "Washington St opp Ruggles St",
                parent_station_id: "place-asmnl",
                latitude: 42.330957,
-               longitude: -71.082754
+               longitude: -71.082754,
+               location_type: 1
              }
     end
 
@@ -64,12 +65,14 @@ defmodule Schedule.Gtfs.StopTest do
                |> Map.put("parent_station", "")
                |> Map.put("stop_lat", "")
                |> Map.put("stop_lon", "")
+               |> Map.put("location_type", "")
              ) == %Stop{
                id: "1",
                name: "Washington St opp Ruggles St",
                parent_station_id: nil,
                latitude: nil,
-               longitude: nil
+               longitude: nil,
+               location_type: 0
              }
     end
   end
