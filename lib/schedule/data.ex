@@ -35,6 +35,7 @@ defmodule Schedule.Data do
           timepoint_names_by_id: Timepoint.timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
+          stations: [Stop.t()],
           trips: Schedule.Trip.by_id(),
           blocks: Block.by_id(),
           calendar: Calendar.t(),
@@ -56,6 +57,7 @@ defmodule Schedule.Data do
             timepoint_names_by_id: %{},
             shapes: %{},
             stops: %{},
+            stations: [],
             trips: %{},
             blocks: %{},
             calendar: %{},
@@ -261,6 +263,9 @@ defmodule Schedule.Data do
     end
   end
 
+  @spec stations(t()) :: [Stop.t()]
+  def stations(%__MODULE__{stations: stations}), do: stations
+
   @spec stops_for_trip(t(), Schedule.Trip.id()) :: [Stop.t()]
   defp stops_for_trip(%__MODULE__{stops: stops_by_id, trips: trips}, trip_id) do
     case Map.get(trips, trip_id) do
@@ -361,6 +366,14 @@ defmodule Schedule.Data do
 
     bus_routes = Garage.add_garages_to_routes(gtfs_data.bus_only.routes, schedule_trips_by_id)
 
+    stops =
+      Stop.stops_with_connections(
+        gtfs_data.all_modes.stops_by_id,
+        gtfs_data.all_modes.routes,
+        gtfs_data.all_modes.route_patterns,
+        gtfs_data.all_modes.stop_times_by_trip_id
+      )
+
     %__MODULE__{
       routes: bus_routes,
       route_patterns: gtfs_data.bus_only.route_patterns,
@@ -372,13 +385,11 @@ defmodule Schedule.Data do
         ),
       timepoint_names_by_id: timepoint_names_by_id,
       shapes: gtfs_data.bus_only.shapes,
-      stops:
-        Stop.stops_with_connections(
-          gtfs_data.all_modes.stops_by_id,
-          gtfs_data.all_modes.routes,
-          gtfs_data.all_modes.route_patterns,
-          gtfs_data.all_modes.stop_times_by_trip_id
-        ),
+      stops: stops,
+      stations:
+        stops
+        |> Map.values()
+        |> Enum.filter(&Stop.is_station?/1),
       trips: schedule_trips_by_id,
       blocks: blocks,
       calendar: gtfs_data.all_modes.calendar,

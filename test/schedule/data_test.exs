@@ -630,6 +630,15 @@ defmodule Schedule.DataTest do
     end
   end
 
+  describe "stations/1" do
+    stations = [
+      %Stop{id: "station-1", name: "station 1"},
+      %Stop{id: "station-2", name: "station 2"}
+    ]
+
+    assert stations == Data.stations(%Data{stations: stations})
+  end
+
   describe "first_route_pattern_for_route_and_direction/3" do
     setup do
       route_patterns = [
