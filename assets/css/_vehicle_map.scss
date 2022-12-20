@@ -77,10 +77,6 @@
   outline: 0;
 }
 
-.m-vehicle-map__stop-tooltip .m-street-view-button {
-  margin-top: 0.5em;
-}
-
 // Adding .leaflet-control-container increases specificity to make sure we override
 // base Leaflet control positioning
 .leaflet-control-container .m-vehicle-map__street-view-control {
