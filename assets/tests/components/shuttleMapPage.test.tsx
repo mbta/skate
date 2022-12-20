@@ -38,6 +38,14 @@ jest.mock("../../src/hooks/useTrainVehicles", () => ({
   default: jest.fn(() => ({})),
 }))
 
+const originalScrollTo = global.scrollTo
+// Clicking/moving map calls scrollTo under the hood
+jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
+afterAll(() => {
+  global.scrollTo = originalScrollTo
+})
+
 const shuttle: Vehicle = vehicleFactory.build({
   id: "y1818",
   label: "1818",

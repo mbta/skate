@@ -78,6 +78,31 @@ defmodule Schedule.Gtfs.StopTimeTest do
     }
   ]
 
+  describe "parse/1" do
+    test "parses stop time file into map by trip_id" do
+      assert %{
+               "t1" => [
+                 %StopTime{time: 60, stop_id: "s1", timepoint_id: "c1"},
+                 %StopTime{time: 120, stop_id: "s2", timepoint_id: nil}
+               ],
+               "t2" => [
+                 %StopTime{time: 180, stop_id: "s3", timepoint_id: "c2"}
+               ]
+             } ==
+               StopTime.parse(
+                 Enum.join(
+                   [
+                     "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+                     "t1,,00:01:00,s1,1,c1",
+                     "t1,,00:02:00,s2,2,",
+                     "t2,,00:03:00,s3,3,c2"
+                   ],
+                   "\n"
+                 )
+               )
+    end
+  end
+
   describe "trip_stop_times_from_csv/1" do
     test "builds a trip stops map from a list of stop time csv rows" do
       assert StopTime.trip_stop_times_from_csv(@csv_rows) == %{
@@ -142,17 +167,6 @@ defmodule Schedule.Gtfs.StopTimeTest do
                  %StopTime{time: 18003}
                ]
              } = StopTime.trip_stop_times_from_csv(csv_rows)
-    end
-  end
-
-  describe "row_in_trip_id_set?/2" do
-    test "returns whether the row's trip id is in the given set" do
-      assert StopTime.row_in_trip_id_set?(
-               List.first(@csv_rows),
-               MapSet.new(["39770779", "39770780"])
-             )
-
-      refute StopTime.row_in_trip_id_set?(List.first(@csv_rows), MapSet.new(["1", "2"]))
     end
   end
 

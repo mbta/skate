@@ -1,5 +1,6 @@
 defmodule Schedule.Gtfs.RouteTest do
   use ExUnit.Case, async: true
+  import Skate.Factory
 
   alias Schedule.Gtfs.{Direction, Route}
 
@@ -50,9 +51,9 @@ defmodule Schedule.Gtfs.RouteTest do
     end
   end
 
-  describe "bus_route_valid_row?/1" do
-    test "returns whether or not this row represents a bus route" do
-      bus_csv_row = %{
+  describe "row_has_route_type?/1" do
+    test "true when route type present" do
+      bus_route_csv_row = %{
         "route_id" => "39",
         "agency_id" => "1",
         "route_short_name" => "39",
@@ -68,45 +69,11 @@ defmodule Schedule.Gtfs.RouteTest do
         "listed_route" => ""
       }
 
-      subway_csv_row = %{
-        "route_id" => "Red",
-        "agency_id" => "1",
-        "route_short_name" => "",
-        "route_long_name" => "Red Line",
-        "route_desc" => "Rapid Transit",
-        "route_type" => "1",
-        "route_url" => "https://www.mbta.com/schedules/Red",
-        "route_color" => "DA291C",
-        "route_text_color" => "FFFFFF",
-        "route_sort_order" => "10010",
-        "route_fare_class" => "Rapid Transit",
-        "line_id" => "line-Red",
-        "listed_route" => ""
-      }
-
-      private_carrier_csv_row = %{
-        "route_id" => "710",
-        "agency_id" => "1",
-        "route_short_name" => "710",
-        "route_long_name" => "North Medford - Wellington Station",
-        "route_desc" => "Local Bus",
-        "route_type" => "3",
-        "route_url" => "https://www.mbta.com/schedules/710",
-        "route_color" => "FFC72C",
-        "route_text_color" => "000000",
-        "route_sort_order" => "57100",
-        "route_fare_class" => "Local Bus",
-        "line_id" => "line-710",
-        "listed_route" => ""
-      }
-
-      assert Route.bus_route_valid_row?(bus_csv_row)
-      refute Route.bus_route_valid_row?(subway_csv_row)
-      refute Route.bus_route_valid_row?(private_carrier_csv_row)
+      assert Route.row_has_route_type?(bus_route_csv_row)
     end
 
     test "ensures a `route_type` property" do
-      bad_csv_row = %{
+      bad_route_csv_row = %{
         "route_id" => "39",
         "agency_id" => "1",
         "route_short_name" => "39",
@@ -123,8 +90,22 @@ defmodule Schedule.Gtfs.RouteTest do
       }
 
       assert_raise ArgumentError, fn ->
-        Route.bus_route_valid_row?(bad_csv_row)
+        Route.row_has_route_type?(bad_route_csv_row)
       end
+    end
+  end
+
+  describe "bus_route_mbta?/1" do
+    test "true for bus route" do
+      assert Route.bus_route_mbta?(build(:gtfs_route, %{id: "1", type: 3}))
+    end
+
+    test "false for non-mbta bus route" do
+      refute Route.bus_route_mbta?(build(:gtfs_route, %{id: "710", type: 3}))
+    end
+
+    test "false for  subway route" do
+      refute Route.bus_route_mbta?(build(:gtfs_route, %{id: "RL", type: 1}))
     end
   end
 
