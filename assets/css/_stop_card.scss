@@ -1,0 +1,61 @@
+.m-stop-card .leaflet-popup-content-wrapper {
+  width: 295px;
+
+  padding: 16px;
+
+  box-shadow: none;
+  border: 1px solid $color-gray-500;
+
+  .leaflet-popup-content {
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.m-stop-card .leaflet-popup-tip-container {
+  left: calc(50% + 125px);
+
+  .leaflet-popup-tip {
+    box-shadow: none;
+    border: 1px solid $color-gray-500;
+  }
+}
+
+.m-stop-card__stop-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-gray-900;
+}
+
+.m-stop-card__direction {
+  color: $color-gray-700;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.m-stop-card__connections {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 8px;
+
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-300;
+  border-radius: 4px;
+}
+
+.m-stop-card__connections-label {
+  color: $color-gray-700;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.m-stop-card__connections-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

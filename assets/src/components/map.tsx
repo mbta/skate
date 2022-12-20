@@ -34,14 +34,13 @@ import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { Shape } from "../schedule"
+import { DirectionId, Shape } from "../schedule"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
-import StreetViewButton from "./streetViewButton"
 
 import garages, { Garage } from "../data/garages"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -49,6 +48,7 @@ import garages, { Garage } from "../data/garages"
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import { walkingIcon } from "../helpers/icon"
+import StopCard from "./stopCard"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -61,6 +61,7 @@ export interface Props {
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   allowStreetView?: boolean
   children?: JSX.Element | JSX.Element[]
+  stopCardDirection?: DirectionId
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -217,7 +218,13 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const Shape = ({ shape }: { shape: Shape }) => {
+const Shape = ({
+  shape,
+  direction,
+}: {
+  shape: Shape
+  direction?: DirectionId
+}) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
@@ -237,15 +244,11 @@ const Shape = ({ shape }: { shape: Shape }) => {
           center={[stop.lat, stop.lon]}
           radius={3}
         >
-          <Popup className="m-vehicle-map__stop-tooltip">
-            {stop.name}
-            {inTestGroup(MAP_BETA_GROUP_NAME) && (
-              <StreetViewButton
-                latitude={stop.lat}
-                longitude={stop.lon}
-              ></StreetViewButton>
-            )}
-          </Popup>
+          {inTestGroup(MAP_BETA_GROUP_NAME) ? (
+            <StopCard stop={stop} direction={direction} />
+          ) : (
+            <Popup className="m-vehicle-map__stop-tooltip">{stop.name}</Popup>
+          )}
         </CircleMarker>
       ))}
     </>
@@ -598,7 +601,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
         ))}
         {(props.shapes || []).map((shape) => (
-          <Shape key={shape.id} shape={shape} />
+          <Shape
+            key={shape.id}
+            shape={shape}
+            direction={props.stopCardDirection}
+          />
         ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
           <Garages zoomLevel={zoomLevel} />
