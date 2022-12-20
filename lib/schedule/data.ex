@@ -89,6 +89,7 @@ defmodule Schedule.Data do
 
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
+
   @spec trip(t(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
