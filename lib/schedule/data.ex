@@ -226,11 +226,26 @@ defmodule Schedule.Data do
 
   @spec shape_with_stops_for_trip(t(), Schedule.Trip.id()) :: Schedule.ShapeWithStops.t()
   def shape_with_stops_for_trip(data, trip_id) do
-    stops = stops_for_trip(data, trip_id)
+    %{trips: trips_by_id} = data
+
+    trip = Map.get(trips_by_id, trip_id)
+    trip_route_id = if trip, do: trip.route_id, else: nil
+
+    stops_for_trip =
+      case trip_route_id do
+        # This trip doesn't have a route - no connections to filter
+        nil ->
+          stops_for_trip(data, trip_id)
+
+        trip_route_id ->
+          data
+          |> stops_for_trip(trip_id)
+          |> Enum.map(&Stop.reject_connections_for_route(&1, trip_route_id))
+      end
 
     case shape_for_trip(data, trip_id) do
       nil -> nil
-      shape -> Schedule.ShapeWithStops.create(shape, stops)
+      shape -> Schedule.ShapeWithStops.create(shape, stops_for_trip)
     end
   end
 
@@ -357,7 +372,13 @@ defmodule Schedule.Data do
         ),
       timepoint_names_by_id: timepoint_names_by_id,
       shapes: gtfs_data.bus_only.shapes,
-      stops: gtfs_data.all_modes.stops_by_id,
+      stops:
+        Stop.stops_with_connections(
+          gtfs_data.all_modes.stops_by_id,
+          gtfs_data.all_modes.routes,
+          gtfs_data.all_modes.route_patterns,
+          gtfs_data.all_modes.stop_times_by_trip_id
+        ),
       trips: schedule_trips_by_id,
       blocks: blocks,
       calendar: gtfs_data.all_modes.calendar,
@@ -642,6 +663,4 @@ defmodule Schedule.Data do
     |> Csv.parse(parse: &Stop.from_csv_row/1)
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
-
-  # Add connections_by_stop_id(routes, route_patterns, stop_times_by_trip_id)
 end

@@ -23,7 +23,15 @@ defmodule Schedule.ShapeWithStops do
       stops_to_encode =
         shape_with_stops
         |> Map.get(:stops, [])
-        |> Enum.map(&%{id: &1.id, name: &1.name, lat: &1.latitude, lon: &1.longitude})
+        |> Enum.map(
+          &%{
+            id: &1.id,
+            name: &1.name,
+            lat: &1.latitude,
+            lon: &1.longitude,
+            connections: &1.connections
+          }
+        )
 
       Jason.Encode.map(
         %{id: shape_with_stops.id, points: shape_with_stops.points, stops: stops_to_encode},

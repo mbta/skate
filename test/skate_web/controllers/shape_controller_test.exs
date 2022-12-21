@@ -2,7 +2,7 @@ defmodule SkateWeb.ShapeControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Schedule.Gtfs.{Shape, Stop}
+  alias Schedule.Gtfs.{Shape, Stop, Route}
   alias Schedule.Gtfs.Shape.Point
   alias Schedule.ShapeWithStops
 
@@ -41,8 +41,21 @@ defmodule SkateWeb.ShapeControllerTest do
       }
     ],
     stops: [
-      %Stop{id: "stop_1", name: "One", latitude: 42.01, longitude: -71.01},
-      %Stop{id: "stop_2", name: "Two", latitude: 42.02, longitude: -71.02}
+      %Stop{
+        id: "stop_1",
+        name: "One",
+        latitude: 42.01,
+        longitude: -71.01,
+        connections: [
+          %Route{
+            id: "route_1",
+            name: "route_1_name",
+            description: "Key Route",
+            direction_names: %{}
+          }
+        ]
+      },
+      %Stop{id: "stop_2", name: "Two", latitude: 42.02, longitude: -71.02, connections: []}
     ]
   }
 
@@ -61,13 +74,24 @@ defmodule SkateWeb.ShapeControllerTest do
         "id" => "stop_1",
         "name" => "One",
         "lat" => 42.01,
-        "lon" => -71.01
+        "lon" => -71.01,
+        "connections" => [
+          %{
+            "id" => "route_1",
+            "name" => "route_1_name",
+            "description" => "Key Route",
+            "direction_names" => %{},
+            "garages" => [],
+            "type" => 3
+          }
+        ]
       },
       %{
         "id" => "stop_2",
         "name" => "Two",
         "lat" => 42.02,
-        "lon" => -71.02
+        "lon" => -71.02,
+        "connections" => []
       }
     ]
   }
