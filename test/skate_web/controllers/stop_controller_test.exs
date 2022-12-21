@@ -4,11 +4,11 @@ defmodule SkateWeb.StopControllerTest do
   import Skate.Factory
 
   @stations [
-    build(:gtfs_stop, %{location_type: 1, connections: [build(:gtfs_route)]}),
+    build(:gtfs_stop, %{location_type: :station, connections: [build(:gtfs_route)]}),
     build(:gtfs_stop, %{
       id: "stop2",
       name: "Stop 2",
-      location_type: 1
+      location_type: :station
     })
   ]
   describe "GET /api/stops/stations" do
@@ -41,7 +41,7 @@ defmodule SkateWeb.StopControllerTest do
                    ],
                    "id" => "stop1",
                    "lat" => 42.01,
-                   "location_type" => 1,
+                   "location_type" => "station",
                    "lon" => -71.01,
                    "name" => "Stop 1"
                  },
@@ -49,7 +49,7 @@ defmodule SkateWeb.StopControllerTest do
                    "connections" => [],
                    "id" => "stop2",
                    "lat" => 42.01,
-                   "location_type" => 1,
+                   "location_type" => "station",
                    "lon" => -71.01,
                    "name" => "Stop 2"
                  }

@@ -671,8 +671,7 @@ defmodule Schedule.Data do
   @spec all_stops_by_id(binary()) :: stops_by_id()
   defp all_stops_by_id(stops_data) do
     stops_data
-    # TODO perf: filter out non-stop or station rows
-    |> Csv.parse(parse: &Stop.from_csv_row/1)
+    |> Stop.parse()
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
 end

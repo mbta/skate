@@ -4,6 +4,8 @@ defmodule Schedule.Gtfs.Stop do
 
   @type id :: String.t()
 
+  @type location_type() :: :stop | :station
+
   @type t :: %__MODULE__{
           id: id(),
           name: String.t(),
@@ -11,7 +13,7 @@ defmodule Schedule.Gtfs.Stop do
           latitude: float() | nil,
           longitude: float() | nil,
           connections: [Route.t()],
-          location_type: integer()
+          location_type: location_type()
         }
   @type by_id :: %{id() => t()}
 
@@ -27,7 +29,7 @@ defmodule Schedule.Gtfs.Stop do
     :latitude,
     :longitude,
     connections: [],
-    location_type: 0
+    location_type: :stop
   ]
 
   defimpl Jason.Encoder do
@@ -40,6 +42,21 @@ defmodule Schedule.Gtfs.Stop do
       |> Map.merge(%{lat: latitude, lon: longitude})
       |> Jason.Encode.map(opts)
     end
+  end
+
+  @location_type_map %{nil => :stop, "" => :stop, "0" => :stop, "1" => :station}
+
+  @doc """
+  Parse a CSV of stops, including only records that have a location type of stop/platform or stations
+  (omitting enterance/exits, generic nodes, and boarding areas)
+  """
+  @spec parse(binary() | nil) :: [t()]
+  def parse(file_binary) do
+    file_binary
+    |> Csv.parse(
+      parse: &from_csv_row/1,
+      filter: fn row -> Map.has_key?(@location_type_map, row["location_type"]) end
+    )
   end
 
   @spec parent_station_id(t() | nil) :: id() | nil
@@ -57,7 +74,7 @@ defmodule Schedule.Gtfs.Stop do
       parent_station_id: parent_station_id,
       latitude: parse_lat_lon(row["stop_lat"]),
       longitude: parse_lat_lon(row["stop_lon"]),
-      location_type: parse_location_type(row["location_type"])
+      location_type: Map.fetch!(@location_type_map, row["location_type"])
     }
   end
 
@@ -160,9 +177,4 @@ defmodule Schedule.Gtfs.Stop do
   @spec parse_lat_lon(String.t()) :: float() | nil
   defp parse_lat_lon(""), do: nil
   defp parse_lat_lon(s), do: String.to_float(s)
-
-  @spec parse_location_type(String.t() | nil) :: integer()
-  defp parse_location_type(""), do: 0
-  defp parse_location_type(nil), do: 0
-  defp parse_location_type(location_type), do: String.to_integer(location_type)
 end
