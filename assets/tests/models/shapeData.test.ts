@@ -5,6 +5,7 @@ import {
 } from "../../src/models/shapeData"
 import shapeDataFactory from "../factories/shape_data"
 import shapeFactory from "../factories/shape"
+import stopFactory from "../factories/stop"
 
 describe("shapeFromData", () => {
   test("handles data", () => {
@@ -25,26 +26,20 @@ describe("shapeFromData", () => {
     const data: ShapeData = shapeDataFactory.build({
       id: shapeId,
       stops: [
-        {
+        stopFactory.build({
           id: "1",
-          name: "Some Stop",
-          lat: 0,
-          lon: 0,
           connections: [{ type: 3, id: "747", name: "CT2" }],
-        },
+        }),
       ],
     })
 
     const expectedResult = shapeFactory.build({
       id: shapeId,
       stops: [
-        {
+        stopFactory.build({
           id: "1",
-          name: "Some Stop",
-          lat: 0,
-          lon: 0,
           connections: [{ type: 3, id: "747", name: "CT2" }],
-        },
+        }),
       ],
     })
 
@@ -55,15 +50,29 @@ describe("shapeFromData", () => {
 describe("shapesFromData", () => {
   test("handles data", () => {
     const shapeId1 = "shape1"
-    const shapeId2 = "shape1"
+    const shapeId2 = "shape2"
+    const stopId1 = "stop1"
+    const stopId2 = "stop2"
     const data: ShapeData[] = [
-      shapeDataFactory.build({ id: shapeId1 }),
-      shapeDataFactory.build({ id: shapeId2 }),
+      shapeDataFactory.build({
+        id: shapeId1,
+        stops: [stopFactory.build({ id: stopId1 })],
+      }),
+      shapeDataFactory.build({
+        id: shapeId2,
+        stops: [stopFactory.build({ id: stopId2 })],
+      }),
     ]
 
     const expectedResult = [
-      shapeFactory.build({ id: shapeId1 }),
-      shapeFactory.build({ id: shapeId2 }),
+      shapeFactory.build({
+        id: shapeId1,
+        stops: [stopFactory.build({ id: stopId1 })],
+      }),
+      shapeFactory.build({
+        id: shapeId2,
+        stops: [stopFactory.build({ id: stopId2 })],
+      }),
     ]
 
     expect(shapesFromData(data)).toEqual(expectedResult)
