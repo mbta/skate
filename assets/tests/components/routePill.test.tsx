@@ -7,9 +7,9 @@ describe("RoutePill", () => {
   test.each([
     ["1", "1", "m-route-pill--bus"],
     ["SL1", "SL1", "m-route-pill--silver"],
-    ["Red", "RL", "m-route-pill--red"],
-    ["Orange", "OL", "m-route-pill--orange"],
-    ["Blue", "BL", "m-route-pill--blue"],
+    ["Red Line", "RL", "m-route-pill--red"],
+    ["Orange Line", "OL", "m-route-pill--orange"],
+    ["Blue Line", "BL", "m-route-pill--blue"],
     ["B", "GL·B", "m-route-pill--green"],
     ["C", "GL·C", "m-route-pill--green"],
     ["D", "GL·D", "m-route-pill--green"],

@@ -59,13 +59,17 @@ describe("StopCard", () => {
     ).toBeInTheDocument()
   })
 
-  test("sorts rendered connections", () => {
+  test("sorts rendered connections and excludes commuter rail", () => {
     const stop = stopFactory.build({
       connections: [
+        { type: 1, name: "Orange Line", id: "Orange" },
+        { type: 3, name: "CT3", id: "708" },
         { type: 3, name: "28", id: "28" },
         { type: 3, name: "SL1", id: "741" },
         { type: 3, name: "1", id: "1" },
-        { type: 1, name: "Red", id: "Red" },
+        { type: 2, name: "Providence/Stoughton Line", id: "CR-Providence" },
+        { type: 3, name: "CT2", id: "747" },
+        { type: 1, name: "Red Line", id: "Red" },
       ],
     })
 
@@ -79,6 +83,14 @@ describe("StopCard", () => {
       (item) => item.children[0].innerHTML
     )
 
-    expect(connectionRoutes).toEqual(["RL", "SL1", "1", "28"])
+    expect(connectionRoutes).toEqual([
+      "OL",
+      "RL",
+      "SL1",
+      "CT2",
+      "CT3",
+      "1",
+      "28",
+    ])
   })
 })
