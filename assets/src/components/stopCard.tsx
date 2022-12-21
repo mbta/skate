@@ -15,8 +15,10 @@ const StopCard = ({
 
   const connections = stop.connections
     ? stop.connections
+        // exclude commuter rail
         .filter((c) => c.type !== 2)
         .sort((a, b) => {
+          // non-bubs (i.e. rapid transit) routes go before bus
           if (a.type === 3 && b.type !== 3) {
             return 1
           } else if (a.type !== 3 && b.type === 3) {
@@ -25,6 +27,7 @@ const StopCard = ({
             const aNumeric = Number(a.name)
             const bNumeric = Number(b.name)
 
+            // SL comes before CT, other than that use localeCompare for non-numeric routes
             if (isNaN(aNumeric) && isNaN(bNumeric)) {
               if (a.name.match(/^SL*/) && b.name.match(/^CT*/)) {
                 return -1
@@ -34,6 +37,7 @@ const StopCard = ({
                 return a.name.localeCompare(b.name)
               }
             } else if (isNaN(aNumeric)) {
+              // purely numeric routes come last
               return -1
             } else if (isNaN(bNumeric)) {
               return 1
