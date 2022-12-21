@@ -48,10 +48,10 @@ defmodule Schedule.Gtfs.Stop do
     }
   end
 
-  @spec reject_connections_for_route(t(), Route.id()) :: t()
   @doc """
   Remove any stop connections with the given route_id
   """
+  @spec reject_connections_for_route(t(), Route.id()) :: t()
   def reject_connections_for_route(stop, route_id) do
     %{stop | connections: Enum.reject(stop.connections, &(&1.id == route_id))}
   end
