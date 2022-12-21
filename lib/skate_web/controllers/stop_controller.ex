@@ -6,7 +6,7 @@ defmodule SkateWeb.StopController do
   Get all stations
   """
   def stations(conn, _params) do
-    stations = Application.get_env(:skate_web, :shapes_fn, &Schedule.stations/1)
+    stations = Application.get_env(:skate_web, :stations_fn, &Schedule.stations/1)
     stations = stations.()
 
     json(conn, %{data: stations})
