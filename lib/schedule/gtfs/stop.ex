@@ -20,8 +20,6 @@ defmodule Schedule.Gtfs.Stop do
     :name
   ]
 
-  @derive Jason.Encoder
-
   defstruct [
     :id,
     :name,
@@ -31,6 +29,18 @@ defmodule Schedule.Gtfs.Stop do
     connections: [],
     location_type: 0
   ]
+
+  defimpl Jason.Encoder do
+    def encode(stop, opts) do
+      %{latitude: latitude, longitude: longitude} = stop
+
+      stop
+      |> Map.from_struct()
+      |> Map.drop([:latitude, :longitude, :parent_station_id])
+      |> Map.merge(%{lat: latitude, lon: longitude})
+      |> Jason.Encode.map(opts)
+    end
+  end
 
   @spec parent_station_id(t() | nil) :: id() | nil
   def parent_station_id(nil), do: nil
