@@ -14,20 +14,34 @@ const StopCard = ({
   const connectionsLabelId = "stop-card-connections-label-" + useId()
 
   const connections = stop.connections
-    ? stop.connections.sort((a, b) => {
-        const aNumeric = Number(a.name)
-        const bNumeric = Number(b.name)
+    ? stop.connections
+        .filter((c) => c.type !== 2)
+        .sort((a, b) => {
+          if (a.type === 3 && b.type !== 3) {
+            return 1
+          } else if (a.type !== 3 && b.type === 3) {
+            return -1
+          } else {
+            const aNumeric = Number(a.name)
+            const bNumeric = Number(b.name)
 
-        if (isNaN(aNumeric) && isNaN(bNumeric)) {
-          return a.name.localeCompare(b.name)
-        } else if (isNaN(aNumeric)) {
-          return -1
-        } else if (isNaN(bNumeric)) {
-          return 1
-        }
+            if (isNaN(aNumeric) && isNaN(bNumeric)) {
+              if (a.name.match(/^SL*/) && b.name.match(/^CT*/)) {
+                return -1
+              } else if (a.name.match(/^CT*/) && b.name.match(/^SL*/)) {
+                return 1
+              } else {
+                return a.name.localeCompare(b.name)
+              }
+            } else if (isNaN(aNumeric)) {
+              return -1
+            } else if (isNaN(bNumeric)) {
+              return 1
+            }
 
-        return aNumeric - bNumeric
-      })
+            return aNumeric - bNumeric
+          }
+        })
     : []
 
   return (

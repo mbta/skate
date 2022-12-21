@@ -14,11 +14,11 @@ export const RoutePill = ({
 const modeClass = (routeName: string): string => {
   if (routeName.match(/^SL*/)) {
     return "m-route-pill--silver"
-  } else if (routeName === "Red") {
+  } else if (routeName === "Red Line") {
     return "m-route-pill--red"
-  } else if (routeName === "Orange") {
+  } else if (routeName === "Orange Line") {
     return "m-route-pill--orange"
-  } else if (routeName === "Blue") {
+  } else if (routeName === "Blue Line") {
     return "m-route-pill--blue"
   } else if (["B", "C", "D", "E"].includes(routeName)) {
     return "m-route-pill--green"
@@ -29,11 +29,11 @@ const modeClass = (routeName: string): string => {
 
 const routeNameTransform = (routeName: string): string => {
   switch (routeName) {
-    case "Red":
+    case "Red Line":
       return "RL"
-    case "Orange":
+    case "Orange Line":
       return "OL"
-    case "Blue":
+    case "Blue Line":
       return "BL"
     case "B":
       return "GL·B"
