@@ -118,6 +118,16 @@ defmodule Schedule.Gtfs.StopTest do
     end
   end
 
+  describe "is_station?/1" do
+    test "true when location_type is :station" do
+      assert Stop.is_station?(%Stop{id: "stop-1", name: "Station", location_type: :station})
+    end
+
+    test "false when location_type is :stop" do
+      refute Stop.is_station?(%Stop{id: "stop-1", name: "Stop", location_type: :stop})
+    end
+  end
+
   describe "reject_connections_for_route/2" do
     test "only rejects connections with the matching route id " do
       matching_route = %Route{

@@ -264,7 +264,9 @@ defmodule Schedule.Data do
   end
 
   @spec stations(t()) :: [Stop.t()]
-  def stations(%__MODULE__{stations: stations}), do: stations
+  def stations(%__MODULE__{stations: stations}) do
+    stations
+  end
 
   @spec stops_for_trip(t(), Schedule.Trip.id()) :: [Stop.t()]
   defp stops_for_trip(%__MODULE__{stops: stops_by_id, trips: trips}, trip_id) do

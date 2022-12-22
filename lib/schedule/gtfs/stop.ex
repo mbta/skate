@@ -82,7 +82,7 @@ defmodule Schedule.Gtfs.Stop do
   Returns true when the stop is a station.
   """
   @spec is_station?(t()) :: boolean()
-  def is_station?(stop), do: stop.location_type == 1
+  def is_station?(stop), do: stop.location_type == :station
 
   @doc """
   Remove any stop connections with the given route_id

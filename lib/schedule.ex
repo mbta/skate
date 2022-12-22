@@ -149,7 +149,7 @@ defmodule Schedule do
   end
 
   def stations(persistent_term_key \\ __MODULE__) do
-    call_with_data(persistent_term_key, [], :shape_with_stops_for_trip, [])
+    call_with_data(persistent_term_key, [], :stations, [])
   end
 
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
