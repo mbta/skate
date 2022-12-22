@@ -1,6 +1,6 @@
 defmodule Schedule.Data do
   @moduledoc """
-  GTFS Data management
+  Combined static GTFS and HASTUS schedule data.
   """
   require Logger
 

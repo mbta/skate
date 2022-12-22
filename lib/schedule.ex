@@ -1,4 +1,7 @@
 defmodule Schedule do
+  @moduledoc """
+  A repository for accessing and updating static schedule data stored in memory
+  """
   require Logger
 
   alias Schedule.{
