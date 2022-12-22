@@ -25,6 +25,7 @@ import {
   Polyline,
   Popup,
   TileLayer,
+  Tooltip,
   useMap,
   useMapEvents,
   ZoomControl,
@@ -34,7 +35,7 @@ import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { Shape } from "../schedule"
+import { Shape, Stop } from "../schedule"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
@@ -47,6 +48,9 @@ import garages, { Garage } from "../data/garages"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import garageIcon from "../../static/images/icon-bus-garage.svg"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import stationIcon from "../../static/images/icon-station.svg"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import { walkingIcon } from "../helpers/icon"
 
@@ -61,6 +65,7 @@ export interface Props {
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   allowStreetView?: boolean
   children?: JSX.Element | JSX.Element[]
+  stations?: Stop[]
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -217,6 +222,45 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
+const StopMarker = ({ stop }: { stop: Stop }) => {
+  if (stop.location_type === "station") {
+    return <StationMarker station={stop} />
+  }
+
+  return (
+    <CircleMarker
+      key={stop.id}
+      className="m-vehicle-map__stop"
+      center={[stop.lat, stop.lon]}
+      radius={3}
+    >
+      <Popup className="m-vehicle-map__stop-tooltip">
+        {stop.name}
+        {inTestGroup(MAP_BETA_GROUP_NAME) && (
+          <StreetViewButton
+            latitude={stop.lat}
+            longitude={stop.lon}
+          ></StreetViewButton>
+        )}
+      </Popup>
+    </CircleMarker>
+  )
+}
+
+const StationMarker = ({ station }: { station: Stop }) => {
+  return (
+    <Marker
+      key={station.name}
+      position={[station.lat, station.lon]}
+      icon={stationLeafletIcon}
+    >
+      <Tooltip className="m-vehicle-map__station-tooltip" direction={"top"}>
+        {station.name}
+      </Tooltip>
+    </Marker>
+  )
+}
+
 const Shape = ({ shape }: { shape: Shape }) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
@@ -231,22 +275,7 @@ const Shape = ({ shape }: { shape: Shape }) => {
         {...strokeOptions(shape)}
       />
       {(shape.stops || []).map((stop) => (
-        <CircleMarker
-          key={stop.id}
-          className="m-vehicle-map__stop"
-          center={[stop.lat, stop.lon]}
-          radius={3}
-        >
-          <Popup className="m-vehicle-map__stop-tooltip">
-            {stop.name}
-            {inTestGroup(MAP_BETA_GROUP_NAME) && (
-              <StreetViewButton
-                latitude={stop.lat}
-                longitude={stop.lon}
-              ></StreetViewButton>
-            )}
-          </Popup>
-        </CircleMarker>
+        <StopMarker stop={stop} />
       ))}
     </>
   )
@@ -474,6 +503,12 @@ const garageLeafletIcon = Leaflet.divIcon({
   iconAnchor: new Leaflet.Point(10, 25),
 })
 
+const stationLeafletIcon = Leaflet.divIcon({
+  html: stationIcon,
+  className: "m-station-icon",
+  iconSize: [12, 12],
+})
+
 const Garage = ({
   garage,
   zoomLevel,
@@ -599,6 +634,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ))}
         {(props.shapes || []).map((shape) => (
           <Shape key={shape.id} shape={shape} />
+        ))}
+        {props.stations?.map((station) => (
+          <StationMarker station={station} />
         ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
           <Garages zoomLevel={zoomLevel} />
