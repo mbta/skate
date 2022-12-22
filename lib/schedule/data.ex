@@ -35,7 +35,6 @@ defmodule Schedule.Data do
           timepoint_names_by_id: Timepoint.timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
-          stations: [Stop.t()],
           trips: Schedule.Trip.by_id(),
           blocks: Block.by_id(),
           calendar: Calendar.t(),
@@ -57,7 +56,6 @@ defmodule Schedule.Data do
             timepoint_names_by_id: %{},
             shapes: %{},
             stops: %{},
-            stations: [],
             trips: %{},
             blocks: %{},
             calendar: %{},
@@ -264,8 +262,10 @@ defmodule Schedule.Data do
   end
 
   @spec stations(t()) :: [Stop.t()]
-  def stations(%__MODULE__{stations: stations}) do
-    stations
+  def stations(%__MODULE__{stops: stops}) do
+    stops
+    |> Map.values()
+    |> Enum.filter(&Stop.is_station?/1)
   end
 
   @spec stops_for_trip(t(), Schedule.Trip.id()) :: [Stop.t()]
@@ -388,10 +388,6 @@ defmodule Schedule.Data do
       timepoint_names_by_id: timepoint_names_by_id,
       shapes: gtfs_data.bus_only.shapes,
       stops: stops,
-      stations:
-        stops
-        |> Map.values()
-        |> Enum.filter(&Stop.is_station?/1),
       trips: schedule_trips_by_id,
       blocks: blocks,
       calendar: gtfs_data.all_modes.calendar,
