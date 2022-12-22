@@ -222,9 +222,9 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const StopMarker = ({ stop }: { stop: Stop }) => {
+const StopMarker = ({ stop, zoomLevel }: { stop: Stop; zoomLevel: number }) => {
   if (stop.location_type === "station") {
-    return <StationMarker station={stop} />
+    return <StationMarker station={stop} zoomLevel={zoomLevel} />
   }
 
   return (
@@ -247,12 +247,20 @@ const StopMarker = ({ stop }: { stop: Stop }) => {
   )
 }
 
-const StationMarker = ({ station }: { station: Stop }) => {
+const StationMarker = ({
+  station,
+  zoomLevel,
+}: {
+  station: Stop
+  zoomLevel: number
+}) => {
+  const iconSize = zoomLevel <= 16 ? 12 : 16
+
   return (
     <Marker
       key={station.name}
       position={[station.lat, station.lon]}
-      icon={stationLeafletIcon}
+      icon={stationLeafletIcon({ size: iconSize })}
     >
       <Tooltip className="m-vehicle-map__station-tooltip" direction={"top"}>
         {station.name}
@@ -261,7 +269,7 @@ const StationMarker = ({ station }: { station: Stop }) => {
   )
 }
 
-const Shape = ({ shape }: { shape: Shape }) => {
+const Shape = ({ shape, zoomLevel }: { shape: Shape; zoomLevel: number }) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
@@ -275,7 +283,7 @@ const Shape = ({ shape }: { shape: Shape }) => {
         {...strokeOptions(shape)}
       />
       {(shape.stops || []).map((stop) => (
-        <StopMarker stop={stop} />
+        <StopMarker stop={stop} zoomLevel={zoomLevel} />
       ))}
     </>
   )
@@ -503,11 +511,14 @@ const garageLeafletIcon = Leaflet.divIcon({
   iconAnchor: new Leaflet.Point(10, 25),
 })
 
-const stationLeafletIcon = Leaflet.divIcon({
-  html: stationIcon,
-  className: "m-station-icon",
-  iconSize: [12, 12],
-})
+const stationLeafletIcon = ({ size }: { size: number }): Leaflet.DivIcon => {
+  return Leaflet.divIcon({
+    html: stationIcon,
+    className: "m-station-icon",
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  })
+}
 
 const Garage = ({
   garage,
@@ -578,8 +589,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         className="m-vehicle-map"
         id="id-vehicle-map"
         maxBounds={[
-          [41.2, -72],
-          [43, -69.8],
+          [42.05, -71.55],
+          [42.65, -70.6],
         ]}
         zoomControl={false}
         center={defaultCenter}
@@ -633,11 +644,12 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
         ))}
         {(props.shapes || []).map((shape) => (
-          <Shape key={shape.id} shape={shape} />
+          <Shape key={shape.id} shape={shape} zoomLevel={zoomLevel} />
         ))}
-        {props.stations?.map((station) => (
-          <StationMarker station={station} />
-        ))}
+        {zoomLevel >= 15 &&
+          props.stations?.map((station) => (
+            <StationMarker station={station} zoomLevel={zoomLevel} />
+          ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
           <Garages zoomLevel={zoomLevel} />
         )}
