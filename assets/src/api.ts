@@ -11,6 +11,7 @@ import {
   Route,
   RouteId,
   Shape,
+  Stop,
   Swing,
   Timepoint,
   TripId,
@@ -138,6 +139,13 @@ export const fetchShuttleRoutes = (): Promise<Route[]> =>
     url: "/api/shuttles",
     parser: parseRoutesData,
     defaultResult: [],
+  })
+
+export const fetchStations = (): Promise<Stop[] | null> =>
+  apiCall({
+    url: `/api/stops/stations`,
+    parser: (stations: Stop[] | null) => stations,
+    defaultResult: null,
   })
 
 export const fetchTimepointsForRoute = (

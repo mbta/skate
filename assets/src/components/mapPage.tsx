@@ -4,6 +4,7 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useTripShape } from "../hooks/useShapes"
+import { useStations } from "../hooks/useStations"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
@@ -51,6 +52,7 @@ const ToggleMobileDisplayButton = ({
 const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, mobileMenuIsOpen }] =
     useContext(StateDispatchContext)
+  const stations = useStations()
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
@@ -127,6 +129,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           allowStreetView={true}
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
+          stations={stations}
         >
           {liveVehicle && showVehicleCard ? (
             <VehicleCard

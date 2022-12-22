@@ -14,6 +14,8 @@ export interface Stop {
   lat: number
   lon: number
   connections?: { type: number; id: RouteId; name: string }[]
+  // TODO: create StopData & parse into Stop with locationType
+  location_type?: "station" | "stop"
 }
 
 export type RouteId = string
