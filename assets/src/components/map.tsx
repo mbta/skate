@@ -45,12 +45,12 @@ import "leaflet.fullscreen"
 import StreetViewButton from "./streetViewButton"
 
 import garages, { Garage } from "../data/garages"
-// eslint-disable @typescript-eslint/ban-ts-comment
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
-// eslint-/* eslint-enable @typescript-eslint/ban-ts-comment
+/*  eslint-enable @typescript-eslint/ban-ts-comment */
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import { walkingIcon } from "../helpers/icon"
 import { LocationType } from "../models/stopData"
@@ -651,7 +651,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ))}
         {zoomLevel >= 15 &&
           props.stations?.map((station) => (
-            <StationMarker station={station} zoomLevel={zoomLevel} />
+            <StationMarker
+              key={station.id}
+              station={station}
+              zoomLevel={zoomLevel}
+            />
           ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
           <Garages zoomLevel={zoomLevel} />

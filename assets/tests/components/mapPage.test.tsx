@@ -15,6 +15,8 @@ import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
 import { SearchPageState } from "../../src/state/searchPageState"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
+import { useStations } from "../../src/hooks/useStations"
+import { LocationType } from "../../src/models/stopData"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -93,6 +95,31 @@ describe("MapPage", () => {
     )
 
     expect(asFragment()).toMatchSnapshot()
+  })
+
+  test("renders stations on zoom", async () => {
+    ;(useStations as jest.Mock).mockImplementationOnce(() => [
+      {
+        id: "station-1",
+        name: "Station 1",
+        locationType: LocationType.Station,
+        lat: 42,
+        lon: -71,
+      },
+    ])
+
+    const { container } = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+
+    expect(container.innerHTML).toContain("m-station-icon")
   })
 
   test("on mobile, shows the results list initially", () => {
