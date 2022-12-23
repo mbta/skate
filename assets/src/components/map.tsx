@@ -45,14 +45,15 @@ import "leaflet.fullscreen"
 import StreetViewButton from "./streetViewButton"
 
 import garages, { Garage } from "../data/garages"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// eslint-disable @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import garageIcon from "../../static/images/icon-bus-garage.svg"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
+// eslint-/* eslint-enable @typescript-eslint/ban-ts-comment
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import { walkingIcon } from "../helpers/icon"
+import { LocationType } from "../models/stopData"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -65,7 +66,7 @@ export interface Props {
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   allowStreetView?: boolean
   children?: JSX.Element | JSX.Element[]
-  stations?: Stop[]
+  stations?: Stop[] | null
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -223,13 +224,12 @@ export const strokeOptions = ({ color }: Shape): object =>
       }
 
 const StopMarker = ({ stop, zoomLevel }: { stop: Stop; zoomLevel: number }) => {
-  if (stop.location_type === "station") {
+  if (stop.locationType === LocationType.Station) {
     return <StationMarker station={stop} zoomLevel={zoomLevel} />
   }
 
   return (
     <CircleMarker
-      key={stop.id}
       className="m-vehicle-map__stop"
       center={[stop.lat, stop.lon]}
       radius={3}
@@ -258,11 +258,14 @@ const StationMarker = ({
 
   return (
     <Marker
-      key={station.name}
       position={[station.lat, station.lon]}
       icon={stationLeafletIcon({ size: iconSize })}
     >
-      <Tooltip className="m-vehicle-map__station-tooltip" direction={"top"}>
+      <Tooltip
+        className="m-vehicle-map__station-tooltip"
+        direction={"top"}
+        offset={[0, -(iconSize / 2 + 8)]}
+      >
         {station.name}
       </Tooltip>
     </Marker>
@@ -283,7 +286,7 @@ const Shape = ({ shape, zoomLevel }: { shape: Shape; zoomLevel: number }) => {
         {...strokeOptions(shape)}
       />
       {(shape.stops || []).map((stop) => (
-        <StopMarker stop={stop} zoomLevel={zoomLevel} />
+        <StopMarker key={stop.id} stop={stop} zoomLevel={zoomLevel} />
       ))}
     </>
   )
@@ -589,8 +592,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         className="m-vehicle-map"
         id="id-vehicle-map"
         maxBounds={[
-          [42.05, -71.55],
-          [42.65, -70.6],
+          [41.2, -72],
+          [43, -69.8],
         ]}
         zoomControl={false}
         center={defaultCenter}

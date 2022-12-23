@@ -62,6 +62,11 @@ jest.mock("../../src/hooks/useVehicleForId", () => ({
   default: jest.fn(),
 }))
 
+jest.mock("../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
+}))
+
 describe("MapPage", () => {
   test("renders the empty state", () => {
     ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
