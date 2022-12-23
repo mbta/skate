@@ -10,13 +10,14 @@ import Map, {
   strokeOptions,
 } from "../../src/components/map"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
-import { Shape } from "../../src/schedule"
+import { Shape, Stop } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 
 import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
+import { LocationType } from "../../src/models/stopData"
 
 const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
@@ -87,6 +88,14 @@ const shape = {
       lon: 0,
     },
   ],
+}
+
+const station: Stop = {
+  id: "station-1",
+  name: "Station 1",
+  lat: 42.1,
+  lon: -71.1,
+  locationType: LocationType.Station,
 }
 
 jest.mock("userTestGroups", () => ({
@@ -192,6 +201,75 @@ describe("map", () => {
   test("no garage icons if not in test group", () => {
     const { container } = render(<Map vehicles={[vehicle]} />)
     expect(container.innerHTML).not.toContain("m-garage-icon")
+  })
+
+  test("doesn't draw station icons at zoom levels < 15", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} stations={[station]} />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(14)
+    })
+    await animationFramePromise()
+    expect(container.innerHTML).not.toContain("m-station-icon")
+    expect(screen.queryByText(station.name)).toBeNull()
+  })
+
+  test("draws station icons at zoom levels >= 15", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} stations={[station]} />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(15)
+    })
+    await animationFramePromise()
+    expect(container.innerHTML).toContain("m-station-icon")
+    expect(screen.queryByText(station.name)).toBeNull()
+  })
+
+  test("station name appears on hover", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} stations={[station]} />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(15)
+    })
+    await animationFramePromise()
+    expect(container.innerHTML).toContain("m-station-icon")
+    await userEvent.hover(container.querySelector(".m-station-icon")!)
+
+    expect(screen.queryByText(station.name)).toBeInTheDocument()
+  })
+
+  test("if shape contains stations, renders them as stations instead of regular stops", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map
+        shapes={[{ ...shape, stops: [station] }]}
+        vehicles={[]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(14)
+    })
+    await animationFramePromise()
+    expect(container.innerHTML).toContain("m-station-icon")
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {

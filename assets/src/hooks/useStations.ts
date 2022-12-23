@@ -7,9 +7,7 @@ export const useStations = (): Stop[] | null => {
   const [stations, setStations] = useState<Stop[] | null>(null)
 
   useEffect(() => {
-    fetchStations()
-      .then(setStations)
-      .catch(() => setStations(null))
+    fetchStations().then(setStations)
   }, [])
 
   return stations

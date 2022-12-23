@@ -12,11 +12,13 @@ import {
   fetchTimepointsForRoute,
   putUserSetting,
   putRouteTabs,
+  fetchStations,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import * as browser from "../src/models/browser"
 import { string, StructError, unknown } from "superstruct"
+import { LocationType } from "../src/models/stopData"
 
 declare global {
   interface Window {
@@ -144,7 +146,7 @@ describe("checkedApiCall", () => {
     })
   })
 
-  test("handles malformed data", async () => {
+  test("raises error for malformed data when no default", async () => {
     mockFetch(200, { data: 12 })
 
     const parse = jest.fn(() => "parsed")
@@ -159,6 +161,19 @@ describe("checkedApiCall", () => {
     } catch (error) {
       expect(error).toBeInstanceOf(StructError)
     }
+  })
+
+  test("returns default value when malformed data", async () => {
+    mockFetch(200, { data: 12 })
+
+    const parse = jest.fn(() => "parsed")
+
+    await checkedApiCall({
+      url: "/",
+      dataStruct: string(),
+      parser: parse,
+      defaultResult: null,
+    }).then((result) => expect(result).toBeNull())
   })
 
   test("reloads the page if the response status is a redirect (3xx)", (done) => {
@@ -433,6 +448,60 @@ describe("fetchShuttleRoutes", () => {
           id: "71",
         },
       ])
+      done()
+    })
+  })
+})
+
+describe("fetchStations", () => {
+  test("fetches a list stations", (done) => {
+    mockFetch(200, {
+      data: [
+        {
+          id: "station-1",
+          name: "Station 1",
+          location_type: "station",
+          lat: 42.1,
+          lon: -71.1,
+        },
+        {
+          id: "station-2",
+          name: "Station 2",
+          location_type: "station",
+          lat: 42.2,
+          lon: -71.2,
+        },
+      ],
+    })
+
+    fetchStations().then((stations) => {
+      expect(stations).toEqual([
+        {
+          id: "station-1",
+          name: "Station 1",
+          locationType: LocationType.Station,
+          lat: 42.1,
+          lon: -71.1,
+        },
+        {
+          id: "station-2",
+          name: "Station 2",
+          locationType: LocationType.Station,
+          lat: 42.2,
+          lon: -71.2,
+        },
+      ])
+      done()
+    })
+  })
+
+  test("returns empty list on error", (done) => {
+    mockFetch(500, {
+      data: null,
+    })
+
+    fetchStations().then((stations) => {
+      expect(stations).toEqual([])
       done()
     })
   })
