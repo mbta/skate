@@ -38,7 +38,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.1.0",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.6.1",
     "superstruct": "^0.16.5",
     "uuid": "^8.3.2",
     "whatwg-fetch": "^3.6.2"
