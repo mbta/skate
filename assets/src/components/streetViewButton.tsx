@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react"
+import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl } from "../util/streetViewUrl"
 
 const StreetViewButton = (position: {
@@ -12,6 +13,7 @@ const StreetViewButton = (position: {
     target="_blank"
     rel="noreferrer"
   >
+    <WalkingIcon className="m-street-view-button__icon" />
     Go to Street View
   </a>
 )
