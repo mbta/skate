@@ -26,14 +26,14 @@ jest.mock("../../src/hooks/useNearestIntersection", () => ({
   useNearestIntersection: jest.fn(() => null),
 }))
 
-describe("VehicleCard", () => {
+describe("VehiclePropertiesCard", () => {
   test("displays information about the vehicle", () => {
     ;(useNearestIntersection as jest.Mock).mockImplementationOnce(
       () => intersection
     )
     render(
       <RoutesProvider routes={[route]}>
-        <VehicleCard vehicle={vehicle} onClose={jest.fn()} />
+        <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
       </RoutesProvider>
     )
 
@@ -46,7 +46,7 @@ describe("VehicleCard", () => {
   })
 
   test("location not displayed if not known", () => {
-    render(<VehicleCard vehicle={vehicle} onClose={jest.fn()} />)
+    render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
 
     ;(useNearestIntersection as jest.Mock).mockImplementationOnce(() => null)
 
@@ -56,7 +56,7 @@ describe("VehicleCard", () => {
   test("clicking close button calls on close", async () => {
     const mockOnClose = jest.fn()
     render(
-      <VehicleCard vehicle={vehicle} onClose={mockOnClose} />
+      <VehiclePropertiesCard vehicle={vehicle} onClose={mockOnClose} />
     )
     await userEvent.click(screen.getByTitle("Close"))
 
@@ -64,7 +64,7 @@ describe("VehicleCard", () => {
   })
 
   test("has link to street view", async () => {
-    render(<VehicleCard vehicle={vehicle} onClose={jest.fn()} />)
+    render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
 
     expect(
       screen.getByRole("link", { name: "Go to Street View" })
