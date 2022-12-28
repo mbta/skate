@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import routeFactory from "../factories/route"
 import { RouteVariantName } from "../../src/components/routeVariantName"
@@ -65,9 +65,10 @@ const vehicle: Vehicle = vehicleFactory.build({
 
 describe("RouteVariantName", () => {
   test("renders for a vehicle with variant and headsign", () => {
-    const result = render(<RouteVariantName vehicle={vehicle} />)
 
-    expect(result.getByTestId("variant-name")).toHaveTextContent(
+    render(<RouteVariantName vehicle={vehicle} />)
+
+    expect(screen.getByTestId("variant-name")).toHaveTextContent(
       "39_X Forest Hills"
     )
   })
@@ -79,9 +80,9 @@ describe("RouteVariantName", () => {
       viaVariant: null,
     }
 
-    const result = render(<RouteVariantName vehicle={testVehicle} />)
+    render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(result.getByTestId("variant-name")).toHaveTextContent("39_")
+    expect(screen.getByTestId("variant-name")).toHaveTextContent("39_")
   })
 
   test("doesn't show underscore variant character", () => {
@@ -91,9 +92,9 @@ describe("RouteVariantName", () => {
       viaVariant: "_",
     }
 
-    const result = render(<RouteVariantName vehicle={testVehicle} />)
+    render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(result.getByTestId("variant-name")).toHaveTextContent("39_")
+    expect(screen.getByTestId("variant-name")).toHaveTextContent("39_")
   })
 
   test("renders a static label for a shuttle", () => {
@@ -102,9 +103,9 @@ describe("RouteVariantName", () => {
       isShuttle: true,
     }
 
-    const result = render(<RouteVariantName vehicle={testVehicle} />)
+    render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(result.getByText("Shuttle")).toBeInTheDocument()
+    expect(screen.getByText("Shuttle")).toBeInTheDocument()
   })
 
   test("uses route name if available", () => {
@@ -113,12 +114,12 @@ describe("RouteVariantName", () => {
       name: "ThirtyNine",
     })
 
-    const result = render(
+    render(
       <RoutesProvider routes={[route]}>
         <RouteVariantName vehicle={vehicle} />
       </RoutesProvider>
     )
-    expect(result.getByTestId("variant-name")).toHaveTextContent(
+    expect(screen.getByTestId("variant-name")).toHaveTextContent(
       "ThirtyNine_X Forest Hills"
     )
   })
