@@ -479,7 +479,7 @@ describe("strokeOptions", () => {
     expect(strokeOptions(subwayShape)).toEqual(expected)
   })
 
-  test("sets default color, width, and opacity settincgs for shuttle route lines", () => {
+  test("sets default color, width, and opacity settings for shuttle route lines", () => {
     const shuttleShape = {
       color: undefined,
     } as Shape
