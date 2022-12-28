@@ -35,7 +35,7 @@ import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { DirectionId, Shape, Stop } from "../schedule"
+import { DirectionId, Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
@@ -225,48 +225,56 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const StopMarker = ({ stop, zoomLevel }: { stop: Stop; zoomLevel: number }) => {
-  if (stop.locationType === LocationType.Station) {
-    return <StationMarker station={stop} zoomLevel={zoomLevel} />
-  }
+const StopMarker = React.memo(
+  ({
+    stop,
+    iconSize,
+  }: {
+    stop: Stop
+    iconSize: StationIconSize
+  }): JSX.Element => {
+    if (stop.locationType === LocationType.Station) {
+      return <StationMarker station={stop} iconSize={iconSize} />
+    }
 
-  return (
-    <CircleMarker
-      className="m-vehicle-map__stop"
-      center={[stop.lat, stop.lon]}
-      radius={3}
-    >
-      <Popup className="m-vehicle-map__stop-tooltip">
-        {stop.name}
-        {inTestGroup(MAP_BETA_GROUP_NAME) && (
-          <StreetViewButton
-            latitude={stop.lat}
-            longitude={stop.lon}
-          ></StreetViewButton>
-        )}
-      </Popup>
-    </CircleMarker>
-  )
-}
+    return (
+      <CircleMarker
+        className="m-vehicle-map__stop"
+        center={[stop.lat, stop.lon]}
+        radius={3}
+      >
+        <Popup className="m-vehicle-map__stop-tooltip">
+          {stop.name}
+          {inTestGroup(MAP_BETA_GROUP_NAME) && (
+            <StreetViewButton
+              latitude={stop.lat}
+              longitude={stop.lon}
+            ></StreetViewButton>
+          )}
+        </Popup>
+      </CircleMarker>
+    )
+  }
+)
 
 const StationMarker = ({
   station,
-  zoomLevel,
+  iconSize,
 }: {
   station: Stop
-  zoomLevel: number
+  iconSize: StationIconSize
 }) => {
-  const iconSize = zoomLevel <= 16 ? 12 : 16
+  const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
 
   return (
     <Marker
       position={[station.lat, station.lon]}
-      icon={stationLeafletIcon({ size: iconSize })}
+      icon={stationLeafletIcon({ size: iconSizeLength })}
     >
       <Tooltip
         className="m-vehicle-map__station-tooltip"
         direction={"top"}
-        offset={[0, -(iconSize / 2 + 8)]}
+        offset={[0, -(iconSizeLength / 2 + 8)]}
       >
         {station.name}
       </Tooltip>
@@ -274,25 +282,50 @@ const StationMarker = ({
   )
 }
 
-const Shape = ({ shape, zoomLevel }: { shape: Shape; zoomLevel: number }) => {
-  const positions: LatLngExpression[] = shape.points.map((point) => [
-    point.lat,
-    point.lon,
-  ])
+enum StationIconSize {
+  small,
+  large,
+}
+
+const RouteStops = ({
+  stops,
+  iconSize,
+}: {
+  stops: Stop[]
+  iconSize: StationIconSize
+}): JSX.Element => {
+  const seenStopIds = new Set<StopId>()
+  // Keep the first occurance of each stop when there are duplicates
+  const uniqueStops: Stop[] = stops.flatMap((stop) => {
+    if (!seenStopIds.has(stop.id)) {
+      seenStopIds.add(stop.id)
+      return [stop]
+    }
+    return []
+  })
 
   return (
     <>
-      <Polyline
-        className="m-vehicle-map__route-shape"
-        positions={positions}
-        {...strokeOptions(shape)}
-      />
-      {(shape.stops || []).map((stop) => (
-        <StopMarker key={stop.id} stop={stop} zoomLevel={zoomLevel} />
+      {uniqueStops.map((stop) => (
+        <StopMarker key={stop.id} stop={stop} iconSize={iconSize} />
       ))}
     </>
   )
 }
+
+const RouteShape = React.memo(({ shape }: { shape: Shape }) => {
+  const positions: LatLngExpression[] = shape.points.map((point) => [
+    point.lat,
+    point.lon,
+  ])
+  return (
+    <Polyline
+      className="m-vehicle-map__route-shape"
+      positions={positions}
+      {...strokeOptions(shape)}
+    />
+  )
+})
 
 export const autoCenter = (
   map: LeafletMap,
@@ -599,6 +632,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     streetViewEnabled ? "m-vehicle-map-state--street-view-enabled" : null,
   ])
 
+  const stationIconSize =
+    zoomLevel <= 16 ? StationIconSize.small : StationIconSize.large
+
   return (
     <>
       <div className={stateClasses} />
@@ -660,15 +696,22 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
           <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
         ))}
+
         {(props.shapes || []).map((shape) => (
-          <Shape key={shape.id} shape={shape} zoomLevel={zoomLevel} />
+          <RouteShape key={shape.id} shape={shape} />
         ))}
+        {
+          <RouteStops
+            stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
+            iconSize={stationIconSize}
+          />
+        }
         {zoomLevel >= 15 &&
           props.stations?.map((station) => (
             <StationMarker
               key={station.id}
               station={station}
-              zoomLevel={zoomLevel}
+              iconSize={stationIconSize}
             />
           ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
