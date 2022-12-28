@@ -224,7 +224,7 @@ describe("map", () => {
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
 
     expect(
-      screen.getByRole("link", { name: /Go to Street View/ })
+      screen.getByRole("link", { name: /street view/i })
     ).toBeInTheDocument()
   })
 
