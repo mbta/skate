@@ -17,7 +17,4 @@ describe("StreetViewButton", () => {
       streetViewUrl({ latitude, longitude })
     )
   })
-
-    expect(link).toHaveAttribute("href", streetViewUrl({ latitude, longitude }))
-  })
 })
