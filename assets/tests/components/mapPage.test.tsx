@@ -262,4 +262,16 @@ describe("MapPage", () => {
 
     expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
+
+  test.todo("Selecting another vehicle updates the VPC")
+
+  test.todo("Closing the (VPC)card clears the vehicle, its route and stops, and other vehicles on the route from the map.")
+
+  test.todo("When a card is displayed (a vehicle is selected), the search panel is in its its collapsed state.")
+
+  test.todo("The VPC can be closed by clicking the 'X' button.")
+
+  test.todo("Closing the card causes the search panel to be in its expanded state.")
+
+  test.todo("Selected vehicles are styled with the selected state outlines in the Figma File.")
 })

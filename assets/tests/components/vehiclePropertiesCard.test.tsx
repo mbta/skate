@@ -27,6 +27,37 @@ jest.mock("../../src/hooks/useNearestIntersection", () => ({
 }))
 
 describe("VehiclePropertiesCard", () => {
+  describe("todo: card interactions", () => {
+    test.todo("The VPC can be closed by clicking the 'X' button. (kinda done)")
+    test.todo("Selecting another vehicle does not render old data")
+    test.todo("Selecting another vehicle renders with new information")
+    test.todo("when vehicle prop changes, card rerenders?")
+  })
+  // The information displayed in the VPC, outlined in the Figma file,
+  // corresponds with the selected vehicle, following guidelines for component
+  // variants (default, no location data available, invalid bus, ghost bus).
+  describe("renders bus information according to the figma file", () => {
+    test.todo("Default > Location Available") // {
+    // Header
+    // Vehicle Summary
+    // "Vehicle Status"
+    // Location Information
+    // }
+    test.todo("Default > Location Not Available") // {
+    // shows "Exact location cannot be determined" when unavailable
+    // }
+    test.todo("Invalid Bus") // {
+    // Show invalid in Adherence Info
+    // Use correct icon
+    // }
+    test.todo("Ghost Bus") // {
+    // Display "Ghost Bus or Dropped Trip" in `LastUpdated`
+    // Do not Display the location information block
+    // Display `N/A` in invalid labels
+    // Display Ghost Icon and `N/A`
+    // Do not display adherence information
+    // }
+  })
   test("displays information about the vehicle", () => {
     ;(useNearestIntersection as jest.Mock).mockImplementationOnce(
       () => intersection
@@ -53,6 +84,7 @@ describe("VehiclePropertiesCard", () => {
     expect(screen.queryByText("Current Location")).not.toBeInTheDocument()
   })
 
+  // Alt Name: Figma: The VPC can be closed by clicking the 'X' button.
   test("clicking close button calls on close", async () => {
     const mockOnClose = jest.fn()
     render(

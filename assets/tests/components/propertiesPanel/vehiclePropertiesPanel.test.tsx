@@ -246,4 +246,8 @@ describe("VehiclePropertiesPanel", () => {
     const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
+
+  test.todo(
+    "when `Go To Map` button is pressed; fires `vppToMapCallback`(or Something)"
+  )
 })
