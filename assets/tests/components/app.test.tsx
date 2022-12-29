@@ -49,7 +49,7 @@ describe("App", () => {
   })
 
   test("shows data outage banner if there's a data outage", () => {
-    ;(useDataStatus as jest.Mock).mockImplementation(() => "outage")
+    ;(useDataStatus as jest.Mock).mockImplementationOnce(() => "outage")
     const result = render(<App />)
     expect(result.queryByText(/Ongoing MBTA Data Outage/)).toBeVisible()
   })
@@ -78,19 +78,42 @@ describe("App", () => {
     expect(routeIds).toEqual(["1", "15", "22"])
   })
 
-  test("renders VPP when vehicle is selected", () => {
+  describe("renders VPP  on the expected pages", () => {
     const mockState: State = {
       ...initialState,
       selectedVehicleOrGhost: vehicle.build({ routeId: null }),
     }
     const mockDispatch = jest.fn()
-    const result = render(
+
+    test.each([["/"], ["/search"], ["/shuttle-map"], ["/settings"]])(
+      "VPP renders on %s",
+      (path) => {
+        window.history.pushState({}, "", path)
+        render(
+          <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+            <App />
+          </StateDispatchProvider>
+        )
+        expect(screen.getByText("Vehicles")).toBeInTheDocument()
+      }
+    )
+  })
+
+  test("does not display VPP over map page", () => {
+    const mockState: State = {
+      ...initialState,
+      selectedVehicleOrGhost: vehicle.build({ routeId: null }),
+    }
+    const mockDispatch = jest.fn()
+    window.history.pushState({}, "", "/map")
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+
+    render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <App />
       </StateDispatchProvider>
     )
-
-    expect(result.getByText("Vehicles")).toBeInTheDocument()
+    expect(screen.queryByText("Vehicles")).not.toBeInTheDocument()
   })
 
   test("renders old search page for users not in map test group", () => {
