@@ -633,8 +633,8 @@ defmodule Schedule.DataTest do
   describe "stations/1" do
     test "returns only stations" do
       [station_1, station_2] = [
-        %Stop{id: "station-1", name: "station 1", location_type: :station},
-        %Stop{id: "station-2", name: "station 2", location_type: :station}
+        build(:gtfs_stop, %{id: "station-1", location_type: :station}),
+        build(:gtfs_stop, %{id: "station-2", location_type: :station})
       ]
 
       stops = %{
