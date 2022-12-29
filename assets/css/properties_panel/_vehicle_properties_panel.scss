@@ -70,6 +70,26 @@
   }
 }
 
+.m-vehicle-properties-panel__map-open-link {
+  position: absolute;
+  // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
+  z-index: 7001;
+  top: 10px;
+  // Adjacent to controls - control width is 40px
+  right: calc(env(safe-area-inset-right) + 40px + 0.5rem);
+  text-decoration: none;
+  background-color: $white;
+  padding: 0.5rem;
+  border-radius: 6px;
+  //  border: 2px solid $color-gray-400;
+  color: $color-gray-700 !important;
+  font-weight: 500;
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+}
+
 .m-vehicle-properties-panel__data-discrepancies {
   padding: 1rem;
 }
