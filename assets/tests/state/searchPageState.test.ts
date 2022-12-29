@@ -3,6 +3,7 @@ import {
   initialSearchPageState,
   reducer,
   SearchPageState,
+  setSelectedVehicle,
   setSearchProperty,
   setSearchText,
   submitSearch,
@@ -93,6 +94,26 @@ describe("reducer", () => {
     const newSearch = reducer(invalidQuery, submitSearch())
 
     expect(newSearch.savedQueries).toEqual([])
+  })
+
+  test("setSelectedVehicle sets the selected vehicle", () => {
+    const initialState: SearchPageState = {
+      ...initialSearchPageState,
+      selectedVehicleId: "123",
+    }
+
+    const updatedState = reducer(initialState, setSelectedVehicle("456"))
+    expect(updatedState.selectedVehicleId).toBe("456")
+  })
+
+  test("can setSelectedVehicle to null", () => {
+    const initialState: SearchPageState = {
+      ...initialSearchPageState,
+      selectedVehicleId: "123",
+    }
+
+    const updatedState = reducer(initialState, setSelectedVehicle(null))
+    expect(updatedState.selectedVehicleId).toBeNull()
   })
 })
 
