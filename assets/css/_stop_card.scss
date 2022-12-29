@@ -1,10 +1,14 @@
+$stop-card-popup-box-border: 1px solid $color-gray-500;
+$stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
+  0px 16px 24px rgba(176, 181, 192, 0.24);
+
 .m-stop-card .leaflet-popup-content-wrapper {
   width: 295px;
 
   padding: 16px;
 
-  box-shadow: none;
-  border: 1px solid $color-gray-500;
+  box-shadow: $stop-card-popup-box-shadow;
+  border: $stop-card-popup-box-border;
 
   .leaflet-popup-content {
     margin: 0;
@@ -19,8 +23,8 @@
   left: calc(50% + 125px);
 
   .leaflet-popup-tip {
-    box-shadow: none;
-    border: 1px solid $color-gray-500;
+    box-shadow: $stop-card-popup-box-shadow;
+    border: $stop-card-popup-box-border;
   }
 }
 
