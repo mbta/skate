@@ -21,9 +21,8 @@ describe("<VehiclePropertiesCard/>", () => {
     test("when `close` button is clicked, should fire `onClose` callback", async () => {
       const vehicle = vehicleFactory.build()
       const onClose = jest.fn()
-      render(
-        <VehiclePropertiesCard vehicle={vehicle} onClose={onClose} />
-      )
+      render(<VehiclePropertiesCard vehicle={vehicle} onClose={onClose} />)
+
       await userEvent.click(screen.getByTitle("Close"))
 
       expect(onClose).toHaveBeenCalled()
@@ -39,29 +38,44 @@ describe("<VehiclePropertiesCard/>", () => {
 
       const vehicle = vehicleFactory.build()
 
-      const { rerender } = render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+      const { rerender } = render(
+        <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+      )
 
-      expect(screen.getByRole("status", { name: /Current Location/i })).toHaveTextContent(intersection)
+      expect(
+        screen.getByRole("status", { name: /Current Location/i })
+      ).toHaveTextContent(intersection)
 
       rerender(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
       // expect(screen.getByRole("status", { name: /Current Location/i })).toHaveTextContent("")
-      expect(screen.getByRole("status", { name: /Current Location/i })).toHaveTextContent(intersection2)
-
+      expect(
+        screen.getByRole("status", { name: /Current Location/i })
+      ).toHaveTextContent(intersection2)
     })
 
     test("when rerendered, should display latest data", () => {
       const vehicle = vehicleFactory.build()
       const vehicle2 = vehicleFactory.build()
 
-      const { rerender } = render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+      const { rerender } = render(
+        <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+      )
 
-      expect(screen.getByRole("cell", { name: /run/i })).toHaveTextContent(vehicle.runId!)
-      expect(screen.getByRole("cell", { name: /vehicle/i })).toHaveTextContent(vehicle.label)
+      expect(screen.getByRole("cell", { name: /run/i })).toHaveTextContent(
+        vehicle.runId!
+      )
+      expect(screen.getByRole("cell", { name: /vehicle/i })).toHaveTextContent(
+        vehicle.label
+      )
 
       rerender(<VehiclePropertiesCard vehicle={vehicle2} onClose={jest.fn()} />)
 
-      expect(screen.getByRole("cell", { name: /vehicle/i })).toHaveTextContent(vehicle2.label)
-      expect(screen.getByRole("cell", { name: /run/i })).toHaveTextContent(vehicle2.runId!)
+      expect(screen.getByRole("cell", { name: /vehicle/i })).toHaveTextContent(
+        vehicle2.label
+      )
+      expect(screen.getByRole("cell", { name: /run/i })).toHaveTextContent(
+        vehicle2.runId!
+      )
     })
   })
 
@@ -73,9 +87,11 @@ describe("<VehiclePropertiesCard/>", () => {
           .spyOn(dateTime, "now")
           .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
-
         const vehicle = vehicleFactory.build()
-        const route = routeFactory.build({ id: vehicle.routeId!, name: vehicle.routeId! })
+        const route = routeFactory.build({
+          id: vehicle.routeId!,
+          name: vehicle.routeId!,
+        })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
           ; (useNearestIntersection as jest.Mock).mockImplementationOnce(
@@ -90,8 +106,9 @@ describe("<VehiclePropertiesCard/>", () => {
 
         // -- Assert
         // - Header Bar
-        expect(screen.getByRole("status", { name: "Last Updated Time" }))
-          .toHaveTextContent("Updated 111 sec ago")
+        expect(
+          screen.getByRole("status", { name: "Last Updated Time" })
+        ).toHaveTextContent("Updated 111 sec ago")
         expect(
           screen.getByRole("button", { name: /close/i })
         ).toBeInTheDocument()
@@ -102,28 +119,37 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(screen.getByTitle(/vehicle status icon/i)).toBeInTheDocument()
         // expect(screen.getByRole("presentation", { description: /vehicle status icon/i })).toBeInTheDocument()
 
-        expect(screen.getByRole("status", { name: "Vehicle Adherence" }))
-          .toHaveTextContent(/on time \(0 min early\)/i)
-        expect(screen.getByRole("status", { name: "Route Direction" }))
-          .toHaveTextContent(/outbound/i)
-        expect(screen.getByRole("status", { name: "Route Variant Name" }))
-          .toHaveTextContent("39_X Forest Hills")
+        expect(
+          screen.getByRole("status", { name: "Vehicle Adherence" })
+        ).toHaveTextContent(/on time \(0 min early\)/i)
+        expect(
+          screen.getByRole("status", { name: "Route Direction" })
+        ).toHaveTextContent(/outbound/i)
+        expect(
+          screen.getByRole("status", { name: "Route Variant Name" })
+        ).toHaveTextContent("39_X Forest Hills")
 
         // - Vehicle Work Info
-        const { operatorFirstName, operatorLastName, operatorId } = vehicle;
+        const { operatorFirstName, operatorLastName, operatorId } = vehicle
         // Run      | Run ID
-        expect(screen.getByRole("cell", { name: /run/ }))
-          .toHaveTextContent(vehicle.runId!)
+        expect(screen.getByRole("cell", { name: /run/ })).toHaveTextContent(
+          vehicle.runId!
+        )
         // Vehicle  | Vehicle ID
-        expect(screen.getByRole("cell", { name: /vehicle/ }))
-          .toHaveTextContent(vehicle.label)
+        expect(screen.getByRole("cell", { name: /vehicle/ })).toHaveTextContent(
+          vehicle.label
+        )
         // Operator | Operator First, Last, #BadgeID
-        expect(screen.getByRole("cell", { name: /operator/ }))
-          .toHaveTextContent(`${operatorFirstName} ${operatorLastName} #${operatorId}`)
+        expect(
+          screen.getByRole("cell", { name: /operator/ })
+        ).toHaveTextContent(
+          `${operatorFirstName} ${operatorLastName} #${operatorId}`
+        )
 
         // - Vehicle Location Information
-        expect(screen.getByRole("status", { name: "Current Location" }))
-          .toHaveTextContent(intersection)
+        expect(
+          screen.getByRole("status", { name: "Current Location" })
+        ).toHaveTextContent(intersection)
         expect(
           screen.getByRole("link", { name: /street view/i })
         ).toBeInTheDocument()
@@ -131,12 +157,15 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
         const vehicle = vehicleFactory.build()
-          ; (useNearestIntersection as jest.Mock).mockImplementationOnce(() => null)
+          ; (useNearestIntersection as jest.Mock).mockImplementationOnce(
+            () => null
+          )
 
         render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
 
-        expect(screen.getByRole("status", { name: "Current Location" }))
-          .toHaveTextContent("Exact location cannot be determined")
+        expect(
+          screen.getByRole("status", { name: "Current Location" })
+        ).toHaveTextContent("Exact location cannot be determined")
       })
     })
 
@@ -146,8 +175,9 @@ describe("<VehiclePropertiesCard/>", () => {
       render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
 
       // Show `invalid` in Adherence Info
-      expect(screen.getByRole("status", { name: /Vehicle Adherence/ }))
-        .toHaveTextContent(/invalid/i)
+      expect(
+        screen.getByRole("status", { name: /Vehicle Adherence/ })
+      ).toHaveTextContent(/invalid/i)
 
       // Use correct icon // TODO: make accessible and ensure icon is correct
       expect(screen.getByTitle(/vehicle status icon/i)).toBeInTheDocument()
