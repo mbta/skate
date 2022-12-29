@@ -22,6 +22,8 @@ const modeClass = (routeName: string): string => {
     return "m-route-pill--blue"
   } else if (["B", "C", "D", "E"].includes(routeName)) {
     return "m-route-pill--green"
+  } else if (routeName === "Mattapan Trolley") {
+    return "m-route-pill--red"
   }
 
   return "m-route-pill--bus"
@@ -43,6 +45,8 @@ const routeNameTransform = (routeName: string): string => {
       return "GL·D"
     case "E":
       return "GL·E"
+    case "Mattapan Trolley":
+      return "M"
     default:
       return routeName
   }

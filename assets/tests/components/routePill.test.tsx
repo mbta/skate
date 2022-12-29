@@ -14,6 +14,7 @@ describe("RoutePill", () => {
     ["C", "GL·C", "m-route-pill--green"],
     ["D", "GL·D", "m-route-pill--green"],
     ["E", "GL·E", "m-route-pill--green"],
+    ["Mattapan Trolley", "M", "m-route-pill--red"],
   ])("renders %s", (routeName, expectedText, expectedClass) => {
     render(<RoutePill routeName={routeName} />)
 
