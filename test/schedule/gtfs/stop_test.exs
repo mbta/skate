@@ -122,6 +122,12 @@ defmodule Schedule.Gtfs.StopTest do
           description: "route 2 desc",
           direction_names: %{}
         },
+        shuttle_route: %Route{
+          id: "shuttle_route",
+          name: "Shuttle Route Name",
+          description: "Rail Replacement Bus",
+          direction_names: %{}
+        },
         route_1_pattern_1: %RoutePattern{
           id: "rp1",
           name: "pattern 1",
@@ -142,6 +148,13 @@ defmodule Schedule.Gtfs.StopTest do
           route_id: "route_2",
           direction_id: 1,
           representative_trip_id: "trip_2"
+        },
+        shuttle_route_pattern_1: %RoutePattern{
+          id: "srp",
+          name: "shuttle pattern",
+          route_id: "shuttle_route",
+          direction_id: 1,
+          representative_trip_id: "shuttle_trip"
         }
       }
     end
@@ -184,6 +197,29 @@ defmodule Schedule.Gtfs.StopTest do
                      %StopTime{stop_id: stop_2_id, time: 120}
                    ],
                    # Route 2 only stop 2
+                   route_2_trip_id => [%StopTime{stop_id: stop_1_id, time: 180}]
+                 }
+               )
+    end
+
+    test "shuttle routes are excluded", data do
+      stop_1_id = data.stop_1.id
+
+      route_1 = data.route_1
+      route_2 = data.shuttle_route
+
+      route_1_trip_id = data.route_1_pattern_1.representative_trip_id
+      route_2_trip_id = data.shuttle_route_pattern_1.representative_trip_id
+
+      assert %{
+               ^stop_1_id => %{connections: [^route_1]}
+             } =
+               Stop.stops_with_connections(
+                 %{stop_1_id => data.stop_1},
+                 [route_1, route_2],
+                 [data.route_1_pattern_1, data.shuttle_route_pattern_1],
+                 %{
+                   route_1_trip_id => [%StopTime{stop_id: stop_1_id, time: 60}],
                    route_2_trip_id => [%StopTime{stop_id: stop_1_id, time: 180}]
                  }
                )

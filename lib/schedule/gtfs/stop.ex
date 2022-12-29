@@ -63,7 +63,7 @@ defmodule Schedule.Gtfs.Stop do
   @spec stops_with_connections(by_id(), [Route.t()], [RoutePattern.t()], StopTime.by_trip_id()) ::
           by_id()
   def stops_with_connections(stops_by_id, routes, route_patterns, stop_times_by_trip_id) do
-    routes_by_id = Map.new(routes, &{&1.id, &1})
+    routes_by_id = routes |> Enum.reject(&Route.shuttle_route?(&1)) |> Map.new(&{&1.id, &1})
 
     connections_by_parent_or_stop_id =
       route_patterns
