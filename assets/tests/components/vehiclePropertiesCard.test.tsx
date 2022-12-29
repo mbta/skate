@@ -10,7 +10,6 @@ import VehiclePropertiesCard from "../../src/components/vehiclePropertiesCard"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 
-
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => null),
@@ -31,10 +30,10 @@ describe("<VehiclePropertiesCard/>", () => {
     test("when rerendered, should display latest intersection", () => {
       const intersection = "Massachusetts Ave @ 1"
       const intersection2 = "Massachusetts Ave @ 2"
-        ; (useNearestIntersection as jest.Mock)
-          .mockReturnValueOnce(intersection)
-          // .mockReturnValueOnce(null)
-          .mockReturnValueOnce(intersection2)
+      ;(useNearestIntersection as jest.Mock)
+        .mockReturnValueOnce(intersection)
+        // .mockReturnValueOnce(null)
+        .mockReturnValueOnce(intersection2)
 
       const vehicle = vehicleFactory.build()
 
@@ -54,12 +53,14 @@ describe("<VehiclePropertiesCard/>", () => {
     })
 
     test("when rerendered, should display latest data", () => {
-      const vehicle = vehicleFactory.build()
-      const vehicle2 = vehicleFactory.build()
+      const [vehicle, vehicle2] = vehicleFactory.buildList(2)
 
       const { rerender } = render(
         <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
       )
+
+      expect(vehicle.label).not.toBe(vehicle2.label)
+      expect(vehicle.runId).not.toBe(vehicle2.runId)
 
       expect(screen.getByRole("cell", { name: /run/i })).toHaveTextContent(
         vehicle.runId!
@@ -82,10 +83,10 @@ describe("<VehiclePropertiesCard/>", () => {
   describe("bus types and data scenarios rendering", () => {
     describe("vehicle default, not invalid or ghost", () => {
       test("has location available, should render all design fields", () => {
-        jest.spyOn(Date, "now").mockImplementation(() => 234000)
+        jest.spyOn(Date, "now").mockReturnValue(234000)
         jest
           .spyOn(dateTime, "now")
-          .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+          .mockReturnValue(new Date("2018-08-15T17:41:21.000Z"))
 
         const vehicle = vehicleFactory.build()
         const route = routeFactory.build({
@@ -94,9 +95,7 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-          ; (useNearestIntersection as jest.Mock).mockImplementationOnce(
-            () => intersection
-          )
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(intersection)
 
         render(
           <RoutesProvider routes={[route]}>
@@ -157,9 +156,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
         const vehicle = vehicleFactory.build()
-          ; (useNearestIntersection as jest.Mock).mockImplementationOnce(
-            () => null
-          )
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(null)
 
         render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
 
