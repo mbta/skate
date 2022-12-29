@@ -8,9 +8,7 @@ const latitude = 42.3601
 const longitude = 71.0589
 describe("StreetViewButton", () => {
   test("link element with expected title and href", () => {
-    render(
-      <StreetViewButton latitude={latitude} longitude={longitude} />
-    )
+    render(<StreetViewButton latitude={latitude} longitude={longitude} />)
 
     expect(screen.getByRole("link", { name: /Street View/i })).toHaveAttribute(
       "href",
