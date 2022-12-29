@@ -62,6 +62,7 @@ export interface Props {
   allowStreetView?: boolean
   children?: JSX.Element | JSX.Element[]
   stopCardDirection?: DirectionId
+  includeStopCard?: boolean
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -221,9 +222,11 @@ export const strokeOptions = ({ color }: Shape): object =>
 const Shape = ({
   shape,
   direction,
+  includeStopCard,
 }: {
   shape: Shape
   direction?: DirectionId
+  includeStopCard?: boolean
 }) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
@@ -244,7 +247,7 @@ const Shape = ({
           center={[stop.lat, stop.lon]}
           radius={3}
         >
-          {inTestGroup(MAP_BETA_GROUP_NAME) ? (
+          {includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME) ? (
             <StopCard stop={stop} direction={direction} />
           ) : (
             <Popup className="m-vehicle-map__stop-tooltip">{stop.name}</Popup>
@@ -605,6 +608,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             key={shape.id}
             shape={shape}
             direction={props.stopCardDirection}
+            includeStopCard={props.includeStopCard}
           />
         ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
