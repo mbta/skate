@@ -3,6 +3,7 @@ import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
+import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { isVehicle } from "../../models/vehicle"
@@ -12,7 +13,8 @@ import {
   VehicleId,
   VehicleOrGhost,
 } from "../../realtime"
-import { RouteId, Shape } from "../../schedule"
+import { RouteId, Shape, Stop } from "../../schedule"
+import inTestGroup, { MAP_BETA_GROUP_NAME } from "../../userInTestGroup"
 import Map from "../map"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
@@ -70,6 +72,7 @@ const useRouteVehicles = (
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
+  const stations: Stop[] | null = useStations()
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
   const nearestIntersection: string | null = useNearestIntersection(
@@ -112,6 +115,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           vehicles={[vehicle]}
           shapes={shapes}
           secondaryVehicles={routeVehicles}
+          stations={inTestGroup(MAP_BETA_GROUP_NAME) ? stations : []}
         />
       </div>
     </div>
