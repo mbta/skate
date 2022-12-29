@@ -55,14 +55,14 @@ export const submitSearch = (): SubmitSearchAction => ({
 })
 
 interface SelectVehicleAction {
-  type: "SELECT_VEHICLE"
+  type: "SELECT_SEARCH_VEHICLE"
   payload: { vehicleId: VehicleId | null }
 }
 
 export const setSelectedVehicle = (
   vehicleId: VehicleId | null
 ): SelectVehicleAction => ({
-  type: "SELECT_VEHICLE",
+  type: "SELECT_SEARCH_VEHICLE",
   payload: { vehicleId: vehicleId },
 })
 
@@ -106,7 +106,7 @@ export const reducer = (
           isActive: false,
         }
       }
-    case "SELECT_VEHICLE":
+    case "SELECT_SEARCH_VEHICLE":
       return {
         ...state,
         selectedVehicleId: action.payload.vehicleId,
