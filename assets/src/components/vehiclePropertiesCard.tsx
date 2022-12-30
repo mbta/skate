@@ -151,6 +151,62 @@ const VehicleRouteSummary = ({ vehicle }: VehicleProp): React.ReactElement => (
 )
 //#endregion
 
+//#region Vehicle Work Info
+/* const DataPairTable = (props): React.ReactElement => (
+  <>
+    <div className="m-key-value-table">
+      <table className="m-key-value-table__table">
+        <tbody className={`m-datalist-column-flex $`}></tbody>
+      </table>
+    </div>
+  </>
+) */
+
+interface NameValue {
+  name: string
+  children: ReactNode
+  idPrefix?: string
+}
+
+const TrNameValue = ({
+  name,
+  children: value,
+  idPrefix,
+}: NameValue): React.ReactElement => {
+  const id = (idPrefix ?? name) + useId()
+  return (
+    <tr>
+      <th scope="row" id={id}>
+        {name}
+      </th>
+      <td aria-labelledby={id}>{value}</td>
+    </tr>
+  )
+}
+
+const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
+  // <PropertiesList properties={vehicleProperties(vehicle)}/>
+  <>
+    <table className="m-vehicle-work-info">
+      <tbody className="m-vehicle-work-info__items">
+        <TrNameValue name="run">{vehicle.runId ?? "N/A"}</TrNameValue>
+        <TrNameValue name="vehicle">{vehicle.label ?? "N/A"}</TrNameValue>
+        <TrNameValue name="operator">
+          {/* {vehicle.operatorFirstName} {vehicle.operatorLastName} #{vehicle.operatorId} */}
+          {[
+            vehicle.operatorFirstName,
+            vehicle.operatorLastName,
+            vehicle.operatorId ? `#${vehicle.operatorId}` : null,
+          ]
+            .filter((e) => e !== null)
+            .join(" ") || "Not Available"}
+        </TrNameValue>
+      </tbody>
+    </table>
+  </>
+)
+//#endregion
+
 //#region Vehicle Properties Card
 const VehiclePropertiesCard = ({
   vehicle,
@@ -171,6 +227,7 @@ const VehiclePropertiesCard = ({
 
     <div className="m-vpc__body">
       <div className="m-vpc__properties m-info-section">
+        <VehicleWorkInfo vehicle={vehicle} />
       </div>
 
       <div className="m-vpc__location-info m-info-section">
