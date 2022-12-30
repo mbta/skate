@@ -95,3 +95,15 @@
   left: calc(env(safe-area-inset-left) + 60px);
   cursor: default;
 }
+
+.m-map-page__input-and-results[hidden] + *::before {
+  content: "";
+  visibility: visible;
+  width: 10px;
+  height: 100%;
+  background-color: magenta;
+}
+
+.m-map-page__input-and-results[hidden] {
+  visibility: collapse;
+}
