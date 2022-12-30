@@ -100,6 +100,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     >
       <div
         className="m-map-page__input-and-results"
+        title="Map Search Panel"
         {...(showVehicleCard ? { hidden: true } : {})}
       >
         <div className="m-map-page__input">
