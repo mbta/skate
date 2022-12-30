@@ -83,7 +83,8 @@ const VisualSeparator = (): React.ReactElement => (
   <object
     className="m-vehicle-route-summary__separator"
     aria-hidden="true"
-  ></object>
+    role="separator"
+  />
 )
 
 const ScheduleAdherenceStatusIcon = () => (
