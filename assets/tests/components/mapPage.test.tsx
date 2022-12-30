@@ -168,7 +168,9 @@ describe("MapPage", () => {
     )
 
     await userEvent.click(screen.getByRole("cell", { name: runId }))
-    expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+    expect(
+      screen.getByRole("generic", { name: /vehicle properties card/i })
+    ).toBeVisible()
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
   })
 
@@ -222,11 +224,13 @@ describe("MapPage", () => {
 
   test("vehicle card fires `onClose`, vehicle properties card should not be visible, search panel should be visible", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-      ; (useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
+    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
 
     const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId })
-      ; (useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, {
+      runId,
+    })
+    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
 
     render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
@@ -237,27 +241,37 @@ describe("MapPage", () => {
     )
 
     await userEvent.click(screen.getByRole("button", { name: runId }))
-    expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+    expect(
+      screen.getByRole("generic", { name: /vehicle properties card/i })
+    ).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
-    expect(screen.queryByRole("generic", { name: /vehicle properties card/i })).not.toBeInTheDocument() // toBeVisible() is also acceptable
+    expect(
+      screen.queryByRole("generic", { name: /vehicle properties card/i })
+    ).not.toBeInTheDocument() // toBeVisible() is also acceptable
 
-    expect(screen.getByRole("generic", { name: /map search panel/i })).toBeVisible()
+    expect(
+      screen.getByRole("generic", { name: /map search panel/i })
+    ).toBeVisible()
   })
 
   test("after search is canceled, should not render search results", () => {
     expect.hasAssertions()
   })
 
-  test.todo("closing the vehicle properties card, should remove related elements from the map")
+  test.todo(
+    "closing the vehicle properties card, should remove related elements from the map"
+  )
 
   test("When a vehicle is selected, the search panel should be collapsed", async () => {
     expect.hasAssertions()
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-      ; (useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
-      ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+    ;(useSearchResults as jest.Mock).mockReturnValue(
+      vehicleFactory.buildList(1, { runId: runId })
+    )
 
     render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
@@ -267,15 +281,20 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-
-    const mapSearchPanel = screen.getByRole("generic", { name: /map search panel/i })
+    const mapSearchPanel = screen.getByRole("generic", {
+      name: /map search panel/i,
+    })
     expect(mapSearchPanel).toBeVisible()
 
-    await userEvent.click(screen.getByRole("button", {
-      name: runId
-    }))
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: runId,
+      })
+    )
 
-    expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+    expect(
+      screen.getByRole("generic", { name: /vehicle properties card/i })
+    ).toBeVisible()
     expect(mapSearchPanel).not.toBeVisible()
   })
 
@@ -289,8 +308,10 @@ describe("MapPage", () => {
         const runId = "clickMe"
         const vehicle = vehicleFactory.build({ runId })
         jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-          ; (useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
-          ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+        ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+        ;(useSearchResults as jest.Mock).mockReturnValue(
+          vehicleFactory.buildList(1, { runId: runId })
+        )
 
         render(
           <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
@@ -300,17 +321,23 @@ describe("MapPage", () => {
           </StateDispatchProvider>
         )
 
-        await userEvent.click(screen.getByRole("button", {
-          name: runId
-        }))
-        expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+        await userEvent.click(
+          screen.getByRole("button", {
+            name: runId,
+          })
+        )
+        expect(
+          screen.getByRole("generic", { name: /vehicle properties card/i })
+        ).toBeVisible()
       })
 
       test("after vehicle on the map is clicked", async () => {
         jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-          ; (useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+        ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
         const runId = "clickMe"
-          ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+        ;(useSearchResults as jest.Mock).mockReturnValue(
+          vehicleFactory.buildList(1, { runId: runId })
+        )
         // const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId: runId })
 
         render(
@@ -321,27 +348,37 @@ describe("MapPage", () => {
           </StateDispatchProvider>
         )
 
-        await userEvent.click(screen.getByRole("button", {
-          name: runId
-        }))
-        expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+        await userEvent.click(
+          screen.getByRole("button", {
+            name: runId,
+          })
+        )
+        expect(
+          screen.getByRole("generic", { name: /vehicle properties card/i })
+        ).toBeVisible()
       })
 
       test("VPC is opened when page is loaded with vehicle selected, search panel is closed if state is last selected and not closed", async () => {
         // jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
         const vehicle = vehicleFactory.build()
-          ; (useVehicleForId as jest.Mock).mockReturnValue(vehicle)
+        ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
         const runId = "clickMe"
-          ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+        ;(useSearchResults as jest.Mock).mockReturnValue(
+          vehicleFactory.buildList(1, { runId: runId })
+        )
         // const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId: runId })
 
         render(
-          <StateDispatchProvider state={{
-            ...initialState, searchPageState: {
-              ...initialState.searchPageState,
-              selectedVehicleId: vehicle.id,
-            }
-          }} dispatch={jest.fn()}>
+          <StateDispatchProvider
+            state={{
+              ...initialState,
+              searchPageState: {
+                ...initialState.searchPageState,
+                selectedVehicleId: vehicle.id,
+              },
+            }}
+            dispatch={jest.fn()}
+          >
             <BrowserRouter>
               <MapPage />
             </BrowserRouter>
@@ -349,15 +386,12 @@ describe("MapPage", () => {
         )
 
         // expect(screen.getByTitle(/vehicle properties card/i)).toBeVisible()
-        expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+        expect(
+          screen.getByRole("generic", { name: /vehicle properties card/i })
+        ).toBeVisible()
       })
     })
   })
 
-
-  test.todo(
-    "selected vehicle is styled as selected"
-  )
-
-
+  test.todo("selected vehicle is styled as selected")
 })

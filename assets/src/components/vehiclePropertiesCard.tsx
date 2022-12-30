@@ -17,9 +17,7 @@ import { Vehicle } from "../realtime"
 import { secondsToMinutes } from "../util/dateTime"
 import { CloseButton2 } from "./closeButton"
 import { RouteVariantName2 } from "./routeVariantName"
-import StreetViewButton, {
-  WorldPositionBearing,
-} from "./streetViewButton"
+import StreetViewButton, { WorldPositionBearing } from "./streetViewButton"
 import { Size, VehicleIcon2, vehicleOrientation } from "./vehicleIcon"
 
 interface VehicleProp {
@@ -263,7 +261,7 @@ const VehiclePropertiesCard = ({
   onClose,
 }: VehicleProp & {
   onClose: () => void
-  }): React.ReactElement => (
+}): React.ReactElement => (
   <div className="m-vpc" title="Vehicle Properties Card">
     <div className="m-vpc__title-bar">
       <CloseButton2 onClick={onClose} closeButtonType={"l_light"} />

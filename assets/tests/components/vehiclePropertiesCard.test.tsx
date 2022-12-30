@@ -112,14 +112,14 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(
           screen.getByRole("status", { name: "Last Updated Time" })
         ).toHaveTextContent("Updated 111 sec ago")
-        expect(
-          screen.getByRole("button", { name: /close/i })
-        ).toBeVisible()
+        expect(screen.getByRole("button", { name: /close/i })).toBeVisible()
 
         // - Vehicle Route Summary
         // Vehicle Icon
         // ToDo: make component accessible
-        expect(screen.getByRole("img", { name: /vehicle status icon/i })).toBeVisible()
+        expect(
+          screen.getByRole("img", { name: /vehicle status icon/i })
+        ).toBeVisible()
 
         expect(
           screen.getByRole("status", { name: "Vehicle Adherence" })
@@ -152,9 +152,7 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(
           screen.getByRole("status", { name: "Current Location" })
         ).toHaveTextContent(intersection)
-        expect(
-          screen.getByRole("link", { name: /street view/i })
-        ).toBeVisible()
+        expect(screen.getByRole("link", { name: /street view/i })).toBeVisible()
       })
 
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
@@ -180,7 +178,9 @@ describe("<VehiclePropertiesCard/>", () => {
       ).toHaveTextContent(/invalid/i)
 
       // Use correct icon // TODO: make accessible and ensure icon is correct
-      expect(screen.getByRole("img", { name: /vehicle status icon/i })).toBeVisible()
+      expect(
+        screen.getByRole("img", { name: /vehicle status icon/i })
+      ).toBeVisible()
     })
 
     // - Ghost Bus is not Displayable on map

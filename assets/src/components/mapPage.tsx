@@ -67,7 +67,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
     : null
   const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
-  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(searchPageState.selectedVehicleId ? true : false)
+  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(
+    searchPageState.selectedVehicleId ? true : false
+  )
 
   const onSearchCallback = () => {
     setSelectedVehicleId(null)
