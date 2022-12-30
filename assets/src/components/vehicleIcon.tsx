@@ -131,7 +131,7 @@ export const VehicleIcon2 = React.memo(
     const { left, top, width, height } = viewBox(props)
     return (
       <svg
-        role="presentation"
+        role="img"
         style={{ width, height }}
         viewBox={`${left} ${top} ${width} ${height}`}
       >
