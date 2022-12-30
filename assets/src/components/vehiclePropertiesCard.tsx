@@ -82,8 +82,9 @@ const VisualSeparator = (): React.ReactElement => (
   // This object is strictly for visual presentation
   <object
     className="m-vehicle-route-summary__separator"
-    aria-hidden="true"
     role="separator"
+    aria-hidden={true}
+    aria-label="presentation separator"
   />
 )
 
