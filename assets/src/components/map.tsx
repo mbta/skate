@@ -82,7 +82,8 @@ export const defaultCenter: LatLngExpression = {
 const makeVehicleIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
-  userSettings: UserSettings
+  userSettings: UserSettings,
+  isSelected: boolean
 ): Leaflet.DivIcon => {
   const centerX = 12
   const centerY = 12
@@ -94,12 +95,13 @@ const makeVehicleIcon = (
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          class="${className(
-            statusClasses(
+          class="${className([
+            ...statusClasses(
               drawnStatus(vehicle),
               userSettings.vehicleAdherenceColors
-            )
-          )}"
+            ),
+            isSelected ? "selected" : null,
+          ])}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
           transform="scale(${isPrimary ? 1.0 : 0.8}) rotate(${
       vehicle.bearing
@@ -157,7 +159,8 @@ const Vehicle = ({
   const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
     vehicle,
     isPrimary,
-    appState.userSettings
+    appState.userSettings,
+    appState.searchPageState?.selectedVehicleId === vehicle.id
   )
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
