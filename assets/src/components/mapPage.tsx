@@ -97,7 +97,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       className={`c-page m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
       data-testid="map-page"
     >
-      <div className="m-map-page__input-and-results">
+      <div
+        className="m-map-page__input-and-results"
+        {...(showVehicleCard ? { hidden: true } : {})}
+      >
         <div className="m-map-page__input">
           <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
           <ToggleMobileDisplayButton
