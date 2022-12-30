@@ -60,14 +60,14 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
   const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId | null>(
-    null
+    searchPageState.selectedVehicleId ?? null
   )
 
   const liveVehicle: Vehicle | null = selectedVehicleId
     ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
     : null
   const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
-  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(false)
+  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(searchPageState.selectedVehicleId ? true : false)
 
   const onSearchCallback = () => {
     setSelectedVehicleId(null)
@@ -135,7 +135,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           {liveVehicle && showVehicleCard ? (
             <VehiclePropertiesCard
               vehicle={liveVehicle}
-              onClose={() => setShowVehicleCard(false)}
+              onClose={() => {
+                dispatch(setSelectedVehicle(null))
+                setShowVehicleCard(false)
+              }}
             />
           ) : undefined}
         </Map>

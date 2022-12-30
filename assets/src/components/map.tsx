@@ -166,7 +166,7 @@ const Vehicle = ({
     vehicle,
     isPrimary,
     appState.userSettings,
-    appState.selectedVehicleOrGhost?.id || ""
+    appState.searchPageState?.selectedVehicleId || undefined
   )
   const zIndexOffset = isPrimary ? 2000 : 0
   return (
