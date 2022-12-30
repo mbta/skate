@@ -9,6 +9,7 @@ import {
   shapeStrokeOptions,
   TrainVehicleMarker,
   VehicleMarker,
+  StopMarker,
 } from "../../src/components/mapMarkers"
 import vehicleFactory from "../factories/vehicle"
 
@@ -17,6 +18,14 @@ import React from "react"
 import { MapContainer } from "react-leaflet"
 import userEvent from "@testing-library/user-event"
 import { LocationType } from "../../src/models/stopData"
+
+const originalScrollTo = global.scrollTo
+// Clicking/moving map calls scrollTo under the hood
+jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
+afterAll(() => {
+  global.scrollTo = originalScrollTo
+})
 
 describe("VehicleMarker", () => {
   test("Includes icon and label", () => {
@@ -70,6 +79,31 @@ describe("strokeOptions", () => {
     }
 
     expect(shapeStrokeOptions(shuttleShape)).toEqual(expected)
+  })
+})
+
+describe("StopMarker", () => {
+  test("Stop name displayed on hover when not including stop card", async () => {
+    const { container } = renderInMap(
+      <StopMarker
+        stop={{ id: "stop-1", name: "Stop 1", lat: 0, lon: 0 }}
+        includeStopCard={false}
+      />
+    )
+    await userEvent.hover(container.querySelector(".m-vehicle-map__stop")!)
+    expect(screen.getByText("Stop 1")).toBeInTheDocument()
+  })
+
+  test("Stop card displayed on click when includeStopCard is true", async () => {
+    const { container } = renderInMap(
+      <StopMarker
+        stop={{ id: "stop-1", name: "Stop 1", lat: 0, lon: 0 }}
+        direction={0}
+        includeStopCard={true}
+      />
+    )
+    await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
+    expect(screen.getByText("Outbound")).toBeInTheDocument()
   })
 })
 

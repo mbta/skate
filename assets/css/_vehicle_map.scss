@@ -77,18 +77,14 @@
   outline: 0;
 }
 
-.m-vehicle-map__stop-tooltip .m-street-view-button {
-  margin-top: 0.5em;
-}
-
-.leaflet-tooltip.m-vehicle-map__station-tooltip {
+.leaflet-tooltip.m-vehicle-map__stop-tooltip {
   background-color: $color-tooltip-background;
   color: $white;
   border-color: $color-tooltip-background;
 }
 
 // The tooltip triangle
-.leaflet-tooltip-top.m-vehicle-map__station-tooltip::before {
+.leaflet-tooltip-top.m-vehicle-map__stop-tooltip::before {
   border-top-color: $color-tooltip-background;
 }
 

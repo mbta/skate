@@ -130,6 +130,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
           stations={stations}
+          stopCardDirection={liveVehicle?.directionId}
+          includeStopCard={true}
         >
           {liveVehicle && showVehicleCard ? (
             <VehicleCard
