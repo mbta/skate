@@ -39,6 +39,12 @@
     &.off-course {
       fill: $color-vehicle-off-course;
     }
+
+    &.selected {
+      stroke: $color-eggplant-600;
+      stroke-width: 1.5;
+      filter: drop-shadow(1px 1px 4px $color-eggplant-400);
+    }
   }
 
   svg {
