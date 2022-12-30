@@ -31,18 +31,17 @@ export const RouteVariantName2 = ({ vehicle }: { vehicle: VehicleOrGhost }) => {
 
   const { routeId, viaVariant, headsign } = vehicle
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
-  const headsignFormatted = headsign ? `${headsign}` : ""
 
   return (
-    <output aria-label="Route Variant Name" className="m-route-variant-name">
+    <output title="Route Variant Name" className="m-route-variant-name">
       <output
-        aria-label="Route Variant"
+        title="Route & Variant"
         className="m-route-variant-name__route-id"
       >
         {`${route?.name || routeId}_${viaVariantFormatted}`}
       </output>
       &nbsp;
-      <output aria-label="Route Headsign">{headsignFormatted}</output>
+      <output title="Route Headsign">{headsign}</output>
     </output>
   )
 }
