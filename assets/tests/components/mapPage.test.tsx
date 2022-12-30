@@ -216,9 +216,7 @@ describe("MapPage", () => {
     )
 
     await userEvent.click(screen.getByText(runId))
-    expect(screen.getByText("39_X")).toBeInTheDocument()
-    expect(screen.getByText("Forest Hills")).toBeInTheDocument()
-    expect(screen.getByText("Go to Street View")).toBeInTheDocument()
+    expect(screen.getByRole("generic", { name: /vehicle properties card/i }))
   })
 
   test("can close the vehicle card", async () => {
