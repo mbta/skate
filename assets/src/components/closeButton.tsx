@@ -42,4 +42,22 @@ const CloseButton: React.FC<Props> = ({ onClick, closeButtonType }) => {
   )
 }
 
+export const CloseButton2 = ({
+  onClick,
+  closeButtonType,
+  ...rest
+}: Props & React.HTMLAttributes<HTMLElement>) => (
+  <button
+    title="Close"
+    onClick={onClick}
+    className={[
+      "m-close-button",
+      ...buttonTypeClassNames[closeButtonType],
+    ].join(" ")}
+    {...rest}
+  >
+    <CloseXIcon />
+  </button>
+)
+
 export default CloseButton
