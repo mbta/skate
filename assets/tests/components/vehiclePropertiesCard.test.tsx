@@ -104,6 +104,10 @@ describe("<VehiclePropertiesCard/>", () => {
         )
 
         // -- Assert
+        expect(
+          screen.getByRole("generic", { name: /vehicle properties card/i })
+        ).toBeInTheDocument()
+
         // - Header Bar
         expect(
           screen.getByRole("status", { name: "Last Updated Time" })
