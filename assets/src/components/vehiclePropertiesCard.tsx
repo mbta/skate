@@ -26,6 +26,25 @@ interface VehicleProp {
   vehicle: Vehicle
 }
 
+//#region Card Title Bar
+const DataStaleTime = ({
+  timestamp,
+}: {
+  timestamp: number
+}): React.ReactElement => {
+  const epochNowInSeconds = useCurrentTimeSeconds()
+  return (
+    <output aria-label="Last Updated Time" className="data-stale-time">
+      Updated {epochNowInSeconds - timestamp} sec ago
+    </output>
+  )
+}
+
+const VehicleDataStaleTime = ({ vehicle }: VehicleProp): React.ReactElement => (
+  <DataStaleTime timestamp={vehicle.timestamp} />
+)
+//#endregion
+
 //#region Vehicle Properties Card
 const VehiclePropertiesCard = ({
   vehicle,
@@ -36,6 +55,8 @@ const VehiclePropertiesCard = ({
   <div className="m-vpc" title="Vehicle Properties Card">
     <div className="m-vpc__title-bar">
       <CloseButton2 onClick={onClose} closeButtonType={"l_light"} />
+
+      <VehicleDataStaleTime vehicle={vehicle} />
     </div>
 
     <div className="m-vpc__summary">
