@@ -166,7 +166,24 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const StopMarker = React.memo(
+const StopMarker = ({ stop }: { stop: Stop }) => (
+  <CircleMarker
+    className="m-vehicle-map__stop"
+    center={[stop.lat, stop.lon]}
+    radius={3}
+  >
+    <Popup className="m-vehicle-map__stop-tooltip">
+      {stop.name}
+      {inTestGroup(MAP_BETA_GROUP_NAME) && (
+        <StreetViewButton
+          latitude={stop.lat}
+          longitude={stop.lon}
+        ></StreetViewButton>
+      )}
+    </Popup>
+  </CircleMarker>
+)
+const StopOrStationMarker = React.memo(
   ({
     stop,
     iconSize,
@@ -178,23 +195,7 @@ const StopMarker = React.memo(
       return <StationMarker station={stop} iconSize={iconSize} />
     }
 
-    return (
-      <CircleMarker
-        className="m-vehicle-map__stop"
-        center={[stop.lat, stop.lon]}
-        radius={3}
-      >
-        <Popup className="m-vehicle-map__stop-tooltip">
-          {stop.name}
-          {inTestGroup(MAP_BETA_GROUP_NAME) && (
-            <StreetViewButton
-              latitude={stop.lat}
-              longitude={stop.lon}
-            ></StreetViewButton>
-          )}
-        </Popup>
-      </CircleMarker>
-    )
+    return <StopMarker stop={stop} />
   }
 )
 
@@ -248,7 +249,7 @@ export const RouteStopMarkers = ({
   return (
     <>
       {uniqueStops.map((stop) => (
-        <StopMarker key={stop.id} stop={stop} iconSize={iconSize} />
+        <StopOrStationMarker key={stop.id} stop={stop} iconSize={iconSize} />
       ))}
     </>
   )
