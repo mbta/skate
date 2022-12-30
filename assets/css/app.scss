@@ -102,6 +102,10 @@ $component-active-bg: $color-eggplant-700;
 
 @import "../node_modules/bootstrap/scss/forms";
 
+[hidden] {
+  visibility: collapse;
+}
+
 html,
 body,
 main,
