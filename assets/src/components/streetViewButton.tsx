@@ -2,19 +2,31 @@ import React, { ReactElement } from "react"
 import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl } from "../util/streetViewUrl"
 
-const StreetViewButton = (position: {
+export interface WorldPositionBearing {
   latitude: number
   longitude: number
   bearing?: number
-}): ReactElement<HTMLElement> => (
+}
+
+const StreetViewButton = ({
+  text,
+  children,
+  title,
+  ...position
+}: {
+  text?: string
+  title?: string
+  children?: ReactElement
+} & WorldPositionBearing): ReactElement<HTMLElement> => (
   <a
     className="m-street-view-button"
     href={streetViewUrl(position)}
     target="_blank"
     rel="noreferrer"
+    {...(title && { title })}
   >
     <WalkingIcon className="m-street-view-button__icon" />
-    Go to Street View
+    {children ?? text ?? "Street View"}
   </a>
 )
 
