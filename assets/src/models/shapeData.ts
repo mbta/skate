@@ -35,7 +35,9 @@ export type ShapeData = Infer<typeof ShapeData>
 
 export const shapeFromData = (shapeData: ShapeData): Shape => ({
   id: shapeData.id,
-  points: shapeData.points,
+  points: shapeData.points.map((pointData) => {
+    return { lat: pointData.lat, lon: pointData.lon }
+  }),
   stops: shapeData.stops,
 })
 
