@@ -4,13 +4,9 @@ import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
 import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
-import Map, {
-  autoCenter,
-  defaultCenter,
-  strokeOptions,
-} from "../../src/components/map"
+import Map, { autoCenter, defaultCenter } from "../../src/components/map"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
-import { Shape, Stop } from "../../src/schedule"
+import { Stop } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
@@ -538,35 +534,5 @@ describe("auto centering", () => {
       "m-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
-  })
-})
-
-describe("strokeOptions", () => {
-  test("uses the color for a subway line, defaults to a thinner, opaque line", () => {
-    const subwayShape = {
-      color: "#DA291C",
-    } as Shape
-
-    const expected = {
-      color: "#DA291C",
-      opacity: 1.0,
-      weight: 4,
-    }
-
-    expect(strokeOptions(subwayShape)).toEqual(expected)
-  })
-
-  test("sets default color, width, and opacity settincgs for shuttle route lines", () => {
-    const shuttleShape = {
-      color: undefined,
-    } as Shape
-
-    const expected = {
-      color: "#4db6ac",
-      opacity: 0.6,
-      weight: 6,
-    }
-
-    expect(strokeOptions(shuttleShape)).toEqual(expected)
   })
 })
