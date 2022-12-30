@@ -1,4 +1,5 @@
-import React, { useContext } from "react"
+import { DomEvent } from "leaflet"
+import React, { useContext, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { useStations } from "../../hooks/useStations"
@@ -11,9 +12,15 @@ import Map from "../map"
 
 const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
   const [_state, dispatch] = useContext(StateDispatchContext)
+  const ref = React.useRef(null)
+
+  useEffect(() => {
+    DomEvent.disableClickPropagation(ref.current!)
+  }, [])
 
   return (
     <Link
+      ref={ref}
       className="m-vehicle-properties-panel__map-open-link leaflet-bar"
       to={mapModeForUser().path}
       onClick={() => {
