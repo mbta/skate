@@ -128,6 +128,7 @@ describe("MapPage", () => {
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const mockDispatch = jest.fn()
+
     const { container } = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -139,7 +140,9 @@ describe("MapPage", () => {
     expect(screen.queryByTestId("routeShape")).toBeNull()
 
     await userEvent.click(screen.getByText(runId))
-    expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
+    expect(
+      container.querySelector(".m-vehicle-map__route-shape")
+    ).toBeInTheDocument()
   })
 
   test("clicking a vehicle from a search result displays the route shape and card", async () => {
@@ -165,10 +168,8 @@ describe("MapPage", () => {
     )
 
     await userEvent.click(screen.getByRole("cell", { name: runId }))
-    expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
-    expect(
-      screen.getByRole("link", { name: "Go to Street View" })
-    ).toBeInTheDocument()
+    expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+    expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
@@ -199,48 +200,6 @@ describe("MapPage", () => {
     expect(container.innerHTML).not.toContain("m-vehicle-map__route-shape")
   })
 
-  test("clicking a vehicle on the map displays vehicle card", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
-
-    const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const mockDispatch = jest.fn()
-    render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    await userEvent.click(screen.getByText(runId))
-    expect(screen.getByRole("generic", { name: /vehicle properties card/i }))
-  })
-
-  test("can close the vehicle card", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
-
-    const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const mockDispatch = jest.fn()
-    render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    await userEvent.click(screen.getByText(runId))
-    expect(screen.getByText("Forest Hills")).toBeInTheDocument()
-    await userEvent.click(screen.getByTitle("Close"))
-    expect(screen.queryByText("Forest Hills")).not.toBeInTheDocument()
-  })
-
   test("on mobile, allows you to toggle to the map view and back again", async () => {
     const { container } = render(
       <BrowserRouter>
@@ -261,15 +220,144 @@ describe("MapPage", () => {
     expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
-  test.todo("Selecting another vehicle updates the VPC")
+  test("vehicle card fires `onClose`, vehicle properties card should not be visible, search panel should be visible", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      ; (useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
 
-  test.todo("Closing the (VPC)card clears the vehicle, its route and stops, and other vehicles on the route from the map.")
+    const runId = "clickMe"
+    const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId })
+      ; (useSearchResults as jest.Mock).mockImplementation(() => searchResults)
 
-  test.todo("When a card is displayed (a vehicle is selected), the search panel is in its its collapsed state.")
+    render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
 
-  test.todo("The VPC can be closed by clicking the 'X' button.")
+    await userEvent.click(screen.getByRole("button", { name: runId }))
+    expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
 
-  test.todo("Closing the card causes the search panel to be in its expanded state.")
+    await userEvent.click(screen.getByRole("button", { name: /close/i }))
+    expect(screen.queryByRole("generic", { name: /vehicle properties card/i })).not.toBeInTheDocument() // toBeVisible() is also acceptable
 
-  test.todo("Selected vehicles are styled with the selected state outlines in the Figma File.")
+    expect(screen.getByRole("generic", { name: /map search panel/i })).toBeVisible()
+  })
+
+  test("after search is canceled, should not render search results", () => {
+    expect.hasAssertions()
+  })
+
+  test.todo("closing the vehicle properties card, should remove related elements from the map")
+
+  test("When a vehicle is selected, the search panel should be collapsed", async () => {
+    expect.hasAssertions()
+    const runId = "clickMe"
+    const vehicle = vehicleFactory.build({ runId })
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      ; (useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+      ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+
+    render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+
+    const mapSearchPanel = screen.getByRole("generic", { name: /map search panel/i })
+    expect(mapSearchPanel).toBeVisible()
+
+    await userEvent.click(screen.getByRole("button", {
+      name: runId
+    }))
+
+    expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+    expect(mapSearchPanel).not.toBeVisible()
+  })
+
+  test.todo(
+    "Closing the card causes the search panel to be in its expanded state."
+  )
+
+  describe("VehiclePropertiesCard", () => {
+    describe("renders", () => {
+      test("after search result is selected", async () => {
+        const runId = "clickMe"
+        const vehicle = vehicleFactory.build({ runId })
+        jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+          ; (useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+          ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+
+        render(
+          <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+            <BrowserRouter>
+              <MapPage />
+            </BrowserRouter>
+          </StateDispatchProvider>
+        )
+
+        await userEvent.click(screen.getByRole("button", {
+          name: runId
+        }))
+        expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+      })
+
+      test("after vehicle on the map is clicked", async () => {
+        jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+          ; (useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+        const runId = "clickMe"
+          ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+        // const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId: runId })
+
+        render(
+          <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+            <BrowserRouter>
+              <MapPage />
+            </BrowserRouter>
+          </StateDispatchProvider>
+        )
+
+        await userEvent.click(screen.getByRole("button", {
+          name: runId
+        }))
+        expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+      })
+
+      test("VPC is opened when page is loaded with vehicle selected, search panel is closed if state is last selected and not closed", async () => {
+        // jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+        const vehicle = vehicleFactory.build()
+          ; (useVehicleForId as jest.Mock).mockReturnValue(vehicle)
+        const runId = "clickMe"
+          ; (useSearchResults as jest.Mock).mockReturnValue(vehicleFactory.buildList(1, { runId: runId }))
+        // const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId: runId })
+
+        render(
+          <StateDispatchProvider state={{
+            ...initialState, searchPageState: {
+              ...initialState.searchPageState,
+              selectedVehicleId: vehicle.id,
+            }
+          }} dispatch={jest.fn()}>
+            <BrowserRouter>
+              <MapPage />
+            </BrowserRouter>
+          </StateDispatchProvider>
+        )
+
+        // expect(screen.getByTitle(/vehicle properties card/i)).toBeVisible()
+        expect(screen.getByRole("generic", { name: /vehicle properties card/i })).toBeVisible()
+      })
+    })
+  })
+
+
+  test.todo(
+    "selected vehicle is styled as selected"
+  )
+
+
 })
