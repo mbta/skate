@@ -290,7 +290,9 @@ describe("map", () => {
   test("renders street view link from stop if in maps test group", async () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
-    const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
+    const { container } = render(
+      <Map vehicles={[]} shapes={[shape]} includeStopCard={true} />
+    )
 
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
 

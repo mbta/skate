@@ -290,7 +290,7 @@ describe("fetchRoutes", () => {
 
 describe("fetchShapeForRoute", () => {
   test("fetches a shape for the route", (done) => {
-    const shapes = [
+    const shapeData = [
       {
         id: "shape1",
         points: [
@@ -315,7 +315,28 @@ describe("fetchShapeForRoute", () => {
       },
     ]
 
-    mockFetch(200, { data: shapes })
+    const shapes = [
+      {
+        id: "shape1",
+        points: [
+          {
+            lat: 42.41356,
+            lon: -70.99211,
+          },
+        ],
+      },
+      {
+        id: "shape2",
+        points: [
+          {
+            lat: 43.41356,
+            lon: -71.99211,
+          },
+        ],
+      },
+    ]
+
+    mockFetch(200, { data: shapeData })
 
     fetchShapeForRoute("28").then((response) => {
       expect(response).toEqual(shapes)
@@ -335,7 +356,7 @@ describe("fetchShapeForRoute", () => {
 
 describe("fetchShapeForTrip", () => {
   test("fetches a shape for the trip", (done) => {
-    const shape = {
+    const shapeData = {
       id: "shape",
       points: [
         {
@@ -347,7 +368,17 @@ describe("fetchShapeForTrip", () => {
       ],
     }
 
-    mockFetch(200, { data: shape })
+    const shape = {
+      id: "shape",
+      points: [
+        {
+          lat: 42.41356,
+          lon: -70.99211,
+        },
+      ],
+    }
+
+    mockFetch(200, { data: shapeData })
 
     fetchShapeForTrip("trip").then((response) => {
       expect(response).toEqual(shape)

@@ -1,16 +1,15 @@
 import Leaflet, { LatLngExpression } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, { useContext } from "react"
-import { CircleMarker, Marker, Polyline, Popup, Tooltip } from "react-leaflet"
+import { CircleMarker, Marker, Polyline, Tooltip } from "react-leaflet"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime"
-import { Shape, Stop, StopId } from "../schedule"
+import { DirectionId, Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 import "leaflet.fullscreen"
-import StreetViewButton from "./streetViewButton"
 
 import garages, { Garage } from "../data/garages"
 /* eslint-disable @typescript-eslint/ban-ts-comment */
@@ -21,6 +20,7 @@ import stationIcon from "../../static/images/icon-station.svg"
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import { LocationType } from "../models/stopData"
+import StopCard from "./stopCard"
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
@@ -166,63 +166,65 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const StopMarker = ({ stop }: { stop: Stop }) => (
-  <CircleMarker
-    className="m-vehicle-map__stop"
-    center={[stop.lat, stop.lon]}
-    radius={3}
+const StopTooltip = ({
+  children,
+  markerRadius,
+}: {
+  children: JSX.Element | string
+  markerRadius: number
+}) => (
+  <Tooltip
+    className="m-vehicle-map__stop-tooltip"
+    direction={"top"}
+    offset={[0, -(markerRadius + 8)]}
   >
-    <Popup className="m-vehicle-map__stop-tooltip">
-      {stop.name}
-      {inTestGroup(MAP_BETA_GROUP_NAME) && (
-        <StreetViewButton
-          latitude={stop.lat}
-          longitude={stop.lon}
-        ></StreetViewButton>
-      )}
-    </Popup>
-  </CircleMarker>
+    {children}
+  </Tooltip>
 )
-const StopOrStationMarker = React.memo(
+
+const StopMarker = React.memo(
   ({
     stop,
-    iconSize,
+    direction,
+    includeStopCard,
   }: {
     stop: Stop
-    iconSize: StationIconSize
-  }): JSX.Element => {
-    if (stop.locationType === LocationType.Station) {
-      return <StationMarker station={stop} iconSize={iconSize} />
-    }
-
-    return <StopMarker stop={stop} />
+    direction?: DirectionId
+    includeStopCard?: boolean
+  }) => {
+    const markerRadius = 3
+    return (
+      <CircleMarker
+        className="m-vehicle-map__stop"
+        center={[stop.lat, stop.lon]}
+        radius={markerRadius}
+      >
+        {includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME) ? (
+          <StopCard stop={stop} direction={direction} />
+        ) : (
+          <StopTooltip markerRadius={markerRadius}>{stop.name}</StopTooltip>
+        )}
+      </CircleMarker>
+    )
   }
 )
 
-export const StationMarker = ({
-  station,
-  iconSize,
-}: {
-  station: Stop
-  iconSize: StationIconSize
-}) => {
-  const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
+export const StationMarker = React.memo(
+  ({ station, iconSize }: { station: Stop; iconSize: StationIconSize }) => {
+    const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
 
-  return (
-    <Marker
-      position={[station.lat, station.lon]}
-      icon={stationLeafletIcon({ size: iconSizeLength })}
-    >
-      <Tooltip
-        className="m-vehicle-map__station-tooltip"
-        direction={"top"}
-        offset={[0, -(iconSizeLength / 2 + 8)]}
+    return (
+      <Marker
+        position={[station.lat, station.lon]}
+        icon={stationLeafletIcon({ size: iconSizeLength })}
       >
-        {station.name}
-      </Tooltip>
-    </Marker>
-  )
-}
+        <StopTooltip markerRadius={iconSizeLength / 2}>
+          {station.name}
+        </StopTooltip>
+      </Marker>
+    )
+  }
+)
 
 export enum StationIconSize {
   small,
@@ -232,9 +234,13 @@ export enum StationIconSize {
 export const RouteStopMarkers = ({
   stops,
   iconSize,
+  direction,
+  includeStopCard,
 }: {
   stops: Stop[]
   iconSize: StationIconSize
+  direction?: DirectionId
+  includeStopCard?: boolean
 }): JSX.Element => {
   const seenStopIds = new Set<StopId>()
   // Keep the first occurance of each stop when there are duplicates
@@ -248,9 +254,18 @@ export const RouteStopMarkers = ({
 
   return (
     <>
-      {uniqueStops.map((stop) => (
-        <StopOrStationMarker key={stop.id} stop={stop} iconSize={iconSize} />
-      ))}
+      {uniqueStops.map((stop) =>
+        stop.locationType === LocationType.Station ? (
+          <StationMarker key={stop.id} station={stop} iconSize={iconSize} />
+        ) : (
+          <StopMarker
+            key={stop.id}
+            stop={stop}
+            direction={direction}
+            includeStopCard={includeStopCard}
+          />
+        )
+      )}
     </>
   )
 }

@@ -128,6 +128,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           shapes={selectedVehicleShapes}
           allowStreetView={true}
           stations={stations}
+          stopCardDirection={liveVehicle?.directionId}
+          includeStopCard={true}
         >
           {liveVehicle && showVehicleCard ? (
             <VehicleCard

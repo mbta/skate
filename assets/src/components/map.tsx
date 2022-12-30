@@ -32,7 +32,7 @@ import { createControlComponent } from "@react-leaflet/core"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { TrainVehicle, Vehicle } from "../realtime.d"
-import { Shape, Stop } from "../schedule"
+import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
 import appData from "../appData"
@@ -58,7 +58,11 @@ export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   allowStreetView?: boolean
+
   children?: JSX.Element | JSX.Element[]
+  stopCardDirection?: DirectionId
+  includeStopCard?: boolean
+
   stations?: Stop[] | null
 }
 
@@ -76,7 +80,7 @@ interface StreetViewControlProps extends ControlOptions {
   setStreetViewEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const StreetViewControl = ({
+const StreetViewControl = ({
   streetViewEnabled: streetViewEnabled,
   setStreetViewEnabled: setStreetViewEnabled,
 }: StreetViewControlProps): JSX.Element | null => {
@@ -390,6 +394,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           <RouteStopMarkers
             stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
             iconSize={stationIconSize}
+            direction={props.stopCardDirection}
+            includeStopCard={props.includeStopCard}
           />
         }
         {zoomLevel >= 15 &&
