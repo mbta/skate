@@ -231,7 +231,9 @@ describe("map", () => {
       mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
-    expect(container.innerHTML).toContain("m-station-icon")
+    expect(
+      container.querySelector(".m-station-icon")
+    ).toBeVisible()
     expect(screen.queryByText(station.name)).toBeNull()
   })
 
