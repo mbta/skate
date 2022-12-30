@@ -35,6 +35,7 @@ const VehiclePropertiesCard = ({
   }): React.ReactElement => (
   <div className="m-vpc" title="Vehicle Properties Card">
     <div className="m-vpc__title-bar">
+      <CloseButton2 onClick={onClose} closeButtonType={"l_light"} />
     </div>
 
     <div className="m-vpc__summary">
