@@ -106,7 +106,7 @@ describe("<VehiclePropertiesCard/>", () => {
         // -- Assert
         expect(
           screen.getByRole("generic", { name: /vehicle properties card/i })
-        ).toBeInTheDocument()
+        ).toBeVisible()
 
         // - Header Bar
         expect(
@@ -114,13 +114,12 @@ describe("<VehiclePropertiesCard/>", () => {
         ).toHaveTextContent("Updated 111 sec ago")
         expect(
           screen.getByRole("button", { name: /close/i })
-        ).toBeInTheDocument()
+        ).toBeVisible()
 
         // - Vehicle Route Summary
         // Vehicle Icon
         // ToDo: make component accessible
-        expect(screen.getByTitle(/vehicle status icon/i)).toBeInTheDocument()
-        // expect(screen.getByRole("presentation", { description: /vehicle status icon/i })).toBeInTheDocument()
+        expect(screen.getByRole("img", { name: /vehicle status icon/i })).toBeVisible()
 
         expect(
           screen.getByRole("status", { name: "Vehicle Adherence" })
@@ -155,7 +154,7 @@ describe("<VehiclePropertiesCard/>", () => {
         ).toHaveTextContent(intersection)
         expect(
           screen.getByRole("link", { name: /street view/i })
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
 
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
@@ -181,7 +180,7 @@ describe("<VehiclePropertiesCard/>", () => {
       ).toHaveTextContent(/invalid/i)
 
       // Use correct icon // TODO: make accessible and ensure icon is correct
-      expect(screen.getByTitle(/vehicle status icon/i)).toBeInTheDocument()
+      expect(screen.getByRole("img", { name: /vehicle status icon/i })).toBeVisible()
     })
 
     // - Ghost Bus is not Displayable on map
