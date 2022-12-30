@@ -18,7 +18,7 @@ import { secondsToMinutes } from "../util/dateTime"
 import { CloseButton2 } from "./closeButton"
 import { RouteVariantName2 } from "./routeVariantName"
 import StreetViewButton, {
-  WorldPositionBearing as WorldPositionBearing,
+  WorldPositionBearing,
 } from "./streetViewButton"
 import { Size, VehicleIcon2, vehicleOrientation } from "./vehicleIcon"
 
