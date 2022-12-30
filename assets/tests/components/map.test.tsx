@@ -215,7 +215,7 @@ describe("map", () => {
       mapRef.current!.setZoom(14)
     })
     await animationFramePromise()
-    expect(container.innerHTML).not.toContain("m-station-icon")
+    expect(container.querySelector(".m-station-icon")).not.toBeInTheDocument()
     expect(screen.queryByText(station.name)).toBeNull()
   })
 
@@ -231,7 +231,7 @@ describe("map", () => {
       mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
-    expect(container.innerHTML).toContain("m-station-icon")
+    expect(container.querySelector(".m-station-icon")).toBeVisible()
     expect(screen.queryByText(station.name)).toBeNull()
   })
 
@@ -247,7 +247,6 @@ describe("map", () => {
       mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
-    expect(container.innerHTML).toContain("m-station-icon")
     await userEvent.hover(container.querySelector(".m-station-icon")!)
 
     expect(screen.queryByText(station.name)).toBeInTheDocument()
@@ -269,7 +268,7 @@ describe("map", () => {
       mapRef.current!.setZoom(14)
     })
     await animationFramePromise()
-    expect(container.innerHTML).toContain("m-station-icon")
+    expect(container.querySelector(".m-station-icon")).toBeVisible()
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
