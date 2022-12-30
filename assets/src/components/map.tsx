@@ -696,16 +696,13 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
           <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
         ))}
-
         {(props.shapes || []).map((shape) => (
           <RouteShape key={shape.id} shape={shape} />
         ))}
-        {
-          <RouteStops
-            stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
-            iconSize={stationIconSize}
-          />
-        }
+        <RouteStops
+          stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
+          iconSize={stationIconSize}
+        />
         {zoomLevel >= 15 &&
           props.stations?.map((station) => (
             <StationMarker

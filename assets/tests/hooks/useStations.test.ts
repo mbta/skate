@@ -32,7 +32,7 @@ describe("useStations", () => {
     expect(result.current).toEqual(stations)
   })
 
-  test("returns null when data not fetched ", () => {
+  test("returns null when data not fetched", () => {
     const { result } = renderHook(() => {
       return useStations()
     })
