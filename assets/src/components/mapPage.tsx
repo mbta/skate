@@ -6,7 +6,7 @@ import useSearchResults from "../hooks/useSearchResults"
 import { useTripShape } from "../hooks/useShapes"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
-import { SearchPageState } from "../state/searchPageState"
+import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
@@ -49,7 +49,7 @@ const ToggleMobileDisplayButton = ({
 }
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, mobileMenuIsOpen }] =
+  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
     useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
@@ -84,6 +84,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const selectVehicle = (vehicle: VehicleOrGhost): void => {
     setSelectedVehicleId(vehicle.id)
     setShowVehicleCard(true)
+    dispatch(setSelectedVehicle(vehicle.id))
   }
 
   const mobileDisplayClass =
