@@ -207,6 +207,56 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
 )
 //#endregion
 
+//#region Vehicle Location
+const CurrentLocation = ({
+  nearestIntersection,
+}: {
+  nearestIntersection: string | null
+}): React.ReactElement => {
+  const componentId = useId()
+  return (
+    <>
+      <label
+        className="m-current-location__label"
+        htmlFor={"current-location-" + componentId}
+      >
+        Current Location
+      </label>
+      <output
+        className="m-current-location__value "
+        id={"current-location-" + componentId}
+      >
+        {nearestIntersection ?? "Exact location cannot be determined"}
+      </output>
+    </>
+  )
+}
+
+const VehicleNearestIntersection = ({
+  vehicle,
+}: VehicleProp): React.ReactElement => {
+  const nearestIntersection: string | null = useNearestIntersection(
+    vehicle.latitude,
+    vehicle.longitude
+  )
+  return (
+    <div className="m-vehicle-nearest-intersection">
+      <CurrentLocation nearestIntersection={nearestIntersection} />
+    </div>
+  )
+}
+
+const VehicleStreetViewButton = ({
+  vehicle,
+}: VehicleProp): React.ReactElement => (
+  // <StreetViewButton position={vehicle as WorldPositionBearing} />
+  <StreetViewButton
+    title="Go to Street View"
+    {...(vehicle as WorldPositionBearing)}
+  />
+)
+//#endregion
+
 //#region Vehicle Properties Card
 const VehiclePropertiesCard = ({
   vehicle,
@@ -231,6 +281,8 @@ const VehiclePropertiesCard = ({
       </div>
 
       <div className="m-vpc__location-info m-info-section">
+        <VehicleNearestIntersection vehicle={vehicle} />
+        <VehicleStreetViewButton vehicle={vehicle} />
       </div>
     </div>
   </div>
