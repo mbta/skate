@@ -22,7 +22,7 @@ describe("<VehiclePropertiesCard/>", () => {
       const onClose = jest.fn()
       render(<VehiclePropertiesCard vehicle={vehicle} onClose={onClose} />)
 
-      await userEvent.click(screen.getByTitle("Close"))
+      await userEvent.click(screen.getByRole("button", { name: /close/i }))
 
       expect(onClose).toHaveBeenCalled()
     })
@@ -110,7 +110,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
         // - Header Bar
         expect(
-          screen.getByRole("status", { name: "Last Updated Time" })
+          screen.getByRole("status", { name: /Last Update/i })
         ).toHaveTextContent("Updated 111 sec ago")
         expect(screen.getByRole("button", { name: /close/i })).toBeVisible()
 
