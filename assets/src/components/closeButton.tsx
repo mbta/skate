@@ -56,7 +56,7 @@ export const CloseButton2 = ({
     ].join(" ")}
     {...rest}
   >
-    <CloseXIcon />
+    <CloseXIcon role="img" aria-label="" aria-hidden={true} />
   </button>
 )
 
