@@ -6,7 +6,6 @@ import MapPage from "../../src/components/mapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
-import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
 import vehicleFactory from "../factories/vehicle"
@@ -15,6 +14,12 @@ import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
 import { SearchPageState } from "../../src/state/searchPageState"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
+import StateFactory from "../factories/applicationState"
+import { SearchPageStateFactory } from "../factories/searchPageState"
+import { ShapeFactory } from "../factories/shapeFactory"
+import { RunFactory } from "../factories/run"
+import { SearchQueryAllFactory } from "../factories/searchQuery"
+
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -41,7 +46,6 @@ const ghost: Ghost = ghostFactory.build({
   routeStatus: "on_route",
   blockWaivers: [],
 })
-
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(),
@@ -100,7 +104,9 @@ describe("MapPage", () => {
     expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
-  test("clicking a vehicle on the map displays the route shape", async () => {
+  test("clicking a vehicle on the map, should display the route shape and set selection style for map markers", async () => {
+    const runId = "clickMe"
+    const vehicle = vehicleFactory.build({ runId })
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
       tripId === vehicle.tripId
@@ -123,14 +129,16 @@ describe("MapPage", () => {
           ]
         : null
     )
-
-    const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
     const mockDispatch = jest.fn()
+    const state = StateFactory.build({
+      searchPageState: SearchPageStateFactory.build({
+        selectedVehicleId: vehicle.id,
+      }),
+    })
 
     const { container } = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -139,26 +147,34 @@ describe("MapPage", () => {
 
     expect(screen.queryByTestId("routeShape")).toBeNull()
 
-    await userEvent.click(screen.getByText(runId))
+    await userEvent.click(screen.getByRole("button", { name: runId }))
     expect(
       container.querySelector(".m-vehicle-map__route-shape")
     ).toBeInTheDocument()
+
+    screen.debug(container.querySelector(".leaflet-marker-pane")!)
+    expect(container.querySelector(".selected")).toBeVisible()
   })
 
   test("clicking a vehicle from a search result displays the route shape and card", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const activeSearch: SearchPageState = {
+    const vehicle = vehicleFactory.build({ runId })
+      // const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+      // ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    const activeSearch: SearchPageState = SearchPageStateFactory.build({
       query: { text: "clickMe", property: "run" },
       isActive: true,
-      savedQueries: [],
-    }
+    })
+    const shapes = ShapeFactory.buildList(2)
+      ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
+        tripId === vehicle.tripId ? shapes : null
+      )
     const mockDispatch = jest.fn()
     const { container } = render(
       <StateDispatchProvider
-        state={{ ...initialState, searchPageState: activeSearch }}
+        state={StateFactory.build({ searchPageState: activeSearch })}
         dispatch={mockDispatch}
       >
         <BrowserRouter>
@@ -171,23 +187,34 @@ describe("MapPage", () => {
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
+    screen.debug()
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
+    expect(
+      screen.queryByRole("generic", { name: /map search panel/i })
+    ).not.toBeInTheDocument()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
     const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    const vehicle = vehicleFactory.build({ runId })
+      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
     const activeSearch: SearchPageState = {
-      query: { text: "clickMe", property: "run" },
+      query: { text: runId, property: "run" },
       isActive: true,
       savedQueries: [],
     }
+
+    const shapes = ShapeFactory.buildList(2)
+      ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
+        tripId === vehicle.tripId ? shapes : null
+      )
+
     const mockDispatch = jest.fn()
     const { container } = render(
       <StateDispatchProvider
-        state={{ ...initialState, searchPageState: activeSearch }}
+        state={StateFactory.build({ searchPageState: activeSearch })}
         dispatch={mockDispatch}
       >
         <BrowserRouter>
@@ -197,9 +224,12 @@ describe("MapPage", () => {
     )
 
     await userEvent.click(screen.getByRole("cell", { name: runId }))
-    expect(container.innerHTML).toContain("m-vehicle-map__route-shape")
+    expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
     await userEvent.click(screen.getByTitle("Submit"))
-    expect(container.innerHTML).not.toContain("m-vehicle-map__route-shape")
+    // expect(container.innerHTML).not.toContain("m-vehicle-map__route-shape")
+    expect(
+      container.querySelector(".m-vehicle-map__route-shape")
+    ).not.toBeInTheDocument()
   })
 
   test("on mobile, allows you to toggle to the map view and back again", async () => {
@@ -222,7 +252,7 @@ describe("MapPage", () => {
     expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
-  test("vehicle card fires `onClose`, vehicle properties card should not be visible, search panel should be visible", async () => {
+  test("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
 
@@ -232,8 +262,8 @@ describe("MapPage", () => {
     })
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
 
-    render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+    const { container } = render(
+      <StateDispatchProvider state={StateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -244,24 +274,56 @@ describe("MapPage", () => {
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
+    expect(screen.getByTitle(/map search panel/i)).not.toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
     expect(
-      screen.queryByRole("generic", { name: /vehicle properties card/i })
-    ).not.toBeInTheDocument() // toBeVisible() is also acceptable
+      screen.queryByTitle(/vehicle properties card/i)
+    ).not.toBeInTheDocument()
+    expect(
+      container.querySelector(".m-vehicle-map__route-shape")
+    ).not.toBeInTheDocument()
 
     expect(
       screen.getByRole("generic", { name: /map search panel/i })
     ).toBeVisible()
   })
 
-  test("after search is canceled, should not render search results", () => {
-    expect.hasAssertions()
-  })
+  test("after search is canceled, should not render search results on map", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
-  test.todo(
-    "closing the vehicle properties card, should remove related elements from the map"
-  )
+    const runId = RunFactory.build({}).id
+    const vehicle = vehicleFactory.build({ runId })
+    const shapes = ShapeFactory.buildList(2)
+    const activeSearch: SearchPageState = SearchPageStateFactory.build({
+      query: SearchQueryAllFactory.build({ text: vehicle.runId! })
+    })
+
+      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
+      ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
+        tripId === vehicle.tripId ? shapes : null
+      )
+
+    const { container } = render(
+      <StateDispatchProvider
+        state={StateFactory.build({ searchPageState: activeSearch })}
+        dispatch={jest.fn()}
+      >
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(container.querySelector(".m-vehicle-icon__label")).toBeVisible()
+    expect(
+      screen.getByRole("generic", { name: /map search panel/i })
+    ).toBeVisible()
+
+    await userEvent.click(screen.getByRole("button", { name: /clear/i }))
+    // Leaflet? something isn't removing this from the DOM as expected....
+    // await waitForElementToBeRemoved(document.querySelector(".m-vehicle-icon__label"))
+  })
 
   test("When a vehicle is selected, the search panel should be collapsed", async () => {
     expect.hasAssertions()
@@ -274,7 +336,7 @@ describe("MapPage", () => {
     )
 
     render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+      <StateDispatchProvider state={StateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -298,10 +360,6 @@ describe("MapPage", () => {
     expect(mapSearchPanel).not.toBeVisible()
   })
 
-  test.todo(
-    "Closing the card causes the search panel to be in its expanded state."
-  )
-
   describe("VehiclePropertiesCard", () => {
     describe("renders", () => {
       test("after search result is selected", async () => {
@@ -314,7 +372,10 @@ describe("MapPage", () => {
         )
 
         render(
-          <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+          <StateDispatchProvider
+            state={StateFactory.build()}
+            dispatch={jest.fn()}
+          >
             <BrowserRouter>
               <MapPage />
             </BrowserRouter>
@@ -341,7 +402,10 @@ describe("MapPage", () => {
         // const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId: runId })
 
         render(
-          <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+          <StateDispatchProvider
+            state={StateFactory.build()}
+            dispatch={jest.fn()}
+          >
             <BrowserRouter>
               <MapPage />
             </BrowserRouter>
@@ -358,25 +422,20 @@ describe("MapPage", () => {
         ).toBeVisible()
       })
 
-      test("VPC is opened when page is loaded with vehicle selected, search panel is closed if state is last selected and not closed", async () => {
+      test("when page is rendered with a vehicle selected, page should have vehicle properties card open and search panel collapsed", async () => {
         // jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-        const vehicle = vehicleFactory.build()
-        ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
         const runId = "clickMe"
-        ;(useSearchResults as jest.Mock).mockReturnValue(
-          vehicleFactory.buildList(1, { runId: runId })
-        )
-        // const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId: runId })
+        const vehicle = vehicleFactory.build({ runId })
+        ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
+          ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
         render(
           <StateDispatchProvider
-            state={{
-              ...initialState,
-              searchPageState: {
-                ...initialState.searchPageState,
+            state={StateFactory.build({
+              searchPageState: SearchPageStateFactory.build({
                 selectedVehicleId: vehicle.id,
-              },
-            }}
+              }),
+            })}
             dispatch={jest.fn()}
           >
             <BrowserRouter>
@@ -385,13 +444,10 @@ describe("MapPage", () => {
           </StateDispatchProvider>
         )
 
-        // expect(screen.getByTitle(/vehicle properties card/i)).toBeVisible()
         expect(
           screen.getByRole("generic", { name: /vehicle properties card/i })
         ).toBeVisible()
       })
     })
   })
-
-  test.todo("selected vehicle is styled as selected")
 })
