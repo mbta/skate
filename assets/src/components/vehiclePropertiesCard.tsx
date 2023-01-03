@@ -182,7 +182,7 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
             vehicle.operatorId ? `#${vehicle.operatorId}` : null,
           ]
             .filter((e) => e !== null)
-            .join(" ") || "Not Available"}
+            .join(" ") || "N/A"}
         </TrNameValue>
       </tbody>
     </table>
