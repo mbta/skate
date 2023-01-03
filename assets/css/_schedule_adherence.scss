@@ -1,0 +1,28 @@
+.m-schedule-adherence > * {
+  display: inline-block;
+  line-height: 1;
+}
+
+.m-schedule-adherence__status-icon {
+  margin-right: 4px;
+
+  width: 8px;
+
+  vertical-align: baseline;
+
+  .early & {
+    fill: var(--color-vehicle-early);
+  }
+
+  .late & {
+    fill: var(--color-vehicle-late);
+  }
+
+  .on-time & {
+    fill: var(--color-vehicle-ontime);
+  }
+
+  .off-course & {
+    fill: var(--color-vehicle-off-course);
+  }
+}

@@ -1,46 +1,188 @@
-.m-vehicle-card {
+// #region Vehicle Properties Card
+.m-vehicle-properties-card {
+  font-family: $font-family;
+
+  // Static Design Width per spec
   width: 395px;
-  display: flex;
-  background-color: white;
-  border-radius: 1rem;
-  border: 1px solid black;
-  padding: 0.75rem;
+  // Card Look
+  border-radius: 8px;
+  background-color: $color-gray-100;
+  border: 1px solid $color-gray-400;
+  // Clip children to keep rounded edges for background color
+  overflow: clip;
+
+  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.16))
+    drop-shadow(0px 16px 24px rgba(176, 181, 192, 0.24));
+
+  // all children expand to full width of card
+  > * {
+    width: 100%;
+  }
 }
 
-.m-vehicle-card__header {
+.m-vehicle-properties-card__title-bar {
+  background-color: $white;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  align-items: center;
 }
 
-.m-vehicle-card__header-contents {
+.m-vehicle-properties-card__body {
   display: flex;
-  justify-content: space-between;
-  flex: 1;
-  padding-right: 0.5rem;
-  font-size: 0.75rem;
+  flex-flow: column;
+  gap: 10px;
 }
 
-.m-vehicle-card .m-route-variant-name {
-  font-size: 1rem;
+// #region Vehicle Properties Card vehicle location display
+.m-vehicle-properties-card__location-info > :not(:first-child) {
+  margin-top: 10px;
+}
+// #endregion
+
+// #region Padding quirks
+// All children have a 16px padding around the card
+.m-vehicle-properties-card > * {
+  padding-inline: 16px;
 }
 
-.m-vehicle-card__icon {
-  padding-right: 0.5rem;
+.m-vehicle-properties-card__title-bar {
+  padding: 6px 16px;
 }
 
-.m-vehicle-card__icon .m-vehicle-icon__label-background {
-  fill: white;
+.m-vehicle-properties-card__summary {
+  padding-top: 16px;
 }
 
-.m-vehicle-card__icon .m-vehicle-icon--large .m-vehicle-icon__label {
-  font-size: 0.75rem;
+.m-vehicle-properties-card__body {
+  padding: 16px;
+}
+// #endregion
+// #endregion
+
+// #region Visual Information group Section
+.m-info-section {
+  width: 100%;
+  padding: 16px 20px;
+
+  border: 1px solid $color-gray-300;
+  border-radius: 8px;
 }
 
-.m-vehicle-card__location {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
+// #region figma datalist
+// figma layout, needs `gap` set
+.m-datalist-column-flex {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  order: 1;
+
+  align-items: flex-start;
+  align-self: stretch;
 }
-.m-vehicle-card__location-label {
-  font-size: 0.75rem;
+
+// #endregion
+// #endregion
+
+// #region Vehicle Route Summary
+// #region Layout
+.m-vehicle-route-summary {
+  display: grid;
+  grid-template:
+    "icon separator direction  adherence" 1fr
+    "icon separator route-name route-name" 2fr / min-content
+    /* 32px */
+    0.5fr 3fr 6fr;
+
+  align-items: center; // center element vertically within cell
+  justify-items: start; // align element horizontally within the cell
+
+  // assign element grid locations
+  .m-vehicle-route-summary__icon {
+    grid-area: icon;
+  }
+
+  .m-vehicle-route-summary__separator {
+    grid-area: separator;
+  }
+
+  .m-schedule-adherence {
+    grid-area: adherence;
+  }
+
+  .m-vehicle-route-direction {
+    grid-area: direction;
+  }
+
+  .m-route-variant-name {
+    grid-area: route-name;
+  }
+
+  // Bespoke alignment within cells
+  // adherence sticks to the right side of the card
+  .m-schedule-adherence {
+    justify-self: end;
+  }
+
+  .m-schedule-adherence * {
+    display: inline-block;
+  }
+
+  .m-vehicle-route-summary__separator {
+    justify-self: center;
+    align-self: center;
+  }
+
+  // route variant name should not move when text gets longer
+  // so also align
+  .m-route-variant-name {
+    align-self: start;
+
+    line-height: 1.25;
+    max-height: calc(1.25em * 2);
+
+    text-overflow: ellipsis; // doesn't work on multiline text
+    overflow: hidden;
+  }
+
+  .m-vehicle-route-summary__icon {
+    max-height: 62px;
+  }
+
+  .m-vehicle-route-summary__separator {
+    justify-self: center;
+    align-self: center;
+    height: 80%;
+    background-color: $color-gray-300;
+    width: 1px;
+  }
 }
+// #endregion
+
+// #endregion
+
+// #region Vehicle Nearest Intersection Display
+.m-current-location {
+  line-height: 1;
+
+  .m-current-location__label {
+    margin-bottom: 8px;
+  }
+
+  .m-current-location__label,
+  .m-current-location__value {
+    display: block;
+  }
+}
+// #endregion
+
+// #region Vehicle Work Information
+.m-vehicle-work-info {
+  line-height: 1.25;
+}
+
+.m-vehicle-work-info th {
+  padding-right: 36px;
+  text-align: start;
+}
+// #endregion

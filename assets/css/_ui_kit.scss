@@ -116,6 +116,22 @@ $color-vehicle-ghost-border: $color-component-medium;
 $color-vehicle-nonrevenue: #8f7ed6;
 $color-vehicle-off-course: $color-component-dark;
 
+:root {
+  --color-vehicle-off-course: #{$color-vehicle-off-course};
+  --color-vehicle-ontime: #{$color-vehicle-ontime};
+}
+
+:root,
+.early-red {
+  --color-vehicle-early: #{$color-vehicle-red};
+  --color-vehicle-late: #{$color-vehicle-blue};
+}
+
+.early-blue {
+  --color-vehicle-early: #{$color-vehicle-blue};
+  --color-vehicle-late: #{$color-vehicle-red};
+}
+
 $color-line-normal: $color-component-light;
 $color-line-bunched: #ff66bc;
 $color-line-bunched-light: #ffcce9;
@@ -271,7 +287,6 @@ $color-stop-stroke: $black;
     align-items: center;
 
     height: $size;
-    width: $size;
 
     svg {
       stroke: currentColor;

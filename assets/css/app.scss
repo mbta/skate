@@ -20,10 +20,12 @@ $z-properties-panel-context: (
   "fullscreen-map": 11,
 );
 
+@import "ui_kit";
+
 @import "base";
 @import "inter";
-@import "ui_kit";
 @import "leaflet";
+@import "skate_ui";
 
 @import "card";
 @import "close_button";
@@ -33,11 +35,11 @@ $z-properties-panel-context: (
 @import "drawer_tab";
 @import "garage_filter";
 @import "icon_alert_circle";
-@import "incoming_box";
 @import "inactive_notification_modal";
+@import "incoming_box";
 @import "input_modal";
-@import "ladder";
 @import "ladder_page";
+@import "ladder";
 @import "late_view";
 @import "loading_modal";
 @import "loading_spinner";
@@ -45,15 +47,15 @@ $z-properties-panel-context: (
 @import "minischedule";
 @import "modal";
 @import "nav";
+@import "nav/bottom_nav_mobile";
 @import "nav/left_nav";
 @import "nav/nav_menu";
-@import "nav/top_nav";
 @import "nav/top_nav_mobile";
-@import "nav/bottom_nav_mobile";
-@import "notifications";
+@import "nav/top_nav";
 @import "notification_bell_icon";
 @import "notification_content";
 @import "notification_drawer";
+@import "notifications";
 @import "old_close_button";
 @import "page";
 @import "picker_container";
@@ -68,24 +70,25 @@ $z-properties-panel-context: (
 @import "properties_panel/tab_panels";
 @import "properties_panel/vehicle_properties_panel";
 @import "recent_searches";
+@import "route_filter";
 @import "route_ladder";
 @import "route_ladders";
-@import "route_filter";
 @import "route_picker";
 @import "route_pill";
+@import "schedule_adherence";
 @import "search_form";
 @import "search_page";
 @import "search_results";
 @import "settings_page";
 @import "shuttle_map";
-@import "shuttle_picker";
 @import "shuttle_picker_container";
+@import "shuttle_picker";
 @import "stop_card";
 @import "street_view_button";
 @import "swings_view";
-@import "vehicle_properties_card";
 @import "vehicle_icon";
 @import "vehicle_map";
+@import "vehicle_properties_card";
 @import "view_header";
 
 // See https://getbootstrap.com/docs/5.2/customize/sass/#importing - import only
@@ -103,7 +106,17 @@ $component-active-bg: $color-eggplant-700;
 @import "../node_modules/bootstrap/scss/forms";
 
 [hidden] {
-  visibility: collapse;
+  display: none !important;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*:before,
+*:after,
+* {
+  box-sizing: inherit;
 }
 
 html,

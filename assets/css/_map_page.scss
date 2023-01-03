@@ -87,7 +87,7 @@
   }
 }
 
-.m-map-page__map .m-vpc {
+.m-map-page__map .m-vehicle-properties-card {
   position: absolute;
   // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
   z-index: 7001;
@@ -98,7 +98,7 @@
 
 .m-map-page__input-and-results[hidden] + *::before {
   content: "";
-  width: 1rem;
+  width: 10px;
   height: 100%;
   background-color: magenta;
   background-color: $color-gray-400;
