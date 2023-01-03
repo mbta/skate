@@ -415,6 +415,10 @@ const EventAdder = ({
       }
     },
 
+    popupopen: (e) => setTimeout(() => (e.popup.options.autoPan = false), 100),
+
+    popupclose: (e) => (e.popup.options.autoPan = true),
+
     ...(streetViewMode
       ? {
           click: (e) => {
