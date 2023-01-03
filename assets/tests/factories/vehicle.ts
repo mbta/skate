@@ -1,9 +1,10 @@
 import { Factory } from "fishery"
+import { Vehicle, VehicleTimepointStatus } from "../../src/realtime"
 import {
-  Vehicle,
-  VehicleTimepointStatus,
-} from "../../src/realtime"
-import { dataDiscrepancyFactory, swiftlyDataDiscrepancySourceFactory, buslocDataDiscrepancySourceFactory } from "./dataDiscrepancy"
+  dataDiscrepancyFactory,
+  swiftlyDataDiscrepancySourceFactory,
+  buslocDataDiscrepancySourceFactory,
+} from "./dataDiscrepancy"
 
 export default Factory.define<Vehicle>(({ sequence }) => ({
   id: `v${sequence}`,
