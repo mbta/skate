@@ -166,7 +166,7 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const StopMarker = ({ stop }: { stop: Stop }) => (
+const StopMarker = React.memo(({ stop }: { stop: Stop }) => (
   <CircleMarker
     className="m-vehicle-map__stop"
     center={[stop.lat, stop.lon]}
@@ -182,47 +182,28 @@ const StopMarker = ({ stop }: { stop: Stop }) => (
       )}
     </Popup>
   </CircleMarker>
-)
-const StopOrStationMarker = React.memo(
-  ({
-    stop,
-    iconSize,
-  }: {
-    stop: Stop
-    iconSize: StationIconSize
-  }): JSX.Element => {
-    if (stop.locationType === LocationType.Station) {
-      return <StationMarker station={stop} iconSize={iconSize} />
-    }
+))
 
-    return <StopMarker stop={stop} />
+export const StationMarker = React.memo(
+  ({ station, iconSize }: { station: Stop; iconSize: StationIconSize }) => {
+    const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
+
+    return (
+      <Marker
+        position={[station.lat, station.lon]}
+        icon={stationLeafletIcon({ size: iconSizeLength })}
+      >
+        <Tooltip
+          className="m-vehicle-map__station-tooltip"
+          direction={"top"}
+          offset={[0, -(iconSizeLength / 2 + 8)]}
+        >
+          {station.name}
+        </Tooltip>
+      </Marker>
+    )
   }
 )
-
-export const StationMarker = ({
-  station,
-  iconSize,
-}: {
-  station: Stop
-  iconSize: StationIconSize
-}) => {
-  const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
-
-  return (
-    <Marker
-      position={[station.lat, station.lon]}
-      icon={stationLeafletIcon({ size: iconSizeLength })}
-    >
-      <Tooltip
-        className="m-vehicle-map__station-tooltip"
-        direction={"top"}
-        offset={[0, -(iconSizeLength / 2 + 8)]}
-      >
-        {station.name}
-      </Tooltip>
-    </Marker>
-  )
-}
 
 export enum StationIconSize {
   small,
@@ -248,9 +229,13 @@ export const RouteStopMarkers = ({
 
   return (
     <>
-      {uniqueStops.map((stop) => (
-        <StopOrStationMarker key={stop.id} stop={stop} iconSize={iconSize} />
-      ))}
+      {uniqueStops.map((stop) =>
+        stop.locationType === LocationType.Station ? (
+          <StationMarker station={stop} iconSize={iconSize} key={stop.id} />
+        ) : (
+          <StopMarker stop={stop} key={stop.id} />
+        )
+      )}
     </>
   )
 }
