@@ -6,6 +6,7 @@ import RecentSearches from "../../src/components/recentSearches"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
+import { searchPageStateFactory } from "../factories/searchPageState"
 
 describe("RecentSearches", () => {
   test("renders empty state", () => {
@@ -40,11 +41,10 @@ describe("RecentSearches", () => {
   })
 
   test("clicking a recent searchPageState sets the searchPageState text", async () => {
-    const searchWithData = {
+    const searchWithData = searchPageStateFactory.build({
       query: { text: "999-555", property: "run" },
-      isActive: false,
       savedQueries: [{ text: "poodle" }],
-    }
+    })
     const mockDispatch = jest.fn()
     const result = render(
       <StateDispatchProvider

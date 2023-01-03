@@ -775,7 +775,7 @@ describe("LateView", () => {
 
     await userEvent.click(result.getAllByTitle("Exclude Hidden")[0])
 
-    // option to include hidden re-appears, the 2 remaiing rows are still visible
+    // option to include hidden re-appears, the 2 remaining rows are still visible
     expect(result.getAllByTitle("Include Hidden")).toHaveLength(2)
     expect(result.queryAllByTitle("Exclude Hidden")).toHaveLength(0)
     expect(result.getAllByTestId(/row-data/)).toHaveLength(2)

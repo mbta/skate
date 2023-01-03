@@ -1,24 +1,24 @@
-import React from "react"
-import { render, screen } from "@testing-library/react"
-import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
+import { render, screen } from "@testing-library/react"
+import React from "react"
+import { BrowserRouter } from "react-router-dom"
 import MapPage from "../../src/components/mapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 
-import vehicleFactory from "../factories/vehicle"
-import ghostFactory from "../factories/ghost"
 import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
-import { SearchPageState } from "../../src/state/searchPageState"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
-import StateFactory from "../factories/applicationState"
-import { SearchPageStateFactory } from "../factories/searchPageState"
-import { ShapeFactory } from "../factories/shapeFactory"
+import { SearchPageState } from "../../src/state/searchPageState"
+import stateFactory from "../factories/applicationState"
+import ghostFactory from "../factories/ghost"
 import { RunFactory } from "../factories/run"
-import { SearchQueryAllFactory } from "../factories/searchQuery"
+import { searchPageStateFactory } from "../factories/searchPageState"
+import { searchQueryAllFactory } from "../factories/searchQuery"
+import shapeFactory from "../factories/shape"
+import vehicleFactory from "../factories/vehicle"
 
 jest
   .spyOn(dateTime, "now")
@@ -53,12 +53,12 @@ jest.mock("../../src/hooks/useSearchResults", () => ({
 
 jest.mock("../../src/hooks/useShapes", () => ({
   __esModule: true,
-  useTripShape: jest.fn(() => null),
+  useTripShape: jest.fn(),
 }))
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
-  useNearestIntersection: jest.fn(() => null),
+  useNearestIntersection: jest.fn(),
 }))
 
 jest.mock("../../src/hooks/useVehicleForId", () => ({
@@ -66,11 +66,15 @@ jest.mock("../../src/hooks/useVehicleForId", () => ({
   default: jest.fn(),
 }))
 
+beforeEach(() => {
+  expect.hasAssertions()
+})
+
 describe("MapPage", () => {
   test("renders the empty state", () => {
     ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
     const { asFragment } = render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -84,7 +88,7 @@ describe("MapPage", () => {
     const searchResults: VehicleOrGhost[] = [vehicle, ghost]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const { asFragment } = render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -131,8 +135,8 @@ describe("MapPage", () => {
     )
       ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
     const mockDispatch = jest.fn()
-    const state = StateFactory.build({
-      searchPageState: SearchPageStateFactory.build({
+    const state = stateFactory.build({
+      searchPageState: searchPageStateFactory.build({
         selectedVehicleId: vehicle.id,
       }),
     })
@@ -160,21 +164,21 @@ describe("MapPage", () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
-      // const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-      // ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    // const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    // ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
       ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
-    const activeSearch: SearchPageState = SearchPageStateFactory.build({
+    const activeSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "clickMe", property: "run" },
       isActive: true,
     })
-    const shapes = ShapeFactory.buildList(2)
+    const shapes = shapeFactory.buildList(2)
       ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
         tripId === vehicle.tripId ? shapes : null
       )
     const mockDispatch = jest.fn()
     const { container } = render(
       <StateDispatchProvider
-        state={StateFactory.build({ searchPageState: activeSearch })}
+        state={stateFactory.build({ searchPageState: activeSearch })}
         dispatch={mockDispatch}
       >
         <BrowserRouter>
@@ -206,7 +210,7 @@ describe("MapPage", () => {
       savedQueries: [],
     }
 
-    const shapes = ShapeFactory.buildList(2)
+    const shapes = shapeFactory.buildList(2)
       ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
         tripId === vehicle.tripId ? shapes : null
       )
@@ -214,7 +218,7 @@ describe("MapPage", () => {
     const mockDispatch = jest.fn()
     const { container } = render(
       <StateDispatchProvider
-        state={StateFactory.build({ searchPageState: activeSearch })}
+        state={stateFactory.build({ searchPageState: activeSearch })}
         dispatch={mockDispatch}
       >
         <BrowserRouter>
@@ -263,7 +267,7 @@ describe("MapPage", () => {
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
 
     const { container } = render(
-      <StateDispatchProvider state={StateFactory.build()} dispatch={jest.fn()}>
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -294,9 +298,9 @@ describe("MapPage", () => {
 
     const runId = RunFactory.build({}).id
     const vehicle = vehicleFactory.build({ runId })
-    const shapes = ShapeFactory.buildList(2)
-    const activeSearch: SearchPageState = SearchPageStateFactory.build({
-      query: SearchQueryAllFactory.build({ text: vehicle.runId! })
+    const shapes = shapeFactory.buildList(2)
+    const activeSearch: SearchPageState = searchPageStateFactory.build({
+      query: searchQueryAllFactory.build({ text: vehicle.runId! }),
     })
 
       ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
@@ -306,7 +310,7 @@ describe("MapPage", () => {
 
     const { container } = render(
       <StateDispatchProvider
-        state={StateFactory.build({ searchPageState: activeSearch })}
+        state={stateFactory.build({ searchPageState: activeSearch })}
         dispatch={jest.fn()}
       >
         <BrowserRouter>
@@ -336,7 +340,7 @@ describe("MapPage", () => {
     )
 
     render(
-      <StateDispatchProvider state={StateFactory.build()} dispatch={jest.fn()}>
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -373,7 +377,7 @@ describe("MapPage", () => {
 
         render(
           <StateDispatchProvider
-            state={StateFactory.build()}
+            state={stateFactory.build()}
             dispatch={jest.fn()}
           >
             <BrowserRouter>
@@ -403,7 +407,7 @@ describe("MapPage", () => {
 
         render(
           <StateDispatchProvider
-            state={StateFactory.build()}
+            state={stateFactory.build()}
             dispatch={jest.fn()}
           >
             <BrowserRouter>
@@ -431,8 +435,8 @@ describe("MapPage", () => {
 
         render(
           <StateDispatchProvider
-            state={StateFactory.build({
-              searchPageState: SearchPageStateFactory.build({
+            state={stateFactory.build({
+              searchPageState: searchPageStateFactory.build({
                 selectedVehicleId: vehicle.id,
               }),
             })}
