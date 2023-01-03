@@ -18,7 +18,6 @@ import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 
-
 const shape = {
   id: "shape",
   points: [

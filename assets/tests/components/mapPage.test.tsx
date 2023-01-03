@@ -156,7 +156,6 @@ describe("MapPage", () => {
       container.querySelector(".m-vehicle-map__route-shape")
     ).toBeInTheDocument()
 
-    screen.debug(container.querySelector(".leaflet-marker-pane")!)
     expect(container.querySelector(".selected")).toBeVisible()
   })
 
@@ -191,7 +190,6 @@ describe("MapPage", () => {
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
-    screen.debug()
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
     expect(
       screen.queryByRole("generic", { name: /map search panel/i })
@@ -230,7 +228,6 @@ describe("MapPage", () => {
     await userEvent.click(screen.getByRole("cell", { name: runId }))
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
     await userEvent.click(screen.getByTitle("Submit"))
-    // expect(container.innerHTML).not.toContain("m-vehicle-map__route-shape")
     expect(
       container.querySelector(".m-vehicle-map__route-shape")
     ).not.toBeInTheDocument()

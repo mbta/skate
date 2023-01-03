@@ -46,7 +46,6 @@ describe("<VehiclePropertiesCard/>", () => {
       ).toHaveTextContent(intersection)
 
       rerender(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
-      // expect(screen.getByRole("status", { name: /Current Location/i })).toHaveTextContent("")
       expect(
         screen.getByRole("status", { name: /Current Location/i })
       ).toHaveTextContent(intersection2)

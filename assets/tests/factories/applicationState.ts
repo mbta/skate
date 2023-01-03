@@ -18,7 +18,6 @@ const stateFactory = Factory.define<State>(() => ({
   routeTabsToPush: null,
   routeTabsToPushNext: null,
 
-
   selectedNotification: undefined,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
