@@ -1,22 +1,24 @@
-import React, { ReactNode, useContext, useId } from "react"
+import React, {
+  ComponentPropsWithoutRef,
+  HTMLAttributes,
+  ReactNode,
+  useContext,
+  useId,
+} from "react"
 import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { useNearestIntersection } from "../hooks/useNearestIntersection"
+// import { useNearestIntersection2 } from "../hooks/useNearestIntersection"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
 import { directionName } from "../models/vehicle"
-import {
-  drawnStatus,
-  humanReadableScheduleAdherence,
-  statusClasses,
-} from "../models/vehicleStatus"
+import { drawnStatus } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime"
-import { secondsToMinutes } from "../util/dateTime"
 import { CloseButton2 } from "./closeButton"
 import { RouteVariantName2 } from "./routeVariantName"
+import { ScheduleAdherence } from "./scheduleAdherence"
 import StreetViewButton, { WorldPositionBearing } from "./streetViewButton"
 import { Size, VehicleIcon2, vehicleOrientation } from "./vehicleIcon"
 
@@ -32,7 +34,10 @@ const DataStaleTime = ({
 }): React.ReactElement => {
   const epochNowInSeconds = useCurrentTimeSeconds()
   return (
-    <output aria-label="Last Updated Time" className="data-stale-time">
+    <output
+      title="Time Since Last Update Received"
+      className="data-stale-time label font-xs-reg"
+    >
       Updated {epochNowInSeconds - timestamp} sec ago
     </output>
   )
@@ -45,7 +50,10 @@ const VehicleDataStaleTime = ({ vehicle }: VehicleProp): React.ReactElement => (
 
 //#region Vehicle Summary
 
-const VehicleIcon1 = ({ vehicle }: VehicleProp): React.ReactElement => {
+const VehicleIcon1 = ({
+  vehicle,
+  className,
+}: VehicleProp & ComponentPropsWithoutRef<"div">): React.ReactElement => {
   const [{ routeTabs, userSettings }] = useContext(StateDispatchContext)
   const currentTab = currentRouteTab(routeTabs)
   const ladderDirections = currentTab
@@ -53,7 +61,7 @@ const VehicleIcon1 = ({ vehicle }: VehicleProp): React.ReactElement => {
     : emptyLadderDirectionsByRouteId
 
   return (
-    <div className="m-vehicle-route-summary__icon">
+    <div className={className}>
       <VehicleIcon2
         size={Size.Large}
         orientation={vehicleOrientation(vehicle, ladderDirections)}
@@ -68,85 +76,58 @@ const VehicleIcon1 = ({ vehicle }: VehicleProp): React.ReactElement => {
 
 const VehicleRouteDirection = ({
   vehicle,
-}: VehicleProp): React.ReactElement => {
+  className,
+  ...props
+}: VehicleProp & HTMLAttributes<HTMLOutputElement>): React.ReactElement => {
   const route = useRoute(vehicle.routeId)
   return (
-    <output title="Route Direction" className="m-vehicle-route-direction">
+    <output
+      title="Route Direction"
+      className={"m-vehicle-route-direction " + className}
+      {...props}
+    >
       {directionName(vehicle, route)}
     </output>
   )
 }
 
-const VisualSeparator = (): React.ReactElement => (
+const VisualSeparator = ({
+  className,
+}: ComponentPropsWithoutRef<"object">): React.ReactElement => (
   // Visual accent to provide separation between elements
   // This object is strictly for visual presentation
   <object
-    className="m-vehicle-route-summary__separator"
+    className={className ?? "m-visual-separator"}
     role="separator"
     aria-hidden={true}
     aria-label="presentation separator"
   />
 )
 
-const ScheduleAdherenceStatusIcon = () => (
-  <div className="m-properties-panel__schedule-adherence-status-icon">
-    <svg width="10" height="10">
-      <circle cx="5" cy="5" r="5" />
-    </svg>
-  </div>
-)
-
-const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-properties-panel__schedule-adherence-status-string">
-    {humanReadableScheduleAdherence(vehicle)}
-  </div>
-)
-
-const earlyOrLate = (scheduleAdherenceSecs: number): string =>
-  scheduleAdherenceSecs <= 0 ? "early" : "late"
-
-export const scheduleAdherenceLabelString = ({
-  scheduleAdherenceSecs,
-}: Vehicle): string =>
-  `${secondsToMinutes(scheduleAdherenceSecs)} min ${earlyOrLate(
-    scheduleAdherenceSecs
-  )}`
-
-const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse ? "" : `(${scheduleAdherenceLabelString(vehicle)})`}
-  </div>
-)
-
-const ScheduleAdherence1 = ({ vehicle }: { vehicle: Vehicle }) => {
-  const [{ userSettings }] = useContext(StateDispatchContext)
-
-  return (
-    <output
-      aria-label="Vehicle Adherence"
-      className={`m-properties-panel__schedule-adherence ${className(
-        statusClasses(drawnStatus(vehicle), userSettings.vehicleAdherenceColors)
-      )}`}
-    >
-      <ScheduleAdherenceStatusIcon />
-      <ScheduleAdherenceStatusString vehicle={vehicle} />
-      &nbsp;
-      <ScheduleAdherenceLabel vehicle={vehicle} />
-    </output>
-  )
-}
-
 const VehicleRouteSummary = ({ vehicle }: VehicleProp): React.ReactElement => (
   <div className="m-vehicle-route-summary">
-    <VehicleIcon1 vehicle={vehicle} />
+    <VehicleIcon1
+      vehicle={vehicle}
+      className="m-vehicle-route-summary__icon" /* vehicle-label font-xl" */
+    />
 
-    <ScheduleAdherence1 vehicle={vehicle} />
+    <ScheduleAdherence
+      vehicle={vehicle}
+      title="Vehicle Schedule Adherence"
+      className="m-vehicle-route-summary__adherence label font-xs-reg"
+    />
 
-    <VehicleRouteDirection vehicle={vehicle} />
+    <VehicleRouteDirection
+      vehicle={vehicle}
+      className="m-vehicle-route-summary__direction label font-xs-reg"
+    />
 
-    <RouteVariantName2 vehicle={vehicle} />
+    <RouteVariantName2
+      vehicle={vehicle}
+      className="m-vehicle-route-summary__route-variant headsign font-m-semi"
+    />
 
-    <VisualSeparator />
+    <VisualSeparator className="m-vehicle-route-summary__separator" />
   </div>
 )
 //#endregion
@@ -176,10 +157,12 @@ const TrNameValue = ({
   const id = (idPrefix ?? name) + useId()
   return (
     <tr>
-      <th scope="row" id={id}>
+      <th className="kv-key font-s-semi" scope="row" id={id}>
         {name}
       </th>
-      <td aria-labelledby={id}>{value}</td>
+      <td className="kv-value font-s-reg" aria-labelledby={id}>
+        {value}
+      </td>
     </tr>
   )
 }
@@ -211,19 +194,19 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
 const CurrentLocation = ({
   nearestIntersection,
 }: {
-  nearestIntersection: string | null
+  nearestIntersection?: string | null
 }): React.ReactElement => {
   const componentId = useId()
   return (
     <>
       <label
-        className="m-current-location__label"
+        className="m-current-location__label label font-xs-reg title-case"
         htmlFor={"current-location-" + componentId}
       >
         Current Location
       </label>
       <output
-        className="m-current-location__value "
+        className="m-current-location__value label font-s-semi"
         id={"current-location-" + componentId}
       >
         {nearestIntersection ?? "Exact location cannot be determined"}
@@ -235,13 +218,19 @@ const CurrentLocation = ({
 const VehicleNearestIntersection = ({
   vehicle,
 }: VehicleProp): React.ReactElement => {
-  const nearestIntersection: string | null = useNearestIntersection(
+  // const { intersection, isPending } = useNearestIntersection2(
+  //   vehicle.latitude,
+  //   vehicle.longitude
+  // )
+  const intersection = useNearestIntersection(
     vehicle.latitude,
     vehicle.longitude
   )
+
   return (
-    <div className="m-vehicle-nearest-intersection">
-      <CurrentLocation nearestIntersection={nearestIntersection} />
+    <div className="m-current-location">
+      {/* <CurrentLocation nearestIntersection={isPending ? null : intersection} /> */}
+      <CurrentLocation nearestIntersection={intersection} />
     </div>
   )
 }
@@ -264,23 +253,27 @@ const VehiclePropertiesCard = ({
 }: VehicleProp & {
   onClose: () => void
 }): React.ReactElement => (
-  <div className="m-vpc" title="Vehicle Properties Card">
-    <div className="m-vpc__title-bar">
-      <CloseButton2 onClick={onClose} closeButtonType={"l_light"} />
+  <div className="m-vehicle-properties-card" title="Vehicle Properties Card">
+    <div className="m-vehicle-properties-card__title-bar">
+      <CloseButton2
+        onClick={onClose}
+        closeButtonType={"l_light"}
+        title="Close Vehicle Properties Card"
+      />
 
       <VehicleDataStaleTime vehicle={vehicle} />
     </div>
 
-    <div className="m-vpc__summary">
+    <div className="m-vehicle-properties-card__summary">
       <VehicleRouteSummary vehicle={vehicle} />
     </div>
 
-    <div className="m-vpc__body">
-      <div className="m-vpc__properties m-info-section">
+    <div className="m-vehicle-properties-card__body">
+      <div className="m-vehicle-properties-card__properties m-info-section">
         <VehicleWorkInfo vehicle={vehicle} />
       </div>
 
-      <div className="m-vpc__location-info m-info-section">
+      <div className="m-vehicle-properties-card__location-info m-info-section">
         <VehicleNearestIntersection vehicle={vehicle} />
         <VehicleStreetViewButton vehicle={vehicle} />
       </div>
