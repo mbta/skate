@@ -8,6 +8,7 @@ exports[`MapPage renders the empty state 1`] = `
   >
     <div
       class="m-map-page__input-and-results"
+      title="Map Search Panel"
     >
       <div
         class="m-map-page__input"
@@ -338,6 +339,7 @@ exports[`MapPage renders vehicle data 1`] = `
   >
     <div
       class="m-map-page__input-and-results"
+      title="Map Search Panel"
     >
       <div
         class="m-map-page__input"
