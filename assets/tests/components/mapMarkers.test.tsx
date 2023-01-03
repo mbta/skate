@@ -6,7 +6,7 @@ import {
   RouteStopMarkers,
   StationIconSize,
   StationMarker,
-  strokeOptions,
+  shapeStrokeOptions,
   TrainVehicleMarker,
   VehicleMarker,
 } from "../../src/components/mapMarkers"
@@ -55,7 +55,7 @@ describe("strokeOptions", () => {
       weight: 4,
     }
 
-    expect(strokeOptions(subwayShape)).toEqual(expected)
+    expect(shapeStrokeOptions(subwayShape)).toEqual(expected)
   })
 
   test("sets default color, width, and opacity settincgs for shuttle route lines", () => {
@@ -69,7 +69,7 @@ describe("strokeOptions", () => {
       weight: 6,
     }
 
-    expect(strokeOptions(shuttleShape)).toEqual(expected)
+    expect(shapeStrokeOptions(shuttleShape)).toEqual(expected)
   })
 })
 

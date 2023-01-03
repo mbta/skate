@@ -153,7 +153,7 @@ export const TrainVehicleMarker = ({
   return <Marker position={position} icon={icon} />
 }
 
-export const strokeOptions = ({ color }: Shape): object =>
+export const shapeStrokeOptions = ({ color }: Shape): object =>
   color
     ? {
         color,
@@ -183,6 +183,15 @@ const StopMarker = React.memo(({ stop }: { stop: Stop }) => (
     </Popup>
   </CircleMarker>
 ))
+
+const stationLeafletIcon = ({ size }: { size: number }): Leaflet.DivIcon => {
+  return Leaflet.divIcon({
+    html: stationIcon,
+    className: "m-station-icon",
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  })
+}
 
 export const StationMarker = React.memo(
   ({ station, iconSize }: { station: Stop; iconSize: StationIconSize }) => {
@@ -249,7 +258,7 @@ export const RouteShape = React.memo(({ shape }: { shape: Shape }) => {
     <Polyline
       className="m-vehicle-map__route-shape"
       positions={positions}
-      {...strokeOptions(shape)}
+      {...shapeStrokeOptions(shape)}
     />
   )
 })
@@ -259,15 +268,6 @@ const garageLeafletIcon = Leaflet.divIcon({
   className: "m-garage-icon",
   iconAnchor: new Leaflet.Point(10, 25),
 })
-
-const stationLeafletIcon = ({ size }: { size: number }): Leaflet.DivIcon => {
-  return Leaflet.divIcon({
-    html: stationIcon,
-    className: "m-station-icon",
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-  })
-}
 
 const Garage = ({
   garage,
