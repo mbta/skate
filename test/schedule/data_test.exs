@@ -630,6 +630,23 @@ defmodule Schedule.DataTest do
     end
   end
 
+  describe "stations/1" do
+    test "returns only stations" do
+      [station_1, station_2] = [
+        build(:gtfs_stop, %{id: "station-1", location_type: :station}),
+        build(:gtfs_stop, %{id: "station-2", location_type: :station})
+      ]
+
+      stops = %{
+        station_1.id => station_1,
+        station_2.id => station_2,
+        "stop-1" => build(:gtfs_stop, %{id: "stop-1", location_type: :stop})
+      }
+
+      assert [station_1, station_2] == Data.stations(%Data{stops: stops})
+    end
+  end
+
   describe "first_route_pattern_for_route_and_direction/3" do
     setup do
       route_patterns = [

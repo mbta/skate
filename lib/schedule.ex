@@ -1,4 +1,7 @@
 defmodule Schedule do
+  @moduledoc """
+  A repository for accessing and updating static schedule data stored in memory
+  """
   require Logger
 
   alias Schedule.{
@@ -146,6 +149,10 @@ defmodule Schedule do
           Schedule.ShapeWithStops.t() | nil
   def shape_with_stops_for_trip(trip_id, persistent_term_key \\ __MODULE__) do
     call_with_data(persistent_term_key, [trip_id], :shape_with_stops_for_trip, nil)
+  end
+
+  def stations(persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [], :stations, [])
   end
 
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::

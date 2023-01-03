@@ -110,6 +110,16 @@ defmodule Skate.Factory do
     }
   end
 
+  def gtfs_stop_factory do
+    %Schedule.Gtfs.Stop{
+      id: "stop1",
+      name: "Stop 1",
+      location_type: :stop,
+      latitude: 42.01,
+      longitude: -71.01
+    }
+  end
+
   def gtfs_route_factory do
     %Schedule.Gtfs.Route{
       id: "route",

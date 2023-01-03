@@ -325,6 +325,55 @@ defmodule ScheduleTest do
         ]
       } = Schedule.stop("stop1_id", pid)
     end
+
+    test "filters stops that aren't stops or stations" do
+      pid =
+        Schedule.start_mocked(%{
+          gtfs: %{
+            "stops.txt" => [
+              "stop_id,stop_name,stop_lat,stop_lon,parent_station,location_type",
+              "stop-1,No Location Type,1.0,1.5,,",
+              "stop-2,Stop,2.0,2.5,,0",
+              "stop-3,Platform,2.0,2.5,stop-4,0",
+              "stop-4,Station,2.0,2.5,,1",
+              "stop-5,Enterance,2.0,2.5,,2",
+              "stop-6,Generic Node,2.0,2.5,,3",
+              "stop-7,Boarding Area,2.0,2.5,,4"
+            ]
+          }
+        })
+
+      assert %Stop{id: "stop-1", location_type: :stop} = Schedule.stop("stop-1", pid)
+      assert %Stop{id: "stop-2", location_type: :stop} = Schedule.stop("stop-2", pid)
+      assert %Stop{id: "stop-3", location_type: :stop} = Schedule.stop("stop-3", pid)
+      assert %Stop{id: "stop-4", location_type: :station} = Schedule.stop("stop-4", pid)
+      refute Schedule.stop("stop-5", pid)
+      refute Schedule.stop("stop-6", pid)
+      refute Schedule.stop("stop-7", pid)
+    end
+  end
+
+  describe "stations/1" do
+    test "returns only stations" do
+      pid =
+        Schedule.start_mocked(%{
+          gtfs: %{
+            "stops.txt" => [
+              "stop_id,stop_name,stop_lat,stop_lon,parent_station,location_type",
+              "stop-1,No Location Type,1.0,1.5,,",
+              "stop-2,Stop,2.0,2.5,,0",
+              "stop-3,Platform,2.0,2.5,stop-4,0",
+              "stop-4,Station,2.0,2.5,,1",
+              "stop-5,Enterance,2.0,2.5,,2",
+              "stop-6,Generic Node,2.0,2.5,,3",
+              "stop-7,Boarding Area,2.0,2.5,,4"
+            ]
+          }
+        })
+
+      assert [%Stop{id: "stop-4", name: "Station", location_type: :station}] =
+               Schedule.stations(pid)
+    end
   end
 
   describe "trip" do

@@ -4,13 +4,16 @@ defmodule Schedule.Gtfs.Stop do
 
   @type id :: String.t()
 
+  @type location_type() :: :stop | :station
+
   @type t :: %__MODULE__{
           id: id(),
           name: String.t(),
           parent_station_id: id() | nil,
           latitude: float() | nil,
           longitude: float() | nil,
-          connections: [Route.t()]
+          connections: [Route.t()],
+          location_type: location_type()
         }
   @type by_id :: %{id() => t()}
 
@@ -19,16 +22,42 @@ defmodule Schedule.Gtfs.Stop do
     :name
   ]
 
-  @derive Jason.Encoder
-
   defstruct [
     :id,
     :name,
     :parent_station_id,
     :latitude,
     :longitude,
-    connections: []
+    connections: [],
+    location_type: :stop
   ]
+
+  defimpl Jason.Encoder do
+    def encode(stop, opts) do
+      %{latitude: latitude, longitude: longitude} = stop
+
+      stop
+      |> Map.from_struct()
+      |> Map.drop([:latitude, :longitude, :parent_station_id])
+      |> Map.merge(%{lat: latitude, lon: longitude})
+      |> Jason.Encode.map(opts)
+    end
+  end
+
+  @location_type_map %{nil => :stop, "" => :stop, "0" => :stop, "1" => :station}
+
+  @doc """
+  Parse a CSV of stops, including only records that have a location type of stop/platform or stations
+  (omitting enterance/exits, generic nodes, and boarding areas)
+  """
+  @spec parse(binary() | nil) :: [t()]
+  def parse(file_binary) do
+    file_binary
+    |> Csv.parse(
+      parse: &from_csv_row/1,
+      filter: fn row -> Map.has_key?(@location_type_map, row["location_type"]) end
+    )
+  end
 
   @spec parent_station_id(t() | nil) :: id() | nil
   def parent_station_id(nil), do: nil
@@ -44,9 +73,16 @@ defmodule Schedule.Gtfs.Stop do
       name: row["stop_name"],
       parent_station_id: parent_station_id,
       latitude: parse_lat_lon(row["stop_lat"]),
-      longitude: parse_lat_lon(row["stop_lon"])
+      longitude: parse_lat_lon(row["stop_lon"]),
+      location_type: Map.fetch!(@location_type_map, row["location_type"])
     }
   end
+
+  @doc """
+  Returns true when the stop is a station.
+  """
+  @spec is_station?(t()) :: boolean()
+  def is_station?(stop), do: stop.location_type == :station
 
   @doc """
   Remove any stop connections with the given route_id

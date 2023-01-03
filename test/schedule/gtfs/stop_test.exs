@@ -16,10 +16,51 @@ defmodule Schedule.Gtfs.StopTest do
     "stop_address" => "",
     "stop_url" => "https://www.mbta.com/stops/1",
     "level_id" => "",
-    "location_type" => "0",
+    "location_type" => "1",
     "parent_station" => "place-asmnl",
     "wheelchair_boarding" => "1"
   }
+
+  describe "parse/1" do
+    test "returns only stops and stations" do
+      file =
+        Enum.join(
+          [
+            "stop_id,stop_name,stop_lat,stop_lon,parent_station,location_type",
+            "stop-1,No Location Type,1.0,1.5,,",
+            "stop-2,Stop,2.0,2.5,,0",
+            "stop-3,Platform,2.0,2.5,stop-4,0",
+            "stop-4,Station,2.0,2.5,,1",
+            "stop-5,Enterance,2.0,2.5,,2",
+            "stop-6,Generic Node,2.0,2.5,,3",
+            "stop-7,Boarding Area,2.0,2.5,,4"
+          ],
+          "\n"
+        )
+
+      assert [
+               %Stop{
+                 id: "stop-1",
+                 name: "No Location Type",
+                 location_type: :stop,
+                 parent_station_id: nil
+               },
+               %Stop{id: "stop-2", name: "Stop", location_type: :stop, parent_station_id: nil},
+               %Stop{
+                 id: "stop-3",
+                 name: "Platform",
+                 location_type: :stop,
+                 parent_station_id: "stop-4"
+               },
+               %Stop{
+                 id: "stop-4",
+                 name: "Station",
+                 location_type: :station,
+                 parent_station_id: nil
+               }
+             ] = Stop.parse(file)
+    end
+  end
 
   describe "parent_station_id/1" do
     test "returns the parent_station_id if the stop has one" do
@@ -54,7 +95,8 @@ defmodule Schedule.Gtfs.StopTest do
                name: "Washington St opp Ruggles St",
                parent_station_id: "place-asmnl",
                latitude: 42.330957,
-               longitude: -71.082754
+               longitude: -71.082754,
+               location_type: :station
              }
     end
 
@@ -64,13 +106,25 @@ defmodule Schedule.Gtfs.StopTest do
                |> Map.put("parent_station", "")
                |> Map.put("stop_lat", "")
                |> Map.put("stop_lon", "")
+               |> Map.put("location_type", "")
              ) == %Stop{
                id: "1",
                name: "Washington St opp Ruggles St",
                parent_station_id: nil,
                latitude: nil,
-               longitude: nil
+               longitude: nil,
+               location_type: :stop
              }
+    end
+  end
+
+  describe "is_station?/1" do
+    test "true when location_type is :station" do
+      assert Stop.is_station?(%Stop{id: "stop-1", name: "Station", location_type: :station})
+    end
+
+    test "false when location_type is :stop" do
+      refute Stop.is_station?(%Stop{id: "stop-1", name: "Stop", location_type: :stop})
     end
   end
 
