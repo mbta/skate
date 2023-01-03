@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react"
+import { className as classNames } from "../helpers/dom"
 import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl } from "../util/streetViewUrl"
 
@@ -23,7 +24,11 @@ const StreetViewButton = ({
   ...worldPosition
 }: StreetViewButtonProps): ReactElement<HTMLElement> => (
   <a
-    className="m-street-view-button"
+    className={classNames([
+      "m-street-view-button",
+      "button-dark-small",
+      className,
+    ])}
     href={streetViewUrl(worldPosition)}
     target="_blank"
     rel="noreferrer"
@@ -31,6 +36,7 @@ const StreetViewButton = ({
   >
     <WalkingIcon
       className="m-street-view-button__icon"
+      role="img"
       aria-label=""
       aria-hidden={true}
     />
