@@ -31,7 +31,7 @@ afterAll(() => {
 describe("MiniMap", () => {
   describe("For users in map test group", () => {
     beforeAll(() => {
-      ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+      ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
     })
     test("Map includes link to open vehicle in search map page", async () => {
       const mockDispatch = jest.fn()
@@ -47,6 +47,15 @@ describe("MiniMap", () => {
       await userEvent.click(screen.getByText("Open Map"))
       expect(mockDispatch).toHaveBeenCalledWith(setSelectedVehicle(vehicle.id))
     })
+
+    test("Map doesn't include fullscreen button", () => {
+      render(
+        <MemoryRouter initialEntries={["/"]}>
+          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
+        </MemoryRouter>
+      )
+      expect(screen.queryByTitle("Full Screen")).not.toBeInTheDocument()
+    })
   })
 
   describe("For users not in map test group", () => {
@@ -60,6 +69,15 @@ describe("MiniMap", () => {
         </MemoryRouter>
       )
       expect(screen.queryByText("Open Map")).not.toBeInTheDocument()
+    })
+
+    test("Map does include fullscreen button", () => {
+      render(
+        <MemoryRouter initialEntries={["/"]}>
+          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
+        </MemoryRouter>
+      )
+      expect(screen.getByTitle("Full Screen")).toBeInTheDocument()
     })
   })
 })

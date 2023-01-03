@@ -50,6 +50,7 @@ const MiniMap = ({
       shapes={shapes}
       secondaryVehicles={routeVehicles}
       stations={stations}
+      allowFullscreen={false}
     >
       <SearchMapLink vehicleId={vehicle.id} />
     </Map>
