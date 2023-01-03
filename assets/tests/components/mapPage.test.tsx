@@ -133,7 +133,7 @@ describe("MapPage", () => {
           ]
         : null
     )
-      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
     const mockDispatch = jest.fn()
     const state = stateFactory.build({
       searchPageState: searchPageStateFactory.build({
@@ -166,15 +166,15 @@ describe("MapPage", () => {
     const vehicle = vehicleFactory.build({ runId })
     // const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
     // ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
     const activeSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "clickMe", property: "run" },
       isActive: true,
     })
     const shapes = shapeFactory.buildList(2)
-      ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
-        tripId === vehicle.tripId ? shapes : null
-      )
+    ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
+      tripId === vehicle.tripId ? shapes : null
+    )
     const mockDispatch = jest.fn()
     const { container } = render(
       <StateDispatchProvider
@@ -203,7 +203,7 @@ describe("MapPage", () => {
 
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
-      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
     const activeSearch: SearchPageState = {
       query: { text: runId, property: "run" },
       isActive: true,
@@ -211,9 +211,9 @@ describe("MapPage", () => {
     }
 
     const shapes = shapeFactory.buildList(2)
-      ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
-        tripId === vehicle.tripId ? shapes : null
-      )
+    ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
+      tripId === vehicle.tripId ? shapes : null
+    )
 
     const mockDispatch = jest.fn()
     const { container } = render(
@@ -303,10 +303,10 @@ describe("MapPage", () => {
       query: searchQueryAllFactory.build({ text: vehicle.runId! }),
     })
 
-      ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
-      ; (useTripShape as jest.Mock).mockImplementation((tripId) =>
-        tripId === vehicle.tripId ? shapes : null
-      )
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
+      tripId === vehicle.tripId ? shapes : null
+    )
 
     const { container } = render(
       <StateDispatchProvider
@@ -431,7 +431,7 @@ describe("MapPage", () => {
         const runId = "clickMe"
         const vehicle = vehicleFactory.build({ runId })
         ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
-          ; (useSearchResults as jest.Mock).mockReturnValue([vehicle])
+        ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
         render(
           <StateDispatchProvider

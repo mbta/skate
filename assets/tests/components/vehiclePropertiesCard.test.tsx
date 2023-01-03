@@ -122,7 +122,7 @@ describe("<VehiclePropertiesCard/>", () => {
         ).toBeVisible()
 
         expect(
-          screen.getByRole("status", { name: "Vehicle Adherence" })
+          screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
         ).toHaveTextContent(/on time \(0 min early\)/i)
         expect(
           screen.getByRole("status", { name: "Route Direction" })
@@ -174,7 +174,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       // Show `invalid` in Adherence Info
       expect(
-        screen.getByRole("status", { name: /Vehicle Adherence/ })
+        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
       ).toHaveTextContent(/invalid/i)
 
       // Use correct icon // TODO: make accessible and ensure icon is correct
