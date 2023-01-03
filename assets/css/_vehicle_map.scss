@@ -10,6 +10,10 @@
   &.secondary {
     @include font-tiny;
   }
+
+  &.selected .m-vehicle-icon__label-background {
+    fill: $color-eggplant-300;
+  }
 }
 
 .m-vehicle-map__icon {
