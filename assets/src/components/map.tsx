@@ -400,12 +400,10 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         {(props.shapes || []).map((shape) => (
           <RouteShape key={shape.id} shape={shape} />
         ))}
-        {
-          <RouteStopMarkers
-            stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
-            iconSize={stationIconSize}
-          />
-        }
+        <RouteStopMarkers
+          stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
+          iconSize={stationIconSize}
+        />
         {zoomLevel >= 15 &&
           props.stations?.map((station) => (
             <StationMarker
