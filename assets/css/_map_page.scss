@@ -1,4 +1,13 @@
 .m-map-page {
+  box-sizing: border-box;
+
+  *:before,
+  *:after,
+  * {
+    box-sizing: inherit;
+  }
+}
+.m-map-page {
   display: flex;
   flex: 1 1 auto;
   flex-direction: row;

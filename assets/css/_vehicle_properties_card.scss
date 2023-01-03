@@ -1,5 +1,15 @@
 // #region Vehicle Properties Card
 .m-vehicle-properties-card {
+  box-sizing: border-box;
+
+  *:before,
+  *:after,
+  * {
+    box-sizing: inherit;
+  }
+}
+
+.m-vehicle-properties-card {
   font-family: $font-family;
 
   // Static Design Width per spec
