@@ -84,9 +84,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   }
 
   const selectVehicle = (vehicle: VehicleOrGhost): void => {
-    setSelectedVehicleId(vehicle.id)
-    setShowVehicleCard(true)
-    dispatch(setSelectedVehicle(vehicle.id))
+    if (isVehicle(vehicle)) {
+      setSelectedVehicleId(vehicle.id)
+      setShowVehicleCard(true)
+      dispatch(setSelectedVehicle(vehicle.id))
+    }
   }
 
   const mobileDisplayClass =
@@ -95,6 +97,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       : "m-map-page--show-map"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
+  const vpcEnabled = liveVehicle && showVehicleCard
   return (
     <div
       className={`c-page m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
@@ -103,7 +106,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       <div
         className="m-map-page__input-and-results"
         title="Map Search Panel"
-        {...(showVehicleCard ? { hidden: true } : {})}
+        {...(vpcEnabled ? { hidden: true } : {})}
       >
         <div className="m-map-page__input">
           <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
