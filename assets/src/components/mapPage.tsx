@@ -138,7 +138,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
         >
-          {liveVehicle && showVehicleCard ? (
+          {vpcEnabled ? (
             <VehiclePropertiesCard
               vehicle={liveVehicle}
               onClose={() => {
