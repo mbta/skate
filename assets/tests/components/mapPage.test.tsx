@@ -196,8 +196,8 @@ describe("MapPage", () => {
     ).toBeVisible()
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
     expect(
-      screen.queryByRole("generic", { name: /map search panel/i })
-    ).not.toBeInTheDocument()
+      screen.getByTitle(/map search panel/i)
+    ).not.toBeVisible()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
