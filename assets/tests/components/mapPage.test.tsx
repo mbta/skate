@@ -16,7 +16,7 @@ import stateFactory from "../factories/applicationState"
 import ghostFactory from "../factories/ghost"
 import { RunFactory } from "../factories/run"
 import { searchPageStateFactory } from "../factories/searchPageState"
-import { searchQueryAllFactory } from "../factories/searchQuery"
+import { searchQueryRunFactory } from "../factories/searchQuery"
 import shapeFactory from "../factories/shape"
 import vehicleFactory from "../factories/vehicle"
 
@@ -313,7 +313,7 @@ describe("MapPage", () => {
     const vehicle = vehicleFactory.build({ runId })
     const shapes = shapeFactory.buildList(2)
     const activeSearch: SearchPageState = searchPageStateFactory.build({
-      query: searchQueryAllFactory.build({ text: vehicle.runId! }),
+      query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
     })
 
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
