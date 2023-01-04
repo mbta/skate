@@ -51,10 +51,7 @@ export const RouteVariantName2 = ({
             {`${route?.name || routeId}_${viaVariantFormatted}`}
           </output>
           &nbsp;
-          <output
-            title="Route Headsign"
-            className="m-route-variant-name__headsign"
-          >
+          <output title="Headsign" className="m-route-variant-name__headsign">
             {headsign}
           </output>
         </>
