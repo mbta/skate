@@ -70,6 +70,10 @@ beforeEach(() => {
   expect.hasAssertions()
 })
 
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
 describe("MapPage", () => {
   test("renders the empty state", () => {
     ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
@@ -261,10 +265,19 @@ describe("MapPage", () => {
     const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, {
       runId,
     })
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
+    ;(useSearchResults as jest.Mock).mockReturnValue(searchResults)
+    ;(useTripShape as jest.Mock).mockReturnValue(shapeFactory.buildList(1))
 
     const { container } = render(
-      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
+            isActive: true,
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
         <BrowserRouter>
           <MapPage />
         </BrowserRouter>
@@ -276,6 +289,9 @@ describe("MapPage", () => {
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
     expect(screen.getByTitle(/map search panel/i)).not.toBeVisible()
+    expect(
+      container.querySelector(".m-vehicle-map__route-shape")
+    ).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
     expect(
