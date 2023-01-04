@@ -289,7 +289,6 @@ describe("MapPage", () => {
 
   test("after search is canceled, should not render search results on map", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-
     const runId = RunFactory.build({}).id
     const vehicle = vehicleFactory.build({ runId })
     const shapes = shapeFactory.buildList(2)
