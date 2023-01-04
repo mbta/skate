@@ -126,117 +126,60 @@ const iconFn = (svgText: string) => (className = ""): JSX.Element =>
 
 export const alertIcon = iconFn(alertIconSvg)
 export const bangIcon = iconFn(bangIconSvg)
-
 export const blueLineIcon = iconFn(blueLineIconSvg)
-
 export const busFrontIcon = iconFn(busFrontIconSvg)
-
 export const busRearIcon = iconFn(busRearIconSvg)
-
 export const chevronLeftIcon = iconFn(chevronLeftIconSvg)
-
 export const circleXIcon = iconFn(circleXIconSvg)
-
 export const closeXIcon = iconFn(closeXIconSvg)
-
 export const collapseIcon = iconFn(collapseIconSvg)
-
-export const doubleChevronLeftIcon = iconFn(doubleChevronLeftIconSvg)
-
-export const doubleChevronRightIcon = iconFn(doubleChevronRightIconSvg)
-
 export const commuterRailIcon = iconFn(commuterRailIconSvg)
-
 export const crowdingIcon = iconFn(crowdingIconSvg)
-
+export const doubleChevronLeftIcon = iconFn(doubleChevronLeftIconSvg)
+export const doubleChevronRightIcon = iconFn(doubleChevronRightIconSvg)
 export const ellipsisIcon = iconFn(ellipsisIconSvg)
-
 export const expandIcon = iconFn(expandIconSvg)
-
 export const filledCircleIcon = iconFn(filledCircleIconSvg)
-
 export const ghostIcon = iconFn(ghostIconSvg)
-
 export const ghostSwingIcon = iconFn(ghostSwingIconSvg)
-
 export const greenLineBIcon = iconFn(greenLineBIconSvg)
-
 export const greenLineCIcon = iconFn(greenLineCIconSvg)
-
 export const greenLineDIcon = iconFn(greenLineDIconSvg)
-
 export const greenLineEIcon = iconFn(greenLineEIconSvg)
-
 export const greenLineIcon = iconFn(greenLineIconSvg)
-
 export const hamburgerIcon = iconFn(hamburgerIconSvg)
-
 export const hiddenIcon = iconFn(hiddenIconSvg)
-
 export const ladderIcon = iconFn(ladderIconSvg)
-
 export const lateIcon = iconFn(lateIconSvg)
-
 export const lateViewGhostIcon = iconFn(lateViewGhostIconSvg)
-
 export const lateViewGhostWithWaiverIcon = iconFn(lateViewGhostWithWaiverIconSvg)
-
 export const loadingIcon = iconFn(loadingIconSvg)
-
 export const logoIcon = iconFn(logoIconSvg)
-
 export const mapIcon = iconFn(mapIconSvg)
-
 export const mattapanLineIcon = iconFn(mattapanLineIconSvg)
-
 export const minusIcon = iconFn(minusIconSvg)
-
 export const notificationBellIcon = iconFn(notificationBellIconSvg)
-
 export const oldCloseIcon = iconFn(oldCloseIconSvg)
-
 export const orangeLineIcon = iconFn(orangeLineIconSvg)
-
 export const plusIcon = iconFn(plusIconSvg)
-
 export const plusThinIcon = iconFn(plusThinIconSvg)
-
 export const questionMarkIcon = iconFn(questionMarkIconSvg)
-
 export const redLineIcon = iconFn(redLineIconSvg)
-
 export const refreshIcon = iconFn(refreshIconSvg)
-
 export const reverseIcon = iconFn(reverseIconSvg)
-
 export const reverseIconReversed = iconFn(reverseIconReversedSvg)
-
 export const saveIcon = iconFn(saveIconSvg)
-
 export const searchIcon = iconFn(searchIconSvg)
-
 export const settingsIcon = iconFn(settingsIconSvg)
-
 export const speechBubbleIcon = iconFn(speechBubbleIconSvg)
-
 export const swingIcon = iconFn(swingIconSvg)
-
 export const toggleOffIcon = iconFn(toggleOffIconSvg)
-
 export const toggleOnIcon = iconFn(toggleOnIconSvg)
-
 export const triangleDownIcon = iconFn(triangleDownIconSvg)
-
 export const triangleUpIcon = iconFn(triangleUpIconSvg)
-
 export const triangleUpLargeIcon = iconFn(triangleUpLargeIconSvg)
-
 export const unhiddenIcon = iconFn(unhiddenIconSvg)
-
 export const unreadIcon = iconFn(unreadIconSvg)
-
 export const upDownIcon = iconFn(upDownIconSvg)
-
 export const upRightIcon = iconFn(upRightIconSvg)
-
 export const walkingIcon = iconFn(walkingIconSvg)
