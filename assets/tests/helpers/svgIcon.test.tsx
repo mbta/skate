@@ -32,18 +32,18 @@ describe("svgIcon(text) -> (props)", () => {
       const svgText = "<svg><title>hello test</title></svg>"
 
       const TestSvgTextElement = svgIcon(svgText)
-      const result = render(
+      const { container } = render(
         TestSvgTextElement({ className, role: "img" })
-      ).asFragment()
+      )
 
-      expect(result).toEqual(
+      expect(container).toEqual(
         render(
           <span className={className} role="img">
             <svg>
               <title>hello test</title>
             </svg>
           </span>
-        ).asFragment()
+        ).container
       )
     })
 
@@ -60,7 +60,7 @@ describe("svgIcon(text) -> (props)", () => {
           role="img"
           aria-hidden={true}
         />
-      ).asFragment()
+      )
 
       expect(screen.getByRole("img", { hidden: true })).toHaveAttribute(
         "title",
