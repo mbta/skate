@@ -1,8 +1,8 @@
-import { useContext } from "react"
+import React, { useContext } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
-import { NotificationBellIcon as icon } from "../helpers/icon"
+import { NotificationBellIcon as NotificationBellIconSvg } from "../helpers/icon"
 import { OpenView } from "../state"
 
 const NotificationBellIcon = ({
@@ -17,18 +17,20 @@ const NotificationBellIcon = ({
   )
   const unreadBadge: boolean = unreadNotifications.length > 0
 
-  return icon({
-    className: className([
-      "m-notification-bell-icon",
-      openView === OpenView.NotificationDrawer
-        ? "m-notification-bell-icon--open"
-        : "m-notification-bell-icon--closed",
-      unreadBadge
-        ? "m-notification-bell-icon--unread"
-        : "m-notification-bell-icon--read",
-      ...(extraClasses || []),
-    ]),
-  })
+  return (
+    <NotificationBellIconSvg
+      className={className([
+        "m-notification-bell-icon",
+        openView === OpenView.NotificationDrawer
+          ? "m-notification-bell-icon--open"
+          : "m-notification-bell-icon--closed",
+        unreadBadge
+          ? "m-notification-bell-icon--unread"
+          : "m-notification-bell-icon--read",
+        ...(extraClasses || []),
+      ])}
+    />
+  )
 }
 
 export default NotificationBellIcon
