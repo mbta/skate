@@ -630,16 +630,16 @@ const iconForDirectionOnLadder: (
 ) => ReactElement = (directionId, ladderDirections, routeId) => {
   const iconClassName = "m-minischedule__svg--revenue"
   if (directionId === null) {
-    return QuestionMarkIcon({ className: iconClassName })
+    return <QuestionMarkIcon className={iconClassName} />
   }
 
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, routeId)
   if (
     directionOnLadder(directionId, ladderDirection) === VehicleDirection.Down
   ) {
-    return TriangleDownIcon({ className: iconClassName })
+    return <TriangleDownIcon className={iconClassName} />
   }
-  return TriangleUpIcon({ className: iconClassName })
+  return <TriangleUpIcon className={iconClassName} />
 }
 
 const RevenueTrip = ({
