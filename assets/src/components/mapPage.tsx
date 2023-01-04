@@ -66,10 +66,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const liveVehicle: Vehicle | null = selectedVehicleId
     ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
     : null
-  const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
   const [showVehicleCard, setShowVehicleCard] = useState<boolean>(
     searchPageState.selectedVehicleId ? true : false
   )
+  const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
 
   const onSearchCallback = () => {
     setSelectedVehicleId(null)
@@ -133,7 +133,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         <Map
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={selectVehicle}
-          shapes={selectedVehicleShapes}
+          shapes={showVehicleCard ? selectedVehicleShapes : undefined}
           allowStreetView={true}
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
