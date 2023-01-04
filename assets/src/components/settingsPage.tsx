@@ -35,7 +35,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
         <div className="c-page__section">
           <h2 className="m-settings-page__section-header">Vehicle Settings</h2>
           <ToggleSetting
-            icon={mapIcon}
+            icon={<MapIcon />}
             label="Vehicle labels on map"
             settingName="shuttle-vehicle-label"
             value={userSettings.shuttleVehicleLabel}
@@ -58,7 +58,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             ]}
           />
           <ToggleSetting
-            icon={ladderIcon}
+            icon={<LadderIcon />}
             label="Vehicle labels on route ladder"
             settingName="ladder-vehicle-label"
             value={userSettings.ladderVehicleLabel}
@@ -81,7 +81,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             ]}
           />
           <ToggleSetting
-            icon={triangleUpLargeIcon}
+            icon={<TriangleUpLargeIcon />}
             label="Adherence colors"
             settingName="vehicle-adherence-colors"
             value={userSettings.vehicleAdherenceColors}
@@ -100,14 +100,12 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
                     <div className="m-settings-page__vehicle-adherence-setting-row">
                       Early bus: Red
                       <div className="m-settings-page__vehicle-adherence-icon">
-                        {triangleUpIcon("red")}
                         <TriangleUpIcon className="red" />
                       </div>
                     </div>
                     <div className="m-settings-page__vehicle-adherence-setting-row">
                       Late bus: Blue
                       <div className="m-settings-page__vehicle-adherence-icon">
-                        {triangleUpIcon("blue")}
                         <TriangleUpIcon className="blue" />
                       </div>
                     </div>
@@ -122,14 +120,12 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
                     <div className="m-settings-page__vehicle-adherence-setting-row">
                       Early bus: Blue
                       <div className="m-settings-page__vehicle-adherence-icon">
-                        {triangleUpIcon("blue")}
                         <TriangleUpIcon className="blue" />
                       </div>
                     </div>
                     <div className="m-settings-page__vehicle-adherence-setting-row">
                       Late bus: Red
                       <div className="m-settings-page__vehicle-adherence-icon">
-                        {triangleUpIcon("red")}
                         <TriangleUpIcon className="red" />
                       </div>
                     </div>
@@ -154,7 +150,7 @@ const ToggleSetting = ({
   onChange,
   options,
 }: {
-  icon: (className: string) => ReactElement
+  icon: ReactElement
   label: string
   settingName: string
   value: string | number
@@ -168,7 +164,7 @@ const ToggleSetting = ({
   <div className="m-settings-page__setting">
     <div className="m-settings-page__setting_header">
       <div className="m-settings-page__icon">
-        {icon("m-settings-page__icon-path")}
+        {React.cloneElement(icon, { className: "m-settings-page__icon-path" })}
       </div>
       <div className="m-settings-page__setting-label">{label}</div>
     </div>
