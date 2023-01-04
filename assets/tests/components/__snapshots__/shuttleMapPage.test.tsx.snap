@@ -16,9 +16,7 @@ exports[`Shuttle Map Page renders 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -74,9 +72,7 @@ exports[`Shuttle Map Page renders 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Blue 999 501
@@ -94,9 +90,7 @@ exports[`Shuttle Map Page renders 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Green 999 502
@@ -114,9 +108,7 @@ exports[`Shuttle Map Page renders 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Orange 999 503
@@ -134,9 +126,7 @@ exports[`Shuttle Map Page renders 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Red 999 504
@@ -154,9 +144,7 @@ exports[`Shuttle Map Page renders 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 CR 999 505
@@ -413,9 +401,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -471,9 +457,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Blue 999 501
@@ -491,9 +475,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Green 999 502
@@ -511,9 +493,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Orange 999 503
@@ -531,9 +511,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Red 999 504
@@ -551,9 +529,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 CR 999 505
@@ -810,9 +786,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -868,9 +842,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Blue 999 501
@@ -888,9 +860,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Green 999 502
@@ -908,9 +878,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Orange 999 503
@@ -928,9 +896,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Red 999 504
@@ -948,9 +914,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 CR 999 505
@@ -1207,9 +1171,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -1419,9 +1381,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -1477,9 +1437,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Blue 999 501
@@ -1497,9 +1455,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Green 999 502
@@ -1517,9 +1473,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Orange 999 503
@@ -1537,9 +1491,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 Red 999 504
@@ -1557,9 +1509,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               <span
                 class="m-shuttle-picker__route-list-button-name"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
                 CR 999 505

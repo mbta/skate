@@ -1,6 +1,6 @@
 import React from "react"
 
-import { collapseIcon, expandIcon } from "../helpers/icon"
+import { CollapseIcon, ExpandIcon } from "../helpers/icon"
 
 const DrawerTab = ({
   isVisible,
@@ -15,7 +15,7 @@ const DrawerTab = ({
       data-testid="drawer-tab-button"
       onClick={toggleVisibility}
     >
-      {isVisible ? collapseIcon() : expandIcon()}
+      {isVisible ? <CollapseIcon /> : <ExpandIcon />}
     </button>
   </div>
 )

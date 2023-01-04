@@ -19,9 +19,7 @@ exports[`LadderPage renders the empty state 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -74,9 +72,7 @@ exports[`LadderPage renders the empty state 1`] = `
             <div
               class="m-garage-filter__show-hide-icon"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </div>
@@ -143,9 +139,7 @@ exports[`LadderPage renders with route tabs 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -198,9 +192,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             <div
               class="m-garage-filter__show-hide-icon"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </div>
@@ -268,9 +260,7 @@ exports[`LadderPage renders with route tabs 1`] = `
               class="m-ladder-page__tab-save-button"
               title="Save"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -279,9 +269,7 @@ exports[`LadderPage renders with route tabs 1`] = `
               data-testid="close-button"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -305,9 +293,7 @@ exports[`LadderPage renders with route tabs 1`] = `
               data-testid="close-button"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -338,9 +324,7 @@ exports[`LadderPage renders with route tabs 1`] = `
               class="m-close-button m-close-button--large m-close-button--darker"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -391,9 +375,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -446,9 +428,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             <div
               class="m-garage-filter__show-hide-icon"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </div>
@@ -520,9 +500,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               class="m-ladder-page__tab-save-button"
               title="Save"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -531,9 +509,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               data-testid="close-button"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -564,9 +540,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               class="m-close-button m-close-button--large m-close-button--darker"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -602,9 +576,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               class="m-close-button m-close-button--large m-close-button--darker"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -655,9 +627,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
         >
-          <span
-            class=""
-          >
+          <span>
             <svg />
           </span>
         </button>
@@ -710,9 +680,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             <div
               class="m-garage-filter__show-hide-icon"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </div>
@@ -784,9 +752,7 @@ exports[`LadderPage renders with timepoints 1`] = `
               class="m-ladder-page__tab-save-button"
               title="Save"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -795,9 +761,7 @@ exports[`LadderPage renders with timepoints 1`] = `
               data-testid="close-button"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -828,9 +792,7 @@ exports[`LadderPage renders with timepoints 1`] = `
               class="m-close-button m-close-button--large m-close-button--darker"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -984,9 +946,7 @@ exports[`LadderPage renders with timepoints 1`] = `
               class="m-close-button m-close-button--large m-close-button--darker"
               title="Close"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>

@@ -15,7 +15,7 @@ import {
   GarageFilter,
   filterRoutesByGarage,
 } from "../hooks/useGarageFilter"
-import { oldCloseIcon } from "../helpers/icon"
+import { OldCloseIcon } from "../helpers/icon"
 
 interface Props {
   selectedRouteIds: RouteId[]
@@ -107,7 +107,7 @@ const SelectedRouteButton = ({
         onClick={() => deselectRoute(routeId)}
       >
         {routeNameOrId(routeId, routes)}
-        {oldCloseIcon("m-route-picker__selected-routes-button-icon")}
+        <OldCloseIcon className="m-route-picker__selected-routes-button-icon" />
       </button>
     </li>
   )

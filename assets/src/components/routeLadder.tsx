@@ -1,9 +1,9 @@
 import React from "react"
 import {
-  alertIcon,
-  crowdingIcon,
-  reverseIcon,
-  reverseIconReversed,
+  AlertIcon,
+  CrowdingIcon,
+  ReverseIcon,
+  ReverseIconReversed,
 } from "../helpers/icon"
 import {
   getLadderCrowdingToggleForRoute,
@@ -59,7 +59,7 @@ const Header = ({
           trigger="click"
           onShow={() => tagManagerEvent("alert_tooltip_clicked")}
         >
-          {alertIcon("m-route-ladder__alert-icon")}
+          <AlertIcon className="m-route-ladder__alert-icon" />
         </Tippy>
       )}
       <div className="m-route-ladder__close-button-container">
@@ -90,9 +90,11 @@ const Controls = ({
   return (
     <div className="m-route-ladder__controls">
       <button className="m-route-ladder__reverse" onClick={reverseLadder}>
-        {ladderDirection === LadderDirection.OneToZero
-          ? reverseIcon("m-route-ladder__reverse-icon")
-          : reverseIconReversed("m-route-ladder__reverse-icon")}
+        {ladderDirection === LadderDirection.OneToZero ? (
+          <ReverseIcon className="m-route-ladder__reverse-icon" />
+        ) : (
+          <ReverseIconReversed className="m-route-ladder__reverse-icon" />
+        )}
         Reverse
       </button>
       {displayCrowdingToggleIcon &&
@@ -101,9 +103,7 @@ const Controls = ({
             className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
             onClick={toggleCrowding}
           >
-            {crowdingIcon(
-              "m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-            )}
+            <CrowdingIcon className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon" />
             Hide riders
           </button>
         ) : (
@@ -111,9 +111,7 @@ const Controls = ({
             className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--show"
             onClick={toggleCrowding}
           >
-            {crowdingIcon(
-              "m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-            )}
+            <CrowdingIcon className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon" />
             Show riders
           </button>
         ))}

@@ -32,9 +32,7 @@ exports[`MapPage renders the empty state 1`] = `
                 title="Clear"
                 type="reset"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
               </button>
@@ -45,9 +43,7 @@ exports[`MapPage renders the empty state 1`] = `
               title="Submit"
               type="submit"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -311,9 +307,7 @@ exports[`MapPage renders the empty state 1`] = `
             <label
               for="street-view-toggle-:r0:"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
               Street View
@@ -368,9 +362,7 @@ exports[`MapPage renders vehicle data 1`] = `
                 title="Clear"
                 type="reset"
               >
-                <span
-                  class=""
-                >
+                <span>
                   <svg />
                 </span>
               </button>
@@ -381,9 +373,7 @@ exports[`MapPage renders vehicle data 1`] = `
               title="Submit"
               type="submit"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
             </button>
@@ -708,9 +698,7 @@ exports[`MapPage renders vehicle data 1`] = `
             <label
               for="street-view-toggle-:r1:"
             >
-              <span
-                class=""
-              >
+              <span>
                 <svg />
               </span>
               Street View

@@ -1,6 +1,6 @@
 import React from "react"
 import { useLocation } from "react-router-dom"
-import { hamburgerIcon } from "../../helpers/icon"
+import { HamburgerIcon } from "../../helpers/icon"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
 import NavMenu from "./navMenu"
@@ -59,7 +59,7 @@ const TopNavMobile: React.FC<Props> = ({
             onClick={toggleMobileMenu}
             title="Menu"
           >
-            {hamburgerIcon("m-top-nav-mobile__icon")}
+            <HamburgerIcon className="m-top-nav-mobile__icon" />
           </button>
         </div>
 

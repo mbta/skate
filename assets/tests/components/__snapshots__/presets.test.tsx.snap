@@ -21,7 +21,6 @@ exports[`Presets renders current presets 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -46,7 +45,6 @@ exports[`Presets renders current presets 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",

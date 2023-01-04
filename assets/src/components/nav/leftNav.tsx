@@ -6,17 +6,17 @@ import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
 import {
-  ladderIcon,
-  mapIcon,
-  searchIcon,
-  lateIcon,
-  swingIcon,
-  doubleChevronRightIcon,
-  doubleChevronLeftIcon,
-  questionMarkIcon,
-  speechBubbleIcon,
-  settingsIcon,
-  hamburgerIcon,
+  LadderIcon,
+  MapIcon,
+  SearchIcon,
+  LateIcon,
+  SwingIcon,
+  DoubleChevronRightIcon,
+  DoubleChevronLeftIcon,
+  QuestionMarkIcon,
+  SpeechBubbleIcon,
+  SettingsIcon,
+  HamburgerIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
 import {
@@ -71,7 +71,7 @@ const LeftNav = ({
           onClick={toggleMobileMenu}
           title="Menu"
         >
-          {hamburgerIcon("m-top-nav-mobile__icon")}
+          <HamburgerIcon className="m-top-nav-mobile__icon" />
         </button>
       ) : null}
       <div className="m-left-nav__modes-and-views">
@@ -85,7 +85,7 @@ const LeftNav = ({
               title="Route Ladders"
               to="/"
             >
-              {ladderIcon("m-left-nav__icon")}
+              <LadderIcon className="m-left-nav__icon" />
               {collapsed ? null : "Route Ladders"}
             </NavLink>
           </li>
@@ -98,7 +98,7 @@ const LeftNav = ({
               title="Shuttle Map"
               to="/shuttle-map"
             >
-              {mapIcon("m-left-nav__icon")}
+              <MapIcon className="m-left-nav__icon" />
               {collapsed ? null : "Shuttle Map"}
             </NavLink>
           </li>
@@ -111,7 +111,7 @@ const LeftNav = ({
               title={mapMode.title}
               to={mapMode.path}
             >
-              {searchIcon("m-left-nav__icon")}
+              <SearchIcon className="m-left-nav__icon" />
               {collapsed ? null : mapMode.title}
             </NavLink>
           </li>
@@ -121,7 +121,9 @@ const LeftNav = ({
           {featureIsEnabled("late_view") || dispatcherFlag ? (
             <li>
               <ViewToggle
-                icon={lateIcon("m-left-nav__icon m-left-nav__icon--late-view")}
+                icon={
+                  <LateIcon className="m-left-nav__icon m-left-nav__icon--late-view" />
+                }
                 name="Late View"
                 viewIsOpen={openView === OpenView.Late}
                 toggleView={() => {
@@ -138,7 +140,9 @@ const LeftNav = ({
           ) : null}
           <li>
             <ViewToggle
-              icon={swingIcon("m-left-nav__icon m-left-nav__icon--swings-view")}
+              icon={
+                <SwingIcon className="m-left-nav__icon m-left-nav__icon--swings-view" />
+              }
               name="Swings View"
               viewIsOpen={openView === OpenView.Swings}
               toggleView={() => {
@@ -178,7 +182,7 @@ const LeftNav = ({
                 onClick={openDrift}
                 title="Support"
               >
-                {speechBubbleIcon("m-left-nav__icon")}
+                <SpeechBubbleIcon className="m-left-nav__icon" />
                 {collapsed ? null : "Support"}
               </button>
             </li>
@@ -188,7 +192,7 @@ const LeftNav = ({
                 onClick={() => displayHelp(location)}
                 title="About Skate"
               >
-                {questionMarkIcon("m-left-nav__icon")}
+                <QuestionMarkIcon className="m-left-nav__icon" />
                 {collapsed ? null : "About Skate"}
               </button>
             </li>
@@ -201,7 +205,7 @@ const LeftNav = ({
                 title="Settings"
                 to="/settings"
               >
-                {settingsIcon("m-left-nav__icon")}
+                <SettingsIcon className="m-left-nav__icon" />
                 {collapsed ? null : "Settings"}
               </NavLink>
             </li>
@@ -211,9 +215,11 @@ const LeftNav = ({
                 onClick={() => setCollapsed(!collapsed)}
                 title={collapsed ? "Expand" : "Collapse"}
               >
-                {collapsed
-                  ? doubleChevronRightIcon("m-left-nav__icon")
-                  : doubleChevronLeftIcon("m-left-nav__icon")}
+                {collapsed ? (
+                  <DoubleChevronRightIcon className="m-left-nav__icon" />
+                ) : (
+                  <DoubleChevronLeftIcon className="m-left-nav__icon" />
+                )}
                 {collapsed ? null : "Collapse"}
               </button>
             </li>

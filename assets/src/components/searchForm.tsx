@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { circleXIcon, searchIcon } from "../helpers/icon"
+import { CircleXIcon, SearchIcon } from "../helpers/icon"
 import { isValidSearchQuery } from "../models/searchQuery"
 import {
   setSearchProperty,
@@ -69,7 +69,7 @@ const SearchForm = ({
             className="m-search-form__clear"
             onClick={clearTextInput}
           >
-            {circleXIcon()}
+            <CircleXIcon />
           </button>
         </div>
 
@@ -80,7 +80,7 @@ const SearchForm = ({
           onClick={subscribeToSearch}
           disabled={!isValidSearchQuery(query)}
         >
-          {searchIcon()}
+          <SearchIcon />
         </button>
       </div>
 

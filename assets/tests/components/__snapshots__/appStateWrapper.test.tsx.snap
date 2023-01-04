@@ -214,9 +214,7 @@ exports[`renders 1`] = `
                   class="c-drawer-tab__tab-button"
                   data-testid="drawer-tab-button"
                 >
-                  <span
-                    class=""
-                  >
+                  <span>
                     <svg />
                   </span>
                 </button>
@@ -269,9 +267,7 @@ exports[`renders 1`] = `
                     <div
                       class="m-garage-filter__show-hide-icon"
                     >
-                      <span
-                        class=""
-                      >
+                      <span>
                         <svg />
                       </span>
                     </div>
@@ -316,9 +312,7 @@ exports[`renders 1`] = `
                       class="m-ladder-page__tab-save-button"
                       title="Save"
                     >
-                      <span
-                        class=""
-                      >
+                      <span>
                         <svg />
                       </span>
                     </button>
@@ -327,9 +321,7 @@ exports[`renders 1`] = `
                       data-testid="close-button"
                       title="Close"
                     >
-                      <span
-                        class=""
-                      >
+                      <span>
                         <svg />
                       </span>
                     </button>

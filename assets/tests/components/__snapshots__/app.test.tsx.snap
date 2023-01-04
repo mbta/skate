@@ -214,9 +214,7 @@ exports[`App renders 1`] = `
                   class="c-drawer-tab__tab-button"
                   data-testid="drawer-tab-button"
                 >
-                  <span
-                    class=""
-                  >
+                  <span>
                     <svg />
                   </span>
                 </button>
@@ -269,9 +267,7 @@ exports[`App renders 1`] = `
                     <div
                       class="m-garage-filter__show-hide-icon"
                     >
-                      <span
-                        class=""
-                      >
+                      <span>
                         <svg />
                       </span>
                     </div>

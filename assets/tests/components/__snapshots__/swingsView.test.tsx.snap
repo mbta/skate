@@ -19,7 +19,6 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
@@ -186,7 +185,6 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
@@ -351,7 +349,6 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
@@ -542,7 +539,6 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
@@ -660,7 +656,6 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
@@ -945,7 +940,6 @@ exports[`SwingsView renders loading message 1`] = `
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",

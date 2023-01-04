@@ -9,15 +9,15 @@ import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { className } from "../../helpers/dom"
 import {
-  busFrontIcon,
-  busRearIcon,
-  filledCircleIcon,
-  minusIcon,
-  plusIcon,
-  questionMarkIcon,
-  triangleDownIcon,
-  triangleUpIcon,
-  upDownIcon,
+  BusFrontIcon,
+  BusRearIcon,
+  FilledCircleIcon,
+  MinusIcon,
+  PlusIcon,
+  QuestionMarkIcon,
+  TriangleDownIcon,
+  TriangleUpIcon,
+  UpDownIcon,
 } from "../../helpers/icon"
 import {
   useMinischeduleBlock,
@@ -155,7 +155,7 @@ const PastToggle = ({
     className="m-minischedule__show-past"
     onClick={() => setShowPast(!showPast)}
   >
-    {upDownIcon("m-minischedule__show-past-icon")}
+    <UpDownIcon className="m-minischedule__show-past-icon" />
     {`${showPast ? "Hide" : "Show"} past trips`}
   </button>
 )
@@ -366,7 +366,7 @@ const Piece = ({
         {isSwingOn ? (
           <Row
             key="swing-on"
-            icon={plusIcon()}
+            icon={<PlusIcon />}
             text={piece.startMidRoute ? "Mid-route report time" : "Report time"}
             rightText={formattedScheduledTime(piece.startTime, overloadOffset)}
             belowText={piece.startPlace}
@@ -414,7 +414,7 @@ const Piece = ({
         {isSwingOff ? (
           <Row
             key="swing-off"
-            icon={minusIcon()}
+            icon={<MinusIcon />}
             text={piece.endMidRoute ? "Swing off mid-route" : "Swing off"}
             rightText={formattedScheduledTime(piece.endTime, overloadOffset)}
             belowText={piece.endPlace}
@@ -590,7 +590,7 @@ const DeadheadTrip = ({
     case "pull-out":
       return (
         <Row
-          icon={busFrontIcon()}
+          icon={<BusFrontIcon />}
           text={"Pull out"}
           rightText={startTime}
           belowText={trip.startPlace}
@@ -601,7 +601,7 @@ const DeadheadTrip = ({
     case "pull-back":
       return (
         <Row
-          icon={busRearIcon()}
+          icon={<BusRearIcon />}
           text={"Pull back"}
           rightText={startTime}
           belowText={trip.endPlace}
@@ -612,7 +612,7 @@ const DeadheadTrip = ({
     case "deadhead":
       return (
         <Row
-          icon={filledCircleIcon()}
+          icon={<FilledCircleIcon />}
           text={"Deadhead"}
           rightText={startTime}
           belowText={trip.endPlace}
@@ -630,16 +630,16 @@ const iconForDirectionOnLadder: (
 ) => ReactElement = (directionId, ladderDirections, routeId) => {
   const iconClassName = "m-minischedule__svg--revenue"
   if (directionId === null) {
-    return questionMarkIcon(iconClassName)
+    return QuestionMarkIcon({ className: iconClassName })
   }
 
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, routeId)
   if (
     directionOnLadder(directionId, ladderDirection) === VehicleDirection.Down
   ) {
-    return triangleDownIcon(iconClassName)
+    return TriangleDownIcon({ className: iconClassName })
   }
-  return triangleUpIcon(iconClassName)
+  return TriangleUpIcon({ className: iconClassName })
 }
 
 const RevenueTrip = ({
@@ -706,7 +706,7 @@ const AsDirected = ({
   overloadOffset: number | undefined
 }) => (
   <Row
-    icon={busFrontIcon()}
+    icon={<BusFrontIcon />}
     text={asDirected.kind === "rad" ? "Run as directed" : "Work as directed"}
     rightText={formattedScheduledTime(asDirected.startTime, overloadOffset)}
     timeBasedStyle={timeBasedStyle}

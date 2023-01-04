@@ -1,10 +1,10 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
-  ladderIcon,
-  mapIcon,
-  triangleUpIcon,
-  triangleUpLargeIcon,
+  LadderIcon,
+  MapIcon,
+  TriangleUpIcon,
+  TriangleUpLargeIcon,
 } from "../helpers/icon"
 import {
   setLadderVehicleLabelSetting,
@@ -101,12 +101,14 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
                       Early bus: Red
                       <div className="m-settings-page__vehicle-adherence-icon">
                         {triangleUpIcon("red")}
+                        <TriangleUpIcon className="red" />
                       </div>
                     </div>
                     <div className="m-settings-page__vehicle-adherence-setting-row">
                       Late bus: Blue
                       <div className="m-settings-page__vehicle-adherence-icon">
                         {triangleUpIcon("blue")}
+                        <TriangleUpIcon className="blue" />
                       </div>
                     </div>
                   </div>
@@ -121,12 +123,14 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
                       Early bus: Blue
                       <div className="m-settings-page__vehicle-adherence-icon">
                         {triangleUpIcon("blue")}
+                        <TriangleUpIcon className="blue" />
                       </div>
                     </div>
                     <div className="m-settings-page__vehicle-adherence-setting-row">
                       Late bus: Red
                       <div className="m-settings-page__vehicle-adherence-icon">
                         {triangleUpIcon("red")}
+                        <TriangleUpIcon className="red" />
                       </div>
                     </div>
                   </div>

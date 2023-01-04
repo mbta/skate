@@ -14,7 +14,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -65,7 +64,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -474,7 +472,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -818,7 +815,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -1081,7 +1077,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -1254,7 +1249,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -1662,7 +1656,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -2005,7 +1998,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -2487,7 +2479,6 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",

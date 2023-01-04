@@ -6,7 +6,7 @@ import {
 } from "../state"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
-import { plusThinIcon } from "../helpers/icon"
+import { PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import CloseButton from "./closeButton"
 
@@ -49,7 +49,7 @@ const Presets = () => {
           !currentTab || (isPreset(currentTab) && !isEditedPreset(currentTab))
         }
       >
-        {plusThinIcon("m-presets-panel__save-as-preset-button-icon")}
+        <PlusThinIcon className="m-presets-panel__save-as-preset-button-icon" />
         Save as preset
       </button>
     </div>

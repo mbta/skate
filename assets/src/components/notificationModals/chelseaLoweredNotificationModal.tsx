@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { oldCloseIcon } from "../../helpers/icon"
+import { OldCloseIcon } from "../../helpers/icon"
 import { setNotification } from "../../state"
 
 const ChelseaLoweredNotificationModal = () => {
@@ -15,7 +15,7 @@ const ChelseaLoweredNotificationModal = () => {
       <div className="c-modal">
         <div className="m-inactive-notification-modal__close-button">
           <button title="Close" onClick={closeModal}>
-            {oldCloseIcon()}
+            <OldCloseIcon />
           </button>
         </div>
         <div className="m-notification__title">Chelsea St Bridge Lowered</div>

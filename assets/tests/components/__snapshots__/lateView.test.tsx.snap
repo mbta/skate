@@ -21,7 +21,6 @@ exports[`LateView renders missing logons and late buses 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",

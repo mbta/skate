@@ -18,7 +18,6 @@ exports[`RouteLadders renders a route ladder 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -186,7 +185,6 @@ exports[`RouteLadders renders a route ladder 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",

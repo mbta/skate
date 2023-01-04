@@ -3,12 +3,12 @@ import { Link, NavLink } from "react-router-dom"
 import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
 import {
-  oldCloseIcon,
-  logoIcon,
-  questionMarkIcon,
-  refreshIcon,
-  settingsIcon,
-  speechBubbleIcon,
+  OldCloseIcon,
+  LogoIcon,
+  QuestionMarkIcon,
+  RefreshIcon,
+  SettingsIcon,
+  SpeechBubbleIcon,
 } from "../../helpers/icon"
 import { reload } from "../../models/browser"
 
@@ -34,7 +34,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             to="/"
             title="Skate"
           >
-            {logoIcon("m-nav-menu__logo-icon")}
+            <LogoIcon className="m-nav-menu__logo-icon" />
           </Link>
 
           <button
@@ -42,7 +42,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             onClick={toggleMobileMenu}
             title="Close"
           >
-            {oldCloseIcon("m-nav-menu__close-icon")}
+            <OldCloseIcon className="m-nav-menu__close-icon" />
           </button>
         </div>
         <ul className="m-nav-menu__links">
@@ -52,7 +52,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
               onClick={reload}
               title="Refresh"
             >
-              {refreshIcon("m-nav-menu__icon")}
+              <RefreshIcon className="m-nav-menu__icon" />
               Refresh
             </button>
           </li>
@@ -65,7 +65,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
               }}
               title="Support"
             >
-              {speechBubbleIcon("m-nav-menu__icon")}
+              <SpeechBubbleIcon className="m-nav-menu__icon" />
               Support
             </button>
           </li>
@@ -78,7 +78,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
               }}
               title="About Skate"
             >
-              {questionMarkIcon("m-nav-menu__icon")}
+              <QuestionMarkIcon className="m-nav-menu__icon" />
               About Skate
             </button>
           </li>
@@ -93,7 +93,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
               to="/settings"
               onClick={toggleMobileMenu}
             >
-              {settingsIcon("m-nav-menu__icon")}
+              <SettingsIcon className="m-nav-menu__icon" />
               Settings
             </NavLink>
           </li>
