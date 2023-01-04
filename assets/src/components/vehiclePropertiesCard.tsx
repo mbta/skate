@@ -96,10 +96,10 @@ const VisualSeparator = ({
 }: ComponentPropsWithoutRef<"object">): React.ReactElement => (
   // Visual accent to provide separation between elements
   // This object is strictly for visual presentation
-  <object
+  <img
     className={className ?? "m-visual-separator"}
-    role="separator"
     aria-hidden={true}
+    role="img presentation"
     aria-label="presentation separator"
   />
 )
