@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import React from "react"
-import { SvgIcon, svgIcon } from "../../src/helpers/renderSvg"
+import { SvgIcon, svgIcon } from "../../src/helpers/svgIcon"
 import "@testing-library/jest-dom"
 
 describe("<SvgIcon/>", () => {

@@ -119,7 +119,7 @@ import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
 import walkingIconSvg from "../../static/images/icon-walking.svg"
 
 /* eslint-enable @typescript-eslint/ban-ts-comment */
-import { svgIcon } from "./renderSvg"
+import { svgIcon } from "./svgIcon"
 
 export const AlertIcon = svgIcon(alertIconSvg)
 
