@@ -317,7 +317,7 @@ describe("MapPage", () => {
       screen.getByRole("generic", { name: /map search panel/i })
     ).toBeVisible()
 
-    await userEvent.click(screen.getByRole("button", { name: /clear/i }))
+    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
     // Leaflet? something isn't removing this from the DOM as expected....
     // await waitForElementToBeRemoved(document.querySelector(".m-vehicle-icon__label"))
   })
