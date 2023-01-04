@@ -126,7 +126,9 @@ $color-stop-fill: $white;
 $color-stop-stroke: $black;
 
 $color-tooltip-background: #333333;
+
 // type styles
+
 @mixin font-header-big {
   font-size: 1.5rem;
   font-weight: 700;

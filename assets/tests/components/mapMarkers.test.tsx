@@ -11,8 +11,8 @@ import {
   VehicleMarker,
   StopMarker,
 } from "../../src/components/mapMarkers"
+import stopFactory from "../factories/stop"
 import vehicleFactory from "../factories/vehicle"
-
 import { render, screen } from "@testing-library/react"
 import React from "react"
 import { MapContainer } from "react-leaflet"
@@ -26,6 +26,9 @@ jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
 afterAll(() => {
   global.scrollTo = originalScrollTo
 })
+
+const stop = stopFactory.build()
+const station = stopFactory.build({ locationType: LocationType.Station })
 
 describe("VehicleMarker", () => {
   test("Includes icon and label", () => {
@@ -85,10 +88,7 @@ describe("strokeOptions", () => {
 describe("StopMarker", () => {
   test("Stop name displayed on hover when not including stop card", async () => {
     const { container } = renderInMap(
-      <StopMarker
-        stop={{ id: "stop-1", name: "Stop 1", lat: 0, lon: 0 }}
-        includeStopCard={false}
-      />
+      <StopMarker stop={stop} includeStopCard={false} />
     )
     await userEvent.hover(container.querySelector(".m-vehicle-map__stop")!)
     expect(screen.getByText("Stop 1")).toBeInTheDocument()
@@ -96,11 +96,7 @@ describe("StopMarker", () => {
 
   test("Stop card displayed on click when includeStopCard is true", async () => {
     const { container } = renderInMap(
-      <StopMarker
-        stop={{ id: "stop-1", name: "Stop 1", lat: 0, lon: 0 }}
-        direction={0}
-        includeStopCard={true}
-      />
+      <StopMarker stop={stop} direction={0} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
     expect(screen.getByText("Outbound")).toBeInTheDocument()
@@ -110,14 +106,11 @@ describe("StopMarker", () => {
 describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
     const { container } = renderInMap(
-      <StationMarker
-        station={{ id: "station-1", name: "Station 1", lat: 0, lon: 0 }}
-        iconSize={StationIconSize.small}
-      />
+      <StationMarker station={station} iconSize={StationIconSize.small} />
     )
     expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
     await userEvent.hover(container.querySelector(".m-station-icon")!)
-    expect(screen.getByText("Station 1")).toBeInTheDocument()
+    expect(screen.getByText(station.name)).toBeInTheDocument()
   })
 })
 
@@ -125,22 +118,7 @@ describe("RouteStopMarkers", () => {
   test("Returns station and stop markers", () => {
     const { container } = renderInMap(
       <RouteStopMarkers
-        stops={[
-          {
-            id: "1",
-            name: "Stop 1",
-            locationType: LocationType.Stop,
-            lat: 0,
-            lon: 0,
-          },
-          {
-            id: "2",
-            name: "Station 1",
-            locationType: LocationType.Station,
-            lat: 0,
-            lon: 0,
-          },
-        ]}
+        stops={[stop, station]}
         iconSize={StationIconSize.small}
       />
     )
@@ -150,13 +128,6 @@ describe("RouteStopMarkers", () => {
   })
 
   test("Deduplicates list by stop id", () => {
-    const stop = {
-      id: "1",
-      name: "Stop 1",
-      locationType: LocationType.Stop,
-      lat: 0,
-      lon: 0,
-    }
     const { container } = renderInMap(
       <RouteStopMarkers stops={[stop, stop]} iconSize={StationIconSize.small} />
     )

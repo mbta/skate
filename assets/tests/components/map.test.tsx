@@ -6,8 +6,9 @@ import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
 import Map, { autoCenter, defaultCenter } from "../../src/components/map"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
-import { Stop } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
+import stopFactory from "../factories/stop"
+
 import userEvent from "@testing-library/user-event"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 
@@ -86,13 +87,7 @@ const shape = {
   ],
 }
 
-const station: Stop = {
-  id: "station-1",
-  name: "Station 1",
-  lat: 42.1,
-  lon: -71.1,
-  locationType: LocationType.Station,
-}
+const station = stopFactory.build({ locationType: LocationType.Station })
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
