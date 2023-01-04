@@ -1,6 +1,15 @@
-import React from "react"
+import React, { ComponentPropsWithoutRef } from "react"
 
-export default (className: string, svgText: string): JSX.Element => (
+// https://react-typescript-cheatsheet.netlify.app/docs/advanced/patterns_by_usecase/#wrappingmirroring
+interface SvgIconProps extends ComponentPropsWithoutRef<"span"> {
+  svgText: string
+}
+
+export const SvgIcon = ({ svgText, ...props }: SvgIconProps) => (
   // eslint-disable-next-line react/no-danger
-  <span className={className} dangerouslySetInnerHTML={{ __html: svgText }} />
+  <span {...props} dangerouslySetInnerHTML={{ __html: svgText }} />
 )
+
+export const svgIcon =
+  (svgText: string) => (props: ComponentPropsWithoutRef<"span">) =>
+    <SvgIcon svgText={svgText} {...props} />

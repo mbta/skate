@@ -1,22 +1,76 @@
+import { render, screen } from "@testing-library/react"
 import React from "react"
-import renderSvg from "../../src/helpers/renderSvg"
+import { SvgIcon, svgIcon } from "../../src/helpers/renderSvg"
+import "@testing-library/jest-dom"
 
-test("renders the given svg content in a span element with a class name", () => {
-  const className = "test-class-name"
-  const svgText = "svg text"
+describe("<SvgIcon/>", () => {
+  test("renders the given svg content in a span element with a class name", () => {
+    const className = "test-class-name"
+    const svgText = "svg text"
 
-  /* eslint-disable react/no-danger */
-  const expected = (
-    <span
-      className={className}
-      dangerouslySetInnerHTML={{
-        __html: "svg text",
-      }}
-    />
-  )
-  /* eslint-enable react/no-danger */
+    const result = render(
+      <SvgIcon
+        svgText={`<svg>${svgText}</svg>`}
+        className={className}
+      ></SvgIcon>
+    ).asFragment()
 
-  const result = renderSvg(className, svgText)
+    expect(result).toEqual(
+      render(
+        <span className={className}>
+          <svg>{svgText}</svg>
+        </span>
+      ).asFragment()
+    )
+  })
+})
 
-  expect(result).toEqual(expected)
+describe("svgIcon(text) -> (props)", () => {
+  describe("first function returns react element which renders `svgText` and passed props", () => {
+    test("when called via function call", () => {
+      const className = "test-class-name"
+      const svgText = "<svg><title>hello test</title></svg>"
+
+      const TestSvgTextElement = svgIcon(svgText)
+      const result = render(
+        TestSvgTextElement({ className, role: "img" })
+      ).asFragment()
+
+      expect(result).toEqual(
+        render(
+          <span className={className} role="img">
+            <svg>
+              <title>hello test</title>
+            </svg>
+          </span>
+        ).asFragment()
+      )
+    })
+
+    // test("when element is created from svg text, element should be in the accessibility tree from specified props", () => {
+    test("when used via JSX", () => {
+      const className = "test-class-name"
+      const spanTitle = "test span title"
+      const svgText = `<svg role=presentation></svg>`
+
+      const TestSvgTextElement = svgIcon(svgText)
+      render(
+        <TestSvgTextElement
+          title={spanTitle}
+          className={className}
+          role="img"
+          aria-hidden={true}
+        />
+      ).asFragment()
+
+      expect(screen.getByRole("img", { hidden: true })).toHaveAttribute(
+        "title",
+        spanTitle
+      )
+      expect(screen.getByRole("img", { hidden: true })).toHaveClass(className)
+      expect(
+        screen.getByRole("presentation", { hidden: true })
+      ).toBeInTheDocument()
+    })
+  })
 })

@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react"
 import React from "react"
 import {
   alertIcon,
@@ -35,82 +36,74 @@ import {
   walkingIcon,
 } from "../../src/helpers/icon"
 
-const testMap: { [index: string]: (className?: string) => JSX.Element } = {
-  alertIcon,
-  blueLineIcon,
-  busFrontIcon,
-  busRearIcon,
-  circleXIcon,
-  closeXIcon,
-  collapseIcon,
-  commuterRailIcon,
-  crowdingIcon,
-  expandIcon,
-  filledCircleIcon,
-  greenLineBIcon,
-  greenLineCIcon,
-  greenLineDIcon,
-  greenLineEIcon,
-  greenLineIcon,
-  ladderIcon,
-  loadingIcon,
-  mapIcon,
-  mattapanLineIcon,
-  minusIcon,
-  notificationBellIcon,
-  oldCloseIcon,
-  orangeLineIcon,
-  plusIcon,
-  questionMarkIcon,
-  redLineIcon,
-  reverseIcon,
-  searchIcon,
-  triangleDownIcon,
-  triangleUpIcon,
-  upDownIcon,
-  walkingIcon,
-}
+describe.each([
+  ["alertIcon", alertIcon],
+  ["blueLineIcon", blueLineIcon],
+  ["busFrontIcon", busFrontIcon],
+  ["busRearIcon", busRearIcon],
+  ["circleXIcon", circleXIcon],
+  ["closeXIcon", closeXIcon],
+  ["collapseIcon", collapseIcon],
+  ["commuterRailIcon", commuterRailIcon],
+  ["crowdingIcon", crowdingIcon],
+  ["expandIcon", expandIcon],
+  ["filledCircleIcon", filledCircleIcon],
+  ["greenLineBIcon", greenLineBIcon],
+  ["greenLineCIcon", greenLineCIcon],
+  ["greenLineDIcon", greenLineDIcon],
+  ["greenLineEIcon", greenLineEIcon],
+  ["greenLineIcon", greenLineIcon],
+  ["ladderIcon", ladderIcon],
+  ["loadingIcon", loadingIcon],
+  ["mapIcon", mapIcon],
+  ["mattapanLineIcon", mattapanLineIcon],
+  ["minusIcon", minusIcon],
+  ["notificationBellIcon", notificationBellIcon],
+  ["oldCloseIcon", oldCloseIcon],
+  ["orangeLineIcon", orangeLineIcon],
+  ["plusIcon", plusIcon],
+  ["questionMarkIcon", questionMarkIcon],
+  ["redLineIcon", redLineIcon],
+  ["reverseIcon", reverseIcon],
+  ["searchIcon", searchIcon],
+  ["triangleDownIcon", triangleDownIcon],
+  ["triangleUpIcon", triangleUpIcon],
+  ["upDownIcon", upDownIcon],
+  ["walkingIcon", walkingIcon],
+])(`%s`, (_, iconFn) => {
+  it("renders an icon with a class name", () => {
+    const className = "test-class-name"
 
-for (const key in testMap) {
-  if (Object.prototype.hasOwnProperty.call(testMap, key)) {
-    const functionToTest = testMap[key]
+    /* eslint-disable react/no-danger */
+    const expected = render(
+      <span
+        className={className}
+        dangerouslySetInnerHTML={{
+          __html: "<svg />",
+        }}
+      />
+    ).asFragment()
+    /* eslint-enable react/no-danger */
 
-    describe(key, () => {
-      it("renders an icon with a class name", () => {
-        const className = "test-class-name"
+    const result = render(iconFn(className)).asFragment()
 
-        /* eslint-disable react/no-danger */
-        const expected = (
-          <span
-            className={className}
-            dangerouslySetInnerHTML={{
-              __html: "SVG",
-            }}
-          />
-        )
-        /* eslint-enable react/no-danger */
+    expect(result).toEqual(expected)
+  })
 
-        const result = functionToTest(className)
+  it("renders without a class name", () => {
+    /* eslint-disable react/no-danger */
+    const expected = render(
+      <span
+        className=""
+        dangerouslySetInnerHTML={{
+          __html: "<svg/>",
+        }}
+      />
+    ).asFragment()
+    /* eslint-enable react/no-danger */
 
-        expect(result).toEqual(expected)
-      })
+    const result = render(iconFn()).asFragment()
 
-      it("renders without a class name", () => {
-        /* eslint-disable react/no-danger */
-        const expected = (
-          <span
-            className=""
-            dangerouslySetInnerHTML={{
-              __html: "SVG",
-            }}
-          />
-        )
-        /* eslint-enable react/no-danger */
-
-        const result = functionToTest()
-
-        expect(result).toEqual(expected)
-      })
-    })
-  }
-}
+    expect(result).toEqual(expected)
+  })
+})

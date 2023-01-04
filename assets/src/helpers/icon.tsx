@@ -119,10 +119,13 @@ import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
 import walkingIconSvg from "../../static/images/icon-walking.svg"
 
 /* eslint-enable @typescript-eslint/ban-ts-comment */
-import renderSvg from "./renderSvg"
+import { svgIcon } from "./renderSvg"
 
-const iconFn = (svgText: string) => (className = ""): JSX.Element =>
-  renderSvg(className, svgText)
+
+const iconFn = (svgText: string) => {
+  const icon = svgIcon(svgText)
+  return (className = ""): JSX.Element => icon({ className })
+}
 
 export const alertIcon = iconFn(alertIconSvg)
 export const bangIcon = iconFn(bangIconSvg)
