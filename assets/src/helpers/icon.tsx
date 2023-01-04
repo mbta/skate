@@ -121,68 +121,122 @@ import walkingIconSvg from "../../static/images/icon-walking.svg"
 /* eslint-enable @typescript-eslint/ban-ts-comment */
 import { svgIcon } from "./renderSvg"
 
+export const AlertIcon = svgIcon(alertIconSvg)
 
-const iconFn = (svgText: string) => {
-  const icon = svgIcon(svgText)
-  return (className = ""): JSX.Element => icon({ className })
-}
+export const BangIcon = svgIcon(bangIconSvg)
 
-export const alertIcon = iconFn(alertIconSvg)
-export const bangIcon = iconFn(bangIconSvg)
-export const blueLineIcon = iconFn(blueLineIconSvg)
-export const busFrontIcon = iconFn(busFrontIconSvg)
-export const busRearIcon = iconFn(busRearIconSvg)
-export const chevronLeftIcon = iconFn(chevronLeftIconSvg)
-export const circleXIcon = iconFn(circleXIconSvg)
-export const closeXIcon = iconFn(closeXIconSvg)
-export const collapseIcon = iconFn(collapseIconSvg)
-export const commuterRailIcon = iconFn(commuterRailIconSvg)
-export const crowdingIcon = iconFn(crowdingIconSvg)
-export const doubleChevronLeftIcon = iconFn(doubleChevronLeftIconSvg)
-export const doubleChevronRightIcon = iconFn(doubleChevronRightIconSvg)
-export const ellipsisIcon = iconFn(ellipsisIconSvg)
-export const expandIcon = iconFn(expandIconSvg)
-export const filledCircleIcon = iconFn(filledCircleIconSvg)
-export const ghostIcon = iconFn(ghostIconSvg)
-export const ghostSwingIcon = iconFn(ghostSwingIconSvg)
-export const greenLineBIcon = iconFn(greenLineBIconSvg)
-export const greenLineCIcon = iconFn(greenLineCIconSvg)
-export const greenLineDIcon = iconFn(greenLineDIconSvg)
-export const greenLineEIcon = iconFn(greenLineEIconSvg)
-export const greenLineIcon = iconFn(greenLineIconSvg)
-export const hamburgerIcon = iconFn(hamburgerIconSvg)
-export const hiddenIcon = iconFn(hiddenIconSvg)
-export const ladderIcon = iconFn(ladderIconSvg)
-export const lateIcon = iconFn(lateIconSvg)
-export const lateViewGhostIcon = iconFn(lateViewGhostIconSvg)
-export const lateViewGhostWithWaiverIcon = iconFn(lateViewGhostWithWaiverIconSvg)
-export const loadingIcon = iconFn(loadingIconSvg)
-export const logoIcon = iconFn(logoIconSvg)
-export const mapIcon = iconFn(mapIconSvg)
-export const mattapanLineIcon = iconFn(mattapanLineIconSvg)
-export const minusIcon = iconFn(minusIconSvg)
-export const notificationBellIcon = iconFn(notificationBellIconSvg)
-export const oldCloseIcon = iconFn(oldCloseIconSvg)
-export const orangeLineIcon = iconFn(orangeLineIconSvg)
-export const plusIcon = iconFn(plusIconSvg)
-export const plusThinIcon = iconFn(plusThinIconSvg)
-export const questionMarkIcon = iconFn(questionMarkIconSvg)
-export const redLineIcon = iconFn(redLineIconSvg)
-export const refreshIcon = iconFn(refreshIconSvg)
-export const reverseIcon = iconFn(reverseIconSvg)
-export const reverseIconReversed = iconFn(reverseIconReversedSvg)
-export const saveIcon = iconFn(saveIconSvg)
-export const searchIcon = iconFn(searchIconSvg)
-export const settingsIcon = iconFn(settingsIconSvg)
-export const speechBubbleIcon = iconFn(speechBubbleIconSvg)
-export const swingIcon = iconFn(swingIconSvg)
-export const toggleOffIcon = iconFn(toggleOffIconSvg)
-export const toggleOnIcon = iconFn(toggleOnIconSvg)
-export const triangleDownIcon = iconFn(triangleDownIconSvg)
-export const triangleUpIcon = iconFn(triangleUpIconSvg)
-export const triangleUpLargeIcon = iconFn(triangleUpLargeIconSvg)
-export const unhiddenIcon = iconFn(unhiddenIconSvg)
-export const unreadIcon = iconFn(unreadIconSvg)
-export const upDownIcon = iconFn(upDownIconSvg)
-export const upRightIcon = iconFn(upRightIconSvg)
-export const walkingIcon = iconFn(walkingIconSvg)
+export const BlueLineIcon = svgIcon(blueLineIconSvg)
+
+export const BusFrontIcon = svgIcon(busFrontIconSvg)
+
+export const BusRearIcon = svgIcon(busRearIconSvg)
+
+export const ChevronLeftIcon = svgIcon(chevronLeftIconSvg)
+
+export const CircleXIcon = svgIcon(circleXIconSvg)
+
+export const CloseXIcon = svgIcon(closeXIconSvg)
+
+export const CollapseIcon = svgIcon(collapseIconSvg)
+
+export const CommuterRailIcon = svgIcon(commuterRailIconSvg)
+
+export const CrowdingIcon = svgIcon(crowdingIconSvg)
+
+export const DoubleChevronLeftIcon = svgIcon(doubleChevronLeftIconSvg)
+
+export const DoubleChevronRightIcon = svgIcon(doubleChevronRightIconSvg)
+
+export const EllipsisIcon = svgIcon(ellipsisIconSvg)
+
+export const ExpandIcon = svgIcon(expandIconSvg)
+
+export const FilledCircleIcon = svgIcon(filledCircleIconSvg)
+
+export const GhostIcon = svgIcon(ghostIconSvg)
+
+export const GhostSwingIcon = svgIcon(ghostSwingIconSvg)
+
+export const GreenLineBIcon = svgIcon(greenLineBIconSvg)
+
+export const GreenLineCIcon = svgIcon(greenLineCIconSvg)
+
+export const GreenLineDIcon = svgIcon(greenLineDIconSvg)
+
+export const GreenLineEIcon = svgIcon(greenLineEIconSvg)
+
+export const GreenLineIcon = svgIcon(greenLineIconSvg)
+
+export const HamburgerIcon = svgIcon(hamburgerIconSvg)
+
+export const HiddenIcon = svgIcon(hiddenIconSvg)
+
+export const LadderIcon = svgIcon(ladderIconSvg)
+
+export const LateIcon = svgIcon(lateIconSvg)
+
+export const LateViewGhostIcon = svgIcon(lateViewGhostIconSvg)
+
+export const LateViewGhostWithWaiverIcon = svgIcon(
+  lateViewGhostWithWaiverIconSvg
+)
+
+export const LoadingIcon = svgIcon(loadingIconSvg)
+
+export const LogoIcon = svgIcon(logoIconSvg)
+
+export const MapIcon = svgIcon(mapIconSvg)
+
+export const MattapanLineIcon = svgIcon(mattapanLineIconSvg)
+
+export const MinusIcon = svgIcon(minusIconSvg)
+
+export const NotificationBellIcon = svgIcon(notificationBellIconSvg)
+
+export const OldCloseIcon = svgIcon(oldCloseIconSvg)
+
+export const OrangeLineIcon = svgIcon(orangeLineIconSvg)
+
+export const PlusIcon = svgIcon(plusIconSvg)
+
+export const PlusThinIcon = svgIcon(plusThinIconSvg)
+
+export const QuestionMarkIcon = svgIcon(questionMarkIconSvg)
+
+export const RedLineIcon = svgIcon(redLineIconSvg)
+
+export const RefreshIcon = svgIcon(refreshIconSvg)
+
+export const ReverseIcon = svgIcon(reverseIconSvg)
+
+export const ReverseIconReversed = svgIcon(reverseIconReversedSvg)
+
+export const SaveIcon = svgIcon(saveIconSvg)
+
+export const SearchIcon = svgIcon(searchIconSvg)
+
+export const SettingsIcon = svgIcon(settingsIconSvg)
+
+export const SpeechBubbleIcon = svgIcon(speechBubbleIconSvg)
+
+export const SwingIcon = svgIcon(swingIconSvg)
+
+export const ToggleOffIcon = svgIcon(toggleOffIconSvg)
+
+export const ToggleOnIcon = svgIcon(toggleOnIconSvg)
+
+export const TriangleDownIcon = svgIcon(triangleDownIconSvg)
+
+export const TriangleUpIcon = svgIcon(triangleUpIconSvg)
+
+export const TriangleUpLargeIcon = svgIcon(triangleUpLargeIconSvg)
+
+export const UnhiddenIcon = svgIcon(unhiddenIconSvg)
+
+export const UnreadIcon = svgIcon(unreadIconSvg)
+
+export const UpDownIcon = svgIcon(upDownIconSvg)
+
+export const UpRightIcon = svgIcon(upRightIconSvg)
+
+export const WalkingIcon = svgIcon(walkingIconSvg)

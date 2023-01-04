@@ -1,109 +1,99 @@
 import { render } from "@testing-library/react"
 import React from "react"
 import {
-  alertIcon,
-  blueLineIcon,
-  busFrontIcon,
-  busRearIcon,
-  circleXIcon,
-  closeXIcon,
-  collapseIcon,
-  commuterRailIcon,
-  crowdingIcon,
-  expandIcon,
-  filledCircleIcon,
-  greenLineBIcon,
-  greenLineCIcon,
-  greenLineDIcon,
-  greenLineEIcon,
-  greenLineIcon,
-  ladderIcon,
-  loadingIcon,
-  mapIcon,
-  mattapanLineIcon,
-  minusIcon,
-  notificationBellIcon,
-  oldCloseIcon,
-  orangeLineIcon,
-  plusIcon,
-  questionMarkIcon,
-  redLineIcon,
-  reverseIcon,
-  searchIcon,
-  triangleDownIcon,
-  triangleUpIcon,
-  upDownIcon,
-  walkingIcon,
+  AlertIcon,
+  BlueLineIcon,
+  BusFrontIcon,
+  BusRearIcon,
+  CircleXIcon,
+  CloseXIcon,
+  CollapseIcon,
+  CommuterRailIcon,
+  CrowdingIcon,
+  ExpandIcon,
+  FilledCircleIcon,
+  GreenLineBIcon,
+  GreenLineCIcon,
+  GreenLineDIcon,
+  GreenLineEIcon,
+  GreenLineIcon,
+  LadderIcon,
+  LoadingIcon,
+  MapIcon,
+  MattapanLineIcon,
+  MinusIcon,
+  NotificationBellIcon,
+  OldCloseIcon,
+  OrangeLineIcon,
+  PlusIcon,
+  QuestionMarkIcon,
+  RedLineIcon,
+  ReverseIcon,
+  SearchIcon,
+  TriangleDownIcon,
+  TriangleUpIcon,
+  UpDownIcon,
+  WalkingIcon,
 } from "../../src/helpers/icon"
 
 describe.each([
-  ["alertIcon", alertIcon],
-  ["blueLineIcon", blueLineIcon],
-  ["busFrontIcon", busFrontIcon],
-  ["busRearIcon", busRearIcon],
-  ["circleXIcon", circleXIcon],
-  ["closeXIcon", closeXIcon],
-  ["collapseIcon", collapseIcon],
-  ["commuterRailIcon", commuterRailIcon],
-  ["crowdingIcon", crowdingIcon],
-  ["expandIcon", expandIcon],
-  ["filledCircleIcon", filledCircleIcon],
-  ["greenLineBIcon", greenLineBIcon],
-  ["greenLineCIcon", greenLineCIcon],
-  ["greenLineDIcon", greenLineDIcon],
-  ["greenLineEIcon", greenLineEIcon],
-  ["greenLineIcon", greenLineIcon],
-  ["ladderIcon", ladderIcon],
-  ["loadingIcon", loadingIcon],
-  ["mapIcon", mapIcon],
-  ["mattapanLineIcon", mattapanLineIcon],
-  ["minusIcon", minusIcon],
-  ["notificationBellIcon", notificationBellIcon],
-  ["oldCloseIcon", oldCloseIcon],
-  ["orangeLineIcon", orangeLineIcon],
-  ["plusIcon", plusIcon],
-  ["questionMarkIcon", questionMarkIcon],
-  ["redLineIcon", redLineIcon],
-  ["reverseIcon", reverseIcon],
-  ["searchIcon", searchIcon],
-  ["triangleDownIcon", triangleDownIcon],
-  ["triangleUpIcon", triangleUpIcon],
-  ["upDownIcon", upDownIcon],
-  ["walkingIcon", walkingIcon],
+  ["AlertIcon", AlertIcon],
+  ["BlueLineIcon", BlueLineIcon],
+  ["BusFrontIcon", BusFrontIcon],
+  ["BusRearIcon", BusRearIcon],
+  ["CircleXIcon", CircleXIcon],
+  ["CloseXIcon", CloseXIcon],
+  ["CollapseIcon", CollapseIcon],
+  ["CommuterRailIcon", CommuterRailIcon],
+  ["CrowdingIcon", CrowdingIcon],
+  ["ExpandIcon", ExpandIcon],
+  ["FilledCircleIcon", FilledCircleIcon],
+  ["GreenLineBIcon", GreenLineBIcon],
+  ["GreenLineCIcon", GreenLineCIcon],
+  ["GreenLineDIcon", GreenLineDIcon],
+  ["GreenLineEIcon", GreenLineEIcon],
+  ["GreenLineIcon", GreenLineIcon],
+  ["LadderIcon", LadderIcon],
+  ["LoadingIcon", LoadingIcon],
+  ["MapIcon", MapIcon],
+  ["MattapanLineIcon", MattapanLineIcon],
+  ["MinusIcon", MinusIcon],
+  ["NotificationBellIcon", NotificationBellIcon],
+  ["OldCloseIcon", OldCloseIcon],
+  ["OrangeLineIcon", OrangeLineIcon],
+  ["PlusIcon", PlusIcon],
+  ["QuestionMarkIcon", QuestionMarkIcon],
+  ["RedLineIcon", RedLineIcon],
+  ["ReverseIcon", ReverseIcon],
+  ["SearchIcon", SearchIcon],
+  ["TriangleDownIcon", TriangleDownIcon],
+  ["TriangleUpIcon", TriangleUpIcon],
+  ["UpDownIcon", UpDownIcon],
+  ["WalkingIcon", WalkingIcon],
 ])(`%s`, (_, iconFn) => {
   it("renders an icon with a class name", () => {
     const className = "test-class-name"
 
-    /* eslint-disable react/no-danger */
-    const expected = render(
-      <span
-        className={className}
-        dangerouslySetInnerHTML={{
-          __html: "<svg />",
-        }}
-      />
-    ).asFragment()
-    /* eslint-enable react/no-danger */
+    const result = render(iconFn({ className })).asFragment()
 
-    const result = render(iconFn(className)).asFragment()
-
-    expect(result).toEqual(expected)
+    expect(result).toEqual(
+      render(
+        <span className={className}>
+          <svg />
+        </span>
+      ).asFragment()
+    )
   })
 
   it("renders without a class name", () => {
-    /* eslint-disable react/no-danger */
-    const expected = render(
-      <span
-        className=""
-        dangerouslySetInnerHTML={{
-          __html: "<svg/>",
-        }}
-      />
-    ).asFragment()
-    /* eslint-enable react/no-danger */
+    const result = render(iconFn({})).asFragment()
 
-    const result = render(iconFn()).asFragment()
-
-    expect(result).toEqual(expected)
+    expect(result).toEqual(
+      render(
+        <span>
+          <svg />
+        </span>
+      ).asFragment()
+    )
   })
 })
