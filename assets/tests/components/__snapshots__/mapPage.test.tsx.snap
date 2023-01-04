@@ -30,7 +30,7 @@ exports[`MapPage renders the empty state 1`] = `
               />
               <button
                 class="m-search-form__clear"
-                title="Clear"
+                title="Clear Search"
                 type="reset"
               >
                 <span>
@@ -361,7 +361,7 @@ exports[`MapPage renders vehicle data 1`] = `
               />
               <button
                 class="m-search-form__clear"
-                title="Clear"
+                title="Clear Search"
                 type="reset"
               >
                 <span>
