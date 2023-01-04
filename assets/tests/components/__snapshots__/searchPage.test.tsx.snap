@@ -34,7 +34,7 @@ exports[`SearchPage renders the empty state 1`] = `
                 <span
                   class=""
                 >
-                  SVG
+                  <svg />
                 </span>
               </button>
             </div>
@@ -47,7 +47,7 @@ exports[`SearchPage renders the empty state 1`] = `
               <span
                 class=""
               >
-                SVG
+                <svg />
               </span>
             </button>
           </div>
@@ -345,7 +345,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                 <span
                   class=""
                 >
-                  SVG
+                  <svg />
                 </span>
               </button>
             </div>
@@ -358,7 +358,7 @@ exports[`SearchPage renders vehicle data 1`] = `
               <span
                 class=""
               >
-                SVG
+                <svg />
               </span>
             </button>
           </div>

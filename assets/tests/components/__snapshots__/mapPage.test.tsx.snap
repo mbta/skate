@@ -35,7 +35,7 @@ exports[`MapPage renders the empty state 1`] = `
                 <span
                   class=""
                 >
-                  SVG
+                  <svg />
                 </span>
               </button>
             </div>
@@ -48,7 +48,7 @@ exports[`MapPage renders the empty state 1`] = `
               <span
                 class=""
               >
-                SVG
+                <svg />
               </span>
             </button>
           </div>
@@ -314,7 +314,7 @@ exports[`MapPage renders the empty state 1`] = `
               <span
                 class=""
               >
-                SVG
+                <svg />
               </span>
               Street View
             </label>
@@ -371,7 +371,7 @@ exports[`MapPage renders vehicle data 1`] = `
                 <span
                   class=""
                 >
-                  SVG
+                  <svg />
                 </span>
               </button>
             </div>
@@ -384,7 +384,7 @@ exports[`MapPage renders vehicle data 1`] = `
               <span
                 class=""
               >
-                SVG
+                <svg />
               </span>
             </button>
           </div>
@@ -711,7 +711,7 @@ exports[`MapPage renders vehicle data 1`] = `
               <span
                 class=""
               >
-                SVG
+                <svg />
               </span>
               Street View
             </label>

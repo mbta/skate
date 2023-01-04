@@ -28,7 +28,7 @@ exports[`SearchForm renders 1`] = `
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -45,7 +45,7 @@ exports[`SearchForm renders 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />

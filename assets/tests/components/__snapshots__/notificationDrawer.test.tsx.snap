@@ -21,7 +21,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -61,7 +61,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -108,7 +108,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
                     className=""
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />

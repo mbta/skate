@@ -13,7 +13,7 @@ exports[`drawerTab has correct icon when collapsed 1`] = `
       className=""
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -34,7 +34,7 @@ exports[`drawerTab has correct icon when visible 1`] = `
       className=""
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />

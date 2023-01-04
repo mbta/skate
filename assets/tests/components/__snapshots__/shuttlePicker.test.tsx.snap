@@ -17,7 +17,7 @@ exports[`ShuttlePicker renders 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -81,7 +81,7 @@ exports[`ShuttlePicker renders 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -105,7 +105,7 @@ exports[`ShuttlePicker renders 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -129,7 +129,7 @@ exports[`ShuttlePicker renders 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -155,7 +155,7 @@ exports[`ShuttlePicker renders 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -181,7 +181,7 @@ exports[`ShuttlePicker renders 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -323,7 +323,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -385,7 +385,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -409,7 +409,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -433,7 +433,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -457,7 +457,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -481,7 +481,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
               className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -587,7 +587,7 @@ exports[`ShuttlePicker renders loading state 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />

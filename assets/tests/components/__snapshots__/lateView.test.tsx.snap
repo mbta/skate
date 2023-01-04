@@ -24,7 +24,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -228,7 +228,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     className="m-late-view__run-icon m-late-view__ghost-icon"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />
@@ -276,7 +276,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     className="m-late-view__run-icon m-late-view__up-right-icon"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />
@@ -330,7 +330,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     className="m-late-view__run-icon m-late-view__up-right-icon"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />
@@ -384,7 +384,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     className="m-late-view__run-icon m-late-view__block-waiver-icon"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />

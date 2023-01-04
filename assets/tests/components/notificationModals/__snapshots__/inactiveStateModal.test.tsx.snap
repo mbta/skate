@@ -16,7 +16,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -57,7 +57,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -98,7 +98,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -139,7 +139,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -180,7 +180,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -221,7 +221,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -262,7 +262,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -303,7 +303,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />

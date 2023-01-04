@@ -21,7 +21,7 @@ exports[`Header renders a header 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -253,7 +253,7 @@ exports[`Header renders for a ghost 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -459,7 +459,7 @@ exports[`Header renders for a late vehicle 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -691,7 +691,7 @@ exports[`Header renders for a shuttle 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -797,7 +797,7 @@ exports[`Header renders for an early vehicle 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -1029,7 +1029,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -1259,7 +1259,7 @@ exports[`Header renders with route data 1`] = `
         className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />

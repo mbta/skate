@@ -17,7 +17,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -40,7 +40,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -68,7 +68,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -91,7 +91,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -105,7 +105,7 @@ Array [
         className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -477,7 +477,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -500,7 +500,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -821,7 +821,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -844,7 +844,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -1084,7 +1084,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -1107,7 +1107,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -1257,7 +1257,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -1280,7 +1280,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -1294,7 +1294,7 @@ Array [
         className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -1665,7 +1665,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -1688,7 +1688,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -2008,7 +2008,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -2031,7 +2031,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -2490,7 +2490,7 @@ Array [
           className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -2513,7 +2513,7 @@ Array [
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
