@@ -401,12 +401,14 @@ const EventAdder = ({
     zoomend: () => {
       setZoomLevel(map.getZoom())
     },
+
     // `dragstart` is fired when a user drags the map
     // it is expected that this event is not fired for anything but user input
     // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
     dragstart: () => {
       setShouldAutoCenter(false)
     },
+
     // `moveend` is called when the leaflet map has finished animating a pan
     moveend: () => {
       // Wait until the auto centering animation is finished to resume listening for user interaction.
@@ -414,6 +416,9 @@ const EventAdder = ({
         isAutoCentering.current = false
       }
     },
+
+    // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
+    autopanstart: () => setShouldAutoCenter(false),
 
     popupopen: (e) => setTimeout(() => (e.popup.options.autoPan = false), 100),
 
