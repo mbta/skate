@@ -91,7 +91,7 @@ describe("StopMarker", () => {
       <StopMarker stop={stop} includeStopCard={false} />
     )
     await userEvent.hover(container.querySelector(".m-vehicle-map__stop")!)
-    expect(screen.getByText("Stop 1")).toBeInTheDocument()
+    expect(screen.getByText(stop.name)).toBeInTheDocument()
   })
 
   test("Stop card displayed on click when includeStopCard is true", async () => {
