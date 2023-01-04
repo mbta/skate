@@ -34,14 +34,13 @@ import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { Shape } from "../schedule"
+import { DirectionId, Shape } from "../schedule"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
 import appData from "../appData"
 import { createControlComponent } from "@react-leaflet/core"
 import "leaflet.fullscreen"
-import StreetViewButton from "./streetViewButton"
 
 import garages, { Garage } from "../data/garages"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -49,6 +48,7 @@ import garages, { Garage } from "../data/garages"
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import { WalkingIcon } from "../helpers/icon"
+import StopCard from "./stopCard"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -61,6 +61,8 @@ export interface Props {
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   allowStreetView?: boolean
   children?: JSX.Element | JSX.Element[]
+  stopCardDirection?: DirectionId
+  includeStopCard?: boolean
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -217,7 +219,15 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const Shape = ({ shape }: { shape: Shape }) => {
+const Shape = ({
+  shape,
+  direction,
+  includeStopCard,
+}: {
+  shape: Shape
+  direction?: DirectionId
+  includeStopCard?: boolean
+}) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
@@ -237,15 +247,11 @@ const Shape = ({ shape }: { shape: Shape }) => {
           center={[stop.lat, stop.lon]}
           radius={3}
         >
-          <Popup className="m-vehicle-map__stop-tooltip">
-            {stop.name}
-            {inTestGroup(MAP_BETA_GROUP_NAME) && (
-              <StreetViewButton
-                latitude={stop.lat}
-                longitude={stop.lon}
-              ></StreetViewButton>
-            )}
-          </Popup>
+          {includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME) ? (
+            <StopCard stop={stop} direction={direction} />
+          ) : (
+            <Popup className="m-vehicle-map__stop-tooltip">{stop.name}</Popup>
+          )}
         </CircleMarker>
       ))}
     </>
@@ -395,12 +401,14 @@ const EventAdder = ({
     zoomend: () => {
       setZoomLevel(map.getZoom())
     },
+
     // `dragstart` is fired when a user drags the map
     // it is expected that this event is not fired for anything but user input
     // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
     dragstart: () => {
       setShouldAutoCenter(false)
     },
+
     // `moveend` is called when the leaflet map has finished animating a pan
     moveend: () => {
       // Wait until the auto centering animation is finished to resume listening for user interaction.
@@ -408,6 +416,13 @@ const EventAdder = ({
         isAutoCentering.current = false
       }
     },
+
+    // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
+    autopanstart: () => setShouldAutoCenter(false),
+
+    popupopen: (e) => setTimeout(() => (e.popup.options.autoPan = false), 100),
+
+    popupclose: (e) => (e.popup.options.autoPan = true),
 
     ...(streetViewMode
       ? {
@@ -601,7 +616,12 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
         ))}
         {(props.shapes || []).map((shape) => (
-          <Shape key={shape.id} shape={shape} />
+          <Shape
+            key={shape.id}
+            shape={shape}
+            direction={props.stopCardDirection}
+            includeStopCard={props.includeStopCard}
+          />
         ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
           <Garages zoomLevel={zoomLevel} />
