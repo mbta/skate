@@ -98,11 +98,12 @@
 // #region Layout
 .m-vehicle-route-summary {
   display: grid;
-  grid-template:
-    "icon separator direction  adherence" 1fr
-    "icon separator route-name route-name" 2fr / min-content
-    /* 32px */
-    0.5fr 3fr 6fr;
+  grid-template-rows: 1fr 2fr;
+  grid-template-columns: min-content 1fr 6fr 12fr;
+  grid-template-areas:
+    "icon separator direction  adherence"
+    "icon separator route-name route-name";
+
 
   align-items: center; // center element vertically within cell
   justify-items: start; // align element horizontally within the cell
