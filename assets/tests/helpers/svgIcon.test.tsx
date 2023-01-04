@@ -47,7 +47,6 @@ describe("svgIcon(text) -> (props)", () => {
       )
     })
 
-    // test("when element is created from svg text, element should be in the accessibility tree from specified props", () => {
     test("when used via JSX", () => {
       const className = "test-class-name"
       const spanTitle = "test span title"
