@@ -1,116 +1,99 @@
+import { render } from "@testing-library/react"
 import React from "react"
 import {
-  alertIcon,
-  blueLineIcon,
-  busFrontIcon,
-  busRearIcon,
-  circleXIcon,
-  closeXIcon,
-  collapseIcon,
-  commuterRailIcon,
-  crowdingIcon,
-  expandIcon,
-  filledCircleIcon,
-  greenLineBIcon,
-  greenLineCIcon,
-  greenLineDIcon,
-  greenLineEIcon,
-  greenLineIcon,
-  ladderIcon,
-  loadingIcon,
-  mapIcon,
-  mattapanLineIcon,
-  minusIcon,
-  notificationBellIcon,
-  oldCloseIcon,
-  orangeLineIcon,
-  plusIcon,
-  questionMarkIcon,
-  redLineIcon,
-  reverseIcon,
-  searchIcon,
-  triangleDownIcon,
-  triangleUpIcon,
-  upDownIcon,
-  walkingIcon,
+  AlertIcon,
+  BlueLineIcon,
+  BusFrontIcon,
+  BusRearIcon,
+  CircleXIcon,
+  CloseXIcon,
+  CollapseIcon,
+  CommuterRailIcon,
+  CrowdingIcon,
+  ExpandIcon,
+  FilledCircleIcon,
+  GreenLineBIcon,
+  GreenLineCIcon,
+  GreenLineDIcon,
+  GreenLineEIcon,
+  GreenLineIcon,
+  LadderIcon,
+  LoadingIcon,
+  MapIcon,
+  MattapanLineIcon,
+  MinusIcon,
+  NotificationBellIcon,
+  OldCloseIcon,
+  OrangeLineIcon,
+  PlusIcon,
+  QuestionMarkIcon,
+  RedLineIcon,
+  ReverseIcon,
+  SearchIcon,
+  TriangleDownIcon,
+  TriangleUpIcon,
+  UpDownIcon,
+  WalkingIcon,
 } from "../../src/helpers/icon"
 
-const testMap: { [index: string]: (className?: string) => JSX.Element } = {
-  alertIcon,
-  blueLineIcon,
-  busFrontIcon,
-  busRearIcon,
-  circleXIcon,
-  closeXIcon,
-  collapseIcon,
-  commuterRailIcon,
-  crowdingIcon,
-  expandIcon,
-  filledCircleIcon,
-  greenLineBIcon,
-  greenLineCIcon,
-  greenLineDIcon,
-  greenLineEIcon,
-  greenLineIcon,
-  ladderIcon,
-  loadingIcon,
-  mapIcon,
-  mattapanLineIcon,
-  minusIcon,
-  notificationBellIcon,
-  oldCloseIcon,
-  orangeLineIcon,
-  plusIcon,
-  questionMarkIcon,
-  redLineIcon,
-  reverseIcon,
-  searchIcon,
-  triangleDownIcon,
-  triangleUpIcon,
-  upDownIcon,
-  walkingIcon,
-}
+describe.each([
+  ["AlertIcon", AlertIcon],
+  ["BlueLineIcon", BlueLineIcon],
+  ["BusFrontIcon", BusFrontIcon],
+  ["BusRearIcon", BusRearIcon],
+  ["CircleXIcon", CircleXIcon],
+  ["CloseXIcon", CloseXIcon],
+  ["CollapseIcon", CollapseIcon],
+  ["CommuterRailIcon", CommuterRailIcon],
+  ["CrowdingIcon", CrowdingIcon],
+  ["ExpandIcon", ExpandIcon],
+  ["FilledCircleIcon", FilledCircleIcon],
+  ["GreenLineBIcon", GreenLineBIcon],
+  ["GreenLineCIcon", GreenLineCIcon],
+  ["GreenLineDIcon", GreenLineDIcon],
+  ["GreenLineEIcon", GreenLineEIcon],
+  ["GreenLineIcon", GreenLineIcon],
+  ["LadderIcon", LadderIcon],
+  ["LoadingIcon", LoadingIcon],
+  ["MapIcon", MapIcon],
+  ["MattapanLineIcon", MattapanLineIcon],
+  ["MinusIcon", MinusIcon],
+  ["NotificationBellIcon", NotificationBellIcon],
+  ["OldCloseIcon", OldCloseIcon],
+  ["OrangeLineIcon", OrangeLineIcon],
+  ["PlusIcon", PlusIcon],
+  ["QuestionMarkIcon", QuestionMarkIcon],
+  ["RedLineIcon", RedLineIcon],
+  ["ReverseIcon", ReverseIcon],
+  ["SearchIcon", SearchIcon],
+  ["TriangleDownIcon", TriangleDownIcon],
+  ["TriangleUpIcon", TriangleUpIcon],
+  ["UpDownIcon", UpDownIcon],
+  ["WalkingIcon", WalkingIcon],
+])(`%s`, (_, iconFn) => {
+  it("renders an icon with a class name", () => {
+    const className = "test-class-name"
 
-for (const key in testMap) {
-  if (Object.prototype.hasOwnProperty.call(testMap, key)) {
-    const functionToTest = testMap[key]
+    const result = render(iconFn({ className })).asFragment()
 
-    describe(key, () => {
-      it("renders an icon with a class name", () => {
-        const className = "test-class-name"
+    expect(result).toEqual(
+      render(
+        <span className={className}>
+          <svg />
+        </span>
+      ).asFragment()
+    )
+  })
 
-        /* eslint-disable react/no-danger */
-        const expected = (
-          <span
-            className={className}
-            dangerouslySetInnerHTML={{
-              __html: "SVG",
-            }}
-          />
-        )
-        /* eslint-enable react/no-danger */
+  it("renders without a class name", () => {
+    const result = render(iconFn({})).asFragment()
 
-        const result = functionToTest(className)
-
-        expect(result).toEqual(expected)
-      })
-
-      it("renders without a class name", () => {
-        /* eslint-disable react/no-danger */
-        const expected = (
-          <span
-            className=""
-            dangerouslySetInnerHTML={{
-              __html: "SVG",
-            }}
-          />
-        )
-        /* eslint-enable react/no-danger */
-
-        const result = functionToTest()
-
-        expect(result).toEqual(expected)
-      })
-    })
-  }
-}
+    expect(result).toEqual(
+      render(
+        <span>
+          <svg />
+        </span>
+      ).asFragment()
+    )
+  })
+})

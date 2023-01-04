@@ -21,10 +21,9 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -373,10 +372,9 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -725,10 +723,9 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -951,10 +948,9 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -1398,10 +1394,9 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -1750,10 +1745,9 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -2114,10 +2108,9 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />

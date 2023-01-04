@@ -32,10 +32,8 @@ exports[`MapPage renders the empty state 1`] = `
                 title="Clear"
                 type="reset"
               >
-                <span
-                  class=""
-                >
-                  SVG
+                <span>
+                  <svg />
                 </span>
               </button>
             </div>
@@ -45,10 +43,8 @@ exports[`MapPage renders the empty state 1`] = `
               title="Submit"
               type="submit"
             >
-              <span
-                class=""
-              >
-                SVG
+              <span>
+                <svg />
               </span>
             </button>
           </div>
@@ -311,10 +307,8 @@ exports[`MapPage renders the empty state 1`] = `
             <label
               for="street-view-toggle-:r0:"
             >
-              <span
-                class=""
-              >
-                SVG
+              <span>
+                <svg />
               </span>
               Street View
             </label>
@@ -368,10 +362,8 @@ exports[`MapPage renders vehicle data 1`] = `
                 title="Clear"
                 type="reset"
               >
-                <span
-                  class=""
-                >
-                  SVG
+                <span>
+                  <svg />
                 </span>
               </button>
             </div>
@@ -381,10 +373,8 @@ exports[`MapPage renders vehicle data 1`] = `
               title="Submit"
               type="submit"
             >
-              <span
-                class=""
-              >
-                SVG
+              <span>
+                <svg />
               </span>
             </button>
           </div>
@@ -708,10 +698,8 @@ exports[`MapPage renders vehicle data 1`] = `
             <label
               for="street-view-toggle-:r1:"
             >
-              <span
-                class=""
-              >
-                SVG
+              <span>
+                <svg />
               </span>
               Street View
             </label>

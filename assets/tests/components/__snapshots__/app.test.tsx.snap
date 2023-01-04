@@ -28,7 +28,7 @@ exports[`App renders 1`] = `
               <span
                 class="m-top-nav__logo-icon"
               >
-                SVG
+                <svg />
               </span>
             </a>
             <ul
@@ -42,7 +42,7 @@ exports[`App renders 1`] = `
                   <span
                     class="m-top-nav__icon"
                   >
-                    SVG
+                    <svg />
                   </span>
                 </button>
               </li>
@@ -71,7 +71,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Route Ladders
                   </a>
@@ -85,7 +85,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Shuttle Map
                   </a>
@@ -99,7 +99,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Search
                   </a>
@@ -115,7 +115,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon m-left-nav__icon--swings-view"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Swings View
                   </button>
@@ -128,7 +128,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read m-left-nav__icon m-left-nav__icon--notifications-view"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Notifications
                   </button>
@@ -145,7 +145,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Support
                   </button>
@@ -158,7 +158,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon"
                     >
-                      SVG
+                      <svg />
                     </span>
                     About Skate
                   </button>
@@ -172,7 +172,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Settings
                   </a>
@@ -185,7 +185,7 @@ exports[`App renders 1`] = `
                     <span
                       class="m-left-nav__icon"
                     >
-                      SVG
+                      <svg />
                     </span>
                     Collapse
                   </button>
@@ -214,10 +214,8 @@ exports[`App renders 1`] = `
                   class="c-drawer-tab__tab-button"
                   data-testid="drawer-tab-button"
                 >
-                  <span
-                    class=""
-                  >
-                    SVG
+                  <span>
+                    <svg />
                   </span>
                 </button>
               </div>
@@ -269,10 +267,8 @@ exports[`App renders 1`] = `
                     <div
                       class="m-garage-filter__show-hide-icon"
                     >
-                      <span
-                        class=""
-                      >
-                        SVG
+                      <span>
+                        <svg />
                       </span>
                     </div>
                   </button>
@@ -306,7 +302,7 @@ exports[`App renders 1`] = `
                   <span
                     class="m-ladder-page__add-tab-icon"
                   >
-                    SVG
+                    <svg />
                   </span>
                 </button>
               </div>

@@ -11,7 +11,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import Loading from "./loading"
 import { partition, flatten, uniq } from "../helpers/array"
-import { ghostSwingIcon, upDownIcon, upRightIcon } from "../helpers/icon"
+import { GhostSwingIcon, UpDownIcon, UpRightIcon } from "../helpers/icon"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
@@ -204,7 +204,7 @@ const SwingsTable = ({
               colSpan={4}
               onClick={toggleShowPastSwings}
             >
-              {upDownIcon("m-swings-view__show-past-icon")}
+              <UpDownIcon className="m-swings-view__show-past-icon" />
               {`${showPastSwings ? "Hide" : "Show"} past swings`}
             </th>
           </tr>
@@ -324,13 +324,11 @@ const SwingCellContent = ({
     <>
       {vehicleOrGhost ? (
         <>
-          {isVehicle(vehicleOrGhost)
-            ? upRightIcon(
-                "m-swings-view__run-icon m-swings-view__run-icon-arrow"
-              )
-            : ghostSwingIcon(
-                "m-swings-view__run-icon m-swings-view__run-icon-ghost"
-              )}
+          {isVehicle(vehicleOrGhost) ? (
+            <UpRightIcon className="m-swings-view__run-icon m-swings-view__run-icon-arrow" />
+          ) : (
+            <GhostSwingIcon className="m-swings-view__run-icon m-swings-view__run-icon-ghost" />
+          )}
 
           <button
             onClick={() => {

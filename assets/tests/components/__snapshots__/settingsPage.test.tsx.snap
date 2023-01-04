@@ -36,7 +36,7 @@ exports[`SettingsPage renders 1`] = `
               className="m-settings-page__icon-path"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -93,7 +93,7 @@ exports[`SettingsPage renders 1`] = `
               className="m-settings-page__icon-path"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -150,7 +150,7 @@ exports[`SettingsPage renders 1`] = `
               className="m-settings-page__icon-path"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -188,7 +188,7 @@ exports[`SettingsPage renders 1`] = `
                     className="red"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />
@@ -205,7 +205,7 @@ exports[`SettingsPage renders 1`] = `
                     className="blue"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />
@@ -237,7 +237,7 @@ exports[`SettingsPage renders 1`] = `
                     className="blue"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />
@@ -254,7 +254,7 @@ exports[`SettingsPage renders 1`] = `
                     className="red"
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />

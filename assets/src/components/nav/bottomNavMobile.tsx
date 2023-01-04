@@ -1,5 +1,5 @@
 import React from "react"
-import { ladderIcon, mapIcon, searchIcon, swingIcon } from "../../helpers/icon"
+import { LadderIcon, MapIcon, SearchIcon, SwingIcon } from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import { mapModeForUser } from "../../util/mapMode"
@@ -31,7 +31,7 @@ const BottomNavMobile: React.FC<Props> = ({
             title="Route Ladders"
             to="/"
           >
-            {ladderIcon("m-bottom-nav-mobile__icon")}
+            <LadderIcon className="m-bottom-nav-mobile__icon" />
           </NavLink>
         </li>
 
@@ -44,7 +44,7 @@ const BottomNavMobile: React.FC<Props> = ({
             title="Shuttle Map"
             to="/shuttle-map"
           >
-            {mapIcon("m-bottom-nav-mobile__icon")}
+            <MapIcon className="m-bottom-nav-mobile__icon" />
           </NavLink>
         </li>
 
@@ -57,7 +57,7 @@ const BottomNavMobile: React.FC<Props> = ({
             title={mapMode.title}
             to={mapMode.path}
           >
-            {searchIcon("m-bottom-nav-mobile__icon")}
+            <SearchIcon className="m-bottom-nav-mobile__icon" />
           </NavLink>
         </li>
 
@@ -70,9 +70,7 @@ const BottomNavMobile: React.FC<Props> = ({
             }}
             title="Swings View"
           >
-            {swingIcon(
-              "m-bottom-nav-mobile__icon m-bottom-nav-mobile__icon--swings-view"
-            )}
+            <SwingIcon className="m-bottom-nav-mobile__icon m-bottom-nav-mobile__icon--swings-view" />
           </button>
         </li>
       </ul>

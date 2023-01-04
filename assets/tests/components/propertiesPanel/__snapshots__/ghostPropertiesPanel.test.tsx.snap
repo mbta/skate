@@ -21,10 +21,9 @@ exports[`GhostPropertiesPanel renders 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -310,10 +309,9 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -643,10 +641,9 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />

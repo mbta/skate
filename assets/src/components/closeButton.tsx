@@ -1,5 +1,5 @@
 import React from "react"
-import { closeXIcon } from "../helpers/icon"
+import { CloseXIcon } from "../helpers/icon"
 
 export type CloseButtonType =
   | "s_light"
@@ -37,7 +37,7 @@ const CloseButton: React.FC<Props> = ({ onClick, closeButtonType }) => {
 
   return (
     <button onClick={onClick} className={className} title="Close">
-      {closeXIcon()}
+      <CloseXIcon />
     </button>
   )
 }

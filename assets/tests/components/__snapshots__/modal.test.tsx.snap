@@ -13,10 +13,9 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -53,10 +52,9 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -93,10 +91,9 @@ Array [
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -133,7 +130,7 @@ Array [
         className="c-loading-spinner"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />

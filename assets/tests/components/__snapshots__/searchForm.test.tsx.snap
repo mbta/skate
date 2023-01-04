@@ -25,10 +25,9 @@ exports[`SearchForm renders 1`] = `
         type="reset"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -42,10 +41,9 @@ exports[`SearchForm renders 1`] = `
       type="submit"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />

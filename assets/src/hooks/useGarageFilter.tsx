@@ -3,10 +3,10 @@ import { useContext, useState } from "react"
 import { Route, GarageName } from "../schedule.d"
 import { flatten, uniq } from "../helpers/array"
 import {
-  collapseIcon,
-  expandIcon,
-  toggleOnIcon,
-  toggleOffIcon,
+  CollapseIcon,
+  ExpandIcon,
+  ToggleOnIcon,
+  ToggleOffIcon,
 } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -77,7 +77,7 @@ export const GarageFilter = ({
       >
         <div className="m-garage-filter__header">Filter garages</div>
         <div className="m-garage-filter__show-hide-icon">
-          {showGaragesFilter ? collapseIcon() : expandIcon()}
+          {showGaragesFilter ? <CollapseIcon /> : <ExpandIcon />}
         </div>
       </button>
       {showGaragesFilter ? (
@@ -95,9 +95,11 @@ export const GarageFilter = ({
                 className="m-garage-filter__button"
               >
                 {garage}
-                {filteredGarages.includes(garage)
-                  ? toggleOnIcon()
-                  : toggleOffIcon()}
+                {filteredGarages.includes(garage) ? (
+                  <ToggleOnIcon />
+                ) : (
+                  <ToggleOffIcon />
+                )}
               </button>
             </li>
           ))}

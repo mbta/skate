@@ -29,7 +29,7 @@ import {
   promptToSaveOrCreatePreset,
 } from "../state"
 import OldCloseButton from "./oldCloseButton"
-import { saveIcon, plusThinIcon } from "../helpers/icon"
+import { SaveIcon, PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import useAlerts from "../hooks/useAlerts"
 import { SocketContext } from "../contexts/socketContext"
@@ -102,7 +102,7 @@ const LadderTab = ({
               saveTab()
             }}
           >
-            {saveIcon()}
+            <SaveIcon />
           </button>
         ) : null}
         <OldCloseButton onClick={() => closeTab()} />
@@ -125,7 +125,7 @@ const AddTabButton = ({
         addTab()
       }}
     >
-      {plusThinIcon("m-ladder-page__add-tab-icon")}
+      <PlusThinIcon className="m-ladder-page__add-tab-icon" />
     </button>
   )
 }

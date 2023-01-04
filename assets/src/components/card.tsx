@@ -1,6 +1,6 @@
 import React from "react"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
-import { unreadIcon } from "../helpers/icon"
+import { UnreadIcon } from "../helpers/icon"
 import CloseButton from "./closeButton"
 
 export type CardStyle = "kiwi" | "white"
@@ -34,7 +34,7 @@ export const Card: React.FC<CardProps> = ({
     <>
       <div className="m-card__top-row">
         <div className="m-card__title">
-          {isUnread ? unreadIcon() : null}
+          {isUnread ? <UnreadIcon /> : null}
           {title}
         </div>
         {currentTime && time ? (

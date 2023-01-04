@@ -1,7 +1,7 @@
 import React from "react"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
-import { crowdingIcon, questionMarkIcon } from "../../helpers/icon"
+import { CrowdingIcon, QuestionMarkIcon } from "../../helpers/icon"
 import {
   classModifierForStatus,
   Crowding,
@@ -35,7 +35,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           trigger="click"
           className="m-crowding-diagram__crowding-tooltip"
         >
-          {questionMarkIcon("m-crowding-diagram__tooltip-anchor")}
+          <QuestionMarkIcon className="m-crowding-diagram__tooltip-anchor" />
         </Tippy>
         <br />
         {crowding.load !== null ? (
@@ -53,9 +53,9 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         )}
       </div>
       <div className="m-crowding-diagram__crowding-icon-wrapper">
-        {crowdingIcon(
-          `m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`
-        )}
+        <CrowdingIcon
+          className={`m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`}
+        />
       </div>
     </div>
   )

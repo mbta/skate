@@ -1,6 +1,6 @@
 import React from "react"
 import { useState } from "react"
-import { circleXIcon } from "../helpers/icon"
+import { CircleXIcon } from "../helpers/icon"
 import { Route } from "../schedule.d"
 
 export interface RouteFilterData {
@@ -63,7 +63,7 @@ export const RouteFilter = ({
             onClick={clearTextInput}
             title="Clear"
           >
-            {circleXIcon()}
+            <CircleXIcon />
           </button>
         ) : null}
       </div>

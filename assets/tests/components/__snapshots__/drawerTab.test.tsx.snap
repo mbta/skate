@@ -10,10 +10,9 @@ exports[`drawerTab has correct icon when collapsed 1`] = `
     onClick={[MockFunction]}
   >
     <span
-      className=""
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -31,10 +30,9 @@ exports[`drawerTab has correct icon when visible 1`] = `
     onClick={[MockFunction]}
   >
     <span
-      className=""
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />

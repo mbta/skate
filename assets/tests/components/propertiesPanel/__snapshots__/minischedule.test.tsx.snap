@@ -72,7 +72,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -92,10 +92,9 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -127,7 +126,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -150,10 +149,9 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -185,7 +183,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -208,10 +206,9 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -311,7 +308,7 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -354,10 +351,9 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -389,7 +385,7 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -412,10 +408,9 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -479,7 +474,7 @@ exports[`Minischedule renders a Hide past trips button 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -525,7 +520,7 @@ exports[`Minischedule renders a Show past trips button 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -571,7 +566,7 @@ exports[`MinischeduleBlock renders a block 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -596,10 +591,9 @@ exports[`MinischeduleBlock renders a block 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -631,7 +625,7 @@ exports[`MinischeduleBlock renders a block 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -654,10 +648,9 @@ exports[`MinischeduleBlock renders a block 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -721,7 +714,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -746,10 +739,9 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -781,7 +773,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -804,10 +796,9 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -849,10 +840,9 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -884,7 +874,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -910,7 +900,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -933,10 +923,9 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1000,7 +989,7 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -1025,10 +1014,9 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1060,7 +1048,7 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1083,10 +1071,9 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1128,10 +1115,9 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1163,7 +1149,7 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1189,7 +1175,7 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1212,10 +1198,9 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1281,7 +1266,7 @@ exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead 
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -1329,10 +1314,9 @@ exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1364,7 +1348,7 @@ exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1387,10 +1371,9 @@ exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1419,10 +1402,9 @@ exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1509,7 +1491,7 @@ exports[`MinischeduleBlock renders pulls and deadheads 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -1557,10 +1539,9 @@ exports[`MinischeduleBlock renders pulls and deadheads 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1589,10 +1570,9 @@ exports[`MinischeduleBlock renders pulls and deadheads 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1621,10 +1601,9 @@ exports[`MinischeduleBlock renders pulls and deadheads 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1713,7 +1692,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -1738,10 +1717,9 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1773,7 +1751,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1799,7 +1777,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1825,7 +1803,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1848,10 +1826,9 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -1951,7 +1928,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -1971,10 +1948,9 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2006,7 +1982,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2049,7 +2025,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2092,7 +2068,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2115,10 +2091,9 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2218,7 +2193,7 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -2238,10 +2213,9 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2273,7 +2247,7 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2296,10 +2270,9 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2399,7 +2372,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -2419,7 +2392,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
             className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
-                "__html": "SVG",
+                "__html": "<svg/>",
               }
             }
           />
@@ -2451,10 +2424,9 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2486,7 +2458,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2529,7 +2501,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2552,10 +2524,9 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2657,7 +2628,7 @@ exports[`MinischeduleRun renders a run 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -2700,10 +2671,9 @@ exports[`MinischeduleRun renders a run 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2735,7 +2705,7 @@ exports[`MinischeduleRun renders a run 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2778,7 +2748,7 @@ exports[`MinischeduleRun renders a run 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2801,10 +2771,9 @@ exports[`MinischeduleRun renders a run 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2904,7 +2873,7 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -2947,10 +2916,9 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -2982,7 +2950,7 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3025,7 +2993,7 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3048,10 +3016,9 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3151,7 +3118,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -3171,10 +3138,9 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3206,7 +3172,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3249,7 +3215,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3272,10 +3238,9 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3375,7 +3340,7 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -3395,10 +3360,9 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3430,7 +3394,7 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3470,10 +3434,9 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3590,7 +3553,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -3610,10 +3573,9 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3645,7 +3607,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3688,7 +3650,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3711,10 +3673,9 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3814,7 +3775,7 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -3857,10 +3818,9 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3892,7 +3852,7 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3935,7 +3895,7 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -3958,10 +3918,9 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -4061,7 +4020,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -4081,10 +4040,9 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -4116,7 +4074,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -4142,7 +4100,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
               className="m-minischedule__svg--revenue"
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -4165,10 +4123,9 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -4268,7 +4225,7 @@ exports[`MinischeduleRun renders as directed pieces 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -4311,10 +4268,9 @@ exports[`MinischeduleRun renders as directed pieces 1`] = `
             className="m-minischedule__icon"
           >
             <span
-              className=""
               dangerouslySetInnerHTML={
                 Object {
-                  "__html": "SVG",
+                  "__html": "<svg/>",
                 }
               }
             />
@@ -4431,7 +4387,7 @@ exports[`MinischeduleRun renders duty details of run 1`] = `
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />
@@ -4818,7 +4774,7 @@ exports[`MinischeduleRun renders duty details of run with overload offset 1`] = 
       className="m-minischedule__show-past-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />

@@ -11,12 +11,12 @@ import RoutesContext from "../contexts/routesContext"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
-  bangIcon,
-  hiddenIcon,
-  lateViewGhostIcon,
-  lateViewGhostWithWaiverIcon,
-  unhiddenIcon,
-  upRightIcon,
+  BangIcon,
+  HiddenIcon,
+  LateViewGhostIcon,
+  LateViewGhostWithWaiverIcon,
+  UnhiddenIcon,
+  UpRightIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
@@ -456,13 +456,11 @@ const LateGhostRow = ({
             dispatch(selectVehicle(ghost))
           }}
         >
-          {ghost.blockWaivers.length > 0
-            ? lateViewGhostWithWaiverIcon(
-                "m-late-view__run-icon m-late-view__ghost-icon"
-              )
-            : lateViewGhostIcon(
-                "m-late-view__run-icon m-late-view__ghost-icon"
-              )}
+          {ghost.blockWaivers.length > 0 ? (
+            <LateViewGhostWithWaiverIcon className="m-late-view__run-icon m-late-view__ghost-icon" />
+          ) : (
+            <LateViewGhostIcon className="m-late-view__run-icon m-late-view__ghost-icon" />
+          )}
           {runIdToLabel(ghost.runId)}
         </button>
       </td>
@@ -517,9 +515,11 @@ const LateBusRow = ({
             dispatch(selectVehicle(vehicle))
           }}
         >
-          {vehicle.blockWaivers.length > 0
-            ? bangIcon("m-late-view__run-icon m-late-view__block-waiver-icon")
-            : upRightIcon("m-late-view__run-icon m-late-view__up-right-icon")}
+          {vehicle.blockWaivers.length > 0 ? (
+            <BangIcon className="m-late-view__run-icon m-late-view__block-waiver-icon" />
+          ) : (
+            <UpRightIcon className="m-late-view__run-icon m-late-view__up-right-icon" />
+          )}
           {runIdToLabel(vehicle.runId)}
         </button>
       </td>
@@ -623,7 +623,7 @@ const HidePopup = ({
   return (
     <div className="m-late-view__popup m-late-view__hide-popup">
       {nRowsSelected} selected
-      <button onClick={onclickCallback}>{hiddenIcon()} Hide</button>
+      <button onClick={onclickCallback}>{<HiddenIcon />} Hide</button>
     </div>
   )
 }
@@ -658,7 +658,7 @@ const UnhideToggle = ({
     }}
     title={viewHidden ? "Exclude Hidden" : "Include Hidden"}
   >
-    {viewHidden ? unhiddenIcon() : hiddenIcon()}
+    {viewHidden ? <UnhiddenIcon /> : <HiddenIcon />}
     <div className="m-late-view__toggle-exterior">
       <div className="m-late-view__toggle-interior" />
     </div>

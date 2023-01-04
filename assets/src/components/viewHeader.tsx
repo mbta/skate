@@ -1,5 +1,5 @@
 import React from "react"
-import { chevronLeftIcon } from "../helpers/icon"
+import { ChevronLeftIcon } from "../helpers/icon"
 import useDeviceType from "../hooks/useDeviceType"
 import { OpenView } from "../state"
 import CloseButton from "./closeButton"
@@ -41,7 +41,7 @@ const ViewHeader: ViewHeaderType = ({
           onClick={followBacklink}
           title={backlinkTitle(backlinkToView)}
         >
-          {chevronLeftIcon()}
+          <ChevronLeftIcon />
           {backlinkTitle(backlinkToView)}
         </button>
       ) : null}

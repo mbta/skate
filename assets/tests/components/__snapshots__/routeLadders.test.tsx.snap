@@ -18,10 +18,9 @@ exports[`RouteLadders renders a route ladder 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -44,7 +43,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -186,10 +185,9 @@ exports[`RouteLadders renders a route ladder 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -212,7 +210,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
         className="m-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />

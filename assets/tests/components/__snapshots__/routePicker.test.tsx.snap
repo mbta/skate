@@ -37,10 +37,9 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         className="m-garage-filter__show-hide-icon"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -99,7 +98,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
             className="m-route-picker__selected-routes-button-icon"
             dangerouslySetInnerHTML={
               Object {
-                "__html": "SVG",
+                "__html": "<svg/>",
               }
             }
           />
@@ -115,7 +114,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
             className="m-route-picker__selected-routes-button-icon"
             dangerouslySetInnerHTML={
               Object {
-                "__html": "SVG",
+                "__html": "<svg/>",
               }
             }
           />
@@ -163,10 +162,9 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
         className="m-garage-filter__show-hide-icon"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />

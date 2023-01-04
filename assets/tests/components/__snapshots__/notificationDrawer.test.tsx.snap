@@ -18,10 +18,9 @@ exports[`NotificationDrawer renders empty state 1`] = `
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -58,10 +57,9 @@ exports[`NotificationDrawer renders notifications 1`] = `
       title="Close"
     >
       <span
-        className=""
         dangerouslySetInnerHTML={
           Object {
-            "__html": "SVG",
+            "__html": "<svg/>",
           }
         }
       />
@@ -105,10 +103,9 @@ exports[`NotificationDrawer renders notifications 1`] = `
                   className="m-card__title"
                 >
                   <span
-                    className=""
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "SVG",
+                        "__html": "<svg/>",
                       }
                     }
                   />

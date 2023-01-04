@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
-  blueLineIcon,
-  commuterRailIcon,
-  greenLineIcon,
-  orangeLineIcon,
-  redLineIcon,
+  BlueLineIcon,
+  CommuterRailIcon,
+  GreenLineIcon,
+  OrangeLineIcon,
+  RedLineIcon,
 } from "../helpers/icon"
 import useShuttleRoutes from "../hooks/useShuttleRoutes"
 import { SubwayRoute, subwayRoutes } from "../models/subwayRoute"
@@ -40,27 +40,27 @@ const KNOWN_SHUTTLES: KnownShuttle[] = [
   {
     name: "Blue",
     runId: "999-0501",
-    icon: blueLineIcon(),
+    icon: <BlueLineIcon />,
   },
   {
     name: "Green",
     runId: "999-0502",
-    icon: greenLineIcon(),
+    icon: <GreenLineIcon />,
   },
   {
     name: "Orange",
     runId: "999-0503",
-    icon: orangeLineIcon(),
+    icon: <OrangeLineIcon />,
   },
   {
     name: "Red",
     runId: "999-0504",
-    icon: redLineIcon(),
+    icon: <RedLineIcon />,
   },
   {
     name: "CR",
     runId: "999-0505",
-    icon: commuterRailIcon(),
+    icon: <CommuterRailIcon />,
   },
 ]
 

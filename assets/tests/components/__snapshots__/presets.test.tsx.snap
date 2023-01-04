@@ -21,10 +21,9 @@ exports[`Presets renders current presets 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -46,10 +45,9 @@ exports[`Presets renders current presets 1`] = `
         title="Close"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
             Object {
-              "__html": "SVG",
+              "__html": "<svg/>",
             }
           }
         />
@@ -65,7 +63,7 @@ exports[`Presets renders current presets 1`] = `
       className="m-presets-panel__save-as-preset-button-icon"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "SVG",
+          "__html": "<svg/>",
         }
       }
     />

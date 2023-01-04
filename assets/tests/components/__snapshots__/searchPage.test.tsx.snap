@@ -31,10 +31,8 @@ exports[`SearchPage renders the empty state 1`] = `
                 title="Clear"
                 type="reset"
               >
-                <span
-                  class=""
-                >
-                  SVG
+                <span>
+                  <svg />
                 </span>
               </button>
             </div>
@@ -44,10 +42,8 @@ exports[`SearchPage renders the empty state 1`] = `
               title="Submit"
               type="submit"
             >
-              <span
-                class=""
-              >
-                SVG
+              <span>
+                <svg />
               </span>
             </button>
           </div>
@@ -342,10 +338,8 @@ exports[`SearchPage renders vehicle data 1`] = `
                 title="Clear"
                 type="reset"
               >
-                <span
-                  class=""
-                >
-                  SVG
+                <span>
+                  <svg />
                 </span>
               </button>
             </div>
@@ -355,10 +349,8 @@ exports[`SearchPage renders vehicle data 1`] = `
               title="Submit"
               type="submit"
             >
-              <span
-                class=""
-              >
-                SVG
+              <span>
+                <svg />
               </span>
             </button>
           </div>
