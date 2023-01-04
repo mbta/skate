@@ -4,7 +4,7 @@ exports[`MapPage renders the empty state 1`] = `
 <DocumentFragment>
   <div
     class="c-page m-map-page m-map-page--show-list "
-    data-testid="map-page"
+    title="Search Map Page"
   >
     <div
       class="m-map-page__input-and-results"
@@ -335,7 +335,7 @@ exports[`MapPage renders vehicle data 1`] = `
 <DocumentFragment>
   <div
     class="c-page m-map-page m-map-page--show-list "
-    data-testid="map-page"
+    title="Search Map Page"
   >
     <div
       class="m-map-page__input-and-results"

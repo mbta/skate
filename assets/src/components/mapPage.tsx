@@ -101,7 +101,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   return (
     <div
       className={`c-page m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
-      data-testid="map-page"
+      title="Search Map Page"
     >
       <div
         className="m-map-page__input-and-results"
