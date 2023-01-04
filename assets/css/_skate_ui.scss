@@ -46,7 +46,6 @@ $font-weights: (
 // TODO: {type}-{size}-{weight}
 :root {
   @each $size, $font-size in $font-sizes {
-    @debug $size $font-size;
     --font-size-#{$size}: #{$font-size};
   }
 
