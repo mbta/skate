@@ -101,7 +101,7 @@
   // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
   z-index: 7001;
   top: 0.5rem;
-  left: calc(env(safe-area-inset-left) + 60px);
+  left: calc(env(safe-area-inset-left) + 60px - 10px);
   cursor: default;
 }
 
