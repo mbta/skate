@@ -270,8 +270,9 @@ describe("MapPage", () => {
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
     expect(screen.getByTitle(/map search panel/i)).not.toBeVisible()
+    const routeShape = container.querySelector(".m-vehicle-map__route-shape")
     expect(
-      container.querySelector(".m-vehicle-map__route-shape")
+      routeShape
     ).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
@@ -279,7 +280,7 @@ describe("MapPage", () => {
       screen.queryByTitle(/vehicle properties card/i)
     ).not.toBeInTheDocument()
     expect(
-      container.querySelector(".m-vehicle-map__route-shape")
+      routeShape
     ).not.toBeInTheDocument()
 
     expect(
