@@ -265,7 +265,11 @@ const VehiclePropertiesCard = ({
 }: VehicleProp & {
   onClose: () => void
 }): React.ReactElement => (
-  <div {...keepUserInputFromLeaflet} className="m-vehicle-properties-card" title="Vehicle Properties Card">
+  <div
+    {...keepUserInputFromLeaflet}
+    className="m-vehicle-properties-card"
+    title="Vehicle Properties Card"
+  >
     <div className="m-vehicle-properties-card__title-bar">
       <CloseButton2
         onClick={onClose}

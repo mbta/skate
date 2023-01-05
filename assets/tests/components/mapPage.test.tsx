@@ -271,17 +271,13 @@ describe("MapPage", () => {
     ).toBeVisible()
     expect(screen.getByTitle(/map search panel/i)).not.toBeVisible()
     const routeShape = container.querySelector(".m-vehicle-map__route-shape")
-    expect(
-      routeShape
-    ).toBeInTheDocument()
+    expect(routeShape).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
     expect(
       screen.queryByTitle(/vehicle properties card/i)
     ).not.toBeInTheDocument()
-    expect(
-      routeShape
-    ).not.toBeInTheDocument()
+    expect(routeShape).not.toBeInTheDocument()
 
     expect(
       screen.getByRole("generic", { name: /map search panel/i })

@@ -19,7 +19,12 @@ describe("<VehiclePropertiesCard/>", () => {
   describe("logic constraints", () => {
     test("when `close` button is clicked, should fire `onClose` callback", async () => {
       const onClose = jest.fn()
-      render(<VehiclePropertiesCard vehicle={vehicleFactory.build()} onClose={onClose} />)
+      render(
+        <VehiclePropertiesCard
+          vehicle={vehicleFactory.build()}
+          onClose={onClose}
+        />
+      )
 
       await userEvent.click(screen.getByRole("button", { name: /close/i }))
 
@@ -37,17 +42,15 @@ describe("<VehiclePropertiesCard/>", () => {
       const { rerender } = render(
         <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
       )
-      const locationElement = screen.getByRole("status", { name: "Current Location" })
+      const locationElement = screen.getByRole("status", {
+        name: "Current Location",
+      })
 
-      expect(
-        locationElement
-      ).toHaveTextContent(intersection)
+      expect(locationElement).toHaveTextContent(intersection)
 
       rerender(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
 
-      expect(
-        locationElement
-      ).toHaveTextContent(intersection2)
+      expect(locationElement).toHaveTextContent(intersection2)
     })
 
     test("when rerendered, should display latest data", () => {
@@ -59,23 +62,13 @@ describe("<VehiclePropertiesCard/>", () => {
       const runCell = screen.getByRole("cell", { name: /run/i })
       const vehicleCell = screen.getByRole("cell", { name: /vehicle/i })
 
-
-      expect(runCell).toHaveTextContent(
-        vehicle.runId!
-      )
-      expect(vehicleCell).toHaveTextContent(
-        vehicle.label
-      )
+      expect(runCell).toHaveTextContent(vehicle.runId!)
+      expect(vehicleCell).toHaveTextContent(vehicle.label)
 
       rerender(<VehiclePropertiesCard vehicle={vehicle2} onClose={jest.fn()} />)
 
-      expect(vehicleCell).toHaveTextContent(
-        vehicle2.label
-      )
-      expect(runCell).toHaveTextContent(
-        vehicle2.runId!
-      )
-
+      expect(vehicleCell).toHaveTextContent(vehicle2.label)
+      expect(runCell).toHaveTextContent(vehicle2.runId!)
     })
   })
 
