@@ -10,13 +10,11 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
@@ -363,13 +361,11 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
@@ -716,13 +712,11 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
@@ -943,13 +937,11 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
@@ -1391,13 +1383,11 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
@@ -1744,13 +1734,11 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
@@ -2109,13 +2097,11 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}

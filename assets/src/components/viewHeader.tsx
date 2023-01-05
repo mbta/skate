@@ -45,9 +45,7 @@ const ViewHeader: ViewHeaderType = ({
           {backlinkTitle(backlinkToView)}
         </button>
       ) : null}
-      <div className="m-view-header__title" role="heading" aria-level={2}>
-        {title}
-      </div>
+      <h2 className="m-view-header__title">{title}</h2>
       <CloseButton closeButtonType="xl_light" onClick={closeView} />
     </div>
   )

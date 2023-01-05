@@ -8,13 +8,11 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
   <div
     className="m-view-header"
   >
-    <div
-      aria-level={2}
+    <h2
       className="m-view-header__title"
-      role="heading"
     >
       Swings
-    </div>
+    </h2>
     <button
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
@@ -176,13 +174,11 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
   <div
     className="m-view-header"
   >
-    <div
-      aria-level={2}
+    <h2
       className="m-view-header__title"
-      role="heading"
     >
       Swings
-    </div>
+    </h2>
     <button
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
@@ -342,13 +338,11 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
   <div
     className="m-view-header"
   >
-    <div
-      aria-level={2}
+    <h2
       className="m-view-header__title"
-      role="heading"
     >
       Swings
-    </div>
+    </h2>
     <button
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
@@ -534,13 +528,11 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
   <div
     className="m-view-header"
   >
-    <div
-      aria-level={2}
+    <h2
       className="m-view-header__title"
-      role="heading"
     >
       Swings
-    </div>
+    </h2>
     <button
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
@@ -653,13 +645,11 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
   <div
     className="m-view-header"
   >
-    <div
-      aria-level={2}
+    <h2
       className="m-view-header__title"
-      role="heading"
     >
       Swings
-    </div>
+    </h2>
     <button
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
@@ -939,13 +929,11 @@ exports[`SwingsView renders loading message 1`] = `
   <div
     className="m-view-header"
   >
-    <div
-      aria-level={2}
+    <h2
       className="m-view-header__title"
-      role="heading"
     >
       Swings
-    </div>
+    </h2>
     <button
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}

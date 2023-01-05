@@ -10,13 +10,11 @@ exports[`LateView renders missing logons and late buses 1`] = `
     <div
       className="m-view-header"
     >
-      <div
-        aria-level={2}
+      <h2
         className="m-view-header__title"
-        role="heading"
       >
         Late View
-      </div>
+      </h2>
       <button
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
