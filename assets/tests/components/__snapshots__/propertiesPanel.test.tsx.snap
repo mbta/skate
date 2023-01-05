@@ -16,6 +16,7 @@ Array [
           className="m-view-header"
         >
           <div
+            aria-level={2}
             className="m-view-header__title"
             role="heading"
           >
@@ -317,6 +318,7 @@ Array [
           className="m-view-header"
         >
           <div
+            aria-level={2}
             className="m-view-header__title"
             role="heading"
           >

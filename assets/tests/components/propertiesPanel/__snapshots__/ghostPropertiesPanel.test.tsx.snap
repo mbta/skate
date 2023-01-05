@@ -11,6 +11,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
       className="m-view-header"
     >
       <div
+        aria-level={2}
         className="m-view-header__title"
         role="heading"
       >
@@ -300,6 +301,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
       className="m-view-header"
     >
       <div
+        aria-level={2}
         className="m-view-header__title"
         role="heading"
       >
@@ -633,6 +635,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
       className="m-view-header"
     >
       <div
+        aria-level={2}
         className="m-view-header__title"
         role="heading"
       >

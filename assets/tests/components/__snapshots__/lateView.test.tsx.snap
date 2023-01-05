@@ -11,6 +11,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
       className="m-view-header"
     >
       <div
+        aria-level={2}
         className="m-view-header__title"
         role="heading"
       >

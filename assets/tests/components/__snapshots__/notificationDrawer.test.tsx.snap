@@ -8,6 +8,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
     className="m-view-header"
   >
     <div
+      aria-level={2}
       className="m-view-header__title"
       role="heading"
     >
@@ -48,6 +49,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
     className="m-view-header"
   >
     <div
+      aria-level={2}
       className="m-view-header__title"
       role="heading"
     >
