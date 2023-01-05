@@ -1,6 +1,7 @@
 import React, {
   ComponentPropsWithoutRef,
   HTMLAttributes,
+  MouseEventHandler,
   ReactNode,
   useContext,
   useId,
@@ -242,16 +243,29 @@ const VehicleStreetViewButton = ({
     {...(vehicle as WorldPositionBearing)}
   />
 )
-//#endregion
+// #endregion
 
-//#region Vehicle Properties Card
+// #region Vehicle Properties Card
+// #region Catching Events Before Leaflet
+const cancelEvent: MouseEventHandler<HTMLDivElement> = (e) => {
+  e.stopPropagation()
+  e.preventDefault()
+}
+const keepUserInputFromLeaflet: ComponentPropsWithoutRef<"div"> = {
+  onMouseDownCapture: cancelEvent,
+  onDoubleClickCapture: cancelEvent,
+  onScrollCapture: cancelEvent,
+  onWheelCapture: cancelEvent,
+}
+// #endregion
+
 const VehiclePropertiesCard = ({
   vehicle,
   onClose,
 }: VehicleProp & {
   onClose: () => void
 }): React.ReactElement => (
-  <div className="m-vehicle-properties-card" title="Vehicle Properties Card">
+  <div {...keepUserInputFromLeaflet} className="m-vehicle-properties-card" title="Vehicle Properties Card">
     <div className="m-vehicle-properties-card__title-bar">
       <CloseButton2
         onClick={onClose}
