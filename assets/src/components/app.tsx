@@ -27,7 +27,7 @@ import Nav from "./nav"
 import RightPanel from "./rightPanel"
 import { mapModeForUser } from "../util/mapMode"
 
-const AppRoutes = () => {
+export const AppRoutes = () => {
   useAppcues()
 
   const [
@@ -64,41 +64,27 @@ const AppRoutes = () => {
                 element={
                   <>
                     <Outlet />
+                    <RightPanel
+                      selectedVehicleOrGhost={selectedVehicleOrGhost}
+                    />
                     {openView === OpenView.Late ? <LateView /> : null}
                   </>
                 }
               >
-                <Route
-                  element={
-                    <>
-                      <Outlet />
-                      <RightPanel
-                        selectedVehicleOrGhost={selectedVehicleOrGhost}
-                      />
-                    </>
-                  }
-                >
-                  <BrowserRoute path="/" element={<LadderPage />} />
-                  <BrowserRoute
-                    path="/shuttle-map"
-                    element={<ShuttleMapPage />}
-                  />
-                  <BrowserRoute path="/settings" element={<SettingsPage />} />
-                  {mapMode.title === "Search" ? (
-                    <BrowserRoute
-                      path={mapMode.path}
-                      element={mapMode.element}
-                    />
-                  ) : null}
-                </Route>
-                <Route>
-                  {mapMode.title === "Map" ? (
-                    <BrowserRoute
-                      path={mapMode.path}
-                      element={mapMode.element}
-                    />
-                  ) : null}
-                </Route>
+                <BrowserRoute path="/" element={<LadderPage />} />
+                <BrowserRoute
+                  path="/shuttle-map"
+                  element={<ShuttleMapPage />}
+                />
+                <BrowserRoute path="/settings" element={<SettingsPage />} />
+                {mapMode.title === "Search" ? (
+                  <BrowserRoute path={mapMode.path} element={mapMode.element} />
+                ) : null}
+              </Route>
+              <Route>
+                {mapMode.title === "Map" ? (
+                  <BrowserRoute path={mapMode.path} element={mapMode.element} />
+                ) : null}
               </Route>
             </Routes>
           </Nav>

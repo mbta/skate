@@ -10,6 +10,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Swings
     </div>
@@ -176,6 +177,7 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Swings
     </div>
@@ -340,6 +342,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Swings
     </div>
@@ -530,6 +533,7 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Swings
     </div>
@@ -647,6 +651,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Swings
     </div>
@@ -931,6 +936,7 @@ exports[`SwingsView renders loading message 1`] = `
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Swings
     </div>

@@ -17,6 +17,7 @@ Array [
         >
           <div
             className="m-view-header__title"
+            role="heading"
           >
             Vehicles
           </div>
@@ -317,6 +318,7 @@ Array [
         >
           <div
             className="m-view-header__title"
+            role="heading"
           >
             Vehicles
           </div>

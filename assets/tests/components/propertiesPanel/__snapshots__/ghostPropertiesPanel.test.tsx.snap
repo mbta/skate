@@ -12,6 +12,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
     >
       <div
         className="m-view-header__title"
+        role="heading"
       >
         Vehicles
       </div>
@@ -300,6 +301,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     >
       <div
         className="m-view-header__title"
+        role="heading"
       >
         Vehicles
       </div>
@@ -632,6 +634,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     >
       <div
         className="m-view-header__title"
+        role="heading"
       >
         Vehicles
       </div>

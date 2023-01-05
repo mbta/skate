@@ -12,6 +12,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
     >
       <div
         className="m-view-header__title"
+        role="heading"
       >
         Late View
       </div>

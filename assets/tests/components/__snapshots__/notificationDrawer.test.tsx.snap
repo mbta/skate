@@ -9,6 +9,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Notifications
     </div>
@@ -48,6 +49,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
   >
     <div
       className="m-view-header__title"
+      role="heading"
     >
       Notifications
     </div>
