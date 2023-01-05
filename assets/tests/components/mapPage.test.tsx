@@ -302,10 +302,11 @@ describe("MapPage", () => {
       tripId === vehicle.tripId ? shapes : null
     )
 
+    const mockDispatch = jest.fn()
     const { container } = render(
       <StateDispatchProvider
         state={stateFactory.build({ searchPageState: activeSearch })}
-        dispatch={jest.fn()}
+        dispatch={mockDispatch}
       >
         <BrowserRouter>
           <MapPage />
@@ -319,6 +320,7 @@ describe("MapPage", () => {
     ).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
+    expect(mockDispatch).toBeCalledTimes(1)
     // Leaflet? something isn't removing this from the DOM as expected....
     // await waitForElementToBeRemoved(document.querySelector(".m-vehicle-icon__label"))
   })
