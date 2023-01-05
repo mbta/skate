@@ -1,7 +1,7 @@
 import Leaflet, { LatLngExpression } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, { useContext } from "react"
-import { CircleMarker, Marker, Polyline, Tooltip } from "react-leaflet"
+import { CircleMarker, Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -20,6 +20,7 @@ import stationIcon from "../../static/images/icon-station.svg"
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 import { LocationType } from "../models/stopData"
 import StopCard from "./stopCard"
+import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
@@ -174,21 +175,43 @@ const stationLeafletIcon = ({ size }: { size: number }): Leaflet.DivIcon => {
   })
 }
 
-const StopTooltip = ({
+/* Returns a popup and a tooltip for the given content.
+For devices that support hover, only the tooltip will be visible.
+On devices that don't support hover, the popup will be visble on-click.
+*/
+const MobileFriendlyTooltip = ({
   children,
   markerRadius,
+  className,
 }: {
   children: JSX.Element | string
   markerRadius: number
-}) => (
-  <Tooltip
-    className="m-vehicle-map__stop-tooltip"
-    direction={"top"}
-    offset={[0, -(markerRadius + 8)]}
-  >
-    {children}
-  </Tooltip>
-)
+  className: string
+}) => {
+  const supportsHover = useDeviceSupportsHover()
+
+  const fullClassName = `m-vehicle-map__mobile-friendly-tooltip ${className}`
+
+  return supportsHover ? (
+    <Tooltip
+      className={fullClassName}
+      direction={"top"}
+      offset={[0, -(markerRadius + 8)]}
+    >
+      {children}
+    </Tooltip>
+  ) : (
+    <Popup
+      autoPan={false}
+      // style popup as tooltip for consistency
+      className={`leaflet-tooltip ${fullClassName} leaflet-tooltip-top`}
+      closeButton={false}
+      offset={[0, -(markerRadius + 8)]}
+    >
+      {children}
+    </Popup>
+  )
+}
 
 export const StopMarker = React.memo(
   ({
@@ -210,7 +233,12 @@ export const StopMarker = React.memo(
         {includeStopCard ? (
           <StopCard stop={stop} direction={direction} />
         ) : (
-          <StopTooltip markerRadius={markerRadius}>{stop.name}</StopTooltip>
+          <MobileFriendlyTooltip
+            className={"m-vehicle-map__stop-tooltip"}
+            markerRadius={markerRadius}
+          >
+            {stop.name}
+          </MobileFriendlyTooltip>
         )}
       </CircleMarker>
     )
@@ -231,9 +259,12 @@ export const StationMarker = React.memo(
         position={[station.lat, station.lon]}
         icon={stationLeafletIcon({ size: iconSizeLength })}
       >
-        <StopTooltip markerRadius={iconSizeLength / 2}>
+        <MobileFriendlyTooltip
+          className={"m-vehicle-map__stop-tooltip"}
+          markerRadius={iconSizeLength / 2}
+        >
           {station.name}
-        </StopTooltip>
+        </MobileFriendlyTooltip>
       </Marker>
     )
   }

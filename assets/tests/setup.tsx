@@ -19,6 +19,11 @@ jest.mock("../src/hooks/useDeviceType", () => ({
   default: jest.fn().mockImplementation(() => "desktop"),
 }))
 
+jest.mock("../src/hooks/useDeviceSupportsHover", () => ({
+  __esModule: true,
+  default: jest.fn().mockReturnValue(true),
+}))
+
 // JSDOM doesn't support part of SVG that's needed for Leaflet to run in tests.
 // https://stackoverflow.com/questions/54382414/fixing-react-leaflet-testing-error-cannot-read-property-layeradd-of-null
 const createElementNSOrig = document.createElementNS

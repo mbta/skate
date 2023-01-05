@@ -18,6 +18,7 @@ import React from "react"
 import { MapContainer } from "react-leaflet"
 import userEvent from "@testing-library/user-event"
 import { LocationType } from "../../src/models/stopData"
+import useDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -91,7 +92,20 @@ describe("StopMarker", () => {
       <StopMarker stop={stop} includeStopCard={false} />
     )
     await userEvent.hover(container.querySelector(".m-vehicle-map__stop")!)
-    expect(screen.getByText(stop.name)).toBeInTheDocument()
+    expect(screen.getByText(stop.name)).toBeVisible()
+  })
+
+  test("Stop name displayed on click when hover not supported", async () => {
+    ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
+
+    const { container } = renderInMap(
+      <StopMarker
+        stop={stopFactory.build({ lat: 42.360718, lon: -71.05891 })}
+        includeStopCard={false}
+      />
+    )
+    await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
+    expect(screen.getByText(stop.name)).toBeVisible()
   })
 
   test("Stop card displayed on click when includeStopCard is true", async () => {
@@ -110,7 +124,17 @@ describe("StationMarker", () => {
     )
     expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
     await userEvent.hover(container.querySelector(".m-station-icon")!)
-    expect(screen.getByText(station.name)).toBeInTheDocument()
+    expect(screen.getByText(station.name)).toBeVisible()
+  })
+
+  test("Station icon with name on click when hover not supported", async () => {
+    ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
+    const { container } = renderInMap(
+      <StationMarker station={station} iconSize={StationIconSize.small} />
+    )
+    expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
+    await userEvent.click(container.querySelector(".m-station-icon")!)
+    expect(screen.getByText(station.name)).toBeVisible()
   })
 })
 
@@ -160,7 +184,14 @@ describe("GarageMarkers", () => {
 
 const renderInMap = (component: JSX.Element, options?: { zoom?: number }) =>
   render(
-    <MapContainer center={[0, 0]} zoom={options?.zoom || 13}>
+    <MapContainer
+      center={[0, 0]}
+      zoom={options?.zoom || 13}
+      maxBounds={[
+        [41.2, -72],
+        [43, -69.8],
+      ]}
+    >
       {component}
     </MapContainer>
   )
