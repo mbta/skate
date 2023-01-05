@@ -25,7 +25,7 @@ interface VehicleProp {
   vehicle: Vehicle
 }
 
-//#region Card Title Bar
+// #region Card Title Bar
 const DataStaleTime = ({
   timestamp,
 }: {
@@ -45,9 +45,9 @@ const DataStaleTime = ({
 const VehicleDataStaleTime = ({ vehicle }: VehicleProp): React.ReactElement => (
   <DataStaleTime timestamp={vehicle.timestamp} />
 )
-//#endregion
+// #endregion
 
-//#region Vehicle Summary
+// #region Vehicle Summary
 
 const VehicleIcon1 = ({
   vehicle,
@@ -129,9 +129,9 @@ const VehicleRouteSummary = ({ vehicle }: VehicleProp): React.ReactElement => (
     <VisualSeparator className="m-vehicle-route-summary__separator" />
   </div>
 )
-//#endregion
+// #endregion
 
-//#region Vehicle Work Info
+// #region Vehicle Work Info
 /* const DataPairTable = (props): React.ReactElement => (
   <>
     <div className="m-key-value-table">
@@ -167,7 +167,6 @@ const TrNameValue = ({
 }
 
 const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
-  // <PropertiesList properties={vehicleProperties(vehicle)}/>
   <>
     <table className="m-vehicle-work-info">
       <tbody className="m-vehicle-work-info__items">
@@ -187,9 +186,9 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
     </table>
   </>
 )
-//#endregion
+// #endregion
 
-//#region Vehicle Location
+// #region Vehicle Location
 const CurrentLocation = ({
   nearestIntersection,
 }: {
@@ -280,4 +279,4 @@ const VehiclePropertiesCard = ({
   </div>
 )
 export default VehiclePropertiesCard
-//#endregion
+// #endregion
