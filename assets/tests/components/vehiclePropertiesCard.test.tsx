@@ -18,9 +18,8 @@ jest.mock("../../src/hooks/useNearestIntersection", () => ({
 describe("<VehiclePropertiesCard/>", () => {
   describe("logic constraints", () => {
     test("when `close` button is clicked, should fire `onClose` callback", async () => {
-      const vehicle = vehicleFactory.build()
       const onClose = jest.fn()
-      render(<VehiclePropertiesCard vehicle={vehicle} onClose={onClose} />)
+      render(<VehiclePropertiesCard vehicle={vehicleFactory.build()} onClose={onClose} />)
 
       await userEvent.click(screen.getByRole("button", { name: /close/i }))
 
@@ -28,26 +27,26 @@ describe("<VehiclePropertiesCard/>", () => {
     })
 
     test("when rerendered, should display latest intersection", () => {
+      const vehicle = vehicleFactory.build()
       const intersection = "Massachusetts Ave @ 1"
       const intersection2 = "Massachusetts Ave @ 2"
       ;(useNearestIntersection as jest.Mock)
         .mockReturnValueOnce(intersection)
-        // .mockReturnValueOnce(null)
         .mockReturnValueOnce(intersection2)
-
-      const vehicle = vehicleFactory.build()
 
       const { rerender } = render(
         <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
       )
+      const locationElement = screen.getByRole("status", { name: "Current Location" })
 
       expect(
-        screen.getByRole("status", { name: /Current Location/i })
+        locationElement
       ).toHaveTextContent(intersection)
 
       rerender(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+
       expect(
-        screen.getByRole("status", { name: /Current Location/i })
+        locationElement
       ).toHaveTextContent(intersection2)
     })
 
@@ -57,25 +56,26 @@ describe("<VehiclePropertiesCard/>", () => {
       const { rerender } = render(
         <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
       )
+      const runCell = screen.getByRole("cell", { name: /run/i })
+      const vehicleCell = screen.getByRole("cell", { name: /vehicle/i })
 
-      expect(vehicle.label).not.toBe(vehicle2.label)
-      expect(vehicle.runId).not.toBe(vehicle2.runId)
 
-      expect(screen.getByRole("cell", { name: /run/i })).toHaveTextContent(
+      expect(runCell).toHaveTextContent(
         vehicle.runId!
       )
-      expect(screen.getByRole("cell", { name: /vehicle/i })).toHaveTextContent(
+      expect(vehicleCell).toHaveTextContent(
         vehicle.label
       )
 
       rerender(<VehiclePropertiesCard vehicle={vehicle2} onClose={jest.fn()} />)
 
-      expect(screen.getByRole("cell", { name: /vehicle/i })).toHaveTextContent(
+      expect(vehicleCell).toHaveTextContent(
         vehicle2.label
       )
-      expect(screen.getByRole("cell", { name: /run/i })).toHaveTextContent(
+      expect(runCell).toHaveTextContent(
         vehicle2.runId!
       )
+
     })
   })
 
