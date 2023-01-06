@@ -33,7 +33,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
-import { TrainVehicle, Vehicle } from "../realtime.d"
+import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, Shape } from "../schedule"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
@@ -55,6 +55,7 @@ export interface Props {
   children?: JSX.Element | JSX.Element[]
 
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
+  selectedVehicleId: VehicleId
   vehicles: Vehicle[]
   // secondaryVehicles are smaller, deemphasized, and don't affect autocentering
   secondaryVehicles?: Vehicle[]
@@ -542,11 +543,6 @@ const Garages = ({ zoomLevel }: { zoomLevel: number }) => (
 )
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const [
-    {
-      searchPageState: { selectedVehicleId },
-    },
-  ] = useContext(StateDispatchContext)
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -619,7 +615,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             key={vehicle.id}
             vehicle={vehicle}
             isPrimary={true}
-            isSelected={vehicle.id === selectedVehicleId}
+            isSelected={props.selectedVehicleId === vehicle.id}
             onSelect={props.onPrimaryVehicleSelect}
           />
         ))}

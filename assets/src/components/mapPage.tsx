@@ -152,6 +152,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           allowStreetView={true}
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
+          selectedVehicleId={selectedVehicleId as VehicleId}
         >
           {vpcEnabled ? (
             <VehiclePropertiesCard
