@@ -47,34 +47,18 @@
 
   justify-content: center;
   align-items: center;
-
-  color: $white;
-  background-color: $color-eggplant-700;
-
-  &:hover {
-    background-color: $color-eggplant-500;
-  }
-
-  &:focus {
-    background-color: $color-eggplant-500;
-    border: 2px solid $color-eggplant-700;
-  }
-
-  &:disabled {
-    background-color: $color-gray-600;
-  }
 }
 
 .m-search-form__property-buttons {
   display: flex;
   flex: 1 0 auto;
   list-style-type: none;
-  margin-top: 0.75rem;
+  margin-top: 1rem;
 }
 
 .m-search-form__property-button {
   flex: 1 0 0;
-  margin-right: 0.3rem;
+  margin-right: 0.75rem;
 
   &:last-child {
     margin-right: 0;
@@ -86,16 +70,11 @@
 }
 
 .m-search-form__property-label {
-  @include button-simple;
-  display: block;
-  padding-left: 0.8125rem;
-  padding-right: 0.8125rem;
-  text-align: center;
-  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .m-search-form__property-input:checked + & {
-    @include button-primary;
-    padding-left: 0.8125rem;
-    padding-right: 0.8125rem;
-  }
+  height: 1.5625rem;
+
+  text-transform: capitalize;
 }

@@ -34,7 +34,7 @@ exports[`SearchForm renders 1`] = `
       </button>
     </div>
     <button
-      className="m-search-form__submit"
+      className="m-search-form__submit button-submit"
       disabled={true}
       onClick={[Function]}
       title="Submit"
@@ -68,7 +68,7 @@ exports[`SearchForm renders 1`] = `
           value="all"
         />
         <label
-          className="m-search-form__property-label"
+          className="m-search-form__property-label button-search-filter"
           htmlFor="property-all"
         >
           all
@@ -87,7 +87,7 @@ exports[`SearchForm renders 1`] = `
           value="run"
         />
         <label
-          className="m-search-form__property-label"
+          className="m-search-form__property-label button-search-filter"
           htmlFor="property-run"
         >
           run
@@ -106,7 +106,7 @@ exports[`SearchForm renders 1`] = `
           value="vehicle"
         />
         <label
-          className="m-search-form__property-label"
+          className="m-search-form__property-label button-search-filter"
           htmlFor="property-vehicle"
         >
           vehicle
@@ -125,7 +125,7 @@ exports[`SearchForm renders 1`] = `
           value="operator"
         />
         <label
-          className="m-search-form__property-label"
+          className="m-search-form__property-label button-search-filter"
           htmlFor="property-operator"
         >
           operator

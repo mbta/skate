@@ -37,7 +37,7 @@ exports[`SearchPage renders the empty state 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -65,7 +65,7 @@ exports[`SearchPage renders the empty state 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -82,7 +82,7 @@ exports[`SearchPage renders the empty state 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -99,7 +99,7 @@ exports[`SearchPage renders the empty state 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -116,7 +116,7 @@ exports[`SearchPage renders the empty state 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -344,7 +344,7 @@ exports[`SearchPage renders vehicle data 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -372,7 +372,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -389,7 +389,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -406,7 +406,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -423,7 +423,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
