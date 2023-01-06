@@ -24,31 +24,18 @@ const buttonTypeClassNames: Record<CloseButtonType, string[]> = {
   xl_green: ["m-close-button--x-large", "m-close-button--green"],
 }
 
-interface Props {
+export interface CloseButtonProps extends React.HTMLAttributes<HTMLElement> {
   onClick: () => void
   closeButtonType: CloseButtonType
 }
 
-const CloseButton: React.FC<Props> = ({ onClick, closeButtonType }) => {
-  const className = [
-    "m-close-button",
-    ...buttonTypeClassNames[closeButtonType],
-  ].join(" ")
-
-  return (
-    <button onClick={onClick} className={className} title="Close">
-      <CloseXIcon />
-    </button>
-  )
-}
-
-export const CloseButton2 = ({
+export const CloseButton = ({
   onClick,
   closeButtonType,
   ...rest
-}: Props & React.HTMLAttributes<HTMLElement>) => (
+}: CloseButtonProps) => (
   <button
-    title="Close"
+    aria-label="Close"
     onClick={onClick}
     className={[
       "m-close-button",

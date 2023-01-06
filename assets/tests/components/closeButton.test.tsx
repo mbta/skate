@@ -10,7 +10,7 @@ describe("CloseButton", () => {
       <CloseButton onClick={onClick} closeButtonType="l_green" />
     )
 
-    const buttonElement = result.getByTitle("Close")
+    const buttonElement = result.getByRole("button", { name: /close/i })
 
     expect(buttonElement.classList).toContain("m-close-button--large")
     expect(buttonElement.classList).toContain("m-close-button--green")
@@ -23,7 +23,7 @@ describe("CloseButton", () => {
       <CloseButton onClick={onClick} closeButtonType="l_green" />
     )
 
-    await user.click(result.getByTitle("Close"))
+    await user.click(result.getByRole("button", { name: /close/i }))
 
     expect(onClick).toHaveBeenCalled()
   })

@@ -125,7 +125,7 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
-    await user.click(result.getByTitle("Close"))
+    await user.click(result.getByRole("button", { name: /close/i }))
 
     expect(mockDispatch).toHaveBeenCalledWith(closeView())
   })

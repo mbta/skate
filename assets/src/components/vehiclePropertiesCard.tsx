@@ -16,7 +16,7 @@ import { currentRouteTab } from "../models/routeTab"
 import { directionName } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime"
-import { CloseButton2 } from "./closeButton"
+import { CloseButton } from "./closeButton"
 import { RouteVariantName2 } from "./routeVariantName"
 import { ScheduleAdherence } from "./scheduleAdherence"
 import StreetViewButton, { WorldPositionBearing } from "./streetViewButton"
@@ -271,7 +271,7 @@ const VehiclePropertiesCard = ({
     title="Vehicle Properties Card"
   >
     <div className="m-vehicle-properties-card__title-bar">
-      <CloseButton2
+      <CloseButton
         onClick={onClose}
         closeButtonType={"l_light"}
         title="Close Vehicle Properties Card"
