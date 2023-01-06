@@ -3,12 +3,12 @@
 exports[`MapPage renders the empty state 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-map-page m-map-page--show-list "
-    title="Search Map Page"
+    aria-label="Search Map Page"
+    class="m-map-page m-map-page--show-list "
   >
     <div
+      aria-label="Map Search Panel"
       class="m-map-page__input-and-results"
-      title="Map Search Panel"
     >
       <div
         class="m-map-page__input"
@@ -334,12 +334,12 @@ exports[`MapPage renders the empty state 1`] = `
 exports[`MapPage renders vehicle data 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-map-page m-map-page--show-list "
-    title="Search Map Page"
+    aria-label="Search Map Page"
+    class="m-map-page m-map-page--show-list "
   >
     <div
+      aria-label="Map Search Panel"
       class="m-map-page__input-and-results"
-      title="Map Search Panel"
     >
       <div
         class="m-map-page__input"

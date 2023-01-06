@@ -170,13 +170,16 @@ describe("MapPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
+    const mapSearchPanel = screen.getByRole("generic", {
+      name: /map search panel/i,
+    })
     await userEvent.click(screen.getByRole("cell", { name: runId }))
 
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
-    expect(screen.getByTitle(/map search panel/i)).not.toBeVisible()
+    expect(mapSearchPanel).not.toBeVisible()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
@@ -208,9 +211,7 @@ describe("MapPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("cell", { name: runId }))
-    expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
-    await userEvent.click(screen.getByTitle("Submit"))
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }))
     expect(
       container.querySelector(".m-vehicle-map__route-shape")
     ).not.toBeInTheDocument()
@@ -264,24 +265,25 @@ describe("MapPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
+    const mapSearchPanel = screen.getByRole("generic", {
+      name: /map search panel/i,
+    })
 
     await userEvent.click(screen.getByRole("button", { name: runId }))
-    expect(
-      screen.getByRole("generic", { name: /vehicle properties card/i })
-    ).toBeVisible()
-    expect(screen.getByTitle(/map search panel/i)).not.toBeVisible()
     const routeShape = container.querySelector(".m-vehicle-map__route-shape")
-    expect(routeShape).toBeInTheDocument()
+    const vehiclePropertiesCard = screen.getByRole("generic", {
+      name: /vehicle properties card/i,
+    })
+
+    expect(mapSearchPanel).not.toBeVisible()
+    expect(routeShape).toBeVisible()
+    expect(vehiclePropertiesCard).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
-    expect(
-      screen.queryByTitle(/vehicle properties card/i)
-    ).not.toBeInTheDocument()
+    expect(vehiclePropertiesCard).not.toBeInTheDocument()
     expect(routeShape).not.toBeInTheDocument()
 
-    expect(
-      screen.getByRole("generic", { name: /map search panel/i })
-    ).toBeVisible()
+    expect(mapSearchPanel).toBeVisible()
   })
 
   test("after search is canceled, should not render search results on map", async () => {

@@ -115,11 +115,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   return (
     <div
       className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
-      title="Search Map Page"
+      aria-label="Search Map Page"
     >
       <div
         className="m-map-page__input-and-results"
-        title="Map Search Panel"
+        aria-label="Map Search Panel"
         {...(vpcEnabled ? { hidden: true } : {})}
       >
         <div className="m-map-page__input">
