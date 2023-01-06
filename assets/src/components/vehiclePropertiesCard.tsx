@@ -38,26 +38,45 @@ const VehicleDataStaleTime = ({ vehicle }: VehicleProp): React.ReactElement => (
 // #endregion
 
 // #region Vehicle Work Info
+enum HideSensitiveInfo {
+  All,
+  Value,
+  None,
+}
+
 // Table Row Name Value Pair Data
 interface TrNameValueProps {
   name: string
   children: ReactNode
   idPrefix?: string
+  sensitivity?: HideSensitiveInfo
 }
+
+const maskClass = "fs-mask"
+const shouldMaskInfo = (value: boolean) => value && maskClass
 
 // Table Row Name Value Pair
 const TrNameValue = ({
   name,
   children: value,
   idPrefix,
+  sensitivity: sensitive = HideSensitiveInfo.None,
 }: TrNameValueProps): React.ReactElement => {
   const id = (idPrefix ?? name) + useId()
   return (
-    <tr>
+    <tr className={shouldMaskInfo(sensitive === HideSensitiveInfo.All) || ""}>
       <th className="kv-key font-s-semi" scope="row" id={id}>
         {name}
       </th>
-      <td className="kv-value font-s-reg" aria-labelledby={id}>
+      <td
+        className={[
+          "kv-value font-s-reg",
+          shouldMaskInfo(sensitive !== HideSensitiveInfo.None),
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        aria-labelledby={id}
+      >
         {value}
       </td>
     </tr>
@@ -70,7 +89,7 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
       <tbody className="m-vehicle-work-info__items">
         <TrNameValue name="run">{vehicle.runId ?? "N/A"}</TrNameValue>
         <TrNameValue name="vehicle">{vehicle.label ?? "N/A"}</TrNameValue>
-        <TrNameValue name="operator">
+        <TrNameValue name="operator" sensitivity={HideSensitiveInfo.All}>
           {[
             vehicle.operatorFirstName,
             vehicle.operatorLastName,
