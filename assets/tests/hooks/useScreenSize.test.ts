@@ -1,6 +1,6 @@
 import { useMediaQueries } from "@react-hook/media-query"
-const useDeviceType = jest.requireActual(
-  "../../src/hooks/useDeviceType"
+const useScreenSize = jest.requireActual(
+  "../../src/hooks/useScreenSize"
 ).default
 
 jest.mock("@react-hook/media-query", () => ({
@@ -8,7 +8,7 @@ jest.mock("@react-hook/media-query", () => ({
   useMediaQueries: jest.fn(() => {}),
 }))
 
-describe("useDeviceType", () => {
+describe("useScreenSize", () => {
   test("returns mobile when media query matches mobile", () => {
     ;(useMediaQueries as jest.Mock).mockImplementationOnce(() => {
       return {
@@ -22,7 +22,7 @@ describe("useDeviceType", () => {
       }
     })
 
-    expect(useDeviceType()).toBe("mobile")
+    expect(useScreenSize()).toBe("mobile")
   })
 
   test("returns mobile landscape / tablet portrair when media query matches", () => {
@@ -38,7 +38,7 @@ describe("useDeviceType", () => {
       }
     })
 
-    expect(useDeviceType()).toBe("mobile_landscape_tablet_portrait")
+    expect(useScreenSize()).toBe("mobile_landscape_tablet_portrait")
   })
 
   test("returns tablet when media query matches tablet", () => {
@@ -54,7 +54,7 @@ describe("useDeviceType", () => {
       }
     })
 
-    expect(useDeviceType()).toBe("tablet")
+    expect(useScreenSize()).toBe("tablet")
   })
 
   test("returns desktop in other cases", () => {
@@ -70,6 +70,6 @@ describe("useDeviceType", () => {
       }
     })
 
-    expect(useDeviceType()).toBe("desktop")
+    expect(useScreenSize()).toBe("desktop")
   })
 })

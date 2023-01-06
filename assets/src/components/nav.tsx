@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { OpenView, toggleMobileMenu } from "../state"
 import appData from "../appData"
-import useDeviceType from "../hooks/useDeviceType"
+import useScreenSize from "../hooks/useScreenSize"
 import LeftNav from "./nav/leftNav"
 import TopNav from "./nav/topNav"
 import MobilePortraitNav from "./nav/mobilePortraitNav"
@@ -15,7 +15,7 @@ interface Props {
 
 const Nav: React.FC<Props> = ({ children }) => {
   const [, dispatch] = useContext(StateDispatchContext)
-  const deviceType = useDeviceType()
+  const deviceType = useScreenSize()
 
   switch (deviceType) {
     case "mobile":

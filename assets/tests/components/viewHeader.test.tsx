@@ -3,9 +3,9 @@ import { render } from "@testing-library/react"
 import ViewHeader from "../../src/components/viewHeader"
 import userEvent from "@testing-library/user-event"
 import { OpenView } from "../../src/state"
-import useDeviceType from "../../src/hooks/useDeviceType"
+import useScreenSize from "../../src/hooks/useScreenSize"
 
-jest.mock("../../src/hooks/useDeviceType", () => ({
+jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,
   default: jest.fn(() => "desktop"),
 }))
@@ -39,7 +39,7 @@ describe("ViewHeader", () => {
   })
 
   test("backlink doesn't render when there's no view to return to", () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(() => "mobile")
+    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()
@@ -57,7 +57,7 @@ describe("ViewHeader", () => {
   })
 
   test("backlink button invokes callback", async () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(() => "mobile")
+    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()
@@ -78,7 +78,7 @@ describe("ViewHeader", () => {
   })
 
   test("backlink button renders for Late View", async () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(() => "mobile")
+    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()
@@ -96,7 +96,7 @@ describe("ViewHeader", () => {
   })
 
   test("backlink button render for notifications drawer", async () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(() => "mobile")
+    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()

@@ -1,6 +1,6 @@
 import React from "react"
 import { ChevronLeftIcon } from "../helpers/icon"
-import useDeviceType from "../hooks/useDeviceType"
+import useScreenSize from "../hooks/useScreenSize"
 import { OpenView } from "../state"
 import CloseButton from "./closeButton"
 
@@ -29,7 +29,7 @@ const ViewHeader: ViewHeaderType = ({
   backlinkToView?: OpenView
   followBacklink?: () => void
 }): JSX.Element => {
-  const deviceType = useDeviceType()
+  const deviceType = useScreenSize()
 
   return (
     <div className="m-view-header">
