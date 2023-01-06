@@ -100,7 +100,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const vpcEnabled = liveVehicle && showVehicleCard
   return (
     <div
-      className={`c-page m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
+      className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
       title="Search Map Page"
     >
       <div
