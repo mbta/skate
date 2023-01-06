@@ -78,20 +78,6 @@
   border: 1px solid $color-gray-300;
   border-radius: 8px;
 }
-
-// #region figma datalist
-// figma layout, needs `gap` set
-.m-datalist-column-flex {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 0;
-  order: 1;
-
-  align-items: flex-start;
-  align-self: stretch;
-}
-
-// #endregion
 // #endregion
 
 // #region Vehicle Nearest Intersection Display
