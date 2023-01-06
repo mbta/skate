@@ -45,6 +45,7 @@ describe("VehicleMarker", () => {
     expect(screen.getByText("101")).toBeInTheDocument()
   })
 })
+
 describe("TrainVehicleMarker", () => {
   test("Includes icon and label", () => {
     const { container } = renderInMap(

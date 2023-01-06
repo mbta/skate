@@ -16,6 +16,7 @@ import {
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
+import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, StructError, unknown } from "superstruct"
 import { LocationType } from "../src/models/stopData"
@@ -455,42 +456,30 @@ describe("fetchShuttleRoutes", () => {
 
 describe("fetchStations", () => {
   test("fetches a list stations", (done) => {
+    const [station1, station2] = stopFactory.buildList(2, {
+      locationType: LocationType.Station,
+    })
     mockFetch(200, {
       data: [
         {
-          id: "station-1",
-          name: "Station 1",
+          id: station1.id,
+          name: station1.name,
           location_type: "station",
-          lat: 42.1,
-          lon: -71.1,
+          lat: station1.lat,
+          lon: station1.lon,
         },
         {
-          id: "station-2",
-          name: "Station 2",
+          id: station2.id,
+          name: station2.name,
           location_type: "station",
-          lat: 42.2,
-          lon: -71.2,
+          lat: station2.lat,
+          lon: station2.lon,
         },
       ],
     })
 
     fetchStations().then((stations) => {
-      expect(stations).toEqual([
-        {
-          id: "station-1",
-          name: "Station 1",
-          locationType: LocationType.Station,
-          lat: 42.1,
-          lon: -71.1,
-        },
-        {
-          id: "station-2",
-          name: "Station 2",
-          locationType: LocationType.Station,
-          lat: 42.2,
-          lon: -71.2,
-        },
-      ])
+      expect(stations).toEqual([station1, station2])
       done()
     })
   })
