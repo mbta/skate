@@ -1,6 +1,337 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MapPage renders the empty state 1`] = `
+exports[`<MapPage /> Snapshot renders the empty state 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="Search Map Page"
+    class="m-map-page m-map-page--show-list "
+  >
+    <div
+      aria-label="Map Search Panel"
+      class="m-map-page__input-and-results"
+    >
+      <div
+        class="m-map-page__input"
+      >
+        <form
+          class="m-search-form"
+        >
+          <div
+            class="m-search-form__row"
+          >
+            <div
+              class="m-search-form__text"
+            >
+              <input
+                class="m-search-form__input"
+                placeholder="Search"
+                type="text"
+                value=""
+              />
+              <button
+                class="m-search-form__clear"
+                title="Clear Search"
+                type="reset"
+              >
+                <span>
+                  <svg />
+                </span>
+              </button>
+            </div>
+            <button
+              class="m-search-form__submit"
+              disabled=""
+              title="Submit"
+              type="submit"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+          </div>
+          <div
+            class="m-search-form__row"
+          >
+            <ul
+              class="m-search-form__property-buttons"
+            >
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  checked=""
+                  class="m-search-form__property-input"
+                  id="property-all"
+                  name="property"
+                  type="radio"
+                  value="all"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-all"
+                >
+                  all
+                </label>
+              </li>
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  class="m-search-form__property-input"
+                  id="property-run"
+                  name="property"
+                  type="radio"
+                  value="run"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-run"
+                >
+                  run
+                </label>
+              </li>
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  class="m-search-form__property-input"
+                  id="property-vehicle"
+                  name="property"
+                  type="radio"
+                  value="vehicle"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-vehicle"
+                >
+                  vehicle
+                </label>
+              </li>
+              <li
+                class="m-search-form__property-button"
+              >
+                <input
+                  class="m-search-form__property-input"
+                  id="property-operator"
+                  name="property"
+                  type="radio"
+                  value="operator"
+                />
+                <label
+                  class="m-search-form__property-label"
+                  for="property-operator"
+                >
+                  operator
+                </label>
+              </li>
+            </ul>
+          </div>
+        </form>
+        <button
+          class="m-map-page__toggle-mobile-display-button"
+        >
+          Show map instead
+        </button>
+      </div>
+      <div
+        class="m-search-display"
+      >
+        <div
+          class="m-recent-searches"
+        >
+          <div
+            class="m-recent-searches__heading"
+          >
+            Recent Searches
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="m-map-page__map"
+    >
+      <div
+        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 18; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="/13/2479/3029.png"
+                  style="width: 256px; height: 256px; left: -4px; top: -239px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+            >
+              
+		
+              <a
+                aria-label="Recenter Map"
+                href="#"
+                role="button"
+                title="Recenter Map"
+              >
+                
+		    
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  
+			
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                  
+		    
+                </svg>
+                
+		
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+          <div
+            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+          >
+            <label
+              for="street-view-toggle-:r1:"
+            >
+              <span>
+                <svg />
+              </span>
+              Street View
+            </label>
+            <div
+              class="form-check form-switch"
+            >
+              <input
+                class="form-check-input"
+                id="street-view-toggle-:r1:"
+                role="switch"
+                type="checkbox"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<MapPage /> Snapshot renders the null state 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
@@ -331,7 +662,7 @@ exports[`MapPage renders the empty state 1`] = `
 </DocumentFragment>
 `;
 
-exports[`MapPage renders vehicle data 1`] = `
+exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
@@ -698,7 +1029,7 @@ exports[`MapPage renders vehicle data 1`] = `
             class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
           >
             <label
-              for="street-view-toggle-:r1:"
+              for="street-view-toggle-:r2:"
             >
               <span>
                 <svg />
@@ -710,7 +1041,7 @@ exports[`MapPage renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r1:"
+                id="street-view-toggle-:r2:"
                 role="switch"
                 type="checkbox"
               />

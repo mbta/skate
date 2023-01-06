@@ -49,50 +49,60 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-describe("MapPage", () => {
-  test("renders the null state", () => {
-    ; (useSearchResults as jest.Mock).mockReturnValue(null)
-    const { asFragment } = render(
-      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
+describe("<MapPage />", () => {
+  describe("Snapshot", () => {
+    test("renders the null state", () => {
+      ;(useSearchResults as jest.Mock).mockReturnValue(null)
+      const { asFragment } = render(
+        <StateDispatchProvider
+          state={stateFactory.build()}
+          dispatch={jest.fn()}
+        >
+          <BrowserRouter>
+            <MapPage />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
 
-    expect(asFragment()).toMatchSnapshot()
+      expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("renders the empty state", () => {
+      ;(useSearchResults as jest.Mock).mockReturnValue([])
+      const { asFragment } = render(
+        <StateDispatchProvider
+          state={stateFactory.build()}
+          dispatch={jest.fn()}
+        >
+          <BrowserRouter>
+            <MapPage />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
+
+      expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("renders vehicle data", () => {
+      const vehicle = vehicleFactory.build()
+      const ghost = ghostFactory.build()
+
+      ;(useSearchResults as jest.Mock).mockReturnValue([vehicle, ghost])
+
+      const { asFragment } = render(
+        <StateDispatchProvider
+          state={stateFactory.build()}
+          dispatch={jest.fn()}
+        >
+          <BrowserRouter>
+            <MapPage />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
+
+      expect(asFragment()).toMatchSnapshot()
+    })
   })
-
-  test("renders the empty state", () => {
-    ;(useSearchResults as jest.Mock).mockReturnValue([])
-    const { asFragment } = render(
-      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    expect(asFragment()).toMatchSnapshot()
-  })
-
-  test("renders vehicle data", () => {
-    const vehicle = vehicleFactory.build()
-    const ghost = ghostFactory.build()
-
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle, ghost])
-
-    const { asFragment } = render(
-      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    expect(asFragment()).toMatchSnapshot()
-  })
-
   test("on mobile, shows the results list initially", () => {
     const { container } = render(
       <BrowserRouter>
