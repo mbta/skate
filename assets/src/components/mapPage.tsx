@@ -1,5 +1,6 @@
+import { Map as LeafletMap } from "leaflet"
 import { Socket } from "phoenix"
-import React, { ReactElement, useContext, useState } from "react"
+import React, { ReactElement, useContext, useEffect, useRef, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
@@ -98,6 +99,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
   const vpcEnabled = liveVehicle && showVehicleCard
+
+  const leafletMap = useRef<LeafletMap | null>(null)
+  useEffect(() => {
+    // Let leaflet know when Page resizes due to vpc state
+    leafletMap.current?.invalidateSize()
+  }, [vpcEnabled])
+
   return (
     <div
       className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
@@ -131,6 +139,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       </div>
       <div className="m-map-page__map">
         <Map
+          reactLeafletRef={leafletMap}
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={selectVehicle}
           shapes={showVehicleCard ? selectedVehicleShapes : undefined}
