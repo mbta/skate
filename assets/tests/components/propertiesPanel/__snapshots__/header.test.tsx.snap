@@ -94,19 +94,19 @@ exports[`Header renders a header 1`] = `
         className="m-properties-panel__inbound-outbound"
       />
       <output
+        aria-label="Route Variant Name"
         className="m-route-variant-name undefined"
-        title="Route Variant Name"
       >
         <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
-          title="Route & Variant"
         >
           39_X
         </output>
          
         <output
+          aria-label="Headsign"
           className="m-route-variant-name__headsign"
-          title="Headsign"
         >
           Forest Hills
         </output>
@@ -347,19 +347,19 @@ exports[`Header renders for a ghost 1`] = `
         className="m-properties-panel__inbound-outbound"
       />
       <output
+        aria-label="Route Variant Name"
         className="m-route-variant-name undefined"
-        title="Route Variant Name"
       >
         <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
-          title="Route & Variant"
         >
           39_X
         </output>
          
         <output
+          aria-label="Headsign"
           className="m-route-variant-name__headsign"
-          title="Headsign"
         >
           headsign
         </output>
@@ -558,19 +558,19 @@ exports[`Header renders for a late vehicle 1`] = `
         className="m-properties-panel__inbound-outbound"
       />
       <output
+        aria-label="Route Variant Name"
         className="m-route-variant-name undefined"
-        title="Route Variant Name"
       >
         <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
-          title="Route & Variant"
         >
           39_X
         </output>
          
         <output
+          aria-label="Headsign"
           className="m-route-variant-name__headsign"
-          title="Headsign"
         >
           Forest Hills
         </output>
@@ -803,8 +803,8 @@ exports[`Header renders for a shuttle 1`] = `
         className="m-properties-panel__inbound-outbound"
       />
       <output
+        aria-label="Route Variant Name"
         className="m-route-variant-name undefined"
-        title="Route Variant Name"
       >
         Shuttle
       </output>
@@ -916,19 +916,19 @@ exports[`Header renders for an early vehicle 1`] = `
         className="m-properties-panel__inbound-outbound"
       />
       <output
+        aria-label="Route Variant Name"
         className="m-route-variant-name undefined"
-        title="Route Variant Name"
       >
         <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
-          title="Route & Variant"
         >
           39_X
         </output>
          
         <output
+          aria-label="Headsign"
           className="m-route-variant-name__headsign"
-          title="Headsign"
         >
           Forest Hills
         </output>
@@ -1161,19 +1161,19 @@ exports[`Header renders for an off-course vehicle 1`] = `
         className="m-properties-panel__inbound-outbound"
       />
       <output
+        aria-label="Route Variant Name"
         className="m-route-variant-name undefined"
-        title="Route Variant Name"
       >
         <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
-          title="Route & Variant"
         >
           39_X
         </output>
          
         <output
+          aria-label="Headsign"
           className="m-route-variant-name__headsign"
-          title="Headsign"
         >
           Forest Hills
         </output>
@@ -1406,19 +1406,19 @@ exports[`Header renders with route data 1`] = `
         Outbound
       </div>
       <output
+        aria-label="Route Variant Name"
         className="m-route-variant-name undefined"
-        title="Route Variant Name"
       >
         <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
-          title="Route & Variant"
         >
           39_X
         </output>
          
         <output
+          aria-label="Headsign"
           className="m-route-variant-name__headsign"
-          title="Headsign"
         >
           Forest Hills
         </output>

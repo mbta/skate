@@ -16,7 +16,7 @@ export const RouteVariantName = ({
   const isShuttle = isVehicle(vehicle) && vehicle.isShuttle
   return (
     <output
-      title="Route Variant Name"
+      aria-label="Route Variant Name"
       className={"m-route-variant-name " + className}
       {...props}
     >
@@ -25,13 +25,16 @@ export const RouteVariantName = ({
       ) : (
         <>
           <output
-            title="Route & Variant"
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
           >
             {`${route?.name || routeId}_${viaVariantFormatted}`}
           </output>
           &nbsp;
-          <output title="Headsign" className="m-route-variant-name__headsign">
+          <output
+            aria-label="Headsign"
+            className="m-route-variant-name__headsign"
+          >
             {headsign}
           </output>
         </>

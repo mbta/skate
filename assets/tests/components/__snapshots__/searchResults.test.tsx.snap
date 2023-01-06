@@ -113,19 +113,19 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
           className="m-search-results__card-route-label"
         >
           <output
+            aria-label="Route Variant Name"
             className="m-route-variant-name undefined"
-            title="Route Variant Name"
           >
             <output
+              aria-label="Route & Variant"
               className="m-route-variant-name__route-id"
-              title="Route & Variant"
             >
               39_X
             </output>
              
             <output
+              aria-label="Headsign"
               className="m-route-variant-name__headsign"
-              title="Headsign"
             >
               Forest Hills
             </output>
@@ -255,19 +255,19 @@ exports[`SearchResults renders a selected result card 1`] = `
           className="m-search-results__card-route-label"
         >
           <output
+            aria-label="Route Variant Name"
             className="m-route-variant-name undefined"
-            title="Route Variant Name"
           >
             <output
+              aria-label="Route & Variant"
               className="m-route-variant-name__route-id"
-              title="Route & Variant"
             >
               39_X
             </output>
              
             <output
+              aria-label="Headsign"
               className="m-route-variant-name__headsign"
-              title="Headsign"
             >
               Forest Hills
             </output>
@@ -421,19 +421,19 @@ exports[`SearchResults shows the new badge for vehicle that have logged in withi
           className="m-search-results__card-route-label"
         >
           <output
+            aria-label="Route Variant Name"
             className="m-route-variant-name undefined"
-            title="Route Variant Name"
           >
             <output
+              aria-label="Route & Variant"
               className="m-route-variant-name__route-id"
-              title="Route & Variant"
             >
               39_X
             </output>
              
             <output
+              aria-label="Headsign"
               className="m-route-variant-name__headsign"
-              title="Headsign"
             >
               Forest Hills
             </output>

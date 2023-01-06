@@ -97,19 +97,19 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           className="m-properties-panel__inbound-outbound"
         />
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             Forest Hills
           </output>
@@ -462,19 +462,19 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           className="m-properties-panel__inbound-outbound"
         />
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             Forest Hills
           </output>
@@ -827,8 +827,8 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
           className="m-properties-panel__inbound-outbound"
         />
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           Shuttle
         </output>
@@ -1060,19 +1060,19 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           className="m-properties-panel__inbound-outbound"
         />
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             Forest Hills
           </output>
@@ -1520,19 +1520,19 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           className="m-properties-panel__inbound-outbound"
         />
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             Forest Hills
           </output>
@@ -1885,19 +1885,19 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           className="m-properties-panel__inbound-outbound"
         />
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             Forest Hills
           </output>
@@ -2264,19 +2264,19 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           Outbound
         </div>
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             Forest Hills
           </output>

@@ -107,19 +107,19 @@ exports[`GhostPropertiesPanel renders 1`] = `
           Outbound
         </div>
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             headsign
           </output>
@@ -407,19 +407,19 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
           className="m-properties-panel__inbound-outbound"
         />
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             headsign
           </output>
@@ -755,19 +755,19 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
           Outbound
         </div>
         <output
+          aria-label="Route Variant Name"
           className="m-route-variant-name undefined"
-          title="Route Variant Name"
         >
           <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
-            title="Route & Variant"
           >
             39_X
           </output>
            
           <output
+            aria-label="Headsign"
             className="m-route-variant-name__headsign"
-            title="Headsign"
           >
             headsign
           </output>
