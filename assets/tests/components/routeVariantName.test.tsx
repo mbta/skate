@@ -51,7 +51,9 @@ describe("RouteVariantName", () => {
 
     render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(screen.getByText("Shuttle")).toBeInTheDocument()
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent(/shuttle/i)
   })
 
   test("uses route name if available", () => {
