@@ -33,8 +33,12 @@ export const allTrainVehicles = (
 
 const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
-  const { selectedShuttleRouteIds, selectedShuttleRunIds, mobileMenuIsOpen } =
-    state
+  const {
+    selectedVehicleOrGhost,
+    selectedShuttleRouteIds,
+    selectedShuttleRunIds,
+    mobileMenuIsOpen,
+  } = state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
   const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
@@ -60,6 +64,7 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
 
       <div className="m-shuttle-map__map">
         <Map
+          selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={selectedShuttles}
           shapes={shapes}
           trainVehicles={trainVehicles}
