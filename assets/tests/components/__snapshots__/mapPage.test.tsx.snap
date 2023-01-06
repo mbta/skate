@@ -39,7 +39,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -67,7 +67,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -84,7 +84,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -101,7 +101,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -118,7 +118,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -370,7 +370,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -398,7 +398,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -415,7 +415,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -432,7 +432,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -449,7 +449,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -701,7 +701,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -729,7 +729,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -746,7 +746,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -763,7 +763,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -780,7 +780,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
