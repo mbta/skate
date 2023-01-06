@@ -33,7 +33,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
-import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
+import { TrainVehicle, Vehicle } from "../realtime.d"
 import { DirectionId, Shape } from "../schedule"
 import { UserSettings } from "../userSettings"
 import { equalByElements } from "../helpers/array"
@@ -117,13 +117,13 @@ const makeLabelIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
   settings: UserSettings,
-  selectedVehicleId?: VehicleId
+  isSelected: boolean
 ): Leaflet.DivIcon => {
   const labelString = vehicleLabelString(vehicle, settings)
   const labelBackgroundHeight = isPrimary ? 16 : 12
   const labelBackgroundWidth =
     labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40
-  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+  const selectedClass = isSelected ? "selected" : null
   return Leaflet.divIcon({
     className: className([
       "m-vehicle-map__label",
@@ -148,27 +148,29 @@ const Vehicle = ({
   vehicle,
   isPrimary,
   onSelect,
+  isSelected = false,
 }: {
   vehicle: Vehicle
   isPrimary: boolean
+  isSelected?: boolean
   onSelect?: (vehicle: Vehicle) => void
 }) => {
-  const [appState] = useContext(StateDispatchContext)
+  const [{ userSettings }] = useContext(StateDispatchContext)
   const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
   const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
     vehicle,
     isPrimary,
-    appState.userSettings,
-    appState.searchPageState?.selectedVehicleId === vehicle.id
+    userSettings,
+    isSelected
   )
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
     isPrimary,
-    appState.userSettings,
-    appState.searchPageState?.selectedVehicleId || undefined
+    userSettings,
+    isSelected
   )
-  const zIndexOffset = isPrimary ? 2000 : 0
+  const zIndexOffset = (isPrimary ? 2000 : 0) + (isSelected ? 100 : 0)
   return (
     <>
       <Marker
@@ -537,6 +539,11 @@ const Garages = ({ zoomLevel }: { zoomLevel: number }) => (
 )
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
+  const [
+    {
+      searchPageState: { selectedVehicleId },
+    },
+  ] = useContext(StateDispatchContext)
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -609,6 +616,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             key={vehicle.id}
             vehicle={vehicle}
             isPrimary={true}
+            isSelected={vehicle.id === selectedVehicleId}
             onSelect={props.onPrimaryVehicleSelect}
           />
         ))}
