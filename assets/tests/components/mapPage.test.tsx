@@ -119,7 +119,7 @@ describe("MapPage", () => {
     await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
     await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
 
-    expect(container.innerHTML).toContain("m-station-icon")
+    expect(container.querySelector(".m-station-icon")).toBeVisible()
   })
 
   test("on mobile, shows the results list initially", () => {
