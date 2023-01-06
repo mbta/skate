@@ -140,11 +140,11 @@ describe("<VehiclePropertiesCard/>", () => {
           vehicle.label
         )
         // Operator | Operator First, Last, #BadgeID
-        expect(
-          screen.getByRole("cell", { name: /operator/ })
-        ).toHaveTextContent(
+        const operator = screen.getByRole("cell", { name: /operator/ })
+        expect(operator).toHaveTextContent(
           `${operatorFirstName} ${operatorLastName} #${operatorId}`
         )
+        expect(operator).toHaveClass("fs-mask")
 
         // - Vehicle Location Information
         expect(
