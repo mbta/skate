@@ -52,8 +52,11 @@
   .m-route-variant-name {
     align-self: start;
 
-    line-height: 1.25;
-    max-height: calc(1.25em * 2);
+    --line-height: 1.25;
+    line-height: var(--line-height);
+    max-height: calc(var(--line-height) * 2em);
+    height: 100%;
+    width: 100%;
 
     text-overflow: ellipsis; // doesn't work on multiline text
     overflow: hidden;
@@ -72,5 +75,4 @@
   }
 }
 // #endregion
-
 // #endregion
