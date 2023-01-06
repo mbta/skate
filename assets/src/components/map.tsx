@@ -55,7 +55,7 @@ export interface Props {
   children?: JSX.Element | JSX.Element[]
 
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
-  selectedVehicleId: VehicleId
+  selectedVehicleId?: VehicleId
   vehicles: Vehicle[]
   // secondaryVehicles are smaller, deemphasized, and don't affect autocentering
   secondaryVehicles?: Vehicle[]
