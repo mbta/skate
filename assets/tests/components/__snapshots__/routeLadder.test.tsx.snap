@@ -9,16 +9,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -59,16 +62,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -467,16 +473,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -770,6 +779,7 @@ Array [
           className="m-incoming-box__vehicle-icon"
         >
           <svg
+            role="img"
             style={
               Object {
                 "height": 15.2,
@@ -778,6 +788,9 @@ Array [
             }
             viewBox="-8.36 -7.6 16.72 15.2"
           >
+            <title>
+              Vehicle Status Icon
+            </title>
             <g
               className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
             >
@@ -810,16 +823,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -1072,16 +1088,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -1244,16 +1263,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -1651,16 +1673,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -1993,16 +2018,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -2474,16 +2502,19 @@ Array [
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -2688,6 +2719,7 @@ Array [
           className="m-incoming-box__vehicle-icon"
         >
           <svg
+            role="img"
             style={
               Object {
                 "height": 15.2,
@@ -2696,6 +2728,9 @@ Array [
             }
             viewBox="-8.36 -7.6 16.72 15.2"
           >
+            <title>
+              Vehicle Status Icon
+            </title>
             <g
               className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
             >
@@ -2777,6 +2812,7 @@ Array [
           className="m-incoming-box__vehicle-icon"
         >
           <svg
+            role="img"
             style={
               Object {
                 "height": 15.2,
@@ -2785,6 +2821,9 @@ Array [
             }
             viewBox="-8.36 -7.6 16.72 15.2"
           >
+            <title>
+              Vehicle Status Icon
+            </title>
             <g
               className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
             >

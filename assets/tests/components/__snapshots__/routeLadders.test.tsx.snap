@@ -13,16 +13,19 @@ exports[`RouteLadders renders a route ladder 1`] = `
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -180,16 +183,19 @@ exports[`RouteLadders renders a route ladder 1`] = `
       className="m-route-ladder__close-button-container"
     >
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--large m-close-button--darker"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>

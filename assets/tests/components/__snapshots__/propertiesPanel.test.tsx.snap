@@ -21,16 +21,19 @@ Array [
             Vehicles
           </div>
           <button
+            aria-label="Close"
             className="m-close-button m-close-button--x-large m-close-button--light"
             onClick={[Function]}
-            title="Close"
           >
             <span
+              aria-hidden={true}
+              aria-label=""
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "<svg/>",
                 }
               }
+              role="img"
             />
           </button>
         </div>
@@ -41,6 +44,7 @@ Array [
             className="m-properties-panel__label"
           >
             <svg
+              role="img"
               style={
                 Object {
                   "height": 64,
@@ -49,6 +53,9 @@ Array [
               }
               viewBox="-32 -20 64 64"
             >
+              <title>
+                Vehicle Status Icon
+              </title>
               <g
                 className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
               >
@@ -104,17 +111,24 @@ Array [
             >
               Outbound
             </div>
-            <div
-              className="m-route-variant-name"
-              data-testid="variant-name"
+            <output
+              className="m-route-variant-name undefined"
+              title="Route Variant Name"
             >
-              <span
+              <output
                 className="m-route-variant-name__route-id"
+                title="Route & Variant"
               >
                 39_X
-              </span>
-               headsign
-            </div>
+              </output>
+               
+              <output
+                className="m-route-variant-name__headsign"
+                title="Headsign"
+              >
+                headsign
+              </output>
+            </output>
           </div>
           <div
             className="m-properties-panel__ping-container"
@@ -321,16 +335,19 @@ Array [
             Vehicles
           </div>
           <button
+            aria-label="Close"
             className="m-close-button m-close-button--x-large m-close-button--light"
             onClick={[Function]}
-            title="Close"
           >
             <span
+              aria-hidden={true}
+              aria-label=""
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "<svg/>",
                 }
               }
+              role="img"
             />
           </button>
         </div>
@@ -341,6 +358,7 @@ Array [
             className="m-properties-panel__label"
           >
             <svg
+              role="img"
               style={
                 Object {
                   "height": 64,
@@ -349,6 +367,9 @@ Array [
               }
               viewBox="-32 -20 64 64"
             >
+              <title>
+                Vehicle Status Icon
+              </title>
               <g
                 className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
               >
@@ -396,17 +417,24 @@ Array [
             >
               Outbound
             </div>
-            <div
-              className="m-route-variant-name"
-              data-testid="variant-name"
+            <output
+              className="m-route-variant-name undefined"
+              title="Route Variant Name"
             >
-              <span
+              <output
                 className="m-route-variant-name__route-id"
+                title="Route & Variant"
               >
                 39_X
-              </span>
-               Forest Hills
-            </div>
+              </output>
+               
+              <output
+                className="m-route-variant-name__headsign"
+                title="Headsign"
+              >
+                Forest Hills
+              </output>
+            </output>
             <div
               className="m-properties-panel__schedule-adherence on-time early-red"
             >

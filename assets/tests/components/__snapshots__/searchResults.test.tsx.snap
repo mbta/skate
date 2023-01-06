@@ -112,17 +112,24 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
         <div
           className="m-search-results__card-route-label"
         >
-          <div
-            className="m-route-variant-name"
-            data-testid="variant-name"
+          <output
+            className="m-route-variant-name undefined"
+            title="Route Variant Name"
           >
-            <span
+            <output
               className="m-route-variant-name__route-id"
+              title="Route & Variant"
             >
               39_X
-            </span>
-             Forest Hills
-          </div>
+            </output>
+             
+            <output
+              className="m-route-variant-name__headsign"
+              title="Headsign"
+            >
+              Forest Hills
+            </output>
+          </output>
         </div>
       </button>
     </li>
@@ -247,17 +254,24 @@ exports[`SearchResults renders a selected result card 1`] = `
         <div
           className="m-search-results__card-route-label"
         >
-          <div
-            className="m-route-variant-name"
-            data-testid="variant-name"
+          <output
+            className="m-route-variant-name undefined"
+            title="Route Variant Name"
           >
-            <span
+            <output
               className="m-route-variant-name__route-id"
+              title="Route & Variant"
             >
               39_X
-            </span>
-             Forest Hills
-          </div>
+            </output>
+             
+            <output
+              className="m-route-variant-name__headsign"
+              title="Headsign"
+            >
+              Forest Hills
+            </output>
+          </output>
         </div>
       </button>
     </li>
@@ -406,17 +420,24 @@ exports[`SearchResults shows the new badge for vehicle that have logged in withi
         <div
           className="m-search-results__card-route-label"
         >
-          <div
-            className="m-route-variant-name"
-            data-testid="variant-name"
+          <output
+            className="m-route-variant-name undefined"
+            title="Route Variant Name"
           >
-            <span
+            <output
               className="m-route-variant-name__route-id"
+              title="Route & Variant"
             >
               39_X
-            </span>
-             Forest Hills
-          </div>
+            </output>
+             
+            <output
+              className="m-route-variant-name__headsign"
+              title="Headsign"
+            >
+              Forest Hills
+            </output>
+          </output>
         </div>
       </button>
     </li>

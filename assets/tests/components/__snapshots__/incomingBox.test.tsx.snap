@@ -294,6 +294,7 @@ exports[`IncomingBox renders a ghost 1`] = `
         className="m-incoming-box__vehicle-icon"
       >
         <svg
+          role="img"
           style={
             Object {
               "height": 15.2,
@@ -302,6 +303,9 @@ exports[`IncomingBox renders a ghost 1`] = `
           }
           viewBox="-8.36 -7.6 16.72 15.2"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
             className="m-vehicle-icon m-vehicle-icon--small ghost early-red"
           >
@@ -430,6 +434,7 @@ exports[`IncomingBox renders a vehicle 1`] = `
         className="m-incoming-box__vehicle-icon"
       >
         <svg
+          role="img"
           style={
             Object {
               "height": 15.2,
@@ -438,6 +443,9 @@ exports[`IncomingBox renders a vehicle 1`] = `
           }
           viewBox="-8.36 -7.6 16.72 15.2"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
             className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
@@ -527,6 +535,7 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
         className="m-incoming-box__vehicle-icon"
       >
         <svg
+          role="img"
           style={
             Object {
               "height": 15.2,
@@ -535,6 +544,9 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
           }
           viewBox="-8.36 -7.6 16.72 15.2"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
             className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
