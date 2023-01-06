@@ -398,7 +398,6 @@ describe("MapPage", () => {
         ;(useSearchResults as jest.Mock).mockReturnValue(
           vehicleFactory.buildList(1, { runId: runId })
         )
-        // const searchResults: VehicleOrGhost[] = vehicleFactory.buildList(1, { runId: runId })
 
         render(
           <StateDispatchProvider
