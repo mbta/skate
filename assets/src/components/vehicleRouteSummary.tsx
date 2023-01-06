@@ -1,18 +1,15 @@
-import React, {
-  ComponentPropsWithoutRef,
-  useContext
-} from "react";
-import { useRoute } from "../contexts/routesContext";
-import { StateDispatchContext } from "../contexts/stateDispatchContext";
-import vehicleLabel from "../helpers/vehicleLabel";
-import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection";
-import { currentRouteTab } from "../models/routeTab";
-import { directionName, isVehicle } from "../models/vehicle";
-import { drawnStatus } from "../models/vehicleStatus";
-import { VehicleOrGhost } from "../realtime";
-import { RouteVariantName } from "./routeVariantName";
-import { ScheduleAdherence } from "./scheduleAdherence";
-import { Size, VehicleIcon, vehicleOrientation } from "./vehicleIcon";
+import React, { ComponentPropsWithoutRef, useContext } from "react"
+import { useRoute } from "../contexts/routesContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import vehicleLabel from "../helpers/vehicleLabel"
+import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
+import { currentRouteTab } from "../models/routeTab"
+import { directionName, isVehicle } from "../models/vehicle"
+import { drawnStatus } from "../models/vehicleStatus"
+import { VehicleOrGhost } from "../realtime"
+import { RouteVariantName } from "./routeVariantName"
+import { ScheduleAdherence } from "./scheduleAdherence"
+import { Size, VehicleIcon, vehicleOrientation } from "./vehicleIcon"
 // import { VehicleProp } from "./vehiclePropertiesCard";
 interface VehicleOrGhostProp {
   vehicle: VehicleOrGhost
@@ -21,13 +18,15 @@ interface VehicleOrGhostProp {
 // #endregion
 // #region Vehicle Summary
 const VehicleIcon1 = ({
-  vehicle, className,
-}: VehicleOrGhostProp & ComponentPropsWithoutRef<"div">): React.ReactElement => {
-  const [{ routeTabs, userSettings }] = useContext(StateDispatchContext);
-  const currentTab = currentRouteTab(routeTabs);
+  vehicle,
+  className,
+}: VehicleOrGhostProp &
+  ComponentPropsWithoutRef<"div">): React.ReactElement => {
+  const [{ routeTabs, userSettings }] = useContext(StateDispatchContext)
+  const currentTab = currentRouteTab(routeTabs)
   const ladderDirections = currentTab
     ? currentTab.ladderDirections
-    : emptyLadderDirectionsByRouteId;
+    : emptyLadderDirectionsByRouteId
 
   return (
     <div className={className}>
@@ -37,15 +36,19 @@ const VehicleIcon1 = ({
         label={vehicleLabel(vehicle, userSettings)}
         variant={vehicle.viaVariant}
         status={drawnStatus(vehicle)}
-        userSettings={userSettings} />
+        userSettings={userSettings}
+      />
     </div>
-  );
-};
+  )
+}
 
 export const VehicleRouteDirection = ({
-  vehicle, className, ...props
-}: VehicleOrGhostProp & ComponentPropsWithoutRef<'output'>): React.ReactElement => {
-  const route = useRoute(vehicle.routeId);
+  vehicle,
+  className,
+  ...props
+}: VehicleOrGhostProp &
+  ComponentPropsWithoutRef<"output">): React.ReactElement => {
+  const route = useRoute(vehicle.routeId)
   return (
     <output
       aria-label="Route Direction"
@@ -54,8 +57,8 @@ export const VehicleRouteDirection = ({
     >
       {directionName(vehicle, route)}
     </output>
-  );
-};
+  )
+}
 
 const VisualSeparator = ({
   className,
@@ -66,28 +69,37 @@ const VisualSeparator = ({
     className={className ?? "m-visual-separator"}
     aria-hidden={true}
     role="img presentation"
-    aria-label="presentation separator" />
-);
+    aria-label="presentation separator"
+  />
+)
 
-export const VehicleRouteSummary = ({ vehicle }: VehicleOrGhostProp): React.ReactElement => (
+export const VehicleRouteSummary = ({
+  vehicle,
+}: VehicleOrGhostProp): React.ReactElement => (
   <div className="m-vehicle-route-summary">
     <VehicleRouteDirection
       vehicle={vehicle}
-      className="m-vehicle-route-summary__direction label font-xs-reg" />
+      className="m-vehicle-route-summary__direction label font-xs-reg"
+    />
 
     <RouteVariantName
       vehicle={vehicle}
-      className="m-vehicle-route-summary__route-variant headsign font-m-semi" />
+      className="m-vehicle-route-summary__route-variant headsign font-m-semi"
+    />
 
-    {isVehicle(vehicle) && <ScheduleAdherence
-      vehicle={vehicle}
-      title="Vehicle Schedule Adherence"
-      className="m-vehicle-route-summary__adherence label font-xs-reg" />}
+    {isVehicle(vehicle) && (
+      <ScheduleAdherence
+        vehicle={vehicle}
+        title="Vehicle Schedule Adherence"
+        className="m-vehicle-route-summary__adherence label font-xs-reg"
+      />
+    )}
 
     <VehicleIcon1
       vehicle={vehicle}
-      className="m-vehicle-route-summary__icon" /* vehicle-label font-xl" */ />
+      className="m-vehicle-route-summary__icon" /* vehicle-label font-xl" */
+    />
 
     <VisualSeparator className="m-vehicle-route-summary__separator" />
   </div>
-);
+)

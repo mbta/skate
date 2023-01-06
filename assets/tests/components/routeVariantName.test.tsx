@@ -2,9 +2,7 @@ import React from "react"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import routeFactory from "../factories/route"
-import {
-  RouteVariantName,
-} from "../../src/components/routeVariantName"
+import { RouteVariantName } from "../../src/components/routeVariantName"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Route } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"

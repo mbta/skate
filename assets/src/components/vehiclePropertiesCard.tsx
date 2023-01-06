@@ -100,10 +100,7 @@ const CurrentLocation = ({
       >
         Current Location
       </label>
-      <output
-        className="m-current-location__value label font-s-semi"
-        id={id}
-      >
+      <output className="m-current-location__value label font-s-semi" id={id}>
         {nearestIntersection ?? "Exact location cannot be determined"}
       </output>
     </>
