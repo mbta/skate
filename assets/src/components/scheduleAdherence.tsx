@@ -76,7 +76,7 @@ export const ScheduleAdherence = ({
     className,
   ])
   return (
-    <output title={title ?? "Schedule Adherence"} className={classes}>
+    <output aria-label={title ?? "Schedule Adherence"} className={classes}>
       <ScheduleAdherenceStatusIcon />
       <ScheduleAdherenceDescription
         vehicle={vehicle}

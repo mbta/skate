@@ -104,33 +104,6 @@ export const VehicleIcon = React.memo(
     const { left, top, width, height } = viewBox(props)
     return (
       <svg
-        style={{ width, height }}
-        viewBox={`${left} ${top} ${width} ${height}`}
-      >
-        <VehicleIconSvgNode {...props} />
-      </svg>
-    )
-  }
-)
-
-export const VehicleIcon2 = React.memo(
-  (props: Props): ReactElement<HTMLElement> => {
-    if (
-      props.status === "ghost" &&
-      (props.orientation === Orientation.Left ||
-        props.orientation === Orientation.Right)
-    ) {
-      props = {
-        ...props,
-        // ghosts can't be drawn sideways
-        orientation:
-          props.status === "ghost" ? Orientation.Up : props.orientation,
-      }
-    }
-
-    const { left, top, width, height } = viewBox(props)
-    return (
-      <svg
         role="img"
         style={{ width, height }}
         viewBox={`${left} ${top} ${width} ${height}`}
