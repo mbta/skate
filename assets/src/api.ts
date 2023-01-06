@@ -20,7 +20,6 @@ import { RouteTab } from "./models/routeTab"
 import { array, assert, Struct } from "superstruct"
 import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
 import { StopData, stopsFromData } from "./models/stopData"
-import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
 
 export interface RouteData {
   id: string
