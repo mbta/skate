@@ -10,13 +10,7 @@ describe("clarityIdentify", () => {
   })
 
   test("doesn't attempt to call clarity function when not present", () => {
-    const clarity = undefined
-
-    try {
-      clarityIdentify(clarity, "username")
-    } catch {
-      fail()
-    }
+    expect(() => clarityIdentify(undefined, "username")).not.toThrowError()
   })
 
   test("does nothing when username not present", () => {

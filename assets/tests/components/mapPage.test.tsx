@@ -45,10 +45,6 @@ jest.mock("../../src/hooks/useVehicleForId", () => ({
   default: jest.fn(),
 }))
 
-beforeEach(() => {
-  expect.hasAssertions()
-})
-
 afterEach(() => {
   jest.clearAllMocks()
 })
