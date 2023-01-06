@@ -17,7 +17,7 @@ interface VehicleOrGhostProp {
 
 // #endregion
 // #region Vehicle Summary
-const VehicleIcon1 = ({
+const VehicleStatusIcon = ({
   vehicle,
   className,
 }: VehicleOrGhostProp &
@@ -95,7 +95,7 @@ export const VehicleRouteSummary = ({
       />
     )}
 
-    <VehicleIcon1
+    <VehicleStatusIcon
       vehicle={vehicle}
       className="m-vehicle-route-summary__icon" /* vehicle-label font-xl" */
     />
