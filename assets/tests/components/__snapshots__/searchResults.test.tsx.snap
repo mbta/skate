@@ -134,11 +134,6 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       </button>
     </li>
   </ul>
-  <p
-    className="m-search-results__note"
-  >
-    Please note that at this time search is limited to active vehicles and logged-in personnel.
-  </p>
 </div>
 `;
 
@@ -276,11 +271,6 @@ exports[`SearchResults renders a selected result card 1`] = `
       </button>
     </li>
   </ul>
-  <p
-    className="m-search-results__note"
-  >
-    Please note that at this time search is limited to active vehicles and logged-in personnel.
-  </p>
 </div>
 `;
 
@@ -301,9 +291,7 @@ exports[`SearchResults renders no results 1`] = `
       test
       ”. Please try again using numbers or last names only.
     </p>
-    <p
-      className="m-search-results__note"
-    >
+    <p>
       Please note that at this time search is limited to active vehicles and logged-in personnel.
     </p>
     <button
@@ -442,10 +430,5 @@ exports[`SearchResults shows the new badge for vehicle that have logged in withi
       </button>
     </li>
   </ul>
-  <p
-    className="m-search-results__note"
-  >
-    Please note that at this time search is limited to active vehicles and logged-in personnel.
-  </p>
 </div>
 `;
