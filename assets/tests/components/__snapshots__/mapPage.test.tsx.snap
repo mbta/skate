@@ -145,6 +145,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>
@@ -477,6 +478,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>
@@ -809,6 +811,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>

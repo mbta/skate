@@ -42,6 +42,7 @@
 .m-search-display {
   flex: 1 1 auto;
   overflow-y: scroll;
+  padding-top: 0.625rem;
 }
 
 @media screen and (max-width: $mobile-max-width) {
