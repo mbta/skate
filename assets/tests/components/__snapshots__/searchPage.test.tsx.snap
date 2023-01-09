@@ -142,6 +142,7 @@ exports[`SearchPage renders the empty state 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>
@@ -449,6 +450,7 @@ exports[`SearchPage renders vehicle data 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>

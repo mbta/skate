@@ -1,15 +1,27 @@
 .m-recent-searches {
-  background-color: $color-bg-base;
   flex: 1 1 auto;
   width: 100%;
+
+  ul {
+    margin-top: 0.875rem;
+    margin-bottom: 0;
+
+    li:not(:last-child) {
+      margin-bottom: 0.75rem;
+    }
+  }
 }
 
 .m-recent-searches__heading {
-  @include font-label;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  color: var(--font-color-on-light-800);
 }
 
 .m-recent-searches__button {
-  @include button-text;
-  display: block;
-  margin-top: 1rem;
+  color: $color-eggplant-700;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semi);
+  padding: 0;
+  text-decoration: none;
 }
