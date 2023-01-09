@@ -133,6 +133,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
           Show map instead
         </button>
       </div>
+      <hr />
       <div
         class="m-search-display"
       >
@@ -464,6 +465,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
           Show map instead
         </button>
       </div>
+      <hr />
       <div
         class="m-search-display"
       >
@@ -795,6 +797,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           Show map instead
         </button>
       </div>
+      <hr />
       <div
         class="m-search-display"
       >

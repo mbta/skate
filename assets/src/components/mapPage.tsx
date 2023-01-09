@@ -132,6 +132,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
 
+        <hr />
+
         <div className="m-search-display">
           {vehicles !== null &&
           thereIsAnActiveSearch(vehicles, searchPageState) ? (
