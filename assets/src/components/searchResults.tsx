@@ -13,13 +13,6 @@ interface Props {
   selectedVehicleId: string | null
 }
 
-const SearchResultsNote = () => (
-  <p className="m-search-results__note">
-    Please note that at this time search is limited to active vehicles and
-    logged-in personnel.
-  </p>
-)
-
 const NewBadge = () => (
   <div className="m-search-results__card-new-badge">
     <span className="m-search-results__card-new-badge-label">New</span>
@@ -120,21 +113,18 @@ const ResultsList = ({
   onClick: (vehicle: VehicleOrGhost) => void
   selectedVehicleId: string | null
 }) => (
-  <>
-    <ul className="m-search-results__list">
-      {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
-        <SearchResultCard
-          vehicleOrGhost={vehicleOrGhost}
-          onClick={() => onClick(vehicleOrGhost)}
-          isSelected={
-            selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
-          }
-          key={`search-result-card-${vehicleOrGhost.id}`}
-        />
-      ))}
-    </ul>
-    <SearchResultsNote />
-  </>
+  <ul className="m-search-results__list">
+    {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
+      <SearchResultCard
+        vehicleOrGhost={vehicleOrGhost}
+        onClick={() => onClick(vehicleOrGhost)}
+        isSelected={
+          selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
+        }
+        key={`search-result-card-${vehicleOrGhost.id}`}
+      />
+    ))}
+  </ul>
 )
 
 const NoResults = () => {
@@ -154,7 +144,10 @@ const NoResults = () => {
         again using numbers or last names only.
       </p>
 
-      <SearchResultsNote />
+      <p>
+        Please note that at this time search is limited to active vehicles and
+        logged-in personnel.
+      </p>
 
       <button
         className="m-search-results__clear-search-button"
