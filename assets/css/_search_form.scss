@@ -31,11 +31,17 @@
 }
 
 .m-search-form__clear {
-  @include button-transparent;
   @include button-icon(0.875rem);
   right: 0.75rem;
   position: absolute;
   top: 0.75rem;
+
+  color: $color-gray-600;
+
+  &:hover,
+  &:focus-within {
+    color: $color-eggplant-500;
+  }
 }
 
 .m-search-form__submit {
