@@ -1,5 +1,12 @@
+import { Map as LeafletMap } from "leaflet"
 import { Socket } from "phoenix"
-import React, { ReactElement, useContext, useState } from "react"
+import React, {
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
@@ -7,12 +14,12 @@ import { useTripShape } from "../hooks/useShapes"
 import { useStations } from "../hooks/useStations"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
-import { SearchPageState } from "../state/searchPageState"
+import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
-import VehicleCard from "./vehicleCard"
+import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 enum MobileDisplay {
   List = 1,
@@ -50,7 +57,7 @@ const ToggleMobileDisplayButton = ({
 }
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, mobileMenuIsOpen }] =
+  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
     useContext(StateDispatchContext)
   const stations = useStations()
 
@@ -62,14 +69,16 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
   const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId | null>(
-    null
+    searchPageState.selectedVehicleId ?? null
   )
 
   const liveVehicle: Vehicle | null = selectedVehicleId
     ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
     : null
+  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(
+    searchPageState.selectedVehicleId ? true : false
+  )
   const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
-  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(false)
 
   const onSearchCallback = () => {
     setSelectedVehicleId(null)
@@ -84,8 +93,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   }
 
   const selectVehicle = (vehicle: VehicleOrGhost): void => {
-    setSelectedVehicleId(vehicle.id)
-    setShowVehicleCard(true)
+    if (isVehicle(vehicle)) {
+      setSelectedVehicleId(vehicle.id)
+      setShowVehicleCard(true)
+      dispatch(setSelectedVehicle(vehicle.id))
+    }
   }
 
   const mobileDisplayClass =
@@ -94,12 +106,24 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       : "m-map-page--show-map"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
+  const vpcEnabled = liveVehicle && showVehicleCard
+
+  const leafletMap = useRef<LeafletMap | null>(null)
+  useEffect(() => {
+    // Let leaflet know when Page resizes due to vpc state
+    leafletMap.current?.invalidateSize()
+  }, [vpcEnabled])
+
   return (
     <div
-      className={`c-page m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
-      data-testid="map-page"
+      className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
+      aria-label="Search Map Page"
     >
-      <div className="m-map-page__input-and-results">
+      <div
+        className="m-map-page__input-and-results"
+        aria-label="Map Search Panel"
+        {...(vpcEnabled ? { hidden: true } : {})}
+      >
         <div className="m-map-page__input">
           <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
           <ToggleMobileDisplayButton
@@ -123,18 +147,23 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       </div>
       <div className="m-map-page__map">
         <Map
+          reactLeafletRef={leafletMap}
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={selectVehicle}
-          shapes={selectedVehicleShapes}
+          shapes={showVehicleCard ? selectedVehicleShapes : undefined}
           allowStreetView={true}
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
           stations={stations}
+          selectedVehicleId={selectedVehicleId ?? undefined}
         >
-          {liveVehicle && showVehicleCard ? (
-            <VehicleCard
+          {vpcEnabled ? (
+            <VehiclePropertiesCard
               vehicle={liveVehicle}
-              onClose={() => setShowVehicleCard(false)}
+              onClose={() => {
+                dispatch(setSelectedVehicle(null))
+                setShowVehicleCard(false)
+              }}
             />
           ) : undefined}
         </Map>

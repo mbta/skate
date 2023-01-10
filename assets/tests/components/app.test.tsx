@@ -98,7 +98,9 @@ describe("App", () => {
 
     render(<App />)
 
-    expect(screen.queryByTestId("map-page")).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole("generic", { name: /search map page/i })
+    ).not.toBeInTheDocument()
   })
 
   test("renders new map page for users in map test group", () => {
@@ -107,6 +109,8 @@ describe("App", () => {
 
     render(<App />)
 
-    expect(screen.getByTestId("map-page")).toBeInTheDocument()
+    expect(
+      screen.getByRole("generic", { name: /search map page/i })
+    ).toBeInTheDocument()
   })
 })

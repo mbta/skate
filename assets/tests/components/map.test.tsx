@@ -16,61 +16,6 @@ import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
 
-const vehicle: Vehicle = vehicleFactory.build({
-  id: "y1818",
-  label: "1818",
-  runId: "run-1",
-  timestamp: 123,
-  latitude: 42.0,
-  longitude: -71.0,
-  directionId: 0,
-  routeId: "39",
-  tripId: "t1",
-  headsign: "Forest Hills",
-  viaVariant: "X",
-  operatorId: "op1",
-  operatorFirstName: "PATTI",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  isShuttle: false,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [
-    {
-      attribute: "trip_id",
-      sources: [
-        {
-          id: "swiftly",
-          value: "swiftly-trip-id",
-        },
-        {
-          id: "busloc",
-          value: "busloc-trip-id",
-        },
-      ],
-    },
-  ],
-  stopStatus: {
-    stopId: "s1",
-    stopName: "Stop Name",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "tp1",
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
-})
-
 const shape = {
   id: "shape",
   points: [
@@ -106,14 +51,16 @@ afterAll(() => {
   global.scrollTo = originalScrollTo
 })
 
-describe("map", () => {
+describe("<Map />", () => {
   test("draws vehicles", () => {
+    const vehicle = vehicleFactory.build({})
     const result = render(<Map vehicles={[vehicle]} />)
     expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
     expect(result.container.innerHTML).toContain("m-vehicle-map__label")
   })
 
   test("draws secondary vehicles", () => {
+    const vehicle = vehicleFactory.build({})
     const result = render(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
     expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
     expect(result.container.innerHTML).toContain("m-vehicle-map__label")
@@ -137,6 +84,7 @@ describe("map", () => {
   })
 
   test("doesn't draw garage icons at zoom levels < 15", async () => {
+    const vehicle = vehicleFactory.build()
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
@@ -155,6 +103,7 @@ describe("map", () => {
   })
 
   test("draws garage icons only at zoom levels >= 15", async () => {
+    const vehicle = vehicleFactory.build({})
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
@@ -173,6 +122,7 @@ describe("map", () => {
   })
 
   test("draws garage icons and labels at zoom levels >= 16", async () => {
+    const vehicle = vehicleFactory.build({})
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
@@ -190,6 +140,7 @@ describe("map", () => {
   })
 
   test("no garage icons if not in test group", () => {
+    const vehicle = vehicleFactory.build({})
     const { container } = render(<Map vehicles={[vehicle]} />)
     expect(container.innerHTML).not.toContain("m-garage-icon")
   })
@@ -198,7 +149,11 @@ describe("map", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} stations={[station]} />
+      <Map
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
     )
 
     // Manual zoom
@@ -214,7 +169,11 @@ describe("map", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} stations={[station]} />
+      <Map
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
     )
 
     // Manual zoom
@@ -230,7 +189,11 @@ describe("map", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} stations={[station]} />
+      <Map
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
     )
 
     // Manual zoom
@@ -263,6 +226,7 @@ describe("map", () => {
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
+    const vehicle = vehicleFactory.build({})
     const onClick = jest.fn()
     render(<Map vehicles={[vehicle]} onPrimaryVehicleSelect={onClick} />)
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
@@ -270,6 +234,7 @@ describe("map", () => {
   })
 
   test("does not perform onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
+    const vehicle = vehicleFactory.build({})
     const onClick = jest.fn()
     render(
       <Map
@@ -292,7 +257,7 @@ describe("map", () => {
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
 
     expect(
-      screen.getByRole("link", { name: /Go to Street View/ })
+      screen.getByRole("link", { name: /street view/i })
     ).toBeInTheDocument()
   })
 
@@ -412,13 +377,20 @@ const animationFramePromise = (): Promise<null> => {
 
 describe("auto centering", () => {
   test("auto centers on a vehicle", async () => {
+    const location = { lat: 42, lng: -71 }
+    const vehicle: Vehicle = vehicleFactory.build({
+      latitude: location.lat,
+      longitude: location.lng,
+    })
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     render(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
+
     await animationFramePromise()
-    expect(getCenter(mapRef)).toEqual({ lat: 42, lng: -71 })
+    expect(getCenter(mapRef)).toEqual(location)
   })
 
   test("tracks a vehicle when it moves", async () => {
+    const vehicle = vehicleFactory.build({})
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const oldLatLng = { lat: 42, lng: -71 }
     const oldVehicle = {
@@ -442,6 +414,7 @@ describe("auto centering", () => {
   })
 
   test("manual moves disable auto centering", async () => {
+    const vehicle = vehicleFactory.build({})
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const { rerender, container } = render(
       <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
@@ -473,6 +446,7 @@ describe("auto centering", () => {
   })
 
   test("auto recentering does not disable auto centering", async () => {
+    const vehicle = vehicleFactory.build({})
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const latLng1 = { lat: 42, lng: -71 }
     const latLng2 = { lat: 42.1, lng: -71.1 }

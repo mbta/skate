@@ -2,6 +2,7 @@
 
 exports[`ghost going down puts label above it 1`] = `
 <svg
+  role="img"
   style={
     Object {
       "height": 36,
@@ -10,6 +11,9 @@ exports[`ghost going down puts label above it 1`] = `
   }
   viewBox="-20 -23.5 40 36"
 >
+  <title>
+    Vehicle Status Icon
+  </title>
   <g
     className="m-vehicle-icon m-vehicle-icon--medium ghost early-red"
   >
@@ -65,6 +69,7 @@ exports[`ghost going down puts label above it 1`] = `
 
 exports[`ghost with variant doesn't have eyes 1`] = `
 <svg
+  role="img"
   style={
     Object {
       "height": 25,
@@ -73,6 +78,9 @@ exports[`ghost with variant doesn't have eyes 1`] = `
   }
   viewBox="-13.75 -12.5 27.5 25"
 >
+  <title>
+    Vehicle Status Icon
+  </title>
   <g
     className="m-vehicle-icon m-vehicle-icon--medium ghost early-red"
   >
@@ -139,6 +147,7 @@ exports[`renders an unwrapped svg node 1`] = `
 exports[`renders extended labels 1`] = `
 Array [
   <svg
+    role="img"
     style={
       Object {
         "height": 64,
@@ -147,6 +156,9 @@ Array [
     }
     viewBox="-36 -20 72 64"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -177,6 +189,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 64,
@@ -185,6 +198,9 @@ Array [
     }
     viewBox="-36 -20 72 64"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -220,6 +236,7 @@ Array [
 exports[`renders ghost with alert icon 1`] = `
 Array [
   <svg
+    role="img"
     style={
       Object {
         "height": 15.72,
@@ -228,6 +245,9 @@ Array [
     }
     viewBox="-8.36 -8.120000000000001 18.38 15.72"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small ghost early-red"
     >
@@ -292,6 +312,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -300,6 +321,9 @@ Array [
     }
     viewBox="-14.775 -12.5 28.525 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
     >
@@ -369,6 +393,7 @@ Array [
 exports[`renders in all directions and sizes 1`] = `
 Array [
   <svg
+    role="img"
     style={
       Object {
         "height": 15.2,
@@ -377,6 +402,9 @@ Array [
     }
     viewBox="-8.36 -7.6 16.72 15.2"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -389,6 +417,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 16.72,
@@ -397,6 +426,9 @@ Array [
     }
     viewBox="-7.6 -8.36 15.2 16.72"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -409,6 +441,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 15.2,
@@ -417,6 +450,9 @@ Array [
     }
     viewBox="-8.36 -7.6 16.72 15.2"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -429,6 +465,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 16.72,
@@ -437,6 +474,9 @@ Array [
     }
     viewBox="-7.6 -8.36 15.2 16.72"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -449,6 +489,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -457,6 +498,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -469,6 +513,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 27.5,
@@ -477,6 +522,9 @@ Array [
     }
     viewBox="-12.5 -13.75 25 27.5"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -489,6 +537,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -497,6 +546,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -509,6 +561,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 27.5,
@@ -517,6 +570,9 @@ Array [
     }
     viewBox="-12.5 -13.75 25 27.5"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -529,6 +585,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 40,
@@ -537,6 +594,9 @@ Array [
     }
     viewBox="-22 -20 44 40"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -549,6 +609,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 44,
@@ -557,6 +618,9 @@ Array [
     }
     viewBox="-20 -22 40 44"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -569,6 +633,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 40,
@@ -577,6 +642,9 @@ Array [
     }
     viewBox="-22 -20 44 40"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -589,6 +657,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 44,
@@ -597,6 +666,9 @@ Array [
     }
     viewBox="-20 -22 40 44"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -614,6 +686,7 @@ Array [
 exports[`renders with all statuses 1`] = `
 Array [
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -622,6 +695,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
     >
@@ -634,6 +710,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -642,6 +719,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium early early-red"
     >
@@ -654,6 +734,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -662,6 +743,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium late early-red"
     >
@@ -674,6 +758,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -682,6 +767,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium off-course early-red"
     >
@@ -694,6 +782,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -702,6 +791,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium ghost early-red"
     >
@@ -736,6 +828,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -744,6 +837,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -756,6 +852,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 25,
@@ -764,6 +861,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.5 25"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -781,6 +881,7 @@ Array [
 exports[`renders with variants, labels, and alert icons 1`] = `
 Array [
   <svg
+    role="img"
     style={
       Object {
         "height": 26.200000000000003,
@@ -789,6 +890,9 @@ Array [
     }
     viewBox="-13 -7.6 26 26.200000000000003"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -858,6 +962,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 27.72,
@@ -866,6 +971,9 @@ Array [
     }
     viewBox="-13 -8.36 26 27.72"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -935,6 +1043,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 26.200000000000003,
@@ -943,6 +1052,9 @@ Array [
     }
     viewBox="-13 -18.6 26 26.200000000000003"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -1012,6 +1124,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 28.62,
@@ -1020,6 +1133,9 @@ Array [
     }
     viewBox="-13 -9.260000000000002 26 28.62"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
     >
@@ -1089,6 +1205,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 36,
@@ -1097,6 +1214,9 @@ Array [
     }
     viewBox="-13.75 -12.5 27.9 36"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -1166,6 +1286,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 38.5,
@@ -1174,6 +1295,9 @@ Array [
     }
     viewBox="-13 -13.75 26 38.5"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -1243,6 +1367,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 36,
@@ -1251,6 +1376,9 @@ Array [
     }
     viewBox="-14.15 -23.5 27.9 36"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -1320,6 +1448,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 38.9,
@@ -1328,6 +1457,9 @@ Array [
     }
     viewBox="-13 -14.15 26 38.9"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--medium"
     >
@@ -1397,6 +1529,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 64,
@@ -1405,6 +1538,9 @@ Array [
     }
     viewBox="-32 -20 64 64"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -1474,6 +1610,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 68,
@@ -1482,6 +1619,9 @@ Array [
     }
     viewBox="-32 -22 64 68"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -1551,6 +1691,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 64,
@@ -1559,6 +1700,9 @@ Array [
     }
     viewBox="-32 -44 64 64"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >
@@ -1628,6 +1772,7 @@ Array [
     </g>
   </svg>,
   <svg
+    role="img"
     style={
       Object {
         "height": 68.1,
@@ -1636,6 +1781,9 @@ Array [
     }
     viewBox="-32 -22.1 64 68.1"
   >
+    <title>
+      Vehicle Status Icon
+    </title>
     <g
       className="m-vehicle-icon m-vehicle-icon--large"
     >

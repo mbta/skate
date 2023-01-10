@@ -13,16 +13,19 @@ exports[`Header renders a header 1`] = `
       Vehicles
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -33,6 +36,7 @@ exports[`Header renders a header 1`] = `
       className="m-properties-panel__label"
     >
       <svg
+        role="img"
         style={
           Object {
             "height": 64,
@@ -41,6 +45,9 @@ exports[`Header renders a header 1`] = `
         }
         viewBox="-32 -20 64 64"
       >
+        <title>
+          Vehicle Status Icon
+        </title>
         <g
           className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
         >
@@ -86,17 +93,24 @@ exports[`Header renders a header 1`] = `
       <div
         className="m-properties-panel__inbound-outbound"
       />
-      <div
-        className="m-route-variant-name"
-        data-testid="variant-name"
+      <output
+        aria-label="Route Variant Name"
+        className="m-route-variant-name undefined"
       >
-        <span
+        <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
         >
           39_X
-        </span>
-         Forest Hills
-      </div>
+        </output>
+         
+        <output
+          aria-label="Headsign"
+          className="m-route-variant-name__headsign"
+        >
+          Forest Hills
+        </output>
+      </output>
       <div
         className="m-properties-panel__schedule-adherence on-time early-red"
       >
@@ -244,16 +258,19 @@ exports[`Header renders for a ghost 1`] = `
       Vehicles
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -264,6 +281,7 @@ exports[`Header renders for a ghost 1`] = `
       className="m-properties-panel__label"
     >
       <svg
+        role="img"
         style={
           Object {
             "height": 64,
@@ -272,6 +290,9 @@ exports[`Header renders for a ghost 1`] = `
         }
         viewBox="-32 -20 64 64"
       >
+        <title>
+          Vehicle Status Icon
+        </title>
         <g
           className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
         >
@@ -325,17 +346,24 @@ exports[`Header renders for a ghost 1`] = `
       <div
         className="m-properties-panel__inbound-outbound"
       />
-      <div
-        className="m-route-variant-name"
-        data-testid="variant-name"
+      <output
+        aria-label="Route Variant Name"
+        className="m-route-variant-name undefined"
       >
-        <span
+        <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
         >
           39_X
-        </span>
-         headsign
-      </div>
+        </output>
+         
+        <output
+          aria-label="Headsign"
+          className="m-route-variant-name__headsign"
+        >
+          headsign
+        </output>
+      </output>
     </div>
     <div
       className="m-properties-panel__ping-container"
@@ -449,16 +477,19 @@ exports[`Header renders for a late vehicle 1`] = `
       Vehicles
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -469,6 +500,7 @@ exports[`Header renders for a late vehicle 1`] = `
       className="m-properties-panel__label"
     >
       <svg
+        role="img"
         style={
           Object {
             "height": 64,
@@ -477,6 +509,9 @@ exports[`Header renders for a late vehicle 1`] = `
         }
         viewBox="-32 -20 64 64"
       >
+        <title>
+          Vehicle Status Icon
+        </title>
         <g
           className="m-vehicle-icon m-vehicle-icon--large late early-red"
         >
@@ -522,17 +557,24 @@ exports[`Header renders for a late vehicle 1`] = `
       <div
         className="m-properties-panel__inbound-outbound"
       />
-      <div
-        className="m-route-variant-name"
-        data-testid="variant-name"
+      <output
+        aria-label="Route Variant Name"
+        className="m-route-variant-name undefined"
       >
-        <span
+        <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
         >
           39_X
-        </span>
-         Forest Hills
-      </div>
+        </output>
+         
+        <output
+          aria-label="Headsign"
+          className="m-route-variant-name__headsign"
+        >
+          Forest Hills
+        </output>
+      </output>
       <div
         className="m-properties-panel__schedule-adherence late early-red"
       >
@@ -680,16 +722,19 @@ exports[`Header renders for a shuttle 1`] = `
       Vehicles
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -700,6 +745,7 @@ exports[`Header renders for a shuttle 1`] = `
       className="m-properties-panel__label"
     >
       <svg
+        role="img"
         style={
           Object {
             "height": 64,
@@ -708,6 +754,9 @@ exports[`Header renders for a shuttle 1`] = `
         }
         viewBox="-36 -20 72 64"
       >
+        <title>
+          Vehicle Status Icon
+        </title>
         <g
           className="m-vehicle-icon m-vehicle-icon--large"
         >
@@ -753,11 +802,12 @@ exports[`Header renders for a shuttle 1`] = `
       <div
         className="m-properties-panel__inbound-outbound"
       />
-      <div
-        className="m-route-variant-name"
+      <output
+        aria-label="Route Variant Name"
+        className="m-route-variant-name undefined"
       >
         Shuttle
-      </div>
+      </output>
     </div>
     <div
       className="m-properties-panel__ping-container"
@@ -785,16 +835,19 @@ exports[`Header renders for an early vehicle 1`] = `
       Vehicles
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -805,6 +858,7 @@ exports[`Header renders for an early vehicle 1`] = `
       className="m-properties-panel__label"
     >
       <svg
+        role="img"
         style={
           Object {
             "height": 64,
@@ -813,6 +867,9 @@ exports[`Header renders for an early vehicle 1`] = `
         }
         viewBox="-32 -20 64 64"
       >
+        <title>
+          Vehicle Status Icon
+        </title>
         <g
           className="m-vehicle-icon m-vehicle-icon--large early early-red"
         >
@@ -858,17 +915,24 @@ exports[`Header renders for an early vehicle 1`] = `
       <div
         className="m-properties-panel__inbound-outbound"
       />
-      <div
-        className="m-route-variant-name"
-        data-testid="variant-name"
+      <output
+        aria-label="Route Variant Name"
+        className="m-route-variant-name undefined"
       >
-        <span
+        <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
         >
           39_X
-        </span>
-         Forest Hills
-      </div>
+        </output>
+         
+        <output
+          aria-label="Headsign"
+          className="m-route-variant-name__headsign"
+        >
+          Forest Hills
+        </output>
+      </output>
       <div
         className="m-properties-panel__schedule-adherence early early-red"
       >
@@ -1016,16 +1080,19 @@ exports[`Header renders for an off-course vehicle 1`] = `
       Vehicles
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -1036,6 +1103,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
       className="m-properties-panel__label"
     >
       <svg
+        role="img"
         style={
           Object {
             "height": 64,
@@ -1044,6 +1112,9 @@ exports[`Header renders for an off-course vehicle 1`] = `
         }
         viewBox="-32 -20 64 64"
       >
+        <title>
+          Vehicle Status Icon
+        </title>
         <g
           className="m-vehicle-icon m-vehicle-icon--large off-course early-red"
         >
@@ -1089,17 +1160,24 @@ exports[`Header renders for an off-course vehicle 1`] = `
       <div
         className="m-properties-panel__inbound-outbound"
       />
-      <div
-        className="m-route-variant-name"
-        data-testid="variant-name"
+      <output
+        aria-label="Route Variant Name"
+        className="m-route-variant-name undefined"
       >
-        <span
+        <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
         >
           39_X
-        </span>
-         Forest Hills
-      </div>
+        </output>
+         
+        <output
+          aria-label="Headsign"
+          className="m-route-variant-name__headsign"
+        >
+          Forest Hills
+        </output>
+      </output>
       <div
         className="m-properties-panel__schedule-adherence off-course early-red"
       >
@@ -1245,16 +1323,19 @@ exports[`Header renders with route data 1`] = `
       Vehicles
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -1265,6 +1346,7 @@ exports[`Header renders with route data 1`] = `
       className="m-properties-panel__label"
     >
       <svg
+        role="img"
         style={
           Object {
             "height": 64,
@@ -1273,6 +1355,9 @@ exports[`Header renders with route data 1`] = `
         }
         viewBox="-32 -20 64 64"
       >
+        <title>
+          Vehicle Status Icon
+        </title>
         <g
           className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
         >
@@ -1320,17 +1405,24 @@ exports[`Header renders with route data 1`] = `
       >
         Outbound
       </div>
-      <div
-        className="m-route-variant-name"
-        data-testid="variant-name"
+      <output
+        aria-label="Route Variant Name"
+        className="m-route-variant-name undefined"
       >
-        <span
+        <output
+          aria-label="Route & Variant"
           className="m-route-variant-name__route-id"
         >
           39_X
-        </span>
-         Forest Hills
-      </div>
+        </output>
+         
+        <output
+          aria-label="Headsign"
+          className="m-route-variant-name__headsign"
+        >
+          Forest Hills
+        </output>
+      </output>
       <div
         className="m-properties-panel__schedule-adherence on-time early-red"
       >

@@ -112,6 +112,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
       </div>
       <div className="m-vehicle-properties-panel__map">
         <Map
+          selectedVehicleId={vehicle.id}
           vehicles={[vehicle]}
           shapes={shapes}
           secondaryVehicles={routeVehicles}

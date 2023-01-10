@@ -6,7 +6,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
-import { TrainVehicle, Vehicle, VehicleId } from "../realtime"
+import { TrainVehicle, Vehicle } from "../realtime"
 import { DirectionId, Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 import "leaflet.fullscreen"
@@ -25,7 +25,8 @@ import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
 const makeVehicleIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
-  userSettings: UserSettings
+  userSettings: UserSettings,
+  isSelected: boolean
 ): Leaflet.DivIcon => {
   const centerX = 12
   const centerY = 12
@@ -37,12 +38,13 @@ const makeVehicleIcon = (
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          class="${className(
-            statusClasses(
+          class="${className([
+            ...statusClasses(
               drawnStatus(vehicle),
               userSettings.vehicleAdherenceColors
-            )
-          )}"
+            ),
+            isSelected ? "selected" : null,
+          ])}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
           transform="scale(${isPrimary ? 1.0 : 0.8}) rotate(${
       vehicle.bearing
@@ -58,13 +60,13 @@ const makeLabelIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
   settings: UserSettings,
-  selectedVehicleId?: VehicleId
+  isSelected: boolean
 ): Leaflet.DivIcon => {
   const labelString = vehicleLabelString(vehicle, settings)
   const labelBackgroundHeight = isPrimary ? 16 : 12
   const labelBackgroundWidth =
     labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40
-  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+  const selectedClass = isSelected ? "selected" : null
   return Leaflet.divIcon({
     className: className([
       "m-vehicle-map__label",
@@ -89,26 +91,29 @@ export const VehicleMarker = ({
   vehicle,
   isPrimary,
   onSelect,
+  isSelected = false,
 }: {
   vehicle: Vehicle
   isPrimary: boolean
+  isSelected?: boolean
   onSelect?: (vehicle: Vehicle) => void
 }) => {
-  const [appState] = useContext(StateDispatchContext)
+  const [{ userSettings }] = useContext(StateDispatchContext)
   const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
   const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
     vehicle,
     isPrimary,
-    appState.userSettings
+    userSettings,
+    isSelected
   )
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
     isPrimary,
-    appState.userSettings,
-    appState.selectedVehicleOrGhost?.id || ""
+    userSettings,
+    isSelected
   )
-  const zIndexOffset = isPrimary ? 2000 : 0
+  const zIndexOffset = (isPrimary ? 2000 : 0) + (isSelected ? 100 : 0)
   return (
     <>
       <Marker

@@ -116,6 +116,22 @@ $color-vehicle-ghost-border: $color-component-medium;
 $color-vehicle-nonrevenue: #8f7ed6;
 $color-vehicle-off-course: $color-component-dark;
 
+:root {
+  --color-vehicle-off-course: #{$color-vehicle-off-course};
+  --color-vehicle-ontime: #{$color-vehicle-ontime};
+}
+
+:root,
+.early-red {
+  --color-vehicle-early: #{$color-vehicle-red};
+  --color-vehicle-late: #{$color-vehicle-blue};
+}
+
+.early-blue {
+  --color-vehicle-early: #{$color-vehicle-blue};
+  --color-vehicle-late: #{$color-vehicle-red};
+}
+
 $color-line-normal: $color-component-light;
 $color-line-bunched: #ff66bc;
 $color-line-bunched-light: #ffcce9;
@@ -127,7 +143,9 @@ $color-stop-stroke: $black;
 
 $color-tooltip-background: #333333;
 
-// type styles
+// #endregion
+
+// #region type styles [v1]
 
 @mixin font-header-big {
   font-size: 1.5rem;
@@ -192,7 +210,9 @@ $color-tooltip-background: #333333;
   font-weight: 700;
 }
 
-// button styles
+// #endregion
+
+// #region button styles
 
 @mixin button-base {
   border-radius: 4px;
@@ -269,7 +289,6 @@ $color-tooltip-background: #333333;
     align-items: center;
 
     height: $size;
-    width: $size;
 
     svg {
       stroke: currentColor;
@@ -294,7 +313,9 @@ $color-tooltip-background: #333333;
   }
 }
 
-// toggle styles
+// #endregion
+
+// #region toggle styles
 
 @mixin toggle-base {
   @include font-small;
@@ -329,7 +350,9 @@ $color-tooltip-background: #333333;
   border-color: $color-toggle-unselected-border;
 }
 
-// input styles
+// #endregion
+
+// #region input styles
 
 select {
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
@@ -360,11 +383,15 @@ input:not(.form-check-input) {
   }
 }
 
-// transitions
+// #endregion
+
+// #region transitions
 
 $transition-slide: all 0.2s ease-in-out;
 
-// modals
+// #endregion
+
+// #region modals
 $modal-overlay-color: transparentize($color-component-dark, 0.8);
 $modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);
 
@@ -388,7 +415,9 @@ $submenu-box-shadow: 0 2px 4px 0 rgba(126, 126, 126, 0.5);
 
 $font-family-route-pill: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-// blur state
+// #endregion
+
+// #region blur state
 @mixin blur {
   filter: blur(5px);
 }
@@ -398,3 +427,4 @@ $font-family-route-pill: "Helvetica Neue", Helvetica, Arial, sans-serif;
     @include blur;
   }
 }
+// #endregion

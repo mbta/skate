@@ -47,7 +47,7 @@ export const humanReadableScheduleAdherence = (vehicle: Vehicle): string =>
     ? "Invalid"
     : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))
 
-const humanReadableOnTimeStatus = (status: OnTimeStatus): string => {
+export const humanReadableOnTimeStatus = (status: OnTimeStatus): string => {
   switch (status) {
     case "early":
       return "early"

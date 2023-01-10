@@ -149,13 +149,13 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const result = render(
+    render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("Clear"))
+    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
@@ -178,7 +178,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByTitle("Clear"))
+    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
     expect(onClear).toHaveBeenCalledTimes(1)

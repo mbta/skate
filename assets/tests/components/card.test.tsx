@@ -122,7 +122,7 @@ describe("Card", () => {
       </Card>
     )
 
-    await user.click(result.getByTitle("Close"))
+    await user.click(result.getByRole("button", { name: /close/i }))
 
     expect(closeCallback).toHaveBeenCalledTimes(1)
   })

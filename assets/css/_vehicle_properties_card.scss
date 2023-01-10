@@ -1,0 +1,107 @@
+// #region Vehicle Properties Card
+.m-vehicle-properties-card {
+  box-sizing: border-box;
+
+  *:before,
+  *:after,
+  * {
+    box-sizing: inherit;
+  }
+}
+
+.m-vehicle-properties-card {
+  font-family: $font-family;
+
+  // Static Design Width per spec
+  width: 395px;
+  // Card Look
+  border-radius: 8px;
+  background-color: $color-gray-100;
+  border: 1px solid $color-gray-400;
+  // Clip children to keep rounded edges for background color
+  overflow: clip;
+
+  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.16))
+    drop-shadow(0px 16px 24px rgba(176, 181, 192, 0.24));
+
+  // all children expand to full width of card
+  > * {
+    width: 100%;
+  }
+}
+
+.m-vehicle-properties-card__title-bar {
+  background-color: $white;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.m-vehicle-properties-card__body {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+}
+
+// #region Vehicle Properties Card vehicle location display
+.m-vehicle-properties-card__location-info > :not(:first-child) {
+  margin-top: 10px;
+}
+// #endregion
+
+// #region Padding quirks
+// All children have a 16px padding around the card
+.m-vehicle-properties-card > * {
+  padding-inline: 16px;
+}
+
+.m-vehicle-properties-card__title-bar {
+  padding: 6px 16px;
+}
+
+.m-vehicle-properties-card__summary {
+  padding-top: 16px;
+}
+
+.m-vehicle-properties-card__body {
+  padding: 16px;
+}
+// #endregion
+// #endregion
+
+// #region Visual Information group Section
+.m-info-section {
+  width: 100%;
+  padding: 16px 20px;
+
+  border: 1px solid $color-gray-300;
+  border-radius: 8px;
+}
+// #endregion
+
+// #region Vehicle Nearest Intersection Display
+.m-current-location {
+  line-height: 1;
+
+  .m-current-location__label {
+    margin-bottom: 8px;
+  }
+
+  .m-current-location__label,
+  .m-current-location__value {
+    display: block;
+  }
+}
+// #endregion
+
+// #region Vehicle Work Information
+.m-vehicle-work-info {
+  line-height: 1.25;
+}
+
+.m-vehicle-work-info th {
+  padding-right: 36px;
+  text-align: start;
+}
+// #endregion

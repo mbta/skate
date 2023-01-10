@@ -13,16 +13,19 @@ exports[`NotificationDrawer renders empty state 1`] = `
       Notifications
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>
@@ -52,16 +55,19 @@ exports[`NotificationDrawer renders notifications 1`] = `
       Notifications
     </div>
     <button
+      aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
       onClick={[Function]}
-      title="Close"
     >
       <span
+        aria-hidden={true}
+        aria-label=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "<svg/>",
           }
         }
+        role="img"
       />
     </button>
   </div>

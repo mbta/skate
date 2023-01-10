@@ -5,11 +5,13 @@ import {
   SavedSearchQuery,
   SearchQuery,
 } from "../models/searchQuery"
+import { VehicleId } from "../realtime"
 
 export interface SearchPageState {
   query: SearchQuery
   isActive: boolean
   savedQueries: SavedSearchQuery[]
+  selectedVehicleId?: VehicleId | null
 }
 
 export const initialSearchPageState = {
@@ -52,10 +54,23 @@ export const submitSearch = (): SubmitSearchAction => ({
   type: "SUBMIT_SEARCH",
 })
 
+interface SelectVehicleAction {
+  type: "SELECT_SEARCH_VEHICLE"
+  payload: { vehicleId: VehicleId | null }
+}
+
+export const setSelectedVehicle = (
+  vehicleId: VehicleId | null
+): SelectVehicleAction => ({
+  type: "SELECT_SEARCH_VEHICLE",
+  payload: { vehicleId: vehicleId },
+})
+
 export type Action =
   | SetSearchTextAction
   | SetSearchPropertyAction
   | SubmitSearchAction
+  | SelectVehicleAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -90,6 +105,11 @@ export const reducer = (
           ...state,
           isActive: false,
         }
+      }
+    case "SELECT_SEARCH_VEHICLE":
+      return {
+        ...state,
+        selectedVehicleId: action.payload.vehicleId,
       }
   }
   return state

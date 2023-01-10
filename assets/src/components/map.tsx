@@ -31,7 +31,7 @@ import {
 import { createControlComponent } from "@react-leaflet/core"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
-import { TrainVehicle, Vehicle } from "../realtime.d"
+import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
@@ -49,17 +49,20 @@ import {
 import { WalkingIcon } from "../helpers/icon"
 
 export interface Props {
+  reactLeafletRef?: MutableRefObject<LeafletMap | null>
+  children?: JSX.Element | JSX.Element[]
+
+  onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
+  selectedVehicleId?: VehicleId
   vehicles: Vehicle[]
-  shapes?: Shape[]
   // secondaryVehicles are smaller, deemphasized, and don't affect autocentering
   secondaryVehicles?: Vehicle[]
   // trainVehicles are white, don't get a label, and don't affect autocentering
   trainVehicles?: TrainVehicle[]
-  reactLeafletRef?: MutableRefObject<LeafletMap | null>
-  onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
+  shapes?: Shape[]
+
   allowStreetView?: boolean
 
-  children?: JSX.Element | JSX.Element[]
   stopCardDirection?: DirectionId
   includeStopCard?: boolean
   stations?: Stop[] | null
@@ -385,6 +388,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             key={vehicle.id}
             vehicle={vehicle}
             isPrimary={true}
+            isSelected={props.selectedVehicleId === vehicle.id}
             onSelect={props.onPrimaryVehicleSelect}
           />
         ))}

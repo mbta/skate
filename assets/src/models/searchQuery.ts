@@ -1,6 +1,8 @@
+export type SearchQueryType = "all" | "run" | "vehicle" | "operator"
+
 export interface SearchQuery {
   text: string
-  property: string
+  property: SearchQueryType | string
 }
 
 export interface SavedSearchQuery {
