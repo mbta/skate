@@ -91,11 +91,13 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
         <TrNameValue name="run">{vehicle.runId ?? "N/A"}</TrNameValue>
         <TrNameValue name="vehicle">{vehicle.label ?? "N/A"}</TrNameValue>
         <TrNameValue name="operator" sensitivity={HideSensitiveInfo.All}>
-          {joinTruthy([
-            vehicle.operatorFirstName,
-            vehicle.operatorLastName,
-            vehicle.operatorId ? `#${vehicle.operatorId}` : null,
-          ]) || "N/A"}
+          <span className="title-case">
+            {joinTruthy([
+              vehicle.operatorFirstName,
+              vehicle.operatorLastName,
+              vehicle.operatorId && `#${vehicle.operatorId}`,
+            ]).toLowerCase() || "N/A"}
+          </span>
         </TrNameValue>
       </tbody>
     </table>

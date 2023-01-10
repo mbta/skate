@@ -135,7 +135,10 @@ describe("<VehiclePropertiesCard/>", () => {
         // Operator | Operator First, Last, #BadgeID
         const operator = screen.getByRole("cell", { name: /operator/ })
         expect(operator).toHaveTextContent(
-          `${operatorFirstName} ${operatorLastName} #${operatorId}`
+          new RegExp(
+            `${operatorFirstName} ${operatorLastName} #${operatorId}`,
+            "i"
+          )
         )
         expect(operator).toHaveClass("fs-mask")
 
