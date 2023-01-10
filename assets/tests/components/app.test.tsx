@@ -50,7 +50,7 @@ describe("App", () => {
   })
 
   test("shows data outage banner if there's a data outage", () => {
-    ;(useDataStatus as jest.Mock).mockImplementationOnce(() => "outage")
+    ;(useDataStatus as jest.Mock).mockReturnValueOnce("outage")
     const result = render(<App />)
     expect(result.queryByText(/Ongoing MBTA Data Outage/)).toBeVisible()
   })
