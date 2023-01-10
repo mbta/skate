@@ -5,7 +5,6 @@ import { neverPromise } from "../../tests/testHelpers/mockHelpers"
 import { gridIntersectionFactory } from "../factories/gridIntersection"
 import { localGeoCoordinateFactory } from "../factories/geoCoordinate"
 import { GeographicCoordinate } from "../../src/components/streetViewButton"
-import { act } from "react-test-renderer"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
@@ -118,31 +117,24 @@ describe("useNearestIntersection", () => {
   })
 
   describe("when coordinate input changes", () => {
-    test("when promise resolves, return promise result", async () => {
+    test("should return last result until promise resolves", async () => {
       const {
         coordinates: [latLng1, latLng2],
         intersections: [intersection1, intersection2],
-      } = CoordinateIntersectionMap(2, null)
+      } = MockIntersectionWithCoordinateIntersectionMap(2, null)
       const fetchFn = Api.fetchNearestIntersection as jest.Mock
 
-      // } = MockIntersectionWithCoordinateIntersectionMap(2, new Error("hi"))
-
-      fetchFn.mockReturnValueOnce(Promise.resolve(intersection1))
       const { rerender, result } = renderUseNearestIntersection(latLng1)
 
       expect(result.current).toBe(Loading())
       await waitFor(() => expect(result.current).toBe(intersection1))
 
-      fetchFn.mockReturnValueOnce(Promise.resolve(intersection2))
       rerender(latLng2)
+
+      expect(result.current).toBe(intersection1)
       expect(fetchFn).toBeCalledWith(latLng2.latitude, latLng2.longitude)
 
-      await waitFor(async () => {
-        await expect(result.current).toBe(intersection1)
-        // await expect(result.current).toBe(intersection2)
-      })
-
-      await act(async () => expect(result.current).toBe(intersection2))
+      await waitFor(async () => expect(result.current).toBe(intersection2))
     })
 
     test("should make another api call", async () => {
