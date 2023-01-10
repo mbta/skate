@@ -1,80 +1,201 @@
 import { renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
-import { GeographicCoordinate } from "../../src/components/streetViewButton"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
 import { neverPromise } from "../../tests/testHelpers/mockHelpers"
-import { localGeoCoordinateFactory } from "../factories/geoCoordinate"
 import { gridIntersectionFactory } from "../factories/gridIntersection"
+import { localGeoCoordinateFactory } from "../factories/geoCoordinate"
+import { GeographicCoordinate } from "../../src/components/streetViewButton"
+import { act } from "react-test-renderer"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
   fetchNearestIntersection: jest.fn(() => neverPromise()),
 }))
 
-describe("useNearestIntersection", () => {
-  test("returns null when loading", () => {
-    const { result } = renderHook(() => useNearestIntersection(40, -70))
-    expect(result.current).toEqual(null)
-  })
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
-  test("makes an api call", () => {
-    const mockNearestIntersection: jest.Mock =
-      Api.fetchNearestIntersection as jest.Mock
-    renderHook(() => useNearestIntersection(40, -70))
-    expect(mockNearestIntersection).toHaveBeenCalledTimes(1)
-  })
+const Loading = () => null
+const Ok = (v: any) => v
+const Err = (_?: any) => null
 
-  test("makes another api call if the input chnages", () => {
-    const mockNearestIntersection: jest.Mock =
-      Api.fetchNearestIntersection as jest.Mock
-    const { rerender } = renderHook(
-      ({ lat, lng }) => useNearestIntersection(lat, lng),
-      { initialProps: { lat: 40, lng: -70 } }
-    )
-    rerender({ lat: 41, lng: -71 })
-    expect(mockNearestIntersection).toHaveBeenCalledTimes(2)
-  })
+const renderUseNearestIntersection = (location: GeographicCoordinate) =>
+  renderHook(
+    ({ latitude, longitude }) => useNearestIntersection(latitude, longitude),
+    {
+      initialProps: location,
+    }
+  )
 
-  test("doesn't remake an api call if the input stays the same", () => {
-    const mockNearestIntersection: jest.Mock =
-      Api.fetchNearestIntersection as jest.Mock
-    const { rerender } = renderHook(() => useNearestIntersection(40, -70))
-    rerender()
-    expect(mockNearestIntersection).toHaveBeenCalledTimes(1)
-  })
-  const renderUseNearestIntersection = (location: GeographicCoordinate) =>
-    renderHook(
-      ({ latitude, longitude }) => useNearestIntersection(latitude, longitude),
-      {
-        initialProps: location,
-      }
-    )
+function CoordinateIntersectionMap(
+  numberOfEntries: number,
+  errorValue: any = null
+) {
+  const intersections = gridIntersectionFactory.buildList(numberOfEntries)
+  const coordinates = localGeoCoordinateFactory.buildList(numberOfEntries)
 
-  test("when input changes, should return same intersection until next ok result", async () => {
-    const [intersection1, intersection2] = gridIntersectionFactory.buildList(2)
-    const [latLng1, latLng2] = localGeoCoordinateFactory.buildList(2)
-    const map = new Map([
-      [JSON.stringify(latLng1), intersection1],
-      [JSON.stringify(latLng2), intersection2],
+  const map = new Map(
+    coordinates.map((coordinate, index) => [
+      JSON.stringify(coordinate),
+      intersections[index],
     ])
+  )
+  const lookupFn = (coordinate: GeographicCoordinate) =>
+    map.get(JSON.stringify(coordinate)) ?? errorValue
 
-    const mockNearestIntersection: jest.Mock =
-      Api.fetchNearestIntersection as jest.Mock
+  const mockImplementation = (latitude: number, longitude: number) =>
+    Promise.resolve(lookupFn({ latitude, longitude }))
 
-    mockNearestIntersection.mockImplementation((latitude, longitude) =>
-      Promise.resolve(map.get(JSON.stringify({ latitude, longitude })) ?? null)
+  return {
+    intersections,
+    coordinates,
+    map,
+    lookupFn,
+    mockImplementation,
+  }
+}
+
+export const MockIntersectionWithCoordinateIntersectionMap = (
+  numberOfEntries = 1,
+  errorValue: any = null
+) => {
+  const result = CoordinateIntersectionMap(numberOfEntries, errorValue)
+
+    ; (Api.fetchNearestIntersection as jest.Mock).mockImplementation(
+      result.mockImplementation
     )
 
-    const { rerender, result } = renderUseNearestIntersection(latLng1)
+  return result
+}
 
-    expect(result.current).toBe(null)
-    await waitFor(() => expect(result.current).toBe(intersection1))
+describe("useNearestIntersection", () => {
+  describe("when first rendered", () => {
 
-    rerender(latLng2)
+    test("should return loading state", async () => {
+      const { result } = renderUseNearestIntersection(localGeoCoordinateFactory.build())
+      expect(result.current).toEqual(Loading())
+    })
 
-    expect(result.current).toBe(intersection1)
-    await waitFor(() => expect(result.current).toBe(intersection2))
+    test("should make an api call", () => {
+      const mockNearestIntersection: jest.Mock =
+        Api.fetchNearestIntersection as jest.Mock
 
-    expect(mockNearestIntersection).toHaveBeenCalledTimes(2)
+      renderUseNearestIntersection(localGeoCoordinateFactory.build())
+
+      expect(mockNearestIntersection).toHaveBeenCalledTimes(1)
+    })
   })
+
+  describe("when coordinate input is unchanged", () => {
+    test("should return the last result", async () => {
+      const intersection = gridIntersectionFactory.build()
+        ; (Api.fetchNearestIntersection as jest.Mock).mockReturnValueOnce(
+          Promise.resolve(intersection)
+        )
+      const location = localGeoCoordinateFactory.build()
+
+      const { result, rerender } = renderUseNearestIntersection(location)
+
+      await waitFor(() => expect(result.current).toEqual(Ok(intersection)))
+
+      rerender(location)
+
+      expect(result.current).toEqual(Ok(intersection))
+    })
+
+    test("should not make an api call", () => {
+      const mockNearestIntersection: jest.Mock =
+        Api.fetchNearestIntersection as jest.Mock
+      const location = localGeoCoordinateFactory.build()
+      const { rerender } = renderUseNearestIntersection(location)
+
+      rerender(location)
+
+      expect(mockNearestIntersection).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe("when coordinate input changes", () => {
+    test("when promise resolves, return promise result", async () => {
+      const {
+        coordinates: [latLng1, latLng2],
+        intersections: [intersection1, intersection2],
+      } = CoordinateIntersectionMap(2, null)
+      const fetchFn = Api.fetchNearestIntersection as jest.Mock
+
+      // } = MockIntersectionWithCoordinateIntersectionMap(2, new Error("hi"))
+
+      fetchFn.mockReturnValueOnce(Promise.resolve(intersection1))
+      const { rerender, result } = renderUseNearestIntersection(latLng1)
+
+      expect(result.current).toBe(Loading())
+      await waitFor(() => expect(result.current).toBe(intersection1))
+
+      fetchFn.mockReturnValueOnce(Promise.resolve(intersection2))
+      rerender(latLng2)
+      expect(fetchFn).toBeCalledWith(latLng2.latitude, latLng2.longitude)
+
+      await waitFor(async () => {
+        await expect(result.current).toBe(intersection1)
+        // await expect(result.current).toBe(intersection2)
+      })
+
+      await act(async () => expect(result.current).toBe(intersection2))
+    })
+
+    test("should make another api call", async () => {
+      const mockNearestIntersection: jest.Mock =
+        Api.fetchNearestIntersection as jest.Mock
+
+      const { rerender } = renderUseNearestIntersection(
+        localGeoCoordinateFactory.build()
+      )
+
+      expect(mockNearestIntersection).toBeCalledTimes(1)
+
+      rerender(localGeoCoordinateFactory.build())
+
+      await waitFor(() =>
+        expect(mockNearestIntersection).toHaveBeenCalledTimes(2)
+      )
+    })
+  })
+
+  describe("when api call returns error", () => {
+    test("should return error value", async () => {
+      ; (Api.fetchNearestIntersection as jest.Mock).mockReturnValueOnce(
+        Promise.resolve(Err())
+      )
+      const location = localGeoCoordinateFactory.build()
+
+      const { result } = renderUseNearestIntersection(location)
+
+      await waitFor(() =>
+        expect(result.current).toEqual(Err(expect.anything()))
+      )
+    })
+  })
+
+  // test("when location changes, should return loading, and then resolve", async () => {
+  //   const {
+  //     intersections: [intersection1, intersection2],
+  //     coordinates: [latLngValue1, latLngValue2],
+  //     mockImplementation
+  //   } = latLongToIntersections(2, null)
+  //     ; (Api.fetchNearestIntersection as jest.Mock).mockImplementation(mockImplementation)
+
+  //   const { result, rerender } = renderUseNearestIntersection(latLngValue1)
+
+  //   await waitFor(() => expect(result.current).toEqual(Ok(intersection1)))
+
+  //   rerender(latLngValue2)
+  //   expect(result.current).toEqual(Loading())
+  //   // await waitFor(() => )
+
+  //   // When promise resolves and updates state, should rerender with resolved value
+  //   await waitFor(() => {
+  //     expect(result.current).toEqual(Ok(intersection2))
+  //   })
+  // })
 })
