@@ -107,14 +107,20 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
 // #endregion
 
 // #region Vehicle Location
-const CurrentLocation = ({
-  nearestIntersection,
-}: {
-  nearestIntersection?: string | null
-}): React.ReactElement => {
+const CurrentLocation = ({ vehicle }: VehicleProp): React.ReactElement => {
+  const intersection = useNearestIntersection(
+    vehicle.latitude,
+    vehicle.longitude
+  )
+  return <>{intersection ?? "Exact location cannot be determined"}</>
+}
+
+const VehicleNearestIntersection = ({
+  vehicle,
+}: VehicleProp): React.ReactElement => {
   const id = `current-location-${useId()}`
   return (
-    <>
+    <div className="m-current-location">
       <label
         className="m-current-location__label label font-xs-reg title-case"
         htmlFor={id}
@@ -122,23 +128,8 @@ const CurrentLocation = ({
         Current Location
       </label>
       <output className="m-current-location__value label font-s-semi" id={id}>
-        {nearestIntersection ?? "Exact location cannot be determined"}
+        <CurrentLocation vehicle={vehicle} />
       </output>
-    </>
-  )
-}
-
-const VehicleNearestIntersection = ({
-  vehicle,
-}: VehicleProp): React.ReactElement => {
-  const intersection = useNearestIntersection(
-    vehicle.latitude,
-    vehicle.longitude
-  )
-
-  return (
-    <div className="m-current-location">
-      <CurrentLocation nearestIntersection={intersection} />
     </div>
   )
 }
