@@ -1,21 +1,36 @@
-$street-view-button-text-color: $white;
+$street-view-button-background-color: $color-eggplant-700;
+$street-view-button-text-color: $color-eggplant-50;
 
 .m-street-view-button {
   /* Layout */
-  /** Prevent the button from being inlined */
+  /** push button to newline */
   display: block;
+
   /** Prevent the button from expanding to available space */
   width: fit-content;
 
   /* Element Decoration */
-  background-color: black;
-  border-radius: 0.5rem;
-  padding: 0.25rem;
+  background-color: $street-view-button-background-color;
+  border-radius: 4px;
+  padding: 4px 6px;
 
   /* Text Decoration */
   color: $street-view-button-text-color;
   text-decoration: none;
   line-height: 1;
+}
+
+.m-street-view-button__icon {
+  display: inline-block;
+  margin-right: 4px;
+
+  max-height: 1em;
+
+  fill: currentColor;
+
+  svg {
+    height: 1em;
+  }
 }
 
 /* Override `.leaflet-container a` */

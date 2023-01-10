@@ -65,7 +65,7 @@ const SearchForm = ({
           />
           <button
             type="reset"
-            title="Clear"
+            title="Clear Search"
             className="m-search-form__clear"
             onClick={clearTextInput}
           >

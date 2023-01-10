@@ -1,0 +1,114 @@
+// #region Text Styles [v2]
+
+// https://www.notion.so/mbta-downtown-crossing/2022-12-19-Type-Styles-6f6c90eb449248b7a954e234b718137f
+
+$font-colors: (
+  "on-light-900": $color-gray-900,
+  "on-light-800": $color-gray-800,
+  "on-light-700": $color-gray-700,
+
+  "on-dark": $white,
+
+  "text-clickable": $color-eggplant-700,
+);
+
+// > We can append t-shirt sizes to text styles where variants are needed.
+
+// size: skate rem
+// 1rem = 16px
+$font-sizes: (
+  // 24px
+  "xl": 1.5rem,
+  // 20px
+  "l": 1.25rem,
+  // 16px
+  "m": 1rem,
+  // 14px
+  "s": 0.875rem,
+  // 12px
+  "xs": 0.75rem,
+  // 10px
+  "xxs": 0.625rem
+);
+
+// > We can specify font-weight with plain language: bold, semi-bold.
+// > Non-specified text styles are always regular.
+$font-weights: (
+  "reg": 400,
+  // "regular"
+  "semi": 600,
+  // "semi-bold"
+  "bold": 700,
+  // "bold"
+);
+
+// TODO: Cartesian Product of Related Sizes/Weights/Colors
+// TODO: {type}-{size}-{weight}
+:root {
+  @each $size, $font-size in $font-sizes {
+    --font-size-#{$size}: #{$font-size};
+  }
+
+  @each $weight, $font-weight in $font-weights {
+    --font-weight-#{$weight}: #{$font-weight};
+  }
+
+  @each $name, $font-color in $font-colors {
+    --font-color-#{$name}: #{$font-color};
+  }
+}
+
+@each $size, $size_value in $font-sizes {
+  @each $weight, $weight_value in $font-weights {
+    .font-#{$size}-#{$weight} {
+      font-size: var(--font-size-#{$size}, $size_value);
+      font-weight: var(--font-weight-#{$weight}, $weight_value);
+    }
+  }
+}
+
+.content {
+  color: var(--font-color-on-light-800);
+}
+
+.label {
+  color: var(--font-color-on-light-700);
+}
+
+.vehicle-label {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+}
+
+.vehicle-variant {
+  font-weight: var(--font-weight-semi);
+}
+
+.kv-key {
+  text-transform: capitalize;
+  color: var(--font-color-on-light-800);
+}
+
+.kv-value {
+  color: var(--font-color-on-light-700);
+}
+
+.headsign {
+  font-weight: var(--font-weight-semi);
+  font-size: var(--font-size-m);
+  line-height: 1.25;
+  color: var(--font-color-on-light-800);
+}
+
+/* Button/Dark/Small-s-semi */
+
+.button-dark-small {
+  font-weight: 500;
+  font-size: var(--font-size-s);
+  line-height: 1;
+}
+
+.title-case {
+  text-transform: capitalize;
+}
+// #endregion

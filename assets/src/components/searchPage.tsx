@@ -107,6 +107,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
       <div className="m-search-page__map">
         <Map
+          selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
         />

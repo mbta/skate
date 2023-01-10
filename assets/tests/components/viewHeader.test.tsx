@@ -17,7 +17,7 @@ describe("ViewHeader", () => {
 
     const result = render(<ViewHeader title="My View" closeView={close} />)
 
-    await user.click(result.getByTitle("Close"))
+    await user.click(result.getByRole("button", { name: /close/i }))
 
     expect(close).toHaveBeenCalled()
   })

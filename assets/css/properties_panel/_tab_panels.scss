@@ -1,4 +1,5 @@
 .m-tabs__tab-list {
+  box-sizing: border-box; // todo: fix usages of m-tabs to have border box
   border-bottom: 1px solid $color-button-simple;
   display: flex;
   margin: 0;

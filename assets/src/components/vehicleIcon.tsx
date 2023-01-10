@@ -104,9 +104,11 @@ export const VehicleIcon = React.memo(
     const { left, top, width, height } = viewBox(props)
     return (
       <svg
+        role="img"
         style={{ width, height }}
         viewBox={`${left} ${top} ${width} ${height}`}
       >
+        <title>Vehicle Status Icon</title>
         <VehicleIconSvgNode {...props} />
       </svg>
     )
