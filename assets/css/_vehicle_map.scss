@@ -10,6 +10,10 @@
   &.secondary {
     @include font-tiny;
   }
+
+  &.selected .m-vehicle-icon__label-background {
+    fill: $color-eggplant-300;
+  }
 }
 
 .m-vehicle-map__icon {
@@ -38,6 +42,12 @@
 
     &.off-course {
       fill: $color-vehicle-off-course;
+    }
+
+    &.selected {
+      stroke: $color-eggplant-600;
+      stroke-width: 1.5;
+      filter: drop-shadow(1px 1px 4px $color-eggplant-400);
     }
   }
 

@@ -87,12 +87,24 @@
   }
 }
 
-.m-map-page__map .m-vehicle-card {
+$map-page-search-stub-size: 10px;
+
+.m-map-page__map .m-vehicle-properties-card {
   position: absolute;
+  top: 0.5rem;
+  left: calc(env(safe-area-inset-left) + 60px - #{$map-page-search-stub-size});
+
   // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
   z-index: 7001;
-  top: 0.5rem;
-  // Adjacent to controls
-  right: calc(env(safe-area-inset-right) + 3.5rem);
+
   cursor: default;
+}
+
+.m-map-page__input-and-results[hidden] + *::before {
+  content: "";
+
+  height: 100%;
+  width: $map-page-search-stub-size;
+
+  background-color: $color-gray-400;
 }

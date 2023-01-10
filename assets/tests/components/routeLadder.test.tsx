@@ -595,7 +595,7 @@ describe("routeLadder", () => {
         hasAlert={false}
       />
     )
-    await user.click(result.getByTitle("Close"))
+    await user.click(result.getByRole("button", { name: /close/i }))
 
     expect(mockDeselect).toHaveBeenCalledWith("28")
   })

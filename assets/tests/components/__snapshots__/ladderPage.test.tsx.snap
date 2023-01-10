@@ -321,10 +321,14 @@ exports[`LadderPage renders with route tabs 1`] = `
             class="m-route-ladder__close-button-container"
           >
             <button
+              aria-label="Close"
               class="m-close-button m-close-button--large m-close-button--darker"
-              title="Close"
             >
-              <span>
+              <span
+                aria-hidden="true"
+                aria-label=""
+                role="img"
+              >
                 <svg />
               </span>
             </button>
@@ -537,10 +541,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             class="m-route-ladder__close-button-container"
           >
             <button
+              aria-label="Close"
               class="m-close-button m-close-button--large m-close-button--darker"
-              title="Close"
             >
-              <span>
+              <span
+                aria-hidden="true"
+                aria-label=""
+                role="img"
+              >
                 <svg />
               </span>
             </button>
@@ -573,10 +581,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             class="m-route-ladder__close-button-container"
           >
             <button
+              aria-label="Close"
               class="m-close-button m-close-button--large m-close-button--darker"
-              title="Close"
             >
-              <span>
+              <span
+                aria-hidden="true"
+                aria-label=""
+                role="img"
+              >
                 <svg />
               </span>
             </button>
@@ -789,10 +801,14 @@ exports[`LadderPage renders with timepoints 1`] = `
             class="m-route-ladder__close-button-container"
           >
             <button
+              aria-label="Close"
               class="m-close-button m-close-button--large m-close-button--darker"
-              title="Close"
             >
-              <span>
+              <span
+                aria-hidden="true"
+                aria-label=""
+                role="img"
+              >
                 <svg />
               </span>
             </button>
@@ -943,10 +959,14 @@ exports[`LadderPage renders with timepoints 1`] = `
             class="m-route-ladder__close-button-container"
           >
             <button
+              aria-label="Close"
               class="m-close-button m-close-button--large m-close-button--darker"
-              title="Close"
             >
-              <span>
+              <span
+                aria-hidden="true"
+                aria-label=""
+                role="img"
+              >
                 <svg />
               </span>
             </button>

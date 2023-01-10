@@ -191,7 +191,7 @@ describe("LadderPage", () => {
     )
 
     const tabElement = result.getByRole("tab")
-    await user.click(within(tabElement).getByTitle("Close"))
+    await user.click(within(tabElement).getByRole("button", { name: /close/i }))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       closeRouteTab(mockState.routeTabs[0].uuid)

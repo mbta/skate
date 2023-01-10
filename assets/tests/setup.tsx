@@ -32,3 +32,7 @@ document.createElementNS = function (namespaceURI, qualifiedName) {
   }
   return element
 }
+
+beforeEach(() => {
+  expect.hasAssertions()
+})

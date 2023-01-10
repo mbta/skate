@@ -21,7 +21,7 @@ exports[`SearchForm renders 1`] = `
       <button
         className="m-search-form__clear"
         onClick={[Function]}
-        title="Clear"
+        title="Clear Search"
         type="reset"
       >
         <span

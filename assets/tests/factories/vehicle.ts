@@ -1,5 +1,10 @@
 import { Factory } from "fishery"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime"
+import {
+  dataDiscrepancyFactory,
+  swiftlyDataDiscrepancySourceFactory,
+  buslocDataDiscrepancySourceFactory,
+} from "./dataDiscrepancy"
 
 export default Factory.define<Vehicle>(({ sequence }) => ({
   id: `v${sequence}`,
@@ -28,32 +33,22 @@ export default Factory.define<Vehicle>(({ sequence }) => ({
   isRevenue: true,
   layoverDepartureTime: null,
   dataDiscrepancies: [
-    {
+    dataDiscrepancyFactory.build({
       attribute: "trip_id",
       sources: [
-        {
-          id: "swiftly",
-          value: "swiftly-trip-id",
-        },
-        {
-          id: "busloc",
-          value: "busloc-trip-id",
-        },
+        swiftlyDataDiscrepancySourceFactory.build(),
+        buslocDataDiscrepancySourceFactory.build(),
       ],
-    },
-    {
+    }),
+    dataDiscrepancyFactory.build({
       attribute: "route_id",
       sources: [
-        {
-          id: "swiftly",
+        swiftlyDataDiscrepancySourceFactory.withRouteId().build({
           value: null,
-        },
-        {
-          id: "busloc",
-          value: "busloc-route-id",
-        },
+        }),
+        buslocDataDiscrepancySourceFactory.withRouteId().build(),
       ],
-    },
+    }),
   ],
   stopStatus: {
     stopId: "s1",

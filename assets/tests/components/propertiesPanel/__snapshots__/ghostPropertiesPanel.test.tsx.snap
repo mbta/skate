@@ -16,16 +16,19 @@ exports[`GhostPropertiesPanel renders 1`] = `
         Vehicles
       </div>
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -36,6 +39,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
         className="m-properties-panel__label"
       >
         <svg
+          role="img"
           style={
             Object {
               "height": 64,
@@ -44,6 +48,9 @@ exports[`GhostPropertiesPanel renders 1`] = `
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
             className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
           >
@@ -99,17 +106,24 @@ exports[`GhostPropertiesPanel renders 1`] = `
         >
           Outbound
         </div>
-        <div
-          className="m-route-variant-name"
-          data-testid="variant-name"
+        <output
+          aria-label="Route Variant Name"
+          className="m-route-variant-name undefined"
         >
-          <span
+          <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
           >
             39_X
-          </span>
-           headsign
-        </div>
+          </output>
+           
+          <output
+            aria-label="Headsign"
+            className="m-route-variant-name__headsign"
+          >
+            headsign
+          </output>
+        </output>
       </div>
       <div
         className="m-properties-panel__ping-container"
@@ -304,16 +318,19 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         Vehicles
       </div>
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -324,6 +341,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         className="m-properties-panel__label"
       >
         <svg
+          role="img"
           style={
             Object {
               "height": 64,
@@ -332,6 +350,9 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
             className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
           >
@@ -385,17 +406,24 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         <div
           className="m-properties-panel__inbound-outbound"
         />
-        <div
-          className="m-route-variant-name"
-          data-testid="variant-name"
+        <output
+          aria-label="Route Variant Name"
+          className="m-route-variant-name undefined"
         >
-          <span
+          <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
           >
             39_X
-          </span>
-           headsign
-        </div>
+          </output>
+           
+          <output
+            aria-label="Headsign"
+            className="m-route-variant-name__headsign"
+          >
+            headsign
+          </output>
+        </output>
       </div>
       <div
         className="m-properties-panel__ping-container"
@@ -636,16 +664,19 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         Vehicles
       </div>
       <button
+        aria-label="Close"
         className="m-close-button m-close-button--x-large m-close-button--light"
         onClick={[Function]}
-        title="Close"
       >
         <span
+          aria-hidden={true}
+          aria-label=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
             }
           }
+          role="img"
         />
       </button>
     </div>
@@ -656,6 +687,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         className="m-properties-panel__label"
       >
         <svg
+          role="img"
           style={
             Object {
               "height": 64,
@@ -664,6 +696,9 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
             className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
           >
@@ -719,17 +754,24 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         >
           Outbound
         </div>
-        <div
-          className="m-route-variant-name"
-          data-testid="variant-name"
+        <output
+          aria-label="Route Variant Name"
+          className="m-route-variant-name undefined"
         >
-          <span
+          <output
+            aria-label="Route & Variant"
             className="m-route-variant-name__route-id"
           >
             39_X
-          </span>
-           headsign
-        </div>
+          </output>
+           
+          <output
+            aria-label="Headsign"
+            className="m-route-variant-name__headsign"
+          >
+            headsign
+          </output>
+        </output>
       </div>
       <div
         className="m-properties-panel__ping-container"
