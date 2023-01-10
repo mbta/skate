@@ -8,7 +8,9 @@ import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { useNearestIntersection } from "../hooks/useNearestIntersection"
 import { Vehicle } from "../realtime"
 import { CloseButton } from "./closeButton"
-import StreetViewButton, { WorldPositionBearing } from "./streetViewButton"
+import StreetViewButton, {
+  GeographicCoordinateBearing,
+} from "./streetViewButton"
 import { VehicleRouteSummary } from "./vehicleRouteSummary"
 
 interface VehicleProp {
@@ -191,7 +193,7 @@ const VehiclePropertiesCard = ({
         <VehicleNearestIntersection vehicle={vehicle} />
         <StreetViewButton
           aria-label="Go to Street View"
-          {...(vehicle as WorldPositionBearing)}
+          {...(vehicle as GeographicCoordinateBearing)}
         />
       </div>
     </div>

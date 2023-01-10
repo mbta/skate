@@ -3,13 +3,16 @@ import { className as classNames } from "../helpers/dom"
 import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl } from "../util/streetViewUrl"
 
-export interface WorldPositionBearing {
+export interface GeographicCoordinate {
   latitude: number
   longitude: number
+}
+
+export interface GeographicCoordinateBearing extends GeographicCoordinate {
   bearing?: number
 }
 
-export interface StreetViewButtonProps extends WorldPositionBearing {
+export interface StreetViewButtonProps extends GeographicCoordinateBearing {
   className?: string
   text?: string
   title?: string
