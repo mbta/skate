@@ -87,7 +87,7 @@ export const VehicleRouteSummary = ({
       className="m-vehicle-route-summary__route-variant headsign font-m-semi"
     />
 
-    {isVehicle(vehicle) && (
+    {isVehicle(vehicle) && !vehicle.isShuttle && (
       <ScheduleAdherence
         vehicle={vehicle}
         title="Vehicle Schedule Adherence"
