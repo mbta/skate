@@ -97,7 +97,7 @@ export const VehicleRouteSummary = ({
 
     <VehicleStatusIcon
       vehicle={vehicle}
-      className="m-vehicle-route-summary__icon" /* vehicle-label font-xl" */
+      className="m-vehicle-route-summary__icon"
     />
 
     <VisualSeparator className="m-vehicle-route-summary__separator" />
