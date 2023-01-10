@@ -220,7 +220,7 @@ describe("<MapPage />", () => {
     const mapSearchPanel = screen.getByRole("generic", {
       name: /map search panel/i,
     })
-    await userEvent.click(screen.getByRole("cell", { name: runId }))
+    await userEvent.click(screen.getByRole("cell", { name: "Run" }))
 
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
