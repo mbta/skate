@@ -108,7 +108,6 @@ describe("<VehiclePropertiesCard/>", () => {
 
         // - Vehicle Route Summary
         // Vehicle Icon
-        // ToDo: make component accessible
         expect(
           screen.getByRole("img", { name: /vehicle status icon/i })
         ).toBeVisible()
@@ -170,6 +169,7 @@ describe("<VehiclePropertiesCard/>", () => {
           name: "Current Location",
         })
 
+        // In the future, this should show a loading state when vehicle id changes
         // expect(currentLocation).toHaveTextContent(/loading/i)
 
         waitFor(
