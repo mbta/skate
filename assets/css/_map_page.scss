@@ -13,6 +13,10 @@
   position: relative;
 }
 
+.m-map-page__input {
+  padding: 0 0.75rem;
+}
+
 .m-map-page__input-and-results {
   background-color: $color-gray-300;
   display: flex;
@@ -21,14 +25,14 @@
   gap: 1rem;
   width: 21.875rem;
 
-  padding: 1.25rem 1.5625rem;
+  padding: 1.25rem 0.8125rem;
 
   hr {
     height: 1px;
     background-color: $color-gray-100;
     border: none;
-    width: 100%;
-    margin: 0;
+    width: calc(100% - 2 * 0.75rem);
+    margin: 0 0.75rem;
   }
 }
 

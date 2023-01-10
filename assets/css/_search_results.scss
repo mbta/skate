@@ -46,74 +46,11 @@
   }
 }
 
-.m-search-results__card {
-  background-color: $white;
-  border-radius: 4px;
-  box-shadow: $subtle-box-shadow;
-  cursor: pointer;
-  padding: 1rem 1rem 0.5rem;
-  position: relative;
-  text-align: start;
-  width: 100%;
-
-  li:not(:last-child) & {
-    margin-bottom: 1rem;
-  }
-
-  &--selected,
-  &:hover {
-    background-color: $color-secondary-light;
-
-    .highlighted {
-      background-color: $color-secondary-medium;
-    }
-  }
-
-  &--new {
-    border: 1px solid $color-secondary-dark;
-    box-shadow: 0 2px 4px 0 rgba(77, 182, 172, 0.3);
-
-    .m-properties-list__property--last-login
-      .m-properties-list__property-value {
-      color: $color-secondary-dark;
-    }
-  }
-
-  .m-properties-list {
-    padding: 0;
-  }
-}
-
-.m-search-results__card-new-badge {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-}
-
-.m-search-results__card-new-badge-label {
-  @include font-label;
-  color: $color-secondary-dark;
-}
-
-.m-search-results__card-new-badge-icon {
-  display: inline-block;
-  fill: $color-secondary-dark;
-  margin-left: 0.3rem;
-  stroke: none;
-  width: 9px;
-}
-
-.m-search-results__card-route-label {
-  color: $color-font-grey;
-  font-size: 0.75rem;
-  margin: 0.5rem 0;
-
-  .m-route-variant-name__route-id {
-    font-weight: bold;
-  }
-}
-
 .m-search-results__list {
   margin: 0;
   position: relative;
+
+  & > *:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 }

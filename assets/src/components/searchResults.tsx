@@ -1,11 +1,11 @@
 import React, { useContext } from "react"
+import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
 import { isRecentlyLoggedOn, isVehicle } from "../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { VehicleOrGhost } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
-import PropertiesList, { vehicleOrGhostProperties } from "./propertiesList"
-import { RouteVariantName } from "./routeVariantName"
+import { Card, CardProperties } from "./card"
+import { vehicleOrGhostProperties } from "./propertiesList"
 
 interface Props {
   vehicles: VehicleOrGhost[]
@@ -24,48 +24,32 @@ const NewBadge = () => (
   </div>
 )
 
-const RouteLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-search-results__card-route-label">
-    <RouteVariantName vehicle={vehicle} />
-  </div>
-)
-
 const SearchResultCard = ({
   vehicleOrGhost,
   onClick,
-  isSelected,
 }: {
   vehicleOrGhost: VehicleOrGhost
   onClick: (vehicle: VehicleOrGhost) => void
   isSelected: boolean
 }) => {
-  const [
-    {
-      searchPageState: { query },
-    },
-  ] = useContext(StateDispatchContext)
+  const { routeId, viaVariant, headsign } = vehicleOrGhost
+  const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
+  const route = useRoute(vehicleOrGhost.routeId)
 
-  const classes = [
-    "m-search-results__card",
-    isSelected ? "m-search-results__card--selected" : "",
-    isRecentlyLoggedOn(vehicleOrGhost) ? "m-search-results__card--new" : "",
-  ]
+  const title = `${route?.name || routeId}_${viaVariantFormatted} ${headsign}`
 
+  // TODO: Add highlight of result back
   return (
     <li>
-      <button
-        className={className(classes)}
-        onClick={() => onClick(vehicleOrGhost)}
+      <Card
+        openCallback={() => onClick(vehicleOrGhost)}
+        style="white"
+        title={title}
       >
         {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
 
-        <PropertiesList
-          properties={vehicleOrGhostProperties(vehicleOrGhost)}
-          highlightText={query.text}
-        />
-
-        {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
-      </button>
+        <CardProperties properties={vehicleOrGhostProperties(vehicleOrGhost)} />
+      </Card>
     </li>
   )
 }
