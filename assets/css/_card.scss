@@ -98,12 +98,17 @@
   margin-top: 1rem;
   margin-bottom: 0;
 
-  li {
+  tr {
     font-size: 0.875rem;
     line-height: 0.875rem;
 
-    &:not(:last-child) {
+    &:not(:last-child) th,
+    td {
       padding-bottom: 0.5rem;
+    }
+
+    th {
+      text-align: left;
     }
   }
 }

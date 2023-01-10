@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useId } from "react"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { UnreadIcon } from "../helpers/icon"
 import CloseButton from "./closeButton"
@@ -90,24 +90,42 @@ export const CardProperties: React.VFC<CardPropertiesProps> = ({
   properties,
 }: CardPropertiesProps) => {
   return (
-    <ul className="m-card__properties">
-      {properties.map((property) =>
-        property.value ? (
-          <li key={property.label}>
-            <span className="m-card__properties-label">{property.label}</span>
-            <span
-              className={
-                "m-card__properties-value" +
-                (property.sensitive
-                  ? " m-card__properties-value--sensitive fs-mask"
-                  : "")
-              }
-            >
-              {property.value}
-            </span>
-          </li>
-        ) : null
-      )}
-    </ul>
+    <table className="m-card__properties">
+      <tbody>
+        {properties.map((property) =>
+          property.value ? (
+            <CardPropertyRow property={property} key={property.label} />
+          ) : null
+        )}
+      </tbody>
+    </table>
+  )
+}
+
+export interface CardPropertyRowProps {
+  property: Property
+}
+
+const CardPropertyRow: React.FC<CardPropertyRowProps> = ({
+  property,
+}: CardPropertyRowProps) => {
+  const id = "card-property-label-" + useId()
+  return (
+    <tr>
+      <th className="m-card__properties-label" id={id} scope="row">
+        {property.label}
+      </th>
+      <td
+        className={
+          "m-card__properties-value" +
+          (property.sensitive
+            ? " m-card__properties-value--sensitive fs-mask"
+            : "")
+        }
+        aria-labelledby={id}
+      >
+        {property.value}
+      </td>
+    </tr>
   )
 }
