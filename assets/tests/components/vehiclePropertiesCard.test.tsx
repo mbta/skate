@@ -161,22 +161,19 @@ describe("<VehiclePropertiesCard/>", () => {
       test("when location is loading a new vehicle, should show loading text", () => {
         const vehicle = vehicleFactory.build()
         const intersection = "intersection ave @ street"
-          ; (useNearestIntersection as jest.Mock)
-            .mockReturnValueOnce(undefined)
-            .mockReturnValueOnce(intersection)
+        ;(useNearestIntersection as jest.Mock)
+          .mockReturnValueOnce(undefined)
+          .mockReturnValueOnce(intersection)
 
         render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
-        const currentLocation = screen.getByRole("status", { name: "Current Location" })
-        expect(
-          currentLocation
-        ).toHaveTextContent(/loading/i)
-
+        const currentLocation = screen.getByRole("status", {
+          name: "Current Location",
+        })
+        expect(currentLocation).toHaveTextContent(/loading/i)
 
         waitFor(
           () => {
-            expect(
-              currentLocation
-            ).toHaveTextContent(intersection)
+            expect(currentLocation).toHaveTextContent(intersection)
           },
           { timeout: 2 }
         )
