@@ -19,6 +19,7 @@ import { RunFactory } from "../factories/run"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import { searchQueryRunFactory } from "../factories/searchQuery"
 import shapeFactory from "../factories/shape"
+import stopFactory from "../factories/stop"
 import vehicleFactory from "../factories/vehicle"
 
 jest
@@ -113,13 +114,7 @@ describe("<MapPage />", () => {
 
   test("renders stations on zoom", async () => {
     ;(useStations as jest.Mock).mockImplementationOnce(() => [
-      {
-        id: "station-1",
-        name: "Station 1",
-        locationType: LocationType.Station,
-        lat: 42,
-        lon: -71,
-      },
+      stopFactory.build({ locationType: LocationType.Station }),
     ])
 
     const { container } = render(

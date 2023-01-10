@@ -14,8 +14,6 @@ import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory from "../../factories/vehicle"
 import { render } from "@testing-library/react"
 import "@testing-library/jest-dom"
-import { MAP_BETA_GROUP_NAME } from "../../../src/userInTestGroup"
-import getTestGroups from "../../../src/userTestGroups"
 
 jest
   .spyOn(dateTime, "now")
@@ -39,15 +37,6 @@ jest.mock("../../../src/hooks/useStations", () => ({
   __esModule: true,
   useStations: jest.fn(() => []),
 }))
-
-jest.mock("userTestGroups", () => ({
-  __esModule: true,
-  default: jest.fn(() => []),
-}))
-
-beforeEach(() => {
-  ;(getTestGroups as jest.Mock).mockReturnValue([])
-})
 
 const vehicle: Vehicle = vehicleFactory.build({
   id: "v1",
@@ -265,7 +254,6 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("map includes station icons when in map beta test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
     ;(useStations as jest.Mock).mockReturnValue([
       {
         id: "station-id",
@@ -281,24 +269,5 @@ describe("VehiclePropertiesPanel", () => {
     )
 
     expect(container.innerHTML).toContain("m-station-icon")
-  })
-
-  test("map doesn't include station icons when not in map beta test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([])
-    ;(useStations as jest.Mock).mockReturnValue([
-      {
-        id: "station-id",
-        locationType: "station",
-        name: "Station 1",
-        lat: vehicle.latitude,
-        lon: vehicle.longitude,
-      },
-    ])
-
-    const { container } = render(
-      <VehiclePropertiesPanel selectedVehicle={vehicle} />
-    )
-
-    expect(container.innerHTML).not.toContain("m-station-icon")
   })
 })

@@ -14,7 +14,6 @@ import {
   VehicleOrGhost,
 } from "../../realtime"
 import { RouteId, Shape, Stop } from "../../schedule"
-import inTestGroup, { MAP_BETA_GROUP_NAME } from "../../userInTestGroup"
 import Map from "../map"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
@@ -116,7 +115,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           vehicles={[vehicle]}
           shapes={shapes}
           secondaryVehicles={routeVehicles}
-          stations={inTestGroup(MAP_BETA_GROUP_NAME) ? stations : []}
+          stations={stations}
         />
       </div>
     </div>
