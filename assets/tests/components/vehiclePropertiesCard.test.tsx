@@ -9,16 +9,10 @@ import userEvent from "@testing-library/user-event"
 import VehiclePropertiesCard from "../../src/components/vehiclePropertiesCard"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { fetchNearestIntersection } from "../../src/api"
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => null),
-}))
-
-jest.mock("../../src/api", () => ({
-  __esModule: true,
-  fetchNearestIntersection: jest.fn(),
 }))
 
 describe("<VehiclePropertiesCard/>", () => {
@@ -166,28 +160,22 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location is loading a new vehicle, should show loading text", () => {
         const vehicle = vehicleFactory.build()
-        let resolveFn: null | ((value: unknown) => void) = null
-        const locationPromise = new Promise((resolve) => {
-          resolveFn = resolve
-        })
-
-        ;(fetchNearestIntersection as jest.Mock).mockReturnValue(
-          locationPromise
-        )
+        const intersection = "intersection ave @ street"
+          ; (useNearestIntersection as jest.Mock)
+            .mockReturnValueOnce(undefined)
+            .mockReturnValueOnce(intersection)
 
         render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
-
+        const currentLocation = screen.getByRole("status", { name: "Current Location" })
         expect(
-          screen.getByRole("status", { name: "Current Location" })
+          currentLocation
         ).toHaveTextContent(/loading/i)
 
-        const intersection = "intersection ave @ street"
-        resolveFn!(intersection)
 
         waitFor(
           () => {
             expect(
-              screen.getByRole("status", { name: "Current Location" })
+              currentLocation
             ).toHaveTextContent(intersection)
           },
           { timeout: 2 }
