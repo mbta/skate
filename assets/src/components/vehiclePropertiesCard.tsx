@@ -137,8 +137,8 @@ const VehicleNearestIntersection = ({
 // #region Catching Events Before Leaflet
 const cancelEvent: MouseEventHandler<HTMLDivElement> = (e) => {
   e.stopPropagation()
-  e.preventDefault()
 }
+
 const keepUserInputFromLeaflet: ComponentPropsWithoutRef<"div"> = {
   onMouseDownCapture: cancelEvent,
   onDoubleClickCapture: cancelEvent,
