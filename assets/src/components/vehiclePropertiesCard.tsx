@@ -4,7 +4,7 @@ import React, {
   ReactNode,
   useId,
 } from "react"
-import { className as classNames } from "../helpers/dom"
+import { joinTruthy, className as classNames } from "../helpers/dom"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { useNearestIntersection } from "../hooks/useNearestIntersection"
 import { Vehicle } from "../realtime"
@@ -91,7 +91,7 @@ const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
         <TrNameValue name="run">{vehicle.runId ?? "N/A"}</TrNameValue>
         <TrNameValue name="vehicle">{vehicle.label ?? "N/A"}</TrNameValue>
         <TrNameValue name="operator" sensitivity={HideSensitiveInfo.All}>
-          {classNames([
+          {joinTruthy([
             vehicle.operatorFirstName,
             vehicle.operatorLastName,
             vehicle.operatorId ? `#${vehicle.operatorId}` : null,
