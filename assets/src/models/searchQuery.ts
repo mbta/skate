@@ -2,7 +2,6 @@ export type SearchQueryType = "all" | "run" | "vehicle" | "operator"
 
 export interface SearchQuery {
   text: string
-  // property: SearchQueryType
   property: SearchQueryType | string
 }
 

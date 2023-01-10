@@ -40,6 +40,7 @@ function CoordinateIntersectionMap(
       intersections[index],
     ])
   )
+
   const lookupFn = (coordinate: GeographicCoordinate) =>
     map.get(JSON.stringify(coordinate)) ?? errorValue
 
