@@ -169,26 +169,4 @@ describe("useNearestIntersection", () => {
       )
     })
   })
-
-  // test("when location changes, should return loading, and then resolve", async () => {
-  //   const {
-  //     intersections: [intersection1, intersection2],
-  //     coordinates: [latLngValue1, latLngValue2],
-  //     mockImplementation
-  //   } = latLongToIntersections(2, null)
-  //     ; (Api.fetchNearestIntersection as jest.Mock).mockImplementation(mockImplementation)
-
-  //   const { result, rerender } = renderUseNearestIntersection(latLngValue1)
-
-  //   await waitFor(() => expect(result.current).toEqual(Ok(intersection1)))
-
-  //   rerender(latLngValue2)
-  //   expect(result.current).toEqual(Loading())
-  //   // await waitFor(() => )
-
-  //   // When promise resolves and updates state, should rerender with resolved value
-  //   await waitFor(() => {
-  //     expect(result.current).toEqual(Ok(intersection2))
-  //   })
-  // })
 })
