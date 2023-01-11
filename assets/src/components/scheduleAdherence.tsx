@@ -1,12 +1,13 @@
 import React, { ComponentPropsWithoutRef, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className as classNames } from "../helpers/dom"
+import { isVehicle } from "../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../models/vehicleStatus"
-import { Vehicle } from "../realtime"
+import { Vehicle, VehicleOrGhost } from "../realtime"
 import { secondsToMinutes } from "../util/dateTime"
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -59,7 +60,7 @@ const ScheduleAdherenceMetric = ({
 
 export interface ScheduleAdherenceProps
   extends ComponentPropsWithoutRef<"output"> {
-  vehicle: Vehicle
+  vehicle: VehicleOrGhost
   title?: string
 }
 
@@ -77,16 +78,20 @@ export const ScheduleAdherence = ({
   ])
   return (
     <output aria-label={title ?? "Schedule Adherence"} className={classes}>
-      <ScheduleAdherenceStatusIcon />
-      <ScheduleAdherenceDescription
-        vehicle={vehicle}
-        className="label font-xs-semi title-case"
-      />
-      &nbsp;
-      <ScheduleAdherenceMetric
-        vehicle={vehicle}
-        className="label font-xs-reg"
-      />
+      {isVehicle(vehicle) && !vehicle.isShuttle && (
+        <>
+          <ScheduleAdherenceStatusIcon />
+          <ScheduleAdherenceDescription
+            vehicle={vehicle}
+            className="label font-xs-semi title-case"
+          />
+          &nbsp;
+          <ScheduleAdherenceMetric
+            vehicle={vehicle}
+            className="label font-xs-reg"
+          />
+        </>
+      )}
     </output>
   )
 }
