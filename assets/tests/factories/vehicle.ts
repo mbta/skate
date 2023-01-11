@@ -6,7 +6,7 @@ import {
   buslocDataDiscrepancySourceFactory,
 } from "./dataDiscrepancy"
 
-export default Factory.define<Vehicle>(({ sequence }) => ({
+const vehicleFactory = Factory.define<Vehicle>(({ sequence }) => ({
   id: `v${sequence}`,
   label: `v${sequence}-label`,
   runId: `run-${sequence}`,
@@ -76,3 +76,21 @@ export default Factory.define<Vehicle>(({ sequence }) => ({
   blockWaivers: [],
   crowding: null,
 }))
+
+export default vehicleFactory
+
+export const shuttleFactory = vehicleFactory.params({
+  isShuttle: true,
+
+  runId: "999-0555",
+  tripId: "BL-10987654321",
+  routeId: "Shuttle-Generic",
+
+  crowding: null,
+
+  dataDiscrepancies: [],
+})
+
+export const invalidVehicleFactory = vehicleFactory.params({
+  isOffCourse: true,
+})
