@@ -13,7 +13,7 @@ import useSearchResults from "../hooks/useSearchResults"
 import { useTripShape } from "../hooks/useShapes"
 import { useStations } from "../hooks/useStations"
 import { isVehicle } from "../models/vehicle"
-import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
+import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
@@ -68,12 +68,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
-  const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId | null>(
-    searchPageState.selectedVehicleId ?? null
-  )
 
-  const liveVehicle: Vehicle | null = selectedVehicleId
-    ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
+  // TODO: Handle when selectedVehicleId is not in search results
+  // May involve a bit of refactoring - want to conditionally call useVehicleForId hook,
+  // but can't conditionally call hooks. Factor out some separate components?
+  const liveVehicle: Vehicle | null = searchPageState.selectedVehicleId
+    ? onlyVehicles.find((v) => v.id === searchPageState.selectedVehicleId) ||
+      null
     : null
   const [showVehicleCard, setShowVehicleCard] = useState<boolean>(
     searchPageState.selectedVehicleId ? true : false
@@ -81,7 +82,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
 
   const onSearchCallback = () => {
-    setSelectedVehicleId(null)
+    dispatch(setSelectedVehicle(null))
   }
 
   const toggleMobileDisplay = () => {
@@ -94,9 +95,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const selectVehicle = (vehicle: VehicleOrGhost): void => {
     if (isVehicle(vehicle)) {
-      setSelectedVehicleId(vehicle.id)
-      setShowVehicleCard(true)
       dispatch(setSelectedVehicle(vehicle.id))
+      setShowVehicleCard(true)
     }
   }
 
@@ -155,7 +155,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
           stations={stations}
-          selectedVehicleId={selectedVehicleId ?? undefined}
+          selectedVehicleId={searchPageState.selectedVehicleId ?? undefined}
         >
           {vpcEnabled ? (
             <VehiclePropertiesCard
