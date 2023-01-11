@@ -14,7 +14,7 @@
 }
 
 .m-map-page__input {
-  padding: 0 0.75rem;
+  padding: 0 1.5625rem;
 }
 
 .m-map-page__input-and-results {
@@ -25,14 +25,14 @@
   gap: 1rem;
   width: 21.875rem;
 
-  padding: 1.25rem 0.8125rem;
+  padding: 1.25rem 0 0 0;
 
   hr {
     height: 1px;
     background-color: $color-gray-100;
     border: none;
-    width: calc(100% - 2 * 0.75rem);
-    margin: 0 0.75rem;
+    width: calc(100% - 2 * 1.5625rem);
+    margin: 0 1.5625rem;
   }
 }
 
@@ -47,6 +47,7 @@
   flex: 1 1 auto;
   overflow-y: scroll;
   padding-top: 0.625rem;
+  padding: 0.625rem 0.8125rem 0 0.8125rem;
 }
 
 @media screen and (max-width: $mobile-max-width) {
