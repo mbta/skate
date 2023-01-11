@@ -2,13 +2,14 @@ import React from "react"
 import { render, screen, waitFor } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import * as dateTime from "../../src/util/dateTime"
-import vehicleFactory from "../factories/vehicle"
+import vehicleFactory, { shuttleFactory } from "../factories/vehicle"
 import routeFactory from "../factories/route"
 
 import userEvent from "@testing-library/user-event"
 import VehiclePropertiesCard from "../../src/components/vehiclePropertiesCard"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
 import { RoutesProvider } from "../../src/contexts/routesContext"
+import { VehicleRouteSummary } from "../../src/components/vehicleRouteSummary"
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
@@ -193,6 +194,27 @@ describe("<VehiclePropertiesCard/>", () => {
       expect(
         screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
       ).toHaveTextContent(/invalid/i)
+
+      // Use correct icon // TODO: make accessible and ensure icon is correct
+      expect(
+        screen.getByRole("img", { name: /vehicle status icon/i })
+      ).toBeVisible()
+    })
+
+    test("vehicle is shuttle, should render shuttle text and no route or adherence info", () => {
+      const vehicle = shuttleFactory.build()
+
+      render(<VehicleRouteSummary vehicle={vehicle} />)
+
+      expect(
+        screen.getByRole("status", { name: /Route Variant Name/i })
+      ).toHaveTextContent("Shuttle")
+      expect(
+        screen.getByRole("status", { name: /Route Direction/i })
+      ).toBeEmptyDOMElement()
+      expect(
+        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
+      ).toBeEmptyDOMElement()
 
       // Use correct icon // TODO: make accessible and ensure icon is correct
       expect(

@@ -4,7 +4,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
-import { directionName, isVehicle } from "../models/vehicle"
+import { directionName } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleOrGhost } from "../realtime"
 import { RouteVariantName } from "./routeVariantName"
@@ -87,13 +87,11 @@ export const VehicleRouteSummary = ({
       className="m-vehicle-route-summary__route-variant headsign font-m-semi"
     />
 
-    {isVehicle(vehicle) && (
-      <ScheduleAdherence
-        vehicle={vehicle}
-        title="Vehicle Schedule Adherence"
-        className="m-vehicle-route-summary__adherence label font-xs-reg"
-      />
-    )}
+    <ScheduleAdherence
+      vehicle={vehicle}
+      title="Vehicle Schedule Adherence"
+      className="m-vehicle-route-summary__adherence label font-xs-reg"
+    />
 
     <VehicleStatusIcon
       vehicle={vehicle}

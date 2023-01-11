@@ -12,8 +12,9 @@ import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { ByRouteId, Shape } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
-import vehicleFactory from "../factories/vehicle"
+import { shuttleFactory } from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
+import shapeFactory from "../factories/shape"
 
 jest
   .spyOn(dateTime, "now")
@@ -46,51 +47,12 @@ afterAll(() => {
   global.scrollTo = originalScrollTo
 })
 
-const shuttle: Vehicle = vehicleFactory.build({
-  id: "y1818",
-  label: "1818",
-  runId: "999-0555",
-  timestamp: 1557160307,
-  latitude: 0,
-  longitude: 0,
-  directionId: 0,
-  routeId: "1",
-  tripId: "39914237",
-  headsign: "h1",
-  viaVariant: "4",
-  operatorId: "op1",
-  operatorFirstName: "PATTI",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  isShuttle: true,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [],
-  stopStatus: {
-    stopId: "57",
-    stopName: "57",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "MATPN",
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
-})
+const shuttle: Vehicle = shuttleFactory.build({ label: "1818" })
 
-const shape: Shape = {
-  id: "shape",
+const shape: Shape = shapeFactory.build({
   points: [],
-}
+  stops: [],
+})
 
 describe("Shuttle Map Page", () => {
   test("renders", () => {
