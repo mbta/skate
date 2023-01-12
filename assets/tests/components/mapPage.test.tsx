@@ -233,6 +233,39 @@ describe("<MapPage />", () => {
     expect(mapSearchPanel).not.toBeVisible()
   })
 
+  test("when a vehicle is selected and not in the search results, it is still displayed", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const runId = "clickMe"
+    const vehicle = vehicleFactory.build({ runId })
+    ;(useSearchResults as jest.Mock).mockReturnValue([])
+    const shapes = shapeFactory.buildList(2)
+    ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
+      tripId === vehicle.tripId ? shapes : null
+    )
+    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+
+    const { container } = render(<MapPage />, {
+      wrapper: (props) => (
+        <RealDispatchWrapper
+          initialState={stateFactory.build({
+            searchPageState: { selectedVehicleId: vehicle.id },
+          })}
+          {...props}
+        />
+      ),
+    })
+
+    expect(
+      screen.getByRole("generic", { name: /vehicle properties card/i })
+    ).toBeVisible()
+    expect(container.querySelector(".m-vehicle-icon__label")).toBeVisible()
+
+    expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
+    expect(
+      screen.queryByRole("generic", { name: /map search panel/i })
+    ).not.toBeInTheDocument()
+  })
+
   test("submitting a new search clears the previously selected route shape", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
@@ -327,12 +360,11 @@ describe("<MapPage />", () => {
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
     expect(vehiclePropertiesCard).not.toBeInTheDocument()
     expect(routeShape).not.toBeInTheDocument()
-    screen.debug()
     expect(
       screen.getByRole("generic", {
         name: /map search panel/i,
       })
-    ).toBeInTheDocument()
+    ).toBeVisible()
   })
 
   test("after search is canceled, should not render search results on map", async () => {
