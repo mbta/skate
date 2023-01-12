@@ -405,6 +405,22 @@ describe("<MapPage />", () => {
     expect(mapSearchPanel).not.toBeVisible()
   })
 
+  test("can collapse and un-collapse the search panel with the drawer tab", async () => {
+    render(<MapPage />)
+
+    await userEvent.click(screen.getByRole("button", { name: "Collapse" }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "hidden"
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Expand" }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "visible"
+    )
+  })
+
   describe("VehiclePropertiesCard", () => {
     describe("renders", () => {
       test("after search result is selected", async () => {

@@ -8,6 +8,7 @@ exports[`drawerTab has correct icon when collapsed 1`] = `
     className="c-drawer-tab__tab-button"
     data-testid="drawer-tab-button"
     onClick={[MockFunction]}
+    title="Expand"
   >
     <span
       dangerouslySetInnerHTML={
@@ -28,6 +29,7 @@ exports[`drawerTab has correct icon when visible 1`] = `
     className="c-drawer-tab__tab-button"
     data-testid="drawer-tab-button"
     onClick={[MockFunction]}
+    title="Collapse"
   >
     <span
       dangerouslySetInnerHTML={

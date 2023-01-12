@@ -15,6 +15,7 @@ exports[`Shuttle Map Page renders 1`] = `
         <button
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
@@ -400,6 +401,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
         <button
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
@@ -785,6 +787,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
         <button
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
@@ -1170,6 +1173,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
         <button
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
@@ -1380,6 +1384,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
         <button
           class="c-drawer-tab__tab-button"
           data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
