@@ -288,7 +288,7 @@ describe("<MapPage />", () => {
     expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
-  test.only("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
+  test("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
     ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
@@ -327,7 +327,12 @@ describe("<MapPage />", () => {
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
     expect(vehiclePropertiesCard).not.toBeInTheDocument()
     expect(routeShape).not.toBeInTheDocument()
-    expect(mapSearchPanel).toBeVisible()
+    screen.debug()
+    expect(
+      screen.getByRole("generic", {
+        name: /map search panel/i,
+      })
+    ).toBeInTheDocument()
   })
 
   test("after search is canceled, should not render search results on map", async () => {
