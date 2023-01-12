@@ -1,6 +1,6 @@
 import { Factory } from "fishery"
 import { SearchPageState } from "../../src/state/searchPageState"
-import { emptySearchQueryFactory } from "./searchQuery"
+import { emptySearchQueryFactory, searchQueryAllFactory } from "./searchQuery"
 
 export const searchPageStateFactory = Factory.define<SearchPageState>(() => ({
   query: emptySearchQueryFactory.build(),
@@ -8,3 +8,8 @@ export const searchPageStateFactory = Factory.define<SearchPageState>(() => ({
   savedQueries: [],
   selectedVehicleId: null,
 }))
+
+export const activeSearchPageStateFactory = searchPageStateFactory.params({
+  isActive: true,
+  query: searchQueryAllFactory.build(),
+})
