@@ -16,38 +16,42 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
           onClick={[Function]}
         >
           <div
-            className="m-card__top-row"
+            className="m-card__left-content"
           >
             <div
-              className="m-card__title"
+              className="m-card__top-row"
             >
-              39_X headsign
+              <div
+                className="m-card__title"
+              >
+                39_X headsign
+              </div>
             </div>
-          </div>
-          <div
-            className="m-card__contents"
-          >
-            <table
-              className="m-card__properties"
+            <div
+              className="m-card__contents"
             >
-              <tbody>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r0:"
-                    scope="row"
-                  >
-                    Run
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r0:"
-                    className="m-card__properties-value"
-                  >
-                    123-0123
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <table
+                className="m-card__properties"
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r0:"
+                      scope="row"
+                    >
+                      Run
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r0:"
+                      className="m-card__properties-value"
+                    >
+                      123-0123
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </button>
       </div>
@@ -61,83 +65,87 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
           onClick={[Function]}
         >
           <div
-            className="m-card__top-row"
+            className="m-card__left-content"
           >
             <div
-              className="m-card__title"
+              className="m-card__top-row"
             >
-              39_X Forest Hills
+              <div
+                className="m-card__title"
+              >
+                39_X Forest Hills
+              </div>
             </div>
-          </div>
-          <div
-            className="m-card__contents"
-          >
-            <table
-              className="m-card__properties"
+            <div
+              className="m-card__contents"
             >
-              <tbody>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r1:"
-                    scope="row"
-                  >
-                    Run
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r1:"
-                    className="m-card__properties-value"
-                  >
-                    run-1
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r2:"
-                    scope="row"
-                  >
-                    Vehicle
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r2:"
-                    className="m-card__properties-value"
-                  >
-                    v1-label
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r3:"
-                    scope="row"
-                  >
-                    Operator
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r3:"
-                    className="m-card__properties-value m-card__properties-value--sensitive fs-mask"
-                  >
-                    PATTI SMITH #op1
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r4:"
-                    scope="row"
-                  >
-                    Last Login
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r4:"
-                    className="m-card__properties-value"
-                  >
-                    4 hr 3 min; 1:38 PM
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <table
+                className="m-card__properties"
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r1:"
+                      scope="row"
+                    >
+                      Run
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r1:"
+                      className="m-card__properties-value"
+                    >
+                      run-1
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r2:"
+                      scope="row"
+                    >
+                      Vehicle
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r2:"
+                      className="m-card__properties-value"
+                    >
+                      v1-label
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r3:"
+                      scope="row"
+                    >
+                      Operator
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r3:"
+                      className="m-card__properties-value m-card__properties-value--sensitive fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r4:"
+                      scope="row"
+                    >
+                      Last Login
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r4:"
+                      className="m-card__properties-value"
+                    >
+                      4 hr 3 min; 1:38 PM
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </button>
       </div>
@@ -162,38 +170,42 @@ exports[`SearchResults renders a selected result card 1`] = `
           onClick={[Function]}
         >
           <div
-            className="m-card__top-row"
+            className="m-card__left-content"
           >
             <div
-              className="m-card__title"
+              className="m-card__top-row"
             >
-              1_ headsign
+              <div
+                className="m-card__title"
+              >
+                1_ headsign
+              </div>
             </div>
-          </div>
-          <div
-            className="m-card__contents"
-          >
-            <table
-              className="m-card__properties"
+            <div
+              className="m-card__contents"
             >
-              <tbody>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:ri:"
-                    scope="row"
-                  >
-                    Run
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:ri:"
-                    className="m-card__properties-value"
-                  >
-                    123-0123
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <table
+                className="m-card__properties"
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:ri:"
+                      scope="row"
+                    >
+                      Run
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:ri:"
+                      className="m-card__properties-value"
+                    >
+                      123-0123
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </button>
       </div>
@@ -207,83 +219,87 @@ exports[`SearchResults renders a selected result card 1`] = `
           onClick={[Function]}
         >
           <div
-            className="m-card__top-row"
+            className="m-card__left-content"
           >
             <div
-              className="m-card__title"
+              className="m-card__top-row"
             >
-              39_X Forest Hills
+              <div
+                className="m-card__title"
+              >
+                39_X Forest Hills
+              </div>
             </div>
-          </div>
-          <div
-            className="m-card__contents"
-          >
-            <table
-              className="m-card__properties"
+            <div
+              className="m-card__contents"
             >
-              <tbody>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:rj:"
-                    scope="row"
-                  >
-                    Run
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:rj:"
-                    className="m-card__properties-value"
-                  >
-                    run-1
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:rk:"
-                    scope="row"
-                  >
-                    Vehicle
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:rk:"
-                    className="m-card__properties-value"
-                  >
-                    v1-label
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:rl:"
-                    scope="row"
-                  >
-                    Operator
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:rl:"
-                    className="m-card__properties-value m-card__properties-value--sensitive fs-mask"
-                  >
-                    WILL SMITH #op1
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:rm:"
-                    scope="row"
-                  >
-                    Last Login
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:rm:"
-                    className="m-card__properties-value"
-                  >
-                    4 hr 3 min; 1:38 PM
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <table
+                className="m-card__properties"
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:rj:"
+                      scope="row"
+                    >
+                      Run
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:rj:"
+                      className="m-card__properties-value"
+                    >
+                      run-1
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:rk:"
+                      scope="row"
+                    >
+                      Vehicle
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:rk:"
+                      className="m-card__properties-value"
+                    >
+                      v1-label
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:rl:"
+                      scope="row"
+                    >
+                      Operator
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:rl:"
+                      className="m-card__properties-value m-card__properties-value--sensitive fs-mask"
+                    >
+                      WILL SMITH #op1
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:rm:"
+                      scope="row"
+                    >
+                      Last Login
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:rm:"
+                      className="m-card__properties-value"
+                    >
+                      4 hr 3 min; 1:38 PM
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </button>
       </div>
@@ -338,106 +354,110 @@ exports[`SearchResults shows the new badge for vehicle that have logged in withi
           onClick={[Function]}
         >
           <div
-            className="m-card__top-row"
+            className="m-card__left-content"
           >
             <div
-              className="m-card__title"
+              className="m-card__top-row"
             >
-              39_X Forest Hills
+              <div
+                className="m-card__title"
+              >
+                39_X Forest Hills
+              </div>
             </div>
-          </div>
-          <div
-            className="m-card__contents"
-          >
             <div
-              className="m-search-results__card-new-badge"
+              className="m-card__contents"
             >
-              <span
-                className="m-search-results__card-new-badge-label"
+              <div
+                className="m-search-results__card-new-badge"
               >
-                New
-              </span>
-              <span
-                className="m-search-results__card-new-badge-icon"
-              >
-                <svg
-                  viewBox="0 0 9 9"
-                  xmlns="http://www.w3.org/2000/svg"
+                <span
+                  className="m-search-results__card-new-badge-label"
                 >
-                  <circle
-                    cx="4.5"
-                    cy="4.5"
-                    r="4.5"
-                  />
-                </svg>
-              </span>
+                  New
+                </span>
+                <span
+                  className="m-search-results__card-new-badge-icon"
+                >
+                  <svg
+                    viewBox="0 0 9 9"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="4.5"
+                      cy="4.5"
+                      r="4.5"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <table
+                className="m-card__properties"
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r5:"
+                      scope="row"
+                    >
+                      Run
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r5:"
+                      className="m-card__properties-value"
+                    >
+                      run-1
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r6:"
+                      scope="row"
+                    >
+                      Vehicle
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r6:"
+                      className="m-card__properties-value"
+                    >
+                      v1-label
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r7:"
+                      scope="row"
+                    >
+                      Operator
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r7:"
+                      className="m-card__properties-value m-card__properties-value--sensitive fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="m-card__properties-label"
+                      id="card-property-label-:r8:"
+                      scope="row"
+                    >
+                      Last Login
+                    </th>
+                    <td
+                      aria-labelledby="card-property-label-:r8:"
+                      className="m-card__properties-value"
+                    >
+                      1 min; 5:40 PM
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <table
-              className="m-card__properties"
-            >
-              <tbody>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r5:"
-                    scope="row"
-                  >
-                    Run
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r5:"
-                    className="m-card__properties-value"
-                  >
-                    run-1
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r6:"
-                    scope="row"
-                  >
-                    Vehicle
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r6:"
-                    className="m-card__properties-value"
-                  >
-                    v1-label
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r7:"
-                    scope="row"
-                  >
-                    Operator
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r7:"
-                    className="m-card__properties-value m-card__properties-value--sensitive fs-mask"
-                  >
-                    PATTI SMITH #op1
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    className="m-card__properties-label"
-                    id="card-property-label-:r8:"
-                    scope="row"
-                  >
-                    Last Login
-                  </th>
-                  <td
-                    aria-labelledby="card-property-label-:r8:"
-                    className="m-card__properties-value"
-                  >
-                    1 min; 5:40 PM
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </button>
       </div>

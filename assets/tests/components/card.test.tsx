@@ -15,7 +15,8 @@ describe("Card", () => {
     expect(result.queryByText(/Foo/)).not.toBeNull()
     expect(result.queryByTitle("Close")).toBeNull()
     expect(
-      result.queryByText(/Foo/)?.parentElement?.parentElement?.className
+      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
+        ?.className
     ).toMatch(/m-card--read/)
   })
 
@@ -49,7 +50,8 @@ describe("Card", () => {
     )
 
     expect(
-      result.queryByText(/Foo/)?.parentElement?.parentElement?.className
+      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
+        ?.className
     ).toMatch(/my-custom-class/)
   })
 
@@ -66,7 +68,8 @@ describe("Card", () => {
     )
 
     expect(
-      result.queryByText(/Foo/)?.parentElement?.parentElement?.className
+      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
+        ?.className
     ).toMatch(/m-card--no-focus-or-hover/)
   })
 
@@ -85,6 +88,33 @@ describe("Card", () => {
     expect(result.queryByText(/10 min/)).not.toBeNull()
   })
 
+  test("includes icon element when given", () => {
+    const result = render(
+      <Card title="My Card" icon={<>Bar</>} style="white">
+        Foo
+      </Card>
+    )
+
+    expect(result.queryByText(/Bar/)).not.toBeNull()
+  })
+
+  test("includes icon element when given along with open callback", () => {
+    const result = render(
+      <Card
+        title="My Card"
+        icon={<>Bar</>}
+        style="white"
+        openCallback={() => {
+          null
+        }}
+      >
+        Foo
+      </Card>
+    )
+
+    expect(result.queryByText(/Bar/)).not.toBeNull()
+  })
+
   test("invokes callback when clicked", async () => {
     const openCallback = jest.fn()
     const user = userEvent.setup()
@@ -99,9 +129,9 @@ describe("Card", () => {
       </Card>
     )
 
-    expect(result.getByText(/Contents/).parentElement?.tagName).toEqual(
-      "BUTTON"
-    )
+    expect(
+      result.getByText(/Contents/).parentElement?.parentElement?.tagName
+    ).toEqual("BUTTON")
 
     await user.click(result.getByText(/Contents/))
 

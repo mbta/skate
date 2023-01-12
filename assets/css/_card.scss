@@ -22,14 +22,24 @@
 }
 
 .m-card__left {
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
   position: relative;
+  display: grid;
+  grid-template-areas: "icon main-contents";
 
   &:last-child {
     padding-right: 0.3125rem;
   }
+}
+
+.m-card__icon {
+  grid-area: icon;
+}
+
+.m-card__left-content {
+  display: flex;
+  flex-direction: column;
+  grid-area: main-contents;
 }
 
 .m-card__right {
