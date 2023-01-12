@@ -26,6 +26,7 @@
   position: relative;
   display: grid;
   grid-template-areas: "icon main-contents";
+  grid-template-columns: min-content 1fr;
 
   &:last-child {
     padding-right: 0.3125rem;
@@ -105,7 +106,14 @@
 }
 
 .m-card__properties {
-  margin-top: 1rem;
+  &:not(:first-child) {
+    margin-top: 1rem;
+  }
+
+  &:first-child {
+    margin-top: 0.375rem;
+  }
+
   margin-bottom: 0;
 
   tr {
