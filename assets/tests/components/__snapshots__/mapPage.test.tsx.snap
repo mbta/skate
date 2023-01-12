@@ -8,8 +8,21 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results"
+      class="m-map-page__input-and-results visible"
     >
+      <div
+        class="c-drawer-tab"
+      >
+        <button
+          class="c-drawer-tab__tab-button"
+          data-testid="drawer-tab-button"
+          title="Collapse"
+        >
+          <span>
+            <svg />
+          </span>
+        </button>
+      </div>
       <div
         class="m-map-page__input"
       >
@@ -341,8 +354,21 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results"
+      class="m-map-page__input-and-results visible"
     >
+      <div
+        class="c-drawer-tab"
+      >
+        <button
+          class="c-drawer-tab__tab-button"
+          data-testid="drawer-tab-button"
+          title="Collapse"
+        >
+          <span>
+            <svg />
+          </span>
+        </button>
+      </div>
       <div
         class="m-map-page__input"
       >
@@ -674,8 +700,21 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results"
+      class="m-map-page__input-and-results visible"
     >
+      <div
+        class="c-drawer-tab"
+      >
+        <button
+          class="c-drawer-tab__tab-button"
+          data-testid="drawer-tab-button"
+          title="Collapse"
+        >
+          <span>
+            <svg />
+          </span>
+        </button>
+      </div>
       <div
         class="m-map-page__input"
       >
