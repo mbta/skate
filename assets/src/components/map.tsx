@@ -4,6 +4,7 @@ import Leaflet, {
   DomUtil,
   LatLng,
   LatLngExpression,
+  LatLngLiteral,
   Map as LeafletMap,
 } from "leaflet"
 
@@ -70,7 +71,7 @@ export interface Props {
   stations?: Stop[] | null
 }
 
-export const defaultCenter: LatLngExpression = {
+export const defaultCenter: LatLngLiteral = {
   lat: 42.360718,
   lng: -71.05891,
 }
