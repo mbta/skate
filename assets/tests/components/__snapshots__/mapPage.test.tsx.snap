@@ -881,8 +881,8 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="/16/20061/24522.png"
-                  style="width: 256px; height: 256px; left: -77px; top: -215px;"
+                  src="/16/19832/24239.png"
+                  style="width: 256px; height: 256px; left: -31px; top: -119px;"
                 />
               </div>
             </div>
@@ -899,7 +899,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             <div
               class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2000;"
               tabindex="0"
             >
               <svg
@@ -922,7 +922,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             <div
               class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 3252915px; top: 2110761px; z-index: 2112761;"
+              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2000;"
               tabindex="0"
             >
               <svg
