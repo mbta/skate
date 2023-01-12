@@ -6,6 +6,7 @@ import { VehicleOrGhost } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
 import { Card, CardProperties } from "./card"
 import { vehicleOrGhostProperties } from "./propertiesList"
+import { VehicleStatusIcon } from "./vehicleRouteSummary"
 
 interface Props {
   vehicles: VehicleOrGhost[]
@@ -45,6 +46,8 @@ const SearchResultCard = ({
         openCallback={() => onClick(vehicleOrGhost)}
         style="white"
         title={title}
+        icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
+        additionalClass="m-search-results__result"
       >
         {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
 

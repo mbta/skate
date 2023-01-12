@@ -54,3 +54,13 @@
     margin-bottom: 1rem;
   }
 }
+
+.m-search-results__result {
+  .m-card__icon {
+    padding-right: 1rem;
+
+    svg {
+      width: 2.5rem !important;
+    }
+  }
+}

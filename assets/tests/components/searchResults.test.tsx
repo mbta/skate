@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
@@ -374,7 +374,7 @@ describe("SearchResults", () => {
     const testDispatch = jest.fn()
     const vehicle: Vehicle = vehicleFactory.build({ runId: "12345" })
     const mockOnClick = jest.fn()
-    const result = render(
+    render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
         <SearchResults
           vehicles={[vehicle]}
@@ -384,7 +384,7 @@ describe("SearchResults", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByText("12345"))
+    await userEvent.click(screen.getByRole("cell", { name: /run/i }))
 
     expect(mockOnClick).toHaveBeenCalledWith(vehicle)
   })
