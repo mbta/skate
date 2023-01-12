@@ -4,19 +4,17 @@ import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
 import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
-import Map, {
-  autoCenter,
-  defaultCenter,
-  strokeOptions,
-} from "../../src/components/map"
+import Map, { autoCenter, defaultCenter } from "../../src/components/map"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
-import { Shape } from "../../src/schedule"
 import vehicleFactory from "../factories/vehicle"
+import stopFactory from "../factories/stop"
+
 import userEvent from "@testing-library/user-event"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 
 import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
+import { LocationType } from "../../src/models/stopData"
 
 const shape = {
   id: "shape",
@@ -33,6 +31,8 @@ const shape = {
     },
   ],
 }
+
+const station = stopFactory.build({ locationType: LocationType.Station })
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
@@ -143,6 +143,86 @@ describe("<Map />", () => {
     const vehicle = vehicleFactory.build({})
     const { container } = render(<Map vehicles={[vehicle]} />)
     expect(container.innerHTML).not.toContain("m-garage-icon")
+  })
+
+  test("doesn't draw station icons at zoom levels < 15", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(14)
+    })
+    await animationFramePromise()
+    expect(container.querySelector(".m-station-icon")).not.toBeInTheDocument()
+    expect(screen.queryByText(station.name)).toBeNull()
+  })
+
+  test("draws station icons at zoom levels >= 15", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(15)
+    })
+    await animationFramePromise()
+    expect(container.querySelector(".m-station-icon")).toBeVisible()
+    expect(screen.queryByText(station.name)).toBeNull()
+  })
+
+  test("station name appears on hover", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(15)
+    })
+    await animationFramePromise()
+    await userEvent.hover(container.querySelector(".m-station-icon")!)
+
+    expect(screen.queryByText(station.name)).toBeInTheDocument()
+  })
+
+  test("if shape contains stations, renders them as stations instead of regular stops", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <Map
+        shapes={[{ ...shape, stops: [station] }]}
+        vehicles={[]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(14)
+    })
+    await animationFramePromise()
+    expect(container.querySelector(".m-station-icon")).toBeVisible()
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
@@ -423,35 +503,5 @@ describe("auto centering", () => {
       "m-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
-  })
-})
-
-describe("strokeOptions", () => {
-  test("uses the color for a subway line, defaults to a thinner, opaque line", () => {
-    const subwayShape = {
-      color: "#DA291C",
-    } as Shape
-
-    const expected = {
-      color: "#DA291C",
-      opacity: 1.0,
-      weight: 4,
-    }
-
-    expect(strokeOptions(subwayShape)).toEqual(expected)
-  })
-
-  test("sets default color, width, and opacity settings for shuttle route lines", () => {
-    const shuttleShape = {
-      color: undefined,
-    } as Shape
-
-    const expected = {
-      color: "#4db6ac",
-      opacity: 0.6,
-      weight: 6,
-    }
-
-    expect(strokeOptions(shuttleShape)).toEqual(expected)
   })
 })

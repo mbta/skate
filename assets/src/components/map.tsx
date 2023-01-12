@@ -6,7 +6,9 @@ import Leaflet, {
   LatLngExpression,
   Map as LeafletMap,
 } from "leaflet"
+
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
+import "leaflet.fullscreen"
 import React, {
   MutableRefObject,
   ReactElement,
@@ -17,38 +19,34 @@ import React, {
   useState,
 } from "react"
 import ReactDOM from "react-dom"
+
 import {
   AttributionControl,
-  CircleMarker,
   MapContainer,
-  Marker,
-  Polyline,
-  Popup,
   TileLayer,
   useMap,
   useMapEvents,
   ZoomControl,
 } from "react-leaflet"
+import { createControlComponent } from "@react-leaflet/core"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
-import vehicleLabelString from "../helpers/vehicleLabel"
-import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { DirectionId, Shape } from "../schedule"
-import { UserSettings } from "../userSettings"
+import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
 import appData from "../appData"
-import { createControlComponent } from "@react-leaflet/core"
-import "leaflet.fullscreen"
-
-import garages, { Garage } from "../data/garages"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import garageIcon from "../../static/images/icon-bus-garage.svg"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
+import {
+  GarageMarkers,
+  RouteShape,
+  RouteStopMarkers,
+  StationIconSize,
+  StationMarker,
+  TrainVehicleMarker,
+  VehicleMarker,
+} from "./mapMarkers"
 import { WalkingIcon } from "../helpers/icon"
-import StopCard from "./stopCard"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
@@ -65,8 +63,14 @@ export interface Props {
 
   allowStreetView?: boolean
 
-  includeStopCard?: boolean
   stopCardDirection?: DirectionId
+  includeStopCard?: boolean
+  stations?: Stop[] | null
+}
+
+export const defaultCenter: LatLngExpression = {
+  lat: 42.360718,
+  lng: -71.05891,
 }
 
 interface RecenterControlProps extends ControlOptions {
@@ -76,212 +80,6 @@ interface RecenterControlProps extends ControlOptions {
 interface StreetViewControlProps extends ControlOptions {
   streetViewEnabled: boolean
   setStreetViewEnabled: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export const defaultCenter: LatLngExpression = {
-  lat: 42.360718,
-  lng: -71.05891,
-}
-
-const makeVehicleIcon = (
-  vehicle: Vehicle,
-  isPrimary: boolean,
-  userSettings: UserSettings,
-  isSelected: boolean
-): Leaflet.DivIcon => {
-  const centerX = 12
-  const centerY = 12
-  return Leaflet.divIcon({
-    html: `<svg
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          class="${className([
-            ...statusClasses(
-              drawnStatus(vehicle),
-              userSettings.vehicleAdherenceColors
-            ),
-            isSelected ? "selected" : null,
-          ])}"
-          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-          transform="scale(${isPrimary ? 1.0 : 0.8}) rotate(${
-      vehicle.bearing
-    }) translate(${-centerX}, ${-centerY})"
-        />
-      </svg>`,
-    iconAnchor: [0, 0],
-    className: "m-vehicle-map__icon",
-  })
-}
-
-const makeLabelIcon = (
-  vehicle: Vehicle,
-  isPrimary: boolean,
-  settings: UserSettings,
-  isSelected: boolean
-): Leaflet.DivIcon => {
-  const labelString = vehicleLabelString(vehicle, settings)
-  const labelBackgroundHeight = isPrimary ? 16 : 12
-  const labelBackgroundWidth =
-    labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40
-  const selectedClass = isSelected ? "selected" : null
-  return Leaflet.divIcon({
-    className: className([
-      "m-vehicle-map__label",
-      isPrimary ? "primary" : "secondary",
-      selectedClass,
-    ]),
-    html: `<svg viewBox="0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}" width="${labelBackgroundWidth}" height="${labelBackgroundHeight}">
-            <rect
-                class="m-vehicle-icon__label-background"
-                width="100%" height="100%"
-                rx="5.5px" ry="5.5px"
-              />
-            <text class="m-vehicle-icon__label" x="50%" y="50%" text-anchor="middle" dominant-baseline="central">
-              ${labelString}
-            </text>
-          </svg>`,
-    iconAnchor: [labelBackgroundWidth / 2, isPrimary ? -16 : -10],
-  })
-}
-
-const Vehicle = ({
-  vehicle,
-  isPrimary,
-  onSelect,
-  isSelected = false,
-}: {
-  vehicle: Vehicle
-  isPrimary: boolean
-  isSelected?: boolean
-  onSelect?: (vehicle: Vehicle) => void
-}) => {
-  const [{ userSettings }] = useContext(StateDispatchContext)
-  const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}
-  const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
-  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
-    vehicle,
-    isPrimary,
-    userSettings,
-    isSelected
-  )
-  const labelIcon: Leaflet.DivIcon = makeLabelIcon(
-    vehicle,
-    isPrimary,
-    userSettings,
-    isSelected
-  )
-  const zIndexOffset = (isPrimary ? 2000 : 0) + (isSelected ? 100 : 0)
-  return (
-    <>
-      <Marker
-        position={position}
-        icon={vehicleIcon}
-        eventHandlers={eventHandlers}
-        zIndexOffset={zIndexOffset}
-      />
-      <Marker
-        position={position}
-        icon={labelIcon}
-        eventHandlers={eventHandlers}
-        zIndexOffset={zIndexOffset}
-      />
-    </>
-  )
-}
-
-const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
-  const centerX = 24
-  const centerY = 24
-  return Leaflet.divIcon({
-    html: `<svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 36 36">
-        <g transform="rotate(${bearing}, ${centerX}, ${centerY})">
-          <path fill="#fff" d="m42.88 45.83a2.1 2.1 0 0 1 -.87-.19l-15.92-7.17a5.23 5.23 0 0 0 -2.09-.47 5.14 5.14 0 0 0 -2.08.44l-15.92 7.2a2.1 2.1 0 0 1 -.87.19 2.14 2.14 0 0 1 -1.76-1 2 2 0 0 1 -.12-2l18.86-40.83a2.08 2.08 0 0 1 3.78 0l18.87 40.87a2 2 0 0 1 -.12 2 2.14 2.14 0 0 1 -1.76.96z"/>
-        </g>
-    </svg>`,
-    className: "m-vehicle-map__train-icon",
-  })
-}
-
-const TrainVehicle = ({ trainVehicle }: { trainVehicle: TrainVehicle }) => {
-  const position: LatLngExpression = [
-    trainVehicle.latitude,
-    trainVehicle.longitude,
-  ]
-  const icon: Leaflet.DivIcon = makeTrainVehicleIcon(trainVehicle)
-  return <Marker position={position} icon={icon} />
-}
-
-export const strokeOptions = ({ color }: Shape): object =>
-  color
-    ? {
-        color,
-        opacity: 1.0,
-        weight: 4,
-      }
-    : {
-        color: "#4db6ac",
-        opacity: 0.6,
-        weight: 6,
-      }
-
-const Shape = ({
-  shape,
-  direction,
-  includeStopCard,
-}: {
-  shape: Shape
-  direction?: DirectionId
-  includeStopCard?: boolean
-}) => {
-  const positions: LatLngExpression[] = shape.points.map((point) => [
-    point.lat,
-    point.lon,
-  ])
-
-  return (
-    <>
-      <Polyline
-        className="m-vehicle-map__route-shape"
-        positions={positions}
-        {...strokeOptions(shape)}
-      />
-      {(shape.stops || []).map((stop) => (
-        <CircleMarker
-          key={stop.id}
-          className="m-vehicle-map__stop"
-          center={[stop.lat, stop.lon]}
-          radius={3}
-        >
-          {includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME) ? (
-            <StopCard stop={stop} direction={direction} />
-          ) : (
-            <Popup className="m-vehicle-map__stop-tooltip">{stop.name}</Popup>
-          )}
-        </CircleMarker>
-      ))}
-    </>
-  )
-}
-
-export const autoCenter = (
-  map: LeafletMap,
-  latLngs: LatLngExpression[],
-  pickerContainerIsVisible: boolean
-): void => {
-  if (latLngs.length === 0) {
-    map.setView(defaultCenter, 13)
-  } else if (latLngs.length === 1) {
-    map.setView(latLngs[0], 16)
-  } else if (latLngs.length > 1) {
-    map.fitBounds(Leaflet.latLngBounds(latLngs), {
-      paddingBottomRight: [20, 50],
-      paddingTopLeft: [pickerContainerIsVisible ? 220 : 20, 20],
-    })
-  }
 }
 
 const StreetViewControl = ({
@@ -332,7 +130,7 @@ const StreetViewControl = ({
   return portalElement ? ReactDOM.createPortal(control, portalElement) : null
 }
 
-class RecenterControl extends Control {
+class LeafletRecenterControl extends Control {
   private recenter: () => void
   constructor(props: ControlOptions, recenter: () => void) {
     super(props)
@@ -372,12 +170,31 @@ class RecenterControl extends Control {
   }
 }
 
-export const RecenterControlButton = createControlComponent(
+export const RecenterControl = createControlComponent(
   ({ position: position, recenter: recenterFn }: RecenterControlProps) =>
-    new RecenterControl({ position: position }, recenterFn)
+    new LeafletRecenterControl({ position: position }, recenterFn)
 )
 
-const FullscreenControl = createControlComponent(Leaflet.control.fullscreen)
+export const FullscreenControl = createControlComponent(
+  Leaflet.control.fullscreen
+)
+
+export const autoCenter = (
+  map: LeafletMap,
+  latLngs: LatLngExpression[],
+  pickerContainerIsVisible: boolean
+): void => {
+  if (latLngs.length === 0) {
+    map.setView(defaultCenter, 13)
+  } else if (latLngs.length === 1) {
+    map.setView(latLngs[0], 16)
+  } else if (latLngs.length > 1) {
+    map.fitBounds(Leaflet.latLngBounds(latLngs), {
+      paddingBottomRight: [20, 50],
+      paddingTopLeft: [pickerContainerIsVisible ? 220 : 20, 20],
+    })
+  }
+}
 
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
@@ -495,53 +312,6 @@ const Autocenterer = ({
   return <></>
 }
 
-const garageLeafletIcon = Leaflet.divIcon({
-  html: garageIcon,
-  className: "m-garage-icon",
-  iconAnchor: new Leaflet.Point(10, 25),
-})
-
-const Garage = ({
-  garage,
-  zoomLevel,
-}: {
-  garage: Garage
-  zoomLevel: number
-}) => {
-  const showLabel = zoomLevel >= 16
-  return (
-    <>
-      <Marker
-        interactive={false}
-        key={garage.name}
-        position={[garage.lat, garage.lon]}
-        icon={garageLeafletIcon}
-      />
-      {showLabel && (
-        <Marker
-          interactive={false}
-          position={[garage.lat, garage.lon]}
-          icon={Leaflet.divIcon({
-            iconAnchor: new Leaflet.Point(-14, 25),
-            className: "m-garage-icon__label",
-            html: `<svg height="30" width="200">
-				    <text y=15>${garage.name}</text>
-				</svg>`,
-          })}
-        />
-      )}
-    </>
-  )
-}
-
-const Garages = ({ zoomLevel }: { zoomLevel: number }) => (
-  <>
-    {garages.map((garage) => (
-      <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
-    ))}
-  </>
-)
-
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
@@ -562,6 +332,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     shouldAutoCenter ? "m-vehicle-map-state--auto-centering" : null,
     streetViewEnabled ? "m-vehicle-map-state--street-view-enabled" : null,
   ])
+
+  const stationIconSize =
+    zoomLevel <= 16 ? StationIconSize.small : StationIconSize.large
 
   return (
     <>
@@ -600,7 +373,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         )}
         <ZoomControl position="topright" />
         <FullscreenControl position="topright" />
-        <RecenterControlButton
+        <RecenterControl
           position="topright"
           recenter={() => setShouldAutoCenter(true)}
         />
@@ -611,7 +384,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.vehicles.map((vehicle: Vehicle) => (
-          <Vehicle
+          <VehicleMarker
             key={vehicle.id}
             vehicle={vehicle}
             isPrimary={true}
@@ -620,21 +393,36 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           />
         ))}
         {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
-          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={false} />
+          <VehicleMarker key={vehicle.id} vehicle={vehicle} isPrimary={false} />
         ))}
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
-          <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
-        ))}
-        {(props.shapes || []).map((shape) => (
-          <Shape
-            key={shape.id}
-            shape={shape}
-            direction={props.stopCardDirection}
-            includeStopCard={props.includeStopCard}
+          <TrainVehicleMarker
+            key={trainVehicle.id}
+            trainVehicle={trainVehicle}
           />
         ))}
+
+        {(props.shapes || []).map((shape) => (
+          <RouteShape key={shape.id} shape={shape} />
+        ))}
+        <RouteStopMarkers
+          stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
+          iconSize={stationIconSize}
+          direction={props.stopCardDirection}
+          includeStopCard={
+            props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
+          }
+        />
+        {zoomLevel >= 15 &&
+          props.stations?.map((station) => (
+            <StationMarker
+              key={station.id}
+              station={station}
+              iconSize={stationIconSize}
+            />
+          ))}
         {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
-          <Garages zoomLevel={zoomLevel} />
+          <GarageMarkers zoomLevel={zoomLevel} />
         )}
         {props.children}
       </MapContainer>

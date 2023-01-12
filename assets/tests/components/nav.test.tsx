@@ -5,11 +5,11 @@ import "@testing-library/jest-dom"
 
 import Nav from "../../src/components/nav"
 import { OpenView } from "../../src/state"
-import useDeviceType from "../../src/hooks/useDeviceType"
+import useScreenSize from "../../src/hooks/useScreenSize"
 import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 
-jest.mock("../../src/hooks/useDeviceType", () => ({
+jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,
   default: jest.fn(() => "desktop"),
 }))
@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe("Nav", () => {
   test("renders mobile nav content", () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(() => "mobile")
+    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
 
     const result = render(
       <BrowserRouter>
@@ -40,7 +40,7 @@ describe("Nav", () => {
   })
 
   test("renders mobile landscape / tablet portrait nav content", () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(
+    ;(useScreenSize as jest.Mock).mockImplementationOnce(
       () => "mobile_landscape_tablet_portrait"
     )
 
@@ -57,7 +57,7 @@ describe("Nav", () => {
   })
 
   test("renders tablet nav content", () => {
-    ;(useDeviceType as jest.Mock).mockImplementationOnce(() => "tablet")
+    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "tablet")
 
     const result = render(
       <BrowserRouter>

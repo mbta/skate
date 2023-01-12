@@ -11,8 +11,11 @@ import * as dateTime from "../../src/util/dateTime"
 
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import stopFactory from "../factories/stop"
 import userEvent from "@testing-library/user-event"
 import { SearchPageState } from "../../src/state/searchPageState"
+import { useStations } from "../../src/hooks/useStations"
+import { LocationType } from "../../src/models/stopData"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -42,6 +45,11 @@ const ghost: Ghost = ghostFactory.build({
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(),
+}))
+
+jest.mock("../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
 }))
 
 describe("SearchPage", () => {
@@ -148,5 +156,22 @@ describe("SearchPage", () => {
     )
 
     expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+  })
+
+  test("renders stations on zoom", async () => {
+    ;(useStations as jest.Mock).mockImplementationOnce(() => [
+      stopFactory.build({ locationType: LocationType.Station }),
+    ])
+
+    const { container } = render(
+      <BrowserRouter>
+        <SearchPage />
+      </BrowserRouter>
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+
+    expect(container.querySelector(".m-station-icon")).toBeVisible()
   })
 })

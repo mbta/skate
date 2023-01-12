@@ -87,6 +87,48 @@
   outline: 0;
 }
 
+.leaflet-tooltip.m-vehicle-map__mobile-friendly-tooltip {
+  background-color: $color-tooltip-background;
+  color: $white;
+  border-color: $color-tooltip-background;
+  opacity: 1 !important;
+}
+
+.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
+  margin: 0px;
+  background-color: $color-tooltip-background;
+  opacity: 1 !important;
+  text-align: center;
+}
+
+.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip
+  .leaflet-popup-content-wrapper {
+  background-color: $color-tooltip-background;
+  color: $white;
+  padding: 0;
+  box-shadow: none;
+}
+
+.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip {
+  margin-bottom: 6px !important;
+}
+
+// Hide popup pointer triangle - replaced by tooltip triangle
+.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip
+  .leaflet-popup-tip-container {
+  display: none;
+}
+
+// The tooltip triangle
+.leaflet-tooltip-top.m-vehicle-map__mobile-friendly-tooltip::before {
+  border-top-color: $color-tooltip-background;
+}
+
 // Adding .leaflet-control-container increases specificity to make sure we override
 // base Leaflet control positioning
 .leaflet-control-container .m-vehicle-map__street-view-control {

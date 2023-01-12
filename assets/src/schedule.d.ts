@@ -1,3 +1,4 @@
+import { LocationType } from "./models/stopData"
 import { RunId } from "./realtime"
 
 export type BlockId = string
@@ -14,6 +15,7 @@ export interface Stop {
   lat: number
   lon: number
   connections?: { type: number; id: RouteId; name: string }[]
+  locationType?: LocationType
 }
 
 export type RouteId = string

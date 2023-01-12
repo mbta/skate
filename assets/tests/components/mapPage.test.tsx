@@ -10,6 +10,8 @@ import * as dateTime from "../../src/util/dateTime"
 import userEvent from "@testing-library/user-event"
 import { useTripShape } from "../../src/hooks/useShapes"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
+import { useStations } from "../../src/hooks/useStations"
+import { LocationType } from "../../src/models/stopData"
 import { SearchPageState } from "../../src/state/searchPageState"
 import stateFactory from "../factories/applicationState"
 import ghostFactory from "../factories/ghost"
@@ -17,6 +19,7 @@ import { RunFactory } from "../factories/run"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import { searchQueryRunFactory } from "../factories/searchQuery"
 import shapeFactory from "../factories/shape"
+import stopFactory from "../factories/stop"
 import vehicleFactory from "../factories/vehicle"
 
 jest
@@ -43,6 +46,11 @@ jest.mock("../../src/hooks/useNearestIntersection", () => ({
 jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
   default: jest.fn(),
+}))
+
+jest.mock("../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
 }))
 
 afterEach(() => {
@@ -103,6 +111,26 @@ describe("<MapPage />", () => {
       expect(asFragment()).toMatchSnapshot()
     })
   })
+
+  test("renders stations on zoom", async () => {
+    ;(useStations as jest.Mock).mockImplementationOnce(() => [
+      stopFactory.build({ locationType: LocationType.Station }),
+    ])
+
+    const { container } = render(
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+
+    expect(container.querySelector(".m-station-icon")).toBeVisible()
+  })
+
   test("on mobile, shows the results list initially", () => {
     const { container } = render(
       <BrowserRouter>

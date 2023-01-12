@@ -7,7 +7,7 @@ const maxMobileLandscapeTabletPortraitWidth = 800
 const minTabletWidth = maxMobileLandscapeTabletPortraitWidth + 1
 const maxTabletWidth = 1340
 
-const useDeviceType = (): DeviceType => {
+const useScreenSize = (): DeviceType => {
   const { matches } = useMediaQueries({
     mobile: `(max-width: ${maxMobileWidth}px)`,
     mobile_landscape_tablet_portrait: `(min-width: ${minMobileLandscapeTabletPortraitWidth}px) and (max-width: ${maxMobileLandscapeTabletPortraitWidth}px)`,
@@ -25,4 +25,4 @@ const useDeviceType = (): DeviceType => {
   }
 }
 
-export default useDeviceType
+export default useScreenSize

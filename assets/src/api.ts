@@ -11,6 +11,7 @@ import {
   Route,
   RouteId,
   Shape,
+  Stop,
   Swing,
   Timepoint,
   TripId,
@@ -18,6 +19,7 @@ import {
 import { RouteTab } from "./models/routeTab"
 import { array, assert, Struct } from "superstruct"
 import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
+import { StopData, stopsFromData } from "./models/stopData"
 
 export interface RouteData {
   id: string
@@ -137,6 +139,14 @@ export const fetchShuttleRoutes = (): Promise<Route[]> =>
   apiCall({
     url: "/api/shuttles",
     parser: parseRoutesData,
+    defaultResult: [],
+  })
+
+export const fetchStations = (): Promise<Stop[]> =>
+  checkedApiCall<StopData[], Stop[]>({
+    url: `/api/stops/stations`,
+    parser: stopsFromData,
+    dataStruct: array(StopData),
     defaultResult: [],
   })
 

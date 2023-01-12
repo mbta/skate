@@ -14,9 +14,14 @@ jest.mock("@tippyjs/react", () => ({
   /* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 }))
 
-jest.mock("../src/hooks/useDeviceType", () => ({
+jest.mock("../src/hooks/useScreenSize", () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => "desktop"),
+}))
+
+jest.mock("../src/hooks/useDeviceSupportsHover", () => ({
+  __esModule: true,
+  default: jest.fn().mockReturnValue(true),
 }))
 
 // JSDOM doesn't support part of SVG that's needed for Leaflet to run in tests.

@@ -12,11 +12,14 @@ import {
   fetchTimepointsForRoute,
   putUserSetting,
   putRouteTabs,
+  fetchStations,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
+import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, StructError, unknown } from "superstruct"
+import { LocationType } from "../src/models/stopData"
 
 declare global {
   interface Window {
@@ -144,7 +147,7 @@ describe("checkedApiCall", () => {
     })
   })
 
-  test("handles malformed data", async () => {
+  test("raises error for malformed data when no default", async () => {
     mockFetch(200, { data: 12 })
 
     const parse = jest.fn(() => "parsed")
@@ -159,6 +162,19 @@ describe("checkedApiCall", () => {
     } catch (error) {
       expect(error).toBeInstanceOf(StructError)
     }
+  })
+
+  test("returns default value when malformed data", async () => {
+    mockFetch(200, { data: 12 })
+
+    const parse = jest.fn(() => "parsed")
+
+    await checkedApiCall({
+      url: "/",
+      dataStruct: string(),
+      parser: parse,
+      defaultResult: null,
+    }).then((result) => expect(result).toBeNull())
   })
 
   test("reloads the page if the response status is a redirect (3xx)", (done) => {
@@ -433,6 +449,48 @@ describe("fetchShuttleRoutes", () => {
           id: "71",
         },
       ])
+      done()
+    })
+  })
+})
+
+describe("fetchStations", () => {
+  test("fetches a list stations", (done) => {
+    const [station1, station2] = stopFactory.buildList(2, {
+      locationType: LocationType.Station,
+    })
+    mockFetch(200, {
+      data: [
+        {
+          id: station1.id,
+          name: station1.name,
+          location_type: "station",
+          lat: station1.lat,
+          lon: station1.lon,
+        },
+        {
+          id: station2.id,
+          name: station2.name,
+          location_type: "station",
+          lat: station2.lat,
+          lon: station2.lon,
+        },
+      ],
+    })
+
+    fetchStations().then((stations) => {
+      expect(stations).toEqual([station1, station2])
+      done()
+    })
+  })
+
+  test("returns empty list on error", (done) => {
+    mockFetch(500, {
+      data: null,
+    })
+
+    fetchStations().then((stations) => {
+      expect(stations).toEqual([])
       done()
     })
   })

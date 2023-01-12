@@ -3,8 +3,10 @@ import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
+import { useStations } from "../hooks/useStations"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
+import { Stop } from "../schedule"
 import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
@@ -54,6 +56,8 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   ] = useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
+  const stations: Stop[] | null = useStations()
+
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
@@ -110,6 +114,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
+          stations={stations}
         />
       </div>
     </div>

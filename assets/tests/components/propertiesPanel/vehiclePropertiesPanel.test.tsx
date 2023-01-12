@@ -6,6 +6,7 @@ import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehi
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
 import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { useStations } from "../../../src/hooks/useStations"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
@@ -30,6 +31,11 @@ jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => null),
+}))
+
+jest.mock("../../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
 }))
 
 const vehicle: Vehicle = vehicleFactory.build({
@@ -245,5 +251,23 @@ describe("VehiclePropertiesPanel", () => {
     expect(map.default).toHaveBeenCalledTimes(1)
     const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
+  })
+
+  test("map includes station icons when in map beta test group", () => {
+    ;(useStations as jest.Mock).mockReturnValue([
+      {
+        id: "station-id",
+        locationType: "station",
+        name: "Station 1",
+        lat: vehicle.latitude,
+        lon: vehicle.longitude,
+      },
+    ])
+
+    const { container } = render(
+      <VehiclePropertiesPanel selectedVehicle={vehicle} />
+    )
+
+    expect(container.innerHTML).toContain("m-station-icon")
   })
 })
