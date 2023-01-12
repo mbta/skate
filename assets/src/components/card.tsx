@@ -7,6 +7,7 @@ export type CardStyle = "kiwi" | "white"
 
 interface CardProps {
   children?: React.ReactNode
+  icon?: React.ReactNode
   style: CardStyle
   currentTime?: Date
   openCallback?: () => void
@@ -20,6 +21,7 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({
   children,
+  icon,
   style,
   currentTime,
   openCallback,
@@ -31,7 +33,7 @@ export const Card: React.FC<CardProps> = ({
   noFocusOrHover,
 }) => {
   const innerLeftContent = (
-    <>
+    <div className="m-card__left-content">
       <div className="m-card__top-row">
         <div className="m-card__title">
           {isUnread ? <UnreadIcon /> : null}
@@ -44,7 +46,7 @@ export const Card: React.FC<CardProps> = ({
         ) : null}
       </div>
       <div className="m-card__contents">{children}</div>
-    </>
+    </div>
   )
 
   return (
@@ -58,10 +60,14 @@ export const Card: React.FC<CardProps> = ({
     >
       {openCallback ? (
         <button className="m-card__left" onClick={openCallback}>
+          {icon && <div className="m-card__icon">{icon}</div>}
           {innerLeftContent}
         </button>
       ) : (
-        <div className="m-card__left">{innerLeftContent}</div>
+        <div className="m-card__left">
+          {icon && <div className="m-card__icon">{icon}</div>}
+          {innerLeftContent}
+        </div>
       )}
       {closeCallback ? (
         <div className="m-card__right">

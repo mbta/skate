@@ -103,55 +103,59 @@ exports[`NotificationDrawer renders notifications 1`] = `
               onClick={[Function]}
             >
               <div
-                className="m-card__top-row"
+                className="m-card__left-content"
               >
                 <div
-                  className="m-card__title"
+                  className="m-card__top-row"
                 >
-                  <span
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "<svg/>",
+                  <div
+                    className="m-card__title"
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "<svg/>",
+                        }
                       }
-                    }
-                  />
-                  No Operator
+                    />
+                    No Operator
+                  </div>
+                  <div
+                    className="m-card__time"
+                  >
+                    0 min
+                  </div>
                 </div>
                 <div
-                  className="m-card__time"
+                  className="m-card__contents"
                 >
-                  0 min
+                  <div
+                    className="m-card__body"
+                  >
+                    OCC reported that an operator is not available on the r1, r2.
+                  </div>
+                  <table
+                    className="m-card__properties"
+                  >
+                    <tbody>
+                      <tr>
+                        <th
+                          className="m-card__properties-label"
+                          id="card-property-label-:r0:"
+                          scope="row"
+                        >
+                          Run
+                        </th>
+                        <td
+                          aria-labelledby="card-property-label-:r0:"
+                          className="m-card__properties-value"
+                        >
+                          run1, run2
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-              </div>
-              <div
-                className="m-card__contents"
-              >
-                <div
-                  className="m-card__body"
-                >
-                  OCC reported that an operator is not available on the r1, r2.
-                </div>
-                <table
-                  className="m-card__properties"
-                >
-                  <tbody>
-                    <tr>
-                      <th
-                        className="m-card__properties-label"
-                        id="card-property-label-:r0:"
-                        scope="row"
-                      >
-                        Run
-                      </th>
-                      <td
-                        aria-labelledby="card-property-label-:r0:"
-                        className="m-card__properties-value"
-                      >
-                        run1, run2
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
             </button>
           </div>
