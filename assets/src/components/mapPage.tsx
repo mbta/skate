@@ -12,6 +12,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useTripShape } from "../hooks/useShapes"
 import { useStations } from "../hooks/useStations"
+import useVehicleForId from "../hooks/useVehicleForId"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
@@ -56,7 +57,11 @@ const ToggleMobileDisplayButton = ({
   )
 }
 
-const MapPage = (): ReactElement<HTMLDivElement> => {
+const MapPageInternal = ({
+  liveSelectedVehicle,
+}: {
+  liveSelectedVehicle: Vehicle | null
+}) => {
   const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
     useContext(StateDispatchContext)
   const stations = useStations()
@@ -69,17 +74,12 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 
-  // TODO: Handle when selectedVehicleId is not in search results
-  // May involve a bit of refactoring - want to conditionally call useVehicleForId hook,
-  // but can't conditionally call hooks. Factor out some separate components?
-  const liveVehicle: Vehicle | null = searchPageState.selectedVehicleId
-    ? onlyVehicles.find((v) => v.id === searchPageState.selectedVehicleId) ||
-      null
-    : null
   const [showVehicleCard, setShowVehicleCard] = useState<boolean>(
     searchPageState.selectedVehicleId ? true : false
   )
-  const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
+  const selectedVehicleShapes = useTripShape(
+    liveSelectedVehicle?.tripId || null
+  )
 
   const onSearchCallback = () => {
     dispatch(setSelectedVehicle(null))
@@ -106,14 +106,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       : "m-map-page--show-map"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
-  const vpcEnabled = liveVehicle && showVehicleCard
+  const vpcEnabled = liveSelectedVehicle && showVehicleCard
 
   const leafletMap = useRef<LeafletMap | null>(null)
   useEffect(() => {
     // Let leaflet know when Page resizes due to vpc state
     leafletMap.current?.invalidateSize()
   }, [vpcEnabled])
-
   return (
     <div
       className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
@@ -137,7 +136,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           thereIsAnActiveSearch(vehicles, searchPageState) ? (
             <SearchResults
               vehicles={vehicles}
-              selectedVehicleId={liveVehicle?.id || null}
+              selectedVehicleId={liveSelectedVehicle?.id || null}
               onClick={selectVehicle}
             />
           ) : (
@@ -148,18 +147,24 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-map-page__map">
         <Map
           reactLeafletRef={leafletMap}
-          vehicles={onlyVehicles}
+          // show the selected vehicle on the map even when it isn't in the search results
+          vehicles={
+            liveSelectedVehicle &&
+            !onlyVehicles.find((v) => v.id === liveSelectedVehicle.id)
+              ? [...onlyVehicles, liveSelectedVehicle]
+              : onlyVehicles
+          }
           onPrimaryVehicleSelect={selectVehicle}
           shapes={showVehicleCard ? selectedVehicleShapes : undefined}
           allowStreetView={true}
-          stopCardDirection={liveVehicle?.directionId}
+          stopCardDirection={liveSelectedVehicle?.directionId}
           includeStopCard={true}
           stations={stations}
           selectedVehicleId={searchPageState.selectedVehicleId ?? undefined}
         >
           {vpcEnabled ? (
             <VehiclePropertiesCard
-              vehicle={liveVehicle}
+              vehicle={liveSelectedVehicle}
               onClose={() => {
                 dispatch(setSelectedVehicle(null))
                 setShowVehicleCard(false)
@@ -169,6 +174,30 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         </Map>
       </div>
     </div>
+  )
+}
+
+const MapPageWithSelectedVehicle = ({ vehicleId }: { vehicleId: string }) => {
+  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
+
+  const vehicleOrGhost = useVehicleForId(socket, vehicleId)
+
+  return (
+    <MapPageInternal
+      liveSelectedVehicle={
+        vehicleOrGhost && isVehicle(vehicleOrGhost) ? vehicleOrGhost : null
+      }
+    />
+  )
+}
+
+const MapPage = (): ReactElement<HTMLDivElement> => {
+  const [{ searchPageState }] = useContext(StateDispatchContext)
+
+  return searchPageState.selectedVehicleId ? (
+    <MapPageWithSelectedVehicle vehicleId={searchPageState.selectedVehicleId} />
+  ) : (
+    <MapPageInternal liveSelectedVehicle={null} />
   )
 }
 

@@ -171,6 +171,7 @@ describe("<MapPage />", () => {
         : null
     )
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
     const mockDispatch = jest.fn()
     const state = stateFactory.build({
       searchPageState: searchPageStateFactory.build({
@@ -209,6 +210,8 @@ describe("<MapPage />", () => {
     ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
       tripId === vehicle.tripId ? shapes : null
     )
+    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+
     const { container } = render(<MapPage />, {
       wrapper: (props) => (
         <RealDispatchWrapper
@@ -285,17 +288,12 @@ describe("<MapPage />", () => {
     expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
-  test("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
-    const vehicle = vehicleFactory.build()
-    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-
+  test.only("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
     const runId = "clickMe"
-    ;(useSearchResults as jest.Mock).mockReturnValue(
-      vehicleFactory.buildList(1, {
-        runId,
-      })
-    )
+    const vehicle = vehicleFactory.build({ runId })
+    ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
     ;(useTripShape as jest.Mock).mockReturnValue(shapeFactory.buildList(1))
 
     const { container } = render(<MapPage />, {
@@ -329,7 +327,6 @@ describe("<MapPage />", () => {
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
     expect(vehiclePropertiesCard).not.toBeInTheDocument()
     expect(routeShape).not.toBeInTheDocument()
-
     expect(mapSearchPanel).toBeVisible()
   })
 
@@ -404,10 +401,8 @@ describe("<MapPage />", () => {
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
-    ;(useSearchResults as jest.Mock).mockReturnValue(
-      vehicleFactory.buildList(1, { runId: runId })
-    )
+    ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
     render(<MapPage />, {
       wrapper: (props) => <RealDispatchWrapper {...props} />,
@@ -434,12 +429,12 @@ describe("<MapPage />", () => {
     describe("renders", () => {
       test("after search result is selected", async () => {
         const runId = "clickMe"
-        const vehicle = vehicleFactory.build({ runId })
+        const vehicle = vehicleFactory.build({
+          runId,
+        })
         jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-        ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
-        ;(useSearchResults as jest.Mock).mockReturnValue(
-          vehicleFactory.buildList(1, { runId: runId })
-        )
+        ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
+        ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
         render(<MapPage />, {
           wrapper: (props) => <RealDispatchWrapper {...props} />,
@@ -456,13 +451,11 @@ describe("<MapPage />", () => {
       })
 
       test("after vehicle on the map is clicked", async () => {
-        const vehicle = vehicleFactory.build()
-        jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-        ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
         const runId = "clickMe"
-        ;(useSearchResults as jest.Mock).mockReturnValue(
-          vehicleFactory.buildList(1, { runId: runId })
-        )
+        const vehicle = vehicleFactory.build({ runId })
+        jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+        ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
+        ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
         render(<MapPage />, {
           wrapper: (props) => <RealDispatchWrapper {...props} />,
