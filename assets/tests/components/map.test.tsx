@@ -15,6 +15,7 @@ import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
+import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
 
 const shape = {
   id: "shape",
@@ -333,6 +334,7 @@ describe("<Map />", () => {
 })
 
 describe("autoCenter", () => {
+  beforeEach(() => setHtmlDefaultWidthHeight(0, 0))
   const Leaflet = jest.requireActual("leaflet")
   const pickerContainerIsVisible = false
 
