@@ -1,7 +1,8 @@
-import React, { useId } from "react"
+import React from "react"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { UnreadIcon } from "../helpers/icon"
 import CloseButton from "./closeButton"
+import PropertiesList, { Property } from "./propertiesList"
 
 export type CardStyle = "kiwi" | "white"
 
@@ -82,56 +83,16 @@ export const CardBody: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => <div className="m-card__body">{children}</div>
 
-export interface Property {
-  label: string
-  value: string | null
-  sensitive?: boolean
-}
-
 export interface CardPropertiesProps {
   properties: Property[]
+  highlightText?: string
 }
 
 export const CardProperties: React.VFC<CardPropertiesProps> = ({
   properties,
+  highlightText,
 }: CardPropertiesProps) => {
   return (
-    <table className="m-card__properties">
-      <tbody>
-        {properties.map((property) =>
-          property.value ? (
-            <CardPropertyRow property={property} key={property.label} />
-          ) : null
-        )}
-      </tbody>
-    </table>
-  )
-}
-
-export interface CardPropertyRowProps {
-  property: Property
-}
-
-const CardPropertyRow: React.FC<CardPropertyRowProps> = ({
-  property,
-}: CardPropertyRowProps) => {
-  const id = "card-property-label-" + useId()
-  return (
-    <tr>
-      <th className="m-card__properties-label" id={id} scope="row">
-        {property.label}
-      </th>
-      <td
-        className={
-          "m-card__properties-value" +
-          (property.sensitive
-            ? " m-card__properties-value--sensitive fs-mask"
-            : "")
-        }
-        aria-labelledby={id}
-      >
-        {property.value}
-      </td>
-    </tr>
+    <PropertiesList properties={properties} highlightText={highlightText} />
   )
 }

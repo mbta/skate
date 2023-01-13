@@ -211,8 +211,8 @@ describe("CardProperties", () => {
       />
     )
 
-    expect(result.queryByText(/Some sensitive value/)?.className).toMatch(
-      /m-card__properties-value--sensitive fs-mask/
-    )
+    expect(
+      result.queryByText(/Some sensitive value/)?.parentElement?.className
+    ).toMatch(/fs-mask/)
   })
 })

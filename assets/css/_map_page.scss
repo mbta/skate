@@ -76,6 +76,10 @@ $search-panel-width: 22.0625rem;
     flex-direction: column;
   }
 
+  .m-map-page__input-and-results .c-drawer-tab {
+    display: none;
+  }
+
   .m-map-page--show-list {
     .m-map-page__input-and-results {
       flex: 1 1 auto;
