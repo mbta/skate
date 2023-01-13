@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isRecentlyLoggedOn, isVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
 import { Card, CardProperties } from "./card"
@@ -13,17 +13,6 @@ interface Props {
   onClick: (vehicle: VehicleOrGhost) => void
   selectedVehicleId: string | null
 }
-
-const NewBadge = () => (
-  <div className="m-search-results__card-new-badge">
-    <span className="m-search-results__card-new-badge-label">New</span>
-    <span className="m-search-results__card-new-badge-icon">
-      <svg viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="4.5" cy="4.5" r="4.5" />
-      </svg>
-    </span>
-  </div>
-)
 
 const SearchResultCard = ({
   vehicleOrGhost,
@@ -39,7 +28,12 @@ const SearchResultCard = ({
 
   const title = `${route?.name || routeId}_${viaVariantFormatted} ${headsign}`
 
-  // TODO: Add highlight of result back
+  const [
+    {
+      searchPageState: { query },
+    },
+  ] = useContext(StateDispatchContext)
+
   return (
     <li>
       <Card
@@ -49,9 +43,10 @@ const SearchResultCard = ({
         icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
         additionalClass="m-search-results__result"
       >
-        {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
-
-        <CardProperties properties={vehicleOrGhostProperties(vehicleOrGhost)} />
+        <CardProperties
+          properties={vehicleOrGhostProperties(vehicleOrGhost)}
+          highlightText={query.text}
+        />
       </Card>
     </li>
   )

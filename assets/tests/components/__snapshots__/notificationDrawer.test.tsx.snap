@@ -134,27 +134,30 @@ exports[`NotificationDrawer renders notifications 1`] = `
                   >
                     OCC reported that an operator is not available on the r1, r2.
                   </div>
-                  <table
-                    className="m-card__properties"
+                  <div
+                    className="m-properties-list"
                   >
-                    <tbody>
-                      <tr>
-                        <th
-                          className="m-card__properties-label"
-                          id="card-property-label-:r0:"
-                          scope="row"
+                    <table
+                      className="m-properties-list__table"
+                    >
+                      <tbody>
+                        <tr
+                          className="m-properties-list__property "
                         >
-                          Run
-                        </th>
-                        <td
-                          aria-labelledby="card-property-label-:r0:"
-                          className="m-card__properties-value"
-                        >
-                          run1, run2
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <td
+                            className="m-properties-list__property-label"
+                          >
+                            Run
+                          </td>
+                          <td
+                            className="m-properties-list__property-value"
+                          >
+                            run1, run2
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </button>
