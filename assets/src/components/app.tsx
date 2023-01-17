@@ -5,6 +5,8 @@ import {
   Routes,
   Route as BrowserRoute,
   useLocation,
+  Route,
+  Outlet,
 } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
@@ -25,7 +27,7 @@ import Nav from "./nav"
 import RightPanel from "./rightPanel"
 import { mapModeForUser } from "../util/mapMode"
 
-const AppRoutes = () => {
+export const AppRoutes = () => {
   useAppcues()
 
   const [
@@ -58,13 +60,33 @@ const AppRoutes = () => {
             openView={openView}
           >
             <Routes>
-              <BrowserRoute path="/" element={<LadderPage />} />
-              <BrowserRoute path="/shuttle-map" element={<ShuttleMapPage />} />
-              <BrowserRoute path="/settings" element={<SettingsPage />} />
-              <BrowserRoute path={mapMode.path} element={mapMode.element} />
+              <Route
+                element={
+                  <>
+                    <Outlet />
+                    <RightPanel
+                      selectedVehicleOrGhost={selectedVehicleOrGhost}
+                    />
+                    {openView === OpenView.Late ? <LateView /> : null}
+                  </>
+                }
+              >
+                <BrowserRoute path="/" element={<LadderPage />} />
+                <BrowserRoute
+                  path="/shuttle-map"
+                  element={<ShuttleMapPage />}
+                />
+                <BrowserRoute path="/settings" element={<SettingsPage />} />
+                {mapMode.title === "Search" ? (
+                  <BrowserRoute path={mapMode.path} element={mapMode.element} />
+                ) : null}
+              </Route>
+              <Route>
+                {mapMode.title === "Map" ? (
+                  <BrowserRoute path={mapMode.path} element={mapMode.element} />
+                ) : null}
+              </Route>
             </Routes>
-            {openView === OpenView.Late ? <LateView /> : null}
-            <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
           </Nav>
           <Modal />
         </div>

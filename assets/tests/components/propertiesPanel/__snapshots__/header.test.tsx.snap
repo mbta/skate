@@ -7,11 +7,11 @@ exports[`Header renders a header 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Vehicles
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -252,11 +252,11 @@ exports[`Header renders for a ghost 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Vehicles
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -471,11 +471,11 @@ exports[`Header renders for a late vehicle 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Vehicles
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -716,11 +716,11 @@ exports[`Header renders for a shuttle 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Vehicles
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -829,11 +829,11 @@ exports[`Header renders for an early vehicle 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Vehicles
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -1074,11 +1074,11 @@ exports[`Header renders for an off-course vehicle 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Vehicles
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -1317,11 +1317,11 @@ exports[`Header renders with route data 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Vehicles
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
