@@ -6,7 +6,6 @@ exports[`drawerTab has correct icon when collapsed 1`] = `
 >
   <button
     className="c-drawer-tab__tab-button"
-    data-testid="drawer-tab-button"
     onClick={[MockFunction]}
     title="Expand"
   >
@@ -27,7 +26,6 @@ exports[`drawerTab has correct icon when visible 1`] = `
 >
   <button
     className="c-drawer-tab__tab-button"
-    data-testid="drawer-tab-button"
     onClick={[MockFunction]}
     title="Collapse"
   >

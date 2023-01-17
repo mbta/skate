@@ -15,7 +15,6 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       >
         <button
           class="c-drawer-tab__tab-button"
-          data-testid="drawer-tab-button"
           title="Collapse"
         >
           <span>
@@ -361,7 +360,6 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       >
         <button
           class="c-drawer-tab__tab-button"
-          data-testid="drawer-tab-button"
           title="Collapse"
         >
           <span>
@@ -707,7 +705,6 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       >
         <button
           class="c-drawer-tab__tab-button"
-          data-testid="drawer-tab-button"
           title="Collapse"
         >
           <span>

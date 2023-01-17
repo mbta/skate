@@ -12,7 +12,6 @@ const DrawerTab = ({
   <div className="c-drawer-tab">
     <button
       className="c-drawer-tab__tab-button"
-      data-testid="drawer-tab-button"
       onClick={toggleVisibility}
       title={isVisible ? "Collapse" : "Expand"}
     >

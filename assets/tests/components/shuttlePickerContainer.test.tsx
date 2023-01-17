@@ -21,7 +21,7 @@ describe("ShuttlePickerContainer", () => {
       "visible"
     )
 
-    await user.click(result.getByTestId("drawer-tab-button"))
+    await user.click(result.getByRole("button", { name: "Collapse" }))
 
     expect(mockDispatch).toHaveBeenCalledWith(togglePickerContainer())
   })
