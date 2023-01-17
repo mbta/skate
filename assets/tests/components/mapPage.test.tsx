@@ -360,11 +360,7 @@ describe("<MapPage />", () => {
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
     expect(vehiclePropertiesCard).not.toBeInTheDocument()
     expect(routeShape).not.toBeInTheDocument()
-    expect(
-      screen.getByRole("generic", {
-        name: /map search panel/i,
-      })
-    ).toBeVisible()
+    expect(mapSearchPanel).toBeVisible()
   })
 
   test("after search is canceled, should not render search results on map", async () => {

@@ -59,19 +59,16 @@ const ToggleMobileDisplayButton = ({
 
 const MapPageInternal = ({
   liveSelectedVehicle,
+  searchResultVehicles,
 }: {
-  liveSelectedVehicle: Vehicle | null
+  liveSelectedVehicle?: Vehicle | null
+  searchResultVehicles: VehicleOrGhost[] | null
 }) => {
   const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
     useContext(StateDispatchContext)
   const stations = useStations()
 
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const vehicles: VehicleOrGhost[] | null = useSearchResults(
-    socket,
-    searchPageState.isActive ? searchPageState.query : null
-  )
-  const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
+  const onlyVehicles: Vehicle[] = filterVehicles(searchResultVehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 
   const [showVehicleCard, setShowVehicleCard] = useState<boolean>(
@@ -132,10 +129,10 @@ const MapPageInternal = ({
         </div>
 
         <div className="m-search-display">
-          {vehicles !== null &&
-          thereIsAnActiveSearch(vehicles, searchPageState) ? (
+          {searchResultVehicles !== null &&
+          thereIsAnActiveSearch(searchResultVehicles, searchPageState) ? (
             <SearchResults
-              vehicles={vehicles}
+              vehicles={searchResultVehicles}
               selectedVehicleId={liveSelectedVehicle?.id || null}
               onClick={selectVehicle}
             />
@@ -177,27 +174,62 @@ const MapPageInternal = ({
   )
 }
 
-const MapPageWithSelectedVehicle = ({ vehicleId }: { vehicleId: string }) => {
+const MapPageWithSelectedVehicle = ({
+  vehicleId,
+  searchResultVehicles,
+}: {
+  vehicleId: string
+  searchResultVehicles: VehicleOrGhost[] | null
+}) => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
 
-  const vehicleOrGhost = useVehicleForId(socket, vehicleId)
+  const selectedVehicleOrGhost = useVehicleForId(socket, vehicleId)
 
   return (
     <MapPageInternal
       liveSelectedVehicle={
-        vehicleOrGhost && isVehicle(vehicleOrGhost) ? vehicleOrGhost : null
+        selectedVehicleOrGhost && isVehicle(selectedVehicleOrGhost)
+          ? selectedVehicleOrGhost
+          : null
       }
+      searchResultVehicles={searchResultVehicles}
     />
   )
 }
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState }] = useContext(StateDispatchContext)
+  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
+  const searchResultVehicles: VehicleOrGhost[] | null = useSearchResults(
+    socket,
+    searchPageState.isActive ? searchPageState.query : null
+  )
+  if (!searchPageState.selectedVehicleId) {
+    return <MapPageInternal searchResultVehicles={searchResultVehicles} />
+  }
 
-  return searchPageState.selectedVehicleId ? (
-    <MapPageWithSelectedVehicle vehicleId={searchPageState.selectedVehicleId} />
-  ) : (
-    <MapPageInternal liveSelectedVehicle={null} />
+  const vehicleFromSearchResults = searchResultVehicles
+    ? searchResultVehicles.find(
+        (v) => v.id === searchPageState.selectedVehicleId!
+      )
+    : null
+
+  if (vehicleFromSearchResults) {
+    return (
+      <MapPageInternal
+        liveSelectedVehicle={
+          isVehicle(vehicleFromSearchResults) ? vehicleFromSearchResults : null
+        }
+        searchResultVehicles={searchResultVehicles}
+      />
+    )
+  }
+
+  return (
+    <MapPageWithSelectedVehicle
+      vehicleId={searchPageState.selectedVehicleId}
+      searchResultVehicles={searchResultVehicles}
+    />
   )
 }
 
