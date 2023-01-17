@@ -20,6 +20,11 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
+jest.mock("../../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
+}))
+
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
 jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
