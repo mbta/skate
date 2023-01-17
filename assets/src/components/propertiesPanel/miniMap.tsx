@@ -11,7 +11,7 @@ import { mapModeForUser } from "../../util/mapMode"
 import Map from "../map"
 
 const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
-  const [_state, dispatch] = useContext(StateDispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
   const ref = React.useRef(null)
 
   useEffect(() => {
