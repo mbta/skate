@@ -26,7 +26,10 @@ const SearchResultCard = ({
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
   const route = useRoute(vehicleOrGhost.routeId)
 
-  const title = `${route?.name || routeId}_${viaVariantFormatted} ${headsign}`
+  const title =
+    isVehicle(vehicleOrGhost) && vehicleOrGhost.isShuttle
+      ? "Shuttle"
+      : `${route?.name || routeId}_${viaVariantFormatted} ${headsign}`
 
   const [
     {
