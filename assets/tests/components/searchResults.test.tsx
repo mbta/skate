@@ -10,9 +10,10 @@ import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
 import * as dateTime from "../../src/util/dateTime"
+import "@testing-library/jest-dom"
 
 import ghostFactory from "../factories/ghost"
-import vehicleFactory from "../factories/vehicle"
+import vehicleFactory, { shuttleFactory } from "../factories/vehicle"
 
 jest
   .spyOn(dateTime, "now")
@@ -274,6 +275,22 @@ describe("SearchResults", () => {
       .toJSON()
 
     expect(JSON.stringify(tree)).toMatch(/ghost-run.*new-label.*old-label/)
+  })
+
+  test("renders a shuttle", () => {
+    const vehicle: Vehicle = shuttleFactory.build()
+
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[vehicle]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
+
+    expect(screen.getByText(/Shuttle/)).toBeInTheDocument()
   })
 
   test("renders a selected result card", () => {
