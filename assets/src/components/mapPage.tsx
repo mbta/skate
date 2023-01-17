@@ -112,6 +112,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const leafletMap = useRef<LeafletMap | null>(null)
   useEffect(() => {
+    setSearchOpen(!vpcEnabled)
+
     // Let leaflet know when Page resizes due to vpc state
     leafletMap.current?.invalidateSize()
   }, [vpcEnabled])
@@ -126,7 +128,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           searchOpen ? "visible" : "hidden"
         }`}
         aria-label="Map Search Panel"
-        {...(vpcEnabled ? { hidden: true } : {})}
       >
         <DrawerTab
           isVisible={searchOpen}
