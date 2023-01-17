@@ -48,8 +48,8 @@ describe("MiniMap", () => {
           </StateDispatchProvider>
         </MemoryRouter>
       )
-      expect(screen.getByText("Open Map")).toBeInTheDocument()
-      await userEvent.click(screen.getByText("Open Map"))
+      expect(screen.getByRole("link", { name: "Open Map" })).toBeInTheDocument()
+      await userEvent.click(screen.getByRole("link", { name: "Open Map" }))
       expect(mockDispatch).toHaveBeenCalledWith(setSelectedVehicle(vehicle.id))
     })
 
@@ -59,7 +59,9 @@ describe("MiniMap", () => {
           <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
         </MemoryRouter>
       )
-      expect(screen.queryByTitle("Full Screen")).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole("button", { name: "Full Screen" })
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -73,7 +75,9 @@ describe("MiniMap", () => {
           <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
         </MemoryRouter>
       )
-      expect(screen.queryByText("Open Map")).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole("link", { name: "Open Map" })
+      ).not.toBeInTheDocument()
     })
 
     test("Map does include fullscreen button", () => {
@@ -82,7 +86,9 @@ describe("MiniMap", () => {
           <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
         </MemoryRouter>
       )
-      expect(screen.getByTitle("Full Screen")).toBeInTheDocument()
+      expect(
+        screen.getByRole("button", { name: "Full Screen" })
+      ).toBeInTheDocument()
     })
   })
 })
