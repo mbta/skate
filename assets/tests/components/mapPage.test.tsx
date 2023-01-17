@@ -214,14 +214,13 @@ describe("<MapPage />", () => {
       tripId === vehicle.tripId ? shapes : null
     )
 
-    const { container } = render(<MapPage />, {
-      wrapper: (props) => (
-        <RealDispatchWrapper
-          initialState={stateFactory.build({ searchPageState: activeSearch })}
-          {...props}
-        />
-      ),
-    })
+    const { container } = render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({ searchPageState: activeSearch })}
+      >
+        <MapPage />
+      </RealDispatchWrapper>
+    )
 
     const mapSearchPanel = screen.getByRole("generic", {
       name: /map search panel/i,
@@ -243,16 +242,15 @@ describe("<MapPage />", () => {
     ;(useTripShape as jest.Mock).mockReturnValue(shapeFactory.buildList(2))
     ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
 
-    const { container } = render(<MapPage />, {
-      wrapper: (props) => (
-        <RealDispatchWrapper
-          initialState={stateFactory.build({
-            searchPageState: { selectedVehicleId: vehicle.id },
-          })}
-          {...props}
-        />
-      ),
-    })
+    const { container } = render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({
+          searchPageState: { selectedVehicleId: vehicle.id },
+        })}
+      >
+        <MapPage />
+      </RealDispatchWrapper>
+    )
 
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
@@ -328,19 +326,18 @@ describe("<MapPage />", () => {
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
     ;(useTripShape as jest.Mock).mockReturnValue(shapeFactory.buildList(1))
 
-    const { container } = render(<MapPage />, {
-      wrapper: (props) => (
-        <RealDispatchWrapper
-          initialState={stateFactory.build({
-            searchPageState: searchPageStateFactory.build({
-              query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
-              isActive: true,
-            }),
-          })}
-          {...props}
-        />
-      ),
-    })
+    const { container } = render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
+            isActive: true,
+          }),
+        })}
+      >
+        <MapPage />
+      </RealDispatchWrapper>
+    )
 
     const mapSearchPanel = screen.getByRole("generic", {
       name: /map search panel/i,
@@ -376,14 +373,13 @@ describe("<MapPage />", () => {
       tripId === vehicle.tripId ? shapes : null
     )
 
-    const { container } = render(<MapPage />, {
-      wrapper: (props) => (
-        <RealDispatchWrapper
-          initialState={stateFactory.build({ searchPageState: activeSearch })}
-          {...props}
-        />
-      ),
-    })
+    const { container } = render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({ searchPageState: activeSearch })}
+      >
+        <MapPage />
+      </RealDispatchWrapper>
+    )
 
     expect(container.querySelector(".m-vehicle-icon__label")).toBeVisible()
     expect(
@@ -436,9 +432,11 @@ describe("<MapPage />", () => {
     ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
-    render(<MapPage />, {
-      wrapper: (props) => <RealDispatchWrapper {...props} />,
-    })
+    render(
+      <RealDispatchWrapper>
+        <MapPage />
+      </RealDispatchWrapper>
+    )
 
     const mapSearchPanel = screen.getByRole("generic", {
       name: /map search panel/i,
@@ -468,9 +466,11 @@ describe("<MapPage />", () => {
         ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
         ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
-        render(<MapPage />, {
-          wrapper: (props) => <RealDispatchWrapper {...props} />,
-        })
+        render(
+          <RealDispatchWrapper>
+            <MapPage />
+          </RealDispatchWrapper>
+        )
 
         await userEvent.click(
           screen.getByRole("button", {
@@ -489,9 +489,11 @@ describe("<MapPage />", () => {
         ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
         ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
 
-        render(<MapPage />, {
-          wrapper: (props) => <RealDispatchWrapper {...props} />,
-        })
+        render(
+          <RealDispatchWrapper>
+            <MapPage />
+          </RealDispatchWrapper>
+        )
 
         await userEvent.click(
           screen.getByRole("button", {
