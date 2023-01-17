@@ -55,6 +55,7 @@ const useRouteVehicles = (
 ): Vehicle[] => {
   // Get vehicles we've already fetched from the context.
   const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
+
   const existingVehiclesAndGhosts: VehicleOrGhost[] | undefined =
     routeId === null ? undefined : vehiclesByRouteId[routeId]
   // If we haven't already fetched this route, open a new channel.

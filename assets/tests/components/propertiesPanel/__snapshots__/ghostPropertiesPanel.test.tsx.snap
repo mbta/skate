@@ -10,11 +10,11 @@ exports[`GhostPropertiesPanel renders 1`] = `
     <div
       className="m-view-header"
     >
-      <div
+      <h2
         className="m-view-header__title"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         aria-label="Close"
         className="m-close-button m-close-button--x-large m-close-button--light"
@@ -312,11 +312,11 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     <div
       className="m-view-header"
     >
-      <div
+      <h2
         className="m-view-header__title"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         aria-label="Close"
         className="m-close-button m-close-button--x-large m-close-button--light"
@@ -658,11 +658,11 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     <div
       className="m-view-header"
     >
-      <div
+      <h2
         className="m-view-header__title"
       >
         Vehicles
-      </div>
+      </h2>
       <button
         aria-label="Close"
         className="m-close-button m-close-button--x-large m-close-button--light"

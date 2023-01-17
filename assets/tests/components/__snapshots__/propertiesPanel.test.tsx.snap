@@ -15,11 +15,11 @@ Array [
         <div
           className="m-view-header"
         >
-          <div
+          <h2
             className="m-view-header__title"
           >
             Vehicles
-          </div>
+          </h2>
           <button
             aria-label="Close"
             className="m-close-button m-close-button--x-large m-close-button--light"
@@ -329,11 +329,11 @@ Array [
         <div
           className="m-view-header"
         >
-          <div
+          <h2
             className="m-view-header__title"
           >
             Vehicles
-          </div>
+          </h2>
           <button
             aria-label="Close"
             className="m-close-button m-close-button--x-large m-close-button--light"

@@ -8,11 +8,11 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Swings
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -177,11 +177,11 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Swings
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -344,11 +344,11 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Swings
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -537,11 +537,11 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Swings
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -657,11 +657,11 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Swings
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
@@ -944,11 +944,11 @@ exports[`SwingsView renders loading message 1`] = `
   <div
     className="m-view-header"
   >
-    <div
+    <h2
       className="m-view-header__title"
     >
       Swings
-    </div>
+    </h2>
     <button
       aria-label="Close"
       className="m-close-button m-close-button--x-large m-close-button--light"
