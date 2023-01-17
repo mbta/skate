@@ -17,6 +17,7 @@ interface Props {
 const SearchResultCard = ({
   vehicleOrGhost,
   onClick,
+  isSelected,
 }: {
   vehicleOrGhost: VehicleOrGhost
   onClick: (vehicle: VehicleOrGhost) => void
@@ -45,6 +46,7 @@ const SearchResultCard = ({
         title={title}
         icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
         additionalClass="m-search-results__result"
+        selected={isSelected}
       >
         <CardProperties
           properties={vehicleOrGhostProperties(vehicleOrGhost)}
