@@ -73,6 +73,24 @@ describe("Card", () => {
     ).toMatch(/m-card--no-focus-or-hover/)
   })
 
+  test("can mark as selected", () => {
+    const result = render(
+      <Card
+        title="My Card"
+        currentTime={new Date()}
+        style="kiwi"
+        selected={true}
+      >
+        Foo
+      </Card>
+    )
+
+    expect(
+      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
+        ?.className
+    ).toMatch(/selected/)
+  })
+
   test("includes age when time is given", () => {
     const result = render(
       <Card
