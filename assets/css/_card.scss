@@ -7,14 +7,6 @@
   border-radius: 0.5rem;
   padding: 0.3125rem 0.3125rem 1rem 1rem;
 
-  &:hover:not(.m-card--no-focus-or-hover) {
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-  }
-
-  &:focus:not(.m-card--no-focus-or-hover) {
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
-  }
-
   button {
     text-align: start;
     margin: 0;
@@ -170,12 +162,12 @@
     background-color: $color-kiwi-100;
     border: 1px solid $color-kiwi-400;
 
-    &:hover:not(.m-card--no-focus-or-hover) {
+    &:hover:not(.m-card--no-focus-or-hover):not(.m-card--selected) {
       background-color: $white;
       border: 1px solid $color-kiwi-300;
     }
 
-    &:focus:not(.m-card--no-focus-or-hover) {
+    &:focus-within:not(.m-card--no-focus-or-hover) {
       background-color: $color-kiwi-200;
       border: 2px solid $color-kiwi-400;
     }
@@ -185,7 +177,7 @@
     background-color: $color-gray-50;
     border: 1px solid $color-gray-400;
 
-    &:hover:not(.m-card--no-focus-or-hover) {
+    &:hover:not(.m-card--no-focus-or-hover):not(.m-card--selected) {
       background-color: $color-gray-50;
       border: 1px solid $color-kiwi-300;
     }
@@ -200,9 +192,24 @@
   &.m-card {
     background-color: $white;
     border: 1px solid $color-gray-400;
+
+    &:hover:not(.m-card--no-focus-or-hover):not(.m-card--selected) {
+      background-color: $color-gray-100;
+      border: 1px solid $color-gray-300;
+    }
+
+    &:focus-within:not(.m-card--no-focus-or-hover) {
+      background-color: $color-gray-100;
+      border: 1px solid $color-eggplant-500;
+    }
   }
 
   &.m-card__title {
     color: $color-gray-900;
+  }
+
+  &.m-card--selected {
+    background-color: $color-gray-50;
+    border: 1px solid $color-eggplant-500;
   }
 }

@@ -18,6 +18,7 @@ interface CardProps {
   title: string
   time?: Date
   noFocusOrHover?: boolean
+  selected?: boolean
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -32,6 +33,7 @@ export const Card: React.FC<CardProps> = ({
   title,
   time,
   noFocusOrHover,
+  selected,
 }) => {
   const innerLeftContent = (
     <div className="m-card__left-content">
@@ -56,7 +58,8 @@ export const Card: React.FC<CardProps> = ({
         `m-card m-card--${style}` +
         (additionalClass ? " " + additionalClass : "") +
         (noFocusOrHover ? " m-card--no-focus-or-hover" : "") +
-        (!isUnread ? " m-card--read" : "")
+        (!isUnread ? " m-card--read" : "") +
+        (selected ? " m-card--selected" : "")
       }
     >
       {openCallback ? (
