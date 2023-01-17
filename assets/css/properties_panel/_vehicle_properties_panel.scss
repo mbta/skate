@@ -82,7 +82,7 @@
   padding: 0.5rem;
   border-radius: 6px;
   color: $color-gray-700 !important;
-  font-weight: 500;
+  font-weight: var(--font-weight-semi);
 
   &:hover {
     background-color: $color-gray-100;
