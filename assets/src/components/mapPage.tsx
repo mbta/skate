@@ -204,6 +204,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     socket,
     searchPageState.isActive ? searchPageState.query : null
   )
+
   if (!searchPageState.selectedVehicleId) {
     return <MapPageInternal searchResultVehicles={searchResultVehicles} />
   }

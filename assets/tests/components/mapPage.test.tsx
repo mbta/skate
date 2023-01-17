@@ -26,12 +26,6 @@ import stopFactory from "../factories/stop"
 import vehicleFactory from "../factories/vehicle"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 
-jest
-  .spyOn(dateTime, "now")
-  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
-
-jest.spyOn(Date, "now").mockImplementation(() => 234000)
-
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(),
@@ -57,8 +51,17 @@ jest.mock("../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
 }))
 
+beforeEach(() => {
+  jest
+    .spyOn(dateTime, "now")
+    .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+
+  jest.spyOn(Date, "now").mockImplementation(() => 234000)
+  ;(useSearchResults as jest.Mock).mockReturnValue([])
+})
+
 afterEach(() => {
-  jest.clearAllMocks()
+  jest.resetAllMocks()
 })
 
 describe("<MapPage />", () => {
@@ -210,7 +213,6 @@ describe("<MapPage />", () => {
     ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
       tripId === vehicle.tripId ? shapes : null
     )
-    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
 
     const { container } = render(<MapPage />, {
       wrapper: (props) => (
@@ -235,14 +237,11 @@ describe("<MapPage />", () => {
 
   test("when a vehicle is selected and not in the search results, it is still displayed", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    const runId = "clickMe"
+    const runId = "abcd"
     const vehicle = vehicleFactory.build({ runId })
     ;(useSearchResults as jest.Mock).mockReturnValue([])
-    const shapes = shapeFactory.buildList(2)
-    ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
-      tripId === vehicle.tripId ? shapes : null
-    )
-    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+    ;(useTripShape as jest.Mock).mockReturnValue(shapeFactory.buildList(2))
+    ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
 
     const { container } = render(<MapPage />, {
       wrapper: (props) => (
