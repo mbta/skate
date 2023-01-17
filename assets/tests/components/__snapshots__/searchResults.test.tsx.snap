@@ -410,7 +410,7 @@ exports[`SearchResults renders a selected result card 1`] = `
     </li>
     <li>
       <div
-        className="m-card m-card--white m-search-results__result m-card--read"
+        className="m-card m-card--white m-search-results__result m-card--read m-card--selected"
       >
         <button
           className="m-card__left"
