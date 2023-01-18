@@ -60,9 +60,7 @@ $search-panel-width: 22.0625rem;
 }
 
 .m-map-page__toggle-mobile-display-button {
-  @include button-text;
   display: none;
-  font-size: 0.875rem;
   margin: 0.5rem auto 0;
 }
 

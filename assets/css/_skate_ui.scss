@@ -155,6 +155,24 @@ $font-weights: (
   }
 }
 
+.button-text {
+  color: $color-eggplant-700;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semi);
+  padding: 0;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-eggplant-500;
+  }
+
+  &:focus {
+    color: $color-eggplant-500;
+    border: 1px solid $color-eggplant-700;
+    border-radius: 3px;
+  }
+}
+
 .title-case {
   text-transform: capitalize;
 }

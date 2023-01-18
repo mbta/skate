@@ -25,7 +25,7 @@ exports[`RecentSearches renders with data 1`] = `
   <ul>
     <li>
       <button
-        className="m-recent-searches__button"
+        className="m-recent-searches__button button-text"
         onClick={[Function]}
       >
         poodle
@@ -33,7 +33,7 @@ exports[`RecentSearches renders with data 1`] = `
     </li>
     <li>
       <button
-        className="m-recent-searches__button"
+        className="m-recent-searches__button button-text"
         onClick={[Function]}
       >
         999-502
@@ -41,7 +41,7 @@ exports[`RecentSearches renders with data 1`] = `
     </li>
     <li>
       <button
-        className="m-recent-searches__button"
+        className="m-recent-searches__button button-text"
         onClick={[Function]}
       >
         999-501
