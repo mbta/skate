@@ -16,7 +16,7 @@ const RecentSearches = () => {
         {savedQueries.map((savedQuery, i) => (
           <li key={i}>
             <button
-              className="m-recent-searches__button"
+              className="m-recent-searches__button button-text"
               onClick={() => {
                 dispatch(setSearchText(savedQuery.text))
                 dispatch(submitSearch())

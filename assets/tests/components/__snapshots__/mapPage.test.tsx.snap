@@ -140,7 +140,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
           </div>
         </form>
         <button
-          class="m-map-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button button-text"
         >
           Show map instead
         </button>
@@ -485,7 +485,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
           </div>
         </form>
         <button
-          class="m-map-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button button-text"
         >
           Show map instead
         </button>
@@ -830,7 +830,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           </div>
         </form>
         <button
-          class="m-map-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button button-text"
         >
           Show map instead
         </button>

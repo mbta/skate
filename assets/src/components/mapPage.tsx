@@ -49,7 +49,7 @@ const ToggleMobileDisplayButton = ({
 
   return (
     <button
-      className="m-map-page__toggle-mobile-display-button"
+      className="m-map-page__toggle-mobile-display-button button-text"
       onClick={onToggleMobileDisplay}
     >
       Show {otherDisplayName} instead
