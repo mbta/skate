@@ -284,24 +284,33 @@ describe("<MapPage />", () => {
   })
 
   test("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
-    const vehicle = vehicleFactory.build()
+    const mapSearchPanelQuery: [string, object] = [
+      "generic",
+      {
+        name: /Map Search Panel/i,
+      },
+    ]
+
+    const vehicles = randomLocationVehicle.buildList(3, {
+      // runId,
+    })
+    const [vehicle] = vehicles
+    // const runId = "clickMe"
+    const runId = vehicle.runId!
+
     ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-
-    const runId = "clickMe"
-    ;(useSearchResults as jest.Mock).mockReturnValue(
-      vehicleFactory.buildList(1, {
-        runId,
-      })
-    )
+    ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
     ;(useTripShape as jest.Mock).mockReturnValue(shapeFactory.buildList(1))
 
+    setHtmlWidthHeightForLeafletMap()
     const { container } = render(
       <StateDispatchProvider
         state={stateFactory.build({
           searchPageState: searchPageStateFactory.build({
             query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
             isActive: true,
+            selectedVehicleId: vehicle.id,
           }),
         })}
         dispatch={jest.fn()}
@@ -311,11 +320,11 @@ describe("<MapPage />", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    const mapSearchPanel = screen.getByRole("generic", {
-      name: /map search panel/i,
-    })
 
-    await userEvent.click(screen.getByRole("button", { name: runId }))
+    await userEvent.click(
+      screen.getByRole("button", { name: runIdToLabel(runId) })
+    )
+
     const routeShape = container.querySelector(".m-vehicle-map__route-shape")
     const vehiclePropertiesCard = screen.getByRole("generic", {
       name: /vehicle properties card/i,
@@ -329,7 +338,7 @@ describe("<MapPage />", () => {
     expect(vehiclePropertiesCard).not.toBeInTheDocument()
     expect(routeShape).not.toBeInTheDocument()
 
-    expect(mapSearchPanel).toBeVisible()
+    expect(screen.getByRole(...mapSearchPanelQuery)).toBeVisible()
   })
 
   test("after search is canceled, should not render search results on map", async () => {
