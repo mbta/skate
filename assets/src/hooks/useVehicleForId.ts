@@ -15,9 +15,9 @@ const parserWithNull = nullableParser(parser)
 
 const useVehicleForId = (
   socket: Socket | undefined,
-  vehicleId: VehicleId
+  vehicleId: VehicleId | null
 ): VehicleOrGhost | null | undefined => {
-  const topic = `vehicle:id:${vehicleId}`
+  const topic = vehicleId ? `vehicle:id:${vehicleId}` : null
 
   const channelResponse = useChannel<VehicleOrGhost[] | null | undefined>({
     socket,
