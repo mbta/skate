@@ -379,13 +379,12 @@ describe("<MapPage />", () => {
   })
 
   test("When a vehicle is selected, the search panel should be collapsed", async () => {
-    expect.hasAssertions()
-    const runId = "clickMe"
+    const { id: runId } = RunFactory.build()
     const vehicle = vehicleFactory.build({ runId })
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    ;(useVehicleForId as jest.Mock).mockReturnValueOnce(vehicle)
+    ;(useVehicleForId as jest.Mock).mockReturnValue(vehicle)
     ;(useSearchResults as jest.Mock).mockReturnValue(
-      vehicleFactory.buildList(1, { runId: runId })
+      [vehicle]
     )
 
     render(
