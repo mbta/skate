@@ -27,6 +27,7 @@ $search-panel-width: 22.0625rem;
   gap: 1rem;
   width: $search-panel-width;
   height: 100%;
+  box-sizing: border-box;
   position: absolute;
   z-index: 500;
 
@@ -106,7 +107,8 @@ $search-panel-width: 22.0625rem;
 
   .m-map-page__input-and-results {
     box-sizing: border-box;
-    width: auto;
+    width: 100%;
+    position: relative;
   }
 
   .m-map-page__toggle-mobile-display-button {
