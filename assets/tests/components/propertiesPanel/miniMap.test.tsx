@@ -56,7 +56,7 @@ describe("MiniMap", () => {
     test("Map doesn't include fullscreen button", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
+          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
         </MemoryRouter>
       )
       expect(
@@ -72,7 +72,7 @@ describe("MiniMap", () => {
     test("Map does not include link to open vehicle in search map page", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
+          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
         </MemoryRouter>
       )
       expect(
@@ -83,7 +83,7 @@ describe("MiniMap", () => {
     test("Map does include fullscreen button", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />{" "}
+          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
         </MemoryRouter>
       )
       expect(
