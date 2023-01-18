@@ -151,12 +151,3 @@ $map-page-search-stub-size: 10px;
 
   cursor: default;
 }
-
-.m-map-page__input-and-results[hidden] + *::before {
-  content: "";
-
-  height: 100%;
-  width: $map-page-search-stub-size;
-
-  background-color: $color-gray-400;
-}
