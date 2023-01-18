@@ -198,18 +198,23 @@
       border: 1px solid $color-gray-300;
     }
 
-    &:focus-within:not(.m-card--no-focus-or-hover) {
+    &:focus-within:not(.m-card--no-focus-or-hover):not(.m-card--selected) {
       background-color: $color-gray-100;
+      border: 2px solid $color-eggplant-500;
+    }
+
+    &.m-card--selected {
+      background-color: $color-gray-50;
       border: 1px solid $color-eggplant-500;
+    }
+
+    &:focus-within:not(.m-card--no-focus-or-hover).m-card--selected {
+      background-color: $color-gray-50;
+      border: 2px solid $color-eggplant-500;
     }
   }
 
   &.m-card__title {
     color: $color-gray-900;
-  }
-
-  &.m-card--selected {
-    background-color: $color-gray-50;
-    border: 1px solid $color-eggplant-500;
   }
 }
