@@ -1,3 +1,5 @@
+$search-page-search-panel-width: 22.0625rem;
+
 .m-search-page {
   display: flex;
   flex: 1 1 auto;
@@ -7,38 +9,74 @@
   overflow: visible;
 }
 
-.m-search-page__input-and-results {
-  background-color: $color-bg-base;
+.m-search-page__map {
   display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  width: 22rem;
+  flex: 1 1 auto;
+  position: relative;
 }
 
 .m-search-page__input {
-  border-bottom: 1px solid $white;
+  padding: 0 1.5625rem;
+}
+
+.m-search-page__input-and-results {
+  background-color: $color-gray-300;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 1rem;
+  width: $search-page-search-panel-width;
+  height: 100%;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 500;
+
+  padding: 1.25rem 0 0 0;
+
+  transition: $transition-slide;
+
+  hr {
+    height: 1px;
+    background-color: $color-gray-100;
+    border: none;
+    width: calc(100% - 2 * 1.5625rem);
+    margin: 0 1.5625rem;
+  }
+
+  &.visible {
+    left: 0;
+  }
+
+  &.hidden {
+    left: calc(-1 * #{$search-page-search-panel-width} + 1rem);
+  }
+}
+
+.m-search-page__input-and-results .c-drawer-tab {
+  left: 100%;
+  top: 0;
+  background-color: $color-gray-300;
+  z-index: 500; // Leaflet map pane has a z-index of 400
 }
 
 .m-search-page__toggle-mobile-display-button {
-  @include button-text;
   display: none;
-  font-size: 0.875rem;
   margin: 0.5rem auto 0;
 }
 
 .m-search-display {
   flex: 1 1 auto;
   overflow-y: scroll;
-}
-
-.m-search-page__map {
-  flex: 1 1 auto;
-  position: relative;
+  padding: 0.625rem 1rem 0 1rem;
 }
 
 @media screen and (max-width: $mobile-max-width) {
   .m-search-page {
     flex-direction: column;
+  }
+
+  .m-search-page__input-and-results .c-drawer-tab {
+    display: none;
   }
 
   .m-search-page--show-list {
@@ -67,7 +105,8 @@
 
   .m-search-page__input-and-results {
     box-sizing: border-box;
-    width: auto;
+    width: 100%;
+    position: relative;
   }
 
   .m-search-page__toggle-mobile-display-button {
@@ -79,4 +118,28 @@
     height: 75%;
     width: 100%;
   }
+}
+
+$search-page-search-stub-size: 10px;
+
+.m-search-page__map .m-vehicle-properties-card {
+  position: absolute;
+  top: 0.5rem;
+  left: calc(
+    env(safe-area-inset-left) + 60px - #{$search-page-search-stub-size}
+  );
+
+  // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
+  z-index: 7001;
+
+  cursor: default;
+}
+
+.m-search-page__input-and-results[hidden] + *::before {
+  content: "";
+
+  height: 100%;
+  width: $search-page-search-stub-size;
+
+  background-color: $color-gray-400;
 }
