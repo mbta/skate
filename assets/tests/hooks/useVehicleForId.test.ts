@@ -19,4 +19,16 @@ describe("useVehicleForId", () => {
 
     expect(result.current).toMatchObject({ id: vehicleData.id })
   })
+
+  test("null vehicle should call useChannel with null topic", () => {
+    const vehicleData = vehicleDataFactory.build()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockOneShotChannel(vehicleData)
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { result } = renderHook(() => useVehicleForId(mockSocket, null))
+
+    expect(result.current).toBe(undefined)
+    expect(mockChannel.on).not.toHaveBeenCalled()
+  })
 })
