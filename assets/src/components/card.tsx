@@ -15,7 +15,7 @@ interface CardProps {
   closeCallback?: () => void
   isUnread?: boolean
   additionalClass?: string
-  title: string
+  title: string | JSX.Element
   time?: Date
   noFocusOrHover?: boolean
   selected?: boolean

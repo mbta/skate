@@ -1,11 +1,11 @@
 import React, { useContext } from "react"
-import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
 import { Card, CardProperties } from "./card"
 import { vehicleOrGhostProperties } from "./propertiesList"
+import { RouteVariantName } from "./routeVariantName"
 import { VehicleStatusIcon } from "./vehicleRouteSummary"
 
 interface Props {
@@ -23,15 +23,6 @@ const SearchResultCard = ({
   onClick: (vehicle: VehicleOrGhost) => void
   isSelected: boolean
 }) => {
-  const { routeId, viaVariant, headsign } = vehicleOrGhost
-  const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
-  const route = useRoute(vehicleOrGhost.routeId)
-
-  const title =
-    isVehicle(vehicleOrGhost) && vehicleOrGhost.isShuttle
-      ? "Shuttle"
-      : `${route?.name || routeId}_${viaVariantFormatted} ${headsign}`
-
   const [
     {
       searchPageState: { query },
@@ -43,7 +34,7 @@ const SearchResultCard = ({
       <Card
         openCallback={() => onClick(vehicleOrGhost)}
         style="white"
-        title={title}
+        title={<RouteVariantName vehicle={vehicleOrGhost} />}
         icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
         additionalClass="m-search-results__result"
         selected={isSelected}
