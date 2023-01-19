@@ -72,8 +72,7 @@
 
 .m-vehicle-properties-panel__map-open-link {
   position: absolute;
-  // Above leaflet-panes
-  z-index: 401;
+  z-index: #{$leaflet-pane-z-index + 1};
   top: 10px;
   // Adjacent to controls - control width is 40px
   right: calc(env(safe-area-inset-right) + 40px + 0.5rem);

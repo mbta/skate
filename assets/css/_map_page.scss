@@ -29,7 +29,7 @@ $map-page-search-panel-width: 22.0625rem;
   height: 100%;
   box-sizing: border-box;
   position: absolute;
-  z-index: 500;
+  z-index: #{$leaflet-pane-z-index + 100};
 
   padding: 1.25rem 0 0 0;
 
@@ -56,7 +56,7 @@ $map-page-search-panel-width: 22.0625rem;
   left: 100%;
   top: 0;
   background-color: $color-gray-300;
-  z-index: 500; // Leaflet map pane has a z-index of 400
+  z-index: #{$leaflet-pane-z-index + 100};
 }
 
 .m-map-page__toggle-mobile-display-button {
