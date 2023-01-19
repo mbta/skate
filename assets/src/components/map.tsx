@@ -311,7 +311,7 @@ const Autocenterer = ({
   return <></>
 }
 
-const Map = (props: Props): ReactElement<HTMLDivElement> => {
+const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -430,4 +430,5 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
+const Map = BaseMap
 export default Map
