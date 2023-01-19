@@ -26,6 +26,7 @@ import { VehicleLabelSetting } from "../../src/userSettings"
 import { setHtmlWidthHeightForLeafletMap } from "../testHelpers/leafletMapWidth"
 import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
 import routeFactory from "../factories/route"
+import { RealDispatchWrapper } from "../testHelpers/wrappers"
 
 jest
   .spyOn(dateTime, "now")
@@ -882,18 +883,17 @@ describe("<MapPage />", () => {
           )
 
           render(
-            <StateDispatchProvider
-              state={stateFactory.build({
+            <RealDispatchWrapper
+              initialState={stateFactory.build({
                 searchPageState: activeSearchPageStateFactory.build({
                   query: { text: runId },
                 }),
               })}
-              dispatch={jest.fn()}
             >
               <BrowserRouter>
                 <MapPage />
               </BrowserRouter>
-            </StateDispatchProvider>
+            </RealDispatchWrapper>
           )
 
           await userEvent.click(
