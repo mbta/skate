@@ -178,23 +178,6 @@ export const FullscreenControl = createControlComponent(
   Leaflet.control.fullscreen
 )
 
-export const autoCenter = (
-  map: LeafletMap,
-  latLngs: LatLngExpression[],
-  pickerContainerIsVisible: boolean
-): void => {
-  if (latLngs.length === 0) {
-    map.setView(defaultCenter, 13)
-  } else if (latLngs.length === 1) {
-    map.setView(latLngs[0], 16)
-  } else if (latLngs.length > 1) {
-    map.fitBounds(Leaflet.latLngBounds(latLngs), {
-      paddingBottomRight: [20, 50],
-      paddingTopLeft: [pickerContainerIsVisible ? 220 : 20, 20],
-    })
-  }
-}
-
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = ({
@@ -273,6 +256,24 @@ const EventAdder = ({
   return <></>
 }
 
+// #region Auto Center Functionality
+export const autoCenter = (
+  map: LeafletMap,
+  latLngs: LatLngExpression[],
+  pickerContainerIsVisible: boolean
+): void => {
+  if (latLngs.length === 0) {
+    map.setView(defaultCenter, 13)
+  } else if (latLngs.length === 1) {
+    map.setView(latLngs[0], 16)
+  } else if (latLngs.length > 1) {
+    map.fitBounds(Leaflet.latLngBounds(latLngs), {
+      paddingBottomRight: [20, 50],
+      paddingTopLeft: [pickerContainerIsVisible ? 220 : 20, 20],
+    })
+  }
+}
+
 const Autocenterer = ({
   latLngs,
   shouldAutoCenter,
@@ -310,6 +311,7 @@ const Autocenterer = ({
 
   return <></>
 }
+// #endregion
 
 const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
