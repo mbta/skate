@@ -124,7 +124,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       aria-label="Search Map Page"
     >
       <div
-        className={`m-map-page__input-and-results ${
+        className={`m-map-page__left-popover-pane ${
           searchOpen ? "visible" : "hidden"
         }`}
         aria-label="Map Search Panel"
@@ -133,27 +133,32 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           isVisible={searchOpen}
           toggleVisibility={() => setSearchOpen((a) => !a)}
         />
-        <div className="m-map-page__input">
-          <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
-          <ToggleMobileDisplayButton
-            mobileDisplay={mobileDisplay}
-            onToggleMobileDisplay={toggleMobileDisplay}
-          />
-        </div>
 
-        <hr />
-
-        <div className="m-search-display">
-          {vehicles !== null &&
-          thereIsAnActiveSearch(vehicles, searchPageState) ? (
-            <SearchResults
-              vehicles={vehicles}
-              selectedVehicleId={liveVehicle?.id || null}
-              onClick={selectVehicle}
+        <div
+          className="m-map-page__input-and-results"
+        >
+          <div className="m-map-page__input">
+            <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
+            <ToggleMobileDisplayButton
+              mobileDisplay={mobileDisplay}
+              onToggleMobileDisplay={toggleMobileDisplay}
             />
-          ) : (
-            <RecentSearches />
-          )}
+          </div>
+
+          <hr />
+
+          <div className="m-search-display">
+            {vehicles !== null &&
+            thereIsAnActiveSearch(vehicles, searchPageState) ? (
+              <SearchResults
+                vehicles={vehicles}
+                selectedVehicleId={liveVehicle?.id || null}
+                onClick={selectVehicle}
+              />
+            ) : (
+              <RecentSearches />
+            )}
+          </div>
         </div>
       </div>
       <div className="m-map-page__map">
