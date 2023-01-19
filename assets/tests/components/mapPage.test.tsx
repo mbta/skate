@@ -24,6 +24,8 @@ import vehicleFactory, { randomLocationVehicle } from "../factories/vehicle"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import { VehicleLabelSetting } from "../../src/userSettings"
 import { setHtmlWidthHeightForLeafletMap } from "../testHelpers/leafletMapWidth"
+import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
+import routeFactory from "../factories/route"
 
 jest
   .spyOn(dateTime, "now")
@@ -710,64 +712,136 @@ describe("<MapPage />", () => {
       })
     })
 
-    describe("an active selection", () => {
-      test("the map should be populated", () => {
-        const changeApplicationState = jest.fn()
+    describe.only("with an active selection", () => {
 
-        const [selectedRun, unselectedRun] = RunFactory.buildList(2)
-        const selectedRouteVehicles = randomLocationVehicle.buildList(7, {
-          runId: selectedRun.id,
-        })
-        const unselectedRouteVehicles = randomLocationVehicle.buildList(5, {
-          runId: unselectedRun.id,
+      describe("and selection is a vehicle", () => {
+        const selectedStateFactory = (selectedVehicleId: string) => stateFactory.params({
+          searchPageState: {
+            selectedVehicleId
+          }
         })
 
-        const [selectedVehicle] = selectedRouteVehicles
-        // const vehicle = vehicleFactory.build({ runId })
-        const shapes = shapeFactory.buildList(2)
+        test("the map should show the selected vehicle", () => {
+          setHtmlWidthHeightForLeafletMap()
+          const changeApplicationState = jest.fn()
 
-        const searchPageState = activeSearchPageStateFactory.build({
-          query: searchQueryRunFactory.searchFor(selectedRun.id).build(),
-          selectedVehicleId: selectedVehicle.id,
+          const run = RunFactory.build()
+          const route = routeFactory.build()
+
+          const selectedRouteVehicles = randomLocationVehicle.buildList(7, {
+            routeId: route.id,
+            runId: run.id,
+          })
+
+          const [selectedVehicle] = selectedRouteVehicles
+
+          ;(useVehicleForId as jest.Mock).mockImplementation((_, vehicleId) => vehicleId === selectedVehicle.id ? selectedVehicle : null)
+          ;(useVehiclesForRoute as jest.Mock).mockImplementation((_, routeId) => routeId === route.id ? selectedRouteVehicles : null )
+
+          const shapes = shapeFactory.buildList(1)
+          ;(useTripShape as jest.Mock).mockImplementation((tripId: string | null) => tripId === selectedVehicle.tripId? shapes : null)
+
+          render(
+            <StateDispatchProvider
+              state={selectedStateFactory(selectedVehicle.id).build()}
+              dispatch={changeApplicationState}
+            >
+              <MapPage />
+            </StateDispatchProvider>
+          )
+
+          expect(
+            screen.getAllByRole("button", { name: selectedVehicle.runId! })
+          ).toHaveLength(selectedRouteVehicles.length)
+          expect(changeApplicationState).not.toBeCalled()
         })
 
-        ;(useSearchResults as jest.Mock).mockReturnValue([
-          ...selectedRouteVehicles,
-          ...unselectedRouteVehicles,
-        ])
-        ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
-          tripId === selectedVehicle.tripId ? shapes : null
-        )
+        describe("and vehicle is a regular bus", () => {
+          const changeApplicationState = jest.fn()
 
-        // const searchPageState = activeSearchPageStateFactory.build({
-        //   query: searchQueryRunFactory.build({
-        //     text:
-        //   })
-        // })
-        render(
-          <StateDispatchProvider
-            state={stateFactory.build({
-              searchPageState,
-              userSettings: {
-                // ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
-              },
-            })}
-            dispatch={changeApplicationState}
-          >
-            <MapPage />
-          </StateDispatchProvider>
-        )
+          const run = RunFactory.build()
+          const route = routeFactory.build()
 
-        // vehicle, route, trip shape, trip stops, route vehicles
-        // selection state
-        const searchInput = screen.getByRole("textbox", { name: /search map/i })
-        expect(searchInput).toHaveTextContent("")
-        expect(searchInput).toHaveAttribute("placeholder", "Search")
+          const selectedRouteVehicles = randomLocationVehicle.buildList(7, {
+            routeId: route.id,
+            runId: run.id,
+          })
 
-        expect(
-          screen.getAllByRole("button", { name: selectedVehicle.runId! })
-        ).toHaveLength(selectedRouteVehicles.length)
-        expect(changeApplicationState).not.toBeCalled()
+          const [selectedVehicle] = selectedRouteVehicles
+          const shapes = shapeFactory.buildList(1, { stops: stopFactory.buildList(8)})
+
+          test.todo(
+            "should style vehicle icon on map as selected and map should be centered on the vehicle"
+          )
+          test("should display: vehicle icon, route shape and stops", () => {
+            setHtmlWidthHeightForLeafletMap()
+
+            ;(useVehicleForId as jest.Mock).mockImplementation((_, vehicleId) => vehicleId === selectedVehicle.id ? selectedVehicle : null)
+            ;(useVehiclesForRoute as jest.Mock).mockImplementation((_, routeId) => routeId === route.id ? selectedRouteVehicles : null )
+
+            ;(useTripShape as jest.Mock).mockImplementation((tripId: string | null) => tripId === selectedVehicle.tripId? shapes : null)
+
+            const { container } = render(
+              <StateDispatchProvider
+                state={selectedStateFactory(selectedVehicle.id).build()}
+                dispatch={changeApplicationState}
+              >
+                <MapPage />
+              </StateDispatchProvider>
+            )
+
+            expect(
+              screen.getAllByRole("button", { name: selectedVehicle.runId! })
+            ).toHaveLength(selectedRouteVehicles.length)
+
+            screen.debug(container.querySelector(".leaflet-overlay-pane") || undefined)
+            expect(
+              container.querySelectorAll(".m-vehicle-map__stop")
+            ).toHaveLength(shapes[0]?.stops?.length || 0)
+            expect(
+              container.querySelector(".m-vehicle-map__route-shape")
+            ).toBeInTheDocument
+          })
+          test.todo("should auto center on vehicle by default")
+
+          expect(changeApplicationState).not.toHaveBeenCalled()
+        })
+
+        describe("is a shuttle", () => {
+          test.todo("should display VPC")
+          test.todo(
+            "should style vehicle icon on map as selected and map should be centered on the vehicle"
+          )
+          test.todo("should not display vehicle route shape and stops")
+          test.todo("should auto center on vehicle by default")
+        })
+      })
+
+      describe("selection is a ghost", () => {
+
+        test("the map should be unpopulated and centered on default location", () => {
+          const changeApplicationState = jest.fn()
+
+          const vehicle = ghostFactory.build()
+          ;(useVehicleForId as jest.Mock).mockImplementation((_, id) => id === vehicle.id ? vehicle : undefined)
+          // ;(useSearchResults as jest.Mock).mockReturnValue([vehicle, ...vehicleFactory.buildList(3)])
+
+          render(
+            <StateDispatchProvider
+              state={stateFactory.build({ searchPageState: {
+                selectedVehicleId: vehicle.id
+              } })}
+              dispatch={changeApplicationState}
+            >
+              <MapPage />
+            </StateDispatchProvider>
+          )
+
+          expect(screen.queryAllByRole("button", { name: /^run/ })).toHaveLength(
+            0
+          )
+          expect(changeApplicationState).not.toBeCalled()
+        })
       })
 
       describe("VehiclePropertiesCard", () => {
@@ -838,27 +912,9 @@ describe("<MapPage />", () => {
       describe("without a active search", () => {
         // describe("an active selection without a active search", () => {
         // describe("When a regular bus is selected by a search result or VPP(?)", () => {
-        describe("is a regular bus", () => {
-          test.todo("should display VPC")
-          test.todo(
-            "should style vehicle icon on map as selected and map should be centered on the vehicle"
-          )
-          test.todo("should display: vehicle icon, route shape and stops")
-          test.todo("should auto center on vehicle by default")
-        })
 
-        describe("is a shuttle", () => {
-          test.todo("should display VPC")
-          test.todo(
-            "should style vehicle icon on map as selected and map should be centered on the vehicle"
-          )
-          test.todo("should not display vehicle route shape and stops")
-          test.todo("should auto center on vehicle by default")
-        })
         // })
       })
-
-      describe("with an active search", () => {})
     })
   })
 
