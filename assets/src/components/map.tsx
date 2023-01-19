@@ -244,7 +244,7 @@ export const autoCenter = (
   }
 }
 
-const Autocenterer = ({
+const AutoCenter = ({
   latLngs,
   shouldAutoCenter,
   isAutoCentering,
@@ -282,7 +282,7 @@ const Autocenterer = ({
   return <></>
 }
 
-const useCenterOnState = () => {
+const useAutoCenterState = () => {
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
@@ -293,14 +293,14 @@ const useCenterOnState = () => {
   }
 }
 
-interface CenterMapOnProps {
+interface AutoCenterMapOnProps {
   latLngs: LatLng[]
   isAutoCentering: MutableRefObject<boolean>
   shouldAutoCenter: boolean
   setShouldAutoCenter: Dispatch<SetStateAction<boolean>>
 }
 
-const CenterMapOn = (props: CenterMapOnProps) => {
+const AutoCenterMapOn = (props: AutoCenterMapOnProps) => {
   const { shouldAutoCenter, setShouldAutoCenter, isAutoCentering, latLngs } =
     props
 
@@ -337,7 +337,7 @@ const CenterMapOn = (props: CenterMapOnProps) => {
 
   return (
     <>
-      <Autocenterer
+      <AutoCenter
         shouldAutoCenter={shouldAutoCenter}
         isAutoCentering={isAutoCentering}
         latLngs={latLngs}
@@ -454,14 +454,14 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
-const AutoCenteringMap = (props: Props): ReactElement<HTMLDivElement> => {
-  const state = useCenterOnState(),
+const AutoCenteringMap = (props: Props) => {
+  const state = useAutoCenterState(),
     { shouldAutoCenter } = state
 
   const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
     Leaflet.latLng(latitude, longitude)
   )
-  const centerOnProps: CenterMapOnProps = {
+  const centerOnProps: AutoCenterMapOnProps = {
     ...state,
     latLngs,
   }
@@ -474,7 +474,7 @@ const AutoCenteringMap = (props: Props): ReactElement<HTMLDivElement> => {
       }
     >
       <>
-        <CenterMapOn {...centerOnProps} />
+        <AutoCenterMapOn {...centerOnProps} />
         {props.children}
       </>
     </BaseMap>
