@@ -9,6 +9,8 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
   >
     <li>
       <div
+        aria-current={false}
+        aria-labelledby="card-label-:r0:"
         className="m-card m-card--white m-search-results__result m-card--read"
       >
         <button
@@ -88,6 +90,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
             >
               <div
                 className="m-card__title"
+                id="card-label-:r0:"
               >
                 39_X headsign
               </div>
@@ -126,6 +129,8 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
     </li>
     <li>
       <div
+        aria-current={false}
+        aria-labelledby="card-label-:r1:"
         className="m-card m-card--white m-search-results__result m-card--read"
       >
         <button
@@ -197,6 +202,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
             >
               <div
                 className="m-card__title"
+                id="card-label-:r1:"
               >
                 39_X Forest Hills
               </div>
@@ -288,6 +294,8 @@ exports[`SearchResults renders a selected result card 1`] = `
   >
     <li>
       <div
+        aria-current={false}
+        aria-labelledby="card-label-:r5:"
         className="m-card m-card--white m-search-results__result m-card--read"
       >
         <button
@@ -372,6 +380,7 @@ exports[`SearchResults renders a selected result card 1`] = `
             >
               <div
                 className="m-card__title"
+                id="card-label-:r5:"
               >
                 1_ headsign
               </div>
@@ -410,6 +419,8 @@ exports[`SearchResults renders a selected result card 1`] = `
     </li>
     <li>
       <div
+        aria-current={true}
+        aria-labelledby="card-label-:r6:"
         className="m-card m-card--white m-search-results__result m-card--read m-card--selected"
       >
         <button
@@ -481,6 +492,7 @@ exports[`SearchResults renders a selected result card 1`] = `
             >
               <div
                 className="m-card__title"
+                id="card-label-:r6:"
               >
                 39_X Forest Hills
               </div>
