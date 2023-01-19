@@ -300,10 +300,12 @@ interface AutoCenterMapOnProps {
   setShouldAutoCenter: Dispatch<SetStateAction<boolean>>
 }
 
-const AutoCenterMapOn = (props: AutoCenterMapOnProps) => {
-  const { shouldAutoCenter, setShouldAutoCenter, isAutoCentering, latLngs } =
-    props
-
+const AutoCenterMapOn = ({
+  shouldAutoCenter,
+  setShouldAutoCenter,
+  isAutoCentering,
+  latLngs,
+}: AutoCenterMapOnProps) => {
   useMapEvents({
     // If the user drags or zooms, they want manual control of the map.
 
