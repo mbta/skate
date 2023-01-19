@@ -10,8 +10,10 @@ import Leaflet, {
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
 import React, {
+  Dispatch,
   MutableRefObject,
   ReactElement,
+  SetStateAction,
   useContext,
   useEffect,
   useId,
@@ -50,7 +52,8 @@ import { WalkingIcon } from "../helpers/icon"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
-  children?: JSX.Element | JSX.Element[]
+  children?: ReactElement | ReactElement[]
+  stateClasses?: string
 
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   selectedVehicleId?: VehicleId
@@ -181,52 +184,19 @@ export const FullscreenControl = createControlComponent(
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = ({
-  isAutoCentering,
-  setShouldAutoCenter,
   setZoomLevel,
   streetViewMode,
   setStreetViewMode,
 }: {
-  isAutoCentering: MutableRefObject<boolean>
-  setShouldAutoCenter: (arg0: boolean) => void
   setZoomLevel: (level: number) => void
   streetViewMode: boolean
   setStreetViewMode: React.Dispatch<React.SetStateAction<boolean>>
 }): ReactElement => {
   const map = useMap()
   useMapEvents({
-    // If the user drags or zooms, they want manual control of the map.
-
-    // `zoomstart` is fired when the map changes zoom levels
-    // this can be because of animating the zoom change or user input
-    zoomstart: () => {
-      // But don't disable `shouldAutoCenter` if the zoom was triggered by AutoCenterer.
-      if (!isAutoCentering.current) {
-        setShouldAutoCenter(false)
-      }
-    },
-
     zoomend: () => {
       setZoomLevel(map.getZoom())
     },
-
-    // `dragstart` is fired when a user drags the map
-    // it is expected that this event is not fired for anything but user input
-    // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
-    dragstart: () => {
-      setShouldAutoCenter(false)
-    },
-
-    // `moveend` is called when the leaflet map has finished animating a pan
-    moveend: () => {
-      // Wait until the auto centering animation is finished to resume listening for user interaction.
-      if (isAutoCentering.current) {
-        isAutoCentering.current = false
-      }
-    },
-
-    // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
-    autopanstart: () => setShouldAutoCenter(false),
 
     popupopen: (e) => setTimeout(() => (e.popup.options.autoPan = false), 100),
 
@@ -311,6 +281,74 @@ const Autocenterer = ({
 
   return <></>
 }
+
+const useCenterOnState = () => {
+  const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
+  const isAutoCentering: MutableRefObject<boolean> = useRef(false)
+
+  return {
+    shouldAutoCenter,
+    setShouldAutoCenter,
+    isAutoCentering,
+  }
+}
+
+interface CenterMapOnProps {
+  latLngs: LatLng[]
+  isAutoCentering: MutableRefObject<boolean>
+  shouldAutoCenter: boolean
+  setShouldAutoCenter: Dispatch<SetStateAction<boolean>>
+}
+
+const CenterMapOn = (props: CenterMapOnProps) => {
+  const { shouldAutoCenter, setShouldAutoCenter, isAutoCentering, latLngs } =
+    props
+
+  useMapEvents({
+    // If the user drags or zooms, they want manual control of the map.
+
+    // `zoomstart` is fired when the map changes zoom levels
+    // this can be because of animating the zoom change or user input
+    zoomstart: () => {
+      // But don't disable `shouldAutoCenter` if the zoom was triggered by AutoCenterer.
+      if (!isAutoCentering.current) {
+        setShouldAutoCenter(false)
+      }
+    },
+
+    // `dragstart` is fired when a user drags the map
+    // it is expected that this event is not fired for anything but user input
+    // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
+    dragstart: () => {
+      setShouldAutoCenter(false)
+    },
+
+    // `moveend` is called when the leaflet map has finished animating a pan
+    moveend: () => {
+      // Wait until the auto centering animation is finished to resume listening for user interaction.
+      if (isAutoCentering.current) {
+        isAutoCentering.current = false
+      }
+    },
+
+    // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
+    autopanstart: () => setShouldAutoCenter(false),
+  })
+
+  return (
+    <>
+      <Autocenterer
+        shouldAutoCenter={shouldAutoCenter}
+        isAutoCentering={isAutoCentering}
+        latLngs={latLngs}
+      />
+      <RecenterControl
+        position="topright"
+        recenter={() => setShouldAutoCenter(true)}
+      />
+    </>
+  )
+}
 // #endregion
 
 const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
@@ -318,21 +356,15 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
-  const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const defaultZoom = 13
   const [zoomLevel, setZoomLevel] = useState<number>(defaultZoom)
-  const isAutoCentering: MutableRefObject<boolean> = useRef(false)
   const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(false)
   const { allowFullscreen = true } = props
 
-  const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
-    Leaflet.latLng(latitude, longitude)
-  )
-
   const stateClasses = className([
     "m-vehicle-map-state",
-    shouldAutoCenter ? "m-vehicle-map-state--auto-centering" : null,
     streetViewEnabled ? "m-vehicle-map-state--street-view-enabled" : null,
+    props.stateClasses,
   ])
 
   const stationIconSize =
@@ -355,17 +387,11 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         attributionControl={false}
       >
         <EventAdder
-          isAutoCentering={isAutoCentering}
-          setShouldAutoCenter={setShouldAutoCenter}
           setZoomLevel={setZoomLevel}
           streetViewMode={streetViewEnabled}
           setStreetViewMode={setStreetViewEnabled}
         />
-        <Autocenterer
-          shouldAutoCenter={shouldAutoCenter}
-          isAutoCentering={isAutoCentering}
-          latLngs={latLngs}
-        />
+
         {props.allowStreetView && (
           <StreetViewControl
             position="topright"
@@ -375,10 +401,6 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         )}
         <ZoomControl position="topright" />
         {allowFullscreen && <FullscreenControl position="topright" />}
-        <RecenterControl
-          position="topright"
-          recenter={() => setShouldAutoCenter(true)}
-        />
         <AttributionControl position="bottomright" prefix={false} />
 
         <TileLayer
@@ -432,5 +454,32 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
-const Map = BaseMap
+const AutoCenteringMap = (props: Props): ReactElement<HTMLDivElement> => {
+  const state = useCenterOnState(),
+    { shouldAutoCenter } = state
+
+  const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
+    Leaflet.latLng(latitude, longitude)
+  )
+  const centerOnProps: CenterMapOnProps = {
+    ...state,
+    latLngs,
+  }
+
+  return (
+    <BaseMap
+      {...props}
+      stateClasses={
+        shouldAutoCenter ? "m-vehicle-map-state--auto-centering" : undefined
+      }
+    >
+      <>
+        <CenterMapOn {...centerOnProps} />
+        {props.children}
+      </>
+    </BaseMap>
+  )
+}
+
+const Map = AutoCenteringMap
 export default Map
