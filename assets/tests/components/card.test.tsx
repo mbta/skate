@@ -2,6 +2,7 @@ import React from "react"
 import { render } from "@testing-library/react"
 import { Card, CardBody, CardProperties } from "../../src/components/card"
 import userEvent from "@testing-library/user-event"
+import "@testing-library/jest-dom"
 
 describe("Card", () => {
   test("renders content", () => {
@@ -86,9 +87,8 @@ describe("Card", () => {
     )
 
     expect(
-      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
-        ?.className
-    ).toMatch(/selected/)
+      result.getByRole("generic", { name: "My Card", current: true })
+    ).toBeInTheDocument()
   })
 
   test("includes age when time is given", () => {

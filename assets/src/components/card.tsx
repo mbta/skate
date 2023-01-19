@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useId } from "react"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { UnreadIcon } from "../helpers/icon"
 import CloseButton from "./closeButton"
@@ -35,10 +35,12 @@ export const Card: React.FC<CardProps> = ({
   noFocusOrHover,
   selected,
 }) => {
+  const labelId = "card-label-" + useId()
+
   const innerLeftContent = (
     <div className="m-card__left-content">
       <div className="m-card__top-row">
-        <div className="m-card__title">
+        <div className="m-card__title" id={labelId}>
           {isUnread ? <UnreadIcon /> : null}
           {title}
         </div>
@@ -61,6 +63,8 @@ export const Card: React.FC<CardProps> = ({
         (!isUnread ? " m-card--read" : "") +
         (selected ? " m-card--selected" : "")
       }
+      aria-current={selected}
+      aria-labelledby={labelId}
     >
       {openCallback ? (
         <button className="m-card__left" onClick={openCallback}>
