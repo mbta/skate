@@ -795,7 +795,6 @@ describe("<MapPage />", () => {
               screen.getAllByRole("button", { name: selectedVehicle.runId! })
             ).toHaveLength(selectedRouteVehicles.length)
 
-            screen.debug(container.querySelector(".leaflet-overlay-pane") || undefined)
             expect(
               container.querySelectorAll(".m-vehicle-map__stop")
             ).toHaveLength(shapes[0]?.stops?.length || 0)
@@ -844,6 +843,7 @@ describe("<MapPage />", () => {
           expect(changeApplicationState).not.toBeCalled()
         })
       })
+
 
       describe("VehiclePropertiesCard", () => {
         test("should be visible, search panel should be closed", async () => {
@@ -906,7 +906,6 @@ describe("<MapPage />", () => {
           ).toBeVisible()
         })
 
-        // })
       })
 
       describe("without a active search", () => {
