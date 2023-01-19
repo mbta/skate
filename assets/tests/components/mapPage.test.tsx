@@ -33,12 +33,12 @@ jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useShapes", () => ({
   __esModule: true,
-  useTripShape: jest.fn(),
+  useTripShape: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
@@ -48,7 +48,12 @@ jest.mock("../../src/hooks/useNearestIntersection", () => ({
 
 jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useVehiclesForRoute", () => ({
+  __esModule: true,
+  default: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useStations", () => ({
