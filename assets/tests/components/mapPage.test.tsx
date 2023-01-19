@@ -523,10 +523,7 @@ describe("<MapPage />", () => {
     })
   })
 
-  describe.skip("when rendering", () => {
-    beforeEach(() => {
-      setHtmlWidthHeightForLeafletMap()
-    })
+  describe("when rendering the map", () => {
 
     // test("when rendered, map should be unpopulated", async () => {
     // Render map
