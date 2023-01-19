@@ -3,7 +3,6 @@ import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
-import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { isVehicle } from "../../models/vehicle"
@@ -13,12 +12,12 @@ import {
   VehicleId,
   VehicleOrGhost,
 } from "../../realtime"
-import { RouteId, Shape, Stop } from "../../schedule"
-import Map from "../map"
+import { RouteId, Shape } from "../../schedule"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
+import MiniMap from "./miniMap"
 import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
@@ -72,14 +71,12 @@ const useRouteVehicles = (
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
-  const stations: Stop[] | null = useStations()
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
   const nearestIntersection: string | null = useNearestIntersection(
     latitude,
     longitude
   )
-
   return (
     <div className="m-vehicle-properties-panel__location">
       <div className="m-vehicle-properties-panel__latlng">
@@ -111,12 +108,10 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         </div>
       </div>
       <div className="m-vehicle-properties-panel__map">
-        <Map
-          selectedVehicleId={vehicle.id}
-          vehicles={[vehicle]}
+        <MiniMap
+          vehicle={vehicle}
+          routeVehicles={routeVehicles}
           shapes={shapes}
-          secondaryVehicles={routeVehicles}
-          stations={stations}
         />
       </div>
     </div>

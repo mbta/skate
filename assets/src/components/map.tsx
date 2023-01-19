@@ -60,9 +60,8 @@ export interface Props {
   // trainVehicles are white, don't get a label, and don't affect autocentering
   trainVehicles?: TrainVehicle[]
   shapes?: Shape[]
-
   allowStreetView?: boolean
-
+  allowFullscreen?: boolean
   stopCardDirection?: DirectionId
   includeStopCard?: boolean
   stations?: Stop[] | null
@@ -322,6 +321,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [zoomLevel, setZoomLevel] = useState<number>(defaultZoom)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
   const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(false)
+  const { allowFullscreen = true } = props
 
   const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
     Leaflet.latLng(latitude, longitude)
@@ -372,7 +372,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           />
         )}
         <ZoomControl position="topright" />
-        <FullscreenControl position="topright" />
+        {allowFullscreen && <FullscreenControl position="topright" />}
         <RecenterControl
           position="topright"
           recenter={() => setShouldAutoCenter(true)}
