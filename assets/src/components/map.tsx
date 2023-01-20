@@ -283,7 +283,7 @@ const AutoCenter = ({
   return <></>
 }
 
-const useAutoCenterState = () => {
+export const useAutoCenterState = () => {
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
@@ -294,22 +294,24 @@ const useAutoCenterState = () => {
   }
 }
 
-interface AutoCenterMapOnProps {
-  latLngs: LatLng[]
+export interface AutoCenterMapState {
   isAutoCentering: MutableRefObject<boolean>
   shouldAutoCenter: boolean
   setShouldAutoCenter: Dispatch<SetStateAction<boolean>>
 }
 
-export const AutoCenterMapOn = ({
-  shouldAutoCenter,
-  setShouldAutoCenter,
-  isAutoCentering,
-  latLngs,
-}: AutoCenterMapOnProps) => {
+export interface AutoCenterMapArgs {
+  positions: LatLng[]
+}
+
+export type AutoCenterMapOnProps = AutoCenterMapState & AutoCenterMapArgs
+
+function useDisablingAutoCenterMapEvents(
+  isAutoCentering: React.MutableRefObject<boolean>,
+  setShouldAutoCenter: React.Dispatch<React.SetStateAction<boolean>>
+) {
   useMapEvents({
     // If the user drags or zooms, they want manual control of the map.
-
     // `zoomstart` is fired when the map changes zoom levels
     // this can be because of animating the zoom change or user input
     zoomstart: () => {
@@ -337,13 +339,22 @@ export const AutoCenterMapOn = ({
     // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
     autopanstart: () => setShouldAutoCenter(false),
   })
+}
+
+export const AutoCenterMapOn = ({
+  shouldAutoCenter,
+  setShouldAutoCenter,
+  isAutoCentering,
+  positions,
+}: AutoCenterMapOnProps) => {
+  useDisablingAutoCenterMapEvents(isAutoCentering, setShouldAutoCenter)
 
   return (
     <>
       <AutoCenter
         shouldAutoCenter={shouldAutoCenter}
         isAutoCentering={isAutoCentering}
-        latLngs={latLngs}
+        latLngs={positions}
       />
       <RecenterControl
         position="topright"
@@ -351,6 +362,21 @@ export const AutoCenterMapOn = ({
       />
     </>
   )
+}
+
+type PaddingArgument = {
+  padding: [number, number, number, number]
+}
+
+export const AutoCenterMapWithPadding = ({
+  padding,
+  ...props
+}: AutoCenterMapOnProps & PaddingArgument) => {
+  return AutoCenterMapOn(props)
+}
+
+export const ContainedAutoCenterMapOn = (props: AutoCenterMapArgs) => {
+  return AutoCenterMapOn({ ...props, ...useAutoCenterState() })
 }
 // #endregion
 
@@ -457,16 +483,19 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
+export const vehicleToLeafletLatLng = ({
+  latitude,
+  longitude,
+}: Vehicle): Leaflet.LatLng => Leaflet.latLng(latitude, longitude)
+
 export const AutoCenteringMap = (props: Props) => {
   const state = useAutoCenterState(),
     { shouldAutoCenter } = state
 
-  const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
-    Leaflet.latLng(latitude, longitude)
-  )
+  const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
   const centerOnProps: AutoCenterMapOnProps = {
     ...state,
-    latLngs,
+    positions,
   }
 
   return (

@@ -19,7 +19,11 @@ import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
-import { BaseMap } from "./map"
+import {
+  BaseMap,
+  ContainedAutoCenterMapOn,
+  vehicleToLeafletLatLng,
+} from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
@@ -71,8 +75,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     searchPageState.isActive ? searchPageState.query : null
   )
 
-  const selectedVehicle =
+  const selectedVehicle = useDeferredValue(
     useVehicleForId(socket, searchPageState.selectedVehicleId ?? null) || null
+  )
   const vehicles =
     useVehiclesForRoute(socket, selectedVehicle?.routeId ?? null) ||
     ([selectedVehicle].filter(Boolean) as VehicleOrGhost[])
@@ -185,7 +190,15 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           selectedVehicleId={selectedVehicleId ?? undefined}
         >
           <>
-            {selectedVehicle && isVehicle(selectedVehicle) && <></>}
+            {selectedVehicle && isVehicle(selectedVehicle) && (
+              <>
+                <ContainedAutoCenterMapOn
+                  key={selectedVehicle.id}
+                  positions={[selectedVehicle].map(vehicleToLeafletLatLng)}
+                  // padding={[20, 20, 20, 395]}
+                />
+              </>
+            )}
 
             {vpcEnabled === true && (
               <>
