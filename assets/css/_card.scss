@@ -114,6 +114,7 @@
     tr {
       font-size: 0.875rem;
       line-height: 0.875rem;
+      vertical-align: top;
 
       &:not(:last-child) th,
       td {
@@ -138,7 +139,7 @@
 
     .m-properties-list__property--last-login
       .m-properties-list__property-value {
-      color: inherit;
+      color: $color-gray-600;
       font-size: inherit;
     }
   }

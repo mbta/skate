@@ -61,6 +61,10 @@
 
     svg {
       width: 2.5rem !important;
+
+      .m-vehicle-icon__label-background {
+        fill: none;
+      }
     }
   }
 }

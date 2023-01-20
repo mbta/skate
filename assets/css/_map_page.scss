@@ -57,6 +57,13 @@ $map-page-search-panel-width: 22.0625rem;
   top: 0;
   background-color: $color-gray-300;
   z-index: #{$leaflet-pane-z-index + 100};
+
+  .c-drawer-tab__tab-button {
+    &:focus,
+    &:hover {
+      color: $color-eggplant-500;
+    }
+  }
 }
 
 .m-map-page__toggle-mobile-display-button {

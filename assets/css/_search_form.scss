@@ -87,4 +87,9 @@
   height: 1.5625rem;
 
   text-transform: capitalize;
+
+  // Override base button-search-filter style by giving a more specific selector
+  &.button-search-filter {
+    font-size: var(--font-size-xs);
+  }
 }
