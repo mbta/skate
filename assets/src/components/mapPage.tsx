@@ -3,6 +3,7 @@ import { Socket } from "phoenix"
 import React, {
   ReactElement,
   useContext,
+  useDeferredValue,
   useEffect,
   useRef,
   useState,
@@ -12,6 +13,8 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useTripShape } from "../hooks/useShapes"
 import { useStations } from "../hooks/useStations"
+import useVehicleForId from "../hooks/useVehicleForId"
+import useVehiclesForRoute from "../hooks/useVehiclesForRoute"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
@@ -63,22 +66,27 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const stations = useStations()
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const vehicles: VehicleOrGhost[] | null = useSearchResults(
+  const searchVehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
   )
+
+  const selectedVehicle =
+    useVehicleForId(socket, searchPageState.selectedVehicleId ?? null) || null
+  const vehicles =
+    useVehiclesForRoute(socket, selectedVehicle?.routeId ?? null) ||
+    ([selectedVehicle].filter(Boolean) as VehicleOrGhost[])
+
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
+
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
   const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId | null>(
     searchPageState.selectedVehicleId ?? null
   )
   const [searchOpen, setSearchOpen] = useState<boolean>(true)
 
-  const liveVehicle: Vehicle | null = selectedVehicleId
-    ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
-    : null
-  const [showVehicleCard, setShowVehicleCard] = useState<boolean>(
-    searchPageState.selectedVehicleId ? true : false
+  const liveVehicle: Vehicle | null = useDeferredValue(
+    (selectedVehicle && isVehicle(selectedVehicle) && selectedVehicle) || null
   )
   const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
 
@@ -96,10 +104,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const selectVehicle = (vehicle: VehicleOrGhost): void => {
     if (isVehicle(vehicle)) {
-      setSelectedVehicleId(vehicle.id)
-      setShowVehicleCard(true)
-      dispatch(setSelectedVehicle(vehicle.id))
+      selectVehicleId(vehicle?.id)
     }
+  }
+
+  function selectVehicleId(id: VehicleId | null) {
+    setSelectedVehicleId(id)
+    dispatch(setSelectedVehicle(id))
   }
 
   const mobileDisplayClass =
@@ -108,7 +119,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       : "m-map-page--show-map"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
-  const vpcEnabled = liveVehicle && showVehicleCard
+  const vpcEnabled = Boolean(liveVehicle)
 
   const leafletMap = useRef<LeafletMap | null>(null)
   useEffect(() => {
@@ -120,7 +131,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div
-      className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass}`}
+      className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass} inherit-box border-box`}
       aria-label="Search Map Page"
     >
       <div
@@ -134,7 +145,12 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           toggleVisibility={() => setSearchOpen((a) => !a)}
         />
         <div className="m-map-page__input">
-          <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
+          <SearchForm
+            onSubmit={onSearchCallback}
+            onClear={onSearchCallback}
+            formTitle="Search Map"
+            inputTitle="Search Map Query"
+          />
           <ToggleMobileDisplayButton
             mobileDisplay={mobileDisplay}
             onToggleMobileDisplay={toggleMobileDisplay}
@@ -144,10 +160,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         <hr />
 
         <div className="m-search-display">
-          {vehicles !== null &&
-          thereIsAnActiveSearch(vehicles, searchPageState) ? (
+          {searchVehicles !== null &&
+          thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
             <SearchResults
-              vehicles={vehicles}
+              vehicles={searchVehicles}
               selectedVehicleId={liveVehicle?.id || null}
               onClick={selectVehicle}
             />
@@ -161,22 +177,28 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           reactLeafletRef={leafletMap}
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={selectVehicle}
-          shapes={showVehicleCard ? selectedVehicleShapes : undefined}
+          shapes={vpcEnabled ? selectedVehicleShapes : undefined}
           allowStreetView={true}
           stopCardDirection={liveVehicle?.directionId}
           includeStopCard={true}
           stations={stations}
           selectedVehicleId={selectedVehicleId ?? undefined}
         >
-          {vpcEnabled ? (
-            <VehiclePropertiesCard
-              vehicle={liveVehicle}
-              onClose={() => {
-                dispatch(setSelectedVehicle(null))
-                setShowVehicleCard(false)
-              }}
-            />
-          ) : undefined}
+          <>
+            {selectedVehicle && isVehicle(selectedVehicle) && <></>}
+
+            {vpcEnabled === true && (
+              <>
+                <VehiclePropertiesCard
+                  vehicle={liveVehicle!}
+                  onClose={() => {
+                    dispatch(setSelectedVehicle(null))
+                    // setShowVehicleCard(false)
+                  }}
+                />
+              </>
+            )}
+          </>
         </Map>
       </div>
     </div>
