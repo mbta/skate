@@ -1,4 +1,4 @@
-import React, { useId } from "react"
+import React, { ReactElement, useId } from "react"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { UnreadIcon } from "../helpers/icon"
 import CloseButton from "./closeButton"
@@ -15,7 +15,7 @@ interface CardProps {
   closeCallback?: () => void
   isUnread?: boolean
   additionalClass?: string
-  title: string | JSX.Element
+  title: string | ReactElement
   time?: Date
   noFocusOrHover?: boolean
   selected?: boolean
