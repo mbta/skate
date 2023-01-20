@@ -637,19 +637,34 @@ describe("<MapPage />", () => {
         // Click Search Result
         // Ensure only results on map
         // jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-        const vehicle = vehicleFactory.build({ runId: "clickMe" })
+        // const vehicle = vehicleFactory.build({ runId: "clickMe" })
+        // const vehicles = vehicleFactory.buildList(3, { runId: "clickMe" }),
+        const run = RunFactory.build()
+        const vehicles = vehicleFactory.buildList(3, { runId: run.id }),
+          [vehicle] = vehicles
 
-        ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+        ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
 
         // const activeSearch: SearchPageState =
 
-        const shapes = shapeFactory.buildList(2)
+        const shapes = shapeFactory.buildList(2, {
+          stops: stopFactory.buildList(3),
+        })
+        ;(useVehicleForId as jest.Mock).mockImplementation((_, vehicleId) =>
+          vehicleId === vehicle.id ? vehicle : null
+        )
+        ;(useVehiclesForRoute as jest.Mock).mockImplementation((_, routeId) =>
+          routeId === vehicle.routeId ? vehicles : null
+        )
         ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
           tripId === vehicle.tripId ? shapes : null
         )
 
-        const mockDispatch = jest.fn()
-
+        const state = stateFactory.build({
+          searchPageState: activeSearchPageStateFactory.build({
+            query: searchQueryRunFactory.build({ text: vehicle.runId! }),
+          }),
+        })
         // const { container } = renderMapPageWithSearchState(
         //   searchPageStateFactory.build({
         //     query: { text: "clickMe", property: "run" },
@@ -657,22 +672,17 @@ describe("<MapPage />", () => {
         //   }),
         //   mockDispatch
         // )
-        const { container } = render(<MapPage />, {
-          wrapper: (props) => (
-            <StateDispatchProvider
-              state={stateFactory.build({
-                searchPageState: activeSearchPageStateFactory.build({
-                  query: searchQueryRunFactory.build({ text: vehicle.runId! }),
-                }),
-              })}
-              dispatch={mockDispatch}
-              {...props}
-            />
-          ),
-        })
+        const { container } = render(
+          <RealDispatchWrapper initialState={state}>
+            <MapPage />
+          </RealDispatchWrapper>
+        )
 
-        const mapSearchPanel = screen.getByRole("generic", {
-          name: /map search panel/i,
+        // const mapSearchPanel = screen.getByRole("generic", {
+        //   name: /map search panel/i,
+        // })
+        const searchMapForm = screen.getByRole("form", {
+          name: /search map/i,
         })
 
         // TODO:FIXME: this is not the correct format for this query
@@ -689,10 +699,17 @@ describe("<MapPage />", () => {
           container.querySelector(".m-vehicle-map__route-shape")
         ).not.toBeInTheDocument()
 
+        // await userEvent.click(screen.getByRole("cell", { name: vehicle.id! }))
         await userEvent.click(
-          screen.getByRole("cell", { name: vehicle.runId! })
+          screen.getByRole("button", {
+            name: new RegExp(`Vehicle ${vehicle.label}`),
+          })
         )
 
+        // screen.debug(
+        //   container.querySelector(".m-search-results__list") || undefined
+        // )
+        screen.debug(container.querySelector(".m-vehicle-map") || undefined)
         expect(
           container.querySelector(".m-vehicle-icon__label")
         ).toBeInTheDocument()
@@ -700,8 +717,8 @@ describe("<MapPage />", () => {
           container.querySelector(".m-vehicle-map__route-shape")
         ).toBeInTheDocument()
         expect(
-          screen.getByRole("button", { name: vehicle.runId! })
-        ).toBeVisible()
+          screen.getAllByRole("button", { name: runIdToLabel(vehicle.runId!) })
+        ).toHaveLength(vehicles.length)
 
         expect(
           screen.getByRole("generic", { name: /vehicle properties card/i })
@@ -709,7 +726,7 @@ describe("<MapPage />", () => {
         expect(
           container.querySelector(".m-vehicle-map__route-shape")
         ).toBeVisible()
-        expect(mapSearchPanel).not.toBeVisible()
+        expect(searchMapForm).not.toBeVisible()
       })
     })
 
