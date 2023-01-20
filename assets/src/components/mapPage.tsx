@@ -2,8 +2,8 @@ import { Map as LeafletMap } from "leaflet"
 import { Socket } from "phoenix"
 import React, {
   ReactElement,
+  useCallback,
   useContext,
-  useDeferredValue,
   useEffect,
   useRef,
   useState,
@@ -66,8 +66,8 @@ const ToggleMobileDisplayButton = ({
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
-    useContext(StateDispatchContext)
-  const stations = useStations()
+      useContext(StateDispatchContext),
+    { selectedVehicleId = null } = searchPageState
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const searchVehicles: VehicleOrGhost[] | null = useSearchResults(
@@ -75,28 +75,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     searchPageState.isActive ? searchPageState.query : null
   )
 
-  const selectedVehicle = useDeferredValue(
-    useVehicleForId(socket, searchPageState.selectedVehicleId ?? null) || null
-  )
-  const vehicles =
-    useVehiclesForRoute(socket, selectedVehicle?.routeId ?? null) ||
-    ([selectedVehicle].filter(Boolean) as VehicleOrGhost[])
-
-  const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
-
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
-  const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId | null>(
-    searchPageState.selectedVehicleId ?? null
-  )
   const [searchOpen, setSearchOpen] = useState<boolean>(true)
 
-  const liveVehicle: Vehicle | null = useDeferredValue(
-    (selectedVehicle && isVehicle(selectedVehicle) && selectedVehicle) || null
-  )
-  const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
-
   const onSearchCallback = () => {
-    setSelectedVehicleId(null)
+    selectVehicleId(null)
   }
 
   const toggleMobileDisplay = () => {
@@ -107,14 +90,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     )
   }
 
-  const selectVehicle = (vehicle: VehicleOrGhost): void => {
+  const selectVehicle = useCallback((vehicle: VehicleOrGhost): void => {
     if (isVehicle(vehicle)) {
       selectVehicleId(vehicle?.id)
     }
-  }
+  }, [])
 
   function selectVehicleId(id: VehicleId | null) {
-    setSelectedVehicleId(id)
     dispatch(setSelectedVehicle(id))
   }
 
@@ -124,15 +106,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       : "m-map-page--show-map"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
-  const vpcEnabled = Boolean(liveVehicle)
-
-  const leafletMap = useRef<LeafletMap | null>(null)
-  useEffect(() => {
-    setSearchOpen(!vpcEnabled)
-
-    // Let leaflet know when Page resizes due to vpc state
-    leafletMap.current?.invalidateSize()
-  }, [vpcEnabled])
 
   return (
     <div
@@ -169,7 +142,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
             <SearchResults
               vehicles={searchVehicles}
-              selectedVehicleId={liveVehicle?.id || null}
+              selectedVehicleId={selectedVehicleId}
               onClick={selectVehicle}
             />
           ) : (
@@ -178,44 +151,90 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         </div>
       </div>
       <div className="m-map-page__map">
-        <BaseMap
-          reactLeafletRef={leafletMap}
-          vehicles={onlyVehicles}
-          onPrimaryVehicleSelect={selectVehicle}
-          shapes={vpcEnabled ? selectedVehicleShapes : undefined}
-          allowStreetView={true}
-          stopCardDirection={liveVehicle?.directionId}
-          includeStopCard={true}
-          stations={stations}
-          selectedVehicleId={selectedVehicleId ?? undefined}
-        >
-          <>
-            {selectedVehicle && isVehicle(selectedVehicle) && (
-              <>
-                <ContainedAutoCenterMapOn
-                  key={selectedVehicle.id}
-                  positions={[selectedVehicle].map(vehicleToLeafletLatLng)}
-                  // padding={[20, 20, 20, 395]}
-                />
-              </>
-            )}
-
-            {vpcEnabled === true && (
-              <>
-                <VehiclePropertiesCard
-                  vehicle={liveVehicle!}
-                  onClose={() => {
-                    dispatch(setSelectedVehicle(null))
-                    // setShowVehicleCard(false)
-                  }}
-                />
-              </>
-            )}
-          </>
-        </BaseMap>
+        <Map
+          selectedVehicleId={selectedVehicleId}
+          setSelectedVehicleId={selectVehicleId}
+          showVpc={true}
+        ></Map>
       </div>
     </div>
   )
 }
 
 export default MapPage
+
+function Map({
+  selectedVehicleId,
+  setSelectedVehicleId,
+  showVpc,
+}: {
+  selectedVehicleId: VehicleId | null
+  showVpc: boolean
+  setSelectedVehicleId?: (vehicleId: VehicleId | null) => void
+}) {
+  const selectVehicle = useCallback((vehicle: VehicleOrGhost): void => {
+    if (isVehicle(vehicle) && setSelectedVehicleId) {
+      setSelectedVehicleId(vehicle.id)
+    }
+  }, [])
+
+  const deleteSelection = useCallback(() => {
+    setSelectedVehicleId && setSelectedVehicleId(null)
+  }, [setSelectedVehicleId])
+
+  const stations = useStations()
+
+  const { socket } = useContext(SocketContext)
+
+  const selectedVehicle =
+    useVehicleForId(socket, selectedVehicleId ?? null) || null
+  // const deferredVehicle = useDeferredValue(selectedVehicle)
+
+  const vehicles =
+    useVehiclesForRoute(socket, selectedVehicle?.routeId ?? null) ||
+    ([selectedVehicle].filter(Boolean) as VehicleOrGhost[])
+
+  const liveVehicle: Vehicle | null =
+    (selectedVehicle && isVehicle(selectedVehicle) && selectedVehicle) || null
+
+  const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
+
+  const leafletMap = useRef<LeafletMap | null>(null)
+  useEffect(() => {
+    // Let leaflet know when Page resizes due to vpc state
+    leafletMap.current?.invalidateSize()
+  }, [showVpc])
+
+  return (
+    <BaseMap
+      reactLeafletRef={leafletMap}
+      vehicles={filterVehicles(vehicles)}
+      onPrimaryVehicleSelect={selectVehicle}
+      shapes={selectedVehicleShapes}
+      allowStreetView={true}
+      stopCardDirection={liveVehicle?.directionId}
+      includeStopCard={true}
+      stations={stations}
+      selectedVehicleId={selectedVehicleId || undefined}
+    >
+      <>
+        {selectedVehicle && isVehicle(selectedVehicle) && (
+          <>
+            <ContainedAutoCenterMapOn
+              key={selectedVehicle.id}
+              positions={[selectedVehicle].map(vehicleToLeafletLatLng)}
+            />
+          </>
+        )}
+        {showVpc && liveVehicle && (
+          <>
+            <VehiclePropertiesCard
+              vehicle={liveVehicle}
+              onClose={deleteSelection}
+            />
+          </>
+        )}
+      </>
+    </BaseMap>
+  )
+}
