@@ -19,7 +19,7 @@ import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
-import Map from "./map"
+import { BaseMap } from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
@@ -173,7 +173,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         </div>
       </div>
       <div className="m-map-page__map">
-        <Map
+        <BaseMap
           reactLeafletRef={leafletMap}
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={selectVehicle}
@@ -199,7 +199,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
               </>
             )}
           </>
-        </Map>
+        </BaseMap>
       </div>
     </div>
   )

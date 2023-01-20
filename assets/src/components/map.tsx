@@ -301,7 +301,7 @@ interface AutoCenterMapOnProps {
   setShouldAutoCenter: Dispatch<SetStateAction<boolean>>
 }
 
-const AutoCenterMapOn = ({
+export const AutoCenterMapOn = ({
   shouldAutoCenter,
   setShouldAutoCenter,
   isAutoCentering,
@@ -354,7 +354,7 @@ const AutoCenterMapOn = ({
 }
 // #endregion
 
-const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
+export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -457,7 +457,7 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
-const AutoCenteringMap = (props: Props) => {
+export const AutoCenteringMap = (props: Props) => {
   const state = useAutoCenterState(),
     { shouldAutoCenter } = state
 
