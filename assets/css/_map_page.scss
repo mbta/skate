@@ -35,6 +35,8 @@ $map-page-search-panel-width: 22.0625rem;
 
   transition: $transition-slide;
 
+  filter: drop-shadow(2px 0px 10px rgba(0, 0, 0, 0.2));
+
   hr {
     height: 1px;
     background-color: $color-gray-100;
