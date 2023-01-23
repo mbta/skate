@@ -793,12 +793,11 @@ describe("<MapPage />", () => {
           test("should display: vehicle icon, route shape and stops", () => {
             const changeApplicationState = jest.fn()
 
-            const run = RunFactory.build()
             const route = routeFactory.build()
 
             const selectedRouteVehicles = randomLocationVehicle.buildList(7, {
               routeId: route.id,
-              runId: run.id,
+              runId: runIdFactory.build(),
             })
 
             const [selectedVehicle] = selectedRouteVehicles
@@ -835,51 +834,49 @@ describe("<MapPage />", () => {
           })
         })
 
-        describe("is a shuttle", () => {
-          test("should display: vehicle icon, but not route shape or stops", () => {
-            const changeApplicationState = jest.fn()
+        test("and vehicle is a shuttle; should display: vehicle icon, but not route shape or stops", () => {
+          const changeApplicationState = jest.fn()
 
-            const selectedVehicle = shuttleFactory.build()
+          const selectedVehicle = shuttleFactory.build()
 
-            const shape = shapeFactory.build({
-              stops: stopFactory.buildList(8),
-            })
-
-            setHtmlWidthHeightForLeafletMap()
-            mockUseVehiclesForRouteMap({})
-            mockUseVehicleForId([selectedVehicle])
-            mockUseTripShape({ [selectedVehicle.tripId!]: shape })
-
-            const { container } = render(
-              <StateDispatchProvider
-                state={selectedStateFactory(selectedVehicle.id).build()}
-                dispatch={changeApplicationState}
-              >
-                <MapPage />
-              </StateDispatchProvider>
-            )
-
-            const selectedVehicleLabel = screen.getByRole("button", {
-              name: selectedVehicle.label!,
-            })
-            expect(selectedVehicleLabel).toBeInTheDocument()
-            // this should probably be expressed via some accessibility properties
-            expect(selectedVehicleLabel).toHaveClass("selected")
-
-            expect(
-              container.querySelectorAll(".m-vehicle-map__stop")
-            ).toHaveLength(0)
-            expect(
-              container.querySelector(".m-vehicle-map__route-shape")
-            ).not.toBeInTheDocument()
-            expect(
-              within(getVehiclePropertiesCard()).getByRole("status", {
-                name: /route variant name/i,
-              })
-            ).toHaveTextContent("Shuttle")
-
-            expect(changeApplicationState).not.toHaveBeenCalled()
+          const shape = shapeFactory.build({
+            stops: stopFactory.buildList(8),
           })
+
+          setHtmlWidthHeightForLeafletMap()
+          mockUseVehiclesForRouteMap({})
+          mockUseVehicleForId([selectedVehicle])
+          mockUseTripShape({ [selectedVehicle.tripId!]: shape })
+
+          const { container } = render(
+            <StateDispatchProvider
+              state={selectedStateFactory(selectedVehicle.id).build()}
+              dispatch={changeApplicationState}
+            >
+              <MapPage />
+            </StateDispatchProvider>
+          )
+
+          const selectedVehicleLabel = screen.getByRole("button", {
+            name: selectedVehicle.label!,
+          })
+          expect(selectedVehicleLabel).toBeInTheDocument()
+          // this should probably be expressed via some accessibility properties
+          expect(selectedVehicleLabel).toHaveClass("selected")
+
+          expect(
+            container.querySelectorAll(".m-vehicle-map__stop")
+          ).toHaveLength(0)
+          expect(
+            container.querySelector(".m-vehicle-map__route-shape")
+          ).not.toBeInTheDocument()
+          expect(
+            within(getVehiclePropertiesCard()).getByRole("status", {
+              name: /route variant name/i,
+            })
+          ).toHaveTextContent("Shuttle")
+
+          expect(changeApplicationState).not.toHaveBeenCalled()
         })
       })
 

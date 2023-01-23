@@ -2,6 +2,7 @@
 
 exports[`SearchForm renders 1`] = `
 <form
+  aria-label="Submit Search"
   className="m-search-form"
   onSubmit={[Function]}
 >
@@ -12,6 +13,7 @@ exports[`SearchForm renders 1`] = `
       className="m-search-form__text"
     >
       <input
+        aria-label="Search"
         className="m-search-form__input"
         onChange={[Function]}
         placeholder="Search"

@@ -12,6 +12,7 @@ exports[`SearchPage renders the empty state 1`] = `
         class="m-search-page__input"
       >
         <form
+          aria-label="Submit Search"
           class="m-search-form"
         >
           <div
@@ -21,6 +22,7 @@ exports[`SearchPage renders the empty state 1`] = `
               class="m-search-form__text"
             >
               <input
+                aria-label="Search"
                 class="m-search-form__input"
                 placeholder="Search"
                 type="text"
@@ -320,6 +322,7 @@ exports[`SearchPage renders vehicle data 1`] = `
         class="m-search-page__input"
       >
         <form
+          aria-label="Submit Search"
           class="m-search-form"
         >
           <div
@@ -329,6 +332,7 @@ exports[`SearchPage renders vehicle data 1`] = `
               class="m-search-form__text"
             >
               <input
+                aria-label="Search"
                 class="m-search-form__input"
                 placeholder="Search"
                 type="text"

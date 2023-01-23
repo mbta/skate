@@ -1,14 +1,22 @@
 import { Socket } from "phoenix"
-import React, { ReactElement, useCallback, useContext, useState } from "react"
+import React, {
+  ReactElement,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useTripShape } from "../hooks/useShapes"
+import useSocket from "../hooks/useSocket"
 import { useStations } from "../hooks/useStations"
 import useVehicleForId from "../hooks/useVehicleForId"
 import useVehiclesForRoute from "../hooks/useVehiclesForRoute"
-import { filterVehicles, isVehicle } from "../models/vehicle"
+import { filterVehicles, isGhost, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
+import { RouteId, TripId } from "../schedule"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import {
@@ -16,6 +24,7 @@ import {
   ContainedAutoCenterMapOn,
   vehicleToLeafletLatLng,
 } from "./map"
+import { VehicleMarker } from "./mapMarkers"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
@@ -54,26 +63,17 @@ const SearchInputAndResults = ({
   searchPageState,
   mobileDisplay,
   selectedVehicleId,
-  selectVehicleId,
+  selectVehicle,
 }: {
   searchPageState: SearchPageState
   mobileDisplay?: ReactElement
   selectedVehicleId: string | null
-  selectVehicleId?: (value: VehicleId | null) => void
+  selectVehicle: (vehicle: VehicleOrGhost | null) => void
 }): React.ReactElement => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const searchVehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
-  )
-
-  const selectVehicle = useCallback(
-    (vehicle: VehicleOrGhost): void => {
-      if (isVehicle(vehicle)) {
-        selectVehicleId && selectVehicleId(vehicle?.id)
-      }
-    },
-    [selectVehicleId]
   )
 
   return (
@@ -101,25 +101,72 @@ const SearchInputAndResults = ({
   )
 }
 
+interface MapDisplayReducerState {
+  lastSelected: {
+    // vehicleId: VehicleId | null
+    vehicle: Vehicle | null
+    tripId: TripId | null
+    routeId: RouteId | null
+  }
+}
+
+function initialState(): MapDisplayReducerState {
+  return {
+    lastSelected: {
+      vehicle: null,
+      tripId: null,
+      routeId: null,
+    },
+  }
+}
+
+type MapDisplayReducerAction = {
+  action: "new_vehicle"
+  selectedVehicle: VehicleOrGhost | null
+  selectedVehicleId: VehicleId | null
+}
+export function MapDisplayReducer(
+  current: MapDisplayReducerState,
+  next: MapDisplayReducerAction
+): MapDisplayReducerState {
+  switch (next.action) {
+    case "new_vehicle": {
+      if (
+        next.selectedVehicleId !== null &&
+        next.selectedVehicle !== null &&
+        isVehicle(next.selectedVehicle)
+      ) {
+        return {
+          lastSelected: {
+            vehicle: next.selectedVehicle,
+            routeId: next.selectedVehicle.routeId,
+            tripId: next.selectedVehicle.tripId,
+          },
+        }
+      } else if (
+        next.selectedVehicleId === null ||
+        (next.selectedVehicle && isGhost(next.selectedVehicle))
+      ) {
+        return initialState()
+      }
+      return current
+    }
+  }
+  return current
+}
+
 const MapDisplay = ({
-  selectedVehicleIdState: [selectedVehicleId, setSelectedVehicleId],
+  selectedVehicleId,
+  setSelectedVehicle,
   showVpc,
 }: {
-  selectedVehicleIdState: [VehicleId | null, React.Dispatch<VehicleId | null>]
+  selectedVehicleId: VehicleId | null
+  setSelectedVehicle: React.Dispatch<VehicleOrGhost | null>
   showVpc: boolean
 }) => {
-  const selectVehicle = useCallback(
-    (vehicle: VehicleOrGhost): void => {
-      if (isVehicle(vehicle) && setSelectedVehicleId) {
-        setSelectedVehicleId(vehicle.id)
-      }
-    },
-    [setSelectedVehicleId]
-  )
-
   const deleteSelection = useCallback(() => {
-    setSelectedVehicleId && setSelectedVehicleId(null)
-  }, [setSelectedVehicleId])
+    setSelectedVehicle && setSelectedVehicle(null)
+  }, [setSelectedVehicle])
 
   const stations = useStations()
 
@@ -128,50 +175,135 @@ const MapDisplay = ({
   const selectedVehicleOrGhost =
     useVehicleForId(socket, selectedVehicleId ?? null) || null
 
-  const _selectedVehicle: Vehicle | null =
+  // const [
+  //   {
+  //     lastSelected: {
+  //       routeId: selectedRouteId,
+  //       tripId: selectedTripId,
+  //       vehicle: selectedVehicleRef,
+  //     },
+  //   },
+  //   dispatch,
+  // ] = useReducer(MapDisplayReducer, {}, initialState)
+
+  // // const selectedVehicle: Vehicle | null =
+  // //   (selectedVehicleOrGhost &&
+  // //     isVehicle(selectedVehicleOrGhost) &&
+  // //     selectedVehicleOrGhost) ||
+  // //   null
+
+  // useEffect(() => {
+  //   dispatch({
+  //     action: "new_vehicle",
+  //     selectedVehicle: selectedVehicleOrGhost,
+  //     selectedVehicleId,
+  //   })
+  // }, [selectedVehicleOrGhost, selectedVehicleId])
+
+  const ref = useRef(
     (selectedVehicleOrGhost &&
       isVehicle(selectedVehicleOrGhost) &&
       selectedVehicleOrGhost) ||
-    null
-  const selectedVehicleDeferred = _selectedVehicle
-
-  const vehicles =
-    useVehiclesForRoute(socket, selectedVehicleDeferred?.routeId ?? null) ||
-    ([selectedVehicleDeferred].filter(Boolean) as VehicleOrGhost[])
-  const selectedVehicleShapes = useTripShape(
-    selectedVehicleDeferred?.tripId || null
+      null
   )
+  if (
+    selectedVehicleId === null ||
+    (selectedVehicleOrGhost && isGhost(selectedVehicleOrGhost))
+  ) {
+    ref.current = null
+  } else if (selectedVehicleOrGhost !== null) {
+    ref.current = selectedVehicleOrGhost
+  }
+  const selectedVehicleRef = ref.current
+  const selectedRouteId = ref.current?.routeId || null
+  const selectedTripId = ref.current?.tripId || null
+
+  const positions = filterVehicles(
+    [selectedVehicleRef].filter(Boolean) as VehicleOrGhost[]
+  ).map(vehicleToLeafletLatLng)
+  console.debug({
+    positions,
+    selectedTripId,
+    selectedRouteId,
+    selectedVehicleId,
+  })
+
+  const shapes = useTripShape(selectedTripId)
 
   return (
     <BaseMap
-      vehicles={filterVehicles(vehicles)}
-      onPrimaryVehicleSelect={selectVehicle}
-      shapes={
-        (_selectedVehicle?.isShuttle === false && selectedVehicleShapes) || []
-      }
+      vehicles={[]}
       allowStreetView={true}
-      stopCardDirection={selectedVehicleDeferred?.directionId}
+      stopCardDirection={selectedVehicleRef?.directionId}
       includeStopCard={true}
       stations={stations}
-      selectedVehicleId={selectedVehicleId || undefined}
+      shapes={selectedVehicleRef?.isShuttle ? [] : shapes}
     >
       <>
-        <ContainedAutoCenterMapOn
-          key={selectedVehicleId || ""}
-          positions={(
-            [selectedVehicleDeferred].filter(Boolean) as Vehicle[]
-          ).map(vehicleToLeafletLatLng)}
-        />
-        {showVpc && selectedVehicleDeferred && (
+        {showVpc && selectedVehicleRef && isVehicle(selectedVehicleRef) && (
           <>
             <VehiclePropertiesCard
-              vehicle={selectedVehicleDeferred}
+              vehicle={selectedVehicleRef}
               onClose={deleteSelection}
             />
           </>
         )}
+        {selectedVehicleRef?.isShuttle ? (
+          <>
+            <VehicleMarker
+              key={selectedVehicleRef.id}
+              vehicle={selectedVehicleRef}
+              isPrimary={true}
+              isSelected={true}
+            />
+          </>
+        ) : (
+          <>
+            <RouteVehicles
+              selectedVehicleRoute={selectedRouteId}
+              selectedVehicleId={selectedVehicleId}
+              onPrimaryVehicleSelect={setSelectedVehicle}
+            />
+            {/* <TripShape selectedTripId={selectedTripId} /> */}
+          </>
+        )}
+
+        <ContainedAutoCenterMapOn
+          key={selectedVehicleId || ""}
+          positions={positions}
+        />
       </>
     </BaseMap>
+  )
+}
+
+// const TripShape = ({ selectedTripId }: { selectedTripId: TripId | null }) => {
+
+// }
+
+const RouteVehicles = ({
+  selectedVehicleRoute,
+  selectedVehicleId,
+  onPrimaryVehicleSelect,
+}: {
+  selectedVehicleId: VehicleId | null
+  selectedVehicleRoute: RouteId | null
+  onPrimaryVehicleSelect: (vehicle: Vehicle) => void
+}) => {
+  const { socket } = useSocket()
+  const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
+  return (
+    <>
+      {filterVehicles(vehicles).map((vehicle: Vehicle) => (
+        <VehicleMarker
+          key={vehicle.id}
+          vehicle={vehicle}
+          isPrimary={true}
+          isSelected={vehicle.id === selectedVehicleId}
+          onSelect={onPrimaryVehicleSelect}
+        />
+      ))}
+    </>
   )
 }
 
@@ -207,10 +339,14 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   // #endregion
 
-  const selectVehicleId = useCallback(
-    (value: VehicleId | null) => {
-      dispatch(setSelectedVehicle(value))
-      setSearchOpen(value === null)
+  const selectVehicle = useCallback(
+    (vehicle: VehicleOrGhost | null) => {
+      dispatch(setSelectedVehicle(vehicle?.id || null))
+      setSearchOpen(vehicle === null)
+      // if (vehicle && isGhost(vehicle)) {
+      //   setSearchOpen()
+      // } else {
+      // }
     },
     [setSearchOpen, dispatch]
   )
@@ -232,7 +368,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         />
         <SearchInputAndResults
           {...{
-            selectVehicleId,
+            selectVehicle: selectVehicle,
             selectedVehicleId,
             searchPageState,
           }}
@@ -246,7 +382,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       </div>
       <div className="m-map-page__map">
         <MapDisplay
-          selectedVehicleIdState={[selectedVehicleId, selectVehicleId]}
+          selectedVehicleId={selectedVehicleId}
+          setSelectedVehicle={selectVehicle}
           showVpc={!searchOpen}
         />
       </div>

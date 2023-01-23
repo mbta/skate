@@ -4,7 +4,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page m-map-page--show-list "
+    class="m-map-page m-map-page--show-list  inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
@@ -26,6 +26,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         class="m-map-page__input"
       >
         <form
+          aria-label="Search Map"
           class="m-search-form"
         >
           <div
@@ -35,6 +36,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               class="m-search-form__text"
             >
               <input
+                aria-label="Search Map Query"
                 class="m-search-form__input"
                 placeholder="Search"
                 type="text"
@@ -165,7 +167,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="m-vehicle-map-state"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -349,7 +351,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page m-map-page--show-list "
+    class="m-map-page m-map-page--show-list  inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
@@ -371,6 +373,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         class="m-map-page__input"
       >
         <form
+          aria-label="Search Map"
           class="m-search-form"
         >
           <div
@@ -380,6 +383,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               class="m-search-form__text"
             >
               <input
+                aria-label="Search Map Query"
                 class="m-search-form__input"
                 placeholder="Search"
                 type="text"
@@ -510,7 +514,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="m-vehicle-map-state"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -694,18 +698,18 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page m-map-page--show-list "
+    class="m-map-page m-map-page--show-list  inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results visible"
+      class="m-map-page__input-and-results hidden"
     >
       <div
         class="c-drawer-tab"
       >
         <button
           class="c-drawer-tab__tab-button"
-          title="Collapse"
+          title="Expand"
         >
           <span>
             <svg />
@@ -716,6 +720,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
         class="m-map-page__input"
       >
         <form
+          aria-label="Search Map"
           class="m-search-form"
         >
           <div
@@ -725,6 +730,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               class="m-search-form__text"
             >
               <input
+                aria-label="Search Map Query"
                 class="m-search-form__input"
                 placeholder="Search"
                 type="text"
@@ -855,7 +861,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="m-vehicle-map-state"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -899,7 +905,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             <div
               class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2000;"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2100;"
               tabindex="0"
             >
               <svg
@@ -911,7 +917,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 
         
                 <path
-                  class="on-time early-red"
+                  class="on-time early-red selected"
                   d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                   transform="scale(1) rotate(33) translate(-12, -12)"
                 />
@@ -920,9 +926,9 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </svg>
             </div>
             <div
-              class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon m-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2000;"
+              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2100;"
               tabindex="0"
             >
               <svg
@@ -1087,6 +1093,257 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 role="switch"
                 type="checkbox"
               />
+            </div>
+          </div>
+        </div>
+        <div
+          aria-label="Vehicle Properties Card"
+          class="m-vehicle-properties-card"
+        >
+          <div
+            class="m-vehicle-properties-card__title-bar"
+          >
+            <button
+              aria-label="Close Vehicle Properties Card"
+              class="m-close-button m-close-button--large m-close-button--light"
+            >
+              <span
+                aria-hidden="true"
+                aria-label=""
+                role="img"
+              >
+                <svg />
+              </span>
+            </button>
+            <output
+              aria-label="Time Since Last Update Received"
+              class="data-stale-time label font-xs-reg"
+            >
+              Updated 111 sec ago
+            </output>
+          </div>
+          <div
+            class="m-vehicle-properties-card__summary"
+          >
+            <div
+              class="m-vehicle-route-summary"
+            >
+              <output
+                aria-label="Route Direction"
+                class="m-vehicle-route-direction m-vehicle-route-summary__direction label font-xs-reg"
+              />
+              <output
+                aria-label="Route Variant Name"
+                class="m-route-variant-name m-vehicle-route-summary__route-variant headsign font-m-semi"
+              >
+                <output
+                  aria-label="Route & Variant"
+                  class="m-route-variant-name__route-id"
+                >
+                  39_X
+                </output>
+                 
+                <output
+                  aria-label="Headsign"
+                  class="m-route-variant-name__headsign"
+                >
+                  Forest Hills
+                </output>
+              </output>
+              <output
+                aria-label="Vehicle Schedule Adherence"
+                class="m-schedule-adherence on-time early-red m-vehicle-route-summary__adherence label font-xs-reg"
+              >
+                <svg
+                  aria-hidden="true"
+                  aria-label=""
+                  class="m-schedule-adherence__status-icon"
+                  height="8"
+                  role="img"
+                  viewBox="0 0 100 100"
+                  width="8"
+                >
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="40"
+                  />
+                </svg>
+                <output
+                  class="m-schedule-adherence-status label font-xs-semi title-case"
+                >
+                  on time
+                </output>
+                 
+                <output
+                  class="m-vehicle-adherence-label label font-xs-reg"
+                >
+                  (0 min early)
+                </output>
+              </output>
+              <div
+                class="m-vehicle-route-summary__icon"
+              >
+                <svg
+                  role="img"
+                  style="width: 64px; height: 64px;"
+                  viewBox="-32 -20 64 64"
+                >
+                  <title>
+                    Vehicle Status Icon
+                  </title>
+                  <g
+                    class="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+                  >
+                    <rect
+                      class="m-vehicle-icon__label-background"
+                      height="24"
+                      rx="12"
+                      ry="12"
+                      width="64"
+                      x="-32"
+                      y="19"
+                    />
+                    <text
+                      class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+                      dominant-baseline="central"
+                      text-anchor="middle"
+                      x="0"
+                      y="31"
+                    >
+                      1
+                    </text>
+                    <path
+                      class="m-vehicle-icon__triangle"
+                      d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                      data-testid="vehicle-triangle"
+                      transform="scale(1) rotate(0) translate(-24,-22)"
+                    />
+                    <text
+                      class="m-vehicle-icon__variant"
+                      dominant-baseline="alphabetic"
+                      text-anchor="middle"
+                      x="0"
+                      y="14"
+                    >
+                      X
+                    </text>
+                  </g>
+                </svg>
+              </div>
+              <img
+                aria-hidden="true"
+                aria-label="presentation separator"
+                class="m-vehicle-route-summary__separator"
+                role="img presentation"
+              />
+            </div>
+          </div>
+          <div
+            class="m-vehicle-properties-card__body"
+          >
+            <div
+              class="m-vehicle-properties-card__properties m-info-section"
+            >
+              <table
+                class="m-vehicle-work-info"
+              >
+                <tbody
+                  class="m-vehicle-work-info__items"
+                >
+                  <tr
+                    class=""
+                  >
+                    <th
+                      class="kv-key font-s-semi"
+                      id="run:r3:"
+                      scope="row"
+                    >
+                      run
+                    </th>
+                    <td
+                      aria-labelledby="run:r3:"
+                      class="kv-value font-s-reg"
+                    >
+                      run-1
+                    </td>
+                  </tr>
+                  <tr
+                    class=""
+                  >
+                    <th
+                      class="kv-key font-s-semi"
+                      id="vehicle:r4:"
+                      scope="row"
+                    >
+                      vehicle
+                    </th>
+                    <td
+                      aria-labelledby="vehicle:r4:"
+                      class="kv-value font-s-reg"
+                    >
+                      v1-label
+                    </td>
+                  </tr>
+                  <tr
+                    class="fs-mask"
+                  >
+                    <th
+                      class="kv-key font-s-semi"
+                      id="operator:r5:"
+                      scope="row"
+                    >
+                      operator
+                    </th>
+                    <td
+                      aria-labelledby="operator:r5:"
+                      class="kv-value font-s-reg fs-mask"
+                    >
+                      <span
+                        class="title-case"
+                      >
+                        will smith #op1
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="m-vehicle-properties-card__location-info m-info-section"
+            >
+              <div
+                class="m-current-location"
+              >
+                <label
+                  class="m-current-location__label label font-xs-reg title-case"
+                  for="current-location-:r6:"
+                >
+                  Current Location
+                </label>
+                <output
+                  class="m-current-location__value label font-s-semi"
+                  id="current-location-:r6:"
+                >
+                  Exact location cannot be determined
+                </output>
+              </div>
+              <a
+                class="m-street-view-button button-dark-small"
+                href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.360718%2C-71.05891&heading=33&pitch=0&fov=80"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <span
+                  aria-hidden="true"
+                  aria-label=""
+                  class="m-street-view-button__icon"
+                  role="img"
+                >
+                  <svg />
+                </span>
+                Street View
+              </a>
             </div>
           </div>
         </div>
