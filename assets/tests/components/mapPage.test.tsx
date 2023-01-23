@@ -168,16 +168,19 @@ describe("<MapPage />", () => {
       const vehicle = vehicleFactory.build()
       const ghost = ghostFactory.build()
 
-      ;(useSearchResults as jest.Mock).mockReturnValue([vehicle, ghost])
+      mockUseVehicleForId([vehicle])
+      mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle, ghost] })
 
       const { asFragment } = render(
         <StateDispatchProvider
-          state={stateFactory.build()}
+          state={stateFactory.build({
+            searchPageState: {
+              selectedVehicleId: vehicle.id,
+            },
+          })}
           dispatch={jest.fn()}
         >
-          <BrowserRouter>
-            <MapPage />
-          </BrowserRouter>
+          <MapPage />
         </StateDispatchProvider>
       )
 
