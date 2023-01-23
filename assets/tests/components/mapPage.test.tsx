@@ -217,7 +217,6 @@ describe("<MapPage />", () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
-    RunFactory
     const vehicles = [
         routeVehicleFactory.build({ runId: runIdFactory.build() }),
         routeVehicleFactory.build({ runId: runIdFactory.build() }),
@@ -429,7 +428,6 @@ describe("<MapPage />", () => {
   test("When a vehicle is selected, the search panel should be collapsed", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
-    // const { id: runId } = RunFactory.build()
     const runId = runIdFactory.build()
     const vehicle = vehicleFactory.associations({ runId }).build()
 
@@ -789,10 +787,6 @@ describe("<MapPage />", () => {
         })
 
         describe("and vehicle is a regular bus", () => {
-          test.todo(
-            "should style vehicle icon on map as selected and map should be centered on the vehicle"
-          )
-
           test("should display: vehicle icon, route shape and stops", () => {
             const changeApplicationState = jest.fn()
 
@@ -836,8 +830,6 @@ describe("<MapPage />", () => {
 
             expect(changeApplicationState).not.toHaveBeenCalled()
           })
-
-          test.todo("should auto center on vehicle by default")
         })
 
         describe("is a shuttle", () => {
