@@ -364,17 +364,6 @@ export const AutoCenterMapOn = ({
   )
 }
 
-type PaddingArgument = {
-  padding: [number, number, number, number]
-}
-
-export const AutoCenterMapWithPadding = ({
-  padding,
-  ...props
-}: AutoCenterMapOnProps & PaddingArgument) => {
-  return AutoCenterMapOn(props)
-}
-
 export const ContainedAutoCenterMapOn = (props: AutoCenterMapArgs) => {
   return AutoCenterMapOn({ ...props, ...useAutoCenterState() })
 }
