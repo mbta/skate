@@ -7,12 +7,14 @@ import {
   buslocDataDiscrepancySourceFactory,
 } from "./dataDiscrepancy"
 import { localGeoCoordinateFactory } from "./geoCoordinate"
+import { runIdFactory } from "./run"
 
 export const randomLocationVehicle = Factory.define<Vehicle>(
-  ({ sequence }) => ({
+  ({ sequence, associations }) => ({
     id: `v${sequence}`,
     label: `v${sequence}-label`,
-    runId: `run-${sequence}`,
+    runId:
+      associations.runId || runIdFactory.transient({ prefix: "run" }).build(),
     timestamp: 123,
     ...localGeoCoordinateFactory.build(),
     directionId: 0,
