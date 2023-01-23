@@ -26,7 +26,10 @@ import {
 } from "../factories/searchQuery"
 import shapeFactory from "../factories/shape"
 import stopFactory from "../factories/stop"
-import vehicleFactory, { randomLocationVehicle } from "../factories/vehicle"
+import vehicleFactory, {
+  randomLocationVehicle,
+  shuttleFactory,
+} from "../factories/vehicle"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import { VehicleLabelSetting } from "../../src/userSettings"
 import { setHtmlWidthHeightForLeafletMap } from "../testHelpers/leafletMapWidth"
@@ -837,12 +840,50 @@ describe("<MapPage />", () => {
         })
 
         describe("is a shuttle", () => {
-          test.todo("should display VPC")
-          test.todo(
-            "should style vehicle icon on map as selected and map should be centered on the vehicle"
-          )
-          test.todo("should not display vehicle route shape and stops")
-          test.todo("should auto center on vehicle by default")
+          test("should display: vehicle icon, but not route shape or stops", () => {
+            const changeApplicationState = jest.fn()
+
+            const selectedVehicle = shuttleFactory.build()
+
+            const shape = shapeFactory.build({
+              stops: stopFactory.buildList(8),
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehiclesForRouteMap({})
+            mockUseVehicleForId([selectedVehicle])
+            mockUseTripShape({ [selectedVehicle.tripId!]: shape })
+
+            const { container } = render(
+              <StateDispatchProvider
+                state={selectedStateFactory(selectedVehicle.id).build()}
+                dispatch={changeApplicationState}
+              >
+                <MapPage />
+              </StateDispatchProvider>
+            )
+
+            const selectedVehicleLabel = screen.getByRole("button", {
+              name: selectedVehicle.label!,
+            })
+            expect(selectedVehicleLabel).toBeInTheDocument()
+            // this should probably be expressed via some accessibility properties
+            expect(selectedVehicleLabel).toHaveClass("selected")
+
+            expect(
+              container.querySelectorAll(".m-vehicle-map__stop")
+            ).toHaveLength(0)
+            expect(
+              container.querySelector(".m-vehicle-map__route-shape")
+            ).not.toBeInTheDocument()
+            expect(
+              within(getVehiclePropertiesCard()).getByRole("status", {
+                name: /route variant name/i,
+              })
+            ).toHaveTextContent("Shuttle")
+
+            expect(changeApplicationState).not.toHaveBeenCalled()
+          })
         })
       })
 
