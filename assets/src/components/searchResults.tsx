@@ -40,7 +40,7 @@ const SearchResultCard = ({
         selected={isSelected}
       >
         <CardProperties
-          properties={vehicleOrGhostProperties(vehicleOrGhost)}
+          properties={vehicleOrGhostProperties(vehicleOrGhost, true)}
           highlightText={query.text}
         />
       </Card>

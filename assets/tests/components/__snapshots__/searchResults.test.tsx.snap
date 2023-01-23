@@ -290,7 +290,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                       <td
                         className="m-properties-list__property-value"
                       >
-                        PATTI SMITH #op1
+                        SMITH #op1
                       </td>
                     </tr>
                     <tr
@@ -614,7 +614,7 @@ exports[`SearchResults renders a selected result card 1`] = `
                       <td
                         className="m-properties-list__property-value"
                       >
-                        WILL SMITH #op1
+                        SMITH #op1
                       </td>
                     </tr>
                     <tr

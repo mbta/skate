@@ -157,6 +157,12 @@ describe("vehicleOrGhostProperties", () => {
     )
   })
 
+  test("uses vehicle properties for vehicles, operator last name only", () => {
+    expect(vehicleOrGhostProperties(vehicle, true)).toEqual(
+      vehicleProperties(vehicle, true)
+    )
+  })
+
   test("uses ghost properties for ghosts", () => {
     expect(vehicleOrGhostProperties(ghost)).toEqual(ghostProperties(ghost))
   })
@@ -213,6 +219,21 @@ describe("vehicleProperties", () => {
     } as unknown
 
     const properties = vehicleProperties(vehicleSansOperator as Vehicle)
+
+    expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
+      "SMITH #1234"
+    )
+  })
+
+  test("operator information gives last name if that's all that's available", () => {
+    const properties = vehicleProperties(
+      vehicleFactory.build({
+        operatorFirstName: "JOHN",
+        operatorLastName: "SMITH",
+        operatorId: "1234",
+      }),
+      true
+    )
 
     expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
       "SMITH #1234"
