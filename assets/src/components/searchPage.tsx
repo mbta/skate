@@ -4,7 +4,7 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useStations } from "../hooks/useStations"
-import { isVehicle } from "../models/vehicle"
+import { filterVehicles } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { Stop } from "../schedule"
 import { selectVehicle } from "../state"
@@ -23,12 +23,6 @@ const thereIsAnActiveSearch = (
   vehicles: VehicleOrGhost[] | null,
   searchPageState: SearchPageState
 ): boolean => vehicles !== null && searchPageState.isActive
-
-const filterVehicles = (
-  vehiclesOrGhosts: VehicleOrGhost[] | null
-): Vehicle[] => {
-  return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
-}
 
 const ToggleMobileDisplayButton = ({
   mobileDisplay,

@@ -29,3 +29,9 @@ export const directionName = (
   { directionId }: VehicleOrGhost,
   route: Route | null
 ): string => (route ? route.directionNames[directionId] : "")
+
+export const filterVehicles = (
+  vehiclesOrGhosts: VehicleOrGhost[] | null
+): Vehicle[] => {
+  return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
+}
