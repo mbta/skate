@@ -51,6 +51,16 @@ $map-page-search-panel-width: 24rem;
 
   &.hidden {
     left: calc(-1 * #{$map-page-search-panel-width} + 1rem);
+
+    .m-search-display {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+    }
   }
 }
 
