@@ -830,8 +830,9 @@ describe("<MapPage />", () => {
             expect(
               container.querySelectorAll(".m-vehicle-map__stop")
             ).toHaveLength(shape.stops?.length || 0)
-            expect(container.querySelector(".m-vehicle-map__route-shape"))
-              .toBeInTheDocument
+            expect(
+              container.querySelector(".m-vehicle-map__route-shape")
+            ).toBeInTheDocument()
 
             expect(changeApplicationState).not.toHaveBeenCalled()
           })
