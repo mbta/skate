@@ -4,7 +4,6 @@ import React, {
   ReactElement,
   useCallback,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from "react"
@@ -58,7 +57,12 @@ const ToggleMobileDisplayButton = ({
   )
 }
 
-const SearchInputAndResults = (props: {
+const SearchInputAndResults = ({
+  searchPageState,
+  mobileDisplay,
+  selectedVehicleId,
+  selectVehicleId,
+}: {
   searchPageState: SearchPageState
   mobileDisplay?: ReactElement
   selectedVehicleId: string | null
@@ -67,33 +71,33 @@ const SearchInputAndResults = (props: {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const searchVehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,
-    props.searchPageState.isActive ? props.searchPageState.query : null
+    searchPageState.isActive ? searchPageState.query : null
   )
 
   const selectVehicle = useCallback(
     (vehicle: VehicleOrGhost): void => {
       if (isVehicle(vehicle)) {
-        props.selectVehicleId && props.selectVehicleId(vehicle?.id)
+        selectVehicleId && selectVehicleId(vehicle?.id)
       }
     },
-    [props.selectVehicleId]
+    [selectVehicleId]
   )
 
   return (
     <>
       <div className="m-map-page__input">
         <SearchForm formTitle="Search Map" inputTitle="Search Map Query" />
-        {props.mobileDisplay}
+        {mobileDisplay}
       </div>
 
       <hr />
 
       <div className="m-search-display">
         {searchVehicles !== null &&
-        thereIsAnActiveSearch(searchVehicles, props.searchPageState) ? (
+        thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
           <SearchResults
             vehicles={searchVehicles}
-            selectedVehicleId={props.selectedVehicleId}
+            selectedVehicleId={selectedVehicleId}
             onClick={selectVehicle}
           />
         ) : (
@@ -111,11 +115,14 @@ const MapDisplay = ({
   selectedVehicleIdState: [VehicleId | null, React.Dispatch<VehicleId | null>]
   showVpc: boolean
 }) => {
-  const selectVehicle = useCallback((vehicle: VehicleOrGhost): void => {
-    if (isVehicle(vehicle) && setSelectedVehicleId) {
-      setSelectedVehicleId(vehicle.id)
-    }
-  }, [])
+  const selectVehicle = useCallback(
+    (vehicle: VehicleOrGhost): void => {
+      if (isVehicle(vehicle) && setSelectedVehicleId) {
+        setSelectedVehicleId(vehicle.id)
+      }
+    },
+    [setSelectedVehicleId]
+  )
 
   const deleteSelection = useCallback(() => {
     setSelectedVehicleId && setSelectedVehicleId(null)
@@ -142,15 +149,8 @@ const MapDisplay = ({
     selectedVehicleDeferred?.tripId || null
   )
 
-  const leafletMap = useRef<LeafletMap | null>(null)
-  useEffect(() => {
-    // Let leaflet know when Page resizes due to vpc state
-    leafletMap.current?.invalidateSize()
-  }, [showVpc])
-
   return (
     <BaseMap
-      reactLeafletRef={leafletMap}
       vehicles={filterVehicles(vehicles)}
       onPrimaryVehicleSelect={selectVehicle}
       shapes={
@@ -212,33 +212,14 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     () => setSearchOpen((open) => !open),
     [setSearchOpen]
   )
-  // useEffect(() => {
-  //   if (selectedVehicleId !== null) {
-  //     setSearchOpen(false)
-  //   }
-  // }, [selectedVehicleId])
-
-  // useEffect(() => {
-  //   if (selectedVehicleId !== null) {
-  //     setSearchOpen(false)
-  //   }
-  //   // }, [selectedVehicleId === null])
-  // }, [selectedVehicleId])
   // #endregion
 
-  // const selectVehicleId: Dispatch<SetStateAction<VehicleId | null>> = useCallback(
   const selectVehicleId = useCallback(
     (value: VehicleId | null) => {
       dispatch(setSelectedVehicle(value))
       setSearchOpen(value === null)
-
-      // if (id === null) {
-      //   setSearchOpen(true)
-      // } else {
-      //   setSearchOpen(false)
-      // }
     },
-    [setSearchOpen, setSelectedVehicle, dispatch]
+    [setSearchOpen, dispatch]
   )
 
   return (
