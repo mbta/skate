@@ -207,12 +207,12 @@
     }
 
     &.m-card--selected {
-      background-color: $color-gray-50;
+      background-color: $color-eggplant-100;
       border: 1px solid $color-eggplant-500;
     }
 
     &:focus-within:not(.m-card--no-focus-or-hover).m-card--selected {
-      background-color: $color-gray-50;
+      background-color: $color-eggplant-100;
       border: 2px solid $color-eggplant-500;
     }
   }
