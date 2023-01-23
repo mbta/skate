@@ -1,6 +1,7 @@
 import React from "react"
 import MapPage from "../../src/components/mapPage"
 import SearchPage from "../../src/components/searchPage"
+import { SearchIcon, SearchMapIcon } from "../../src/helpers/icon"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
 import { mapModeForUser } from "../../src/util/mapMode"
@@ -15,8 +16,10 @@ describe("mapModeForUser", () => {
     ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
     expect(mapModeForUser()).toEqual({
       path: "/map",
-      title: "Map",
+      title: "Search Map",
       element: <MapPage />,
+      navIcon: SearchMapIcon,
+      supportsRightPanel: false,
     })
   })
 
@@ -27,6 +30,8 @@ describe("mapModeForUser", () => {
       path: "/search",
       title: "Search",
       element: <SearchPage />,
+      navIcon: SearchIcon,
+      supportsRightPanel: true,
     })
   })
 })

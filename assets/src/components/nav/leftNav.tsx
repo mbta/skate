@@ -8,7 +8,6 @@ import NotificationBellIcon from "../notificationBellIcon"
 import {
   LadderIcon,
   MapIcon,
-  SearchIcon,
   LateIcon,
   SwingIcon,
   DoubleChevronRightIcon,
@@ -111,7 +110,7 @@ const LeftNav = ({
               title={mapMode.title}
               to={mapMode.path}
             >
-              <SearchIcon className="m-left-nav__icon" />
+              <mapMode.navIcon className="m-left-nav__icon" />
               {collapsed ? null : mapMode.title}
             </NavLink>
           </li>

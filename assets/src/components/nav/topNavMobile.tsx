@@ -5,6 +5,7 @@ import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
 import NavMenu from "./navMenu"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
+import { searchMapConfig } from "../../util/mapMode"
 
 export const toTitleCase = (str: string): string => {
   return str.replace(
@@ -18,12 +19,9 @@ export const pageOrTabName = (
   pathname: string,
   routeTabs: RouteTab[]
 ): string => {
-  let tabName = "Skate"
-
-  if (pathname === "/") tabName = currentTabName(routeTabs)
-  else tabName = toTitleCase(pathname.replace("/", "").replace("-", " "))
-
-  return tabName
+  if (pathname === "/") return currentTabName(routeTabs)
+  if (pathname === searchMapConfig.path) return searchMapConfig.title
+  else return toTitleCase(pathname.replace("/", "").replace("-", " "))
 }
 
 interface Props {

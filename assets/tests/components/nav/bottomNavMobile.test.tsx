@@ -37,7 +37,7 @@ describe("BottomNavMobile", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
   })
 
-  test("renders nav item with title 'Map' if in map test group", () => {
+  test("renders nav item with title 'Search Map' if in map test group", () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     render(
@@ -50,6 +50,6 @@ describe("BottomNavMobile", () => {
     )
 
     expect(screen.queryByTitle("Search")).toBeNull()
-    expect(screen.queryByTitle("Map")).toBeInTheDocument()
+    expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
   })
 })

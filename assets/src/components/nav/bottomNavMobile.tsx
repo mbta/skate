@@ -1,5 +1,5 @@
 import React from "react"
-import { LadderIcon, MapIcon, SearchIcon, SwingIcon } from "../../helpers/icon"
+import { LadderIcon, MapIcon, SwingIcon } from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import { mapModeForUser } from "../../util/mapMode"
@@ -57,7 +57,7 @@ const BottomNavMobile: React.FC<Props> = ({
             title={mapMode.title}
             to={mapMode.path}
           >
-            <SearchIcon className="m-bottom-nav-mobile__icon" />
+            <mapMode.navIcon className="m-bottom-nav-mobile__icon" />
           </NavLink>
         </li>
 
