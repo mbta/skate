@@ -15,7 +15,7 @@ import { useTripShape } from "../hooks/useShapes"
 import { useStations } from "../hooks/useStations"
 import useVehicleForId from "../hooks/useVehicleForId"
 import useVehiclesForRoute from "../hooks/useVehiclesForRoute"
-import { isVehicle } from "../models/vehicle"
+import { filterVehicles, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
@@ -39,12 +39,6 @@ const thereIsAnActiveSearch = (
   searchPageState: SearchPageState
 ): boolean => vehicles !== null && searchPageState.isActive
 
-const filterVehicles = (
-  vehiclesOrGhosts: VehicleOrGhost[] | null
-): Vehicle[] => {
-  return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
-}
-
 const ToggleMobileDisplayButton = ({
   mobileDisplay,
   onToggleMobileDisplay,
@@ -64,114 +58,59 @@ const ToggleMobileDisplayButton = ({
   )
 }
 
-const MapPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
-      useContext(StateDispatchContext),
-    { selectedVehicleId = null } = searchPageState
-
+const SearchInputAndResults = (props: {
+  searchPageState: SearchPageState
+  mobileDisplay?: ReactElement
+  selectedVehicleId: string | null
+  selectVehicleId?: (value: VehicleId | null) => void
+}): React.ReactElement => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const searchVehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,
-    searchPageState.isActive ? searchPageState.query : null
+    props.searchPageState.isActive ? props.searchPageState.query : null
   )
 
-  const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
-  const [searchOpen, setSearchOpen] = useState<boolean>(true)
-
-  const onSearchCallback = () => {
-    selectVehicleId(null)
-  }
-
-  const toggleMobileDisplay = () => {
-    setMobileDisplay(
-      mobileDisplay === MobileDisplay.List
-        ? MobileDisplay.Map
-        : MobileDisplay.List
-    )
-  }
-
-  const selectVehicle = useCallback((vehicle: VehicleOrGhost): void => {
-    if (isVehicle(vehicle)) {
-      selectVehicleId(vehicle?.id)
-    }
-  }, [])
-
-  function selectVehicleId(id: VehicleId | null) {
-    dispatch(setSelectedVehicle(id))
-  }
-
-  const mobileDisplayClass =
-    mobileDisplay === MobileDisplay.List
-      ? "m-map-page--show-list"
-      : "m-map-page--show-map"
-
-  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
+  const selectVehicle = useCallback(
+    (vehicle: VehicleOrGhost): void => {
+      if (isVehicle(vehicle)) {
+        props.selectVehicleId && props.selectVehicleId(vehicle?.id)
+      }
+    },
+    [props.selectVehicleId]
+  )
 
   return (
-    <div
-      className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass} inherit-box border-box`}
-      aria-label="Search Map Page"
-    >
-      <div
-        className={`m-map-page__input-and-results ${
-          searchOpen ? "visible" : "hidden"
-        }`}
-        aria-label="Map Search Panel"
-      >
-        <DrawerTab
-          isVisible={searchOpen}
-          toggleVisibility={() => setSearchOpen((a) => !a)}
-        />
-        <div className="m-map-page__input">
-          <SearchForm
-            onSubmit={onSearchCallback}
-            onClear={onSearchCallback}
-            formTitle="Search Map"
-            inputTitle="Search Map Query"
-          />
-          <ToggleMobileDisplayButton
-            mobileDisplay={mobileDisplay}
-            onToggleMobileDisplay={toggleMobileDisplay}
-          />
-        </div>
-
-        <hr />
-
-        <div className="m-search-display">
-          {searchVehicles !== null &&
-          thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
-            <SearchResults
-              vehicles={searchVehicles}
-              selectedVehicleId={selectedVehicleId}
-              onClick={selectVehicle}
-            />
-          ) : (
-            <RecentSearches />
-          )}
-        </div>
+    <>
+      <div className="m-map-page__input">
+        <SearchForm formTitle="Search Map" inputTitle="Search Map Query" />
+        {props.mobileDisplay}
       </div>
-      <div className="m-map-page__map">
-        <Map
-          selectedVehicleId={selectedVehicleId}
-          setSelectedVehicleId={selectVehicleId}
-          showVpc={true}
-        ></Map>
+
+      <hr />
+
+      <div className="m-search-display">
+        {searchVehicles !== null &&
+        thereIsAnActiveSearch(searchVehicles, props.searchPageState) ? (
+          <SearchResults
+            vehicles={searchVehicles}
+            selectedVehicleId={props.selectedVehicleId}
+            onClick={selectVehicle}
+          />
+        ) : (
+          <RecentSearches />
+        )}
       </div>
-    </div>
+    </>
   )
 }
 
-export default MapPage
-
-function Map({
-  selectedVehicleId,
-  setSelectedVehicleId,
+const MapDisplay = ({
+  selectedVehicleIdState: [selectedVehicleId, setSelectedVehicleId],
   showVpc,
 }: {
-  selectedVehicleId: VehicleId | null
+  selectedVehicleIdState: [VehicleId | null, React.Dispatch<VehicleId | null>]
   showVpc: boolean
-  setSelectedVehicleId?: (vehicleId: VehicleId | null) => void
-}) {
+}) => {
   const selectVehicle = useCallback((vehicle: VehicleOrGhost): void => {
     if (isVehicle(vehicle) && setSelectedVehicleId) {
       setSelectedVehicleId(vehicle.id)
@@ -186,18 +125,22 @@ function Map({
 
   const { socket } = useContext(SocketContext)
 
-  const selectedVehicle =
+  const selectedVehicleOrGhost =
     useVehicleForId(socket, selectedVehicleId ?? null) || null
-  // const deferredVehicle = useDeferredValue(selectedVehicle)
+
+  const _selectedVehicle: Vehicle | null =
+    (selectedVehicleOrGhost &&
+      isVehicle(selectedVehicleOrGhost) &&
+      selectedVehicleOrGhost) ||
+    null
+  const selectedVehicleDeferred = _selectedVehicle
 
   const vehicles =
-    useVehiclesForRoute(socket, selectedVehicle?.routeId ?? null) ||
-    ([selectedVehicle].filter(Boolean) as VehicleOrGhost[])
-
-  const liveVehicle: Vehicle | null =
-    (selectedVehicle && isVehicle(selectedVehicle) && selectedVehicle) || null
-
-  const selectedVehicleShapes = useTripShape(liveVehicle?.tripId || null)
+    useVehiclesForRoute(socket, selectedVehicleDeferred?.routeId ?? null) ||
+    ([selectedVehicleDeferred].filter(Boolean) as VehicleOrGhost[])
+  const selectedVehicleShapes = useTripShape(
+    selectedVehicleDeferred?.tripId || null
+  )
 
   const leafletMap = useRef<LeafletMap | null>(null)
   useEffect(() => {
@@ -212,24 +155,22 @@ function Map({
       onPrimaryVehicleSelect={selectVehicle}
       shapes={selectedVehicleShapes}
       allowStreetView={true}
-      stopCardDirection={liveVehicle?.directionId}
+      stopCardDirection={selectedVehicleDeferred?.directionId}
       includeStopCard={true}
       stations={stations}
       selectedVehicleId={selectedVehicleId || undefined}
     >
       <>
-        {selectedVehicle && isVehicle(selectedVehicle) && (
-          <>
-            <ContainedAutoCenterMapOn
-              key={selectedVehicle.id}
-              positions={[selectedVehicle].map(vehicleToLeafletLatLng)}
-            />
-          </>
-        )}
-        {showVpc && liveVehicle && (
+        <ContainedAutoCenterMapOn
+          key={selectedVehicleId || ""}
+          positions={(
+            [selectedVehicleDeferred].filter(Boolean) as Vehicle[]
+          ).map(vehicleToLeafletLatLng)}
+        />
+        {showVpc && selectedVehicleDeferred && (
           <>
             <VehiclePropertiesCard
-              vehicle={liveVehicle}
+              vehicle={selectedVehicleDeferred}
               onClose={deleteSelection}
             />
           </>
@@ -238,3 +179,103 @@ function Map({
     </BaseMap>
   )
 }
+
+const MapPage = (): ReactElement<HTMLDivElement> => {
+  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
+      useContext(StateDispatchContext),
+    { selectedVehicleId = null } = searchPageState
+
+  // #region mobile display
+  const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
+  const toggleMobileDisplay = () => {
+    setMobileDisplay(
+      mobileDisplay === MobileDisplay.List
+        ? MobileDisplay.Map
+        : MobileDisplay.List
+    )
+  }
+  const mobileDisplayClass =
+    mobileDisplay === MobileDisplay.List
+      ? "m-map-page--show-list"
+      : "m-map-page--show-map"
+
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
+  // #endregion
+
+  // #region Search Drawer Logic
+  const [searchOpen, setSearchOpen] = useState<boolean>(
+    selectedVehicleId === null
+  )
+  const toggleSearchDrawer = useCallback(
+    () => setSearchOpen((open) => !open),
+    [setSearchOpen]
+  )
+  // useEffect(() => {
+  //   if (selectedVehicleId !== null) {
+  //     setSearchOpen(false)
+  //   }
+  // }, [selectedVehicleId])
+
+  // useEffect(() => {
+  //   if (selectedVehicleId !== null) {
+  //     setSearchOpen(false)
+  //   }
+  //   // }, [selectedVehicleId === null])
+  // }, [selectedVehicleId])
+  // #endregion
+
+  // const selectVehicleId: Dispatch<SetStateAction<VehicleId | null>> = useCallback(
+  const selectVehicleId = useCallback(
+    (value: VehicleId | null) => {
+      dispatch(setSelectedVehicle(value))
+      setSearchOpen(value === null)
+
+      // if (id === null) {
+      //   setSearchOpen(true)
+      // } else {
+      //   setSearchOpen(false)
+      // }
+    },
+    [setSearchOpen, setSelectedVehicle, dispatch]
+  )
+
+  return (
+    <div
+      className={`m-map-page ${mobileDisplayClass} ${mobileMenuClass} inherit-box border-box`}
+      aria-label="Search Map Page"
+    >
+      <div
+        className={`m-map-page__input-and-results ${
+          searchOpen ? "visible" : "hidden"
+        }`}
+        aria-label="Map Search Panel"
+      >
+        <DrawerTab
+          isVisible={searchOpen}
+          toggleVisibility={toggleSearchDrawer}
+        />
+        <SearchInputAndResults
+          {...{
+            selectVehicleId,
+            selectedVehicleId,
+            searchPageState,
+          }}
+          mobileDisplay={
+            <ToggleMobileDisplayButton
+              mobileDisplay={mobileDisplay}
+              onToggleMobileDisplay={toggleMobileDisplay}
+            />
+          }
+        />
+      </div>
+      <div className="m-map-page__map">
+        <MapDisplay
+          selectedVehicleIdState={[selectedVehicleId, selectVehicleId]}
+          showVpc={!searchOpen}
+        />
+      </div>
+    </div>
+  )
+}
+
+export default MapPage
