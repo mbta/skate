@@ -8,8 +8,8 @@ export const RealDispatchWrapper = ({
   children,
   initialState,
 }: {
-  children: JSX.Element
-  initialState: State
+  children: React.ReactElement
+  initialState?: State
 }) => {
   const [state, dispatch] = useReducer(
     reducer,
