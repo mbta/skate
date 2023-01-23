@@ -2,18 +2,18 @@ const path = require("path")
 const glob = require("glob")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const TerserPlugin = require("terser-webpack-plugin")
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = (env, options) => {
   const plugins = [
     new MiniCssExtractPlugin({ filename: "../css/app.css" }),
-    new CopyWebpackPlugin({ patterns: [{ from: "static/", to: "../" }] })
+    new CopyWebpackPlugin({ patterns: [{ from: "static/", to: "../" }] }),
   ]
 
-  const useMinimization = options.mode === "production";
+  const useMinimization = options.mode === "production"
 
-  return({
+  return {
     optimization: {
       minimize: useMinimization,
       minimizer: [
@@ -21,7 +21,7 @@ module.exports = (env, options) => {
         new CssMinimizerPlugin(),
       ],
     },
-    devtool: 'source-map',
+    devtool: "source-map",
     entry: {
       "./js/app.tsx": ["./src/app.tsx"].concat(glob.sync("./vendor/**/*.js")),
     },
@@ -59,7 +59,28 @@ module.exports = (env, options) => {
             {
               loader: "svgo-loader",
               options: {
-                externalConfig: "svgo.yml",
+                plugins: [
+                  {
+                    name: "preset-default",
+                    params: {
+                      overrides: {
+                        // viewBox is required to resize SVGs with CSS.
+                        // @see https://github.com/svg/svgo/issues/1128
+                        removeViewBox: false,
+                      },
+                    },
+                  },
+                  {
+                    name: "removeTitle",
+                    active: true,
+                  },
+                  {
+                    name: "removeAttrs",
+                    params: {
+                      attrs: ["id"],
+                    },
+                  },
+                ],
               },
             },
           ],
@@ -75,5 +96,5 @@ module.exports = (env, options) => {
       modules: ["deps", "node_modules"],
     },
     plugins: plugins,
-  })
+  }
 }
