@@ -39,12 +39,6 @@ import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleOrGhost } from "../../src/realtime"
 import { RouteId, Shape, TripId } from "../../src/schedule"
 
-jest
-  .spyOn(dateTime, "now")
-  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
-
-jest.spyOn(Date, "now").mockImplementation(() => 234000)
-
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(() => null),
@@ -165,6 +159,12 @@ describe("<MapPage />", () => {
     })
 
     test("renders vehicle data", () => {
+      jest
+        .spyOn(dateTime, "now")
+        .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+
+      jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
       const vehicle = vehicleFactory.build()
       const ghost = ghostFactory.build()
 
