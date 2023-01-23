@@ -153,7 +153,9 @@ const MapDisplay = ({
       reactLeafletRef={leafletMap}
       vehicles={filterVehicles(vehicles)}
       onPrimaryVehicleSelect={selectVehicle}
-      shapes={selectedVehicleShapes}
+      shapes={
+        (_selectedVehicle?.isShuttle === false && selectedVehicleShapes) || []
+      }
       allowStreetView={true}
       stopCardDirection={selectedVehicleDeferred?.directionId}
       includeStopCard={true}
