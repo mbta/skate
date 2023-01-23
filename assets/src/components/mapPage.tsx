@@ -175,31 +175,6 @@ const MapDisplay = ({
   const selectedVehicleOrGhost =
     useVehicleForId(socket, selectedVehicleId ?? null) || null
 
-  // const [
-  //   {
-  //     lastSelected: {
-  //       routeId: selectedRouteId,
-  //       tripId: selectedTripId,
-  //       vehicle: selectedVehicleRef,
-  //     },
-  //   },
-  //   dispatch,
-  // ] = useReducer(MapDisplayReducer, {}, initialState)
-
-  // // const selectedVehicle: Vehicle | null =
-  // //   (selectedVehicleOrGhost &&
-  // //     isVehicle(selectedVehicleOrGhost) &&
-  // //     selectedVehicleOrGhost) ||
-  // //   null
-
-  // useEffect(() => {
-  //   dispatch({
-  //     action: "new_vehicle",
-  //     selectedVehicle: selectedVehicleOrGhost,
-  //     selectedVehicleId,
-  //   })
-  // }, [selectedVehicleOrGhost, selectedVehicleId])
-
   const ref = useRef(
     (selectedVehicleOrGhost &&
       isVehicle(selectedVehicleOrGhost) &&
@@ -215,21 +190,15 @@ const MapDisplay = ({
     ref.current = selectedVehicleOrGhost
   }
   const selectedVehicleRef = ref.current
-  const selectedRouteId = ref.current?.routeId || null
-  const selectedTripId = ref.current?.tripId || null
+  const { routeId: selectedRouteId = null, tripId: selectedTripId = null } =
+    ref.current || {}
 
   const positions = filterVehicles(
     [selectedVehicleRef].filter(Boolean) as VehicleOrGhost[]
   ).map(vehicleToLeafletLatLng)
-  console.debug({
-    positions,
-    selectedTripId,
-    selectedRouteId,
-    selectedVehicleId,
-  })
 
   const shapes = useTripShape(selectedTripId)
-
+  const vehicles = useVehiclesForRoute(socket, selectedRouteId)
   return (
     <BaseMap
       vehicles={[]}
@@ -259,27 +228,32 @@ const MapDisplay = ({
           </>
         ) : (
           <>
-            <RouteVehicles
+            {/* <RouteVehicles
               selectedVehicleRoute={selectedRouteId}
               selectedVehicleId={selectedVehicleId}
               onPrimaryVehicleSelect={setSelectedVehicle}
-            />
+            /> */}
             {/* <TripShape selectedTripId={selectedTripId} /> */}
+            {filterVehicles(vehicles).map((vehicle: Vehicle) => (
+              <VehicleMarker
+                key={vehicle.id}
+                vehicle={vehicle}
+                isPrimary={true}
+                isSelected={vehicle.id === selectedVehicleId}
+                onSelect={setSelectedVehicle}
+              />
+            ))}
           </>
         )}
 
         <ContainedAutoCenterMapOn
-          key={selectedVehicleId || ""}
+          key={selectedVehicleRef?.id || ""}
           positions={positions}
         />
       </>
     </BaseMap>
   )
 }
-
-// const TripShape = ({ selectedTripId }: { selectedTripId: TripId | null }) => {
-
-// }
 
 const RouteVehicles = ({
   selectedVehicleRoute,

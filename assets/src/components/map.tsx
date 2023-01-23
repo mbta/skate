@@ -1,4 +1,5 @@
 import Leaflet, {
+  Bounds,
   Control,
   ControlOptions,
   DomUtil,
@@ -6,6 +7,7 @@ import Leaflet, {
   LatLngExpression,
   LatLngLiteral,
   Map as LeafletMap,
+  Point,
 } from "leaflet"
 
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
@@ -233,11 +235,27 @@ export const autoCenter = (
   latLngs: LatLngExpression[],
   pickerContainerIsVisible: boolean
 ): void => {
-  // console.debug({ latLngs })
   if (latLngs.length === 0) {
     map.setView(defaultCenter, 13, { animate: false })
   } else if (latLngs.length === 1) {
-    map.setView(latLngs[0], 16)
+    const bounds = map.getContainer().getBoundingClientRect()
+    const containerBounds = new Bounds([0, 0], [bounds.width, bounds.height])
+
+    const topLeft = new Point(445, 0)
+    const innerBounds = new Bounds(
+      topLeft,
+      containerBounds.getBottomRight() //.subtract([42, 15])
+    )
+
+    const targetZoom = 16
+    const targetPoint = map
+        .project(latLngs[0], targetZoom)
+        .subtract(
+          innerBounds.getCenter().subtract(containerBounds.getCenter())
+        ),
+      targetLatLng = map.unproject(targetPoint, targetZoom)
+    // const targetLatLng = latLngs[0]
+    map.setView(targetLatLng, targetZoom)
   } else if (latLngs.length > 1) {
     map.fitBounds(Leaflet.latLngBounds(latLngs), {
       paddingBottomRight: [20, 50],
