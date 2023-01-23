@@ -15,7 +15,7 @@ class SearchQueryFactory extends Factory<SearchQuery> {
   }
 }
 
-const searchQueryFactory = SearchQueryFactory.define(({}) => ({
+const searchQueryFactory = SearchQueryFactory.define(() => ({
   ...emptySearchQuery,
 }))
 
