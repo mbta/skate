@@ -1,12 +1,5 @@
-import { Map as LeafletMap } from "leaflet"
 import { Socket } from "phoenix"
-import React, {
-  ReactElement,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-} from "react"
+import React, { ReactElement, useCallback, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
