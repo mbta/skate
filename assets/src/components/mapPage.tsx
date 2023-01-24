@@ -1,8 +1,10 @@
+import { Bounds, Point } from "leaflet"
 import { Socket } from "phoenix"
 import React, {
   ReactElement,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react"
@@ -16,12 +18,16 @@ import useVehicleForId from "../hooks/useVehicleForId"
 import useVehiclesForRoute from "../hooks/useVehiclesForRoute"
 import { filterVehicles, isGhost, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
-import { RouteId, TripId } from "../schedule"
+import { RouteId } from "../schedule"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import {
   BaseMap,
-  ContainedAutoCenterMapOn,
+  defaultCenter,
+  FollowerStatusClasses,
+  InterruptibleFollower,
+  UpdateMapFromPointsFn,
+  useInteractiveFollowerState,
   vehicleToLeafletLatLng,
 } from "./map"
 import { VehicleMarker } from "./mapMarkers"
@@ -29,6 +35,7 @@ import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
+import Leaflet from "leaflet"
 
 enum MobileDisplay {
   List = 1,
@@ -164,6 +171,53 @@ const RouteVehicles = ({
   )
 }
 
+const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
+  if (points.length === 0) {
+    map.setView(defaultCenter, 13, { animate: false })
+    return
+  }
+  const bounds = map.getContainer().getBoundingClientRect()
+  const containerBounds = new Bounds([0, 0], [bounds.width, bounds.height])
+
+  const topLeft = new Point(445, 0)
+  const innerBounds = new Bounds(
+    topLeft,
+    containerBounds.getBottomRight() //.subtract([42, 15])
+  )
+
+    const targetZoom = 16
+    const targetPoint = map
+        .project(points[0], targetZoom)
+        .subtract(
+          innerBounds.getCenter().subtract(containerBounds.getCenter())
+        ),
+      targetLatLng = map.unproject(targetPoint, targetZoom)
+    // const targetLatLng = points[0]
+    map.setView(targetLatLng, targetZoom)
+  }
+}
+
+const useFollowingStateWithSelectionLogic = (
+  selectedVehicleId: string | null,
+  selectedVehicleRef: Vehicle | null
+) => {
+  const state = useInteractiveFollowerState(),
+    { setShouldFollow } = state
+
+  // when the selected vehicle ID and last api do or don't reference the same
+  // vehicle
+  useEffect(() => {
+    // Only update the shouldFollow state once the cached value agrees with
+    // the selection state.
+    // Otherwise the follower may try to center on stale data from the
+    // previous selection before `useVehicleForId` resolves to it's next value.
+    if (selectedVehicleId && selectedVehicleId === selectedVehicleRef?.id) {
+      setShouldFollow(true)
+    }
+  }, [selectedVehicleId !== selectedVehicleRef?.id])
+  return state
+}
+
 const MapDisplay = ({
   selectedVehicleId,
   setSelectedVehicle,
@@ -192,6 +246,10 @@ const MapDisplay = ({
       ]) ||
     []
 
+  const state = useFollowingStateWithSelectionLogic(
+    selectedVehicleId,
+    selectedVehicleRef
+  )
 
   return (
     <BaseMap
@@ -201,6 +259,7 @@ const MapDisplay = ({
       includeStopCard={true}
       stations={stations}
       shapes={selectedVehicleRef?.isShuttle ? [] : shapes}
+      stateClasses={FollowerStatusClasses(state.shouldFollow)}
     >
       <>
         {showVpc && selectedVehicleRef && isVehicle(selectedVehicleRef) && (
@@ -231,7 +290,9 @@ const MapDisplay = ({
         )}
 
         <InterruptibleFollower
+          onUpdate={onFollowerUpdate}
           positions={position}
+          {...state}
         />
       </>
     </BaseMap>
