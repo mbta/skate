@@ -1299,11 +1299,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                       aria-labelledby="operator:r5:"
                       class="kv-value font-s-reg fs-mask"
                     >
-                      <span
-                        class="title-case"
-                      >
-                        will smith #op1
-                      </span>
+                      WILL SMITH #op1
                     </td>
                   </tr>
                 </tbody>
