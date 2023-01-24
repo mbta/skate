@@ -6,6 +6,7 @@ $font-colors: (
   "on-light-900": $color-gray-900,
   "on-light-800": $color-gray-800,
   "on-light-700": $color-gray-700,
+  "on-light-600": $color-gray-600,
 
   "on-dark": $white,
 
@@ -106,6 +107,70 @@ $font-weights: (
   font-weight: 500;
   font-size: var(--font-size-s);
   line-height: 1;
+}
+
+/* Input Submit Button */
+
+.button-submit {
+  color: $white;
+  background-color: $color-eggplant-700;
+
+  &:hover {
+    background-color: $color-eggplant-500;
+  }
+
+  &:focus {
+    background-color: $color-eggplant-500;
+    border: 2px solid $color-eggplant-700;
+  }
+
+  &:disabled {
+    background-color: $color-gray-600;
+  }
+}
+
+/* Search Filters */
+
+.button-search-filter {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  color: var(--font-color-on-light-600);
+  background-color: $color-gray-50;
+
+  border-radius: 4px;
+
+  input:checked + & {
+    color: var(--font-color-on-dark);
+    background-color: $color-eggplant-700;
+  }
+
+  &:hover {
+    color: var(--font-color-on-dark);
+    background-color: $color-eggplant-500;
+  }
+
+  &:focus {
+    color: var(--font-color-on-light-700);
+    border: 1px solid $color-eggplant-500;
+  }
+}
+
+.button-text {
+  color: $color-eggplant-700;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semi);
+  padding: 0;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-eggplant-500;
+  }
+
+  &:focus {
+    color: $color-eggplant-500;
+    border: 1px solid $color-eggplant-700;
+    border-radius: 3px;
+  }
 }
 
 .title-case {

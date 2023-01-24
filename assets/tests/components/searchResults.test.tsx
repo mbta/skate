@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
@@ -10,9 +10,10 @@ import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
 import * as dateTime from "../../src/util/dateTime"
+import "@testing-library/jest-dom"
 
 import ghostFactory from "../factories/ghost"
-import vehicleFactory from "../factories/vehicle"
+import vehicleFactory, { shuttleFactory } from "../factories/vehicle"
 
 jest
   .spyOn(dateTime, "now")
@@ -123,77 +124,6 @@ describe("SearchResults", () => {
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
           <SearchResults
             vehicles={[vehicle, ghost]}
-            onClick={jest.fn()}
-            selectedVehicleId={null}
-          />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("shows the new badge for vehicle that have logged in within the past 30 minutes", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
-      id: "v1",
-      label: "v1-label",
-      runId: "run-1",
-      timestamp: 123,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "39",
-      tripId: "t1",
-      headsign: "Forest Hills",
-      viaVariant: "X",
-      operatorId: "op1",
-      operatorFirstName: "PATTI",
-      operatorLastName: "SMITH",
-      operatorLogonTime: new Date("2018-08-15T17:40:21.000Z"),
-      bearing: 33,
-      blockId: "block-1",
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      isShuttle: false,
-      isOverload: false,
-      isOffCourse: false,
-      isRevenue: true,
-      layoverDepartureTime: null,
-      dataDiscrepancies: [
-        {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: "swiftly-trip-id",
-            },
-            {
-              id: "busloc",
-              value: "busloc-trip-id",
-            },
-          ],
-        },
-      ],
-      stopStatus: {
-        stopId: "s1",
-        stopName: "Stop Name",
-      },
-      timepointStatus: {
-        fractionUntilTimepoint: 0.5,
-        timepointId: "tp1",
-      },
-      scheduledLocation: null,
-      routeStatus: "on_route",
-      endOfTripType: "another_trip",
-      blockWaivers: [],
-      crowding: null,
-    })
-
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults
-            vehicles={[vehicle]}
             onClick={jest.fn()}
             selectedVehicleId={null}
           />
@@ -347,6 +277,22 @@ describe("SearchResults", () => {
     expect(JSON.stringify(tree)).toMatch(/ghost-run.*new-label.*old-label/)
   })
 
+  test("renders a shuttle", () => {
+    const vehicle: Vehicle = shuttleFactory.build()
+
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[vehicle]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
+
+    expect(screen.getByText(/Shuttle/)).toBeInTheDocument()
+  })
+
   test("renders a selected result card", () => {
     const vehicle: Vehicle = vehicleFactory.build({
       runId: "run-1",
@@ -374,7 +320,7 @@ describe("SearchResults", () => {
     const testDispatch = jest.fn()
     const vehicle: Vehicle = vehicleFactory.build({ runId: "12345" })
     const mockOnClick = jest.fn()
-    const result = render(
+    render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
         <SearchResults
           vehicles={[vehicle]}
@@ -384,7 +330,7 @@ describe("SearchResults", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByText("12345"))
+    await userEvent.click(screen.getByRole("cell", { name: /run/i }))
 
     expect(mockOnClick).toHaveBeenCalledWith(vehicle)
   })

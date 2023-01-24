@@ -212,7 +212,7 @@ exports[`App renders 1`] = `
               >
                 <button
                   class="c-drawer-tab__tab-button"
-                  data-testid="drawer-tab-button"
+                  title="Collapse"
                 >
                   <span>
                     <svg />

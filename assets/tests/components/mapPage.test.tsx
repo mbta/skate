@@ -217,16 +217,12 @@ describe("<MapPage />", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    const mapSearchPanel = screen.getByRole("generic", {
-      name: /map search panel/i,
-    })
-    await userEvent.click(screen.getByRole("cell", { name: runId }))
+    await userEvent.click(screen.getByRole("cell", { name: "Run" }))
 
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
-    expect(mapSearchPanel).not.toBeVisible()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
@@ -322,7 +318,7 @@ describe("<MapPage />", () => {
       name: /vehicle properties card/i,
     })
 
-    expect(mapSearchPanel).not.toBeVisible()
+    expect(mapSearchPanel).toHaveClass("hidden")
     expect(routeShape).toBeVisible()
     expect(vehiclePropertiesCard).toBeVisible()
 
@@ -391,7 +387,7 @@ describe("<MapPage />", () => {
     const mapSearchPanel = screen.getByRole("generic", {
       name: /map search panel/i,
     })
-    expect(mapSearchPanel).toBeVisible()
+    expect(mapSearchPanel).toHaveClass("visible")
 
     await userEvent.click(
       screen.getByRole("button", {
@@ -402,7 +398,23 @@ describe("<MapPage />", () => {
     expect(
       screen.getByRole("generic", { name: /vehicle properties card/i })
     ).toBeVisible()
-    expect(mapSearchPanel).not.toBeVisible()
+    expect(mapSearchPanel).toHaveClass("hidden")
+  })
+
+  test("can collapse and un-collapse the search panel with the drawer tab", async () => {
+    render(<MapPage />)
+
+    await userEvent.click(screen.getByRole("button", { name: "Collapse" }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "hidden"
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Expand" }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "visible"
+    )
   })
 
   describe("VehiclePropertiesCard", () => {

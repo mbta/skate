@@ -1,3 +1,5 @@
+$map-page-search-panel-width: 24rem;
+
 .m-map-page {
   display: flex;
   flex: 1 1 auto;
@@ -13,38 +15,87 @@
   position: relative;
 }
 
+.m-map-page__input {
+  padding: 0 1.5625rem;
+}
+
 .m-map-page__input-and-results {
-  background-color: $color-bg-base;
+  background-color: $color-gray-300;
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
-  width: 22rem;
+  gap: 1rem;
+  width: $map-page-search-panel-width;
+  height: 100%;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: #{$leaflet-pane-z-index + 100};
+
+  padding: 1.25rem 0 0 0;
+
+  transition: $transition-slide;
+
+  filter: drop-shadow(2px 0px 10px rgba(0, 0, 0, 0.2));
+
+  hr {
+    height: 1px;
+    background-color: $color-gray-100;
+    border: none;
+    width: calc(100% - 2 * 1.5625rem);
+    margin: 0 1.5625rem;
+  }
+
+  &.visible {
+    left: 0;
+  }
+
+  &.hidden {
+    left: calc(-1 * #{$map-page-search-panel-width} + 1rem);
+
+    .m-search-display {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+    }
+  }
 }
 
-.m-map-page__input,
-.m-search-display {
-  padding: 1.5rem 1.1875rem;
-}
+.m-map-page__input-and-results .c-drawer-tab {
+  left: 100%;
+  top: 0;
+  background-color: $color-gray-300;
+  z-index: #{$leaflet-pane-z-index + 100};
 
-.m-map-page__input {
-  border-bottom: 1px solid $white;
+  .c-drawer-tab__tab-button {
+    &:focus,
+    &:hover {
+      color: $color-eggplant-500;
+    }
+  }
 }
 
 .m-map-page__toggle-mobile-display-button {
-  @include button-text;
   display: none;
-  font-size: 0.875rem;
   margin: 0.5rem auto 0;
 }
 
 .m-search-display {
   flex: 1 1 auto;
   overflow-y: scroll;
+  padding: 0.625rem 1rem 0 1rem;
 }
 
 @media screen and (max-width: $mobile-max-width) {
   .m-map-page {
     flex-direction: column;
+  }
+
+  .m-map-page__input-and-results .c-drawer-tab {
+    display: none;
   }
 
   .m-map-page--show-list {
@@ -73,7 +124,8 @@
 
   .m-map-page__input-and-results {
     box-sizing: border-box;
-    width: auto;
+    width: 100%;
+    position: relative;
   }
 
   .m-map-page__toggle-mobile-display-button {

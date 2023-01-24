@@ -9,6 +9,7 @@ exports[`RecentSearches renders empty state 1`] = `
   >
     Recent Searches
   </div>
+  <ul />
 </div>
 `;
 
@@ -21,23 +22,31 @@ exports[`RecentSearches renders with data 1`] = `
   >
     Recent Searches
   </div>
-  <button
-    className="m-recent-searches__button"
-    onClick={[Function]}
-  >
-    poodle
-  </button>
-  <button
-    className="m-recent-searches__button"
-    onClick={[Function]}
-  >
-    999-502
-  </button>
-  <button
-    className="m-recent-searches__button"
-    onClick={[Function]}
-  >
-    999-501
-  </button>
+  <ul>
+    <li>
+      <button
+        className="m-recent-searches__button button-text"
+        onClick={[Function]}
+      >
+        poodle
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-recent-searches__button button-text"
+        onClick={[Function]}
+      >
+        999-502
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-recent-searches__button button-text"
+        onClick={[Function]}
+      >
+        999-501
+      </button>
+    </li>
+  </ul>
 </div>
 `;

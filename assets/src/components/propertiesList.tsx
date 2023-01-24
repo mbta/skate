@@ -24,7 +24,10 @@ export const formattedLogonTime = (logonDate: Date): string => {
   return `${formattedTimeDiff(nowDate, logonDate)}; ${formattedTime(logonDate)}`
 }
 
-export const vehicleProperties = (vehicle: Vehicle): Property[] => {
+export const vehicleProperties = (
+  vehicle: Vehicle,
+  operatorLastNameOnly?: boolean
+): Property[] => {
   const {
     runId,
     label,
@@ -35,7 +38,11 @@ export const vehicleProperties = (vehicle: Vehicle): Property[] => {
   } = vehicle
 
   const operatorValue =
-    [operatorFirstName, operatorLastName, operatorId ? `#${operatorId}` : null]
+    [
+      operatorLastNameOnly ? null : operatorFirstName,
+      operatorLastName,
+      operatorId ? `#${operatorId}` : null,
+    ]
       .filter((e) => e !== null)
       .join(" ") || "Not Available"
 
@@ -76,10 +83,11 @@ export const ghostProperties = (ghost: Ghost): Property[] => [
 ]
 
 export const vehicleOrGhostProperties = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleOrGhost,
+  operatorLastNameOnly?: boolean
 ): Property[] =>
   isVehicle(vehicleOrGhost)
-    ? vehicleProperties(vehicleOrGhost)
+    ? vehicleProperties(vehicleOrGhost, operatorLastNameOnly)
     : ghostProperties(vehicleOrGhost)
 
 export const Highlighted = ({

@@ -1,25 +1,29 @@
-import React from "react"
+import React, { ReactElement, useId } from "react"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import { UnreadIcon } from "../helpers/icon"
 import CloseButton from "./closeButton"
+import PropertiesList, { Property } from "./propertiesList"
 
 export type CardStyle = "kiwi" | "white"
 
 interface CardProps {
   children?: React.ReactNode
+  icon?: React.ReactNode
   style: CardStyle
   currentTime?: Date
   openCallback?: () => void
   closeCallback?: () => void
   isUnread?: boolean
   additionalClass?: string
-  title: string
+  title: string | ReactElement
   time?: Date
   noFocusOrHover?: boolean
+  selected?: boolean
 }
 
 export const Card: React.FC<CardProps> = ({
   children,
+  icon,
   style,
   currentTime,
   openCallback,
@@ -29,11 +33,14 @@ export const Card: React.FC<CardProps> = ({
   title,
   time,
   noFocusOrHover,
+  selected,
 }) => {
+  const labelId = "card-label-" + useId()
+
   const innerLeftContent = (
-    <>
+    <div className="m-card__left-content">
       <div className="m-card__top-row">
-        <div className="m-card__title">
+        <div className="m-card__title" id={labelId}>
           {isUnread ? <UnreadIcon /> : null}
           {title}
         </div>
@@ -44,7 +51,7 @@ export const Card: React.FC<CardProps> = ({
         ) : null}
       </div>
       <div className="m-card__contents">{children}</div>
-    </>
+    </div>
   )
 
   return (
@@ -53,15 +60,22 @@ export const Card: React.FC<CardProps> = ({
         `m-card m-card--${style}` +
         (additionalClass ? " " + additionalClass : "") +
         (noFocusOrHover ? " m-card--no-focus-or-hover" : "") +
-        (!isUnread ? " m-card--read" : "")
+        (!isUnread ? " m-card--read" : "") +
+        (selected ? " m-card--selected" : "")
       }
+      aria-current={selected}
+      aria-labelledby={labelId}
     >
       {openCallback ? (
         <button className="m-card__left" onClick={openCallback}>
+          {icon && <div className="m-card__icon">{icon}</div>}
           {innerLeftContent}
         </button>
       ) : (
-        <div className="m-card__left">{innerLeftContent}</div>
+        <div className="m-card__left">
+          {icon && <div className="m-card__icon">{icon}</div>}
+          {innerLeftContent}
+        </div>
       )}
       {closeCallback ? (
         <div className="m-card__right">
@@ -76,38 +90,16 @@ export const CardBody: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => <div className="m-card__body">{children}</div>
 
-export interface Property {
-  label: string
-  value: string | null
-  sensitive?: boolean
-}
-
 export interface CardPropertiesProps {
   properties: Property[]
+  highlightText?: string
 }
 
 export const CardProperties: React.VFC<CardPropertiesProps> = ({
   properties,
+  highlightText,
 }: CardPropertiesProps) => {
   return (
-    <ul className="m-card__properties">
-      {properties.map((property) =>
-        property.value ? (
-          <li key={property.label}>
-            <span className="m-card__properties-label">{property.label}</span>
-            <span
-              className={
-                "m-card__properties-value" +
-                (property.sensitive
-                  ? " m-card__properties-value--sensitive fs-mask"
-                  : "")
-              }
-            >
-              {property.value}
-            </span>
-          </li>
-        ) : null
-      )}
-    </ul>
+    <PropertiesList properties={properties} highlightText={highlightText} />
   )
 }

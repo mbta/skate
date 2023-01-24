@@ -8,8 +8,20 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results"
+      class="m-map-page__input-and-results visible"
     >
+      <div
+        class="c-drawer-tab"
+      >
+        <button
+          class="c-drawer-tab__tab-button"
+          title="Collapse"
+        >
+          <span>
+            <svg />
+          </span>
+        </button>
+      </div>
       <div
         class="m-map-page__input"
       >
@@ -39,7 +51,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -67,7 +79,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -84,7 +96,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -101,7 +113,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -118,7 +130,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -128,11 +140,12 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
           </div>
         </form>
         <button
-          class="m-map-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button button-text"
         >
           Show map instead
         </button>
       </div>
+      <hr />
       <div
         class="m-search-display"
       >
@@ -144,6 +157,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>
@@ -339,8 +353,20 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results"
+      class="m-map-page__input-and-results visible"
     >
+      <div
+        class="c-drawer-tab"
+      >
+        <button
+          class="c-drawer-tab__tab-button"
+          title="Collapse"
+        >
+          <span>
+            <svg />
+          </span>
+        </button>
+      </div>
       <div
         class="m-map-page__input"
       >
@@ -370,7 +396,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -398,7 +424,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -415,7 +441,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -432,7 +458,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -449,7 +475,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -459,11 +485,12 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
           </div>
         </form>
         <button
-          class="m-map-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button button-text"
         >
           Show map instead
         </button>
       </div>
+      <hr />
       <div
         class="m-search-display"
       >
@@ -475,6 +502,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>
@@ -670,8 +698,20 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results"
+      class="m-map-page__input-and-results visible"
     >
+      <div
+        class="c-drawer-tab"
+      >
+        <button
+          class="c-drawer-tab__tab-button"
+          title="Collapse"
+        >
+          <span>
+            <svg />
+          </span>
+        </button>
+      </div>
       <div
         class="m-map-page__input"
       >
@@ -701,7 +741,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit"
+              class="m-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -729,7 +769,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
@@ -746,7 +786,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
@@ -763,7 +803,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
@@ -780,7 +820,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label"
+                  class="m-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -790,11 +830,12 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           </div>
         </form>
         <button
-          class="m-map-page__toggle-mobile-display-button"
+          class="m-map-page__toggle-mobile-display-button button-text"
         >
           Show map instead
         </button>
       </div>
+      <hr />
       <div
         class="m-search-display"
       >
@@ -806,6 +847,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           >
             Recent Searches
           </div>
+          <ul />
         </div>
       </div>
     </div>

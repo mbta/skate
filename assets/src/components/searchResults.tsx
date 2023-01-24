@@ -1,41 +1,18 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
-import { isRecentlyLoggedOn, isVehicle } from "../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { isVehicle } from "../models/vehicle"
+import { VehicleOrGhost } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
-import PropertiesList, { vehicleOrGhostProperties } from "./propertiesList"
+import { Card, CardProperties } from "./card"
+import { vehicleOrGhostProperties } from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
+import { VehicleStatusIcon } from "./vehicleRouteSummary"
 
 interface Props {
   vehicles: VehicleOrGhost[]
   onClick: (vehicle: VehicleOrGhost) => void
   selectedVehicleId: string | null
 }
-
-const SearchResultsNote = () => (
-  <p className="m-search-results__note">
-    Please note that at this time search is limited to active vehicles and
-    logged-in personnel.
-  </p>
-)
-
-const NewBadge = () => (
-  <div className="m-search-results__card-new-badge">
-    <span className="m-search-results__card-new-badge-label">New</span>
-    <span className="m-search-results__card-new-badge-icon">
-      <svg viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="4.5" cy="4.5" r="4.5" />
-      </svg>
-    </span>
-  </div>
-)
-
-const RouteLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-search-results__card-route-label">
-    <RouteVariantName vehicle={vehicle} />
-  </div>
-)
 
 const SearchResultCard = ({
   vehicleOrGhost,
@@ -52,27 +29,21 @@ const SearchResultCard = ({
     },
   ] = useContext(StateDispatchContext)
 
-  const classes = [
-    "m-search-results__card",
-    isSelected ? "m-search-results__card--selected" : "",
-    isRecentlyLoggedOn(vehicleOrGhost) ? "m-search-results__card--new" : "",
-  ]
-
   return (
     <li>
-      <button
-        className={className(classes)}
-        onClick={() => onClick(vehicleOrGhost)}
+      <Card
+        openCallback={() => onClick(vehicleOrGhost)}
+        style="white"
+        title={<RouteVariantName vehicle={vehicleOrGhost} />}
+        icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
+        additionalClass="m-search-results__result"
+        selected={isSelected}
       >
-        {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
-
-        <PropertiesList
-          properties={vehicleOrGhostProperties(vehicleOrGhost)}
+        <CardProperties
+          properties={vehicleOrGhostProperties(vehicleOrGhost, true)}
           highlightText={query.text}
         />
-
-        {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
-      </button>
+      </Card>
     </li>
   )
 }
@@ -120,21 +91,18 @@ const ResultsList = ({
   onClick: (vehicle: VehicleOrGhost) => void
   selectedVehicleId: string | null
 }) => (
-  <>
-    <ul className="m-search-results__list">
-      {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
-        <SearchResultCard
-          vehicleOrGhost={vehicleOrGhost}
-          onClick={() => onClick(vehicleOrGhost)}
-          isSelected={
-            selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
-          }
-          key={`search-result-card-${vehicleOrGhost.id}`}
-        />
-      ))}
-    </ul>
-    <SearchResultsNote />
-  </>
+  <ul className="m-search-results__list">
+    {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
+      <SearchResultCard
+        vehicleOrGhost={vehicleOrGhost}
+        onClick={() => onClick(vehicleOrGhost)}
+        isSelected={
+          selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
+        }
+        key={`search-result-card-${vehicleOrGhost.id}`}
+      />
+    ))}
+  </ul>
 )
 
 const NoResults = () => {
@@ -154,7 +122,10 @@ const NoResults = () => {
         again using numbers or last names only.
       </p>
 
-      <SearchResultsNote />
+      <p>
+        Please note that at this time search is limited to active vehicles and
+        logged-in personnel.
+      </p>
 
       <button
         className="m-search-results__clear-search-button"

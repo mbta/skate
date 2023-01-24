@@ -76,7 +76,7 @@ const SearchForm = ({
         <button
           type="submit"
           title="Submit"
-          className="m-search-form__submit"
+          className="m-search-form__submit button-submit"
           onClick={subscribeToSearch}
           disabled={!isValidSearchQuery(query)}
         >
@@ -102,7 +102,7 @@ const SearchForm = ({
               />
               <label
                 htmlFor={`property-${property}`}
-                className="m-search-form__property-label"
+                className="m-search-form__property-label button-search-filter"
               >
                 {property}
               </label>

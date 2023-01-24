@@ -15,6 +15,7 @@ import { useStations } from "../hooks/useStations"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
+import DrawerTab from "./drawerTab"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
@@ -48,7 +49,7 @@ const ToggleMobileDisplayButton = ({
 
   return (
     <button
-      className="m-map-page__toggle-mobile-display-button"
+      className="m-map-page__toggle-mobile-display-button button-text"
       onClick={onToggleMobileDisplay}
     >
       Show {otherDisplayName} instead
@@ -71,6 +72,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId | null>(
     searchPageState.selectedVehicleId ?? null
   )
+  const [searchOpen, setSearchOpen] = useState<boolean>(true)
 
   const liveVehicle: Vehicle | null = selectedVehicleId
     ? onlyVehicles.find((v) => v.id === selectedVehicleId) || null
@@ -110,6 +112,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const leafletMap = useRef<LeafletMap | null>(null)
   useEffect(() => {
+    setSearchOpen(!vpcEnabled)
+
     // Let leaflet know when Page resizes due to vpc state
     leafletMap.current?.invalidateSize()
   }, [vpcEnabled])
@@ -120,10 +124,15 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       aria-label="Search Map Page"
     >
       <div
-        className="m-map-page__input-and-results"
+        className={`m-map-page__input-and-results ${
+          searchOpen ? "visible" : "hidden"
+        }`}
         aria-label="Map Search Panel"
-        {...(vpcEnabled ? { hidden: true } : {})}
       >
+        <DrawerTab
+          isVisible={searchOpen}
+          toggleVisibility={() => setSearchOpen((a) => !a)}
+        />
         <div className="m-map-page__input">
           <SearchForm onSubmit={onSearchCallback} onClear={onSearchCallback} />
           <ToggleMobileDisplayButton
@@ -131,6 +140,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
             onToggleMobileDisplay={toggleMobileDisplay}
           />
         </div>
+
+        <hr />
 
         <div className="m-search-display">
           {vehicles !== null &&

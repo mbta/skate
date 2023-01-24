@@ -2,6 +2,7 @@ import React from "react"
 import { render } from "@testing-library/react"
 import { Card, CardBody, CardProperties } from "../../src/components/card"
 import userEvent from "@testing-library/user-event"
+import "@testing-library/jest-dom"
 
 describe("Card", () => {
   test("renders content", () => {
@@ -15,7 +16,8 @@ describe("Card", () => {
     expect(result.queryByText(/Foo/)).not.toBeNull()
     expect(result.queryByTitle("Close")).toBeNull()
     expect(
-      result.queryByText(/Foo/)?.parentElement?.parentElement?.className
+      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
+        ?.className
     ).toMatch(/m-card--read/)
   })
 
@@ -49,7 +51,8 @@ describe("Card", () => {
     )
 
     expect(
-      result.queryByText(/Foo/)?.parentElement?.parentElement?.className
+      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
+        ?.className
     ).toMatch(/my-custom-class/)
   })
 
@@ -66,8 +69,26 @@ describe("Card", () => {
     )
 
     expect(
-      result.queryByText(/Foo/)?.parentElement?.parentElement?.className
+      result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
+        ?.className
     ).toMatch(/m-card--no-focus-or-hover/)
+  })
+
+  test("can mark as selected", () => {
+    const result = render(
+      <Card
+        title="My Card"
+        currentTime={new Date()}
+        style="kiwi"
+        selected={true}
+      >
+        Foo
+      </Card>
+    )
+
+    expect(
+      result.getByRole("generic", { name: "My Card", current: true })
+    ).toBeInTheDocument()
   })
 
   test("includes age when time is given", () => {
@@ -85,6 +106,33 @@ describe("Card", () => {
     expect(result.queryByText(/10 min/)).not.toBeNull()
   })
 
+  test("includes icon element when given", () => {
+    const result = render(
+      <Card title="My Card" icon={<>Bar</>} style="white">
+        Foo
+      </Card>
+    )
+
+    expect(result.queryByText(/Bar/)).not.toBeNull()
+  })
+
+  test("includes icon element when given along with open callback", () => {
+    const result = render(
+      <Card
+        title="My Card"
+        icon={<>Bar</>}
+        style="white"
+        openCallback={() => {
+          null
+        }}
+      >
+        Foo
+      </Card>
+    )
+
+    expect(result.queryByText(/Bar/)).not.toBeNull()
+  })
+
   test("invokes callback when clicked", async () => {
     const openCallback = jest.fn()
     const user = userEvent.setup()
@@ -99,9 +147,9 @@ describe("Card", () => {
       </Card>
     )
 
-    expect(result.getByText(/Contents/).parentElement?.tagName).toEqual(
-      "BUTTON"
-    )
+    expect(
+      result.getByText(/Contents/).parentElement?.parentElement?.tagName
+    ).toEqual("BUTTON")
 
     await user.click(result.getByText(/Contents/))
 
@@ -181,8 +229,8 @@ describe("CardProperties", () => {
       />
     )
 
-    expect(result.queryByText(/Some sensitive value/)?.className).toMatch(
-      /m-card__properties-value--sensitive fs-mask/
-    )
+    expect(
+      result.queryByText(/Some sensitive value/)?.parentElement?.className
+    ).toMatch(/fs-mask/)
   })
 })

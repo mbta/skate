@@ -17,7 +17,7 @@ exports[`LadderPage renders the empty state 1`] = `
       >
         <button
           class="c-drawer-tab__tab-button"
-          data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
@@ -137,7 +137,7 @@ exports[`LadderPage renders with route tabs 1`] = `
       >
         <button
           class="c-drawer-tab__tab-button"
-          data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
@@ -377,7 +377,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       >
         <button
           class="c-drawer-tab__tab-button"
-          data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />
@@ -637,7 +637,7 @@ exports[`LadderPage renders with timepoints 1`] = `
       >
         <button
           class="c-drawer-tab__tab-button"
-          data-testid="drawer-tab-button"
+          title="Collapse"
         >
           <span>
             <svg />

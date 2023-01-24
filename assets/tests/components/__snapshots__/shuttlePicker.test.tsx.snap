@@ -10,8 +10,8 @@ exports[`ShuttlePicker renders 1`] = `
   >
     <button
       className="c-drawer-tab__tab-button"
-      data-testid="drawer-tab-button"
       onClick={[Function]}
+      title="Collapse"
     >
       <span
         dangerouslySetInnerHTML={
@@ -310,8 +310,8 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
   >
     <button
       className="c-drawer-tab__tab-button"
-      data-testid="drawer-tab-button"
       onClick={[Function]}
+      title="Collapse"
     >
       <span
         dangerouslySetInnerHTML={
@@ -568,8 +568,8 @@ exports[`ShuttlePicker renders loading state 1`] = `
   >
     <button
       className="c-drawer-tab__tab-button"
-      data-testid="drawer-tab-button"
       onClick={[Function]}
+      title="Collapse"
     >
       <span
         dangerouslySetInnerHTML={

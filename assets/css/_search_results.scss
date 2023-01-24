@@ -10,78 +10,61 @@
   @include button-text;
 }
 
-.m-search-results__card {
-  background-color: $white;
-  border-radius: 4px;
-  box-shadow: $subtle-box-shadow;
-  cursor: pointer;
-  padding: 1rem 1rem 0.5rem;
-  position: relative;
-  text-align: start;
-  width: 100%;
-
-  li:not(:last-child) & {
+.m-search-results__none {
+  *:not(:last-child) {
     margin-bottom: 1rem;
   }
 
-  &--selected,
-  &:hover {
-    background-color: $color-secondary-light;
-
-    .highlighted {
-      background-color: $color-secondary-medium;
-    }
+  .m-search-results__heading {
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-bold);
+    color: $black;
   }
 
-  &--new {
-    border: 1px solid $color-secondary-dark;
-    box-shadow: 0 2px 4px 0 rgba(77, 182, 172, 0.3);
-
-    .m-properties-list__property--last-login
-      .m-properties-list__property-value {
-      color: $color-secondary-dark;
-    }
+  p {
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-reg);
+    color: $color-gray-700;
   }
 
-  .m-properties-list {
+  button {
+    color: $color-eggplant-700;
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-semi);
     padding: 0;
-  }
-}
+    text-decoration: none;
 
-.m-search-results__card-new-badge {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-}
+    &:hover {
+      color: $color-eggplant-500;
+    }
 
-.m-search-results__card-new-badge-label {
-  @include font-label;
-  color: $color-secondary-dark;
-}
-
-.m-search-results__card-new-badge-icon {
-  display: inline-block;
-  fill: $color-secondary-dark;
-  margin-left: 0.3rem;
-  stroke: none;
-  width: 9px;
-}
-
-.m-search-results__card-route-label {
-  color: $color-font-grey;
-  font-size: 0.75rem;
-  margin: 0.5rem 0;
-
-  .m-route-variant-name__route-id {
-    font-weight: bold;
+    &:focus {
+      color: $color-eggplant-500;
+      border: 1px solid $color-eggplant-700;
+      border-radius: 3px;
+    }
   }
 }
 
 .m-search-results__list {
   margin: 0;
   position: relative;
+
+  & > *:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 }
 
-.m-search-results__note {
-  color: $color-font-grey;
+.m-search-results__result {
+  .m-card__icon {
+    padding-right: 1rem;
+
+    svg {
+      width: 2.5rem !important;
+
+      .m-vehicle-icon__label-background {
+        fill: none;
+      }
+    }
+  }
 }
