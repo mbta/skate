@@ -230,9 +230,8 @@ const MapDisplay = ({
           </>
         )}
 
-        <ContainedAutoCenterMapOn
-          key={selectedVehicleRef?.id || ""}
-          positions={positions}
+        <InterruptibleFollower
+          positions={position}
         />
       </>
     </BaseMap>
