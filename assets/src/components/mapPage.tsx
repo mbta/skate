@@ -35,7 +35,6 @@ import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
-import Leaflet from "leaflet"
 
 enum MobileDisplay {
   List = 1,
@@ -173,28 +172,42 @@ const RouteVehicles = ({
 
 const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
   if (points.length === 0) {
+    // If there are no points, blink to default center
     map.setView(defaultCenter, 13, { animate: false })
     return
   }
-  const bounds = map.getContainer().getBoundingClientRect()
-  const containerBounds = new Bounds([0, 0], [bounds.width, bounds.height])
 
+  const { width, height } = map.getContainer().getBoundingClientRect()
+  const mapContainerBounds = new Bounds([0, 0], [width, height])
+
+  // ```
+  // vpcElement.getBoundingClientRect().right - mapElement.getBoundingClientRect().left
+  //  -> 445
+  // ```
+  // Create a new inner bounds from the map bounds + "padding" to shrink the
+  // inner bounds
+  // In this case, we get the top left of the inner bounds by padding the left
+  // with the distance from the right side of the VPC to the left side of the
+  // map container
   const topLeft = new Point(445, 0)
-  const innerBounds = new Bounds(
-    topLeft,
-    containerBounds.getBottomRight() //.subtract([42, 15])
-  )
+  const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
+  // The "new center" is the offset between the two bounding boxes centers
+  const offset = innerBounds
+    .getCenter()
+    .subtract(mapContainerBounds.getCenter())
 
-    const targetZoom = 16
-    const targetPoint = map
-        .project(points[0], targetZoom)
-        .subtract(
-          innerBounds.getCenter().subtract(containerBounds.getCenter())
-        ),
-      targetLatLng = map.unproject(targetPoint, targetZoom)
-    // const targetLatLng = points[0]
-    map.setView(targetLatLng, targetZoom)
-  }
+  const targetZoom = 16
+  const targetPoint = map
+      // Project the target point into screenspace for the target zoom
+      .project(points[0], targetZoom)
+      // Offset the target point in screenspace to move the center of the map
+      // to apply the padding to the center
+      .subtract(offset),
+    // convert the target point to worldspace from screenspace
+    targetLatLng = map.unproject(targetPoint, targetZoom)
+
+  // Zoom/Pan center of map to offset location in worldspace
+  map.setView(targetLatLng, targetZoom)
 }
 
 const useFollowingStateWithSelectionLogic = (
