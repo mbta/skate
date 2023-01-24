@@ -25,18 +25,18 @@ const DataStaleTime = ({
   timestamp: number
 }): React.ReactElement => {
   const epochNowInSeconds = useCurrentTimeSeconds()
-  return (
-    <output
-      aria-label="Time Since Last Update Received"
-      className="data-stale-time label font-xs-reg"
-    >
-      Updated {epochNowInSeconds - timestamp} sec ago
-    </output>
-  )
+  return <>Updated {epochNowInSeconds - timestamp} sec ago</>
 }
 
-const VehicleDataStaleTime = ({ vehicle }: VehicleProp): React.ReactElement => (
-  <DataStaleTime timestamp={vehicle.timestamp} />
+const VehicleDataStaleTime = ({
+  vehicle,
+}: VehicleProp): React.ReactElement => (
+  <output
+    aria-label="Time Since Last Update Received"
+    className="data-stale-time label font-xs-reg"
+  >
+    <DataStaleTime timestamp={vehicle.timestamp} />
+  </output>
 )
 // #endregion
 
