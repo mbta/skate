@@ -82,6 +82,7 @@ function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
     (_, vehicleId) => map[vehicleId!] || null
   )
 }
+
 function mockUseVehicleForId(vehicles: VehicleOrGhost[]) {
   const vehicleIdToVehicleMap = vehicles.reduce(
     (rest, vehicle) => ({ ...rest, [vehicle.id]: vehicle }),
@@ -189,15 +190,13 @@ describe("<MapPage />", () => {
   })
 
   test("renders stations on zoom", async () => {
-    ;(useStations as jest.Mock).mockReturnValueOnce(
+    ;(useStations as jest.Mock).mockReturnValue(
       stopFactory.params({ locationType: LocationType.Station }).buildList(3)
     )
 
     const { container } = render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <MapPage />
-        </BrowserRouter>
+        <MapPage />
       </StateDispatchProvider>
     )
 
