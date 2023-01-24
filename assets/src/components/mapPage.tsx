@@ -108,40 +108,35 @@ const SearchInputAndResults = ({
 }
 
 // #region Map Display
-const useCachedVehicleById = (
-  selectedVehicleOrGhost: VehicleOrGhost | null,
-  selectedVehicleId: string | null
+const useMostRecentNonNullVehicle = (
+  selectedVehicleOrGhost: VehicleOrGhost | null
 ) => {
-  const ref = useRef(
-    (selectedVehicleOrGhost &&
-      isVehicle(selectedVehicleOrGhost) &&
-      selectedVehicleOrGhost) ||
-      null
-  )
+  const ref = useRef<VehicleOrGhost | null>(null)
 
-  if (
-    selectedVehicleId === null ||
-    (selectedVehicleOrGhost && isGhost(selectedVehicleOrGhost))
-  ) {
-    ref.current = null
-  } else if (selectedVehicleOrGhost !== null) {
+  if(selectedVehicleOrGhost !== null) {
     ref.current = selectedVehicleOrGhost
   }
+
   return ref.current
 }
 
-const useVehicleForIdCached = (
-  socket: Socket | undefined,
+const useMostRecentVehicleById = (
+  // socket: Socket | undefined,
   selectedVehicleId: string | null
 ) => {
+  const { socket } = useContext(SocketContext)
   const selectedVehicleOrGhost =
     useVehicleForId(socket, selectedVehicleId ?? null) || null
 
-  const selectedVehicleRef = useCachedVehicleById(
-    selectedVehicleOrGhost,
-    selectedVehicleId
+  const vehicleRef = useMostRecentNonNullVehicle(
+    selectedVehicleOrGhost
   )
-  return selectedVehicleRef
+
+  // `selectedVehicleId` should change 'atomically', therefore, if it's `null`,
+  // there should be no result or api response, and we should return `null`
+  if (selectedVehicleId === null) { return null }
+
+  return vehicleRef
 }
 
 const RouteVehicles = ({
@@ -247,9 +242,8 @@ const MapDisplay = ({
 
   const stations = useStations()
 
-  const { socket } = useContext(SocketContext)
-
-  const selectedVehicleRef = useVehicleForIdCached(socket, selectedVehicleId),
+  const _selectedVehicleRef = useMostRecentVehicleById(selectedVehicleId),
+    selectedVehicleRef = _selectedVehicleRef && isVehicle(_selectedVehicleRef) && _selectedVehicleRef || null,
     { routeId = null, tripId = null } = selectedVehicleRef || {}
   const tripShapes = useTripShape(tripId)
 
