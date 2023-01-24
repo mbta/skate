@@ -60,9 +60,9 @@ export interface Props {
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   selectedVehicleId?: VehicleId
   vehicles: Vehicle[]
-  // secondaryVehicles are smaller, deemphasized, and don't affect autocentering
+  // secondaryVehicles are smaller, deemphasized, and don't affect follower in `MapFollowingPrimaryVehicles`
   secondaryVehicles?: Vehicle[]
-  // trainVehicles are white, don't get a label, and don't affect autocentering
+  // trainVehicles are white, don't get a label, and don't affect follower in `MapFollowingPrimaryVehicles`
   trainVehicles?: TrainVehicle[]
   shapes?: Shape[]
   allowStreetView?: boolean
@@ -238,8 +238,8 @@ export interface FollowerProps {
 
 export const Follower = ({
   positions,
-  isUpdating,
   onUpdate,
+  isAnimatingFollowUpdate,
   shouldFollow = true,
 }: FollowerProps & InteractiveFollowState) => {
   const map = useMap()
@@ -253,17 +253,17 @@ export const Follower = ({
 
   useEffect(() => {
     if (map !== null && shouldFollow) {
-      if (isUpdating !== undefined) {
-        isUpdating.current = true
+      if (isAnimatingFollowUpdate !== undefined) {
+        isAnimatingFollowUpdate.current = true
       }
       onUpdate(map, currentLatLngs)
     }
-  }, [map, shouldFollow, isUpdating, currentLatLngs, onUpdate])
+  }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
 
   return <></>
 }
 export interface InteractiveFollowState {
-  isUpdating: MutableRefObject<boolean>
+  isAnimatingFollowUpdate: MutableRefObject<boolean>
   shouldFollow: boolean
   setShouldFollow: Dispatch<SetStateAction<boolean>>
 }
@@ -272,29 +272,29 @@ export interface InteractiveFollowState {
 // as well as support turning off when interrupted
 export const useInteractiveFollowerState = (): InteractiveFollowState => {
   const [shouldFollow, setShouldFollow] = useState<boolean>(true)
-  const isFollowing: MutableRefObject<boolean> = useRef(false)
+  const isAnimatingFollowUpdate: MutableRefObject<boolean> = useRef(false)
 
   return {
     shouldFollow,
     setShouldFollow,
-    isUpdating: isFollowing,
+    isAnimatingFollowUpdate,
   }
 }
 
 // Sets up map events to get a callback when the user interacts with the map
 // which should override the follower on state
 function useStopFollowingOnInteraction(
-  isAutoCentering: React.MutableRefObject<boolean>,
-  setShouldAutoCenter: React.Dispatch<React.SetStateAction<boolean>>
+  isAnimatingFollowUpdate: React.MutableRefObject<boolean>,
+  setShouldFollow: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   useMapEvents({
     // If the user drags or zooms, they want manual control of the map.
     // `zoomstart` is fired when the map changes zoom levels
     // this can be because of animating the zoom change or user input
     zoomstart: () => {
-      // But don't disable `shouldAutoCenter` if the zoom was triggered by AutoCenterer.
-      if (!isAutoCentering.current) {
-        setShouldAutoCenter(false)
+      // But don't disable `shouldFollow` if the zoom was triggered by Follower.
+      if (!isAnimatingFollowUpdate.current) {
+        setShouldFollow(false)
       }
     },
 
@@ -302,19 +302,19 @@ function useStopFollowingOnInteraction(
     // it is expected that this event is not fired for anything but user input
     // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
     dragstart: () => {
-      setShouldAutoCenter(false)
+      setShouldFollow(false)
     },
 
     // `moveend` is called when the leaflet map has finished animating a pan
     moveend: () => {
-      // Wait until the auto centering animation is finished to resume listening for user interaction.
-      if (isAutoCentering.current) {
-        isAutoCentering.current = false
+      // Wait until the `Follower` `setView` animation is finished to resume listening for user interaction.
+      if (isAnimatingFollowUpdate.current) {
+        isAnimatingFollowUpdate.current = false
       }
     },
 
     // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
-    autopanstart: () => setShouldAutoCenter(false),
+    autopanstart: () => setShouldFollow(false),
   })
 }
 
@@ -325,11 +325,11 @@ export type InterruptibleFollowerProps = InteractiveFollowState & FollowerProps
 export const InterruptibleFollower = ({
   shouldFollow,
   setShouldFollow,
-  isUpdating,
+  isAnimatingFollowUpdate,
   positions,
   onUpdate,
 }: InterruptibleFollowerProps) => {
-  useStopFollowingOnInteraction(isUpdating, setShouldFollow)
+  useStopFollowingOnInteraction(isAnimatingFollowUpdate, setShouldFollow)
 
   const turnOnFollowing = useCallback(
     () => setShouldFollow(true),
@@ -338,7 +338,7 @@ export const InterruptibleFollower = ({
   return (
     <>
       <Follower
-        isUpdating={isUpdating}
+        isAnimatingFollowUpdate={isAnimatingFollowUpdate}
         shouldFollow={shouldFollow}
         setShouldFollow={setShouldFollow}
         positions={positions}
@@ -499,19 +499,19 @@ export const vehicleToLeafletLatLng = ({
 // TODO: replacing with react controlled component which self-contains
 // state and does not rely on setting a class on the map container
 export const FollowerStatusClasses = (
-  shouldAutoCenter: boolean
+  shouldFollow: boolean
 ): string | undefined => {
-  return shouldAutoCenter ? "m-vehicle-map-state--auto-centering" : undefined
+  return shouldFollow ? "m-vehicle-map-state--auto-centering" : undefined
 }
 
-export const AutoCenteringMap = (props: Props) => {
+export const MapFollowingPrimaryVehicles = (props: Props) => {
   const state = useInteractiveFollowerState(),
-    { shouldFollow: shouldAutoCenter } = state
+    { shouldFollow } = state
 
   const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
 
   return (
-    <BaseMap {...props} stateClasses={FollowerStatusClasses(shouldAutoCenter)}>
+    <BaseMap {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
       <>
         <InterruptibleFollower
           positions={positions}
@@ -524,5 +524,5 @@ export const AutoCenteringMap = (props: Props) => {
   )
 }
 
-const Map = AutoCenteringMap
+const Map = MapFollowingPrimaryVehicles
 export default Map
