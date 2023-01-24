@@ -843,15 +843,15 @@ describe("<MapPage />", () => {
       describe("selection is a ghost", () => {
         test("the map should be unpopulated and centered on default location", () => {
           const changeApplicationState = jest.fn()
-          const vehicle = ghostFactory.build()
-          mockUseVehicleForId([vehicle])
-          mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle] })
+          const ghost = ghostFactory.build()
+          mockUseVehicleForId([ghost])
+          mockUseVehiclesForRouteMap({ [ghost.routeId!]: [ghost] })
 
           render(
             <StateDispatchProvider
               state={stateFactory.build({
                 searchPageState: {
-                  selectedVehicleId: vehicle.id,
+                  selectedVehicleId: ghost.id,
                 },
               })}
               dispatch={changeApplicationState}
@@ -863,6 +863,7 @@ describe("<MapPage />", () => {
           expect(
             screen.queryAllByRole("button", { name: /^run/ })
           ).toHaveLength(0)
+          expect(getVehiclePropertiesCard()).toBeVisible()
           expect(changeApplicationState).not.toBeCalled()
         })
       })
