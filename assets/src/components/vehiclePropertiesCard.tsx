@@ -7,7 +7,8 @@ import React, {
 import { joinTruthy, className as classNames } from "../helpers/dom"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { useNearestIntersection } from "../hooks/useNearestIntersection"
-import { Vehicle } from "../realtime"
+import { isGhost, isVehicle } from "../models/vehicle"
+import { Vehicle, VehicleOrGhost } from "../realtime"
 import { CloseButton } from "./closeButton"
 import StreetViewButton, {
   GeographicCoordinateBearing,
@@ -16,6 +17,9 @@ import { VehicleRouteSummary } from "./vehicleRouteSummary"
 
 interface VehicleProp {
   vehicle: Vehicle
+}
+interface VehicleOrGhostProp {
+  vehicle: VehicleOrGhost
 }
 
 // #region Card Title Bar
@@ -30,12 +34,16 @@ const DataStaleTime = ({
 
 const VehicleDataStaleTime = ({
   vehicle,
-}: VehicleProp): React.ReactElement => (
+}: VehicleOrGhostProp): React.ReactElement => (
   <output
     aria-label="Time Since Last Update Received"
     className="data-stale-time label font-xs-reg"
   >
-    <DataStaleTime timestamp={vehicle.timestamp} />
+    {isVehicle(vehicle) ? (
+      <DataStaleTime timestamp={vehicle.timestamp} />
+    ) : (
+      <>Ghost bus or dropped trip</>
+    )}
   </output>
 )
 // #endregion
@@ -84,18 +92,24 @@ const TrNameValue = ({
   )
 }
 
-const VehicleWorkInfo = ({ vehicle }: VehicleProp): React.ReactElement => (
+const VehicleWorkInfo = ({
+  vehicle,
+}: VehicleOrGhostProp): React.ReactElement => (
   <>
     <table className="m-vehicle-work-info">
       <tbody className="m-vehicle-work-info__items">
-        <TrNameValue name="run">{vehicle.runId ?? "N/A"}</TrNameValue>
-        <TrNameValue name="vehicle">{vehicle.label ?? "N/A"}</TrNameValue>
+        <TrNameValue name="run">{vehicle.runId || "N/A"}</TrNameValue>
+        <TrNameValue name="vehicle">
+          {(isVehicle(vehicle) && vehicle.label) || "N/A"}
+        </TrNameValue>
         <TrNameValue name="operator" sensitivity={HideSensitiveInfo.All}>
-          {joinTruthy([
-            vehicle.operatorFirstName,
-            vehicle.operatorLastName,
-            vehicle.operatorId && `#${vehicle.operatorId}`,
-          ]) || "N/A"}
+          {(isVehicle(vehicle) &&
+            joinTruthy([
+              vehicle.operatorFirstName,
+              vehicle.operatorLastName,
+              vehicle.operatorId && `#${vehicle.operatorId}`,
+            ])) ||
+            "N/A"}
         </TrNameValue>
       </tbody>
     </table>
@@ -114,7 +128,7 @@ const CurrentLocation = ({ vehicle }: VehicleProp): React.ReactElement => {
 
 const VehicleNearestIntersection = ({
   vehicle,
-}: VehicleProp): React.ReactElement => {
+}: VehicleOrGhostProp): React.ReactElement => {
   const id = `current-location-${useId()}`
   return (
     <div className="m-current-location">
@@ -125,7 +139,11 @@ const VehicleNearestIntersection = ({
         Current Location
       </label>
       <output className="m-current-location__value label font-s-semi" id={id}>
-        <CurrentLocation vehicle={vehicle} />
+        {isVehicle(vehicle) ? (
+          <CurrentLocation vehicle={vehicle} />
+        ) : (
+          "Exact location cannot be determined"
+        )}
       </output>
     </div>
   )
@@ -150,7 +168,7 @@ const keepUserInputFromLeaflet: ComponentPropsWithoutRef<"div"> = {
 const VehiclePropertiesCard = ({
   vehicle,
   onClose,
-}: VehicleProp & {
+}: VehicleOrGhostProp & {
   onClose: () => void
 }): React.ReactElement => (
   <div
@@ -177,7 +195,10 @@ const VehiclePropertiesCard = ({
         <VehicleWorkInfo vehicle={vehicle} />
       </div>
 
-      <div className="m-vehicle-properties-card__location-info m-info-section">
+      <div
+        className="m-vehicle-properties-card__location-info m-info-section"
+        hidden={isGhost(vehicle)}
+      >
         <VehicleNearestIntersection vehicle={vehicle} />
         <StreetViewButton
           aria-label="Go to Street View"
