@@ -251,7 +251,7 @@ const MapDisplay = ({
 
   const selectedVehicleRef = useVehicleForIdCached(socket, selectedVehicleId),
     { routeId = null, tripId = null } = selectedVehicleRef || {}
-  const shapes = useTripShape(tripId)
+  const tripShapes = useTripShape(tripId)
 
   const position =
     (selectedVehicleRef &&
@@ -265,6 +265,11 @@ const MapDisplay = ({
     selectedVehicleRef
   )
 
+  const shapes =
+    selectedVehicleRef &&
+    (isGhost(selectedVehicleRef) || selectedVehicleRef?.isShuttle)
+      ? []
+      : tripShapes
   return (
     <BaseMap
       vehicles={[]}
@@ -272,34 +277,33 @@ const MapDisplay = ({
       stopCardDirection={selectedVehicleRef?.directionId}
       includeStopCard={true}
       stations={stations}
-      shapes={selectedVehicleRef?.isShuttle ? [] : shapes}
+      shapes={shapes}
       stateClasses={FollowerStatusClasses(state.shouldFollow)}
     >
       <>
-        {showVpc && selectedVehicleRef && isVehicle(selectedVehicleRef) && (
+        {selectedVehicleRef && (
           <>
-            <VehiclePropertiesCard
-              vehicle={selectedVehicleRef}
-              onClose={deleteSelection}
-            />
-          </>
-        )}
-        {selectedVehicleRef?.isShuttle ? (
-          <>
-            <VehicleMarker
-              key={selectedVehicleRef.id}
-              vehicle={selectedVehicleRef}
-              isPrimary={true}
-              isSelected={true}
-            />
-          </>
-        ) : (
-          <>
-            <RouteVehicles
-              selectedVehicleRoute={routeId}
-              selectedVehicleId={selectedVehicleId}
-              onPrimaryVehicleSelect={setSelectedVehicle}
-            />
+            {showVpc && (
+              <VehiclePropertiesCard
+                vehicle={selectedVehicleRef}
+                onClose={deleteSelection}
+              />
+            )}
+            {isVehicle(selectedVehicleRef) &&
+              (selectedVehicleRef?.isShuttle ? (
+                <VehicleMarker
+                  key={selectedVehicleRef.id}
+                  vehicle={selectedVehicleRef}
+                  isPrimary={true}
+                  isSelected={true}
+                />
+              ) : (
+                <RouteVehicles
+                  selectedVehicleRoute={routeId}
+                  selectedVehicleId={selectedVehicleId}
+                  onPrimaryVehicleSelect={setSelectedVehicle}
+                />
+              ))}
           </>
         )}
 
