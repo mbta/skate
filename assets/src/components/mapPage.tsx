@@ -219,15 +219,16 @@ const useFollowingStateWithSelectionLogic = (
 
   // when the selected vehicle ID and last api do or don't reference the same
   // vehicle
+  const vehicleIdDiffers = selectedVehicleId !== selectedVehicleRef?.id
   useEffect(() => {
     // Only update the shouldFollow state once the cached value agrees with
     // the selection state.
     // Otherwise the follower may try to center on stale data from the
     // previous selection before `useVehicleForId` resolves to it's next value.
-    if (selectedVehicleId && selectedVehicleId === selectedVehicleRef?.id) {
+    if (selectedVehicleId !== null && vehicleIdDiffers === false) {
       setShouldFollow(true)
     }
-  }, [selectedVehicleId !== selectedVehicleRef?.id])
+  }, [vehicleIdDiffers, setShouldFollow, selectedVehicleId])
   return state
 }
 
