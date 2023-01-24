@@ -345,11 +345,6 @@ export const InterruptibleFollower = ({
         onUpdate={onUpdate}
       />
       <RecenterControl position="topright" recenter={turnOnFollowing} />
-      {/* <ReactLeafletRecenterControl
-        position="topright"
-        recenter={turnOnFollowing}
-        shouldFollow={shouldFollow}
-      /> */}
     </>
   )
 }

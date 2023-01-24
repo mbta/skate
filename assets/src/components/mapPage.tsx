@@ -350,10 +350,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     (vehicle: VehicleOrGhost | null) => {
       dispatch(setSelectedVehicle(vehicle?.id || null))
       setSearchOpen(vehicle === null)
-      // if (vehicle && isGhost(vehicle)) {
-      //   setSearchOpen()
-      // } else {
-      // }
     },
     [setSearchOpen, dispatch]
   )
