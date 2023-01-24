@@ -269,7 +269,6 @@ describe("<MapPage />", () => {
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
     mockUseTripShape({ [vehicle.tripId!]: shapeFactory.build() })
     mockUseVehicleForId([vehicle])
-    // const mockDispatch = jest.fn()
 
     const { container } = render(
       <RealDispatchWrapper
@@ -423,8 +422,6 @@ describe("<MapPage />", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
     expect(container.querySelector(".m-vehicle-icon__label")).toBeVisible()
-    // Leaflet? something isn't removing this from the DOM as expected....
-    // await waitForElementToBeRemoved(document.querySelector(".m-vehicle-icon__label"))
   })
 
   test("When a vehicle is selected, the search panel should be collapsed", async () => {
@@ -577,12 +574,6 @@ describe("<MapPage />", () => {
   })
 
   describe("when rendering the map", () => {
-    // test("when rendered, map should be unpopulated", async () => {
-    // Render map
-    // Expect nothing on map
-    // })
-
-    // test("when search result is selected, should show vehicle icon and label, route, stops, ", async () => {})
     describe("with initial state: inactive search, no selection", () => {
       test("search should be empty, map should be empty", () => {
         const changeApplicationState = jest.fn()
@@ -646,19 +637,6 @@ describe("<MapPage />", () => {
       })
 
       test("when a search is made, the map should be unpopulated until search result is selected", async () => {
-        // define elements
-        // - vehicle icon
-        // - route shape FOR CURRENT DIRECTION
-        // - route stops FOR CURRENT DIRECTION
-        // -
-
-        // Render with active Search
-        // Ensure nothing on map
-        // Click Search Result
-        // Ensure only results on map
-        // jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-        // const vehicle = vehicleFactory.build({ runId: "clickMe" })
-        // const vehicles = vehicleFactory.buildList(3, { runId: "clickMe" }),
         const run = RunFactory.build()
         const vehicles = vehicleFactory.buildList(3, { runId: run.id }),
           [vehicle] = vehicles
@@ -679,27 +657,12 @@ describe("<MapPage />", () => {
             query: searchQueryRunFactory.build({ text: vehicle.runId! }),
           }),
         })
-        // const { container } = renderMapPageWithSearchState(
-        //   searchPageStateFactory.build({
-        //     query: { text: "clickMe", property: "run" },
-        //     isActive: true,
-        //   }),
-        //   mockDispatch
-        // )
         const { container } = render(
           <RealDispatchWrapper initialState={state}>
             <MapPage />
           </RealDispatchWrapper>
         )
 
-        // const mapSearchPanel = screen.getByRole("generic", {
-        //   name: /map search panel/i,
-        // })
-        // const searchMapForm = screen.getByRole("form", {
-        //   name: /search map/i,
-        // })
-
-        // TODO:FIXME: this is not the correct format for this query
         expect(
           screen.queryByRole("button", { name: `run ${vehicle.runId}` })
         ).not.toBeInTheDocument()
@@ -715,7 +678,6 @@ describe("<MapPage />", () => {
           mapContainer.querySelector(".m-vehicle-map__route-shape")
         ).not.toBeInTheDocument()
 
-        // await userEvent.click(screen.getByRole("cell", { name: vehicle.id! }))
         await userEvent.click(
           screen.getByRole("button", {
             name: new RegExp(`Vehicle ${vehicle.label}`),
@@ -738,7 +700,6 @@ describe("<MapPage />", () => {
         expect(
           mapContainer.querySelector(".m-vehicle-map__route-shape")
         ).toBeVisible()
-        // expect(searchMapForm).not.toBeVisible()
       })
     })
 
@@ -860,7 +821,7 @@ describe("<MapPage />", () => {
             name: selectedVehicle.label!,
           })
           expect(selectedVehicleLabel).toBeInTheDocument()
-          // this should probably be expressed via some accessibility properties
+          // this should be expressed via some accessibility property
           expect(selectedVehicleLabel).toHaveClass("selected")
 
           expect(
