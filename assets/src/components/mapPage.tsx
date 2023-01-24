@@ -101,58 +101,67 @@ const SearchInputAndResults = ({
   )
 }
 
-interface MapDisplayReducerState {
-  lastSelected: {
-    // vehicleId: VehicleId | null
-    vehicle: Vehicle | null
-    tripId: TripId | null
-    routeId: RouteId | null
+// #region Map Display
+const useCachedVehicleById = (
+  selectedVehicleOrGhost: VehicleOrGhost | null,
+  selectedVehicleId: string | null
+) => {
+  const ref = useRef(
+    (selectedVehicleOrGhost &&
+      isVehicle(selectedVehicleOrGhost) &&
+      selectedVehicleOrGhost) ||
+      null
+  )
+
+  if (
+    selectedVehicleId === null ||
+    (selectedVehicleOrGhost && isGhost(selectedVehicleOrGhost))
+  ) {
+    ref.current = null
+  } else if (selectedVehicleOrGhost !== null) {
+    ref.current = selectedVehicleOrGhost
   }
+  return ref.current
 }
 
-function initialState(): MapDisplayReducerState {
-  return {
-    lastSelected: {
-      vehicle: null,
-      tripId: null,
-      routeId: null,
-    },
-  }
+const useVehicleForIdCached = (
+  socket: Socket | undefined,
+  selectedVehicleId: string | null
+) => {
+  const selectedVehicleOrGhost =
+    useVehicleForId(socket, selectedVehicleId ?? null) || null
+
+  const selectedVehicleRef = useCachedVehicleById(
+    selectedVehicleOrGhost,
+    selectedVehicleId
+  )
+  return selectedVehicleRef
 }
 
-type MapDisplayReducerAction = {
-  action: "new_vehicle"
-  selectedVehicle: VehicleOrGhost | null
+const RouteVehicles = ({
+  selectedVehicleRoute,
+  selectedVehicleId,
+  onPrimaryVehicleSelect,
+}: {
   selectedVehicleId: VehicleId | null
-}
-export function MapDisplayReducer(
-  current: MapDisplayReducerState,
-  next: MapDisplayReducerAction
-): MapDisplayReducerState {
-  switch (next.action) {
-    case "new_vehicle": {
-      if (
-        next.selectedVehicleId !== null &&
-        next.selectedVehicle !== null &&
-        isVehicle(next.selectedVehicle)
-      ) {
-        return {
-          lastSelected: {
-            vehicle: next.selectedVehicle,
-            routeId: next.selectedVehicle.routeId,
-            tripId: next.selectedVehicle.tripId,
-          },
-        }
-      } else if (
-        next.selectedVehicleId === null ||
-        (next.selectedVehicle && isGhost(next.selectedVehicle))
-      ) {
-        return initialState()
-      }
-      return current
-    }
-  }
-  return current
+  selectedVehicleRoute: RouteId | null
+  onPrimaryVehicleSelect: (vehicle: Vehicle) => void
+}) => {
+  const { socket } = useSocket()
+  const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
+  return (
+    <>
+      {filterVehicles(vehicles).map((vehicle: Vehicle) => (
+        <VehicleMarker
+          key={vehicle.id}
+          vehicle={vehicle}
+          isPrimary={true}
+          isSelected={vehicle.id === selectedVehicleId}
+          onSelect={onPrimaryVehicleSelect}
+        />
+      ))}
+    </>
+  )
 }
 
 const MapDisplay = ({
@@ -172,33 +181,18 @@ const MapDisplay = ({
 
   const { socket } = useContext(SocketContext)
 
-  const selectedVehicleOrGhost =
-    useVehicleForId(socket, selectedVehicleId ?? null) || null
+  const selectedVehicleRef = useVehicleForIdCached(socket, selectedVehicleId),
+    { routeId = null, tripId = null } = selectedVehicleRef || {}
+  const shapes = useTripShape(tripId)
 
-  const ref = useRef(
-    (selectedVehicleOrGhost &&
-      isVehicle(selectedVehicleOrGhost) &&
-      selectedVehicleOrGhost) ||
-      null
-  )
-  if (
-    selectedVehicleId === null ||
-    (selectedVehicleOrGhost && isGhost(selectedVehicleOrGhost))
-  ) {
-    ref.current = null
-  } else if (selectedVehicleOrGhost !== null) {
-    ref.current = selectedVehicleOrGhost
-  }
-  const selectedVehicleRef = ref.current
-  const { routeId: selectedRouteId = null, tripId: selectedTripId = null } =
-    ref.current || {}
+  const position =
+    (selectedVehicleRef &&
+      isVehicle(selectedVehicleRef) && [
+        vehicleToLeafletLatLng(selectedVehicleRef),
+      ]) ||
+    []
 
-  const positions = filterVehicles(
-    [selectedVehicleRef].filter(Boolean) as VehicleOrGhost[]
-  ).map(vehicleToLeafletLatLng)
 
-  const shapes = useTripShape(selectedTripId)
-  const vehicles = useVehiclesForRoute(socket, selectedRouteId)
   return (
     <BaseMap
       vehicles={[]}
@@ -228,21 +222,11 @@ const MapDisplay = ({
           </>
         ) : (
           <>
-            {/* <RouteVehicles
-              selectedVehicleRoute={selectedRouteId}
+            <RouteVehicles
+              selectedVehicleRoute={routeId}
               selectedVehicleId={selectedVehicleId}
               onPrimaryVehicleSelect={setSelectedVehicle}
-            /> */}
-            {/* <TripShape selectedTripId={selectedTripId} /> */}
-            {filterVehicles(vehicles).map((vehicle: Vehicle) => (
-              <VehicleMarker
-                key={vehicle.id}
-                vehicle={vehicle}
-                isPrimary={true}
-                isSelected={vehicle.id === selectedVehicleId}
-                onSelect={setSelectedVehicle}
-              />
-            ))}
+            />
           </>
         )}
 
@@ -254,32 +238,7 @@ const MapDisplay = ({
     </BaseMap>
   )
 }
-
-const RouteVehicles = ({
-  selectedVehicleRoute,
-  selectedVehicleId,
-  onPrimaryVehicleSelect,
-}: {
-  selectedVehicleId: VehicleId | null
-  selectedVehicleRoute: RouteId | null
-  onPrimaryVehicleSelect: (vehicle: Vehicle) => void
-}) => {
-  const { socket } = useSocket()
-  const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
-  return (
-    <>
-      {filterVehicles(vehicles).map((vehicle: Vehicle) => (
-        <VehicleMarker
-          key={vehicle.id}
-          vehicle={vehicle}
-          isPrimary={true}
-          isSelected={vehicle.id === selectedVehicleId}
-          onSelect={onPrimaryVehicleSelect}
-        />
-      ))}
-    </>
-  )
-}
+// #endregion
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
