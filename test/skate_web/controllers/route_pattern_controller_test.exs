@@ -81,14 +81,17 @@ defmodule SkateWeb.RoutePatternControllerTest do
         name: "Route Pattern 1",
         route_id: "r1",
         direction_id: 0,
-        representative_trip_id: "t1"
+        representative_trip_id: "t1",
+        sort_order: 0,
+        time_desc: "Mornings only"
       },
       %RoutePattern{
         id: "2",
         name: "Route Pattern 2",
         route_id: "r1",
         direction_id: 1,
-        representative_trip_id: "t2"
+        representative_trip_id: "t2",
+        sort_order: 1
       }
     ]
 
@@ -126,6 +129,8 @@ defmodule SkateWeb.RoutePatternControllerTest do
                    "name" => "Route Pattern 1",
                    "route_id" => "r1",
                    "direction_id" => 0,
+                   "sort_order" => 0,
+                   "time_desc" => "Mornings only",
                    "shape" => @shape_with_stops_json
                  },
                  %{
@@ -133,6 +138,8 @@ defmodule SkateWeb.RoutePatternControllerTest do
                    "name" => "Route Pattern 2",
                    "route_id" => "r1",
                    "direction_id" => 1,
+                   "sort_order" => 1,
+                   "time_desc" => nil,
                    "shape" => nil
                  }
                ]

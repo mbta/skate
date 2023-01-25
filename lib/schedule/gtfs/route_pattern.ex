@@ -17,7 +17,9 @@ defmodule Schedule.Gtfs.RoutePattern do
           name: String.t(),
           route_id: Route.id(),
           direction_id: Direction.id(),
-          representative_trip_id: Trip.id()
+          representative_trip_id: Trip.id(),
+          time_desc: String.t() | nil,
+          sort_order: non_neg_integer()
         }
 
   @enforce_keys [
@@ -35,7 +37,9 @@ defmodule Schedule.Gtfs.RoutePattern do
     :name,
     :route_id,
     :direction_id,
-    :representative_trip_id
+    :representative_trip_id,
+    :time_desc,
+    :sort_order
   ]
 
   @spec from_csv_row(Csv.row()) :: t()
@@ -45,8 +49,13 @@ defmodule Schedule.Gtfs.RoutePattern do
       name: row["route_pattern_name"],
       route_id: row["route_id"],
       direction_id: Direction.id_from_string(row["direction_id"]),
-      representative_trip_id: row["representative_trip_id"]
-      # TODO add the time of day, priority fields
+      representative_trip_id: row["representative_trip_id"],
+      sort_order: String.to_integer(row["route_pattern_sort_order"]),
+      time_desc:
+        case row["route_pattern_time_desc"] do
+          "" -> nil
+          desc -> desc
+        end
     }
   end
 

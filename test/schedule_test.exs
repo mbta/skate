@@ -68,9 +68,9 @@ defmodule ScheduleTest do
               "39,3,39"
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "39-pattern,39,1,39-trip",
-              "blue-pattern,Blue,1,blue-trip"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "39-pattern,39,1,39-trip,0",
+              "blue-pattern,Blue,1,blue-trip,1"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
@@ -104,9 +104,9 @@ defmodule ScheduleTest do
               "Blue,1,Blue"
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "39-pattern,39,1,39-trip",
-              "blue-pattern,Blue,1,blue-trip"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "39-pattern,39,1,39-trip,0",
+              "blue-pattern,Blue,1,blue-trip,1"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
@@ -148,10 +148,10 @@ defmodule ScheduleTest do
               "route,3,39"
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1",
-              "p2,route,1,t2",
-              "p3,route,1,t3"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,t1,0",
+              "p2,route,1,t2,1",
+              "p3,route,1,t3,2"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
@@ -197,9 +197,9 @@ defmodule ScheduleTest do
               "route,3,route"
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p0,route,0,t0",
-              "p1,route,1,t1"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p0,route,0,t0,0",
+              "p1,route,1,t1,1"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
@@ -228,8 +228,8 @@ defmodule ScheduleTest do
         Schedule.start_mocked(%{
           gtfs: %{
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "pattern,route,0,trip"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "pattern,route,0,trip,0"
             ],
             "stop_times.txt" => [
               "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
@@ -279,9 +279,9 @@ defmodule ScheduleTest do
               "subway_route,1,subway_route_name,\"Subway Route\""
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,trip",
-              "p2,subway_route,1,trip_2"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,trip,0",
+              "p2,subway_route,1,trip_2,1"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -386,8 +386,8 @@ defmodule ScheduleTest do
               "route,3,route"
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,t1,0"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -456,8 +456,8 @@ defmodule ScheduleTest do
               "route,3,route"
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,t1,0"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -600,8 +600,8 @@ defmodule ScheduleTest do
               "route,3,route,\"Key Bus\""
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,t1,0"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -656,8 +656,8 @@ defmodule ScheduleTest do
               "route,3,route,\"Rail Replacement Bus\""
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,t1,0"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -700,8 +700,8 @@ defmodule ScheduleTest do
               "route,3,route,\"Rail Replacement Bus\""
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,t1,0"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -758,8 +758,8 @@ defmodule ScheduleTest do
               "route,3,route,\"Key Bus\""
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,trip"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,trip,0"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -802,9 +802,9 @@ defmodule ScheduleTest do
               "subway_route,1,subway_route_name,\"Subway Route\""
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,trip",
-              "p2,subway_route,1,trip_2"
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "p1,route,1,trip,0",
+              "p2,subway_route,1,trip_2,1"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
@@ -873,9 +873,9 @@ defmodule ScheduleTest do
               "Shuttle-BabcockBostonCollege,Green Line B Shuttle,3,Rail Replacement Bus,"
             ],
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,route_pattern_name,representative_trip_id",
-              "Shuttle-BabcockBostonCollege-0-0,Shuttle-BabcockBostonCollege,0,Babcock Street - Boston College,41836966-20:45-BabcockBCNewtonHighlandsKenmore1",
-              "Shuttle-BabcockBostonCollege-0-1,Shuttle-BabcockBostonCollege,1,Boston College - Babcock Street,41836965-20:45-BabcockBCNewtonHighlandsKenmore1"
+              "route_pattern_id,route_id,direction_id,route_pattern_name,representative_trip_id,route_pattern_sort_order",
+              "Shuttle-BabcockBostonCollege-0-0,Shuttle-BabcockBostonCollege,0,Babcock Street - Boston College,41836966-20:45-BabcockBCNewtonHighlandsKenmore1,0",
+              "Shuttle-BabcockBostonCollege-0-1,Shuttle-BabcockBostonCollege,1,Boston College - Babcock Street,41836965-20:45-BabcockBCNewtonHighlandsKenmore1,1"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,trip_route_type,route_pattern_id,bikes_allowed",
@@ -900,7 +900,8 @@ defmodule ScheduleTest do
                  name: "Babcock Street - Boston College",
                  route_id: "Shuttle-BabcockBostonCollege",
                  direction_id: 0,
-                 representative_trip_id: "41836966-20:45-BabcockBCNewtonHighlandsKenmore1"
+                 representative_trip_id: "41836966-20:45-BabcockBCNewtonHighlandsKenmore1",
+                 sort_order: 0
                }
     end
   end
@@ -911,10 +912,10 @@ defmodule ScheduleTest do
         Schedule.start_mocked(%{
           gtfs: %{
             "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,route_pattern_name,representative_trip_id",
-              "Shuttle-BabcockBostonCollege-0-0,Shuttle-BabcockBostonCollege,0,Babcock Street - Boston College,41836966-20:45-BabcockBCNewtonHighlandsKenmore1",
-              "Shuttle-BabcockBostonCollege-0-1,Shuttle-BabcockBostonCollege,1,Boston College - Babcock Street,41836965-20:45-BabcockBCNewtonHighlandsKenmore1",
-              "OtherRoute-0-1,OtherRoute,1,Boston College - Babcock Street,OtherTripId"
+              "route_pattern_id,route_id,direction_id,route_pattern_name,representative_trip_id,route_pattern_sort_order",
+              "Shuttle-BabcockBostonCollege-0-0,Shuttle-BabcockBostonCollege,0,Babcock Street - Boston College,41836966-20:45-BabcockBCNewtonHighlandsKenmore1,0",
+              "Shuttle-BabcockBostonCollege-0-1,Shuttle-BabcockBostonCollege,1,Boston College - Babcock Street,41836965-20:45-BabcockBCNewtonHighlandsKenmore1,1",
+              "OtherRoute-0-1,OtherRoute,1,Boston College - Babcock Street,OtherTripId,2"
             ],
             "directions.txt" => [
               "route_id,direction_id,direction,direction_destination",
@@ -948,14 +949,16 @@ defmodule ScheduleTest do
                    name: "Babcock Street - Boston College",
                    route_id: "Shuttle-BabcockBostonCollege",
                    direction_id: 0,
-                   representative_trip_id: "41836966-20:45-BabcockBCNewtonHighlandsKenmore1"
+                   representative_trip_id: "41836966-20:45-BabcockBCNewtonHighlandsKenmore1",
+                   sort_order: 0
                  },
                  %RoutePattern{
                    id: "Shuttle-BabcockBostonCollege-0-1",
                    name: "Boston College - Babcock Street",
                    route_id: "Shuttle-BabcockBostonCollege",
                    direction_id: 1,
-                   representative_trip_id: "41836965-20:45-BabcockBCNewtonHighlandsKenmore1"
+                   representative_trip_id: "41836965-20:45-BabcockBCNewtonHighlandsKenmore1",
+                   sort_order: 1
                  }
                ]
     end
