@@ -53,10 +53,7 @@ defmodule Realtime.VehicleTest do
     revenue: true
   }
 
-  describe "from_vehicle_position" do
-    setup do
-      trip =
-        build(
+  @trip build(
           :trip,
           id: "39984755",
           block_id: "S28-2",
@@ -73,6 +70,10 @@ defmodule Realtime.VehicleTest do
           start_time: 0,
           end_time: 2
         )
+
+  describe "from_vehicle_position" do
+    setup do
+      trip = @trip
 
       reassign_env(:realtime, :trip_fn, fn trip_id ->
         if trip_id == trip.id do
@@ -125,6 +126,7 @@ defmodule Realtime.VehicleTest do
                longitude: -71.08206019,
                direction_id: 1,
                route_id: "28",
+               route_pattern_id: "28-_-0",
                trip_id: "39984755",
                headsign: "headsign",
                via_variant: "_",
@@ -197,13 +199,16 @@ defmodule Realtime.VehicleTest do
     test "handles trips with incomplete data" do
       reassign_env(:realtime, :trip_fn, fn _ ->
         %Trip{
-          id: "39984755",
-          block_id: "S28-2"
+          id: @trip.id,
+          block_id: @trip.block_id
         }
       end)
 
-      result = Vehicle.from_vehicle_position(@vehicle_position)
-      assert %Vehicle{} = result
+      vehicle_id = @vehicle_position.id
+      trip_id = @trip.id
+
+      assert %Vehicle{id: ^vehicle_id, trip_id: ^trip_id, route_pattern_id: nil} =
+               Vehicle.from_vehicle_position(@vehicle_position)
     end
   end
 
