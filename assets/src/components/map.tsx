@@ -340,11 +340,13 @@ export const InterruptibleFollower = ({
         positions={positions}
         onUpdate={onUpdate}
       />
-      <RecenterControl position="topright" recenter={() => setShouldFollow(true)} />
+      <RecenterControl
+        position="topright"
+        recenter={() => setShouldFollow(true)}
+      />
     </>
   )
 }
-
 
 export const StatefulInteractiveFollower = (props: FollowerProps) => {
   return InterruptibleFollower({

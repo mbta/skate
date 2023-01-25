@@ -113,7 +113,7 @@ const useMostRecentNonNullVehicle = (
 ) => {
   const ref = useRef<VehicleOrGhost | null>(null)
 
-  if(selectedVehicleOrGhost !== null) {
+  if (selectedVehicleOrGhost !== null) {
     ref.current = selectedVehicleOrGhost
   }
 
@@ -128,13 +128,13 @@ const useMostRecentVehicleById = (
   const selectedVehicleOrGhost =
     useVehicleForId(socket, selectedVehicleId ?? null) || null
 
-  const vehicleRef = useMostRecentNonNullVehicle(
-    selectedVehicleOrGhost
-  )
+  const vehicleRef = useMostRecentNonNullVehicle(selectedVehicleOrGhost)
 
   // `selectedVehicleId` should change 'atomically', therefore, if it's `null`,
   // there should be no result or api response, and we should return `null`
-  if (selectedVehicleId === null) { return null }
+  if (selectedVehicleId === null) {
+    return null
+  }
 
   return vehicleRef
 }
@@ -160,7 +160,9 @@ const RouteVehicles = ({
             vehicle={vehicle}
             isPrimary={isSelected === true}
             isSelected={isSelected}
-            onSelect={onPrimaryVehicleSelect} />)
+            onSelect={onPrimaryVehicleSelect}
+          />
+        )
       })}
     </>
   )
@@ -244,7 +246,11 @@ const MapDisplay = ({
   const stations = useStations()
 
   const selectedVehicleOrGhost = useMostRecentVehicleById(selectedVehicleId),
-    selectedVehicle = selectedVehicleOrGhost && isVehicle(selectedVehicleOrGhost) && selectedVehicleOrGhost || null,
+    selectedVehicle =
+      (selectedVehicleOrGhost &&
+        isVehicle(selectedVehicleOrGhost) &&
+        selectedVehicleOrGhost) ||
+      null,
     { routeId = null, tripId = null } = selectedVehicle || {}
   const tripShapes = useTripShape(tripId)
 
@@ -261,8 +267,7 @@ const MapDisplay = ({
   )
 
   const shapes =
-    selectedVehicle &&
-    (isGhost(selectedVehicle) || selectedVehicle?.isShuttle)
+    selectedVehicle && (isGhost(selectedVehicle) || selectedVehicle?.isShuttle)
       ? []
       : tripShapes
   return (
@@ -347,7 +352,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const selectVehicle = useCallback(
     (vehicle: VehicleOrGhost | null) => {
-      if (vehicle && isVehicle(vehicle) || vehicle === null) {
+      if ((vehicle && isVehicle(vehicle)) || vehicle === null) {
         dispatch(setSelectedVehicle(vehicle?.id || null))
         setSearchOpen(vehicle === null)
       }
