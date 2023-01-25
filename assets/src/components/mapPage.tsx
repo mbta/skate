@@ -347,8 +347,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const selectVehicle = useCallback(
     (vehicle: VehicleOrGhost | null) => {
-      dispatch(setSelectedVehicle(vehicle?.id || null))
-      setSearchOpen(vehicle === null)
+      if (vehicle && isVehicle(vehicle) || vehicle === null) {
+        dispatch(setSelectedVehicle(vehicle?.id || null))
+        setSearchOpen(vehicle === null)
+      }
     },
     [setSearchOpen, dispatch]
   )
