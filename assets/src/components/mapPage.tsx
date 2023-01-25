@@ -243,52 +243,52 @@ const MapDisplay = ({
 
   const stations = useStations()
 
-  const _selectedVehicleRef = useMostRecentVehicleById(selectedVehicleId),
-    selectedVehicleRef = _selectedVehicleRef && isVehicle(_selectedVehicleRef) && _selectedVehicleRef || null,
-    { routeId = null, tripId = null } = selectedVehicleRef || {}
+  const selectedVehicleOrGhost = useMostRecentVehicleById(selectedVehicleId),
+    selectedVehicle = selectedVehicleOrGhost && isVehicle(selectedVehicleOrGhost) && selectedVehicleOrGhost || null,
+    { routeId = null, tripId = null } = selectedVehicle || {}
   const tripShapes = useTripShape(tripId)
 
   const position =
-    (selectedVehicleRef &&
-      isVehicle(selectedVehicleRef) && [
-        vehicleToLeafletLatLng(selectedVehicleRef),
+    (selectedVehicle &&
+      isVehicle(selectedVehicle) && [
+        vehicleToLeafletLatLng(selectedVehicle),
       ]) ||
     []
 
   const followerState = useFollowingStateWithSelectionLogic(
     selectedVehicleId,
-    selectedVehicleRef
+    selectedVehicle
   )
 
   const shapes =
-    selectedVehicleRef &&
-    (isGhost(selectedVehicleRef) || selectedVehicleRef?.isShuttle)
+    selectedVehicle &&
+    (isGhost(selectedVehicle) || selectedVehicle?.isShuttle)
       ? []
       : tripShapes
   return (
     <BaseMap
       vehicles={[]}
       allowStreetView={true}
-      stopCardDirection={selectedVehicleRef?.directionId}
+      stopCardDirection={selectedVehicle?.directionId}
       includeStopCard={true}
       stations={stations}
       shapes={shapes}
       stateClasses={FollowerStatusClasses(followerState.shouldFollow)}
     >
       <>
-        {selectedVehicleRef && (
+        {selectedVehicle && (
           <>
             {showVpc && (
               <VehiclePropertiesCard
-                vehicle={selectedVehicleRef}
+                vehicle={selectedVehicle}
                 onClose={deleteSelection}
               />
             )}
-            {isVehicle(selectedVehicleRef) &&
-              (selectedVehicleRef?.isShuttle ? (
+            {isVehicle(selectedVehicle) &&
+              (selectedVehicle?.isShuttle ? (
                 <VehicleMarker
-                  key={selectedVehicleRef.id}
-                  vehicle={selectedVehicleRef}
+                  key={selectedVehicle.id}
+                  vehicle={selectedVehicle}
                   isPrimary={true}
                   isSelected={true}
                 />
