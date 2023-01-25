@@ -702,6 +702,48 @@ defmodule Schedule.DataTest do
     end
   end
 
+  describe "route_patterns_for_route/2" do
+    setup do
+      data = %Data{
+        route_patterns: [
+          %RoutePattern{
+            id: "1",
+            name: "Route Pattern 1",
+            route_id: "r1",
+            direction_id: 0,
+            representative_trip_id: "t1"
+          },
+          %RoutePattern{
+            id: "2",
+            name: "Route Pattern 2",
+            route_id: "r1",
+            direction_id: 1,
+            representative_trip_id: "t2"
+          },
+          %RoutePattern{
+            id: "3",
+            name: "Route Pattern 3",
+            route_id: "r2",
+            direction_id: 0,
+            representative_trip_id: "t3"
+          }
+        ]
+      }
+
+      {:ok, data: data}
+    end
+
+    test "returns all associated route patterns", %{
+      data: %{route_patterns: [r1_pattern_1, r1_pattern_2, _r2_pattern]} = data
+    } do
+      assert [r1_pattern_1, r1_pattern_2] == Data.route_patterns_for_route(data, "r1")
+    end
+
+    test "returns empty list if no patterns for route", %{data: data} do
+      assert [] == Data.route_patterns_for_route(data, "fake_route")
+    end
+  end
+
   describe "run_for_trip/3" do
     test "returns run with ID for trip" do
       trip =
