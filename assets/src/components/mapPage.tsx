@@ -255,7 +255,7 @@ const MapDisplay = ({
       ]) ||
     []
 
-  const state = useFollowingStateWithSelectionLogic(
+  const followerState = useFollowingStateWithSelectionLogic(
     selectedVehicleId,
     selectedVehicleRef
   )
@@ -273,7 +273,7 @@ const MapDisplay = ({
       includeStopCard={true}
       stations={stations}
       shapes={shapes}
-      stateClasses={FollowerStatusClasses(state.shouldFollow)}
+      stateClasses={FollowerStatusClasses(followerState.shouldFollow)}
     >
       <>
         {selectedVehicleRef && (
@@ -305,7 +305,7 @@ const MapDisplay = ({
         <InterruptibleFollower
           onUpdate={onFollowerUpdate}
           positions={position}
-          {...state}
+          {...followerState}
         />
       </>
     </BaseMap>
