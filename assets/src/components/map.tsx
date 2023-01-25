@@ -331,10 +331,6 @@ export const InterruptibleFollower = ({
 }: InterruptibleFollowerProps) => {
   useStopFollowingOnInteraction(isAnimatingFollowUpdate, setShouldFollow)
 
-  const turnOnFollowing = useCallback(
-    () => setShouldFollow(true),
-    [setShouldFollow]
-  )
   return (
     <>
       <Follower
@@ -344,10 +340,11 @@ export const InterruptibleFollower = ({
         positions={positions}
         onUpdate={onUpdate}
       />
-      <RecenterControl position="topright" recenter={turnOnFollowing} />
+      <RecenterControl position="topright" recenter={() => setShouldFollow(true)} />
     </>
   )
 }
+
 
 export const StatefulInteractiveFollower = (props: FollowerProps) => {
   return InterruptibleFollower({
