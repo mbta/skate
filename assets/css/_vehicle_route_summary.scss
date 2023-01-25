@@ -38,13 +38,15 @@
     justify-self: end;
   }
 
-  .m-schedule-adherence * {
-    display: inline-block;
-  }
-
   .m-vehicle-route-summary__separator {
     justify-self: center;
     align-self: center;
+  }
+
+  .m-schedule-adherence {
+    & > * {
+      display: inline-block;
+    }
   }
 
   // route variant name should not move when text gets longer
