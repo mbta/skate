@@ -46,6 +46,7 @@ defmodule Schedule.Gtfs.RoutePattern do
       route_id: row["route_id"],
       direction_id: Direction.id_from_string(row["direction_id"]),
       representative_trip_id: row["representative_trip_id"]
+      # TODO add the time of day, priority fields
     }
   end
 
