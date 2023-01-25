@@ -2,7 +2,7 @@
 // #region Layout
 .m-vehicle-route-summary {
   display: grid;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: 3fr 8fr;
   grid-template-columns: min-content 1fr 6fr 12fr;
   grid-template-areas:
     "icon separator direction  adherence"
