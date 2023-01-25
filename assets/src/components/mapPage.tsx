@@ -152,15 +152,16 @@ const RouteVehicles = ({
   const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
   return (
     <>
-      {filterVehicles(vehicles).map((vehicle: Vehicle) => (
-        <VehicleMarker
-          key={vehicle.id}
-          vehicle={vehicle}
-          isPrimary={true}
-          isSelected={vehicle.id === selectedVehicleId}
-          onSelect={onPrimaryVehicleSelect}
-        />
-      ))}
+      {filterVehicles(vehicles).map((vehicle: Vehicle) => {
+        const isSelected = vehicle.id === selectedVehicleId
+        return (
+          <VehicleMarker
+            key={vehicle.id}
+            vehicle={vehicle}
+            isPrimary={isSelected === true}
+            isSelected={isSelected}
+            onSelect={onPrimaryVehicleSelect} />)
+      })}
     </>
   )
 }
