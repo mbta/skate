@@ -38,6 +38,12 @@
     justify-self: end;
   }
 
+  // Adherence and direction should hug the top of the container
+  .m-schedule-adherence,
+  .m-vehicle-route-direction {
+    line-height: 1;
+  }
+
   .m-vehicle-route-summary__icon,
   .m-vehicle-route-summary__separator {
     justify-self: center;
