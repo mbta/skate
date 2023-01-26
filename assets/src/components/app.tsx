@@ -77,12 +77,12 @@ export const AppRoutes = () => {
                   element={<ShuttleMapPage />}
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
-                {mapMode.title === "Search" ? (
+                {mapMode.supportsRightPanel ? (
                   <BrowserRoute path={mapMode.path} element={mapMode.element} />
                 ) : null}
               </Route>
               <Route>
-                {mapMode.title === "Map" ? (
+                {!mapMode.supportsRightPanel ? (
                   <BrowserRoute path={mapMode.path} element={mapMode.element} />
                 ) : null}
               </Route>

@@ -71,7 +71,7 @@ describe("Nav", () => {
     expect(result.queryByText("Route Ladders")).toBeNull()
   })
 
-  test("renders nav item with title 'Map' if in map test group", () => {
+  test("renders nav item with title 'Search Map' if in map test group", () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     render(
@@ -83,7 +83,7 @@ describe("Nav", () => {
     )
 
     expect(screen.queryByTitle("Search")).toBeNull()
-    expect(screen.queryByTitle("Map")).toBeInTheDocument()
+    expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
   })
 
   test("renders desktop nav content", () => {

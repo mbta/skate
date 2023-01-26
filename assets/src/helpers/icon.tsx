@@ -92,6 +92,8 @@ import saveIconSvg from "../../static/images/icon-save.svg"
 // @ts-ignore
 import searchIconSvg from "../../static/images/icon-search.svg"
 // @ts-ignore
+import searchMapIconSvg from "../../static/images/icon-search-map.svg"
+// @ts-ignore
 import settingsIconSvg from "../../static/images/icon-settings.svg"
 // @ts-ignore
 import speechBubbleIconSvg from "../../static/images/icon-speech-bubble.svg"
@@ -214,6 +216,8 @@ export const ReverseIconReversed = svgIcon(reverseIconReversedSvg)
 export const SaveIcon = svgIcon(saveIconSvg)
 
 export const SearchIcon = svgIcon(searchIconSvg)
+
+export const SearchMapIcon = svgIcon(searchMapIconSvg)
 
 export const SettingsIcon = svgIcon(settingsIconSvg)
 

@@ -75,4 +75,8 @@ describe("pageOrTabName", () => {
   test("returns page name for shuttle map", () => {
     expect(pageOrTabName("/shuttle-map", [])).toEqual("Shuttle Map")
   })
+
+  test("returns the custom title for the search map page", () => {
+    expect(pageOrTabName("/map", [])).toEqual("Search Map")
+  })
 })

@@ -332,6 +332,7 @@ const garageLeafletIcon = Leaflet.divIcon({
   html: garageIcon,
   className: "m-garage-icon",
   iconAnchor: new Leaflet.Point(10, 25),
+  iconSize: [21, 25],
 })
 
 const Garage = ({

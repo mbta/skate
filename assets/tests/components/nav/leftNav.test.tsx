@@ -84,7 +84,7 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Expand")).not.toBeNull()
   })
 
-  test("renders nav item with title 'Map' if in map test group", () => {
+  test("renders nav item with title 'Search Map' if in map test group", () => {
     ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
 
     render(
@@ -94,7 +94,7 @@ describe("LeftNav", () => {
     )
 
     expect(screen.queryByTitle("Search")).toBeNull()
-    expect(screen.getByTitle("Map")).toBeInTheDocument()
+    expect(screen.getByTitle("Search Map")).toBeInTheDocument()
   })
 
   test("can toggle nav menu on tablet layout", async () => {
