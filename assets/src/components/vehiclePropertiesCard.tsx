@@ -10,9 +10,7 @@ import { useNearestIntersection } from "../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { CloseButton } from "./closeButton"
-import StreetViewButton, {
-  GeographicCoordinateBearing,
-} from "./streetViewButton"
+import StreetViewButton from "./streetViewButton"
 import { VehicleRouteSummary } from "./vehicleRouteSummary"
 
 interface VehicleProp {
@@ -149,6 +147,14 @@ const VehicleNearestIntersection = ({
   )
 }
 
+const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
+  <StreetViewButton
+    aria-label="Go to Street View"
+    latitude={vehicle.latitude}
+    longitude={vehicle.longitude}
+    bearing={vehicle.bearing}
+  />
+)
 // #endregion
 
 // #region Vehicle Properties Card
@@ -200,10 +206,9 @@ const VehiclePropertiesCard = ({
         hidden={isGhost(vehicle)}
       >
         <VehicleNearestIntersection vehicle={vehicle} />
-        <StreetViewButton
-          aria-label="Go to Street View"
-          {...(vehicle as GeographicCoordinateBearing)}
-        />
+        {isVehicle(vehicle) && (
+          <VehicleLocationStreetViewButton vehicle={vehicle} />
+        )}
       </div>
     </div>
   </div>

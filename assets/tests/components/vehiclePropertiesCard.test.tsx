@@ -297,8 +297,8 @@ describe("<VehiclePropertiesCard/>", () => {
         screen.getByRole("status", { name: "Current Location", hidden: true })
       ).not.toBeVisible()
       expect(
-        screen.getByRole("link", { name: /street view/i, hidden: true })
-      ).not.toBeVisible()
+        screen.queryByRole("link", { name: /street view/i, hidden: true })
+      ).not.toBeInTheDocument()
     })
   })
 })
