@@ -3,8 +3,9 @@ import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
+import { useTripShape } from "../hooks/useShapes"
 import { useStations } from "../hooks/useStations"
-import { filterVehicles } from "../models/vehicle"
+import { filterVehicles, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { Stop } from "../schedule"
 import { selectVehicle } from "../state"
@@ -56,7 +57,19 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     socket,
     searchPageState.isActive ? searchPageState.query : null
   )
-  const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
+  const onlyVehicles: Vehicle[] = filterVehicles(vehicles).filter(
+    ({ id }) => id === selectedVehicleOrGhost?.id
+  )
+
+  const isShuttle =
+    (selectedVehicleOrGhost &&
+      isVehicle(selectedVehicleOrGhost) &&
+      selectedVehicleOrGhost.isShuttle) ||
+    false
+  const shapes = useTripShape(
+    (!isShuttle && selectedVehicleOrGhost?.tripId) || ""
+  )
+
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
   const toggleMobileDisplay = () => {
     setMobileDisplay(
@@ -109,6 +122,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
           stations={stations}
+          shapes={shapes}
         />
       </div>
     </div>
