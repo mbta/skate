@@ -121,10 +121,9 @@ const useMostRecentNonNullVehicle = (
 }
 
 const useMostRecentVehicleById = (
-  // socket: Socket | undefined,
+  socket: Socket | undefined,
   selectedVehicleId: string | null
 ) => {
-  const { socket } = useContext(SocketContext)
   const selectedVehicleOrGhost =
     useVehicleForId(socket, selectedVehicleId ?? null) || null
 
@@ -245,7 +244,8 @@ const MapDisplay = ({
 
   const stations = useStations()
 
-  const selectedVehicleOrGhost = useMostRecentVehicleById(selectedVehicleId),
+  const { socket } = useContext(SocketContext)
+  const selectedVehicleOrGhost = useMostRecentVehicleById(socket, selectedVehicleId),
     selectedVehicle =
       (selectedVehicleOrGhost &&
         isVehicle(selectedVehicleOrGhost) &&
