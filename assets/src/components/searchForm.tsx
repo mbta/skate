@@ -13,9 +13,13 @@ const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 const SearchForm = ({
   onSubmit,
   onClear,
+  inputTitle,
+  formTitle,
 }: {
   onSubmit?: () => void
   onClear?: () => void
+  inputTitle?: string
+  formTitle?: string
 }) => {
   const [
     {
@@ -53,13 +57,18 @@ const SearchForm = ({
   }
 
   return (
-    <form onSubmit={subscribeToSearch} className="m-search-form">
+    <form
+      onSubmit={subscribeToSearch}
+      className="m-search-form"
+      aria-label={formTitle || "Submit Search"}
+    >
       <div className="m-search-form__row">
         <div className="m-search-form__text">
           <input
             type="text"
             className="m-search-form__input"
             placeholder="Search"
+            aria-label={inputTitle || "Search"}
             value={query.text}
             onChange={handleTextInput}
           />

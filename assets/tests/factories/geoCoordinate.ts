@@ -1,4 +1,5 @@
 import { Factory } from "fishery"
+import { defaultCenter } from "../../src/components/map"
 import { GeographicCoordinate } from "../../src/components/streetViewButton"
 
 interface GeographicCoordinateParams {
@@ -6,15 +7,17 @@ interface GeographicCoordinateParams {
   step: GeographicCoordinate
 }
 
+// ~3in in geo space
+const dist3Inches = 0.00001
 const geoCoordinateFactory = Factory.define<
   GeographicCoordinate,
   GeographicCoordinateParams
 >(({ sequence, transientParams: { start, step } }) => ({
-  latitude: sequence * (step?.latitude ?? 0.0001) + (start?.latitude ?? 0),
-  longitude: sequence * (step?.longitude ?? 0.0001) + (start?.longitude ?? 0),
+  latitude: sequence * (step?.latitude ?? dist3Inches) + (start?.latitude ?? 0),
+  longitude:
+    sequence * (step?.longitude ?? dist3Inches) + (start?.longitude ?? 0),
 }))
 
 export const localGeoCoordinateFactory = geoCoordinateFactory.transient({
-  start: { latitude: 42, longitude: -72 },
-  step: { latitude: 1, longitude: 1 },
+  start: { latitude: defaultCenter.lat, longitude: defaultCenter.lng },
 })

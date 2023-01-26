@@ -15,6 +15,7 @@ import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
+import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
 
 const shape = {
   id: "shape",
@@ -330,9 +331,25 @@ describe("<Map />", () => {
       screen.queryByRole("switch", { name: /Street View/ })
     ).not.toBeInTheDocument()
   })
+
+  test("sets selected vehicle id as selected ", () => {
+    const vehicle = vehicleFactory.build()
+
+    const { container } = render(
+      <Map vehicles={[vehicle]} selectedVehicleId={vehicle.id} />
+    )
+
+    expect(
+      container.querySelector(".m-vehicle-map__icon .selected")
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector(".m-vehicle-map__label.selected")
+    ).toBeInTheDocument()
+  })
 })
 
 describe("autoCenter", () => {
+  beforeEach(() => setHtmlDefaultWidthHeight(0, 0))
   const Leaflet = jest.requireActual("leaflet")
   const pickerContainerIsVisible = false
 

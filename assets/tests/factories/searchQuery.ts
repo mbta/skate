@@ -1,5 +1,9 @@
 import { Factory } from "fishery"
-import { SearchQuery, SearchQueryType } from "../../src/models/searchQuery"
+import {
+  emptySearchQuery,
+  SearchQuery,
+  SearchQueryType,
+} from "../../src/models/searchQuery"
 
 class SearchQueryFactory extends Factory<SearchQuery> {
   searchType(property: SearchQueryType) {
@@ -11,9 +15,8 @@ class SearchQueryFactory extends Factory<SearchQuery> {
   }
 }
 
-const searchQueryFactory = SearchQueryFactory.define(({ sequence }) => ({
-  property: "all" as SearchQueryType,
-  text: sequence.toString(),
+const searchQueryFactory = SearchQueryFactory.define(() => ({
+  ...emptySearchQuery,
 }))
 
 export const searchQueryAllFactory = searchQueryFactory.searchType("all")
@@ -26,4 +29,4 @@ export const searchQueryRunFactory = searchQueryFactory.searchType("run")
 export const searchQueryVehicleFactory =
   searchQueryFactory.searchType("vehicle")
 
-export const emptySearchQueryFactory = searchQueryAllFactory.searchFor("")
+export const emptySearchQueryFactory = searchQueryFactory

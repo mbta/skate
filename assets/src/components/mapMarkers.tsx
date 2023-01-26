@@ -287,7 +287,7 @@ export const RouteStopMarkers = ({
   includeStopCard?: boolean
 }): JSX.Element => {
   const seenStopIds = new Set<StopId>()
-  // Keep the first occurance of each stop when there are duplicates
+  // Keep the first occurrence of each stop when there are duplicates
   const uniqueStops: Stop[] = stops.flatMap((stop) => {
     if (!seenStopIds.has(stop.id)) {
       seenStopIds.add(stop.id)

@@ -110,6 +110,14 @@ $component-active-bg: $color-eggplant-700;
   display: none !important;
 }
 
+.border-box {
+  box-sizing: border-box;
+}
+
+.inherit-box :is(*, *::before, *::after) {
+  box-sizing: inherit;
+}
+
 html,
 body,
 main,

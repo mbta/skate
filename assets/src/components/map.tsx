@@ -4,6 +4,7 @@ import Leaflet, {
   DomUtil,
   LatLng,
   LatLngExpression,
+  LatLngLiteral,
   Map as LeafletMap,
 } from "leaflet"
 
@@ -14,6 +15,7 @@ import React, {
   MutableRefObject,
   ReactElement,
   SetStateAction,
+  useCallback,
   useContext,
   useEffect,
   useId,
@@ -21,7 +23,6 @@ import React, {
   useState,
 } from "react"
 import ReactDOM from "react-dom"
-
 import {
   AttributionControl,
   MapContainer,
@@ -31,6 +32,7 @@ import {
   ZoomControl,
 } from "react-leaflet"
 import { createControlComponent } from "@react-leaflet/core"
+
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
@@ -58,9 +60,9 @@ export interface Props {
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   selectedVehicleId?: VehicleId
   vehicles: Vehicle[]
-  // secondaryVehicles are smaller, deemphasized, and don't affect autocentering
+  // secondaryVehicles are smaller, deemphasized, and don't affect follower in `MapFollowingPrimaryVehicles`
   secondaryVehicles?: Vehicle[]
-  // trainVehicles are white, don't get a label, and don't affect autocentering
+  // trainVehicles are white, don't get a label, and don't affect follower in `MapFollowingPrimaryVehicles`
   trainVehicles?: TrainVehicle[]
   shapes?: Shape[]
   allowStreetView?: boolean
@@ -70,7 +72,7 @@ export interface Props {
   stations?: Stop[] | null
 }
 
-export const defaultCenter: LatLngExpression = {
+export const defaultCenter: LatLngLiteral = {
   lat: 42.360718,
   lng: -71.05891,
 }
@@ -227,6 +229,133 @@ const EventAdder = ({
 }
 
 // #region Auto Center Functionality
+export type UpdateMapFromPointsFn = (map: LeafletMap, points: LatLng[]) => void
+
+export interface FollowerProps {
+  positions: LatLng[]
+  onUpdate: UpdateMapFromPointsFn
+}
+
+export const Follower = ({
+  positions,
+  onUpdate,
+  isAnimatingFollowUpdate,
+  shouldFollow = true,
+}: FollowerProps & InteractiveFollowState) => {
+  const map = useMap()
+  const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(positions)
+
+  if (
+    !equalByElements(positions, currentLatLngs, (lhs, rhs) => lhs.equals(rhs))
+  ) {
+    setCurrentLatLngs(positions)
+  }
+
+  useEffect(() => {
+    if (map !== null && shouldFollow) {
+      if (isAnimatingFollowUpdate !== undefined) {
+        isAnimatingFollowUpdate.current = true
+      }
+      onUpdate(map, currentLatLngs)
+    }
+  }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
+
+  return <></>
+}
+export interface InteractiveFollowState {
+  isAnimatingFollowUpdate: MutableRefObject<boolean>
+  shouldFollow: boolean
+  setShouldFollow: Dispatch<SetStateAction<boolean>>
+}
+
+// Gathers all state needed for the Follower to be able to display it's state
+// as well as support turning off when interrupted
+export const useInteractiveFollowerState = (): InteractiveFollowState => {
+  const [shouldFollow, setShouldFollow] = useState<boolean>(true)
+  const isAnimatingFollowUpdate: MutableRefObject<boolean> = useRef(false)
+
+  return {
+    shouldFollow,
+    setShouldFollow,
+    isAnimatingFollowUpdate,
+  }
+}
+
+// Sets up map events to get a callback when the user interacts with the map
+// which should override the follower on state
+function useStopFollowingOnInteraction(
+  isAnimatingFollowUpdate: React.MutableRefObject<boolean>,
+  setShouldFollow: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  useMapEvents({
+    // If the user drags or zooms, they want manual control of the map.
+    // `zoomstart` is fired when the map changes zoom levels
+    // this can be because of animating the zoom change or user input
+    zoomstart: () => {
+      // But don't disable `shouldFollow` if the zoom was triggered by Follower.
+      if (!isAnimatingFollowUpdate.current) {
+        setShouldFollow(false)
+      }
+    },
+
+    // `dragstart` is fired when a user drags the map
+    // it is expected that this event is not fired for anything but user input
+    // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
+    dragstart: () => {
+      setShouldFollow(false)
+    },
+
+    // `moveend` is called when the leaflet map has finished animating a pan
+    moveend: () => {
+      // Wait until the `Follower` `setView` animation is finished to resume listening for user interaction.
+      if (isAnimatingFollowUpdate.current) {
+        isAnimatingFollowUpdate.current = false
+      }
+    },
+
+    // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
+    autopanstart: () => setShouldFollow(false),
+  })
+}
+
+export type InterruptibleFollowerProps = InteractiveFollowState & FollowerProps
+
+// Component which provides following capability and configures the map to stop
+// the follower component when a user interacts with the map
+export const InterruptibleFollower = ({
+  shouldFollow,
+  setShouldFollow,
+  isAnimatingFollowUpdate,
+  positions,
+  onUpdate,
+}: InterruptibleFollowerProps) => {
+  useStopFollowingOnInteraction(isAnimatingFollowUpdate, setShouldFollow)
+
+  return (
+    <>
+      <Follower
+        isAnimatingFollowUpdate={isAnimatingFollowUpdate}
+        shouldFollow={shouldFollow}
+        setShouldFollow={setShouldFollow}
+        positions={positions}
+        onUpdate={onUpdate}
+      />
+      <RecenterControl
+        position="topright"
+        recenter={() => setShouldFollow(true)}
+      />
+    </>
+  )
+}
+
+export const StatefulInteractiveFollower = (props: FollowerProps) => {
+  return InterruptibleFollower({
+    ...props,
+    ...useInteractiveFollowerState(),
+  })
+}
+
+// #region Previous Follower Logic
 export const autoCenter = (
   map: LeafletMap,
   latLngs: LatLngExpression[],
@@ -244,116 +373,21 @@ export const autoCenter = (
   }
 }
 
-const AutoCenter = ({
-  latLngs,
-  shouldAutoCenter,
-  isAutoCentering,
-}: {
-  shouldAutoCenter: boolean
-  isAutoCentering: MutableRefObject<boolean>
-  latLngs: LatLng[]
-}) => {
-  const map = useMap()
-
+export const usePickerContainerFollowerFn = () => {
   const [{ pickerContainerIsVisible }] = useContext(StateDispatchContext)
-  const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(latLngs)
 
-  if (
-    !equalByElements(latLngs, currentLatLngs, (latLng1, latLng2) =>
-      latLng1.equals(latLng2)
-    )
-  ) {
-    setCurrentLatLngs(latLngs)
-  }
-
-  useEffect(() => {
-    if (map !== null && shouldAutoCenter) {
-      isAutoCentering.current = true
-      autoCenter(map, currentLatLngs, pickerContainerIsVisible)
-    }
-  }, [
-    map,
-    shouldAutoCenter,
-    isAutoCentering,
-    currentLatLngs,
-    pickerContainerIsVisible,
-  ])
-
-  return <></>
-}
-
-const useAutoCenterState = () => {
-  const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
-  const isAutoCentering: MutableRefObject<boolean> = useRef(false)
-
-  return {
-    shouldAutoCenter,
-    setShouldAutoCenter,
-    isAutoCentering,
-  }
-}
-
-interface AutoCenterMapOnProps {
-  latLngs: LatLng[]
-  isAutoCentering: MutableRefObject<boolean>
-  shouldAutoCenter: boolean
-  setShouldAutoCenter: Dispatch<SetStateAction<boolean>>
-}
-
-const AutoCenterMapOn = ({
-  shouldAutoCenter,
-  setShouldAutoCenter,
-  isAutoCentering,
-  latLngs,
-}: AutoCenterMapOnProps) => {
-  useMapEvents({
-    // If the user drags or zooms, they want manual control of the map.
-
-    // `zoomstart` is fired when the map changes zoom levels
-    // this can be because of animating the zoom change or user input
-    zoomstart: () => {
-      // But don't disable `shouldAutoCenter` if the zoom was triggered by AutoCenterer.
-      if (!isAutoCentering.current) {
-        setShouldAutoCenter(false)
-      }
-    },
-
-    // `dragstart` is fired when a user drags the map
-    // it is expected that this event is not fired for anything but user input
-    // by [handler/Map.Drag.js](https://github.com/Leaflet/Leaflet/blob/6b90c169d6cd11437bfbcc8ba261255e009afee3/src/map/handler/Map.Drag.js#L113-L115)
-    dragstart: () => {
-      setShouldAutoCenter(false)
-    },
-
-    // `moveend` is called when the leaflet map has finished animating a pan
-    moveend: () => {
-      // Wait until the auto centering animation is finished to resume listening for user interaction.
-      if (isAutoCentering.current) {
-        isAutoCentering.current = false
-      }
-    },
-
-    // `autopanstart` is invoked when opening a popup causes the map to pan to fit it
-    autopanstart: () => setShouldAutoCenter(false),
-  })
-
-  return (
-    <>
-      <AutoCenter
-        shouldAutoCenter={shouldAutoCenter}
-        isAutoCentering={isAutoCentering}
-        latLngs={latLngs}
-      />
-      <RecenterControl
-        position="topright"
-        recenter={() => setShouldAutoCenter(true)}
-      />
-    </>
+  const onUpdate = useCallback(
+    (map: Leaflet.Map, points: Leaflet.LatLng[]): void =>
+      autoCenter(map, points, pickerContainerIsVisible),
+    [pickerContainerIsVisible]
   )
+
+  return onUpdate
 }
 // #endregion
+// #endregion
 
-const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
+export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -456,32 +490,38 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
-const AutoCenteringMap = (props: Props) => {
-  const state = useAutoCenterState(),
-    { shouldAutoCenter } = state
+export const vehicleToLeafletLatLng = ({
+  latitude,
+  longitude,
+}: Vehicle): Leaflet.LatLng => Leaflet.latLng(latitude, longitude)
 
-  const latLngs: LatLng[] = props.vehicles.map(({ latitude, longitude }) =>
-    Leaflet.latLng(latitude, longitude)
-  )
-  const centerOnProps: AutoCenterMapOnProps = {
-    ...state,
-    latLngs,
-  }
+// TODO: replacing with react controlled component which self-contains
+// state and does not rely on setting a class on the map container
+export const FollowerStatusClasses = (
+  shouldFollow: boolean
+): string | undefined => {
+  return shouldFollow ? "m-vehicle-map-state--auto-centering" : undefined
+}
+
+export const MapFollowingPrimaryVehicles = (props: Props) => {
+  const state = useInteractiveFollowerState(),
+    { shouldFollow } = state
+
+  const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
 
   return (
-    <BaseMap
-      {...props}
-      stateClasses={
-        shouldAutoCenter ? "m-vehicle-map-state--auto-centering" : undefined
-      }
-    >
+    <BaseMap {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
       <>
-        <AutoCenterMapOn {...centerOnProps} />
+        <InterruptibleFollower
+          positions={positions}
+          {...state}
+          onUpdate={usePickerContainerFollowerFn()}
+        />
         {props.children}
       </>
     </BaseMap>
   )
 }
 
-const Map = AutoCenteringMap
+const Map = MapFollowingPrimaryVehicles
 export default Map

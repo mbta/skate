@@ -10,6 +10,8 @@ import * as dateTime from "../../src/util/dateTime"
 
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
+import stateFactory from "../factories/applicationState"
+import { RunFactory } from "../factories/run"
 
 const ghost = ghostFactory.build({ runId: "ghostrun-1" })
 const vehicle = vehicleFactory.build()
@@ -38,7 +40,10 @@ describe("rightPanel", () => {
   })
 
   test("shows a selected vehicle", () => {
-    const state: State = { ...initialState, selectedVehicleOrGhost: vehicle }
+    const { id: runId } = RunFactory.build()
+    const vehicle = vehicleFactory.build({ runId })
+    const state = stateFactory.build({ selectedVehicleOrGhost: vehicle })
+
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
@@ -46,7 +51,8 @@ describe("rightPanel", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.queryByText(vehicle.runId!)).toBeVisible()
+
+    expect(result.queryByRole("button", { name: vehicle.runId! })).toBeVisible()
   })
 
   test("shows a selected ghost", () => {
