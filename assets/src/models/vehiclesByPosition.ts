@@ -144,6 +144,7 @@ const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   directionId: vehicle.scheduledLocation!.directionId,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   routeId: vehicle.scheduledLocation!.routeId,
+  routePatternId: vehicle.scheduledLocation!.routePatternId,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   tripId: vehicle.scheduledLocation!.tripId,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

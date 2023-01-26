@@ -10,6 +10,7 @@ export default Factory.define<VehicleData>(({ sequence }) => ({
   longitude: 0,
   direction_id: 0,
   route_id: "39",
+  route_pattern_id: "39-_-0",
   trip_id: `t${sequence}`,
   headsign: "Forest Hills",
   via_variant: "X",
@@ -68,6 +69,7 @@ export default Factory.define<VehicleData>(({ sequence }) => ({
   },
   scheduled_location: {
     route_id: "39",
+    route_pattern_id: "39-_-0",
     direction_id: 0,
     trip_id: "scheduled trip",
     run_id: "scheduled run",

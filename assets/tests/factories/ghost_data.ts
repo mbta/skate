@@ -5,6 +5,7 @@ export default Factory.define<GhostData>(({ sequence }) => ({
   id: `g${sequence}`,
   direction_id: 0,
   route_id: "1",
+  route_pattern_id: "1-_-0",
   trip_id: "trip",
   headsign: "headsign",
   block_id: "block",

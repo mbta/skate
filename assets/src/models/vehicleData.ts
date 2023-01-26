@@ -11,7 +11,7 @@ import {
   VehicleStopStatus,
   VehicleTimepointStatus,
 } from "../realtime.d"
-import { DirectionId, RouteId } from "../schedule.d"
+import { DirectionId, RouteId, RoutePatternId } from "../schedule.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
 import { OccupancyStatus } from "./crowding"
 
@@ -24,6 +24,7 @@ export interface VehicleData {
   longitude: number
   direction_id: DirectionId
   route_id: RouteId
+  route_pattern_id: RoutePatternId | null
   trip_id: string
   headsign: string | null
   via_variant: string | null
@@ -62,6 +63,7 @@ export interface GhostData {
   id: string
   direction_id: DirectionId
   route_id: string
+  route_pattern_id: RoutePatternId | null
   trip_id: string
   headsign: string
   block_id: string
@@ -91,6 +93,7 @@ interface DataDiscrepancySourceData {
 
 interface VehicleScheduledLocationData {
   route_id: RouteId
+  route_pattern_id: RoutePatternId | null
   direction_id: DirectionId
   trip_id: string
   run_id: RunId
@@ -127,6 +130,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   longitude: vehicleData.longitude,
   directionId: vehicleData.direction_id,
   routeId: vehicleData.route_id,
+  routePatternId: vehicleData.route_pattern_id,
   tripId: vehicleData.trip_id,
   headsign: vehicleData.headsign,
   viaVariant: vehicleData.via_variant,
@@ -170,6 +174,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   id: ghostData.id,
   directionId: ghostData.direction_id,
   routeId: ghostData.route_id,
+  routePatternId: ghostData.route_pattern_id,
   tripId: ghostData.trip_id,
   headsign: ghostData.headsign,
   blockId: ghostData.block_id,
@@ -209,6 +214,7 @@ const vehicleScheduledLocationFromData = (
   vehicleScheduledLocationData: VehicleScheduledLocationData
 ): VehicleScheduledLocation => ({
   routeId: vehicleScheduledLocationData.route_id,
+  routePatternId: vehicleScheduledLocationData.route_pattern_id,
   directionId: vehicleScheduledLocationData.direction_id,
   tripId: vehicleScheduledLocationData.trip_id,
   runId: vehicleScheduledLocationData.run_id,

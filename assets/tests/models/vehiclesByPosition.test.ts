@@ -104,6 +104,7 @@ describe("groupByPosition", () => {
       scheduleAdherenceSecs: 361,
       scheduledLocation: {
         routeId: "1",
+        routePatternId: "1-_-0",
         directionId: 0,
         tripId: "scheduled trip",
         runId: "scheduled run",
@@ -157,6 +158,7 @@ describe("groupByPosition", () => {
       scheduleAdherenceSecs: 361,
       scheduledLocation: {
         routeId: "1",
+        routePatternId: "1-_-0",
         directionId: 0,
         tripId: "scheduled trip",
         runId: "scheduled run",
