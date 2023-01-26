@@ -40,6 +40,17 @@ export interface Route {
   garages: GarageName[]
 }
 
+export type RoutePatternId = string
+export interface RoutePattern {
+  id: RoutePatternId
+  name: string
+  routeId: RouteId
+  directionId: DirectionId
+  timeDescription?: string | null
+  sortOrder: number
+  shape?: Shape | null
+}
+
 export interface Shape {
   id: ShapeId
   color?: string
