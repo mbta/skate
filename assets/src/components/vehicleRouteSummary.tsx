@@ -10,7 +10,7 @@ import { VehicleOrGhost } from "../realtime"
 import { RouteVariantName } from "./routeVariantName"
 import { ScheduleAdherence } from "./scheduleAdherence"
 import { Size, VehicleIcon, vehicleOrientation } from "./vehicleIcon"
-// import { VehicleProp } from "./vehiclePropertiesCard";
+
 interface VehicleOrGhostProp {
   vehicle: VehicleOrGhost
 }

@@ -2,16 +2,16 @@
 // #region Layout
 .m-vehicle-route-summary {
   display: grid;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: 3fr 8fr;
   grid-template-columns: min-content 1fr 6fr 12fr;
   grid-template-areas:
     "icon separator direction  adherence"
     "icon separator route-name route-name";
 
-  align-items: center; // center element vertically within cell
+  align-items: start; // align element vertically within cell
   justify-items: start; // align element horizontally within the cell
 
-  // assign element grid locations
+  // #region element grid locations
   .m-vehicle-route-summary__icon {
     grid-area: icon;
   }
@@ -31,32 +31,43 @@
   .m-route-variant-name {
     grid-area: route-name;
   }
+  // #endregion
 
-  // Bespoke alignment within cells
-  // adherence sticks to the right side of the card
+  // #region Bespoke alignment within cells
+  // adherence should stick to the right side of the card
   .m-schedule-adherence {
     justify-self: end;
   }
 
-  .m-schedule-adherence * {
-    display: inline-block;
-  }
-
+  .m-vehicle-route-summary__icon,
   .m-vehicle-route-summary__separator {
     justify-self: center;
     align-self: center;
   }
 
-  // route variant name should not move when text gets longer
-  // so also align
-  .m-route-variant-name {
-    align-self: start;
+  // Adherence and direction should hug the top of the container
+  .m-schedule-adherence,
+  .m-vehicle-route-direction {
+    line-height: 1;
+  }
+  // #endregion
 
-    --line-height: 1.25;
-    line-height: var(--line-height);
-    max-height: calc(var(--line-height) * 2em);
+  // #region component layout
+  .m-schedule-adherence {
+    & > * {
+      display: inline-block;
+    }
+  }
+
+  // route variant name should not move when text gets longer
+  .m-route-variant-name {
+    // Fill grid container
     height: 100%;
     width: 100%;
+
+    --line-height: 1.5;
+    line-height: var(--line-height);
+    max-height: calc(var(--line-height) * 2em);
 
     text-overflow: ellipsis; // doesn't work on multiline text
     overflow: hidden;
@@ -69,7 +80,7 @@
   .m-vehicle-route-summary__separator {
     justify-self: center;
     align-self: center;
-    height: 80%;
+    height: 100%;
     background-color: $color-gray-300;
     width: 1px;
   }

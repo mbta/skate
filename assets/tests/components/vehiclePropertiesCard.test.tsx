@@ -10,6 +10,8 @@ import VehiclePropertiesCard from "../../src/components/vehiclePropertiesCard"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { VehicleRouteSummary } from "../../src/components/vehicleRouteSummary"
+import ghostFactory from "../factories/ghost"
+import { runIdFactory } from "../factories/run"
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
@@ -22,7 +24,7 @@ describe("<VehiclePropertiesCard/>", () => {
       const onClose = jest.fn()
       render(
         <VehiclePropertiesCard
-          vehicle={vehicleFactory.build()}
+          vehicleOrGhost={vehicleFactory.build()}
           onClose={onClose}
         />
       )
@@ -41,7 +43,7 @@ describe("<VehiclePropertiesCard/>", () => {
         .mockReturnValueOnce(intersection2)
 
       const { rerender } = render(
-        <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
       )
       const locationElement = screen.getByRole("status", {
         name: "Current Location",
@@ -49,7 +51,9 @@ describe("<VehiclePropertiesCard/>", () => {
 
       expect(locationElement).toHaveTextContent(intersection)
 
-      rerender(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+      rerender(
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+      )
 
       expect(locationElement).toHaveTextContent(intersection2)
     })
@@ -58,7 +62,7 @@ describe("<VehiclePropertiesCard/>", () => {
       const [vehicle, vehicle2] = vehicleFactory.buildList(2)
 
       const { rerender } = render(
-        <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
       )
       const runCell = screen.getByRole("cell", { name: /run/i })
       const vehicleCell = screen.getByRole("cell", { name: /vehicle/i })
@@ -66,7 +70,9 @@ describe("<VehiclePropertiesCard/>", () => {
       expect(runCell).toHaveTextContent(vehicle.runId!)
       expect(vehicleCell).toHaveTextContent(vehicle.label)
 
-      rerender(<VehiclePropertiesCard vehicle={vehicle2} onClose={jest.fn()} />)
+      rerender(
+        <VehiclePropertiesCard vehicleOrGhost={vehicle2} onClose={jest.fn()} />
+      )
 
       expect(vehicleCell).toHaveTextContent(vehicle2.label)
       expect(runCell).toHaveTextContent(vehicle2.runId!)
@@ -92,7 +98,10 @@ describe("<VehiclePropertiesCard/>", () => {
 
         render(
           <RoutesProvider routes={[route]}>
-            <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+            <VehiclePropertiesCard
+              vehicleOrGhost={vehicle}
+              onClose={jest.fn()}
+            />
           </RoutesProvider>
         )
 
@@ -154,7 +163,9 @@ describe("<VehiclePropertiesCard/>", () => {
         const vehicle = vehicleFactory.build()
         ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(null)
 
-        render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+        render(
+          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        )
 
         expect(
           screen.getByRole("status", { name: "Current Location" })
@@ -168,7 +179,9 @@ describe("<VehiclePropertiesCard/>", () => {
           .mockReturnValueOnce(undefined)
           .mockReturnValueOnce(intersection)
 
-        render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+        render(
+          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        )
         const currentLocation = screen.getByRole("status", {
           name: "Current Location",
         })
@@ -188,7 +201,9 @@ describe("<VehiclePropertiesCard/>", () => {
     test("vehicle is off course, should render invalid bus design", () => {
       const vehicle = vehicleFactory.build({ isOffCourse: true })
 
-      render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+      render(
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+      )
 
       // Show `invalid` in Adherence Info
       expect(
@@ -223,12 +238,80 @@ describe("<VehiclePropertiesCard/>", () => {
     })
 
     // - Ghost Bus is not Displayable on map
-    // test.todo("vehicle is ghost bus, should render ghost bus design") //, {
-    // Display "Ghost Bus or Dropped Trip" in `LastUpdated`
-    // Do not Display the location information block
-    // Display `N/A` in invalid labels
-    // Display Ghost Icon and `N/A`
-    // Do not display adherence information
-    // })
+    test("vehicle is ghost bus, should render ghost bus design", () => {
+      // Display "Ghost Bus or Dropped Trip" in `LastUpdated`
+      // Do not Display the location information block
+      // Display `N/A` in invalid labels
+      // Display Ghost Icon and `N/A`
+      // Do not display adherence information
+      const ghost = ghostFactory.build({
+        runId: runIdFactory.build(),
+      })
+      const route = routeFactory.build({
+        id: ghost.routeId!,
+        name: ghost.routeId!,
+      })
+
+      const intersection = "Massachusetts Ave @ Marlborough St"
+      ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(intersection)
+
+      render(
+        <RoutesProvider routes={[route]}>
+          <VehiclePropertiesCard vehicleOrGhost={ghost} onClose={jest.fn()} />
+        </RoutesProvider>
+      )
+
+      // -- Assert
+      expect(
+        screen.getByRole("generic", { name: /vehicle properties card/i })
+      ).toBeVisible()
+
+      // - Header Bar
+      expect(
+        screen.getByRole("status", { name: /Last Update/i })
+      ).toHaveTextContent(/ghost bus or dropped trip/i)
+      expect(screen.getByRole("button", { name: /close/i })).toBeVisible()
+
+      // - Vehicle Route Summary
+      // Vehicle Icon
+      expect(
+        screen.getByRole("img", { name: /vehicle status icon/i })
+      ).toBeVisible()
+
+      expect(
+        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
+      ).toBeEmptyDOMElement()
+      expect(
+        screen.getByRole("status", { name: "Route Direction" })
+      ).toHaveTextContent(/outbound/i)
+      expect(
+        screen.getByRole("status", { name: "Route & Variant" })
+      ).toHaveTextContent(ghost.routeId)
+      expect(
+        screen.getByRole("status", { name: "Headsign" })
+      ).toHaveTextContent(ghost.headsign)
+
+      // - Vehicle Work Info
+      // const { operatorFirstName, operatorLastName, operatorId } = ghost
+      // Run      | Run ID
+      expect(screen.getByRole("cell", { name: /run/ })).toHaveTextContent(
+        ghost.runId!
+      )
+      // Vehicle  | Vehicle ID
+      expect(screen.getByRole("cell", { name: /vehicle/ })).toHaveTextContent(
+        "N/A"
+      )
+      // Operator | Operator First, Last, #BadgeID
+      const operator = screen.getByRole("cell", { name: /operator/ })
+      expect(operator).toHaveTextContent("N/A")
+
+      // - Vehicle Location Information
+      expect(
+        screen.getByRole("status", { name: "Current Location", hidden: true })
+      ).not.toBeVisible()
+      expect(
+        screen.queryByRole("link", { name: /street view/i, hidden: true })
+      ).not.toBeInTheDocument()
+    })
   })
 })
