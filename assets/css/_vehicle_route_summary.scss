@@ -8,7 +8,7 @@
     "icon separator direction  adherence"
     "icon separator route-name route-name";
 
-  align-items: center; // center element vertically within cell
+  align-items: start; // align element vertically within cell
   justify-items: start; // align element horizontally within the cell
 
   // assign element grid locations
@@ -57,9 +57,7 @@
   }
 
   // route variant name should not move when text gets longer
-  // so also align
   .m-route-variant-name {
-    align-self: start;
 
     --line-height: 1.5;
     line-height: var(--line-height);
