@@ -24,7 +24,7 @@ describe("<VehiclePropertiesCard/>", () => {
       const onClose = jest.fn()
       render(
         <VehiclePropertiesCard
-          vehicle={vehicleFactory.build()}
+          vehicleOrGhost={vehicleFactory.build()}
           onClose={onClose}
         />
       )
@@ -43,7 +43,7 @@ describe("<VehiclePropertiesCard/>", () => {
         .mockReturnValueOnce(intersection2)
 
       const { rerender } = render(
-        <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
       )
       const locationElement = screen.getByRole("status", {
         name: "Current Location",
@@ -51,7 +51,9 @@ describe("<VehiclePropertiesCard/>", () => {
 
       expect(locationElement).toHaveTextContent(intersection)
 
-      rerender(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+      rerender(
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+      )
 
       expect(locationElement).toHaveTextContent(intersection2)
     })
@@ -60,7 +62,7 @@ describe("<VehiclePropertiesCard/>", () => {
       const [vehicle, vehicle2] = vehicleFactory.buildList(2)
 
       const { rerender } = render(
-        <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
       )
       const runCell = screen.getByRole("cell", { name: /run/i })
       const vehicleCell = screen.getByRole("cell", { name: /vehicle/i })
@@ -68,7 +70,9 @@ describe("<VehiclePropertiesCard/>", () => {
       expect(runCell).toHaveTextContent(vehicle.runId!)
       expect(vehicleCell).toHaveTextContent(vehicle.label)
 
-      rerender(<VehiclePropertiesCard vehicle={vehicle2} onClose={jest.fn()} />)
+      rerender(
+        <VehiclePropertiesCard vehicleOrGhost={vehicle2} onClose={jest.fn()} />
+      )
 
       expect(vehicleCell).toHaveTextContent(vehicle2.label)
       expect(runCell).toHaveTextContent(vehicle2.runId!)
@@ -94,7 +98,10 @@ describe("<VehiclePropertiesCard/>", () => {
 
         render(
           <RoutesProvider routes={[route]}>
-            <VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />
+            <VehiclePropertiesCard
+              vehicleOrGhost={vehicle}
+              onClose={jest.fn()}
+            />
           </RoutesProvider>
         )
 
@@ -156,7 +163,9 @@ describe("<VehiclePropertiesCard/>", () => {
         const vehicle = vehicleFactory.build()
         ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(null)
 
-        render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+        render(
+          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        )
 
         expect(
           screen.getByRole("status", { name: "Current Location" })
@@ -170,7 +179,9 @@ describe("<VehiclePropertiesCard/>", () => {
           .mockReturnValueOnce(undefined)
           .mockReturnValueOnce(intersection)
 
-        render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+        render(
+          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        )
         const currentLocation = screen.getByRole("status", {
           name: "Current Location",
         })
@@ -190,7 +201,9 @@ describe("<VehiclePropertiesCard/>", () => {
     test("vehicle is off course, should render invalid bus design", () => {
       const vehicle = vehicleFactory.build({ isOffCourse: true })
 
-      render(<VehiclePropertiesCard vehicle={vehicle} onClose={jest.fn()} />)
+      render(
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+      )
 
       // Show `invalid` in Adherence Info
       expect(
@@ -244,7 +257,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       render(
         <RoutesProvider routes={[route]}>
-          <VehiclePropertiesCard vehicle={ghost} onClose={jest.fn()} />
+          <VehiclePropertiesCard vehicleOrGhost={ghost} onClose={jest.fn()} />
         </RoutesProvider>
       )
 

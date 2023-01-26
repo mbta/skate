@@ -285,7 +285,7 @@ const MapDisplay = ({
           <>
             {showVpc && (
               <VehiclePropertiesCard
-                vehicle={selectedVehicleOrGhost}
+                vehicleOrGhost={selectedVehicleOrGhost}
                 onClose={deleteSelection}
               />
             )}
