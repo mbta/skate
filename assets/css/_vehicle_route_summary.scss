@@ -11,7 +11,7 @@
   align-items: start; // align element vertically within cell
   justify-items: start; // align element horizontally within the cell
 
-  // assign element grid locations
+  // #region element grid locations
   .m-vehicle-route-summary__icon {
     grid-area: icon;
   }
@@ -31,17 +31,12 @@
   .m-route-variant-name {
     grid-area: route-name;
   }
+  // #endregion
 
-  // Bespoke alignment within cells
-  // adherence sticks to the right side of the card
+  // #region Bespoke alignment within cells
+  // adherence should stick to the right side of the card
   .m-schedule-adherence {
     justify-self: end;
-  }
-
-  // Adherence and direction should hug the top of the container
-  .m-schedule-adherence,
-  .m-vehicle-route-direction {
-    line-height: 1;
   }
 
   .m-vehicle-route-summary__icon,
@@ -50,6 +45,14 @@
     align-self: center;
   }
 
+  // Adherence and direction should hug the top of the container
+  .m-schedule-adherence,
+  .m-vehicle-route-direction {
+    line-height: 1;
+  }
+  // #endregion
+
+  // #region component layout
   .m-schedule-adherence {
     & > * {
       display: inline-block;
@@ -58,12 +61,13 @@
 
   // route variant name should not move when text gets longer
   .m-route-variant-name {
+    // Fill grid container
+    height: 100%;
+    width: 100%;
 
     --line-height: 1.5;
     line-height: var(--line-height);
     max-height: calc(var(--line-height) * 2em);
-    height: 100%;
-    width: 100%;
 
     text-overflow: ellipsis; // doesn't work on multiline text
     overflow: hidden;
