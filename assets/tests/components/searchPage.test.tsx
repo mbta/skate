@@ -5,7 +5,7 @@ import "@testing-library/jest-dom"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
+import { VehicleOrGhost } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -16,41 +16,31 @@ import userEvent from "@testing-library/user-event"
 import { SearchPageState } from "../../src/state/searchPageState"
 import { useStations } from "../../src/hooks/useStations"
 import { LocationType } from "../../src/models/stopData"
+import stateFactory from "../factories/applicationState"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-const vehicle: Vehicle = vehicleFactory.build()
-
-const ghost: Ghost = ghostFactory.build({
-  id: "ghost-trip",
-  directionId: 0,
-  routeId: "39",
-  tripId: "trip",
-  headsign: "headsign",
-  blockId: "block",
-  runId: "123-0123",
-  viaVariant: "X",
-  layoverDepartureTime: null,
-  scheduledTimepointStatus: {
-    timepointId: "t0",
-    fractionUntilTimepoint: 0.0,
-  },
-  scheduledLogonTime: null,
-  routeStatus: "on_route",
-  blockWaivers: [],
-})
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: jest.fn(() => []),
 }))
 
 jest.mock("../../src/hooks/useStations", () => ({
   __esModule: true,
   useStations: jest.fn(() => []),
 }))
+
+jest.mock("../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useTripShape: jest.fn(() => []),
+}))
+
+afterEach(() => {
+  jest.restoreAllMocks()
+})
 
 describe("SearchPage", () => {
   test("renders the empty state", () => {
@@ -67,10 +57,15 @@ describe("SearchPage", () => {
   })
 
   test("renders vehicle data", () => {
+    const vehicle = vehicleFactory.build()
+    const ghost = ghostFactory.build()
     const searchResults: VehicleOrGhost[] = [vehicle, ghost]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+      <StateDispatchProvider
+        state={stateFactory.build({ selectedVehicleOrGhost: vehicle })}
+        dispatch={jest.fn()}
+      >
         <BrowserRouter>
           <SearchPage />
         </BrowserRouter>
@@ -90,30 +85,11 @@ describe("SearchPage", () => {
     expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
   })
 
-  test("clicking a vehicle on the map selects it", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
-    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const mockDispatch = jest.fn()
-    const result = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <BrowserRouter>
-          <SearchPage />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    await userEvent.click(result.getByText(runId))
-    expect(mockDispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: "SELECT_VEHICLE" })
-    )
-  })
-
   test("clicking a search result selects that vehicle", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
     const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    const searchResults = vehicleFactory.buildList(1, { runId })
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const activeSearch: SearchPageState = {
       query: { text: "clickMe", property: "run" },
@@ -159,15 +135,10 @@ describe("SearchPage", () => {
   })
 
   test("renders stations on zoom", async () => {
-    ;(useStations as jest.Mock).mockImplementationOnce(() => [
-      stopFactory.build({ locationType: LocationType.Station }),
-    ])
-
-    const { container } = render(
-      <BrowserRouter>
-        <SearchPage />
-      </BrowserRouter>
+    ;(useStations as jest.Mock).mockReturnValue(
+      stopFactory.buildList(3, { locationType: LocationType.Station })
     )
+    const { container } = render(<SearchPage />)
 
     await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
     await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))

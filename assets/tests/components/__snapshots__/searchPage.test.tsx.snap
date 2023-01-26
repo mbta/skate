@@ -506,7 +506,7 @@ exports[`SearchPage renders vehicle data 1`] = `
             <div
               class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2000;"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2100;"
               tabindex="0"
             >
               <svg
@@ -518,7 +518,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                 
         
                 <path
-                  class="on-time early-red"
+                  class="on-time early-red selected"
                   d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                   transform="scale(1) rotate(33) translate(-12, -12)"
                 />
@@ -527,9 +527,9 @@ exports[`SearchPage renders vehicle data 1`] = `
               </svg>
             </div>
             <div
-              class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon m-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2000;"
+              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 2100;"
               tabindex="0"
             >
               <svg
