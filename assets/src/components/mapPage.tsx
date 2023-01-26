@@ -130,7 +130,7 @@ const useMostRecentVehicleById = (
   const vehicleRef = useMostRecentNonNullVehicle(selectedVehicleOrGhost)
 
   // `selectedVehicleId` should change 'atomically', therefore, if it's `null`,
-  // there should be no result or api response, and we should return `null`
+  // there should be no result or api response, and should return `null`
   if (selectedVehicleId === null) {
     return null
   }
@@ -245,7 +245,10 @@ const MapDisplay = ({
   const stations = useStations()
 
   const { socket } = useContext(SocketContext)
-  const selectedVehicleOrGhost = useMostRecentVehicleById(socket, selectedVehicleId),
+  const selectedVehicleOrGhost = useMostRecentVehicleById(
+      socket,
+      selectedVehicleId
+    ),
     selectedVehicle =
       (selectedVehicleOrGhost &&
         isVehicle(selectedVehicleOrGhost) &&
