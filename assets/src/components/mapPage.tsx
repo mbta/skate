@@ -209,7 +209,7 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
 
 const useFollowingStateWithSelectionLogic = (
   selectedVehicleId: string | null,
-  selectedVehicleRef: Vehicle | null
+  selectedVehicleRef: VehicleOrGhost | null
 ) => {
   const state = useInteractiveFollowerState(),
     { setShouldFollow } = state
@@ -249,54 +249,51 @@ const MapDisplay = ({
       socket,
       selectedVehicleId
     ),
-    selectedVehicle =
-      (selectedVehicleOrGhost &&
-        isVehicle(selectedVehicleOrGhost) &&
-        selectedVehicleOrGhost) ||
-      null,
-    { routeId = null, tripId = null } = selectedVehicle || {}
+    { routeId = null, tripId = null } = selectedVehicleOrGhost || {}
+
   const tripShapes = useTripShape(tripId)
 
   const position =
-    (selectedVehicle &&
-      isVehicle(selectedVehicle) && [
-        vehicleToLeafletLatLng(selectedVehicle),
+    (selectedVehicleOrGhost &&
+      isVehicle(selectedVehicleOrGhost) && [
+        vehicleToLeafletLatLng(selectedVehicleOrGhost),
       ]) ||
     []
 
   const followerState = useFollowingStateWithSelectionLogic(
     selectedVehicleId,
-    selectedVehicle
+    selectedVehicleOrGhost
   )
 
   const shapes =
-    selectedVehicle && (isGhost(selectedVehicle) || selectedVehicle?.isShuttle)
+    selectedVehicleOrGhost &&
+    (isGhost(selectedVehicleOrGhost) || selectedVehicleOrGhost?.isShuttle)
       ? []
       : tripShapes
   return (
     <BaseMap
       vehicles={[]}
       allowStreetView={true}
-      stopCardDirection={selectedVehicle?.directionId}
+      stopCardDirection={selectedVehicleOrGhost?.directionId}
       includeStopCard={true}
       stations={stations}
       shapes={shapes}
       stateClasses={FollowerStatusClasses(followerState.shouldFollow)}
     >
       <>
-        {selectedVehicle && (
+        {selectedVehicleOrGhost && (
           <>
             {showVpc && (
               <VehiclePropertiesCard
-                vehicle={selectedVehicle}
+                vehicle={selectedVehicleOrGhost}
                 onClose={deleteSelection}
               />
             )}
-            {isVehicle(selectedVehicle) &&
-              (selectedVehicle?.isShuttle ? (
+            {isVehicle(selectedVehicleOrGhost) &&
+              (selectedVehicleOrGhost?.isShuttle ? (
                 <VehicleMarker
-                  key={selectedVehicle.id}
-                  vehicle={selectedVehicle}
+                  key={selectedVehicleOrGhost.id}
+                  vehicle={selectedVehicleOrGhost}
                   isPrimary={true}
                   isSelected={true}
                 />
@@ -326,6 +323,24 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       useContext(StateDispatchContext),
     { selectedVehicleId = null } = searchPageState
 
+  // #region Search Drawer Logic
+  const [searchOpen, setSearchOpen] = useState<boolean>(
+    selectedVehicleId === null
+  )
+  const toggleSearchDrawer = useCallback(
+    () => setSearchOpen((open) => !open),
+    [setSearchOpen]
+  )
+  // #endregion
+
+  const selectVehicle = useCallback(
+    (vehicle: VehicleOrGhost | null) => {
+      dispatch(setSelectedVehicle(vehicle?.id || null))
+      setSearchOpen(vehicle === null)
+    },
+    [setSearchOpen, dispatch]
+  )
+
   // #region mobile display
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
   const toggleMobileDisplay = () => {
@@ -342,26 +357,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
   // #endregion
-
-  // #region Search Drawer Logic
-  const [searchOpen, setSearchOpen] = useState<boolean>(
-    selectedVehicleId === null
-  )
-  const toggleSearchDrawer = useCallback(
-    () => setSearchOpen((open) => !open),
-    [setSearchOpen]
-  )
-  // #endregion
-
-  const selectVehicle = useCallback(
-    (vehicle: VehicleOrGhost | null) => {
-      if ((vehicle && isVehicle(vehicle)) || vehicle === null) {
-        dispatch(setSelectedVehicle(vehicle?.id || null))
-        setSearchOpen(vehicle === null)
-      }
-    },
-    [setSearchOpen, dispatch]
-  )
 
   return (
     <div
