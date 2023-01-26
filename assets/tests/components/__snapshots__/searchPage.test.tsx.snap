@@ -559,6 +559,267 @@ exports[`SearchPage renders vehicle data 1`] = `
           
               </svg>
             </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -58950px; top: -71276px; z-index: -71276;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -58950px; top: -71276px; z-index: -71276;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Albany
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -61008px; top: -68954px; z-index: -68954;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -61008px; top: -68954px; z-index: -68954;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Arborway
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -58620px; top: -71252px; z-index: -71252;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -58620px; top: -71252px; z-index: -71252;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Cabot
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -59349px; top: -74291px; z-index: -74291;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -59349px; top: -74291px; z-index: -74291;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Charlestown and Somerville
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -60066px; top: -76394px; z-index: -76394;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -60066px; top: -76394px; z-index: -76394;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Fellsway
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -54735px; top: -78518px; z-index: -78518;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -54735px; top: -78518px; z-index: -78518;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Lynn
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -61925px; top: -74837px; z-index: -74837;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -61925px; top: -74837px; z-index: -74837;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  North Cambridge
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -56354px; top: -66181px; z-index: -66181;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -56354px; top: -66181px; z-index: -66181;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Quincy
+                </text>
+                
+				
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon leaflet-zoom-hide"
+              role="button"
+              style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -58958px; top: -70717px; z-index: -70717;"
+              tabindex="0"
+            >
+              <svg />
+            </div>
+            <div
+              class="leaflet-marker-icon m-garage-icon__label leaflet-zoom-hide"
+              role="button"
+              style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -58958px; top: -70717px; z-index: -70717;"
+              tabindex="0"
+            >
+              <svg
+                height="30"
+                width="200"
+              >
+                
+				    
+                <text
+                  y="15"
+                >
+                  Southampton
+                </text>
+                
+				
+              </svg>
+            </div>
           </div>
           <div
             class="leaflet-pane leaflet-tooltip-pane"

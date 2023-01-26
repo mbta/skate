@@ -447,9 +447,7 @@ const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
               iconSize={stationIconSize}
             />
           ))}
-        {inTestGroup(MAP_BETA_GROUP_NAME) && zoomLevel >= 15 && (
-          <GarageMarkers zoomLevel={zoomLevel} />
-        )}
+        {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
         {props.children}
       </MapContainer>
     </>

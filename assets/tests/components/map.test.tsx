@@ -85,7 +85,6 @@ describe("<Map />", () => {
 
   test("doesn't draw garage icons at zoom levels < 15", async () => {
     const vehicle = vehicleFactory.build()
-    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
@@ -104,8 +103,6 @@ describe("<Map />", () => {
 
   test("draws garage icons only at zoom levels >= 15", async () => {
     const vehicle = vehicleFactory.build({})
-    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
-
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
@@ -123,8 +120,6 @@ describe("<Map />", () => {
 
   test("draws garage icons and labels at zoom levels >= 16", async () => {
     const vehicle = vehicleFactory.build({})
-    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
-
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
@@ -137,12 +132,6 @@ describe("<Map />", () => {
 
     expect(container.innerHTML).toContain("m-garage-icon")
     expect(screen.getByText("Albany")).toBeInTheDocument()
-  })
-
-  test("no garage icons if not in test group", () => {
-    const vehicle = vehicleFactory.build({})
-    const { container } = render(<Map vehicles={[vehicle]} />)
-    expect(container.innerHTML).not.toContain("m-garage-icon")
   })
 
   test("doesn't draw station icons at zoom levels < 15", async () => {
