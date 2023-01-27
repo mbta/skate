@@ -1,0 +1,13 @@
+.m-route-properties-card {
+  font-family: $font-family;
+
+  // Static Design Width per spec
+  width: 395px;
+  // Clip children to keep rounded edges for background color
+  overflow: clip;
+
+  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.16))
+    drop-shadow(0px 16px 24px rgba(176, 181, 192, 0.24));
+
+  // all children expand to full width of card
+}

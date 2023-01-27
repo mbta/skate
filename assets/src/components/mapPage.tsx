@@ -32,6 +32,7 @@ import {
 } from "./map"
 import { VehicleMarker } from "./mapMarkers"
 import RecentSearches from "./recentSearches"
+import RoutePropertiesCard from "./routePropertiesCard"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
