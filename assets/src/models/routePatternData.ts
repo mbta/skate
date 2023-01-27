@@ -1,4 +1,4 @@
-import { define, Infer, number, optional, string, type } from "superstruct"
+import { define, Infer, nullable, number, string, type } from "superstruct"
 import { RoutePattern } from "../schedule"
 import { ShapeData, shapeFromData } from "./shapeData"
 
@@ -12,9 +12,9 @@ export const RoutePatternData = type({
   name: string(),
   route_id: string(),
   direction_id: DirectionId,
-  time_desc: optional(string()),
+  time_desc: nullable(string()),
   sort_order: number(),
-  shape: optional(ShapeData),
+  shape: nullable(ShapeData),
 })
 
 export type RoutePatternData = Infer<typeof RoutePatternData>
@@ -35,4 +35,6 @@ export const routePatternFromData = (
 
 export const routePatternsFromData = (
   routePatternsData: RoutePatternData[]
-): RoutePattern[] => routePatternsData.map(routePatternFromData)
+): RoutePattern[] => {
+  return routePatternsData.map(routePatternFromData)
+}
