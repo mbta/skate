@@ -18,6 +18,7 @@ defmodule Realtime.TimepointStatus do
   @type scheduled_location ::
           %{
             route_id: Route.id(),
+            route_pattern_id: RoutePattern.id() | nil,
             direction_id: Direction.id(),
             trip_id: Trip.id() | nil,
             run_id: Run.id() | nil,
@@ -170,6 +171,7 @@ defmodule Realtime.TimepointStatus do
 
             %{
               route_id: trip.route_id,
+              route_pattern_id: trip.route_pattern_id,
               direction_id: trip.direction_id,
               trip_id: trip.id,
               run_id: trip.run_id,
