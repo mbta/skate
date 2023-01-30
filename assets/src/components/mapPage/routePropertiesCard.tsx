@@ -1,7 +1,7 @@
 import React from "react"
 
-import { useRoute } from "../contexts/routesContext"
-import useRoutePatterns from "../hooks/useRoutePatterns"
+import { useRoute } from "../../contexts/routesContext"
+import useRoutePatterns from "../../hooks/useRoutePatterns"
 import {
   DirectionId,
   DirectionName,
@@ -9,9 +9,9 @@ import {
   RouteId,
   RoutePattern,
   RoutePatternId,
-} from "../schedule"
-import { Card } from "./card"
-import { RoutePill } from "./routePill"
+} from "../../schedule"
+import { Card } from "../card"
+import { RoutePill } from "../routePill"
 
 const DirectionPicker = ({
   selectedRoutePattern,

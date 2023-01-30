@@ -31,7 +31,7 @@ import {
   useInteractiveFollowerState,
 } from "../map"
 import { RouteShape, VehicleMarker } from "../mapMarkers"
-import VehiclePropertiesCard from "../vehiclePropertiesCard"
+import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 const useMostRecentNonNullVehicle = (
   selectedVehicleOrGhost: VehicleOrGhost | null
