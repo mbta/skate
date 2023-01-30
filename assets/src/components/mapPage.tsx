@@ -19,6 +19,7 @@ import useVehiclesForRoute from "../hooks/useVehiclesForRoute"
 import { filterVehicles, isGhost, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { RouteId } from "../schedule"
+import { closeView } from "../state"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import {
@@ -322,6 +323,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
       useContext(StateDispatchContext),
     { selectedVehicleId = null } = searchPageState
+
+  useEffect(() => {
+    dispatch(closeView())
+  }, [dispatch])
 
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(

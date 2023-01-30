@@ -38,6 +38,7 @@ import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleOrGhost } from "../../src/realtime"
 import { RouteId, Shape, TripId } from "../../src/schedule"
+import { closeView } from "../../src/state"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -187,6 +188,18 @@ describe("<MapPage />", () => {
 
       expect(asFragment()).toMatchSnapshot()
     })
+  })
+
+  test("closes any open views on page render", () => {
+    const dispatch = jest.fn()
+
+    render(
+      <StateDispatchProvider state={stateFactory.build()} dispatch={dispatch}>
+        <MapPage />
+      </StateDispatchProvider>
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(closeView())
   })
 
   test("renders stations on zoom", async () => {
@@ -598,7 +611,6 @@ describe("<MapPage />", () => {
         expect(
           screen.queryAllByRole("button", { name: /^vehicle #/ })
         ).toHaveLength(0)
-        expect(changeApplicationState).not.toBeCalled()
       })
     })
 
@@ -633,7 +645,6 @@ describe("<MapPage />", () => {
         expect(screen.queryAllByRole("button", { name: /^run/ })).toHaveLength(
           0
         )
-        expect(changeApplicationState).not.toBeCalled()
       })
 
       test("when a search is made, the map should be unpopulated until search result is selected", async () => {
@@ -746,7 +757,6 @@ describe("<MapPage />", () => {
           expect(
             screen.getAllByRole("button", { name: selectedVehicle.runId! })
           ).toHaveLength(selectedRouteVehicles.length)
-          expect(changeApplicationState).not.toBeCalled()
         })
 
         describe("and vehicle is a regular bus", () => {
@@ -789,8 +799,6 @@ describe("<MapPage />", () => {
             expect(
               container.querySelector(".m-vehicle-map__route-shape")
             ).toBeInTheDocument()
-
-            expect(changeApplicationState).not.toHaveBeenCalled()
           })
         })
 
@@ -835,8 +843,6 @@ describe("<MapPage />", () => {
               name: /route variant name/i,
             })
           ).toHaveTextContent("Shuttle")
-
-          expect(changeApplicationState).not.toHaveBeenCalled()
         })
       })
 
@@ -864,7 +870,6 @@ describe("<MapPage />", () => {
             screen.queryAllByRole("button", { name: /^run/ })
           ).toHaveLength(0)
           expect(getVehiclePropertiesCard()).toBeVisible()
-          expect(changeApplicationState).not.toBeCalled()
         })
       })
     })
