@@ -33,34 +33,28 @@ import {
 import { RouteShape, VehicleMarker } from "../mapMarkers"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
-const useMostRecentNonNullVehicle = (
-  selectedVehicleOrGhost: VehicleOrGhost | null
-) => {
-  const ref = useRef<VehicleOrGhost | null>(null)
-
-  if (selectedVehicleOrGhost !== null) {
-    ref.current = selectedVehicleOrGhost
-  }
-
-  return ref.current
-}
-
 const useMostRecentVehicleById = (
   socket: Socket | undefined,
   selectedVehicleId: string | null
 ) => {
+  const mostRecentVehicle = useRef<VehicleOrGhost | null>(null)
+
   const selectedVehicleOrGhost =
     useVehicleForId(socket, selectedVehicleId ?? null) || null
 
-  const vehicleRef = useMostRecentNonNullVehicle(selectedVehicleOrGhost)
-
-  // `selectedVehicleId` should change 'atomically', therefore, if it's `null`,
-  // there should be no result or api response, and should return `null`
-  if (selectedVehicleId === null) {
+  if (selectedVehicleId == null) {
+    mostRecentVehicle.current = null
+    // `selectedVehicleId` should change 'atomically', therefore, if it's `null`,
+    // there should be no result or api response, and should return `null`
     return null
   }
 
-  return vehicleRef
+  if (selectedVehicleOrGhost != null) {
+    // only set the newly selected vehicle as the most recent once it has loaded/is no longer null
+    mostRecentVehicle.current = selectedVehicleOrGhost
+  }
+
+  return mostRecentVehicle.current
 }
 
 const RouteVehicles = ({
