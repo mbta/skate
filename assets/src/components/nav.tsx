@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { OpenView, toggleMobileMenu } from "../state"
+import { toggleMobileMenu } from "../state"
 import appData from "../appData"
 import useScreenSize from "../hooks/useScreenSize"
 import LeftNav from "./nav/leftNav"
@@ -9,8 +9,6 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 
 interface Props {
   children?: React.ReactNode
-  pickerContainerIsVisible: boolean
-  openView: OpenView
   allowViews: boolean
 }
 

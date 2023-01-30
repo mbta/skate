@@ -30,9 +30,8 @@ import { mapModeForUser } from "../util/mapMode"
 export const AppRoutes = () => {
   useAppcues()
 
-  const [
-    { pickerContainerIsVisible, openView, routeTabs, selectedVehicleOrGhost },
-  ] = useContext(StateDispatchContext)
+  const [{ openView, routeTabs, selectedVehicleOrGhost }] =
+    useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
 
@@ -56,8 +55,6 @@ export const AppRoutes = () => {
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
         <div className="m-app__main">
           <Nav
-            pickerContainerIsVisible={pickerContainerIsVisible}
-            openView={openView}
             allowViews={
               location.pathname !== mapMode.path || mapMode.supportsRightPanel
             }
