@@ -75,7 +75,6 @@ $z-properties-panel-context: (
 @import "route_ladders";
 @import "route_picker";
 @import "route_pill";
-@import "route_properties_card";
 @import "schedule_adherence";
 @import "search_form";
 @import "search_page";
@@ -104,7 +103,6 @@ $component-active-bg: $color-eggplant-700;
 @import "../node_modules/bootstrap/scss/maps";
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
-@import "../node_modules/bootstrap/scss/accordion";
 @import "../node_modules/bootstrap/scss/forms";
 
 [hidden] {

@@ -151,14 +151,3 @@ $map-page-search-stub-size: 10px;
 
   cursor: default;
 }
-
-.m-map-page__map .m-route-properties-card {
-  position: absolute;
-  top: 8rem;
-  left: calc(env(safe-area-inset-left) + 60px - #{$map-page-search-stub-size});
-
-  // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
-  z-index: 7001;
-
-  cursor: default;
-}
