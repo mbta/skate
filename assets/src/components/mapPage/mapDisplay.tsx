@@ -179,7 +179,7 @@ type LiveSelectedEntity =
   | { type: SelectedEntityType.VEHICLE; vehicleOrGhost: VehicleOrGhost | null }
   | null
 
-const liveSelectedEntityData = (
+const useLiveSelectedEntity = (
   selectedEntity: SelectedEntity | null
 ): LiveSelectedEntity => {
   const { socket } = useContext(SocketContext)
@@ -213,7 +213,7 @@ const MapElementsNoSelection = ({
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-  }, [followerState.shouldFollow])
+  }, [followerState.shouldFollow, setStateClasses])
 
   return (
     <InterruptibleFollower
@@ -271,7 +271,7 @@ const SelectedVehicleDataLayers = ({
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-  }, [followerState.shouldFollow])
+  }, [followerState.shouldFollow, setStateClasses])
 
   return (
     <>
@@ -386,7 +386,7 @@ const MapDisplay = ({
   const stations = useStations()
 
   const liveSelectedEntity: LiveSelectedEntity | null =
-    liveSelectedEntityData(selectedEntity)
+    useLiveSelectedEntity(selectedEntity)
 
   const [_routePatterns, selectedEntityRoutePattern] =
     useSelectedEntityRoutePatterns(liveSelectedEntity)

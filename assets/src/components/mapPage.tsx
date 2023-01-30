@@ -104,10 +104,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   // #endregion
 
-  const setSelection = (selectedEntity: SelectedEntity | null) => {
-    dispatch(setSelectedEntity(selectedEntity))
-    setSearchOpen(selectedEntity === null)
-  }
+  const setSelection = useCallback(
+    (selectedEntity: SelectedEntity | null) => {
+      dispatch(setSelectedEntity(selectedEntity))
+      setSearchOpen(selectedEntity === null)
+    },
+    [dispatch, setSearchOpen]
+  )
 
   const selectVehicle = useCallback(
     (vehicleOrGhost: VehicleOrGhost | null) => {
