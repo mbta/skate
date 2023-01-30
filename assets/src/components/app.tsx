@@ -58,6 +58,9 @@ export const AppRoutes = () => {
           <Nav
             pickerContainerIsVisible={pickerContainerIsVisible}
             openView={openView}
+            allowViews={
+              location.pathname !== mapMode.path || mapMode.supportsRightPanel
+            }
           >
             <Routes>
               <Route

@@ -11,6 +11,7 @@ interface Props {
   children?: React.ReactNode
   pickerContainerIsVisible: boolean
   openView: OpenView
+  allowViews: boolean
 }
 
 const Nav: React.FC<Props> = ({ children }) => {

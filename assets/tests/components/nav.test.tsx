@@ -29,7 +29,11 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+        <Nav
+          pickerContainerIsVisible={true}
+          openView={OpenView.None}
+          allowViews={true}
+        >
           Hello, world!
         </Nav>
       </BrowserRouter>
@@ -46,7 +50,11 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+        <Nav
+          pickerContainerIsVisible={true}
+          openView={OpenView.None}
+          allowViews={true}
+        >
           Hello, world!
         </Nav>
       </BrowserRouter>
@@ -61,7 +69,11 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+        <Nav
+          pickerContainerIsVisible={true}
+          openView={OpenView.None}
+          allowViews={true}
+        >
           Hello, world!
         </Nav>
       </BrowserRouter>
@@ -76,7 +88,11 @@ describe("Nav", () => {
 
     render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+        <Nav
+          pickerContainerIsVisible={true}
+          openView={OpenView.None}
+          allowViews={true}
+        >
           Hello, world!
         </Nav>
       </BrowserRouter>
@@ -89,7 +105,11 @@ describe("Nav", () => {
   test("renders desktop nav content", () => {
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+        <Nav
+          pickerContainerIsVisible={true}
+          openView={OpenView.None}
+          allowViews={true}
+        >
           Hello, world!
         </Nav>
       </BrowserRouter>
