@@ -18,7 +18,7 @@ interface SelectedVehicle {
   vehicleId: VehicleId
 }
 
-interface SelectedRoute {
+export interface SelectedRoute {
   type: SelectedEntityType.ROUTE
 
   routeId: RouteId
