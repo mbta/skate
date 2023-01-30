@@ -32,6 +32,7 @@ interface Props {
   toggleMobileMenu?: () => void
   defaultToCollapsed: boolean
   dispatcherFlag: boolean
+  allowViews: boolean
   closePickerOnViewOpen?: boolean
 }
 
@@ -39,6 +40,7 @@ const LeftNav = ({
   toggleMobileMenu,
   defaultToCollapsed,
   dispatcherFlag,
+  allowViews,
   closePickerOnViewOpen,
 }: Props): JSX.Element => {
   const [{ openView, mobileMenuIsOpen, pickerContainerIsVisible }, dispatch] =
@@ -134,6 +136,7 @@ const LeftNav = ({
                   }
                 }}
                 collapsed={collapsed}
+                disabled={!allowViews}
               />
             </li>
           ) : null}
@@ -153,6 +156,7 @@ const LeftNav = ({
                 }
               }}
               collapsed={collapsed}
+              disabled={!allowViews}
             />
           </li>
           <li>
@@ -170,6 +174,7 @@ const LeftNav = ({
               }}
               name="Notifications"
               collapsed={collapsed}
+              disabled={!allowViews}
             />
           </li>
         </ul>
@@ -235,12 +240,14 @@ const ViewToggle = ({
   viewIsOpen,
   toggleView,
   collapsed,
+  disabled,
 }: {
   icon: JSX.Element
   name: string
   viewIsOpen: boolean
   toggleView: () => void
   collapsed: boolean
+  disabled?: boolean
 }): JSX.Element => {
   return (
     <button
@@ -250,6 +257,7 @@ const ViewToggle = ({
       }
       onClick={toggleView}
       title={name}
+      disabled={disabled}
     >
       {icon}
       {collapsed ? null : name}

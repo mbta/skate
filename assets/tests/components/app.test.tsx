@@ -13,6 +13,7 @@ import vehicleFactory from "../factories/vehicle"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
 import { MemoryRouter } from "react-router-dom"
+import appData from "../../src/appData"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -22,11 +23,17 @@ jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
-
 jest.mock("userTestGroups", () => ({
   __esModule: true,
   default: jest.fn(() => []),
 }))
+jest.mock("../../src/appData", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    userSettings: JSON.stringify({}),
+  })),
+}))
+
 describe("App", () => {
   test("renders", () => {
     const result = render(<App />)
@@ -179,6 +186,25 @@ describe("App", () => {
         screen.queryByRole("heading", { name: expectedPanelTitle })
       ).not.toBeInTheDocument()
     })
+  })
+
+  test("disables view nav entries on search map page", () => {
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+    ;(appData as jest.Mock).mockImplementationOnce(() => {
+      return {
+        dispatcherFlag: "true",
+      }
+    })
+
+    render(
+      <MemoryRouter initialEntries={["/map"]}>
+        <AppRoutes />
+      </MemoryRouter>
+    )
+
+    expect(screen.getByRole("button", { name: "Late View" })).toBeDisabled()
+    expect(screen.getByRole("button", { name: "Swings View" })).toBeDisabled()
+    expect(screen.getByRole("button", { name: "Notifications" })).toBeDisabled()
   })
 
   test("renders old search page for users not in map test group", () => {
