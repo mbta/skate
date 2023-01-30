@@ -19,7 +19,12 @@ import useVehiclesForRoute from "../hooks/useVehiclesForRoute"
 import { filterVehicles, isGhost, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { RouteId } from "../schedule"
-import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
+import {
+  SearchPageState,
+  SelectedEntity,
+  SelectedEntityType,
+  setSelectedVehicle,
+} from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import {
   BaseMap,
@@ -32,7 +37,6 @@ import {
 } from "./map"
 import { VehicleMarker } from "./mapMarkers"
 import RecentSearches from "./recentSearches"
-import RoutePropertiesCard from "./routePropertiesCard"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
@@ -69,12 +73,12 @@ const ToggleMobileDisplayButton = ({
 const SearchInputAndResults = ({
   searchPageState,
   mobileDisplay,
-  selectedVehicleId,
+  selectedEntity,
   selectVehicle,
 }: {
   searchPageState: SearchPageState
   mobileDisplay?: ReactElement
-  selectedVehicleId: string | null
+  selectedEntity: SelectedEntity | null
   selectVehicle: (vehicle: VehicleOrGhost | null) => void
 }): React.ReactElement => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
@@ -97,7 +101,11 @@ const SearchInputAndResults = ({
         thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
           <SearchResults
             vehicles={searchVehicles}
-            selectedVehicleId={selectedVehicleId}
+            selectedVehicleId={
+              (selectedEntity?.type === SelectedEntityType.VEHICLE &&
+                selectedEntity.vehicleId) ||
+              null
+            }
             onClick={selectVehicle}
           />
         ) : (
@@ -322,12 +330,10 @@ const MapDisplay = ({
 const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
       useContext(StateDispatchContext),
-    { selectedVehicleId = null } = searchPageState
+    { selectedEntity = null } = searchPageState
 
   // #region Search Drawer Logic
-  const [searchOpen, setSearchOpen] = useState<boolean>(
-    selectedVehicleId === null
-  )
+  const [searchOpen, setSearchOpen] = useState<boolean>(selectedEntity === null)
   const toggleSearchDrawer = useCallback(
     () => setSearchOpen((open) => !open),
     [setSearchOpen]
@@ -377,7 +383,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         <SearchInputAndResults
           {...{
             selectVehicle: selectVehicle,
-            selectedVehicleId,
+            selectedEntity,
             searchPageState,
           }}
           mobileDisplay={
@@ -390,7 +396,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       </div>
       <div className="m-map-page__map">
         <MapDisplay
-          selectedVehicleId={selectedVehicleId}
+          selectedVehicleId={
+            (selectedEntity?.type === SelectedEntityType.VEHICLE &&
+              selectedEntity.vehicleId) ||
+            null
+          }
           setSelectedVehicle={selectVehicle}
           showVpc={!searchOpen}
         />

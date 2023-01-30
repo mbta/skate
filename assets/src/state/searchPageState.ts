@@ -6,12 +6,32 @@ import {
   SearchQuery,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
+import { RouteId, RoutePatternId } from "../schedule"
+
+export enum SelectedEntityType {
+  VEHICLE = 1,
+  ROUTE,
+}
+
+interface SelectedVehicle {
+  type: SelectedEntityType.VEHICLE
+  vehicleId: VehicleId
+}
+
+interface SelectedRoute {
+  type: SelectedEntityType.ROUTE
+
+  routeId: RouteId
+  routePatternId: RoutePatternId
+}
+
+export type SelectedEntity = SelectedVehicle | SelectedRoute
 
 export interface SearchPageState {
   query: SearchQuery
   isActive: boolean
   savedQueries: SavedSearchQuery[]
-  selectedVehicleId?: VehicleId | null
+  selectedEntity?: SelectedEntity | null
 }
 
 export const initialSearchPageState = {
@@ -56,14 +76,14 @@ export const submitSearch = (): SubmitSearchAction => ({
 
 interface SelectVehicleAction {
   type: "SELECT_SEARCH_VEHICLE"
-  payload: { vehicleId: VehicleId | null }
+  payload: { vehicleId: VehicleId } | null
 }
 
 export const setSelectedVehicle = (
   vehicleId: VehicleId | null
 ): SelectVehicleAction => ({
   type: "SELECT_SEARCH_VEHICLE",
-  payload: { vehicleId: vehicleId },
+  payload: vehicleId ? { vehicleId: vehicleId } : null,
 })
 
 export type Action =
@@ -109,7 +129,12 @@ export const reducer = (
     case "SELECT_SEARCH_VEHICLE":
       return {
         ...state,
-        selectedVehicleId: action.payload.vehicleId,
+        selectedEntity: action.payload
+          ? {
+              type: SelectedEntityType.VEHICLE,
+              vehicleId: action.payload.vehicleId,
+            }
+          : null,
       }
   }
   return state

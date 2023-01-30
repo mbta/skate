@@ -12,7 +12,10 @@ import { useTripShape } from "../../src/hooks/useShapes"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
 import { useStations } from "../../src/hooks/useStations"
 import { LocationType } from "../../src/models/stopData"
-import { SearchPageState } from "../../src/state/searchPageState"
+import {
+  SearchPageState,
+  SelectedEntityType,
+} from "../../src/state/searchPageState"
 import stateFactory from "../factories/applicationState"
 import ghostFactory from "../factories/ghost"
 import { RunFactory, runIdFactory } from "../factories/run"
@@ -176,7 +179,10 @@ describe("<MapPage />", () => {
         <StateDispatchProvider
           state={stateFactory.build({
             searchPageState: {
-              selectedVehicleId: vehicle.id,
+              selectedEntity: {
+                type: SelectedEntityType.VEHICLE,
+                vehicleId: vehicle.id,
+              },
             },
           })}
           dispatch={jest.fn()}
@@ -240,7 +246,10 @@ describe("<MapPage />", () => {
     const mockDispatch = jest.fn()
     const state = stateFactory.build({
       searchPageState: searchPageStateFactory.build({
-        selectedVehicleId: vehicle.id,
+        selectedEntity: {
+          type: SelectedEntityType.VEHICLE,
+          vehicleId: vehicle.id,
+        },
       }),
     })
 
@@ -361,7 +370,10 @@ describe("<MapPage />", () => {
           searchPageState: searchPageStateFactory.build({
             query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
             isActive: true,
-            selectedVehicleId: vehicle.id,
+            selectedEntity: {
+              type: SelectedEntityType.VEHICLE,
+              vehicleId: vehicle.id,
+            },
           }),
         })}
       >
@@ -397,7 +409,10 @@ describe("<MapPage />", () => {
     const shape = shapeFactory.build()
     const activeSearch: SearchPageState = searchPageStateFactory.build({
       query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
-      selectedVehicleId: vehicle.id,
+      selectedEntity: {
+        type: SelectedEntityType.VEHICLE,
+        vehicleId: vehicle.id,
+      },
     })
 
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
@@ -525,7 +540,10 @@ describe("<MapPage />", () => {
           <RealDispatchWrapper
             initialState={stateFactory.build({
               searchPageState: {
-                selectedVehicleId: vehicle.id,
+                selectedEntity: {
+                  type: SelectedEntityType.VEHICLE,
+                  vehicleId: vehicle.id,
+                },
               },
               userSettings: {
                 ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
@@ -555,7 +573,10 @@ describe("<MapPage />", () => {
           <StateDispatchProvider
             state={stateFactory.build({
               searchPageState: searchPageStateFactory.build({
-                selectedVehicleId: vehicle.id,
+                selectedEntity: {
+                  type: SelectedEntityType.VEHICLE,
+                  vehicleId: vehicle.id,
+                },
               }),
             })}
             dispatch={jest.fn()}
@@ -708,7 +729,10 @@ describe("<MapPage />", () => {
         const selectedStateFactory = (selectedVehicleId: string) =>
           stateFactory.params({
             searchPageState: {
-              selectedVehicleId,
+              selectedEntity: {
+                type: SelectedEntityType.VEHICLE,
+                vehicleId: selectedVehicleId,
+              },
             },
           })
 
@@ -851,7 +875,10 @@ describe("<MapPage />", () => {
             <StateDispatchProvider
               state={stateFactory.build({
                 searchPageState: {
-                  selectedVehicleId: ghost.id,
+                  selectedEntity: {
+                    type: SelectedEntityType.VEHICLE,
+                    vehicleId: ghost.id,
+                  },
                 },
               })}
               dispatch={changeApplicationState}
