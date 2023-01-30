@@ -1,17 +1,10 @@
 import { Bounds, Point } from "leaflet"
-import { Socket } from "phoenix"
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { SocketContext } from "../../contexts/socketContext"
+import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
 import useRoutePatterns from "../../hooks/useRoutePatterns"
 import useSocket from "../../hooks/useSocket"
 import { useStations } from "../../hooks/useStations"
-import useVehicleForId from "../../hooks/useVehicleForId"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { isVehicle, isGhost, filterVehicles } from "../../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../../realtime"
@@ -32,30 +25,6 @@ import {
 } from "../map"
 import { RouteShape, VehicleMarker } from "../mapMarkers"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
-
-const useMostRecentVehicleById = (
-  socket: Socket | undefined,
-  selectedVehicleId: string | null
-) => {
-  const mostRecentVehicle = useRef<VehicleOrGhost | null>(null)
-
-  const selectedVehicleOrGhost =
-    useVehicleForId(socket, selectedVehicleId ?? null) || null
-
-  if (selectedVehicleId == null) {
-    mostRecentVehicle.current = null
-    // `selectedVehicleId` should change 'atomically', therefore, if it's `null`,
-    // there should be no result or api response, and should return `null`
-    return null
-  }
-
-  if (selectedVehicleOrGhost != null) {
-    // only set the newly selected vehicle as the most recent once it has loaded/is no longer null
-    mostRecentVehicle.current = selectedVehicleOrGhost
-  }
-
-  return mostRecentVehicle.current
-}
 
 const RouteVehicles = ({
   selectedVehicleRoute,
