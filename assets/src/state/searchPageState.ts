@@ -79,11 +79,22 @@ interface SelectVehicleAction {
   payload: { vehicleId: VehicleId } | null
 }
 
+interface SelectEntityAction {
+  type: "SELECT_SEARCH_ENTITY"
+  payload: SelectedEntity | null
+}
+
 export const setSelectedVehicle = (
   vehicleId: VehicleId | null
 ): SelectVehicleAction => ({
   type: "SELECT_SEARCH_VEHICLE",
   payload: vehicleId ? { vehicleId: vehicleId } : null,
+})
+export const setSelectedEntity = (
+  selectedEntity: SelectedEntity | null
+): SelectEntityAction => ({
+  type: "SELECT_SEARCH_ENTITY",
+  payload: selectedEntity,
 })
 
 export type Action =
@@ -91,6 +102,7 @@ export type Action =
   | SetSearchPropertyAction
   | SubmitSearchAction
   | SelectVehicleAction
+  | SelectEntityAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -135,6 +147,12 @@ export const reducer = (
               vehicleId: action.payload.vehicleId,
             }
           : null,
+      }
+
+    case "SELECT_SEARCH_ENTITY":
+      return {
+        ...state,
+        selectedEntity: action.payload,
       }
   }
   return state

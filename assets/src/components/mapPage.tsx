@@ -8,7 +8,7 @@ import {
   SearchPageState,
   SelectedEntity,
   SelectedEntityType,
-  setSelectedVehicle,
+  setSelectedEntity,
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import MapDisplay from "./mapPage/mapDisplay"
@@ -104,12 +104,21 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   // #endregion
 
+  const setSelection = (selectedEntity: SelectedEntity | null) => {
+    dispatch(setSelectedEntity(selectedEntity))
+    setSearchOpen(selectedEntity === null)
+  }
+
   const selectVehicle = useCallback(
-    (vehicle: VehicleOrGhost | null) => {
-      dispatch(setSelectedVehicle(vehicle?.id || null))
-      setSearchOpen(vehicle === null)
+    (vehicleOrGhost: VehicleOrGhost | null) => {
+      vehicleOrGhost
+        ? setSelection({
+            type: SelectedEntityType.VEHICLE,
+            vehicleId: vehicleOrGhost.id,
+          })
+        : setSelection(null)
     },
-    [setSearchOpen, dispatch]
+    [setSelection]
   )
 
   // #region mobile display
@@ -161,8 +170,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       <div className="m-map-page__map">
         <MapDisplay
           selectedEntity={selectedEntity}
-          setSelectedVehicle={selectVehicle}
-          showVpc={!searchOpen}
+          setSelection={setSelection}
+          showSelectionCard={!searchOpen}
         />
       </div>
     </div>

@@ -224,19 +224,31 @@ const MapElementsNoSelection = ({
   )
 }
 
-const MapElementsSelectedVehicle = ({
+const SelectionCardContainer = ({
+  children,
+}: {
+  children: JSX.Element
+}): JSX.Element => {
+  return (
+    <div className="m-map-display__selected-entity-card-container">
+      {children}
+    </div>
+  )
+}
+
+const SelectedVehicleDataLayers = ({
   vehicleOrGhost: selectedVehicleOrGhost,
-  showVpc,
+  showSelectionCard,
   deleteSelection,
   routePattern,
-  setSelectedVehicle,
+  selectVehicle,
   setStateClasses,
 }: {
   vehicleOrGhost: VehicleOrGhost | null
-  showVpc: boolean
+  showSelectionCard: boolean
   routePattern: RoutePattern | null
   deleteSelection: () => void
-  setSelectedVehicle: (vehicle: Vehicle) => void
+  selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
   const position =
@@ -265,11 +277,13 @@ const MapElementsSelectedVehicle = ({
     <>
       {selectedVehicleOrGhost && (
         <>
-          {showVpc && (
-            <VehiclePropertiesCard
-              vehicleOrGhost={selectedVehicleOrGhost}
-              onClose={deleteSelection}
-            />
+          {showSelectionCard && (
+            <SelectionCardContainer>
+              <VehiclePropertiesCard
+                vehicleOrGhost={selectedVehicleOrGhost}
+                onClose={deleteSelection}
+              />
+            </SelectionCardContainer>
           )}
           {routePatternShape && <RouteShape shape={routePatternShape} />}
           {isVehicle(selectedVehicleOrGhost) &&
@@ -284,7 +298,7 @@ const MapElementsSelectedVehicle = ({
               <RouteVehicles
                 selectedVehicleRoute={selectedVehicleOrGhost.routeId}
                 selectedVehicleId={selectedVehicleOrGhost.id}
-                onPrimaryVehicleSelect={setSelectedVehicle}
+                onPrimaryVehicleSelect={selectVehicle}
               />
             ))}
         </>
@@ -299,33 +313,39 @@ const MapElementsSelectedVehicle = ({
   )
 }
 
-const MapDataLayers = ({
+const SelectionDataLayers = ({
   liveSelectedEntity,
-  showVpc,
+  showSelectionCard,
   deleteSelection,
   selectedRoutePattern,
-  setSelectedVehicle,
+  setSelection,
   setStateClasses,
 }: {
   liveSelectedEntity: LiveSelectedEntity | null
-  showVpc: boolean
+  showSelectionCard: boolean
   selectedRoutePattern: RoutePattern | null
   deleteSelection: () => void
-  setSelectedVehicle: (vehicle: Vehicle) => void
+  setSelection: (selectedEntity: SelectedEntity | null) => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.VEHICLE:
       return (
-        <MapElementsSelectedVehicle
+        <SelectedVehicleDataLayers
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
-          showVpc={showVpc}
+          showSelectionCard={showSelectionCard}
           routePattern={selectedRoutePattern}
           deleteSelection={deleteSelection}
-          setSelectedVehicle={setSelectedVehicle}
+          selectVehicle={(vehicleOrGhost: VehicleOrGhost) =>
+            setSelection({
+              type: SelectedEntityType.VEHICLE,
+              vehicleId: vehicleOrGhost.id,
+            })
+          }
           setStateClasses={setStateClasses}
         />
       )
+    // TODO: handle SelectedEntityType.ROUTE
     default:
       return <MapElementsNoSelection setStateClasses={setStateClasses} />
   }
@@ -352,16 +372,16 @@ const useSelectedEntityRoutePatterns = (
 
 const MapDisplay = ({
   selectedEntity,
-  setSelectedVehicle,
-  showVpc,
+  setSelection,
+  showSelectionCard,
 }: {
   selectedEntity: SelectedEntity | null
-  setSelectedVehicle: React.Dispatch<VehicleOrGhost | null>
-  showVpc: boolean
+  setSelection: (selectedEntity: SelectedEntity | null) => void
+  showSelectionCard: boolean
 }) => {
   const deleteSelection = useCallback(() => {
-    setSelectedVehicle && setSelectedVehicle(null)
-  }, [setSelectedVehicle])
+    setSelection && setSelection(null)
+  }, [setSelection])
 
   const stations = useStations()
 
@@ -391,11 +411,11 @@ const MapDisplay = ({
     >
       <>
         {
-          <MapDataLayers
+          <SelectionDataLayers
             liveSelectedEntity={liveSelectedEntity}
-            showVpc={showVpc}
+            showSelectionCard={showSelectionCard}
             deleteSelection={deleteSelection}
-            setSelectedVehicle={setSelectedVehicle}
+            setSelection={setSelection}
             selectedRoutePattern={selectedEntityRoutePattern}
             setStateClasses={setStateClasses}
           />
