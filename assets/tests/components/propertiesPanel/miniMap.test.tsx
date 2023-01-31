@@ -40,6 +40,11 @@ describe("MiniMap", () => {
     })
     test("Map includes link to open vehicle in search map page", async () => {
       const mockDispatch = jest.fn()
+      const originalFS = window.FS
+      window.FS = { event: jest.fn(), identify: jest.fn() }
+      afterEach(() => {
+        window.FS = originalFS
+      })
 
       render(
         <MemoryRouter initialEntries={["/"]}>
@@ -51,6 +56,9 @@ describe("MiniMap", () => {
       expect(screen.getByRole("link", { name: "Open Map" })).toBeInTheDocument()
       await userEvent.click(screen.getByRole("link", { name: "Open Map" }))
       expect(mockDispatch).toHaveBeenCalledWith(setSelectedVehicle(vehicle.id))
+      expect(window.FS!.event).toHaveBeenCalledWith(
+        "Map opened from VPP mini map"
+      )
     })
 
     test("Map doesn't include fullscreen button", () => {
