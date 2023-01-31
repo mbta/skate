@@ -38,7 +38,7 @@ import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleOrGhost } from "../../src/realtime"
 import { RouteId, Shape, TripId } from "../../src/schedule"
-import { closeView } from "../../src/state"
+import { closeView, OpenView } from "../../src/state"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -194,12 +194,31 @@ describe("<MapPage />", () => {
     const dispatch = jest.fn()
 
     render(
-      <StateDispatchProvider state={stateFactory.build()} dispatch={dispatch}>
+      <StateDispatchProvider
+        state={stateFactory.build({ openView: OpenView.Swings })}
+        dispatch={dispatch}
+      >
         <MapPage />
       </StateDispatchProvider>
     )
 
     expect(dispatch).toHaveBeenCalledWith(closeView())
+  })
+
+  test("doesn't close VPP if open", () => {
+    const selectedVehicle = vehicleFactory.build()
+    const dispatch = jest.fn()
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({ selectedVehicleOrGhost: selectedVehicle })}
+        dispatch={dispatch}
+      >
+        <MapPage />
+      </StateDispatchProvider>
+    )
+
+    expect(dispatch).not.toHaveBeenCalledWith(closeView())
   })
 
   test("renders stations on zoom", async () => {

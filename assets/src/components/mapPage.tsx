@@ -19,7 +19,7 @@ import useVehiclesForRoute from "../hooks/useVehiclesForRoute"
 import { filterVehicles, isGhost, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { RouteId } from "../schedule"
-import { closeView } from "../state"
+import { closeView, OpenView } from "../state"
 import { SearchPageState, setSelectedVehicle } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import {
@@ -320,13 +320,16 @@ const MapDisplay = ({
 // #endregion
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
+  const [{ searchPageState, mobileMenuIsOpen, openView }, dispatch] =
       useContext(StateDispatchContext),
     { selectedVehicleId = null } = searchPageState
 
   useEffect(() => {
-    dispatch(closeView())
-  }, [dispatch])
+    // don't dispatch closeView if the VPP is open
+    if (openView !== OpenView.None) {
+      dispatch(closeView())
+    }
+  }, [dispatch, openView])
 
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(
