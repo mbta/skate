@@ -20,7 +20,7 @@ config :skate,
 # before starting your production server.
 config :skate, SkateWeb.Endpoint,
   server: true,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
+  http: [:inet6, port: System.get_env("PORT") || 4000, compress: true],
   url: [host: {:system, "HOST"}, port: 80],
   static_url: [
     scheme: {:system, "STATIC_SCHEME"},
