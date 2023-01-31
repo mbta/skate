@@ -22,7 +22,7 @@ import { RouteId } from "../../../src/schedule"
 import MapDisplay from "../../../src/components/mapPage/mapDisplay"
 import { mockUserRoutePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
 
-jest.mock("../../../src/hooks/useRoutePatternsById", () => ({
+jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }))

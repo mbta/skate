@@ -46,7 +46,7 @@ jest.mock("../../src/hooks/useSearchResults", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../src/hooks/useRoutePatternsById", () => ({
+jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }))

@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from "react"
-import useRoutePatternsById from "../../src/hooks/useRoutePatternsById"
+import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { VehicleOrGhost } from "../../src/realtime"
 import { routePatternFactory } from "../factories/routePattern"
 import stopFactory from "../factories/stop"
@@ -55,7 +55,7 @@ export const mockUserRoutePatternsByIdForVehicles = (
     )
   )
 
-  ;(useRoutePatternsById as jest.Mock).mockReturnValue(
+  ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue(
     routePatternIdentifiers
       .map(([routePatternId, routeId]) =>
         routePatternFactory.build({

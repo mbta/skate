@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { fetchRoutePatterns } from "../api"
 import { ByRoutePatternId, RouteId, RoutePattern } from "../schedule"
 
-const useRoutePatternsById = (
+const usePatternsByIdForRoute = (
   routeId: RouteId | null
 ): ByRoutePatternId<RoutePattern> | null => {
   const [routePatterns, setRoutePatterns] = useState<RoutePattern[] | null>(
@@ -31,4 +31,4 @@ const useRoutePatternsById = (
       }, {})
 }
 
-export default useRoutePatternsById
+export default usePatternsByIdForRoute

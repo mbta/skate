@@ -2,7 +2,7 @@ import { Bounds, Point } from "leaflet"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
-import useRoutePatternsById from "../../hooks/useRoutePatternsById"
+import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
 import useSocket from "../../hooks/useSocket"
 import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
@@ -345,7 +345,7 @@ const MapDisplay = ({
     routePatternIdentifierForSelection(liveSelectedEntity)
 
   const allPatternsForRoute: ByRoutePatternId<RoutePattern> | null =
-    useRoutePatternsById(routePatternIdentifier?.routeId || null)
+    usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
 
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
