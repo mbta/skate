@@ -15,11 +15,13 @@ const SearchForm = ({
   onClear,
   inputTitle,
   formTitle,
+  submitEvent,
 }: {
   onSubmit?: () => void
   onClear?: () => void
   inputTitle?: string
   formTitle?: string
+  submitEvent?: string
 }) => {
   const [
     {
@@ -49,6 +51,10 @@ const SearchForm = ({
 
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
+
+    if (submitEvent && window.FS) {
+      window.FS.event(submitEvent)
+    }
 
     dispatch(submitSearch())
     if (onSubmit) {

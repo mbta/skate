@@ -72,7 +72,11 @@ const SearchInputAndResults = ({
   return (
     <>
       <div className="m-map-page__input">
-        <SearchForm formTitle="Search Map" inputTitle="Search Map Query" />
+        <SearchForm
+          formTitle="Search Map"
+          inputTitle="Search Map Query"
+          submitEvent="Search submitted from map page"
+        />
         {mobileDisplay}
       </div>
 
