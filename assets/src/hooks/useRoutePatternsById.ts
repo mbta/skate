@@ -9,10 +9,18 @@ const useRoutePatternsById = (
     null
   )
   useEffect(() => {
+    let canceled = false
     if (routeId === null) {
       setRoutePatterns([])
     } else {
-      fetchRoutePatterns(routeId).then(setRoutePatterns)
+      fetchRoutePatterns(routeId).then((routePatterns) => {
+        if (!canceled) {
+          setRoutePatterns(routePatterns)
+        }
+      })
+    }
+    return () => {
+      canceled = true
     }
   }, [routeId])
 
