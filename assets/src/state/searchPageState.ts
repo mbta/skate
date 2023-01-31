@@ -9,17 +9,17 @@ import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
 
 export enum SelectedEntityType {
-  VEHICLE = 1,
-  ROUTE,
+  Vehicle = 1,
+  Route,
 }
 
 interface SelectedVehicle {
-  type: SelectedEntityType.VEHICLE
+  type: SelectedEntityType.Vehicle
   vehicleId: VehicleId
 }
 
 export interface SelectedRoute {
-  type: SelectedEntityType.ROUTE
+  type: SelectedEntityType.Route
 
   routeId: RouteId
   routePatternId: RoutePatternId
@@ -143,7 +143,7 @@ export const reducer = (
         ...state,
         selectedEntity: action.payload
           ? {
-              type: SelectedEntityType.VEHICLE,
+              type: SelectedEntityType.Vehicle,
               vehicleId: action.payload.vehicleId,
             }
           : null,

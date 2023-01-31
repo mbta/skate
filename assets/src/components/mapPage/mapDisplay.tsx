@@ -121,12 +121,12 @@ const selectedEntityRoutePattern = (
   selectedEntity: LiveSelectedEntity | null
 ): { routeId: RouteId; routePatternId: RoutePatternId | null } | null => {
   switch (selectedEntity?.type) {
-    case SelectedEntityType.ROUTE:
+    case SelectedEntityType.Route:
       return {
         routeId: selectedEntity.routeId,
         routePatternId: selectedEntity.routePatternId,
       }
-    case SelectedEntityType.VEHICLE:
+    case SelectedEntityType.Vehicle:
       return selectedEntity.vehicleOrGhost?.routeId
         ? {
             routeId: selectedEntity.vehicleOrGhost.routeId,
@@ -139,7 +139,7 @@ const selectedEntityRoutePattern = (
 }
 type LiveSelectedEntity =
   | SelectedRoute
-  | { type: SelectedEntityType.VEHICLE; vehicleOrGhost: VehicleOrGhost | null }
+  | { type: SelectedEntityType.Vehicle; vehicleOrGhost: VehicleOrGhost | null }
   | null
 
 const useLiveSelectedEntity = (
@@ -149,18 +149,18 @@ const useLiveSelectedEntity = (
 
   const selectedVehicleOrGhost = useMostRecentVehicleById(
     socket,
-    (selectedEntity?.type === SelectedEntityType.VEHICLE &&
+    (selectedEntity?.type === SelectedEntityType.Vehicle &&
       selectedEntity.vehicleId) ||
       null
   )
 
   switch (selectedEntity?.type) {
-    case SelectedEntityType.VEHICLE:
+    case SelectedEntityType.Vehicle:
       return {
-        type: SelectedEntityType.VEHICLE,
+        type: SelectedEntityType.Vehicle,
         vehicleOrGhost: selectedVehicleOrGhost,
       }
-    case SelectedEntityType.ROUTE:
+    case SelectedEntityType.Route:
       return selectedEntity // no live updates for route pattern
     default:
       return null
@@ -292,7 +292,7 @@ const SelectionDataLayers = ({
   setStateClasses: (classes: string | undefined) => void
 }) => {
   switch (liveSelectedEntity?.type) {
-    case SelectedEntityType.VEHICLE:
+    case SelectedEntityType.Vehicle:
       return (
         <SelectedVehicleDataLayers
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
@@ -301,7 +301,7 @@ const SelectionDataLayers = ({
           deleteSelection={deleteSelection}
           selectVehicle={(vehicleOrGhost: VehicleOrGhost) =>
             setSelection({
-              type: SelectedEntityType.VEHICLE,
+              type: SelectedEntityType.Vehicle,
               vehicleId: vehicleOrGhost.id,
             })
           }

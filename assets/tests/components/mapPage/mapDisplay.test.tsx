@@ -161,7 +161,7 @@ describe("<MapPage />", () => {
     render(
       <MapDisplay
         selectedEntity={{
-          type: SelectedEntityType.VEHICLE,
+          type: SelectedEntityType.Vehicle,
           vehicleId: vehicle.id,
         }}
         setSelection={mockSetSelection}
@@ -172,7 +172,7 @@ describe("<MapPage />", () => {
     await userEvent.click(screen.getByRole("button", { name: runId! }))
 
     expect(mockSetSelection).toHaveBeenCalledWith({
-      type: SelectedEntityType.VEHICLE,
+      type: SelectedEntityType.Vehicle,
       vehicleId: nextVehicle.id,
     })
   })
@@ -194,7 +194,7 @@ describe("<MapPage />", () => {
       const { container } = render(
         <MapDisplay
           selectedEntity={{
-            type: SelectedEntityType.VEHICLE,
+            type: SelectedEntityType.Vehicle,
             vehicleId: vehicle.id,
           }}
           setSelection={setSelectedEntityMock}
@@ -227,7 +227,7 @@ describe("<MapPage />", () => {
       const { container } = render(
         <MapDisplay
           selectedEntity={{
-            type: SelectedEntityType.VEHICLE,
+            type: SelectedEntityType.Vehicle,
             vehicleId: vehicle.id,
           }}
           setSelection={setSelectedEntityMock}
@@ -265,7 +265,7 @@ describe("<MapPage />", () => {
             const { container } = render(
               <MapDisplay
                 selectedEntity={{
-                  type: SelectedEntityType.VEHICLE,
+                  type: SelectedEntityType.Vehicle,
                   vehicleId: selectedVehicle.id,
                 }}
                 setSelection={jest.fn()}
@@ -297,7 +297,7 @@ describe("<MapPage />", () => {
           const { container } = render(
             <MapDisplay
               selectedEntity={{
-                type: SelectedEntityType.VEHICLE,
+                type: SelectedEntityType.Vehicle,
                 vehicleId: selectedVehicle.id,
               }}
               setSelection={jest.fn()}
@@ -335,7 +335,7 @@ describe("<MapPage />", () => {
           render(
             <MapDisplay
               selectedEntity={{
-                type: SelectedEntityType.VEHICLE,
+                type: SelectedEntityType.Vehicle,
                 vehicleId: ghost.id,
               }}
               setSelection={jest.fn()}

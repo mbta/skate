@@ -199,7 +199,7 @@ describe("<MapPage />", () => {
           state={stateFactory.build({
             searchPageState: {
               selectedEntity: {
-                type: SelectedEntityType.VEHICLE,
+                type: SelectedEntityType.Vehicle,
                 vehicleId: vehicle.id,
               },
             },
@@ -262,7 +262,7 @@ describe("<MapPage />", () => {
     const state = stateFactory.build({
       searchPageState: searchPageStateFactory.build({
         selectedEntity: {
-          type: SelectedEntityType.VEHICLE,
+          type: SelectedEntityType.Vehicle,
           vehicleId: vehicle.id,
         },
       }),
@@ -385,7 +385,7 @@ describe("<MapPage />", () => {
             query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
             isActive: true,
             selectedEntity: {
-              type: SelectedEntityType.VEHICLE,
+              type: SelectedEntityType.Vehicle,
               vehicleId: vehicle.id,
             },
           }),
@@ -423,7 +423,7 @@ describe("<MapPage />", () => {
     const activeSearch: SearchPageState = searchPageStateFactory.build({
       query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
       selectedEntity: {
-        type: SelectedEntityType.VEHICLE,
+        type: SelectedEntityType.Vehicle,
         vehicleId: vehicle.id,
       },
     })
@@ -554,7 +554,7 @@ describe("<MapPage />", () => {
             initialState={stateFactory.build({
               searchPageState: {
                 selectedEntity: {
-                  type: SelectedEntityType.VEHICLE,
+                  type: SelectedEntityType.Vehicle,
                   vehicleId: vehicle.id,
                 },
               },
@@ -587,7 +587,7 @@ describe("<MapPage />", () => {
             state={stateFactory.build({
               searchPageState: searchPageStateFactory.build({
                 selectedEntity: {
-                  type: SelectedEntityType.VEHICLE,
+                  type: SelectedEntityType.Vehicle,
                   vehicleId: vehicle.id,
                 },
               }),
@@ -739,7 +739,7 @@ describe("<MapPage />", () => {
           stateFactory.params({
             searchPageState: {
               selectedEntity: {
-                type: SelectedEntityType.VEHICLE,
+                type: SelectedEntityType.Vehicle,
                 vehicleId: selectedVehicleId,
               },
             },
@@ -878,7 +878,7 @@ describe("<MapPage />", () => {
               state={stateFactory.build({
                 searchPageState: {
                   selectedEntity: {
-                    type: SelectedEntityType.VEHICLE,
+                    type: SelectedEntityType.Vehicle,
                     vehicleId: ghost.id,
                   },
                 },

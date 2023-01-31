@@ -101,12 +101,12 @@ describe("reducer", () => {
   test("setSelectedVehicle sets the selected vehicle", () => {
     const initialState: SearchPageState = {
       ...initialSearchPageState,
-      selectedEntity: { type: SelectedEntityType.VEHICLE, vehicleId: "123" },
+      selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
     }
 
     const updatedState = reducer(initialState, setSelectedVehicle("456"))
     expect(updatedState.selectedEntity).toEqual({
-      type: SelectedEntityType.VEHICLE,
+      type: SelectedEntityType.Vehicle,
       vehicleId: "456",
     })
   })
@@ -114,7 +114,7 @@ describe("reducer", () => {
   test("can setSelectedVehicle to null", () => {
     const initialState: SearchPageState = {
       ...initialSearchPageState,
-      selectedEntity: { type: SelectedEntityType.VEHICLE, vehicleId: "123" },
+      selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
     }
 
     const updatedState = reducer(initialState, setSelectedVehicle(null))
@@ -124,7 +124,7 @@ describe("reducer", () => {
   test("can setSelectedEntity to null", () => {
     const initialState: SearchPageState = {
       ...initialSearchPageState,
-      selectedEntity: { type: SelectedEntityType.VEHICLE, vehicleId: "123" },
+      selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
     }
 
     const updatedState = reducer(initialState, setSelectedEntity(null))
@@ -138,10 +138,10 @@ describe("reducer", () => {
 
     const updatedState = reducer(
       initialState,
-      setSelectedEntity({ type: SelectedEntityType.VEHICLE, vehicleId: "123" })
+      setSelectedEntity({ type: SelectedEntityType.Vehicle, vehicleId: "123" })
     )
     expect(updatedState.selectedEntity).toEqual({
-      type: SelectedEntityType.VEHICLE,
+      type: SelectedEntityType.Vehicle,
       vehicleId: "123",
     })
   })
@@ -154,13 +154,13 @@ describe("reducer", () => {
     const updatedState = reducer(
       initialState,
       setSelectedEntity({
-        type: SelectedEntityType.ROUTE,
+        type: SelectedEntityType.Route,
         routeId: "66",
         routePatternId: "66-_-0",
       })
     )
     expect(updatedState.selectedEntity).toEqual({
-      type: SelectedEntityType.ROUTE,
+      type: SelectedEntityType.Route,
       routeId: "66",
       routePatternId: "66-_-0",
     })

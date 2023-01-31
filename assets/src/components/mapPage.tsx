@@ -77,7 +77,7 @@ const SearchInputAndResults = ({
           <SearchResults
             vehicles={searchVehicles}
             selectedVehicleId={
-              (selectedEntity?.type === SelectedEntityType.VEHICLE &&
+              (selectedEntity?.type === SelectedEntityType.Vehicle &&
                 selectedEntity.vehicleId) ||
               null
             }
@@ -116,7 +116,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     (vehicleOrGhost: VehicleOrGhost | null) => {
       vehicleOrGhost
         ? setSelection({
-            type: SelectedEntityType.VEHICLE,
+            type: SelectedEntityType.Vehicle,
             vehicleId: vehicleOrGhost.id,
           })
         : setSelection(null)
