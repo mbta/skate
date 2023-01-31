@@ -295,6 +295,11 @@ defmodule Schedule.Data do
     end)
   end
 
+  @spec route_patterns_for_route(t(), Route.id()) :: [RoutePattern.t()]
+  def route_patterns_for_route(%__MODULE__{route_patterns: route_patterns}, route_id) do
+    Enum.filter(route_patterns, &(&1.route_id == route_id))
+  end
+
   @spec run_for_trip(t(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
   def run_for_trip(%__MODULE__{runs: runs, trips: trips}, run_id, trip_id) do
     trip = trips[trip_id]

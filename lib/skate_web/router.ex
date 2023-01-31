@@ -91,6 +91,7 @@ defmodule SkateWeb.Router do
 
     get "/routes", RouteController, :index
     get "/routes/:route_id", RouteController, :show
+    get "/route_patterns/route/:route_id", RoutePatternController, :route
     get "/shapes/route/:route_id", ShapeController, :route
     get "/shapes/trip/:trip_id", ShapeController, :trip
     get "/stops/stations", StopController, :stations

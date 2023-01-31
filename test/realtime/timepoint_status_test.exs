@@ -291,6 +291,7 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
+               route_pattern_id: "28-_-1",
                direction_id: 0,
                trip_id: "0",
                run_id: "run",
@@ -312,6 +313,7 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
+               route_pattern_id: "28-_-1",
                direction_id: 0,
                trip_id: "0",
                run_id: "run",
@@ -333,6 +335,7 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
+               route_pattern_id: "28-_-1",
                direction_id: 1,
                trip_id: "1",
                run_id: "run",
@@ -351,6 +354,7 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
+               route_pattern_id: "28-_-1",
                direction_id: 1,
                trip_id: "1",
                run_id: "run",
@@ -372,6 +376,7 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
+               route_pattern_id: "28-_-1",
                direction_id: 1,
                trip_id: "1",
                run_id: "run",
@@ -393,6 +398,7 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
+               route_pattern_id: "28-_-1",
                direction_id: 1,
                trip_id: "1",
                run_id: "run",

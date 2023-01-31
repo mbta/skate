@@ -175,6 +175,20 @@ defmodule Schedule do
     )
   end
 
+  @spec route_patterns_for_route(Route.id()) :: [RoutePattern.t()]
+  @spec route_patterns_for_route(Route.id(), persistent_term_key()) :: [RoutePattern.t()]
+  @doc """
+  Get all route patterns associated with the given route.
+  """
+  def route_patterns_for_route(route_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(
+      persistent_term_key,
+      [route_id],
+      :route_patterns_for_route,
+      []
+    )
+  end
+
   @spec run_for_trip(Hastus.Run.id(), Trip.id()) :: Run.t() | nil
   @spec run_for_trip(Hastus.Run.id(), Trip.id(), persistent_term_key()) :: Run.t() | nil
   def run_for_trip(run_id, trip_id, persistent_term_key \\ __MODULE__) do

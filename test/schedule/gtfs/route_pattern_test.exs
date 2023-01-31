@@ -8,7 +8,7 @@ defmodule Schedule.Gtfs.RoutePatternTest do
     "route_id" => "39",
     "direction_id" => "0",
     "route_pattern_name" => "Forest Hills Station via Huntington Avenue",
-    "route_pattern_time_desc" => "",
+    "route_pattern_time_desc" => "Mornings only",
     "route_pattern_typicality" => "1",
     "route_pattern_sort_order" => "50390004",
     "representative_trip_id" => "40044234"
@@ -21,7 +21,9 @@ defmodule Schedule.Gtfs.RoutePatternTest do
                name: "Forest Hills Station via Huntington Avenue",
                route_id: "39",
                direction_id: 0,
-               representative_trip_id: "40044234"
+               representative_trip_id: "40044234",
+               time_desc: "Mornings only",
+               sort_order: 50_390_004
              } = RoutePattern.from_csv_row(@csv_row)
     end
   end

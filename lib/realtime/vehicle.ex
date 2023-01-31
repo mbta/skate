@@ -21,6 +21,7 @@ defmodule Realtime.Vehicle do
           longitude: float(),
           direction_id: Direction.id(),
           route_id: Route.id() | nil,
+          route_pattern_id: RoutePattern.id() | nil,
           trip_id: Trip.id() | nil,
           headsign: String.t() | nil,
           via_variant: RoutePattern.via_variant() | nil,
@@ -92,6 +93,7 @@ defmodule Realtime.Vehicle do
     :longitude,
     :direction_id,
     :route_id,
+    :route_pattern_id,
     :trip_id,
     :headsign,
     :via_variant,
@@ -148,6 +150,7 @@ defmodule Realtime.Vehicle do
     direction_id = VehiclePosition.direction_id(vehicle_position) || (trip && trip.direction_id)
     block = trip && trip.schedule_id && block_fn.(trip.schedule_id, block_id)
     headsign = trip && trip.headsign
+    route_pattern = trip && trip.route_pattern_id
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
     stop_name = stop_name(vehicle_position, stop_id)
@@ -188,6 +191,7 @@ defmodule Realtime.Vehicle do
       longitude: VehiclePosition.longitude(vehicle_position),
       direction_id: direction_id,
       route_id: route_id,
+      route_pattern_id: route_pattern,
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
