@@ -109,11 +109,18 @@ describe("StopMarker", () => {
   })
 
   test("Stop card displayed on click when includeStopCard is true", async () => {
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
     const { container } = renderInMap(
       <StopMarker stop={stop} direction={0} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
     expect(screen.getByText("Outbound")).toBeInTheDocument()
+    expect(window.FS!.event).toHaveBeenCalledWith("Bus stop card opened")
   })
 })
 
