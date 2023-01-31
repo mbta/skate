@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { fetchRoutePatterns } from "../api"
-import { RouteId, RoutePattern } from "../schedule"
+import { ByRoutePatternId, RouteId, RoutePattern } from "../schedule"
 
-const useRoutePatterns = (routeId: RouteId | null): RoutePattern[] | null => {
+const useRoutePatternsById = (
+  routeId: RouteId | null
+): ByRoutePatternId<RoutePattern> | null => {
   const [routePatterns, setRoutePatterns] = useState<RoutePattern[] | null>(
     null
   )
@@ -13,7 +15,12 @@ const useRoutePatterns = (routeId: RouteId | null): RoutePattern[] | null => {
       fetchRoutePatterns(routeId).then(setRoutePatterns)
     }
   }, [routeId])
-  return routePatterns
+
+  return routePatterns == null
+    ? null
+    : routePatterns.reduce((map, rp) => {
+        return { ...map, [rp.id]: rp }
+      }, {})
 }
 
-export default useRoutePatterns
+export default useRoutePatternsById

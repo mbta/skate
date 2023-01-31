@@ -39,16 +39,14 @@ import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleOrGhost } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
-import useRoutePatterns from "../../src/hooks/useRoutePatterns"
-import { routePatternFactory } from "../factories/routePattern"
-import shape from "../factories/shape"
+import { mockUserRoutePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../src/hooks/useRoutePatterns", () => ({
+jest.mock("../../src/hooks/useRoutePatternsById", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }))
@@ -93,30 +91,6 @@ function mockUseVehicleForId(vehicles: VehicleOrGhost[]) {
     {}
   )
   mockUseVehicleForIdMap(vehicleIdToVehicleMap)
-}
-
-function mockRoutePatternsForVehicles(
-  vehicles: VehicleOrGhost[],
-  params?: { stopCount: number }
-) {
-  const patternIds = Array.from(
-    new Set(
-      vehicles
-        .filter((v) => v.routePatternId != null)
-        .map((v) => v.routePatternId)
-    )
-  )
-
-  ;(useRoutePatterns as jest.Mock).mockReturnValue(
-    patternIds.map((routePatternId) =>
-      routePatternFactory.build({
-        id: routePatternId!,
-        shape: shape.build({
-          stops: stopFactory.buildList(params?.stopCount || 2),
-        }),
-      })
-    )
-  )
 }
 
 function mockUseVehiclesForRouteMap(map: {
@@ -253,7 +227,7 @@ describe("<MapPage />", () => {
       { runId } = nextVehicle
     ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
 
-    mockRoutePatternsForVehicles([vehicle, nextVehicle])
+    mockUserRoutePatternsByIdForVehicles([vehicle, nextVehicle])
 
     mockUseVehicleForId([vehicle, nextVehicle])
     mockUseVehiclesForRouteMap({ [route.id]: vehicles })
@@ -291,7 +265,7 @@ describe("<MapPage />", () => {
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
-    mockRoutePatternsForVehicles([vehicle])
+    mockUserRoutePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
 
     const { container } = render(
@@ -326,7 +300,7 @@ describe("<MapPage />", () => {
       savedQueries: [],
     }
 
-    mockRoutePatternsForVehicles([vehicle])
+    mockUserRoutePatternsByIdForVehicles([vehicle])
 
     const mockDispatch = jest.fn()
     const { container } = render(
@@ -376,7 +350,7 @@ describe("<MapPage />", () => {
     ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
     mockUseVehicleForId(vehicles)
     mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-    mockRoutePatternsForVehicles([vehicle])
+    mockUserRoutePatternsByIdForVehicles([vehicle])
 
     const { container } = render(
       <RealDispatchWrapper
@@ -429,7 +403,7 @@ describe("<MapPage />", () => {
     })
 
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
-    mockRoutePatternsForVehicles([vehicle])
+    mockUserRoutePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
     mockUseVehiclesForRouteMap({
       [vehicle.routeId!]: [vehicle],
@@ -648,7 +622,7 @@ describe("<MapPage />", () => {
         })
 
         ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
-        mockRoutePatternsForVehicles([vehicle])
+        mockUserRoutePatternsByIdForVehicles([vehicle])
 
         render(
           <StateDispatchProvider
@@ -676,7 +650,7 @@ describe("<MapPage />", () => {
 
         ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
 
-        mockRoutePatternsForVehicles([vehicle])
+        mockUserRoutePatternsByIdForVehicles([vehicle])
         mockUseVehicleForId([vehicle])
         mockUseVehiclesForRouteMap({
           [vehicle.routeId!]: vehicles,
@@ -764,7 +738,7 @@ describe("<MapPage />", () => {
             [route.id]: selectedRouteVehicles,
           })
 
-          mockRoutePatternsForVehicles([selectedVehicle])
+          mockUserRoutePatternsByIdForVehicles([selectedVehicle])
 
           render(
             <StateDispatchProvider
@@ -798,7 +772,9 @@ describe("<MapPage />", () => {
             setHtmlWidthHeightForLeafletMap()
             mockUseVehicleForId([selectedVehicle])
             mockUseVehiclesForRouteMap({ [route.id]: selectedRouteVehicles })
-            mockRoutePatternsForVehicles([selectedVehicle], { stopCount: 8 })
+            mockUserRoutePatternsByIdForVehicles([selectedVehicle], {
+              stopCount: 8,
+            })
 
             const { container } = render(
               <StateDispatchProvider
@@ -832,7 +808,7 @@ describe("<MapPage />", () => {
           setHtmlWidthHeightForLeafletMap()
           mockUseVehiclesForRouteMap({})
           mockUseVehicleForId([selectedVehicle])
-          mockRoutePatternsForVehicles([]) // no route pattern for shuttle vehicle
+          mockUserRoutePatternsByIdForVehicles([]) // no route pattern for shuttle vehicle
 
           const { container } = render(
             <StateDispatchProvider

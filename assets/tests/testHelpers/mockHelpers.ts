@@ -1,4 +1,10 @@
 import React, { useReducer, useState } from "react"
+import useRoutePatternsById from "../../src/hooks/useRoutePatternsById"
+import { VehicleOrGhost } from "../../src/realtime"
+import { routePatternFactory } from "../factories/routePattern"
+import stopFactory from "../factories/stop"
+
+import shape from "../factories/shape"
 
 /**
  * A promise that resolves synchronously.
@@ -33,5 +39,35 @@ export const mockUseReducerOnce = <StateT, ActionT>(
   const spyUseReducer = jest.spyOn(React, "useReducer") as jest.Mock
   spyUseReducer.mockImplementationOnce(() =>
     actualUseReducer(reducer, mockInitialState)
+  )
+}
+
+export const mockUserRoutePatternsByIdForVehicles = (
+  vehicles: VehicleOrGhost[],
+  params?: { stopCount: number }
+) => {
+  const routePatternIdentifiers = Array.from(
+    new Set(
+      vehicles
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        .filter((v) => v.routePatternId != null && v.routeId != null)
+        .map((v) => [v.routePatternId, v.routeId])
+    )
+  )
+
+  ;(useRoutePatternsById as jest.Mock).mockReturnValue(
+    routePatternIdentifiers
+      .map(([routePatternId, routeId]) =>
+        routePatternFactory.build({
+          id: routePatternId!,
+          routeId: routeId!,
+          shape: shape.build({
+            stops: stopFactory.buildList(params?.stopCount || 2),
+          }),
+        })
+      )
+      .reduce((map, rp) => {
+        return { ...map, [rp.id]: rp }
+      }, {})
   )
 }

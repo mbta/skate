@@ -28,6 +28,10 @@ export interface ByBlockId<T> {
   [blockId: string]: T
 }
 
+export interface ByRoutePatternId<T> {
+  [routePatternId: RoutePatternId]: T
+}
+
 export type GarageName = string
 
 export interface Route {

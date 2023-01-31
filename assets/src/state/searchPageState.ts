@@ -10,22 +10,22 @@ import { RouteId, RoutePatternId } from "../schedule"
 
 export enum SelectedEntityType {
   Vehicle = 1,
-  Route,
+  RoutePattern,
 }
 
-interface SelectedVehicle {
+interface SelectedVehicleId {
   type: SelectedEntityType.Vehicle
   vehicleId: VehicleId
 }
 
-export interface SelectedRoute {
-  type: SelectedEntityType.Route
+export interface SelectedRoutePattern {
+  type: SelectedEntityType.RoutePattern
 
   routeId: RouteId
   routePatternId: RoutePatternId
 }
 
-export type SelectedEntity = SelectedVehicle | SelectedRoute
+export type SelectedEntity = SelectedVehicleId | SelectedRoutePattern
 
 export interface SearchPageState {
   query: SearchQuery

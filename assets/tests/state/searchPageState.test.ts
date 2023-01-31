@@ -154,13 +154,13 @@ describe("reducer", () => {
     const updatedState = reducer(
       initialState,
       setSelectedEntity({
-        type: SelectedEntityType.Route,
+        type: SelectedEntityType.RoutePattern,
         routeId: "66",
         routePatternId: "66-_-0",
       })
     )
     expect(updatedState.selectedEntity).toEqual({
-      type: SelectedEntityType.Route,
+      type: SelectedEntityType.RoutePattern,
       routeId: "66",
       routePatternId: "66-_-0",
     })

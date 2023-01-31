@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"
-import useRoutePatterns from "../../src/hooks/useRoutePatterns"
+import useRoutePatternsById from "../../src/hooks/useRoutePatternsById"
 import { routePatternFactory } from "../factories/routePattern"
 import { instantPromise } from "../testHelpers/mockHelpers"
 
@@ -10,12 +10,12 @@ jest.mock("../../src/api", () => ({
   fetchRoutePatterns: jest.fn(() => new Promise(() => [])),
 }))
 
-describe("useRoutePatterns", () => {
+describe("useRoutePatternsById", () => {
   test("returns null while loading", () => {
     const mockFetchRoutePatterns: jest.Mock =
       Api.fetchRoutePatterns as jest.Mock
     const { result } = renderHook(() => {
-      return useRoutePatterns("1")
+      return useRoutePatternsById("1")
     })
     expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(1)
     expect(result.current).toEqual(null)
@@ -23,14 +23,15 @@ describe("useRoutePatterns", () => {
 
   test("returns result when loaded", () => {
     const routePatterns = routePatternFactory.buildList(2, { routeId: "66" })
+    const [rp1, rp2] = routePatterns
     const mockFetchRoutePatterns: jest.Mock =
       Api.fetchRoutePatterns as jest.Mock
     mockFetchRoutePatterns.mockReturnValueOnce(instantPromise(routePatterns))
     const { result } = renderHook(() => {
-      return useRoutePatterns("66")
+      return useRoutePatternsById("66")
     })
     expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(1)
-    expect(result.current).toEqual(routePatterns)
+    expect(result.current).toEqual({ [rp1.id]: rp1, [rp2.id]: rp2 })
   })
 
   test("doesn't fetch routes when passed null id", () => {
@@ -40,7 +41,7 @@ describe("useRoutePatterns", () => {
       instantPromise([routePatternFactory.buildList(2)])
     )
     const { rerender } = renderHook(() => {
-      return useRoutePatterns(null)
+      return useRoutePatternsById(null)
     })
     rerender()
     expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(0)
@@ -53,7 +54,7 @@ describe("useRoutePatterns", () => {
       instantPromise([routePatternFactory.buildList(2)])
     )
     const { rerender } = renderHook(() => {
-      return useRoutePatterns("66")
+      return useRoutePatternsById("66")
     })
     rerender()
     expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(1)
@@ -67,7 +68,7 @@ describe("useRoutePatterns", () => {
     )
     const { rerender } = renderHook(
       (id) => {
-        return useRoutePatterns(id)
+        return useRoutePatternsById(id)
       },
       { initialProps: "66" }
     )
