@@ -27,11 +27,13 @@ import {
 } from "../../state"
 import NavMenu from "./navMenu"
 import { mapModeForUser } from "../../util/mapMode"
+import Tippy from "@tippyjs/react"
 
 interface Props {
   toggleMobileMenu?: () => void
   defaultToCollapsed: boolean
   dispatcherFlag: boolean
+  allowViews: boolean
   closePickerOnViewOpen?: boolean
 }
 
@@ -39,6 +41,7 @@ const LeftNav = ({
   toggleMobileMenu,
   defaultToCollapsed,
   dispatcherFlag,
+  allowViews,
   closePickerOnViewOpen,
 }: Props): JSX.Element => {
   const [{ openView, mobileMenuIsOpen, pickerContainerIsVisible }, dispatch] =
@@ -134,6 +137,7 @@ const LeftNav = ({
                   }
                 }}
                 collapsed={collapsed}
+                disabled={!allowViews}
               />
             </li>
           ) : null}
@@ -153,6 +157,7 @@ const LeftNav = ({
                 }
               }}
               collapsed={collapsed}
+              disabled={!allowViews}
             />
           </li>
           <li>
@@ -170,6 +175,7 @@ const LeftNav = ({
               }}
               name="Notifications"
               collapsed={collapsed}
+              disabled={!allowViews}
             />
           </li>
         </ul>
@@ -235,26 +241,40 @@ const ViewToggle = ({
   viewIsOpen,
   toggleView,
   collapsed,
+  disabled,
 }: {
   icon: JSX.Element
   name: string
   viewIsOpen: boolean
   toggleView: () => void
   collapsed: boolean
+  disabled?: boolean
 }): JSX.Element => {
-  return (
+  const buttonContent = (
     <button
       className={
         "m-left-nav__link m-left-nav__view" +
-        (viewIsOpen ? " m-left-nav__view--active" : "")
+        (viewIsOpen ? " m-left-nav__view--active" : "") +
+        (disabled ? " m-left-nav__view--disabled" : "")
       }
       onClick={toggleView}
       title={name}
+      aria-disabled={disabled}
     >
       {icon}
       {collapsed ? null : name}
     </button>
   )
+
+  if (disabled) {
+    return (
+      <Tippy content="Not available in Search Map" placement="right">
+        {buttonContent}
+      </Tippy>
+    )
+  }
+
+  return buttonContent
 }
 
 export default LeftNav

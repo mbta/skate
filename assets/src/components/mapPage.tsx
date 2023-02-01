@@ -1,9 +1,16 @@
 import { Socket } from "phoenix"
-import React, { ReactElement, useCallback, useContext, useState } from "react"
+import React, {
+  ReactElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { VehicleOrGhost } from "../realtime"
+import { OpenView, closeView } from "../state"
 import {
   SearchPageState,
   SelectedEntity,
@@ -92,9 +99,16 @@ const SearchInputAndResults = ({
 }
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, mobileMenuIsOpen }, dispatch] =
+  const [{ searchPageState, mobileMenuIsOpen, openView }, dispatch] =
       useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
+
+  useEffect(() => {
+    // don't dispatch closeView if the VPP is open
+    if (openView !== OpenView.None) {
+      dispatch(closeView())
+    }
+  }, [dispatch, openView])
 
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(selectedEntity === null)

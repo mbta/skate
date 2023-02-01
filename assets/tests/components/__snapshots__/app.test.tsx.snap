@@ -109,6 +109,7 @@ exports[`App renders 1`] = `
                 </li>
                 <li>
                   <button
+                    aria-disabled="false"
                     class="m-left-nav__link m-left-nav__view"
                     title="Swings View"
                   >
@@ -122,6 +123,7 @@ exports[`App renders 1`] = `
                 </li>
                 <li>
                   <button
+                    aria-disabled="false"
                     class="m-left-nav__link m-left-nav__view"
                     title="Notifications"
                   >
