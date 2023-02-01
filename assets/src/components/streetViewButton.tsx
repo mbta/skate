@@ -35,6 +35,11 @@ const StreetViewButton = ({
     href={streetViewUrl(worldPosition)}
     target="_blank"
     rel="noreferrer"
+    onClick={() => {
+      if (window.FS) {
+        window.FS.event("Street view link followed")
+      }
+    }}
     {...(title && { title })}
   >
     <WalkingIcon
