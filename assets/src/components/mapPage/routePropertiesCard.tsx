@@ -145,6 +145,7 @@ const RoutePropertiesCard = ({
   return (
     <Card
       style={"white"}
+      noFocusOrHover={true}
       title={
         <div>
           <RoutePill routeName={routeId} />
