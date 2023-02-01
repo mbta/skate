@@ -126,7 +126,13 @@ const StreetViewControl = ({
           type="checkbox"
           role="switch"
           checked={streetViewEnabled}
-          onChange={() => setStreetViewEnabled((enabled) => !enabled)}
+          onChange={() => {
+            if (!streetViewEnabled && window.FS) {
+              window.FS.event("Dedicated street view enabled")
+            }
+
+            setStreetViewEnabled((enabled) => !enabled)
+          }}
         />
       </div>
     </>

@@ -265,6 +265,11 @@ describe("<Map />", () => {
 
   test("can turn on street view and click on the map", async () => {
     const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
@@ -277,6 +282,9 @@ describe("<Map />", () => {
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
 
     expect(openSpy).toHaveBeenCalled()
+    expect(window.FS.event).toHaveBeenCalledWith(
+      "Dedicated street view enabled"
+    )
 
     expect(
       screen.queryByRole("switch", { name: /Street View/, checked: false })
