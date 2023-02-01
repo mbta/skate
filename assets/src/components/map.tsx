@@ -37,7 +37,7 @@ import { createControlComponent } from "@react-leaflet/core"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { DirectionId, Shape, Stop } from "../schedule"
+import { DirectionId, Shape, ShapeId, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import { streetViewUrl } from "../util/streetViewUrl"
 import appData from "../appData"
@@ -66,6 +66,7 @@ export interface Props {
   // trainVehicles are white, don't get a label, and don't affect follower in `MapFollowingPrimaryVehicles`
   trainVehicles?: TrainVehicle[]
   shapes?: Shape[]
+  onShapeSelect?: (shapeId: ShapeId) => void
   allowStreetView?: boolean
   allowFullscreen?: boolean
   stopCardDirection?: DirectionId
@@ -476,7 +477,11 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
           />
         ))}
         {(props.shapes || []).map((shape) => (
-          <RouteShape key={shape.id} shape={shape} />
+          <RouteShape
+            key={shape.id}
+            shape={shape}
+            onClick={props.onShapeSelect}
+          />
         ))}
 
         <ZoomLevelWrapper>

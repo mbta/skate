@@ -10,7 +10,7 @@ import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
-import { DirectionId, Shape, Stop, StopId } from "../schedule"
+import { DirectionId, Shape, ShapeId, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 import "leaflet.fullscreen"
 
@@ -384,19 +384,28 @@ export const RouteStopMarkers = ({
   )
 }
 
-export const RouteShape = React.memo(({ shape }: { shape: Shape }) => {
-  const positions: LatLngExpression[] = shape.points.map((point) => [
-    point.lat,
-    point.lon,
-  ])
-  return (
-    <Polyline
-      className="m-vehicle-map__route-shape"
-      positions={positions}
-      {...shapeStrokeOptions(shape)}
-    />
-  )
-})
+export const RouteShape = React.memo(
+  ({
+    shape,
+    onClick,
+  }: {
+    shape: Shape
+    onClick?: (shapeId: ShapeId) => void
+  }) => {
+    const positions: LatLngExpression[] = shape.points.map((point) => [
+      point.lat,
+      point.lon,
+    ])
+    return (
+      <Polyline
+        className="m-vehicle-map__route-shape"
+        positions={positions}
+        {...shapeStrokeOptions(shape)}
+        eventHandlers={onClick ? { click: () => onClick(shape.id) } : {}}
+      />
+    )
+  }
+)
 
 const garageLeafletIcon = Leaflet.divIcon({
   html: garageIcon,

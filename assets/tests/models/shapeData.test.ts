@@ -16,6 +16,7 @@ describe("shapeFromData", () => {
 
     const expectedResult = shapeFactory.build({
       id: shapeId,
+      stops: data.stops,
     })
 
     expect(shapeFromData(data)).toEqual(expectedResult)
@@ -35,12 +36,7 @@ describe("shapeFromData", () => {
 
     const expectedResult = shapeFactory.build({
       id: shapeId,
-      stops: [
-        stopFactory.build({
-          id: "1",
-          connections: [{ type: 3, id: "747", name: "CT2" }],
-        }),
-      ],
+      stops: data.stops,
     })
 
     expect(shapeFromData(data)).toEqual(expectedResult)
@@ -53,7 +49,7 @@ describe("shapesFromData", () => {
     const shapeId2 = "shape2"
     const stopId1 = "stop1"
     const stopId2 = "stop2"
-    const data: ShapeData[] = [
+    const [shape1, shape2]: ShapeData[] = [
       shapeDataFactory.build({
         id: shapeId1,
         stops: [stopFactory.build({ id: stopId1 })],
@@ -67,14 +63,14 @@ describe("shapesFromData", () => {
     const expectedResult = [
       shapeFactory.build({
         id: shapeId1,
-        stops: [stopFactory.build({ id: stopId1 })],
+        stops: shape1.stops,
       }),
       shapeFactory.build({
         id: shapeId2,
-        stops: [stopFactory.build({ id: stopId2 })],
+        stops: shape2.stops,
       }),
     ]
 
-    expect(shapesFromData(data)).toEqual(expectedResult)
+    expect(shapesFromData([shape1, shape2])).toEqual(expectedResult)
   })
 })

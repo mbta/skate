@@ -1,4 +1,4 @@
-import { Bounds, Point } from "leaflet"
+import Leaflet, { Bounds, Point } from "leaflet"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
@@ -30,6 +30,7 @@ import {
 } from "../map"
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
+import RoutePropertiesCard from "./routePropertiesCard"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 const RouteVehicles = ({
@@ -87,18 +88,26 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
     .getCenter()
     .subtract(mapContainerBounds.getCenter())
 
-  const targetZoom = 16
-  const targetPoint = map
-      // Project the target point into screenspace for the target zoom
-      .project(points[0], targetZoom)
-      // Offset the target point in screenspace to move the center of the map
-      // to apply the padding to the center
-      .subtract(offset),
-    // convert the target point to worldspace from screenspace
-    targetLatLng = map.unproject(targetPoint, targetZoom)
+  if (points.length === 0) {
+    const targetZoom = 16
+    const targetPoint = map
+        // Project the target point into screenspace for the target zoom
+        .project(points[0], targetZoom)
+        // Offset the target point in screenspace to move the center of the map
+        // to apply the padding to the center
+        .subtract(offset),
+      // convert the target point to worldspace from screenspace
+      targetLatLng = map.unproject(targetPoint, targetZoom)
 
-  // Zoom/Pan center of map to offset location in worldspace
-  map.setView(targetLatLng, targetZoom)
+    // Zoom/Pan center of map to offset location in worldspace
+    map.setView(targetLatLng, targetZoom)
+  } else {
+    const pointsBounds = Leaflet.latLngBounds(points)
+    map.fitBounds(pointsBounds, {
+      paddingBottomRight: [20, 50],
+      paddingTopLeft: topLeft,
+    })
+  }
 }
 
 const useFollowingStateWithSelectionLogic = (
@@ -313,6 +322,77 @@ const SelectedVehicleDataLayers = ({
   )
 }
 
+const SelectedRouteDataLayers = ({
+  selectedRoutePatternIdentifier,
+  routePatterns,
+  showSelectionCard,
+  deleteSelection,
+  selectVehicle,
+  selectRoutePattern,
+  setStateClasses,
+}: {
+  selectedRoutePatternIdentifier: {
+    routeId: RouteId
+    routePatternId: RoutePatternId
+  }
+  routePatterns: ByRoutePatternId<RoutePattern> | null
+  showSelectionCard: boolean
+  deleteSelection: () => void
+  selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
+  selectRoutePattern: (routePattern: {
+    routeId: RouteId
+    routePatternId: RoutePatternId
+  }) => void
+  setStateClasses: (classes: string | undefined) => void
+}) => {
+  // TODO: Something about all positions in shape
+  const position = routePatterns
+    ? routePatterns[
+        selectedRoutePatternIdentifier.routePatternId
+      ]?.shape?.points?.map((p) => Leaflet.latLng(p.lat, p.lon)) || []
+    : []
+
+  // TODO: Something else
+  const followerState = useFollowingStateWithSelectionLogic(null, null)
+
+  useEffect(() => {
+    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
+  }, [followerState.shouldFollow, setStateClasses])
+
+  return (
+    <>
+      {showSelectionCard && routePatterns && (
+        <SelectionCardContainer>
+          <RoutePropertiesCard
+            routeId={selectedRoutePatternIdentifier.routeId}
+            selectedRoutePatternId={
+              selectedRoutePatternIdentifier.routePatternId
+            }
+            routePatterns={routePatterns}
+            selectRoutePattern={selectRoutePattern}
+            onClose={deleteSelection}
+          />
+        </SelectionCardContainer>
+      )}
+
+      {
+        // TODO: maybe pull routeVehicles up a level?
+      }
+      <RouteVehicles
+        selectedVehicleRoute={selectedRoutePatternIdentifier.routeId}
+        selectedVehicleId={null}
+        onPrimaryVehicleSelect={selectVehicle}
+      />
+
+      <InterruptibleFollower
+        onUpdate={onFollowerUpdate}
+        positions={position}
+        {...followerState}
+      />
+    </>
+  )
+}
+
 const SelectionDataLayers = ({
   selectedEntity,
   showSelectionCard,
@@ -335,6 +415,12 @@ const SelectionDataLayers = ({
   const routePatterns: ByRoutePatternId<RoutePattern> | null =
     usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
 
+  const selectVehicle = (vehicleOrGhost: VehicleOrGhost) =>
+    setSelection({
+      type: SelectedEntityType.Vehicle,
+      vehicleId: vehicleOrGhost.id,
+    })
+
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
       return (
@@ -343,16 +429,34 @@ const SelectionDataLayers = ({
           routePatterns={routePatterns}
           showSelectionCard={showSelectionCard}
           deleteSelection={deleteSelection}
-          selectVehicle={(vehicleOrGhost: VehicleOrGhost) =>
-            setSelection({
-              type: SelectedEntityType.Vehicle,
-              vehicleId: vehicleOrGhost.id,
-            })
-          }
+          selectVehicle={selectVehicle}
           setStateClasses={setStateClasses}
         />
       )
-    // TODO: handle SelectedEntityType.ROUTE
+    case SelectedEntityType.RoutePattern:
+      return (
+        <SelectedRouteDataLayers
+          selectedRoutePatternIdentifier={{
+            routeId: liveSelectedEntity.routeId,
+            routePatternId: liveSelectedEntity.routePatternId,
+          }}
+          routePatterns={routePatterns}
+          showSelectionCard={showSelectionCard}
+          deleteSelection={deleteSelection}
+          selectRoutePattern={(routePattern: {
+            routeId: RouteId
+            routePatternId: RoutePatternId
+          }) =>
+            setSelection({
+              type: SelectedEntityType.RoutePattern,
+              routeId: routePattern.routeId,
+              routePatternId: routePattern.routePatternId,
+            })
+          }
+          selectVehicle={selectVehicle}
+          setStateClasses={setStateClasses}
+        />
+      )
     default:
       return <MapElementsNoSelection setStateClasses={setStateClasses} />
   }

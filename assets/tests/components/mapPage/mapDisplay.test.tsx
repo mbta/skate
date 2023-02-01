@@ -21,6 +21,9 @@ import { VehicleId, VehicleOrGhost } from "../../../src/realtime"
 import { RouteId } from "../../../src/schedule"
 import MapDisplay from "../../../src/components/mapPage/mapDisplay"
 import { mockUserRoutePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
+import { routePatternFactory } from "../../factories/routePattern"
+import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -84,6 +87,12 @@ function mockUseVehiclesForRouteMap(map: {
 function getVehiclePropertiesCard() {
   return screen.getByRole("generic", {
     name: /vehicle properties card/i,
+  })
+}
+
+function getRoutePropertiesCard() {
+  return screen.getByRole("generic", {
+    name: /route properties card/i,
   })
 }
 
@@ -217,6 +226,42 @@ describe("<MapPage />", () => {
 
       expect(routeShape).toBeVisible()
       expect(getVehiclePropertiesCard()).toBeVisible()
+    })
+
+    test.only("when showSelectionCard is true and route pattern is selected, route properties card should be visible", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      setHtmlWidthHeightForLeafletMap()
+
+      const route = routeFactory.build()
+      const vehicles = randomLocationVehicle.buildList(3)
+
+      mockUseVehiclesForRouteMap({ [route.id]: vehicles })
+      const routePattern = routePatternFactory.build({ routeId: route.id })
+      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValueOnce({
+        [routePattern.id]: routePattern,
+      })
+
+      const setSelectedEntityMock = jest.fn()
+
+      const { container } = render(
+        <RoutesProvider routes={[route]}>
+          <MapDisplay
+            selectedEntity={{
+              type: SelectedEntityType.RoutePattern,
+              routeId: route.id,
+              routePatternId: routePattern.id,
+            }}
+            setSelection={setSelectedEntityMock}
+            showSelectionCard={true}
+          />
+        </RoutesProvider>
+      )
+
+      expect(getRoutePropertiesCard()).toBeVisible()
+
+      const routeShape = container.querySelector(".m-vehicle-map__route-shape")
+
+      expect(routeShape).toBeVisible()
     })
   })
 
