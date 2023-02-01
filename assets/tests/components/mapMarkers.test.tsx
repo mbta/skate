@@ -127,6 +127,13 @@ describe("StopMarker", () => {
 describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(true)
+
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
     )
@@ -135,16 +142,24 @@ describe("StationMarker", () => {
     await userEvent.hover(container.querySelector(".m-station-icon")!)
 
     expect(screen.getByText(station.name)).toBeVisible()
+    expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
   })
 
   test("Station icon with name on click when hover not supported", async () => {
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
     )
     expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
     await userEvent.click(container.querySelector(".m-station-icon")!)
     expect(screen.getByText(station.name)).toBeVisible()
+    expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
   })
 })
 

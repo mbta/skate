@@ -325,10 +325,20 @@ export const StationMarker = React.memo(
       zoomLevel <= 16 ? StationIconSize.small : StationIconSize.large
     const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
 
+    const fireEvent = () => {
+      if (window.FS) {
+        window.FS.event("Station tooltip shown")
+      }
+    }
+
     return (
       <Marker
         position={[station.lat, station.lon]}
         icon={stationLeafletIcon({ size: iconSizeLength })}
+        eventHandlers={{
+          tooltipopen: fireEvent,
+          popupopen: fireEvent,
+        }}
       >
         <MobileFriendlyTooltip
           className={"m-vehicle-map__stop-tooltip"}
