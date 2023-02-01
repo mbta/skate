@@ -27,6 +27,7 @@ import {
 } from "../../state"
 import NavMenu from "./navMenu"
 import { mapModeForUser } from "../../util/mapMode"
+import Tippy from "@tippyjs/react"
 
 interface Props {
   toggleMobileMenu?: () => void
@@ -249,20 +250,31 @@ const ViewToggle = ({
   collapsed: boolean
   disabled?: boolean
 }): JSX.Element => {
-  return (
+  const buttonContent = (
     <button
       className={
         "m-left-nav__link m-left-nav__view" +
-        (viewIsOpen ? " m-left-nav__view--active" : "")
+        (viewIsOpen ? " m-left-nav__view--active" : "") +
+        (disabled ? " m-left-nav__view--disabled" : "")
       }
       onClick={toggleView}
       title={name}
-      disabled={disabled}
+      aria-disabled={disabled}
     >
       {icon}
       {collapsed ? null : name}
     </button>
   )
+
+  if (disabled) {
+    return (
+      <Tippy content="Not available in Search Map" placement="right">
+        {buttonContent}
+      </Tippy>
+    )
+  }
+
+  return buttonContent
 }
 
 export default LeftNav

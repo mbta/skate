@@ -202,9 +202,17 @@ describe("App", () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByRole("button", { name: "Late View" })).toBeDisabled()
-    expect(screen.getByRole("button", { name: "Swings View" })).toBeDisabled()
-    expect(screen.getByRole("button", { name: "Notifications" })).toBeDisabled()
+    expect(screen.getByRole("button", { name: "Late View" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    )
+    expect(screen.getByRole("button", { name: "Swings View" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    )
+    expect(
+      screen.getByRole("button", { name: "Notifications" })
+    ).toHaveAttribute("aria-disabled", "true")
   })
 
   test("renders old search page for users not in map test group", () => {

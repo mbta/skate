@@ -123,7 +123,7 @@
     }
   }
 
-  &:disabled {
+  &.m-left-nav__view--disabled {
     cursor: not-allowed;
     background-color: $color-gray-300;
     color: $color-gray-500;
