@@ -14,7 +14,6 @@ import {
   RoutePattern,
   RoutePatternId,
 } from "../../schedule"
-import { selectVehicle } from "../../state"
 import {
   SelectedEntity,
   SelectedEntityType,
@@ -342,7 +341,10 @@ const SelectedRouteDataLayers = ({
       <RouteVehicles
         selectedVehicleRoute={selectedRoutePatternIdentifier.routeId}
         selectedVehicleId={null}
-        onPrimaryVehicleSelect={selectVehicle}
+        onPrimaryVehicleSelect={(vehicle) => {
+          console.log("Hit")
+          selectVehicle(vehicle)
+        }}
       />
 
       <InterruptibleFollower
@@ -369,6 +371,11 @@ const SelectionDataLayers = ({
   setSelection: (selectedEntity: SelectedEntity | null) => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
+  const selectVehicle = (vehicleOrGhost: VehicleOrGhost) =>
+    setSelection({
+      type: SelectedEntityType.Vehicle,
+      vehicleId: vehicleOrGhost.id,
+    })
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
       return (
@@ -376,12 +383,7 @@ const SelectionDataLayers = ({
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
           showSelectionCard={showSelectionCard}
           deleteSelection={deleteSelection}
-          selectVehicle={(vehicleOrGhost: VehicleOrGhost) =>
-            setSelection({
-              type: SelectedEntityType.Vehicle,
-              vehicleId: vehicleOrGhost.id,
-            })
-          }
+          selectVehicle={selectVehicle}
           setStateClasses={setStateClasses}
         />
       )
