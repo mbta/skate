@@ -123,6 +123,13 @@
     }
   }
 
+  &.m-left-nav__view--disabled {
+    cursor: not-allowed;
+    background-color: $color-gray-300;
+    color: $color-gray-500;
+    font-weight: var(--font-weight-reg);
+  }
+
   .m-left-nav__icon {
     svg {
       fill: $color-gray-50;

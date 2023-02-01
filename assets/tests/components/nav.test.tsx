@@ -4,7 +4,6 @@ import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 
 import Nav from "../../src/components/nav"
-import { OpenView } from "../../src/state"
 import useScreenSize from "../../src/hooks/useScreenSize"
 import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
@@ -29,9 +28,7 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-          Hello, world!
-        </Nav>
+        <Nav allowViews={true}>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -46,9 +43,7 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-          Hello, world!
-        </Nav>
+        <Nav allowViews={true}>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -61,9 +56,7 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-          Hello, world!
-        </Nav>
+        <Nav allowViews={true}>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -76,9 +69,7 @@ describe("Nav", () => {
 
     render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-          Hello, world!
-        </Nav>
+        <Nav allowViews={true}>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -89,9 +80,7 @@ describe("Nav", () => {
   test("renders desktop nav content", () => {
     const result = render(
       <BrowserRouter>
-        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-          Hello, world!
-        </Nav>
+        <Nav allowViews={true}>Hello, world!</Nav>
       </BrowserRouter>
     )
 
