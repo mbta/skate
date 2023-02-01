@@ -88,18 +88,26 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
     .getCenter()
     .subtract(mapContainerBounds.getCenter())
 
-  const targetZoom = 16
-  const targetPoint = map
-      // Project the target point into screenspace for the target zoom
-      .project(points[0], targetZoom)
-      // Offset the target point in screenspace to move the center of the map
-      // to apply the padding to the center
-      .subtract(offset),
-    // convert the target point to worldspace from screenspace
-    targetLatLng = map.unproject(targetPoint, targetZoom)
+  if (points.length === 0) {
+    const targetZoom = 16
+    const targetPoint = map
+        // Project the target point into screenspace for the target zoom
+        .project(points[0], targetZoom)
+        // Offset the target point in screenspace to move the center of the map
+        // to apply the padding to the center
+        .subtract(offset),
+      // convert the target point to worldspace from screenspace
+      targetLatLng = map.unproject(targetPoint, targetZoom)
 
-  // Zoom/Pan center of map to offset location in worldspace
-  map.setView(targetLatLng, targetZoom)
+    // Zoom/Pan center of map to offset location in worldspace
+    map.setView(targetLatLng, targetZoom)
+  } else {
+    const pointsBounds = Leaflet.latLngBounds(points)
+    map.fitBounds(pointsBounds, {
+      paddingBottomRight: [20, 50],
+      paddingTopLeft: topLeft,
+    })
+  }
 }
 
 const useFollowingStateWithSelectionLogic = (

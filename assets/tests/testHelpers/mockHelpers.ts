@@ -49,7 +49,6 @@ export const mockUserRoutePatternsByIdForVehicles = (
   const routePatternIdentifiers = Array.from(
     new Set(
       vehicles
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         .filter((v) => v.routePatternId != null && v.routeId != null)
         .map((v) => [v.routePatternId, v.routeId])
     )
@@ -59,7 +58,9 @@ export const mockUserRoutePatternsByIdForVehicles = (
     routePatternIdentifiers
       .map(([routePatternId, routeId]) =>
         routePatternFactory.build({
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           id: routePatternId!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           routeId: routeId!,
           shape: shape.build({
             stops: stopFactory.buildList(params?.stopCount || 2),
