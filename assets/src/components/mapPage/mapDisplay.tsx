@@ -341,10 +341,7 @@ const SelectedRouteDataLayers = ({
       <RouteVehicles
         selectedVehicleRoute={selectedRoutePatternIdentifier.routeId}
         selectedVehicleId={null}
-        onPrimaryVehicleSelect={(vehicle) => {
-          console.log("Hit")
-          selectVehicle(vehicle)
-        }}
+        onPrimaryVehicleSelect={selectVehicle}
       />
 
       <InterruptibleFollower
@@ -479,6 +476,7 @@ const MapDisplay = ({
       includeStopCard={true}
       stations={stations}
       shapes={routePatternShape ? [routePatternShape] : []}
+      // TODO: try rendering shapes as a child instead
       onShapeSelect={() => {
         if (routePatternIdentifier) {
           setSelection({
