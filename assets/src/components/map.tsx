@@ -43,6 +43,7 @@ import appData from "../appData"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import {
   GarageMarkers,
+  ResizingRouteStopmarkers,
   RouteShape,
   RouteStopMarkers,
   StationIconSize,
@@ -470,9 +471,9 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
             onClick={props.onShapeSelect}
           />
         ))}
-        <RouteStopMarkers
+        <ResizingRouteStopmarkers
           stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
-          iconSize={stationIconSize}
+          //iconSize={stationIconSize}
           direction={props.stopCardDirection}
           includeStopCard={
             props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)

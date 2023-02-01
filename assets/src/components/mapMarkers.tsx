@@ -1,7 +1,14 @@
 import Leaflet, { LatLngExpression } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
-import React, { useContext } from "react"
-import { CircleMarker, Marker, Polyline, Popup, Tooltip } from "react-leaflet"
+import React, { useContext, useState } from "react"
+import {
+  CircleMarker,
+  Marker,
+  Polyline,
+  Popup,
+  Tooltip,
+  useMap,
+} from "react-leaflet"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -274,6 +281,31 @@ export const StationMarker = React.memo(
     )
   }
 )
+
+export const ResizingRouteStopmarkers = ({
+  stops,
+  direction,
+  includeStopCard,
+}: {
+  stops: Stop[]
+  direction?: DirectionId
+  includeStopCard?: boolean
+}) => {
+  const map = useMap()
+  const [zoomLevel, setZoomLevel] = useState(map.getZoom())
+  map.addEventListener("zoomend", () => setZoomLevel(map.getZoom()))
+  const iconSize =
+    zoomLevel <= 16 ? StationIconSize.small : StationIconSize.large
+
+  return (
+    <RouteStopMarkers
+      stops={stops}
+      direction={direction}
+      includeStopCard={includeStopCard}
+      iconSize={iconSize}
+    />
+  )
+}
 
 export const RouteStopMarkers = ({
   stops,
