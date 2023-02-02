@@ -41,6 +41,7 @@ import { VehicleId, VehicleOrGhost } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
 import { mockUserRoutePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -251,6 +252,7 @@ describe("<MapPage />", () => {
   })
 
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
+    mockFullStoryEvent()
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
@@ -294,6 +296,7 @@ describe("<MapPage />", () => {
     ).toBeInTheDocument()
 
     expect(container.querySelector(".selected")).toBeVisible()
+    expect(window.FS!.event).toHaveBeenCalledWith("VPC Opened")
   })
 
   test("clicking a vehicle from a search result displays the route shape and card", async () => {

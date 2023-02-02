@@ -132,12 +132,18 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const selectVehicle = useCallback(
     (vehicleOrGhost: VehicleOrGhost | null) => {
-      vehicleOrGhost
-        ? setSelection({
-            type: SelectedEntityType.Vehicle,
-            vehicleId: vehicleOrGhost.id,
-          })
-        : setSelection(null)
+      if (vehicleOrGhost) {
+        setSelection({
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicleOrGhost.id,
+        })
+
+        if (vehicleOrGhost !== null && window.FS) {
+          window.FS.event("VPC Opened")
+        }
+      } else {
+        setSelection(null)
+      }
     },
     [setSelection]
   )
