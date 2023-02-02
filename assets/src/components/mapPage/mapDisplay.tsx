@@ -281,8 +281,8 @@ const SelectedVehicleDataLayers = ({
             routePatternForVehicle.shape && (
               <>
                 <RouteShape shape={routePatternForVehicle.shape} />
-                <ZoomLevelWrapper
-                  children={(zoomLevel) => {
+                <ZoomLevelWrapper>
+                  {(zoomLevel) => {
                     return (
                       <>
                         {routePatternForVehicle &&
@@ -297,7 +297,7 @@ const SelectedVehicleDataLayers = ({
                       </>
                     )
                   }}
-                />
+                </ZoomLevelWrapper>
               </>
             )}
         </>
