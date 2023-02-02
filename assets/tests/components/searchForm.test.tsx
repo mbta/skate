@@ -12,6 +12,7 @@ import {
   setSearchText,
   submitSearch,
 } from "../../src/state/searchPageState"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 const mockDispatch = jest.fn()
 
@@ -126,11 +127,7 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
+    mockFullStoryEvent()
 
     render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>

@@ -18,6 +18,7 @@ import { MapContainer } from "react-leaflet"
 import userEvent from "@testing-library/user-event"
 import { LocationType } from "../../src/models/stopData"
 import useDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -109,11 +110,7 @@ describe("StopMarker", () => {
   })
 
   test("Stop card displayed on click when includeStopCard is true", async () => {
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
+    mockFullStoryEvent()
 
     const { container } = renderInMap(
       <StopMarker stop={stop} direction={0} includeStopCard={true} />
@@ -128,11 +125,7 @@ describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(true)
 
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
+    mockFullStoryEvent()
 
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
@@ -146,12 +139,8 @@ describe("StationMarker", () => {
   })
 
   test("Station icon with name on click when hover not supported", async () => {
+    mockFullStoryEvent()
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
 
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />

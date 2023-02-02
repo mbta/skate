@@ -12,6 +12,7 @@ import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContex
 import { initialState } from "../../../src/state"
 import { setSelectedVehicle } from "../../../src/state/searchPageState"
 import userEvent from "@testing-library/user-event"
+import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
 const vehicle: Vehicle = vehicleFactory.build()
 
@@ -40,11 +41,7 @@ describe("MiniMap", () => {
     })
     test("Map includes link to open vehicle in search map page", async () => {
       const mockDispatch = jest.fn()
-      const originalFS = window.FS
-      window.FS = { event: jest.fn(), identify: jest.fn() }
-      afterEach(() => {
-        window.FS = originalFS
-      })
+      mockFullStoryEvent()
 
       render(
         <MemoryRouter initialEntries={["/"]}>

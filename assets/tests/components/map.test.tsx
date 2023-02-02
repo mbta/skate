@@ -16,6 +16,7 @@ import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
 import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 const shape = {
   id: "shape",
@@ -264,13 +265,8 @@ describe("<Map />", () => {
   })
 
   test("can turn on street view and click on the map", async () => {
+    mockFullStoryEvent()
     const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
-    const originalFS = window.FS
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    afterEach(() => {
-      window.FS = originalFS
-    })
-
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
@@ -282,7 +278,7 @@ describe("<Map />", () => {
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
 
     expect(openSpy).toHaveBeenCalled()
-    expect(window.FS.event).toHaveBeenCalledWith(
+    expect(window.FS!.event).toHaveBeenCalledWith(
       "Dedicated street view enabled"
     )
 
