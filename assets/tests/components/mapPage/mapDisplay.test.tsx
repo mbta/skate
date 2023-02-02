@@ -54,6 +54,10 @@ jest.mock("../../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
 }))
 
+beforeEach(() => {
+  jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+})
+
 afterEach(() => {
   jest.restoreAllMocks()
 })
@@ -104,7 +108,7 @@ function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
   return container.querySelectorAll(".m-station-icon")
 }
 
-describe("<MapPage />", () => {
+describe("<MapDisplay />", () => {
   test("renders stations on zoom", async () => {
     ;(useStations as jest.Mock).mockReturnValue(
       stopFactory.params({ locationType: LocationType.Station }).buildList(3)
@@ -128,7 +132,6 @@ describe("<MapPage />", () => {
   })
 
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
     const vehicles = [
@@ -166,7 +169,6 @@ describe("<MapPage />", () => {
 
   describe("showSelectionCard", () => {
     test("when showSelectionCard is false, vehicle properties card should not be visible", async () => {
-      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
       setHtmlWidthHeightForLeafletMap()
 
       const vehicles = randomLocationVehicle.buildList(3),
@@ -199,7 +201,6 @@ describe("<MapPage />", () => {
     })
 
     test("when showSelectionCard is true, vehicle properties card should be visible", async () => {
-      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
       setHtmlWidthHeightForLeafletMap()
 
       const vehicles = randomLocationVehicle.buildList(3),
@@ -228,8 +229,7 @@ describe("<MapPage />", () => {
       expect(getVehiclePropertiesCard()).toBeVisible()
     })
 
-    test.only("when showSelectionCard is true and route pattern is selected, route properties card should be visible", async () => {
-      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    test("when showSelectionCard is true and route pattern is selected, route properties card should be visible", async () => {
       setHtmlWidthHeightForLeafletMap()
 
       const route = routeFactory.build()
@@ -237,13 +237,11 @@ describe("<MapPage />", () => {
 
       mockUseVehiclesForRouteMap({ [route.id]: vehicles })
       const routePattern = routePatternFactory.build({ routeId: route.id })
-      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValueOnce({
+      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
         [routePattern.id]: routePattern,
       })
 
-      const setSelectedEntityMock = jest.fn()
-
-      const { container } = render(
+      render(
         <RoutesProvider routes={[route]}>
           <MapDisplay
             selectedEntity={{
@@ -251,17 +249,13 @@ describe("<MapPage />", () => {
               routeId: route.id,
               routePatternId: routePattern.id,
             }}
-            setSelection={setSelectedEntityMock}
+            setSelection={jest.fn()}
             showSelectionCard={true}
           />
         </RoutesProvider>
       )
 
       expect(getRoutePropertiesCard()).toBeVisible()
-
-      const routeShape = container.querySelector(".m-vehicle-map__route-shape")
-
-      expect(routeShape).toBeVisible()
     })
   })
 
@@ -308,6 +302,50 @@ describe("<MapPage />", () => {
             expect(
               container.querySelector(".m-vehicle-map__route-shape")
             ).toBeInTheDocument()
+          })
+
+          test("clicking the route shape calls setSelection ", async () => {
+            const route = routeFactory.build()
+
+            const selectedVehicle = randomLocationVehicle.build({
+              routeId: route.id,
+            })
+
+            const routePattern = routePatternFactory.build({
+              routeId: route.id,
+              id: selectedVehicle.routePatternId!,
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([selectedVehicle])
+            mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+            ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+              [routePattern.id]: routePattern,
+            })
+
+            const setSelectedEntityMock = jest.fn()
+
+            const { container } = render(
+              <RoutesProvider routes={[route]}>
+                <MapDisplay
+                  selectedEntity={{
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: selectedVehicle.id,
+                  }}
+                  setSelection={setSelectedEntityMock}
+                  showSelectionCard={true}
+                />
+              </RoutesProvider>
+            )
+
+            await userEvent.click(
+              container.querySelector(".m-vehicle-map__route-shape")!
+            )
+            expect(setSelectedEntityMock).toHaveBeenCalledWith({
+              type: SelectedEntityType.RoutePattern,
+              routeId: routePattern.routeId,
+              routePatternId: routePattern.id,
+            })
           })
         })
 
@@ -372,6 +410,118 @@ describe("<MapPage />", () => {
             screen.queryAllByRole("button", { name: /^run/ })
           ).toHaveLength(0)
           expect(getVehiclePropertiesCard()).toBeVisible()
+        })
+      })
+
+      describe("selection is a route pattern", () => {
+        test("RPC doesn't display if route data hasn't loaded yet", () => {
+          setHtmlWidthHeightForLeafletMap()
+
+          const route = routeFactory.build()
+          const vehicles = randomLocationVehicle.buildList(3)
+
+          mockUseVehiclesForRouteMap({ [route.id]: vehicles })
+          const routePattern = routePatternFactory.build({ routeId: route.id })
+          ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+            [routePattern.id]: routePattern,
+          })
+
+          render(
+            <RoutesProvider routes={[]}>
+              <MapDisplay
+                selectedEntity={{
+                  type: SelectedEntityType.RoutePattern,
+                  routeId: route.id,
+                  routePatternId: routePattern.id,
+                }}
+                setSelection={jest.fn()}
+                showSelectionCard={true}
+              />
+            </RoutesProvider>
+          )
+
+          expect(
+            screen.queryByRole("generic", {
+              name: /route properties card/i,
+            })
+          ).not.toBeInTheDocument()
+        })
+
+        test("RPC doesn't display if selected pattern ID doesn't match the route patterns", () => {
+          setHtmlWidthHeightForLeafletMap()
+
+          const route = routeFactory.build()
+          const vehicles = randomLocationVehicle.buildList(3)
+
+          mockUseVehiclesForRouteMap({ [route.id]: vehicles })
+          const routePattern = routePatternFactory.build({ routeId: route.id })
+          ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+            [routePattern.id]: routePattern,
+          })
+          render(
+            <RoutesProvider routes={[route]}>
+              <MapDisplay
+                selectedEntity={{
+                  type: SelectedEntityType.RoutePattern,
+                  routeId: route.id,
+                  routePatternId: "otherRoutePatternId",
+                }}
+                setSelection={jest.fn()}
+                showSelectionCard={true}
+              />
+            </RoutesProvider>
+          )
+
+          expect(
+            screen.queryByRole("generic", {
+              name: /route properties card/i,
+            })
+          ).not.toBeInTheDocument()
+        })
+        test("clicking vehicle route dispatches setSelection event", async () => {
+          setHtmlWidthHeightForLeafletMap()
+
+          const route = routeFactory.build()
+          const vehicles = randomLocationVehicle.buildList(3)
+
+          mockUseVehiclesForRouteMap({ [route.id]: vehicles })
+          const [routePattern1, routePattern2] = routePatternFactory.buildList(
+            2,
+            {
+              routeId: route.id,
+            }
+          )
+          ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+            [routePattern1.id]: routePattern1,
+            [routePattern2.id]: routePattern2,
+          })
+
+          const setSelectedEntityMock = jest.fn()
+
+          render(
+            <RoutesProvider routes={[route]}>
+              <MapDisplay
+                selectedEntity={{
+                  type: SelectedEntityType.RoutePattern,
+                  routeId: routePattern1.routeId,
+                  routePatternId: routePattern1.id,
+                }}
+                setSelection={setSelectedEntityMock}
+                showSelectionCard={true}
+              />
+            </RoutesProvider>
+          )
+
+          expect(getRoutePropertiesCard()).toBeInTheDocument()
+
+          await userEvent.click(
+            screen.getByRole("radio", { name: routePattern2.name })
+          )
+          expect(setSelectedEntityMock).toHaveBeenCalledWith({
+            type: SelectedEntityType.RoutePattern,
+            routeId: routePattern2.routeId,
+            routePatternId: routePattern2.id,
+          })
         })
       })
     })

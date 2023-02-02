@@ -10,7 +10,14 @@ import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
-import { DirectionId, Shape, ShapeId, Stop, StopId } from "../schedule"
+import {
+  DirectionId,
+  RoutePattern,
+  Shape,
+  ShapeId,
+  Stop,
+  StopId,
+} from "../schedule"
 import { UserSettings } from "../userSettings"
 import "leaflet.fullscreen"
 
@@ -385,13 +392,7 @@ export const RouteStopMarkers = ({
 }
 
 export const RouteShape = React.memo(
-  ({
-    shape,
-    onClick,
-  }: {
-    shape: Shape
-    onClick?: (shapeId: ShapeId) => void
-  }) => {
+  ({ shape, onClick }: { shape: Shape; onClick?: () => void }) => {
     const positions: LatLngExpression[] = shape.points.map((point) => [
       point.lat,
       point.lon,
@@ -401,7 +402,7 @@ export const RouteShape = React.memo(
         className="m-vehicle-map__route-shape"
         positions={positions}
         {...shapeStrokeOptions(shape)}
-        eventHandlers={onClick ? { click: () => onClick(shape.id) } : {}}
+        eventHandlers={onClick ? { click: onClick } : {}}
       />
     )
   }

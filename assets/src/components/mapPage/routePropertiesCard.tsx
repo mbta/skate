@@ -23,13 +23,7 @@ const DirectionPicker = ({
 }: {
   selectedRoutePattern: RoutePattern
   routePatterns: ByRoutePatternId<RoutePattern>
-  selectRoutePattern: ({
-    routeId,
-    routePatternId,
-  }: {
-    routeId: RouteId
-    routePatternId: RoutePatternId
-  }) => void
+  selectRoutePattern: (routePattern: RoutePattern) => void
   directionNames: {
     0: DirectionName
     1: DirectionName
@@ -56,10 +50,7 @@ const DirectionPicker = ({
                 ) || null
 
               if (targetRoutePattern) {
-                selectRoutePattern({
-                  routeId: targetRoutePattern.routeId,
-                  routePatternId: targetRoutePattern.id,
-                })
+                selectRoutePattern(targetRoutePattern)
               }
             }}
           />
@@ -79,10 +70,7 @@ const VariantPicker = ({
 }: {
   routePatterns: RoutePattern[]
   selectedRoutePatternId: RoutePatternId
-  selectRoutePattern: (routePattern: {
-    routeId: RouteId
-    routePatternId: RoutePatternId
-  }) => void
+  selectRoutePattern: (routePattern: RoutePattern) => void
 }): JSX.Element => {
   {
     return (
@@ -97,12 +85,7 @@ const VariantPicker = ({
               id={`variant-radio-${routePattern.id}`}
               name="variant"
               defaultChecked={routePattern.id === selectedRoutePatternId}
-              onChange={() =>
-                selectRoutePattern({
-                  routeId: routePattern.routeId,
-                  routePatternId: routePattern.id,
-                })
-              }
+              onChange={() => selectRoutePattern(routePattern)}
             />
 
             <label htmlFor={`variant-radio-${routePattern.id}`}>
@@ -128,10 +111,7 @@ const RoutePropertiesCard = ({
   routeId: RouteId
   routePatterns: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId: RoutePatternId
-  selectRoutePattern: (routePattern: {
-    routeId: RouteId
-    routePatternId: RoutePatternId
-  }) => void
+  selectRoutePattern: (routePattern: RoutePattern) => void
   onClose: () => void
 }) => {
   const route: Route | null = useRoute(routeId)
@@ -139,53 +119,49 @@ const RoutePropertiesCard = ({
   const selectedRoutePattern = routePatterns[selectedRoutePatternId]
 
   if (!route || selectedRoutePattern === undefined) {
-    console.error("THAt's why")
-    return <div className="m-route-properties-card"></div>
+    return <></>
   }
-
-  console.error("Show card")
-
   return (
-    <Card
-      style={"white"}
-      noFocusOrHover={true}
-      title={
-        <h3>
-          <RoutePill routeName={routeId} />
-          {selectedRoutePattern.name}
-        </h3>
-      }
-      additionalClass="m-route-properties-card"
-      aria-label={"route properties card"}
-      closeCallback={onClose}
-    >
-      <DirectionPicker
-        selectedRoutePattern={selectedRoutePattern}
-        routePatterns={routePatterns}
-        selectRoutePattern={selectRoutePattern}
-        directionNames={route.directionNames}
-      />
-      <details className="m-route-properties-card__variant-picker">
-        <summary>Variants </summary>
-        <VariantPicker
-          routePatterns={Object.values(routePatterns).filter(
-            (routePattern) =>
-              routePattern.directionId === selectedRoutePattern.directionId
-          )}
-          selectedRoutePatternId={selectedRoutePattern.id}
+    <div className="m-route-properties-card" aria-label="route properties card">
+      <Card
+        style={"white"}
+        noFocusOrHover={true}
+        title={
+          <h3>
+            <RoutePill routeName={routeId} />
+            {selectedRoutePattern.name}
+          </h3>
+        }
+        closeCallback={onClose}
+      >
+        <DirectionPicker
+          selectedRoutePattern={selectedRoutePattern}
+          routePatterns={routePatterns}
           selectRoutePattern={selectRoutePattern}
+          directionNames={route.directionNames}
         />
-      </details>
-      <details className="m-route-properties-card__selected-variant-stops">
-        <summary>Stops</summary>
-        <ol>
-          {selectedRoutePattern.shape &&
-            selectedRoutePattern.shape.stops?.map((stop) => (
-              <li key={stop.id}>{stop.name}</li>
-            ))}
-        </ol>
-      </details>
-    </Card>
+        <details className="m-route-properties-card__variant-picker">
+          <summary>Variants </summary>
+          <VariantPicker
+            routePatterns={Object.values(routePatterns).filter(
+              (routePattern) =>
+                routePattern.directionId === selectedRoutePattern.directionId
+            )}
+            selectedRoutePatternId={selectedRoutePattern.id}
+            selectRoutePattern={selectRoutePattern}
+          />
+        </details>
+        <details className="m-route-properties-card__selected-variant-stops">
+          <summary>Stops</summary>
+          <ol>
+            {selectedRoutePattern.shape &&
+              selectedRoutePattern.shape.stops?.map((stop) => (
+                <li key={stop.id}>{stop.name}</li>
+              ))}
+          </ol>
+        </details>
+      </Card>
+    </div>
   )
 }
 

@@ -18,11 +18,13 @@ interface SelectedVehicleId {
   vehicleId: VehicleId
 }
 
-export interface SelectedRoutePattern {
-  type: SelectedEntityType.RoutePattern
-
+export interface RoutePatternIdentifier {
   routeId: RouteId
   routePatternId: RoutePatternId
+}
+
+export interface SelectedRoutePattern extends RoutePatternIdentifier {
+  type: SelectedEntityType.RoutePattern
 }
 
 export type SelectedEntity = SelectedVehicleId | SelectedRoutePattern
