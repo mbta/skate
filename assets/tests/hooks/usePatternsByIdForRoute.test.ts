@@ -77,7 +77,7 @@ describe("usePatternsByIdForRoute", () => {
     expect(mockFetchRoutePatterns).toHaveBeenLastCalledWith("39")
   })
 
-  test.only("Keeps most recently requested route patterns if previous resolves finishes later", async () => {
+  test("Keeps most recently requested route patterns if previous resolves finishes later", async () => {
     const patternFor66 = routePatternFactory.build({ routeId: "66" })
     // const patternsFor66ById = { [patternFor66.id]: patternFor66 }
     const patternFor39 = routePatternFactory.build({ routeId: "39" })
