@@ -4,7 +4,6 @@ import {
   GarageMarkers,
   RouteShape,
   RouteStopMarkers,
-  StationIconSize,
   StationMarker,
   shapeStrokeOptions,
   TrainVehicleMarker,
@@ -121,7 +120,7 @@ describe("StopMarker", () => {
 describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
     const { container } = renderInMap(
-      <StationMarker station={station} iconSize={StationIconSize.small} />
+      <StationMarker station={station} zoomLevel={13} />
     )
     expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
     await userEvent.hover(container.querySelector(".m-station-icon")!)
@@ -131,7 +130,7 @@ describe("StationMarker", () => {
   test("Station icon with name on click when hover not supported", async () => {
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
     const { container } = renderInMap(
-      <StationMarker station={station} iconSize={StationIconSize.small} />
+      <StationMarker station={station} zoomLevel={13} />
     )
     expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
     await userEvent.click(container.querySelector(".m-station-icon")!)
@@ -142,10 +141,7 @@ describe("StationMarker", () => {
 describe("RouteStopMarkers", () => {
   test("Returns station and stop markers", () => {
     const { container } = renderInMap(
-      <RouteStopMarkers
-        stops={[stop, station]}
-        iconSize={StationIconSize.small}
-      />
+      <RouteStopMarkers stops={[stop, station]} zoomLevel={13} />
     )
 
     expect(container.querySelectorAll(".m-station-icon")).toHaveLength(1)
@@ -154,7 +150,7 @@ describe("RouteStopMarkers", () => {
 
   test("Deduplicates list by stop id", () => {
     const { container } = renderInMap(
-      <RouteStopMarkers stops={[stop, stop]} iconSize={StationIconSize.small} />
+      <RouteStopMarkers stops={[stop, stop]} zoomLevel={13} />
     )
 
     expect(container.querySelectorAll(".m-vehicle-map__stop")).toHaveLength(1)

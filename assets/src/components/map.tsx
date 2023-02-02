@@ -45,7 +45,6 @@ import {
   GarageMarkers,
   RouteShape,
   RouteStopMarkers,
-  StationIconSize,
   StationMarker,
   TrainVehicleMarker,
   VehicleMarker,
@@ -403,9 +402,6 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
     props.stateClasses,
   ])
 
-  const stationIconSize =
-    zoomLevel <= 16 ? StationIconSize.small : StationIconSize.large
-
   return (
     <>
       <div className={stateClasses} />
@@ -467,7 +463,7 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         ))}
         <RouteStopMarkers
           stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
-          iconSize={stationIconSize}
+          zoomLevel={zoomLevel}
           direction={props.stopCardDirection}
           includeStopCard={
             props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
@@ -478,7 +474,7 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
             <StationMarker
               key={station.id}
               station={station}
-              iconSize={stationIconSize}
+              zoomLevel={zoomLevel}
             />
           ))}
         {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
