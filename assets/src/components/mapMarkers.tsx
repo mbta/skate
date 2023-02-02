@@ -1,6 +1,9 @@
-import Leaflet, { LatLngExpression } from "leaflet"
+import Leaflet, {
+  CircleMarker as LeafletCircleMarker,
+  LatLngExpression,
+} from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { CircleMarker, Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
@@ -21,6 +24,7 @@ import stationIcon from "../../static/images/icon-station.svg"
 import { LocationType } from "../models/stopData"
 import StopCard from "./stopCard"
 import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
+import { CircleMarkerProps } from "react-leaflet"
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
@@ -217,6 +221,38 @@ const MobileFriendlyTooltip = ({
     </Popup>
   )
 }
+interface StopIconProps extends Omit<CircleMarkerProps, "center"> {
+  stop: Stop
+  radius?: number
+  selected?: boolean
+}
+
+export const StopIcon = ({
+  stop,
+  radius = 8,
+  selected = false,
+  ...props
+}: StopIconProps) => {
+  const ref = useRef<null | LeafletCircleMarker>(null)
+  const element = ref.current?.getElement()
+  useEffect(() => {
+    if (element) {
+      element.classList.toggle("selected", selected)
+    }
+  }, [selected, element])
+
+  return (
+    <CircleMarker
+      {...props}
+      ref={ref}
+      className={className(["m-vehicle-map__stop"])}
+      center={[stop.lat, stop.lon]}
+      radius={radius}
+    >
+      {props.children}
+    </CircleMarker>
+  )
+}
 
 export const StopMarker = React.memo(
   ({
@@ -228,11 +264,18 @@ export const StopMarker = React.memo(
     direction?: DirectionId
     includeStopCard?: boolean
   }) => {
-    const markerRadius = 3
+    const markerRadius = 8
+    const [isSelected, setIsSelected] = useState(false)
+    const popupHandlers = {
+      popupopen: () => setIsSelected(true),
+      popupclose: () => setIsSelected(false),
+    }
+
     return (
-      <CircleMarker
-        className="m-vehicle-map__stop"
-        center={[stop.lat, stop.lon]}
+      <StopIcon
+        stop={stop}
+        selected={isSelected}
+        eventHandlers={popupHandlers}
         radius={markerRadius}
       >
         {includeStopCard ? (
@@ -245,7 +288,7 @@ export const StopMarker = React.memo(
             {stop.name}
           </MobileFriendlyTooltip>
         )}
-      </CircleMarker>
+      </StopIcon>
     )
   }
 )
