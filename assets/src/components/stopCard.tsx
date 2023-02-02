@@ -49,7 +49,12 @@ const StopCard = ({
     : []
 
   return (
-    <Popup className="m-stop-card" closeButton={false} offset={[-125, 7]}>
+    <Popup
+      pane="popupPane"
+      className="m-stop-card"
+      closeButton={false}
+      offset={[-125, 7]}
+    >
       <div className="m-stop-card__stop-info">
         <div className="m-stop-card__stop-name">{stop.name}</div>
         {direction !== undefined && (
