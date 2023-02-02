@@ -18,6 +18,7 @@ import { displayHelp } from "../../../src/helpers/appCue"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 import getTestGroups from "../../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../../src/userInTestGroup"
+import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -107,6 +108,27 @@ describe("LeftNav", () => {
 
     expect(screen.queryByTitle("Search")).toBeNull()
     expect(screen.getByTitle("Search Map")).toBeInTheDocument()
+  })
+
+  test("clicking 'Search Map' nav item triggers FullStory event", async () => {
+    mockFullStoryEvent()
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+
+    render(
+      <BrowserRouter>
+        <LeftNav
+          defaultToCollapsed={true}
+          dispatcherFlag={true}
+          allowViews={true}
+        />
+      </BrowserRouter>
+    )
+
+    await userEvent.click(screen.getByRole("link", { name: "Search Map" }))
+
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Search Map nav entry clicked"
+    )
   })
 
   test("can toggle nav menu on tablet layout", async () => {

@@ -20,6 +20,7 @@ describe("mapModeForUser", () => {
       element: <MapPage />,
       navIcon: SearchMapIcon,
       supportsRightPanel: false,
+      navEventText: "Search Map nav entry clicked",
     })
   })
 
