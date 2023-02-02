@@ -10,14 +10,7 @@ import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
-import {
-  DirectionId,
-  RoutePattern,
-  Shape,
-  ShapeId,
-  Stop,
-  StopId,
-} from "../schedule"
+import { DirectionId, Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 import "leaflet.fullscreen"
 

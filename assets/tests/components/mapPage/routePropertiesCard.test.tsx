@@ -182,10 +182,9 @@ describe("<RoutePropertiesCard/>", () => {
           name: route66.directionNames[1],
         })
       )
-      expect(mockSelectRoutePattern).toHaveBeenCalledWith({
-        routeId: routePatternDirection1_0.routeId,
-        routePatternId: routePatternDirection1_0.id,
-      })
+      expect(mockSelectRoutePattern).toHaveBeenCalledWith(
+        routePatternDirection1_0
+      )
     })
 
     test("Clicking a different route pattern calls selectRoutePattern", async () => {
@@ -214,10 +213,7 @@ describe("<RoutePropertiesCard/>", () => {
           name: routePattern2.name,
         })
       )
-      expect(mockSelectRoutePattern).toHaveBeenCalledWith({
-        routeId: routePattern2.routeId,
-        routePatternId: routePattern2.id,
-      })
+      expect(mockSelectRoutePattern).toHaveBeenCalledWith(routePattern2)
     })
 
     test("Clicking the close button calls onClose prop", async () => {

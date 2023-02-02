@@ -42,6 +42,9 @@ import { RouteId } from "../../src/schedule"
 import { mockUserRoutePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
+import { routePatternFactory } from "../factories/routePattern"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -110,6 +113,18 @@ function mockUseVehiclesForRouteMap(map: {
 function getVehiclePropertiesCard() {
   return screen.getByRole("generic", {
     name: /vehicle properties card/i,
+  })
+}
+
+function getRoutePropertiesCard() {
+  return screen.getByRole("generic", {
+    name: /route properties card/i,
+  })
+}
+
+function queryRoutePropertiesCard() {
+  return screen.queryByRole("generic", {
+    name: /route properties card/i,
   })
 }
 
@@ -617,6 +632,101 @@ describe("<MapPage />", () => {
           screen.getByRole("generic", { name: /vehicle properties card/i })
         ).toBeVisible()
       })
+    })
+  })
+
+  describe("<RoutePropertiesCard />", () => {
+    test("renders when a vehicle's route shape is selected", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+      const route = routeFactory.build()
+      const routePattern = routePatternFactory.build({ routeId: route.id })
+      const vehicle = vehicleFactory.build({
+        routeId: route.id,
+        routePatternId: routePattern.id,
+      })
+
+      mockUseVehicleForId([vehicle])
+      mockUseVehiclesForRouteMap({
+        [route.id]: [vehicle],
+      })
+      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+        [routePattern.id]: routePattern,
+      })
+
+      const { container } = render(
+        <RealDispatchWrapper
+          initialState={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: vehicle.id,
+              },
+            },
+            userSettings: {
+              ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+            },
+          })}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </RealDispatchWrapper>
+      )
+      expect(getVehiclePropertiesCard()).toBeVisible()
+
+      await userEvent.click(
+        container.querySelector(".m-vehicle-map__route-shape")!
+      )
+      expect(getRoutePropertiesCard()).toBeVisible()
+    })
+    test("clicking vehicle when RPC is open closes RPC and opens VPC", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+      const route = routeFactory.build()
+      const routePattern = routePatternFactory.build({ routeId: route.id })
+      const vehicle = vehicleFactory.build({
+        routeId: route.id,
+        routePatternId: routePattern.id,
+      })
+
+      mockUseVehicleForId([vehicle])
+      mockUseVehiclesForRouteMap({
+        [route.id]: [vehicle],
+      })
+      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+        [routePattern.id]: routePattern,
+      })
+
+      render(
+        <RealDispatchWrapper
+          initialState={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.RoutePattern,
+                routeId: route.id,
+                routePatternId: routePattern.id,
+              },
+            },
+            userSettings: {
+              ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+            },
+          })}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </RealDispatchWrapper>
+      )
+      expect(getRoutePropertiesCard()).toBeVisible()
+      await userEvent.click(
+        screen.getByRole("button", {
+          name: vehicle.label,
+        })
+      )
+
+      expect(queryRoutePropertiesCard()).not.toBeInTheDocument()
+      expect(getVehiclePropertiesCard()).toBeVisible()
     })
   })
 
