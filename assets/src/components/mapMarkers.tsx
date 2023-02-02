@@ -203,6 +203,7 @@ const MobileFriendlyTooltip = ({
 
   return supportsHover ? (
     <Tooltip
+      pane="tooltipPane"
       className={fullClassName}
       direction={"top"}
       offset={[0, -(markerRadius + 8)]}
@@ -211,6 +212,7 @@ const MobileFriendlyTooltip = ({
     </Tooltip>
   ) : (
     <Popup
+      pane="popupPane"
       autoPan={false}
       // style popup as tooltip for consistency
       className={`leaflet-tooltip ${fullClassName} leaflet-tooltip-top`}
