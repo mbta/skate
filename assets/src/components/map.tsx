@@ -451,8 +451,8 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
           <RouteShape key={shape.id} shape={shape} />
         ))}
 
-        <ZoomLevelWrapper
-          render={(zoomLevel) => (
+        <ZoomLevelWrapper>
+          {(zoomLevel) => (
             <>
               <RouteStopMarkers
                 stops={(props.shapes || []).flatMap(
@@ -475,7 +475,7 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
               {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
             </>
           )}
-        />
+        </ZoomLevelWrapper>
         {props.children}
       </MapContainer>
     </>

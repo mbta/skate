@@ -2,13 +2,13 @@ import { ReactElement, useState } from "react"
 import { useMap } from "react-leaflet"
 
 const ZoomLevelWrapper = ({
-  render,
+  children,
 }: {
-  render: (zoomLevel: number) => ReactElement
+  children: (zoomLevel: number) => ReactElement
 }) => {
   const map = useMap()
   const [zoomLevel, setZoomLevel] = useState(map.getZoom())
   map.addEventListener("zoomend", () => setZoomLevel(map.getZoom()))
-  return render(zoomLevel)
+  return children(zoomLevel)
 }
 export default ZoomLevelWrapper

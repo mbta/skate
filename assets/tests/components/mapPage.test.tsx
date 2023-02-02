@@ -835,7 +835,7 @@ describe("<MapPage />", () => {
           setHtmlWidthHeightForLeafletMap()
           mockUseVehiclesForRouteMap({})
           mockUseVehicleForId([selectedVehicle])
-          mockUserRoutePatternsByIdForVehicles([]) // no route pattern for shuttle vehicle
+          mockUserRoutePatternsByIdForVehicles([selectedVehicle])
 
           const { container } = render(
             <StateDispatchProvider

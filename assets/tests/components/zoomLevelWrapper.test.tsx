@@ -21,12 +21,16 @@ const getMapZoomInButton = () => {
 
 describe("ZoomLevelWrapper", () => {
   test("Passes zoom level to child", () => {
-    renderInMap(<ZoomLevelWrapper render={renderProps} />, { zoom: 13 })
+    renderInMap(<ZoomLevelWrapper>{renderProps}</ZoomLevelWrapper>, {
+      zoom: 13,
+    })
     expect(screen.getByText("13")).toBeInTheDocument()
   })
 
   test("Updates when zoom level changes", async () => {
-    renderInMap(<ZoomLevelWrapper render={renderProps} />, { zoom: 13 })
+    renderInMap(<ZoomLevelWrapper>{renderProps}</ZoomLevelWrapper>, {
+      zoom: 13,
+    })
     expect(screen.getByText("13")).toBeInTheDocument()
     await userEvent.click(getMapZoomInButton())
     expect(screen.getByText("14")).toBeInTheDocument()
