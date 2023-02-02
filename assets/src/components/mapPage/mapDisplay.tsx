@@ -28,7 +28,8 @@ import {
   UpdateMapFromPointsFn,
   useInteractiveFollowerState,
 } from "../map"
-import { VehicleMarker } from "../mapMarkers"
+import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
+import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 const RouteVehicles = ({
@@ -207,12 +208,14 @@ const SelectionCardContainer = ({
 
 const SelectedVehicleDataLayers = ({
   vehicleOrGhost: selectedVehicleOrGhost,
+  routePatterns,
   showSelectionCard,
   deleteSelection,
   selectVehicle,
   setStateClasses,
 }: {
   vehicleOrGhost: VehicleOrGhost | null
+  routePatterns: ByRoutePatternId<RoutePattern> | null
   showSelectionCard: boolean
   deleteSelection: () => void
   selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
@@ -229,6 +232,18 @@ const SelectedVehicleDataLayers = ({
     selectedVehicleOrGhost?.id || null,
     selectedVehicleOrGhost
   )
+
+  const routePatternForVehicle =
+    selectedVehicleOrGhost &&
+    selectedVehicleOrGhost.routePatternId &&
+    routePatterns
+      ? routePatterns[selectedVehicleOrGhost.routePatternId]
+      : null
+
+  const showShapeAndStops =
+    selectedVehicleOrGhost &&
+    isVehicle(selectedVehicleOrGhost) &&
+    !selectedVehicleOrGhost.isShuttle
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
@@ -261,6 +276,30 @@ const SelectedVehicleDataLayers = ({
                 onPrimaryVehicleSelect={selectVehicle}
               />
             ))}
+          {showShapeAndStops &&
+            routePatternForVehicle &&
+            routePatternForVehicle.shape && (
+              <>
+                <RouteShape shape={routePatternForVehicle.shape} />
+                <ZoomLevelWrapper
+                  render={(zoomLevel) => {
+                    return (
+                      <>
+                        {routePatternForVehicle &&
+                          routePatternForVehicle.shape && (
+                            <RouteStopMarkers
+                              stops={routePatternForVehicle.shape.stops || []}
+                              includeStopCard={true}
+                              direction={routePatternForVehicle.directionId}
+                              zoomLevel={zoomLevel}
+                            />
+                          )}
+                      </>
+                    )
+                  }}
+                />
+              </>
+            )}
         </>
       )}
 
@@ -274,23 +313,33 @@ const SelectedVehicleDataLayers = ({
 }
 
 const SelectionDataLayers = ({
-  liveSelectedEntity,
+  selectedEntity,
   showSelectionCard,
   deleteSelection,
   setSelection,
   setStateClasses,
 }: {
-  liveSelectedEntity: LiveSelectedEntity | null
+  selectedEntity: SelectedEntity | null
   showSelectionCard: boolean
   deleteSelection: () => void
   setSelection: (selectedEntity: SelectedEntity | null) => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
+  const liveSelectedEntity: LiveSelectedEntity | null =
+    useLiveSelectedEntity(selectedEntity)
+
+  const routePatternIdentifier =
+    routePatternIdentifierForSelection(liveSelectedEntity)
+
+  const routePatterns: ByRoutePatternId<RoutePattern> | null =
+    usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
+
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
       return (
         <SelectedVehicleDataLayers
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
+          routePatterns={routePatterns}
           showSelectionCard={showSelectionCard}
           deleteSelection={deleteSelection}
           selectVehicle={(vehicleOrGhost: VehicleOrGhost) =>
@@ -305,21 +354,6 @@ const SelectionDataLayers = ({
     // TODO: handle SelectedEntityType.ROUTE
     default:
       return <MapElementsNoSelection setStateClasses={setStateClasses} />
-  }
-}
-
-const shouldShowShape = (liveSelectedEntity: LiveSelectedEntity | null) => {
-  switch (liveSelectedEntity?.type) {
-    case SelectedEntityType.RoutePattern:
-      return true
-    case SelectedEntityType.Vehicle:
-      return (
-        liveSelectedEntity.vehicleOrGhost &&
-        isVehicle(liveSelectedEntity.vehicleOrGhost) &&
-        !liveSelectedEntity.vehicleOrGhost.isShuttle
-      )
-    default:
-      return false
   }
 }
 
@@ -338,46 +372,23 @@ const MapDisplay = ({
 
   const stations = useStations()
 
-  const liveSelectedEntity: LiveSelectedEntity | null =
-    useLiveSelectedEntity(selectedEntity)
-
-  const routePatternIdentifier =
-    routePatternIdentifierForSelection(liveSelectedEntity)
-
-  const allPatternsForRoute: ByRoutePatternId<RoutePattern> | null =
-    usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
-
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
   )
-
-  const routePatternShape =
-    allPatternsForRoute &&
-    routePatternIdentifier &&
-    shouldShowShape(liveSelectedEntity)
-      ? allPatternsForRoute[routePatternIdentifier.routePatternId]?.shape
-      : null
 
   return (
     <BaseMap
       vehicles={[]}
       allowStreetView={true}
-      stopCardDirection={
-        allPatternsForRoute && routePatternIdentifier
-          ? allPatternsForRoute[routePatternIdentifier.routePatternId]
-              ?.directionId
-          : undefined
-      }
       includeStopCard={true}
       stations={stations}
-      shapes={routePatternShape ? [routePatternShape] : []}
+      shapes={[]}
       stateClasses={stateClasses}
     >
       <>
         {
-          // TODO: pass allPatternsForRoute and routePatternIdentifier for use in SelectedRouteDataLayers
           <SelectionDataLayers
-            liveSelectedEntity={liveSelectedEntity}
+            selectedEntity={selectedEntity}
             showSelectionCard={showSelectionCard}
             deleteSelection={deleteSelection}
             setSelection={setSelection}
