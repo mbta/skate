@@ -156,6 +156,11 @@ class LeafletRecenterControl extends Control {
     controlContainer.onclick = (e) => {
       e.stopPropagation()
       e.preventDefault()
+
+      if (window.FS) {
+        window.FS.event("Recenter control clicked")
+      }
+
       this.recenter()
     }
     controlContainer.innerHTML = `

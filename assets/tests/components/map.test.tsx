@@ -490,6 +490,7 @@ describe("auto centering", () => {
   })
 
   test("recenter control turns on auto center", async () => {
+    mockFullStoryEvent()
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const result = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
@@ -513,5 +514,6 @@ describe("auto centering", () => {
       "m-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
+    expect(window.FS!.event).toHaveBeenCalledWith("Recenter control clicked")
   })
 })
