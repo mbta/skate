@@ -66,7 +66,7 @@ describe("<RoutePropertiesCard/>", () => {
       )
 
       expect(
-        screen.getByRole("heading", { name: `66 ${routePattern.name}` })
+        screen.getByRole("heading", { name: routePattern.name })
       ).toBeInTheDocument()
     })
 
@@ -152,12 +152,12 @@ describe("<RoutePropertiesCard/>", () => {
       })
       const routePatternDirection1_0 = routePatternFactory.build({
         routeId: "66",
-        directionId: 0,
+        directionId: 1,
         sortOrder: 0,
       })
       const routePatternDirection1_1 = routePatternFactory.build({
         routeId: "66",
-        directionId: 0,
+        directionId: 1,
         sortOrder: 1,
       })
       const mockSelectRoutePattern = jest.fn()
@@ -243,6 +243,38 @@ describe("<RoutePropertiesCard/>", () => {
         })
       )
       expect(mockOnClose).toHaveBeenCalled()
+    })
+
+    test("Only one details section is open at a time", async () => {
+      const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
+        routeId: "66",
+        directionId: 0,
+      })
+      const mockOnClose = jest.fn()
+      render(
+        <RoutesProvider routes={[route66]}>
+          <RoutePropertiesCard
+            routeId="66"
+            routePatterns={{
+              [routePattern1.id]: routePattern1,
+              [routePattern2.id]: routePattern2,
+            }}
+            selectedRoutePatternId={routePattern1.id}
+            selectRoutePattern={jest.fn()}
+            onClose={mockOnClose}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(screen.getByText("Show variants"))
+
+      expect(screen.getByText("Hide variants")).toBeInTheDocument()
+
+      await userEvent.click(screen.getByText("Show outbound stops"))
+
+      expect(screen.getByText("Hide outbound stops")).toBeInTheDocument()
+
+      expect(screen.getByText("Show variants")).toBeInTheDocument()
     })
   })
 })

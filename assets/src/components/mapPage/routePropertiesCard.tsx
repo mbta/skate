@@ -22,6 +22,39 @@ const displayName = (routePattern: RoutePattern) => {
   return routePattern.name
 }
 
+const DetailSection = ({
+  title,
+  isOpen,
+  toggleOpen,
+  className,
+  children,
+}: {
+  title: string
+  isOpen: boolean
+  toggleOpen: () => void
+  className: string
+  children: JSX.Element
+}) => {
+  return (
+    <details
+      className={`m-route-properties-card__details-section ${className}`}
+      {...(isOpen ? { open: true } : {})}
+    >
+      <summary
+        onClick={(event) => {
+          // preventDefault so that open/closed state is managed entirely by react
+          // see https://github.com/facebook/react/issues/15486
+          event.preventDefault()
+          toggleOpen()
+        }}
+      >
+        {`${isOpen ? "Hide" : "Show"} ${title}`}
+      </summary>
+      {children}
+    </details>
+  )
+}
+
 const DirectionPicker = ({
   selectedRoutePattern,
   routePatterns,
@@ -36,12 +69,13 @@ const DirectionPicker = ({
     1: DirectionName
   }
 }) => {
+  const directionIds: DirectionId[] = Array.from(
+    new Set(Object.values(routePatterns).map((rp) => rp.directionId))
+  )
+
   return (
     <div className="m-route-properties-card__direction-picker">
-      {
-        // TODO: Should we always show both buttons? Some routes only go one direction?
-      }
-      {[0, 1].map((directionId) => (
+      {directionIds.map((directionId) => (
         <div
           key={directionId}
           className={`direction-button ${
@@ -52,14 +86,12 @@ const DirectionPicker = ({
             type="radio"
             id={`direction-radio-${directionId}`}
             name="direction"
-            defaultChecked={selectedRoutePattern.directionId === directionId}
+            checked={selectedRoutePattern.directionId === directionId}
             onChange={() => {
-              const targetDirectionId = directionId === 0 ? 1 : 0
-              // TODO: Try to find matching pattern in other direction first
+              // TODO: Try to find same pattern as selectedRoutePattern first
               const targetRoutePattern =
                 sortRoutePatterns(Object.values(routePatterns)).find(
-                  (routePattern) =>
-                    routePattern.directionId === targetDirectionId
+                  (routePattern) => routePattern.directionId === directionId
                 ) || null
 
               if (targetRoutePattern) {
@@ -162,7 +194,6 @@ const RoutePropertiesCard = ({
   if (!route || selectedRoutePattern === undefined) {
     return <></>
   }
-  console.log("OPEN", openedDetails)
   return (
     <div className="m-route-properties-card" aria-label="route properties card">
       <Card
@@ -184,16 +215,16 @@ const RoutePropertiesCard = ({
           selectRoutePattern={selectRoutePattern}
           directionNames={route.directionNames}
         />
-        <details
-          className="m-route-properties-card__variant-picker"
-          {...(openedDetails === "variants" ? { open: true } : {})}
-          onClick={() => {
-            setOpenedDetails("variants")
-          }}
+        <DetailSection
+          title="variants"
+          isOpen={openedDetails === "variants"}
+          toggleOpen={() =>
+            setOpenedDetails((prevValue) =>
+              prevValue === "variants" ? null : "variants"
+            )
+          }
+          className="variant-picker"
         >
-          <summary>
-            {`${openedDetails === "variants" ? "Hide" : "Show"} variants`}
-          </summary>
           <VariantPicker
             routePatterns={Object.values(routePatterns).filter(
               (routePattern) =>
@@ -202,32 +233,26 @@ const RoutePropertiesCard = ({
             selectedRoutePatternId={selectedRoutePattern.id}
             selectRoutePattern={selectRoutePattern}
           />
-        </details>
-        <details
-          className="m-route-properties-card__selected-variant-stops"
-          {...(openedDetails === "stops" ? { open: true } : {})}
-          onClick={() => {
-            if (openedDetails === "stops") {
-              setOpenedDetails(null)
-            } else {
-              setOpenedDetails("stops")
-            }
-          }}
+        </DetailSection>
+        <DetailSection
+          title={`${(
+            route.directionNames[selectedRoutePattern.directionId] || ""
+          ).toLowerCase()} stops`}
+          isOpen={openedDetails === "stops"}
+          toggleOpen={() =>
+            setOpenedDetails((prevValue) =>
+              prevValue === "stops" ? null : "stops"
+            )
+          }
+          className="variant-stop-list"
         >
-          <summary>
-            {`${
-              openedDetails === "stops" ? "Hide" : "Show"
-            } ${route.directionNames[
-              selectedRoutePattern.directionId
-            ].toLowerCase()} stops`}
-          </summary>
           <ol>
             {selectedRoutePattern.shape &&
               selectedRoutePattern.shape.stops?.map((stop) => (
                 <li key={stop.id}>{stop.name}</li>
               ))}
           </ol>
-        </details>
+        </DetailSection>
       </Card>
     </div>
   )

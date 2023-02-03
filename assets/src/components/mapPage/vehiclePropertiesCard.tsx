@@ -1,9 +1,4 @@
-import React, {
-  ComponentPropsWithoutRef,
-  MouseEventHandler,
-  ReactNode,
-  useId,
-} from "react"
+import React, { ReactNode, useId } from "react"
 import { joinTruthy, className as classNames } from "../../helpers/dom"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
