@@ -31,6 +31,8 @@ import routeTabFactory from "../factories/routeTab"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import stateFactory from "../factories/applicationState"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -291,16 +293,14 @@ describe("LadderPage", () => {
   })
 
   test("can add a new route tab", async () => {
-    const mockState = {
-      ...initialState,
-      routeTabs: [
-        routeTabFactory.build({
-          ordering: 0,
-          isCurrentTab: true,
-          selectedRouteIds: ["1"],
-        }),
-      ],
-    }
+    mockFullStoryEvent()
+    const mockState = stateFactory.build({
+      routeTabs: routeTabFactory.buildList(1, {
+        ordering: 0,
+        isCurrentTab: true,
+        selectedRouteIds: ["1"],
+      }),
+    })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -315,6 +315,7 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
+    expect(window.FS!.event).toBeCalledWith("User added a new Route Ladder Tab")
   })
 
   test("can toggle to presets view in picker and back", async () => {

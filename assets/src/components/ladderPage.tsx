@@ -121,6 +121,7 @@ const AddTabButton = ({
       className="m-ladder-page__add-tab-button"
       title="Add Tab"
       onClick={() => {
+        window.FS?.event("User added a new Route Ladder Tab")
         tagManagerEvent("new_tab_added")
         addTab()
       }}
