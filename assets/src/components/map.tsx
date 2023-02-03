@@ -395,6 +395,8 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
     props.stateClasses,
   ])
 
+  const stops = (props.shapes || []).flatMap((shape) => shape.stops || [])
+
   return (
     <>
       <div className={stateClasses} />
@@ -454,16 +456,16 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         <ZoomLevelWrapper>
           {(zoomLevel) => (
             <>
-              <RouteStopMarkers
-                stops={(props.shapes || []).flatMap(
-                  (shape) => shape.stops || []
-                )}
-                zoomLevel={zoomLevel}
-                direction={props.stopCardDirection}
-                includeStopCard={
-                  props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
-                }
-              />
+              {stops.length > 0 && (
+                <RouteStopMarkers
+                  stops={stops}
+                  zoomLevel={zoomLevel}
+                  direction={props.stopCardDirection}
+                  includeStopCard={
+                    props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
+                  }
+                />
+              )}
               {zoomLevel >= 15 &&
                 props.stations?.map((station) => (
                   <StationMarker
