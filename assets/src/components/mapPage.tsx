@@ -138,9 +138,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           vehicleId: vehicleOrGhost.id,
         })
 
-        if (vehicleOrGhost !== null && window.FS) {
-          window.FS.event("VPC Opened")
-        }
+        vehicleOrGhost !== null && window.FS?.event("VPC Opened")
       } else {
         setSelection(null)
       }

@@ -293,9 +293,7 @@ export const StopMarker = React.memo(
         radius={markerRadius}
         eventHandlers={{
           popupopen: () => {
-            if (includeStopCard && window.FS) {
-              window.FS.event("Bus stop card opened")
-            }
+            includeStopCard && window.FS?.event("Bus stop card opened")
           },
         }}
       >
@@ -326,9 +324,7 @@ export const StationMarker = React.memo(
     const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
 
     const fireEvent = () => {
-      if (window.FS) {
-        window.FS.event("Station tooltip shown")
-      }
+      window.FS?.event("Station tooltip shown")
     }
 
     return (

@@ -25,9 +25,7 @@ const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
       className="m-vehicle-properties-panel__map-open-link leaflet-bar"
       to={mapModeForUser().path}
       onClick={() => {
-        if (window.FS) {
-          window.FS.event("Map opened from VPP mini map")
-        }
+        window.FS?.event("Map opened from VPP mini map")
 
         dispatch(setSelectedVehicle(vehicleId))
       }}

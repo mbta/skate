@@ -127,9 +127,8 @@ const StreetViewControl = ({
           role="switch"
           checked={streetViewEnabled}
           onChange={() => {
-            if (!streetViewEnabled && window.FS) {
-              window.FS.event("Dedicated street view enabled")
-            }
+            !streetViewEnabled &&
+              window.FS?.event("Dedicated street view enabled")
 
             setStreetViewEnabled((enabled) => !enabled)
           }}
@@ -157,9 +156,7 @@ class LeafletRecenterControl extends Control {
       e.stopPropagation()
       e.preventDefault()
 
-      if (window.FS) {
-        window.FS.event("Recenter control clicked")
-      }
+      window.FS?.event("Recenter control clicked")
 
       this.recenter()
     }

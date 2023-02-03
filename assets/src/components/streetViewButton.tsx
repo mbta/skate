@@ -36,9 +36,7 @@ const StreetViewButton = ({
     target="_blank"
     rel="noreferrer"
     onClick={() => {
-      if (window.FS) {
-        window.FS.event("Street view link followed")
-      }
+      window.FS?.event("Street view link followed")
     }}
     {...(title && { title })}
   >

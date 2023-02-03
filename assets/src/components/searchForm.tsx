@@ -52,9 +52,7 @@ const SearchForm = ({
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
 
-    if (submitEvent && window.FS) {
-      window.FS.event(submitEvent)
-    }
+    submitEvent && window.FS?.event(submitEvent)
 
     dispatch(submitSearch())
     if (onSubmit) {
