@@ -26,6 +26,7 @@ import ReactDOM from "react-dom"
 import {
   AttributionControl,
   MapContainer,
+  Pane,
   TileLayer,
   useMap,
   useMapEvents,
@@ -431,18 +432,33 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
           url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        {props.vehicles.map((vehicle: Vehicle) => (
-          <VehicleMarker
-            key={vehicle.id}
-            vehicle={vehicle}
-            isPrimary={true}
-            isSelected={props.selectedVehicleId === vehicle.id}
-            onSelect={props.onPrimaryVehicleSelect}
-          />
-        ))}
-        {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
-          <VehicleMarker key={vehicle.id} vehicle={vehicle} isPrimary={false} />
-        ))}
+
+        <Pane name="primaryVehicles" pane="markerPane" style={{ zIndex: 499 }}>
+          {props.vehicles.map((vehicle: Vehicle) => (
+            <VehicleMarker
+              key={vehicle.id}
+              vehicle={vehicle}
+              isPrimary={true}
+              isSelected={props.selectedVehicleId === vehicle.id}
+              onSelect={props.onPrimaryVehicleSelect}
+            />
+          ))}
+        </Pane>
+
+        <Pane
+          name="secondaryVehicles"
+          pane="markerPane"
+          style={{ zIndex: 400 }}
+        >
+          {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
+            <VehicleMarker
+              key={vehicle.id}
+              vehicle={vehicle}
+              isPrimary={false}
+            />
+          ))}
+        </Pane>
+
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
           <TrainVehicleMarker
             key={trainVehicle.id}
@@ -457,24 +473,37 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
           {(zoomLevel) => (
             <>
               {stops.length > 0 && (
-                <RouteStopMarkers
-                  stops={stops}
-                  zoomLevel={zoomLevel}
-                  direction={props.stopCardDirection}
-                  includeStopCard={
-                    props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
-                  }
-                />
-              )}
-              {zoomLevel >= 15 &&
-                props.stations?.map((station) => (
-                  <StationMarker
-                    key={station.id}
-                    station={station}
+                <Pane
+                  name="routeStopMarkers"
+                  pane="markerPane"
+                  style={{ zIndex: 450 }} // should be above other non-interactive elements
+                >
+                  <RouteStopMarkers
+                    stops={stops}
                     zoomLevel={zoomLevel}
+                    direction={props.stopCardDirection}
+                    includeStopCard={
+                      props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
+                    }
                   />
-                ))}
-              {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
+                </Pane>
+              )}
+
+              <Pane
+                name="notableLocationMarkers"
+                pane="markerPane"
+                style={{ zIndex: 410 }}
+              >
+                {zoomLevel >= 15 &&
+                  props.stations?.map((station) => (
+                    <StationMarker
+                      key={station.id}
+                      station={station}
+                      zoomLevel={zoomLevel}
+                    />
+                  ))}
+                {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
+              </Pane>
             </>
           )}
         </ZoomLevelWrapper>

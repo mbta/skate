@@ -117,7 +117,12 @@ export const VehicleMarker = ({
     userSettings,
     isSelected
   )
-  const zIndexOffset = (isPrimary ? 2000 : 0) + (isSelected ? 100 : 0)
+
+  // https://leafletjs.com/reference.html#marker-zindexoffset
+  // > By default, marker images zIndex is set automatically based on its latitude
+  // > [...] if you want to put the marker on top of all others,
+  // > [specify] a high value like 1000 [...]
+  const zIndexOffset = isSelected ? 1000 : 0
   return (
     <>
       <Marker
