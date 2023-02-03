@@ -124,6 +124,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const setSelection = useCallback(
     (selectedEntity: SelectedEntity | null) => {
+      if (selectedEntity?.type === SelectedEntityType.Vehicle) {
+        window.FS?.event("VPC Opened")
+      }
+
       dispatch(setSelectedEntity(selectedEntity))
       setSearchOpen(selectedEntity === null)
     },
@@ -137,8 +141,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           type: SelectedEntityType.Vehicle,
           vehicleId: vehicleOrGhost.id,
         })
-
-        vehicleOrGhost !== null && window.FS?.event("VPC Opened")
       } else {
         setSelection(null)
       }
