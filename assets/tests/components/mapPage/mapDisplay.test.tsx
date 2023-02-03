@@ -20,7 +20,7 @@ import routeFactory from "../../factories/route"
 import { VehicleId, VehicleOrGhost } from "../../../src/realtime"
 import { RouteId } from "../../../src/schedule"
 import MapDisplay from "../../../src/components/mapPage/mapDisplay"
-import { mockUserRoutePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
+import { mockUsePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { routePatternFactory } from "../../factories/routePattern"
 import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
@@ -142,7 +142,7 @@ describe("<MapDisplay />", () => {
       [vehicle, nextVehicle] = vehicles,
       { runId } = nextVehicle
 
-    mockUserRoutePatternsByIdForVehicles([vehicle, nextVehicle])
+    mockUsePatternsByIdForVehicles([vehicle, nextVehicle])
 
     mockUseVehicleForId([vehicle, nextVehicle])
     mockUseVehiclesForRouteMap({ [route.id]: vehicles })
@@ -176,7 +176,7 @@ describe("<MapDisplay />", () => {
 
       mockUseVehicleForId(vehicles)
       mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-      mockUserRoutePatternsByIdForVehicles([vehicle])
+      mockUsePatternsByIdForVehicles([vehicle])
 
       const setSelectedEntityMock = jest.fn()
 
@@ -208,7 +208,7 @@ describe("<MapDisplay />", () => {
 
       mockUseVehicleForId(vehicles)
       mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-      mockUserRoutePatternsByIdForVehicles([vehicle])
+      mockUsePatternsByIdForVehicles([vehicle])
 
       const setSelectedEntityMock = jest.fn()
 
@@ -277,7 +277,7 @@ describe("<MapDisplay />", () => {
             setHtmlWidthHeightForLeafletMap()
             mockUseVehicleForId([selectedVehicle])
             mockUseVehiclesForRouteMap({ [route.id]: selectedRouteVehicles })
-            mockUserRoutePatternsByIdForVehicles([selectedVehicle], {
+            mockUsePatternsByIdForVehicles([selectedVehicle], {
               stopCount: 8,
             })
 
@@ -355,7 +355,7 @@ describe("<MapDisplay />", () => {
           setHtmlWidthHeightForLeafletMap()
           mockUseVehiclesForRouteMap({})
           mockUseVehicleForId([selectedVehicle])
-          mockUserRoutePatternsByIdForVehicles([]) // no route pattern for shuttle vehicle
+          mockUsePatternsByIdForVehicles([]) // no route pattern for shuttle vehicle
 
           const { container } = render(
             <MapDisplay
