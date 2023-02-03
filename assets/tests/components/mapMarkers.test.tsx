@@ -96,7 +96,7 @@ describe("StopMarker", () => {
   })
 
   test("Stop name displayed on click when hover not supported", async () => {
-    ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
+    ;(useDeviceSupportsHover as jest.Mock).mockReturnValue(false)
 
     const { container } = renderInMap(
       <StopMarker
@@ -119,11 +119,14 @@ describe("StopMarker", () => {
 
 describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
+    ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(true)
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
     )
     expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
+
     await userEvent.hover(container.querySelector(".m-station-icon")!)
+
     expect(screen.getByText(station.name)).toBeVisible()
   })
 
