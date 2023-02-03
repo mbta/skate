@@ -279,7 +279,31 @@ describe("<Map />", () => {
 
     expect(openSpy).toHaveBeenCalled()
     expect(window.FS!.event).toHaveBeenCalledWith(
-      "Dedicated street view enabled"
+      "Dedicated street view toggled",
+      { streetViewEnabled: true }
+    )
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
+    ).toBeInTheDocument()
+  })
+
+  test("turning off street view also fires a FullStory event", async () => {
+    mockFullStoryEvent()
+
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Dedicated street view toggled",
+      { streetViewEnabled: false }
     )
 
     expect(

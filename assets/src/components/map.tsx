@@ -127,8 +127,10 @@ const StreetViewControl = ({
           role="switch"
           checked={streetViewEnabled}
           onChange={() => {
-            !streetViewEnabled &&
-              window.FS?.event("Dedicated street view enabled")
+            // since the value is being toggled, the new value will be the opposite of the current value
+            window.FS?.event("Dedicated street view toggled", {
+              streetViewEnabled: !streetViewEnabled,
+            })
 
             setStreetViewEnabled((enabled) => !enabled)
           }}
