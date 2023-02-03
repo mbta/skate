@@ -24,6 +24,9 @@ import { mockUsePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { routePatternFactory } from "../../factories/routePattern"
 import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
+import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"
+import { vehiclePropertiesCard } from "../../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
+import { zoomInButton } from "../../testHelpers/selectors/components/map"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -88,22 +91,6 @@ function mockUseVehiclesForRouteMap(map: {
   )
 }
 
-function getVehiclePropertiesCard() {
-  return screen.getByRole("generic", {
-    name: /vehicle properties card/i,
-  })
-}
-
-function getRoutePropertiesCard() {
-  return screen.getByRole("generic", {
-    name: /route properties card/i,
-  })
-}
-
-function getMapZoomInButton(): Element {
-  return screen.getByRole("button", { name: "Zoom in" })
-}
-
 function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
   return container.querySelectorAll(".m-station-icon")
 }
@@ -124,7 +111,7 @@ describe("<MapDisplay />", () => {
 
     expect(getAllStationIcons(container)).toHaveLength(0)
 
-    const zoomIn = getMapZoomInButton()
+    const zoomIn = zoomInButton.get()
     await userEvent.click(zoomIn)
     await userEvent.click(zoomIn)
 
@@ -193,11 +180,7 @@ describe("<MapDisplay />", () => {
 
       const routeShape = container.querySelector(".m-vehicle-map__route-shape")
       expect(routeShape).toBeVisible()
-      expect(
-        screen.queryByRole("generic", {
-          name: /vehicle properties card/i,
-        })
-      ).not.toBeInTheDocument()
+      expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
     })
 
     test("when showSelectionCard is true, vehicle properties card should be visible", async () => {
@@ -226,7 +209,7 @@ describe("<MapDisplay />", () => {
       const routeShape = container.querySelector(".m-vehicle-map__route-shape")
 
       expect(routeShape).toBeVisible()
-      expect(getVehiclePropertiesCard()).toBeVisible()
+      expect(vehiclePropertiesCard.get()).toBeVisible()
     })
 
     test("when showSelectionCard is true and route pattern is selected, route properties card should be visible", async () => {
@@ -255,7 +238,7 @@ describe("<MapDisplay />", () => {
         </RoutesProvider>
       )
 
-      expect(getRoutePropertiesCard()).toBeVisible()
+      expect(routePropertiesCard.get()).toBeVisible()
     })
   })
 
@@ -382,7 +365,7 @@ describe("<MapDisplay />", () => {
             container.querySelector(".m-vehicle-map__route-shape")
           ).not.toBeInTheDocument()
           expect(
-            within(getVehiclePropertiesCard()).getByRole("status", {
+            within(vehiclePropertiesCard.get()).getByRole("status", {
               name: /route variant name/i,
             })
           ).toHaveTextContent("Shuttle")
@@ -409,7 +392,7 @@ describe("<MapDisplay />", () => {
           expect(
             screen.queryAllByRole("button", { name: /^run/ })
           ).toHaveLength(0)
-          expect(getVehiclePropertiesCard()).toBeVisible()
+          expect(vehiclePropertiesCard.get()).toBeVisible()
         })
       })
 
@@ -440,11 +423,7 @@ describe("<MapDisplay />", () => {
             </RoutesProvider>
           )
 
-          expect(
-            screen.queryByRole("generic", {
-              name: /route properties card/i,
-            })
-          ).not.toBeInTheDocument()
+          expect(routePropertiesCard.query()).not.toBeInTheDocument()
         })
 
         test("RPC doesn't display if selected pattern ID doesn't match the route patterns", () => {
@@ -472,11 +451,7 @@ describe("<MapDisplay />", () => {
             </RoutesProvider>
           )
 
-          expect(
-            screen.queryByRole("generic", {
-              name: /route properties card/i,
-            })
-          ).not.toBeInTheDocument()
+          expect(routePropertiesCard.query()).not.toBeInTheDocument()
         })
         test("clicking vehicle route dispatches setSelection event", async () => {
           setHtmlWidthHeightForLeafletMap()
@@ -512,7 +487,7 @@ describe("<MapDisplay />", () => {
             </RoutesProvider>
           )
 
-          expect(getRoutePropertiesCard()).toBeInTheDocument()
+          expect(routePropertiesCard.get()).toBeInTheDocument()
 
           await userEvent.click(
             screen.getByRole("radio", { name: routePattern2.name })

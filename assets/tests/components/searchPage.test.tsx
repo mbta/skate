@@ -16,6 +16,7 @@ import userEvent from "@testing-library/user-event"
 import { SearchPageState } from "../../src/state/searchPageState"
 import { useStations } from "../../src/hooks/useStations"
 import { LocationType } from "../../src/models/stopData"
+import { zoomInButton } from "../testHelpers/selectors/components/map"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -169,8 +170,8 @@ describe("SearchPage", () => {
       </BrowserRouter>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
-    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+    await userEvent.click(zoomInButton.get())
+    await userEvent.click(zoomInButton.get())
 
     expect(container.querySelector(".m-station-icon")).toBeVisible()
   })

@@ -177,6 +177,20 @@ describe("RouteShape", () => {
       container.querySelector(".m-vehicle-map__route-shape")
     ).toBeInTheDocument()
   })
+
+  test("onClick called on click", async () => {
+    const mockOnClick = jest.fn()
+    const { container } = renderInMap(
+      <RouteShape
+        shape={{ id: "shape1", points: [{ lat: 0, lon: 0 }] }}
+        onClick={mockOnClick}
+      />
+    )
+    await userEvent.click(
+      container.querySelector(".m-vehicle-map__route-shape")!
+    )
+    expect(mockOnClick).toHaveBeenCalled()
+  })
 })
 
 describe("GarageMarkers", () => {
