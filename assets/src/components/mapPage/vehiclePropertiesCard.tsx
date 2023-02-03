@@ -4,14 +4,14 @@ import React, {
   ReactNode,
   useId,
 } from "react"
-import { joinTruthy, className as classNames } from "../helpers/dom"
-import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
-import { useNearestIntersection } from "../hooks/useNearestIntersection"
-import { isGhost, isVehicle } from "../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../realtime"
-import { CloseButton } from "./closeButton"
-import StreetViewButton from "./streetViewButton"
-import { VehicleRouteSummary } from "./vehicleRouteSummary"
+import { joinTruthy, className as classNames } from "../../helpers/dom"
+import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
+import { useNearestIntersection } from "../../hooks/useNearestIntersection"
+import { isGhost, isVehicle } from "../../models/vehicle"
+import { Vehicle, VehicleOrGhost } from "../../realtime"
+import { CloseButton } from "../closeButton"
+import StreetViewButton from "../streetViewButton"
+import { VehicleRouteSummary } from "../vehicleRouteSummary"
 
 interface VehicleProp {
   vehicle: Vehicle

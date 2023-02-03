@@ -45,12 +45,12 @@ import {
   GarageMarkers,
   RouteShape,
   RouteStopMarkers,
-  StationIconSize,
   StationMarker,
   TrainVehicleMarker,
   VehicleMarker,
 } from "./mapMarkers"
 import { WalkingIcon } from "../helpers/icon"
+import ZoomLevelWrapper from "./ZoomLevelWrapper"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
@@ -186,20 +186,13 @@ export const FullscreenControl = createControlComponent(
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = ({
-  setZoomLevel,
   streetViewMode,
   setStreetViewMode,
 }: {
-  setZoomLevel: (level: number) => void
   streetViewMode: boolean
   setStreetViewMode: React.Dispatch<React.SetStateAction<boolean>>
 }): ReactElement => {
-  const map = useMap()
   useMapEvents({
-    zoomend: () => {
-      setZoomLevel(map.getZoom())
-    },
-
     popupopen: (e) => setTimeout(() => (e.popup.options.autoPan = false), 100),
 
     popupclose: (e) => (e.popup.options.autoPan = true),
@@ -393,7 +386,6 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
   const defaultZoom = 13
-  const [zoomLevel, setZoomLevel] = useState<number>(defaultZoom)
   const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(false)
   const { allowFullscreen = true } = props
 
@@ -403,8 +395,7 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
     props.stateClasses,
   ])
 
-  const stationIconSize =
-    zoomLevel <= 16 ? StationIconSize.small : StationIconSize.large
+  const stops = (props.shapes || []).flatMap((shape) => shape.stops || [])
 
   return (
     <>
@@ -423,11 +414,9 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         attributionControl={false}
       >
         <EventAdder
-          setZoomLevel={setZoomLevel}
           streetViewMode={streetViewEnabled}
           setStreetViewMode={setStreetViewEnabled}
         />
-
         {props.allowStreetView && (
           <StreetViewControl
             position="topright"
@@ -438,7 +427,6 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         <ZoomControl position="topright" />
         {allowFullscreen && <FullscreenControl position="topright" />}
         <AttributionControl position="bottomright" prefix={false} />
-
         <TileLayer
           url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -461,27 +449,35 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
             trainVehicle={trainVehicle}
           />
         ))}
-
         {(props.shapes || []).map((shape) => (
           <RouteShape key={shape.id} shape={shape} />
         ))}
-        <RouteStopMarkers
-          stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
-          iconSize={stationIconSize}
-          direction={props.stopCardDirection}
-          includeStopCard={
-            props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
-          }
-        />
-        {zoomLevel >= 15 &&
-          props.stations?.map((station) => (
-            <StationMarker
-              key={station.id}
-              station={station}
-              iconSize={stationIconSize}
-            />
-          ))}
-        {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
+
+        <ZoomLevelWrapper>
+          {(zoomLevel) => (
+            <>
+              {stops.length > 0 && (
+                <RouteStopMarkers
+                  stops={stops}
+                  zoomLevel={zoomLevel}
+                  direction={props.stopCardDirection}
+                  includeStopCard={
+                    props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
+                  }
+                />
+              )}
+              {zoomLevel >= 15 &&
+                props.stations?.map((station) => (
+                  <StationMarker
+                    key={station.id}
+                    station={station}
+                    zoomLevel={zoomLevel}
+                  />
+                ))}
+              {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
+            </>
+          )}
+        </ZoomLevelWrapper>
         {props.children}
       </MapContainer>
     </>

@@ -28,6 +28,10 @@ export interface ByBlockId<T> {
   [blockId: string]: T
 }
 
+export interface ByRoutePatternId<T> {
+  [routePatternId: RoutePatternId]: T
+}
+
 export type GarageName = string
 
 export interface Route {
@@ -38,6 +42,17 @@ export interface Route {
   }
   name: string
   garages: GarageName[]
+}
+
+export type RoutePatternId = string
+export interface RoutePattern {
+  id: RoutePatternId
+  name: string
+  routeId: RouteId
+  directionId: DirectionId
+  timeDescription?: string | null
+  sortOrder: number
+  shape?: Shape | null
 }
 
 export interface Shape {

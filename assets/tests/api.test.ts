@@ -13,6 +13,7 @@ import {
   putUserSetting,
   putRouteTabs,
   fetchStations,
+  fetchRoutePatterns,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
@@ -283,6 +284,57 @@ describe("fetchRoutes", () => {
           garages: ["North Cambridge"],
           name: undefined,
         }),
+      ])
+      done()
+    })
+  })
+})
+
+describe("fetchRoutePatterns", () => {
+  test("fetches route patterns for route", (done) => {
+    mockFetch(200, {
+      data: [
+        {
+          id: "rp1",
+          name: "route pattern 1",
+          direction_id: 0,
+          route_id: "66",
+          sort_order: 0,
+          time_desc: "Mornings only",
+          shape: {
+            id: "shape1",
+            points: [
+              {
+                shape_id: "shape1",
+                sequence: 0,
+                lat: 42.41356,
+                lon: -70.99211,
+              },
+            ],
+          },
+        },
+      ],
+    })
+
+    fetchRoutePatterns("66").then((routePatterns) => {
+      expect(routePatterns).toEqual([
+        {
+          id: "rp1",
+          name: "route pattern 1",
+          directionId: 0,
+          routeId: "66",
+          sortOrder: 0,
+          timeDescription: "Mornings only",
+          shape: {
+            id: "shape1",
+            points: [
+              {
+                lat: 42.41356,
+                lon: -70.99211,
+              },
+            ],
+          },
+        },
       ])
       done()
     })

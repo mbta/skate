@@ -10,6 +10,7 @@ import {
   GarageName,
   Route,
   RouteId,
+  RoutePattern,
   Shape,
   Stop,
   Swing,
@@ -20,6 +21,10 @@ import { RouteTab } from "./models/routeTab"
 import { array, assert, Struct } from "superstruct"
 import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
 import { StopData, stopsFromData } from "./models/stopData"
+import {
+  RoutePatternData,
+  routePatternsFromData,
+} from "./models/routePatternData"
 
 export interface RouteData {
   id: string
@@ -117,6 +122,14 @@ export const fetchRoutes = (): Promise<Route[]> =>
   apiCall({
     url: "/api/routes",
     parser: parseRoutesData,
+  })
+
+export const fetchRoutePatterns = (routeId: RouteId): Promise<RoutePattern[]> =>
+  checkedApiCall({
+    url: `/api/route_patterns/route/${routeId}`,
+    parser: routePatternsFromData,
+    dataStruct: array(RoutePatternData),
+    defaultResult: [],
   })
 
 export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>

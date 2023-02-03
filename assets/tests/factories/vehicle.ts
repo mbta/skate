@@ -19,6 +19,7 @@ export const randomLocationVehicle = Factory.define<Vehicle>(
     ...localGeoCoordinateFactory.build(),
     directionId: 0,
     routeId: "39",
+    routePatternId: "39-_-0",
     tripId: `t${sequence}`,
     headsign: "Forest Hills",
     viaVariant: "X",
@@ -64,6 +65,7 @@ export const randomLocationVehicle = Factory.define<Vehicle>(
     } as VehicleTimepointStatus,
     scheduledLocation: {
       routeId: "39",
+      routePatternId: "39-_-0",
       directionId: 0,
       tripId: "scheduled trip",
       runId: "scheduled run",

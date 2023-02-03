@@ -250,13 +250,15 @@ export const StopMarker = React.memo(
   }
 )
 
-export enum StationIconSize {
+enum StationIconSize {
   small,
   large,
 }
 
 export const StationMarker = React.memo(
-  ({ station, iconSize }: { station: Stop; iconSize: StationIconSize }) => {
+  ({ station, zoomLevel }: { station: Stop; zoomLevel: number }) => {
+    const iconSize =
+      zoomLevel <= 16 ? StationIconSize.small : StationIconSize.large
     const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
 
     return (
@@ -277,12 +279,12 @@ export const StationMarker = React.memo(
 
 export const RouteStopMarkers = ({
   stops,
-  iconSize,
+  zoomLevel,
   direction,
   includeStopCard,
 }: {
   stops: Stop[]
-  iconSize: StationIconSize
+  zoomLevel: number
   direction?: DirectionId
   includeStopCard?: boolean
 }): JSX.Element => {
@@ -300,7 +302,7 @@ export const RouteStopMarkers = ({
     <>
       {uniqueStops.map((stop) =>
         stop.locationType === LocationType.Station ? (
-          <StationMarker key={stop.id} station={stop} iconSize={iconSize} />
+          <StationMarker key={stop.id} station={stop} zoomLevel={zoomLevel} />
         ) : (
           <StopMarker
             key={stop.id}

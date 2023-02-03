@@ -8,11 +8,13 @@ import useSearchResults from "../../src/hooks/useSearchResults"
 import * as dateTime from "../../src/util/dateTime"
 
 import userEvent from "@testing-library/user-event"
-import { useTripShape } from "../../src/hooks/useShapes"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
 import { useStations } from "../../src/hooks/useStations"
 import { LocationType } from "../../src/models/stopData"
-import { SearchPageState } from "../../src/state/searchPageState"
+import {
+  SearchPageState,
+  SelectedEntityType,
+} from "../../src/state/searchPageState"
 import stateFactory from "../factories/applicationState"
 import ghostFactory from "../factories/ghost"
 import { RunFactory, runIdFactory } from "../factories/run"
@@ -24,7 +26,6 @@ import {
   searchQueryRunFactory,
   searchQueryVehicleFactory,
 } from "../factories/searchQuery"
-import shapeFactory from "../factories/shape"
 import stopFactory from "../factories/stop"
 import vehicleFactory, {
   randomLocationVehicle,
@@ -37,7 +38,8 @@ import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
 import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleOrGhost } from "../../src/realtime"
-import { RouteId, Shape, TripId } from "../../src/schedule"
+import { RouteId } from "../../src/schedule"
+import { mockUserRoutePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
@@ -45,9 +47,9 @@ jest.mock("../../src/hooks/useSearchResults", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../src/hooks/useShapes", () => ({
+jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
-  useTripShape: jest.fn(() => null),
+  default: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
@@ -90,12 +92,6 @@ function mockUseVehicleForId(vehicles: VehicleOrGhost[]) {
     {}
   )
   mockUseVehicleForIdMap(vehicleIdToVehicleMap)
-}
-
-function mockUseTripShape(map: { [tripId: TripId]: Shape }) {
-  ;(useTripShape as jest.Mock).mockImplementation((tripId) =>
-    [map[tripId!]].filter(Boolean)
-  )
 }
 
 function mockUseVehiclesForRouteMap(map: {
@@ -177,7 +173,10 @@ describe("<MapPage />", () => {
         <StateDispatchProvider
           state={stateFactory.build({
             searchPageState: {
-              selectedVehicleId: vehicle.id,
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: vehicle.id,
+              },
             },
           })}
           dispatch={jest.fn()}
@@ -260,11 +259,7 @@ describe("<MapPage />", () => {
       { runId } = nextVehicle
     ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
 
-    const [a, b] = shapeFactory.buildList(2)
-    mockUseTripShape({
-      [vehicle.tripId!]: a,
-      [nextVehicle.tripId!]: b,
-    })
+    mockUserRoutePatternsByIdForVehicles([vehicle, nextVehicle])
 
     mockUseVehicleForId([vehicle, nextVehicle])
     mockUseVehiclesForRouteMap({ [route.id]: vehicles })
@@ -272,7 +267,10 @@ describe("<MapPage />", () => {
     const mockDispatch = jest.fn()
     const state = stateFactory.build({
       searchPageState: searchPageStateFactory.build({
-        selectedVehicleId: vehicle.id,
+        selectedEntity: {
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicle.id,
+        },
       }),
     })
 
@@ -299,7 +297,7 @@ describe("<MapPage />", () => {
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
-    mockUseTripShape({ [vehicle.tripId!]: shapeFactory.build() })
+    mockUserRoutePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
 
     const { container } = render(
@@ -334,8 +332,7 @@ describe("<MapPage />", () => {
       savedQueries: [],
     }
 
-    const shape = shapeFactory.build()
-    mockUseTripShape({ [vehicle.tripId!]: shape })
+    mockUserRoutePatternsByIdForVehicles([vehicle])
 
     const mockDispatch = jest.fn()
     const { container } = render(
@@ -385,7 +382,7 @@ describe("<MapPage />", () => {
     ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
     mockUseVehicleForId(vehicles)
     mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-    mockUseTripShape({ [vehicle.tripId!]: shapeFactory.build() })
+    mockUserRoutePatternsByIdForVehicles([vehicle])
 
     const { container } = render(
       <RealDispatchWrapper
@@ -393,7 +390,10 @@ describe("<MapPage />", () => {
           searchPageState: searchPageStateFactory.build({
             query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
             isActive: true,
-            selectedVehicleId: vehicle.id,
+            selectedEntity: {
+              type: SelectedEntityType.Vehicle,
+              vehicleId: vehicle.id,
+            },
           }),
         })}
       >
@@ -426,14 +426,16 @@ describe("<MapPage />", () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = runIdFactory.build()
     const vehicle = vehicleFactory.build({ runId })
-    const shape = shapeFactory.build()
     const activeSearch: SearchPageState = searchPageStateFactory.build({
       query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
-      selectedVehicleId: vehicle.id,
+      selectedEntity: {
+        type: SelectedEntityType.Vehicle,
+        vehicleId: vehicle.id,
+      },
     })
 
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
-    mockUseTripShape({ [vehicle.tripId!]: shape })
+    mockUserRoutePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
     mockUseVehiclesForRouteMap({
       [vehicle.routeId!]: [vehicle],
@@ -557,7 +559,10 @@ describe("<MapPage />", () => {
           <RealDispatchWrapper
             initialState={stateFactory.build({
               searchPageState: {
-                selectedVehicleId: vehicle.id,
+                selectedEntity: {
+                  type: SelectedEntityType.Vehicle,
+                  vehicleId: vehicle.id,
+                },
               },
               userSettings: {
                 ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
@@ -587,7 +592,10 @@ describe("<MapPage />", () => {
           <StateDispatchProvider
             state={stateFactory.build({
               searchPageState: searchPageStateFactory.build({
-                selectedVehicleId: vehicle.id,
+                selectedEntity: {
+                  type: SelectedEntityType.Vehicle,
+                  vehicleId: vehicle.id,
+                },
               }),
             })}
             dispatch={jest.fn()}
@@ -640,13 +648,12 @@ describe("<MapPage />", () => {
         const { id: runId } = RunFactory.build()
         const vehicles = vehicleFactory.buildList(3, { runId }),
           [vehicle] = vehicles
-        const shape = shapeFactory.build()
         const searchPageState = activeSearchPageStateFactory.build({
           query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
         })
 
         ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
-        mockUseTripShape({ [vehicle.tripId!]: shape })
+        mockUserRoutePatternsByIdForVehicles([vehicle])
 
         render(
           <StateDispatchProvider
@@ -673,10 +680,7 @@ describe("<MapPage />", () => {
 
         ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
 
-        const shape = shapeFactory.build({
-          stops: stopFactory.buildList(3),
-        })
-        mockUseTripShape({ [vehicle.tripId!]: shape })
+        mockUserRoutePatternsByIdForVehicles([vehicle])
         mockUseVehicleForId([vehicle])
         mockUseVehiclesForRouteMap({
           [vehicle.routeId!]: vehicles,
@@ -738,7 +742,10 @@ describe("<MapPage />", () => {
         const selectedStateFactory = (selectedVehicleId: string) =>
           stateFactory.params({
             searchPageState: {
-              selectedVehicleId,
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: selectedVehicleId,
+              },
             },
           })
 
@@ -761,8 +768,7 @@ describe("<MapPage />", () => {
             [route.id]: selectedRouteVehicles,
           })
 
-          const shape = shapeFactory.build()
-          mockUseTripShape({ [selectedVehicle.tripId!]: shape })
+          mockUserRoutePatternsByIdForVehicles([selectedVehicle])
 
           render(
             <StateDispatchProvider
@@ -790,14 +796,14 @@ describe("<MapPage />", () => {
             })
 
             const [selectedVehicle] = selectedRouteVehicles
-            const shape = shapeFactory.build({
-              stops: stopFactory.buildList(8),
-            })
+            const stopCount = 8
 
             setHtmlWidthHeightForLeafletMap()
             mockUseVehicleForId([selectedVehicle])
             mockUseVehiclesForRouteMap({ [route.id]: selectedRouteVehicles })
-            mockUseTripShape({ [selectedVehicle.tripId!]: shape })
+            mockUserRoutePatternsByIdForVehicles([selectedVehicle], {
+              stopCount: 8,
+            })
 
             const { container } = render(
               <StateDispatchProvider
@@ -814,7 +820,7 @@ describe("<MapPage />", () => {
 
             expect(
               container.querySelectorAll(".m-vehicle-map__stop")
-            ).toHaveLength(shape.stops?.length || 0)
+            ).toHaveLength(stopCount)
             expect(
               container.querySelector(".m-vehicle-map__route-shape")
             ).toBeInTheDocument()
@@ -826,14 +832,10 @@ describe("<MapPage />", () => {
 
           const selectedVehicle = shuttleFactory.build()
 
-          const shape = shapeFactory.build({
-            stops: stopFactory.buildList(8),
-          })
-
           setHtmlWidthHeightForLeafletMap()
           mockUseVehiclesForRouteMap({})
           mockUseVehicleForId([selectedVehicle])
-          mockUseTripShape({ [selectedVehicle.tripId!]: shape })
+          mockUserRoutePatternsByIdForVehicles([selectedVehicle])
 
           const { container } = render(
             <StateDispatchProvider
@@ -876,7 +878,10 @@ describe("<MapPage />", () => {
             <StateDispatchProvider
               state={stateFactory.build({
                 searchPageState: {
-                  selectedVehicleId: ghost.id,
+                  selectedEntity: {
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: ghost.id,
+                  },
                 },
               })}
               dispatch={changeApplicationState}

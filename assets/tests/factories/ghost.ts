@@ -5,6 +5,7 @@ const ghostFactory = Factory.define<Ghost>(({ sequence }) => ({
   id: `ghost-trip-${sequence}`,
   directionId: 0,
   routeId: "1",
+  routePatternId: "1-_-0",
   tripId: `trip-${sequence}`,
   headsign: "headsign",
   blockId: "block",

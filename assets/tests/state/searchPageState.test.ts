@@ -7,6 +7,8 @@ import {
   setSearchProperty,
   setSearchText,
   submitSearch,
+  SelectedEntityType,
+  setSelectedEntity,
 } from "../../src/state/searchPageState"
 
 describe("initialSearchPageState", () => {
@@ -99,21 +101,69 @@ describe("reducer", () => {
   test("setSelectedVehicle sets the selected vehicle", () => {
     const initialState: SearchPageState = {
       ...initialSearchPageState,
-      selectedVehicleId: "123",
+      selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
     }
 
     const updatedState = reducer(initialState, setSelectedVehicle("456"))
-    expect(updatedState.selectedVehicleId).toBe("456")
+    expect(updatedState.selectedEntity).toEqual({
+      type: SelectedEntityType.Vehicle,
+      vehicleId: "456",
+    })
   })
 
   test("can setSelectedVehicle to null", () => {
     const initialState: SearchPageState = {
       ...initialSearchPageState,
-      selectedVehicleId: "123",
+      selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
     }
 
     const updatedState = reducer(initialState, setSelectedVehicle(null))
-    expect(updatedState.selectedVehicleId).toBeNull()
+    expect(updatedState.selectedEntity).toBeNull()
+  })
+
+  test("can setSelectedEntity to null", () => {
+    const initialState: SearchPageState = {
+      ...initialSearchPageState,
+      selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
+    }
+
+    const updatedState = reducer(initialState, setSelectedEntity(null))
+    expect(updatedState.selectedEntity).toBeNull()
+  })
+
+  test("can setSelectedEntity to vehicle", () => {
+    const initialState: SearchPageState = {
+      ...initialSearchPageState,
+    }
+
+    const updatedState = reducer(
+      initialState,
+      setSelectedEntity({ type: SelectedEntityType.Vehicle, vehicleId: "123" })
+    )
+    expect(updatedState.selectedEntity).toEqual({
+      type: SelectedEntityType.Vehicle,
+      vehicleId: "123",
+    })
+  })
+
+  test("can setSelectedEntity to route", () => {
+    const initialState: SearchPageState = {
+      ...initialSearchPageState,
+    }
+
+    const updatedState = reducer(
+      initialState,
+      setSelectedEntity({
+        type: SelectedEntityType.RoutePattern,
+        routeId: "66",
+        routePatternId: "66-_-0",
+      })
+    )
+    expect(updatedState.selectedEntity).toEqual({
+      type: SelectedEntityType.RoutePattern,
+      routeId: "66",
+      routePatternId: "66-_-0",
+    })
   })
 })
 

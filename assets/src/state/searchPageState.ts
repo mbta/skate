@@ -6,12 +6,32 @@ import {
   SearchQuery,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
+import { RouteId, RoutePatternId } from "../schedule"
+
+export enum SelectedEntityType {
+  Vehicle = 1,
+  RoutePattern,
+}
+
+interface SelectedVehicleId {
+  type: SelectedEntityType.Vehicle
+  vehicleId: VehicleId
+}
+
+export interface SelectedRoutePattern {
+  type: SelectedEntityType.RoutePattern
+
+  routeId: RouteId
+  routePatternId: RoutePatternId
+}
+
+export type SelectedEntity = SelectedVehicleId | SelectedRoutePattern
 
 export interface SearchPageState {
   query: SearchQuery
   isActive: boolean
   savedQueries: SavedSearchQuery[]
-  selectedVehicleId?: VehicleId | null
+  selectedEntity?: SelectedEntity | null
 }
 
 export const initialSearchPageState = {
@@ -56,14 +76,25 @@ export const submitSearch = (): SubmitSearchAction => ({
 
 interface SelectVehicleAction {
   type: "SELECT_SEARCH_VEHICLE"
-  payload: { vehicleId: VehicleId | null }
+  payload: { vehicleId: VehicleId } | null
+}
+
+interface SelectEntityAction {
+  type: "SELECT_SEARCH_ENTITY"
+  payload: SelectedEntity | null
 }
 
 export const setSelectedVehicle = (
   vehicleId: VehicleId | null
 ): SelectVehicleAction => ({
   type: "SELECT_SEARCH_VEHICLE",
-  payload: { vehicleId: vehicleId },
+  payload: vehicleId ? { vehicleId: vehicleId } : null,
+})
+export const setSelectedEntity = (
+  selectedEntity: SelectedEntity | null
+): SelectEntityAction => ({
+  type: "SELECT_SEARCH_ENTITY",
+  payload: selectedEntity,
 })
 
 export type Action =
@@ -71,6 +102,7 @@ export type Action =
   | SetSearchPropertyAction
   | SubmitSearchAction
   | SelectVehicleAction
+  | SelectEntityAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -109,7 +141,18 @@ export const reducer = (
     case "SELECT_SEARCH_VEHICLE":
       return {
         ...state,
-        selectedVehicleId: action.payload.vehicleId,
+        selectedEntity: action.payload
+          ? {
+              type: SelectedEntityType.Vehicle,
+              vehicleId: action.payload.vehicleId,
+            }
+          : null,
+      }
+
+    case "SELECT_SEARCH_ENTITY":
+      return {
+        ...state,
+        selectedEntity: action.payload,
       }
   }
   return state

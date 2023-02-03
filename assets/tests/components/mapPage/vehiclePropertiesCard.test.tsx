@@ -1,19 +1,19 @@
 import React from "react"
 import { render, screen, waitFor } from "@testing-library/react"
 import "@testing-library/jest-dom"
-import * as dateTime from "../../src/util/dateTime"
-import vehicleFactory, { shuttleFactory } from "../factories/vehicle"
-import routeFactory from "../factories/route"
+import * as dateTime from "../../../src/util/dateTime"
+import vehicleFactory, { shuttleFactory } from "../../factories/vehicle"
+import routeFactory from "../../factories/route"
 
 import userEvent from "@testing-library/user-event"
-import VehiclePropertiesCard from "../../src/components/vehiclePropertiesCard"
-import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
-import { RoutesProvider } from "../../src/contexts/routesContext"
-import { VehicleRouteSummary } from "../../src/components/vehicleRouteSummary"
-import ghostFactory from "../factories/ghost"
-import { runIdFactory } from "../factories/run"
+import VehiclePropertiesCard from "../../../src/components/mapPage/vehiclePropertiesCard"
+import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
+import ghostFactory from "../../factories/ghost"
+import { runIdFactory } from "../../factories/run"
+import { VehicleRouteSummary } from "../../../src/components/vehicleRouteSummary"
 
-jest.mock("../../src/hooks/useNearestIntersection", () => ({
+jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => null),
 }))

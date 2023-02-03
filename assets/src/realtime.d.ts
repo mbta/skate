@@ -2,6 +2,7 @@ import {
   BlockId,
   DirectionId,
   RouteId,
+  RoutePatternId,
   StopId,
   TimepointId,
   TripId,
@@ -34,6 +35,7 @@ export interface Ghost {
   id: VehicleId
   directionId: DirectionId
   routeId: RouteId
+  routePatternId: RoutePatternId | null
   tripId: TripId
   headsign: string
   blockId: BlockId
@@ -108,6 +110,7 @@ export interface Vehicle {
   longitude: number
   directionId: DirectionId
   routeId: RouteId | null
+  routePatternId: RoutePatternId | null
   tripId: TripId | null
   headsign: string | null
   viaVariant: ViaVariant | null
@@ -147,6 +150,7 @@ export interface VehicleStopStatus {
 
 export interface VehicleScheduledLocation {
   routeId: RouteId
+  routePatternId: RoutePatternId | null
   directionId: DirectionId
   tripId: TripId
   runId: RunId

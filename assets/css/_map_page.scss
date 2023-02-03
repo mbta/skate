@@ -141,7 +141,7 @@ $map-page-search-panel-width: 24rem;
 
 $map-page-search-stub-size: 10px;
 
-.m-map-page__map .m-vehicle-properties-card {
+.m-map-page__map .m-map-display__selected-entity-card-container {
   position: absolute;
   top: 0.5rem;
   left: calc(env(safe-area-inset-left) + 60px - #{$map-page-search-stub-size});
