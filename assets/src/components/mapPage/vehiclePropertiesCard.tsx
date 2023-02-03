@@ -167,18 +167,6 @@ const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
 // #endregion
 
 // #region Vehicle Properties Card
-// #region Catching Events Before Leaflet
-const cancelEvent: MouseEventHandler<HTMLDivElement> = (e) => {
-  e.stopPropagation()
-}
-
-const keepUserInputFromLeaflet: ComponentPropsWithoutRef<"div"> = {
-  onMouseDownCapture: cancelEvent,
-  onDoubleClickCapture: cancelEvent,
-  onScrollCapture: cancelEvent,
-  onWheelCapture: cancelEvent,
-}
-// #endregion
 
 const VehiclePropertiesCard = ({
   vehicleOrGhost,
@@ -187,7 +175,6 @@ const VehiclePropertiesCard = ({
   onClose: () => void
 }): React.ReactElement => (
   <div
-    {...keepUserInputFromLeaflet}
     className="m-vehicle-properties-card"
     aria-label="Vehicle Properties Card"
   >

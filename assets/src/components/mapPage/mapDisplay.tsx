@@ -1,5 +1,12 @@
 import Leaflet, { Bounds, Point } from "leaflet"
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, {
+  ComponentPropsWithoutRef,
+  MouseEventHandler,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -209,8 +216,23 @@ const SelectionCardContainer = ({
 }: {
   children: JSX.Element
 }): JSX.Element => {
+  // #region Catching Events Before Leaflet
+  const cancelEvent: MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation()
+  }
+
+  const keepUserInputFromLeaflet: ComponentPropsWithoutRef<"div"> = {
+    onMouseDownCapture: cancelEvent,
+    onDoubleClickCapture: cancelEvent,
+    onScrollCapture: cancelEvent,
+    onWheelCapture: cancelEvent,
+  }
+  // #endregion
   return (
-    <div className="m-map-display__selected-entity-card-container">
+    <div
+      {...keepUserInputFromLeaflet}
+      className="m-map-display__selected-entity-card-container"
+    >
       {children}
     </div>
   )

@@ -1,0 +1,115 @@
+.m-route-properties-card {
+  width: 375px;
+}
+
+.m-route-properties-card .m-card__title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.m-route-properties-card .route-title {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  & h4 {
+    margin: 0px;
+  }
+}
+
+.m-route-properties-card .m-card,
+.m-route-properties-card .m-card__left {
+  padding-left: 0;
+  padding-right: 0;
+}
+.m-route-properties-card .m-card__contents {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.m-route-properties-card .m-route-properties-card__direction-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  gap: 4px;
+  background-color: $color-gray-100;
+  border-radius: 0.5rem;
+  height: 44px;
+  & input[type="radio"] {
+    display: none;
+  }
+  & .direction-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 36px;
+  }
+  & .direction-button.selected {
+    border-radius: 6px;
+    border-color: $color-gray-500;
+    border-width: 6px;
+    background-color: $white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+  }
+
+  & label {
+    font-weight: var(--font-weight-semi);
+    font-size: 1rem;
+  }
+}
+
+.m-route-properties-card__variant-picker-variant label {
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.m-route-properties-card__variant-picker-variant:hover {
+  background-color: $color-eggplant-100;
+}
+
+.m-route-properties-card__variant-picker-variant > * {
+  cursor: pointer;
+}
+
+.m-route-properties-card__variant-picker-variant.selected {
+  background-color: $color-eggplant-100;
+}
+
+.m-route-properties-card__variant-picker-variant input[type="radio"] {
+  display: none;
+}
+
+.m-route-properties-card__variant-picker-variant .variant-check {
+  vertical-align: middle;
+  fill: $color-eggplant-800;
+  width: 16px;
+  height: 16px;
+}
+
+.m-route-properties-card__variant-picker-variant:not(.selected) .variant-check {
+  visibility: hidden;
+}
+
+.m-route-properties-card__variant-picker-name {
+  font-weight: var(--font-weight-semi);
+}
+
+.m-route-properties-card__variant-picker-time-description {
+  font-size: 0.75rem;
+  color: $color-gray-700;
+}
+
+.m-route-properties-card__selected-variant-stops {
+  max-height: 490px;
+  overflow: scroll;
+}
