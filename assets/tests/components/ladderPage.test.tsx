@@ -27,7 +27,7 @@ import {
 } from "../../src/state"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import routeFactory from "../factories/route"
-import routeTabFactory from "../factories/routeTab"
+import routeTabFactory, { routeTabPresetFactory } from "../factories/routeTab"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
@@ -230,13 +230,11 @@ describe("LadderPage", () => {
   })
 
   test("can save an edited preset from the save icon", async () => {
-    const mockState = {
-      ...initialState,
+    mockFullStoryEvent()
+    const mockState = stateFactory.build({
       routeTabs: [
-        routeTabFactory.build({
+        routeTabPresetFactory.build({
           uuid: "uuid1",
-          ordering: undefined,
-          isCurrentTab: false,
           selectedRouteIds: ["1"],
         }),
         routeTabFactory.build({
@@ -248,7 +246,7 @@ describe("LadderPage", () => {
           saveChangesToTabUuid: "uuid1",
         }),
       ],
-    }
+    })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -263,6 +261,9 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
+    )
+    expect(window.FS!.event).toBeCalledWith(
+      "User updated preset with tab save icon"
     )
   })
 
