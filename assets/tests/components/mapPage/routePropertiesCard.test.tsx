@@ -1,7 +1,9 @@
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
-import RoutePropertiesCard from "../../../src/components/mapPage/routePropertiesCard"
+import RoutePropertiesCard, {
+  patternDisplayName,
+} from "../../../src/components/mapPage/routePropertiesCard"
 import { routePatternFactory } from "../../factories/routePattern"
 import routeFactory from "../../factories/route"
 import shapeFactory from "../../factories/shape"
@@ -11,6 +13,40 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import userEvent from "@testing-library/user-event"
 
 const route66 = routeFactory.build({ id: "66" })
+
+describe("patternDisplayName", () => {
+  test("When not formatted correctly with ' - '", () => {
+    const routePattern = routePatternFactory.build({
+      name: "BAdFormatted RP",
+    })
+
+    expect(patternDisplayName(routePattern)).toEqual({
+      name: routePattern.name,
+      description: "",
+    })
+  })
+  test("When formatted correctly and no time description", () => {
+    const routePattern = routePatternFactory.build({
+      name: "Nubian Station - Forest Hills Station",
+    })
+
+    expect(patternDisplayName(routePattern)).toEqual({
+      name: "Forest Hills Station",
+      description: "from Nubian Station",
+    })
+  })
+  test("When formatted correctly and time description", () => {
+    const routePattern = routePatternFactory.build({
+      name: "Nubian Station - Forest Hills Station",
+      timeDescription: "School mornings only",
+    })
+
+    expect(patternDisplayName(routePattern)).toEqual({
+      name: "Forest Hills Station",
+      description: "from Nubian Station, School mornings only",
+    })
+  })
+})
 
 describe("<RoutePropertiesCard/>", () => {
   describe("Empty when no data to show", () => {
@@ -63,7 +99,9 @@ describe("<RoutePropertiesCard/>", () => {
       )
 
       expect(
-        screen.getByRole("heading", { name: routePattern.name })
+        screen.getByRole("heading", {
+          name: patternDisplayName(routePattern).name,
+        })
       ).toBeInTheDocument()
     })
 
@@ -92,11 +130,11 @@ describe("<RoutePropertiesCard/>", () => {
       )
 
       const routePattern1Picker = screen.getByRole("radio", {
-        name: routePattern1.name,
+        name: new RegExp(`${patternDisplayName(routePattern1).name}`),
       })
 
       const routePattern2Picker = screen.getByRole("radio", {
-        name: routePattern2.name,
+        name: new RegExp(`${patternDisplayName(routePattern2).name}`),
       })
 
       expect(routePattern1Picker).toBeInTheDocument()
@@ -106,7 +144,11 @@ describe("<RoutePropertiesCard/>", () => {
       expect(routePattern2Picker).not.toBeChecked()
 
       expect(
-        screen.queryByRole("radio", { name: routePatternOtherDirection.name })
+        screen.queryByRole("radio", {
+          name: new RegExp(
+            `${patternDisplayName(routePatternOtherDirection).name}`
+          ),
+        })
       ).not.toBeInTheDocument()
     })
 
@@ -203,7 +245,7 @@ describe("<RoutePropertiesCard/>", () => {
 
       await userEvent.click(
         screen.getByRole("radio", {
-          name: routePattern2.name,
+          name: new RegExp(`${patternDisplayName(routePattern2).name}`),
         })
       )
       expect(mockSelectRoutePattern).toHaveBeenCalledWith(routePattern2)

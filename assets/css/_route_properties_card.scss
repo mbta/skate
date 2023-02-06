@@ -19,6 +19,11 @@
   & h4 {
     margin: 0px;
   }
+  & .route-title__description {
+    font-size: var(--font-size-s);
+    color: $color-gray-700;
+    font-weight: var(--font-weight-reg);
+  }
 }
 
 .m-route-properties-card .m-card,
@@ -40,6 +45,7 @@
   background-color: $color-gray-100;
   border-radius: 0.5rem;
   height: 44px;
+
   & input[type="radio"] {
     display: none;
   }
@@ -48,6 +54,7 @@
     align-items: center;
     flex: 1;
     height: 36px;
+    cursor: pointer;
   }
   & .direction-button.selected {
     border-radius: 6px;
@@ -62,11 +69,12 @@
     font-weight: var(--font-weight-semi);
     font-size: 1rem;
     text-align: center;
+    cursor: pointer;
   }
 }
 
 .m-route-properties-card__variant-picker-variant label {
-  font-size: 0.875rem;
+  font-size: var(--font-size-s);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -84,6 +92,10 @@
 
 .m-route-properties-card__variant-picker-variant.selected {
   background-color: $color-eggplant-100;
+  color: $color-eggplant-800;
+  & .m-route-properties-card__variant-picker-description {
+    color: $color-eggplant-700;
+  }
 }
 
 .m-route-properties-card__variant-picker-variant input[type="radio"] {
@@ -105,8 +117,8 @@
   font-weight: var(--font-weight-semi);
 }
 
-.m-route-properties-card__variant-picker-time-description {
-  font-size: 0.75rem;
+.m-route-properties-card__variant-picker-description {
+  font-size: var(--font-size-xs);
   color: $color-gray-700;
 }
 

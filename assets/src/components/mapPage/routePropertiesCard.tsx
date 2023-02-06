@@ -6,7 +6,6 @@ import {
   RoutePatternId,
   DirectionName,
   DirectionId,
-  RouteId,
   Route,
   ByRoutePatternId,
 } from "../../schedule"
@@ -17,9 +16,21 @@ import { RoutePill } from "../routePill"
 const sortRoutePatterns = (routePatterns: RoutePattern[]): RoutePattern[] =>
   routePatterns.sort((rp1, rp2) => rp1.sortOrder - rp2.sortOrder)
 
-const displayName = (routePattern: RoutePattern) => {
-  //const splitName = routePattern.name.split("- ", 2)
-  return routePattern.name
+export const patternDisplayName = (
+  routePattern: RoutePattern
+): { name: string; description: string } => {
+  const splitName = routePattern.name.split(" - ", 2)
+
+  const timeDescription = routePattern.timeDescription
+
+  return splitName.length < 2
+    ? { name: routePattern.name, description: timeDescription || "" }
+    : {
+        name: splitName[1],
+        description: `from ${splitName[0]}${
+          timeDescription ? `, ${timeDescription}` : ""
+        }`,
+      }
 }
 
 const DetailSection = ({
@@ -117,6 +128,7 @@ const VariantOption = ({
   isSelected: boolean
   selectRoutePattern: (routePattern: RoutePattern) => void
 }) => {
+  const { name, description } = patternDisplayName(routePattern)
   return (
     <div
       className={`m-route-properties-card__variant-picker-variant ${
@@ -135,10 +147,10 @@ const VariantOption = ({
         <CircleCheckIcon className="variant-check" />
         <div>
           <div className="m-route-properties-card__variant-picker-name">
-            {displayName(routePattern)}
+            {name}
           </div>
-          <div className="m-route-properties-card__variant-picker-time-description">
-            {routePattern.timeDescription && routePattern.timeDescription}
+          <div className="m-route-properties-card__variant-picker-description">
+            {description}
           </div>
         </div>
       </label>
@@ -192,6 +204,8 @@ const RoutePropertiesCard = ({
   if (!route || selectedRoutePattern === undefined) {
     return <></>
   }
+  const { name, description } = patternDisplayName(selectedRoutePattern)
+
   return (
     <div className="m-route-properties-card" aria-label="route properties card">
       <Card
@@ -200,8 +214,11 @@ const RoutePropertiesCard = ({
         title={
           <>
             <div className="route-title">
-              <RoutePill routeName={routeId} />
-              <h4>{displayName(selectedRoutePattern)}</h4>
+              <RoutePill routeName={selectedRoutePattern.routeId} />
+              <div>
+                <h4>{name}</h4>
+                <div className="route-title__description">{description}</div>
+              </div>
             </div>
             <CloseButton onClick={onClose} closeButtonType={"l_light"} />
           </>
