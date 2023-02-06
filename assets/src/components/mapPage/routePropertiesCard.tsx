@@ -49,7 +49,7 @@ const DetailSection = ({
   return (
     <details
       className={`m-route-properties-card__details-section ${className}`}
-      {...(isOpen ? { open: isOpen || undefined } : {})}
+      open={isOpen || undefined}
     >
       <summary
         className={`details-section-summary ${isOpen ? "open" : ""}`}
