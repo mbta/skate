@@ -3,7 +3,7 @@ import Leaflet, {
   LatLngExpression,
 } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { CircleMarker, Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
@@ -240,18 +240,25 @@ export const StopIcon = ({
   selected = false,
   ...props
 }: StopIconProps) => {
-  const ref = useRef<null | LeafletCircleMarker>(null)
-  const element = ref.current?.getElement()
+  const [marker, setMarker] = useState<null | LeafletCircleMarker>(null)
+
   useEffect(() => {
-    if (element) {
-      element.classList.toggle("selected", selected)
+    if (marker == null) {
+      return
     }
-  }, [selected, element])
+
+    const element = marker.getElement()
+    if (!element) {
+      return
+    }
+
+    element.classList.toggle("selected", selected)
+  }, [selected, marker])
 
   return (
     <CircleMarker
       {...props}
-      ref={ref}
+      ref={setMarker}
       className={className(["m-vehicle-map__stop"])}
       center={[stop.lat, stop.lon]}
       radius={radius}
