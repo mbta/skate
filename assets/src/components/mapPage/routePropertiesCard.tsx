@@ -67,6 +67,30 @@ const DetailSection = ({
   )
 }
 
+const routePatternForTargetDirection = (
+  currentRoutePattern: RoutePattern,
+  newDirectionId: DirectionId,
+  routePatterns: ByRoutePatternId<RoutePattern>
+): RoutePattern | undefined => {
+  // attempt to find the same route pattern for the opposite direction
+  const possibleNextRoutePatternId = `${currentRoutePattern.id.slice(
+    0,
+    -1
+  )}${newDirectionId}`
+
+  const sortedRoutePatterns = sortRoutePatterns(Object.values(routePatterns))
+
+  const nextRoutePattern = sortedRoutePatterns.find(
+    (rp) => rp.id === possibleNextRoutePatternId
+  )
+
+  if (nextRoutePattern) {
+    return nextRoutePattern
+  }
+
+  return sortedRoutePatterns.find((rp) => rp.directionId === newDirectionId)
+}
+
 const DirectionPicker = ({
   selectedRoutePattern,
   routePatterns,
@@ -100,11 +124,11 @@ const DirectionPicker = ({
             name="direction"
             checked={selectedRoutePattern.directionId === directionId}
             onChange={() => {
-              // TODO: Try to find same pattern as selectedRoutePattern first
-              const targetRoutePattern =
-                sortRoutePatterns(Object.values(routePatterns)).find(
-                  (routePattern) => routePattern.directionId === directionId
-                ) || null
+              const targetRoutePattern = routePatternForTargetDirection(
+                selectedRoutePattern,
+                directionId,
+                routePatterns
+              )
 
               if (targetRoutePattern) {
                 selectRoutePattern(targetRoutePattern)

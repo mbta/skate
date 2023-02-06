@@ -182,7 +182,50 @@ describe("<RoutePropertiesCard/>", () => {
   })
 
   describe("Interactivity", () => {
-    test("Changing direction calls selectRoutePattern with the first route pattern in the new direction", async () => {
+    test("Changing direction calls selectRoutePattern with the current route pattern in the opposite direction", async () => {
+      const routePatternBDirection0 = routePatternFactory.build({
+        id: "66-B-0",
+        routeId: "66",
+        directionId: 0,
+      })
+
+      const routePatternBDirection1 = routePatternFactory.build({
+        id: "66-B-1",
+        directionId: 1,
+        sortOrder: 1,
+      })
+
+      const routePattern7Direction1 = routePatternFactory.build({
+        routeId: "66-7-1",
+        directionId: 1,
+        sortOrder: 0,
+      })
+      const mockSelectRoutePattern = jest.fn()
+      render(
+        <RoutesProvider routes={[route66]}>
+          <RoutePropertiesCard
+            routePatterns={{
+              [routePatternBDirection0.id]: routePatternBDirection0,
+              [routePatternBDirection1.id]: routePatternBDirection1,
+              [routePattern7Direction1.id]: routePattern7Direction1,
+            }}
+            selectedRoutePatternId={routePatternBDirection0.id}
+            selectRoutePattern={mockSelectRoutePattern}
+            onClose={jest.fn()}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("radio", {
+          name: route66.directionNames[1],
+        })
+      )
+      expect(mockSelectRoutePattern).toHaveBeenCalledWith(
+        routePatternBDirection1
+      )
+    })
+    test("Changing direction calls selectRoutePattern with the first route pattern in the new direction when the current route pattern doesn't go in the opposite direction", async () => {
       const routePatternDirection0 = routePatternFactory.build({
         routeId: "66",
         directionId: 0,
