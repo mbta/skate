@@ -266,7 +266,7 @@ describe("<RoutePropertiesCard/>", () => {
       )
     })
 
-    test("Clicking a different route pattern calls selectRoutePattern", async () => {
+    test("Clicking a different route pattern calls selectRoutePattern and closes the variants list", async () => {
       const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
         routeId: "66",
         directionId: 0,
@@ -286,12 +286,13 @@ describe("<RoutePropertiesCard/>", () => {
         </RoutesProvider>
       )
 
-      await userEvent.click(
-        screen.getByRole("radio", {
-          name: new RegExp(patternDisplayName(routePattern2).name),
-        })
-      )
+      const routePattern2Radio = screen.getByRole("radio", {
+        name: new RegExp(patternDisplayName(routePattern2).name),
+      })
+
+      await userEvent.click(routePattern2Radio)
       expect(mockSelectRoutePattern).toHaveBeenCalledWith(routePattern2)
+      expect(routePattern2Radio).not.toBeVisible()
     })
 
     test("Clicking the close button calls onClose prop", async () => {

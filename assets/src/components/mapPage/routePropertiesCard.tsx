@@ -109,7 +109,7 @@ const DirectionPicker = ({
 }) => {
   const directionIds: DirectionId[] = Array.from(
     new Set(Object.values(routePatterns).map((rp) => rp.directionId))
-  )
+  ).sort((d1, d2) => d1 - d2)
 
   return (
     <div className="m-route-properties-card__direction-picker">
@@ -277,7 +277,10 @@ const RoutePropertiesCard = ({
                 routePattern.directionId === selectedRoutePattern.directionId
             )}
             selectedRoutePatternId={selectedRoutePattern.id}
-            selectRoutePattern={selectRoutePattern}
+            selectRoutePattern={(routePattern: RoutePattern) => {
+              selectRoutePattern(routePattern)
+              setOpenedDetails(null)
+            }}
           />
         </DetailSection>
         <hr />
