@@ -144,7 +144,8 @@ describe("GarageFilter", () => {
     expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
     expect(window.FS!.event).toHaveBeenCalledWith(
-      "User filtered Route Selector by Garage"
+      "User filtered Route Selector by Garage",
+      { garageName_str: mockGarageFilter.allGarages[0] }
     )
   })
 })
