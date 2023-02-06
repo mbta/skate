@@ -280,7 +280,7 @@ describe("<Map />", () => {
     expect(openSpy).toHaveBeenCalled()
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Dedicated street view toggled",
-      { streetViewEnabled: true }
+      { streetViewEnabled_bool: true }
     )
 
     expect(
@@ -303,7 +303,7 @@ describe("<Map />", () => {
 
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Dedicated street view toggled",
-      { streetViewEnabled: false }
+      { streetViewEnabled_bool: false }
     )
 
     expect(

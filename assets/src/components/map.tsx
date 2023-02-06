@@ -129,7 +129,7 @@ const StreetViewControl = ({
           onChange={() => {
             // since the value is being toggled, the new value will be the opposite of the current value
             window.FS?.event("Dedicated street view toggled", {
-              streetViewEnabled: !streetViewEnabled,
+              streetViewEnabled_bool: !streetViewEnabled,
             })
 
             setStreetViewEnabled((enabled) => !enabled)
