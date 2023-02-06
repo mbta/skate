@@ -152,6 +152,11 @@ const LeftNav = ({
               name="Swings View"
               viewIsOpen={openView === OpenView.Swings}
               toggleView={() => {
+                if (openView !== OpenView.Swings) {
+                  // only fire event when opening
+                  window.FS?.event("User opened Swings View")
+                }
+
                 tagManagerEvent("swings_view_toggled")
                 dispatch(openSwingsView())
 
