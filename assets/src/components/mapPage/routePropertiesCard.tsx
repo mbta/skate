@@ -60,7 +60,7 @@ const DetailSection = ({
           toggleOpen()
         }}
       >
-        {`${isOpen ? "Hide" : "Show"} ${title}`}
+        {isOpen ? "Hide" : "Show"} {title}
       </summary>
       {children}
     </details>
