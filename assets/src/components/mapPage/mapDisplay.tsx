@@ -382,16 +382,14 @@ const SelectedRouteDataLayers = ({
   const selectedRoutePattern: RoutePattern | undefined = routePatterns
     ? routePatterns[routePatternIdentifier.routePatternId]
     : undefined
-  const position = selectedRoutePattern
+  const routeShapePositions = selectedRoutePattern
     ? selectedRoutePattern.shape?.points?.map((p) =>
         Leaflet.latLng(p.lat, p.lon)
       ) || []
     : []
   const followerState = useInteractiveFollowerState()
 
-  useEffect(() => {
-    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-  }, [followerState.shouldFollow, setStateClasses])
+  setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
 
   return (
     <>
@@ -419,7 +417,7 @@ const SelectedRouteDataLayers = ({
       />
       <InterruptibleFollower
         onUpdate={onFollowerUpdate}
-        positions={position}
+        positions={routeShapePositions}
         {...followerState}
       />
     </>
