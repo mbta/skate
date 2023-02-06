@@ -136,7 +136,7 @@ const DirectionPicker = ({
             }}
           />
           <label htmlFor={`direction-radio-${directionId}`}>
-            {directionNames[directionId as DirectionId]}
+            {directionNames[directionId]}
           </label>
         </div>
       ))}
