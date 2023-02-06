@@ -130,11 +130,11 @@ describe("<RoutePropertiesCard/>", () => {
       )
 
       const routePattern1Picker = screen.getByRole("radio", {
-        name: new RegExp(`${patternDisplayName(routePattern1).name}`),
+        name: new RegExp(patternDisplayName(routePattern1).name),
       })
 
       const routePattern2Picker = screen.getByRole("radio", {
-        name: new RegExp(`${patternDisplayName(routePattern2).name}`),
+        name: new RegExp(patternDisplayName(routePattern2).name),
       })
 
       expect(routePattern1Picker).toBeInTheDocument()
@@ -245,7 +245,7 @@ describe("<RoutePropertiesCard/>", () => {
 
       await userEvent.click(
         screen.getByRole("radio", {
-          name: new RegExp(`${patternDisplayName(routePattern2).name}`),
+          name: new RegExp(patternDisplayName(routePattern2).name),
         })
       )
       expect(mockSelectRoutePattern).toHaveBeenCalledWith(routePattern2)

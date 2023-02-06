@@ -49,9 +49,10 @@ const DetailSection = ({
   return (
     <details
       className={`m-route-properties-card__details-section ${className}`}
-      {...(isOpen ? { open: true } : {})}
+      {...(isOpen ? { open: isOpen || undefined } : {})}
     >
       <summary
+        className={`details-section-summary ${isOpen ? "open" : ""}`}
         onClick={(event) => {
           // preventDefault so that open/closed state is managed entirely by react
           // see https://github.com/facebook/react/issues/15486
@@ -169,7 +170,7 @@ const VariantPicker = ({
 }): JSX.Element => {
   {
     return (
-      <>
+      <fieldset>
         {sortRoutePatterns(routePatterns).map((routePattern) => (
           <VariantOption
             key={routePattern.id}
@@ -178,7 +179,7 @@ const VariantPicker = ({
             selectRoutePattern={selectRoutePattern}
           />
         ))}
-      </>
+      </fieldset>
     )
   }
 }
@@ -216,7 +217,7 @@ const RoutePropertiesCard = ({
             <div className="route-title">
               <RoutePill routeName={selectedRoutePattern.routeId} />
               <div>
-                <h4>{name}</h4>
+                <h2>{name}</h2>
                 <div className="route-title__description">{description}</div>
               </div>
             </div>
@@ -249,6 +250,7 @@ const RoutePropertiesCard = ({
             selectRoutePattern={selectRoutePattern}
           />
         </DetailSection>
+        <hr />
         <DetailSection
           title={`${(
             route.directionNames[selectedRoutePattern.directionId] || ""

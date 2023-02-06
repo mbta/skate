@@ -27,6 +27,7 @@ import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
 import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"
 import { vehiclePropertiesCard } from "../../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
 import { zoomInButton } from "../../testHelpers/selectors/components/map"
+import { patternDisplayName } from "../../../src/components/mapPage/routePropertiesCard"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -490,7 +491,9 @@ describe("<MapDisplay />", () => {
           expect(routePropertiesCard.get()).toBeInTheDocument()
 
           await userEvent.click(
-            screen.getByRole("radio", { name: routePattern2.name })
+            screen.getByRole("radio", {
+              name: new RegExp(patternDisplayName(routePattern2).name),
+            })
           )
           expect(setSelectedEntityMock).toHaveBeenCalledWith({
             type: SelectedEntityType.RoutePattern,
