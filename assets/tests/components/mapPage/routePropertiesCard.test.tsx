@@ -19,7 +19,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{ [routePattern.id]: routePattern }}
             selectedRoutePatternId={routePattern.id}
             selectRoutePattern={jest.fn()}
@@ -36,7 +35,6 @@ describe("<RoutePropertiesCard/>", () => {
       const routePattern = routePatternFactory.build({ routeId: "66" })
       render(
         <RoutePropertiesCard
-          routeId="66"
           routePatterns={{ [routePattern.id]: routePattern }}
           selectedRoutePatternId={"missingRoutePatternId"}
           selectRoutePattern={jest.fn()}
@@ -56,7 +54,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[route66]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{ [routePattern.id]: routePattern }}
             selectedRoutePatternId={routePattern.id}
             selectRoutePattern={jest.fn()}
@@ -82,7 +79,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[route66]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{
               [routePattern1.id]: routePattern1,
               [routePattern2.id]: routePattern2,
@@ -126,7 +122,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[route66]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{
               [routePattern1.id]: routePattern1,
               [routePattern2.id]: routePattern2,
@@ -164,7 +159,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[route66]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{
               [routePatternDirection0.id]: routePatternDirection0,
               [routePatternDirection1_1.id]: routePatternDirection1_1,
@@ -196,7 +190,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[route66]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{
               [routePattern1.id]: routePattern1,
               [routePattern2.id]: routePattern2,
@@ -225,7 +218,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[route66]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{
               [routePattern1.id]: routePattern1,
               [routePattern2.id]: routePattern2,
@@ -254,7 +246,6 @@ describe("<RoutePropertiesCard/>", () => {
       render(
         <RoutesProvider routes={[route66]}>
           <RoutePropertiesCard
-            routeId="66"
             routePatterns={{
               [routePattern1.id]: routePattern1,
               [routePattern2.id]: routePattern2,

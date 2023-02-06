@@ -397,7 +397,6 @@ const SelectedRouteDataLayers = ({
       {showSelectionCard && routePatterns && (
         <SelectionCardContainer>
           <RoutePropertiesCard
-            routeId={routePatternIdentifier.routeId}
             selectedRoutePatternId={routePatternIdentifier.routePatternId}
             routePatterns={routePatterns}
             selectRoutePattern={selectRoutePattern}

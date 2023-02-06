@@ -172,24 +172,22 @@ const VariantPicker = ({
 }
 
 const RoutePropertiesCard = ({
-  routeId,
   routePatterns,
   selectedRoutePatternId,
   selectRoutePattern,
   onClose,
 }: {
-  routeId: RouteId
   routePatterns: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId: RoutePatternId
   selectRoutePattern: (routePattern: RoutePattern) => void
   onClose: () => void
 }) => {
-  const route: Route | null = useRoute(routeId)
   const [openedDetails, setOpenedDetails] = useState<
     "variants" | "stops" | null
   >(null)
 
   const selectedRoutePattern = routePatterns[selectedRoutePatternId]
+  const route: Route | null = useRoute(selectedRoutePattern?.routeId)
 
   if (!route || selectedRoutePattern === undefined) {
     return <></>
