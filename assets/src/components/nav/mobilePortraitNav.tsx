@@ -25,6 +25,8 @@ const MobilePortraitNav = ({
 
   return (
     <div className="m-nav--narrow">
+      <div className="m-nav__app-content">{children}</div>
+
       <div
         className="m-nav__nav-bar m-nav__nav-bar--top"
         style={{ visibility: navVisibilityStyle }}
@@ -36,8 +38,6 @@ const MobilePortraitNav = ({
           mobileMenuIsOpen={mobileMenuIsOpen}
         />
       </div>
-
-      <div className="m-nav__app-content">{children}</div>
 
       <div
         className="m-nav__nav-bar m-nav__nav-bar--bottom"
