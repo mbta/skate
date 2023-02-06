@@ -453,7 +453,7 @@ describe("<MapDisplay />", () => {
 
           expect(routePropertiesCard.query()).not.toBeInTheDocument()
         })
-        test("clicking vehicle route dispatches setSelection event", async () => {
+        test("selecting a pattern in RPC dispatches setSelection event", async () => {
           setHtmlWidthHeightForLeafletMap()
 
           const route = routeFactory.build()

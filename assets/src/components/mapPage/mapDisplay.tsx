@@ -389,8 +389,9 @@ const SelectedRouteDataLayers = ({
     : []
   const followerState = useInteractiveFollowerState()
 
-  setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-
+  useEffect(() => {
+    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
+  }, [followerState.shouldFollow, setStateClasses])
   return (
     <>
       {showSelectionCard && routePatterns && (
