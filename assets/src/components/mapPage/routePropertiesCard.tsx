@@ -52,7 +52,9 @@ const DetailSection = ({
       open={isOpen}
     >
       <summary
-        className={`details-section-summary ${isOpen ? "open" : ""}`}
+        className={`m-route-properties-card__summary${
+          isOpen ? " m-route-properties-card__summary--open" : ""
+        }`}
         onClick={(event) => {
           // preventDefault so that open/closed state is managed entirely by react
           // see https://github.com/facebook/react/issues/15486
@@ -114,8 +116,10 @@ const DirectionPicker = ({
       {directionIds.map((directionId) => (
         <div
           key={directionId}
-          className={`direction-button ${
-            selectedRoutePattern.directionId === directionId ? "selected" : ""
+          className={`direction-button${
+            selectedRoutePattern.directionId === directionId
+              ? " direction-button--selected"
+              : ""
           }`}
         >
           <input
@@ -156,8 +160,8 @@ const VariantOption = ({
   const { name, description } = patternDisplayName(routePattern)
   return (
     <div
-      className={`m-route-properties-card__variant-picker-variant ${
-        isSelected ? "selected" : ""
+      className={`m-route-properties-card__variant-option${
+        isSelected ? " m-route-properties-card__variant-option--selected" : ""
       }`}
     >
       <input
@@ -171,10 +175,10 @@ const VariantOption = ({
       <label htmlFor={`variant-radio-${routePattern.id}`}>
         <CircleCheckIcon className="variant-check" />
         <div>
-          <div className="m-route-properties-card__variant-picker-name">
+          <div className="m-route-properties-card__variant-option-name">
             {name}
           </div>
-          <div className="m-route-properties-card__variant-picker-description">
+          <div className="m-route-properties-card__variant-option-description">
             {description}
           </div>
         </div>
@@ -238,11 +242,13 @@ const RoutePropertiesCard = ({
         noFocusOrHover={true}
         title={
           <>
-            <div className="route-title">
+            <div className="m-route-properties-card__route-title">
               <RoutePill routeName={selectedRoutePattern.routeId} />
               <div>
                 <h2>{name}</h2>
-                <div className="route-title__description">{description}</div>
+                <div className="m-route-properties-card__route-description">
+                  {description}
+                </div>
               </div>
             </div>
             <CloseButton onClick={onClose} closeButtonType={"l_light"} />
