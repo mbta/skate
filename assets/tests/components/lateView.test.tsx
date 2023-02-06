@@ -18,6 +18,7 @@ import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import userEvent from "@testing-library/user-event"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -707,6 +708,7 @@ describe("LateView", () => {
   })
 
   test("eye toggle toggles visibility of non-permanently-hidden rows", async () => {
+    mockFullStoryEvent()
     const lateVehicle1 = vehicleFactory.build({
       routeId: "route",
       runId: "run1",
@@ -782,6 +784,9 @@ describe("LateView", () => {
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
 
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_eye_toggle")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      'User clicked the "hide" eye toggle'
+    )
   })
 
   test("persist hidden rows between page loads", async () => {

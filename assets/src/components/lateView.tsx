@@ -654,6 +654,7 @@ const UnhideToggle = ({
     }`}
     onClick={() => {
       tagManagerEvent("clicked_eye_toggle")
+      window.FS?.event('User clicked the "hide" eye toggle')
       toggleViewHidden()
     }}
     title={viewHidden ? "Exclude Hidden" : "Include Hidden"}
