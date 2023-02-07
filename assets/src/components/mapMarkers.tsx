@@ -395,7 +395,7 @@ export const RouteShape = React.memo(
         className="m-vehicle-map__route-shape"
         positions={positions}
         {...shapeStrokeOptions(shape)}
-        eventHandlers={onClick ? { click: onClick } : {}}
+        eventHandlers={{ click: onClick }}
       />
     )
   }
