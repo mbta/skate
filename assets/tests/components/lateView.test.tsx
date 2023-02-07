@@ -132,6 +132,7 @@ describe("LateView", () => {
   })
 
   test("clicking ghost run number opens ghost and sends tag manager event", async () => {
+    mockFullStoryEvent()
     const ghost = ghostFactory.build({
       routeId: "route",
       runId: "12345",
@@ -155,6 +156,10 @@ describe("LateView", () => {
 
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number_ghost"
+    )
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User clicked Late View Run Number",
+      { isGhost_bool: true }
     )
   })
 
@@ -180,6 +185,10 @@ describe("LateView", () => {
 
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number"
+    )
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User clicked Late View Run Number",
+      { isGhost_bool: false }
     )
   })
 
