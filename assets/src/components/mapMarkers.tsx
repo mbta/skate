@@ -1,6 +1,9 @@
-import Leaflet, { LatLngExpression } from "leaflet"
+import Leaflet, {
+  CircleMarker as LeafletCircleMarker,
+  LatLngExpression,
+} from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { CircleMarker, Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
@@ -21,6 +24,7 @@ import stationIcon from "../../static/images/icon-station.svg"
 import { LocationType } from "../models/stopData"
 import StopCard from "./stopCard"
 import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
+import { CircleMarkerProps } from "react-leaflet"
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
@@ -113,7 +117,12 @@ export const VehicleMarker = ({
     userSettings,
     isSelected
   )
-  const zIndexOffset = (isPrimary ? 2000 : 0) + (isSelected ? 100 : 0)
+
+  // https://leafletjs.com/reference.html#marker-zindexoffset
+  // > By default, marker images zIndex is set automatically based on its latitude
+  // > [...] if you want to put the marker on top of all others,
+  // > [specify] a high value like 1000 [...]
+  const zIndexOffset = isSelected ? 1000 : 0
   return (
     <>
       <Marker
@@ -199,6 +208,7 @@ const MobileFriendlyTooltip = ({
 
   return supportsHover ? (
     <Tooltip
+      pane="tooltipPane"
       className={fullClassName}
       direction={"top"}
       offset={[0, -(markerRadius + 8)]}
@@ -207,6 +217,7 @@ const MobileFriendlyTooltip = ({
     </Tooltip>
   ) : (
     <Popup
+      pane="popupPane"
       autoPan={false}
       // style popup as tooltip for consistency
       className={`leaflet-tooltip ${fullClassName} leaflet-tooltip-top`}
@@ -215,6 +226,45 @@ const MobileFriendlyTooltip = ({
     >
       {children}
     </Popup>
+  )
+}
+interface StopIconProps extends Omit<CircleMarkerProps, "center"> {
+  stop: Stop
+  radius?: number
+  selected?: boolean
+}
+
+export const StopIcon = ({
+  stop,
+  radius = 8,
+  selected = false,
+  ...props
+}: StopIconProps) => {
+  const [marker, setMarker] = useState<null | LeafletCircleMarker>(null)
+
+  useEffect(() => {
+    if (marker == null) {
+      return
+    }
+
+    const element = marker.getElement()
+    if (!element) {
+      return
+    }
+
+    element.classList.toggle("selected", selected)
+  }, [selected, marker])
+
+  return (
+    <CircleMarker
+      {...props}
+      ref={setMarker}
+      className={className(["m-vehicle-map__stop"])}
+      center={[stop.lat, stop.lon]}
+      radius={radius}
+    >
+      {props.children}
+    </CircleMarker>
   )
 }
 
@@ -228,11 +278,18 @@ export const StopMarker = React.memo(
     direction?: DirectionId
     includeStopCard?: boolean
   }) => {
-    const markerRadius = 3
+    const markerRadius = 8
+    const [isSelected, setIsSelected] = useState(false)
+    const popupHandlers = {
+      popupopen: () => setIsSelected(true),
+      popupclose: () => setIsSelected(false),
+    }
+
     return (
-      <CircleMarker
-        className="m-vehicle-map__stop"
-        center={[stop.lat, stop.lon]}
+      <StopIcon
+        stop={stop}
+        selected={isSelected}
+        eventHandlers={popupHandlers}
         radius={markerRadius}
       >
         {includeStopCard ? (
@@ -245,7 +302,7 @@ export const StopMarker = React.memo(
             {stop.name}
           </MobileFriendlyTooltip>
         )}
-      </CircleMarker>
+      </StopIcon>
     )
   }
 )

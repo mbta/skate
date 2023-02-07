@@ -79,12 +79,26 @@
 .m-vehicle-map__stop {
   fill: $color-stop-fill;
   fill-opacity: 1;
-  stroke: $color-stop-stroke;
-  stroke-width: 1;
-}
 
-.m-vehicle-map__stop:focus {
-  outline: 0;
+  stroke: $color-stop-stroke;
+  stroke-width: 2px;
+
+  &:hover {
+    stroke-width: 4px;
+  }
+
+  &:focus {
+    stroke-width: 4px;
+    filter: drop-shadow(0 0 2px #514f55);
+    outline: 0;
+  }
+
+  &.selected {
+    stroke-width: 4px;
+
+    fill: $color-eggplant-200;
+    stroke: $color-eggplant-700;
+  }
 }
 
 .leaflet-tooltip.m-vehicle-map__mobile-friendly-tooltip {
