@@ -18,7 +18,12 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
 
   switch (deviceType) {
     case "mobile":
-      return <MobilePortraitNav>{children}</MobilePortraitNav>
+      return (
+        <div className="m-nav--narrow">
+          <div className="m-nav__app-content">{children}</div>
+          <MobilePortraitNav />
+        </div>
+      )
     case "mobile_landscape_tablet_portrait":
       return (
         <div className="m-nav--medium">
