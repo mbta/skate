@@ -1,11 +1,9 @@
 import "@testing-library/jest-dom"
-import { Shape } from "../../src/schedule"
 import {
   GarageMarkers,
   RouteShape,
   RouteStopMarkers,
   StationMarker,
-  shapeStrokeOptions,
   TrainVehicleMarker,
   VehicleMarker,
   StopMarker,
@@ -54,36 +52,6 @@ describe("TrainVehicleMarker", () => {
     expect(
       container.querySelector(".m-vehicle-map__train-icon")
     ).toBeInTheDocument()
-  })
-})
-
-describe("strokeOptions", () => {
-  test("uses the color for a subway line, defaults to a thinner, opaque line", () => {
-    const subwayShape = {
-      color: "#DA291C",
-    } as Shape
-
-    const expected = {
-      color: "#DA291C",
-      opacity: 1.0,
-      weight: 4,
-    }
-
-    expect(shapeStrokeOptions(subwayShape)).toEqual(expected)
-  })
-
-  test("sets default color, width, and opacity settincgs for shuttle route lines", () => {
-    const shuttleShape = {
-      color: undefined,
-    } as Shape
-
-    const expected = {
-      color: "#4db6ac",
-      opacity: 0.6,
-      weight: 6,
-    }
-
-    expect(shapeStrokeOptions(shuttleShape)).toEqual(expected)
   })
 })
 
@@ -176,6 +144,33 @@ describe("RouteShape", () => {
     expect(
       container.querySelector(".m-vehicle-map__route-shape")
     ).toBeInTheDocument()
+  })
+
+  test("has selected class when isSelected is true", () => {
+    const { container } = renderInMap(
+      <RouteShape
+        shape={{ id: "shape1", points: [{ lat: 0, lon: 0 }] }}
+        isSelected={true}
+      />
+    )
+    expect(container.querySelector(".m-vehicle-map__route-shape")).toHaveClass(
+      "m-vehicle-map__route-shape--selected"
+    )
+  })
+
+  test("passes additional class names defined on the shape", () => {
+    const { container } = renderInMap(
+      <RouteShape
+        shape={{
+          id: "shape1",
+          points: [{ lat: 0, lon: 0 }],
+          className: "route-shape--red",
+        }}
+      />
+    )
+    expect(container.querySelector(".m-vehicle-map__route-shape")).toHaveClass(
+      "route-shape--red"
+    )
   })
 
   test("onClick called on click", async () => {

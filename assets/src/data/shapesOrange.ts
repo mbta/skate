@@ -3,7 +3,7 @@ import stopsOrange from "./stopsOrange"
 
 const orangeLine30Shape: Shape = {
   id: "903_0018",
-  color: "#ED8B00",
+  className: "route-shape--rail route-shape--orange",
   points: [
     { lat: 42.436967, lon: -71.070867 },
     { lat: 42.436397, lon: -71.070961 },
@@ -313,7 +313,7 @@ const orangeLine30Shape: Shape = {
 
 const orangeLine31Shape: Shape = {
   id: "903_0017",
-  color: "#ED8B00",
+  className: "route-shape--rail route-shape--orange",
   points: [
     { lat: 42.300731, lon: -71.114102 },
     { lat: 42.301103, lon: -71.113837 },

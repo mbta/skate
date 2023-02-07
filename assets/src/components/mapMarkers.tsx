@@ -167,19 +167,6 @@ export const TrainVehicleMarker = ({
   return <Marker position={position} icon={icon} />
 }
 
-export const shapeStrokeOptions = ({ color }: Shape): object =>
-  color
-    ? {
-        color,
-        opacity: 1.0,
-        weight: 4,
-      }
-    : {
-        color: "#4db6ac",
-        opacity: 0.6,
-        weight: 6,
-      }
-
 const stationLeafletIcon = ({ size }: { size: number }): Leaflet.DivIcon => {
   return Leaflet.divIcon({
     html: stationIcon,
@@ -385,18 +372,31 @@ export const RouteStopMarkers = ({
 }
 
 export const RouteShape = React.memo(
-  ({ shape, onClick }: { shape: Shape; onClick?: () => void }) => {
+  ({
+    shape,
+    isSelected,
+    onClick,
+    children,
+  }: {
+    shape: Shape
+    isSelected?: boolean
+    onClick?: () => void
+    children?: JSX.Element
+  }) => {
     const positions: LatLngExpression[] = shape.points.map((point) => [
       point.lat,
       point.lon,
     ])
     return (
       <Polyline
-        className="m-vehicle-map__route-shape"
+        className={`m-vehicle-map__route-shape ${shape.className || ""} ${
+          isSelected ? "m-vehicle-map__route-shape--selected" : ""
+        }`}
         positions={positions}
-        {...shapeStrokeOptions(shape)}
         eventHandlers={{ click: onClick }}
-      />
+      >
+        {children}
+      </Polyline>
     )
   }
 )

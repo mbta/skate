@@ -3,7 +3,7 @@ import stopsGreen from "./stopsGreen"
 
 const greenLineB30Shape: Shape = {
   id: "813_0006",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.356334, lon: -71.062193 },
     { lat: 42.356219, lon: -71.062336 },
@@ -279,7 +279,7 @@ const greenLineB30Shape: Shape = {
 
 const greenLineB31Shape: Shape = {
   id: "813_0007",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.340076, lon: -71.16681 },
     { lat: 42.34002, lon: -71.166556 },
@@ -555,7 +555,7 @@ const greenLineB31Shape: Shape = {
 
 const greenLineC10Shape: Shape = {
   id: "831_0008",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.365657, lon: -71.0606 },
     { lat: 42.363989, lon: -71.059097 },
@@ -773,7 +773,7 @@ const greenLineC10Shape: Shape = {
 
 const greenLineC11Shape: Shape = {
   id: "831_0009",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.336152, lon: -71.149186 },
     { lat: 42.336314, lon: -71.148435 },
@@ -991,7 +991,7 @@ const greenLineC11Shape: Shape = {
 
 const greenLineD11Shape: Shape = {
   id: "851_0008",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.337303, lon: -71.252372 },
     { lat: 42.337239, lon: -71.2522 },
@@ -1445,7 +1445,7 @@ const greenLineD11Shape: Shape = {
 
 const greenLineD20Shape: Shape = {
   id: "852_0013",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.359338, lon: -71.059393 },
     { lat: 42.359208, lon: -71.059508 },
@@ -1879,7 +1879,7 @@ const greenLineD20Shape: Shape = {
 
 const greenLineD21Shape: Shape = {
   id: "852_0012",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.337303, lon: -71.252372 },
     { lat: 42.337239, lon: -71.2522 },
@@ -2313,7 +2313,7 @@ const greenLineD21Shape: Shape = {
 
 const greenLineD51Shape: Shape = {
   id: "842_0007",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.334947, lon: -71.149078 },
     { lat: 42.335031, lon: -71.148726 },
@@ -2547,7 +2547,7 @@ const greenLineD51Shape: Shape = {
 
 const greenLineD60Shape: Shape = {
   id: "858_0002",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.321731, lon: -71.206113 },
     { lat: 42.321677, lon: -71.20616 },
@@ -2649,7 +2649,7 @@ const greenLineD60Shape: Shape = {
 
 const greenLineD61Shape: Shape = {
   id: "858_0001",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.337303, lon: -71.252372 },
     { lat: 42.337239, lon: -71.2522 },
@@ -2751,7 +2751,7 @@ const greenLineD61Shape: Shape = {
 
 const greenLineE00Shape: Shape = {
   id: "8000002",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.37712, lon: -71.09433 },
     { lat: 42.37708, lon: -71.09426 },
@@ -3023,7 +3023,7 @@ const greenLineE00Shape: Shape = {
 
 const greenLineE01Shape: Shape = {
   id: "8000001",
-  color: "#00843D",
+  className: "route-shape--rail route-shape--green",
   points: [
     { lat: 42.32834, lon: -71.1101 },
     { lat: 42.32836, lon: -71.11008 },

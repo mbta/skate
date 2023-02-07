@@ -3,7 +3,7 @@ import stopsRed from "./stopsRed"
 
 const redLine10Shape: Shape = {
   id: "931_0009",
-  color: "#DA291C",
+  className: "route-shape--rail route-shape--red",
   points: [
     { lat: 42.396152, lon: -71.142079 },
     { lat: 42.396193, lon: -71.139553 },
@@ -305,7 +305,7 @@ const redLine10Shape: Shape = {
 
 const redLine30Shape: Shape = {
   id: "933_0009",
-  color: "#DA291C",
+  className: "route-shape--rail route-shape--red",
   points: [
     { lat: 42.396152, lon: -71.142079 },
     { lat: 42.396193, lon: -71.139553 },
@@ -721,7 +721,7 @@ const redLine30Shape: Shape = {
 
 const redLine31Shape: Shape = {
   id: "931_0010",
-  color: "#DA291C",
+  className: "route-shape--rail route-shape--red",
   points: [
     { lat: 42.284249, lon: -71.063556 },
     { lat: 42.284383, lon: -71.063627 },
