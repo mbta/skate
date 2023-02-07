@@ -186,6 +186,7 @@ describe("LeftNav", () => {
   })
 
   test("clicking late view button toggles late view", async () => {
+    mockFullStoryEvent()
     const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
@@ -204,6 +205,7 @@ describe("LeftNav", () => {
 
     expect(dispatch).toHaveBeenCalledWith(openLateView())
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
+    expect(window.FS!.event).toHaveBeenCalledWith("User opened Late View")
   })
 
   test("clicking late view button closes picker container when flag is set", async () => {

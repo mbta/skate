@@ -133,6 +133,7 @@ const LeftNav = ({
                 viewIsOpen={openView === OpenView.Late}
                 toggleView={() => {
                   tagManagerEvent("late_view_toggled")
+                  window.FS?.event("User opened Late View")
                   dispatch(openLateView())
 
                   if (closePickerOnViewOpen && pickerContainerIsVisible) {
