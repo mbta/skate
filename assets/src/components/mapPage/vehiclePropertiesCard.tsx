@@ -9,6 +9,7 @@ import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../../realtime"
+import { isOk } from "../../util/fetchResult"
 import { CloseButton } from "../closeButton"
 import StreetViewButton from "../streetViewButton"
 import { VehicleRouteSummary } from "../vehicleRouteSummary"
@@ -121,7 +122,12 @@ const CurrentLocation = ({ vehicle }: VehicleProp): React.ReactElement => {
     vehicle.latitude,
     vehicle.longitude
   )
-  return <>{intersection ?? "Exact location cannot be determined"}</>
+
+  if (isOk(intersection)) {
+    return <>{intersection.ok}</>
+  }
+
+  return <>Exact location cannot be determined</>
 }
 
 const VehicleNearestIntersection = ({

@@ -258,6 +258,7 @@ const SelectedVehicleDataLayers = ({
               <VehiclePropertiesCard
                 vehicleOrGhost={selectedVehicleOrGhost}
                 onClose={deleteSelection}
+                key={selectedVehicleOrGhost.id}
               />
             </SelectionCardContainer>
           )}
