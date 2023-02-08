@@ -12,7 +12,7 @@ import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 // Due to this unmock interacting badly with other tests
 jest.unmock("@tippyjs/react")
 
-test.only("when info icon is clicked, should show tooltip", async () => {
+test("when info icon is clicked, should show tooltip", async () => {
   mockFullStoryEvent()
   const crowded: Crowding = crowdingFactory.build()
   render(<CrowdingDiagram crowding={crowded} />)
