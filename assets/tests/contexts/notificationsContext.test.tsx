@@ -12,6 +12,7 @@ import { initialState, selectVehicleFromNotification } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { useNotifications } from "../../src/hooks/useNotifications"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -63,6 +64,7 @@ describe("NotificationsProvider", () => {
   })
 
   test("receives incoming notifications and logs a tag manager event", () => {
+    mockFullStoryEvent()
     ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
@@ -82,6 +84,9 @@ describe("NotificationsProvider", () => {
     rerender()
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User was Delivered a Notification"
+    )
   })
 
   test("expires notifications after 8 hours", () => {

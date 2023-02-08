@@ -218,6 +218,7 @@ export const useNotificationsReducer = (
 
       if (latestMessage.type === "new") {
         tagManagerEvent("notification_delivered")
+        window.FS?.event("User was Delivered a Notification")
         dispatch(addNotification((latestMessage as NewNotification).payload))
       }
     }
