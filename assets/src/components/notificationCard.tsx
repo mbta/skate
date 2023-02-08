@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import { Notification, NotificationReason } from "../realtime.d"
+import { isChelseaBridgeNotification } from "../util/isChelseaBridgeNotification"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
 import { Card, CardBody, CardProperties } from "./card"
@@ -32,6 +33,10 @@ export const NotificationCard = ({
 
         if (hideLatestNotification) {
           hideLatestNotification()
+        }
+
+        if (isChelseaBridgeNotification(notification.reason)) {
+          window.FS?.event("User clicked Chelsea Bridge Notification")
         }
       }}
       closeCallback={hideLatestNotification}

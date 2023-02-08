@@ -68,17 +68,20 @@ export interface Notification {
   state: NotificationState
 }
 
-export type NotificationReason =
-  | "manpower"
-  | "disabled"
-  | "diverted"
-  | "accident"
-  | "other"
-  | "adjusted"
-  | "operator_error"
-  | "traffic"
+export type ChelseaBridgeNotificationReason =
   | "chelsea_st_bridge_raised"
   | "chelsea_st_bridge_lowered"
+
+export type NotificationReason =
+  | "other"
+  | "accident"
+  | "adjusted"
+  | "disabled"
+  | "diverted"
+  | "manpower"
+  | "operator_error"
+  | "traffic"
+  | ChelseaBridgeNotificationReason
 
 export type NotificationState = "unread" | "read" | "deleted"
 
