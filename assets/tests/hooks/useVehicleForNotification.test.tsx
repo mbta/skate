@@ -18,6 +18,7 @@ import {
 import vehicleDataFactory from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -73,6 +74,7 @@ describe("useVehicleForNotification", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel([ghostData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockFullStoryEvent()
 
     const { result } = renderHook(
       () => {
@@ -84,6 +86,9 @@ describe("useVehicleForNotification", () => {
     expect(result.current).toEqual(ghostFromData(ghostData))
 
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_linked_to_vpp")
+    expect(window.FS!.event).toBeCalledWith(
+      "User clicked Notification and linked to VPP"
+    )
   })
 
   test("only logs event once", () => {
@@ -114,6 +119,7 @@ describe("useVehicleForNotification", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockFullStoryEvent()
 
     const { result } = renderHook(
       () => {
@@ -130,6 +136,9 @@ describe("useVehicleForNotification", () => {
     expect(result.current).toBeNull()
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "notification_linked_to_inactive_modal"
+    )
+    expect(window.FS!.event).toBeCalledWith(
+      "User clicked Notification but it Failed"
     )
   })
 
@@ -137,6 +146,7 @@ describe("useVehicleForNotification", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel([])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockFullStoryEvent()
 
     const { result } = renderHook(
       () => {
@@ -153,6 +163,9 @@ describe("useVehicleForNotification", () => {
     expect(result.current).toBeNull()
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "notification_linked_to_inactive_modal"
+    )
+    expect(window.FS!.event).toBeCalledWith(
+      "User clicked Notification but it Failed"
     )
   })
 })
