@@ -393,7 +393,7 @@ export const RouteShape = React.memo(
           isSelected ? "m-vehicle-map__route-shape--selected" : ""
         }`}
         positions={positions}
-        eventHandlers={{ click: onClick }}
+        eventHandlers={onClick ? { click: onClick } : {}}
       >
         {children}
       </Polyline>
