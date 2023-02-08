@@ -163,6 +163,21 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(screen.getByRole("link", { name: /street view/i })).toBeVisible()
       })
 
+      test("when location is initially loading, should show `loading...` backup text", () => {
+        const vehicle = vehicleFactory.build()
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+          is_loading: true,
+        })
+
+        render(
+          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        )
+
+        expect(
+          screen.getByRole("status", { name: "Current Location" })
+        ).toHaveTextContent("loading...")
+      })
+
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
         const vehicle = vehicleFactory.build()
         ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({

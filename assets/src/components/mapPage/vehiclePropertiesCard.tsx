@@ -9,8 +9,9 @@ import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../../realtime"
-import { isOk } from "../../util/fetchResult"
+import { isLoading, isOk } from "../../util/fetchResult"
 import { CloseButton } from "../closeButton"
+import Loading from "../loading"
 import StreetViewButton from "../streetViewButton"
 import { VehicleRouteSummary } from "../vehicleRouteSummary"
 
@@ -123,7 +124,9 @@ const CurrentLocation = ({ vehicle }: VehicleProp): React.ReactElement => {
     vehicle.longitude
   )
 
-  if (isOk(intersection)) {
+  if (isLoading(intersection) && !isOk(intersection)) {
+    return <Loading />
+  } else if (isOk(intersection)) {
     return <>{intersection.ok}</>
   }
 
