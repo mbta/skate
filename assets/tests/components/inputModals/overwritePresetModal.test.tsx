@@ -4,9 +4,11 @@ import userEvent from "@testing-library/user-event"
 import OverwritePresetModal from "../../../src/components/inputModals/overwritePresetModal"
 import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
+import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
 describe("OverwritePresetModal", () => {
   test("can confirm", async () => {
+    mockFullStoryEvent()
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
@@ -24,9 +26,13 @@ describe("OverwritePresetModal", () => {
 
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User Overwrote a Saved Preset"
+    )
   })
 
   test("can cancel", async () => {
+    mockFullStoryEvent()
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
@@ -44,5 +50,8 @@ describe("OverwritePresetModal", () => {
 
     expect(mockCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User canceled Overwriting a Preset"
+    )
   })
 })

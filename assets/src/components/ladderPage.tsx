@@ -98,6 +98,7 @@ const LadderTab = ({
               e.stopPropagation()
 
               tagManagerEvent("preset_saved")
+              window.FS?.event('User clicked Route Tab "Save" Button')
 
               saveTab()
             }}

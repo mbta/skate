@@ -201,6 +201,7 @@ describe("LadderPage", () => {
   })
 
   test("can save a route tab as a preset from the save icon", async () => {
+    mockFullStoryEvent()
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -221,12 +222,15 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("Save"))
+    await userEvent.click(result.getByRole("button", { name: "Save" }))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      'User clicked Route Tab "Save" Button'
+    )
   })
 
   test("can save an edited preset from the save icon", async () => {
@@ -263,7 +267,7 @@ describe("LadderPage", () => {
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
     )
     expect(window.FS!.event).toBeCalledWith(
-      "User updated preset with tab save icon"
+      'User clicked Route Tab "Save" Button'
     )
   })
 
