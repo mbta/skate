@@ -96,7 +96,7 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
     .getCenter()
     .subtract(mapContainerBounds.getCenter())
 
-  if (points.length === 0) {
+  if (points.length === 1) {
     const targetZoom = 16
     const targetPoint = map
         // Project the target point into screenspace for the target zoom
