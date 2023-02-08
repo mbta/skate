@@ -1,7 +1,7 @@
 import { Factory } from "fishery"
 import { Notification } from "../../src/realtime"
 
-export default Factory.define<Notification>(({ sequence }) => ({
+const notificationFactory = Factory.define<Notification>(({ sequence }) => ({
   id: `${sequence}`,
   createdAt: new Date(),
   reason: "manpower",
@@ -15,3 +15,4 @@ export default Factory.define<Notification>(({ sequence }) => ({
   endTime: new Date(),
   state: "unread",
 }))
+export default notificationFactory

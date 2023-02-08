@@ -10,6 +10,7 @@ import { otherNotificationReadState } from "../contexts/notificationsContext"
 import { SocketContext } from "../contexts/socketContext"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import { Notification } from "../realtime.d"
+import { isChelseaBridgeNotification } from "../util/isChelseaBridgeNotification"
 import {
   InitialNotifications,
   NewNotification,
@@ -218,7 +219,11 @@ export const useNotificationsReducer = (
 
       if (latestMessage.type === "new") {
         tagManagerEvent("notification_delivered")
-        window.FS?.event("User was Delivered a Notification")
+        if (isChelseaBridgeNotification(latestMessage.payload.reason)) {
+          window.FS?.event("User was Delivered a Chelsea Bridge Notification")
+        } else {
+          window.FS?.event("User was Delivered a Notification")
+        }
         dispatch(addNotification((latestMessage as NewNotification).payload))
       }
     }
