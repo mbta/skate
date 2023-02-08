@@ -207,7 +207,6 @@ describe("NotificationCard", () => {
   test.each<{
     reason: NotificationReason
     should_fire_fs_event: boolean
-    a?: string
   }>([
     { should_fire_fs_event: true, reason: "chelsea_st_bridge_raised" },
     { should_fire_fs_event: true, reason: "chelsea_st_bridge_lowered" },
