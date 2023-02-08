@@ -103,7 +103,7 @@
   stroke: $color-mbta-red;
 }
 
-.m-vehicle-map__route-shape:hover,
+.m-vehicle-map__route-shape:not(.m-vehicle-map__route-shape--no-hover):hover,
 .m-vehicle-map__route-shape--selected {
   stroke-width: 7;
 }

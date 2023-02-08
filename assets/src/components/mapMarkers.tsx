@@ -389,9 +389,11 @@ export const RouteShape = React.memo(
     ])
     return (
       <Polyline
-        className={`m-vehicle-map__route-shape ${shape.className || ""} ${
-          isSelected ? "m-vehicle-map__route-shape--selected" : ""
-        }`}
+        className={
+          `m-vehicle-map__route-shape ${shape.className || ""}` +
+          `${isSelected ? " m-vehicle-map__route-shape--selected" : ""}` +
+          `${onClick ? "" : " m-vehicle-map__route-shape--no-hover"}`
+        }
         positions={positions}
         eventHandlers={onClick ? { click: onClick } : {}}
       >

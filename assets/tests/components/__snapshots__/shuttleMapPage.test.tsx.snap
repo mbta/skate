@@ -2055,7 +2055,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
             >
               <g>
                 <path
-                  class="m-vehicle-map__route-shape leaflet-interactive"
+                  class="m-vehicle-map__route-shape m-vehicle-map__route-shape--no-hover leaflet-interactive"
                   d="M0 0"
                   fill="none"
                   stroke="#3388ff"
