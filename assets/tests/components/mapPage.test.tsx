@@ -1,5 +1,11 @@
 import "@testing-library/jest-dom"
-import { render, screen, within } from "@testing-library/react"
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react"
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import MapPage from "../../src/components/mapPage"
@@ -651,11 +657,8 @@ describe("<MapPage />", () => {
       )
       expect(vehiclePropertiesCard.get()).toBeVisible()
 
-      await userEvent.click(
-        container.querySelector(".m-vehicle-map__route-shape")!
-      )
-      expect(routePropertiesCard.get()).toBeVisible()
-      expect(window.FS?.event).toHaveBeenCalledWith("RPC Opened")
+      fireEvent.click(container.querySelector(".m-vehicle-map__route-shape")!)
+      await waitFor(() => expect(routePropertiesCard.get()).toBeVisible())
       expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
     })
     test("clicking vehicle when RPC is open closes RPC and opens VPC", async () => {

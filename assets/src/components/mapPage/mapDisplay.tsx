@@ -252,6 +252,11 @@ const RoutePatternLayers = ({
     <>
       <ZoomLevelWrapper>
         {(zoomLevel) => {
+          const routePatternIdSplit = routePattern.id.split("-")
+          const variantFormatted =
+            routePatternIdSplit.length === 3 && routePatternIdSplit[1] !== "_"
+              ? "_" + routePatternIdSplit[1]
+              : ""
           return (
             <>
               {routePattern.shape && (
@@ -267,7 +272,9 @@ const RoutePatternLayers = ({
                         sticky={true}
                         direction="top"
                       >
-                        <>Click to select route {routePattern.id}.</>
+                        <>
+                          {`Click to select route ${routePattern.routeId}${variantFormatted}.`}
+                        </>
                       </Tooltip>
                     ) : undefined}
                   </RouteShape>
