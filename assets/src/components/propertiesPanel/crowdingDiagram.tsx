@@ -38,6 +38,9 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           }
           trigger="click"
           className="m-crowding-diagram__crowding-tooltip"
+          onShow={() => {
+            window.FS?.event('User opened "Riders Onboard" tooltip')
+          }}
         >
           <button id="riders-onboard">
             <QuestionMarkIcon

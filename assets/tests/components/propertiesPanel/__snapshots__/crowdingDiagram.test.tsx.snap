@@ -15,6 +15,7 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
     </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
@@ -83,6 +84,7 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
     </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
@@ -151,6 +153,7 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
     </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
@@ -219,6 +222,7 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
     </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
@@ -287,6 +291,7 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
     </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
