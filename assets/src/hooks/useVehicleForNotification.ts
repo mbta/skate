@@ -28,7 +28,9 @@ const useVehicleForNotification = (
       } else if (notification && newVehicleOrGhost === null) {
         setClickthroughLogged(true)
         tagManagerEvent("notification_linked_to_inactive_modal")
-        window.FS?.event("User clicked Notification but it Failed")
+        window.FS?.event(
+          "User clicked Notification and linked to Inactive Modal"
+        )
       }
     }
   }, [clickthroughLogged, notification, newVehicleOrGhost])

@@ -138,7 +138,7 @@ describe("useVehicleForNotification", () => {
       "notification_linked_to_inactive_modal"
     )
     expect(window.FS!.event).toBeCalledWith(
-      "User clicked Notification but it Failed"
+      "User clicked Notification and linked to Inactive Modal"
     )
   })
 
@@ -165,7 +165,7 @@ describe("useVehicleForNotification", () => {
       "notification_linked_to_inactive_modal"
     )
     expect(window.FS!.event).toBeCalledWith(
-      "User clicked Notification but it Failed"
+      "User clicked Notification and linked to Inactive Modal"
     )
   })
 })
