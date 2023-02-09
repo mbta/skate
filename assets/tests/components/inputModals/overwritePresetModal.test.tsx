@@ -51,7 +51,7 @@ describe("OverwritePresetModal", () => {
     expect(mockCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
     expect(window.FS!.event).toHaveBeenCalledWith(
-      "User canceled Overwriting a Preset"
+      "User canceled Overwriting a Saved Preset"
     )
   })
 })
