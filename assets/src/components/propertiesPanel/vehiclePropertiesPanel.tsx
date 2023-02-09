@@ -13,6 +13,7 @@ import {
   VehicleOrGhost,
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
+import { isOk } from "../../util/fetchResult"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
@@ -73,10 +74,12 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
-  const nearestIntersection: string | null = useNearestIntersection(
-    latitude,
-    longitude
-  )
+
+  const nearestIntersectionResult = useNearestIntersection(latitude, longitude)
+  const nearestIntersection = isOk(nearestIntersectionResult)
+    ? nearestIntersectionResult.ok
+    : null
+
   return (
     <div className="m-vehicle-properties-panel__location">
       <div className="m-vehicle-properties-panel__latlng">

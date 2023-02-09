@@ -15,7 +15,9 @@ import { VehicleRouteSummary } from "../../../src/components/vehicleRouteSummary
 
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
-  useNearestIntersection: jest.fn(() => null),
+  useNearestIntersection: jest.fn(() => {
+    return { is_loading: true }
+  }),
 }))
 
 describe("<VehiclePropertiesCard/>", () => {
@@ -39,8 +41,8 @@ describe("<VehiclePropertiesCard/>", () => {
       const intersection = "Massachusetts Ave @ 1"
       const intersection2 = "Massachusetts Ave @ 2"
       ;(useNearestIntersection as jest.Mock)
-        .mockReturnValueOnce(intersection)
-        .mockReturnValueOnce(intersection2)
+        .mockReturnValueOnce({ ok: intersection })
+        .mockReturnValueOnce({ ok: intersection2 })
 
       const { rerender } = render(
         <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
@@ -94,7 +96,9 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(intersection)
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+          ok: intersection,
+        })
 
         render(
           <RoutesProvider routes={[route]}>
@@ -159,9 +163,26 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(screen.getByRole("link", { name: /street view/i })).toBeVisible()
       })
 
+      test("when location is initially loading, should show `loading...` backup text", () => {
+        const vehicle = vehicleFactory.build()
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+          is_loading: true,
+        })
+
+        render(
+          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        )
+
+        expect(
+          screen.getByRole("status", { name: "Current Location" })
+        ).toHaveTextContent("loading...")
+      })
+
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
         const vehicle = vehicleFactory.build()
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(null)
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+          is_error: true,
+        })
 
         render(
           <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
@@ -176,8 +197,8 @@ describe("<VehiclePropertiesCard/>", () => {
         const vehicle = vehicleFactory.build()
         const intersection = "intersection ave @ street"
         ;(useNearestIntersection as jest.Mock)
-          .mockReturnValueOnce(undefined)
-          .mockReturnValueOnce(intersection)
+          .mockReturnValueOnce({ is_loading: true })
+          .mockReturnValueOnce({ ok: intersection })
 
         render(
           <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
@@ -186,8 +207,7 @@ describe("<VehiclePropertiesCard/>", () => {
           name: "Current Location",
         })
 
-        // In the future, this should show a loading state when vehicle id changes
-        // expect(currentLocation).toHaveTextContent(/loading/i)
+        expect(currentLocation).toHaveTextContent("loading...")
 
         waitFor(
           () => {
@@ -253,7 +273,9 @@ describe("<VehiclePropertiesCard/>", () => {
       })
 
       const intersection = "Massachusetts Ave @ Marlborough St"
-      ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(intersection)
+      ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        ok: intersection,
+      })
 
       render(
         <RoutesProvider routes={[route]}>

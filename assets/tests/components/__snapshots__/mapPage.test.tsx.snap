@@ -1624,7 +1624,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                     class="m-current-location__value label font-s-semi"
                     id="current-location-:r6:"
                   >
-                    Exact location cannot be determined
+                    loading...
                   </output>
                 </div>
                 <a

@@ -30,7 +30,11 @@ jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
 
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
-  useNearestIntersection: jest.fn(() => null),
+  useNearestIntersection: jest.fn(() => {
+    return {
+      is_loading: true,
+    }
+  }),
 }))
 
 jest.mock("../../../src/hooks/useStations", () => ({
@@ -192,9 +196,9 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("shows the nearest intersection", () => {
-    ;(useNearestIntersection as jest.Mock).mockImplementationOnce(
-      () => "Atlantic Ave & Summer St"
-    )
+    ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+      ok: "Atlantic Ave & Summer St",
+    })
     const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
     expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
   })
