@@ -18,6 +18,7 @@ import { MapContainer } from "react-leaflet"
 import userEvent from "@testing-library/user-event"
 import { LocationType } from "../../src/models/stopData"
 import useDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -109,17 +110,23 @@ describe("StopMarker", () => {
   })
 
   test("Stop card displayed on click when includeStopCard is true", async () => {
+    mockFullStoryEvent()
+
     const { container } = renderInMap(
       <StopMarker stop={stop} direction={0} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
     expect(screen.getByText("Outbound")).toBeInTheDocument()
+    expect(window.FS!.event).toHaveBeenCalledWith("Bus stop card opened")
   })
 })
 
 describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(true)
+
+    mockFullStoryEvent()
+
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
     )
@@ -128,16 +135,20 @@ describe("StationMarker", () => {
     await userEvent.hover(container.querySelector(".m-station-icon")!)
 
     expect(screen.getByText(station.name)).toBeVisible()
+    expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
   })
 
   test("Station icon with name on click when hover not supported", async () => {
+    mockFullStoryEvent()
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
+
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
     )
     expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
     await userEvent.click(container.querySelector(".m-station-icon")!)
     expect(screen.getByText(station.name)).toBeVisible()
+    expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
   })
 })
 

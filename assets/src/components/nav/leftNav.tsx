@@ -112,6 +112,9 @@ const LeftNav = ({
               }
               title={mapMode.title}
               to={mapMode.path}
+              onClick={() => {
+                mapMode.navEventText && window.FS?.event(mapMode.navEventText)
+              }}
             >
               <mapMode.navIcon className="m-left-nav__icon" />
               {collapsed ? null : mapMode.title}

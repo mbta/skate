@@ -12,6 +12,7 @@ import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContex
 import { initialState } from "../../../src/state"
 import { setSelectedVehicle } from "../../../src/state/searchPageState"
 import userEvent from "@testing-library/user-event"
+import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
 const vehicle: Vehicle = vehicleFactory.build()
 
@@ -40,6 +41,7 @@ describe("MiniMap", () => {
     })
     test("Map includes link to open vehicle in search map page", async () => {
       const mockDispatch = jest.fn()
+      mockFullStoryEvent()
 
       render(
         <MemoryRouter initialEntries={["/"]}>
@@ -51,6 +53,9 @@ describe("MiniMap", () => {
       expect(screen.getByRole("link", { name: "Open Map" })).toBeInTheDocument()
       await userEvent.click(screen.getByRole("link", { name: "Open Map" }))
       expect(mockDispatch).toHaveBeenCalledWith(setSelectedVehicle(vehicle.id))
+      expect(window.FS!.event).toHaveBeenCalledWith(
+        "Map opened from VPP mini map"
+      )
     })
 
     test("Map doesn't include fullscreen button", () => {

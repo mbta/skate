@@ -11,6 +11,7 @@ export interface NavMode {
   element: ReactElement
   navIcon: (props: any) => ReactElement
   supportsRightPanel: boolean
+  navEventText?: string
 }
 
 const legacyMapConfig = {
@@ -27,6 +28,7 @@ export const searchMapConfig = {
   element: <MapPage />,
   navIcon: SearchMapIcon,
   supportsRightPanel: false,
+  navEventText: "Search Map nav entry clicked",
 }
 
 export const mapModeForUser = (): NavMode =>

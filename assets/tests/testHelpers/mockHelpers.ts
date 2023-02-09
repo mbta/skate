@@ -72,3 +72,11 @@ export const mockUserRoutePatternsByIdForVehicles = (
       }, {})
   )
 }
+
+export const mockFullStoryEvent = (): void => {
+  const originalFS = window.FS
+  window.FS = { event: jest.fn(), identify: jest.fn() }
+  afterEach(() => {
+    window.FS = originalFS
+  })
+}

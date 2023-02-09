@@ -12,6 +12,7 @@ import {
   setSearchText,
   submitSearch,
 } from "../../src/state/searchPageState"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 const mockDispatch = jest.fn()
 
@@ -49,7 +50,7 @@ describe("SearchForm", () => {
     expect(result.getByTitle("Submit")).toBeDisabled()
   })
 
-  test("submit button is enable if there are at least 2 characters in the text field", () => {
+  test("submit button is enabled if there are at least 2 characters in the text field", () => {
     const validSearch: SearchPageState = {
       query: { text: "12", property: "run" },
       isActive: false,
@@ -112,6 +113,31 @@ describe("SearchForm", () => {
     await userEvent.click(screen.getByTitle("Submit"))
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
     expect(onSubmit).toHaveBeenCalledTimes(1)
+  })
+
+  test("clicking the submit button logs a FullStory event when provided", async () => {
+    const testDispatch = jest.fn()
+    const onSubmit = jest.fn()
+    const validSearch: SearchPageState = {
+      query: { text: "12", property: "run" },
+      isActive: false,
+      savedQueries: [],
+    }
+    const validSearchState = {
+      ...initialState,
+      searchPageState: validSearch,
+    }
+    mockFullStoryEvent()
+
+    render(
+      <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
+        <SearchForm onSubmit={onSubmit} submitEvent="Test event" />
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByTitle("Submit"))
+
+    expect(window.FS!.event).toHaveBeenCalledWith("Test event")
   })
 
   test("entering text sets it as the search text", async () => {

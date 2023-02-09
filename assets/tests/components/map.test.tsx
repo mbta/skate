@@ -16,6 +16,7 @@ import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
 import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 const shape = {
   id: "shape",
@@ -264,8 +265,8 @@ describe("<Map />", () => {
   })
 
   test("can turn on street view and click on the map", async () => {
+    mockFullStoryEvent()
     const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
-
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
@@ -277,6 +278,33 @@ describe("<Map />", () => {
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
 
     expect(openSpy).toHaveBeenCalled()
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Dedicated street view toggled",
+      { streetViewEnabled_bool: true }
+    )
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
+    ).toBeInTheDocument()
+  })
+
+  test("turning off street view also fires a FullStory event", async () => {
+    mockFullStoryEvent()
+
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Dedicated street view toggled",
+      { streetViewEnabled_bool: false }
+    )
 
     expect(
       screen.queryByRole("switch", { name: /Street View/, checked: false })
@@ -486,6 +514,7 @@ describe("auto centering", () => {
   })
 
   test("recenter control turns on auto center", async () => {
+    mockFullStoryEvent()
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const result = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
@@ -509,5 +538,6 @@ describe("auto centering", () => {
       "m-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
+    expect(window.FS!.event).toHaveBeenCalledWith("Recenter control clicked")
   })
 })

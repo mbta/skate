@@ -72,7 +72,11 @@ const SearchInputAndResults = ({
   return (
     <>
       <div className="m-map-page__input">
-        <SearchForm formTitle="Search Map" inputTitle="Search Map Query" />
+        <SearchForm
+          formTitle="Search Map"
+          inputTitle="Search Map Query"
+          submitEvent="Search submitted from map page"
+        />
         {mobileDisplay}
       </div>
 
@@ -120,6 +124,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const setSelection = useCallback(
     (selectedEntity: SelectedEntity | null) => {
+      if (selectedEntity?.type === SelectedEntityType.Vehicle) {
+        window.FS?.event("VPC Opened")
+      }
+
       dispatch(setSelectedEntity(selectedEntity))
       setSearchOpen(selectedEntity === null)
     },
@@ -128,12 +136,14 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const selectVehicle = useCallback(
     (vehicleOrGhost: VehicleOrGhost | null) => {
-      vehicleOrGhost
-        ? setSelection({
-            type: SelectedEntityType.Vehicle,
-            vehicleId: vehicleOrGhost.id,
-          })
-        : setSelection(null)
+      if (vehicleOrGhost) {
+        setSelection({
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicleOrGhost.id,
+        })
+      } else {
+        setSelection(null)
+      }
     },
     [setSelection]
   )

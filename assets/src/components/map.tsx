@@ -126,7 +126,14 @@ const StreetViewControl = ({
           type="checkbox"
           role="switch"
           checked={streetViewEnabled}
-          onChange={() => setStreetViewEnabled((enabled) => !enabled)}
+          onChange={() => {
+            // since the value is being toggled, the new value will be the opposite of the current value
+            window.FS?.event("Dedicated street view toggled", {
+              streetViewEnabled_bool: !streetViewEnabled,
+            })
+
+            setStreetViewEnabled((enabled) => !enabled)
+          }}
         />
       </div>
     </>
@@ -150,6 +157,9 @@ class LeafletRecenterControl extends Control {
     controlContainer.onclick = (e) => {
       e.stopPropagation()
       e.preventDefault()
+
+      window.FS?.event("Recenter control clicked")
+
       this.recenter()
     }
     controlContainer.innerHTML = `
