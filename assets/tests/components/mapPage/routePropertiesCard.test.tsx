@@ -12,7 +12,7 @@ import stopFactory from "../../factories/stop"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import userEvent from "@testing-library/user-event"
 
-const route66 = routeFactory.build({ id: "66" })
+const route66 = routeFactory.build({ id: "66", name: "66Name" })
 
 describe("patternDisplayName", () => {
   test("When not formatted correctly with ' - '", () => {
@@ -64,7 +64,7 @@ describe("<RoutePropertiesCard/>", () => {
       )
 
       expect(
-        screen.queryByRole("heading", { name: /66/ })
+        screen.queryByRole("heading", { name: /66Name/ })
       ).not.toBeInTheDocument()
     })
     test("Selected route pattern not among route patterns", () => {
@@ -79,7 +79,7 @@ describe("<RoutePropertiesCard/>", () => {
       )
 
       expect(
-        screen.queryByRole("heading", { name: /66/ })
+        screen.queryByRole("heading", { name: /66Name/ })
       ).not.toBeInTheDocument()
     })
   })

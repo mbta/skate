@@ -243,7 +243,7 @@ const RoutePropertiesCard = ({
         title={
           <>
             <div className="m-route-properties-card__route-title">
-              <RoutePill routeName={selectedRoutePattern.routeId} />
+              <RoutePill routeName={route.name} />
               <div>
                 <h2>{name}</h2>
                 <div className="m-route-properties-card__route-description">
