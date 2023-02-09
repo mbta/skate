@@ -272,9 +272,8 @@ const RoutePatternLayers = ({
                         sticky={true}
                         direction="top"
                       >
-                        <>
-                          {`Click to select route ${routePattern.routeId}${variantFormatted}.`}
-                        </>
+                        Click to select route {routePattern.routeId}
+                        {variantFormatted}.
                       </Tooltip>
                     ) : undefined}
                   </RouteShape>
