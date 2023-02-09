@@ -266,7 +266,7 @@ const RoutePatternLayers = ({
                     isSelected={isSelected}
                     onClick={onShapeClick}
                   >
-                    {zoomLevel >= 16 && !isSelected ? (
+                    {(zoomLevel >= 16 && !isSelected && (
                       <Tooltip
                         className="route-shape__tooltip"
                         sticky={true}
@@ -275,7 +275,8 @@ const RoutePatternLayers = ({
                         Click to select route {routePattern.routeId}
                         {variantFormatted}.
                       </Tooltip>
-                    ) : undefined}
+                    )) ||
+                      undefined}
                   </RouteShape>
                   <RouteStopMarkers
                     stops={routePattern.shape.stops || []}
