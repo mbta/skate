@@ -281,7 +281,10 @@ export const StopMarker = React.memo(
     const markerRadius = 8
     const [isSelected, setIsSelected] = useState(false)
     const popupHandlers = {
-      popupopen: () => setIsSelected(true),
+      popupopen: () => {
+        includeStopCard && window.FS?.event("Bus stop card opened")
+        setIsSelected(true)
+      },
       popupclose: () => setIsSelected(false),
     }
 
@@ -291,11 +294,6 @@ export const StopMarker = React.memo(
         selected={isSelected}
         eventHandlers={popupHandlers}
         radius={markerRadius}
-        eventHandlers={{
-          popupopen: () => {
-            includeStopCard && window.FS?.event("Bus stop card opened")
-          },
-        }}
       >
         {includeStopCard ? (
           <StopCard stop={stop} direction={direction} />
