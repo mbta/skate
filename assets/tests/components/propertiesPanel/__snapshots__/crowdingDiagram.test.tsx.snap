@@ -9,7 +9,7 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
   >
     <label
       className="m-properties-list__property-label"
-      htmlFor="riders-onboard"
+      htmlFor="riders-onboard-:r5:"
     >
       Riders onboard
     </label>
@@ -27,7 +27,7 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
         </div>
       </div>
       <button
-        id="riders-onboard"
+        id="riders-onboard-:r5:"
       >
         <span
           aria-hidden={true}
@@ -78,7 +78,7 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
   >
     <label
       className="m-properties-list__property-label"
-      htmlFor="riders-onboard"
+      htmlFor="riders-onboard-:r4:"
     >
       Riders onboard
     </label>
@@ -96,7 +96,7 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
         </div>
       </div>
       <button
-        id="riders-onboard"
+        id="riders-onboard-:r4:"
       >
         <span
           aria-hidden={true}
@@ -147,7 +147,7 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
   >
     <label
       className="m-properties-list__property-label"
-      htmlFor="riders-onboard"
+      htmlFor="riders-onboard-:r2:"
     >
       Riders onboard
     </label>
@@ -165,7 +165,7 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
         </div>
       </div>
       <button
-        id="riders-onboard"
+        id="riders-onboard-:r2:"
       >
         <span
           aria-hidden={true}
@@ -216,7 +216,7 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
   >
     <label
       className="m-properties-list__property-label"
-      htmlFor="riders-onboard"
+      htmlFor="riders-onboard-:r3:"
     >
       Riders onboard
     </label>
@@ -234,7 +234,7 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
         </div>
       </div>
       <button
-        id="riders-onboard"
+        id="riders-onboard-:r3:"
       >
         <span
           aria-hidden={true}
@@ -285,7 +285,7 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
   >
     <label
       className="m-properties-list__property-label"
-      htmlFor="riders-onboard"
+      htmlFor="riders-onboard-:r1:"
     >
       Riders onboard
     </label>
@@ -303,7 +303,7 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
         </div>
       </div>
       <button
-        id="riders-onboard"
+        id="riders-onboard-:r1:"
       >
         <span
           aria-hidden={true}
