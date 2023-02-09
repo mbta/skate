@@ -10,7 +10,7 @@ import { otherNotificationReadState } from "../contexts/notificationsContext"
 import { SocketContext } from "../contexts/socketContext"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import { Notification } from "../realtime.d"
-import { isChelseaBridgeNotification } from "../util/isChelseaBridgeNotification"
+import { isChelseaBridgeNotification } from "../util/notifications"
 import {
   InitialNotifications,
   NewNotification,

@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import { Notification, NotificationReason } from "../realtime.d"
-import { isChelseaBridgeNotification } from "../util/isChelseaBridgeNotification"
+import { isChelseaBridgeNotification } from "../util/notifications"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
 import { Card, CardBody, CardProperties } from "./card"
