@@ -613,6 +613,7 @@ describe("<MapPage />", () => {
   describe("<RoutePropertiesCard />", () => {
     test("RPC replaces VPC vehicle's route shape is selected", async () => {
       jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      mockFullStoryEvent()
 
       const route = routeFactory.build()
       const routePattern = routePatternFactory.build({ routeId: route.id })
@@ -654,6 +655,7 @@ describe("<MapPage />", () => {
         container.querySelector(".m-vehicle-map__route-shape")!
       )
       expect(routePropertiesCard.get()).toBeVisible()
+      expect(window.FS?.event).toHaveBeenCalledWith("RPC Opened")
       expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
     })
     test("clicking vehicle when RPC is open closes RPC and opens VPC", async () => {
