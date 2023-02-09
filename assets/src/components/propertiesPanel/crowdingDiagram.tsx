@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useId } from "react"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import { CrowdingIcon, QuestionMarkIcon } from "../../helpers/icon"
@@ -9,6 +9,8 @@ import {
 } from "../../models/crowding"
 
 const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
+  const tooltipButtonId = `riders-onboard-${useId()}`
+
   if (crowding === null) {
     return null
   }
@@ -24,7 +26,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
       <div className="m-crowding-diagram__properties">
         <label
           className="m-properties-list__property-label"
-          htmlFor="riders-onboard"
+          htmlFor={tooltipButtonId}
         >
           Riders onboard
         </label>
@@ -42,7 +44,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
             window.FS?.event('User opened "Riders Onboard" tooltip')
           }}
         >
-          <button id="riders-onboard">
+          <button id={tooltipButtonId}>
             <QuestionMarkIcon
               role="presentation img"
               aria-label=""
