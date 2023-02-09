@@ -454,7 +454,7 @@ const LateGhostRow = ({
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number_ghost")
             window.FS?.event("User clicked Late View Run Number", {
-              is_ghost_bool: true,
+              isGhost_bool: true,
             })
 
             dispatch(selectVehicle(ghost))
@@ -517,7 +517,7 @@ const LateBusRow = ({
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number")
             window.FS?.event("User clicked Late View Run Number", {
-              is_ghost_bool: false,
+              isGhost_bool: false,
             })
             dispatch(selectVehicle(vehicle))
           }}

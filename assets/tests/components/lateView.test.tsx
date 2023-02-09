@@ -159,7 +159,7 @@ describe("LateView", () => {
     )
     expect(window.FS!.event).toHaveBeenCalledWith(
       "User clicked Late View Run Number",
-      { is_ghost_bool: true }
+      { isGhost_bool: true }
     )
   })
 
@@ -188,7 +188,7 @@ describe("LateView", () => {
     )
     expect(window.FS!.event).toHaveBeenCalledWith(
       "User clicked Late View Run Number",
-      { is_ghost_bool: false }
+      { isGhost_bool: false }
     )
   })
 
