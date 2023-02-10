@@ -25,7 +25,7 @@ const CreatePresetModal = ({
           const existingPreset = findPresetByName(routeTabs, presetName)
           if (existingPreset) {
             window.FS?.event(
-              "User tried to Save new Preset under existing Name"
+              "User submitted name of existing preset when creating a new Saved Preset"
             )
             confirmOverwriteCallback(presetName, existingPreset.uuid, dispatch)
           } else {

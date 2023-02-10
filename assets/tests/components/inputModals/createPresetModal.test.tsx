@@ -74,7 +74,7 @@ describe("CreatePresetModal", () => {
       mockDispatch
     )
     expect(window.FS!.event).toHaveBeenCalledWith(
-      "User tried to Save new Preset under existing Name"
+      "User submitted name of existing preset when creating a new Saved Preset"
     )
   })
 
