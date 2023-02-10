@@ -1,5 +1,12 @@
-import { Bounds, Point } from "leaflet"
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import Leaflet, { Bounds, Point } from "leaflet"
+import React, {
+  ComponentPropsWithoutRef,
+  MouseEventHandler,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -15,6 +22,7 @@ import {
   RoutePatternId,
 } from "../../schedule"
 import {
+  RoutePatternIdentifier,
   SelectedEntity,
   SelectedEntityType,
   SelectedRoutePattern,
@@ -30,6 +38,7 @@ import {
 } from "../map"
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
+import RoutePropertiesCard from "./routePropertiesCard"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 const RouteVehicles = ({
@@ -87,18 +96,26 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
     .getCenter()
     .subtract(mapContainerBounds.getCenter())
 
-  const targetZoom = 16
-  const targetPoint = map
-      // Project the target point into screenspace for the target zoom
-      .project(points[0], targetZoom)
-      // Offset the target point in screenspace to move the center of the map
-      // to apply the padding to the center
-      .subtract(offset),
-    // convert the target point to worldspace from screenspace
-    targetLatLng = map.unproject(targetPoint, targetZoom)
+  if (points.length === 1) {
+    const targetZoom = 16
+    const targetPoint = map
+        // Project the target point into screenspace for the target zoom
+        .project(points[0], targetZoom)
+        // Offset the target point in screenspace to move the center of the map
+        // to apply the padding to the center
+        .subtract(offset),
+      // convert the target point to worldspace from screenspace
+      targetLatLng = map.unproject(targetPoint, targetZoom)
 
-  // Zoom/Pan center of map to offset location in worldspace
-  map.setView(targetLatLng, targetZoom)
+    // Zoom/Pan center of map to offset location in worldspace
+    map.setView(targetLatLng, targetZoom)
+  } else {
+    const pointsBounds = Leaflet.latLngBounds(points)
+    map.fitBounds(pointsBounds, {
+      paddingBottomRight: [20, 50],
+      paddingTopLeft: topLeft,
+    })
+  }
 }
 
 const useFollowingStateWithSelectionLogic = (
@@ -199,10 +216,57 @@ const SelectionCardContainer = ({
 }: {
   children: JSX.Element
 }): JSX.Element => {
+  // #region Catching Events Before Leaflet
+  const cancelEvent: MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation()
+  }
+
+  const keepUserInputFromLeaflet: ComponentPropsWithoutRef<"div"> = {
+    onMouseDownCapture: cancelEvent,
+    onDoubleClickCapture: cancelEvent,
+    onScrollCapture: cancelEvent,
+    onWheelCapture: cancelEvent,
+  }
+  // #endregion
   return (
-    <div className="m-map-display__selected-entity-card-container">
+    <div
+      {...keepUserInputFromLeaflet}
+      className="m-map-display__selected-entity-card-container"
+    >
       {children}
     </div>
+  )
+}
+
+const RoutePatternLayers = ({
+  routePattern,
+  onShapeClick,
+}: {
+  routePattern: RoutePattern
+  onShapeClick: () => void
+}): JSX.Element => {
+  return routePattern.shape ? (
+    <>
+      <RouteShape shape={routePattern.shape} onClick={onShapeClick} />
+      <ZoomLevelWrapper>
+        {(zoomLevel) => {
+          return (
+            <>
+              {routePattern.shape && (
+                <RouteStopMarkers
+                  stops={routePattern.shape.stops || []}
+                  includeStopCard={true}
+                  direction={routePattern.directionId}
+                  zoomLevel={zoomLevel}
+                />
+              )}
+            </>
+          )
+        }}
+      </ZoomLevelWrapper>
+    </>
+  ) : (
+    <></>
   )
 }
 
@@ -210,15 +274,17 @@ const SelectedVehicleDataLayers = ({
   vehicleOrGhost: selectedVehicleOrGhost,
   routePatterns,
   showSelectionCard,
-  deleteSelection,
   selectVehicle,
+  selectRoutePattern,
+  deleteSelection,
   setStateClasses,
 }: {
   vehicleOrGhost: VehicleOrGhost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
   showSelectionCard: boolean
-  deleteSelection: () => void
   selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
+  selectRoutePattern: (routePattern: RoutePattern) => void
+  deleteSelection: () => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
   const position =
@@ -277,36 +343,81 @@ const SelectedVehicleDataLayers = ({
                 onPrimaryVehicleSelect={selectVehicle}
               />
             ))}
-          {showShapeAndStops &&
-            routePatternForVehicle &&
-            routePatternForVehicle.shape && (
-              <>
-                <RouteShape shape={routePatternForVehicle.shape} />
-                <ZoomLevelWrapper>
-                  {(zoomLevel) => {
-                    return (
-                      <>
-                        {routePatternForVehicle &&
-                          routePatternForVehicle.shape && (
-                            <RouteStopMarkers
-                              stops={routePatternForVehicle.shape.stops || []}
-                              includeStopCard={true}
-                              direction={routePatternForVehicle.directionId}
-                              zoomLevel={zoomLevel}
-                            />
-                          )}
-                      </>
-                    )
-                  }}
-                </ZoomLevelWrapper>
-              </>
-            )}
+          {showShapeAndStops && routePatternForVehicle && (
+            <RoutePatternLayers
+              routePattern={routePatternForVehicle}
+              onShapeClick={() => selectRoutePattern(routePatternForVehicle)}
+            />
+          )}
         </>
       )}
 
       <InterruptibleFollower
         onUpdate={onFollowerUpdate}
         positions={position}
+        {...followerState}
+      />
+    </>
+  )
+}
+
+const SelectedRouteDataLayers = ({
+  routePatternIdentifier,
+  routePatterns,
+  showSelectionCard,
+  deleteSelection,
+  selectVehicle,
+  selectRoutePattern,
+  setStateClasses,
+}: {
+  routePatternIdentifier: RoutePatternIdentifier
+  routePatterns: ByRoutePatternId<RoutePattern> | null
+  showSelectionCard: boolean
+  selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
+  selectRoutePattern: (routePattern: RoutePattern) => void
+  deleteSelection: () => void
+
+  setStateClasses: (classes: string | undefined) => void
+}) => {
+  const selectedRoutePattern: RoutePattern | undefined = routePatterns
+    ? routePatterns[routePatternIdentifier.routePatternId]
+    : undefined
+  const routeShapePositions = selectedRoutePattern
+    ? selectedRoutePattern.shape?.points?.map((p) =>
+        Leaflet.latLng(p.lat, p.lon)
+      ) || []
+    : []
+  const followerState = useInteractiveFollowerState()
+
+  useEffect(() => {
+    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
+  }, [followerState.shouldFollow, setStateClasses])
+  return (
+    <>
+      {showSelectionCard && routePatterns && (
+        <SelectionCardContainer>
+          <RoutePropertiesCard
+            selectedRoutePatternId={routePatternIdentifier.routePatternId}
+            routePatterns={routePatterns}
+            selectRoutePattern={selectRoutePattern}
+            onClose={deleteSelection}
+          />
+        </SelectionCardContainer>
+      )}
+      {selectedRoutePattern && (
+        <RoutePatternLayers
+          routePattern={selectedRoutePattern}
+          onShapeClick={() => selectRoutePattern(selectedRoutePattern)}
+        />
+      )}
+      <RouteVehicles
+        selectedVehicleRoute={routePatternIdentifier.routeId}
+        selectedVehicleId={null}
+        onPrimaryVehicleSelect={selectVehicle}
+      />
+      <InterruptibleFollower
+        onUpdate={onFollowerUpdate}
+        positions={routeShapePositions}
         {...followerState}
       />
     </>
@@ -335,6 +446,20 @@ const SelectionDataLayers = ({
   const routePatterns: ByRoutePatternId<RoutePattern> | null =
     usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
 
+  const selectVehicle = (vehicleOrGhost: VehicleOrGhost) =>
+    setSelection({
+      type: SelectedEntityType.Vehicle,
+      vehicleId: vehicleOrGhost.id,
+    })
+
+  const selectRoutePattern = (routePattern: RoutePattern) => {
+    setSelection({
+      type: SelectedEntityType.RoutePattern,
+      routeId: routePattern.routeId,
+      routePatternId: routePattern.id,
+    })
+  }
+
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
       return (
@@ -342,17 +467,27 @@ const SelectionDataLayers = ({
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
           routePatterns={routePatterns}
           showSelectionCard={showSelectionCard}
+          selectVehicle={selectVehicle}
+          selectRoutePattern={selectRoutePattern}
           deleteSelection={deleteSelection}
-          selectVehicle={(vehicleOrGhost: VehicleOrGhost) =>
-            setSelection({
-              type: SelectedEntityType.Vehicle,
-              vehicleId: vehicleOrGhost.id,
-            })
-          }
           setStateClasses={setStateClasses}
         />
       )
-    // TODO: handle SelectedEntityType.ROUTE
+    case SelectedEntityType.RoutePattern:
+      return (
+        <SelectedRouteDataLayers
+          routePatternIdentifier={{
+            routeId: liveSelectedEntity.routeId,
+            routePatternId: liveSelectedEntity.routePatternId,
+          }}
+          routePatterns={routePatterns}
+          showSelectionCard={showSelectionCard}
+          selectVehicle={selectVehicle}
+          selectRoutePattern={selectRoutePattern}
+          deleteSelection={deleteSelection}
+          setStateClasses={setStateClasses}
+        />
+      )
     default:
       return <MapElementsNoSelection setStateClasses={setStateClasses} />
   }
@@ -386,17 +521,13 @@ const MapDisplay = ({
       shapes={[]}
       stateClasses={stateClasses}
     >
-      <>
-        {
-          <SelectionDataLayers
-            selectedEntity={selectedEntity}
-            showSelectionCard={showSelectionCard}
-            deleteSelection={deleteSelection}
-            setSelection={setSelection}
-            setStateClasses={setStateClasses}
-          />
-        }
-      </>
+      <SelectionDataLayers
+        selectedEntity={selectedEntity}
+        showSelectionCard={showSelectionCard}
+        deleteSelection={deleteSelection}
+        setSelection={setSelection}
+        setStateClasses={setStateClasses}
+      />
     </BaseMap>
   )
 }

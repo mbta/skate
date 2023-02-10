@@ -384,19 +384,22 @@ export const RouteStopMarkers = ({
   )
 }
 
-export const RouteShape = React.memo(({ shape }: { shape: Shape }) => {
-  const positions: LatLngExpression[] = shape.points.map((point) => [
-    point.lat,
-    point.lon,
-  ])
-  return (
-    <Polyline
-      className="m-vehicle-map__route-shape"
-      positions={positions}
-      {...shapeStrokeOptions(shape)}
-    />
-  )
-})
+export const RouteShape = React.memo(
+  ({ shape, onClick }: { shape: Shape; onClick?: () => void }) => {
+    const positions: LatLngExpression[] = shape.points.map((point) => [
+      point.lat,
+      point.lon,
+    ])
+    return (
+      <Polyline
+        className="m-vehicle-map__route-shape"
+        positions={positions}
+        {...shapeStrokeOptions(shape)}
+        eventHandlers={{ click: onClick }}
+      />
+    )
+  }
+)
 
 const garageLeafletIcon = Leaflet.divIcon({
   html: garageIcon,

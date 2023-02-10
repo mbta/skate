@@ -24,6 +24,8 @@ import expandIconSvg from "../../static/images/icon-caret-right.svg"
 // @ts-ignore
 import circleXIconSvg from "../../static/images/icon-circle-x.svg"
 // @ts-ignore
+import circleCheckSvg from "../../static/images/icon-circle-check.svg"
+// @ts-ignore
 import commuterRailIconSvg from "../../static/images/icon-commuter-rail.svg"
 // @ts-ignore
 import crowdingIconSvg from "../../static/images/icon-crowding.svg"
@@ -136,6 +138,8 @@ export const BusRearIcon = svgIcon(busRearIconSvg)
 export const ChevronLeftIcon = svgIcon(chevronLeftIconSvg)
 
 export const CircleXIcon = svgIcon(circleXIconSvg)
+
+export const CircleCheckIcon = svgIcon(circleCheckSvg)
 
 export const CloseXIcon = svgIcon(closeXIconSvg)
 

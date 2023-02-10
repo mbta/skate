@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event"
 import React from "react"
 import { MapContainer } from "react-leaflet"
 import ZoomLevelWrapper from "../../src/components/ZoomLevelWrapper"
+import { zoomInButton } from "../testHelpers/selectors/components/map"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -14,10 +15,6 @@ afterAll(() => {
 })
 
 const renderProps = (zoomLevel: number) => <p>{zoomLevel}</p>
-
-const getMapZoomInButton = () => {
-  return screen.getByRole("button", { name: "Zoom in" })
-}
 
 describe("ZoomLevelWrapper", () => {
   test("Passes zoom level to child", () => {
@@ -32,7 +29,7 @@ describe("ZoomLevelWrapper", () => {
       zoom: 13,
     })
     expect(screen.getByText("13")).toBeInTheDocument()
-    await userEvent.click(getMapZoomInButton())
+    await userEvent.click(zoomInButton.get())
     expect(screen.getByText("14")).toBeInTheDocument()
   })
 })

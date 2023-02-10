@@ -42,7 +42,7 @@ export const mockUseReducerOnce = <StateT, ActionT>(
   )
 }
 
-export const mockUserRoutePatternsByIdForVehicles = (
+export const mockUsePatternsByIdForVehicles = (
   vehicles: VehicleOrGhost[],
   params?: { stopCount: number }
 ) => {

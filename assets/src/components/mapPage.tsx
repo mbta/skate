@@ -124,8 +124,12 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const setSelection = useCallback(
     (selectedEntity: SelectedEntity | null) => {
-      if (selectedEntity?.type === SelectedEntityType.Vehicle) {
-        window.FS?.event("VPC Opened")
+      switch (selectedEntity?.type) {
+        case SelectedEntityType.Vehicle:
+          window.FS?.event("VPC Opened")
+          break
+        case SelectedEntityType.RoutePattern:
+          window.FS?.event("RPC Opened")
       }
 
       dispatch(setSelectedEntity(selectedEntity))

@@ -39,9 +39,15 @@ import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleOrGhost } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
-import { mockUserRoutePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
+import { mockUsePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
+import { routePatternFactory } from "../factories/routePattern"
+import { RoutesProvider } from "../../src/contexts/routesContext"
+import { vehiclePropertiesCard } from "../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
+import { routePropertiesCard } from "../testHelpers/selectors/components/mapPage/routePropertiesCard"
+import { zoomInButton } from "../testHelpers/selectors/components/map"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -107,20 +113,10 @@ function mockUseVehiclesForRouteMap(map: {
   )
 }
 
-function getVehiclePropertiesCard() {
-  return screen.getByRole("generic", {
-    name: /vehicle properties card/i,
-  })
-}
-
 function getMapSearchPanel() {
   return screen.getByRole("generic", {
     name: /map search panel/i,
   })
-}
-
-function getMapZoomInButton(): Element {
-  return screen.getByRole("button", { name: "Zoom in" })
 }
 
 function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
@@ -238,7 +234,7 @@ describe("<MapPage />", () => {
 
     expect(getAllStationIcons(container)).toHaveLength(0)
 
-    const zoomIn = getMapZoomInButton()
+    const zoomIn = zoomInButton.get()
     await userEvent.click(zoomIn)
     await userEvent.click(zoomIn)
 
@@ -265,7 +261,7 @@ describe("<MapPage />", () => {
       { runId } = nextVehicle
     ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
 
-    mockUserRoutePatternsByIdForVehicles([vehicle, nextVehicle])
+    mockUsePatternsByIdForVehicles([vehicle, nextVehicle])
 
     mockUseVehicleForId([vehicle, nextVehicle])
     mockUseVehiclesForRouteMap({ [route.id]: vehicles })
@@ -304,7 +300,7 @@ describe("<MapPage />", () => {
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
-    mockUserRoutePatternsByIdForVehicles([vehicle])
+    mockUsePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
 
     const { container } = render(
@@ -321,9 +317,7 @@ describe("<MapPage />", () => {
     )
     await userEvent.click(screen.getByRole("cell", { name: "Run" }))
 
-    expect(
-      screen.getByRole("generic", { name: /vehicle properties card/i })
-    ).toBeVisible()
+    expect(vehiclePropertiesCard.get()).toBeVisible()
     expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
   })
 
@@ -339,7 +333,7 @@ describe("<MapPage />", () => {
       savedQueries: [],
     }
 
-    mockUserRoutePatternsByIdForVehicles([vehicle])
+    mockUsePatternsByIdForVehicles([vehicle])
 
     const mockDispatch = jest.fn()
     const { container } = render(
@@ -389,7 +383,7 @@ describe("<MapPage />", () => {
     ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
     mockUseVehicleForId(vehicles)
     mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-    mockUserRoutePatternsByIdForVehicles([vehicle])
+    mockUsePatternsByIdForVehicles([vehicle])
 
     const { container } = render(
       <RealDispatchWrapper
@@ -416,14 +410,14 @@ describe("<MapPage />", () => {
     )
 
     const routeShape = container.querySelector(".m-vehicle-map__route-shape")
-    const vehiclePropertiesCard = getVehiclePropertiesCard()
+    const vpc = vehiclePropertiesCard.get()
 
     expect(mapSearchPanel).toHaveClass("hidden")
     expect(routeShape).toBeVisible()
-    expect(vehiclePropertiesCard).toBeVisible()
+    expect(vpc).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: /close/i }))
-    expect(vehiclePropertiesCard).not.toBeInTheDocument()
+    expect(vpc).not.toBeInTheDocument()
     expect(routeShape).not.toBeInTheDocument()
 
     expect(getMapSearchPanel()).toBeVisible()
@@ -442,7 +436,7 @@ describe("<MapPage />", () => {
     })
 
     ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
-    mockUserRoutePatternsByIdForVehicles([vehicle])
+    mockUsePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
     mockUseVehiclesForRouteMap({
       [vehicle.routeId!]: [vehicle],
@@ -496,7 +490,7 @@ describe("<MapPage />", () => {
       })
     )
 
-    expect(getVehiclePropertiesCard()).toBeVisible()
+    expect(vehiclePropertiesCard.get()).toBeVisible()
     expect(mapSearchPanel).toHaveClass("hidden")
   })
 
@@ -543,9 +537,7 @@ describe("<MapPage />", () => {
             name: new RegExp(`Vehicle ${vehicle.label}`),
           })
         )
-        expect(
-          screen.getByRole("generic", { name: /vehicle properties card/i })
-        ).toBeVisible()
+        expect(vehiclePropertiesCard.get()).toBeVisible()
       })
 
       test("after vehicle on the map is clicked", async () => {
@@ -585,7 +577,7 @@ describe("<MapPage />", () => {
             name: vehicleNext.label,
           })
         )
-        expect(getVehiclePropertiesCard()).toBeVisible()
+        expect(vehiclePropertiesCard.get()).toBeVisible()
       })
 
       test("when page is rendered with a vehicle selected, page should have vehicle properties card open and search panel collapsed", async () => {
@@ -613,10 +605,106 @@ describe("<MapPage />", () => {
           </StateDispatchProvider>
         )
 
-        expect(
-          screen.getByRole("generic", { name: /vehicle properties card/i })
-        ).toBeVisible()
+        expect(vehiclePropertiesCard.get()).toBeVisible()
       })
+    })
+  })
+
+  describe("<RoutePropertiesCard />", () => {
+    test("RPC replaces VPC vehicle's route shape is selected", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      mockFullStoryEvent()
+
+      const route = routeFactory.build()
+      const routePattern = routePatternFactory.build({ routeId: route.id })
+      const vehicle = vehicleFactory.build({
+        routeId: route.id,
+        routePatternId: routePattern.id,
+      })
+
+      mockUseVehicleForId([vehicle])
+      mockUseVehiclesForRouteMap({
+        [route.id]: [vehicle],
+      })
+      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+        [routePattern.id]: routePattern,
+      })
+
+      const { container } = render(
+        <RealDispatchWrapper
+          initialState={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: vehicle.id,
+              },
+            },
+            userSettings: {
+              ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+            },
+          })}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </RealDispatchWrapper>
+      )
+      expect(vehiclePropertiesCard.get()).toBeVisible()
+
+      await userEvent.click(
+        container.querySelector(".m-vehicle-map__route-shape")!
+      )
+      expect(routePropertiesCard.get()).toBeVisible()
+      expect(window.FS?.event).toHaveBeenCalledWith("RPC Opened")
+      expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
+    })
+    test("clicking vehicle when RPC is open closes RPC and opens VPC", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+      const route = routeFactory.build()
+      const routePattern = routePatternFactory.build({ routeId: route.id })
+      const vehicle = vehicleFactory.build({
+        routeId: route.id,
+        routePatternId: routePattern.id,
+      })
+
+      mockUseVehicleForId([vehicle])
+      mockUseVehiclesForRouteMap({
+        [route.id]: [vehicle],
+      })
+      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+        [routePattern.id]: routePattern,
+      })
+
+      render(
+        <RealDispatchWrapper
+          initialState={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.RoutePattern,
+                routeId: route.id,
+                routePatternId: routePattern.id,
+              },
+            },
+            userSettings: {
+              ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+            },
+          })}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </RealDispatchWrapper>
+      )
+      expect(routePropertiesCard.get()).toBeVisible()
+      await userEvent.click(
+        screen.getByRole("button", {
+          name: vehicle.label,
+        })
+      )
+
+      expect(routePropertiesCard.query()).not.toBeInTheDocument()
+      expect(vehiclePropertiesCard.get()).toBeVisible()
     })
   })
 
@@ -660,7 +748,7 @@ describe("<MapPage />", () => {
         })
 
         ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
-        mockUserRoutePatternsByIdForVehicles([vehicle])
+        mockUsePatternsByIdForVehicles([vehicle])
 
         render(
           <StateDispatchProvider
@@ -687,7 +775,7 @@ describe("<MapPage />", () => {
 
         ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
 
-        mockUserRoutePatternsByIdForVehicles([vehicle])
+        mockUsePatternsByIdForVehicles([vehicle])
         mockUseVehicleForId([vehicle])
         mockUseVehiclesForRouteMap({
           [vehicle.routeId!]: vehicles,
@@ -735,9 +823,7 @@ describe("<MapPage />", () => {
           screen.getAllByRole("button", { name: runIdToLabel(vehicle.runId!) })
         ).toHaveLength(vehicles.length)
 
-        expect(
-          screen.getByRole("generic", { name: /vehicle properties card/i })
-        ).toBeVisible()
+        expect(vehiclePropertiesCard.get()).toBeVisible()
         expect(
           mapContainer.querySelector(".m-vehicle-map__route-shape")
         ).toBeVisible()
@@ -775,7 +861,7 @@ describe("<MapPage />", () => {
             [route.id]: selectedRouteVehicles,
           })
 
-          mockUserRoutePatternsByIdForVehicles([selectedVehicle])
+          mockUsePatternsByIdForVehicles([selectedVehicle])
 
           render(
             <StateDispatchProvider
@@ -808,7 +894,7 @@ describe("<MapPage />", () => {
             setHtmlWidthHeightForLeafletMap()
             mockUseVehicleForId([selectedVehicle])
             mockUseVehiclesForRouteMap({ [route.id]: selectedRouteVehicles })
-            mockUserRoutePatternsByIdForVehicles([selectedVehicle], {
+            mockUsePatternsByIdForVehicles([selectedVehicle], {
               stopCount: 8,
             })
 
@@ -842,7 +928,7 @@ describe("<MapPage />", () => {
           setHtmlWidthHeightForLeafletMap()
           mockUseVehiclesForRouteMap({})
           mockUseVehicleForId([selectedVehicle])
-          mockUserRoutePatternsByIdForVehicles([selectedVehicle])
+          mockUsePatternsByIdForVehicles([selectedVehicle])
 
           const { container } = render(
             <StateDispatchProvider
@@ -867,7 +953,7 @@ describe("<MapPage />", () => {
             container.querySelector(".m-vehicle-map__route-shape")
           ).not.toBeInTheDocument()
           expect(
-            within(getVehiclePropertiesCard()).getByRole("status", {
+            within(vehiclePropertiesCard.get()).getByRole("status", {
               name: /route variant name/i,
             })
           ).toHaveTextContent("Shuttle")
@@ -900,7 +986,7 @@ describe("<MapPage />", () => {
           expect(
             screen.queryAllByRole("button", { name: /^run/ })
           ).toHaveLength(0)
-          expect(getVehiclePropertiesCard()).toBeVisible()
+          expect(vehiclePropertiesCard.get()).toBeVisible()
         })
       })
     })
