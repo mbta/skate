@@ -453,6 +453,10 @@ const LateGhostRow = ({
           className="m-late-view__run-link"
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number_ghost")
+            window.FS?.event("User clicked Late View Run Number", {
+              isGhost_bool: true,
+            })
+
             dispatch(selectVehicle(ghost))
           }}
         >
@@ -512,6 +516,9 @@ const LateBusRow = ({
           className="m-late-view__run-link"
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number")
+            window.FS?.event("User clicked Late View Run Number", {
+              isGhost_bool: false,
+            })
             dispatch(selectVehicle(vehicle))
           }}
         >
@@ -654,6 +661,7 @@ const UnhideToggle = ({
     }`}
     onClick={() => {
       tagManagerEvent("clicked_eye_toggle")
+      window.FS?.event('User clicked the "hide" eye toggle')
       toggleViewHidden()
     }}
     title={viewHidden ? "Exclude Hidden" : "Include Hidden"}

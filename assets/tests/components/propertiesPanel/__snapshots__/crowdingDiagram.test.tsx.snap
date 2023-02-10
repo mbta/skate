@@ -7,31 +7,40 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
   <div
     className="m-crowding-diagram__properties"
   >
-    <span
+    <label
       className="m-properties-list__property-label"
+      htmlFor="riders-onboard-:r5:"
     >
       Riders onboard
-    </span>
+    </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
       >
         <div>
-          Riders are estimated using Automated 
+          Riders are estimated using
           <br />
-           Passenger Counters (APCs).
+          Automated Passenger Counters (APCs).
         </div>
       </div>
-      <span
-        className="m-crowding-diagram__tooltip-anchor"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
+      <button
+        id="riders-onboard-:r5:"
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          className="m-crowding-diagram__tooltip-anchor"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
+          role="presentation img"
+        />
+      </button>
     </div>
     <br />
     45 riders
@@ -67,31 +76,40 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
   <div
     className="m-crowding-diagram__properties"
   >
-    <span
+    <label
       className="m-properties-list__property-label"
+      htmlFor="riders-onboard-:r4:"
     >
       Riders onboard
-    </span>
+    </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
       >
         <div>
-          Riders are estimated using Automated 
+          Riders are estimated using
           <br />
-           Passenger Counters (APCs).
+          Automated Passenger Counters (APCs).
         </div>
       </div>
-      <span
-        className="m-crowding-diagram__tooltip-anchor"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
+      <button
+        id="riders-onboard-:r4:"
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          className="m-crowding-diagram__tooltip-anchor"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
+          role="presentation img"
+        />
+      </button>
     </div>
     <br />
     10 riders
@@ -127,31 +145,40 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
   <div
     className="m-crowding-diagram__properties"
   >
-    <span
+    <label
       className="m-properties-list__property-label"
+      htmlFor="riders-onboard-:r2:"
     >
       Riders onboard
-    </span>
+    </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
       >
         <div>
-          Riders are estimated using Automated 
+          Riders are estimated using
           <br />
-           Passenger Counters (APCs).
+          Automated Passenger Counters (APCs).
         </div>
       </div>
-      <span
-        className="m-crowding-diagram__tooltip-anchor"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
+      <button
+        id="riders-onboard-:r2:"
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          className="m-crowding-diagram__tooltip-anchor"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
+          role="presentation img"
+        />
+      </button>
     </div>
     <br />
     0 riders
@@ -187,31 +214,40 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
   <div
     className="m-crowding-diagram__properties"
   >
-    <span
+    <label
       className="m-properties-list__property-label"
+      htmlFor="riders-onboard-:r3:"
     >
       Riders onboard
-    </span>
+    </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
       >
         <div>
-          Riders are estimated using Automated 
+          Riders are estimated using
           <br />
-           Passenger Counters (APCs).
+          Automated Passenger Counters (APCs).
         </div>
       </div>
-      <span
-        className="m-crowding-diagram__tooltip-anchor"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
+      <button
+        id="riders-onboard-:r3:"
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          className="m-crowding-diagram__tooltip-anchor"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
+          role="presentation img"
+        />
+      </button>
     </div>
     <br />
     1 rider
@@ -247,31 +283,40 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
   <div
     className="m-crowding-diagram__properties"
   >
-    <span
+    <label
       className="m-properties-list__property-label"
+      htmlFor="riders-onboard-:r1:"
     >
       Riders onboard
-    </span>
+    </label>
     <div
       className="mock-tippy"
+      onClick={[Function]}
     >
       <div
         className="mock-tippy-content"
       >
         <div>
-          Riders are estimated using Automated 
+          Riders are estimated using
           <br />
-           Passenger Counters (APCs).
+          Automated Passenger Counters (APCs).
         </div>
       </div>
-      <span
-        className="m-crowding-diagram__tooltip-anchor"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
+      <button
+        id="riders-onboard-:r1:"
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          className="m-crowding-diagram__tooltip-anchor"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
+          role="presentation img"
+        />
+      </button>
     </div>
     <br />
     No data available

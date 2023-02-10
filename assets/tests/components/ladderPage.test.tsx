@@ -27,10 +27,12 @@ import {
 } from "../../src/state"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import routeFactory from "../factories/route"
-import routeTabFactory from "../factories/routeTab"
+import routeTabFactory, { routeTabPresetFactory } from "../factories/routeTab"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import stateFactory from "../factories/applicationState"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -199,6 +201,7 @@ describe("LadderPage", () => {
   })
 
   test("can save a route tab as a preset from the save icon", async () => {
+    mockFullStoryEvent()
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -219,22 +222,23 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByTitle("Save"))
+    await userEvent.click(result.getByRole("button", { name: "Save" }))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      'User clicked Route Tab "Save" Button'
+    )
   })
 
   test("can save an edited preset from the save icon", async () => {
-    const mockState = {
-      ...initialState,
+    mockFullStoryEvent()
+    const mockState = stateFactory.build({
       routeTabs: [
-        routeTabFactory.build({
+        routeTabPresetFactory.build({
           uuid: "uuid1",
-          ordering: undefined,
-          isCurrentTab: false,
           selectedRouteIds: ["1"],
         }),
         routeTabFactory.build({
@@ -246,7 +250,7 @@ describe("LadderPage", () => {
           saveChangesToTabUuid: "uuid1",
         }),
       ],
-    }
+    })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -261,6 +265,9 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
+    )
+    expect(window.FS!.event).toBeCalledWith(
+      'User clicked Route Tab "Save" Button'
     )
   })
 
@@ -291,16 +298,14 @@ describe("LadderPage", () => {
   })
 
   test("can add a new route tab", async () => {
-    const mockState = {
-      ...initialState,
-      routeTabs: [
-        routeTabFactory.build({
-          ordering: 0,
-          isCurrentTab: true,
-          selectedRouteIds: ["1"],
-        }),
-      ],
-    }
+    mockFullStoryEvent()
+    const mockState = stateFactory.build({
+      routeTabs: routeTabFactory.buildList(1, {
+        ordering: 0,
+        isCurrentTab: true,
+        selectedRouteIds: ["1"],
+      }),
+    })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -315,6 +320,7 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
+    expect(window.FS!.event).toBeCalledWith("User added a new Route Ladder Tab")
   })
 
   test("can toggle to presets view in picker and back", async () => {

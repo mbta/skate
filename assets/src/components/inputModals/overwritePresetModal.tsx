@@ -25,7 +25,10 @@ const OverwritePresetModal = ({
       <div className="m-input-modal__buttons">
         <button
           className="m-input-modal__button"
-          onClick={() => dispatch(closeInputModal())}
+          onClick={() => {
+            window.FS?.event("User canceled Overwriting a Saved Preset")
+            dispatch(closeInputModal())
+          }}
         >
           Cancel
         </button>
@@ -34,6 +37,7 @@ const OverwritePresetModal = ({
           autoFocus={true}
           className="m-input-modal__button-confirm"
           onClick={() => {
+            window.FS?.event("User Overwrote a Saved Preset")
             confirmCallback(dispatch)
             dispatch(closeInputModal())
           }}

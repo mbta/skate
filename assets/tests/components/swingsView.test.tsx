@@ -25,6 +25,7 @@ import * as dateTime from "../../src/util/dateTime"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import userEvent from "@testing-library/user-event"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useSwings", () => ({
   __esModule: true,
@@ -253,6 +254,7 @@ describe("SwingsView", () => {
   })
 
   test("opens VPP when clicking an active swing-off and sends Fullstory event", async () => {
+    mockFullStoryEvent()
     const swing = swingFactory.build({ time: 19000 })
     ;(useSwings as jest.Mock)
       .mockImplementationOnce((): Swing[] => [swing])
@@ -277,9 +279,13 @@ describe("SwingsView", () => {
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_off")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      'User clicked "Swing Off" run button'
+    )
   })
 
   test("opens VPP when clicking an active swing-on and sends Fullstory event", async () => {
+    mockFullStoryEvent()
     const swing = swingFactory.build({
       fromRunId: "123-789",
       toRunId: "123-456",
@@ -308,6 +314,9 @@ describe("SwingsView", () => {
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_on")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      'User clicked "Swing On" run button'
+    )
   })
 
   test("links to both swing-on and swing-off if both are active", () => {

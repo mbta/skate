@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useId } from "react"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import { CrowdingIcon, QuestionMarkIcon } from "../../helpers/icon"
@@ -9,6 +9,8 @@ import {
 } from "../../models/crowding"
 
 const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
+  const tooltipButtonId = `riders-onboard-${useId()}`
+
   if (crowding === null) {
     return null
   }
@@ -22,20 +24,34 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
   return (
     <div className="m-crowding-diagram">
       <div className="m-crowding-diagram__properties">
-        <span className="m-properties-list__property-label">
+        <label
+          className="m-properties-list__property-label"
+          htmlFor={tooltipButtonId}
+        >
           Riders onboard
-        </span>
+        </label>
         <Tippy
           content={
             <div>
-              Riders are estimated using Automated <br /> Passenger Counters
-              (APCs).
+              Riders are estimated using
+              <br />
+              Automated Passenger Counters (APCs).
             </div>
           }
           trigger="click"
           className="m-crowding-diagram__crowding-tooltip"
+          onShow={() => {
+            window.FS?.event('User opened "Riders Onboard" tooltip')
+          }}
         >
-          <QuestionMarkIcon className="m-crowding-diagram__tooltip-anchor" />
+          <button id={tooltipButtonId}>
+            <QuestionMarkIcon
+              role="presentation img"
+              aria-label=""
+              aria-hidden={true}
+              className="m-crowding-diagram__tooltip-anchor"
+            />
+          </button>
         </Tippy>
         <br />
         {crowding.load !== null ? (

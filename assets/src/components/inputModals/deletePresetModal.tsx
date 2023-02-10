@@ -31,6 +31,7 @@ const DeletePresetModal = ({
           className="m-input-modal__button-danger"
           onClick={() => {
             tagManagerEvent("preset_deleted")
+            window.FS?.event("User deleted a preset")
 
             deleteCallback(dispatch)
             dispatch(closeInputModal())

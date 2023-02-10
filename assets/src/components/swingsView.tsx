@@ -280,7 +280,10 @@ const SwingRow = ({
           <SwingCellContent
             vehicleOrGhost={swingOnVehicleOrGhost}
             runId={swing.toRunId}
-            tagManagerEventText="clicked_swing_on"
+            onClick={() => {
+              tagManagerEvent("clicked_swing_on")
+              window.FS?.event('User clicked "Swing On" run button')
+            }}
           />
         </div>
       </th>
@@ -289,7 +292,10 @@ const SwingRow = ({
           <SwingCellContent
             vehicleOrGhost={swingOffVehicleOrGhost}
             runId={swing.fromRunId}
-            tagManagerEventText="clicked_swing_off"
+            onClick={() => {
+              tagManagerEvent("clicked_swing_off")
+              window.FS?.event('User clicked "Swing Off" run button')
+            }}
           />
           <div className="m-swings-view__route-pill">
             <div className="m-swings-view__route">
@@ -312,11 +318,11 @@ const SwingRow = ({
 const SwingCellContent = ({
   vehicleOrGhost,
   runId,
-  tagManagerEventText,
+  onClick,
 }: {
   vehicleOrGhost?: VehicleOrGhost
   runId: string
-  tagManagerEventText: string
+  onClick?: () => void
 }): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
 
@@ -332,7 +338,7 @@ const SwingCellContent = ({
 
           <button
             onClick={() => {
-              tagManagerEvent(tagManagerEventText)
+              onClick && onClick()
               dispatch(selectVehicle(vehicleOrGhost))
             }}
           >

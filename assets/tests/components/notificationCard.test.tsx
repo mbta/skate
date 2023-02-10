@@ -7,6 +7,7 @@ import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
 import { hideLatestNotification } from "../../src/hooks/useNotificationsReducer"
 import { RoutesProvider } from "../../src/contexts/routesContext"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 const notification = notificationFactory.build({
   routeIds: ["route1", "route2"],
@@ -202,4 +203,58 @@ describe("NotificationCard", () => {
     expect(openVPPForCurrentVehicle).toHaveBeenCalled()
     expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
   })
+
+  test.each<{
+    reason: NotificationReason
+    should_fire_fs_event: boolean
+  }>([
+    { should_fire_fs_event: true, reason: "chelsea_st_bridge_raised" },
+    { should_fire_fs_event: true, reason: "chelsea_st_bridge_lowered" },
+    { should_fire_fs_event: false, reason: "other" },
+    { should_fire_fs_event: false, reason: "manpower" },
+    { should_fire_fs_event: false, reason: "disabled" },
+    { should_fire_fs_event: false, reason: "diverted" },
+    { should_fire_fs_event: false, reason: "accident" },
+    { should_fire_fs_event: false, reason: "adjusted" },
+    { should_fire_fs_event: false, reason: "operator_error" },
+    { should_fire_fs_event: false, reason: "traffic" },
+  ])(
+    "clicking bridge notification should trigger FS event: %s",
+    async ({ reason, should_fire_fs_event }) => {
+      mockFullStoryEvent()
+      const updatedNotification = notificationFactory.build({
+        reason,
+      })
+      const dispatch = jest.fn()
+      const currentTime = new Date()
+      const openVPPForCurrentVehicle = jest.fn()
+
+      const user = userEvent.setup()
+      const result = render(
+        <RoutesProvider routes={routes}>
+          <NotificationCard
+            notification={updatedNotification}
+            currentTime={currentTime}
+            openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+            hideLatestNotification={() => dispatch(hideLatestNotification())}
+            noFocusOrHover={true}
+          />
+        </RoutesProvider>
+      )
+      expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
+      expect(dispatch).not.toHaveBeenCalled()
+
+      await user.click(result.getByText(/run1/))
+
+      if (should_fire_fs_event) {
+        expect(window.FS!.event).toHaveBeenCalledWith(
+          "User clicked Chelsea Bridge Notification"
+        )
+      } else {
+        expect(window.FS!.event).not.toHaveBeenCalledWith(
+          "User clicked Chelsea Bridge Notification"
+        )
+      }
+    }
+  )
 })

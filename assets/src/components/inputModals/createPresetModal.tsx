@@ -24,8 +24,12 @@ const CreatePresetModal = ({
           event.preventDefault()
           const existingPreset = findPresetByName(routeTabs, presetName)
           if (existingPreset) {
+            window.FS?.event(
+              "User submitted name of existing preset when creating a new Saved Preset"
+            )
             confirmOverwriteCallback(presetName, existingPreset.uuid, dispatch)
           } else {
+            window.FS?.event("User saved a new Preset")
             createCallback(presetName, dispatch)
             dispatch(closeInputModal())
           }
@@ -48,7 +52,10 @@ const CreatePresetModal = ({
           <button
             type="button"
             className="m-input-modal__button"
-            onClick={() => dispatch(closeInputModal())}
+            onClick={() => {
+              window.FS?.event("User canceled Creating a new Preset")
+              dispatch(closeInputModal())
+            }}
           >
             Cancel
           </button>

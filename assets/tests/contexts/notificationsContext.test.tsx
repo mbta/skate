@@ -12,6 +12,8 @@ import { initialState, selectVehicleFromNotification } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { useNotifications } from "../../src/hooks/useNotifications"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import notificationFactory from "../factories/notification"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -63,6 +65,7 @@ describe("NotificationsProvider", () => {
   })
 
   test("receives incoming notifications and logs a tag manager event", () => {
+    mockFullStoryEvent()
     ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
@@ -79,9 +82,44 @@ describe("NotificationsProvider", () => {
       type: "new",
       payload: notification,
     }))
+
     rerender()
+
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User was Delivered a Notification"
+    )
+  })
+
+  test("when receiving a bridge notification, should trigger FS event", () => {
+    mockFullStoryEvent()
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+      type: "initial",
+      payload: [],
+    }))
+
+    const { result, rerender } = renderHook(
+      () => useContext(NotificationsContext),
+      {
+        wrapper: NotificationsProvider,
+      }
+    )
+    expect(result.current.notifications).toHaveLength(0)
+    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+      type: "new",
+      payload: notificationFactory.build({
+        reason: "chelsea_st_bridge_raised",
+      }),
+    }))
+
+    rerender()
+
+    expect(result.current.notifications).toHaveLength(1)
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User was Delivered a Chelsea Bridge Notification"
+    )
   })
 
   test("expires notifications after 8 hours", () => {

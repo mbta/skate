@@ -12,6 +12,7 @@ import Presets from "../../src/components/presets"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import routeTabFactory from "../factories/routeTab"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -55,6 +56,7 @@ describe("Presets", () => {
   })
 
   test("saves current tab as preset", async () => {
+    mockFullStoryEvent()
     const mockDispatch = jest.fn()
     const mockState = {
       ...initialState,
@@ -83,6 +85,9 @@ describe("Presets", () => {
     )
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "preset_saved_from_presets_panel"
+    )
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      'User clicked the Presets panel "Save as preset" button'
     )
   })
 
