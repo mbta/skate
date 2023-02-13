@@ -1,16 +1,30 @@
-import React, { useId } from "react"
+import { PointExpression } from "leaflet"
+import React, { createContext, useContext, useId } from "react"
 import { Popup } from "react-leaflet"
 import { DirectionId, Stop } from "../schedule"
 import { RoutePill } from "./routePill"
 import StreetViewButton from "./streetViewButton"
 
+export type LeafletPaddingOptions = {
+  padding?: PointExpression | undefined
+  paddingTopLeft?: PointExpression | undefined
+  paddingBottomRight?: PointExpression | undefined
+}
+
+type StopCardProps = {
+  stop: Stop
+  direction?: DirectionId
+}
+
+type AutoPanProps = {
+  autoPanPadding?: LeafletPaddingOptions
+}
+
 const StopCard = ({
   stop,
   direction,
-}: {
-  stop: Stop
-  direction?: DirectionId
-}): JSX.Element => {
+  autoPanPadding,
+}: StopCardProps & AutoPanProps): JSX.Element => {
   const connectionsLabelId = "stop-card-connections-label-" + useId()
 
   const connections = stop.connections
@@ -54,6 +68,9 @@ const StopCard = ({
       className="m-stop-card"
       closeButton={false}
       offset={[-125, 7]}
+      autoPanPadding={autoPanPadding?.padding || [20, 20]}
+      autoPanPaddingTopLeft={autoPanPadding?.paddingTopLeft}
+      autoPanPaddingBottomRight={autoPanPadding?.paddingBottomRight}
     >
       <div className="m-stop-card__stop-info">
         <div className="m-stop-card__stop-name">{stop.name}</div>
@@ -88,6 +105,22 @@ const StopCard = ({
         longitude={stop.lon}
       ></StreetViewButton>
     </Popup>
+  )
+}
+
+export const MapSafeArea = createContext<LeafletPaddingOptions>({})
+
+/**
+ * A <{@link StopCard}/> which provides it's `autoPanPadding` parameter via the
+ * nearest {@link MapSafeArea} Context
+ */
+export const SafeAreaContextStopCard = (props: StopCardProps) => {
+  const safeArea = useContext(MapSafeArea)
+
+  return (
+    <>
+      <StopCard {...props} autoPanPadding={safeArea} />
+    </>
   )
 }
 

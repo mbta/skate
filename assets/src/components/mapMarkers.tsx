@@ -22,9 +22,9 @@ import garageIcon from "../../static/images/icon-bus-garage.svg"
 import stationIcon from "../../static/images/icon-station.svg"
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 import { LocationType } from "../models/stopData"
-import StopCard from "./stopCard"
 import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
 import { CircleMarkerProps } from "react-leaflet"
+import { SafeAreaContextStopCard } from "./stopCard"
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
@@ -283,7 +283,7 @@ export const StopMarker = React.memo(
         radius={markerRadius}
       >
         {includeStopCard ? (
-          <StopCard stop={stop} direction={direction} />
+          <SafeAreaContextStopCard stop={stop} direction={direction} />
         ) : (
           <MobileFriendlyTooltip
             className={"m-vehicle-map__stop-tooltip"}
