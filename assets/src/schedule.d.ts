@@ -57,9 +57,9 @@ export interface RoutePattern {
 
 export interface Shape {
   id: ShapeId
-  color?: string
   points: ShapePoint[]
   stops?: Stop[]
+  className?: string
 }
 
 export type ShapeId = string

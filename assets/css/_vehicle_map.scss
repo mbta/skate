@@ -72,8 +72,40 @@
   }
 }
 
-.m-vehicle-map__route-shape:hover {
+.m-vehicle-map__route-shape {
+  stroke: $color-kiwi-500;
+  stroke-opacity: 0.5;
+  stroke-width: 5;
+}
+
+.m-vehicle-map__route-shape:focus {
+  outline: none;
+}
+
+.route-shape--rail {
   stroke-opacity: 1;
+  stroke-width: 4;
+}
+
+.m-vehicle-map__route-shape.route-shape--blue {
+  stroke: $color-mbta-blue;
+}
+
+.m-vehicle-map__route-shape.route-shape--green {
+  stroke: $color-mbta-green;
+}
+
+.m-vehicle-map__route-shape.route-shape--orange {
+  stroke: $color-mbta-orange;
+}
+
+.m-vehicle-map__route-shape.route-shape--red {
+  stroke: $color-mbta-red;
+}
+
+.m-vehicle-map__route-shape:not(.m-vehicle-map__route-shape--no-hover):hover,
+.m-vehicle-map__route-shape--selected {
+  stroke-width: 7;
 }
 
 .m-vehicle-map__stop {
@@ -101,7 +133,8 @@
   }
 }
 
-.leaflet-tooltip.m-vehicle-map__mobile-friendly-tooltip {
+.leaflet-tooltip.m-vehicle-map__mobile-friendly-tooltip,
+.leaflet-tooltip.route-shape__tooltip {
   background-color: $color-tooltip-background;
   color: $white;
   border-color: $color-tooltip-background;
@@ -139,7 +172,8 @@
 }
 
 // The tooltip triangle
-.leaflet-tooltip-top.m-vehicle-map__mobile-friendly-tooltip::before {
+.leaflet-tooltip-top.m-vehicle-map__mobile-friendly-tooltip::before,
+.leaflet-tooltip-top.route-shape__tooltip::before {
   border-top-color: $color-tooltip-background;
 }
 

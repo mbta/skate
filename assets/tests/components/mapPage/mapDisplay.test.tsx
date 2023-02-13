@@ -1,5 +1,11 @@
 import "@testing-library/jest-dom"
-import { render, screen, within } from "@testing-library/react"
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react"
 import React from "react"
 
 import userEvent from "@testing-library/user-event"
@@ -288,6 +294,127 @@ describe("<MapDisplay />", () => {
             ).toBeInTheDocument()
           })
 
+          test("hovering over route shape displays tooltip when variant", async () => {
+            const route = routeFactory.build({ id: "66" })
+
+            const selectedVehicle = randomLocationVehicle.build({
+              routeId: route.id,
+              routePatternId: "66-3-1",
+            })
+
+            const routePattern = routePatternFactory.build({
+              routeId: route.id,
+              id: selectedVehicle.routePatternId!,
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([selectedVehicle])
+            mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+            ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+              [routePattern.id]: routePattern,
+            })
+
+            const { container } = render(
+              <RoutesProvider routes={[route]}>
+                <MapDisplay
+                  selectedEntity={{
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: selectedVehicle.id,
+                  }}
+                  setSelection={jest.fn()}
+                  showSelectionCard={true}
+                />
+              </RoutesProvider>
+            )
+
+            await userEvent.hover(
+              container.querySelector(".m-vehicle-map__route-shape")!
+            )
+            expect(
+              screen.getByText("Click to select route 66_3.")
+            ).toBeVisible()
+          })
+
+          test("hovering over route shape displays tooltip when no variant", async () => {
+            const route = routeFactory.build({ id: "66" })
+
+            const selectedVehicle = randomLocationVehicle.build({
+              routeId: route.id,
+              routePatternId: "66-_-1",
+            })
+
+            const routePattern = routePatternFactory.build({
+              routeId: route.id,
+              id: selectedVehicle.routePatternId!,
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([selectedVehicle])
+            mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+            ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+              [routePattern.id]: routePattern,
+            })
+
+            const { container } = render(
+              <RoutesProvider routes={[route]}>
+                <MapDisplay
+                  selectedEntity={{
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: selectedVehicle.id,
+                  }}
+                  setSelection={jest.fn()}
+                  showSelectionCard={true}
+                />
+              </RoutesProvider>
+            )
+
+            await userEvent.hover(
+              container.querySelector(".m-vehicle-map__route-shape")!
+            )
+
+            expect(screen.getByText("Click to select route 66.")).toBeVisible()
+          })
+
+          test("hovering over route shape displays tooltip when malformed id", async () => {
+            const route = routeFactory.build({ id: "66" })
+
+            const selectedVehicle = randomLocationVehicle.build({
+              routeId: route.id,
+              routePatternId: "badlyFormattedId",
+            })
+
+            const routePattern = routePatternFactory.build({
+              routeId: route.id,
+              id: selectedVehicle.routePatternId!,
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([selectedVehicle])
+            mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+            ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+              [routePattern.id]: routePattern,
+            })
+
+            const { container } = render(
+              <RoutesProvider routes={[route]}>
+                <MapDisplay
+                  selectedEntity={{
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: selectedVehicle.id,
+                  }}
+                  setSelection={jest.fn()}
+                  showSelectionCard={true}
+                />
+              </RoutesProvider>
+            )
+
+            await userEvent.hover(
+              container.querySelector(".m-vehicle-map__route-shape")!
+            )
+
+            expect(screen.getByText("Click to select route 66.")).toBeVisible()
+          })
+
           test("clicking the route shape calls setSelection ", async () => {
             const route = routeFactory.build()
 
@@ -322,14 +449,16 @@ describe("<MapDisplay />", () => {
               </RoutesProvider>
             )
 
-            await userEvent.click(
+            fireEvent.click(
               container.querySelector(".m-vehicle-map__route-shape")!
             )
-            expect(setSelectedEntityMock).toHaveBeenCalledWith({
-              type: SelectedEntityType.RoutePattern,
-              routeId: routePattern.routeId,
-              routePatternId: routePattern.id,
-            })
+            await waitFor(() =>
+              expect(setSelectedEntityMock).toHaveBeenCalledWith({
+                type: SelectedEntityType.RoutePattern,
+                routeId: routePattern.routeId,
+                routePatternId: routePattern.id,
+              })
+            )
           })
         })
 

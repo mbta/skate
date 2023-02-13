@@ -3,7 +3,7 @@ import stopsBlue from "./stopsBlue"
 
 const blueLine60Shape: Shape = {
   id: "946_0013",
-  color: "#003DA5",
+  className: "route-shape--rail route-shape--blue",
   points: [
     { lat: 42.413638, lon: -70.991535 },
     { lat: 42.4127, lon: -70.992021 },
@@ -217,7 +217,7 @@ const blueLine60Shape: Shape = {
 
 const blueLine61Shape: Shape = {
   id: "946_0014",
-  color: "#003DA5",
+  className: "route-shape--rail route-shape--blue",
   points: [
     { lat: 42.36118, lon: -71.062395 },
     { lat: 42.361162, lon: -71.06215 },

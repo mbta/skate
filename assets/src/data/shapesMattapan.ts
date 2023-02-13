@@ -3,7 +3,7 @@ import stopsMattapan from "./stopsMattapan"
 
 const mattapan00Shape: Shape = {
   id: "899_0005",
-  color: "#DA291C",
+  className: "route-shape--rail route-shape--red",
   points: [
     { lat: 42.284095, lon: -71.063303 },
     { lat: 42.283901, lon: -71.063183 },
@@ -136,7 +136,7 @@ const mattapan00Shape: Shape = {
 
 const mattapan10Shape: Shape = {
   id: "899_0008",
-  color: "#DA291C",
+  className: "route-shape--rail route-shape--red",
   points: [
     { lat: 42.267515, lon: -71.09199 },
     { lat: 42.267516, lon: -71.091986 },

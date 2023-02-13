@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react"
+import { Tooltip } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -240,25 +241,50 @@ const SelectionCardContainer = ({
 
 const RoutePatternLayers = ({
   routePattern,
+  isSelected,
   onShapeClick,
 }: {
   routePattern: RoutePattern
+  isSelected: boolean
   onShapeClick: () => void
 }): JSX.Element => {
   return routePattern.shape ? (
     <>
-      <RouteShape shape={routePattern.shape} onClick={onShapeClick} />
       <ZoomLevelWrapper>
         {(zoomLevel) => {
+          const routePatternIdSplit = routePattern.id.split("-")
+          const variantFormatted =
+            routePatternIdSplit.length === 3 && routePatternIdSplit[1] !== "_"
+              ? "_" + routePatternIdSplit[1]
+              : ""
           return (
             <>
               {routePattern.shape && (
-                <RouteStopMarkers
-                  stops={routePattern.shape.stops || []}
-                  includeStopCard={true}
-                  direction={routePattern.directionId}
-                  zoomLevel={zoomLevel}
-                />
+                <>
+                  <RouteShape
+                    shape={routePattern.shape}
+                    isSelected={isSelected}
+                    onClick={onShapeClick}
+                  >
+                    {(zoomLevel >= 16 && !isSelected && (
+                      <Tooltip
+                        className="route-shape__tooltip"
+                        sticky={true}
+                        direction="top"
+                      >
+                        Click to select route {routePattern.routeId}
+                        {variantFormatted}.
+                      </Tooltip>
+                    )) ||
+                      undefined}
+                  </RouteShape>
+                  <RouteStopMarkers
+                    stops={routePattern.shape.stops || []}
+                    includeStopCard={true}
+                    direction={routePattern.directionId}
+                    zoomLevel={zoomLevel}
+                  />
+                </>
               )}
             </>
           )
@@ -346,6 +372,7 @@ const SelectedVehicleDataLayers = ({
           {showShapeAndStops && routePatternForVehicle && (
             <RoutePatternLayers
               routePattern={routePatternForVehicle}
+              isSelected={false}
               onShapeClick={() => selectRoutePattern(routePatternForVehicle)}
             />
           )}
@@ -407,6 +434,7 @@ const SelectedRouteDataLayers = ({
       {selectedRoutePattern && (
         <RoutePatternLayers
           routePattern={selectedRoutePattern}
+          isSelected={true}
           onShapeClick={() => selectRoutePattern(selectedRoutePattern)}
         />
       )}
