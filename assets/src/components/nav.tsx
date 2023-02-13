@@ -18,10 +18,16 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
 
   switch (deviceType) {
     case "mobile":
-      return <MobilePortraitNav>{children}</MobilePortraitNav>
+      return (
+        <div className="m-nav--narrow">
+          <div className="m-nav__app-content">{children}</div>
+          <MobilePortraitNav />
+        </div>
+      )
     case "mobile_landscape_tablet_portrait":
       return (
         <div className="m-nav--medium">
+          <div className="m-nav__app-content">{children}</div>
           <div className="m-nav__nav-bar m-nav__nav-bar--left">
             <LeftNav
               toggleMobileMenu={() => dispatch(toggleMobileMenu())}
@@ -31,12 +37,12 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
               allowViews={allowViews}
             />
           </div>
-          <div className="m-nav__app-content">{children}</div>
         </div>
       )
     case "tablet":
       return (
         <div className="m-nav--medium">
+          <div className="m-nav__app-content">{children}</div>
           <div className="m-nav__nav-bar m-nav__nav-bar--left">
             <LeftNav
               toggleMobileMenu={() => dispatch(toggleMobileMenu())}
@@ -45,12 +51,12 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
               allowViews={allowViews}
             />
           </div>
-          <div className="m-nav__app-content">{children}</div>
         </div>
       )
     default:
       return (
         <div className="m-nav--wide">
+          <div className="m-nav__app-content">{children}</div>
           <div className="m-nav__nav-bar m-nav__nav-bar--top">
             <TopNav />
           </div>
@@ -61,7 +67,6 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
               allowViews={allowViews}
             />
           </div>
-          <div className="m-nav__app-content">{children}</div>
         </div>
       )
   }

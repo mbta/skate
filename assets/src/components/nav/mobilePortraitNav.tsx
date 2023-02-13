@@ -9,11 +9,7 @@ import {
 import BottomNavMobile from "./bottomNavMobile"
 import TopNavMobile from "./topNavMobile"
 
-const MobilePortraitNav = ({
-  children,
-}: {
-  children?: React.ReactNode | undefined
-}): JSX.Element => {
+const MobilePortraitNav = (): JSX.Element => {
   const [state, dispatch] = useContext(StateDispatchContext)
 
   const { mobileMenuIsOpen, routeTabs, openView, selectedVehicleOrGhost } =
@@ -24,7 +20,7 @@ const MobilePortraitNav = ({
   const navVisibilityStyle = isViewOpen ? "hidden" : "visible"
 
   return (
-    <div className="m-nav--narrow">
+    <>
       <div
         className="m-nav__nav-bar m-nav__nav-bar--top"
         style={{ visibility: navVisibilityStyle }}
@@ -37,8 +33,6 @@ const MobilePortraitNav = ({
         />
       </div>
 
-      <div className="m-nav__app-content">{children}</div>
-
       <div
         className="m-nav__nav-bar m-nav__nav-bar--bottom"
         style={{ visibility: navVisibilityStyle }}
@@ -48,7 +42,7 @@ const MobilePortraitNav = ({
           openSwingsView={() => dispatch(openSwingsView())}
         />
       </div>
-    </div>
+    </>
   )
 }
 
