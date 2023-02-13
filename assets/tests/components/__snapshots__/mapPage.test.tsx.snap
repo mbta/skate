@@ -4,7 +4,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page m-map-page--show-list  inherit-box border-box"
+    class="m-map-page inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
@@ -141,11 +141,6 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </ul>
           </div>
         </form>
-        <button
-          class="m-map-page__toggle-mobile-display-button button-text"
-        >
-          Show map instead
-        </button>
       </div>
       <hr />
       <div
@@ -364,7 +359,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page m-map-page--show-list  inherit-box border-box"
+    class="m-map-page inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
@@ -501,11 +496,6 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             </ul>
           </div>
         </form>
-        <button
-          class="m-map-page__toggle-mobile-display-button button-text"
-        >
-          Show map instead
-        </button>
       </div>
       <hr />
       <div
@@ -724,7 +714,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page m-map-page--show-list  inherit-box border-box"
+    class="m-map-page inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
@@ -861,11 +851,6 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </ul>
           </div>
         </form>
-        <button
-          class="m-map-page__toggle-mobile-display-button button-text"
-        >
-          Show map instead
-        </button>
       </div>
       <hr />
       <div

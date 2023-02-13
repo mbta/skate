@@ -89,56 +89,6 @@ $map-page-search-panel-width: 24rem;
   padding: 0.625rem 1rem 0 1rem;
 }
 
-@media screen and (max-width: $mobile-max-width) {
-  .m-map-page {
-    flex-direction: column;
-  }
-
-  .m-map-page__input-and-results .c-drawer-tab {
-    display: none;
-  }
-
-  .m-map-page--show-list {
-    .m-map-page__input-and-results {
-      flex: 1 1 auto;
-      height: 100%;
-    }
-
-    .m-map-page__map {
-      // Needs to be hidden instead of not displayed so the map still gets drawn properly
-      position: fixed;
-      top: 100vh;
-    }
-  }
-
-  .m-map-page--show-map {
-    .m-map-page__input-and-results {
-      flex: 0 0 auto;
-      height: auto;
-    }
-
-    .m-search-display {
-      display: none;
-    }
-  }
-
-  .m-map-page__input-and-results {
-    box-sizing: border-box;
-    width: 100%;
-    position: relative;
-  }
-
-  .m-map-page__toggle-mobile-display-button {
-    display: block;
-  }
-
-  .m-map-page__map {
-    box-sizing: border-box;
-    height: 75%;
-    width: 100%;
-  }
-}
-
 $map-page-search-stub-size: 10px;
 
 .m-map-page__map .m-map-display__selected-entity-card-container {
