@@ -127,7 +127,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div
-      className={`m-map-page inherit-box border-box`}
+      className="m-map-page inherit-box border-box"
       aria-label="Search Map Page"
     >
       <div
