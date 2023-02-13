@@ -29,7 +29,7 @@ $search-page-search-panel-width: 22.0625rem;
   height: 100%;
   box-sizing: border-box;
   position: absolute;
-  z-index: #{$leaflet-pane-z-index + 100};
+  z-index: #{$max-leaflet-z-index + 100};
 
   padding: 1.25rem 0 0 0;
 
