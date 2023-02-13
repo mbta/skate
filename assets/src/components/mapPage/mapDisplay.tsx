@@ -92,14 +92,15 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
   // with the distance from the right side of the VPC to the left side of the
   // map container
   const topLeft = new Point(445, 0)
-  const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
-  // The "new center" is the offset between the two bounding boxes centers
-  const offset = innerBounds
-    .getCenter()
-    .subtract(mapContainerBounds.getCenter())
 
   if (points.length === 1) {
     const targetZoom = 16
+    const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
+    // The "new center" is the offset between the two bounding boxes centers
+    const offset = innerBounds
+      .getCenter()
+      .subtract(mapContainerBounds.getCenter())
+
     const targetPoint = map
         // Project the target point into screenspace for the target zoom
         .project(points[0], targetZoom)
