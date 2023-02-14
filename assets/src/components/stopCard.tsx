@@ -117,11 +117,7 @@ export const MapSafeArea = createContext<LeafletPaddingOptions>({})
 export const SafeAreaContextStopCard = (props: StopCardProps) => {
   const safeArea = useContext(MapSafeArea)
 
-  return (
-    <>
-      <StopCard {...props} autoPanPadding={safeArea} />
-    </>
-  )
+  return <StopCard {...props} autoPanPadding={safeArea} />
 }
 
 export default StopCard
