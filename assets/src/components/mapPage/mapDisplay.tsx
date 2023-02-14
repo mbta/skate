@@ -115,7 +115,7 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
   } else {
     const pointsBounds = Leaflet.latLngBounds(points)
     map.fitBounds(pointsBounds, {
-      paddingBottomRight: [20, 50],
+      paddingBottomRight: [50, 20],
       paddingTopLeft: topLeft,
     })
   }
@@ -554,7 +554,7 @@ const MapDisplay = ({
       <MapSafeArea.Provider
         value={{
           paddingTopLeft: [445, 54],
-          paddingBottomRight: [50, 50],
+          paddingBottomRight: [50, 20],
         }}
       >
         <SelectionDataLayers
