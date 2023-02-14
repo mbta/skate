@@ -553,8 +553,8 @@ const MapDisplay = ({
     >
       <MapSafeArea.Provider
         value={{
-          paddingTopLeft: [445, 50],
-          paddingBottomRight: [20, 50],
+          paddingTopLeft: [445, 54],
+          paddingBottomRight: [50, 50],
         }}
       >
         <SelectionDataLayers
