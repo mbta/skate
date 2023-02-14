@@ -38,7 +38,7 @@ import {
   useInteractiveFollowerState,
 } from "../map"
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
-import { MapSafeArea } from "../stopCard"
+import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import RoutePropertiesCard from "./routePropertiesCard"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
@@ -551,7 +551,7 @@ const MapDisplay = ({
       shapes={[]}
       stateClasses={stateClasses}
     >
-      <MapSafeArea.Provider
+      <MapSafeAreaContext.Provider
         value={{
           paddingTopLeft: [445, 54],
           paddingBottomRight: [50, 20],
@@ -564,7 +564,7 @@ const MapDisplay = ({
           setSelection={setSelection}
           setStateClasses={setStateClasses}
         />
-      </MapSafeArea.Provider>
+      </MapSafeAreaContext.Provider>
     </BaseMap>
   )
 }

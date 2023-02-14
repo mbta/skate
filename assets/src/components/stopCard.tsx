@@ -1,7 +1,8 @@
 import { PointExpression } from "leaflet"
-import React, { createContext, useContext, useId } from "react"
+import React, { useContext, useId } from "react"
 import { Popup } from "react-leaflet"
 import { DirectionId, Stop } from "../schedule"
+import { MapSafeAreaContext } from "../contexts/mapSafeAreaContext"
 import { RoutePill } from "./routePill"
 import StreetViewButton from "./streetViewButton"
 
@@ -108,14 +109,12 @@ const StopCard = ({
   )
 }
 
-export const MapSafeArea = createContext<LeafletPaddingOptions>({})
-
 /**
  * A <{@link StopCard}/> which provides it's `autoPanPadding` parameter via the
- * nearest {@link MapSafeArea} Context
+ * nearest {@link MapSafeAreaContext} Context
  */
 export const SafeAreaContextStopCard = (props: StopCardProps) => {
-  const safeArea = useContext(MapSafeArea)
+  const safeArea = useContext(MapSafeAreaContext)
 
   return <StopCard {...props} autoPanPadding={safeArea} />
 }
