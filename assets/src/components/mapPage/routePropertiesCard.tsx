@@ -47,25 +47,27 @@ const DetailSection = ({
   children: JSX.Element
 }) => {
   return (
-    <details
-      className={`m-route-properties-card__details-section ${className}`}
-      open={isOpen}
-    >
-      <summary
-        className={`m-route-properties-card__summary${
-          isOpen ? " m-route-properties-card__summary--open" : ""
-        }`}
-        onClick={(event) => {
-          // preventDefault so that open/closed state is managed entirely by react
-          // see https://github.com/facebook/react/issues/15486
-          event.preventDefault()
-          toggleOpen()
-        }}
+    <div className="m-route-properties-card__details-wrapper">
+      <details
+        className={`m-route-properties-card__details-section ${className}`}
+        open={isOpen}
       >
-        {isOpen ? "Hide" : "Show"} {title}
-      </summary>
-      {children}
-    </details>
+        <summary
+          className={`m-route-properties-card__summary${
+            isOpen ? " m-route-properties-card__summary--open" : ""
+          }`}
+          onClick={(event) => {
+            // preventDefault so that open/closed state is managed entirely by react
+            // see https://github.com/facebook/react/issues/15486
+            event.preventDefault()
+            toggleOpen()
+          }}
+        >
+          {isOpen ? "Hide" : "Show"} {title}
+        </summary>
+        {children}
+      </details>
+    </div>
   )
 }
 
@@ -237,73 +239,68 @@ const RoutePropertiesCard = ({
 
   return (
     <div className="m-route-properties-card" aria-label="route properties card">
-      <Card
-        style={"white"}
-        noFocusOrHover={true}
-        title={
-          <>
-            <div className="m-route-properties-card__route-title">
-              <RoutePill routeName={route.name} />
-              <div>
-                <h2>{name}</h2>
-                <div className="m-route-properties-card__route-description">
-                  {description}
-                </div>
-              </div>
+      <div className="m-route-properties-card__header">
+        <div className="m-route-properties-card__route-title">
+          <RoutePill routeName={route.name} />
+          <div>
+            <h2>{name}</h2>
+            <div className="m-route-properties-card__route-description">
+              {description}
             </div>
-            <CloseButton onClick={onClose} closeButtonType={"l_light"} />
-          </>
+          </div>
+        </div>
+        <CloseButton onClick={onClose} closeButtonType={"l_light"} />
+      </div>
+      <DirectionPicker
+        selectedRoutePattern={selectedRoutePattern}
+        routePatterns={routePatterns}
+        selectRoutePattern={selectRoutePattern}
+        directionNames={route.directionNames}
+      />
+      <DetailSection
+        title="variants"
+        isOpen={openedDetails === "variants"}
+        toggleOpen={() =>
+          setOpenedDetails((prevValue) =>
+            prevValue === "variants" ? null : "variants"
+          )
         }
+        className="variant-picker"
       >
-        <DirectionPicker
-          selectedRoutePattern={selectedRoutePattern}
-          routePatterns={routePatterns}
-          selectRoutePattern={selectRoutePattern}
-          directionNames={route.directionNames}
+        <VariantPicker
+          routePatterns={Object.values(routePatterns).filter(
+            (routePattern) =>
+              routePattern.directionId === selectedRoutePattern.directionId
+          )}
+          selectedRoutePatternId={selectedRoutePattern.id}
+          selectRoutePattern={(routePattern: RoutePattern) => {
+            selectRoutePattern(routePattern)
+            setOpenedDetails(null)
+          }}
         />
-        <DetailSection
-          title="variants"
-          isOpen={openedDetails === "variants"}
-          toggleOpen={() =>
-            setOpenedDetails((prevValue) =>
-              prevValue === "variants" ? null : "variants"
-            )
-          }
-          className="variant-picker"
-        >
-          <VariantPicker
-            routePatterns={Object.values(routePatterns).filter(
-              (routePattern) =>
-                routePattern.directionId === selectedRoutePattern.directionId
-            )}
-            selectedRoutePatternId={selectedRoutePattern.id}
-            selectRoutePattern={(routePattern: RoutePattern) => {
-              selectRoutePattern(routePattern)
-              setOpenedDetails(null)
-            }}
-          />
-        </DetailSection>
-        <hr />
-        <DetailSection
-          title={`${(
-            route.directionNames[selectedRoutePattern.directionId] || ""
-          ).toLowerCase()} stops`}
-          isOpen={openedDetails === "stops"}
-          toggleOpen={() =>
-            setOpenedDetails((prevValue) =>
-              prevValue === "stops" ? null : "stops"
-            )
-          }
-          className="variant-stop-list"
-        >
+      </DetailSection>
+      <hr />
+      <DetailSection
+        title={`${(
+          route.directionNames[selectedRoutePattern.directionId] || ""
+        ).toLowerCase()} stops`}
+        isOpen={openedDetails === "stops"}
+        toggleOpen={() =>
+          setOpenedDetails((prevValue) =>
+            prevValue === "stops" ? null : "stops"
+          )
+        }
+        className="variant-stop-list"
+      >
+        <div>
           <ol>
             {selectedRoutePattern.shape &&
               selectedRoutePattern.shape.stops?.map((stop) => (
                 <li key={stop.id}>{stop.name}</li>
               ))}
           </ol>
-        </DetailSection>
-      </Card>
+        </div>
+      </DetailSection>
     </div>
   )
 }

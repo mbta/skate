@@ -143,7 +143,10 @@ $map-page-search-stub-size: 10px;
 
 .m-map-page__map .m-map-display__selected-entity-card-container {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 0.5rem;
+  max-height: calc(100% - 2rem);
   left: calc(env(safe-area-inset-left) + 60px - #{$map-page-search-stub-size});
 
   // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map

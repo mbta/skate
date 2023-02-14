@@ -1,14 +1,17 @@
 .m-route-properties-card {
   width: 375px;
+  background-color: white;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border-color: $color-gray-500;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
 }
 
-.m-route-properties-card .m-card,
-.m-route-properties-card .m-card__left {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.m-route-properties-card .m-card__title {
+.m-route-properties-card__header {
   display: flex;
   flex-direction: row;
   align-items: start;
@@ -87,6 +90,11 @@
   }
 }
 
+.m-route-properties-card__details-wrapper {
+  min-height: 1rem;
+  overflow-y: auto;
+}
+
 .m-route-properties-card__details-section.variant-picker fieldset {
   border: none;
   padding: 0rem;
@@ -146,14 +154,22 @@
 }
 
 .m-route-properties-card hr {
+  min-height: 1px;
   height: 1px;
   background-color: $color-gray-400;
+  width: 100%;
   border: none;
+}
+
+.m-route-properties-card__details-section.variant-stop-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .m-route-properties-card__details-section.variant-stop-list ol {
   max-height: 490px;
-  overflow: auto;
+  // overflow: auto;
   li {
     margin-left: 1rem;
   }
