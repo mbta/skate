@@ -9,7 +9,6 @@ import {
   Route,
   ByRoutePatternId,
 } from "../../schedule"
-import { Card } from "../card"
 import CloseButton from "../closeButton"
 import { RoutePill } from "../routePill"
 
@@ -47,26 +46,24 @@ const DetailSection = ({
   children: JSX.Element
 }) => {
   return (
-    <div className="m-route-properties-card__details-wrapper">
-      <details
-        className={`m-route-properties-card__details-section ${className}`}
-        open={isOpen}
+    <div className="m-route-properties-card__details-section">
+      <button
+        className={`m-route-properties-card__toggle`}
+        aria-expanded={isOpen}
+        aria-controls={"details" + className}
+        onClick={toggleOpen}
       >
-        <summary
-          className={`m-route-properties-card__summary${
-            isOpen ? " m-route-properties-card__summary--open" : ""
-          }`}
-          onClick={(event) => {
-            // preventDefault so that open/closed state is managed entirely by react
-            // see https://github.com/facebook/react/issues/15486
-            event.preventDefault()
-            toggleOpen()
-          }}
-        >
+        <span id={"summary" + className}>
           {isOpen ? "Hide" : "Show"} {title}
-        </summary>
-        {children}
-      </details>
+        </span>
+      </button>
+      <div
+        id={"details" + className}
+        aria-labelledby={"summary" + className}
+        className={`m-route-properties-card__details ${className}`}
+      >
+        {isOpen && children}
+      </div>
     </div>
   )
 }
