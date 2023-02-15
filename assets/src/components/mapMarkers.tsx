@@ -3,8 +3,17 @@ import Leaflet, {
   LatLngExpression,
 } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
+import "leaflet.fullscreen"
 import React, { useContext, useEffect, useState } from "react"
-import { CircleMarker, Marker, Polyline, Popup, Tooltip } from "react-leaflet"
+import {
+  CircleMarker,
+  CircleMarkerProps,
+  Marker,
+  Polyline,
+  Popup,
+  Tooltip,
+} from "react-leaflet"
+
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -12,18 +21,17 @@ import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
 import { DirectionId, Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
-import "leaflet.fullscreen"
 
 import garages, { Garage } from "../data/garages"
+import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
+import { LocationType } from "../models/stopData"
+
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
-import { LocationType } from "../models/stopData"
-import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
-import { CircleMarkerProps } from "react-leaflet"
 import { SafeAreaContextStopCard } from "./stopCard"
 
 const makeVehicleIcon = (
