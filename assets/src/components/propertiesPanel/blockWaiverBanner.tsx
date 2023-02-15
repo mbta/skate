@@ -5,6 +5,7 @@ import {
 } from "../../models/blockWaiver"
 import { BlockWaiver } from "../../realtime"
 import { formattedTime } from "../../util/dateTime"
+import { Card, CardBody, CardProperties } from "../card"
 import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 
 interface Props {
@@ -44,55 +45,53 @@ const alertIconStyle = (blockWaiver: BlockWaiver): AlertIconStyle => {
   }
 }
 
+const formattedReason = (blockWaiver: BlockWaiver) =>
+  [
+    blockWaiver.causeDescription,
+    (blockWaiver.remark || "")
+      .replace(blockWaiver.causeDescription, "")
+      .replace(/:$/, ""),
+  ]
+    .filter((s) => s !== null && s !== "")
+    .join(" ")
+
 const BlockWaiverBanner = ({ blockWaiver }: Props) => (
-  <div
-    className={`m-block-waiver-banner m-block-waiver-banner--${currentFuturePastClass(
+  <Card
+    additionalClass={`m-block-waiver-banner m-block-waiver-banner--${currentFuturePastClass(
       blockWaiver
     )}`}
-  >
-    <div className="m-block-waiver-banner__header">
-      <span className="m-block-waiver-banner__alert-icon">
-        <IconAlertCircle style={alertIconStyle(blockWaiver)} />
-      </span>
-      <div className="m-block-waiver-banner__title">
-        Dispatcher Note - {currentFuturePastTitle(blockWaiver)}
+    noFocusOrHover={true}
+    style={"kiwi"}
+    title={
+      <div className="m-block-waiver-banner__header">
+        <span className="m-block-waiver-banner__alert-icon">
+          <IconAlertCircle style={alertIconStyle(blockWaiver)} />
+        </span>
+        <div className="m-block-waiver-banner__title">
+          Dispatcher Note - {currentFuturePastTitle(blockWaiver)}
+        </div>
       </div>
-    </div>
-
-    <table className="m-block-waiver-banner__details">
-      <tbody>
-        <tr>
-          <td className="m-block-waiver-banner__detail-label">Reason</td>
-          <td className="m-block-waiver-banner__detail-value">
-            {[
-              blockWaiver.causeDescription,
-              (blockWaiver.remark || "")
-                .replace(blockWaiver.causeDescription, "")
-                .replace(/:$/, ""),
-            ]
-              .filter((s) => s !== null && s !== "")
-              .join(" ")}
-          </td>
-        </tr>
-        <tr>
-          <td className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--start-time">
-            Start Time
-          </td>
-          <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time">
-            {formattedTime(blockWaiver.startTime)}
-          </td>
-        </tr>
-        <tr>
-          <td className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--end-time">
-            End Time
-          </td>
-          <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time">
-            {formattedTime(blockWaiver.endTime)}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    }
+  >
+    <CardBody>
+      <CardProperties
+        properties={[
+          {
+            label: "Reason",
+            value: formattedReason(blockWaiver),
+          },
+          {
+            label: "Start Time",
+            value: formattedTime(blockWaiver.startTime),
+          },
+          {
+            label: "End Time",
+            value: formattedTime(blockWaiver.endTime),
+          },
+        ]}
+      />
+    </CardBody>
+  </Card>
 )
 
 export default BlockWaiverBanner
