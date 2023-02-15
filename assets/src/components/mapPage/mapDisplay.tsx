@@ -38,6 +38,7 @@ import {
   useInteractiveFollowerState,
 } from "../map"
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
+import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import RoutePropertiesCard from "./routePropertiesCard"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
@@ -91,14 +92,15 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
   // with the distance from the right side of the VPC to the left side of the
   // map container
   const topLeft = new Point(445, 0)
-  const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
-  // The "new center" is the offset between the two bounding boxes centers
-  const offset = innerBounds
-    .getCenter()
-    .subtract(mapContainerBounds.getCenter())
 
   if (points.length === 1) {
     const targetZoom = 16
+    const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
+    // The "new center" is the offset between the two bounding boxes centers
+    const offset = innerBounds
+      .getCenter()
+      .subtract(mapContainerBounds.getCenter())
+
     const targetPoint = map
         // Project the target point into screenspace for the target zoom
         .project(points[0], targetZoom)
@@ -113,7 +115,7 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
   } else {
     const pointsBounds = Leaflet.latLngBounds(points)
     map.fitBounds(pointsBounds, {
-      paddingBottomRight: [20, 50],
+      paddingBottomRight: [50, 20],
       paddingTopLeft: topLeft,
     })
   }
@@ -549,13 +551,20 @@ const MapDisplay = ({
       shapes={[]}
       stateClasses={stateClasses}
     >
-      <SelectionDataLayers
-        selectedEntity={selectedEntity}
-        showSelectionCard={showSelectionCard}
-        deleteSelection={deleteSelection}
-        setSelection={setSelection}
-        setStateClasses={setStateClasses}
-      />
+      <MapSafeAreaContext.Provider
+        value={{
+          paddingTopLeft: [445, 54],
+          paddingBottomRight: [50, 20],
+        }}
+      >
+        <SelectionDataLayers
+          selectedEntity={selectedEntity}
+          showSelectionCard={showSelectionCard}
+          deleteSelection={deleteSelection}
+          setSelection={setSelection}
+          setStateClasses={setStateClasses}
+        />
+      </MapSafeAreaContext.Provider>
     </BaseMap>
   )
 }
