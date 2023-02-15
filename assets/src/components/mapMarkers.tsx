@@ -25,6 +25,7 @@ import { UserSettings } from "../userSettings"
 import garages, { Garage } from "../data/garages"
 import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
 import { LocationType } from "../models/stopData"
+import StopCard from "./stopCard"
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
@@ -32,7 +33,6 @@ import garageIcon from "../../static/images/icon-bus-garage.svg"
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
-import { SafeAreaContextStopCard } from "./stopCard"
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
@@ -291,7 +291,7 @@ export const StopMarker = React.memo(
         radius={markerRadius}
       >
         {includeStopCard ? (
-          <SafeAreaContextStopCard stop={stop} direction={direction} />
+          <StopCard.WithSafeArea stop={stop} direction={direction} />
         ) : (
           <MobileFriendlyTooltip
             className={"m-vehicle-map__stop-tooltip"}

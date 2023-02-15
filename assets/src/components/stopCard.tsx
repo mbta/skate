@@ -113,10 +113,13 @@ const StopCard = ({
  * A <{@link StopCard}/> which provides it's `autoPanPadding` parameter via the
  * nearest {@link MapSafeAreaContext} Context
  */
-export const SafeAreaContextStopCard = (props: StopCardProps) => {
+const StopCardWithSafeArea = (props: StopCardProps) => {
   const safeArea = useContext(MapSafeAreaContext)
 
   return <StopCard {...props} autoPanPadding={safeArea} />
 }
+
+/** @borrows StopCardWithSafeArea as StopCard#WithSafeArea  */
+StopCard.WithSafeArea = StopCardWithSafeArea
 
 export default StopCard
