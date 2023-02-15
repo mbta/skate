@@ -14,6 +14,7 @@ import {
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
 import { isOk } from "../../util/fetchResult"
+import { Card, CardBody } from "../card"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
@@ -27,13 +28,17 @@ interface Props {
 
 /* eslint-disable no-irregular-whitespace */
 const InvalidBanner = () => (
-  <div className="m-vehicle-properties-panel__invalid-banner">
-    <span className="m-vehicle-properties-panel__invalid-banner-title">
-      Invalid
-    </span>
-    - We cannot match this vehicle to a scheduled trip at this time. This
-    vehicle may be off-route or severely off-schedule.
-  </div>
+  <Card
+    additionalClass="m-vehicle-properties-panel__invalid-banner"
+    style="white"
+    title="Invalid Bus"
+    noFocusOrHover={true}
+  >
+    <CardBody>
+      We cannot match this vehicle to a scheduled trip at this time. This
+      vehicle may be off-route or severely off-schedule.
+    </CardBody>
+  </Card>
 )
 /* eslint-enable no-irregular-whitespace */
 

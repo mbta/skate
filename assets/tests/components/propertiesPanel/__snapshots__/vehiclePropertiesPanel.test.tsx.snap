@@ -1216,8 +1216,8 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       className="m-block-waiver-list"
     >
       <div
-        aria-labelledby="card-label-:r6:"
-        className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
+        aria-labelledby="card-label-:r7:"
+        className="m-card m-card--white m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
       >
         <div
           className="m-card__left"
@@ -1230,52 +1230,17 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             >
               <div
                 className="m-card__title"
-                id="card-label-:r6:"
+                id="card-label-:r7:"
               >
                 <div
-                  className="m-block-waiver-banner__header"
+                  className="m-block-waiver-banner__title"
                 >
-                  <span
-                    className="m-block-waiver-banner__alert-icon"
-                  >
-                    <svg
-                      className="c-icon-alert-circle"
-                      viewBox="-3 -3 54 54"
-                    >
-                      <g
-                        className="c-icon-alert-circle--grey-on-grey"
-                      >
-                        <circle
-                          className="c-icon-alert-circle__outline"
-                          cx="24"
-                          cy="24"
-                          r="27"
-                        />
-                        <circle
-                          className="c-icon-alert-circle__fill"
-                          cx="24"
-                          cy="24"
-                          r="22.59"
-                        />
-                        <g
-                          className="c-icon-alert-circle__exclamation-point"
-                        >
-                          <path
-                            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                          />
-                          <path
-                            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                          />
-                        </g>
-                      </g>
-                    </svg>
-                  </span>
-                  <div
-                    className="m-block-waiver-banner__title"
-                  >
-                    Dispatcher Note - 
-                    Past
-                  </div>
+                  Dispatcher Note
+                </div>
+                <div
+                  className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
+                >
+                  Past
                 </div>
               </div>
             </div>
@@ -2069,14 +2034,36 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     </ul>
   </div>
   <div
-    className="m-vehicle-properties-panel__invalid-banner"
+    aria-labelledby="card-label-:r4:"
+    className="m-card m-card--white m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--read"
   >
-    <span
-      className="m-vehicle-properties-panel__invalid-banner-title"
+    <div
+      className="m-card__left"
     >
-      Invalid
-    </span>
-    - We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
+      <div
+        className="m-card__left-content"
+      >
+        <div
+          className="m-card__top-row"
+        >
+          <div
+            className="m-card__title"
+            id="card-label-:r4:"
+          >
+            Invalid Bus
+          </div>
+        </div>
+        <div
+          className="m-card__contents"
+        >
+          <div
+            className="m-card__body"
+          >
+            We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div
     className="m-tabs__tab-panel"

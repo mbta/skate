@@ -4,16 +4,10 @@
   flex-direction: column;
 }
 
-.m-vehicle-properties-panel__invalid-banner {
+.m-card.m-vehicle-properties-panel__invalid-banner {
   @include font-body;
-  background-color: $color-secondary-light;
-  border: 1px solid $color-secondary-dark;
-  padding: 1rem;
-}
-
-.m-vehicle-properties-panel__invalid-banner-title {
-  font-weight: 700;
-  text-transform: uppercase;
+  background-color: $color-lemon-50;
+  border: 1px solid $color-lemon-400;
 }
 
 .m-vehicle-properties-panel__location {

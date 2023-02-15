@@ -6,7 +6,7 @@ exports[`BlockWaiverList renders 1`] = `
 >
   <div
     aria-labelledby="card-label-:r0:"
-    className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
+    className="m-card m-card--white m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
   >
     <div
       className="m-card__left"
@@ -22,49 +22,14 @@ exports[`BlockWaiverList renders 1`] = `
             id="card-label-:r0:"
           >
             <div
-              className="m-block-waiver-banner__header"
+              className="m-block-waiver-banner__title"
             >
-              <span
-                className="m-block-waiver-banner__alert-icon"
-              >
-                <svg
-                  className="c-icon-alert-circle"
-                  viewBox="-3 -3 54 54"
-                >
-                  <g
-                    className="c-icon-alert-circle--grey-on-grey"
-                  >
-                    <circle
-                      className="c-icon-alert-circle__outline"
-                      cx="24"
-                      cy="24"
-                      r="27"
-                    />
-                    <circle
-                      className="c-icon-alert-circle__fill"
-                      cx="24"
-                      cy="24"
-                      r="22.59"
-                    />
-                    <g
-                      className="c-icon-alert-circle__exclamation-point"
-                    >
-                      <path
-                        d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                      />
-                      <path
-                        d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                      />
-                    </g>
-                  </g>
-                </svg>
-              </span>
-              <div
-                className="m-block-waiver-banner__title"
-              >
-                Dispatcher Note - 
-                Past
-              </div>
+              Dispatcher Note
+            </div>
+            <div
+              className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
+            >
+              Past
             </div>
           </div>
         </div>
