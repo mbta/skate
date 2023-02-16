@@ -1,17 +1,5 @@
 .m-card.m-block-waiver-banner {
-  border: 1px solid;
   padding: 1rem;
-
-  &--current,
-  &--future {
-    background-color: $color-kiwi-50;
-    border-color: $color-kiwi-300;
-  }
-
-  &--past {
-    background-color: $color-gray-50;
-    border-color: $color-gray-300;
-  }
 
   &--unknown {
     background-color: $color-lemon-50;

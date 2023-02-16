@@ -102,7 +102,8 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
       blockWaiver
     )}`}
     noFocusOrHover={true}
-    style={"white"}
+    style={"kiwi"}
+    isUnread={currentFuturePastType(blockWaiver) !== CurrentFuturePastType.Past}
     title={
       <>
         <div className="m-block-waiver-banner__title">Dispatcher Note</div>

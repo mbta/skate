@@ -5,6 +5,7 @@ import { isChelseaBridgeNotification } from "../util/notifications"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
 import { Card, CardBody, CardProperties } from "./card"
+import { UnreadIcon } from "../helpers/icon"
 
 export const NotificationCard = ({
   notification,
@@ -21,13 +22,19 @@ export const NotificationCard = ({
 }): ReactElement<HTMLElement> => {
   const routes = useRoutes(notification.routeIds)
   const routeAtCreation = useRoute(notification.routeIdAtCreation)
-
+  const isUnread = notification.state === "unread"
   return (
     <Card
       currentTime={currentTime}
-      title={title(notification.reason)}
+      title={
+        <>
+          {" "}
+          {isUnread ? <UnreadIcon /> : null}
+          {title(notification.reason)}
+        </>
+      }
       style="kiwi"
-      isUnread={notification.state === "unread"}
+      isUnread={isUnread}
       openCallback={() => {
         openVPPForCurrentVehicle(notification)
 

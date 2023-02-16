@@ -529,7 +529,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     >
       <div
         aria-labelledby="card-label-:r2:"
-        className="m-card m-card--white m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
+        className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
       >
         <div
           className="m-card__left"
