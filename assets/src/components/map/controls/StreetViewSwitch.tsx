@@ -41,7 +41,13 @@ export const StreetViewControl = ({
 
   const control = (
     <>
-      <label htmlFor={id} className="lc-street-view-switch__label">
+      <label
+        htmlFor={id}
+        className="lc-street-view-switch__label"
+        aria-label=""
+        aria-hidden={true}
+        role="presentation"
+      >
         <WalkingIcon className="lc-street-view-switch__label-icon" />
       </label>
       <label
