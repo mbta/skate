@@ -1,6 +1,7 @@
 // Adding .leaflet-control-container increases specificity to make sure we override
 // base Leaflet control positioning
-.leaflet-control-container .m-vehicle-map__street-view-control {
+.m-vehicle-map__street-view-control,
+.lc-street-view-switch {
   position: absolute;
   // Leaflet uses px for positioning of their controls so we use px here to match
   top: 10px;
@@ -27,5 +28,33 @@
     }
 
     padding-right: 0.5rem;
+  }
+}
+
+@media screen and (max-width: $non-mobile-min-width) {
+  .lc-street-view-switch {
+    padding-block: 4px;
+    padding-inline: 8px;
+
+    &__label-text {
+      @include visually-hidden;
+    }
+
+    &__input {
+      // padding: 4px;
+      margin: 0;
+      padding-left: 0;
+
+      // display: flex;
+      align-items: center;
+    }
+
+    // &__input-box {}
+
+    &__input .form-check-input {
+      // margin: auto;
+      margin-left: 0;
+      // padding-inline: 0;
+    }
   }
 }

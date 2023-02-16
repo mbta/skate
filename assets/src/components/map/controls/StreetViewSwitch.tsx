@@ -1,15 +1,18 @@
-import { ControlOptions } from "leaflet"
+import Leaflet, { ControlOptions } from "leaflet"
 import React, { useEffect, useId, useState } from "react"
+import ReactDOM from "react-dom"
 import { useMap } from "react-leaflet"
+import { className } from "../../../helpers/dom"
+import { WalkingIcon } from "../../../helpers/icon"
 
-interface StreetViewControlProps extends ControlOptions {
+export interface StreetViewControlProps extends ControlOptions {
   streetViewEnabled: boolean
   setStreetViewEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const StreetViewControl = ({
-  streetViewEnabled: streetViewEnabled,
-  setStreetViewEnabled: setStreetViewEnabled,
+  streetViewEnabled,
+  setStreetViewEnabled,
 }: StreetViewControlProps): JSX.Element | null => {
   const map = useMap()
   const portalParent = map
@@ -24,8 +27,12 @@ export const StreetViewControl = ({
     }
 
     if (portalParent && portalElement) {
-      portalElement.className =
-        "leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+      portalElement.className = className([
+        "leaflet-control",
+        "leaflet-bar",
+        "m-vehicle-map__street-view-control",
+        "lc-street-view-switch",
+      ])
       portalParent.append(portalElement)
       Leaflet.DomEvent.disableClickPropagation(portalElement)
     }
@@ -35,11 +42,11 @@ export const StreetViewControl = ({
 
   const control = (
     <>
-      <label htmlFor={id}>
-        <WalkingIcon />
-        Street View
+      <label htmlFor={id} className="lc-street-view-switch__label">
+        <WalkingIcon className="lc-street-view-switch__label-icon" />
+        <span className="lc-street-view-switch__label-text">Street View</span>
       </label>
-      <div className="form-check form-switch">
+      <div className="form-check form-switch lc-street-view-switch__input">
         <input
           id={id}
           className="form-check-input"
