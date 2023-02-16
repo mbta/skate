@@ -327,7 +327,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </div>
           </div>
           <div
-            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control lc-street-view-switch"
+            class="leaflet-control leaflet-bar lc-street-view-switch"
           >
             <label
               class="lc-street-view-switch__label"
@@ -690,7 +690,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             </div>
           </div>
           <div
-            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control lc-street-view-switch"
+            class="leaflet-control leaflet-bar lc-street-view-switch"
           >
             <label
               class="lc-street-view-switch__label"
@@ -1375,7 +1375,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </div>
           </div>
           <div
-            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control lc-street-view-switch"
+            class="leaflet-control leaflet-bar lc-street-view-switch"
           >
             <label
               class="lc-street-view-switch__label"

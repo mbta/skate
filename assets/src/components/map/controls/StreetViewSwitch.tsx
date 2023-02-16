@@ -30,7 +30,6 @@ export const StreetViewControl = ({
       portalElement.className = className([
         "leaflet-control",
         "leaflet-bar",
-        "m-vehicle-map__street-view-control",
         "lc-street-view-switch",
       ])
       portalParent.append(portalElement)
