@@ -1,6 +1,3 @@
-// Adding .leaflet-control-container increases specificity to make sure we override
-// base Leaflet control positioning
-.m-vehicle-map__street-view-control,
 .lc-street-view-switch {
   position: absolute;
   // Leaflet uses px for positioning of their controls so we use px here to match
