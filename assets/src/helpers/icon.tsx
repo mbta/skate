@@ -2,8 +2,6 @@
 // @ts-ignore
 import alertIconSvg from "../../static/images/icon-alert.svg"
 // @ts-ignore
-import bellIconSvg from "../../static/images/icon-bell.svg"
-// @ts-ignore
 import bangIconSvg from "../../static/images/icon-bang.svg"
 // @ts-ignore
 import blueLineIconSvg from "../../static/images/icon-blue-line.svg"
@@ -130,8 +128,6 @@ import { svgIcon } from "./svgIcon"
 export const AlertIcon = svgIcon(alertIconSvg)
 
 export const BangIcon = svgIcon(bangIconSvg)
-
-export const BellIcon = svgIcon(bellIconSvg)
 
 export const BlueLineIcon = svgIcon(blueLineIconSvg)
 

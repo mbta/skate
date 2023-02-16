@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react"
-import { BellIcon, GhostIcon } from "../../helpers/icon"
+import { GhostIcon, NotificationBellIcon } from "../../helpers/icon"
 import {
   CurrentFuturePastType,
   currentFuturePastType,
@@ -62,7 +62,15 @@ const BlockWaiverBadge = ({ blockWaiver }: { blockWaiver: BlockWaiver }) => {
         />
       )
     case CurrentFuturePastType.Future:
-      return <Badge text={"Upcoming"} icon={<BellIcon />} modifier={modifier} />
+      return (
+        <Badge
+          text={"Upcoming"}
+          icon={
+            <NotificationBellIcon className="m-notification-bell-icon--read" />
+          }
+          modifier={modifier}
+        />
+      )
   }
 }
 
