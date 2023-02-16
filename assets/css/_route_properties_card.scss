@@ -12,6 +12,7 @@
 }
 
 .m-route-properties-card__header {
+  flex: none;
   display: flex;
   flex-direction: row;
   align-items: start;
@@ -38,6 +39,7 @@
 }
 
 .m-route-properties-card__direction-picker {
+  flex: none;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -80,7 +82,7 @@
   }
 }
 
-.m-route-properties-card__toggle::before {
+.m-route-properties-card__disclosure_toggle::before {
   display: inline-block;
   content: "▶";
   text-decoration: none;
@@ -88,7 +90,7 @@
   margin-right: 0.5rem;
 }
 
-.m-route-properties-card__toggle[aria-expanded="true"]::before {
+.m-route-properties-card__disclosure_toggle[aria-expanded="true"]::before {
   display: inline-block;
   content: "▼";
   text-decoration: none;
@@ -96,7 +98,7 @@
   margin-right: 0.25rem;
 }
 
-.m-route-properties-card__toggle {
+.m-route-properties-card__disclosure_toggle {
   text-align: left;
   font-size: var(--font-size-sm);
   text-decoration: underline;
@@ -111,6 +113,10 @@
   min-height: 1rem;
   display: flex;
   flex-direction: column;
+}
+
+.m-route-properties-card__details-section:not(.m-route-properties-card__details-section--open) {
+  flex: none;
 }
 
 .m-route-properties-card__details {
@@ -176,7 +182,7 @@
 }
 
 .m-route-properties-card hr {
-  min-height: 1px;
+  flex: none;
   height: 1px;
   background-color: $color-gray-400;
   width: 100%;

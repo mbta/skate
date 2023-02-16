@@ -46,9 +46,13 @@ const DetailSection = ({
   children: JSX.Element
 }) => {
   return (
-    <div className="m-route-properties-card__details-section">
+    <div
+      className={`m-route-properties-card__details-section ${
+        isOpen ? "m-route-properties-card__details-section--open" : ""
+      }`}
+    >
       <button
-        className={`m-route-properties-card__toggle`}
+        className={`m-route-properties-card__disclosure_toggle`}
         aria-expanded={isOpen}
         aria-controls={"details" + className}
         onClick={toggleOpen}
