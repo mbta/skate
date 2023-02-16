@@ -1,0 +1,31 @@
+// Adding .leaflet-control-container increases specificity to make sure we override
+// base Leaflet control positioning
+.leaflet-control-container .m-vehicle-map__street-view-control {
+  position: absolute;
+  // Leaflet uses px for positioning of their controls so we use px here to match
+  top: 10px;
+  right: 55px;
+
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+
+  background-color: $white;
+
+  border: 1px solid $color-gray-400;
+  border-radius: 7px;
+
+  color: $color-eggplant-700;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  user-select: none;
+  display: flex;
+
+  label {
+    span svg {
+      height: 1rem;
+      padding-right: 0.5rem;
+      fill: currentColor;
+    }
+
+    padding-right: 0.5rem;
+  }
+}
