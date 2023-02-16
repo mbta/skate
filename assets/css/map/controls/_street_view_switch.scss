@@ -16,6 +16,7 @@
 
   // #region Layout
   display: flex;
+  align-items: center;
 
   font-size: 1rem;
   line-height: 1.5rem;
@@ -35,10 +36,15 @@
     fill: currentColor;
 
     height: 1em;
+    height: calc(1em - 2px);
     min-width: 16px;
   }
 
   &__input {
+    // Shrinkwrap the wrapper component to the input component so that flexbox
+    // can align this element properly
+    min-height: unset;
+    height: min-content;
 
     // Remove layout offsets
     padding-left: 0;
