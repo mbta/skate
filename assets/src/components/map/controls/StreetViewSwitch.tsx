@@ -44,7 +44,12 @@ export const StreetViewControl = ({
     <>
       <label htmlFor={id} className="lc-street-view-switch__label">
         <WalkingIcon className="lc-street-view-switch__label-icon" />
-        <span className="lc-street-view-switch__label-text">Street View</span>
+      </label>
+      <label
+        htmlFor={id}
+        className="lc-street-view-switch__label lc-street-view-switch__label-text"
+      >
+        Street View
       </label>
       <div className="form-check form-switch lc-street-view-switch__input">
         <input
