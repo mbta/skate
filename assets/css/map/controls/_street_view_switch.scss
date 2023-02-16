@@ -1,58 +1,65 @@
 // BEM-PREFIX: LC = Leaflet Control
 .lc-street-view-switch {
+  // #region Position
   position: absolute;
   // Leaflet uses px for positioning of their controls so we use px here to match
   top: 10px;
   right: 55px;
+  // #endregion
 
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  // #region Look
+  user-select: none;
 
+  color: $color-eggplant-700;
   background-color: $white;
+  // #endregion
+
+  // #region Layout
+  display: flex;
+
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  padding: 8px;
 
   border: 1px solid $color-gray-400;
   border-radius: 7px;
+  // #endregion
 
-  color: $color-eggplant-700;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  user-select: none;
-  display: flex;
-
-  label {
-    span svg {
-      height: 1rem;
-      padding-right: 0.5rem;
-      fill: currentColor;
-    }
-
+  // #region Sub-Components
+  &__label {
     padding-right: 0.5rem;
   }
-}
 
-@media screen and (max-width: $non-mobile-min-width) {
-  .lc-street-view-switch {
-    padding-block: 4px;
-    padding-inline: 8px;
+  &__label-icon svg {
+    fill: currentColor;
+
+    height: 1em;
+    min-width: 16px;
+  }
+
+  &__input {
+
+    // Remove layout offsets
+    padding-left: 0;
+    margin-bottom: 0;
+
+    // Remove Negative Margins so shrinkwrap works
+    .form-check-input {
+      margin-left: 0;
+    }
+  }
+  // #endregion
+
+  // #region Media Queries
+  @media screen and (max-width: 800px) {
+    & {
+      padding: 4px;
+    }
 
     &__label-text {
       @include visually-hidden;
     }
-
-    &__input {
-      // padding: 4px;
-      margin: 0;
-      padding-left: 0;
-
-      // display: flex;
-      align-items: center;
-    }
-
-    // &__input-box {}
-
-    &__input .form-check-input {
-      // margin: auto;
-      margin-left: 0;
-      // padding-inline: 0;
-    }
   }
+  // #endregion
 }
