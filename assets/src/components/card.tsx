@@ -1,4 +1,5 @@
 import React, { ReactElement, useId } from "react"
+import { UnreadIcon } from "../helpers/icon"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import CloseButton from "./closeButton"
 import PropertiesList, { Property } from "./propertiesList"
@@ -12,7 +13,7 @@ interface CardProps {
   currentTime?: Date
   openCallback?: () => void
   closeCallback?: () => void
-  isUnread?: boolean
+  isActive?: boolean
   additionalClass?: string
   title: string | ReactElement
   time?: Date
@@ -27,7 +28,7 @@ export const Card: React.FC<CardProps> = ({
   currentTime,
   openCallback,
   closeCallback,
-  isUnread,
+  isActive,
   additionalClass,
   title,
   time,
@@ -58,7 +59,7 @@ export const Card: React.FC<CardProps> = ({
         `m-card m-card--${style}` +
         (additionalClass ? " " + additionalClass : "") +
         (noFocusOrHover ? " m-card--no-focus-or-hover" : "") +
-        (!isUnread ? " m-card--read" : "") +
+        (!isActive ? " m-card--inactive" : "") +
         (selected ? " m-card--selected" : "")
       }
       aria-current={selected}
@@ -81,6 +82,20 @@ export const Card: React.FC<CardProps> = ({
         </div>
       ) : null}
     </div>
+  )
+}
+
+export const CardReadable = (props: CardProps) => {
+  return (
+    <Card
+      {...props}
+      title={
+        <>
+          {props.isActive && <UnreadIcon />}
+          {props.title}
+        </>
+      }
+    />
   )
 }
 

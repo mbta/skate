@@ -233,7 +233,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
 exports[`BlockWaiverBanner renders a past time waiver 1`] = `
 <div
   aria-labelledby="card-label-:r2:"
-  className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
+  className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
 >
   <div
     className="m-card__left"

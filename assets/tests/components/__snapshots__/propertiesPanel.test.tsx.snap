@@ -232,7 +232,7 @@ Array [
       >
         <div
           aria-labelledby="card-label-:r1:"
-          className="m-card m-card--white m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--read"
+          className="m-card m-card--white m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
         >
           <div
             className="m-card__left"

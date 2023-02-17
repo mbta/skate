@@ -1217,7 +1217,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
     >
       <div
         aria-labelledby="card-label-:r7:"
-        className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--read"
+        className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
       >
         <div
           className="m-card__left"
@@ -2035,7 +2035,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
   </div>
   <div
     aria-labelledby="card-label-:r4:"
-    className="m-card m-card--white m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--read"
+    className="m-card m-card--white m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--inactive"
   >
     <div
       className="m-card__left"

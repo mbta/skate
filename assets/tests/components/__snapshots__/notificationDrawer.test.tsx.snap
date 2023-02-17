@@ -113,7 +113,6 @@ exports[`NotificationDrawer renders notifications 1`] = `
                     className="m-card__title"
                     id="card-label-:r0:"
                   >
-                     
                     <span
                       dangerouslySetInnerHTML={
                         Object {

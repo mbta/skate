@@ -18,16 +18,16 @@ describe("Card", () => {
     expect(
       result.queryByText(/Foo/)?.parentElement?.parentElement?.parentElement
         ?.className
-    ).toMatch(/m-card--read/)
+    ).toMatch(/m-card--inactive/)
   })
 
-  test("omits read class when unread", () => {
+  test("omits inactive class when active", () => {
     const result = render(
       <Card
         title="My Card"
         currentTime={new Date()}
         style="kiwi"
-        isUnread={true}
+        isActive={true}
       >
         Foo
       </Card>
@@ -35,7 +35,7 @@ describe("Card", () => {
 
     expect(
       result.queryByText(/Foo/)?.parentElement?.parentElement?.className
-    ).not.toMatch(/m-card--read/)
+    ).not.toMatch(/m-card--inactive/)
   })
 
   test("can add custom additional class", () => {
