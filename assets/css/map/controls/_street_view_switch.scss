@@ -57,6 +57,7 @@
   // #region Media Queries
   @media screen and (max-width: 800px) {
     & {
+      font-size: var(--font-size-s);
       padding: 4px;
     }
 
