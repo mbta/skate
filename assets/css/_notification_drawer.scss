@@ -8,7 +8,7 @@
   right: 0;
   top: 0;
   width: 23.5rem;
-  z-index: 1001;
+  z-index: map-get($z-page-layout-context, "view");
 
   @media screen and (max-width: $mobile-max-width) {
     width: 100%;
