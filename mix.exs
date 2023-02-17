@@ -64,7 +64,7 @@ defmodule Skate.MixProject do
       {:gen_stage, "~> 1.1.0"},
       {:guardian_phoenix, "~> 2.0"},
       {:guardian, "~> 2.0"},
-      {:httpoison, "~> 1.8.0"},
+      {:httpoison, "~> 2.0.0"},
       {:jason, "~> 1.0"},
       {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"},
       {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
