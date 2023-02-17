@@ -96,6 +96,7 @@ $map-page-search-stub-size: 10px;
   display: flex;
   flex-direction: column;
   top: 0.5rem;
+  min-height: 200px;
   max-height: calc(100% - 2rem);
   left: calc(env(safe-area-inset-left) + 60px - #{$map-page-search-stub-size});
 
