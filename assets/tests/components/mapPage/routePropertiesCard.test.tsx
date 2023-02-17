@@ -105,7 +105,7 @@ describe("<RoutePropertiesCard/>", () => {
       ).toBeInTheDocument()
     })
 
-    test("Shows the route's other patterns in the same direction", () => {
+    test("Shows the route's other patterns in the same direction", async () => {
       const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
         routeId: "66",
         directionId: 0,
@@ -127,6 +127,9 @@ describe("<RoutePropertiesCard/>", () => {
             onClose={jest.fn()}
           />
         </RoutesProvider>
+      )
+      await userEvent.click(
+        screen.getByRole("button", { name: "Show variants" })
       )
 
       const routePattern1Picker = screen.getByRole("radio", {
@@ -152,7 +155,7 @@ describe("<RoutePropertiesCard/>", () => {
       ).not.toBeInTheDocument()
     })
 
-    test("Shows the selected pattern's stops", () => {
+    test("Shows the selected pattern's stops", async () => {
       const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
         routeId: "66",
         directionId: 0,
@@ -175,6 +178,9 @@ describe("<RoutePropertiesCard/>", () => {
         </RoutesProvider>
       )
 
+      await userEvent.click(
+        screen.getByRole("button", { name: "Show outbound stops" })
+      )
       expect(
         screen.getAllByRole("listitem").map((item) => item.textContent)
       ).toEqual(routePattern1.shape!.stops!.map((stop) => stop.name))
@@ -284,6 +290,10 @@ describe("<RoutePropertiesCard/>", () => {
             onClose={jest.fn()}
           />
         </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Show variants" })
       )
 
       const routePattern2Radio = screen.getByRole("radio", {

@@ -620,6 +620,10 @@ describe("<MapDisplay />", () => {
           expect(routePropertiesCard.get()).toBeInTheDocument()
 
           await userEvent.click(
+            screen.getByRole("button", { name: "Show variants" })
+          )
+
+          await userEvent.click(
             screen.getByRole("radio", {
               name: new RegExp(patternDisplayName(routePattern2).name),
             })

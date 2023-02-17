@@ -1,14 +1,18 @@
 .m-route-properties-card {
   width: 375px;
+  background-color: white;
+  border: 1px solid $color-gray-400;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
 }
 
-.m-route-properties-card .m-card,
-.m-route-properties-card .m-card__left {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.m-route-properties-card .m-card__title {
+.m-route-properties-card__header {
+  flex: none;
   display: flex;
   flex-direction: row;
   align-items: start;
@@ -35,6 +39,7 @@
 }
 
 .m-route-properties-card__direction-picker {
+  flex: none;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -77,17 +82,48 @@
   }
 }
 
-.m-route-properties-card__summary {
+.m-route-properties-card__disclosure_toggle::before {
+  display: inline-block;
+  content: "▶";
+  text-decoration: none;
+  font-size: var(--font-size-xxs);
+  margin-right: 0.5rem;
+}
+
+.m-route-properties-card__disclosure_toggle[aria-expanded="true"]::before {
+  display: inline-block;
+  content: "▼";
+  text-decoration: none;
+  font-size: var(--font-size-xs);
+  margin-right: 0.25rem;
+}
+
+.m-route-properties-card__disclosure_toggle {
+  text-align: left;
   font-size: var(--font-size-sm);
   text-decoration: underline;
   color: $color-eggplant-700;
   padding: 0rem 1rem;
-  &--open {
+  &[aria-expanded="true"] {
     font-weight: var(--font-weight-semi);
   }
 }
 
-.m-route-properties-card__details-section.variant-picker fieldset {
+.m-route-properties-card__details-section {
+  min-height: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.m-route-properties-card__details-section:not(.m-route-properties-card__details-section--open) {
+  flex: none;
+}
+
+.m-route-properties-card__details {
+  overflow-y: auto;
+}
+
+.m-route-properties-card__details.variant-picker fieldset {
   border: none;
   padding: 0rem;
   margin: 0rem;
@@ -146,14 +182,21 @@
 }
 
 .m-route-properties-card hr {
+  flex: none;
   height: 1px;
   background-color: $color-gray-400;
+  width: 100%;
   border: none;
 }
 
-.m-route-properties-card__details-section.variant-stop-list ol {
+.m-route-properties-card__details.variant-stop-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.m-route-properties-card__details.variant-stop-list ol {
   max-height: 490px;
-  overflow: auto;
   li {
     margin-left: 1rem;
   }
