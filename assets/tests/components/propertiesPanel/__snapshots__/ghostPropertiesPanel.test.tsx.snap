@@ -227,7 +227,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
   >
     <div
       aria-labelledby="card-label-:r0:"
-      className="m-card m-card--white m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
+      className="m-card m-card--lemon m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
     >
       <div
         className="m-card__left"
@@ -875,7 +875,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
   >
     <div
       aria-labelledby="card-label-:r1:"
-      className="m-card m-card--white m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
+      className="m-card m-card--lemon m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
     >
       <div
         className="m-card__left"

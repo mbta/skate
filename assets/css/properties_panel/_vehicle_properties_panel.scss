@@ -4,12 +4,6 @@
   flex-direction: column;
 }
 
-.m-card.m-vehicle-properties-panel__invalid-banner {
-  @include font-body;
-  background-color: $color-lemon-50;
-  border: 1px solid $color-lemon-400;
-}
-
 .m-vehicle-properties-panel__location {
   border-top: 1px solid $color-rule;
   display: flex;

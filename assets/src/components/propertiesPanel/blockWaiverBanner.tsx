@@ -87,7 +87,7 @@ const formattedReason = (blockWaiver: BlockWaiver) =>
 export const NoWaiverBanner = () => (
   <Card
     additionalClass="m-block-waiver-banner m-block-waiver-banner--unknown"
-    style="white"
+    style="lemon"
     noFocusOrHover={true}
     title={
       <>

@@ -4,7 +4,7 @@ import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import CloseButton from "./closeButton"
 import PropertiesList, { Property } from "./propertiesList"
 
-export type CardStyle = "kiwi" | "white"
+export type CardStyle = "kiwi" | "white" | "lemon"
 
 interface CardProps {
   children?: React.ReactNode

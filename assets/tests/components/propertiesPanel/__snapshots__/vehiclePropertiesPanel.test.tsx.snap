@@ -2035,7 +2035,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
   </div>
   <div
     aria-labelledby="card-label-:r4:"
-    className="m-card m-card--white m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--inactive"
+    className="m-card m-card--lemon m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--inactive"
   >
     <div
       className="m-card__left"

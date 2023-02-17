@@ -30,7 +30,7 @@ interface Props {
 const InvalidBanner = () => (
   <Card
     additionalClass="m-vehicle-properties-panel__invalid-banner"
-    style="white"
+    style="lemon"
     title="Invalid Bus"
     noFocusOrHover={true}
   >

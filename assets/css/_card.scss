@@ -221,3 +221,8 @@
     color: $color-gray-900;
   }
 }
+
+.m-card--lemon.m-card {
+  background-color: $color-lemon-50;
+  border: 1px solid $color-lemon-400;
+}
