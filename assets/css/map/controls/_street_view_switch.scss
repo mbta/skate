@@ -65,6 +65,11 @@
     &__label-text {
       @include visually-hidden;
     }
+
+    &__input .form-check-input {
+      // Move street view icon closer to switch
+      margin-inline-start: 0;
+    }
   }
   // #endregion
 }
