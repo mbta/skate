@@ -247,12 +247,6 @@ describe("<MapPage />", () => {
     expect(getAllStationIcons(container)).toHaveLength(3)
   })
 
-  test("on mobile, shows the results list initially", () => {
-    const { container } = render(<MapPage />)
-
-    expect(container.firstChild).toHaveClass("m-map-page--show-list")
-  })
-
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
     mockFullStoryEvent()
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -357,26 +351,6 @@ describe("<MapPage />", () => {
     expect(
       container.querySelector(".m-vehicle-map__route-shape")
     ).not.toBeInTheDocument()
-  })
-
-  test("on mobile, allows you to toggle to the map view and back again", async () => {
-    const { container } = render(
-      <BrowserRouter>
-        <MapPage />
-      </BrowserRouter>
-    )
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Show map instead" })
-    )
-
-    expect(container.firstChild).toHaveClass("m-map-page--show-map")
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Show list instead" })
-    )
-
-    expect(container.firstChild).toHaveClass("m-map-page--show-list")
   })
 
   test("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {

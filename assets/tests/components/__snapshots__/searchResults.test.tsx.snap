@@ -61,12 +61,12 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                     <path
                       className="m-vehicle-icon__ghost-highlight"
                       d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                      stroke-join="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       className="m-vehicle-icon__ghost-body"
                       d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                      stroke-join="round"
+                      strokeLinejoin="round"
                     />
                   </g>
                   <text
@@ -380,12 +380,12 @@ exports[`SearchResults renders a selected result card 1`] = `
                     <path
                       className="m-vehicle-icon__ghost-highlight"
                       d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                      stroke-join="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       className="m-vehicle-icon__ghost-body"
                       d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                      stroke-join="round"
+                      strokeLinejoin="round"
                     />
                     <ellipse
                       className="m-vehicle-icon__ghost-eye"
