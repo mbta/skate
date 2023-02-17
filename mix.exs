@@ -50,7 +50,7 @@ defmodule Skate.MixProject do
       {:bypass, "~> 2.1.0", only: :test},
       {:castore, "~> 0.1.5"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:csv, "~> 2.4.1"},
+      {:csv, "~> 3.0.5"},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:diskusage_logger, "~> 0.2.0"},
       {:ecto_sql, "~> 3.4"},
