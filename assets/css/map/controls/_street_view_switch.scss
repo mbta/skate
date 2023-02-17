@@ -57,6 +57,7 @@
   // #region Media Queries
   @media screen and (max-width: 800px) {
     & {
+      // Change size of icon and switch when on a smaller screen
       font-size: var(--font-size-s);
       padding: 4px;
     }
