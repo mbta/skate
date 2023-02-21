@@ -23,6 +23,31 @@ $z-properties-panel-context: (
 
 @import "ui_kit";
 
+// #region External Libraries
+// Import External Libraries first so that css selectors specified after these
+// imports are more specific and do not require extra work to override styles
+// imported externally
+
+// #region Bootstrap
+// See https://getbootstrap.com/docs/5.2/customize/sass/#importing - import only
+// the parts of Bootstrap that we need
+@import "../node_modules/bootstrap/scss/functions";
+
+// Bootstrap variable customization
+$component-active-bg: $color-eggplant-700;
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/forms";
+// #endregion
+
+// #region Leaflet
+@import "../node_modules/leaflet/dist/leaflet.css";
+// #endregion
+// #endregion
+
 @import "base";
 @import "inter";
 @import "leaflet";
@@ -45,6 +70,7 @@ $z-properties-panel-context: (
 @import "loading_modal";
 @import "loading_spinner";
 @import "map_page";
+@import "map/controls/street_view_switch";
 @import "minischedule";
 @import "modal";
 @import "nav";
@@ -93,19 +119,6 @@ $z-properties-panel-context: (
 @import "vehicle_properties_card";
 @import "vehicle_route_summary";
 @import "view_header";
-
-// See https://getbootstrap.com/docs/5.2/customize/sass/#importing - import only
-// the parts of Bootstrap that we need
-@import "../node_modules/bootstrap/scss/functions";
-
-// Bootstrap variable customization
-$component-active-bg: $color-eggplant-700;
-
-@import "../node_modules/bootstrap/scss/variables";
-@import "../node_modules/bootstrap/scss/maps";
-@import "../node_modules/bootstrap/scss/mixins";
-@import "../node_modules/bootstrap/scss/root";
-@import "../node_modules/bootstrap/scss/forms";
 
 [hidden] {
   display: none !important;
