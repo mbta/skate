@@ -138,7 +138,7 @@ describe("VehiclePropertiesPanel", () => {
     render(
       <VehiclePropertiesPanel selectedVehicle={invalidVehicleFactory.build()} />
     )
-    expect(screen.getByText("Invalid Bus")).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
   })
 
   test("renders for a late vehicle", () => {
