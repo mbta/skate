@@ -242,11 +242,11 @@ exports[`GhostPropertiesPanel renders 1`] = `
               className="m-card__title"
               id="card-label-:r0:"
             >
-              <div
+              <h3
                 className="m-block-waiver-banner__title"
               >
                 Unknown Ghost Bus
-              </div>
+              </h3>
               <div
                 className="m-block-waiver-banner__badge m-block-waiver-banner__badge--unknown"
               >
@@ -544,11 +544,11 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
                 className="m-card__title"
                 id="card-label-:r2:"
               >
-                <div
+                <h3
                   className="m-block-waiver-banner__title"
                 >
                   Dispatcher Note
-                </div>
+                </h3>
                 <div
                   className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
                 >
@@ -890,11 +890,11 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
               className="m-card__title"
               id="card-label-:r1:"
             >
-              <div
+              <h3
                 className="m-block-waiver-banner__title"
               >
                 Unknown Ghost Bus
-              </div>
+              </h3>
               <div
                 className="m-block-waiver-banner__badge m-block-waiver-banner__badge--unknown"
               >

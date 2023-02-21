@@ -1,6 +1,11 @@
 .m-block-waiver-banner .m-card__title {
-  font-size: var(--font-size-m);
   justify-content: space-between;
+
+  .m-block-waiver-banner__title {
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-semi);
+    margin: 0;
+  }
   span {
     margin-right: 0.25rem;
   }

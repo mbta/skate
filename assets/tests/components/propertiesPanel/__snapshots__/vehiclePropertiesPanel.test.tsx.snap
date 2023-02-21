@@ -1232,11 +1232,11 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
                 className="m-card__title"
                 id="card-label-:r7:"
               >
-                <div
+                <h3
                   className="m-block-waiver-banner__title"
                 >
                   Dispatcher Note
-                </div>
+                </h3>
                 <div
                   className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
                 >
@@ -2050,7 +2050,9 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             className="m-card__title"
             id="card-label-:r4:"
           >
-            Invalid Bus
+            <h3>
+              Invalid Bus
+            </h3>
           </div>
         </div>
         <div

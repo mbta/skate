@@ -91,7 +91,7 @@ export const NoWaiverBanner = () => (
     noFocusOrHover={true}
     title={
       <>
-        <div className="m-block-waiver-banner__title">Unknown Ghost Bus</div>
+        <h3 className="m-block-waiver-banner__title">Unknown Ghost Bus</h3>
         <Badge text="Ghost" icon={<GhostIcon />} modifier="unknown" />
       </>
     }
@@ -114,7 +114,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
     isActive={currentFuturePastType(blockWaiver) !== CurrentFuturePastType.Past}
     title={
       <>
-        <div className="m-block-waiver-banner__title">Dispatcher Note</div>
+        <h3 className="m-block-waiver-banner__title">Dispatcher Note</h3>
         <BlockWaiverBadge blockWaiver={blockWaiver} />
       </>
     }

@@ -18,11 +18,11 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
           className="m-card__title"
           id="card-label-:r0:"
         >
-          <div
+          <h3
             className="m-block-waiver-banner__title"
           >
             Dispatcher Note
-          </div>
+          </h3>
           <div
             className="m-block-waiver-banner__badge m-block-waiver-banner__badge--current"
           >
@@ -146,11 +146,11 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
           className="m-card__title"
           id="card-label-:r1:"
         >
-          <div
+          <h3
             className="m-block-waiver-banner__title"
           >
             Dispatcher Note
-          </div>
+          </h3>
           <div
             className="m-block-waiver-banner__badge m-block-waiver-banner__badge--future"
           >
@@ -249,11 +249,11 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
           className="m-card__title"
           id="card-label-:r2:"
         >
-          <div
+          <h3
             className="m-block-waiver-banner__title"
           >
             Dispatcher Note
-          </div>
+          </h3>
           <div
             className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
           >

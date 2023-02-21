@@ -4,6 +4,12 @@
   flex-direction: column;
 }
 
+.m-vehicle-properties-panel__invalid-banner h3 {
+  margin: 0;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semi);
+}
+
 .m-vehicle-properties-panel__location {
   border-top: 1px solid $color-rule;
   display: flex;

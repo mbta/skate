@@ -31,7 +31,7 @@ const InvalidBanner = () => (
   <Card
     additionalClass="m-vehicle-properties-panel__invalid-banner"
     style="lemon"
-    title="Invalid Bus"
+    title={<h3>Invalid Bus</h3>}
     noFocusOrHover={true}
   >
     <CardBody>
