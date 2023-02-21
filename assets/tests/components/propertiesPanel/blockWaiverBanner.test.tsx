@@ -101,6 +101,8 @@ describe("BlockWaiverBanner", () => {
 describe("NoWaiverBanner", () => {
   test("renders unknown ghost bus", () => {
     render(<NoWaiverBanner />)
-    expect(screen.getByText("Unknown Ghost Bus")).toBeVisible()
+    expect(
+      screen.getByRole("heading", { name: "Unknown Ghost Bus" })
+    ).toBeVisible()
   })
 })
