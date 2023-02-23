@@ -176,7 +176,7 @@
     }
   }
 
-  &.m-card--read {
+  &.m-card--inactive {
     background-color: $color-gray-50;
     border: 1px solid $color-gray-400;
 
@@ -220,4 +220,9 @@
   &.m-card__title {
     color: $color-gray-900;
   }
+}
+
+.m-card--lemon.m-card {
+  background-color: $color-lemon-50;
+  border: 1px solid $color-lemon-400;
 }

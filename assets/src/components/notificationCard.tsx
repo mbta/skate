@@ -4,7 +4,7 @@ import { Notification, NotificationReason } from "../realtime.d"
 import { isChelseaBridgeNotification } from "../util/notifications"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
-import { Card, CardBody, CardProperties } from "./card"
+import { CardBody, CardProperties, CardReadable } from "./card"
 
 export const NotificationCard = ({
   notification,
@@ -21,13 +21,13 @@ export const NotificationCard = ({
 }): ReactElement<HTMLElement> => {
   const routes = useRoutes(notification.routeIds)
   const routeAtCreation = useRoute(notification.routeIdAtCreation)
-
+  const isUnread = notification.state === "unread"
   return (
-    <Card
+    <CardReadable
       currentTime={currentTime}
-      title={title(notification.reason)}
+      title={<>{title(notification.reason)}</>}
       style="kiwi"
-      isUnread={notification.state === "unread"}
+      isActive={isUnread}
       openCallback={() => {
         openVPPForCurrentVehicle(notification)
 
@@ -64,7 +64,7 @@ export const NotificationCard = ({
           },
         ]}
       />
-    </Card>
+    </CardReadable>
   )
 }
 

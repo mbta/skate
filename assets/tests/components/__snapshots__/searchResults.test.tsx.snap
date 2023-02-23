@@ -11,7 +11,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       <div
         aria-current={false}
         aria-labelledby="card-label-:r0:"
-        className="m-card m-card--white m-search-results__result m-card--read"
+        className="m-card m-card--white m-search-results__result m-card--inactive"
       >
         <button
           className="m-card__left"
@@ -148,7 +148,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       <div
         aria-current={false}
         aria-labelledby="card-label-:r1:"
-        className="m-card m-card--white m-search-results__result m-card--read"
+        className="m-card m-card--white m-search-results__result m-card--inactive"
       >
         <button
           className="m-card__left"
@@ -330,7 +330,7 @@ exports[`SearchResults renders a selected result card 1`] = `
       <div
         aria-current={false}
         aria-labelledby="card-label-:r5:"
-        className="m-card m-card--white m-search-results__result m-card--read"
+        className="m-card m-card--white m-search-results__result m-card--inactive"
       >
         <button
           className="m-card__left"
@@ -472,7 +472,7 @@ exports[`SearchResults renders a selected result card 1`] = `
       <div
         aria-current={true}
         aria-labelledby="card-label-:r6:"
-        className="m-card m-card--white m-search-results__result m-card--read m-card--selected"
+        className="m-card m-card--white m-search-results__result m-card--inactive m-card--selected"
       >
         <button
           className="m-card__left"

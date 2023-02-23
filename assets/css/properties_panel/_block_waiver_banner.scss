@@ -1,100 +1,53 @@
-.m-block-waiver-banner {
-  background-color: $color-secondary-light;
-  border: 1px solid;
-  padding: 1rem 1rem 1rem 2rem;
+.m-block-waiver-banner .m-card__title {
+  justify-content: space-between;
 
-  &--current {
-    background-color: $color-secondary-light;
-    border-color: $color-secondary-dark;
+  .m-block-waiver-banner__title {
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-semi);
+    margin: 0;
   }
-
-  &--past,
-  &--future {
-    background-color: $color-bg-medium;
-    border-color: $color-component-medium;
+  span {
+    margin-right: 0.25rem;
   }
 }
 
-.m-block-waiver-banner__header {
+.m-block-waiver-banner .m-card__title span svg {
+  stroke: none;
+  width: 11px;
+  height: 11px;
+}
+
+.m-block-waiver-banner__badge {
   display: flex;
   flex-direction: row;
-  margin-left: -1.2rem;
-}
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semi);
 
-.m-block-waiver-banner__alert-icon {
-  display: block;
-  margin-right: 0.3rem;
-  width: 15px;
-}
+  &--current,
+  &--future {
+    background-color: $color-kiwi-200;
 
-.m-block-waiver-banner__title {
-  @include font-body;
-  margin-bottom: 0.8rem;
-}
+    .c-icon-alert-circle__outline {
+      fill: none;
+    }
+  }
 
-.m-block-waiver-banner__details {
-  border-spacing: 0;
+  &--past {
+    background-color: $color-gray-200;
+  }
 
-  td {
-    padding-bottom: 0.3rem;
+  &--unknown {
+    background-color: $color-lemon-300;
   }
 }
 
-.m-block-waiver-banner__detail-label,
-.m-block-waiver-banner__detail-value {
-  .m-block-waiver-banner--past & {
-    color: $color-font-grey;
-  }
+.m-block-waiver-banner .m-properties-list__property-label {
+  color: $color-gray-800;
 }
 
-.m-block-waiver-banner__detail-label {
-  @include font-label;
-  margin-bottom: 0.5rem;
-  text-align: left;
-  width: 7rem;
-}
-
-.m-block-waiver-banner__detail-value {
-  @include font-body;
-  margin-bottom: 1rem;
-}
-
-.m-block-waiver-banner__detail-label--start-time,
-.m-block-waiver-banner__detail-value--start-time {
-  .m-block-waiver-banner--future & {
-    color: $color-font-dark;
-    font-weight: 700;
-  }
-}
-
-.m-block-waiver-banner__detail-label--end-time,
-.m-block-waiver-banner__detail-value--end-time {
-  .m-block-waiver-banner--current &,
-  .m-block-waiver-banner--past & {
-    font-weight: 700;
-  }
-
-  .m-block-waiver-banner--current & {
-    color: $color-font-dark;
-  }
-}
-
-.m-block-waiver-banner__reason-icon {
-  fill: $color-button-secondary;
-  display: inline-block;
-  width: 9px;
-
-  .m-block-waiver-banner__reason:focus &,
-  .m-block-waiver-banner__reason:hover & {
-    fill: $color-primary;
-  }
-
-  .m-block-waiver-banner--future &,
-  .m-block-waiver-banner--past & {
-    fill: $color-font-grey;
-  }
-}
-
-.m-block-waiver-banner__reason-tooltip.__react_component_tooltip.show {
-  opacity: 1;
+.m-block-waiver-banner .m-properties-list__property-value {
+  color: $color-gray-600;
 }

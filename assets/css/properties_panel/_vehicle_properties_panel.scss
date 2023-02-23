@@ -4,16 +4,14 @@
   flex-direction: column;
 }
 
-.m-vehicle-properties-panel__invalid-banner {
-  @include font-body;
-  background-color: $color-secondary-light;
-  border: 1px solid $color-secondary-dark;
-  padding: 1rem;
+.m-vehicle-properties-panel__notes {
+  margin: 0.5rem;
 }
 
-.m-vehicle-properties-panel__invalid-banner-title {
-  font-weight: 700;
-  text-transform: uppercase;
+.m-vehicle-properties-panel__invalid-banner h3 {
+  margin: 0;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semi);
 }
 
 .m-vehicle-properties-panel__location {

@@ -1,8 +1,10 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import React from "react"
 import renderer from "react-test-renderer"
-import BlockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+import BlockWaiverBanner, {
+  NoWaiverBanner,
+} from "../../../src/components/propertiesPanel/blockWaiverBanner"
 import { BlockWaiver } from "../../../src/realtime"
 import * as dateTime from "../../../src/util/dateTime"
 
@@ -93,5 +95,14 @@ describe("BlockWaiverBanner", () => {
     const result = render(<BlockWaiverBanner blockWaiver={blockWaiver} />)
 
     expect(result.queryAllByText(/D - Disabled Bus/)).toHaveLength(1)
+  })
+})
+
+describe("NoWaiverBanner", () => {
+  test("renders unknown ghost bus", () => {
+    render(<NoWaiverBanner />)
+    expect(
+      screen.getByRole("heading", { name: "Unknown Ghost Bus" })
+    ).toBeVisible()
   })
 })

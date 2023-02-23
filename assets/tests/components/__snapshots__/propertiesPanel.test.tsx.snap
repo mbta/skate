@@ -231,53 +231,56 @@ Array [
         className="m-tabs__tab-panel"
       >
         <div
-          className="m-ghost-properties-panel__no-waiver-banner"
+          className="m-ghost-properties-panel__notes"
         >
           <div
-            className="m-ghost-properties-panel__no-waiver-banner-header"
+            aria-labelledby="card-label-:r1:"
+            className="m-card m-card--lemon m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
           >
-            <span
-              className="m-ghost-properties-panel__no-waiver-banner-alert-icon"
-            >
-              <svg
-                className="c-icon-alert-circle"
-                viewBox="-3 -3 54 54"
-              >
-                <g
-                  className="c-icon-alert-circle--highlighted"
-                >
-                  <circle
-                    className="c-icon-alert-circle__outline"
-                    cx="24"
-                    cy="24"
-                    r="27"
-                  />
-                  <circle
-                    className="c-icon-alert-circle__fill"
-                    cx="24"
-                    cy="24"
-                    r="22.59"
-                  />
-                  <g
-                    className="c-icon-alert-circle__exclamation-point"
-                  >
-                    <path
-                      d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                    />
-                    <path
-                      d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                    />
-                  </g>
-                </g>
-              </svg>
-            </span>
             <div
-              className="m-ghost-properties-panel__no-waiver-banner-title"
+              className="m-card__left"
             >
-              Unknown Ghost Bus - No Dispatcher Note
+              <div
+                className="m-card__left-content"
+              >
+                <div
+                  className="m-card__top-row"
+                >
+                  <div
+                    className="m-card__title"
+                    id="card-label-:r1:"
+                  >
+                    <h3
+                      className="m-block-waiver-banner__title"
+                    >
+                      Unknown Ghost Bus
+                    </h3>
+                    <div
+                      className="m-block-waiver-banner__badge m-block-waiver-banner__badge--unknown"
+                    >
+                      <span
+                        dangerouslySetInnerHTML={
+                          Object {
+                            "__html": "<svg/>",
+                          }
+                        }
+                      />
+                      Ghost
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="m-card__contents"
+                >
+                  <div
+                    className="m-card__body"
+                  >
+                    A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
         </div>
         <div
           className="m-properties-list"
@@ -570,6 +573,9 @@ Array [
       <div
         className="m-tabs__tab-panel"
       >
+        <div
+          className="m-vehicle-properties-panel__notes"
+        />
         <div
           className="m-properties-list"
         >

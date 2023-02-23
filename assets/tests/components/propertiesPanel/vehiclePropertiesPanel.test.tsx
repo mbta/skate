@@ -11,8 +11,8 @@ import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
-import vehicleFactory from "../../factories/vehicle"
-import { render } from "@testing-library/react"
+import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 
 jest
@@ -132,6 +132,13 @@ describe("VehiclePropertiesPanel", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("Includes invalid bus banner when vehicle is off course", () => {
+    render(
+      <VehiclePropertiesPanel selectedVehicle={invalidVehicleFactory.build()} />
+    )
+    expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
   })
 
   test("renders for a late vehicle", () => {

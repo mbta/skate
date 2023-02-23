@@ -14,6 +14,7 @@ import {
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
 import { isOk } from "../../util/fetchResult"
+import { Card, CardBody } from "../card"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
@@ -27,13 +28,17 @@ interface Props {
 
 /* eslint-disable no-irregular-whitespace */
 const InvalidBanner = () => (
-  <div className="m-vehicle-properties-panel__invalid-banner">
-    <span className="m-vehicle-properties-panel__invalid-banner-title">
-      Invalid
-    </span>
-    - We cannot match this vehicle to a scheduled trip at this time. This
-    vehicle may be off-route or severely off-schedule.
-  </div>
+  <Card
+    additionalClass="m-vehicle-properties-panel__invalid-banner"
+    style="lemon"
+    title={<h3>Invalid Bus</h3>}
+    noFocusOrHover={true}
+  >
+    <CardBody>
+      We cannot match this vehicle to a scheduled trip at this time. This
+      vehicle may be off-route or severely off-schedule.
+    </CardBody>
+  </Card>
 )
 /* eslint-enable no-irregular-whitespace */
 
@@ -167,9 +172,13 @@ const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
 
 const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
-    {hasBlockWaiver(selectedVehicle) && (
-      <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
-    )}
+    <div className="m-vehicle-properties-panel__notes">
+      {selectedVehicle.isOffCourse && <InvalidBanner />}
+
+      {hasBlockWaiver(selectedVehicle) && (
+        <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
+      )}
+    </div>
 
     <PropertiesList properties={vehicleProperties(selectedVehicle)} />
 
@@ -193,8 +202,6 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         tabMode={tabMode}
         setTabMode={setTabMode}
       />
-
-      {selectedVehicle.isOffCourse && <InvalidBanner />}
 
       {selectedVehicle.isShuttle ? (
         <StatusContent selectedVehicle={selectedVehicle} />
