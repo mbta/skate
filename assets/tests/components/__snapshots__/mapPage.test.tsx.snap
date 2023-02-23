@@ -327,18 +327,29 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </div>
           </div>
           <div
-            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+            class="leaflet-control leaflet-bar lc-street-view-switch"
           >
             <label
+              aria-hidden="true"
+              aria-label=""
+              class="lc-street-view-switch__label"
               for="street-view-toggle-:r1:"
+              role="presentation"
             >
-              <span>
+              <span
+                class="lc-street-view-switch__label-icon"
+              >
                 <svg />
               </span>
+            </label>
+            <label
+              class="lc-street-view-switch__label lc-street-view-switch__label-text"
+              for="street-view-toggle-:r1:"
+            >
               Street View
             </label>
             <div
-              class="form-check form-switch"
+              class="form-check form-switch lc-street-view-switch__input"
             >
               <input
                 class="form-check-input"
@@ -682,18 +693,29 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             </div>
           </div>
           <div
-            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+            class="leaflet-control leaflet-bar lc-street-view-switch"
           >
             <label
+              aria-hidden="true"
+              aria-label=""
+              class="lc-street-view-switch__label"
               for="street-view-toggle-:r0:"
+              role="presentation"
             >
-              <span>
+              <span
+                class="lc-street-view-switch__label-icon"
+              >
                 <svg />
               </span>
+            </label>
+            <label
+              class="lc-street-view-switch__label lc-street-view-switch__label-text"
+              for="street-view-toggle-:r0:"
+            >
               Street View
             </label>
             <div
-              class="form-check form-switch"
+              class="form-check form-switch lc-street-view-switch__input"
             >
               <input
                 class="form-check-input"
@@ -1359,18 +1381,29 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </div>
           </div>
           <div
-            class="leaflet-control leaflet-bar m-vehicle-map__street-view-control"
+            class="leaflet-control leaflet-bar lc-street-view-switch"
           >
             <label
+              aria-hidden="true"
+              aria-label=""
+              class="lc-street-view-switch__label"
               for="street-view-toggle-:r2:"
+              role="presentation"
             >
-              <span>
+              <span
+                class="lc-street-view-switch__label-icon"
+              >
                 <svg />
               </span>
+            </label>
+            <label
+              class="lc-street-view-switch__label lc-street-view-switch__label-text"
+              for="street-view-toggle-:r2:"
+            >
               Street View
             </label>
             <div
-              class="form-check form-switch"
+              class="form-check form-switch lc-street-view-switch__input"
             >
               <input
                 class="form-check-input"

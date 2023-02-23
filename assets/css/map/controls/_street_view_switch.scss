@@ -1,0 +1,75 @@
+// BEM-PREFIX: LC = Leaflet Control
+.lc-street-view-switch {
+  // #region Position
+  position: absolute;
+  // Leaflet uses px for positioning of their controls so we use px here to match
+  top: 10px;
+  right: 55px;
+  // #endregion
+
+  // #region Look
+  user-select: none;
+
+  color: $color-eggplant-700;
+  background-color: $white;
+  // #endregion
+
+  // #region Layout
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  font-size: 1rem;
+  line-height: 1;
+
+  padding: 8px;
+
+  border: 1px solid $color-gray-400;
+  border-radius: 7px;
+  // #endregion
+
+  // #region Sub-Components
+  &__label-icon svg {
+    fill: currentColor;
+
+    height: 1em;
+    height: calc(1em - 2px);
+    min-width: 16px;
+  }
+
+  &__input {
+    // Shrinkwrap the wrapper component to the input component so that flexbox
+    // can align this element properly
+    min-height: unset;
+    height: min-content;
+
+    // Remove layout offsets
+    padding-left: 0;
+    margin-bottom: 0;
+
+    // Remove Negative Margins so shrinkwrap works
+    .form-check-input {
+      margin-inline: 4px;
+    }
+  }
+  // #endregion
+
+  // #region Media Queries
+  @media screen and (max-width: 800px) {
+    & {
+      // Change size of icon and switch when on a smaller screen
+      font-size: var(--font-size-s);
+      padding: 4px;
+    }
+
+    &__label-text {
+      @include visually-hidden;
+    }
+
+    &__input .form-check-input {
+      // Move street view icon closer to switch
+      margin-inline-start: 0;
+    }
+  }
+  // #endregion
+}
