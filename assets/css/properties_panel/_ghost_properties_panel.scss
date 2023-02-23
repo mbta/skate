@@ -8,6 +8,10 @@
   }
 }
 
+.m-ghost-properties-panel__notes {
+  margin: 0.5rem;
+}
+
 .m-ghost-properties-panel__no-waiver-banner {
   @include font-body;
   background-color: transparentize($color-component-highlight, 0.6);

@@ -13,11 +13,13 @@ interface Props {
 
 const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   <>
-    {hasBlockWaiver(ghost) ? (
-      <BlockWaiverList blockWaivers={ghost.blockWaivers} />
-    ) : (
-      <NoWaiverBanner />
-    )}
+    <div className="m-ghost-properties-panel__notes">
+      {hasBlockWaiver(ghost) ? (
+        <BlockWaiverList blockWaivers={ghost.blockWaivers} />
+      ) : (
+        <NoWaiverBanner />
+      )}
+    </div>
     <PropertiesList properties={ghostProperties(ghost)} />
   </>
 )
