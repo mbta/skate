@@ -55,7 +55,7 @@
     "@types/leaflet.fullscreen": "^1.6.1",
     "@types/phoenix": "^1.5.4",
     "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
+    "@types/react-dom": "^18.0.11",
     "@types/react-leaflet": "^2.8.2",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
