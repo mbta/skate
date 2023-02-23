@@ -570,6 +570,9 @@ Array [
         className="m-tabs__tab-panel"
       >
         <div
+          className="m-vehicle-properties-panel__notes"
+        />
+        <div
           className="m-properties-list"
         >
           <table

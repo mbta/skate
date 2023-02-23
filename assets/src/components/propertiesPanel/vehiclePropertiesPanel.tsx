@@ -172,9 +172,13 @@ const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
 
 const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
-    {hasBlockWaiver(selectedVehicle) && (
-      <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
-    )}
+    <div className="m-vehicle-properties-panel__notes">
+      {selectedVehicle.isOffCourse && <InvalidBanner />}
+
+      {hasBlockWaiver(selectedVehicle) && (
+        <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
+      )}
+    </div>
 
     <PropertiesList properties={vehicleProperties(selectedVehicle)} />
 
@@ -198,8 +202,6 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         tabMode={tabMode}
         setTabMode={setTabMode}
       />
-
-      {selectedVehicle.isOffCourse && <InvalidBanner />}
 
       {selectedVehicle.isShuttle ? (
         <StatusContent selectedVehicle={selectedVehicle} />

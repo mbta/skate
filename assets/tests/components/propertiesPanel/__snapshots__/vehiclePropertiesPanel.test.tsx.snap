@@ -250,6 +250,9 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
+      className="m-vehicle-properties-panel__notes"
+    />
+    <div
       className="m-properties-list"
     >
       <table
@@ -615,6 +618,9 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
+      className="m-vehicle-properties-panel__notes"
+    />
+    <div
       className="m-properties-list"
     >
       <table
@@ -844,6 +850,9 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="m-vehicle-properties-panel__notes"
+  />
   <div
     className="m-properties-list"
   >
@@ -1213,94 +1222,98 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-block-waiver-list"
+      className="m-vehicle-properties-panel__notes"
     >
       <div
-        aria-labelledby="card-label-:r7:"
-        className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
+        className="m-block-waiver-list"
       >
         <div
-          className="m-card__left"
+          aria-labelledby="card-label-:r7:"
+          className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
         >
           <div
-            className="m-card__left-content"
+            className="m-card__left"
           >
             <div
-              className="m-card__top-row"
+              className="m-card__left-content"
             >
               <div
-                className="m-card__title"
-                id="card-label-:r7:"
+                className="m-card__top-row"
               >
-                <h3
-                  className="m-block-waiver-banner__title"
-                >
-                  Dispatcher Note
-                </h3>
                 <div
-                  className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
+                  className="m-card__title"
+                  id="card-label-:r7:"
                 >
-                  Past
+                  <h3
+                    className="m-block-waiver-banner__title"
+                  >
+                    Dispatcher Note
+                  </h3>
+                  <div
+                    className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
+                  >
+                    Past
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              className="m-card__contents"
-            >
               <div
-                className="m-card__body"
+                className="m-card__contents"
               >
                 <div
-                  className="m-properties-list"
+                  className="m-card__body"
                 >
-                  <table
-                    className="m-properties-list__table"
+                  <div
+                    className="m-properties-list"
                   >
-                    <tbody>
-                      <tr
-                        className="m-properties-list__property "
-                      >
-                        <td
-                          className="m-properties-list__property-label"
+                    <table
+                      className="m-properties-list__table"
+                    >
+                      <tbody>
+                        <tr
+                          className="m-properties-list__property "
                         >
-                          Reason
-                        </td>
-                        <td
-                          className="m-properties-list__property-value"
+                          <td
+                            className="m-properties-list__property-label"
+                          >
+                            Reason
+                          </td>
+                          <td
+                            className="m-properties-list__property-value"
+                          >
+                            Block Waiver
+                          </td>
+                        </tr>
+                        <tr
+                          className="m-properties-list__property "
                         >
-                          Block Waiver
-                        </td>
-                      </tr>
-                      <tr
-                        className="m-properties-list__property "
-                      >
-                        <td
-                          className="m-properties-list__property-label"
+                          <td
+                            className="m-properties-list__property-label"
+                          >
+                            Start Time
+                          </td>
+                          <td
+                            className="m-properties-list__property-value"
+                          >
+                            5:05 AM
+                          </td>
+                        </tr>
+                        <tr
+                          className="m-properties-list__property "
                         >
-                          Start Time
-                        </td>
-                        <td
-                          className="m-properties-list__property-value"
-                        >
-                          5:05 AM
-                        </td>
-                      </tr>
-                      <tr
-                        className="m-properties-list__property "
-                      >
-                        <td
-                          className="m-properties-list__property-label"
-                        >
-                          End Time
-                        </td>
-                        <td
-                          className="m-properties-list__property-value"
-                        >
-                          12:38 PM
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <td
+                            className="m-properties-list__property-label"
+                          >
+                            End Time
+                          </td>
+                          <td
+                            className="m-properties-list__property-value"
+                          >
+                            12:38 PM
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1674,6 +1687,9 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
+      className="m-vehicle-properties-panel__notes"
+    />
+    <div
       className="m-properties-list"
     >
       <table
@@ -2034,42 +2050,46 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     </ul>
   </div>
   <div
-    aria-labelledby="card-label-:r4:"
-    className="m-card m-card--lemon m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--inactive"
+    className="m-tabs__tab-panel"
   >
     <div
-      className="m-card__left"
+      className="m-vehicle-properties-panel__notes"
     >
       <div
-        className="m-card__left-content"
+        aria-labelledby="card-label-:r4:"
+        className="m-card m-card--lemon m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--inactive"
       >
         <div
-          className="m-card__top-row"
+          className="m-card__left"
         >
           <div
-            className="m-card__title"
-            id="card-label-:r4:"
+            className="m-card__left-content"
           >
-            <h3>
-              Invalid Bus
-            </h3>
-          </div>
-        </div>
-        <div
-          className="m-card__contents"
-        >
-          <div
-            className="m-card__body"
-          >
-            We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
+            <div
+              className="m-card__top-row"
+            >
+              <div
+                className="m-card__title"
+                id="card-label-:r4:"
+              >
+                <h3>
+                  Invalid Bus
+                </h3>
+              </div>
+            </div>
+            <div
+              className="m-card__contents"
+            >
+              <div
+                className="m-card__body"
+              >
+                We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="m-tabs__tab-panel"
-  >
     <div
       className="m-properties-list"
     >
@@ -2441,6 +2461,9 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
   <div
     className="m-tabs__tab-panel"
   >
+    <div
+      className="m-vehicle-properties-panel__notes"
+    />
     <div
       className="m-properties-list"
     >
