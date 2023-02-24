@@ -1,8 +1,10 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureLog
   import Test.Support.Helpers
   import Skate.Factory
 
+  alias Realtime.BlockWaiver
   alias Realtime.Server
 
   @vehicle build(:vehicle,
@@ -459,6 +461,42 @@ defmodule Realtime.ServerTest do
       Server.handle_info(:check_data_status, state)
 
       assert_received([%Realtime.Vehicle{}])
+    end
+
+    test "logs ghost stats" do
+      set_log_level(:info)
+
+      ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
+      state = %Server{ets: ets}
+
+      ghost1 = build(:ghost, id: "g1", block_id: "ghost_block", route_id: "1")
+
+      ghost2 =
+        build(:ghost,
+          id: "g2",
+          block_id: "ghost_block_2",
+          route_id: "1",
+          block_waivers: [
+            %BlockWaiver{
+              start_time: 1,
+              end_time: 2,
+              cause_id: 26,
+              cause_description: "E - Diverted"
+            },
+            %BlockWaiver{
+              start_time: 3,
+              end_time: 4,
+              cause_id: 23,
+              cause_description: "B - Manpower"
+            }
+          ]
+        )
+
+      :ets.insert(ets, {:all_vehicles, [@vehicle, ghost1, ghost2]})
+      log = capture_log(fn -> Server.handle_info(:ghost_stats, state) end)
+      refute log =~ "ghost: id=#{@vehicle.id}"
+      assert log =~ "ghost: id=g1 block_waiver_causes=[]"
+      assert log =~ "ghost: id=g2 block_waiver_causes=[26, 23]"
     end
   end
 

@@ -223,6 +223,7 @@ defmodule Realtime.Server do
     ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
     :timer.send_interval(30_000, self(), :check_data_status)
+    :timer.send_interval(60_000, self(), :ghost_stats)
 
     {:ok, %__MODULE__{ets: ets}}
   end
@@ -244,6 +245,17 @@ defmodule Realtime.Server do
 
     # hibernate periodically to clean up garbage from previous states.
     {:noreply, state, :hibernate}
+  end
+
+  def handle_info(:ghost_stats, %__MODULE__{ets: ets}) do
+    {ets, :all_vehicles}
+    |> lookup()
+    |> Enum.filter(&match?(%Ghost{}, &1))
+    |> Enum.each(fn ghost ->
+      Logger.info(
+        "ghost: id=#{ghost.id} block_waiver_causes=#{inspect(Enum.map(ghost.block_waivers, & &1.cause_id))}"
+      )
+    end)
   end
 
   @impl true
