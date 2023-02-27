@@ -495,8 +495,8 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {:all_vehicles, [@vehicle, ghost1, ghost2]})
       log = capture_log(fn -> Server.handle_info(:ghost_stats, state) end)
       refute log =~ "ghost: id=#{@vehicle.id}"
-      assert log =~ "ghost: id=g1 block_waiver_causes=[]"
-      assert log =~ "ghost: id=g2 block_waiver_causes=[26, 23]"
+      assert log =~ "ghost: id=g1 route=1 run_id=123-9049 block_waiver_causes=[]"
+      assert log =~ "ghost: id=g2 route=1 run_id=123-9049 block_waiver_causes=[26, 23]"
     end
   end
 

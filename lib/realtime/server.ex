@@ -253,7 +253,7 @@ defmodule Realtime.Server do
     |> Enum.filter(&match?(%Ghost{}, &1))
     |> Enum.each(fn ghost ->
       Logger.info(
-        "ghost: id=#{ghost.id} block_waiver_causes=#{inspect(Enum.map(ghost.block_waivers, & &1.cause_id))}"
+        "ghost: id=#{ghost.id} route=#{ghost.route_id} run_id=#{ghost.run_id} block_waiver_causes=#{inspect(Enum.map(ghost.block_waivers, & &1.cause_id))}"
       )
     end)
   end
