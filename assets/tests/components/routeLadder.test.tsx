@@ -118,6 +118,8 @@ const vehicles: Vehicle[] = [
   }),
 ]
 
+jest.unmock("@tippyjs/react")
+
 describe("routeLadder", () => {
   const originalGetBBox = SVGSVGElement.prototype.getBBox
   const originalGetElementsByClassName = document.getElementsByClassName

@@ -106,80 +106,167 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
       viewBox="-92 -55 184 0"
       width="184"
     >
-      <div
-        class="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             1
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               1818
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 4
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      PATTI SMITH #op1
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(63,-27.5)"
+          class="m-vehicle-icon m-vehicle-icon--small"
+        >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="40"
+            x="-20"
+            y="6.6"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.1"
+          >
+            14/18
+          </text>
+          <g
+            class="m-ladder__crowding m-ladder__crowding--some-crowding"
+            transform="scale(0.38) translate(-24,-30)"
+          >
+            <rect
+              fill="transparent"
+              height="52"
+              width="52"
+              x="-2"
+              y="-2"
+            />
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
+          </g>
+        </g>
+      </g>
+      <line
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
+        y1="0"
+        y2="-110"
+      />
+      <line
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="-110"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
+      >
+        MATPN
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
+      >
+        WELLH
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
+      >
+        MORTN
+      </text>
+    </svg>
+  </div>
+  <div
+    class="m-incoming-box"
+  >
+    <button
+      class="m-incoming-box__vehicle "
+    >
+      <div
+        class="m-incoming-box__vehicle-icon"
+      >
+        <svg
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
             class="m-vehicle-icon m-vehicle-icon--small"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="40"
-              x="-20"
-              y="6.6"
-            />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--extended"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="12.1"
-            >
-              14/18
-            </text>
             <g
-              class="m-ladder__crowding m-ladder__crowding--some-crowding"
-              transform="scale(0.38) translate(-24,-30)"
+              class="m-ladder__crowding m-ladder__crowding--no-data"
+              transform="scale(0.38) translate(-24,-14)"
             >
               <rect
                 fill="transparent"
@@ -214,217 +301,14 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
               />
             </g>
           </g>
-        </g>
+        </svg>
       </div>
-      <line
-        class="m-ladder__line"
-        x1="-40"
-        x2="-40"
-        y1="0"
-        y2="-110"
-      />
-      <line
-        class="m-ladder__line"
-        x1="40"
-        x2="40"
-        y1="0"
-        y2="-110"
-      />
-      <circle
-        class="m-ladder__stop-circle"
-        cx="-40"
-        cy="0"
-        r="3"
-      />
-      <circle
-        class="m-ladder__stop-circle"
-        cx="40"
-        cy="0"
-        r="3"
-      />
       <div
-        class="mock-tippy"
+        class="m-incoming-box__vehicle-label"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
+        ?/?
       </div>
-      <circle
-        class="m-ladder__stop-circle"
-        cx="-40"
-        cy="-55"
-        r="3"
-      />
-      <circle
-        class="m-ladder__stop-circle"
-        cx="40"
-        cy="-55"
-        r="3"
-      />
-      <div
-        class="mock-tippy"
-      >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
-      <circle
-        class="m-ladder__stop-circle"
-        cx="-40"
-        cy="-110"
-        r="3"
-      />
-      <circle
-        class="m-ladder__stop-circle"
-        cx="40"
-        cy="-110"
-        r="3"
-      />
-      <div
-        class="mock-tippy"
-      >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
-    </svg>
-  </div>
-  <div
-    class="m-incoming-box"
-  >
-    <div
-      class="mock-tippy"
-    >
-      <div
-        class="mock-tippy-content"
-      >
-        <b>
-          Block:
-        </b>
-         block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         2
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         0479
-        <br />
-        <b>
-          Variant:
-        </b>
-         
-        <br />
-        <b>
-          Adherence:
-        </b>
-         0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          class="fs-mask"
-        >
-          NORA JONES #op2
-        </span>
-      </div>
-      <button
-        class="m-incoming-box__vehicle "
-      >
-        <div
-          class="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            style="width: 16.72px; height: 15.2px;"
-            viewBox="-8.36 -7.6 16.72 15.2"
-          >
-            <g
-              class="m-vehicle-icon m-vehicle-icon--small"
-            >
-              <g
-                class="m-ladder__crowding m-ladder__crowding--no-data"
-                transform="scale(0.38) translate(-24,-14)"
-              >
-                <rect
-                  fill="transparent"
-                  height="52"
-                  width="52"
-                  x="-2"
-                  y="-2"
-                />
-                <path
-                  d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
-                />
-                <circle
-                  cx="6.74"
-                  cy="8.54"
-                  r="4.93"
-                />
-                <path
-                  d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
-                />
-                <circle
-                  cx="23.88"
-                  cy="8.48"
-                  r="4.93"
-                />
-                <path
-                  d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
-                />
-                <circle
-                  cx="41.03"
-                  cy="8.48"
-                  r="4.93"
-                />
-              </g>
-            </g>
-          </svg>
-        </div>
-        <div
-          class="m-incoming-box__vehicle-label"
-        >
-          ?/?
-        </div>
-      </button>
-    </div>
+    </button>
   </div>
 </DocumentFragment>
 `;
@@ -480,95 +364,48 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
       viewBox="-92 -55 184 0"
       width="184"
     >
-      <div
-        class="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             1
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               1818
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 4
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      PATTI SMITH #op1
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(63,-27.5)"
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
-          <g
-            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="11.5"
-            />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="17"
-            >
-              1
-            </text>
-            <path
-              class="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(0) translate(-24,-22)"
-            />
-            <text
-              class="m-vehicle-icon__variant"
-              dominant-baseline="alphabetic"
-              text-anchor="middle"
-              x="0"
-              y="8.5"
-            >
-              4
-            </text>
-          </g>
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="alphabetic"
+            text-anchor="middle"
+            x="0"
+            y="8.5"
+          >
+            4
+          </text>
         </g>
-      </div>
+      </g>
       <line
         class="m-ladder__line"
         x1="-40"
@@ -595,24 +432,15 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
         cy="0"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -625,24 +453,15 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
         cy="-55"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -655,103 +474,52 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
         cy="-110"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
   </div>
   <div
     class="m-incoming-box"
   >
-    <div
-      class="mock-tippy"
+    <button
+      class="m-incoming-box__vehicle "
     >
       <div
-        class="mock-tippy-content"
+        class="m-incoming-box__vehicle-icon"
       >
-        <b>
-          Block:
-        </b>
-         block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         2
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         0479
-        <br />
-        <b>
-          Variant:
-        </b>
-         
-        <br />
-        <b>
-          Adherence:
-        </b>
-         0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          class="fs-mask"
+        <svg
+          role="img"
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
-          NORA JONES #op2
-        </span>
-      </div>
-      <button
-        class="m-incoming-box__vehicle "
-      >
-        <div
-          class="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            role="img"
-            style="width: 16.72px; height: 15.2px;"
-            viewBox="-8.36 -7.6 16.72 15.2"
+          <title>
+            Vehicle Status Icon
+          </title>
+          <g
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
-            <title>
-              Vehicle Status Icon
-            </title>
-            <g
-              class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
-            >
-              <path
-                class="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                data-testid="vehicle-triangle"
-                transform="scale(0.38) rotate(180) translate(-24,-22)"
-              />
-            </g>
-          </svg>
-        </div>
-        <div
-          class="m-incoming-box__vehicle-label"
-        >
-          2
-        </div>
-      </button>
-    </div>
+            <path
+              class="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
+              transform="scale(0.38) rotate(180) translate(-24,-22)"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="m-incoming-box__vehicle-label"
+      >
+        2
+      </div>
+    </button>
   </div>
 </DocumentFragment>
 `;
@@ -807,95 +575,48 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
       viewBox="-92 -55 184 0"
       width="184"
     >
-      <div
-        class="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             1
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               1818
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 4
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      PATTI SMITH #op1
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(63,-27.5)"
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
-          <g
-            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="11.5"
-            />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="17"
-            >
-              1
-            </text>
-            <path
-              class="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(0) translate(-24,-22)"
-            />
-            <text
-              class="m-vehicle-icon__variant"
-              dominant-baseline="alphabetic"
-              text-anchor="middle"
-              x="0"
-              y="8.5"
-            >
-              4
-            </text>
-          </g>
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="alphabetic"
+            text-anchor="middle"
+            x="0"
+            y="8.5"
+          >
+            4
+          </text>
         </g>
-      </div>
+      </g>
       <line
         class="m-ladder__line"
         x1="-40"
@@ -922,24 +643,15 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
         cy="0"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -952,24 +664,15 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
         cy="-55"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -982,24 +685,15 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
         cy="-110"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
   </div>
   <div
@@ -1085,24 +779,15 @@ exports[`routeLadder renders a route ladder 1`] = `
         cy="0"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -1115,24 +800,15 @@ exports[`routeLadder renders a route ladder 1`] = `
         cy="-55"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -1145,24 +821,15 @@ exports[`routeLadder renders a route ladder 1`] = `
         cy="-110"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
   </div>
   <div
@@ -1232,226 +899,132 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
       viewBox="-92 -55 184 0"
       width="184"
     >
-      <div
-        class="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             1
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               1818
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 4
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      PATTI SMITH #op1
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(63,-27.5)"
+          class="m-vehicle-icon m-vehicle-icon--small"
         >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="40"
+            x="-20"
+            y="6.6"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.1"
+          >
+            14/18
+          </text>
           <g
-            class="m-vehicle-icon m-vehicle-icon--small"
+            class="m-ladder__crowding m-ladder__crowding--some-crowding"
+            transform="scale(0.38) translate(-24,-30)"
           >
             <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="40"
-              x="-20"
-              y="6.6"
+              fill="transparent"
+              height="52"
+              width="52"
+              x="-2"
+              y="-2"
             />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--extended"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="12.1"
-            >
-              14/18
-            </text>
-            <g
-              class="m-ladder__crowding m-ladder__crowding--some-crowding"
-              transform="scale(0.38) translate(-24,-30)"
-            >
-              <rect
-                fill="transparent"
-                height="52"
-                width="52"
-                x="-2"
-                y="-2"
-              />
-              <path
-                d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
-              />
-              <circle
-                cx="6.74"
-                cy="8.54"
-                r="4.93"
-              />
-              <path
-                d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
-              />
-              <circle
-                cx="23.88"
-                cy="8.48"
-                r="4.93"
-              />
-              <path
-                d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
-              />
-              <circle
-                cx="41.03"
-                cy="8.48"
-                r="4.93"
-              />
-            </g>
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
           </g>
         </g>
-      </div>
-      <div
-        class="mock-tippy"
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(-63,-110)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             2
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               0479
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      NORA JONES #op2
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(-63,-110)"
+          class="m-vehicle-icon m-vehicle-icon--small"
         >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="-17.6"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="-12.100000000000001"
+          >
+            ?/?
+          </text>
           <g
-            class="m-vehicle-icon m-vehicle-icon--small"
+            class="m-ladder__crowding m-ladder__crowding--no-data"
+            transform="scale(0.38) translate(-24,-14)"
           >
             <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="-17.6"
+              fill="transparent"
+              height="52"
+              width="52"
+              x="-2"
+              y="-2"
             />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="-12.100000000000001"
-            >
-              ?/?
-            </text>
-            <g
-              class="m-ladder__crowding m-ladder__crowding--no-data"
-              transform="scale(0.38) translate(-24,-14)"
-            >
-              <rect
-                fill="transparent"
-                height="52"
-                width="52"
-                x="-2"
-                y="-2"
-              />
-              <path
-                d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
-              />
-              <circle
-                cx="6.74"
-                cy="8.54"
-                r="4.93"
-              />
-              <path
-                d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
-              />
-              <circle
-                cx="23.88"
-                cy="8.48"
-                r="4.93"
-              />
-              <path
-                d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
-              />
-              <circle
-                cx="41.03"
-                cy="8.48"
-                r="4.93"
-              />
-            </g>
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
           </g>
         </g>
-      </div>
+      </g>
       <line
         class="m-ladder__line"
         x1="-40"
@@ -1478,24 +1051,15 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
         cy="0"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -1508,24 +1072,15 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
         cy="-55"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -1538,24 +1093,15 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
         cy="-110"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
   </div>
   <div
@@ -1615,175 +1161,81 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
       viewBox="-92 -55 184 0"
       width="184"
     >
-      <div
-        class="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(0,-35)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             2
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               0479
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      NORA JONES #op2
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(0,-35)"
+          class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
         >
-          <g
-            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="7.359999999999999"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.86"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="7.359999999999999"
-            />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="12.86"
-            >
-              2
-            </text>
-            <path
-              class="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.38) rotate(270) translate(-24,-22)"
-            />
-          </g>
+            2
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.38) rotate(270) translate(-24,-22)"
+          />
         </g>
-      </div>
-      <div
-        class="mock-tippy"
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(0,-85)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             1
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               1818
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 4
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      PATTI SMITH #op1
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(0,-85)"
+          class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
         >
-          <g
-            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="7.359999999999999"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.86"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="7.359999999999999"
-            />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="12.86"
-            >
-              1
-            </text>
-            <path
-              class="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.38) rotate(90) translate(-24,-22)"
-            />
-            <text
-              class="m-vehicle-icon__variant"
-              dominant-baseline="central"
-              text-anchor="start"
-              x="-5.6"
-              y="0"
-            >
-              4
-            </text>
-          </g>
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.38) rotate(90) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="central"
+            text-anchor="start"
+            x="-5.6"
+            y="0"
+          >
+            4
+          </text>
         </g>
-      </div>
+      </g>
       <line
         class="m-ladder__line"
         x1="-40"
@@ -1810,24 +1262,15 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
         cy="0"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -1840,24 +1283,15 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
         cy="-55"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -1870,24 +1304,15 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
         cy="-110"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
   </div>
   <div
@@ -1954,307 +1379,166 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         y1="-110"
         y2="-110"
       />
-      <div
-        class="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             1
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               1818
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 4
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      PATTI SMITH #op1
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(63,-27.5)"
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
-          <g
-            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="11.5"
-            />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="17"
-            >
-              1
-            </text>
-            <path
-              class="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(0) translate(-24,-22)"
-            />
-            <text
-              class="m-vehicle-icon__variant"
-              dominant-baseline="alphabetic"
-              text-anchor="middle"
-              x="0"
-              y="8.5"
-            >
-              4
-            </text>
-          </g>
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="alphabetic"
+            text-anchor="middle"
+            x="0"
+            y="8.5"
+          >
+            4
+          </text>
         </g>
-      </div>
-      <div
-        class="mock-tippy"
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-110)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           ghost block
-          <br>
-            <b>
-              Run:
-            </b>
-             0123
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               N/A
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   N/A
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      N/A
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(63,-110)"
+          class="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
         >
-          <g
-            class="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="11.5"
+            0123
+          </text>
+          <g
+            transform="scale(0.4375) translate(-24,-23)"
+          >
+            <path
+              class="m-vehicle-icon__ghost-highlight"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-linejoin="round"
             />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="17"
-            >
-              0123
-            </text>
+            <path
+              class="m-vehicle-icon__ghost-body"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-linejoin="round"
+            />
+            <ellipse
+              class="m-vehicle-icon__ghost-eye"
+              cx="19.73"
+              cy="22.8"
+              rx="3.11"
+              ry="3.03"
+            />
+            <ellipse
+              class="m-vehicle-icon__ghost-eye"
+              cx="35.29"
+              cy="22.8"
+              rx="3.11"
+              ry="3.03"
+            />
+          </g>
+          <g
+            transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
+          >
             <g
-              transform="scale(0.4375) translate(-24,-23)"
+              class="c-icon-alert-circle--highlighted"
             >
-              <path
-                class="m-vehicle-icon__ghost-highlight"
-                d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-linejoin="round"
+              <circle
+                class="c-icon-alert-circle__outline"
+                cx="24"
+                cy="24"
+                r="27"
               />
-              <path
-                class="m-vehicle-icon__ghost-body"
-                d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-linejoin="round"
+              <circle
+                class="c-icon-alert-circle__fill"
+                cx="24"
+                cy="24"
+                r="22.59"
               />
-              <ellipse
-                class="m-vehicle-icon__ghost-eye"
-                cx="19.73"
-                cy="22.8"
-                rx="3.11"
-                ry="3.03"
-              />
-              <ellipse
-                class="m-vehicle-icon__ghost-eye"
-                cx="35.29"
-                cy="22.8"
-                rx="3.11"
-                ry="3.03"
-              />
-            </g>
-            <g
-              transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
-            >
               <g
-                class="c-icon-alert-circle--highlighted"
+                class="c-icon-alert-circle__exclamation-point"
               >
-                <circle
-                  class="c-icon-alert-circle__outline"
-                  cx="24"
-                  cy="24"
-                  r="27"
+                <path
+                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
                 />
-                <circle
-                  class="c-icon-alert-circle__fill"
-                  cx="24"
-                  cy="24"
-                  r="22.59"
+                <path
+                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
                 />
-                <g
-                  class="c-icon-alert-circle__exclamation-point"
-                >
-                  <path
-                    d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                  />
-                  <path
-                    d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                  />
-                </g>
               </g>
             </g>
           </g>
         </g>
-      </div>
-      <div
-        class="mock-tippy"
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(-63,-110)"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           block-1
-          <br>
-            <b>
-              Run:
-            </b>
-             2
-            <br>
-              <b>
-                Vehicle:
-              </b>
-               0479
-              <br>
-                <b>
-                  Variant:
-                </b>
-                 
-                <br>
-                  <b>
-                    Adherence:
-                  </b>
-                   0 min early
-                  <br>
-                    <b>
-                      Operator:
-                    </b>
-                     
-                    <span
-                      class="fs-mask"
-                    >
-                      NORA JONES #op2
-                    </span>
-                  </br>
-                </br>
-              </br>
-            </br>
-          </br>
-        </div>
         <g
-          class="m-ladder__vehicle  "
-          transform="translate(-63,-110)"
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
-          <g
-            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="-22.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="-17"
           >
-            <rect
-              class="m-vehicle-icon__label-background"
-              height="11"
-              rx="5.5"
-              ry="5.5"
-              width="26"
-              x="-13"
-              y="-22.5"
-            />
-            <text
-              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominant-baseline="central"
-              text-anchor="middle"
-              x="0"
-              y="-17"
-            >
-              2
-            </text>
-            <path
-              class="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(180) translate(-24,-22)"
-            />
-          </g>
+            2
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(180) translate(-24,-22)"
+          />
         </g>
-      </div>
+      </g>
       <line
         class="m-ladder__line"
         x1="-40"
@@ -2281,24 +1565,15 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         cy="0"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -2311,24 +1586,15 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         cy="-55"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -2341,24 +1607,15 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         cy="-110"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
   </div>
   <div
@@ -2444,24 +1701,15 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
         cy="0"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="0"
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -2474,24 +1722,15 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
         cy="-55"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-55"
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
         class="m-ladder__stop-circle"
         cx="-40"
@@ -2504,186 +1743,93 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
         cy="-110"
         r="3"
       />
-      <div
-        class="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          class="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          class="m-ladder__timepoint-name"
-          dominant-baseline="middle"
-          text-anchor="middle"
-          x="0"
-          y="-110"
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
   </div>
   <div
     class="m-incoming-box"
   >
-    <div
-      class="mock-tippy"
+    <button
+      class="m-incoming-box__vehicle "
     >
       <div
-        class="mock-tippy-content"
+        class="m-incoming-box__vehicle-icon"
       >
-        <b>
-          Block:
-        </b>
-         block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         1
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         1818
-        <br />
-        <b>
-          Variant:
-        </b>
-         4
-        <br />
-        <b>
-          Adherence:
-        </b>
-         0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          class="fs-mask"
+        <svg
+          role="img"
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
-          PATTI SMITH #op1
-        </span>
-      </div>
-      <button
-        class="m-incoming-box__vehicle "
-      >
-        <div
-          class="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            role="img"
-            style="width: 16.72px; height: 15.2px;"
-            viewBox="-8.36 -7.6 16.72 15.2"
+          <title>
+            Vehicle Status Icon
+          </title>
+          <g
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
-            <title>
-              Vehicle Status Icon
-            </title>
-            <g
-              class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            <path
+              class="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
+              transform="scale(0.38) rotate(0) translate(-24,-22)"
+            />
+            <text
+              class="m-vehicle-icon__variant"
+              dominant-baseline="alphabetic"
+              text-anchor="middle"
+              x="0"
+              y="5.6"
             >
-              <path
-                class="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                data-testid="vehicle-triangle"
-                transform="scale(0.38) rotate(0) translate(-24,-22)"
-              />
-              <text
-                class="m-vehicle-icon__variant"
-                dominant-baseline="alphabetic"
-                text-anchor="middle"
-                x="0"
-                y="5.6"
-              >
-                4
-              </text>
-            </g>
-          </svg>
-        </div>
-        <div
-          class="m-incoming-box__vehicle-label"
-        >
-          1
-        </div>
-      </button>
-    </div>
-    <div
-      class="mock-tippy"
+              4
+            </text>
+          </g>
+        </svg>
+      </div>
+      <div
+        class="m-incoming-box__vehicle-label"
+      >
+        1
+      </div>
+    </button>
+    <button
+      class="m-incoming-box__vehicle "
     >
       <div
-        class="mock-tippy-content"
+        class="m-incoming-box__vehicle-icon"
       >
-        <b>
-          Block:
-        </b>
-         block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         2
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         0479
-        <br />
-        <b>
-          Variant:
-        </b>
-         
-        <br />
-        <b>
-          Adherence:
-        </b>
-         0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          class="fs-mask"
+        <svg
+          role="img"
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
-          NORA JONES #op2
-        </span>
-      </div>
-      <button
-        class="m-incoming-box__vehicle "
-      >
-        <div
-          class="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            role="img"
-            style="width: 16.72px; height: 15.2px;"
-            viewBox="-8.36 -7.6 16.72 15.2"
+          <title>
+            Vehicle Status Icon
+          </title>
+          <g
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
-            <title>
-              Vehicle Status Icon
-            </title>
-            <g
-              class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
-            >
-              <path
-                class="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                data-testid="vehicle-triangle"
-                transform="scale(0.38) rotate(180) translate(-24,-22)"
-              />
-            </g>
-          </svg>
-        </div>
-        <div
-          class="m-incoming-box__vehicle-label"
-        >
-          2
-        </div>
-      </button>
-    </div>
+            <path
+              class="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
+              transform="scale(0.38) rotate(180) translate(-24,-22)"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="m-incoming-box__vehicle-label"
+      >
+        2
+      </div>
+    </button>
   </div>
 </DocumentFragment>
 `;
