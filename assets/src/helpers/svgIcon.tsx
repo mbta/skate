@@ -5,6 +5,13 @@ interface SvgIconProps extends ComponentPropsWithoutRef<"span"> {
   svgText: string
 }
 
+/**
+ * Takes a SVG string and renders that as the `innerHTML` of the `container`
+ * element.
+ *
+ * Also exposes valid props of the `container` element, and passes the `ref`
+ * attribute to the `container` element.
+ */
 export const SvgIcon = forwardRef<HTMLSpanElement, SvgIconProps>(
   ({ svgText, ...props }, ref) => (
     // eslint-disable-next-line react/no-danger
@@ -12,6 +19,12 @@ export const SvgIcon = forwardRef<HTMLSpanElement, SvgIconProps>(
   )
 )
 
+/**
+ * Factory to construct a {@link SvgIcon} Component Definition from SVG.
+ *
+ * @param svgText HTML representation of the Icon
+ * @returns React Component Constructor
+ */
 export const svgIcon = (svgText: string) =>
   forwardRef<HTMLSpanElement, ComponentPropsWithoutRef<"span">>(
     (props, ref) => <SvgIcon {...props} ref={ref} svgText={svgText} />
