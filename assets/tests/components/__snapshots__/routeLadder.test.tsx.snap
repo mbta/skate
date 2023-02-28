@@ -1,209 +1,184 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`routeLadder displays loading if we are fetching the timepoints 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
-  "loading...",
-]
+  </div>
+  loading...
+</DocumentFragment>
 `;
 
 exports[`routeLadder displays no crowding data for a bus coming off a route with no crowding data onto a route with crowding data 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
     <button
-      className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
-      onClick={[Function]}
+      class="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
     >
       <span
-        className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
+      >
+        <svg />
+      </span>
       Hide riders
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             1
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               1818
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 4
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(63,-27.5)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            class="m-vehicle-icon m-vehicle-icon--small"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={40}
-              x={-20}
-              y={6.6}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="40"
+              x="-20"
+              y="6.6"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={12.1}
+              y="12.1"
             >
               14/18
             </text>
             <g
-              className="m-ladder__crowding m-ladder__crowding--some-crowding"
+              class="m-ladder__crowding m-ladder__crowding--some-crowding"
               transform="scale(0.38) translate(-24,-30)"
             >
               <rect
@@ -242,137 +217,134 @@ Array [
         </g>
       </div>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
+    class="m-incoming-box"
   >
     <div
-      className="mock-tippy"
+      class="mock-tippy"
     >
       <div
-        className="mock-tippy-content"
+        class="mock-tippy-content"
       >
         <b>
           Block:
         </b>
-         
-        block-1
+         block-1
         <br />
         <b>
           Run:
         </b>
-         
-        2
+         2
         <br />
         <b>
           Vehicle:
         </b>
-         
-        0479
+         0479
         <br />
         <b>
           Variant:
@@ -382,40 +354,33 @@ Array [
         <b>
           Adherence:
         </b>
-         
-        0 min early
+         0 min early
         <br />
         <b>
           Operator:
         </b>
          
         <span
-          className="fs-mask"
+          class="fs-mask"
         >
           NORA JONES #op2
         </span>
       </div>
       <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
+        class="m-incoming-box__vehicle "
       >
         <div
-          className="m-incoming-box__vehicle-icon"
+          class="m-incoming-box__vehicle-icon"
         >
           <svg
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
+            style="width: 16.72px; height: 15.2px;"
             viewBox="-8.36 -7.6 16.72 15.2"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--small"
+              class="m-vehicle-icon m-vehicle-icon--small"
             >
               <g
-                className="m-ladder__crowding m-ladder__crowding--no-data"
+                class="m-ladder__crowding m-ladder__crowding--no-data"
                 transform="scale(0.38) translate(-24,-14)"
               >
                 <rect
@@ -454,163 +419,150 @@ Array [
           </svg>
         </div>
         <div
-          className="m-incoming-box__vehicle-label"
+          class="m-incoming-box__vehicle-label"
         >
           ?/?
         </div>
       </button>
     </div>
-  </div>,
-]
+  </div>
+</DocumentFragment>
 `;
 
 exports[`routeLadder doesn't display crowding data for a vehicle coming off a route with crowding data onto a route with none 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             1
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               1818
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 4
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(63,-27.5)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="11.5"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={17}
+              y="17"
             >
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              class="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.625) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={8.5}
+              class="m-vehicle-icon__variant"
+              dominant-baseline="alphabetic"
+              text-anchor="middle"
+              x="0"
+              y="8.5"
             >
               4
             </text>
@@ -618,137 +570,134 @@ Array [
         </g>
       </div>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
+    class="m-incoming-box"
   >
     <div
-      className="mock-tippy"
+      class="mock-tippy"
     >
       <div
-        className="mock-tippy-content"
+        class="mock-tippy-content"
       >
         <b>
           Block:
         </b>
-         
-        block-1
+         block-1
         <br />
         <b>
           Run:
         </b>
-         
-        2
+         2
         <br />
         <b>
           Vehicle:
         </b>
-         
-        0479
+         0479
         <br />
         <b>
           Variant:
@@ -758,44 +707,37 @@ Array [
         <b>
           Adherence:
         </b>
-         
-        0 min early
+         0 min early
         <br />
         <b>
           Operator:
         </b>
          
         <span
-          className="fs-mask"
+          class="fs-mask"
         >
           NORA JONES #op2
         </span>
       </div>
       <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
+        class="m-incoming-box__vehicle "
       >
         <div
-          className="m-incoming-box__vehicle-icon"
+          class="m-incoming-box__vehicle-icon"
         >
           <svg
             role="img"
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
+            style="width: 16.72px; height: 15.2px;"
             viewBox="-8.36 -7.6 16.72 15.2"
           >
             <title>
               Vehicle Status Icon
             </title>
             <g
-              className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+              class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
             >
               <path
-                className="m-vehicle-icon__triangle"
+                class="m-vehicle-icon__triangle"
                 d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
                 data-testid="vehicle-triangle"
                 transform="scale(0.38) rotate(180) translate(-24,-22)"
@@ -804,163 +746,150 @@ Array [
           </svg>
         </div>
         <div
-          className="m-incoming-box__vehicle-label"
+          class="m-incoming-box__vehicle-label"
         >
           2
         </div>
       </button>
     </div>
-  </div>,
-]
+  </div>
+</DocumentFragment>
 `;
 
 exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             1
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               1818
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 4
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(63,-27.5)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="11.5"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={17}
+              y="17"
             >
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              class="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.625) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={8.5}
+              class="m-vehicle-icon__variant"
+              dominant-baseline="alphabetic"
+              text-anchor="middle"
+              x="0"
+              y="8.5"
             >
               4
             </text>
@@ -968,443 +897,414 @@ Array [
         </g>
       </div>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-incoming-box"
+  />
+</DocumentFragment>
 `;
 
 exports[`routeLadder renders a route ladder 1`] = `
-Array [
+<div>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-incoming-box"
+  />
+</div>
 `;
 
 exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
     <button
-      className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
-      onClick={[Function]}
+      class="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
     >
       <span
-        className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
+      >
+        <svg />
+      </span>
       Hide riders
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             1
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               1818
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 4
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(63,-27.5)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            class="m-vehicle-icon m-vehicle-icon--small"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={40}
-              x={-20}
-              y={6.6}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="40"
+              x="-20"
+              y="6.6"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={12.1}
+              y="12.1"
             >
               14/18
             </text>
             <g
-              className="m-ladder__crowding m-ladder__crowding--some-crowding"
+              class="m-ladder__crowding m-ladder__crowding--some-crowding"
               transform="scale(0.38) translate(-24,-30)"
             >
               <rect
@@ -1443,78 +1343,78 @@ Array [
         </g>
       </div>
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          2
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          0479
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            NORA JONES #op2
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             2
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               0479
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      NORA JONES #op2
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(-63,-110)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            class="m-vehicle-icon m-vehicle-icon--small"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={-17.6}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="-17.6"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={-12.100000000000001}
+              y="-12.100000000000001"
             >
               ?/?
             </text>
             <g
-              className="m-ladder__crowding m-ladder__crowding--no-data"
+              class="m-ladder__crowding m-ladder__crowding--no-data"
               transform="scale(0.38) translate(-24,-14)"
             >
               <rect
@@ -1553,253 +1453,241 @@ Array [
         </g>
       </div>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-incoming-box"
+  />
+</DocumentFragment>
 `;
 
 exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          2
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          0479
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            NORA JONES #op2
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             2
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               0479
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      NORA JONES #op2
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(0,-35)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={7.359999999999999}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="7.359999999999999"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={12.86}
+              y="12.86"
             >
               2
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              class="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(270) translate(-24,-22)"
@@ -1808,89 +1696,88 @@ Array [
         </g>
       </div>
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             1
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               1818
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 4
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(0,-85)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={7.359999999999999}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="7.359999999999999"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={12.86}
+              y="12.86"
             >
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              class="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(90) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-5.6}
-              y={0}
+              class="m-vehicle-icon__variant"
+              dominant-baseline="central"
+              text-anchor="start"
+              x="-5.6"
+              y="0"
             >
               4
             </text>
@@ -1898,271 +1785,258 @@ Array [
         </g>
       </div>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-incoming-box"
+  />
+</DocumentFragment>
 `;
 
 exports[`routeLadder renders a route ladder with vehicles 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <line
-        className="m-ladder__scheduled-line on-time early-red"
-        x1={-63}
-        x2={-40}
-        y1={-110}
-        y2={-110}
+        class="m-ladder__scheduled-line on-time early-red"
+        x1="-63"
+        x2="-40"
+        y1="-110"
+        y2="-110"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             1
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               1818
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 4
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      PATTI SMITH #op1
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(63,-27.5)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="11.5"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={17}
+              y="17"
             >
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              class="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.625) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={8.5}
+              class="m-vehicle-icon__variant"
+              dominant-baseline="alphabetic"
+              text-anchor="middle"
+              x="0"
+              y="8.5"
             >
               4
             </text>
@@ -2170,73 +2044,73 @@ Array [
         </g>
       </div>
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          ghost block
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          0123
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          N/A
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          N/A
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            N/A
-          </span>
+           ghost block
+          <br>
+            <b>
+              Run:
+            </b>
+             0123
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               N/A
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   N/A
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      N/A
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(63,-110)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
+            class="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="11.5"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={17}
+              y="17"
             >
               0123
             </text>
@@ -2244,24 +2118,24 @@ Array [
               transform="scale(0.4375) translate(-24,-23)"
             >
               <path
-                className="m-vehicle-icon__ghost-highlight"
+                class="m-vehicle-icon__ghost-highlight"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                strokeLinejoin="round"
+                stroke-linejoin="round"
               />
               <path
-                className="m-vehicle-icon__ghost-body"
+                class="m-vehicle-icon__ghost-body"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                strokeLinejoin="round"
+                stroke-linejoin="round"
               />
               <ellipse
-                className="m-vehicle-icon__ghost-eye"
+                class="m-vehicle-icon__ghost-eye"
                 cx="19.73"
                 cy="22.8"
                 rx="3.11"
                 ry="3.03"
               />
               <ellipse
-                className="m-vehicle-icon__ghost-eye"
+                class="m-vehicle-icon__ghost-eye"
                 cx="35.29"
                 cy="22.8"
                 rx="3.11"
@@ -2272,22 +2146,22 @@ Array [
               transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
             >
               <g
-                className="c-icon-alert-circle--highlighted"
+                class="c-icon-alert-circle--highlighted"
               >
                 <circle
-                  className="c-icon-alert-circle__outline"
+                  class="c-icon-alert-circle__outline"
                   cx="24"
                   cy="24"
                   r="27"
                 />
                 <circle
-                  className="c-icon-alert-circle__fill"
+                  class="c-icon-alert-circle__fill"
                   cx="24"
                   cy="24"
                   r="22.59"
                 />
                 <g
-                  className="c-icon-alert-circle__exclamation-point"
+                  class="c-icon-alert-circle__exclamation-point"
                 >
                   <path
                     d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
@@ -2302,78 +2176,78 @@ Array [
         </g>
       </div>
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           <b>
             Block:
           </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          2
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          0479
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            NORA JONES #op2
-          </span>
+           block-1
+          <br>
+            <b>
+              Run:
+            </b>
+             2
+            <br>
+              <b>
+                Vehicle:
+              </b>
+               0479
+              <br>
+                <b>
+                  Variant:
+                </b>
+                 
+                <br>
+                  <b>
+                    Adherence:
+                  </b>
+                   0 min early
+                  <br>
+                    <b>
+                      Operator:
+                    </b>
+                     
+                    <span
+                      class="fs-mask"
+                    >
+                      NORA JONES #op2
+                    </span>
+                  </br>
+                </br>
+              </br>
+            </br>
+          </br>
         </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
+          class="m-ladder__vehicle  "
           transform="translate(-63,-110)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+            class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={-22.5}
+              class="m-vehicle-icon__label-background"
+              height="11"
+              rx="5.5"
+              ry="5.5"
+              width="26"
+              x="-13"
+              y="-22.5"
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
+              class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominant-baseline="central"
+              text-anchor="middle"
               x="0"
-              y={-17}
+              y="-17"
             >
               2
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              class="m-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.625) rotate(180) translate(-24,-22)"
@@ -2382,370 +2256,347 @@ Array [
         </g>
       </div>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-incoming-box"
+  />
+</DocumentFragment>
 `;
 
 exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="m-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
+    class="m-incoming-box"
   >
     <div
-      className="mock-tippy"
+      class="mock-tippy"
     >
       <div
-        className="mock-tippy-content"
+        class="mock-tippy-content"
       >
         <b>
           Block:
         </b>
-         
-        block-1
+         block-1
         <br />
         <b>
           Run:
         </b>
-         
-        1
+         1
         <br />
         <b>
           Vehicle:
         </b>
-         
-        1818
+         1818
         <br />
         <b>
           Variant:
         </b>
-         
-        4
+         4
         <br />
         <b>
           Adherence:
         </b>
-         
-        0 min early
+         0 min early
         <br />
         <b>
           Operator:
         </b>
          
         <span
-          className="fs-mask"
+          class="fs-mask"
         >
           PATTI SMITH #op1
         </span>
       </div>
       <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
+        class="m-incoming-box__vehicle "
       >
         <div
-          className="m-incoming-box__vehicle-icon"
+          class="m-incoming-box__vehicle-icon"
         >
           <svg
             role="img"
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
+            style="width: 16.72px; height: 15.2px;"
             viewBox="-8.36 -7.6 16.72 15.2"
           >
             <title>
               Vehicle Status Icon
             </title>
             <g
-              className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+              class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
             >
               <path
-                className="m-vehicle-icon__triangle"
+                class="m-vehicle-icon__triangle"
                 d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
                 data-testid="vehicle-triangle"
                 transform="scale(0.38) rotate(0) translate(-24,-22)"
               />
               <text
-                className="m-vehicle-icon__variant"
-                dominantBaseline="alphabetic"
-                textAnchor="middle"
-                x={0}
-                y={5.6}
+                class="m-vehicle-icon__variant"
+                dominant-baseline="alphabetic"
+                text-anchor="middle"
+                x="0"
+                y="5.6"
               >
                 4
               </text>
@@ -2753,35 +2604,32 @@ Array [
           </svg>
         </div>
         <div
-          className="m-incoming-box__vehicle-label"
+          class="m-incoming-box__vehicle-label"
         >
           1
         </div>
       </button>
     </div>
     <div
-      className="mock-tippy"
+      class="mock-tippy"
     >
       <div
-        className="mock-tippy-content"
+        class="mock-tippy-content"
       >
         <b>
           Block:
         </b>
-         
-        block-1
+         block-1
         <br />
         <b>
           Run:
         </b>
-         
-        2
+         2
         <br />
         <b>
           Vehicle:
         </b>
-         
-        0479
+         0479
         <br />
         <b>
           Variant:
@@ -2791,44 +2639,37 @@ Array [
         <b>
           Adherence:
         </b>
-         
-        0 min early
+         0 min early
         <br />
         <b>
           Operator:
         </b>
          
         <span
-          className="fs-mask"
+          class="fs-mask"
         >
           NORA JONES #op2
         </span>
       </div>
       <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
+        class="m-incoming-box__vehicle "
       >
         <div
-          className="m-incoming-box__vehicle-icon"
+          class="m-incoming-box__vehicle-icon"
         >
           <svg
             role="img"
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
+            style="width: 16.72px; height: 15.2px;"
             viewBox="-8.36 -7.6 16.72 15.2"
           >
             <title>
               Vehicle Status Icon
             </title>
             <g
-              className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+              class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
             >
               <path
-                className="m-vehicle-icon__triangle"
+                class="m-vehicle-icon__triangle"
                 d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
                 data-testid="vehicle-triangle"
                 transform="scale(0.38) rotate(180) translate(-24,-22)"
@@ -2837,12 +2678,12 @@ Array [
           </svg>
         </div>
         <div
-          className="m-incoming-box__vehicle-label"
+          class="m-incoming-box__vehicle-label"
         >
           2
         </div>
       </button>
     </div>
-  </div>,
-]
+  </div>
+</DocumentFragment>
 `;
