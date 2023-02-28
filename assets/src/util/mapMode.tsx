@@ -9,7 +9,7 @@ export interface NavMode {
   path: string
   title: string
   element: ReactElement
-  navIcon: (props: any) => ReactElement
+  navIcon: React.JSXElementConstructor<any>
   supportsRightPanel: boolean
   navEventText?: string
 }

@@ -27,26 +27,6 @@ describe("<SvgIcon/>", () => {
 
 describe("svgIcon(text) -> (props)", () => {
   describe("first function returns react element which renders `svgText` and passed props", () => {
-    test("when called via function call", () => {
-      const className = "test-class-name"
-      const svgText = "<svg><title>hello test</title></svg>"
-
-      const TestSvgTextElement = svgIcon(svgText)
-      const { container } = render(
-        TestSvgTextElement({ className, role: "img" })
-      )
-
-      expect(container).toEqual(
-        render(
-          <span className={className} role="img">
-            <svg>
-              <title>hello test</title>
-            </svg>
-          </span>
-        ).container
-      )
-    })
-
     test("when used via JSX", () => {
       const className = "test-class-name"
       const spanTitle = "test span title"
