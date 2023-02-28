@@ -248,14 +248,23 @@ defmodule Realtime.Server do
   end
 
   def handle_info(:ghost_stats, %__MODULE__{ets: ets}) do
-    {ets, :all_vehicles}
-    |> lookup()
-    |> Enum.filter(&match?(%Ghost{}, &1))
-    |> Enum.each(fn ghost ->
-      Logger.info(
-        "ghost: id=#{ghost.id} route=#{ghost.route_id} run_id=#{ghost.run_id} block_waiver_causes=#{inspect(Enum.map(ghost.block_waivers, & &1.cause_id))}"
-      )
-    end)
+    {explained_count, unexplained_count} =
+      {ets, :all_vehicles}
+      |> lookup()
+      |> Enum.filter(&match?(%Ghost{}, &1))
+      |> Enum.reduce({0, 0}, fn ghost, {explained_count, unexplained_count} ->
+        alias Realtime.BlockWaiver
+
+        if Enum.any?(ghost.block_waivers, &BlockWaiver.is_current?(&1)) do
+          {explained_count + 1, unexplained_count}
+        else
+          {explained_count, unexplained_count + 1}
+        end
+      end)
+
+    Logger.info(
+      "ghost_stats: explained_count=#{explained_count} unexplained_count=#{unexplained_count}"
+    )
   end
 
   @impl true

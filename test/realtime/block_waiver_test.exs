@@ -202,6 +202,44 @@ defmodule Realtime.BlockWaiverTest do
     end
   end
 
+  describe "is_current?/1" do
+    test "true when current time is between start and end times" do
+      current_time = 5
+      reassign_env(:skate, :now_fn, fn -> current_time end)
+
+      assert BlockWaiver.is_current?(%BlockWaiver{
+               start_time: current_time - 1,
+               end_time: current_time + 10,
+               cause_id: 26,
+               cause_description: "E - Diverted"
+             })
+    end
+
+    test "false when current time is after end time" do
+      current_time = 5
+      reassign_env(:skate, :now_fn, fn -> current_time end)
+
+      refute BlockWaiver.is_current?(%BlockWaiver{
+               start_time: current_time - 4,
+               end_time: current_time - 1,
+               cause_id: 26,
+               cause_description: "E - Diverted"
+             })
+    end
+
+    test "false when current time is before start time" do
+      current_time = 5
+      reassign_env(:skate, :now_fn, fn -> current_time end)
+
+      refute BlockWaiver.is_current?(%BlockWaiver{
+               start_time: current_time + 1,
+               end_time: current_time + 4,
+               cause_id: 26,
+               cause_description: "E - Diverted"
+             })
+    end
+  end
+
   describe "group_consecutive_sequences/1" do
     test "removes trip_stop_time_waivers missing a waiver" do
       trip_stop_time_waivers = [{1, nil}]
