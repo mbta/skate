@@ -247,7 +247,7 @@ defmodule Realtime.Server do
     {:noreply, state, :hibernate}
   end
 
-  def handle_info(:ghost_stats, %__MODULE__{ets: ets}) do
+  def handle_info(:ghost_stats, %__MODULE__{ets: ets} = state) do
     {explained_count, unexplained_count} =
       {ets, :all_vehicles}
       |> lookup()
@@ -265,6 +265,8 @@ defmodule Realtime.Server do
     Logger.info(
       "ghost_stats: explained_count=#{explained_count} unexplained_count=#{unexplained_count}"
     )
+
+    {:noreply, state, :hibernate}
   end
 
   @impl true
