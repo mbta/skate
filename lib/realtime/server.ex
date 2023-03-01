@@ -223,6 +223,7 @@ defmodule Realtime.Server do
     ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
     :timer.send_interval(30_000, self(), :check_data_status)
+    :timer.send_interval(60_000, self(), :ghost_stats)
 
     {:ok, %__MODULE__{ets: ets}}
   end
@@ -243,6 +244,28 @@ defmodule Realtime.Server do
     _ = DataStatusPubSub.update(data_status)
 
     # hibernate periodically to clean up garbage from previous states.
+    {:noreply, state, :hibernate}
+  end
+
+  def handle_info(:ghost_stats, %__MODULE__{ets: ets} = state) do
+    {explained_count, unexplained_count} =
+      {ets, :all_vehicles}
+      |> lookup()
+      |> Enum.filter(&match?(%Ghost{}, &1))
+      |> Enum.reduce({0, 0}, fn ghost, {explained_count, unexplained_count} ->
+        alias Realtime.BlockWaiver
+
+        if Enum.any?(ghost.block_waivers, &BlockWaiver.is_current?(&1)) do
+          {explained_count + 1, unexplained_count}
+        else
+          {explained_count, unexplained_count + 1}
+        end
+      end)
+
+    Logger.info(
+      "ghost_stats: explained_count=#{explained_count} unexplained_count=#{unexplained_count}"
+    )
+
     {:noreply, state, :hibernate}
   end
 

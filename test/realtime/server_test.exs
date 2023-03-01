@@ -1,8 +1,10 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureLog
   import Test.Support.Helpers
   import Skate.Factory
 
+  alias Realtime.BlockWaiver
   alias Realtime.Server
 
   @vehicle build(:vehicle,
@@ -459,6 +461,88 @@ defmodule Realtime.ServerTest do
       Server.handle_info(:check_data_status, state)
 
       assert_received([%Realtime.Vehicle{}])
+    end
+
+    test "logs ghost stats" do
+      set_log_level(:info)
+
+      ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
+      state = %Server{ets: ets}
+
+      current_time = 5
+
+      reassign_env(:skate, :now_fn, fn -> current_time end)
+
+      ghost_unexplained = build(:ghost, id: "g1", block_id: "ghost_block", route_id: "1")
+
+      ghost_current_waiver =
+        build(:ghost,
+          id: "g2",
+          block_id: "ghost_block_2",
+          route_id: "1",
+          block_waivers: [
+            # one current waiver
+            %BlockWaiver{
+              start_time: current_time - 1,
+              end_time: current_time + 10,
+              cause_id: 26,
+              cause_description: "E - Diverted"
+            },
+            # one future waiver
+            %BlockWaiver{
+              start_time: current_time + 10,
+              end_time: current_time + 20,
+              cause_id: 23,
+              cause_description: "B - Manpower"
+            }
+          ]
+        )
+
+      ghost_past_waiver =
+        build(:ghost,
+          id: "g3",
+          block_id: "ghost_block_3",
+          route_id: "1",
+          block_waivers: [
+            # one past waiver
+            %BlockWaiver{
+              start_time: current_time - 4,
+              end_time: current_time - 1,
+              cause_id: 23,
+              cause_description: "B - Manpower"
+            }
+          ]
+        )
+
+      ghost_future_waiver =
+        build(:ghost,
+          id: "g4",
+          block_id: "ghost_block_4",
+          route_id: "1",
+          block_waivers: [
+            %BlockWaiver{
+              start_time: current_time + 10,
+              end_time: current_time + 20,
+              cause_id: 23,
+              cause_description: "B - Manpower"
+            }
+          ]
+        )
+
+      :ets.insert(
+        ets,
+        {:all_vehicles,
+         [
+           @vehicle,
+           ghost_unexplained,
+           ghost_current_waiver,
+           ghost_past_waiver,
+           ghost_future_waiver
+         ]}
+      )
+
+      log = capture_log(fn -> Server.handle_info(:ghost_stats, state) end)
+      assert log =~ "ghost_stats: explained_count=1 unexplained_count=3"
     end
   end
 

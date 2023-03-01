@@ -78,6 +78,17 @@ defmodule Realtime.BlockWaiver do
     end)
   end
 
+  @spec is_current?(t()) :: boolean()
+  @doc """
+  Returns whether or not the given block waiver is currently active
+  based on its start and end times.
+  """
+  def is_current?(block_waiver) do
+    now_fn = Application.get_env(:skate, :now_fn, &Util.Time.now/0)
+    now = now_fn.()
+    now > block_waiver.start_time && now < block_waiver.end_time
+  end
+
   @spec is_block_waiver?(StopTimeUpdate.t()) :: boolean()
   def is_block_waiver?(stop_time_update) do
     # cause_id 33 is bad TransitMaster units.
