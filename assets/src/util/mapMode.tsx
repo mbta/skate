@@ -5,11 +5,13 @@ import SearchPage from "../components/searchPage"
 import { SearchIcon, SearchMapIcon } from "../helpers/icon"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 
+type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
+
 export interface NavMode {
   path: string
   title: string
   element: ReactElement
-  navIcon: (props: any) => ReactElement
+  navIcon: React.JSXElementConstructor<HTMLElementProps>
   supportsRightPanel: boolean
   navEventText?: string
 }

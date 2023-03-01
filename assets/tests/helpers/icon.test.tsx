@@ -72,11 +72,11 @@ describe.each([
   ["TriangleUpIcon", TriangleUpIcon],
   ["UpDownIcon", UpDownIcon],
   ["WalkingIcon", WalkingIcon],
-])(`%s`, (_, iconFn) => {
-  it("renders an icon with a class name", () => {
+])(`%s`, (_, IconFn) => {
+  it("should render icon with a class name", () => {
     const className = "test-class-name"
 
-    const result = render(iconFn({ className })).asFragment()
+    const result = render(<IconFn className={className}></IconFn>).asFragment()
 
     expect(result).toEqual(
       render(
@@ -87,8 +87,8 @@ describe.each([
     )
   })
 
-  it("renders without a class name", () => {
-    const result = render(iconFn({})).asFragment()
+  it("should render without a class name", () => {
+    const result = render(<IconFn />).asFragment()
 
     expect(result).toEqual(
       render(

@@ -59,7 +59,10 @@ const Header = ({
           trigger="click"
           onShow={() => tagManagerEvent("alert_tooltip_clicked")}
         >
-          <AlertIcon className="m-route-ladder__alert-icon" />
+          <AlertIcon
+            className="m-route-ladder__alert-icon"
+            aria-label="Route Alert"
+          />
         </Tippy>
       )}
       <div className="m-route-ladder__close-button-container">

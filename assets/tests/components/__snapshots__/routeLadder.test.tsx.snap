@@ -1,1520 +1,271 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`routeLadder displays loading if we are fetching the timepoints 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
-  "loading...",
-]
+  </div>
+  loading...
+</DocumentFragment>
 `;
 
 exports[`routeLadder displays no crowding data for a bus coming off a route with no crowding data onto a route with crowding data 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
     <button
-      className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
-      onClick={[Function]}
+      class="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
     >
       <span
-        className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
+      >
+        <svg />
+      </span>
       Hide riders
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
-      <div
-        className="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
-        </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(63,-27.5)"
+          class="m-vehicle-icon m-vehicle-icon--small"
         >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="40"
+            x="-20"
+            y="6.6"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.1"
+          >
+            14/18
+          </text>
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            class="m-ladder__crowding m-ladder__crowding--some-crowding"
+            transform="scale(0.38) translate(-24,-30)"
           >
             <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={40}
-              x={-20}
-              y={6.6}
+              fill="transparent"
+              height="52"
+              width="52"
+              x="-2"
+              y="-2"
             />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={12.1}
-            >
-              14/18
-            </text>
-            <g
-              className="m-ladder__crowding m-ladder__crowding--some-crowding"
-              transform="scale(0.38) translate(-24,-30)"
-            >
-              <rect
-                fill="transparent"
-                height="52"
-                width="52"
-                x="-2"
-                y="-2"
-              />
-              <path
-                d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
-              />
-              <circle
-                cx="6.74"
-                cy="8.54"
-                r="4.93"
-              />
-              <path
-                d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
-              />
-              <circle
-                cx="23.88"
-                cy="8.48"
-                r="4.93"
-              />
-              <path
-                d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
-              />
-              <circle
-                cx="41.03"
-                cy="8.48"
-                r="4.93"
-              />
-            </g>
-          </g>
-        </g>
-      </div>
-      <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
-        y1="0"
-        y2={-110}
-      />
-      <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
-        y1="0"
-        y2={-110}
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
-      </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
-    </svg>
-  </div>,
-  <div
-    className="m-incoming-box"
-  >
-    <div
-      className="mock-tippy"
-    >
-      <div
-        className="mock-tippy-content"
-      >
-        <b>
-          Block:
-        </b>
-         
-        block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         
-        2
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         
-        0479
-        <br />
-        <b>
-          Variant:
-        </b>
-         
-        <br />
-        <b>
-          Adherence:
-        </b>
-         
-        0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          className="fs-mask"
-        >
-          NORA JONES #op2
-        </span>
-      </div>
-      <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
-      >
-        <div
-          className="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
-            viewBox="-8.36 -7.6 16.72 15.2"
-          >
-            <g
-              className="m-vehicle-icon m-vehicle-icon--small"
-            >
-              <g
-                className="m-ladder__crowding m-ladder__crowding--no-data"
-                transform="scale(0.38) translate(-24,-14)"
-              >
-                <rect
-                  fill="transparent"
-                  height="52"
-                  width="52"
-                  x="-2"
-                  y="-2"
-                />
-                <path
-                  d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
-                />
-                <circle
-                  cx="6.74"
-                  cy="8.54"
-                  r="4.93"
-                />
-                <path
-                  d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
-                />
-                <circle
-                  cx="23.88"
-                  cy="8.48"
-                  r="4.93"
-                />
-                <path
-                  d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
-                />
-                <circle
-                  cx="41.03"
-                  cy="8.48"
-                  r="4.93"
-                />
-              </g>
-            </g>
-          </svg>
-        </div>
-        <div
-          className="m-incoming-box__vehicle-label"
-        >
-          ?/?
-        </div>
-      </button>
-    </div>
-  </div>,
-]
-`;
-
-exports[`routeLadder doesn't display crowding data for a vehicle coming off a route with crowding data onto a route with none 1`] = `
-Array [
-  <div
-    className="m-route-ladder__header"
-  >
-    <div
-      className="m-route-ladder__close-button-container"
-    >
-      <button
-        aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
-      >
-        <span
-          aria-hidden={true}
-          aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
-          role="img"
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-ladder__route-name"
-    >
-      28
-    </div>
-  </div>,
-  <div
-    className="m-route-ladder__controls"
-  >
-    <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
-    >
-      <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
-      Reverse
-    </button>
-  </div>,
-  <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
-  >
-    <svg
-      className="m-ladder__svg"
-      height={0}
-      viewBox="-92 -55 184 0"
-      width={184}
-    >
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
-        </div>
-        <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(63,-27.5)"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={17}
-            >
-              1
-            </text>
             <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(0) translate(-24,-22)"
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
             />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={8.5}
-            >
-              4
-            </text>
-          </g>
-        </g>
-      </div>
-      <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
-        y1="0"
-        y2={-110}
-      />
-      <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
-        y1="0"
-        y2={-110}
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
-      </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
-    </svg>
-  </div>,
-  <div
-    className="m-incoming-box"
-  >
-    <div
-      className="mock-tippy"
-    >
-      <div
-        className="mock-tippy-content"
-      >
-        <b>
-          Block:
-        </b>
-         
-        block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         
-        2
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         
-        0479
-        <br />
-        <b>
-          Variant:
-        </b>
-         
-        <br />
-        <b>
-          Adherence:
-        </b>
-         
-        0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          className="fs-mask"
-        >
-          NORA JONES #op2
-        </span>
-      </div>
-      <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
-      >
-        <div
-          className="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            role="img"
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
-            viewBox="-8.36 -7.6 16.72 15.2"
-          >
-            <title>
-              Vehicle Status Icon
-            </title>
-            <g
-              className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
-            >
-              <path
-                className="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                data-testid="vehicle-triangle"
-                transform="scale(0.38) rotate(180) translate(-24,-22)"
-              />
-            </g>
-          </svg>
-        </div>
-        <div
-          className="m-incoming-box__vehicle-label"
-        >
-          2
-        </div>
-      </button>
-    </div>
-  </div>,
-]
-`;
-
-exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] = `
-Array [
-  <div
-    className="m-route-ladder__header"
-  >
-    <div
-      className="m-route-ladder__close-button-container"
-    >
-      <button
-        aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
-      >
-        <span
-          aria-hidden={true}
-          aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
-          role="img"
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-ladder__route-name"
-    >
-      28
-    </div>
-  </div>,
-  <div
-    className="m-route-ladder__controls"
-  >
-    <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
-    >
-      <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
-      Reverse
-    </button>
-  </div>,
-  <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
-  >
-    <svg
-      className="m-ladder__svg"
-      height={0}
-      viewBox="-92 -55 184 0"
-      width={184}
-    >
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
-        </div>
-        <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(63,-27.5)"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
             />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={17}
-            >
-              1
-            </text>
             <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(0) translate(-24,-22)"
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
             />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={8.5}
-            >
-              4
-            </text>
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
           </g>
         </g>
-      </div>
+      </g>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
-`;
-
-exports[`routeLadder renders a route ladder 1`] = `
-Array [
-  <div
-    className="m-route-ladder__header"
-  >
-    <div
-      className="m-route-ladder__close-button-container"
-    >
-      <button
-        aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
-      >
-        <span
-          aria-hidden={true}
-          aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
-          role="img"
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-ladder__route-name"
-    >
-      28
-    </div>
-  </div>,
-  <div
-    className="m-route-ladder__controls"
+    class="m-incoming-box"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
-    >
-      <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
-      Reverse
-    </button>
-  </div>,
-  <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
-  >
-    <svg
-      className="m-ladder__svg"
-      height={0}
-      viewBox="-92 -55 184 0"
-      width={184}
-    >
-      <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
-        y1="0"
-        y2={-110}
-      />
-      <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
-        y1="0"
-        y2={-110}
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
-      </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
-    </svg>
-  </div>,
-  <div
-    className="m-incoming-box"
-  />,
-]
-`;
-
-exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`] = `
-Array [
-  <div
-    className="m-route-ladder__header"
-  >
-    <div
-      className="m-route-ladder__close-button-container"
-    >
-      <button
-        aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
-      >
-        <span
-          aria-hidden={true}
-          aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
-          role="img"
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-ladder__route-name"
-    >
-      28
-    </div>
-  </div>,
-  <div
-    className="m-route-ladder__controls"
-  >
-    <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
-    >
-      <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
-      Reverse
-    </button>
-    <button
-      className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
-      onClick={[Function]}
-    >
-      <span
-        className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
-      Hide riders
-    </button>
-  </div>,
-  <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
-  >
-    <svg
-      className="m-ladder__svg"
-      height={0}
-      viewBox="-92 -55 184 0"
-      width={184}
+      class="m-incoming-box__vehicle "
     >
       <div
-        className="mock-tippy"
+        class="m-incoming-box__vehicle-icon"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
-        </div>
-        <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(63,-27.5)"
+        <svg
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            class="m-vehicle-icon m-vehicle-icon--small"
           >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={40}
-              x={-20}
-              y={6.6}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={12.1}
-            >
-              14/18
-            </text>
             <g
-              className="m-ladder__crowding m-ladder__crowding--some-crowding"
-              transform="scale(0.38) translate(-24,-30)"
-            >
-              <rect
-                fill="transparent"
-                height="52"
-                width="52"
-                x="-2"
-                y="-2"
-              />
-              <path
-                d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
-              />
-              <circle
-                cx="6.74"
-                cy="8.54"
-                r="4.93"
-              />
-              <path
-                d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
-              />
-              <circle
-                cx="23.88"
-                cy="8.48"
-                r="4.93"
-              />
-              <path
-                d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
-              />
-              <circle
-                cx="41.03"
-                cy="8.48"
-                r="4.93"
-              />
-            </g>
-          </g>
-        </g>
-      </div>
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          2
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          0479
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            NORA JONES #op2
-          </span>
-        </div>
-        <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(-63,-110)"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--small"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={-17.6}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={-12.100000000000001}
-            >
-              ?/?
-            </text>
-            <g
-              className="m-ladder__crowding m-ladder__crowding--no-data"
+              class="m-ladder__crowding m-ladder__crowding--no-data"
               transform="scale(0.38) translate(-24,-14)"
             >
               <rect
@@ -1550,1299 +301,1535 @@ Array [
               />
             </g>
           </g>
-        </g>
+        </svg>
       </div>
-      <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
-        y1="0"
-        y2={-110}
-      />
-      <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
-        y1="0"
-        y2={-110}
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
-        r="3"
-      />
       <div
-        className="mock-tippy"
+        class="m-incoming-box__vehicle-label"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
+        ?/?
       </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
-        r="3"
-      />
-      <div
-        className="mock-tippy"
-      >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
-    </svg>
-  </div>,
+    </button>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`routeLadder doesn't display crowding data for a vehicle coming off a route with crowding data onto a route with none 1`] = `
+<DocumentFragment>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-route-ladder__header"
+  >
+    <div
+      class="m-route-ladder__close-button-container"
+    >
+      <button
+        aria-label="Close"
+        class="m-close-button m-close-button--large m-close-button--darker"
+      >
+        <span
+          aria-hidden="true"
+          aria-label=""
+          role="img"
+        >
+          <svg />
+        </span>
+      </button>
+    </div>
+    <div
+      class="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>
+  <div
+    class="m-route-ladder__controls"
+  >
+    <button
+      class="m-route-ladder__reverse"
+    >
+      <span
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
+      Reverse
+    </button>
+  </div>
+  <div
+    class="m-ladder"
+    style="width: 184px;"
+  >
+    <svg
+      class="m-ladder__svg"
+      height="0"
+      viewBox="-92 -55 184 0"
+      width="184"
+    >
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
+      >
+        <g
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+        >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
+          >
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="alphabetic"
+            text-anchor="middle"
+            x="0"
+            y="8.5"
+          >
+            4
+          </text>
+        </g>
+      </g>
+      <line
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
+        y1="0"
+        y2="-110"
+      />
+      <line
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="-110"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
+      >
+        MATPN
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
+      >
+        WELLH
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
+      >
+        MORTN
+      </text>
+    </svg>
+  </div>
+  <div
+    class="m-incoming-box"
+  >
+    <button
+      class="m-incoming-box__vehicle "
+    >
+      <div
+        class="m-incoming-box__vehicle-icon"
+      >
+        <svg
+          role="img"
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
+        >
+          <title>
+            Vehicle Status Icon
+          </title>
+          <g
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          >
+            <path
+              class="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
+              transform="scale(0.38) rotate(180) translate(-24,-22)"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="m-incoming-box__vehicle-label"
+      >
+        2
+      </div>
+    </button>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] = `
+<DocumentFragment>
+  <div
+    class="m-route-ladder__header"
+  >
+    <div
+      class="m-route-ladder__close-button-container"
+    >
+      <button
+        aria-label="Close"
+        class="m-close-button m-close-button--large m-close-button--darker"
+      >
+        <span
+          aria-hidden="true"
+          aria-label=""
+          role="img"
+        >
+          <svg />
+        </span>
+      </button>
+    </div>
+    <div
+      class="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>
+  <div
+    class="m-route-ladder__controls"
+  >
+    <button
+      class="m-route-ladder__reverse"
+    >
+      <span
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
+      Reverse
+    </button>
+  </div>
+  <div
+    class="m-ladder"
+    style="width: 184px;"
+  >
+    <svg
+      class="m-ladder__svg"
+      height="0"
+      viewBox="-92 -55 184 0"
+      width="184"
+    >
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
+      >
+        <g
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+        >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
+          >
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="alphabetic"
+            text-anchor="middle"
+            x="0"
+            y="8.5"
+          >
+            4
+          </text>
+        </g>
+      </g>
+      <line
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
+        y1="0"
+        y2="-110"
+      />
+      <line
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="-110"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
+      >
+        MATPN
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
+      >
+        WELLH
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
+      >
+        MORTN
+      </text>
+    </svg>
+  </div>
+  <div
+    class="m-incoming-box"
+  />
+</DocumentFragment>
+`;
+
+exports[`routeLadder renders a route ladder 1`] = `
+<div>
+  <div
+    class="m-route-ladder__header"
+  >
+    <div
+      class="m-route-ladder__close-button-container"
+    >
+      <button
+        aria-label="Close"
+        class="m-close-button m-close-button--large m-close-button--darker"
+      >
+        <span
+          aria-hidden="true"
+          aria-label=""
+          role="img"
+        >
+          <svg />
+        </span>
+      </button>
+    </div>
+    <div
+      class="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>
+  <div
+    class="m-route-ladder__controls"
+  >
+    <button
+      class="m-route-ladder__reverse"
+    >
+      <span
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
+      Reverse
+    </button>
+  </div>
+  <div
+    class="m-ladder"
+    style="width: 184px;"
+  >
+    <svg
+      class="m-ladder__svg"
+      height="0"
+      viewBox="-92 -55 184 0"
+      width="184"
+    >
+      <line
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
+        y1="0"
+        y2="-110"
+      />
+      <line
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="-110"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
+      >
+        MATPN
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
+      >
+        WELLH
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
+      >
+        MORTN
+      </text>
+    </svg>
+  </div>
+  <div
+    class="m-incoming-box"
+  />
+</div>
+`;
+
+exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`] = `
+<DocumentFragment>
+  <div
+    class="m-route-ladder__header"
+  >
+    <div
+      class="m-route-ladder__close-button-container"
+    >
+      <button
+        aria-label="Close"
+        class="m-close-button m-close-button--large m-close-button--darker"
+      >
+        <span
+          aria-hidden="true"
+          aria-label=""
+          role="img"
+        >
+          <svg />
+        </span>
+      </button>
+    </div>
+    <div
+      class="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>
+  <div
+    class="m-route-ladder__controls"
+  >
+    <button
+      class="m-route-ladder__reverse"
+    >
+      <span
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
+      Reverse
+    </button>
+    <button
+      class="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
+    >
+      <span
+        class="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
+      >
+        <svg />
+      </span>
+      Hide riders
+    </button>
+  </div>
+  <div
+    class="m-ladder"
+    style="width: 184px;"
+  >
+    <svg
+      class="m-ladder__svg"
+      height="0"
+      viewBox="-92 -55 184 0"
+      width="184"
+    >
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
+      >
+        <g
+          class="m-vehicle-icon m-vehicle-icon--small"
+        >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="40"
+            x="-20"
+            y="6.6"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.1"
+          >
+            14/18
+          </text>
+          <g
+            class="m-ladder__crowding m-ladder__crowding--some-crowding"
+            transform="scale(0.38) translate(-24,-30)"
+          >
+            <rect
+              fill="transparent"
+              height="52"
+              width="52"
+              x="-2"
+              y="-2"
+            />
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
+          </g>
+        </g>
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(-63,-110)"
+      >
+        <g
+          class="m-vehicle-icon m-vehicle-icon--small"
+        >
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="-17.6"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="-12.100000000000001"
+          >
+            ?/?
+          </text>
+          <g
+            class="m-ladder__crowding m-ladder__crowding--no-data"
+            transform="scale(0.38) translate(-24,-14)"
+          >
+            <rect
+              fill="transparent"
+              height="52"
+              width="52"
+              x="-2"
+              y="-2"
+            />
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
+          </g>
+        </g>
+      </g>
+      <line
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
+        y1="0"
+        y2="-110"
+      />
+      <line
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="-110"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
+      >
+        MATPN
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
+      >
+        WELLH
+      </text>
+      <circle
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
+        r="3"
+      />
+      <circle
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
+        r="3"
+      />
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
+      >
+        MORTN
+      </text>
+    </svg>
+  </div>
+  <div
+    class="m-incoming-box"
+  />
+</DocumentFragment>
 `;
 
 exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
-      <div
-        className="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(0,-35)"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          2
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          0479
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            NORA JONES #op2
-          </span>
-        </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(0,-35)"
+          class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
         >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="7.359999999999999"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.86"
           >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={7.359999999999999}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={12.86}
-            >
-              2
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.38) rotate(270) translate(-24,-22)"
-            />
-          </g>
+            2
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.38) rotate(270) translate(-24,-22)"
+          />
         </g>
-      </div>
-      <div
-        className="mock-tippy"
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(0,-85)"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
-        </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(0,-85)"
+          class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
         >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="7.359999999999999"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="12.86"
           >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={7.359999999999999}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={12.86}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.38) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-5.6}
-              y={0}
-            >
-              4
-            </text>
-          </g>
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.38) rotate(90) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="central"
+            text-anchor="start"
+            x="-5.6"
+            y="0"
+          >
+            4
+          </text>
         </g>
-      </div>
+      </g>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-incoming-box"
+  />
+</DocumentFragment>
 `;
 
 exports[`routeLadder renders a route ladder with vehicles 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <line
-        className="m-ladder__scheduled-line on-time early-red"
-        x1={-63}
-        x2={-40}
-        y1={-110}
-        y2={-110}
+        class="m-ladder__scheduled-line on-time early-red"
+        x1="-63"
+        x2="-40"
+        y1="-110"
+        y2="-110"
       />
-      <div
-        className="mock-tippy"
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-27.5)"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          1
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          1818
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          4
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            PATTI SMITH #op1
-          </span>
-        </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(63,-27.5)"
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
           >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={17}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(0) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={8.5}
-            >
-              4
-            </text>
-          </g>
+            1
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            class="m-vehicle-icon__variant"
+            dominant-baseline="alphabetic"
+            text-anchor="middle"
+            x="0"
+            y="8.5"
+          >
+            4
+          </text>
         </g>
-      </div>
-      <div
-        className="mock-tippy"
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(63,-110)"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          ghost block
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          0123
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          N/A
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          N/A
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            N/A
-          </span>
-        </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(63,-110)"
+          class="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
         >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="11.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="17"
           >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
+            0123
+          </text>
+          <g
+            transform="scale(0.4375) translate(-24,-23)"
+          >
+            <path
+              class="m-vehicle-icon__ghost-highlight"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-linejoin="round"
             />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={17}
-            >
-              0123
-            </text>
+            <path
+              class="m-vehicle-icon__ghost-body"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-linejoin="round"
+            />
+            <ellipse
+              class="m-vehicle-icon__ghost-eye"
+              cx="19.73"
+              cy="22.8"
+              rx="3.11"
+              ry="3.03"
+            />
+            <ellipse
+              class="m-vehicle-icon__ghost-eye"
+              cx="35.29"
+              cy="22.8"
+              rx="3.11"
+              ry="3.03"
+            />
+          </g>
+          <g
+            transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
+          >
             <g
-              transform="scale(0.4375) translate(-24,-23)"
+              class="c-icon-alert-circle--highlighted"
             >
-              <path
-                className="m-vehicle-icon__ghost-highlight"
-                d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                strokeLinejoin="round"
+              <circle
+                class="c-icon-alert-circle__outline"
+                cx="24"
+                cy="24"
+                r="27"
               />
-              <path
-                className="m-vehicle-icon__ghost-body"
-                d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                strokeLinejoin="round"
+              <circle
+                class="c-icon-alert-circle__fill"
+                cx="24"
+                cy="24"
+                r="22.59"
               />
-              <ellipse
-                className="m-vehicle-icon__ghost-eye"
-                cx="19.73"
-                cy="22.8"
-                rx="3.11"
-                ry="3.03"
-              />
-              <ellipse
-                className="m-vehicle-icon__ghost-eye"
-                cx="35.29"
-                cy="22.8"
-                rx="3.11"
-                ry="3.03"
-              />
-            </g>
-            <g
-              transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
-            >
               <g
-                className="c-icon-alert-circle--highlighted"
+                class="c-icon-alert-circle__exclamation-point"
               >
-                <circle
-                  className="c-icon-alert-circle__outline"
-                  cx="24"
-                  cy="24"
-                  r="27"
+                <path
+                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
                 />
-                <circle
-                  className="c-icon-alert-circle__fill"
-                  cx="24"
-                  cy="24"
-                  r="22.59"
+                <path
+                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
                 />
-                <g
-                  className="c-icon-alert-circle__exclamation-point"
-                >
-                  <path
-                    d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                  />
-                  <path
-                    d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                  />
-                </g>
               </g>
             </g>
           </g>
         </g>
-      </div>
-      <div
-        className="mock-tippy"
+      </g>
+      <g
+        class="m-ladder__vehicle  "
+        transform="translate(-63,-110)"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          <b>
-            Block:
-          </b>
-           
-          block-1
-          <br />
-          <b>
-            Run:
-          </b>
-           
-          2
-          <br />
-          <b>
-            Vehicle:
-          </b>
-           
-          0479
-          <br />
-          <b>
-            Variant:
-          </b>
-           
-          <br />
-          <b>
-            Adherence:
-          </b>
-           
-          0 min early
-          <br />
-          <b>
-            Operator:
-          </b>
-           
-          <span
-            className="fs-mask"
-          >
-            NORA JONES #op2
-          </span>
-        </div>
         <g
-          className="m-ladder__vehicle  "
-          onClick={[Function]}
-          transform="translate(-63,-110)"
+          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          <rect
+            class="m-vehicle-icon__label-background"
+            height="11"
+            rx="5.5"
+            ry="5.5"
+            width="26"
+            x="-13"
+            y="-22.5"
+          />
+          <text
+            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominant-baseline="central"
+            text-anchor="middle"
+            x="0"
+            y="-17"
           >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={-22.5}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={-17}
-            >
-              2
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              data-testid="vehicle-triangle"
-              transform="scale(0.625) rotate(180) translate(-24,-22)"
-            />
-          </g>
+            2
+          </text>
+          <path
+            class="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            data-testid="vehicle-triangle"
+            transform="scale(0.625) rotate(180) translate(-24,-22)"
+          />
         </g>
-      </div>
+      </g>
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
-  />,
-]
+    class="m-incoming-box"
+  />
+</DocumentFragment>
 `;
 
 exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="m-route-ladder__header"
+    class="m-route-ladder__header"
   >
     <div
-      className="m-route-ladder__close-button-container"
+      class="m-route-ladder__close-button-container"
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
-        onClick={[Function]}
+        class="m-close-button m-close-button--large m-close-button--darker"
       >
         <span
-          aria-hidden={true}
+          aria-hidden="true"
           aria-label=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "<svg/>",
-            }
-          }
           role="img"
-        />
+        >
+          <svg />
+        </span>
       </button>
     </div>
     <div
-      className="m-route-ladder__route-name"
+      class="m-route-ladder__route-name"
     >
       28
     </div>
-  </div>,
+  </div>
   <div
-    className="m-route-ladder__controls"
+    class="m-route-ladder__controls"
   >
     <button
-      className="m-route-ladder__reverse"
-      onClick={[Function]}
+      class="m-route-ladder__reverse"
     >
       <span
-        className="m-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-      />
+        class="m-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
       Reverse
     </button>
-  </div>,
+  </div>
   <div
-    className="m-ladder"
-    style={
-      Object {
-        "width": 184,
-      }
-    }
+    class="m-ladder"
+    style="width: 184px;"
   >
     <svg
-      className="m-ladder__svg"
-      height={0}
+      class="m-ladder__svg"
+      height="0"
       viewBox="-92 -55 184 0"
-      width={184}
+      width="184"
     >
       <line
-        className="m-ladder__line"
-        x1={-40}
-        x2={-40}
+        class="m-ladder__line"
+        x1="-40"
+        x2="-40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <line
-        className="m-ladder__line"
-        x1={40}
-        x2={40}
+        class="m-ladder__line"
+        x1="40"
+        x2="40"
         y1="0"
-        y2={-110}
+        y2="-110"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="0"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-0}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="0"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MATPN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-0}
-        >
-          MATPN
-        </text>
-      </div>
+        MATPN
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          WELLH Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-55}
-        >
-          WELLH
-        </text>
-      </div>
+        WELLH
+      </text>
       <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="m-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
-      <div
-        className="mock-tippy"
+      <text
+        class="m-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
       >
-        <div
-          className="mock-tippy-content"
-        >
-          MORTN Name
-        </div>
-        <text
-          className="m-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          x="0"
-          y={-110}
-        >
-          MORTN
-        </text>
-      </div>
+        MORTN
+      </text>
     </svg>
-  </div>,
+  </div>
   <div
-    className="m-incoming-box"
+    class="m-incoming-box"
   >
-    <div
-      className="mock-tippy"
+    <button
+      class="m-incoming-box__vehicle "
     >
       <div
-        className="mock-tippy-content"
+        class="m-incoming-box__vehicle-icon"
       >
-        <b>
-          Block:
-        </b>
-         
-        block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         
+        <svg
+          role="img"
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
+        >
+          <title>
+            Vehicle Status Icon
+          </title>
+          <g
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          >
+            <path
+              class="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
+              transform="scale(0.38) rotate(0) translate(-24,-22)"
+            />
+            <text
+              class="m-vehicle-icon__variant"
+              dominant-baseline="alphabetic"
+              text-anchor="middle"
+              x="0"
+              y="5.6"
+            >
+              4
+            </text>
+          </g>
+        </svg>
+      </div>
+      <div
+        class="m-incoming-box__vehicle-label"
+      >
         1
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         
-        1818
-        <br />
-        <b>
-          Variant:
-        </b>
-         
-        4
-        <br />
-        <b>
-          Adherence:
-        </b>
-         
-        0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          className="fs-mask"
-        >
-          PATTI SMITH #op1
-        </span>
       </div>
-      <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
-      >
-        <div
-          className="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            role="img"
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
-            viewBox="-8.36 -7.6 16.72 15.2"
-          >
-            <title>
-              Vehicle Status Icon
-            </title>
-            <g
-              className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
-            >
-              <path
-                className="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                data-testid="vehicle-triangle"
-                transform="scale(0.38) rotate(0) translate(-24,-22)"
-              />
-              <text
-                className="m-vehicle-icon__variant"
-                dominantBaseline="alphabetic"
-                textAnchor="middle"
-                x={0}
-                y={5.6}
-              >
-                4
-              </text>
-            </g>
-          </svg>
-        </div>
-        <div
-          className="m-incoming-box__vehicle-label"
-        >
-          1
-        </div>
-      </button>
-    </div>
-    <div
-      className="mock-tippy"
+    </button>
+    <button
+      class="m-incoming-box__vehicle "
     >
       <div
-        className="mock-tippy-content"
+        class="m-incoming-box__vehicle-icon"
       >
-        <b>
-          Block:
-        </b>
-         
-        block-1
-        <br />
-        <b>
-          Run:
-        </b>
-         
-        2
-        <br />
-        <b>
-          Vehicle:
-        </b>
-         
-        0479
-        <br />
-        <b>
-          Variant:
-        </b>
-         
-        <br />
-        <b>
-          Adherence:
-        </b>
-         
-        0 min early
-        <br />
-        <b>
-          Operator:
-        </b>
-         
-        <span
-          className="fs-mask"
+        <svg
+          role="img"
+          style="width: 16.72px; height: 15.2px;"
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
-          NORA JONES #op2
-        </span>
-      </div>
-      <button
-        className="m-incoming-box__vehicle "
-        onClick={[Function]}
-      >
-        <div
-          className="m-incoming-box__vehicle-icon"
-        >
-          <svg
-            role="img"
-            style={
-              Object {
-                "height": 15.2,
-                "width": 16.72,
-              }
-            }
-            viewBox="-8.36 -7.6 16.72 15.2"
+          <title>
+            Vehicle Status Icon
+          </title>
+          <g
+            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
-            <title>
-              Vehicle Status Icon
-            </title>
-            <g
-              className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
-            >
-              <path
-                className="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                data-testid="vehicle-triangle"
-                transform="scale(0.38) rotate(180) translate(-24,-22)"
-              />
-            </g>
-          </svg>
-        </div>
-        <div
-          className="m-incoming-box__vehicle-label"
-        >
-          2
-        </div>
-      </button>
-    </div>
-  </div>,
-]
+            <path
+              class="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
+              transform="scale(0.38) rotate(180) translate(-24,-22)"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="m-incoming-box__vehicle-label"
+      >
+        2
+      </div>
+    </button>
+  </div>
+</DocumentFragment>
 `;

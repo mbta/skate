@@ -1,5 +1,4 @@
 import React from "react"
-import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -18,6 +17,7 @@ import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -119,6 +119,8 @@ const vehicles: Vehicle[] = [
   }),
 ]
 
+jest.unmock("@tippyjs/react")
+
 describe("routeLadder", () => {
   const originalGetBBox = SVGSVGElement.prototype.getBBox
   const originalGetElementsByClassName = document.getElementsByClassName
@@ -153,22 +155,20 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={undefined}
-          selectedVehicleId={undefined}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={{}}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).container
 
     expect(tree).toMatchSnapshot()
   })
@@ -203,22 +203,20 @@ describe("routeLadder", () => {
       blockWaivers: [],
     })
 
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={(vehicles as VehicleOrGhost[]).concat([ghost])}
-          selectedVehicleId={undefined}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={{}}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={(vehicles as VehicleOrGhost[]).concat([ghost])}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -233,25 +231,23 @@ describe("routeLadder", () => {
       { id: "WELLH", name: "WELLH Name" },
       { id: "MORTN", name: "MORTN Name" },
     ]
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={vehicles.map((vehicle: Vehicle) => ({
-            ...vehicle,
-            routeStatus: "pulling_out" as RouteStatus,
-          }))}
-          selectedVehicleId={undefined}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={{}}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={vehicles.map((vehicle: Vehicle) => ({
+          ...vehicle,
+          routeStatus: "pulling_out" as RouteStatus,
+        }))}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -269,25 +265,23 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            { ...v1, routeStatus: "laying_over" },
-            { ...v2, routeStatus: "laying_over" },
-          ]}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={{}}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          { ...v1, routeStatus: "laying_over" },
+          { ...v2, routeStatus: "laying_over" },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -306,36 +300,34 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            {
-              ...v1,
-              crowding: {
-                occupancyStatus: "FEW_SEATS_AVAILABLE",
-                occupancyPercentage: 0.78,
-                load: 14,
-                capacity: 18,
-              },
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+            crowding: {
+              occupancyStatus: "FEW_SEATS_AVAILABLE",
+              occupancyPercentage: 0.78,
+              load: 14,
+              capacity: 18,
             },
-            {
-              ...v2,
-              crowding: null,
-            },
-          ]}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={ladderCrowdingToggles}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+          },
+          {
+            ...v2,
+            crowding: null,
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={ladderCrowdingToggles}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -353,31 +345,29 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            {
-              ...v1,
-            },
-            {
-              ...v2,
-              isOffCourse: true,
-              isRevenue: false,
-            },
-          ]}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={{}}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+          },
+          {
+            ...v2,
+            isOffCourse: true,
+            isRevenue: false,
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -396,37 +386,35 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            {
-              ...v1,
-              crowding: {
-                occupancyStatus: "FEW_SEATS_AVAILABLE",
-                occupancyPercentage: 0.78,
-                load: 14,
-                capacity: 18,
-              },
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+            crowding: {
+              occupancyStatus: "FEW_SEATS_AVAILABLE",
+              occupancyPercentage: 0.78,
+              load: 14,
+              capacity: 18,
             },
-            {
-              ...v2,
-              routeId: "741",
-              crowding: null,
-            },
-          ]}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={ladderCrowdingToggles}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+          },
+          {
+            ...v2,
+            routeId: "741",
+            crowding: null,
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={ladderCrowdingToggles}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -445,37 +433,35 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            {
-              ...v1,
-              crowding: null,
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+            crowding: null,
+          },
+          {
+            ...v2,
+            routeId: "741",
+            crowding: {
+              occupancyStatus: "FEW_SEATS_AVAILABLE",
+              occupancyPercentage: 0.78,
+              load: 14,
+              capacity: 18,
             },
-            {
-              ...v2,
-              routeId: "741",
-              crowding: {
-                occupancyStatus: "FEW_SEATS_AVAILABLE",
-                occupancyPercentage: 0.78,
-                load: 14,
-                capacity: 18,
-              },
-            },
-          ]}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={ladderCrowdingToggles}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={ladderCrowdingToggles}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -487,22 +473,20 @@ describe("routeLadder", () => {
     })
     const timepoints = null
 
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={undefined}
-          selectedVehicleId={undefined}
-          deselectRoute={() => {}}
-          reverseLadder={() => {}}
-          toggleCrowding={() => {}}
-          ladderDirections={{}}
-          ladderCrowdingToggles={{}}
-          hasAlert={false}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -518,7 +502,7 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const result = render(
+    render(
       <RouteLadder
         route={route}
         timepoints={timepoints}
@@ -533,10 +517,10 @@ describe("routeLadder", () => {
       />
     )
 
-    expect(result.getByText("Active detour")).toBeInTheDocument()
+    expect(routeAlert.get()).toBeVisible()
   })
 
-  test("clicking alert icon to open tooltip triggers tag manager event", async () => {
+  test("clicking alert icon should show tooltip and observe event", async () => {
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -547,8 +531,7 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const user = userEvent.setup()
-    const result = render(
+    render(
       <RouteLadder
         route={route}
         timepoints={timepoints}
@@ -563,8 +546,9 @@ describe("routeLadder", () => {
       />
     )
 
-    await user.click(result.getByText("Active detour"))
+    await userEvent.click(routeAlert.get())
 
+    expect(routeAlert.get()).toHaveAccessibleDescription(/Active Detour/i)
     expect(tagManagerEvent).toHaveBeenCalledWith("alert_tooltip_clicked")
   })
 
