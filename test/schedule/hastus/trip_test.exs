@@ -104,7 +104,6 @@ defmodule Schedule.Hastus.TripTest do
       result =
         [hastus_trip1, hastus_trip2]
         |> Trip.expand_through_routed_trips(gtfs_trip_ids)
-        |> Enum.sort_by(& &1.trip_id)
 
       assert result == [
                hastus_trip1,
