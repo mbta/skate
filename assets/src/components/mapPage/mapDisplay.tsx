@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react"
-import { Tooltip } from "react-leaflet"
+import { Pane, Tooltip } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -280,12 +280,18 @@ const RoutePatternLayers = ({
                     )) ||
                       undefined}
                   </RouteShape>
-                  <RouteStopMarkers
-                    stops={routePattern.shape.stops || []}
-                    includeStopCard={true}
-                    direction={routePattern.directionId}
-                    zoomLevel={zoomLevel}
-                  />
+                  <Pane
+                    name="routeStopMarkers2"
+                    pane="markerPane"
+                    style={{ zIndex: 450 }} // should be above other non-interactive elements
+                  >
+                    <RouteStopMarkers
+                      stops={routePattern.shape.stops || []}
+                      includeStopCard={true}
+                      direction={routePattern.directionId}
+                      zoomLevel={zoomLevel}
+                    />
+                  </Pane>
                 </>
               )}
             </>
