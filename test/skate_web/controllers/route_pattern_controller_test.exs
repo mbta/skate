@@ -1,5 +1,6 @@
 defmodule SkateWeb.RoutePatternControllerTest do
   use SkateWeb.ConnCase
+  import Skate.Factory
   import Test.Support.Helpers
 
   alias Schedule.Gtfs.{Stop, Route, RoutePattern}
@@ -95,6 +96,9 @@ defmodule SkateWeb.RoutePatternControllerTest do
       }
     ]
 
+    @trip_t1 build(:trip, %{id: "t1", headsign: "headsign"})
+    @trip_t2 build(:trip, %{id: "t2", headsign: nil})
+
     setup do
       reassign_env(:skate_web, :route_patterns_fn, fn _route_id -> @route_patterns end)
 
@@ -102,6 +106,13 @@ defmodule SkateWeb.RoutePatternControllerTest do
         case trip_id do
           "t1" -> @shape_with_stops
           _ -> nil
+        end
+      end)
+
+      reassign_env(:skate_web, :trip_fn, fn trip_id ->
+        case trip_id do
+          "t1" -> @trip_t1
+          "t2" -> @trip_t2
         end
       end)
     end
@@ -122,6 +133,9 @@ defmodule SkateWeb.RoutePatternControllerTest do
         |> api_headers()
         |> get("/api/route_patterns/route/r1")
 
+      %{headsign: headsign_t1} = @trip_t1
+      %{headsign: headsign_t2} = @trip_t2
+
       assert %{
                "data" => [
                  %{
@@ -131,7 +145,8 @@ defmodule SkateWeb.RoutePatternControllerTest do
                    "direction_id" => 0,
                    "sort_order" => 0,
                    "time_desc" => "Mornings only",
-                   "shape" => @shape_with_stops_json
+                   "shape" => @shape_with_stops_json,
+                   "headsign" => ^headsign_t1
                  },
                  %{
                    "id" => "2",
@@ -140,7 +155,8 @@ defmodule SkateWeb.RoutePatternControllerTest do
                    "direction_id" => 1,
                    "sort_order" => 1,
                    "time_desc" => nil,
-                   "shape" => nil
+                   "shape" => nil,
+                   "headsign" => ^headsign_t2
                  }
                ]
              } = json_response(conn, 200)
