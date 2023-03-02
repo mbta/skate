@@ -281,7 +281,7 @@ const RoutePatternLayers = ({
                       undefined}
                   </RouteShape>
                   <Pane
-                    name="routeStopMarkers2"
+                    name="selectedRoutePatternStops"
                     pane="markerPane"
                     style={{ zIndex: 450 }} // should be above other non-interactive elements
                   >
