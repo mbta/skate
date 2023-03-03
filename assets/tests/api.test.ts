@@ -312,6 +312,7 @@ describe("fetchRoutePatterns", () => {
               },
             ],
           },
+          headsign: "Headsign",
         },
       ],
     })
@@ -334,6 +335,7 @@ describe("fetchRoutePatterns", () => {
               },
             ],
           },
+          headsign: "Headsign",
         },
       ])
       done()

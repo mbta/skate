@@ -19,13 +19,12 @@ export const patternDisplayName = (
   routePattern: RoutePattern
 ): { name: string; description: string } => {
   const splitName = routePattern.name.split(" - ", 2)
-
   const timeDescription = routePattern.timeDescription
 
   return splitName.length < 2
     ? { name: routePattern.name, description: timeDescription || "" }
     : {
-        name: splitName[1],
+        name: routePattern.headsign || splitName[1],
         description: `from ${splitName[0]}${
           timeDescription ? `, ${timeDescription}` : ""
         }`,

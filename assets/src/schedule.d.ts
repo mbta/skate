@@ -53,6 +53,7 @@ export interface RoutePattern {
   timeDescription?: string | null
   sortOrder: number
   shape?: Shape | null
+  headsign: string | null
 }
 
 export interface Shape {
