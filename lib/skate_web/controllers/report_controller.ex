@@ -14,7 +14,10 @@ defmodule SkateWeb.ReportController do
 
     conn
     |> assign(:reports, reports)
-    |> render("index.html", layout: {SkateWeb.LayoutView, "reports.html"})
+    |> render("index.html",
+      layout: {SkateWeb.LayoutView, "barebones.html"},
+      title: "Skate Reports"
+    )
   end
 
   @spec run(Plug.Conn.t(), map()) :: Plug.Conn.t()

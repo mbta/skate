@@ -76,6 +76,7 @@ defmodule SkateWeb.Router do
       :ensure_admin_group
     ]
 
+    get "/admin", AdminController, :index
     get "/reports", ReportController, :index
     get "/reports/:short_name", ReportController, :run
     get "/test_groups", TestGroupController, :index
