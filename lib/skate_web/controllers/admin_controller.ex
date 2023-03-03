@@ -8,6 +8,6 @@ defmodule SkateWeb.AdminController do
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
     conn
-    |> render("index.html", layout: {SkateWeb.LayoutView, "barebones.html"}, title: "ADMIN TITLE")
+    |> render("index.html", layout: {SkateWeb.LayoutView, "barebones.html"}, title: "Skate Admin")
   end
 end
