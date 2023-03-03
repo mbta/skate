@@ -146,9 +146,8 @@ describe("Shuttle Map Page", () => {
     await animationFramePromise()
 
     // We can't directly use the recenter button to disable recentering, but zooming works.
-    // However, for some reason a single change in zoom doesn't suffice to turn it off.
-    // There's probably something else we could await for to get the recentering disabled
-    // by firing just a single click
+    // However, there is currently a bug causing us to not disable autocentering with a single
+    // click on one of the zoom buttons, instead requiring two.
     await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
     await animationFramePromise()
     await userEvent.click(screen.getByRole("button", { name: "Zoom out" }))
