@@ -540,4 +540,38 @@ describe("auto centering", () => {
     expect(getCenter(mapRef)).toEqual(defaultCenter)
     expect(window.FS!.event).toHaveBeenCalledWith("Recenter control clicked")
   })
+
+  test("changing followerResetKey turns on auto center", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+    const vehicles: Vehicle[] = []
+    const result = render(
+      <Map
+        vehicles={vehicles}
+        reactLeafletRef={mapRef}
+        followerResetKey="key1"
+      />
+    )
+    await animationFramePromise()
+
+    // Manual move to turn off auto centering
+    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    act(() => {
+      mapRef.current!.fire("dragstart")
+      mapRef.current!.panTo(manualLatLng)
+    })
+    await animationFramePromise()
+
+    result.rerender(
+      <Map
+        vehicles={vehicles}
+        reactLeafletRef={mapRef}
+        followerResetKey="key2"
+      />
+    )
+    await animationFramePromise()
+    expect(result.container.firstChild).toHaveClass(
+      "m-vehicle-map-state--auto-centering"
+    )
+    expect(getCenter(mapRef)).toEqual(defaultCenter)
+  })
 })

@@ -130,6 +130,48 @@ describe("Shuttle Map Page", () => {
     expect(result.asFragment()).toMatchSnapshot()
   })
 
+  test("changing selected shuttles re-enabled map centering", async () => {
+    const dispatch = jest.fn()
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    await animationFramePromise()
+
+    // We can't directly use the recenter button to disable recentering, but zooming works.
+    // However, for some reason a single change in zoom doesn't suffice to turn it off.
+    // There's probably something else we could await for to get the recentering disabled
+    // by firing just a single click
+    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+    await animationFramePromise()
+    await userEvent.click(screen.getByRole("button", { name: "Zoom out" }))
+    await animationFramePromise()
+
+    result.rerender(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: ["shuttle run"] }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(
+      result.container.getElementsByClassName(
+        "m-vehicle-map-state--auto-centering"
+      ).length
+    ).toBe(1)
+  })
+
   test("clicking a shuttle on the map dispatches select event", async () => {
     const label = "clickMe"
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [
@@ -169,3 +211,9 @@ describe("allTrainVehicles", () => {
     expect(allTrainVehicles(trainVehiclesByRouteId)).toEqual([trainVehicle])
   })
 })
+
+const animationFramePromise = (): Promise<null> => {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => resolve(null))
+  })
+}

@@ -69,6 +69,8 @@ export interface Props {
   stopCardDirection?: DirectionId
   includeStopCard?: boolean
   stations?: Stop[] | null
+  // if set, changes to this value will cause the autofollower to reset to following the new selection
+  followerResetKey?: string
 }
 
 export const defaultCenter: LatLngLiteral = {
@@ -476,9 +478,14 @@ export const FollowerStatusClasses = (
 
 export const MapFollowingPrimaryVehicles = (props: Props) => {
   const state = useInteractiveFollowerState(),
-    { shouldFollow } = state
+    { shouldFollow, setShouldFollow } = state
 
   const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
+
+  useEffect(
+    () => setShouldFollow(true),
+    [props.followerResetKey, setShouldFollow]
+  )
 
   return (
     <BaseMap {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>

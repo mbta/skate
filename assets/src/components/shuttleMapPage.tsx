@@ -58,6 +58,9 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
+  const followerResetKey =
+    selectedShuttleRunIds === "all" ? "all" : selectedShuttleRunIds.join(",")
+
   return (
     <div className={`m-shuttle-map ${mobileMenuClass}`}>
       <ShuttlePicker shuttles={shuttles} />
@@ -69,6 +72,7 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
           shapes={shapes}
           trainVehicles={trainVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
+          followerResetKey={followerResetKey}
         />
       </div>
     </div>
