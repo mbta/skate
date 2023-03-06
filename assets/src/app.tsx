@@ -17,10 +17,6 @@ import * as React from "react"
 import { createRoot } from "react-dom/client"
 import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import clarityInit from "./helpers/clarityInit"
-import clarityIdentify from "./helpers/clarityIdentify"
 import { tagManagerIdentify } from "./helpers/googleTagManager"
 import { fullStoryIdentify } from "./helpers/fullStory"
 
@@ -32,19 +28,9 @@ sentryInit(window.sentry, username || undefined)
 
 fullStoryIdentify(username)
 
-const clarityTag = document
-  .querySelector("meta[name=clarity-tag]")
-  ?.getAttribute("content")
-
-if (clarityTag) {
-  clarityInit(clarityTag)
-}
-
 const userUuid = document
   .querySelector("meta[name=user-uuid]")
   ?.getAttribute("content")
-
-clarityIdentify(window.clarity, userUuid)
 
 tagManagerIdentify(userUuid)
 

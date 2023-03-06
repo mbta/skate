@@ -13,7 +13,6 @@ config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
   api_url: {:system, "API_URL"},
   api_key: {:system, "API_KEY"},
-  clarity_tag: {:system, "CLARITY_TAG"},
   google_tag_manager_id: {:system, "GOOGLE_TAG_MANAGER_ID"},
   tileset_url: {:system, "TILESET_URL"},
   gtfs_url: {:system, "GTFS_URL"},

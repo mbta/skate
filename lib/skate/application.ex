@@ -57,7 +57,6 @@ defmodule Skate.Application do
     application_keys = [
       :api_url,
       :api_key,
-      :clarity_tag,
       :google_tag_manager_id,
       :tileset_url,
       :gtfs_url,

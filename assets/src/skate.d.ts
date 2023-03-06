@@ -5,8 +5,6 @@ declare global {
       page: () => void
       show: (id: string) => void
     }
-    // we only need this for providing username
-    clarity?(action: "identify", username: string): void
     // for Google Tag Manager
     dataLayer?: Record<string, any>[]
     drift: {

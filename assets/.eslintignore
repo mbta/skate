@@ -2,4 +2,3 @@ webpack.config.js
 babel.config.js
 .eslintrc.js
 __mocks__
-clarityInit.js

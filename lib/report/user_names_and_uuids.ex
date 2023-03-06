@@ -1,7 +1,7 @@
 defmodule Report.UserNamesAndUuids do
   @moduledoc """
   Returns usernames and UUIDs for mapping to monitoring tools like
-  Google Analytics and Clarity.
+  Google Analytics.
   """
 
   import Ecto.Query
