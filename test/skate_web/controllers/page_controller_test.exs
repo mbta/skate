@@ -128,14 +128,6 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
-    test "correct clarity tag set", %{conn: conn} do
-      reassign_env(:skate, :clarity_tag, "test_tag")
-
-      conn = get(conn, "/")
-      assert html_response(conn, 200) =~ "<meta name=\"clarity-tag\" content=\"test_tag\">"
-    end
-
-    @tag :authenticated
     test "correct username set", %{conn: conn} do
       conn = get(conn, "/")
       assert html_response(conn, 200) =~ "<meta name=\"username\" content=\"test_user\">"

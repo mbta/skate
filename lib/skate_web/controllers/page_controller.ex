@@ -27,7 +27,6 @@ defmodule SkateWeb.PageController do
     |> assign(:user_settings, user_settings)
     |> assign(:route_tabs, route_tabs)
     |> assign(:dispatcher_flag, dispatcher_flag)
-    |> assign(:clarity_tag, Application.get_env(:skate, :clarity_tag))
     |> assign(:google_tag_manager_id, Application.get_env(:skate, :google_tag_manager_id))
     |> assign(:tileset_url, Application.get_env(:skate, :tileset_url))
     |> assign(:user_test_groups, user.test_groups |> Enum.map(& &1.name))
