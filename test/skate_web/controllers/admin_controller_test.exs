@@ -17,7 +17,6 @@ defmodule SkateWeb.AdminControllerTest do
       assert html_response(conn, 200) =~ "Test Groups"
       assert html_response(conn, 200) =~ "Reports"
       assert html_response(conn, 200) =~ "Feature Flags"
-      assert html_response(conn, 200) =~ "Health Check"
     end
   end
 end
