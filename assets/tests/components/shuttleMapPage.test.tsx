@@ -15,6 +15,10 @@ import * as dateTime from "../../src/util/dateTime"
 import { shuttleFactory } from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import shapeFactory from "../factories/shape"
+import {
+  zoomInButton,
+  zoomOutButton,
+} from "../testHelpers/selectors/components/map"
 
 jest
   .spyOn(dateTime, "now")
@@ -148,9 +152,9 @@ describe("Shuttle Map Page", () => {
     // We can't directly use the recenter button to disable recentering, but zooming works.
     // However, there is currently a bug causing us to not disable autocentering with a single
     // click on one of the zoom buttons, instead requiring two.
-    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }))
+    await userEvent.click(zoomInButton.get())
     await animationFramePromise()
-    await userEvent.click(screen.getByRole("button", { name: "Zoom out" }))
+    await userEvent.click(zoomOutButton.get())
     await animationFramePromise()
 
     result.rerender(
