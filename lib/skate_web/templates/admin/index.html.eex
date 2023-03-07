@@ -1,4 +1,4 @@
-<h2>Admin Tools</h2>
+<h1>Admin Tools</h1>
 
 <ul>
   <li><%= link "Test Groups", to: Routes.test_group_path(@conn, :index) %></li>
