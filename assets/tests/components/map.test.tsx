@@ -4,7 +4,11 @@ import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
 import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
-import Map, { autoCenter, defaultCenter } from "../../src/components/map"
+import {
+  autoCenter,
+  defaultCenter,
+  MapFollowingPrimaryVehicles,
+} from "../../src/components/map"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
 import vehicleFactory from "../factories/vehicle"
 import stopFactory from "../factories/stop"
@@ -56,14 +60,19 @@ afterAll(() => {
 describe("<Map />", () => {
   test("draws vehicles", () => {
     const vehicle = vehicleFactory.build({})
-    const result = render(<Map vehicles={[vehicle]} />)
+    const result = render(<MapFollowingPrimaryVehicles vehicles={[vehicle]} />)
     expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
     expect(result.container.innerHTML).toContain("m-vehicle-map__label")
   })
 
   test("draws secondary vehicles", () => {
     const vehicle = vehicleFactory.build({})
-    const result = render(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
+    const result = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        secondaryVehicles={[vehicle]}
+      />
+    )
     expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
     expect(result.container.innerHTML).toContain("m-vehicle-map__label")
   })
@@ -75,12 +84,19 @@ describe("<Map />", () => {
       longitude: -71.00369,
       bearing: 15,
     }
-    const result = render(<Map vehicles={[]} trainVehicles={[trainVehicle]} />)
+    const result = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        trainVehicles={[trainVehicle]}
+      />
+    )
     expect(result.container.innerHTML).toContain("m-vehicle-map__train-icon")
   })
 
   test("draws shapes", () => {
-    const result = render(<Map vehicles={[]} shapes={[shape]} />)
+    const result = render(
+      <MapFollowingPrimaryVehicles vehicles={[]} shapes={[shape]} />
+    )
     expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
     expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
   })
@@ -91,7 +107,10 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
     )
 
     // Manual zoom
@@ -108,7 +127,10 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
     )
 
     // Manual zoom
@@ -125,7 +147,10 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
     )
     // Manual zoom
     act(() => {
@@ -140,7 +165,7 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map
+      <MapFollowingPrimaryVehicles
         vehicles={[vehicleFactory.build()]}
         reactLeafletRef={mapRef}
         stations={[station]}
@@ -160,7 +185,7 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map
+      <MapFollowingPrimaryVehicles
         vehicles={[vehicleFactory.build()]}
         reactLeafletRef={mapRef}
         stations={[station]}
@@ -180,7 +205,7 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map
+      <MapFollowingPrimaryVehicles
         vehicles={[vehicleFactory.build()]}
         reactLeafletRef={mapRef}
         stations={[station]}
@@ -201,7 +226,7 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     const { container } = render(
-      <Map
+      <MapFollowingPrimaryVehicles
         shapes={[{ ...shape, stops: [station] }]}
         vehicles={[]}
         reactLeafletRef={mapRef}
@@ -219,7 +244,12 @@ describe("<Map />", () => {
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
     const vehicle = vehicleFactory.build({})
     const onClick = jest.fn()
-    render(<Map vehicles={[vehicle]} onPrimaryVehicleSelect={onClick} />)
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        onPrimaryVehicleSelect={onClick}
+      />
+    )
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
     expect(onClick).toHaveBeenCalledWith(expect.objectContaining(vehicle))
   })
@@ -228,7 +258,7 @@ describe("<Map />", () => {
     const vehicle = vehicleFactory.build({})
     const onClick = jest.fn()
     render(
-      <Map
+      <MapFollowingPrimaryVehicles
         vehicles={[]}
         secondaryVehicles={[vehicle]}
         onPrimaryVehicleSelect={onClick}
@@ -242,7 +272,11 @@ describe("<Map />", () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
 
     const { container } = render(
-      <Map vehicles={[]} shapes={[shape]} includeStopCard={true} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        shapes={[shape]}
+        includeStopCard={true}
+      />
     )
 
     await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
@@ -255,7 +289,9 @@ describe("<Map />", () => {
   test("does not render street view link from stop if not in maps test group", async () => {
     ;(getTestGroups as jest.Mock).mockReturnValue([])
 
-    const { container } = render(<Map vehicles={[]} shapes={[shape]} />)
+    const { container } = render(
+      <MapFollowingPrimaryVehicles vehicles={[]} shapes={[shape]} />
+    )
 
     await userEvent.click(container.querySelector("e-map__stop")!)
 
@@ -270,7 +306,11 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
-      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
     )
 
     await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
@@ -294,7 +334,11 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
-      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
     )
 
     await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
@@ -317,7 +361,11 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
-      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
     )
 
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
@@ -329,7 +377,11 @@ describe("<Map />", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
-      <Map vehicles={[]} allowStreetView={true} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
     )
 
     await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
@@ -342,7 +394,7 @@ describe("<Map />", () => {
   })
 
   test("does not show street view when prop is not specified", () => {
-    render(<Map vehicles={[]} />)
+    render(<MapFollowingPrimaryVehicles vehicles={[]} />)
 
     expect(
       screen.queryByRole("switch", { name: /Street View/ })
@@ -353,7 +405,10 @@ describe("<Map />", () => {
     const vehicle = vehicleFactory.build()
 
     const { container } = render(
-      <Map vehicles={[vehicle]} selectedVehicleId={vehicle.id} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        selectedVehicleId={vehicle.id}
+      />
     )
 
     expect(
@@ -417,7 +472,12 @@ describe("auto centering", () => {
       longitude: location.lng,
     })
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
-    render(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
 
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(location)
@@ -433,7 +493,10 @@ describe("auto centering", () => {
       longitude: oldLatLng.lng,
     }
     const { rerender } = render(
-      <Map vehicles={[oldVehicle]} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[oldVehicle]}
+        reactLeafletRef={mapRef}
+      />
     )
     await animationFramePromise()
     const newLatLng = { lat: 42.1, lng: -71.1 }
@@ -442,7 +505,12 @@ describe("auto centering", () => {
       latitude: newLatLng.lat,
       longitude: newLatLng.lng,
     }
-    rerender(<Map vehicles={[newVehicle]} reactLeafletRef={mapRef} />)
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[newVehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(newLatLng)
   })
@@ -451,7 +519,10 @@ describe("auto centering", () => {
     const vehicle = vehicleFactory.build({})
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const { rerender, container } = render(
-      <Map vehicles={[vehicle]} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
     )
     await animationFramePromise()
     expect(container.firstChild).toHaveClass(
@@ -471,7 +542,12 @@ describe("auto centering", () => {
       latitude: newLatLng.lat,
       longitude: newLatLng.lng,
     }
-    rerender(<Map vehicles={[newVehicle]} reactLeafletRef={mapRef} />)
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[newVehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(manualLatLng)
     expect(container.firstChild).not.toHaveClass(
@@ -501,13 +577,26 @@ describe("auto centering", () => {
       longitude: latLng3.lng,
     }
     const { rerender } = render(
-      <Map vehicles={[vehicle1]} reactLeafletRef={mapRef} />
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle1]}
+        reactLeafletRef={mapRef}
+      />
     )
     await animationFramePromise()
-    rerender(<Map vehicles={[vehicle2]} reactLeafletRef={mapRef} />)
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle2]}
+        reactLeafletRef={mapRef}
+      />
+    )
 
     await animationFramePromise()
-    rerender(<Map vehicles={[vehicle3]} reactLeafletRef={mapRef} />)
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle3]}
+        reactLeafletRef={mapRef}
+      />
+    )
 
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(latLng3)
@@ -516,7 +605,9 @@ describe("auto centering", () => {
   test("recenter control turns on auto center", async () => {
     mockFullStoryEvent()
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
-    const result = render(<Map vehicles={[]} reactLeafletRef={mapRef} />)
+    const result = render(
+      <MapFollowingPrimaryVehicles vehicles={[]} reactLeafletRef={mapRef} />
+    )
     await animationFramePromise()
 
     // Manual move to turn off auto centering
@@ -545,7 +636,7 @@ describe("auto centering", () => {
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const vehicles: Vehicle[] = []
     const result = render(
-      <Map
+      <MapFollowingPrimaryVehicles
         vehicles={vehicles}
         reactLeafletRef={mapRef}
         followerResetKey="key1"
@@ -562,7 +653,7 @@ describe("auto centering", () => {
     await animationFramePromise()
 
     result.rerender(
-      <Map
+      <MapFollowingPrimaryVehicles
         vehicles={vehicles}
         reactLeafletRef={mapRef}
         followerResetKey="key2"

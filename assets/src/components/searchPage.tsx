@@ -9,7 +9,7 @@ import { Vehicle, VehicleOrGhost } from "../realtime"
 import { Stop } from "../schedule"
 import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
-import Map from "./map"
+import { MapFollowingPrimaryVehicles } from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
@@ -104,7 +104,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       </div>
 
       <div className="m-search-page__map">
-        <Map
+        <MapFollowingPrimaryVehicles
           selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}

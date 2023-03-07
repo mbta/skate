@@ -10,7 +10,7 @@ import { isASubwayRoute } from "../models/subwayRoute"
 import { RunId, TrainVehicle, Vehicle } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
-import Map from "./map"
+import { MapFollowingPrimaryVehicles } from "./map"
 import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
@@ -66,7 +66,7 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
       <ShuttlePicker shuttles={shuttles} />
 
       <div className="m-shuttle-map__map">
-        <Map
+        <MapFollowingPrimaryVehicles
           selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={selectedShuttles}
           shapes={shapes}

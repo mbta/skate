@@ -500,6 +500,3 @@ export const MapFollowingPrimaryVehicles = (props: Props) => {
     </BaseMap>
   )
 }
-
-const Map = MapFollowingPrimaryVehicles
-export default Map

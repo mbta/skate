@@ -8,7 +8,7 @@ import { Shape, Stop } from "../../schedule"
 import { setSelectedVehicle } from "../../state/searchPageState"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../../userInTestGroup"
 import { mapModeForUser } from "../../util/mapMode"
-import Map from "../map"
+import { MapFollowingPrimaryVehicles } from "../map"
 
 const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
   const [, dispatch] = useContext(StateDispatchContext)
@@ -47,7 +47,7 @@ const MiniMap = ({
   const stations: Stop[] | null = useStations()
 
   return inTestGroup(MAP_BETA_GROUP_NAME) ? (
-    <Map
+    <MapFollowingPrimaryVehicles
       selectedVehicleId={vehicle.id}
       vehicles={[vehicle]}
       shapes={shapes}
@@ -56,9 +56,9 @@ const MiniMap = ({
       allowFullscreen={false}
     >
       <SearchMapLink vehicleId={vehicle.id} />
-    </Map>
+    </MapFollowingPrimaryVehicles>
   ) : (
-    <Map
+    <MapFollowingPrimaryVehicles
       selectedVehicleId={vehicle.id}
       vehicles={[vehicle]}
       shapes={shapes}
