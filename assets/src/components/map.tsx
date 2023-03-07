@@ -69,8 +69,6 @@ export interface Props {
   stopCardDirection?: DirectionId
   includeStopCard?: boolean
   stations?: Stop[] | null
-  // if set, changes to this value will cause the autofollower to reset to following the new selection
-  followerResetKey?: string
 }
 
 export const defaultCenter: LatLngLiteral = {
@@ -331,7 +329,7 @@ export const usePickerContainerFollowerFn = () => {
 // #endregion
 // #endregion
 
-export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
+const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -478,17 +476,12 @@ export const FollowerStatusClasses = (
 
 export const MapFollowingPrimaryVehicles = (props: Props) => {
   const state = useInteractiveFollowerState(),
-    { shouldFollow, setShouldFollow } = state
+    { shouldFollow } = state
 
   const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
 
-  useEffect(
-    () => setShouldFollow(true),
-    [props.followerResetKey, setShouldFollow]
-  )
-
   return (
-    <BaseMap {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
+    <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
       <>
         <InterruptibleFollower
           positions={positions}
@@ -497,6 +490,32 @@ export const MapFollowingPrimaryVehicles = (props: Props) => {
         />
         {props.children}
       </>
-    </BaseMap>
+    </Map>
   )
 }
+
+export const MapFollowingSelectionKey = (
+  props: Props & { selectionKey?: string }
+) => {
+  const state = useInteractiveFollowerState(),
+    { shouldFollow, setShouldFollow } = state
+
+  const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
+
+  useEffect(() => setShouldFollow(true), [props.selectionKey, setShouldFollow])
+
+  return (
+    <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
+      <>
+        <InterruptibleFollower
+          positions={positions}
+          {...state}
+          onUpdate={usePickerContainerFollowerFn()}
+        />
+        {props.children}
+      </>
+    </Map>
+  )
+}
+
+export default Map

@@ -8,6 +8,7 @@ import {
   autoCenter,
   defaultCenter,
   MapFollowingPrimaryVehicles,
+  MapFollowingSelectionKey,
 } from "../../src/components/map"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
 import vehicleFactory from "../factories/vehicle"
@@ -57,7 +58,7 @@ afterAll(() => {
   global.scrollTo = originalScrollTo
 })
 
-describe("<Map />", () => {
+describe("<MapFollowingPrimaryVehicles />", () => {
   test("draws vehicles", () => {
     const vehicle = vehicleFactory.build({})
     const result = render(<MapFollowingPrimaryVehicles vehicles={[vehicle]} />)
@@ -632,37 +633,39 @@ describe("auto centering", () => {
     expect(window.FS!.event).toHaveBeenCalledWith("Recenter control clicked")
   })
 
-  test("changing followerResetKey turns on auto center", async () => {
-    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
-    const vehicles: Vehicle[] = []
-    const result = render(
-      <MapFollowingPrimaryVehicles
-        vehicles={vehicles}
-        reactLeafletRef={mapRef}
-        followerResetKey="key1"
-      />
-    )
-    await animationFramePromise()
+  describe("for MapFollowingSelectionKey", () => {
+    test("changing followerResetKey turns on auto center", async () => {
+      const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+      const vehicles: Vehicle[] = []
+      const result = render(
+        <MapFollowingSelectionKey
+          vehicles={vehicles}
+          reactLeafletRef={mapRef}
+          selectionKey="key1"
+        />
+      )
+      await animationFramePromise()
 
-    // Manual move to turn off auto centering
-    const manualLatLng = { lat: 41.9, lng: -70.9 }
-    act(() => {
-      mapRef.current!.fire("dragstart")
-      mapRef.current!.panTo(manualLatLng)
+      // Manual move to turn off auto centering
+      const manualLatLng = { lat: 41.9, lng: -70.9 }
+      act(() => {
+        mapRef.current!.fire("dragstart")
+        mapRef.current!.panTo(manualLatLng)
+      })
+      await animationFramePromise()
+
+      result.rerender(
+        <MapFollowingSelectionKey
+          vehicles={vehicles}
+          reactLeafletRef={mapRef}
+          selectionKey="key2"
+        />
+      )
+      await animationFramePromise()
+      expect(result.container.firstChild).toHaveClass(
+        "m-vehicle-map-state--auto-centering"
+      )
+      expect(getCenter(mapRef)).toEqual(defaultCenter)
     })
-    await animationFramePromise()
-
-    result.rerender(
-      <MapFollowingPrimaryVehicles
-        vehicles={vehicles}
-        reactLeafletRef={mapRef}
-        followerResetKey="key2"
-      />
-    )
-    await animationFramePromise()
-    expect(result.container.firstChild).toHaveClass(
-      "m-vehicle-map-state--auto-centering"
-    )
-    expect(getCenter(mapRef)).toEqual(defaultCenter)
   })
 })
