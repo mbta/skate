@@ -10,5 +10,6 @@ export const routePatternFactory = Factory.define<RoutePattern>(
     directionId: 0,
     sortOrder: sequence,
     shape: shape.build(),
+    headsign: `Headsign ${sequence}`,
   })
 )

@@ -25,25 +25,39 @@ describe("patternDisplayName", () => {
       description: "",
     })
   })
-  test("When formatted correctly and no time description", () => {
+  test("When name formatted correctly and no time description", () => {
     const routePattern = routePatternFactory.build({
-      name: "Nubian Station - Forest Hills Station",
+      name: "Nubian Station - Harvard Station",
+      headsign: "Harvard via Allston",
     })
 
     expect(patternDisplayName(routePattern)).toEqual({
-      name: "Forest Hills Station",
+      name: "Harvard via Allston",
       description: "from Nubian Station",
     })
   })
-  test("When formatted correctly and time description", () => {
+  test("When name formatted correctly and time description", () => {
     const routePattern = routePatternFactory.build({
-      name: "Nubian Station - Forest Hills Station",
+      name: "Nubian Station - Harvard Station",
+      headsign: "Harvard via Allston",
       timeDescription: "School mornings only",
     })
 
     expect(patternDisplayName(routePattern)).toEqual({
-      name: "Forest Hills Station",
+      name: "Harvard via Allston",
       description: "from Nubian Station, School mornings only",
+    })
+  })
+
+  test("When name formatted correctly and no headsign", () => {
+    const routePattern = routePatternFactory.build({
+      name: "Nubian Station - Harvard Station",
+      headsign: null,
+    })
+
+    expect(patternDisplayName(routePattern)).toEqual({
+      name: "Harvard Station",
+      description: "from Nubian Station",
     })
   })
 })

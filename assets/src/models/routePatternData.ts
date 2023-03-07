@@ -15,6 +15,7 @@ export const RoutePatternData = type({
   time_desc: nullable(string()),
   sort_order: number(),
   shape: nullable(ShapeData),
+  headsign: nullable(string()),
 })
 
 export type RoutePatternData = Infer<typeof RoutePatternData>
@@ -31,6 +32,7 @@ export const routePatternFromData = (
   shape: routePatternData.shape
     ? shapeFromData(routePatternData.shape)
     : routePatternData.shape,
+  headsign: routePatternData.headsign,
 })
 
 export const routePatternsFromData = (
