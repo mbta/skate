@@ -1,19 +1,25 @@
 .m-close-button--small {
   @include button-icon(0.5rem);
-  width: 1rem;
-  height: 1rem;
+  min-width: 1rem;
+  max-width: 1rem;
+  min-height: 1rem;
+  max-height: 1rem;
 }
 
 .m-close-button--large {
   @include button-icon(0.75rem);
-  width: 1.75rem;
-  height: 1.75rem;
+  min-width: 1.75rem;
+  max-width: 1.75rem;
+  min-height: 1.75rem;
+  max-height: 1.75rem;
 }
 
 .m-close-button--x-large {
   @include button-icon(1rem);
-  width: 2.5rem;
-  height: 2.5rem;
+  min-width: 2.5rem;
+  max-width: 2.5rem;
+  min-height: 2.5rem;
+  max-height: 2.5rem;
 }
 
 .m-close-button--light {
