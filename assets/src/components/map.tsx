@@ -329,7 +329,7 @@ export const usePickerContainerFollowerFn = () => {
 // #endregion
 // #endregion
 
-export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
+const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<LeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -481,7 +481,7 @@ export const MapFollowingPrimaryVehicles = (props: Props) => {
   const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
 
   return (
-    <BaseMap {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
+    <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
       <>
         <InterruptibleFollower
           positions={positions}
@@ -490,9 +490,32 @@ export const MapFollowingPrimaryVehicles = (props: Props) => {
         />
         {props.children}
       </>
-    </BaseMap>
+    </Map>
   )
 }
 
-const Map = MapFollowingPrimaryVehicles
+export const MapFollowingSelectionKey = (
+  props: Props & { selectionKey?: string }
+) => {
+  const state = useInteractiveFollowerState(),
+    { shouldFollow, setShouldFollow } = state
+
+  const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
+
+  useEffect(() => setShouldFollow(true), [props.selectionKey, setShouldFollow])
+
+  return (
+    <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
+      <>
+        <InterruptibleFollower
+          positions={positions}
+          {...state}
+          onUpdate={usePickerContainerFollowerFn()}
+        />
+        {props.children}
+      </>
+    </Map>
+  )
+}
+
 export default Map

@@ -28,9 +28,8 @@ import {
   SelectedEntityType,
   SelectedRoutePattern,
 } from "../../state/searchPageState"
-import {
+import Map, {
   vehicleToLeafletLatLng,
-  BaseMap,
   FollowerStatusClasses,
   InterruptibleFollower,
   defaultCenter,
@@ -549,7 +548,7 @@ const MapDisplay = ({
   )
 
   return (
-    <BaseMap
+    <Map
       vehicles={[]}
       allowStreetView={true}
       includeStopCard={true}
@@ -571,7 +570,7 @@ const MapDisplay = ({
           setStateClasses={setStateClasses}
         />
       </MapSafeAreaContext.Provider>
-    </BaseMap>
+    </Map>
   )
 }
 

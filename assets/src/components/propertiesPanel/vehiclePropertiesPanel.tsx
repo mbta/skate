@@ -26,7 +26,6 @@ interface Props {
   selectedVehicle: Vehicle
 }
 
-/* eslint-disable no-irregular-whitespace */
 const InvalidBanner = () => (
   <Card
     additionalClass="m-vehicle-properties-panel__invalid-banner"
@@ -40,7 +39,6 @@ const InvalidBanner = () => (
     </CardBody>
   </Card>
 )
-/* eslint-enable no-irregular-whitespace */
 
 const NotAvailable = () => (
   <span className="m-vehicle-properties-panel__not-available">

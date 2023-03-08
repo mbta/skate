@@ -15,6 +15,10 @@ import * as dateTime from "../../src/util/dateTime"
 import { shuttleFactory } from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import shapeFactory from "../factories/shape"
+import {
+  zoomInButton,
+  zoomOutButton,
+} from "../testHelpers/selectors/components/map"
 
 jest
   .spyOn(dateTime, "now")
@@ -130,6 +134,47 @@ describe("Shuttle Map Page", () => {
     expect(result.asFragment()).toMatchSnapshot()
   })
 
+  test("changing selected shuttles re-enabled map centering", async () => {
+    const dispatch = jest.fn()
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    await animationFramePromise()
+
+    // We can't directly use the recenter button to disable recentering, but zooming works.
+    // However, there is currently a bug causing us to not disable autocentering with a single
+    // click on one of the zoom buttons, instead requiring two.
+    await userEvent.click(zoomInButton.get())
+    await animationFramePromise()
+    await userEvent.click(zoomOutButton.get())
+    await animationFramePromise()
+
+    result.rerender(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: ["shuttle run"] }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(
+      result.container.getElementsByClassName(
+        "m-vehicle-map-state--auto-centering"
+      ).length
+    ).toBe(1)
+  })
+
   test("clicking a shuttle on the map dispatches select event", async () => {
     const label = "clickMe"
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [
@@ -169,3 +214,9 @@ describe("allTrainVehicles", () => {
     expect(allTrainVehicles(trainVehiclesByRouteId)).toEqual([trainVehicle])
   })
 })
+
+const animationFramePromise = (): Promise<null> => {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => resolve(null))
+  })
+}

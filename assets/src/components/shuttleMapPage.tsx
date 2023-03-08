@@ -10,7 +10,7 @@ import { isASubwayRoute } from "../models/subwayRoute"
 import { RunId, TrainVehicle, Vehicle } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
-import Map from "./map"
+import { MapFollowingSelectionKey } from "./map"
 import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
@@ -58,17 +58,21 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
+  const followerResetKey =
+    selectedShuttleRunIds === "all" ? "all" : selectedShuttleRunIds.join(",")
+
   return (
     <div className={`m-shuttle-map ${mobileMenuClass}`}>
       <ShuttlePicker shuttles={shuttles} />
 
       <div className="m-shuttle-map__map">
-        <Map
+        <MapFollowingSelectionKey
           selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={selectedShuttles}
           shapes={shapes}
           trainVehicles={trainVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
+          selectionKey={followerResetKey}
         />
       </div>
     </div>

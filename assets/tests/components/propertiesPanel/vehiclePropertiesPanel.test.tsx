@@ -21,7 +21,7 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-jest.spyOn(map, "default")
+jest.spyOn(map, "MapFollowingPrimaryVehicles")
 
 jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
   __esModule: true,
@@ -234,7 +234,7 @@ describe("VehiclePropertiesPanel", () => {
     const thisVehicle = vehicle
     const otherVehicle = { ...vehicle, id: "other" }
     const ghost = { id: "ghost" } as Ghost
-    jest.spyOn(map, "default")
+    jest.spyOn(map, "MapFollowingPrimaryVehicles")
     renderer.create(
       <VehiclesByRouteIdProvider
         vehiclesByRouteId={{ "39": [thisVehicle, otherVehicle, ghost] }}
@@ -242,8 +242,9 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel selectedVehicle={thisVehicle} />
       </VehiclesByRouteIdProvider>
     )
-    expect(map.default).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
+    expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
+    const mapArgs: map.Props = (map.MapFollowingPrimaryVehicles as jest.Mock)
+      .mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
@@ -251,7 +252,7 @@ describe("VehiclePropertiesPanel", () => {
     const thisVehicle = vehicle
     const otherVehicle = { ...vehicle, id: "other" }
     const ghost = { id: "ghost" } as Ghost
-    jest.spyOn(map, "default")
+    jest.spyOn(map, "MapFollowingPrimaryVehicles")
     ;(useVehiclesForRoute as jest.Mock).mockImplementationOnce(() => [
       thisVehicle,
       otherVehicle,
@@ -259,8 +260,9 @@ describe("VehiclePropertiesPanel", () => {
     ])
     renderer.create(<VehiclePropertiesPanel selectedVehicle={thisVehicle} />)
     expect(useVehiclesForRoute).toHaveBeenCalled()
-    expect(map.default).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
+    expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
+    const mapArgs: map.Props = (map.MapFollowingPrimaryVehicles as jest.Mock)
+      .mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
