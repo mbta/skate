@@ -70,7 +70,11 @@ const TrNameValue = ({
 }: TrNameValueProps): React.ReactElement => {
   const id = (idPrefix ?? name) + useId()
   return (
-    <tr className={shouldMaskInfo(sensitive === HideSensitiveInfo.All) || ""}>
+    <tr
+      className={
+        shouldMaskInfo(sensitive === HideSensitiveInfo.All) || undefined
+      }
+    >
       <th className="kv-key font-s-semi" scope="row" id={id}>
         {name}
       </th>
