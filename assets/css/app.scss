@@ -53,8 +53,6 @@ $component-active-bg: $color-eggplant-700;
 @import "leaflet";
 @import "skate_ui";
 
-@import "demo_mode";
-
 @import "card";
 @import "close_button";
 @import "crowding";
@@ -121,6 +119,10 @@ $component-active-bg: $color-eggplant-700;
 @import "vehicle_properties_card";
 @import "vehicle_route_summary";
 @import "view_header";
+
+// #region Effects
+@import "demo_mode";
+// #endregion
 
 [hidden] {
   display: none !important;
