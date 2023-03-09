@@ -115,7 +115,9 @@
   flex-direction: column;
 }
 
-.m-route-properties-card__details-section:not(.m-route-properties-card__details-section--open) {
+.m-route-properties-card__details-section:not(
+    .m-route-properties-card__details-section--open
+  ) {
   flex: none;
 }
 
