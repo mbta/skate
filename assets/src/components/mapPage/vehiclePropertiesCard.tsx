@@ -101,7 +101,7 @@ const VehicleWorkInfo = ({
         <TrNameValue name="vehicle">
           {(isVehicle(vehicleOrGhost) && vehicleOrGhost.label) || "N/A"}
         </TrNameValue>
-        <TrNameValue name="operator" sensitivity={HideSensitiveInfo.All}>
+        <TrNameValue name="operator" sensitivity={HideSensitiveInfo.Value}>
           {(isVehicle(vehicleOrGhost) &&
             joinTruthy([
               vehicleOrGhost.operatorFirstName,

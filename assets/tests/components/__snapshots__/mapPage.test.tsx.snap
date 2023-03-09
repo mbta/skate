@@ -1602,9 +1602,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         v1-label
                       </td>
                     </tr>
-                    <tr
-                      class="fs-mask"
-                    >
+                    <tr>
                       <th
                         class="kv-key font-s-semi"
                         id="operator:r5:"
