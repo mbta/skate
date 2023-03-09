@@ -27,8 +27,8 @@
   gap: 0.5rem;
   h2 {
     font-size: 1.125rem;
-    line-height: 1;
-    margin: 0px;
+    line-height: 1.1;
+    margin: 0px 0px 4px 0px;
   }
 }
 
@@ -36,6 +36,7 @@
   font-size: var(--font-size-s);
   color: $color-gray-700;
   font-weight: var(--font-weight-reg);
+  line-height: 1.1;
 }
 
 .m-route-properties-card__direction-picker {
