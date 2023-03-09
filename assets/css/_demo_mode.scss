@@ -17,8 +17,8 @@
       cursor: not-allowed;
 
       // Force text "invisible" by making it the same as the background
-      color: var(--demo-redact-color) !important;
-      background-color: var(--demo-redact-color) !important;
+      color: var(--demo-redact-color, magenta) !important;
+      background-color: var(--demo-redact-color, magenta) !important;
     }
     & {
       // Attempt to prevent leaking data length
