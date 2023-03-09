@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement, useContext, useEffect } from "react"
 import { Socket } from "phoenix"
 import {
   BrowserRouter,
@@ -26,6 +26,7 @@ import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
 import { mapModeForUser } from "../util/mapMode"
+import inTestGroup from "../userInTestGroup"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -96,6 +97,10 @@ export const AppRoutes = () => {
 }
 
 const App = (): ReactElement<HTMLDivElement> => {
+  useEffect(() => {
+    document.documentElement.dataset.demoMode =
+      inTestGroup("demo-mode").toString()
+  })
   return (
     <BrowserRouter>
       <AppRoutes />

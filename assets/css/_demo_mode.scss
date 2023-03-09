@@ -1,0 +1,13 @@
+:root {
+  --demo-color: magenta;
+}
+
+[data-demo-mode="true"] :is(.fs-mask, .fs-exclude) {
+  color: var(--demo-color) !important;
+  background-color: var(--demo-color) !important;
+
+  * {
+    color: var(--demo-color) !important;
+    background-color: var(--demo-color) !important;
+  }
+}
