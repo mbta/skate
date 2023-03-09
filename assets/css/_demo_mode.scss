@@ -1,5 +1,5 @@
 :root {
-  --demo-redact-color: magenta;
+  --demo-redact-color: #{$color-strawberry-900};
 }
 
 [data-demo-mode="true"] {
