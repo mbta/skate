@@ -19,6 +19,9 @@ import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
 import { tagManagerIdentify } from "./helpers/googleTagManager"
 import { fullStoryIdentify } from "./helpers/fullStory"
+import inTestGroup from "./userInTestGroup"
+
+document.documentElement.dataset.demoMode = inTestGroup("demo-mode").toString()
 
 const username = document
   .querySelector("meta[name=username]")

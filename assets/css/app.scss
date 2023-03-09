@@ -120,6 +120,10 @@ $component-active-bg: $color-eggplant-700;
 @import "vehicle_route_summary";
 @import "view_header";
 
+// #region Effects
+@import "demo_mode";
+// #endregion
+
 [hidden] {
   display: none !important;
 }

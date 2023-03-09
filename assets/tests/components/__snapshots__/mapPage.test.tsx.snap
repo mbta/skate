@@ -1572,9 +1572,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tbody
                     class="m-vehicle-work-info__items"
                   >
-                    <tr
-                      class=""
-                    >
+                    <tr>
                       <th
                         class="kv-key font-s-semi"
                         id="run:r3:"
@@ -1589,9 +1587,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         run-1
                       </td>
                     </tr>
-                    <tr
-                      class=""
-                    >
+                    <tr>
                       <th
                         class="kv-key font-s-semi"
                         id="vehicle:r4:"
@@ -1606,9 +1602,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         v1-label
                       </td>
                     </tr>
-                    <tr
-                      class="fs-mask"
-                    >
+                    <tr>
                       <th
                         class="kv-key font-s-semi"
                         id="operator:r5:"
