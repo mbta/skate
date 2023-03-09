@@ -1,13 +1,30 @@
 :root {
-  --demo-color: magenta;
+  --demo-redact-color: magenta;
 }
 
-[data-demo-mode="true"] :is(.fs-mask, .fs-exclude) {
-  color: var(--demo-color) !important;
-  background-color: var(--demo-color) !important;
+[data-demo-mode="true"] {
+  :is(.fs-mask, .fs-exclude .demo-mask) {
+    // Child styles or selection might expose sensitive values in demo mode so
+    // Select
+    // - This element
+    // - Selection on this element
+    // - All masked children of this element
+    &,
+    &::selection,
+    :not(:is(.fs-unmask, .demo-unmask)) {
+      // Disallow selection and communicate via cursor
+      user-select: none;
+      cursor: not-allowed;
 
-  * {
-    color: var(--demo-color) !important;
-    background-color: var(--demo-color) !important;
+      // Force text "invisible" by making it the same as the background
+      color: var(--demo-redact-color) !important;
+      background-color: var(--demo-redact-color) !important;
+    }
+    & {
+      // Attempt to prevent leaking data length
+      /// WARNING: Breaks some things that don't expect children to expand
+      /// (table column headers)
+      width: 100%;
+    }
   }
 }
