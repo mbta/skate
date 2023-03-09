@@ -530,7 +530,7 @@ const LateBusRow = ({
           {runIdToLabel(vehicle.runId)}
         </button>
       </td>
-      <td className="m-late-view__operator-name">
+      <td className="m-late-view__operator-name fs-mask">
         {vehicle.operatorLastName} &ndash; {vehicle.operatorId}
       </td>
     </tr>
