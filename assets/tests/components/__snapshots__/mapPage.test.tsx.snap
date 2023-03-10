@@ -23,7 +23,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         </button>
       </div>
       <div
-        class="m-map-page__input"
+        class="m-map-page__input u-hide"
       >
         <form
           aria-label="Search Map"
@@ -144,7 +144,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display"
+        class="m-search-display u-hide"
       >
         <div
           class="m-recent-searches"
@@ -389,7 +389,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         </button>
       </div>
       <div
-        class="m-map-page__input"
+        class="m-map-page__input u-hide"
       >
         <form
           aria-label="Search Map"
@@ -510,7 +510,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display"
+        class="m-search-display u-hide"
       >
         <div
           class="m-recent-searches"
@@ -755,7 +755,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
         </button>
       </div>
       <div
-        class="m-map-page__input"
+        class="m-map-page__input u-hide"
       >
         <form
           aria-label="Search Map"
@@ -876,7 +876,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display"
+        class="m-search-display u-hide"
       >
         <div
           class="m-recent-searches"

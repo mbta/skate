@@ -1,0 +1,11 @@
+.u-hide {
+  transition: visibility 0s 1.2s;
+
+  .visible & {
+    transition-delay: 0s;
+  }
+
+  .hidden & {
+    visibility: hidden;
+  }
+}

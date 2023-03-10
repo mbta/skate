@@ -73,7 +73,7 @@ const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
 
   return (
     <ShuttlePickerContainer>
-      <div className="m-shuttle-picker">
+      <div className="m-shuttle-picker u-hide">
         {shuttles === null ? (
           <Loading />
         ) : (

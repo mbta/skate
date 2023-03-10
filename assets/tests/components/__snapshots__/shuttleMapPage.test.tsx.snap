@@ -22,7 +22,7 @@ exports[`Shuttle Map Page renders 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker"
+        class="m-shuttle-picker u-hide"
       >
         <div
           class="m-shuttle-picker__label"
@@ -682,7 +682,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker"
+        class="m-shuttle-picker u-hide"
       >
         <div
           class="m-shuttle-picker__label"
@@ -1342,7 +1342,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker"
+        class="m-shuttle-picker u-hide"
       >
         <div
           class="m-shuttle-picker__label"
@@ -2002,7 +2002,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker"
+        class="m-shuttle-picker u-hide"
       >
         loading...
       </div>
@@ -2225,7 +2225,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker"
+        class="m-shuttle-picker u-hide"
       >
         <div
           class="m-shuttle-picker__label"

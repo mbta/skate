@@ -19,7 +19,7 @@ const Presets = () => {
   const currentTab = currentRouteTab(routeTabs)
 
   return (
-    <div className="m-presets-panel">
+    <div className="m-presets-panel u-hide">
       <ul>
         {presets.map((preset) => (
           <li key={preset.uuid}>
