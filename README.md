@@ -20,7 +20,7 @@ Skate also requires Postgres. If you don't already have Postgres installed, and 
 
 There are a number of configuration details defined in environment variables. These define where data sources live, as well as authentication and CDN details. In our AWS environments these are all set and managed via Terraform.
 
-To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A `.envrc.template` file is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the direnv documentation to load it.
+To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A [`.envrc.template` file](.envrc.template) is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the direnv documentation to load it.
 
 Here are the configuration details defined in `.envrc`:
 
