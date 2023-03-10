@@ -22,27 +22,7 @@ There are a number of configuration details defined in environment variables. Th
 
 To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A [`.envrc.template` file](.envrc.template) is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the [direnv documentation](https://direnv.net/#getting-started) to load it.
 
-Here are the configuration details defined in `.envrc`:
-
-- **API_URL**: URL of the API for retrieving live train positions
-- **API_KEY**: Access key for the API
-- **GTFS_URL**: Location of the GTFS zip file
-- **BUSLOC_URL**: Source of GTFS-realtime enhanced VehiclePositions json data file
-- **POSTGRES_USERNAME**, **POSTGRES_PASSWORD**, **POSTGRES_HOSTNAME**: Postgres username, password, and hostname
-- **SWIFTLY_AUTHORIZATION_KEY**: for dev only, see below for prod
-- **SWIFTLY_REALTIME_VEHICLES_URL**: Source of Swiftly vehicle data
-- **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
-- **ERL_FLAGS**: Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
-- **SKATE_HASTUS_URL**: Source of extended schedule data
-- **TILESET_URL**: Location of map tile images
-- **RELEASE_COOKIE**: Used by Erlang (only required in production)
-- **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
-- **STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT**: CDN details (only required in production)
-- **SENTRY_BACKEND_DSN**, **SENTRY_FRONTEND_DSN**: Endpoints for logging errors to Sentry (optional, only used in production)
-- **BRIDGE_URL**: URL of the API for retrieving drawbridge status
-- **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status
-- **GUARDIAN_SECRET_KEY**: Authentication/authorization secret
-- **SECRET_KEY_BASE**: Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
+The environment variables are documented in the [Skate `.envrc.example` file](.envrc.example).
 
 Here are the values you'll need to be prepared to update to run Skate locally:
 * Your local Postgres server username and password
