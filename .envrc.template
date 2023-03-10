@@ -1,9 +1,24 @@
-### MBTA API V3 Access
+## Required Variables
+## * These are the values you'll need to be prepared to update to run Skate locally
+
 ## URL of the [MBTA v3 API](https://github.com/mbta/api) for retrieving live train positions
 export API_URL=
+
 ## Access key for the MBTA v3 API
-## * request your personal API key from [MBTA Realtime API](https://api-v3.mbta.com/)
+## * Request your personal API key from [MBTA Realtime API](https://api-v3.mbta.com/)
 export API_KEY=
+
+## Postgres configuration: username, password, and hostname
+## * Your local Postgres server should go here
+export POSTGRES_USERNAME=
+export POSTGRES_PASSWORD=
+export POSTGRES_HOSTNAME=
+
+## API key from [Swiftly Transitime API](https://swiftly-inc.stoplight.io/docs/realtime-standalone/YXBpOjI4NDM2MDU3-swiftly-api-reference)
+export SWIFTLY_AUTHORIZATION_KEY=
+
+## Source of Swiftly vehicle data
+export SWIFTLY_REALTIME_VEHICLES_URL=
 
 ## Location of the GTFS zip file
 export GTFS_URL=
@@ -11,29 +26,19 @@ export GTFS_URL=
 ## Source of GTFS-realtime enhanced VehiclePositions json data file
 export BUSLOC_URL=
 
-## Postgres configuration: username, password, and hostname
-export POSTGRES_USERNAME=
-export POSTGRES_PASSWORD=
-export POSTGRES_HOSTNAME=
-
-
-## API key from [Swiftly Transitime API](https://swiftly-inc.stoplight.io/docs/realtime-standalone/YXBpOjI4NDM2MDU3-swiftly-api-reference)
-export SWIFTLY_AUTHORIZATION_KEY=
-## Source of Swiftly vehicle data
-export SWIFTLY_REALTIME_VEHICLES_URL=
-
 ## Source of GTFS-realtime enhanced TripUpdates json data file (optional)
 export TRIP_UPDATES_URL=
 
 ## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 export ERL_FLAGS="+MIscs 2048"
 
+## Optional Variables
+
 ## Source of extended schedule data
-export SKATE_HASTUS_URL=
+# export SKATE_HASTUS_URL=
 
 ## Location of map tile images
-export TILESET_URL=
-
+# export TILESET_URL=
 
 ## Used by Erlang (only required in production)
 # export RELEASE_COOKIE=
