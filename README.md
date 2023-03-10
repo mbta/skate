@@ -22,7 +22,7 @@ There are a number of configuration details defined in environment variables. Th
 
 To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A [`.envrc.template` file](.envrc.template) is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the [direnv documentation](https://direnv.net/#getting-started) to load it.
 
-The environment variables are documented in the [Skate `.envrc.example` file](.envrc.example).
+The environment variables are documented in the [Skate `.envrc.template` file](.envrc.template).
 
 Here are the values you'll need to be prepared to update to run Skate locally:
 * Your local Postgres server username and password
