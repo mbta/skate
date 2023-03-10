@@ -1,55 +1,44 @@
-# API_URL
-#   : URL of the API for retrieving live train positions
+### MBTA API V3 Access
+## URL of the [MBTA v3 API](https://github.com/mbta/api) for retrieving live train positions
 export API_URL=
-
-# API_KEY
-#   : Access key for the API
+## Access key for the MBTA v3 API
+## * request your personal API key from [MBTA Realtime API](https://api-v3.mbta.com/)
 export API_KEY=
 
-# GTFS_URL
-#   : Location of the GTFS zip file
+## Location of the GTFS zip file
 export GTFS_URL=
 
-# BUSLOC_URL
-#   : Source of GTFS-realtime enhanced VehiclePositions json data file
+## Source of GTFS-realtime enhanced VehiclePositions json data file
 export BUSLOC_URL=
 
-# POSTGRES_USERNAME, POSTGRES_PASSWORD, POSTGRES_HOSTNAME
-#   : Postgres username, password, and hostname
+## Postgres configuration: username, password, and hostname
 export POSTGRES_USERNAME=
 export POSTGRES_PASSWORD=
 export POSTGRES_HOSTNAME=
 
-# SWIFTLY_AUTHORIZATION_KEY
-#   : for dev only, see below for prod
-export SWIFTLY_AUTHORIZATION_KEY=
 
-# SWIFTLY_REALTIME_VEHICLES_URL
-#   : Source of Swiftly vehicle data
+## API key from [Swiftly Transitime API](https://swiftly-inc.stoplight.io/docs/realtime-standalone/YXBpOjI4NDM2MDU3-swiftly-api-reference)
+export SWIFTLY_AUTHORIZATION_KEY=
+## Source of Swiftly vehicle data
 export SWIFTLY_REALTIME_VEHICLES_URL=
 
-# TRIP_UPDATES_URL
-#   : Source of GTFS-realtime enhanced TripUpdates json data file (optional)
+## Source of GTFS-realtime enhanced TripUpdates json data file (optional)
 export TRIP_UPDATES_URL=
 
-# ERL_FLAGS
-#   : Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
+## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 export ERL_FLAGS="+MIscs 2048"
 
-# SKATE_HASTUS_URL
-#   : Source of extended schedule data
+## Source of extended schedule data
 export SKATE_HASTUS_URL=
 
-# TILESET_URL
-#   : Location of map tile images
+## Location of map tile images
 export TILESET_URL=
 
 
-# RELEASE_COOKIE
-#   : Used by Erlang (only required in production)
+## Used by Erlang (only required in production)
 # export RELEASE_COOKIE=
-# COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY
-#   : Authentication/authorization details (only required in production)
+
+## AWS Cognito Authentication/authorization details (only required in production)
 # export COGNITO_DOMAIN
 # export COGNITO_CLIENT_ID
 # export COGNITO_CLIENT_SECRET
@@ -57,32 +46,26 @@ export TILESET_URL=
 # export COGNITO_AWS_REGION
 # export GUARDIAN_SECRET_KEY
 
-# STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT
-#   : CDN details (only required in production)
+## CDN details (only required in production)
 # export STATIC_SCHEME
 # export STATIC_HOST
 # export STATIC_PATH
 # export STATIC_PORT
 
-# SENTRY_BACKEND_DSN**, **SENTRY_FRONTEND_DSN
-#   : Endpoints for logging errors to Sentry (optional, only used in production)
+## Endpoints for logging errors to Sentry (only used in production)
 # export SENTRY_BACKEND_DSN
 # export SENTRY_FRONTEND_DSN
 
-# BRIDGE_URL
-#   : URL of the API for retrieving drawbridge status
+## URL of the API for retrieving drawbridge status
 # export BRIDGE_URL
 
-# BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD
-#   : credentials for the API that gets drawbridge status
+## Credentials for the API that gets drawbridge status
 # export BRIDGE_API_USERNAME
 # export BRIDGE_API_PASSWORD
 
-# GUARDIAN_SECRET_KEY
-#   : Authentication/authorization secret
+## Authentication/authorization secret
 # export GUARDIAN_SECRET_KEY
 
-# SECRET_KEY_BASE
-#   : Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
+## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret (only required in production)
 # export SECRET_KEY_BASE
 
