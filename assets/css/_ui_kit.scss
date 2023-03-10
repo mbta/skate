@@ -370,7 +370,8 @@ select {
 
 // #region transitions
 
-$transition-slide: all 0.2s ease-in-out;
+$transition-slide-duration: 0.2s;
+$transition-slide: all $transition-slide-duration ease-in-out;
 
 // #endregion
 

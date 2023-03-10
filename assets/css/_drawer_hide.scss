@@ -1,11 +1,14 @@
 .u-hide {
-  transition: visibility 0s 1.2s;
+  // Delay visibility transition to end of slide transition
+  transition: visibility 0s $transition-slide-duration;
 
   .visible & {
+    // when revealing do not delay visibility change
     transition-delay: 0s;
   }
 
   .hidden & {
+    // when parent hides, hide this element from accessibility tree
     visibility: hidden;
   }
 }
