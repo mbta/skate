@@ -333,7 +333,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       2,
       "User clicked map to open street view",
       {
-        streetViewUrl_str: `${url}`,
+        streetViewUrl_str: url,
         clickedMapAt: {
           latitude_real: latitude,
           longitude_real: longitude,
