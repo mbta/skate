@@ -44,13 +44,22 @@ export const StreetViewControl = ({
     streetViewEnabled
       ? {
           click: (e) => {
-            window.open(
-              streetViewUrl({
+            const source = {
                 latitude: e.latlng.lat,
                 longitude: e.latlng.lng,
-              }),
-              "_blank"
-            )
+              },
+              url = streetViewUrl(source)
+
+            window.FS?.event("User clicked map to open street view", {
+              streetViewUrl_str: url,
+              clickedMapAt: {
+                latitude_real: source.latitude,
+                longitude_real: source.longitude,
+              },
+            })
+
+            window.open(url, "_blank")
+
             setStreetViewEnabled(false)
           },
 
