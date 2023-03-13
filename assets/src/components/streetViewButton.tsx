@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react"
 import { className as classNames } from "../helpers/dom"
 import { WalkingIcon } from "../helpers/icon"
-import { streetViewUrl } from "../util/streetViewUrl"
+import { streetViewUrl as streetViewUrlFrom } from "../util/streetViewUrl"
 
 export interface GeographicCoordinate {
   latitude: number
@@ -26,7 +26,7 @@ const StreetViewButton = ({
   title,
   ...worldPosition
 }: StreetViewButtonProps): ReactElement<HTMLElement> => {
-  const streetViewUrl_str = streetViewUrl(worldPosition)
+  const streetViewUrl = streetViewUrlFrom(worldPosition)
   return (
     <a
       className={classNames([
@@ -34,12 +34,12 @@ const StreetViewButton = ({
         "button-dark-small",
         className,
       ])}
-      href={streetViewUrl_str}
+      href={streetViewUrl}
       target="_blank"
       rel="noreferrer"
       onClick={() => {
         window.FS?.event("Street view link followed", {
-          streetViewUrl_str,
+          streetViewUrl_str: streetViewUrl,
           source: {
             latitude_real: worldPosition.latitude,
             longitude_real: worldPosition.longitude,
