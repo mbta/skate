@@ -25,6 +25,12 @@ describe("StreetViewButton", () => {
 
     await userEvent.click(screen.getByRole("link", { name: /Street View/i }))
 
-    expect(window.FS!.event).toHaveBeenCalledWith("Street view link followed")
+    expect(window.FS!.event).toHaveBeenCalledWith("Street view link followed", {
+      streetViewUrl_str: streetViewUrl({ latitude, longitude }),
+      source: {
+        latitude_real: latitude,
+        longitude_real: longitude,
+      },
+    })
   })
 })
