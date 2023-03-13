@@ -15,7 +15,7 @@ defmodule SkateWeb.TestGroupController do
 
     conn
     |> assign(:test_groups, test_groups)
-    |> put_layout({SkateWeb.LayoutView, "test_groups.html"})
+    |> put_layout()
     |> render("index.html")
   end
 
@@ -41,7 +41,7 @@ defmodule SkateWeb.TestGroupController do
       |> assign(:test_group_name, test_group.name)
       |> assign(:test_group_id, test_group.id)
       |> assign(:test_group_users, test_group_users)
-      |> put_layout({SkateWeb.LayoutView, "test_groups.html"})
+      |> put_layout()
       |> render("test_group.html")
     else
       send_resp(conn, :not_found, "no test group found")
@@ -65,7 +65,7 @@ defmodule SkateWeb.TestGroupController do
       |> assign(:test_group_name, test_group.name)
       |> assign(:test_group_id, test_group.id)
       |> assign(:users, users)
-      |> put_layout({SkateWeb.LayoutView, "test_groups.html"})
+      |> put_layout()
       |> render("add_user.html")
     else
       send_resp(conn, :not_found, "no test group found")
@@ -114,5 +114,11 @@ defmodule SkateWeb.TestGroupController do
     else
       send_resp(conn, :not_found, "no test group found")
     end
+  end
+
+  defp put_layout(conn) do
+    conn
+    |> put_layout({SkateWeb.LayoutView, "barebones.html"})
+    |> assign(:title, "Skate Test Groups")
   end
 end

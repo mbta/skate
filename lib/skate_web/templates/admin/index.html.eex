@@ -1,0 +1,8 @@
+<h1>Admin Tools</h1>
+
+<ul>
+  <li><%= link "Test Groups", to: Routes.test_group_path(@conn, :index) %></li>
+  <li><%= link "Reports", to: Routes.report_path(@conn, :index) %></li>
+  <li><%= link "Feature Flags", to: SkateWeb.Router.Helpers.path(@conn, "/_flags") %></li>
+
+</ul>

@@ -5,6 +5,6 @@ defmodule SkateWeb.UnauthorizedController do
   def index(conn, _params) do
     conn
     |> put_status(403)
-    |> render("index.html", layout: {SkateWeb.LayoutView, "reports.html"})
+    |> render("index.html", layout: {SkateWeb.LayoutView, "barebones.html"})
   end
 end
