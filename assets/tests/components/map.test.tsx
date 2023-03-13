@@ -343,7 +343,8 @@ describe("<MapFollowingPrimaryVehicles />", () => {
 
     expect(openSpy).toHaveBeenCalled()
 
-    expect(streetViewModeSwitch.get()).toBeInTheDocument()
+    expect(streetViewModeSwitch.get()).toBeVisible()
+    expect(streetViewModeSwitch.get()).not.toBeChecked()
   })
 
   test("turning off street view also fires a FullStory event", async () => {
