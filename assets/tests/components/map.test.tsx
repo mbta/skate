@@ -22,6 +22,8 @@ import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
 import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPage/map"
+import { streetViewUrl } from "../../src/util/streetViewUrl"
 
 const shape = {
   id: "shape",
@@ -314,19 +316,39 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       />
     )
 
-    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
-
-    await userEvent.click(mapRef.current!.getPane("mapPane")!)
-
-    expect(openSpy).toHaveBeenCalled()
-    expect(window.FS!.event).toHaveBeenCalledWith(
+    await userEvent.click(streetViewModeSwitch.get())
+    expect(window.FS!.event).toHaveBeenNthCalledWith(
+      1,
       "Dedicated street view toggled",
       { streetViewEnabled_bool: true }
     )
 
-    expect(
-      screen.queryByRole("switch", { name: /Street View/, checked: false })
-    ).toBeInTheDocument()
+    await userEvent.click(mapRef.current!.getPane("mapPane")!)
+
+    /**
+     * These "magic numbers" correspond to the nearest floating point value of
+     * our map's {@link defaultCenter} (and also constrained by `maxBounds`).
+     */
+    const latitude = 42.360700296138525
+    const longitude = -71.0588836669922
+    const url = streetViewUrl({ latitude, longitude })
+
+    expect(window.FS!.event).toHaveBeenNthCalledWith(
+      2,
+      "User clicked map to open street view",
+      {
+        streetViewUrl_str: url,
+        clickedMapAt: {
+          latitude_real: latitude,
+          longitude_real: longitude,
+        },
+      }
+    )
+
+    expect(openSpy).toHaveBeenCalled()
+
+    expect(streetViewModeSwitch.get()).toBeVisible()
+    expect(streetViewModeSwitch.get()).not.toBeChecked()
   })
 
   test("turning off street view also fires a FullStory event", async () => {

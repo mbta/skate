@@ -1,9 +1,10 @@
 import Leaflet, { ControlOptions } from "leaflet"
 import React, { useEffect, useId, useState } from "react"
 import ReactDOM from "react-dom"
-import { useMap } from "react-leaflet"
+import { useMap, useMapEvents } from "react-leaflet"
 import { className } from "../../../helpers/dom"
 import { WalkingIcon } from "../../../helpers/icon"
+import { streetViewUrl } from "../../../util/streetViewUrl"
 
 export interface StreetViewControlProps extends ControlOptions {
   streetViewEnabled: boolean
@@ -38,6 +39,38 @@ export const StreetViewControl = ({
 
     return () => portalElement?.remove()
   }, [portalElement, portalParent, setStreetViewEnabled])
+
+  useMapEvents(
+    streetViewEnabled
+      ? {
+          click: (e) => {
+            const source = {
+                latitude: e.latlng.lat,
+                longitude: e.latlng.lng,
+              },
+              url = streetViewUrl(source)
+
+            window.FS?.event("User clicked map to open street view", {
+              streetViewUrl_str: url,
+              clickedMapAt: {
+                latitude_real: source.latitude,
+                longitude_real: source.longitude,
+              },
+            })
+
+            window.open(url, "_blank")
+
+            setStreetViewEnabled(false)
+          },
+
+          keydown: (e) => {
+            if (e.originalEvent.key === "Escape") {
+              setStreetViewEnabled(false)
+            }
+          },
+        }
+      : {}
+  )
 
   const control = (
     <>

@@ -37,7 +37,6 @@ import { className } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
-import { streetViewUrl } from "../util/streetViewUrl"
 import appData from "../appData"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import {
@@ -134,38 +133,11 @@ export const FullscreenControl = createControlComponent(
 
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
-const EventAdder = ({
-  streetViewMode,
-  setStreetViewMode,
-}: {
-  streetViewMode: boolean
-  setStreetViewMode: React.Dispatch<React.SetStateAction<boolean>>
-}): ReactElement => {
+const EventAdder = (): ReactElement => {
   useMapEvents({
     popupopen: (e) => setTimeout(() => (e.popup.options.autoPan = false), 100),
 
     popupclose: (e) => (e.popup.options.autoPan = true),
-
-    ...(streetViewMode
-      ? {
-          click: (e) => {
-            window.open(
-              streetViewUrl({
-                latitude: e.latlng.lat,
-                longitude: e.latlng.lng,
-              }),
-              "_blank"
-            )
-            setStreetViewMode(false)
-          },
-
-          keydown: (e) => {
-            if (e.originalEvent.key === "Escape") {
-              setStreetViewMode(false)
-            }
-          },
-        }
-      : {}),
   })
   return <></>
 }
@@ -362,10 +334,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ref={mapRef}
         attributionControl={false}
       >
-        <EventAdder
-          streetViewMode={streetViewEnabled}
-          setStreetViewMode={setStreetViewEnabled}
-        />
+        <EventAdder />
         {props.allowStreetView && (
           <StreetViewControl
             position="topright"
