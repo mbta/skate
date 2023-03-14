@@ -38,7 +38,7 @@ const RoutePicker = ({
   ).filter((route) => !selectedRouteIds.includes(route.id))
 
   return (
-    <div className="m-route-picker">
+    <div className="m-route-picker u-hide">
       <RouteFilter {...routeFilterData} />
 
       <GarageFilter {...garageFilterData} />

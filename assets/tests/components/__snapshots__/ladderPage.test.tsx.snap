@@ -25,7 +25,7 @@ exports[`LadderPage renders the empty state 1`] = `
         </button>
       </div>
       <div
-        class="m-ladder-page__routes-presets-toggle"
+        class="m-ladder-page__routes-presets-toggle u-hide"
       >
         <button
           class="m-ladder-page__routes_picker_button_selected"
@@ -41,7 +41,7 @@ exports[`LadderPage renders the empty state 1`] = `
         </button>
       </div>
       <div
-        class="m-route-picker"
+        class="m-route-picker u-hide"
       >
         <div
           class="m-route-filter"
@@ -145,7 +145,7 @@ exports[`LadderPage renders with route tabs 1`] = `
         </button>
       </div>
       <div
-        class="m-ladder-page__routes-presets-toggle"
+        class="m-ladder-page__routes-presets-toggle u-hide"
       >
         <button
           class="m-ladder-page__routes_picker_button_selected"
@@ -161,7 +161,7 @@ exports[`LadderPage renders with route tabs 1`] = `
         </button>
       </div>
       <div
-        class="m-route-picker"
+        class="m-route-picker u-hide"
       >
         <div
           class="m-route-filter"
@@ -385,7 +385,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         </button>
       </div>
       <div
-        class="m-ladder-page__routes-presets-toggle"
+        class="m-ladder-page__routes-presets-toggle u-hide"
       >
         <button
           class="m-ladder-page__routes_picker_button_selected"
@@ -401,7 +401,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         </button>
       </div>
       <div
-        class="m-route-picker"
+        class="m-route-picker u-hide"
       >
         <div
           class="m-route-filter"
@@ -645,7 +645,7 @@ exports[`LadderPage renders with timepoints 1`] = `
         </button>
       </div>
       <div
-        class="m-ladder-page__routes-presets-toggle"
+        class="m-ladder-page__routes-presets-toggle u-hide"
       >
         <button
           class="m-ladder-page__routes_picker_button_selected"
@@ -661,7 +661,7 @@ exports[`LadderPage renders with timepoints 1`] = `
         </button>
       </div>
       <div
-        class="m-route-picker"
+        class="m-route-picker u-hide"
       >
         <div
           class="m-route-filter"

@@ -2,7 +2,7 @@
 
 exports[`Presets renders current presets 1`] = `
 <div
-  className="m-presets-panel"
+  className="m-presets-panel u-hide"
 >
   <ul>
     <li>
