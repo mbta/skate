@@ -325,6 +325,10 @@ describe("<MapFollowingPrimaryVehicles />", () => {
 
     await userEvent.click(mapRef.current!.getPane("mapPane")!)
 
+    /**
+     * These "magic numbers" correspond to the nearest floating point value of
+     * our map's {@link defaultCenter} (and also constrained by `maxBounds`).
+     */
     const latitude = 42.360700296138525
     const longitude = -71.0588836669922
     const url = streetViewUrl({ latitude, longitude })
