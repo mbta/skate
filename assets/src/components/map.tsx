@@ -306,6 +306,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
+  // eslint-disable-next-line no-console
+  console.error("I'm erroring!")
   const defaultZoom = 13
   const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(false)
   const { allowFullscreen = true } = props
