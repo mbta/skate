@@ -1,6 +1,9 @@
 // mocking createSVGRect does some stuff that typescript doesn't like.
 // @ts-nocheck
+import failOnConsole from "jest-fail-on-console"
 import React from "react"
+
+failOnConsole()
 
 jest.mock("@tippyjs/react", () => ({
   __esModule: true,
