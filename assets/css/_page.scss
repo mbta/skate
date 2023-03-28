@@ -1,4 +1,4 @@
-.c-page {
+.l-page {
   height: 100%;
   overflow: scroll;
 }
@@ -22,9 +22,4 @@
   box-shadow: $subtle-box-shadow;
   margin-bottom: 1rem;
   padding: 0.5rem 1rem;
-}
-
-.c-page__header {
-  @include font-emph;
-  font-weight: bold;
 }

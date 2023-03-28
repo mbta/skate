@@ -27,7 +27,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
-    <div className={`c-page c-page--settings ${mobileMenuClass}`}>
+    <div className={`l-page m-settings-page ${mobileMenuClass}`}>
       <Notifications />
       <div className="c-page__container">
         <h1 className="c-page__title">Settings</h1>

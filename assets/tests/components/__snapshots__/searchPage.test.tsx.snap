@@ -3,7 +3,7 @@
 exports[`SearchPage renders the empty state 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-search-page m-search-page--show-list "
+    class="l-page m-search-page m-search-page--show-list "
   >
     <div
       class="m-search-page__input-and-results"
@@ -326,7 +326,7 @@ exports[`SearchPage renders the empty state 1`] = `
 exports[`SearchPage renders vehicle data 1`] = `
 <DocumentFragment>
   <div
-    class="c-page m-search-page m-search-page--show-list "
+    class="l-page m-search-page m-search-page--show-list "
   >
     <div
       class="m-search-page__input-and-results"

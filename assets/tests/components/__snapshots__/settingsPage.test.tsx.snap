@@ -2,7 +2,7 @@
 
 exports[`SettingsPage renders 1`] = `
 <div
-  className="c-page c-page--settings "
+  className="l-page m-settings-page "
 >
   <div
     className="m-notifications"
