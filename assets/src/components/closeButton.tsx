@@ -13,15 +13,15 @@ export type CloseButtonType =
   | "xl_green"
 
 const buttonTypeClassNames: Record<CloseButtonType, string[]> = {
-  s_light: ["m-close-button--small", "m-close-button--light"],
-  l_light: ["m-close-button--large", "m-close-button--light"],
-  xl_light: ["m-close-button--x-large", "m-close-button--light"],
-  l_dark: ["m-close-button--large", "m-close-button--dark"],
-  xl_dark: ["m-close-button--x-large", "m-close-button--dark"],
-  s_darker: ["m-close-button--small", "m-close-button--darker"],
-  l_darker: ["m-close-button--large", "m-close-button--darker"],
-  l_green: ["m-close-button--large", "m-close-button--green"],
-  xl_green: ["m-close-button--x-large", "m-close-button--green"],
+  s_light: ["c-close-button--small", "c-close-button--light"],
+  l_light: ["c-close-button--large", "c-close-button--light"],
+  xl_light: ["c-close-button--x-large", "c-close-button--light"],
+  l_dark: ["c-close-button--large", "c-close-button--dark"],
+  xl_dark: ["c-close-button--x-large", "c-close-button--dark"],
+  s_darker: ["c-close-button--small", "c-close-button--darker"],
+  l_darker: ["c-close-button--large", "c-close-button--darker"],
+  l_green: ["c-close-button--large", "c-close-button--green"],
+  xl_green: ["c-close-button--x-large", "c-close-button--green"],
 }
 
 export interface CloseButtonProps extends React.HTMLAttributes<HTMLElement> {
@@ -38,7 +38,7 @@ export const CloseButton = ({
     aria-label="Close"
     onClick={onClick}
     className={[
-      "m-close-button",
+      "c-close-button",
       ...buttonTypeClassNames[closeButtonType],
     ].join(" ")}
     {...rest}

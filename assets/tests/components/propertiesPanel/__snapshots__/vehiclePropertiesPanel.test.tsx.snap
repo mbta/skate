@@ -17,7 +17,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -385,7 +385,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -753,7 +753,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -989,7 +989,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -1454,7 +1454,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -1822,7 +1822,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -2227,7 +2227,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span

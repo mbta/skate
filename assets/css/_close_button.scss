@@ -1,4 +1,4 @@
-.m-close-button--small {
+.c-close-button--small {
   @include button-icon(0.5rem);
   min-width: 1rem;
   max-width: 1rem;
@@ -6,7 +6,7 @@
   max-height: 1rem;
 }
 
-.m-close-button--large {
+.c-close-button--large {
   @include button-icon(0.75rem);
   min-width: 1.75rem;
   max-width: 1.75rem;
@@ -14,7 +14,7 @@
   max-height: 1.75rem;
 }
 
-.m-close-button--x-large {
+.c-close-button--x-large {
   @include button-icon(1rem);
   min-width: 2.5rem;
   max-width: 2.5rem;
@@ -22,7 +22,7 @@
   max-height: 2.5rem;
 }
 
-.m-close-button--light {
+.c-close-button--light {
   background-color: transparent;
 
   span svg {
@@ -39,7 +39,7 @@
   }
 }
 
-.m-close-button--dark {
+.c-close-button--dark {
   background-color: transparent;
 
   span svg {
@@ -64,7 +64,7 @@
   }
 }
 
-.m-close-button--darker {
+.c-close-button--darker {
   background-color: transparent;
 
   span svg {
@@ -89,7 +89,7 @@
   }
 }
 
-.m-close-button--green {
+.c-close-button--green {
   background-color: transparent;
 
   span svg {
@@ -114,7 +114,7 @@
   }
 }
 
-.m-close-button {
+.c-close-button {
   display: flex;
   justify-content: center;
   align-items: center;

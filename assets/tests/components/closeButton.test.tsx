@@ -12,8 +12,8 @@ describe("CloseButton", () => {
 
     const buttonElement = result.getByRole("button", { name: /close/i })
 
-    expect(buttonElement.classList).toContain("m-close-button--large")
-    expect(buttonElement.classList).toContain("m-close-button--green")
+    expect(buttonElement.classList).toContain("c-close-button--large")
+    expect(buttonElement.classList).toContain("c-close-button--green")
   })
 
   test("clicking button invokes callback", async () => {

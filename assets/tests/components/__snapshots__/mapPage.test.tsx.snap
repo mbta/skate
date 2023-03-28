@@ -1426,7 +1426,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <button
                 aria-label="Close Vehicle Properties Card"
-                class="m-close-button m-close-button--large m-close-button--light"
+                class="c-close-button c-close-button--large c-close-button--light"
               >
                 <span
                   aria-hidden="true"

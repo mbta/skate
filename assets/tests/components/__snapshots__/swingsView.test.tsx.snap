@@ -15,7 +15,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
     </h2>
     <button
       aria-label="Close"
-      className="m-close-button m-close-button--x-large m-close-button--light"
+      className="c-close-button c-close-button--x-large c-close-button--light"
       onClick={[Function]}
     >
       <span
@@ -184,7 +184,7 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
     </h2>
     <button
       aria-label="Close"
-      className="m-close-button m-close-button--x-large m-close-button--light"
+      className="c-close-button c-close-button--x-large c-close-button--light"
       onClick={[Function]}
     >
       <span
@@ -351,7 +351,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
     </h2>
     <button
       aria-label="Close"
-      className="m-close-button m-close-button--x-large m-close-button--light"
+      className="c-close-button c-close-button--x-large c-close-button--light"
       onClick={[Function]}
     >
       <span
@@ -544,7 +544,7 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
     </h2>
     <button
       aria-label="Close"
-      className="m-close-button m-close-button--x-large m-close-button--light"
+      className="c-close-button c-close-button--x-large c-close-button--light"
       onClick={[Function]}
     >
       <span
@@ -664,7 +664,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
     </h2>
     <button
       aria-label="Close"
-      className="m-close-button m-close-button--x-large m-close-button--light"
+      className="c-close-button c-close-button--x-large c-close-button--light"
       onClick={[Function]}
     >
       <span
@@ -951,7 +951,7 @@ exports[`SwingsView renders loading message 1`] = `
     </h2>
     <button
       aria-label="Close"
-      className="m-close-button m-close-button--x-large m-close-button--light"
+      className="c-close-button c-close-button--x-large c-close-button--light"
       onClick={[Function]}
     >
       <span

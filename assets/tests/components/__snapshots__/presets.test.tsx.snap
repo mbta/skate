@@ -17,7 +17,7 @@ exports[`Presets renders current presets 1`] = `
       </div>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--light"
+        className="c-close-button c-close-button--large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -44,7 +44,7 @@ exports[`Presets renders current presets 1`] = `
       </div>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--light"
+        className="c-close-button c-close-button--large c-close-button--light"
         onClick={[Function]}
       >
         <span
