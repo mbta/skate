@@ -1,4 +1,4 @@
-.m-nav-menu--open {
+.c-nav-menu--open {
   width: 18.125rem;
   max-width: 100%;
   height: 100%;
@@ -11,11 +11,11 @@
   border-right: 1px solid $color-gray-300;
 }
 
-.m-nav-menu--closed {
+.c-nav-menu--closed {
   display: none;
 }
 
-.m-nav-menu__icon svg {
+.c-nav-menu__icon svg {
   fill: $color-gray-600;
   &:hover,
   &:active,
@@ -24,7 +24,7 @@
   }
 }
 
-.m-nav-menu__header {
+.c-nav-menu__header {
   margin-bottom: 0.5rem;
   padding: 0.625rem 1.5rem 0.625rem 1.5rem;
   background-color: $color-gray-100;
@@ -33,8 +33,8 @@
   align-items: center;
 }
 
-.m-nav-menu__link,
-.m-nav-menu__button {
+.c-nav-menu__link,
+.c-nav-menu__button {
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -50,14 +50,14 @@
     font-weight: 500;
   }
 
-  &.m-nav-menu__link--active {
+  &.c-nav-menu__link--active {
     background-color: $color-eggplant-100;
     font-weight: 500;
     color: $color-eggplant-800;
   }
 }
 
-.m-nav-menu__close {
+.c-nav-menu__close {
   width: 1rem;
   height: 1rem;
   svg {
@@ -65,12 +65,12 @@
   }
 }
 
-.m-nav-menu__close-icon {
+.c-nav-menu__close-icon {
   display: block;
   height: 1rem;
 }
 
-.m-nav-menu__logo {
+.c-nav-menu__logo {
   width: 2.5rem;
   height: 1.5rem;
 
@@ -80,7 +80,7 @@
   }
 }
 
-.m-nav-menu__logo-icon {
+.c-nav-menu__logo-icon {
   svg {
     fill: $color-eggplant-900;
     max-width: 100%;
@@ -88,8 +88,8 @@
   }
 }
 
-.m-nav-menu__button,
-.m-nav-menu__link {
+.c-nav-menu__button,
+.c-nav-menu__link {
   color: $color-gray-600;
   &:hover,
   &:active,
@@ -102,7 +102,7 @@
   padding-bottom: 0.25rem;
 }
 
-.m-nav-menu__icon {
+.c-nav-menu__icon {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   svg {
@@ -111,14 +111,14 @@
   }
 }
 
-.m-nav-menu__overlay {
+.c-nav-menu__overlay {
   position: fixed;
   padding: 0px;
   margin: 0px;
   display: none;
 }
 
-.m-nav-menu__overlay--open {
+.c-nav-menu__overlay--open {
   display: block;
   z-index: 109;
   background: rgba(88, 88, 88, 0.23);
