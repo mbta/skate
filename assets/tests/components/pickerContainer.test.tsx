@@ -25,7 +25,7 @@ describe("PickerContainer", () => {
     expect(mockDispatch).toHaveBeenCalledWith(togglePickerContainer())
   })
 
-  test("clicking the overlay hides the route picker", async () => {
+  test("clicking the backdrop hides the route picker", async () => {
     const mockDispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
@@ -36,7 +36,7 @@ describe("PickerContainer", () => {
       </StateDispatchProvider>
     )
 
-    await user.click(result.getByTestId("picker-container-overlay"))
+    await user.click(result.getByTestId("picker-container-backdrop"))
 
     expect(mockDispatch).toHaveBeenCalledWith(togglePickerContainer())
   })

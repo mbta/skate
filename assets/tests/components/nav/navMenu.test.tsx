@@ -19,7 +19,7 @@ jest.mock("../../../src/helpers/appCue", () => ({
 }))
 
 describe("NavMenu", () => {
-  test("clicking the overlay expanded/collapsed state", async () => {
+  test("clicking the backdrop expanded/collapsed state", async () => {
     const toggleMobileMenu = jest.fn()
 
     const user = userEvent.setup()
@@ -29,7 +29,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTestId("nav-menu-overlay"))
+    await user.click(result.getByTestId("nav-menu-backdrop"))
 
     expect(toggleMobileMenu).toHaveBeenCalled()
   })

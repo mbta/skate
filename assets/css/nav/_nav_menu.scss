@@ -111,14 +111,14 @@
   }
 }
 
-.c-nav-menu__overlay {
+.c-nav-menu__backdrop {
   position: fixed;
   padding: 0px;
   margin: 0px;
   display: none;
 }
 
-.c-nav-menu__overlay--open {
+.c-nav-menu__backdrop--open {
   display: block;
   z-index: 109;
   background: rgba(88, 88, 88, 0.23);

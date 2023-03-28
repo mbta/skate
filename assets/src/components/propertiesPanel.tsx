@@ -57,7 +57,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
         )}
       </div>
       <div
-        className="m-properties-panel__modal-overlay"
+        className="m-properties-panel__modal-backdrop"
         onClick={
           /* istanbul ignore next */
           () => hideMeIfNoCrowdingTooltip(hideMe)

@@ -376,11 +376,11 @@ $transition-slide: all $transition-slide-duration ease-in-out;
 // #endregion
 
 // #region modals
-$modal-overlay-color: transparentize($color-component-dark, 0.8);
+$modal-backdrop-color: transparentize($color-component-dark, 0.8);
 $modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);
 
-@mixin modal-overlay {
-  background-color: $modal-overlay-color;
+@mixin modal-backdrop {
+  background-color: $modal-backdrop-color;
   height: 100%;
   left: 0;
   position: fixed;
