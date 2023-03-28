@@ -140,7 +140,7 @@ html,
 body,
 main,
 #app,
-.m-app {
+.l-app {
   height: 100%;
 }
 
@@ -151,18 +151,18 @@ body {
   font-size: 16px;
 }
 
-.m-app {
+.l-app {
   display: flex;
   flex-direction: column;
   width: 100vw;
 }
 
-.m-app__banner {
+.l-app__banner {
   width: 100%;
   flex: 0 0 0;
 }
 
-.m-app__main {
+.l-app__main {
   position: relative;
   flex: 1 1 0;
   min-height: 0;

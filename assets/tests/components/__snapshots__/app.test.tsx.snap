@@ -3,13 +3,13 @@
 exports[`App renders 1`] = `
 <DocumentFragment>
   <div
-    class="m-app"
+    class="l-app"
   >
     <div
-      class="m-app__banner"
+      class="l-app__banner"
     />
     <div
-      class="m-app__main"
+      class="l-app__main"
     >
       <div
         class="l-nav--wide"
