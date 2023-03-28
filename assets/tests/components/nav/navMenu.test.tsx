@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import * as browser from "../../../src/models/browser"
@@ -19,19 +19,31 @@ jest.mock("../../../src/helpers/appCue", () => ({
 }))
 
 describe("NavMenu", () => {
-  test("clicking the backdrop expanded/collapsed state", async () => {
+  test("when mobile menu is open, clicking the backdrop toggled the mobile menu", async () => {
     const toggleMobileMenu = jest.fn()
 
     const user = userEvent.setup()
-    const result = render(
+    render(
+      <BrowserRouter>
+        <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
+      </BrowserRouter>
+    )
+
+    await user.click(screen.getByTestId("nav-menu-backdrop"))
+
+    expect(toggleMobileMenu).toHaveBeenCalled()
+  })
+
+  test("when mobile menu is closed, there is no backdrop", async () => {
+    const toggleMobileMenu = jest.fn()
+
+    render(
       <BrowserRouter>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={false} />
       </BrowserRouter>
     )
 
-    await user.click(result.getByTestId("nav-menu-backdrop"))
-
-    expect(toggleMobileMenu).toHaveBeenCalled()
+    expect(screen.queryByTestId("nav-menu-backdrop")).not.toBeInTheDocument()
   })
 
   test("mobile menu is visible", () => {
