@@ -1624,16 +1624,16 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 class="m-vehicle-properties-card__location-info m-info-section"
               >
                 <div
-                  class="m-current-location"
+                  class="c-current-location"
                 >
                   <label
-                    class="m-current-location__label label font-xs-reg title-case"
+                    class="c-current-location__label label font-xs-reg title-case"
                     for="current-location-:r6:"
                   >
                     Current Location
                   </label>
                   <output
-                    class="m-current-location__value label font-s-semi"
+                    class="c-current-location__value label font-s-semi"
                     id="current-location-:r6:"
                   >
                     loading...
