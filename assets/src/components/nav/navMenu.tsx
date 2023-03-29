@@ -99,16 +99,15 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
           </li>
         </ul>
       </div>
-      <div
-        data-testid="nav-menu-overlay"
-        className={
-          "c-nav-menu__overlay" +
-          (mobileMenuIsOpen ? " c-nav-menu__overlay--open" : "")
-        }
-        onClick={toggleMobileMenu}
-        onKeyDown={toggleMobileMenu}
-        aria-hidden={true}
-      />
+      {mobileMenuIsOpen && (
+        <div
+          data-testid="nav-menu-backdrop"
+          className={"c-nav-menu-backdrop"}
+          onClick={toggleMobileMenu}
+          onKeyDown={toggleMobileMenu}
+          aria-hidden={true}
+        />
+      )}
     </>
   )
 }

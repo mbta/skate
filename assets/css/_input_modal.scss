@@ -28,8 +28,8 @@
   }
 }
 
-.m-input-modal__overlay {
-  @include modal-overlay;
+.c-input-modal-backdrop {
+  @include modal-backdrop;
   z-index: 2000;
 }
 

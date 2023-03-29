@@ -90,8 +90,8 @@ exports[`LadderPage renders the empty state 1`] = `
     </div>
     <div
       aria-hidden="true"
-      class="m-picker-container-overlay"
-      data-testid="picker-container-overlay"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
     />
     <div
       class="m-ladder-page__tab-bar-and-ladders"
@@ -233,8 +233,8 @@ exports[`LadderPage renders with route tabs 1`] = `
     </div>
     <div
       aria-hidden="true"
-      class="m-picker-container-overlay"
-      data-testid="picker-container-overlay"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
     />
     <div
       class="m-ladder-page__tab-bar-and-ladders"
@@ -477,8 +477,8 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     </div>
     <div
       aria-hidden="true"
-      class="m-picker-container-overlay"
-      data-testid="picker-container-overlay"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
     />
     <div
       class="m-ladder-page__tab-bar-and-ladders"
@@ -737,8 +737,8 @@ exports[`LadderPage renders with timepoints 1`] = `
     </div>
     <div
       aria-hidden="true"
-      class="m-picker-container-overlay"
-      data-testid="picker-container-overlay"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
     />
     <div
       class="m-ladder-page__tab-bar-and-ladders"

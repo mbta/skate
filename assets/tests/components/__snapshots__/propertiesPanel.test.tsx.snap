@@ -311,7 +311,7 @@ Array [
   </div>,
   <div
     aria-hidden={true}
-    className="m-properties-panel__modal-overlay"
+    className="m-properties-panel-backdrop"
     onClick={[Function]}
   />,
 ]
@@ -693,7 +693,7 @@ Array [
   </div>,
   <div
     aria-hidden={true}
-    className="m-properties-panel__modal-overlay"
+    className="m-properties-panel-backdrop"
     onClick={[Function]}
   />,
 ]

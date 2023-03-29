@@ -23,7 +23,7 @@ const InputModal = ({
           {children}
         </div>
       </div>
-      <div className="m-input-modal__overlay" aria-hidden={true} />
+      <div className="c-input-modal-backdrop" aria-hidden={true} />
     </>
   )
 }
