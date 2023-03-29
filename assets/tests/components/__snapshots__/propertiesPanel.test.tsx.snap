@@ -235,7 +235,7 @@ Array [
         >
           <div
             aria-labelledby="card-label-:r1:"
-            className="m-card m-card--lemon m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
+            className="m-card m-card--lemon c-block-waiver-banner c-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
           >
             <div
               className="m-card__left"
@@ -251,12 +251,12 @@ Array [
                     id="card-label-:r1:"
                   >
                     <h3
-                      className="m-block-waiver-banner__title"
+                      className="c-block-waiver-banner__title"
                     >
                       Unknown Ghost Bus
                     </h3>
                     <div
-                      className="m-block-waiver-banner__badge m-block-waiver-banner__badge--unknown"
+                      className="c-block-waiver-banner__badge c-block-waiver-banner__badge--unknown"
                     >
                       <span
                         dangerouslySetInnerHTML={

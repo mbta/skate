@@ -3,7 +3,7 @@
 exports[`BlockWaiverBanner renders a current time waiver 1`] = `
 <div
   aria-labelledby="card-label-:r0:"
-  className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--current m-card--no-focus-or-hover"
+  className="m-card m-card--kiwi c-block-waiver-banner c-block-waiver-banner--current m-card--no-focus-or-hover"
 >
   <div
     className="m-card__left"
@@ -19,12 +19,12 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
           id="card-label-:r0:"
         >
           <h3
-            className="m-block-waiver-banner__title"
+            className="c-block-waiver-banner__title"
           >
             Dispatcher Note
           </h3>
           <div
-            className="m-block-waiver-banner__badge m-block-waiver-banner__badge--current"
+            className="c-block-waiver-banner__badge c-block-waiver-banner__badge--current"
           >
             <span>
               <svg
@@ -131,7 +131,7 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
 exports[`BlockWaiverBanner renders a future time waiver 1`] = `
 <div
   aria-labelledby="card-label-:r1:"
-  className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--future m-card--no-focus-or-hover"
+  className="m-card m-card--kiwi c-block-waiver-banner c-block-waiver-banner--future m-card--no-focus-or-hover"
 >
   <div
     className="m-card__left"
@@ -147,12 +147,12 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
           id="card-label-:r1:"
         >
           <h3
-            className="m-block-waiver-banner__title"
+            className="c-block-waiver-banner__title"
           >
             Dispatcher Note
           </h3>
           <div
-            className="m-block-waiver-banner__badge m-block-waiver-banner__badge--future"
+            className="c-block-waiver-banner__badge c-block-waiver-banner__badge--future"
           >
             <span
               className="m-notification-bell-icon--read"
@@ -234,7 +234,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
 exports[`BlockWaiverBanner renders a past time waiver 1`] = `
 <div
   aria-labelledby="card-label-:r2:"
-  className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
+  className="m-card m-card--kiwi c-block-waiver-banner c-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
 >
   <div
     className="m-card__left"
@@ -250,12 +250,12 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
           id="card-label-:r2:"
         >
           <h3
-            className="m-block-waiver-banner__title"
+            className="c-block-waiver-banner__title"
           >
             Dispatcher Note
           </h3>
           <div
-            className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
+            className="c-block-waiver-banner__badge c-block-waiver-banner__badge--past"
           >
             Past
           </div>

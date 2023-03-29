@@ -230,7 +230,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
     >
       <div
         aria-labelledby="card-label-:r0:"
-        className="m-card m-card--lemon m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
+        className="m-card m-card--lemon c-block-waiver-banner c-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
       >
         <div
           className="m-card__left"
@@ -246,12 +246,12 @@ exports[`GhostPropertiesPanel renders 1`] = `
                 id="card-label-:r0:"
               >
                 <h3
-                  className="m-block-waiver-banner__title"
+                  className="c-block-waiver-banner__title"
                 >
                   Unknown Ghost Bus
                 </h3>
                 <div
-                  className="m-block-waiver-banner__badge m-block-waiver-banner__badge--unknown"
+                  className="c-block-waiver-banner__badge c-block-waiver-banner__badge--unknown"
                 >
                   <span
                     dangerouslySetInnerHTML={
@@ -536,7 +536,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
       >
         <div
           aria-labelledby="card-label-:r2:"
-          className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
+          className="m-card m-card--kiwi c-block-waiver-banner c-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
         >
           <div
             className="m-card__left"
@@ -552,12 +552,12 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
                   id="card-label-:r2:"
                 >
                   <h3
-                    className="m-block-waiver-banner__title"
+                    className="c-block-waiver-banner__title"
                   >
                     Dispatcher Note
                   </h3>
                   <div
-                    className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
+                    className="c-block-waiver-banner__badge c-block-waiver-banner__badge--past"
                   >
                     Past
                   </div>
@@ -886,7 +886,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     >
       <div
         aria-labelledby="card-label-:r1:"
-        className="m-card m-card--lemon m-block-waiver-banner m-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
+        className="m-card m-card--lemon c-block-waiver-banner c-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
       >
         <div
           className="m-card__left"
@@ -902,12 +902,12 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
                 id="card-label-:r1:"
               >
                 <h3
-                  className="m-block-waiver-banner__title"
+                  className="c-block-waiver-banner__title"
                 >
                   Unknown Ghost Bus
                 </h3>
                 <div
-                  className="m-block-waiver-banner__badge m-block-waiver-banner__badge--unknown"
+                  className="c-block-waiver-banner__badge c-block-waiver-banner__badge--unknown"
                 >
                   <span
                     dangerouslySetInnerHTML={

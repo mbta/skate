@@ -1,7 +1,7 @@
-.m-block-waiver-banner .m-card__title {
+.c-block-waiver-banner .m-card__title {
   justify-content: space-between;
 
-  .m-block-waiver-banner__title {
+  .c-block-waiver-banner__title {
     font-size: var(--font-size-m);
     font-weight: var(--font-weight-semi);
     margin: 0;
@@ -11,13 +11,13 @@
   }
 }
 
-.m-block-waiver-banner .m-card__title span svg {
+.c-block-waiver-banner .m-card__title span svg {
   stroke: none;
   width: 11px;
   height: 11px;
 }
 
-.m-block-waiver-banner__badge {
+.c-block-waiver-banner__badge {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,10 +44,10 @@
   }
 }
 
-.m-block-waiver-banner .m-properties-list__property-label {
+.c-block-waiver-banner .m-properties-list__property-label {
   color: $color-gray-800;
 }
 
-.m-block-waiver-banner .m-properties-list__property-value {
+.c-block-waiver-banner .m-properties-list__property-value {
   color: $color-gray-600;
 }
