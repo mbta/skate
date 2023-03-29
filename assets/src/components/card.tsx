@@ -38,46 +38,46 @@ export const Card: React.FC<CardProps> = ({
   const labelId = "card-label-" + useId()
 
   const innerLeftContent = (
-    <div className="m-card__left-content">
-      <div className="m-card__top-row">
-        <div className="m-card__title" id={labelId}>
+    <div className="c-card__left-content">
+      <div className="c-card__top-row">
+        <div className="c-card__title" id={labelId}>
           {title}
         </div>
         {currentTime && time ? (
-          <div className="m-card__time">
+          <div className="c-card__time">
             {formattedTimeDiffUnderThreshold(currentTime, time, 60)}
           </div>
         ) : null}
       </div>
-      <div className="m-card__contents">{children}</div>
+      <div className="c-card__contents">{children}</div>
     </div>
   )
 
   return (
     <div
       className={
-        `m-card m-card--${style}` +
+        `c-card c-card--${style}` +
         (additionalClass ? " " + additionalClass : "") +
-        (noFocusOrHover ? " m-card--no-focus-or-hover" : "") +
-        (!isActive ? " m-card--inactive" : "") +
-        (selected ? " m-card--selected" : "")
+        (noFocusOrHover ? " c-card--no-focus-or-hover" : "") +
+        (!isActive ? " c-card--inactive" : "") +
+        (selected ? " c-card--selected" : "")
       }
       aria-current={selected}
       aria-labelledby={labelId}
     >
       {openCallback ? (
-        <button className="m-card__left" onClick={openCallback}>
-          {icon && <div className="m-card__icon">{icon}</div>}
+        <button className="c-card__left" onClick={openCallback}>
+          {icon && <div className="c-card__icon">{icon}</div>}
           {innerLeftContent}
         </button>
       ) : (
-        <div className="m-card__left">
-          {icon && <div className="m-card__icon">{icon}</div>}
+        <div className="c-card__left">
+          {icon && <div className="c-card__icon">{icon}</div>}
           {innerLeftContent}
         </div>
       )}
       {closeCallback ? (
-        <div className="m-card__right">
+        <div className="c-card__right">
           <CloseButton closeButtonType="xl_green" onClick={closeCallback} />
         </div>
       ) : null}
@@ -101,7 +101,7 @@ export const CardReadable = (props: CardProps) => {
 
 export const CardBody: React.FC<{ children?: React.ReactNode }> = ({
   children,
-}) => <div className="m-card__body">{children}</div>
+}) => <div className="c-card__body">{children}</div>
 
 export interface CardPropertiesProps {
   properties: Property[]

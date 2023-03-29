@@ -15,7 +15,7 @@ describe("Card", () => {
     expect(screen.getByText(/My Card/)).toBeVisible()
     expect(screen.getByText(/Foo/)).toBeVisible()
     expect(screen.queryByTitle("Close")).toBeNull()
-    expect(screen.getByLabelText(/My Card/)).toHaveClass("m-card--inactive")
+    expect(screen.getByLabelText(/My Card/)).toHaveClass("c-card--inactive")
   })
 
   test("omits inactive class when active", () => {
@@ -30,7 +30,7 @@ describe("Card", () => {
       </Card>
     )
 
-    expect(screen.getByLabelText(/My Card/)).not.toHaveClass("m-card--inactive")
+    expect(screen.getByLabelText(/My Card/)).not.toHaveClass("c-card--inactive")
   })
 
   test("can add custom additional class", () => {
@@ -61,7 +61,7 @@ describe("Card", () => {
     )
 
     expect(screen.getByLabelText(/My Card/)).toHaveClass(
-      "m-card--no-focus-or-hover"
+      "c-card--no-focus-or-hover"
     )
   })
 

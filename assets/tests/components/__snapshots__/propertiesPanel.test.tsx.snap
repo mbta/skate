@@ -235,19 +235,19 @@ Array [
         >
           <div
             aria-labelledby="card-label-:r1:"
-            className="m-card m-card--lemon c-block-waiver-banner c-block-waiver-banner--unknown m-card--no-focus-or-hover m-card--inactive"
+            className="c-card c-card--lemon c-block-waiver-banner c-block-waiver-banner--unknown c-card--no-focus-or-hover c-card--inactive"
           >
             <div
-              className="m-card__left"
+              className="c-card__left"
             >
               <div
-                className="m-card__left-content"
+                className="c-card__left-content"
               >
                 <div
-                  className="m-card__top-row"
+                  className="c-card__top-row"
                 >
                   <div
-                    className="m-card__title"
+                    className="c-card__title"
                     id="card-label-:r1:"
                   >
                     <h3
@@ -270,10 +270,10 @@ Array [
                   </div>
                 </div>
                 <div
-                  className="m-card__contents"
+                  className="c-card__contents"
                 >
                   <div
-                    className="m-card__body"
+                    className="c-card__body"
                   >
                     A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
                   </div>

@@ -97,20 +97,20 @@ exports[`NotificationDrawer renders notifications 1`] = `
         <li>
           <div
             aria-labelledby="card-label-:r0:"
-            className="m-card m-card--kiwi"
+            className="c-card c-card--kiwi"
           >
             <button
-              className="m-card__left"
+              className="c-card__left"
               onClick={[Function]}
             >
               <div
-                className="m-card__left-content"
+                className="c-card__left-content"
               >
                 <div
-                  className="m-card__top-row"
+                  className="c-card__top-row"
                 >
                   <div
-                    className="m-card__title"
+                    className="c-card__title"
                     id="card-label-:r0:"
                   >
                     <span
@@ -123,16 +123,16 @@ exports[`NotificationDrawer renders notifications 1`] = `
                     No Operator
                   </div>
                   <div
-                    className="m-card__time"
+                    className="c-card__time"
                   >
                     0 min
                   </div>
                 </div>
                 <div
-                  className="m-card__contents"
+                  className="c-card__contents"
                 >
                   <div
-                    className="m-card__body"
+                    className="c-card__body"
                   >
                     OCC reported that an operator is not available on the r1, r2.
                   </div>
