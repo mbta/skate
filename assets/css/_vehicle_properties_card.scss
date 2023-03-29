@@ -1,5 +1,5 @@
 // #region Vehicle Properties Card
-.m-vehicle-properties-card {
+.c-vehicle-properties-card {
   box-sizing: border-box;
 
   *:before,
@@ -9,7 +9,7 @@
   }
 }
 
-.m-vehicle-properties-card {
+.c-vehicle-properties-card {
   font-family: $font-family;
 
   // Static Design Width per spec
@@ -30,7 +30,7 @@
   }
 }
 
-.m-vehicle-properties-card__title-bar {
+.c-vehicle-properties-card__title-bar {
   background-color: $white;
   display: flex;
   flex-direction: row-reverse;
@@ -38,33 +38,33 @@
   align-items: center;
 }
 
-.m-vehicle-properties-card__body {
+.c-vehicle-properties-card__body {
   display: flex;
   flex-flow: column;
   gap: 10px;
 }
 
 // #region Vehicle Properties Card vehicle location display
-.m-vehicle-properties-card__location-info > :not(:first-child) {
+.c-vehicle-properties-card__location-info > :not(:first-child) {
   margin-top: 10px;
 }
 // #endregion
 
 // #region Padding quirks
 // All children have a 16px padding around the card
-.m-vehicle-properties-card > * {
+.c-vehicle-properties-card > * {
   padding-inline: 16px;
 }
 
-.m-vehicle-properties-card__title-bar {
+.c-vehicle-properties-card__title-bar {
   padding: 6px 16px;
 }
 
-.m-vehicle-properties-card__summary {
+.c-vehicle-properties-card__summary {
   padding-top: 16px;
 }
 
-.m-vehicle-properties-card__body {
+.c-vehicle-properties-card__body {
   padding: 16px;
 }
 // #endregion

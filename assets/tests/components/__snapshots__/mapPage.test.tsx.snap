@@ -1419,10 +1419,10 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
         >
           <div
             aria-label="Vehicle Properties Card"
-            class="m-vehicle-properties-card"
+            class="c-vehicle-properties-card"
           >
             <div
-              class="m-vehicle-properties-card__title-bar"
+              class="c-vehicle-properties-card__title-bar"
             >
               <button
                 aria-label="Close Vehicle Properties Card"
@@ -1444,7 +1444,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </output>
             </div>
             <div
-              class="m-vehicle-properties-card__summary"
+              class="c-vehicle-properties-card__summary"
             >
               <div
                 class="m-vehicle-route-summary"
@@ -1561,10 +1561,10 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </div>
             </div>
             <div
-              class="m-vehicle-properties-card__body"
+              class="c-vehicle-properties-card__body"
             >
               <div
-                class="m-vehicle-properties-card__properties m-info-section"
+                class="c-vehicle-properties-card__properties m-info-section"
               >
                 <table
                   class="m-vehicle-work-info"
@@ -1621,7 +1621,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </table>
               </div>
               <div
-                class="m-vehicle-properties-card__location-info m-info-section"
+                class="c-vehicle-properties-card__location-info m-info-section"
               >
                 <div
                   class="m-current-location"
