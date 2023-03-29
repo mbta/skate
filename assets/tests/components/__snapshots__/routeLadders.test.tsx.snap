@@ -14,7 +14,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
+        className="c-close-button c-close-button--large c-close-button--darker"
         onClick={[Function]}
       >
         <span
@@ -184,7 +184,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     >
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--large m-close-button--darker"
+        className="c-close-button c-close-button--large c-close-button--darker"
         onClick={[Function]}
       >
         <span

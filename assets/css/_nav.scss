@@ -1,4 +1,4 @@
-.m-nav--wide {
+.l-nav--wide {
   display: grid;
   gap: 0;
   grid-template-columns: max-content minmax(0, 1fr);
@@ -10,7 +10,7 @@
   height: 100%;
 }
 
-.m-nav--medium {
+.l-nav--medium {
   display: grid;
   gap: 0;
   grid-template-columns: max-content minmax(0, 1fr);
@@ -20,7 +20,7 @@
   height: 100%;
 }
 
-.m-nav--narrow {
+.l-nav--narrow {
   display: grid;
   gap: 0;
   grid-template-columns: minmax(0, 1fr);
@@ -33,24 +33,24 @@
   height: 100%;
 }
 
-.m-nav__nav-bar {
+.l-nav__nav-bar {
   z-index: map-get($z-page-layout-context, "navbar");
 }
 
-.m-nav__nav-bar--left {
+.l-nav__nav-bar--left {
   grid-area: left;
 }
 
-.m-nav__nav-bar--top {
+.l-nav__nav-bar--top {
   grid-area: top;
 }
 
-.m-nav__nav-bar--bottom {
+.l-nav__nav-bar--bottom {
   grid-area: bottom;
   z-index: 1099;
 }
 
-.m-nav__app-content {
+.l-nav__app-content {
   grid-area: content;
   position: relative;
 }

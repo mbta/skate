@@ -322,7 +322,7 @@ exports[`LadderPage renders with route tabs 1`] = `
           >
             <button
               aria-label="Close"
-              class="m-close-button m-close-button--large m-close-button--darker"
+              class="c-close-button c-close-button--large c-close-button--darker"
             >
               <span
                 aria-hidden="true"
@@ -542,7 +542,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           >
             <button
               aria-label="Close"
-              class="m-close-button m-close-button--large m-close-button--darker"
+              class="c-close-button c-close-button--large c-close-button--darker"
             >
               <span
                 aria-hidden="true"
@@ -582,7 +582,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           >
             <button
               aria-label="Close"
-              class="m-close-button m-close-button--large m-close-button--darker"
+              class="c-close-button c-close-button--large c-close-button--darker"
             >
               <span
                 aria-hidden="true"
@@ -802,7 +802,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           >
             <button
               aria-label="Close"
-              class="m-close-button m-close-button--large m-close-button--darker"
+              class="c-close-button c-close-button--large c-close-button--darker"
             >
               <span
                 aria-hidden="true"
@@ -960,7 +960,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           >
             <button
               aria-label="Close"
-              class="m-close-button m-close-button--large m-close-button--darker"
+              class="c-close-button c-close-button--large c-close-button--darker"
             >
               <span
                 aria-hidden="true"

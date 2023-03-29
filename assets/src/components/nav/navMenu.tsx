@@ -23,62 +23,62 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
       <div
         data-testid="nav-menu"
         className={
-          "m-nav-menu" +
-          (mobileMenuIsOpen ? " m-nav-menu--open" : " m-nav-menu--closed")
+          "c-nav-menu" +
+          (mobileMenuIsOpen ? " c-nav-menu--open" : " c-nav-menu--closed")
         }
       >
-        <div className="m-nav-menu__header">
+        <div className="c-nav-menu__header">
           <Link
-            className="m-nav-menu__logo"
+            className="c-nav-menu__logo"
             onClick={toggleMobileMenu}
             to="/"
             title="Skate"
           >
-            <LogoIcon className="m-nav-menu__logo-icon" />
+            <LogoIcon className="c-nav-menu__logo-icon" />
           </Link>
 
           <button
-            className="m-nav-menu__close"
+            className="c-nav-menu__close"
             onClick={toggleMobileMenu}
             title="Close"
           >
-            <OldCloseIcon className="m-nav-menu__close-icon" />
+            <OldCloseIcon className="c-nav-menu__close-icon" />
           </button>
         </div>
-        <ul className="m-nav-menu__links">
+        <ul className="c-nav-menu__links">
           <li>
             <button
-              className="m-nav-menu__button"
+              className="c-nav-menu__button"
               onClick={reload}
               title="Refresh"
             >
-              <RefreshIcon className="m-nav-menu__icon" />
+              <RefreshIcon className="c-nav-menu__icon" />
               Refresh
             </button>
           </li>
           <li>
             <button
-              className="m-nav-menu__button"
+              className="c-nav-menu__button"
               onClick={() => {
                 openDrift()
                 toggleMobileMenu()
               }}
               title="Support"
             >
-              <SpeechBubbleIcon className="m-nav-menu__icon" />
+              <SpeechBubbleIcon className="c-nav-menu__icon" />
               Support
             </button>
           </li>
           <li>
             <button
-              className="m-nav-menu__button"
+              className="c-nav-menu__button"
               onClick={() => {
                 displayHelp(location)
                 toggleMobileMenu()
               }}
               title="About Skate"
             >
-              <QuestionMarkIcon className="m-nav-menu__icon" />
+              <QuestionMarkIcon className="c-nav-menu__icon" />
               About Skate
             </button>
           </li>
@@ -86,14 +86,14 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
           <li>
             <NavLink
               className={({ isActive }) =>
-                "m-nav-menu__link" +
-                (isActive ? " m-nav-menu__link--active" : "")
+                "c-nav-menu__link" +
+                (isActive ? " c-nav-menu__link--active" : "")
               }
               title="Settings"
               to="/settings"
               onClick={toggleMobileMenu}
             >
-              <SettingsIcon className="m-nav-menu__icon" />
+              <SettingsIcon className="c-nav-menu__icon" />
               Settings
             </NavLink>
           </li>
@@ -102,8 +102,8 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
       <div
         data-testid="nav-menu-overlay"
         className={
-          "m-nav-menu__overlay" +
-          (mobileMenuIsOpen ? " m-nav-menu__overlay--open" : "")
+          "c-nav-menu__overlay" +
+          (mobileMenuIsOpen ? " c-nav-menu__overlay--open" : "")
         }
         onClick={toggleMobileMenu}
         onKeyDown={toggleMobileMenu}

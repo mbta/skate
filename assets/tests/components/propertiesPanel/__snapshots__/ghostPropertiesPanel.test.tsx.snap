@@ -17,7 +17,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -322,7 +322,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span
@@ -673,7 +673,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
       </h2>
       <button
         aria-label="Close"
-        className="m-close-button m-close-button--x-large m-close-button--light"
+        className="c-close-button c-close-button--x-large c-close-button--light"
         onClick={[Function]}
       >
         <span

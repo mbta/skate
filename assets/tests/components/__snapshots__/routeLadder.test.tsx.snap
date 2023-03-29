@@ -10,7 +10,7 @@ exports[`routeLadder displays loading if we are fetching the timepoints 1`] = `
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -55,7 +55,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -323,7 +323,7 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -534,7 +534,7 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -712,7 +712,7 @@ exports[`routeLadder renders a route ladder 1`] = `
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -848,7 +848,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -1120,7 +1120,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -1331,7 +1331,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"
@@ -1634,7 +1634,7 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
     >
       <button
         aria-label="Close"
-        class="m-close-button m-close-button--large m-close-button--darker"
+        class="c-close-button c-close-button--large c-close-button--darker"
       >
         <span
           aria-hidden="true"

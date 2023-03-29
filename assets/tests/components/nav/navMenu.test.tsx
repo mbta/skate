@@ -43,7 +43,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    expect(result.getByTestId("nav-menu")).toHaveClass("m-nav-menu--open")
+    expect(result.getByTestId("nav-menu")).toHaveClass("c-nav-menu--open")
   })
 
   test("mobile menu is not visible", () => {
@@ -55,7 +55,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    expect(result.getByTestId("nav-menu")).not.toHaveClass("m-nav-menu--open")
+    expect(result.getByTestId("nav-menu")).not.toHaveClass("c-nav-menu--open")
   })
 
   test("refresh button reloads the page", async () => {

@@ -22,7 +22,7 @@ const MobilePortraitNav = (): JSX.Element => {
   return (
     <>
       <div
-        className="m-nav__nav-bar m-nav__nav-bar--top"
+        className="l-nav__nav-bar l-nav__nav-bar--top"
         style={{ visibility: navVisibilityStyle }}
       >
         <TopNavMobile
@@ -34,7 +34,7 @@ const MobilePortraitNav = (): JSX.Element => {
       </div>
 
       <div
-        className="m-nav__nav-bar m-nav__nav-bar--bottom"
+        className="l-nav__nav-bar l-nav__nav-bar--bottom"
         style={{ visibility: navVisibilityStyle }}
       >
         <BottomNavMobile

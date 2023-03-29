@@ -26,19 +26,9 @@
   margin-bottom: 0.4rem;
 }
 
-.m-properties-panel__headway-target,
 .m-properties-panel__schedule-adherence {
   @include font-small;
   margin-top: 0.7rem;
-}
-
-.m-properties-panel__headway-target-label {
-  font-weight: bold;
-  margin-right: 0.3rem;
-}
-
-.m-properties-panel__headway-target-value {
-  @include font-body;
 }
 
 .m-properties-panel__schedule-adherence {

@@ -12,10 +12,10 @@ exports[`App renders 1`] = `
       class="m-app__main"
     >
       <div
-        class="m-nav--wide"
+        class="l-nav--wide"
       >
         <div
-          class="m-nav__app-content"
+          class="l-nav__app-content"
         >
           <div
             class="m-ladder-page m-ladder-page--picker-container-visible "
@@ -134,7 +134,7 @@ exports[`App renders 1`] = `
           </div>
         </div>
         <div
-          class="m-nav__nav-bar m-nav__nav-bar--top"
+          class="l-nav__nav-bar l-nav__nav-bar--top"
         >
           <div
             class="m-top-nav"
@@ -169,7 +169,7 @@ exports[`App renders 1`] = `
           </div>
         </div>
         <div
-          class="m-nav__nav-bar m-nav__nav-bar--left"
+          class="l-nav__nav-bar l-nav__nav-bar--left"
         >
           <div
             class="m-left-nav"
