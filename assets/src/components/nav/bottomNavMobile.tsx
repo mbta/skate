@@ -18,52 +18,52 @@ const BottomNavMobile: React.FC<Props> = ({
     <div
       data-testid="bottom-nav-mobile"
       className={
-        "m-bottom-nav-mobile" + (mobileMenuIsOpen ? " blurred-mobile" : "")
+        "c-bottom-nav-mobile" + (mobileMenuIsOpen ? " blurred-mobile" : "")
       }
     >
-      <ul className="m-bottom-nav-mobile__links">
+      <ul className="c-bottom-nav-mobile__links">
         <li>
           <NavLink
             className={({ isActive }) =>
-              "m-bottom-nav-mobile__link" +
-              (isActive ? " m-bottom-nav-mobile__link--active" : "")
+              "c-bottom-nav-mobile__link" +
+              (isActive ? " c-bottom-nav-mobile__link--active" : "")
             }
             title="Route Ladders"
             to="/"
           >
-            <LadderIcon className="m-bottom-nav-mobile__icon" />
+            <LadderIcon className="c-bottom-nav-mobile__icon" />
           </NavLink>
         </li>
 
         <li>
           <NavLink
             className={({ isActive }) =>
-              "m-bottom-nav-mobile__link" +
-              (isActive ? " m-bottom-nav-mobile__link--active" : "")
+              "c-bottom-nav-mobile__link" +
+              (isActive ? " c-bottom-nav-mobile__link--active" : "")
             }
             title="Shuttle Map"
             to="/shuttle-map"
           >
-            <MapIcon className="m-bottom-nav-mobile__icon" />
+            <MapIcon className="c-bottom-nav-mobile__icon" />
           </NavLink>
         </li>
 
         <li>
           <NavLink
             className={({ isActive }) =>
-              "m-bottom-nav-mobile__link" +
-              (isActive ? " m-bottom-nav-mobile__link--active" : "")
+              "c-bottom-nav-mobile__link" +
+              (isActive ? " c-bottom-nav-mobile__link--active" : "")
             }
             title={mapMode.title}
             to={mapMode.path}
           >
-            <mapMode.navIcon className="m-bottom-nav-mobile__icon" />
+            <mapMode.navIcon className="c-bottom-nav-mobile__icon" />
           </NavLink>
         </li>
 
         <li>
           <button
-            className="m-bottom-nav-mobile__button"
+            className="c-bottom-nav-mobile__button"
             onClick={() => {
               tagManagerEvent("swings_view_toggled")
               window.FS?.event("User opened Swings View")
@@ -71,7 +71,7 @@ const BottomNavMobile: React.FC<Props> = ({
             }}
             title="Swings View"
           >
-            <SwingIcon className="m-bottom-nav-mobile__icon m-bottom-nav-mobile__icon--swings-view" />
+            <SwingIcon className="c-bottom-nav-mobile__icon c-bottom-nav-mobile__icon--swings-view" />
           </button>
         </li>
       </ul>

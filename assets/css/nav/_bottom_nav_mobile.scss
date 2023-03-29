@@ -1,18 +1,18 @@
-.m-bottom-nav-mobile {
+.c-bottom-nav-mobile {
   background-color: $color-gray-50;
   border-top: 1px solid $color-gray-300;
   padding: 0.5rem 1.5rem 1.75rem 1.5rem;
 }
 
-.m-bottom-nav-mobile__links {
+.c-bottom-nav-mobile__links {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0;
 }
 
-.m-bottom-nav-mobile__link,
-.m-bottom-nav-mobile__button {
+.c-bottom-nav-mobile__link,
+.c-bottom-nav-mobile__button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +35,7 @@
     stroke: none;
   }
 
-  &.m-bottom-nav-mobile__link--active {
+  &.c-bottom-nav-mobile__link--active {
     background-color: $color-eggplant-700;
     font-weight: 500;
     color: $white;
@@ -46,10 +46,10 @@
   }
 }
 
-.m-bottom-nav-mobile__icon {
+.c-bottom-nav-mobile__icon {
   line-height: 0;
 
-  &.m-bottom-nav-mobile__icon--swings-view svg {
+  &.c-bottom-nav-mobile__icon--swings-view svg {
     transform: scaleX(-1);
     fill: $color-gray-50;
     stroke: $color-gray-600;
