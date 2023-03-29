@@ -105,7 +105,7 @@ exports[`renders 1`] = `
             </div>
             <div
               aria-hidden="true"
-              class="m-picker-container-backdrop"
+              class="c-picker-container-backdrop"
               data-testid="picker-container-backdrop"
             />
             <div

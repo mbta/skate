@@ -27,7 +27,7 @@ const PickerContainer = ({ children }: Props): ReactElement<HTMLDivElement> => {
       </div>
       {state.pickerContainerIsVisible ? (
         <div
-          className="m-picker-container-backdrop"
+          className="c-picker-container-backdrop"
           onClick={toggleVisibility}
           data-testid="picker-container-backdrop"
           aria-hidden={true}
