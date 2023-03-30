@@ -248,7 +248,7 @@ exports[`Shuttle Map Page renders 1`] = `
                   
             
                   <rect
-                    class="m-vehicle-icon__label-background"
+                    class="c-vehicle-icon__label-background"
                     height="100%"
                     rx="5.5px"
                     ry="5.5px"
@@ -257,7 +257,7 @@ exports[`Shuttle Map Page renders 1`] = `
                   
             
                   <text
-                    class="m-vehicle-icon__label"
+                    class="c-vehicle-icon__label"
                     dominant-baseline="central"
                     text-anchor="middle"
                     x="50%"
@@ -908,7 +908,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                   
             
                   <rect
-                    class="m-vehicle-icon__label-background"
+                    class="c-vehicle-icon__label-background"
                     height="100%"
                     rx="5.5px"
                     ry="5.5px"
@@ -917,7 +917,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                   
             
                   <text
-                    class="m-vehicle-icon__label"
+                    class="c-vehicle-icon__label"
                     dominant-baseline="central"
                     text-anchor="middle"
                     x="50%"
@@ -1568,7 +1568,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                   
             
                   <rect
-                    class="m-vehicle-icon__label-background"
+                    class="c-vehicle-icon__label-background"
                     height="100%"
                     rx="5.5px"
                     ry="5.5px"
@@ -1577,7 +1577,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                   
             
                   <text
-                    class="m-vehicle-icon__label"
+                    class="c-vehicle-icon__label"
                     dominant-baseline="central"
                     text-anchor="middle"
                     x="50%"
@@ -2451,7 +2451,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                   
             
                   <rect
-                    class="m-vehicle-icon__label-background"
+                    class="c-vehicle-icon__label-background"
                     height="100%"
                     rx="5.5px"
                     ry="5.5px"
@@ -2460,7 +2460,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                   
             
                   <text
-                    class="m-vehicle-icon__label"
+                    class="c-vehicle-icon__label"
                     dominant-baseline="central"
                     text-anchor="middle"
                     x="50%"

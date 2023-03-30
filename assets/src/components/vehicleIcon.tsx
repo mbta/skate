@@ -264,10 +264,10 @@ export const VehicleIconSvgNode = React.memo(
       orientation = Orientation.Up
     }
     const classes: string[] = [
-      "m-vehicle-icon",
-      `m-vehicle-icon${sizeClassSuffix(size)}`,
+      "c-vehicle-icon",
+      `c-vehicle-icon${sizeClassSuffix(size)}`,
       alertIconStyle === AlertIconStyle.Highlighted
-        ? "m-vehicle-icon--highlighted"
+        ? "c-vehicle-icon--highlighted"
         : "",
     ].concat(statusClasses(status, userSettings.vehicleAdherenceColors))
     return (
@@ -308,7 +308,7 @@ const Triangle = React.memo(
     const rotation = rotationForOrientation(orientation)
     return (
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         data-testid="vehicle-triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         // Move the center to 0,0
@@ -330,26 +330,26 @@ const Ghost = React.memo(
       >
         <path
           // The outline that gets highlighted when it's selected
-          className="m-vehicle-icon__ghost-highlight"
+          className="c-vehicle-icon__ghost-highlight"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         <path
-          className="m-vehicle-icon__ghost-body"
+          className="c-vehicle-icon__ghost-body"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         {variant === undefined ? (
           <>
             <ellipse
-              className="m-vehicle-icon__ghost-eye"
+              className="c-vehicle-icon__ghost-eye"
               cx="19.73"
               cy="22.8"
               rx="3.11"
               ry="3.03"
             />
             <ellipse
-              className="m-vehicle-icon__ghost-eye"
+              className="c-vehicle-icon__ghost-eye"
               cx="35.29"
               cy="22.8"
               rx="3.11"
@@ -393,14 +393,14 @@ export const Label = React.memo(
 
     const labelClassWithModifier =
       label.length > 4
-        ? "m-vehicle-icon__label--extended"
-        : "m-vehicle-icon__label--normal"
-    const labelClass = `m-vehicle-icon__label ${labelClassWithModifier}`
+        ? "c-vehicle-icon__label--extended"
+        : "c-vehicle-icon__label--normal"
+    const labelClass = `c-vehicle-icon__label ${labelClassWithModifier}`
 
     return (
       <>
         <rect
-          className="m-vehicle-icon__label-background"
+          className="c-vehicle-icon__label-background"
           x={-labelBgWidth / 2}
           y={labelBgTop}
           width={labelBgWidth}
@@ -487,7 +487,7 @@ const Variant = React.memo(
         break
     }
     return (
-      <text className="m-vehicle-icon__variant" {...variantPositionOpts}>
+      <text className="c-vehicle-icon__variant" {...variantPositionOpts}>
         {variant}
       </text>
     )

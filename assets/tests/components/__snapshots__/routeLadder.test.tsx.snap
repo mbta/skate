@@ -111,10 +111,10 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
         transform="translate(63,-27.5)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--small"
+          class="c-vehicle-icon c-vehicle-icon--small"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -123,7 +123,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
             y="6.6"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            class="c-vehicle-icon__label c-vehicle-icon__label--extended"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -262,7 +262,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            class="m-vehicle-icon m-vehicle-icon--small"
+            class="c-vehicle-icon c-vehicle-icon--small"
           >
             <g
               class="m-ladder__crowding m-ladder__crowding--no-data"
@@ -369,10 +369,10 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
         transform="translate(63,-27.5)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          class="c-vehicle-icon c-vehicle-icon--medium on-time early-red"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -381,7 +381,7 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
             y="11.5"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -390,13 +390,13 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
             1
           </text>
           <path
-            class="m-vehicle-icon__triangle"
+            class="c-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
             data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
           <text
-            class="m-vehicle-icon__variant"
+            class="c-vehicle-icon__variant"
             dominant-baseline="alphabetic"
             text-anchor="middle"
             x="0"
@@ -503,10 +503,10 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
             Vehicle Status Icon
           </title>
           <g
-            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            class="c-vehicle-icon c-vehicle-icon--small on-time early-red"
           >
             <path
-              class="m-vehicle-icon__triangle"
+              class="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(180) translate(-24,-22)"
@@ -580,10 +580,10 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
         transform="translate(63,-27.5)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          class="c-vehicle-icon c-vehicle-icon--medium on-time early-red"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -592,7 +592,7 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
             y="11.5"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -601,13 +601,13 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
             1
           </text>
           <path
-            class="m-vehicle-icon__triangle"
+            class="c-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
             data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
           <text
-            class="m-vehicle-icon__variant"
+            class="c-vehicle-icon__variant"
             dominant-baseline="alphabetic"
             text-anchor="middle"
             x="0"
@@ -904,10 +904,10 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
         transform="translate(63,-27.5)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--small"
+          class="c-vehicle-icon c-vehicle-icon--small"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -916,7 +916,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
             y="6.6"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            class="c-vehicle-icon__label c-vehicle-icon__label--extended"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -967,10 +967,10 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
         transform="translate(-63,-110)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--small"
+          class="c-vehicle-icon c-vehicle-icon--small"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -979,7 +979,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
             y="-17.6"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -1166,10 +1166,10 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
         transform="translate(0,-35)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          class="c-vehicle-icon c-vehicle-icon--small on-time early-red"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -1178,7 +1178,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
             y="7.359999999999999"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -1187,7 +1187,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
             2
           </text>
           <path
-            class="m-vehicle-icon__triangle"
+            class="c-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
             data-testid="vehicle-triangle"
             transform="scale(0.38) rotate(270) translate(-24,-22)"
@@ -1199,10 +1199,10 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
         transform="translate(0,-85)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+          class="c-vehicle-icon c-vehicle-icon--small on-time early-red"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -1211,7 +1211,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
             y="7.359999999999999"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -1220,13 +1220,13 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
             1
           </text>
           <path
-            class="m-vehicle-icon__triangle"
+            class="c-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
             data-testid="vehicle-triangle"
             transform="scale(0.38) rotate(90) translate(-24,-22)"
           />
           <text
-            class="m-vehicle-icon__variant"
+            class="c-vehicle-icon__variant"
             dominant-baseline="central"
             text-anchor="start"
             x="-5.6"
@@ -1384,10 +1384,10 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         transform="translate(63,-27.5)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          class="c-vehicle-icon c-vehicle-icon--medium on-time early-red"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -1396,7 +1396,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             y="11.5"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -1405,13 +1405,13 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             1
           </text>
           <path
-            class="m-vehicle-icon__triangle"
+            class="c-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
             data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
           />
           <text
-            class="m-vehicle-icon__variant"
+            class="c-vehicle-icon__variant"
             dominant-baseline="alphabetic"
             text-anchor="middle"
             x="0"
@@ -1426,10 +1426,10 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         transform="translate(63,-110)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
+          class="c-vehicle-icon c-vehicle-icon--medium c-vehicle-icon--highlighted ghost early-red"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -1438,7 +1438,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             y="11.5"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -1450,24 +1450,24 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             transform="scale(0.4375) translate(-24,-23)"
           >
             <path
-              class="m-vehicle-icon__ghost-highlight"
+              class="c-vehicle-icon__ghost-highlight"
               d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
               stroke-linejoin="round"
             />
             <path
-              class="m-vehicle-icon__ghost-body"
+              class="c-vehicle-icon__ghost-body"
               d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
               stroke-linejoin="round"
             />
             <ellipse
-              class="m-vehicle-icon__ghost-eye"
+              class="c-vehicle-icon__ghost-eye"
               cx="19.73"
               cy="22.8"
               rx="3.11"
               ry="3.03"
             />
             <ellipse
-              class="m-vehicle-icon__ghost-eye"
+              class="c-vehicle-icon__ghost-eye"
               cx="35.29"
               cy="22.8"
               rx="3.11"
@@ -1511,10 +1511,10 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         transform="translate(-63,-110)"
       >
         <g
-          class="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+          class="c-vehicle-icon c-vehicle-icon--medium on-time early-red"
         >
           <rect
-            class="m-vehicle-icon__label-background"
+            class="c-vehicle-icon__label-background"
             height="11"
             rx="5.5"
             ry="5.5"
@@ -1523,7 +1523,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             y="-22.5"
           />
           <text
-            class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            class="c-vehicle-icon__label c-vehicle-icon__label--normal"
             dominant-baseline="central"
             text-anchor="middle"
             x="0"
@@ -1532,7 +1532,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             2
           </text>
           <path
-            class="m-vehicle-icon__triangle"
+            class="c-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
             data-testid="vehicle-triangle"
             transform="scale(0.625) rotate(180) translate(-24,-22)"
@@ -1772,16 +1772,16 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
             Vehicle Status Icon
           </title>
           <g
-            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            class="c-vehicle-icon c-vehicle-icon--small on-time early-red"
           >
             <path
-              class="m-vehicle-icon__triangle"
+              class="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(0) translate(-24,-22)"
             />
             <text
-              class="m-vehicle-icon__variant"
+              class="c-vehicle-icon__variant"
               dominant-baseline="alphabetic"
               text-anchor="middle"
               x="0"
@@ -1813,10 +1813,10 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
             Vehicle Status Icon
           </title>
           <g
-            class="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            class="c-vehicle-icon c-vehicle-icon--small on-time early-red"
           >
             <path
-              class="m-vehicle-icon__triangle"
+              class="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(180) translate(-24,-22)"

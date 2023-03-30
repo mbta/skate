@@ -52,10 +52,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -64,7 +64,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -73,13 +73,13 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -420,10 +420,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large late early-red"
+            className="c-vehicle-icon c-vehicle-icon--large late early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -432,7 +432,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -441,13 +441,13 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -788,10 +788,10 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="c-vehicle-icon c-vehicle-icon--large"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -800,7 +800,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+              className="c-vehicle-icon__label c-vehicle-icon__label--extended"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -809,13 +809,13 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
               v1-label
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1024,10 +1024,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1036,7 +1036,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1045,13 +1045,13 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1489,10 +1489,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large early early-red"
+            className="c-vehicle-icon c-vehicle-icon--large early early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1501,7 +1501,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1510,13 +1510,13 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1857,10 +1857,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large off-course early-red"
+            className="c-vehicle-icon c-vehicle-icon--large off-course early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1869,7 +1869,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1878,13 +1878,13 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -2262,10 +2262,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -2274,7 +2274,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -2283,13 +2283,13 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}

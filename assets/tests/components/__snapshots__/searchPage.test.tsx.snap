@@ -557,7 +557,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   
             
                   <rect
-                    class="m-vehicle-icon__label-background"
+                    class="c-vehicle-icon__label-background"
                     height="100%"
                     rx="5.5px"
                     ry="5.5px"
@@ -566,7 +566,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   
             
                   <text
-                    class="m-vehicle-icon__label"
+                    class="c-vehicle-icon__label"
                     dominant-baseline="central"
                     text-anchor="middle"
                     x="50%"

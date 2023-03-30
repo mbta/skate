@@ -29,29 +29,29 @@
   cursor: pointer;
 
   &:hover {
-    .m-vehicle-icon__triangle {
+    .c-vehicle-icon__triangle {
       stroke: $color-secondary-light;
     }
 
-    .m-vehicle-icon__ghost-highlight {
+    .c-vehicle-icon__ghost-highlight {
       stroke: $color-secondary-light;
     }
 
-    .m-vehicle-icon__label-background {
+    .c-vehicle-icon__label-background {
       fill: $color-secondary-light;
     }
   }
 
   &.selected {
-    .m-vehicle-icon__triangle {
+    .c-vehicle-icon__triangle {
       stroke: $color-secondary-medium;
     }
 
-    .m-vehicle-icon__ghost-highlight {
+    .c-vehicle-icon__ghost-highlight {
       stroke: $color-secondary-medium;
     }
 
-    .m-vehicle-icon__label-background {
+    .c-vehicle-icon__label-background {
       fill: $color-secondary-medium;
     }
   }

@@ -15,10 +15,10 @@ exports[`ghost going down puts label above it 1`] = `
     Vehicle Status Icon
   </title>
   <g
-    className="m-vehicle-icon m-vehicle-icon--medium ghost early-red"
+    className="c-vehicle-icon c-vehicle-icon--medium ghost early-red"
   >
     <rect
-      className="m-vehicle-icon__label-background"
+      className="c-vehicle-icon__label-background"
       height={11}
       rx={5.5}
       ry={5.5}
@@ -27,7 +27,7 @@ exports[`ghost going down puts label above it 1`] = `
       y={-22.5}
     />
     <text
-      className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+      className="c-vehicle-icon__label c-vehicle-icon__label--extended"
       dominantBaseline="central"
       textAnchor="middle"
       x="0"
@@ -39,24 +39,24 @@ exports[`ghost going down puts label above it 1`] = `
       transform="scale(0.4375) translate(-24,-23)"
     >
       <path
-        className="m-vehicle-icon__ghost-highlight"
+        className="c-vehicle-icon__ghost-highlight"
         d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
         strokeLinejoin="round"
       />
       <path
-        className="m-vehicle-icon__ghost-body"
+        className="c-vehicle-icon__ghost-body"
         d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
         strokeLinejoin="round"
       />
       <ellipse
-        className="m-vehicle-icon__ghost-eye"
+        className="c-vehicle-icon__ghost-eye"
         cx="19.73"
         cy="22.8"
         rx="3.11"
         ry="3.03"
       />
       <ellipse
-        className="m-vehicle-icon__ghost-eye"
+        className="c-vehicle-icon__ghost-eye"
         cx="35.29"
         cy="22.8"
         rx="3.11"
@@ -82,24 +82,24 @@ exports[`ghost with variant doesn't have eyes 1`] = `
     Vehicle Status Icon
   </title>
   <g
-    className="m-vehicle-icon m-vehicle-icon--medium ghost early-red"
+    className="c-vehicle-icon c-vehicle-icon--medium ghost early-red"
   >
     <g
       transform="scale(0.4375) translate(-24,-23)"
     >
       <path
-        className="m-vehicle-icon__ghost-highlight"
+        className="c-vehicle-icon__ghost-highlight"
         d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
         strokeLinejoin="round"
       />
       <path
-        className="m-vehicle-icon__ghost-body"
+        className="c-vehicle-icon__ghost-body"
         d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
         strokeLinejoin="round"
       />
     </g>
     <text
-      className="m-vehicle-icon__variant"
+      className="c-vehicle-icon__variant"
       dominantBaseline="alphabetic"
       textAnchor="middle"
       x={0}
@@ -114,10 +114,10 @@ exports[`ghost with variant doesn't have eyes 1`] = `
 exports[`renders an unwrapped svg node 1`] = `
 <svg>
   <g
-    className="m-vehicle-icon m-vehicle-icon--medium"
+    className="c-vehicle-icon c-vehicle-icon--medium"
   >
     <rect
-      className="m-vehicle-icon__label-background"
+      className="c-vehicle-icon__label-background"
       height={11}
       rx={5.5}
       ry={5.5}
@@ -126,7 +126,7 @@ exports[`renders an unwrapped svg node 1`] = `
       y={-22.5}
     />
     <text
-      className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+      className="c-vehicle-icon__label c-vehicle-icon__label--extended"
       dominantBaseline="central"
       textAnchor="middle"
       x="0"
@@ -135,7 +135,7 @@ exports[`renders an unwrapped svg node 1`] = `
       label
     </text>
     <path
-      className="m-vehicle-icon__triangle"
+      className="c-vehicle-icon__triangle"
       d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       data-testid="vehicle-triangle"
       transform="scale(0.625) rotate(180) translate(-24,-22)"
@@ -160,10 +160,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={24}
         rx={12}
         ry={12}
@@ -172,7 +172,7 @@ Array [
         y={19}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+        className="c-vehicle-icon__label c-vehicle-icon__label--extended"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -181,7 +181,7 @@ Array [
         SW-OFF
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(0) translate(-24,-22)"
@@ -202,10 +202,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={24}
         rx={12}
         ry={12}
@@ -214,7 +214,7 @@ Array [
         y={19}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+        className="c-vehicle-icon__label c-vehicle-icon__label--extended"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -223,7 +223,7 @@ Array [
         PULL-B
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(0) translate(-24,-22)"
@@ -249,30 +249,30 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small ghost early-red"
+      className="c-vehicle-icon c-vehicle-icon--small ghost early-red"
     >
       <g
         transform="scale(0.26599999999999996) translate(-24,-23)"
       >
         <path
-          className="m-vehicle-icon__ghost-highlight"
+          className="c-vehicle-icon__ghost-highlight"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         <path
-          className="m-vehicle-icon__ghost-body"
+          className="c-vehicle-icon__ghost-body"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         <ellipse
-          className="m-vehicle-icon__ghost-eye"
+          className="c-vehicle-icon__ghost-eye"
           cx="19.73"
           cy="22.8"
           rx="3.11"
           ry="3.03"
         />
         <ellipse
-          className="m-vehicle-icon__ghost-eye"
+          className="c-vehicle-icon__ghost-eye"
           cx="35.29"
           cy="22.8"
           rx="3.11"
@@ -325,30 +325,30 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
+      className="c-vehicle-icon c-vehicle-icon--medium c-vehicle-icon--highlighted ghost early-red"
     >
       <g
         transform="scale(0.4375) translate(-24,-23)"
       >
         <path
-          className="m-vehicle-icon__ghost-highlight"
+          className="c-vehicle-icon__ghost-highlight"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         <path
-          className="m-vehicle-icon__ghost-body"
+          className="c-vehicle-icon__ghost-body"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         <ellipse
-          className="m-vehicle-icon__ghost-eye"
+          className="c-vehicle-icon__ghost-eye"
           cx="19.73"
           cy="22.8"
           rx="3.11"
           ry="3.03"
         />
         <ellipse
-          className="m-vehicle-icon__ghost-eye"
+          className="c-vehicle-icon__ghost-eye"
           cx="35.29"
           cy="22.8"
           rx="3.11"
@@ -406,10 +406,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(0) translate(-24,-22)"
@@ -430,10 +430,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(90) translate(-24,-22)"
@@ -454,10 +454,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(180) translate(-24,-22)"
@@ -478,10 +478,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(270) translate(-24,-22)"
@@ -502,10 +502,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
@@ -526,10 +526,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(90) translate(-24,-22)"
@@ -550,10 +550,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(180) translate(-24,-22)"
@@ -574,10 +574,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(270) translate(-24,-22)"
@@ -598,10 +598,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(0) translate(-24,-22)"
@@ -622,10 +622,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(90) translate(-24,-22)"
@@ -646,10 +646,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(180) translate(-24,-22)"
@@ -670,10 +670,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(270) translate(-24,-22)"
@@ -699,10 +699,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
+      className="c-vehicle-icon c-vehicle-icon--medium on-time early-red"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
@@ -723,10 +723,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium early early-red"
+      className="c-vehicle-icon c-vehicle-icon--medium early early-red"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
@@ -747,10 +747,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium late early-red"
+      className="c-vehicle-icon c-vehicle-icon--medium late early-red"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
@@ -771,10 +771,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium off-course early-red"
+      className="c-vehicle-icon c-vehicle-icon--medium off-course early-red"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
@@ -795,30 +795,30 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium ghost early-red"
+      className="c-vehicle-icon c-vehicle-icon--medium ghost early-red"
     >
       <g
         transform="scale(0.4375) translate(-24,-23)"
       >
         <path
-          className="m-vehicle-icon__ghost-highlight"
+          className="c-vehicle-icon__ghost-highlight"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         <path
-          className="m-vehicle-icon__ghost-body"
+          className="c-vehicle-icon__ghost-body"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
           strokeLinejoin="round"
         />
         <ellipse
-          className="m-vehicle-icon__ghost-eye"
+          className="c-vehicle-icon__ghost-eye"
           cx="19.73"
           cy="22.8"
           rx="3.11"
           ry="3.03"
         />
         <ellipse
-          className="m-vehicle-icon__ghost-eye"
+          className="c-vehicle-icon__ghost-eye"
           cx="35.29"
           cy="22.8"
           rx="3.11"
@@ -841,10 +841,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
@@ -865,10 +865,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
@@ -894,10 +894,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -906,7 +906,7 @@ Array [
         y={6.6}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -915,13 +915,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(0) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="alphabetic"
         textAnchor="middle"
         x={0}
@@ -975,10 +975,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -987,7 +987,7 @@ Array [
         y={7.359999999999999}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -996,13 +996,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(90) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="central"
         textAnchor="start"
         x={-5.6}
@@ -1056,10 +1056,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -1068,7 +1068,7 @@ Array [
         y={-17.6}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1077,13 +1077,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(180) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="hanging"
         textAnchor="middle"
         x={0}
@@ -1137,10 +1137,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="c-vehicle-icon c-vehicle-icon--small"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -1149,7 +1149,7 @@ Array [
         y={7.359999999999999}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1158,13 +1158,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.38) rotate(270) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="central"
         textAnchor="end"
         x={5.6}
@@ -1218,10 +1218,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -1230,7 +1230,7 @@ Array [
         y={11.5}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1239,13 +1239,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="alphabetic"
         textAnchor="middle"
         x={0}
@@ -1299,10 +1299,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -1311,7 +1311,7 @@ Array [
         y={12.75}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1320,13 +1320,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(90) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="central"
         textAnchor="start"
         x={-8.5}
@@ -1380,10 +1380,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -1392,7 +1392,7 @@ Array [
         y={-22.5}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1401,13 +1401,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(180) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="hanging"
         textAnchor="middle"
         x={0}
@@ -1461,10 +1461,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="c-vehicle-icon c-vehicle-icon--medium"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={11}
         rx={5.5}
         ry={5.5}
@@ -1473,7 +1473,7 @@ Array [
         y={12.75}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1482,13 +1482,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(0.625) rotate(270) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="central"
         textAnchor="end"
         x={8.5}
@@ -1542,10 +1542,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={24}
         rx={12}
         ry={12}
@@ -1554,7 +1554,7 @@ Array [
         y={19}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1563,13 +1563,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(0) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="alphabetic"
         textAnchor="middle"
         x={0}
@@ -1623,10 +1623,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={24}
         rx={12}
         ry={12}
@@ -1635,7 +1635,7 @@ Array [
         y={21}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1644,13 +1644,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(90) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="central"
         textAnchor="start"
         x={-14}
@@ -1704,10 +1704,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={24}
         rx={12}
         ry={12}
@@ -1716,7 +1716,7 @@ Array [
         y={-43}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1725,13 +1725,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(180) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="hanging"
         textAnchor="middle"
         x={0}
@@ -1785,10 +1785,10 @@ Array [
       Vehicle Status Icon
     </title>
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="c-vehicle-icon c-vehicle-icon--large"
     >
       <rect
-        className="m-vehicle-icon__label-background"
+        className="c-vehicle-icon__label-background"
         height={24}
         rx={12}
         ry={12}
@@ -1797,7 +1797,7 @@ Array [
         y={21}
       />
       <text
-        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+        className="c-vehicle-icon__label c-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1806,13 +1806,13 @@ Array [
         0617
       </text>
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         data-testid="vehicle-triangle"
         transform="scale(1) rotate(270) translate(-24,-22)"
       />
       <text
-        className="m-vehicle-icon__variant"
+        className="c-vehicle-icon__variant"
         dominantBaseline="central"
         textAnchor="end"
         x={14}

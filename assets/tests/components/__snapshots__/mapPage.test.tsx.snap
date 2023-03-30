@@ -1246,7 +1246,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 
             
                 <rect
-                  class="m-vehicle-icon__label-background"
+                  class="c-vehicle-icon__label-background"
                   height="100%"
                   rx="5.5px"
                   ry="5.5px"
@@ -1255,7 +1255,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 
             
                 <text
-                  class="m-vehicle-icon__label"
+                  class="c-vehicle-icon__label"
                   dominant-baseline="central"
                   text-anchor="middle"
                   x="50%"
@@ -1514,10 +1514,10 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                       Vehicle Status Icon
                     </title>
                     <g
-                      class="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+                      class="c-vehicle-icon c-vehicle-icon--large on-time early-red"
                     >
                       <rect
-                        class="m-vehicle-icon__label-background"
+                        class="c-vehicle-icon__label-background"
                         height="24"
                         rx="12"
                         ry="12"
@@ -1526,7 +1526,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         y="19"
                       />
                       <text
-                        class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+                        class="c-vehicle-icon__label c-vehicle-icon__label--normal"
                         dominant-baseline="central"
                         text-anchor="middle"
                         x="0"
@@ -1535,13 +1535,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         1
                       </text>
                       <path
-                        class="m-vehicle-icon__triangle"
+                        class="c-vehicle-icon__triangle"
                         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
                         data-testid="vehicle-triangle"
                         transform="scale(1) rotate(0) translate(-24,-22)"
                       />
                       <text
-                        class="m-vehicle-icon__variant"
+                        class="c-vehicle-icon__variant"
                         dominant-baseline="alphabetic"
                         text-anchor="middle"
                         x="0"

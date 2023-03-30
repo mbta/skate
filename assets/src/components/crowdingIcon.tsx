@@ -72,8 +72,8 @@ export const CrowdingIconSvgNode = React.memo(
     isLayingOver,
   }: Props): ReactElement<SVGElement> => {
     const classes: string[] = [
-      "m-vehicle-icon",
-      `m-vehicle-icon${sizeClassSuffix(size)}`,
+      "c-vehicle-icon",
+      `c-vehicle-icon${sizeClassSuffix(size)}`,
     ]
     return (
       <g className={className(classes)}>

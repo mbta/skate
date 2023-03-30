@@ -67,7 +67,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            className="c-vehicle-icon c-vehicle-icon--small"
           >
             <g
               className="m-ladder__crowding m-ladder__crowding--no-data"
@@ -185,7 +185,7 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            className="c-vehicle-icon c-vehicle-icon--small"
           >
             <g
               className="m-ladder__crowding m-ladder__crowding--empty"
@@ -307,24 +307,24 @@ exports[`IncomingBox renders a ghost 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--small ghost early-red"
+            className="c-vehicle-icon c-vehicle-icon--small ghost early-red"
           >
             <g
               transform="scale(0.26599999999999996) translate(-24,-23)"
             >
               <path
-                className="m-vehicle-icon__ghost-highlight"
+                className="c-vehicle-icon__ghost-highlight"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
                 strokeLinejoin="round"
               />
               <path
-                className="m-vehicle-icon__ghost-body"
+                className="c-vehicle-icon__ghost-body"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
                 strokeLinejoin="round"
               />
             </g>
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -447,16 +447,16 @@ exports[`IncomingBox renders a vehicle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--small on-time early-red"
           >
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -548,16 +548,16 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--small on-time early-red"
           >
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(180) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="hanging"
               textAnchor="middle"
               x={0}

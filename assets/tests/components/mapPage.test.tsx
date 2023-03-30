@@ -430,13 +430,13 @@ describe("<MapPage />", () => {
       </RealDispatchWrapper>
     )
 
-    expect(container.querySelector(".m-vehicle-icon__label")).toBeVisible()
+    expect(container.querySelector(".c-vehicle-icon__label")).toBeVisible()
     expect(
       screen.getByRole("generic", { name: /map search panel/i })
     ).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
-    expect(container.querySelector(".m-vehicle-icon__label")).toBeVisible()
+    expect(container.querySelector(".c-vehicle-icon__label")).toBeVisible()
   })
 
   test("When a vehicle is selected, the search panel should be collapsed", async () => {
@@ -778,7 +778,7 @@ describe("<MapPage />", () => {
 
         const mapContainer = container.querySelector(".m-map-page__map")!
         expect(
-          mapContainer.querySelector(".m-vehicle-icon__label")
+          mapContainer.querySelector(".c-vehicle-icon__label")
         ).not.toBeInTheDocument()
         expect(
           mapContainer.querySelector(".c-vehicle-map__route-shape")
@@ -791,7 +791,7 @@ describe("<MapPage />", () => {
         )
 
         expect(
-          mapContainer.querySelector(".m-vehicle-icon__label")
+          mapContainer.querySelector(".c-vehicle-icon__label")
         ).toBeInTheDocument()
         expect(
           mapContainer.querySelector(".c-vehicle-map__route-shape")

@@ -603,7 +603,7 @@ describe("ladder", () => {
     )
 
     await userEvent.click(
-      result.getByText("N/A", { selector: ".m-vehicle-icon__label" })
+      result.getByText("N/A", { selector: ".c-vehicle-icon__label" })
     )
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(incomingGhost))

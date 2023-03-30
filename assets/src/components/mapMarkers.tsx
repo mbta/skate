@@ -87,11 +87,11 @@ const makeLabelIcon = (
     ]),
     html: `<svg viewBox="0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}" width="${labelBackgroundWidth}" height="${labelBackgroundHeight}">
             <rect
-                class="m-vehicle-icon__label-background"
+                class="c-vehicle-icon__label-background"
                 width="100%" height="100%"
                 rx="5.5px" ry="5.5px"
               />
-            <text class="m-vehicle-icon__label" x="50%" y="50%" text-anchor="middle" dominant-baseline="central">
+            <text class="c-vehicle-icon__label" x="50%" y="50%" text-anchor="middle" dominant-baseline="central">
               ${labelString}
             </text>
           </svg>`,
