@@ -121,7 +121,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       mapRef.current!.setZoom(14)
     })
     await animationFramePromise()
-    expect(container.innerHTML).not.toContain("m-garage-icon")
+    expect(container.innerHTML).not.toContain("c-garage-icon")
     expect(screen.queryByText("Albany")).toBeNull()
   })
 
@@ -141,7 +141,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
-    expect(container.innerHTML).toContain("m-garage-icon")
+    expect(container.innerHTML).toContain("c-garage-icon")
     expect(screen.queryByText("Albany")).toBeNull()
   })
 
@@ -160,7 +160,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       mapRef.current!.setZoom(16)
     })
 
-    expect(container.innerHTML).toContain("m-garage-icon")
+    expect(container.innerHTML).toContain("c-garage-icon")
     expect(screen.getByText("Albany")).toBeInTheDocument()
   })
 
