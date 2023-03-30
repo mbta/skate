@@ -58,19 +58,19 @@ exports[`LadderPage renders the empty state 1`] = `
           </div>
         </div>
         <div
-          class="m-garage-filter"
+          class="c-garage-filter"
         >
           <button
-            class="m-garage-filter__show-hide-button"
+            class="c-garage-filter__show-hide-button"
             title="Toggle Garage Filter"
           >
             <div
-              class="m-garage-filter__header"
+              class="c-garage-filter__header"
             >
               Filter garages
             </div>
             <div
-              class="m-garage-filter__show-hide-icon"
+              class="c-garage-filter__show-hide-icon"
             >
               <span>
                 <svg />
@@ -178,19 +178,19 @@ exports[`LadderPage renders with route tabs 1`] = `
           </div>
         </div>
         <div
-          class="m-garage-filter"
+          class="c-garage-filter"
         >
           <button
-            class="m-garage-filter__show-hide-button"
+            class="c-garage-filter__show-hide-button"
             title="Toggle Garage Filter"
           >
             <div
-              class="m-garage-filter__header"
+              class="c-garage-filter__header"
             >
               Filter garages
             </div>
             <div
-              class="m-garage-filter__show-hide-icon"
+              class="c-garage-filter__show-hide-icon"
             >
               <span>
                 <svg />
@@ -418,19 +418,19 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           </div>
         </div>
         <div
-          class="m-garage-filter"
+          class="c-garage-filter"
         >
           <button
-            class="m-garage-filter__show-hide-button"
+            class="c-garage-filter__show-hide-button"
             title="Toggle Garage Filter"
           >
             <div
-              class="m-garage-filter__header"
+              class="c-garage-filter__header"
             >
               Filter garages
             </div>
             <div
-              class="m-garage-filter__show-hide-icon"
+              class="c-garage-filter__show-hide-icon"
             >
               <span>
                 <svg />
@@ -678,19 +678,19 @@ exports[`LadderPage renders with timepoints 1`] = `
           </div>
         </div>
         <div
-          class="m-garage-filter"
+          class="c-garage-filter"
         >
           <button
-            class="m-garage-filter__show-hide-button"
+            class="c-garage-filter__show-hide-button"
             title="Toggle Garage Filter"
           >
             <div
-              class="m-garage-filter__header"
+              class="c-garage-filter__header"
             >
               Filter garages
             </div>
             <div
-              class="m-garage-filter__show-hide-icon"
+              class="c-garage-filter__show-hide-icon"
             >
               <span>
                 <svg />

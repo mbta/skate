@@ -73,19 +73,19 @@ exports[`renders 1`] = `
                   </div>
                 </div>
                 <div
-                  class="m-garage-filter"
+                  class="c-garage-filter"
                 >
                   <button
-                    class="m-garage-filter__show-hide-button"
+                    class="c-garage-filter__show-hide-button"
                     title="Toggle Garage Filter"
                   >
                     <div
-                      class="m-garage-filter__header"
+                      class="c-garage-filter__header"
                     >
                       Filter garages
                     </div>
                     <div
-                      class="m-garage-filter__show-hide-icon"
+                      class="c-garage-filter__show-hide-icon"
                     >
                       <span>
                         <svg />

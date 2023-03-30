@@ -69,21 +69,21 @@ export const GarageFilter = ({
   const toggleVisibility = () => dispatch(toggleShowGaragesFilter())
 
   return (
-    <div className="m-garage-filter">
+    <div className="c-garage-filter">
       <button
-        className="m-garage-filter__show-hide-button"
+        className="c-garage-filter__show-hide-button"
         title="Toggle Garage Filter"
         onClick={toggleVisibility}
       >
-        <div className="m-garage-filter__header">Filter garages</div>
-        <div className="m-garage-filter__show-hide-icon">
+        <div className="c-garage-filter__header">Filter garages</div>
+        <div className="c-garage-filter__show-hide-icon">
           {showGaragesFilter ? <CollapseIcon /> : <ExpandIcon />}
         </div>
       </button>
       {showGaragesFilter ? (
-        <ul className="m-garage-filter__garages">
+        <ul className="c-garage-filter__garages">
           {sortedGarages.map((garage) => (
-            <li key={garage} className="m-garage-filter__garage">
+            <li key={garage} className="c-garage-filter__garage">
               <button
                 title={"Toggle Garage: " + garage}
                 onClick={() => {
@@ -95,7 +95,7 @@ export const GarageFilter = ({
                   }
                   toggleGarage(garage)
                 }}
-                className="m-garage-filter__button"
+                className="c-garage-filter__button"
               >
                 {garage}
                 {filteredGarages.includes(garage) ? (
