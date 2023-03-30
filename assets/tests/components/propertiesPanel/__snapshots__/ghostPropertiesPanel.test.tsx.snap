@@ -8,10 +8,10 @@ exports[`GhostPropertiesPanel renders 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -313,10 +313,10 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -664,10 +664,10 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>

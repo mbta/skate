@@ -6,10 +6,10 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
   id="m-swings-view"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Swings
     </h2>
@@ -175,10 +175,10 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
   id="m-swings-view"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Swings
     </h2>
@@ -342,10 +342,10 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
   id="m-swings-view"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Swings
     </h2>
@@ -535,10 +535,10 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
   id="m-swings-view"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Swings
     </h2>
@@ -655,10 +655,10 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
   id="m-swings-view"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Swings
     </h2>
@@ -942,10 +942,10 @@ exports[`SwingsView renders loading message 1`] = `
   id="m-swings-view"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Swings
     </h2>

@@ -13,10 +13,10 @@ Array [
         className="m-properties-panel__header-wrapper"
       >
         <div
-          className="m-view-header"
+          className="c-view-header"
         >
           <h2
-            className="m-view-header__title"
+            className="c-view-header__title"
           >
             Vehicles
           </h2>
@@ -330,10 +330,10 @@ Array [
         className="m-properties-panel__header-wrapper"
       >
         <div
-          className="m-view-header"
+          className="c-view-header"
         >
           <h2
-            className="m-view-header__title"
+            className="c-view-header__title"
           >
             Vehicles
           </h2>
