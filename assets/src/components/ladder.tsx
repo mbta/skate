@@ -190,7 +190,6 @@ const VehicleSvg = ({
   displayCrowding = !!displayCrowding && isVehicle(ladderVehicle.vehicle)
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
-  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
   const crowding = isVehicle(vehicle) ? vehicle.crowding : null
@@ -201,7 +200,10 @@ const VehicleSvg = ({
   return (
     <VehicleTooltip vehicleOrGhost={vehicle}>
       <g
-        className={`m-ladder__vehicle ${selectedClass} `}
+        className={className([
+          "m-ladder__vehicle",
+          vehicle.id === selectedVehicleId && "m-ladder__vehicle--selected",
+        ])}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(vehicle))}
       >

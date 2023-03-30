@@ -42,7 +42,7 @@
     }
   }
 
-  &.selected {
+  &--selected {
     .c-vehicle-icon__triangle {
       stroke: $color-secondary-medium;
     }
