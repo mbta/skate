@@ -165,7 +165,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -276,7 +276,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -531,7 +531,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -642,7 +642,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -897,7 +897,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -1210,7 +1210,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </div>
             </div>
             <div
-              class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 0px; z-index: 1000;"
               tabindex="0"
@@ -1233,7 +1233,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </svg>
             </div>
             <div
-              class="leaflet-marker-icon m-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon c-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 223px; top: 0px; z-index: 1000;"
               tabindex="0"
@@ -1330,7 +1330,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		

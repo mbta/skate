@@ -39,7 +39,7 @@ describe("VehicleMarker", () => {
         isPrimary={true}
       />
     )
-    expect(container.querySelector(".m-vehicle-map__icon")).toBeInTheDocument()
+    expect(container.querySelector(".c-vehicle-map__icon")).toBeInTheDocument()
     expect(screen.getByText("101")).toBeInTheDocument()
   })
 })
@@ -50,7 +50,7 @@ describe("TrainVehicleMarker", () => {
       <TrainVehicleMarker trainVehicle={vehicleFactory.build()} />
     )
     expect(
-      container.querySelector(".m-vehicle-map__train-icon")
+      container.querySelector(".c-vehicle-map__train-icon")
     ).toBeInTheDocument()
   })
 })
@@ -60,7 +60,7 @@ describe("StopMarker", () => {
     const { container } = renderInMap(
       <StopMarker stop={stop} includeStopCard={false} />
     )
-    await userEvent.hover(container.querySelector(".m-vehicle-map__stop")!)
+    await userEvent.hover(container.querySelector(".c-vehicle-map__stop")!)
     expect(screen.getByText(stop.name)).toBeVisible()
   })
 
@@ -70,7 +70,7 @@ describe("StopMarker", () => {
     const { container } = renderInMap(
       <StopMarker stop={stop} includeStopCard={false} />
     )
-    await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
+    await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
     expect(screen.getByText(stop.name)).toBeVisible()
   })
 
@@ -80,7 +80,7 @@ describe("StopMarker", () => {
     const { container } = renderInMap(
       <StopMarker stop={stop} direction={0} includeStopCard={true} />
     )
-    await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
+    await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
     expect(screen.getByText("Outbound")).toBeInTheDocument()
     expect(window.FS!.event).toHaveBeenCalledWith("Bus stop card opened")
   })
@@ -124,7 +124,7 @@ describe("RouteStopMarkers", () => {
     )
 
     expect(container.querySelectorAll(".m-station-icon")).toHaveLength(1)
-    expect(container.querySelectorAll(".m-vehicle-map__stop")).toHaveLength(1)
+    expect(container.querySelectorAll(".c-vehicle-map__stop")).toHaveLength(1)
   })
 
   test("Deduplicates list by stop id", () => {
@@ -132,7 +132,7 @@ describe("RouteStopMarkers", () => {
       <RouteStopMarkers stops={[stop, stop]} zoomLevel={13} />
     )
 
-    expect(container.querySelectorAll(".m-vehicle-map__stop")).toHaveLength(1)
+    expect(container.querySelectorAll(".c-vehicle-map__stop")).toHaveLength(1)
   })
 })
 
@@ -142,7 +142,7 @@ describe("RouteShape", () => {
       <RouteShape shape={{ id: "shape1", points: [{ lat: 0, lon: 0 }] }} />
     )
     expect(
-      container.querySelector(".m-vehicle-map__route-shape")
+      container.querySelector(".c-vehicle-map__route-shape")
     ).toBeInTheDocument()
   })
 
@@ -153,8 +153,8 @@ describe("RouteShape", () => {
         isSelected={true}
       />
     )
-    expect(container.querySelector(".m-vehicle-map__route-shape")).toHaveClass(
-      "m-vehicle-map__route-shape--selected"
+    expect(container.querySelector(".c-vehicle-map__route-shape")).toHaveClass(
+      "c-vehicle-map__route-shape--selected"
     )
   })
 
@@ -168,7 +168,7 @@ describe("RouteShape", () => {
         }}
       />
     )
-    expect(container.querySelector(".m-vehicle-map__route-shape")).toHaveClass(
+    expect(container.querySelector(".c-vehicle-map__route-shape")).toHaveClass(
       "route-shape--red"
     )
   })
@@ -182,7 +182,7 @@ describe("RouteShape", () => {
       />
     )
     await userEvent.click(
-      container.querySelector(".m-vehicle-map__route-shape")!
+      container.querySelector(".c-vehicle-map__route-shape")!
     )
     expect(mockOnClick).toHaveBeenCalled()
   })

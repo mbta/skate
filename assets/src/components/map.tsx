@@ -89,7 +89,7 @@ class LeafletRecenterControl extends Control {
   onAdd() {
     const controlContainer = DomUtil.create(
       "div",
-      "leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+      "leaflet-control leaflet-bar c-vehicle-map__recenter-button"
     )
     controlContainer.onclick = (e) => {
       e.stopPropagation()
@@ -322,7 +322,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     <>
       <div className={stateClasses} />
       <MapContainer
-        className="m-vehicle-map"
+        className="c-vehicle-map"
         id="id-vehicle-map"
         maxBounds={[
           [41.2, -72],

@@ -169,7 +169,7 @@ exports[`Shuttle Map Page renders 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -212,7 +212,7 @@ exports[`Shuttle Map Page renders 1`] = `
               style="z-index: 499;"
             >
               <div
-                class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -235,7 +235,7 @@ exports[`Shuttle Map Page renders 1`] = `
                 </svg>
               </div>
               <div
-                class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -603,7 +603,7 @@ exports[`Shuttle Map Page renders 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -829,7 +829,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -872,7 +872,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               style="z-index: 499;"
             >
               <div
-                class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -895,7 +895,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 </svg>
               </div>
               <div
-                class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -1263,7 +1263,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -1489,7 +1489,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -1532,7 +1532,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               style="z-index: 499;"
             >
               <div
-                class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -1555,7 +1555,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 </svg>
               </div>
               <div
-                class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -1923,7 +1923,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -2014,7 +2014,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -2055,7 +2055,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
             >
               <g>
                 <path
-                  class="m-vehicle-map__route-shape m-vehicle-map__route-shape--no-hover leaflet-interactive"
+                  class="c-vehicle-map__route-shape c-vehicle-map__route-shape--no-hover leaflet-interactive"
                   d="M0 0"
                   fill="none"
                   stroke="#3388ff"
@@ -2146,7 +2146,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -2372,7 +2372,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -2415,7 +2415,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               style="z-index: 499;"
             >
               <div
-                class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -2438,7 +2438,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 </svg>
               </div>
               <div
-                class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -2480,7 +2480,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               style="z-index: 400;"
             />
             <div
-              class="leaflet-marker-icon m-vehicle-map__train-icon leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon c-vehicle-map__train-icon leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: 2573px; top: 7219px; z-index: 7219;"
               tabindex="0"
@@ -2835,7 +2835,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		

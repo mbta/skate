@@ -288,7 +288,7 @@ describe("<MapPage />", () => {
 
     await userEvent.click(screen.getByRole("button", { name: runId! }))
     expect(
-      container.querySelector(".m-vehicle-map__route-shape")
+      container.querySelector(".c-vehicle-map__route-shape")
     ).toBeInTheDocument()
 
     expect(container.querySelector(".selected")).toBeVisible()
@@ -318,7 +318,7 @@ describe("<MapPage />", () => {
     await userEvent.click(screen.getByRole("cell", { name: "Run" }))
 
     expect(vehiclePropertiesCard.get()).toBeVisible()
-    expect(container.querySelector(".m-vehicle-map__route-shape")).toBeVisible()
+    expect(container.querySelector(".c-vehicle-map__route-shape")).toBeVisible()
   })
 
   test("submitting a new search clears the previously selected route shape", async () => {
@@ -349,7 +349,7 @@ describe("<MapPage />", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /submit/i }))
     expect(
-      container.querySelector(".m-vehicle-map__route-shape")
+      container.querySelector(".c-vehicle-map__route-shape")
     ).not.toBeInTheDocument()
   })
 
@@ -389,7 +389,7 @@ describe("<MapPage />", () => {
       })
     )
 
-    const routeShape = container.querySelector(".m-vehicle-map__route-shape")
+    const routeShape = container.querySelector(".c-vehicle-map__route-shape")
     const vpc = vehiclePropertiesCard.get()
 
     expect(mapSearchPanel).toHaveClass("hidden")
@@ -631,7 +631,7 @@ describe("<MapPage />", () => {
       )
       expect(vehiclePropertiesCard.get()).toBeVisible()
 
-      fireEvent.click(container.querySelector(".m-vehicle-map__route-shape")!)
+      fireEvent.click(container.querySelector(".c-vehicle-map__route-shape")!)
       await waitFor(() => expect(routePropertiesCard.get()).toBeVisible())
       expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
     })
@@ -781,7 +781,7 @@ describe("<MapPage />", () => {
           mapContainer.querySelector(".m-vehicle-icon__label")
         ).not.toBeInTheDocument()
         expect(
-          mapContainer.querySelector(".m-vehicle-map__route-shape")
+          mapContainer.querySelector(".c-vehicle-map__route-shape")
         ).not.toBeInTheDocument()
 
         await userEvent.click(
@@ -794,7 +794,7 @@ describe("<MapPage />", () => {
           mapContainer.querySelector(".m-vehicle-icon__label")
         ).toBeInTheDocument()
         expect(
-          mapContainer.querySelector(".m-vehicle-map__route-shape")
+          mapContainer.querySelector(".c-vehicle-map__route-shape")
         ).toBeInTheDocument()
         expect(
           screen.getAllByRole("button", { name: runIdToLabel(vehicle.runId!) })
@@ -802,7 +802,7 @@ describe("<MapPage />", () => {
 
         expect(vehiclePropertiesCard.get()).toBeVisible()
         expect(
-          mapContainer.querySelector(".m-vehicle-map__route-shape")
+          mapContainer.querySelector(".c-vehicle-map__route-shape")
         ).toBeVisible()
       })
     })
@@ -889,10 +889,10 @@ describe("<MapPage />", () => {
             ).toHaveLength(selectedRouteVehicles.length)
 
             expect(
-              container.querySelectorAll(".m-vehicle-map__stop")
+              container.querySelectorAll(".c-vehicle-map__stop")
             ).toHaveLength(stopCount)
             expect(
-              container.querySelector(".m-vehicle-map__route-shape")
+              container.querySelector(".c-vehicle-map__route-shape")
             ).toBeInTheDocument()
           })
         })
@@ -924,10 +924,10 @@ describe("<MapPage />", () => {
           expect(selectedVehicleLabel).toHaveClass("selected")
 
           expect(
-            container.querySelectorAll(".m-vehicle-map__stop")
+            container.querySelectorAll(".c-vehicle-map__stop")
           ).toHaveLength(0)
           expect(
-            container.querySelector(".m-vehicle-map__route-shape")
+            container.querySelector(".c-vehicle-map__route-shape")
           ).not.toBeInTheDocument()
           expect(
             within(vehiclePropertiesCard.get()).getByRole("status", {

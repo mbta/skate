@@ -683,7 +683,7 @@ Array [
               className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
             />
             <div
-              className="m-vehicle-map"
+              className="c-vehicle-map"
               id="id-vehicle-map"
             />
           </div>
