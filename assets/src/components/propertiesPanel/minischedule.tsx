@@ -7,7 +7,7 @@ import React, {
 } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { className } from "../../helpers/dom"
+import { joinClasses } from "../../helpers/dom"
 import {
   BusFrontIcon,
   BusRearIcon,
@@ -106,7 +106,7 @@ export const Minischedule = ({
     )
     return (
       <div
-        className={className([
+        className={joinClasses([
           "m-minischedule",
           `m-minischedule--${showPast ? "show-past" : "hide-past"}`,
         ])}
@@ -733,7 +733,7 @@ const Row = ({
   const [{ userSettings }] = useContext(StateDispatchContext)
   return (
     <div
-      className={className([
+      className={joinClasses([
         "m-minischedule__row",
         timeBasedStyle && "m-minischedule__row--" + timeBasedStyle,
         ...(activeStatus

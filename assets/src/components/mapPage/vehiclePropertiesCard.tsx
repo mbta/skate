@@ -1,5 +1,5 @@
 import React, { ReactNode, useId } from "react"
-import { joinTruthy, className as classNames } from "../../helpers/dom"
+import { joinTruthy, joinClasses as classNames } from "../../helpers/dom"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"

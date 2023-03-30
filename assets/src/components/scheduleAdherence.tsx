@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithoutRef, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className as classNames } from "../helpers/dom"
+import { joinClasses as classNames } from "../helpers/dom"
 import { isVehicle } from "../models/vehicle"
 import {
   drawnStatus,

@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react"
-import { className as classNames } from "../helpers/dom"
+import { joinClasses as classNames } from "../helpers/dom"
 import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl as streetViewUrlFrom } from "../util/streetViewUrl"
 
