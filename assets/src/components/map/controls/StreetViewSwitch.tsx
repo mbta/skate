@@ -31,7 +31,7 @@ export const StreetViewControl = ({
       portalElement.className = className([
         "leaflet-control",
         "leaflet-bar",
-        "lc-street-view-switch",
+        "c-street-view-switch",
       ])
       portalParent.append(portalElement)
       Leaflet.DomEvent.disableClickPropagation(portalElement)
@@ -76,20 +76,20 @@ export const StreetViewControl = ({
     <>
       <label
         htmlFor={id}
-        className="lc-street-view-switch__label"
+        className="c-street-view-switch__label"
         aria-label=""
         aria-hidden={true}
         role="presentation"
       >
-        <WalkingIcon className="lc-street-view-switch__label-icon" />
+        <WalkingIcon className="c-street-view-switch__label-icon" />
       </label>
       <label
         htmlFor={id}
-        className="lc-street-view-switch__label lc-street-view-switch__label-text"
+        className="c-street-view-switch__label c-street-view-switch__label-text"
       >
         Street View
       </label>
-      <div className="form-check form-switch lc-street-view-switch__input">
+      <div className="form-check form-switch c-street-view-switch__input">
         <input
           id={id}
           className="form-check-input"
