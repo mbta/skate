@@ -27,13 +27,13 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
-    <div className={`l-page m-settings-page ${mobileMenuClass}`}>
+    <div className={`l-page c-settings-page ${mobileMenuClass}`}>
       <Notifications />
       <div className="c-page__container">
         <h1 className="c-page__title">Settings</h1>
 
         <div className="c-page__section">
-          <h2 className="m-settings-page__section-header">Vehicle Settings</h2>
+          <h2 className="c-settings-page__section-header">Vehicle Settings</h2>
           <ToggleSetting
             icon={<MapIcon />}
             label="Vehicle labels on map"
@@ -97,15 +97,15 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
               {
                 label: (
                   <div>
-                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                    <div className="c-settings-page__vehicle-adherence-setting-row">
                       Early bus: Red
-                      <div className="m-settings-page__vehicle-adherence-icon">
+                      <div className="c-settings-page__vehicle-adherence-icon">
                         <TriangleUpIcon className="red" />
                       </div>
                     </div>
-                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                    <div className="c-settings-page__vehicle-adherence-setting-row">
                       Late bus: Blue
-                      <div className="m-settings-page__vehicle-adherence-icon">
+                      <div className="c-settings-page__vehicle-adherence-icon">
                         <TriangleUpIcon className="blue" />
                       </div>
                     </div>
@@ -117,15 +117,15 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
               {
                 label: (
                   <div>
-                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                    <div className="c-settings-page__vehicle-adherence-setting-row">
                       Early bus: Blue
-                      <div className="m-settings-page__vehicle-adherence-icon">
+                      <div className="c-settings-page__vehicle-adherence-icon">
                         <TriangleUpIcon className="blue" />
                       </div>
                     </div>
-                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                    <div className="c-settings-page__vehicle-adherence-setting-row">
                       Late bus: Red
-                      <div className="m-settings-page__vehicle-adherence-icon">
+                      <div className="c-settings-page__vehicle-adherence-icon">
                         <TriangleUpIcon className="red" />
                       </div>
                     </div>
@@ -161,26 +161,26 @@ const ToggleSetting = ({
     optionId: string
   }[]
 }) => (
-  <div className="m-settings-page__setting">
-    <div className="m-settings-page__setting_header">
-      <div className="m-settings-page__icon">
-        {React.cloneElement(icon, { className: "m-settings-page__icon-path" })}
+  <div className="c-settings-page__setting">
+    <div className="c-settings-page__setting_header">
+      <div className="c-settings-page__icon">
+        {React.cloneElement(icon, { className: "c-settings-page__icon-path" })}
       </div>
-      <div className="m-settings-page__setting-label">{label}</div>
+      <div className="c-settings-page__setting-label">{label}</div>
     </div>
-    <div className="m-settings-page__options-container">
+    <div className="c-settings-page__options-container">
       {options.map((option) => (
         <label
           className={
             value === option.value
-              ? "m-settings-page__option-label-selected"
-              : "m-settings-page__option-label-unselected"
+              ? "c-settings-page__option-label-selected"
+              : "c-settings-page__option-label-unselected"
           }
           key={option.optionId}
         >
           <input
             type="radio"
-            className="m-settings-page__input"
+            className="c-settings-page__input"
             data-testid={option.optionId}
             name={settingName}
             value={option.value}

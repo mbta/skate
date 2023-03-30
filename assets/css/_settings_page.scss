@@ -1,63 +1,63 @@
-.m-settings-page__section-header {
+.c-settings-page__section-header {
   @include font-label;
   padding: 0.5rem 0rem 0.625rem 1.25rem;
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.m-settings-page__setting {
+.c-settings-page__setting {
   padding: 0 0 1rem 0;
 }
 
-.m-settings-page__setting_header {
+.c-settings-page__setting_header {
   align-items: center;
   display: flex;
   justify-content: flex-start;
   padding: 0rem 0rem 0.5rem 0rem;
 }
 
-.m-settings-page__icon {
+.c-settings-page__icon {
   align-self: normal;
   flex: 0 1 auto;
   margin: 0.2rem 0.5rem 0 0;
 }
 
-.m-settings-page__icon-path {
+.c-settings-page__icon-path {
   display: block;
   fill: $color-primary;
   width: 13px;
 }
 
-.m-settings-page__setting-label {
+.c-settings-page__setting-label {
   @include font-body;
   flex: 1 1 6rem;
 }
 
-.m-settings-page__options-container {
+.c-settings-page__options-container {
   margin-left: 1.3125rem;
   display: flex;
   justify-content: flex-start;
 }
 
-.m-settings-page__input {
+.c-settings-page__input {
   display: none;
 }
 
-.m-settings-page__option-label-selected {
+.c-settings-page__option-label-selected {
   @include toggle-selected;
 }
 
-.m-settings-page__option-label-unselected {
+.c-settings-page__option-label-unselected {
   @include toggle-unselected;
 }
 
-.m-settings-page__vehicle-adherence-setting-row {
+.c-settings-page__vehicle-adherence-setting-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.m-settings-page__vehicle-adherence-icon {
+.c-settings-page__vehicle-adherence-icon {
   width: 1.5rem;
   height: 1.5rem;
 
