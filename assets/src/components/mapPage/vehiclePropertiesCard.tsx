@@ -1,5 +1,5 @@
 import React, { ReactNode, useId } from "react"
-import { joinTruthy, joinClasses as classNames } from "../../helpers/dom"
+import { joinTruthy, joinClasses } from "../../helpers/dom"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"
@@ -79,7 +79,7 @@ const TrNameValue = ({
         {name}
       </th>
       <td
-        className={classNames([
+        className={joinClasses([
           "kv-value font-s-reg",
           shouldMaskInfo(sensitive !== HideSensitiveInfo.None),
         ])}

@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithoutRef } from "react"
 import { useRoute } from "../contexts/routesContext"
-import { joinClasses as joinClasses } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime"
 
