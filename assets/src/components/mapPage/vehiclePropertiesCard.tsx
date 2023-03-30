@@ -174,10 +174,10 @@ const VehiclePropertiesCard = ({
   onClose: () => void
 }): React.ReactElement => (
   <div
-    className="m-vehicle-properties-card"
+    className="c-vehicle-properties-card"
     aria-label="Vehicle Properties Card"
   >
-    <div className="m-vehicle-properties-card__title-bar">
+    <div className="c-vehicle-properties-card__title-bar">
       <CloseButton
         onClick={onClose}
         closeButtonType={"l_light"}
@@ -187,17 +187,17 @@ const VehiclePropertiesCard = ({
       <VehicleDataStaleTime vehicleOrGhost={vehicleOrGhost} />
     </div>
 
-    <div className="m-vehicle-properties-card__summary">
+    <div className="c-vehicle-properties-card__summary">
       <VehicleRouteSummary vehicle={vehicleOrGhost} />
     </div>
 
-    <div className="m-vehicle-properties-card__body">
-      <div className="m-vehicle-properties-card__properties m-info-section">
+    <div className="c-vehicle-properties-card__body">
+      <div className="c-vehicle-properties-card__properties m-info-section">
         <VehicleWorkInfo vehicleOrGhost={vehicleOrGhost} />
       </div>
 
       <div
-        className="m-vehicle-properties-card__location-info m-info-section"
+        className="c-vehicle-properties-card__location-info m-info-section"
         hidden={isGhost(vehicleOrGhost)}
       >
         <VehicleNearestIntersection vehicleOrGhost={vehicleOrGhost} />
