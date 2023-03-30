@@ -9,7 +9,7 @@ Array [
       Your connection to Skate has expired. Refresh the page to continue.
     </div>
     <button
-      className="m-disconnected-modal__refresh-button"
+      className="c-disconnected-modal__refresh-button"
       onClick={[MockFunction]}
     >
       Refresh
