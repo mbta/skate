@@ -1,5 +1,6 @@
 import React, { ComponentPropsWithoutRef } from "react"
 import { useRoute } from "../contexts/routesContext"
+import { className as joinClassNames } from "../helpers/dom"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime"
 
@@ -17,7 +18,7 @@ export const RouteVariantName = ({
   return (
     <output
       aria-label="Route Variant Name"
-      className={"c-route-variant-name " + className}
+      className={joinClassNames(["c-route-variant-name", className])}
       {...props}
     >
       {isShuttle ? (

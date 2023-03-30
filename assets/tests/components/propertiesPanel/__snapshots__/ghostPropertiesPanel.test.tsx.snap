@@ -108,7 +108,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
         </div>
         <output
           aria-label="Route Variant Name"
-          className="c-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
@@ -411,7 +411,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         />
         <output
           aria-label="Route Variant Name"
-          className="c-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
@@ -764,7 +764,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         </div>
         <output
           aria-label="Route Variant Name"
-          className="c-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"

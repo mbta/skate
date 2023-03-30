@@ -95,7 +95,7 @@ exports[`Header renders a header 1`] = `
       />
       <output
         aria-label="Route Variant Name"
-        className="c-route-variant-name undefined"
+        className="c-route-variant-name"
       >
         <output
           aria-label="Route & Variant"
@@ -348,7 +348,7 @@ exports[`Header renders for a ghost 1`] = `
       />
       <output
         aria-label="Route Variant Name"
-        className="c-route-variant-name undefined"
+        className="c-route-variant-name"
       >
         <output
           aria-label="Route & Variant"
@@ -559,7 +559,7 @@ exports[`Header renders for a late vehicle 1`] = `
       />
       <output
         aria-label="Route Variant Name"
-        className="c-route-variant-name undefined"
+        className="c-route-variant-name"
       >
         <output
           aria-label="Route & Variant"
@@ -804,7 +804,7 @@ exports[`Header renders for a shuttle 1`] = `
       />
       <output
         aria-label="Route Variant Name"
-        className="c-route-variant-name undefined"
+        className="c-route-variant-name"
       >
         Shuttle
       </output>
@@ -917,7 +917,7 @@ exports[`Header renders for an early vehicle 1`] = `
       />
       <output
         aria-label="Route Variant Name"
-        className="c-route-variant-name undefined"
+        className="c-route-variant-name"
       >
         <output
           aria-label="Route & Variant"
@@ -1162,7 +1162,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
       />
       <output
         aria-label="Route Variant Name"
-        className="c-route-variant-name undefined"
+        className="c-route-variant-name"
       >
         <output
           aria-label="Route & Variant"
@@ -1407,7 +1407,7 @@ exports[`Header renders with route data 1`] = `
       </div>
       <output
         aria-label="Route Variant Name"
-        className="c-route-variant-name undefined"
+        className="c-route-variant-name"
       >
         <output
           aria-label="Route & Variant"

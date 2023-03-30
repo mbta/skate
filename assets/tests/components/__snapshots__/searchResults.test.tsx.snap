@@ -94,7 +94,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="c-route-variant-name undefined"
+                  className="c-route-variant-name"
                 >
                   <output
                     aria-label="Route & Variant"
@@ -223,7 +223,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="c-route-variant-name undefined"
+                  className="c-route-variant-name"
                 >
                   <output
                     aria-label="Route & Variant"
@@ -418,7 +418,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="c-route-variant-name undefined"
+                  className="c-route-variant-name"
                 >
                   <output
                     aria-label="Route & Variant"
@@ -547,7 +547,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="c-route-variant-name undefined"
+                  className="c-route-variant-name"
                 >
                   <output
                     aria-label="Route & Variant"

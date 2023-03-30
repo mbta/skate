@@ -113,7 +113,7 @@ Array [
             </div>
             <output
               aria-label="Route Variant Name"
-              className="c-route-variant-name undefined"
+              className="c-route-variant-name"
             >
               <output
                 aria-label="Route & Variant"
@@ -422,7 +422,7 @@ Array [
             </div>
             <output
               aria-label="Route Variant Name"
-              className="c-route-variant-name undefined"
+              className="c-route-variant-name"
             >
               <output
                 aria-label="Route & Variant"
