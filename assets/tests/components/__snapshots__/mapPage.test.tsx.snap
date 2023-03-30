@@ -1455,18 +1455,18 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 />
                 <output
                   aria-label="Route Variant Name"
-                  class="m-route-variant-name m-vehicle-route-summary__route-variant headsign font-m-semi"
+                  class="c-route-variant-name m-vehicle-route-summary__route-variant headsign font-m-semi"
                 >
                   <output
                     aria-label="Route & Variant"
-                    class="m-route-variant-name__route-id"
+                    class="c-route-variant-name__route-id"
                   >
                     39_X
                   </output>
                    
                   <output
                     aria-label="Headsign"
-                    class="m-route-variant-name__headsign"
+                    class="c-route-variant-name__headsign"
                   >
                     Forest Hills
                   </output>

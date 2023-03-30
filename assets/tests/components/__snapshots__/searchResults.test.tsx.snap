@@ -94,18 +94,18 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="m-route-variant-name undefined"
+                  className="c-route-variant-name undefined"
                 >
                   <output
                     aria-label="Route & Variant"
-                    className="m-route-variant-name__route-id"
+                    className="c-route-variant-name__route-id"
                   >
                     39_X
                   </output>
                    
                   <output
                     aria-label="Headsign"
-                    className="m-route-variant-name__headsign"
+                    className="c-route-variant-name__headsign"
                   >
                     headsign
                   </output>
@@ -223,18 +223,18 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="m-route-variant-name undefined"
+                  className="c-route-variant-name undefined"
                 >
                   <output
                     aria-label="Route & Variant"
-                    className="m-route-variant-name__route-id"
+                    className="c-route-variant-name__route-id"
                   >
                     39_X
                   </output>
                    
                   <output
                     aria-label="Headsign"
-                    className="m-route-variant-name__headsign"
+                    className="c-route-variant-name__headsign"
                   >
                     Forest Hills
                   </output>
@@ -418,18 +418,18 @@ exports[`SearchResults renders a selected result card 1`] = `
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="m-route-variant-name undefined"
+                  className="c-route-variant-name undefined"
                 >
                   <output
                     aria-label="Route & Variant"
-                    className="m-route-variant-name__route-id"
+                    className="c-route-variant-name__route-id"
                   >
                     1_
                   </output>
                    
                   <output
                     aria-label="Headsign"
-                    className="m-route-variant-name__headsign"
+                    className="c-route-variant-name__headsign"
                   >
                     headsign
                   </output>
@@ -547,18 +547,18 @@ exports[`SearchResults renders a selected result card 1`] = `
               >
                 <output
                   aria-label="Route Variant Name"
-                  className="m-route-variant-name undefined"
+                  className="c-route-variant-name undefined"
                 >
                   <output
                     aria-label="Route & Variant"
-                    className="m-route-variant-name__route-id"
+                    className="c-route-variant-name__route-id"
                   >
                     39_X
                   </output>
                    
                   <output
                     aria-label="Headsign"
-                    className="m-route-variant-name__headsign"
+                    className="c-route-variant-name__headsign"
                   >
                     Forest Hills
                   </output>

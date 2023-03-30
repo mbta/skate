@@ -28,7 +28,7 @@
     grid-area: direction;
   }
 
-  .m-route-variant-name {
+  .c-route-variant-name {
     grid-area: route-name;
   }
   // #endregion
@@ -60,7 +60,7 @@
   }
 
   // route variant name should not move when text gets longer
-  .m-route-variant-name {
+  .c-route-variant-name {
     // Fill grid container
     height: 100%;
     width: 100%;

@@ -17,7 +17,7 @@ export const RouteVariantName = ({
   return (
     <output
       aria-label="Route Variant Name"
-      className={"m-route-variant-name " + className}
+      className={"c-route-variant-name " + className}
       {...props}
     >
       {isShuttle ? (
@@ -26,14 +26,14 @@ export const RouteVariantName = ({
         <>
           <output
             aria-label="Route & Variant"
-            className="m-route-variant-name__route-id"
+            className="c-route-variant-name__route-id"
           >
             {`${route?.name || routeId}_${viaVariantFormatted}`}
           </output>
           &nbsp;
           <output
             aria-label="Headsign"
-            className="m-route-variant-name__headsign"
+            className="c-route-variant-name__headsign"
           >
             {headsign}
           </output>

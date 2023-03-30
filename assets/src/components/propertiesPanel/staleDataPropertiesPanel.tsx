@@ -69,7 +69,7 @@ const StaleDataHeader: React.FC<{
         </div>
         <div className="m-properties-panel__variant">
           <div className="m-properties-panel__inbound-outbound">N/A</div>
-          <div className="m-route-variant-name">Not Available</div>
+          <div className="c-route-variant-name">Not Available</div>
         </div>
       </div>
       {vehicle.isShuttle || (
