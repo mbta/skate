@@ -30,7 +30,7 @@ const StreetViewButton = ({
   return (
     <a
       className={classNames([
-        "m-street-view-button",
+        "c-street-view-button",
         "button-dark-small",
         className,
       ])}
@@ -49,7 +49,7 @@ const StreetViewButton = ({
       {...(title && { title })}
     >
       <WalkingIcon
-        className="m-street-view-button__icon"
+        className="c-street-view-button__icon"
         role="img"
         aria-label=""
         aria-hidden={true}

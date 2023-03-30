@@ -1640,7 +1640,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   </output>
                 </div>
                 <a
-                  class="m-street-view-button button-dark-small"
+                  class="c-street-view-button button-dark-small"
                   href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.360718%2C-71.05891&heading=33&pitch=0&fov=80"
                   rel="noreferrer"
                   target="_blank"
@@ -1648,7 +1648,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <span
                     aria-hidden="true"
                     aria-label=""
-                    class="m-street-view-button__icon"
+                    class="c-street-view-button__icon"
                     role="img"
                   >
                     <svg />
