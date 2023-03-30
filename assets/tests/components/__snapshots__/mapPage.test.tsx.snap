@@ -1473,12 +1473,12 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </output>
                 <output
                   aria-label="Vehicle Schedule Adherence"
-                  class="m-schedule-adherence on-time early-red m-vehicle-route-summary__adherence label font-xs-reg"
+                  class="c-schedule-adherence on-time early-red m-vehicle-route-summary__adherence label font-xs-reg"
                 >
                   <svg
                     aria-hidden="true"
                     aria-label=""
-                    class="m-schedule-adherence__status-icon"
+                    class="c-schedule-adherence__status-icon"
                     height="8"
                     role="img"
                     viewBox="0 0 100 100"
@@ -1491,7 +1491,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                     />
                   </svg>
                   <output
-                    class="m-schedule-adherence-status label font-xs-semi title-case"
+                    class="c-schedule-adherence-status label font-xs-semi title-case"
                   >
                     on time
                   </output>

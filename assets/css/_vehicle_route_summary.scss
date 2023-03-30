@@ -20,7 +20,7 @@
     grid-area: separator;
   }
 
-  .m-schedule-adherence {
+  .c-schedule-adherence {
     grid-area: adherence;
   }
 
@@ -35,7 +35,7 @@
 
   // #region Bespoke alignment within cells
   // adherence should stick to the right side of the card
-  .m-schedule-adherence {
+  .c-schedule-adherence {
     justify-self: end;
   }
 
@@ -46,14 +46,14 @@
   }
 
   // Adherence and direction should hug the top of the container
-  .m-schedule-adherence,
+  .c-schedule-adherence,
   .m-vehicle-route-direction {
     line-height: 1;
   }
   // #endregion
 
   // #region component layout
-  .m-schedule-adherence {
+  .c-schedule-adherence {
     & > * {
       display: inline-block;
     }
