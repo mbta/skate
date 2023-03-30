@@ -6,27 +6,27 @@ export const RoutePill = ({
 }: {
   routeName: string
 }): JSX.Element => {
-  const classes = className(["m-route-pill", modeClass(routeName)])
+  const classes = className(["c-route-pill", modeClass(routeName)])
 
   return <div className={classes}>{routeNameTransform(routeName)}</div>
 }
 
 const modeClass = (routeName: string): string => {
   if (routeName.match(/^SL*/)) {
-    return "m-route-pill--silver"
+    return "c-route-pill--silver"
   } else if (routeName === "Red Line") {
-    return "m-route-pill--red"
+    return "c-route-pill--red"
   } else if (routeName === "Orange Line") {
-    return "m-route-pill--orange"
+    return "c-route-pill--orange"
   } else if (routeName === "Blue Line") {
-    return "m-route-pill--blue"
+    return "c-route-pill--blue"
   } else if (["B", "C", "D", "E"].includes(routeName)) {
-    return "m-route-pill--green"
+    return "c-route-pill--green"
   } else if (routeName === "Mattapan Trolley") {
-    return "m-route-pill--red"
+    return "c-route-pill--red"
   }
 
-  return "m-route-pill--bus"
+  return "c-route-pill--bus"
 }
 
 const routeNameTransform = (routeName: string): string => {

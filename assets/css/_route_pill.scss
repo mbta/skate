@@ -1,4 +1,4 @@
-.m-route-pill {
+.c-route-pill {
   min-width: 2.875rem;
   max-width: 2.875rem;
   height: 1.5rem;
@@ -12,32 +12,32 @@
   font-family: $font-family-route-pill;
 }
 
-.m-route-pill--bus {
+.c-route-pill--bus {
   color: $black;
   background-color: $color-mbta-bus;
 }
 
-.m-route-pill--silver {
+.c-route-pill--silver {
   color: $white;
   background-color: $color-mbta-silver;
 }
 
-.m-route-pill--red {
+.c-route-pill--red {
   color: $white;
   background-color: $color-mbta-red;
 }
 
-.m-route-pill--green {
+.c-route-pill--green {
   color: $white;
   background-color: $color-mbta-green;
 }
 
-.m-route-pill--orange {
+.c-route-pill--orange {
   color: $white;
   background-color: $color-mbta-orange;
 }
 
-.m-route-pill--blue {
+.c-route-pill--blue {
   color: $white;
   background-color: $color-mbta-blue;
 }
