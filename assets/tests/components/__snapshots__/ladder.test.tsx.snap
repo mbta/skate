@@ -68,7 +68,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(-63,-68.75)"
       >
@@ -148,7 +148,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle selected "
+        className="m-ladder__vehicle m-ladder__vehicle--selected"
         onClick={[Function]}
         transform="translate(63,-82.5)"
       >
@@ -352,7 +352,7 @@ exports[`ladder renders a ghost bus 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(63,0)"
       >
@@ -609,7 +609,7 @@ exports[`ladder renders a ladder 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(63,-82.5)"
       >
@@ -689,7 +689,7 @@ exports[`ladder renders a ladder 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(-63,-68.75)"
       >
@@ -769,7 +769,7 @@ exports[`ladder renders a ladder 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(-63,0)"
       >
@@ -972,7 +972,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(63,0)"
       >
@@ -1085,7 +1085,7 @@ exports[`ladder renders a laying over vehicle 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(0,-35)"
       >
@@ -1295,7 +1295,7 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(0,-35)"
       >
@@ -1505,7 +1505,7 @@ exports[`ladder renders a reversed ladder 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(63,-82.5)"
       >
@@ -1709,7 +1709,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(63,0)"
       >
@@ -1921,7 +1921,7 @@ exports[`ladder renders an overload vehicle 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(63,-82.5)"
       >
@@ -2131,7 +2131,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(-63,41.25)"
       >
@@ -2349,7 +2349,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(63,0)"
       >
@@ -2476,7 +2476,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(-87,-68.75)"
       >
@@ -2586,7 +2586,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
         </span>
       </div>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle"
         onClick={[Function]}
         transform="translate(-63,-68.75)"
       >
