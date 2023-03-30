@@ -137,14 +137,14 @@ const VehicleNearestIntersection = ({
 }: VehicleOrGhostProp): React.ReactElement => {
   const id = `current-location-${useId()}`
   return (
-    <div className="m-current-location">
+    <div className="c-current-location">
       <label
-        className="m-current-location__label label font-xs-reg title-case"
+        className="c-current-location__label label font-xs-reg title-case"
         htmlFor={id}
       >
         Current Location
       </label>
-      <output className="m-current-location__value label font-s-semi" id={id}>
+      <output className="c-current-location__value label font-s-semi" id={id}>
         {isVehicle(vehicleOrGhost) ? (
           <CurrentLocation vehicle={vehicleOrGhost} />
         ) : (

@@ -81,15 +81,15 @@
 // #endregion
 
 // #region Vehicle Nearest Intersection Display
-.m-current-location {
+.c-current-location {
   line-height: 1;
 
-  .m-current-location__label {
+  .c-current-location__label {
     margin-bottom: 8px;
   }
 
-  .m-current-location__label,
-  .m-current-location__value {
+  .c-current-location__label,
+  .c-current-location__value {
     display: block;
   }
 }
