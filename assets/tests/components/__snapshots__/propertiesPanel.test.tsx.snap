@@ -324,7 +324,7 @@ Array [
     id="m-properties-panel"
   >
     <div
-      className="m-vehicle-properties-panel"
+      className="c-vehicle-properties-panel"
     >
       <div
         className="m-properties-panel__header-wrapper"
@@ -574,7 +574,7 @@ Array [
         className="m-tabs__tab-panel"
       >
         <div
-          className="m-vehicle-properties-panel__notes"
+          className="c-vehicle-properties-panel__notes"
         />
         <div
           className="m-properties-list"
@@ -643,18 +643,18 @@ Array [
           </table>
         </div>
         <div
-          className="m-vehicle-properties-panel__location"
+          className="c-vehicle-properties-panel__location"
         >
           <div
-            className="m-vehicle-properties-panel__latlng"
+            className="c-vehicle-properties-panel__latlng"
           >
             <div
-              className="m-vehicle-properties-panel__label"
+              className="c-vehicle-properties-panel__label"
             >
               Current Location
             </div>
             <a
-              className="m-vehicle-properties-panel__link"
+              className="c-vehicle-properties-panel__link"
               href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
               rel="noreferrer"
               target="_blank"
@@ -663,21 +663,21 @@ Array [
             </a>
           </div>
           <div
-            className="m-vehicle-properties-panel__next-stop"
+            className="c-vehicle-properties-panel__next-stop"
           >
             <div
-              className="m-vehicle-properties-panel__label"
+              className="c-vehicle-properties-panel__label"
             >
               Next Stop
             </div>
             <div
-              className="m-vehicle-properties-panel__value"
+              className="c-vehicle-properties-panel__value"
             >
               Stop Name
             </div>
           </div>
           <div
-            className="m-vehicle-properties-panel__map"
+            className="c-vehicle-properties-panel__map"
           >
             <div
               className="m-vehicle-map-state m-vehicle-map-state--auto-centering"

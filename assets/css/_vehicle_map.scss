@@ -56,7 +56,7 @@
   }
 }
 
-.m-vehicle-properties-panel__location .m-vehicle-map .leaflet-right {
+.c-vehicle-properties-panel__location .m-vehicle-map .leaflet-right {
   padding-right: calc(env(safe-area-inset-right) - #{$vpp-location-padding});
 }
 

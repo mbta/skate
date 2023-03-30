@@ -28,7 +28,7 @@ interface Props {
 
 const InvalidBanner = () => (
   <Card
-    additionalClass="m-vehicle-properties-panel__invalid-banner"
+    additionalClass="c-vehicle-properties-panel__invalid-banner"
     style="lemon"
     title={<h3>Invalid Bus</h3>}
     noFocusOrHover={true}
@@ -41,7 +41,7 @@ const InvalidBanner = () => (
 )
 
 const NotAvailable = () => (
-  <span className="m-vehicle-properties-panel__not-available">
+  <span className="c-vehicle-properties-panel__not-available">
     Not available
   </span>
 )
@@ -84,18 +84,18 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
     : null
 
   return (
-    <div className="m-vehicle-properties-panel__location">
-      <div className="m-vehicle-properties-panel__latlng">
-        <div className="m-vehicle-properties-panel__label">
+    <div className="c-vehicle-properties-panel__location">
+      <div className="c-vehicle-properties-panel__latlng">
+        <div className="c-vehicle-properties-panel__label">
           Current Location
         </div>
         {nearestIntersection ? (
-          <div className="m-vehicle-properties-panel__value">
+          <div className="c-vehicle-properties-panel__value">
             {nearestIntersection}
           </div>
         ) : null}
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__link"
           href={directionsUrl(latitude, longitude)}
           target="_blank"
           rel="noreferrer"
@@ -103,9 +103,9 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           Directions
         </a>
       </div>
-      <div className="m-vehicle-properties-panel__next-stop">
-        <div className="m-vehicle-properties-panel__label">Next Stop</div>
-        <div className="m-vehicle-properties-panel__value">
+      <div className="c-vehicle-properties-panel__next-stop">
+        <div className="c-vehicle-properties-panel__label">Next Stop</div>
+        <div className="c-vehicle-properties-panel__value">
           {isOffCourse || vehicle.isShuttle ? (
             <NotAvailable />
           ) : (
@@ -113,7 +113,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           )}
         </div>
       </div>
-      <div className="m-vehicle-properties-panel__map">
+      <div className="c-vehicle-properties-panel__map">
         <MiniMap
           vehicle={vehicle}
           routeVehicles={routeVehicles}
@@ -129,16 +129,16 @@ const Discrepancy = ({
 }: {
   dataDiscrepancy: DataDiscrepancy
 }) => (
-  <dl className="m-vehicle-properties-panel__data-discrepancy">
+  <dl className="c-vehicle-properties-panel__data-discrepancy">
     <dt>{attribute}</dt>
     <dd>
       <ul>
         {sources.map(({ id, value }) => (
           <li key={`${attribute}-${id}`} data-testid="data-discrepancy">
-            <span className="m-vehicle-properties-panel__data-discrepancy-source-id">
+            <span className="c-vehicle-properties-panel__data-discrepancy-source-id">
               {id}
             </span>
-            <span className="m-vehicle-properties-panel__data-discrepancy-source-value">
+            <span className="c-vehicle-properties-panel__data-discrepancy-source-value">
               {value}
             </span>
           </li>
@@ -153,7 +153,7 @@ const DataDiscrepancies = ({
 }: {
   vehicle: Vehicle
 }) => (
-  <ul className="m-vehicle-properties-panel__data-discrepancies">
+  <ul className="c-vehicle-properties-panel__data-discrepancies">
     {dataDiscrepancies.map((dataDiscrepancy) => (
       <li key={dataDiscrepancy.attribute}>
         <Discrepancy dataDiscrepancy={dataDiscrepancy} />
@@ -170,7 +170,7 @@ const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
 
 const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
-    <div className="m-vehicle-properties-panel__notes">
+    <div className="c-vehicle-properties-panel__notes">
       {selectedVehicle.isOffCourse && <InvalidBanner />}
 
       {hasBlockWaiver(selectedVehicle) && (
@@ -194,7 +194,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
   return (
-    <div className="m-vehicle-properties-panel">
+    <div className="c-vehicle-properties-panel">
       <Header
         vehicle={selectedVehicle}
         tabMode={tabMode}

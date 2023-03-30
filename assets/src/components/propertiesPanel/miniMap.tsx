@@ -22,7 +22,7 @@ const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
   return (
     <Link
       ref={openMapLinkRef}
-      className="m-vehicle-properties-panel__map-open-link leaflet-bar"
+      className="c-vehicle-properties-panel__map-open-link leaflet-bar"
       to={mapModeForUser().path}
       onClick={() => {
         window.FS?.event("Map opened from VPP mini map")
