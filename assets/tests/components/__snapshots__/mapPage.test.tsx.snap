@@ -162,7 +162,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -528,7 +528,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -894,7 +894,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"

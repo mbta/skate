@@ -549,7 +549,7 @@ describe("auto centering", () => {
     )
     await animationFramePromise()
     expect(container.firstChild).toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
     const manualLatLng = { lat: 41.9, lng: -70.9 }
 
@@ -574,7 +574,7 @@ describe("auto centering", () => {
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(manualLatLng)
     expect(container.firstChild).not.toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
   })
 
@@ -641,7 +641,7 @@ describe("auto centering", () => {
     })
     await animationFramePromise()
     expect(result.container.firstChild).not.toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(manualLatLng)
 
@@ -649,7 +649,7 @@ describe("auto centering", () => {
     await userEvent.click(result.getByTitle("Recenter Map"))
     await animationFramePromise()
     expect(result.container.firstChild).toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
     expect(window.FS!.event).toHaveBeenCalledWith("Recenter control clicked")
@@ -685,7 +685,7 @@ describe("auto centering", () => {
       )
       await animationFramePromise()
       expect(result.container.firstChild).toHaveClass(
-        "m-vehicle-map-state--auto-centering"
+        "c-vehicle-map-state--auto-centering"
       )
       expect(getCenter(mapRef)).toEqual(defaultCenter)
     })

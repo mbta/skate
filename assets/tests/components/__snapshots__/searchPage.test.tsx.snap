@@ -152,7 +152,7 @@ exports[`SearchPage renders the empty state 1`] = `
       class="m-search-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -475,7 +475,7 @@ exports[`SearchPage renders vehicle data 1`] = `
       class="m-search-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"

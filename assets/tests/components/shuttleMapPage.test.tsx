@@ -170,7 +170,7 @@ describe("Shuttle Map Page", () => {
 
     expect(
       result.container.getElementsByClassName(
-        "m-vehicle-map-state--auto-centering"
+        "c-vehicle-map-state--auto-centering"
       ).length
     ).toBe(1)
   })

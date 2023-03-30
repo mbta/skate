@@ -311,8 +311,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const { allowFullscreen = true } = props
 
   const stateClasses = className([
-    "m-vehicle-map-state",
-    streetViewEnabled ? "m-vehicle-map-state--street-view-enabled" : null,
+    "c-vehicle-map-state",
+    streetViewEnabled ? "c-vehicle-map-state--street-view-enabled" : null,
     props.stateClasses,
   ])
 
@@ -440,7 +440,7 @@ export const vehicleToLeafletLatLng = ({
 export const FollowerStatusClasses = (
   shouldFollow: boolean
 ): string | undefined => {
-  return shouldFollow ? "m-vehicle-map-state--auto-centering" : undefined
+  return shouldFollow ? "c-vehicle-map-state--auto-centering" : undefined
 }
 
 export const MapFollowingPrimaryVehicles = (props: Props) => {

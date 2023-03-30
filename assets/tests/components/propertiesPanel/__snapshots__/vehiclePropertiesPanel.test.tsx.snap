@@ -356,7 +356,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
           className="m-vehicle-map"
@@ -724,7 +724,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
           className="m-vehicle-map"
@@ -961,7 +961,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       className="c-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         className="m-vehicle-map"
@@ -1425,7 +1425,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
           className="m-vehicle-map"
@@ -1793,7 +1793,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
           className="m-vehicle-map"
@@ -2198,7 +2198,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
           className="m-vehicle-map"
@@ -2568,7 +2568,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
           className="m-vehicle-map"

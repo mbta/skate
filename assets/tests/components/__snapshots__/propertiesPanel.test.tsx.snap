@@ -680,7 +680,7 @@ Array [
             className="c-vehicle-properties-panel__map"
           >
             <div
-              className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+              className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
             />
             <div
               className="m-vehicle-map"

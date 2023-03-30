@@ -166,7 +166,7 @@ exports[`Shuttle Map Page renders 1`] = `
       class="m-shuttle-map__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -826,7 +826,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
       class="m-shuttle-map__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -1486,7 +1486,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
       class="m-shuttle-map__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -2011,7 +2011,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
       class="m-shuttle-map__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
@@ -2369,7 +2369,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
       class="m-shuttle-map__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
         class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
