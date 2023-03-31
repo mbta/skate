@@ -49,15 +49,15 @@ const StaleDataHeader: React.FC<{
   const hideMe = () => dispatch(closeView())
 
   return (
-    <div className="m-properties-panel__header-wrapper">
+    <div className="c-properties-panel__header-wrapper">
       <ViewHeader
         title="Vehicles"
         closeView={hideMe}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />
-      <div className="m-properties-panel__header">
-        <div className="m-properties-panel__label">
+      <div className="c-properties-panel__header">
+        <div className="c-properties-panel__label">
           <VehicleIcon
             size={Size.Large}
             orientation={Orientation.Up}
@@ -67,8 +67,8 @@ const StaleDataHeader: React.FC<{
             userSettings={userSettings}
           />
         </div>
-        <div className="m-properties-panel__variant">
-          <div className="m-properties-panel__inbound-outbound">N/A</div>
+        <div className="c-properties-panel__variant">
+          <div className="c-properties-panel__inbound-outbound">N/A</div>
           <div className="c-route-variant-name">Not Available</div>
         </div>
       </div>

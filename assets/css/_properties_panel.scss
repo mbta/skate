@@ -1,4 +1,4 @@
-.m-properties-panel {
+.c-properties-panel {
   @include modal-content;
   display: flex;
   flex-direction: column;
@@ -24,19 +24,19 @@
   }
 }
 
-.m-properties-panel .m-properties-panel__header-wrapper {
+.c-properties-panel .c-properties-panel__header-wrapper {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
   z-index: map-get($z-properties-panel-context, "header");
 }
 
-.m-properties-panel .m-properties-panel__header {
+.c-properties-panel .c-properties-panel__header {
   background-color: $color-bg-base;
   border-bottom: 1px solid $color-rule;
 }
 
-.m-properties-panel-backdrop {
+.c-properties-panel-backdrop {
   @include modal-backdrop;
   z-index: map-get($z-page-layout-context, "properties-panel-backdrop");
 }

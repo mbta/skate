@@ -1,4 +1,4 @@
-.m-properties-panel__header {
+.c-properties-panel__header {
   display: flex;
 
   .c-route-variant-name {
@@ -6,14 +6,14 @@
   }
 }
 
-.m-properties-panel__label {
+.c-properties-panel__label {
   flex: 0 0 auto;
   padding: 1rem;
   text-align: center;
   width: 4rem;
 }
 
-.m-properties-panel__variant {
+.c-properties-panel__variant {
   border-left: 1px solid $color-rule;
   flex: 1 1 auto;
   padding-bottom: 1rem;
@@ -21,21 +21,21 @@
   padding-top: 1rem;
 }
 
-.m-properties-panel__inbound-outbound {
+.c-properties-panel__inbound-outbound {
   @include font-emph;
   margin-bottom: 0.4rem;
 }
 
-.m-properties-panel__schedule-adherence {
+.c-properties-panel__schedule-adherence {
   @include font-small;
   margin-top: 0.7rem;
 }
 
-.m-properties-panel__schedule-adherence {
+.c-properties-panel__schedule-adherence {
   display: flex;
 }
 
-.m-properties-panel__schedule-adherence-status-icon {
+.c-properties-panel__schedule-adherence-status-icon {
   margin-right: 0.4rem;
 
   .on-time & {
@@ -61,33 +61,33 @@
   }
 }
 
-.m-properties-panel__schedule-adherence-status-string {
+.c-properties-panel__schedule-adherence-status-string {
   font-weight: bold;
   margin-right: 0.3rem;
   text-transform: uppercase;
 }
 
-.m-properties-panel__schedule-adherence-label {
+.c-properties-panel__schedule-adherence-label {
   .on-time & {
     color: $color-component-medium;
   }
 }
 
-.m-properties-panel__ping-container {
+.c-properties-panel__ping-container {
   align-items: flex-end;
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
   justify-content: flex-end;
 
-  .m-properties-panel__last-gps-ping {
+  .c-properties-panel__last-gps-ping {
     padding-bottom: 1rem;
     padding-right: 1rem;
     padding-top: 1rem;
   }
 }
 
-.m-properties-panel__last-gps-ping {
+.c-properties-panel__last-gps-ping {
   @include font-small;
   color: $color-font-grey;
   min-width: 3rem;
