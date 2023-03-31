@@ -1,7 +1,7 @@
 $street-view-button-background-color: $color-eggplant-700;
 $street-view-button-text-color: $color-eggplant-50;
 
-.m-street-view-button {
+.c-street-view-button {
   /* Layout */
   /** push button to newline */
   display: block;
@@ -20,7 +20,7 @@ $street-view-button-text-color: $color-eggplant-50;
   line-height: 1;
 }
 
-.m-street-view-button__icon {
+.c-street-view-button__icon {
   display: inline-block;
   margin-right: 4px;
 
@@ -34,6 +34,6 @@ $street-view-button-text-color: $color-eggplant-50;
 }
 
 /* Override `.leaflet-container a` */
-.leaflet-container .m-street-view-button {
+.leaflet-container .c-street-view-button {
   color: $street-view-button-text-color;
 }

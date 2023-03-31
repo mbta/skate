@@ -162,10 +162,10 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -276,7 +276,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -528,10 +528,10 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -642,7 +642,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -894,10 +894,10 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       class="m-map-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -1210,7 +1210,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </div>
             </div>
             <div
-              class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 0px; z-index: 1000;"
               tabindex="0"
@@ -1233,7 +1233,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </svg>
             </div>
             <div
-              class="leaflet-marker-icon m-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon c-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 223px; top: 0px; z-index: 1000;"
               tabindex="0"
@@ -1246,7 +1246,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 
             
                 <rect
-                  class="m-vehicle-icon__label-background"
+                  class="c-vehicle-icon__label-background"
                   height="100%"
                   rx="5.5px"
                   ry="5.5px"
@@ -1255,7 +1255,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 
             
                 <text
-                  class="m-vehicle-icon__label"
+                  class="c-vehicle-icon__label"
                   dominant-baseline="central"
                   text-anchor="middle"
                   x="50%"
@@ -1330,7 +1330,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -1455,30 +1455,30 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 />
                 <output
                   aria-label="Route Variant Name"
-                  class="m-route-variant-name m-vehicle-route-summary__route-variant headsign font-m-semi"
+                  class="c-route-variant-name m-vehicle-route-summary__route-variant headsign font-m-semi"
                 >
                   <output
                     aria-label="Route & Variant"
-                    class="m-route-variant-name__route-id"
+                    class="c-route-variant-name__route-id"
                   >
                     39_X
                   </output>
                    
                   <output
                     aria-label="Headsign"
-                    class="m-route-variant-name__headsign"
+                    class="c-route-variant-name__headsign"
                   >
                     Forest Hills
                   </output>
                 </output>
                 <output
                   aria-label="Vehicle Schedule Adherence"
-                  class="m-schedule-adherence on-time early-red m-vehicle-route-summary__adherence label font-xs-reg"
+                  class="c-schedule-adherence on-time early-red m-vehicle-route-summary__adherence label font-xs-reg"
                 >
                   <svg
                     aria-hidden="true"
                     aria-label=""
-                    class="m-schedule-adherence__status-icon"
+                    class="c-schedule-adherence__status-icon"
                     height="8"
                     role="img"
                     viewBox="0 0 100 100"
@@ -1491,7 +1491,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                     />
                   </svg>
                   <output
-                    class="m-schedule-adherence-status label font-xs-semi title-case"
+                    class="c-schedule-adherence-status label font-xs-semi title-case"
                   >
                     on time
                   </output>
@@ -1514,10 +1514,10 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                       Vehicle Status Icon
                     </title>
                     <g
-                      class="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+                      class="c-vehicle-icon c-vehicle-icon--large on-time early-red"
                     >
                       <rect
-                        class="m-vehicle-icon__label-background"
+                        class="c-vehicle-icon__label-background"
                         height="24"
                         rx="12"
                         ry="12"
@@ -1526,7 +1526,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         y="19"
                       />
                       <text
-                        class="m-vehicle-icon__label m-vehicle-icon__label--normal"
+                        class="c-vehicle-icon__label c-vehicle-icon__label--normal"
                         dominant-baseline="central"
                         text-anchor="middle"
                         x="0"
@@ -1535,13 +1535,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         1
                       </text>
                       <path
-                        class="m-vehicle-icon__triangle"
+                        class="c-vehicle-icon__triangle"
                         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
                         data-testid="vehicle-triangle"
                         transform="scale(1) rotate(0) translate(-24,-22)"
                       />
                       <text
-                        class="m-vehicle-icon__variant"
+                        class="c-vehicle-icon__variant"
                         dominant-baseline="alphabetic"
                         text-anchor="middle"
                         x="0"
@@ -1640,7 +1640,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   </output>
                 </div>
                 <a
-                  class="m-street-view-button button-dark-small"
+                  class="c-street-view-button button-dark-small"
                   href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.360718%2C-71.05891&heading=33&pitch=0&fov=80"
                   rel="noreferrer"
                   target="_blank"
@@ -1648,7 +1648,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <span
                     aria-hidden="true"
                     aria-label=""
-                    class="m-street-view-button__icon"
+                    class="c-street-view-button__icon"
                     role="img"
                   >
                     <svg />

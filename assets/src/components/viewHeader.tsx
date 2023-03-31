@@ -32,12 +32,12 @@ const ViewHeader: ViewHeaderType = ({
   const deviceType = useScreenSize()
 
   return (
-    <div className="m-view-header">
+    <div className="c-view-header">
       {backlinkToView &&
       backlinkToView !== OpenView.None &&
       deviceType === "mobile" ? (
         <button
-          className="m-view-header__backlink"
+          className="c-view-header__backlink"
           onClick={followBacklink}
           title={backlinkTitle(backlinkToView)}
         >
@@ -45,7 +45,7 @@ const ViewHeader: ViewHeaderType = ({
           {backlinkTitle(backlinkToView)}
         </button>
       ) : null}
-      <h2 className="m-view-header__title">{title}</h2>
+      <h2 className="c-view-header__title">{title}</h2>
       <CloseButton closeButtonType="xl_light" onClick={closeView} />
     </div>
   )

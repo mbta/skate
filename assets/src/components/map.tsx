@@ -89,7 +89,7 @@ class LeafletRecenterControl extends Control {
   onAdd() {
     const controlContainer = DomUtil.create(
       "div",
-      "leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+      "leaflet-control leaflet-bar c-vehicle-map__recenter-button"
     )
     controlContainer.onclick = (e) => {
       e.stopPropagation()
@@ -311,8 +311,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const { allowFullscreen = true } = props
 
   const stateClasses = className([
-    "m-vehicle-map-state",
-    streetViewEnabled ? "m-vehicle-map-state--street-view-enabled" : null,
+    "c-vehicle-map-state",
+    streetViewEnabled ? "c-vehicle-map-state--street-view-enabled" : null,
     props.stateClasses,
   ])
 
@@ -322,7 +322,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     <>
       <div className={stateClasses} />
       <MapContainer
-        className="m-vehicle-map"
+        className="c-vehicle-map"
         id="id-vehicle-map"
         maxBounds={[
           [41.2, -72],
@@ -440,7 +440,7 @@ export const vehicleToLeafletLatLng = ({
 export const FollowerStatusClasses = (
   shouldFollow: boolean
 ): string | undefined => {
-  return shouldFollow ? "m-vehicle-map-state--auto-centering" : undefined
+  return shouldFollow ? "c-vehicle-map-state--auto-centering" : undefined
 }
 
 export const MapFollowingPrimaryVehicles = (props: Props) => {

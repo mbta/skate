@@ -1,4 +1,4 @@
-.m-vehicle-icon__triangle {
+.c-vehicle-icon__triangle {
   fill: $color-vehicle-normal;
   stroke: $color-bg-base;
   stroke-width: 2;
@@ -23,35 +23,35 @@
   }
 }
 
-.m-vehicle-icon__ghost-highlight {
+.c-vehicle-icon__ghost-highlight {
   fill: none;
   stroke: none;
   stroke-width: 9;
 }
 
-.m-vehicle-icon__ghost-body {
+.c-vehicle-icon__ghost-body {
   fill: $color-vehicle-ghost;
   stroke: $color-vehicle-ghost-border;
   stroke-width: 3;
 }
 
-.m-vehicle-icon__ghost-eye {
+.c-vehicle-icon__ghost-eye {
   fill: $color-vehicle-ghost-border;
 }
 
-.m-vehicle-icon__label-background {
+.c-vehicle-icon__label-background {
   fill: $color-bg-base;
 
-  .m-vehicle-icon--highlighted & {
+  .c-vehicle-icon--highlighted & {
     fill: $color-component-highlight;
   }
 }
 
-.m-vehicle-icon__label {
+.c-vehicle-icon__label {
   fill: currentColor;
 }
 
-.m-vehicle-icon__variant {
+.c-vehicle-icon__variant {
   fill: $color-font-light;
 
   .ghost & {
@@ -59,28 +59,28 @@
   }
 }
 
-.m-vehicle-icon--small {
-  .m-vehicle-icon__label {
+.c-vehicle-icon--small {
+  .c-vehicle-icon__label {
     @include font-tiny;
   }
 
-  .m-vehicle-icon__variant {
+  .c-vehicle-icon__variant {
     @include font-tiny;
   }
 }
 
-.m-vehicle-icon--medium {
-  .m-vehicle-icon__label {
+.c-vehicle-icon--medium {
+  .c-vehicle-icon__label {
     @include font-tiny;
   }
 
-  .m-vehicle-icon__variant {
+  .c-vehicle-icon__variant {
     @include font-small;
   }
 }
 
-.m-vehicle-icon--large {
-  .m-vehicle-icon__label {
+.c-vehicle-icon--large {
+  .c-vehicle-icon__label {
     @include font-header-big;
 
     &--extended {
@@ -88,7 +88,7 @@
     }
   }
 
-  .m-vehicle-icon__variant {
+  .c-vehicle-icon__variant {
     @include font-big;
   }
 }

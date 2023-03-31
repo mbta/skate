@@ -18,7 +18,7 @@ const ScheduleAdherenceStatusIcon = () => (
     viewBox="0 0 100 100"
     width={8}
     height={8}
-    className="m-schedule-adherence__status-icon"
+    className="c-schedule-adherence__status-icon"
   >
     <circle cx={50} cy={50} r={40} />
   </svg>
@@ -30,7 +30,7 @@ const ScheduleAdherenceDescription = ({
   ...props
 }: { vehicle: Vehicle } & ComponentPropsWithoutRef<"output">) => (
   <output
-    className={classNames(["m-schedule-adherence-status", className])}
+    className={classNames(["c-schedule-adherence-status", className])}
     {...props}
   >
     {humanReadableScheduleAdherence(vehicle)}
@@ -72,7 +72,7 @@ export const ScheduleAdherence = ({
   const [{ userSettings }] = useContext(StateDispatchContext)
 
   const classes = classNames([
-    "m-schedule-adherence",
+    "c-schedule-adherence",
     ...statusClasses(drawnStatus(vehicle), userSettings.vehicleAdherenceColors),
     className,
   ])

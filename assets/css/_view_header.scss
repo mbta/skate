@@ -1,4 +1,4 @@
-.m-view-header {
+.c-view-header {
   position: sticky;
   top: 0;
   z-index: 1;
@@ -29,13 +29,13 @@
   }
 }
 
-.m-view-header__title {
+.c-view-header__title {
   font-size: 0.875rem;
   font-weight: 500;
   color: $color-gray-800;
 }
 
-.m-view-header__backlink {
+.c-view-header__backlink {
   @include button-icon(0.875rem);
   position: absolute;
   top: 0;

@@ -1,20 +1,20 @@
-.m-vehicle-properties-panel {
+.c-vehicle-properties-panel {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
 }
 
-.m-vehicle-properties-panel__notes {
+.c-vehicle-properties-panel__notes {
   margin: 0.5rem;
 }
 
-.m-vehicle-properties-panel__invalid-banner h3 {
+.c-vehicle-properties-panel__invalid-banner h3 {
   margin: 0;
   font-size: var(--font-size-m);
   font-weight: var(--font-weight-semi);
 }
 
-.m-vehicle-properties-panel__location {
+.c-vehicle-properties-panel__location {
   border-top: 1px solid $color-rule;
   display: flex;
   flex: 1 1 auto;
@@ -22,53 +22,53 @@
   padding: $vpp-location-padding;
 }
 
-.m-vehicle-properties-panel__latlng {
+.c-vehicle-properties-panel__latlng {
   flex: 0 1 4.25rem;
 }
 
-.m-vehicle-properties-panel__next-stop {
+.c-vehicle-properties-panel__next-stop {
   flex: 0 0 auto;
 }
 
-.m-vehicle-properties-panel__label {
+.c-vehicle-properties-panel__label {
   @include font-label;
   margin-bottom: 0.25rem;
   margin-top: 0.5rem;
 }
 
-.m-vehicle-properties-panel__value {
+.c-vehicle-properties-panel__value {
   @include font-body;
   margin-bottom: 0.25rem;
 }
 
-.m-vehicle-properties-panel__link {
+.c-vehicle-properties-panel__link {
   @include font-link;
   margin-bottom: 0.25rem;
 }
 
-.m-vehicle-properties-panel__not-available {
+.c-vehicle-properties-panel__not-available {
   color: $color-font-warning;
 }
 
-.m-vehicle-properties-panel__map {
+.c-vehicle-properties-panel__map {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   margin-top: 1rem;
   min-height: 320px;
 
-  .m-vehicle-map {
+  .c-vehicle-map {
     flex: 1 0 auto;
     z-index: map-get($z-properties-panel-context, "map");
   }
   // Fullscreen on mobile safari not naitively supported - uses 'pseudo-fullscreen' css
   // Ensure fullscreen VPP map appears above VPP header
-  .m-vehicle-map.leaflet-pseudo-fullscreen {
+  .c-vehicle-map.leaflet-pseudo-fullscreen {
     z-index: map-get($z-properties-panel-context, "fullscreen-map");
   }
 }
 
-.m-vehicle-properties-panel__map-open-link {
+.c-vehicle-properties-panel__map-open-link {
   position: absolute;
   z-index: #{$max-leaflet-z-index + 1};
   top: 10px;
@@ -86,11 +86,11 @@
   }
 }
 
-.m-vehicle-properties-panel__data-discrepancies {
+.c-vehicle-properties-panel__data-discrepancies {
   padding: 1rem;
 }
 
-.m-vehicle-properties-panel__data-discrepancy-source-id {
+.c-vehicle-properties-panel__data-discrepancy-source-id {
   font-style: italic;
 
   &::after {

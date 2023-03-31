@@ -64,8 +64,8 @@ describe("<MapFollowingPrimaryVehicles />", () => {
   test("draws vehicles", () => {
     const vehicle = vehicleFactory.build({})
     const result = render(<MapFollowingPrimaryVehicles vehicles={[vehicle]} />)
-    expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
-    expect(result.container.innerHTML).toContain("m-vehicle-map__label")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__icon")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__label")
   })
 
   test("draws secondary vehicles", () => {
@@ -76,8 +76,8 @@ describe("<MapFollowingPrimaryVehicles />", () => {
         secondaryVehicles={[vehicle]}
       />
     )
-    expect(result.container.innerHTML).toContain("m-vehicle-map__icon")
-    expect(result.container.innerHTML).toContain("m-vehicle-map__label")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__icon")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__label")
   })
 
   test("draws train vehicles", () => {
@@ -93,15 +93,15 @@ describe("<MapFollowingPrimaryVehicles />", () => {
         trainVehicles={[trainVehicle]}
       />
     )
-    expect(result.container.innerHTML).toContain("m-vehicle-map__train-icon")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__train-icon")
   })
 
   test("draws shapes", () => {
     const result = render(
       <MapFollowingPrimaryVehicles vehicles={[]} shapes={[shape]} />
     )
-    expect(result.container.innerHTML).toContain("m-vehicle-map__route-shape")
-    expect(result.container.innerHTML).toContain("m-vehicle-map__stop")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__route-shape")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__stop")
   })
 
   test("doesn't draw garage icons at zoom levels < 15", async () => {
@@ -282,7 +282,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       />
     )
 
-    await userEvent.click(container.querySelector(".m-vehicle-map__stop")!)
+    await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
 
     expect(
       screen.getByRole("link", { name: /street view/i })
@@ -435,10 +435,10 @@ describe("<MapFollowingPrimaryVehicles />", () => {
     )
 
     expect(
-      container.querySelector(".m-vehicle-map__icon .selected")
+      container.querySelector(".c-vehicle-map__icon .selected")
     ).toBeInTheDocument()
     expect(
-      container.querySelector(".m-vehicle-map__label.selected")
+      container.querySelector(".c-vehicle-map__label.selected")
     ).toBeInTheDocument()
   })
 })
@@ -549,7 +549,7 @@ describe("auto centering", () => {
     )
     await animationFramePromise()
     expect(container.firstChild).toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
     const manualLatLng = { lat: 41.9, lng: -70.9 }
 
@@ -574,7 +574,7 @@ describe("auto centering", () => {
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(manualLatLng)
     expect(container.firstChild).not.toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
   })
 
@@ -641,7 +641,7 @@ describe("auto centering", () => {
     })
     await animationFramePromise()
     expect(result.container.firstChild).not.toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(manualLatLng)
 
@@ -649,7 +649,7 @@ describe("auto centering", () => {
     await userEvent.click(result.getByTitle("Recenter Map"))
     await animationFramePromise()
     expect(result.container.firstChild).toHaveClass(
-      "m-vehicle-map-state--auto-centering"
+      "c-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
     expect(window.FS!.event).toHaveBeenCalledWith("Recenter control clicked")
@@ -685,7 +685,7 @@ describe("auto centering", () => {
       )
       await animationFramePromise()
       expect(result.container.firstChild).toHaveClass(
-        "m-vehicle-map-state--auto-centering"
+        "c-vehicle-map-state--auto-centering"
       )
       expect(getCenter(mapRef)).toEqual(defaultCenter)
     })

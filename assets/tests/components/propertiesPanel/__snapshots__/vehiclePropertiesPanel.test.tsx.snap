@@ -2,16 +2,16 @@
 
 exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -52,10 +52,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -64,7 +64,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -73,13 +73,13 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -98,18 +98,18 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         />
         <output
           aria-label="Route Variant Name"
-          className="m-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
-            className="m-route-variant-name__route-id"
+            className="c-route-variant-name__route-id"
           >
             39_X
           </output>
            
           <output
             aria-label="Headsign"
-            className="m-route-variant-name__headsign"
+            className="c-route-variant-name__headsign"
           >
             Forest Hills
           </output>
@@ -250,7 +250,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-vehicle-properties-panel__notes"
+      className="c-vehicle-properties-panel__notes"
     />
     <div
       className="m-properties-list"
@@ -319,18 +319,18 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -339,27 +339,27 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -370,16 +370,16 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
 
 exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -420,10 +420,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large late early-red"
+            className="c-vehicle-icon c-vehicle-icon--large late early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -432,7 +432,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -441,13 +441,13 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -466,18 +466,18 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         />
         <output
           aria-label="Route Variant Name"
-          className="m-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
-            className="m-route-variant-name__route-id"
+            className="c-route-variant-name__route-id"
           >
             39_X
           </output>
            
           <output
             aria-label="Headsign"
-            className="m-route-variant-name__headsign"
+            className="c-route-variant-name__headsign"
           >
             Forest Hills
           </output>
@@ -618,7 +618,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-vehicle-properties-panel__notes"
+      className="c-vehicle-properties-panel__notes"
     />
     <div
       className="m-properties-list"
@@ -687,18 +687,18 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -707,27 +707,27 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -738,16 +738,16 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
 
 exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -788,10 +788,10 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="c-vehicle-icon c-vehicle-icon--large"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -800,7 +800,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+              className="c-vehicle-icon__label c-vehicle-icon__label--extended"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -809,13 +809,13 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
               v1-label
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -834,7 +834,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         />
         <output
           aria-label="Route Variant Name"
-          className="m-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           Shuttle
         </output>
@@ -851,7 +851,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     </div>
   </div>
   <div
-    className="m-vehicle-properties-panel__notes"
+    className="c-vehicle-properties-panel__notes"
   />
   <div
     className="m-properties-list"
@@ -920,18 +920,18 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     </table>
   </div>
   <div
-    className="m-vehicle-properties-panel__location"
+    className="c-vehicle-properties-panel__location"
   >
     <div
-      className="m-vehicle-properties-panel__latlng"
+      className="c-vehicle-properties-panel__latlng"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="c-vehicle-properties-panel__label"
       >
         Current Location
       </div>
       <a
-        className="m-vehicle-properties-panel__link"
+        className="c-vehicle-properties-panel__link"
         href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
         rel="noreferrer"
         target="_blank"
@@ -940,31 +940,31 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       </a>
     </div>
     <div
-      className="m-vehicle-properties-panel__next-stop"
+      className="c-vehicle-properties-panel__next-stop"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="c-vehicle-properties-panel__label"
       >
         Next Stop
       </div>
       <div
-        className="m-vehicle-properties-panel__value"
+        className="c-vehicle-properties-panel__value"
       >
         <span
-          className="m-vehicle-properties-panel__not-available"
+          className="c-vehicle-properties-panel__not-available"
         >
           Not available
         </span>
       </div>
     </div>
     <div
-      className="m-vehicle-properties-panel__map"
+      className="c-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        className="m-vehicle-map"
+        className="c-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -974,16 +974,16 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
 
 exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -1024,10 +1024,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1036,7 +1036,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1045,13 +1045,13 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1070,18 +1070,18 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         />
         <output
           aria-label="Route Variant Name"
-          className="m-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
-            className="m-route-variant-name__route-id"
+            className="c-route-variant-name__route-id"
           >
             39_X
           </output>
            
           <output
             aria-label="Headsign"
-            className="m-route-variant-name__headsign"
+            className="c-route-variant-name__headsign"
           >
             Forest Hills
           </output>
@@ -1222,7 +1222,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-vehicle-properties-panel__notes"
+      className="c-vehicle-properties-panel__notes"
     >
       <div
         className="m-block-waiver-list"
@@ -1388,18 +1388,18 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -1408,27 +1408,27 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -1439,16 +1439,16 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
 
 exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -1489,10 +1489,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large early early-red"
+            className="c-vehicle-icon c-vehicle-icon--large early early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1501,7 +1501,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1510,13 +1510,13 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1535,18 +1535,18 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         />
         <output
           aria-label="Route Variant Name"
-          className="m-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
-            className="m-route-variant-name__route-id"
+            className="c-route-variant-name__route-id"
           >
             39_X
           </output>
            
           <output
             aria-label="Headsign"
-            className="m-route-variant-name__headsign"
+            className="c-route-variant-name__headsign"
           >
             Forest Hills
           </output>
@@ -1687,7 +1687,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-vehicle-properties-panel__notes"
+      className="c-vehicle-properties-panel__notes"
     />
     <div
       className="m-properties-list"
@@ -1756,18 +1756,18 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -1776,27 +1776,27 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -1807,16 +1807,16 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
 
 exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -1857,10 +1857,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large off-course early-red"
+            className="c-vehicle-icon c-vehicle-icon--large off-course early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1869,7 +1869,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1878,13 +1878,13 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1903,18 +1903,18 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         />
         <output
           aria-label="Route Variant Name"
-          className="m-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
-            className="m-route-variant-name__route-id"
+            className="c-route-variant-name__route-id"
           >
             39_X
           </output>
            
           <output
             aria-label="Headsign"
-            className="m-route-variant-name__headsign"
+            className="c-route-variant-name__headsign"
           >
             Forest Hills
           </output>
@@ -2053,11 +2053,11 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-vehicle-properties-panel__notes"
+      className="c-vehicle-properties-panel__notes"
     >
       <div
         aria-labelledby="card-label-:r4:"
-        className="c-card c-card--lemon m-vehicle-properties-panel__invalid-banner c-card--no-focus-or-hover c-card--inactive"
+        className="c-card c-card--lemon c-vehicle-properties-panel__invalid-banner c-card--no-focus-or-hover c-card--inactive"
       >
         <div
           className="c-card__left"
@@ -2157,18 +2157,18 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -2177,31 +2177,31 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           <span
-            className="m-vehicle-properties-panel__not-available"
+            className="c-vehicle-properties-panel__not-available"
           >
             Not available
           </span>
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -2212,16 +2212,16 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
 
 exports[`VehiclePropertiesPanel renders with route data 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
   >
     <div
-      className="m-view-header"
+      className="c-view-header"
     >
       <h2
-        className="m-view-header__title"
+        className="c-view-header__title"
       >
         Vehicles
       </h2>
@@ -2262,10 +2262,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
             Vehicle Status Icon
           </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -2274,7 +2274,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -2283,13 +2283,13 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -2310,18 +2310,18 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </div>
         <output
           aria-label="Route Variant Name"
-          className="m-route-variant-name undefined"
+          className="c-route-variant-name"
         >
           <output
             aria-label="Route & Variant"
-            className="m-route-variant-name__route-id"
+            className="c-route-variant-name__route-id"
           >
             39_X
           </output>
            
           <output
             aria-label="Headsign"
-            className="m-route-variant-name__headsign"
+            className="c-route-variant-name__headsign"
           >
             Forest Hills
           </output>
@@ -2462,7 +2462,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-vehicle-properties-panel__notes"
+      className="c-vehicle-properties-panel__notes"
     />
     <div
       className="m-properties-list"
@@ -2531,18 +2531,18 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -2551,27 +2551,27 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>

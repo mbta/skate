@@ -185,7 +185,7 @@ describe("<MapDisplay />", () => {
         />
       )
 
-      const routeShape = container.querySelector(".m-vehicle-map__route-shape")
+      const routeShape = container.querySelector(".c-vehicle-map__route-shape")
       expect(routeShape).toBeVisible()
       expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
     })
@@ -213,7 +213,7 @@ describe("<MapDisplay />", () => {
         />
       )
 
-      const routeShape = container.querySelector(".m-vehicle-map__route-shape")
+      const routeShape = container.querySelector(".c-vehicle-map__route-shape")
 
       expect(routeShape).toBeVisible()
       expect(vehiclePropertiesCard.get()).toBeVisible()
@@ -287,10 +287,10 @@ describe("<MapDisplay />", () => {
             ).toHaveLength(selectedRouteVehicles.length)
 
             expect(
-              container.querySelectorAll(".m-vehicle-map__stop")
+              container.querySelectorAll(".c-vehicle-map__stop")
             ).toHaveLength(stopCount)
             expect(
-              container.querySelector(".m-vehicle-map__route-shape")
+              container.querySelector(".c-vehicle-map__route-shape")
             ).toBeInTheDocument()
           })
 
@@ -328,7 +328,7 @@ describe("<MapDisplay />", () => {
             )
 
             await userEvent.hover(
-              container.querySelector(".m-vehicle-map__route-shape")!
+              container.querySelector(".c-vehicle-map__route-shape")!
             )
             expect(
               screen.getByText("Click to select route 66_3.")
@@ -369,7 +369,7 @@ describe("<MapDisplay />", () => {
             )
 
             await userEvent.hover(
-              container.querySelector(".m-vehicle-map__route-shape")!
+              container.querySelector(".c-vehicle-map__route-shape")!
             )
 
             expect(screen.getByText("Click to select route 66.")).toBeVisible()
@@ -409,7 +409,7 @@ describe("<MapDisplay />", () => {
             )
 
             await userEvent.hover(
-              container.querySelector(".m-vehicle-map__route-shape")!
+              container.querySelector(".c-vehicle-map__route-shape")!
             )
 
             expect(screen.getByText("Click to select route 66.")).toBeVisible()
@@ -450,7 +450,7 @@ describe("<MapDisplay />", () => {
             )
 
             fireEvent.click(
-              container.querySelector(".m-vehicle-map__route-shape")!
+              container.querySelector(".c-vehicle-map__route-shape")!
             )
             await waitFor(() =>
               expect(setSelectedEntityMock).toHaveBeenCalledWith({
@@ -489,10 +489,10 @@ describe("<MapDisplay />", () => {
           expect(selectedVehicleLabel).toHaveClass("selected")
 
           expect(
-            container.querySelectorAll(".m-vehicle-map__stop")
+            container.querySelectorAll(".c-vehicle-map__stop")
           ).toHaveLength(0)
           expect(
-            container.querySelector(".m-vehicle-map__route-shape")
+            container.querySelector(".c-vehicle-map__route-shape")
           ).not.toBeInTheDocument()
           expect(
             within(vehiclePropertiesCard.get()).getByRole("status", {

@@ -1,4 +1,4 @@
-.m-vehicle-map__label {
+.c-vehicle-map__label {
   svg {
     overflow: visible;
   }
@@ -11,12 +11,12 @@
     @include font-tiny;
   }
 
-  &.selected .m-vehicle-icon__label-background {
+  &.selected .c-vehicle-icon__label-background {
     fill: $color-eggplant-300;
   }
 }
 
-.m-vehicle-map__icon {
+.c-vehicle-map__icon {
   path {
     fill: $color-primary;
     stroke: $color-bg-base;
@@ -56,11 +56,11 @@
   }
 }
 
-.m-vehicle-properties-panel__location .m-vehicle-map .leaflet-right {
+.c-vehicle-properties-panel__location .c-vehicle-map .leaflet-right {
   padding-right: calc(env(safe-area-inset-right) - #{$vpp-location-padding});
 }
 
-.m-vehicle-map__train-icon {
+.c-vehicle-map__train-icon {
   fill: $white;
   stroke: $color-component-dark;
   stroke-width: 4;
@@ -72,13 +72,13 @@
   }
 }
 
-.m-vehicle-map__route-shape {
+.c-vehicle-map__route-shape {
   stroke: $color-kiwi-500;
   stroke-opacity: 0.5;
   stroke-width: 5;
 }
 
-.m-vehicle-map__route-shape:focus {
+.c-vehicle-map__route-shape:focus {
   outline: none;
 }
 
@@ -87,28 +87,28 @@
   stroke-width: 4;
 }
 
-.m-vehicle-map__route-shape.route-shape--blue {
+.c-vehicle-map__route-shape.route-shape--blue {
   stroke: $color-mbta-blue;
 }
 
-.m-vehicle-map__route-shape.route-shape--green {
+.c-vehicle-map__route-shape.route-shape--green {
   stroke: $color-mbta-green;
 }
 
-.m-vehicle-map__route-shape.route-shape--orange {
+.c-vehicle-map__route-shape.route-shape--orange {
   stroke: $color-mbta-orange;
 }
 
-.m-vehicle-map__route-shape.route-shape--red {
+.c-vehicle-map__route-shape.route-shape--red {
   stroke: $color-mbta-red;
 }
 
-.m-vehicle-map__route-shape:not(.m-vehicle-map__route-shape--no-hover):hover,
-.m-vehicle-map__route-shape--selected {
+.c-vehicle-map__route-shape:not(.c-vehicle-map__route-shape--no-hover):hover,
+.c-vehicle-map__route-shape--selected {
   stroke-width: 7;
 }
 
-.m-vehicle-map__stop {
+.c-vehicle-map__stop {
   fill: $color-stop-fill;
   fill-opacity: 1;
 
@@ -133,7 +133,7 @@
   }
 }
 
-.leaflet-tooltip.m-vehicle-map__mobile-friendly-tooltip,
+.leaflet-tooltip.c-vehicle-map__mobile-friendly-tooltip,
 .leaflet-tooltip.route-shape__tooltip {
   background-color: $color-tooltip-background;
   color: $white;
@@ -141,14 +141,14 @@
   opacity: 1 !important;
 }
 
-.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
   margin: 0px;
   background-color: $color-tooltip-background;
   opacity: 1 !important;
   text-align: center;
 }
 
-.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip
   .leaflet-popup-content-wrapper {
   background-color: $color-tooltip-background;
   color: $white;
@@ -156,35 +156,35 @@
   box-shadow: none;
 }
 
-.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
   font-size: 0.75rem;
   line-height: 1.5;
 }
 
-.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip {
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip {
   margin-bottom: 6px !important;
 }
 
 // Hide popup pointer triangle - replaced by tooltip triangle
-.leaflet-popup.m-vehicle-map__mobile-friendly-tooltip
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip
   .leaflet-popup-tip-container {
   display: none;
 }
 
 // The tooltip triangle
-.leaflet-tooltip-top.m-vehicle-map__mobile-friendly-tooltip::before,
+.leaflet-tooltip-top.c-vehicle-map__mobile-friendly-tooltip::before,
 .leaflet-tooltip-top.route-shape__tooltip::before {
   border-top-color: $color-tooltip-background;
 }
 
-.m-vehicle-map__recenter-button {
+.c-vehicle-map__recenter-button {
   path {
     fill: none;
     stroke: $color-button-secondary;
     stroke-width: 2;
   }
 
-  .m-vehicle-map-state--auto-centering + .m-vehicle-map & a {
+  .c-vehicle-map-state--auto-centering + .c-vehicle-map & a {
     background-color: $color-button-disabled;
     color: $color-font-grey;
     cursor: default;

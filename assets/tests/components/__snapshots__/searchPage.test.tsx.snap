@@ -152,10 +152,10 @@ exports[`SearchPage renders the empty state 1`] = `
       class="m-search-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -266,7 +266,7 @@ exports[`SearchPage renders the empty state 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		
@@ -475,10 +475,10 @@ exports[`SearchPage renders vehicle data 1`] = `
       class="m-search-page__map"
     >
       <div
-        class="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
       />
       <div
-        class="m-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
         id="id-vehicle-map"
         style="position: relative;"
         tabindex="0"
@@ -521,7 +521,7 @@ exports[`SearchPage renders vehicle data 1`] = `
               style="z-index: 499;"
             >
               <div
-                class="leaflet-marker-icon m-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -544,7 +544,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                 </svg>
               </div>
               <div
-                class="leaflet-marker-icon m-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
+                class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
                 role="button"
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
@@ -557,7 +557,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   
             
                   <rect
-                    class="m-vehicle-icon__label-background"
+                    class="c-vehicle-icon__label-background"
                     height="100%"
                     rx="5.5px"
                     ry="5.5px"
@@ -566,7 +566,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                   
             
                   <text
-                    class="m-vehicle-icon__label"
+                    class="c-vehicle-icon__label"
                     dominant-baseline="central"
                     text-anchor="middle"
                     x="50%"
@@ -912,7 +912,7 @@ exports[`SearchPage renders vehicle data 1`] = `
               />
             </div>
             <div
-              class="leaflet-control leaflet-bar m-vehicle-map__recenter-button"
+              class="leaflet-control leaflet-bar c-vehicle-map__recenter-button"
             >
               
 		

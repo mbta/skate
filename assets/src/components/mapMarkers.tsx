@@ -64,7 +64,7 @@ const makeVehicleIcon = (
         />
       </svg>`,
     iconAnchor: [0, 0],
-    className: "m-vehicle-map__icon",
+    className: "c-vehicle-map__icon",
   })
 }
 
@@ -81,17 +81,17 @@ const makeLabelIcon = (
   const selectedClass = isSelected ? "selected" : null
   return Leaflet.divIcon({
     className: className([
-      "m-vehicle-map__label",
+      "c-vehicle-map__label",
       isPrimary ? "primary" : "secondary",
       selectedClass,
     ]),
     html: `<svg viewBox="0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}" width="${labelBackgroundWidth}" height="${labelBackgroundHeight}">
             <rect
-                class="m-vehicle-icon__label-background"
+                class="c-vehicle-icon__label-background"
                 width="100%" height="100%"
                 rx="5.5px" ry="5.5px"
               />
-            <text class="m-vehicle-icon__label" x="50%" y="50%" text-anchor="middle" dominant-baseline="central">
+            <text class="c-vehicle-icon__label" x="50%" y="50%" text-anchor="middle" dominant-baseline="central">
               ${labelString}
             </text>
           </svg>`,
@@ -158,7 +158,7 @@ const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
           <path fill="#fff" d="m42.88 45.83a2.1 2.1 0 0 1 -.87-.19l-15.92-7.17a5.23 5.23 0 0 0 -2.09-.47 5.14 5.14 0 0 0 -2.08.44l-15.92 7.2a2.1 2.1 0 0 1 -.87.19 2.14 2.14 0 0 1 -1.76-1 2 2 0 0 1 -.12-2l18.86-40.83a2.08 2.08 0 0 1 3.78 0l18.87 40.87a2 2 0 0 1 -.12 2 2.14 2.14 0 0 1 -1.76.96z"/>
         </g>
     </svg>`,
-    className: "m-vehicle-map__train-icon",
+    className: "c-vehicle-map__train-icon",
   })
 }
 
@@ -199,7 +199,7 @@ const MobileFriendlyTooltip = ({
 }) => {
   const supportsHover = useDeviceSupportsHover()
 
-  const fullClassName = `m-vehicle-map__mobile-friendly-tooltip ${className}`
+  const fullClassName = `c-vehicle-map__mobile-friendly-tooltip ${className}`
 
   return supportsHover ? (
     <Tooltip
@@ -254,7 +254,7 @@ export const StopIcon = ({
     <CircleMarker
       {...props}
       ref={setMarker}
-      className={className(["m-vehicle-map__stop"])}
+      className={className(["c-vehicle-map__stop"])}
       center={[stop.lat, stop.lon]}
       radius={radius}
     >
@@ -294,7 +294,7 @@ export const StopMarker = React.memo(
           <StopCard.WithSafeArea stop={stop} direction={direction} />
         ) : (
           <MobileFriendlyTooltip
-            className={"m-vehicle-map__stop-tooltip"}
+            className={"c-vehicle-map__stop-tooltip"}
             markerRadius={markerRadius}
           >
             {stop.name}
@@ -330,7 +330,7 @@ export const StationMarker = React.memo(
         }}
       >
         <MobileFriendlyTooltip
-          className={"m-vehicle-map__stop-tooltip"}
+          className={"c-vehicle-map__stop-tooltip"}
           markerRadius={iconSizeLength / 2}
         >
           {station.name}
@@ -398,9 +398,9 @@ export const RouteShape = React.memo(
     return (
       <Polyline
         className={
-          `m-vehicle-map__route-shape ${shape.className || ""}` +
-          `${isSelected ? " m-vehicle-map__route-shape--selected" : ""}` +
-          `${onClick ? "" : " m-vehicle-map__route-shape--no-hover"}`
+          `c-vehicle-map__route-shape ${shape.className || ""}` +
+          `${isSelected ? " c-vehicle-map__route-shape--selected" : ""}` +
+          `${onClick ? "" : " c-vehicle-map__route-shape--no-hover"}`
         }
         positions={positions}
         eventHandlers={onClick ? { click: onClick } : {}}

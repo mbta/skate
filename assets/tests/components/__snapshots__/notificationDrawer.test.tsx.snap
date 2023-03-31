@@ -5,10 +5,10 @@ exports[`NotificationDrawer renders empty state 1`] = `
   className="m-notification-drawer"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Notifications
     </h2>
@@ -47,10 +47,10 @@ exports[`NotificationDrawer renders notifications 1`] = `
   className="m-notification-drawer"
 >
   <div
-    className="m-view-header"
+    className="c-view-header"
   >
     <h2
-      className="m-view-header__title"
+      className="c-view-header__title"
     >
       Notifications
     </h2>
