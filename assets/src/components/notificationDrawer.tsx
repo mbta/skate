@@ -37,7 +37,7 @@ const NotificationDrawer = () => {
   }, [isInitialRender, notificationDrawerScrollPosition, dispatch])
 
   return (
-    <div className="m-notification-drawer" ref={elementRef}>
+    <div className="c-notification-drawer" ref={elementRef}>
       <ViewHeader
         title="Notifications"
         closeView={() => {
@@ -51,7 +51,7 @@ const NotificationDrawer = () => {
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />
-      <div className="m-notification-drawer__content">
+      <div className="c-notification-drawer__content">
         <Content />
       </div>
     </div>
@@ -79,14 +79,14 @@ const Content = () => {
   ).length
 
   return (
-    <div className="m-notification-drawer__cards">
-      <div className="m-notification-drawer__header">
-        <span className="m-notification-drawer__n-unread">
+    <div className="c-notification-drawer__cards">
+      <div className="c-notification-drawer__header">
+        <span className="c-notification-drawer__n-unread">
           {unreadNotificationsCount} new
         </span>
         {unreadNotificationsCount > 0 ? (
           <button
-            className="m-notification-drawer__mark-all-read-button"
+            className="c-notification-drawer__mark-all-read-button"
             onClick={() => notificationsDispatch(markAllAsRead())}
           >
             Mark all as read
