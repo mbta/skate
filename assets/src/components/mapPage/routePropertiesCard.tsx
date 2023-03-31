@@ -46,12 +46,12 @@ const DetailSection = ({
 }) => {
   return (
     <div
-      className={`m-route-properties-card__details-section ${
-        isOpen ? "m-route-properties-card__details-section--open" : ""
+      className={`c-route-properties-card__details-section ${
+        isOpen ? "c-route-properties-card__details-section--open" : ""
       }`}
     >
       <button
-        className={`m-route-properties-card__disclosure_toggle`}
+        className={`c-route-properties-card__disclosure_toggle`}
         aria-expanded={isOpen}
         aria-controls={"details" + className}
         onClick={toggleOpen}
@@ -63,7 +63,7 @@ const DetailSection = ({
       <div
         id={"details" + className}
         aria-labelledby={"summary" + className}
-        className={`m-route-properties-card__details ${className}`}
+        className={`c-route-properties-card__details ${className}`}
       >
         {isOpen && children}
       </div>
@@ -114,7 +114,7 @@ const DirectionPicker = ({
   ).sort((d1, d2) => d1 - d2)
 
   return (
-    <div className="m-route-properties-card__direction-picker">
+    <div className="c-route-properties-card__direction-picker">
       {directionIds.map((directionId) => (
         <div
           key={directionId}
@@ -162,8 +162,8 @@ const VariantOption = ({
   const { name, description } = patternDisplayName(routePattern)
   return (
     <div
-      className={`m-route-properties-card__variant-option${
-        isSelected ? " m-route-properties-card__variant-option--selected" : ""
+      className={`c-route-properties-card__variant-option${
+        isSelected ? " c-route-properties-card__variant-option--selected" : ""
       }`}
     >
       <input
@@ -177,10 +177,10 @@ const VariantOption = ({
       <label htmlFor={`variant-radio-${routePattern.id}`}>
         <CircleCheckIcon className="variant-check" />
         <div>
-          <div className="m-route-properties-card__variant-option-name">
+          <div className="c-route-properties-card__variant-option-name">
             {name}
           </div>
-          <div className="m-route-properties-card__variant-option-description">
+          <div className="c-route-properties-card__variant-option-description">
             {description}
           </div>
         </div>
@@ -238,13 +238,13 @@ const RoutePropertiesCard = ({
   const { name, description } = patternDisplayName(selectedRoutePattern)
 
   return (
-    <div className="m-route-properties-card" aria-label="route properties card">
-      <div className="m-route-properties-card__header">
-        <div className="m-route-properties-card__route-title">
+    <div className="c-route-properties-card" aria-label="route properties card">
+      <div className="c-route-properties-card__header">
+        <div className="c-route-properties-card__route-title">
           <RoutePill routeName={route.name} />
           <div>
             <h2>{name}</h2>
-            <div className="m-route-properties-card__route-description">
+            <div className="c-route-properties-card__route-description">
               {description}
             </div>
           </div>
