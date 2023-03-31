@@ -8,15 +8,15 @@ interface Props {
 }
 
 const TabStatusIcon = () => (
-  <svg className="m-tabs__tab-status-icon" width="14" height="14">
+  <svg className="c-tabs__tab-status-icon" width="14" height="14">
     <circle
-      className="m-tabs__tab-status-icon-outer-circle"
+      className="c-tabs__tab-status-icon-outer-circle"
       cx="7"
       cy="7"
       r="6"
     />
     <circle
-      className="m-tabs__tab-status-icon-inner-circle"
+      className="c-tabs__tab-status-icon-inner-circle"
       cx="7"
       cy="7"
       r="4"
@@ -34,7 +34,7 @@ const Tab = ({
   setActiveTab: Dispatch<SetStateAction<TabMode>>
 }) => {
   const classes =
-    tabName === activeTab ? "m-tabs__tab m-tabs__tab--selected" : "m-tabs__tab"
+    tabName === activeTab ? "c-tabs__tab c-tabs__tab--selected" : "c-tabs__tab"
 
   const tabTitle = tabName[0].toUpperCase() + tabName.slice(1)
   const clickCallback = () => setActiveTab(tabName)
@@ -54,7 +54,7 @@ const Tab = ({
 }
 
 const TabList = ({ activeTab, setActiveTab }: Props) => (
-  <ul className="m-tabs__tab-list" role="tablist">
+  <ul className="c-tabs__tab-list" role="tablist">
     <Tab tabName="status" activeTab={activeTab} setActiveTab={setActiveTab} />
     <Tab tabName="run" activeTab={activeTab} setActiveTab={setActiveTab} />
     <Tab tabName="block" activeTab={activeTab} setActiveTab={setActiveTab} />

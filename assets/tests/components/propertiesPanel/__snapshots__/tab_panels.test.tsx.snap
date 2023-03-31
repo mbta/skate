@@ -3,7 +3,7 @@
 exports[`TabPanels renders the block tab 1`] = `
 <DocumentFragment>
   <div
-    class="m-tabs__tab-panel"
+    class="c-tabs__tab-panel"
   >
     loading...
   </div>
@@ -13,7 +13,7 @@ exports[`TabPanels renders the block tab 1`] = `
 exports[`TabPanels renders the run tab 1`] = `
 <DocumentFragment>
   <div
-    class="m-tabs__tab-panel"
+    class="c-tabs__tab-panel"
   >
     loading...
   </div>
@@ -23,7 +23,7 @@ exports[`TabPanels renders the run tab 1`] = `
 exports[`TabPanels renders the status tab 1`] = `
 <DocumentFragment>
   <div
-    class="m-tabs__tab-panel"
+    class="c-tabs__tab-panel"
   >
     Test content
   </div>
