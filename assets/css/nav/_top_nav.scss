@@ -1,4 +1,4 @@
-.m-top-nav {
+.c-top-nav {
   width: 100%;
   height: 3rem;
   box-sizing: border-box;
@@ -12,7 +12,7 @@
   border-bottom: 1px solid $color-gray-300;
 }
 
-.m-top-nav__logo {
+.c-top-nav__logo {
   width: 2.5rem;
   height: 1.5rem;
 
@@ -22,13 +22,13 @@
   }
 }
 
-.m-top-nav__logo-icon {
+.c-top-nav__logo-icon {
   svg {
     fill: $color-eggplant-900;
   }
 }
 
-.m-top-nav__right-items {
+.c-top-nav__right-items {
   display: flex;
 
   :not(:last-child) {
@@ -36,7 +36,7 @@
   }
 }
 
-.m-top-nav__right-item {
+.c-top-nav__right-item {
   @include button-icon(1.5rem);
   color: $color-gray-600;
 
@@ -48,7 +48,7 @@
     color: $color-gray-500;
   }
 
-  &.m-top-nav__right-item--active {
+  &.c-top-nav__right-item--active {
     color: $color-eggplant-800;
   }
 }

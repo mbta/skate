@@ -169,29 +169,29 @@ exports[`renders 1`] = `
           class="l-nav__nav-bar l-nav__nav-bar--top"
         >
           <div
-            class="m-top-nav"
+            class="c-top-nav"
           >
             <a
-              class="m-top-nav__logo"
+              class="c-top-nav__logo"
               href="/"
               title="Skate"
             >
               <span
-                class="m-top-nav__logo-icon"
+                class="c-top-nav__logo-icon"
               >
                 <svg />
               </span>
             </a>
             <ul
-              class="m-top-nav__right-items"
+              class="c-top-nav__right-items"
             >
               <li>
                 <button
-                  class="m-top-nav__right-item"
+                  class="c-top-nav__right-item"
                   title="Refresh"
                 >
                   <span
-                    class="m-top-nav__icon"
+                    class="c-top-nav__icon"
                   >
                     <svg />
                   </span>
