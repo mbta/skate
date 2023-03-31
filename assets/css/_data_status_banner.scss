@@ -1,20 +1,20 @@
-.m-data-status-banner {
+.c-data-status-banner {
   width: 100%;
 }
 
-.m-data-status-banner--outage {
+.c-data-status-banner--outage {
   background-color: $black;
   color: $color-font-light;
 }
 
-.m-data-status-banner__heading {
+.c-data-status-banner__heading {
   @include font-emph;
   font-weight: 700;
   padding-left: 0.625rem;
   padding-top: 0.625rem;
 }
 
-.m-data-status-banner__content {
+.c-data-status-banner__content {
   padding-bottom: 0.625rem;
   padding-left: 0.625rem;
   padding-right: 0.625rem;

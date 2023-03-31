@@ -191,7 +191,7 @@ describe("RouteShape", () => {
 describe("GarageMarkers", () => {
   test("Includes all garages", () => {
     const { container } = renderInMap(<GarageMarkers zoomLevel={16} />)
-    expect(container.querySelectorAll(".m-garage-icon")).toHaveLength(9)
+    expect(container.querySelectorAll(".c-garage-icon")).toHaveLength(9)
   })
   test("Includes labels when zoom >= 16", () => {
     renderInMap(<GarageMarkers zoomLevel={16} />)

@@ -7,7 +7,7 @@ Array [
     id="m-properties-panel"
   >
     <div
-      className="m-ghost-properties-panel"
+      className="c-ghost-properties-panel"
     >
       <div
         className="m-properties-panel__header-wrapper"
@@ -231,7 +231,7 @@ Array [
         className="m-tabs__tab-panel"
       >
         <div
-          className="m-ghost-properties-panel__notes"
+          className="c-ghost-properties-panel__notes"
         >
           <div
             aria-labelledby="card-label-:r1:"

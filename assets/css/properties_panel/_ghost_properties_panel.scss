@@ -1,4 +1,4 @@
-.m-ghost-properties-panel {
+.c-ghost-properties-panel {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -8,11 +8,11 @@
   }
 }
 
-.m-ghost-properties-panel__notes {
+.c-ghost-properties-panel__notes {
   margin: 0.5rem;
 }
 
-.m-ghost-properties-panel__no-waiver-banner {
+.c-ghost-properties-panel__no-waiver-banner {
   @include font-body;
   background-color: transparentize($color-component-highlight, 0.6);
   border: 1px solid $color-component-highlight;
@@ -21,19 +21,19 @@
   padding: 1rem 1rem 1rem 2rem;
 }
 
-.m-ghost-properties-panel__no-waiver-banner-header {
+.c-ghost-properties-panel__no-waiver-banner-header {
   display: flex;
   flex-direction: row;
   margin-left: -1.2rem;
 }
 
-.m-ghost-properties-panel__no-waiver-banner-alert-icon {
+.c-ghost-properties-panel__no-waiver-banner-alert-icon {
   display: block;
   margin-right: 0.3rem;
   width: 15px;
 }
 
-.m-ghost-properties-panel__no-waiver-banner-title {
+.c-ghost-properties-panel__no-waiver-banner-title {
   font-weight: 500;
   margin-bottom: 0.8rem;
 }

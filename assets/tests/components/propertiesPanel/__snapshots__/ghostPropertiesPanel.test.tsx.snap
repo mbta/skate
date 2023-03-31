@@ -2,7 +2,7 @@
 
 exports[`GhostPropertiesPanel renders 1`] = `
 <div
-  className="m-ghost-properties-panel"
+  className="c-ghost-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
@@ -226,7 +226,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-ghost-properties-panel__notes"
+      className="c-ghost-properties-panel__notes"
     >
       <div
         aria-labelledby="card-label-:r0:"
@@ -307,7 +307,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
 
 exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
 <div
-  className="m-ghost-properties-panel"
+  className="c-ghost-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
@@ -529,7 +529,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-ghost-properties-panel__notes"
+      className="c-ghost-properties-panel__notes"
     >
       <div
         className="m-block-waiver-list"
@@ -658,7 +658,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
 
 exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
 <div
-  className="m-ghost-properties-panel"
+  className="c-ghost-properties-panel"
 >
   <div
     className="m-properties-panel__header-wrapper"
@@ -882,7 +882,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     className="m-tabs__tab-panel"
   >
     <div
-      className="m-ghost-properties-panel__notes"
+      className="c-ghost-properties-panel__notes"
     >
       <div
         aria-labelledby="card-label-:r1:"

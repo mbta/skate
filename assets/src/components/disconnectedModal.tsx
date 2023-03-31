@@ -7,7 +7,7 @@ const DisconnectedModal = () => (
       <div>
         Your connection to Skate has expired. Refresh the page to continue.
       </div>
-      <button className="m-disconnected-modal__refresh-button" onClick={reload}>
+      <button className="c-disconnected-modal__refresh-button" onClick={reload}>
         Refresh
       </button>
     </div>

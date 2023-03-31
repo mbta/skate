@@ -13,7 +13,7 @@ interface Props {
 
 const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   <>
-    <div className="m-ghost-properties-panel__notes">
+    <div className="c-ghost-properties-panel__notes">
       {hasBlockWaiver(ghost) ? (
         <BlockWaiverList blockWaivers={ghost.blockWaivers} />
       ) : (
@@ -28,7 +28,7 @@ const GhostPropertiesPanel = ({ selectedGhost }: Props) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
   return (
-    <div className="m-ghost-properties-panel">
+    <div className="c-ghost-properties-panel">
       <Header
         vehicle={selectedGhost}
         tabMode={tabMode}
