@@ -121,10 +121,10 @@ Array [
 exports[`Modal renders loading modal when appropriate 1`] = `
 Array [
   <div
-    className="c-modal m-notification-loading-modal"
+    className="c-modal c-notification-loading-modal"
   >
     <div
-      className="m-notification-loading-modal__spinner-wrapper"
+      className="c-notification-loading-modal__spinner-wrapper"
     >
       <span
         className="c-loading-spinner"
@@ -136,7 +136,7 @@ Array [
       />
     </div>
     <div
-      className="m-notification-loading-modal__text-wrapper"
+      className="c-notification-loading-modal__text-wrapper"
     >
       Loading...
     </div>

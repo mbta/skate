@@ -3,11 +3,11 @@ import { LoadingIcon } from "../../helpers/icon"
 
 const NotificationLoadingModal = (): ReactElement => (
   <>
-    <div className="c-modal m-notification-loading-modal">
-      <div className="m-notification-loading-modal__spinner-wrapper">
+    <div className="c-modal c-notification-loading-modal">
+      <div className="c-notification-loading-modal__spinner-wrapper">
         <LoadingIcon className="c-loading-spinner" />
       </div>
-      <div className="m-notification-loading-modal__text-wrapper">
+      <div className="c-notification-loading-modal__text-wrapper">
         Loading...
       </div>
     </div>
