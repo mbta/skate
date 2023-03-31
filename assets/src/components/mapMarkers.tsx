@@ -15,7 +15,7 @@ import {
 } from "react-leaflet"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
@@ -50,7 +50,7 @@ const makeVehicleIcon = (
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          class="${className([
+          class="${joinClasses([
             ...statusClasses(
               drawnStatus(vehicle),
               userSettings.vehicleAdherenceColors
@@ -80,7 +80,7 @@ const makeLabelIcon = (
     labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40
   const selectedClass = isSelected ? "selected" : null
   return Leaflet.divIcon({
-    className: className([
+    className: joinClasses([
       "c-vehicle-map__label",
       isPrimary ? "primary" : "secondary",
       selectedClass,
@@ -254,7 +254,7 @@ export const StopIcon = ({
     <CircleMarker
       {...props}
       ref={setMarker}
-      className={className(["c-vehicle-map__stop"])}
+      className={joinClasses(["c-vehicle-map__stop"])}
       center={[stop.lat, stop.lon]}
       radius={radius}
     >

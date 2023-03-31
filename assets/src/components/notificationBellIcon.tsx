@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import { NotificationBellIcon as NotificationBellIconSvg } from "../helpers/icon"
 import { OpenView } from "../state"
 
@@ -19,7 +19,7 @@ const NotificationBellIcon = ({
 
   return (
     <NotificationBellIconSvg
-      className={className([
+      className={joinClasses([
         "c-notification-bell-icon",
         openView === OpenView.NotificationDrawer
           ? "c-notification-bell-icon--open"

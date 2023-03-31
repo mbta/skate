@@ -1,12 +1,12 @@
 import React from "react"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 
 export const RoutePill = ({
   routeName,
 }: {
   routeName: string
 }): JSX.Element => {
-  const classes = className(["c-route-pill", modeClass(routeName)])
+  const classes = joinClasses(["c-route-pill", modeClass(routeName)])
 
   return <div className={classes}>{routeNameTransform(routeName)}</div>
 }

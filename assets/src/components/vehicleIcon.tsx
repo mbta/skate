@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 import { runIdToLabel } from "../helpers/vehicleLabel"
@@ -271,7 +271,7 @@ export const VehicleIconSvgNode = React.memo(
         : "",
     ].concat(statusClasses(status, userSettings.vehicleAdherenceColors))
     return (
-      <g className={className(classes)}>
+      <g className={joinClasses(classes)}>
         {label ? (
           <Label size={size} orientation={orientation} label={label} />
         ) : null}
