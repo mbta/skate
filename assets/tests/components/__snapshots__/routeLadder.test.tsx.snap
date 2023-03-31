@@ -107,7 +107,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
       width="184"
     >
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(63,-27.5)"
       >
         <g
@@ -365,7 +365,7 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
       width="184"
     >
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(63,-27.5)"
       >
         <g
@@ -576,7 +576,7 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
       width="184"
     >
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(63,-27.5)"
       >
         <g
@@ -900,7 +900,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
       width="184"
     >
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(63,-27.5)"
       >
         <g
@@ -963,7 +963,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
         </g>
       </g>
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(-63,-110)"
       >
         <g
@@ -1162,7 +1162,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
       width="184"
     >
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(0,-35)"
       >
         <g
@@ -1195,7 +1195,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
         </g>
       </g>
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(0,-85)"
       >
         <g
@@ -1380,7 +1380,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         y2="-110"
       />
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(63,-27.5)"
       >
         <g
@@ -1422,7 +1422,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         </g>
       </g>
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(63,-110)"
       >
         <g
@@ -1507,7 +1507,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         </g>
       </g>
       <g
-        class="m-ladder__vehicle  "
+        class="m-ladder__vehicle"
         transform="translate(-63,-110)"
       >
         <g
