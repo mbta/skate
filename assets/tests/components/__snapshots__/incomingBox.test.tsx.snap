@@ -70,7 +70,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
             className="c-vehicle-icon c-vehicle-icon--small"
           >
             <g
-              className="m-ladder__crowding m-ladder__crowding--no-data"
+              className="c-ladder__crowding c-ladder__crowding--no-data"
               transform="scale(0.38) translate(-24,-30)"
             >
               <rect
@@ -188,7 +188,7 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
             className="c-vehicle-icon c-vehicle-icon--small"
           >
             <g
-              className="m-ladder__crowding m-ladder__crowding--empty"
+              className="c-ladder__crowding c-ladder__crowding--empty"
               transform="scale(0.38) translate(-24,-30)"
             >
               <rect

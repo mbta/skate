@@ -54,7 +54,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     </button>
   </div>
   <div
-    className="m-ladder"
+    className="c-ladder"
     style={
       Object {
         "width": 184,
@@ -62,33 +62,33 @@ exports[`RouteLadders renders a route ladder 1`] = `
     }
   >
     <svg
-      className="m-ladder__svg"
+      className="c-ladder__svg"
       height={0}
       viewBox="-92 -55 184 0"
       width={184}
     >
       <line
-        className="m-ladder__line"
+        className="c-ladder__line"
         x1={-40}
         x2={-40}
         y1="0"
         y2={-110}
       />
       <line
-        className="m-ladder__line"
+        className="c-ladder__line"
         x1={40}
         x2={40}
         y1="0"
         y2={-110}
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-40}
         cy={-0}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={40}
         cy={-0}
         r="3"
@@ -102,7 +102,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           WASMA Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           dominantBaseline="middle"
           textAnchor="middle"
           x="0"
@@ -112,13 +112,13 @@ exports[`RouteLadders renders a route ladder 1`] = `
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-40}
         cy={-55}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={40}
         cy={-55}
         r="3"
@@ -132,7 +132,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           MELWA Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           dominantBaseline="middle"
           textAnchor="middle"
           x="0"
@@ -142,13 +142,13 @@ exports[`RouteLadders renders a route ladder 1`] = `
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-40}
         cy={-110}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={40}
         cy={-110}
         r="3"
@@ -162,7 +162,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           HHGAT Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           dominantBaseline="middle"
           textAnchor="middle"
           x="0"
@@ -224,7 +224,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     </button>
   </div>
   <div
-    className="m-ladder"
+    className="c-ladder"
     style={
       Object {
         "width": 184,
@@ -232,33 +232,33 @@ exports[`RouteLadders renders a route ladder 1`] = `
     }
   >
     <svg
-      className="m-ladder__svg"
+      className="c-ladder__svg"
       height={0}
       viewBox="-92 -55 184 0"
       width={184}
     >
       <line
-        className="m-ladder__line"
+        className="c-ladder__line"
         x1={-40}
         x2={-40}
         y1="0"
         y2={-110}
       />
       <line
-        className="m-ladder__line"
+        className="c-ladder__line"
         x1={40}
         x2={40}
         y1="0"
         y2={-110}
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-40}
         cy={-0}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={40}
         cy={-0}
         r="3"
@@ -272,7 +272,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           MATPN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           dominantBaseline="middle"
           textAnchor="middle"
           x="0"
@@ -282,13 +282,13 @@ exports[`RouteLadders renders a route ladder 1`] = `
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-40}
         cy={-55}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={40}
         cy={-55}
         r="3"
@@ -302,7 +302,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           WELLH Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           dominantBaseline="middle"
           textAnchor="middle"
           x="0"
@@ -312,13 +312,13 @@ exports[`RouteLadders renders a route ladder 1`] = `
         </text>
       </div>
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-40}
         cy={-110}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={40}
         cy={-110}
         r="3"
@@ -332,7 +332,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           MORTN Name
         </div>
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           dominantBaseline="middle"
           textAnchor="middle"
           x="0"

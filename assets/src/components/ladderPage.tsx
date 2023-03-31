@@ -67,8 +67,8 @@ const LadderTab = ({
   return (
     <div
       className={
-        "m-ladder-page__tab" +
-        (tab.isCurrentTab ? " m-ladder-page__tab-current" : "")
+        "c-ladder-page__tab" +
+        (tab.isCurrentTab ? " c-ladder-page__tab-current" : "")
       }
       onClick={() => selectTab()}
       onKeyDown={(event) => {
@@ -79,12 +79,12 @@ const LadderTab = ({
       role="tab"
       tabIndex={tab.isCurrentTab ? 0 : -1}
     >
-      <div className="m-ladder-page__tab-contents">
+      <div className="c-ladder-page__tab-contents">
         <div
           className={
-            "m-ladder-page__tab-title" +
+            "c-ladder-page__tab-title" +
             (tab.saveChangesToTabUuid
-              ? " m-ladder-page__tab-title--edited"
+              ? " c-ladder-page__tab-title--edited"
               : "")
           }
         >
@@ -92,7 +92,7 @@ const LadderTab = ({
         </div>
         {tab.isCurrentTab && showSaveIcon ? (
           <button
-            className="m-ladder-page__tab-save-button"
+            className="c-ladder-page__tab-save-button"
             title="Save"
             onClick={(e) => {
               e.stopPropagation()
@@ -119,7 +119,7 @@ const AddTabButton = ({
 }): ReactElement<HTMLDivElement> => {
   return (
     <button
-      className="m-ladder-page__add-tab-button"
+      className="c-ladder-page__add-tab-button"
       title="Add Tab"
       onClick={() => {
         window.FS?.event("User added a new Route Ladder Tab")
@@ -127,7 +127,7 @@ const AddTabButton = ({
         addTab()
       }}
     >
-      <PlusThinIcon className="m-ladder-page__add-tab-icon" />
+      <PlusThinIcon className="c-ladder-page__add-tab-icon" />
     </button>
   )
 }
@@ -176,37 +176,37 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     .filter((route) => route) as Route[]
 
   const pickerContainerVisibleClass = pickerContainerIsVisible
-    ? "m-ladder-page--picker-container-visible"
-    : "m-ladder-page--picker-container-hidden"
+    ? "c-ladder-page--picker-container-visible"
+    : "c-ladder-page--picker-container-hidden"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
     <div
-      className={`m-ladder-page ${pickerContainerVisibleClass} ${mobileMenuClass}`}
+      className={`c-ladder-page ${pickerContainerVisibleClass} ${mobileMenuClass}`}
     >
       <Notifications />
 
       <PickerContainer>
         <>
-          <div className="m-ladder-page__routes-presets-toggle u-hide">
+          <div className="c-ladder-page__routes-presets-toggle u-hide">
             <button
-              id="m-ladder-page__routes_picker_button"
+              id="c-ladder-page__routes_picker_button"
               className={
                 currentDrawerContent === "route_picker"
-                  ? "m-ladder-page__routes_picker_button_selected"
-                  : "m-ladder-page__routes_picker_button_unselected"
+                  ? "c-ladder-page__routes_picker_button_selected"
+                  : "c-ladder-page__routes_picker_button_unselected"
               }
               onClick={() => setCurrentDrawerContent("route_picker")}
             >
               Routes
             </button>
             <button
-              id="m-ladder-page__presets_picker_button"
+              id="c-ladder-page__presets_picker_button"
               className={
                 currentDrawerContent === "presets"
-                  ? "m-ladder-page__routes_picker_button_selected"
-                  : "m-ladder-page__routes_picker_button_unselected"
+                  ? "c-ladder-page__routes_picker_button_selected"
+                  : "c-ladder-page__routes_picker_button_unselected"
               }
               onClick={() => setCurrentDrawerContent("presets")}
             >
@@ -224,8 +224,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           )}
         </>
       </PickerContainer>
-      <div className="m-ladder-page__tab-bar-and-ladders">
-        <div className="m-ladder-page__route-tab-bar" role="tablist">
+      <div className="c-ladder-page__tab-bar-and-ladders">
+        <div className="c-ladder-page__route-tab-bar" role="tablist">
           {routeTabs
             .filter(isOpenTab)
             .sort((a, b) => (a.ordering || 0) - (b.ordering || 0))
