@@ -315,10 +315,10 @@ exports[`LadderPage renders with route tabs 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="m-route-ladder__header"
+          class="c-route-ladder__header"
         >
           <div
-            class="m-route-ladder__close-button-container"
+            class="c-route-ladder__close-button-container"
           >
             <button
               aria-label="Close"
@@ -334,19 +334,19 @@ exports[`LadderPage renders with route tabs 1`] = `
             </button>
           </div>
           <div
-            class="m-route-ladder__route-name"
+            class="c-route-ladder__route-name"
           >
             1
           </div>
         </div>
         <div
-          class="m-route-ladder__controls"
+          class="c-route-ladder__controls"
         >
           <button
-            class="m-route-ladder__reverse"
+            class="c-route-ladder__reverse"
           >
             <span
-              class="m-route-ladder__reverse-icon"
+              class="c-route-ladder__reverse-icon"
             >
               <svg />
             </span>
@@ -535,10 +535,10 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         data-testid="route-ladders-div"
       >
         <div
-          class="m-route-ladder__header"
+          class="c-route-ladder__header"
         >
           <div
-            class="m-route-ladder__close-button-container"
+            class="c-route-ladder__close-button-container"
           >
             <button
               aria-label="Close"
@@ -554,19 +554,19 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             </button>
           </div>
           <div
-            class="m-route-ladder__route-name"
+            class="c-route-ladder__route-name"
           >
             28
           </div>
         </div>
         <div
-          class="m-route-ladder__controls"
+          class="c-route-ladder__controls"
         >
           <button
-            class="m-route-ladder__reverse"
+            class="c-route-ladder__reverse"
           >
             <span
-              class="m-route-ladder__reverse-icon"
+              class="c-route-ladder__reverse-icon"
             >
               <svg />
             </span>
@@ -575,10 +575,10 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         </div>
         loading...
         <div
-          class="m-route-ladder__header"
+          class="c-route-ladder__header"
         >
           <div
-            class="m-route-ladder__close-button-container"
+            class="c-route-ladder__close-button-container"
           >
             <button
               aria-label="Close"
@@ -594,19 +594,19 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             </button>
           </div>
           <div
-            class="m-route-ladder__route-name"
+            class="c-route-ladder__route-name"
           >
             1
           </div>
         </div>
         <div
-          class="m-route-ladder__controls"
+          class="c-route-ladder__controls"
         >
           <button
-            class="m-route-ladder__reverse"
+            class="c-route-ladder__reverse"
           >
             <span
-              class="m-route-ladder__reverse-icon"
+              class="c-route-ladder__reverse-icon"
             >
               <svg />
             </span>
@@ -795,10 +795,10 @@ exports[`LadderPage renders with timepoints 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="m-route-ladder__header"
+          class="c-route-ladder__header"
         >
           <div
-            class="m-route-ladder__close-button-container"
+            class="c-route-ladder__close-button-container"
           >
             <button
               aria-label="Close"
@@ -814,19 +814,19 @@ exports[`LadderPage renders with timepoints 1`] = `
             </button>
           </div>
           <div
-            class="m-route-ladder__route-name"
+            class="c-route-ladder__route-name"
           >
             28
           </div>
         </div>
         <div
-          class="m-route-ladder__controls"
+          class="c-route-ladder__controls"
         >
           <button
-            class="m-route-ladder__reverse"
+            class="c-route-ladder__reverse"
           >
             <span
-              class="m-route-ladder__reverse-icon"
+              class="c-route-ladder__reverse-icon"
             >
               <svg />
             </span>
@@ -953,10 +953,10 @@ exports[`LadderPage renders with timepoints 1`] = `
           class="c-incoming-box"
         />
         <div
-          class="m-route-ladder__header"
+          class="c-route-ladder__header"
         >
           <div
-            class="m-route-ladder__close-button-container"
+            class="c-route-ladder__close-button-container"
           >
             <button
               aria-label="Close"
@@ -972,19 +972,19 @@ exports[`LadderPage renders with timepoints 1`] = `
             </button>
           </div>
           <div
-            class="m-route-ladder__route-name"
+            class="c-route-ladder__route-name"
           >
             1
           </div>
         </div>
         <div
-          class="m-route-ladder__controls"
+          class="c-route-ladder__controls"
         >
           <button
-            class="m-route-ladder__reverse"
+            class="c-route-ladder__reverse"
           >
             <span
-              class="m-route-ladder__reverse-icon"
+              class="c-route-ladder__reverse-icon"
             >
               <svg />
             </span>

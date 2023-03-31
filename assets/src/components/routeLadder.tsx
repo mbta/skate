@@ -52,7 +52,7 @@ const Header = ({
   hasAlert: boolean
 }) => {
   return (
-    <div className="m-route-ladder__header">
+    <div className="c-route-ladder__header">
       {hasAlert && (
         <Tippy
           content="Active detour"
@@ -60,19 +60,19 @@ const Header = ({
           onShow={() => tagManagerEvent("alert_tooltip_clicked")}
         >
           <AlertIcon
-            className="m-route-ladder__alert-icon"
+            className="c-route-ladder__alert-icon"
             aria-label="Route Alert"
           />
         </Tippy>
       )}
-      <div className="m-route-ladder__close-button-container">
+      <div className="c-route-ladder__close-button-container">
         <CloseButton
           closeButtonType="l_darker"
           onClick={() => deselectRoute(route.id)}
         />
       </div>
 
-      <div className="m-route-ladder__route-name">{route.name}</div>
+      <div className="c-route-ladder__route-name">{route.name}</div>
     </div>
   )
 }
@@ -91,30 +91,30 @@ const Controls = ({
   toggleCrowding: () => void
 }) => {
   return (
-    <div className="m-route-ladder__controls">
-      <button className="m-route-ladder__reverse" onClick={reverseLadder}>
+    <div className="c-route-ladder__controls">
+      <button className="c-route-ladder__reverse" onClick={reverseLadder}>
         {ladderDirection === LadderDirection.OneToZero ? (
-          <ReverseIcon className="m-route-ladder__reverse-icon" />
+          <ReverseIcon className="c-route-ladder__reverse-icon" />
         ) : (
-          <ReverseIconReversed className="m-route-ladder__reverse-icon" />
+          <ReverseIconReversed className="c-route-ladder__reverse-icon" />
         )}
         Reverse
       </button>
       {displayCrowdingToggleIcon &&
         (ladderCrowdingToggle ? (
           <button
-            className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
+            className="c-route-ladder__crowding-toggle c-route-ladder__crowding-toggle--hide"
             onClick={toggleCrowding}
           >
-            <CrowdingIcon className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon" />
+            <CrowdingIcon className="c-route-ladder__crowding-toggle-icon c-route-ladder__crowding-toggle-icon" />
             Hide riders
           </button>
         ) : (
           <button
-            className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--show"
+            className="c-route-ladder__crowding-toggle c-route-ladder__crowding-toggle--show"
             onClick={toggleCrowding}
           >
-            <CrowdingIcon className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon" />
+            <CrowdingIcon className="c-route-ladder__crowding-toggle-icon c-route-ladder__crowding-toggle-icon" />
             Show riders
           </button>
         ))}
