@@ -38,12 +38,12 @@ const RoutePicker = ({
   ).filter((route) => !selectedRouteIds.includes(route.id))
 
   return (
-    <div className="m-route-picker u-hide">
+    <div className="c-route-picker u-hide">
       <RouteFilter {...routeFilterData} />
 
       <GarageFilter {...garageFilterData} />
 
-      <div className="m-route-picker__routes-container">
+      <div className="c-route-picker__routes-container">
         {routes === null ? (
           <Loading />
         ) : (
@@ -75,7 +75,7 @@ const SelectedRoutesList = ({
 }) => {
   if (selectedRouteIds.length > 0) {
     return (
-      <ul className="m-route-picker__selected-routes">
+      <ul className="c-route-picker__selected-routes">
         {selectedRouteIds.map((routeId) => (
           <SelectedRouteButton
             key={routeId}
@@ -103,11 +103,11 @@ const SelectedRouteButton = ({
   return (
     <li>
       <button
-        className="m-route-picker__selected-routes-button"
+        className="c-route-picker__selected-routes-button"
         onClick={() => deselectRoute(routeId)}
       >
         {routeNameOrId(routeId, routes)}
-        <OldCloseIcon className="m-route-picker__selected-routes-button-icon" />
+        <OldCloseIcon className="c-route-picker__selected-routes-button-icon" />
       </button>
     </li>
   )
@@ -121,7 +121,7 @@ const RoutesList = ({
   selectRoute: (routeId: RouteId) => void
   deselectRoute: (routeId: RouteId) => void
 }) => (
-  <ul className="m-route-picker__route-list">
+  <ul className="c-route-picker__route-list">
     {routes.map((route) => (
       <li key={route.id}>
         <RouteListButton route={route} selectRoute={selectRoute} />
@@ -139,7 +139,7 @@ const RouteListButton = ({
 }) => {
   return (
     <button
-      className="m-route-picker__route-list-button"
+      className="c-route-picker__route-list-button"
       onClick={() => selectRoute(route.id)}
     >
       {route.name}

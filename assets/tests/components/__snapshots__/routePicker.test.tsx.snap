@@ -2,7 +2,7 @@
 
 exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
 <div
-  className="m-route-picker u-hide"
+  className="c-route-picker u-hide"
 >
   <div
     className="c-route-filter"
@@ -47,14 +47,14 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
     </button>
   </div>
   <div
-    className="m-route-picker__routes-container"
+    className="c-route-picker__routes-container"
   >
     <ul
-      className="m-route-picker__route-list"
+      className="c-route-picker__route-list"
     >
       <li>
         <button
-          className="m-route-picker__route-list-button"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
         >
           71
@@ -62,7 +62,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
         >
           73
@@ -70,7 +70,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
         >
           111
@@ -78,7 +78,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
         >
           SL1
@@ -86,16 +86,16 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
     </ul>
     <ul
-      className="m-route-picker__selected-routes"
+      className="c-route-picker__selected-routes"
     >
       <li>
         <button
-          className="m-route-picker__selected-routes-button"
+          className="c-route-picker__selected-routes-button"
           onClick={[Function]}
         >
           28
           <span
-            className="m-route-picker__selected-routes-button-icon"
+            className="c-route-picker__selected-routes-button-icon"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "<svg/>",
@@ -106,12 +106,12 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__selected-routes-button"
+          className="c-route-picker__selected-routes-button"
           onClick={[Function]}
         >
           39
           <span
-            className="m-route-picker__selected-routes-button-icon"
+            className="c-route-picker__selected-routes-button-icon"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "<svg/>",
@@ -127,7 +127,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
 
 exports[`RoutePicker renders a loading/empty state 1`] = `
 <div
-  className="m-route-picker u-hide"
+  className="c-route-picker u-hide"
 >
   <div
     className="c-route-filter"
@@ -172,7 +172,7 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
     </button>
   </div>
   <div
-    className="m-route-picker__routes-container"
+    className="c-route-picker__routes-container"
   >
     loading...
     <p>

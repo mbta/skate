@@ -56,7 +56,7 @@ exports[`renders 1`] = `
                 </button>
               </div>
               <div
-                class="m-route-picker u-hide"
+                class="c-route-picker u-hide"
               >
                 <div
                   class="c-route-filter"
@@ -94,7 +94,7 @@ exports[`renders 1`] = `
                   </button>
                 </div>
                 <div
-                  class="m-route-picker__routes-container"
+                  class="c-route-picker__routes-container"
                 >
                   loading...
                   <p>
