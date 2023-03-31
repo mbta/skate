@@ -2,7 +2,7 @@
 
 exports[`RouteLadders renders a route ladder 1`] = `
 <div
-  className="m-route-ladders"
+  className="c-route-ladders"
   data-testid="route-ladders-div"
   onWheel={[Function]}
 >

@@ -159,7 +159,7 @@ exports[`renders 1`] = `
                 </button>
               </div>
               <div
-                class="m-route-ladders"
+                class="c-route-ladders"
                 data-testid="route-ladders-div"
               />
             </div>

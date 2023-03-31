@@ -44,7 +44,7 @@ const RouteLadders = ({
 
   return (
     <div
-      className="m-route-ladders"
+      className="c-route-ladders"
       ref={laddersRef}
       onWheel={onWheel}
       data-testid="route-ladders-div"
