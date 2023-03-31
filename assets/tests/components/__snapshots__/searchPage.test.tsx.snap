@@ -3,13 +3,13 @@
 exports[`SearchPage renders the empty state 1`] = `
 <DocumentFragment>
   <div
-    class="l-page m-search-page m-search-page--show-list "
+    class="l-page c-search-page c-search-page--show-list "
   >
     <div
-      class="m-search-page__input-and-results"
+      class="c-search-page__input-and-results"
     >
       <div
-        class="m-search-page__input"
+        class="c-search-page__input"
       >
         <form
           aria-label="Submit Search"
@@ -128,7 +128,7 @@ exports[`SearchPage renders the empty state 1`] = `
           </div>
         </form>
         <button
-          class="m-search-page__toggle-mobile-display-button"
+          class="c-search-page__toggle-mobile-display-button"
         >
           Show map instead
         </button>
@@ -149,7 +149,7 @@ exports[`SearchPage renders the empty state 1`] = `
       </div>
     </div>
     <div
-      class="m-search-page__map"
+      class="c-search-page__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -326,13 +326,13 @@ exports[`SearchPage renders the empty state 1`] = `
 exports[`SearchPage renders vehicle data 1`] = `
 <DocumentFragment>
   <div
-    class="l-page m-search-page m-search-page--show-list "
+    class="l-page c-search-page c-search-page--show-list "
   >
     <div
-      class="m-search-page__input-and-results"
+      class="c-search-page__input-and-results"
     >
       <div
-        class="m-search-page__input"
+        class="c-search-page__input"
       >
         <form
           aria-label="Submit Search"
@@ -451,7 +451,7 @@ exports[`SearchPage renders vehicle data 1`] = `
           </div>
         </form>
         <button
-          class="m-search-page__toggle-mobile-display-button"
+          class="c-search-page__toggle-mobile-display-button"
         >
           Show map instead
         </button>
@@ -472,7 +472,7 @@ exports[`SearchPage renders vehicle data 1`] = `
       </div>
     </div>
     <div
-      class="m-search-page__map"
+      class="c-search-page__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"

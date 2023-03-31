@@ -88,7 +88,7 @@ describe("SearchPage", () => {
       </BrowserRouter>
     )
 
-    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(result.container.firstChild).toHaveClass("c-search-page--show-list")
   })
 
   test("clicking a vehicle on the map selects it", async () => {
@@ -150,13 +150,13 @@ describe("SearchPage", () => {
       result.getByRole("button", { name: "Show map instead" })
     )
 
-    expect(result.container.firstChild).toHaveClass("m-search-page--show-map")
+    expect(result.container.firstChild).toHaveClass("c-search-page--show-map")
 
     await userEvent.click(
       result.getByRole("button", { name: "Show list instead" })
     )
 
-    expect(result.container.firstChild).toHaveClass("m-search-page--show-list")
+    expect(result.container.firstChild).toHaveClass("c-search-page--show-list")
   })
 
   test("renders stations on zoom", async () => {

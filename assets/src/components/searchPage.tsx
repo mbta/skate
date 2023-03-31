@@ -35,7 +35,7 @@ const ToggleMobileDisplayButton = ({
 
   return (
     <button
-      className="m-search-page__toggle-mobile-display-button"
+      className="c-search-page__toggle-mobile-display-button"
       onClick={onToggleMobileDisplay}
     >
       Show {otherDisplayName} instead
@@ -68,17 +68,17 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileDisplayClass =
     mobileDisplay === MobileDisplay.List
-      ? "m-search-page--show-list"
-      : "m-search-page--show-map"
+      ? "c-search-page--show-list"
+      : "c-search-page--show-map"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
     <div
-      className={`l-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}
+      className={`l-page c-search-page ${mobileDisplayClass} ${mobileMenuClass}`}
     >
-      <div className="m-search-page__input-and-results">
-        <div className="m-search-page__input">
+      <div className="c-search-page__input-and-results">
+        <div className="c-search-page__input">
           <SearchForm />
 
           <ToggleMobileDisplayButton
@@ -103,7 +103,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
         </div>
       </div>
 
-      <div className="m-search-page__map">
+      <div className="c-search-page__map">
         <MapFollowingPrimaryVehicles
           selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={onlyVehicles}
