@@ -49,10 +49,10 @@ const IncomingBoxVehicle = ({
   return (
     <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
       <button
-        className={`m-incoming-box__vehicle ${selectedClass}`}
+        className={`c-incoming-box__vehicle ${selectedClass}`}
         onClick={() => dispatch(selectVehicle(vehicleOrGhost))}
       >
-        <div className="m-incoming-box__vehicle-icon">
+        <div className="c-incoming-box__vehicle-icon">
           {displayCrowding ? (
             <CrowdingIcon
               size={Size.Small}
@@ -72,7 +72,7 @@ const IncomingBoxVehicle = ({
         {displayCrowding || alertIconStyle === undefined ? null : (
           <IconAlertCircle style={alertIconStyle} />
         )}
-        <div className="m-incoming-box__vehicle-label">
+        <div className="c-incoming-box__vehicle-label">
           {displayCrowding
             ? crowdingLabel(vehicleOrGhost as Vehicle)
             : vehicleLabel(vehicleOrGhost, userSettings)}
@@ -93,7 +93,7 @@ const IncomingBox = ({
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => (
-  <div className="m-incoming-box">
+  <div className="c-incoming-box">
     {vehiclesAndGhosts.map((vehicleOrGhost) => (
       <IncomingBoxVehicle
         displayCrowding={!!displayCrowding && isVehicle(vehicleOrGhost)}

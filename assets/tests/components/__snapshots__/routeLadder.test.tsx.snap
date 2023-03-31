@@ -249,13 +249,13 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   >
     <button
-      class="m-incoming-box__vehicle "
+      class="c-incoming-box__vehicle "
     >
       <div
-        class="m-incoming-box__vehicle-icon"
+        class="c-incoming-box__vehicle-icon"
       >
         <svg
           style="width: 16.72px; height: 15.2px;"
@@ -304,7 +304,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
         </svg>
       </div>
       <div
-        class="m-incoming-box__vehicle-label"
+        class="c-incoming-box__vehicle-label"
       >
         ?/?
       </div>
@@ -486,13 +486,13 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   >
     <button
-      class="m-incoming-box__vehicle "
+      class="c-incoming-box__vehicle "
     >
       <div
-        class="m-incoming-box__vehicle-icon"
+        class="c-incoming-box__vehicle-icon"
       >
         <svg
           role="img"
@@ -515,7 +515,7 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
         </svg>
       </div>
       <div
-        class="m-incoming-box__vehicle-label"
+        class="c-incoming-box__vehicle-label"
       >
         2
       </div>
@@ -697,7 +697,7 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   />
 </DocumentFragment>
 `;
@@ -833,7 +833,7 @@ exports[`routeLadder renders a route ladder 1`] = `
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   />
 </div>
 `;
@@ -1105,7 +1105,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   />
 </DocumentFragment>
 `;
@@ -1316,7 +1316,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   />
 </DocumentFragment>
 `;
@@ -1619,7 +1619,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   />
 </DocumentFragment>
 `;
@@ -1755,13 +1755,13 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
     </svg>
   </div>
   <div
-    class="m-incoming-box"
+    class="c-incoming-box"
   >
     <button
-      class="m-incoming-box__vehicle "
+      class="c-incoming-box__vehicle "
     >
       <div
-        class="m-incoming-box__vehicle-icon"
+        class="c-incoming-box__vehicle-icon"
       >
         <svg
           role="img"
@@ -1793,16 +1793,16 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
         </svg>
       </div>
       <div
-        class="m-incoming-box__vehicle-label"
+        class="c-incoming-box__vehicle-label"
       >
         1
       </div>
     </button>
     <button
-      class="m-incoming-box__vehicle "
+      class="c-incoming-box__vehicle "
     >
       <div
-        class="m-incoming-box__vehicle-icon"
+        class="c-incoming-box__vehicle-icon"
       >
         <svg
           role="img"
@@ -1825,7 +1825,7 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
         </svg>
       </div>
       <div
-        class="m-incoming-box__vehicle-label"
+        class="c-incoming-box__vehicle-label"
       >
         2
       </div>

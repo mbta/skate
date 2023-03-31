@@ -174,7 +174,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     </svg>
   </div>
   <div
-    className="m-incoming-box"
+    className="c-incoming-box"
   />
   <div
     className="m-route-ladder__header"
@@ -344,7 +344,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
     </svg>
   </div>
   <div
-    className="m-incoming-box"
+    className="c-incoming-box"
   />
 </div>
 `;

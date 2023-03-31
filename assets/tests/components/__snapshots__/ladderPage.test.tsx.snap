@@ -950,7 +950,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           </svg>
         </div>
         <div
-          class="m-incoming-box"
+          class="c-incoming-box"
         />
         <div
           class="m-route-ladder__header"
@@ -1108,7 +1108,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           </svg>
         </div>
         <div
-          class="m-incoming-box"
+          class="c-incoming-box"
         />
       </div>
     </div>
