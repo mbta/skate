@@ -116,8 +116,8 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 
   return (
     <div
-      id="m-swings-view"
-      className={`m-swings-view ${mobileMenuClass}`}
+      id="c-swings-view"
+      className={`c-swings-view ${mobileMenuClass}`}
       ref={elementRef}
     >
       <ViewHeader title="Swings" closeView={hideMe} />
@@ -156,55 +156,55 @@ const SwingsTable = ({
   toggleShowPastSwings: () => void
 }): ReactElement<HTMLElement> => {
   return (
-    <div className="m-swings-view__table-container">
-      <table className="m-swings-view__table">
-        <thead className="m-swings-view__table-header">
+    <div className="c-swings-view__table-container">
+      <table className="c-swings-view__table">
+        <thead className="c-swings-view__table-header">
           <tr>
-            <th className="m-swings-view__table-header-cell">
+            <th className="c-swings-view__table-header-cell">
               <div>
                 Swing On
-                <div className="m-swings-view__table-header-cell-subheaders">
-                  <div className="m-swings-view__table-header-cell-subheader">
+                <div className="c-swings-view__table-header-cell-subheaders">
+                  <div className="c-swings-view__table-header-cell-subheader">
                     Time
                   </div>
                 </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on">
+            <th className="c-swings-view__table-header-cell c-swings-view__table-header-cell-swing-on">
               Swing On
-              <div className="m-swings-view__table-header-cell-subheaders">
-                <div className="m-swings-view__table-header-cell-subheader">
+              <div className="c-swings-view__table-header-cell-subheaders">
+                <div className="c-swings-view__table-header-cell-subheader">
                   Run
                 </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-off">
+            <th className="c-swings-view__table-header-cell c-swings-view__table-header-cell-swing-off">
               Swing Off
-              <div className="m-swings-view__table-header-cell-subheaders">
-                <div className="m-swings-view__table-header-cell-subheader">
+              <div className="c-swings-view__table-header-cell-subheaders">
+                <div className="c-swings-view__table-header-cell-subheader">
                   Run
                 </div>
-                <div className="m-swings-view__table-header-cell-route-subheader">
+                <div className="c-swings-view__table-header-cell-route-subheader">
                   Route
                 </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell">Vehicle</th>
+            <th className="c-swings-view__table-header-cell">Vehicle</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th
               className={
-                "m-swings-view__show-past" +
+                "c-swings-view__show-past" +
                 (showPastSwings
-                  ? " m-swings-view__show-past-enabled"
-                  : " m-swings-view__show-past-disabled")
+                  ? " c-swings-view__show-past-enabled"
+                  : " c-swings-view__show-past-disabled")
               }
               colSpan={4}
               onClick={toggleShowPastSwings}
             >
-              <UpDownIcon className="m-swings-view__show-past-icon" />
+              <UpDownIcon className="c-swings-view__show-past-icon" />
               {`${showPastSwings ? "Hide" : "Show"} past swings`}
             </th>
           </tr>
@@ -260,13 +260,13 @@ const SwingRow = ({
     <tr
       className={
         (vehicleOrGhost && !isPast
-          ? "m-swings-view__table-row-active"
-          : "m-swings-view__table-row-inactive") +
-        (isLastPast ? " m-swings-view__table-row-last-past" : "")
+          ? "c-swings-view__table-row-active"
+          : "c-swings-view__table-row-inactive") +
+        (isLastPast ? " c-swings-view__table-row-last-past" : "")
       }
     >
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
           {formattedScheduledTime(
             swing.time,
             vehicleOrGhost && isVehicle(vehicleOrGhost)
@@ -275,8 +275,8 @@ const SwingRow = ({
           )}
         </div>
       </th>
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
           <SwingCellContent
             vehicleOrGhost={swingOnVehicleOrGhost}
             runId={swing.toRunId}
@@ -287,8 +287,8 @@ const SwingRow = ({
           />
         </div>
       </th>
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
           <SwingCellContent
             vehicleOrGhost={swingOffVehicleOrGhost}
             runId={swing.fromRunId}
@@ -297,15 +297,15 @@ const SwingRow = ({
               window.FS?.event('User clicked "Swing Off" run button')
             }}
           />
-          <div className="m-swings-view__route-pill">
-            <div className="m-swings-view__route">
+          <div className="c-swings-view__route-pill">
+            <div className="c-swings-view__route">
               {route ? route.name : swing.fromRouteId}
             </div>
           </div>
         </div>
       </th>
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
           {swingVehicleForBlockId && isVehicle(swingVehicleForBlockId)
             ? swingVehicleForBlockId.label
             : null}
@@ -331,9 +331,9 @@ const SwingCellContent = ({
       {vehicleOrGhost ? (
         <>
           {isVehicle(vehicleOrGhost) ? (
-            <UpRightIcon className="m-swings-view__run-icon m-swings-view__run-icon-arrow" />
+            <UpRightIcon className="c-swings-view__run-icon c-swings-view__run-icon-arrow" />
           ) : (
-            <GhostSwingIcon className="m-swings-view__run-icon m-swings-view__run-icon-ghost" />
+            <GhostSwingIcon className="c-swings-view__run-icon c-swings-view__run-icon-ghost" />
           )}
 
           <button
