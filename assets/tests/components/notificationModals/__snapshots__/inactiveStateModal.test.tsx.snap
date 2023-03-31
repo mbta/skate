@@ -6,7 +6,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -28,7 +28,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Sorry, we can't show you details for run 111 because it is on a scheduled break.
     </div>
@@ -46,7 +46,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -68,7 +68,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Run 222 has ended and is no longer active in Skate.
     </div>
@@ -86,7 +86,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -108,7 +108,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Run 222 has ended and is no longer active in Skate.
     </div>
@@ -126,7 +126,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -148,7 +148,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Sorry, we can't show you details for runs 111, 222 because nobody is logged into them.
     </div>
@@ -166,7 +166,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -188,7 +188,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Runs 111, 222 are upcoming and not yet active in Skate. Please check back later to see details for these runs.
     </div>
@@ -206,7 +206,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -228,7 +228,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Sorry, there's no additional information that we can provide you about this notification.
     </div>
@@ -246,7 +246,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -268,7 +268,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Sorry, we can't show you details for run 111 because nobody is logged into it.
     </div>
@@ -286,7 +286,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -308,7 +308,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Run 111 is upcoming and not yet active in Skate. Please check back later to see details for this run.
     </div>

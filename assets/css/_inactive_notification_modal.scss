@@ -1,4 +1,4 @@
-.m-inactive-notification-modal__close-button {
+.c-inactive-notification-modal__close-button {
   height: 1rem;
   position: relative;
 
@@ -12,25 +12,25 @@
   }
 }
 
-.m-inactive-notification-modal__body {
+.c-inactive-notification-modal__body {
   margin-top: 1rem;
 }
 
-.m-inactive-notification-modal__buttons {
+.c-inactive-notification-modal__buttons {
   display: flex;
   height: 2rem;
   justify-content: center;
   margin-top: 1.5rem;
 }
 
-.m-inactive-notification-modal__keep-button {
+.c-inactive-notification-modal__keep-button {
   @include button-simple;
   flex: 0 1 auto;
   margin-right: 0.25rem;
   width: 30%;
 }
 
-.m-inactive-notification-modal__discard-button {
+.c-inactive-notification-modal__discard-button {
   @include button-primary;
   flex: 0 1 auto;
   margin-left: 0.25rem;

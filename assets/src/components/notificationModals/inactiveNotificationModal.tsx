@@ -40,7 +40,7 @@ const InactiveNotificationModal = ({
     return (
       <>
         <div className="c-modal">
-          <div className="m-inactive-notification-modal__close-button">
+          <div className="c-inactive-notification-modal__close-button">
             <button title="Close" onClick={closeModal}>
               <OldCloseIcon />
             </button>
@@ -48,7 +48,7 @@ const InactiveNotificationModal = ({
           <div className="m-notification__title">
             {title(notification.reason)} NOTIFICATION
           </div>
-          <div className="m-inactive-notification-modal__body">
+          <div className="c-inactive-notification-modal__body">
             {bodyCopy(notification, uniqueRuns)}
           </div>
         </div>
