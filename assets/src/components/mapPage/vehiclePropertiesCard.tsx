@@ -192,12 +192,12 @@ const VehiclePropertiesCard = ({
     </div>
 
     <div className="c-vehicle-properties-card__body">
-      <div className="c-vehicle-properties-card__properties m-info-section">
+      <div className="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section">
         <VehicleWorkInfo vehicleOrGhost={vehicleOrGhost} />
       </div>
 
       <div
-        className="c-vehicle-properties-card__location-info m-info-section"
+        className="c-vehicle-properties-card__location-info c-vehicle-properties-card__info-section"
         hidden={isGhost(vehicleOrGhost)}
       >
         <VehicleNearestIntersection vehicleOrGhost={vehicleOrGhost} />
