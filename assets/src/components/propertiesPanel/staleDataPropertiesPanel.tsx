@@ -19,7 +19,7 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
   return (
-    <div className="m-stale-data-properties-panel">
+    <div className="c-stale-data-properties-panel">
       <StaleDataHeader
         vehicle={selectedVehicle}
         tabMode={tabMode}
