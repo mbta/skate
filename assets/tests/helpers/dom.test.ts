@@ -1,6 +1,6 @@
 import { joinClasses } from "../../src/helpers/dom"
 
-describe("className", () => {
+describe("joinClasses", () => {
   test("combine a list of class names into a single string", () => {
     expect(joinClasses(["foo", "bar"])).toEqual("foo bar")
   })
