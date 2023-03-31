@@ -40,34 +40,34 @@ const TopNavMobile: React.FC<Props> = ({
   const location = useLocation()
 
   return (
-    <div className="m-top-nav-mobile" data-testid="top-nav-mobile">
+    <div className="c-top-nav-mobile" data-testid="top-nav-mobile">
       <NavMenu
         mobileMenuIsOpen={mobileMenuIsOpen}
         toggleMobileMenu={toggleMobileMenu}
       />
       <div
         className={
-          "m-top-nav-mobile__inner" +
+          "c-top-nav-mobile__inner" +
           (mobileMenuIsOpen ? " blurred-mobile" : "")
         }
       >
-        <div className="m-top-nav-mobile__left-items">
+        <div className="c-top-nav-mobile__left-items">
           <button
-            className="m-top-nav-mobile__left-item"
+            className="c-top-nav-mobile__left-item"
             onClick={toggleMobileMenu}
             title="Menu"
           >
-            <HamburgerIcon className="m-top-nav-mobile__icon" />
+            <HamburgerIcon className="c-top-nav-mobile__icon" />
           </button>
         </div>
 
-        <div className="m-top-nav-mobile__header-text">
+        <div className="c-top-nav-mobile__header-text">
           {pageOrTabName(location.pathname, routeTabs)}
         </div>
 
-        <div className="m-top-nav-mobile__right-items">
+        <div className="c-top-nav-mobile__right-items">
           <button
-            className="m-top-nav-mobile__right-item"
+            className="c-top-nav-mobile__right-item"
             onClick={() => {
               openNotificationDrawer()
 
@@ -76,7 +76,7 @@ const TopNavMobile: React.FC<Props> = ({
             title="Notifications"
           >
             <NotificationBellIcon
-              extraClasses={["m-top-nav-mobile__notifications-icon"]}
+              extraClasses={["c-top-nav-mobile__notifications-icon"]}
             />
           </button>
         </div>
