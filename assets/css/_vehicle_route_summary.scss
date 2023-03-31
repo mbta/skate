@@ -1,6 +1,6 @@
 // #region Vehicle Route Summary
 // #region Layout
-.m-vehicle-route-summary {
+.c-vehicle-route-summary {
   display: grid;
   grid-template-rows: 3fr 8fr;
   grid-template-columns: min-content 1fr 6fr 12fr;
@@ -12,11 +12,11 @@
   justify-items: start; // align element horizontally within the cell
 
   // #region element grid locations
-  .m-vehicle-route-summary__icon {
+  .c-vehicle-route-summary__icon {
     grid-area: icon;
   }
 
-  .m-vehicle-route-summary__separator {
+  .c-vehicle-route-summary__separator {
     grid-area: separator;
   }
 
@@ -39,8 +39,8 @@
     justify-self: end;
   }
 
-  .m-vehicle-route-summary__icon,
-  .m-vehicle-route-summary__separator {
+  .c-vehicle-route-summary__icon,
+  .c-vehicle-route-summary__separator {
     justify-self: center;
     align-self: center;
   }
@@ -73,11 +73,11 @@
     overflow: hidden;
   }
 
-  .m-vehicle-route-summary__icon {
+  .c-vehicle-route-summary__icon {
     max-height: 62px;
   }
 
-  .m-vehicle-route-summary__separator {
+  .c-vehicle-route-summary__separator {
     justify-self: center;
     align-self: center;
     height: 100%;

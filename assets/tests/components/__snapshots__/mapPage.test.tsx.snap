@@ -1447,15 +1447,15 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               class="c-vehicle-properties-card__summary"
             >
               <div
-                class="m-vehicle-route-summary"
+                class="c-vehicle-route-summary"
               >
                 <output
                   aria-label="Route Direction"
-                  class="c-vehicle-route-direction m-vehicle-route-summary__direction label font-xs-reg"
+                  class="c-vehicle-route-direction c-vehicle-route-summary__direction label font-xs-reg"
                 />
                 <output
                   aria-label="Route Variant Name"
-                  class="c-route-variant-name m-vehicle-route-summary__route-variant headsign font-m-semi"
+                  class="c-route-variant-name c-vehicle-route-summary__route-variant headsign font-m-semi"
                 >
                   <output
                     aria-label="Route & Variant"
@@ -1473,7 +1473,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </output>
                 <output
                   aria-label="Vehicle Schedule Adherence"
-                  class="c-schedule-adherence on-time early-red m-vehicle-route-summary__adherence label font-xs-reg"
+                  class="c-schedule-adherence on-time early-red c-vehicle-route-summary__adherence label font-xs-reg"
                 >
                   <svg
                     aria-hidden="true"
@@ -1503,7 +1503,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   </output>
                 </output>
                 <div
-                  class="m-vehicle-route-summary__icon"
+                  class="c-vehicle-route-summary__icon"
                 >
                   <svg
                     role="img"
@@ -1555,7 +1555,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <img
                   aria-hidden="true"
                   aria-label="presentation separator"
-                  class="m-vehicle-route-summary__separator"
+                  class="c-vehicle-route-summary__separator"
                   role="img presentation"
                 />
               </div>
