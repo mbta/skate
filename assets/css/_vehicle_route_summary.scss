@@ -24,7 +24,7 @@
     grid-area: adherence;
   }
 
-  .m-vehicle-route-direction {
+  .c-vehicle-route-direction {
     grid-area: direction;
   }
 
@@ -47,7 +47,7 @@
 
   // Adherence and direction should hug the top of the container
   .c-schedule-adherence,
-  .m-vehicle-route-direction {
+  .c-vehicle-route-direction {
     line-height: 1;
   }
   // #endregion

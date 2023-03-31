@@ -52,7 +52,7 @@ export const VehicleRouteDirection = ({
   return (
     <output
       aria-label="Route Direction"
-      className={"m-vehicle-route-direction " + className}
+      className={"c-vehicle-route-direction " + className}
       {...props}
     >
       {directionName(vehicle, route)}

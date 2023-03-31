@@ -1451,7 +1451,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               >
                 <output
                   aria-label="Route Direction"
-                  class="m-vehicle-route-direction m-vehicle-route-summary__direction label font-xs-reg"
+                  class="c-vehicle-route-direction m-vehicle-route-summary__direction label font-xs-reg"
                 />
                 <output
                   aria-label="Route Variant Name"
