@@ -48,12 +48,12 @@ export const AppRoutes = () => {
   const mapMode = mapModeForUser()
 
   return (
-    <div className="m-app">
-      <div className="m-app__banner">
+    <div className="l-app">
+      <div className="l-app__banner">
         <DataStatusBanner />
       </div>
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
-        <div className="m-app__main">
+        <div className="l-app__main">
           <Nav
             allowViews={
               location.pathname !== mapMode.path || mapMode.supportsRightPanel

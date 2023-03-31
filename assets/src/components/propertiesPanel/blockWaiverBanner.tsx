@@ -34,8 +34,8 @@ const Badge = ({
   modifier?: string
 }) => (
   <div
-    className={`m-block-waiver-banner__badge ${
-      modifier ? "m-block-waiver-banner__badge--" + modifier : ""
+    className={`c-block-waiver-banner__badge ${
+      modifier ? "c-block-waiver-banner__badge--" + modifier : ""
     }`}
   >
     {icon}
@@ -86,12 +86,12 @@ const formattedReason = (blockWaiver: BlockWaiver) =>
 
 export const NoWaiverBanner = () => (
   <Card
-    additionalClass="m-block-waiver-banner m-block-waiver-banner--unknown"
+    additionalClass="c-block-waiver-banner c-block-waiver-banner--unknown"
     style="lemon"
     noFocusOrHover={true}
     title={
       <>
-        <h3 className="m-block-waiver-banner__title">Unknown Ghost Bus</h3>
+        <h3 className="c-block-waiver-banner__title">Unknown Ghost Bus</h3>
         <Badge text="Ghost" icon={<GhostIcon />} modifier="unknown" />
       </>
     }
@@ -106,7 +106,7 @@ export const NoWaiverBanner = () => (
 
 const BlockWaiverBanner = ({ blockWaiver }: Props) => (
   <Card
-    additionalClass={`m-block-waiver-banner m-block-waiver-banner--${currentFuturePastClass(
+    additionalClass={`c-block-waiver-banner c-block-waiver-banner--${currentFuturePastClass(
       blockWaiver
     )}`}
     noFocusOrHover={true}
@@ -114,7 +114,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
     isActive={currentFuturePastType(blockWaiver) !== CurrentFuturePastType.Past}
     title={
       <>
-        <h3 className="m-block-waiver-banner__title">Dispatcher Note</h3>
+        <h3 className="c-block-waiver-banner__title">Dispatcher Note</h3>
         <BlockWaiverBadge blockWaiver={blockWaiver} />
       </>
     }

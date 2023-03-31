@@ -75,7 +75,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div
-      className={`c-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}
+      className={`l-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}
     >
       <div className="m-search-page__input-and-results">
         <div className="m-search-page__input">

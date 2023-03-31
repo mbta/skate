@@ -1229,38 +1229,38 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       >
         <div
           aria-labelledby="card-label-:r7:"
-          className="m-card m-card--kiwi m-block-waiver-banner m-block-waiver-banner--past m-card--no-focus-or-hover m-card--inactive"
+          className="c-card c-card--kiwi c-block-waiver-banner c-block-waiver-banner--past c-card--no-focus-or-hover c-card--inactive"
         >
           <div
-            className="m-card__left"
+            className="c-card__left"
           >
             <div
-              className="m-card__left-content"
+              className="c-card__left-content"
             >
               <div
-                className="m-card__top-row"
+                className="c-card__top-row"
               >
                 <div
-                  className="m-card__title"
+                  className="c-card__title"
                   id="card-label-:r7:"
                 >
                   <h3
-                    className="m-block-waiver-banner__title"
+                    className="c-block-waiver-banner__title"
                   >
                     Dispatcher Note
                   </h3>
                   <div
-                    className="m-block-waiver-banner__badge m-block-waiver-banner__badge--past"
+                    className="c-block-waiver-banner__badge c-block-waiver-banner__badge--past"
                   >
                     Past
                   </div>
                 </div>
               </div>
               <div
-                className="m-card__contents"
+                className="c-card__contents"
               >
                 <div
-                  className="m-card__body"
+                  className="c-card__body"
                 >
                   <div
                     className="m-properties-list"
@@ -2057,19 +2057,19 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     >
       <div
         aria-labelledby="card-label-:r4:"
-        className="m-card m-card--lemon m-vehicle-properties-panel__invalid-banner m-card--no-focus-or-hover m-card--inactive"
+        className="c-card c-card--lemon m-vehicle-properties-panel__invalid-banner c-card--no-focus-or-hover c-card--inactive"
       >
         <div
-          className="m-card__left"
+          className="c-card__left"
         >
           <div
-            className="m-card__left-content"
+            className="c-card__left-content"
           >
             <div
-              className="m-card__top-row"
+              className="c-card__top-row"
             >
               <div
-                className="m-card__title"
+                className="c-card__title"
                 id="card-label-:r4:"
               >
                 <h3>
@@ -2078,10 +2078,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               </div>
             </div>
             <div
-              className="m-card__contents"
+              className="c-card__contents"
             >
               <div
-                className="m-card__body"
+                className="c-card__body"
               >
                 We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
               </div>

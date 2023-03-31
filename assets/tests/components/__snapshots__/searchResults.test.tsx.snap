@@ -11,14 +11,14 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       <div
         aria-current={false}
         aria-labelledby="card-label-:r0:"
-        className="m-card m-card--white m-search-results__result m-card--inactive"
+        className="c-card c-card--white m-search-results__result c-card--inactive"
       >
         <button
-          className="m-card__left"
+          className="c-card__left"
           onClick={[Function]}
         >
           <div
-            className="m-card__icon"
+            className="c-card__icon"
           >
             <div>
               <svg
@@ -83,13 +83,13 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
             </div>
           </div>
           <div
-            className="m-card__left-content"
+            className="c-card__left-content"
           >
             <div
-              className="m-card__top-row"
+              className="c-card__top-row"
             >
               <div
-                className="m-card__title"
+                className="c-card__title"
                 id="card-label-:r0:"
               >
                 <output
@@ -113,7 +113,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               </div>
             </div>
             <div
-              className="m-card__contents"
+              className="c-card__contents"
             >
               <div
                 className="m-properties-list"
@@ -148,14 +148,14 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       <div
         aria-current={false}
         aria-labelledby="card-label-:r1:"
-        className="m-card m-card--white m-search-results__result m-card--inactive"
+        className="c-card c-card--white m-search-results__result c-card--inactive"
       >
         <button
-          className="m-card__left"
+          className="c-card__left"
           onClick={[Function]}
         >
           <div
-            className="m-card__icon"
+            className="c-card__icon"
           >
             <div>
               <svg
@@ -212,13 +212,13 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
             </div>
           </div>
           <div
-            className="m-card__left-content"
+            className="c-card__left-content"
           >
             <div
-              className="m-card__top-row"
+              className="c-card__top-row"
             >
               <div
-                className="m-card__title"
+                className="c-card__title"
                 id="card-label-:r1:"
               >
                 <output
@@ -242,7 +242,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               </div>
             </div>
             <div
-              className="m-card__contents"
+              className="c-card__contents"
             >
               <div
                 className="m-properties-list"
@@ -330,14 +330,14 @@ exports[`SearchResults renders a selected result card 1`] = `
       <div
         aria-current={false}
         aria-labelledby="card-label-:r5:"
-        className="m-card m-card--white m-search-results__result m-card--inactive"
+        className="c-card c-card--white m-search-results__result c-card--inactive"
       >
         <button
-          className="m-card__left"
+          className="c-card__left"
           onClick={[Function]}
         >
           <div
-            className="m-card__icon"
+            className="c-card__icon"
           >
             <div>
               <svg
@@ -407,13 +407,13 @@ exports[`SearchResults renders a selected result card 1`] = `
             </div>
           </div>
           <div
-            className="m-card__left-content"
+            className="c-card__left-content"
           >
             <div
-              className="m-card__top-row"
+              className="c-card__top-row"
             >
               <div
-                className="m-card__title"
+                className="c-card__title"
                 id="card-label-:r5:"
               >
                 <output
@@ -437,7 +437,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               </div>
             </div>
             <div
-              className="m-card__contents"
+              className="c-card__contents"
             >
               <div
                 className="m-properties-list"
@@ -472,14 +472,14 @@ exports[`SearchResults renders a selected result card 1`] = `
       <div
         aria-current={true}
         aria-labelledby="card-label-:r6:"
-        className="m-card m-card--white m-search-results__result m-card--inactive m-card--selected"
+        className="c-card c-card--white m-search-results__result c-card--inactive c-card--selected"
       >
         <button
-          className="m-card__left"
+          className="c-card__left"
           onClick={[Function]}
         >
           <div
-            className="m-card__icon"
+            className="c-card__icon"
           >
             <div>
               <svg
@@ -536,13 +536,13 @@ exports[`SearchResults renders a selected result card 1`] = `
             </div>
           </div>
           <div
-            className="m-card__left-content"
+            className="c-card__left-content"
           >
             <div
-              className="m-card__top-row"
+              className="c-card__top-row"
             >
               <div
-                className="m-card__title"
+                className="c-card__title"
                 id="card-label-:r6:"
               >
                 <output
@@ -566,7 +566,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               </div>
             </div>
             <div
-              className="m-card__contents"
+              className="c-card__contents"
             >
               <div
                 className="m-properties-list"
