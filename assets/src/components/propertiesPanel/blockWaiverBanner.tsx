@@ -66,7 +66,7 @@ const BlockWaiverBadge = ({ blockWaiver }: { blockWaiver: BlockWaiver }) => {
         <Badge
           text={"Upcoming"}
           icon={
-            <NotificationBellIcon className="m-notification-bell-icon--read" />
+            <NotificationBellIcon className="c-notification-bell-icon--read" />
           }
           modifier={modifier}
         />

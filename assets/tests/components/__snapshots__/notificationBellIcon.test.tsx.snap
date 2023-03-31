@@ -2,7 +2,7 @@
 
 exports[`NotificationBellIcon renders when the drawer is closed and there are new notifications 1`] = `
 <span
-  className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--unread"
+  className="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--unread"
   dangerouslySetInnerHTML={
     Object {
       "__html": "<svg/>",
@@ -13,7 +13,7 @@ exports[`NotificationBellIcon renders when the drawer is closed and there are ne
 
 exports[`NotificationBellIcon renders when the drawer is closed and there are not new notifications 1`] = `
 <span
-  className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read"
+  className="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--read"
   dangerouslySetInnerHTML={
     Object {
       "__html": "<svg/>",
@@ -24,7 +24,7 @@ exports[`NotificationBellIcon renders when the drawer is closed and there are no
 
 exports[`NotificationBellIcon renders when the drawer is open and there are new notifications 1`] = `
 <span
-  className="m-notification-bell-icon m-notification-bell-icon--open m-notification-bell-icon--unread"
+  className="c-notification-bell-icon c-notification-bell-icon--open c-notification-bell-icon--unread"
   dangerouslySetInnerHTML={
     Object {
       "__html": "<svg/>",
@@ -35,7 +35,7 @@ exports[`NotificationBellIcon renders when the drawer is open and there are new 
 
 exports[`NotificationBellIcon renders when the drawer is open and there are not new notifications 1`] = `
 <span
-  className="m-notification-bell-icon m-notification-bell-icon--open m-notification-bell-icon--read"
+  className="c-notification-bell-icon c-notification-bell-icon--open c-notification-bell-icon--read"
   dangerouslySetInnerHTML={
     Object {
       "__html": "<svg/>",
