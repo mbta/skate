@@ -12,7 +12,7 @@ const InputModal = ({
     <>
       <div role="dialog">
         <div
-          className="m-input-modal"
+          className="c-input-modal"
           role="presentation"
           onKeyDown={(event) => {
             if (event.key === "Escape") {

@@ -1,4 +1,4 @@
-.m-input-modal {
+.c-input-modal {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,23 +33,23 @@
   z-index: 2000;
 }
 
-.m-input-modal__title {
+.c-input-modal__title {
   font-size: 1.125rem;
   font-weight: 500;
   text-align: center;
   color: $color-gray-900;
 }
 
-.m-input-modal__text {
+.c-input-modal__text {
   font-size: 1.125rem;
   font-weight: 400;
 }
 
-.m-input-modal__name-text {
+.c-input-modal__name-text {
   color: $color-text-blue;
 }
 
-.m-input-modal__input {
+.c-input-modal__input {
   input {
     @include font-body;
     background: inherit;
@@ -68,7 +68,7 @@
   }
 }
 
-.m-input-modal__buttons {
+.c-input-modal__buttons {
   display: flex;
 
   & > :not(:last-child) {
@@ -86,26 +86,26 @@
   padding: 0.5rem 2.25rem;
 }
 
-.m-input-modal__button {
+.c-input-modal__button {
   @include input-modal-button;
   color: $color-component-dark;
   background: #e5e7eb;
 }
 
-.m-input-modal__button-disabled {
+.c-input-modal__button-disabled {
   @include input-modal-button;
   cursor: default;
   color: #4f535f;
   background: #e5e7eb;
 }
 
-.m-input-modal__button-confirm {
+.c-input-modal__button-confirm {
   @include input-modal-button;
   color: $color-gray-50;
   background: #118d86;
 }
 
-.m-input-modal__button-danger {
+.c-input-modal__button-danger {
   @include input-modal-button;
   color: $color-gray-50;
   background: #f00d55;

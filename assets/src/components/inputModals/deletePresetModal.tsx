@@ -14,13 +14,13 @@ const DeletePresetModal = ({
   const [, dispatch] = useContext(StateDispatchContext)
   return (
     <InputModal>
-      <div className="m-input-modal__title">Delete preset?</div>
-      <div className="m-input-modal__text">
-        <span className="m-input-modal__name-text">{presetName}</span>
+      <div className="c-input-modal__title">Delete preset?</div>
+      <div className="c-input-modal__text">
+        <span className="c-input-modal__name-text">{presetName}</span>
       </div>
-      <div className="m-input-modal__buttons">
+      <div className="c-input-modal__buttons">
         <button
-          className="m-input-modal__button"
+          className="c-input-modal__button"
           onClick={() => dispatch(closeInputModal())}
         >
           Cancel
@@ -28,7 +28,7 @@ const DeletePresetModal = ({
         {/* eslint-disable jsx-a11y/no-autofocus */}
         <button
           autoFocus={true}
-          className="m-input-modal__button-danger"
+          className="c-input-modal__button-danger"
           onClick={() => {
             tagManagerEvent("preset_deleted")
             window.FS?.event("User deleted a preset")
