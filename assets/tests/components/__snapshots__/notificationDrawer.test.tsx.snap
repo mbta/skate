@@ -137,22 +137,22 @@ exports[`NotificationDrawer renders notifications 1`] = `
                     OCC reported that an operator is not available on the r1, r2.
                   </div>
                   <div
-                    className="m-properties-list"
+                    className="c-properties-list"
                   >
                     <table
-                      className="m-properties-list__table"
+                      className="c-properties-list__table"
                     >
                       <tbody>
                         <tr
-                          className="m-properties-list__property "
+                          className="c-properties-list__property "
                         >
                           <td
-                            className="m-properties-list__property-label"
+                            className="c-properties-list__property-label"
                           >
                             Run
                           </td>
                           <td
-                            className="m-properties-list__property-value"
+                            className="c-properties-list__property-value"
                           >
                             run1, run2
                           </td>

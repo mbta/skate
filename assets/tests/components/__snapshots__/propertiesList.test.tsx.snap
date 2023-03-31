@@ -60,22 +60,22 @@ exports[`Highlighted renders the original content if no highlight text is specif
 
 exports[`PropertiesList highlights requested text 1`] = `
 <div
-  className="m-properties-list"
+  className="c-properties-list"
 >
   <table
-    className="m-properties-list__table"
+    className="c-properties-list__table"
   >
     <tbody>
       <tr
-        className="m-properties-list__property "
+        className="c-properties-list__property "
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Run
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           <span
             className="highlighted"
@@ -86,43 +86,43 @@ exports[`PropertiesList highlights requested text 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property "
+        className="c-properties-list__property "
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Vehicle
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           v1-label
         </td>
       </tr>
       <tr
-        className="m-properties-list__property m-properties-list__property--operator fs-mask"
+        className="c-properties-list__property c-properties-list__property--operator fs-mask"
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Operator
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           PATTI SMITH #op1
         </td>
       </tr>
       <tr
-        className="m-properties-list__property m-properties-list__property--last-login"
+        className="c-properties-list__property c-properties-list__property--last-login"
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Last Login
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           4 hr 3 min; 1:38 PM
         </td>
@@ -134,22 +134,22 @@ exports[`PropertiesList highlights requested text 1`] = `
 
 exports[`PropertiesList renders a properties list for a ghost 1`] = `
 <div
-  className="m-properties-list"
+  className="c-properties-list"
 >
   <table
-    className="m-properties-list__table"
+    className="c-properties-list__table"
   >
     <tbody>
       <tr
-        className="m-properties-list__property "
+        className="c-properties-list__property "
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Run
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           123-0123
         </td>
@@ -161,64 +161,64 @@ exports[`PropertiesList renders a properties list for a ghost 1`] = `
 
 exports[`PropertiesList renders a properties list for a vehicle 1`] = `
 <div
-  className="m-properties-list"
+  className="c-properties-list"
 >
   <table
-    className="m-properties-list__table"
+    className="c-properties-list__table"
   >
     <tbody>
       <tr
-        className="m-properties-list__property "
+        className="c-properties-list__property "
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Run
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           run-1
         </td>
       </tr>
       <tr
-        className="m-properties-list__property "
+        className="c-properties-list__property "
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Vehicle
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           v1-label
         </td>
       </tr>
       <tr
-        className="m-properties-list__property m-properties-list__property--operator fs-mask"
+        className="c-properties-list__property c-properties-list__property--operator fs-mask"
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Operator
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           PATTI SMITH #op1
         </td>
       </tr>
       <tr
-        className="m-properties-list__property m-properties-list__property--last-login"
+        className="c-properties-list__property c-properties-list__property--last-login"
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Last Login
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           4 hr 3 min; 1:38 PM
         </td>
@@ -230,36 +230,36 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
 
 exports[`PropertiesList renders generic properties 1`] = `
 <div
-  className="m-properties-list"
+  className="c-properties-list"
 >
   <table
-    className="m-properties-list__table"
+    className="c-properties-list__table"
   >
     <tbody>
       <tr
-        className="m-properties-list__property "
+        className="c-properties-list__property "
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Label 1
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           Value 1
         </td>
       </tr>
       <tr
-        className="m-properties-list__property "
+        className="c-properties-list__property "
       >
         <td
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
         >
           Label 2
         </td>
         <td
-          className="m-properties-list__property-value"
+          className="c-properties-list__property-value"
         >
           Value 2
         </td>

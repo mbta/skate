@@ -278,22 +278,22 @@ exports[`GhostPropertiesPanel renders 1`] = `
       </div>
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               123-0123
             </td>
@@ -570,50 +570,50 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
                   className="c-card__body"
                 >
                   <div
-                    className="m-properties-list"
+                    className="c-properties-list"
                   >
                     <table
-                      className="m-properties-list__table"
+                      className="c-properties-list__table"
                     >
                       <tbody>
                         <tr
-                          className="m-properties-list__property "
+                          className="c-properties-list__property "
                         >
                           <td
-                            className="m-properties-list__property-label"
+                            className="c-properties-list__property-label"
                           >
                             Reason
                           </td>
                           <td
-                            className="m-properties-list__property-value"
+                            className="c-properties-list__property-value"
                           >
                             Block Waiver
                           </td>
                         </tr>
                         <tr
-                          className="m-properties-list__property "
+                          className="c-properties-list__property "
                         >
                           <td
-                            className="m-properties-list__property-label"
+                            className="c-properties-list__property-label"
                           >
                             Start Time
                           </td>
                           <td
-                            className="m-properties-list__property-value"
+                            className="c-properties-list__property-value"
                           >
                             5:05 AM
                           </td>
                         </tr>
                         <tr
-                          className="m-properties-list__property "
+                          className="c-properties-list__property "
                         >
                           <td
-                            className="m-properties-list__property-label"
+                            className="c-properties-list__property-label"
                           >
                             End Time
                           </td>
                           <td
-                            className="m-properties-list__property-value"
+                            className="c-properties-list__property-value"
                           >
                             12:38 PM
                           </td>
@@ -629,22 +629,22 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
       </div>
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               123-0123
             </td>
@@ -934,22 +934,22 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
       </div>
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               Not Available
             </td>
