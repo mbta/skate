@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithoutRef, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className as classNames } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import { isVehicle } from "../models/vehicle"
 import {
   drawnStatus,
@@ -30,7 +30,7 @@ const ScheduleAdherenceDescription = ({
   ...props
 }: { vehicle: Vehicle } & ComponentPropsWithoutRef<"output">) => (
   <output
-    className={classNames(["c-schedule-adherence-status", className])}
+    className={joinClasses(["c-schedule-adherence-status", className])}
     {...props}
   >
     {humanReadableScheduleAdherence(vehicle)}
@@ -71,7 +71,7 @@ export const ScheduleAdherence = ({
 }: ScheduleAdherenceProps) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
 
-  const classes = classNames([
+  const classes = joinClasses([
     "c-schedule-adherence",
     ...statusClasses(drawnStatus(vehicle), userSettings.vehicleAdherenceColors),
     className,

@@ -4,7 +4,7 @@ import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
@@ -200,7 +200,7 @@ const VehicleSvg = ({
   return (
     <VehicleTooltip vehicleOrGhost={vehicle}>
       <g
-        className={className([
+        className={joinClasses([
           "m-ladder__vehicle",
           vehicle.id === selectedVehicleId && "m-ladder__vehicle--selected",
         ])}
@@ -351,7 +351,7 @@ const ScheduledLine = ({
 
   return (
     <line
-      className={className(
+      className={joinClasses(
         ["m-ladder__scheduled-line"].concat(
           statusClasses(status, userSettings.vehicleAdherenceColors)
         )

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { className } from "../../helpers/dom"
+import { joinClasses } from "../../helpers/dom"
 import vehicleLabel from "../../helpers/vehicleLabel"
 import { secondsAgoLabel, secondsToMinutes } from "../../util/dateTime"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
@@ -62,7 +62,7 @@ const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div
-      className={`m-properties-panel__schedule-adherence ${className(
+      className={`m-properties-panel__schedule-adherence ${joinClasses(
         statusClasses(drawnStatus(vehicle), userSettings.vehicleAdherenceColors)
       )}`}
     >

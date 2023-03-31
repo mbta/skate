@@ -2,7 +2,7 @@ import Leaflet, { ControlOptions } from "leaflet"
 import React, { useEffect, useId, useState } from "react"
 import ReactDOM from "react-dom"
 import { useMap, useMapEvents } from "react-leaflet"
-import { className } from "../../../helpers/dom"
+import { joinClasses } from "../../../helpers/dom"
 import { WalkingIcon } from "../../../helpers/icon"
 import { streetViewUrl } from "../../../util/streetViewUrl"
 
@@ -28,7 +28,7 @@ export const StreetViewControl = ({
     }
 
     if (portalParent && portalElement) {
-      portalElement.className = className([
+      portalElement.className = joinClasses([
         "leaflet-control",
         "leaflet-bar",
         "c-street-view-switch",

@@ -33,7 +33,7 @@ import {
 import { createControlComponent } from "@react-leaflet/core"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
@@ -310,7 +310,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(false)
   const { allowFullscreen = true } = props
 
-  const stateClasses = className([
+  const stateClasses = joinClasses([
     "c-vehicle-map-state",
     streetViewEnabled ? "c-vehicle-map-state--street-view-enabled" : null,
     props.stateClasses,

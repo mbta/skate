@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import { classModifierForStatus, OccupancyStatus } from "../models/crowding"
 import {
   Label,
@@ -49,7 +49,7 @@ const Crowd = React.memo(
     return (
       <g
         transform={`scale(${scale}) translate(-24,${yOffset - 22})`}
-        className={className(classNames)}
+        className={joinClasses(classNames)}
       >
         <rect x="-2" y="-2" width="52" height="52" fill="transparent" />
         <path d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z" />
@@ -76,7 +76,7 @@ export const CrowdingIconSvgNode = React.memo(
       `c-vehicle-icon${sizeClassSuffix(size)}`,
     ]
     return (
-      <g className={className(classes)}>
+      <g className={joinClasses(classes)}>
         {label ? (
           <Label size={size} orientation={orientation} label={label} />
         ) : null}
