@@ -1567,10 +1567,10 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 class="c-vehicle-properties-card__properties m-info-section"
               >
                 <table
-                  class="m-vehicle-work-info"
+                  class="c-vehicle-work-info"
                 >
                   <tbody
-                    class="m-vehicle-work-info__items"
+                    class="c-vehicle-work-info__items"
                   >
                     <tr>
                       <th
