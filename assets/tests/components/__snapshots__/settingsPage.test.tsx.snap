@@ -5,7 +5,7 @@ exports[`SettingsPage renders 1`] = `
   className="l-page c-settings-page "
 >
   <div
-    className="m-notifications"
+    className="c-notifications"
   />
   <div
     className="c-page__container"
