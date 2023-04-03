@@ -42,14 +42,6 @@ $search-page-search-panel-width: 22.0625rem;
     width: calc(100% - 2 * 1.5625rem);
     margin: 0 1.5625rem;
   }
-
-  &.visible {
-    left: 0;
-  }
-
-  &.hidden {
-    left: calc(-1 * #{$search-page-search-panel-width} + 1rem);
-  }
 }
 
 .c-search-page__toggle-mobile-display-button {
