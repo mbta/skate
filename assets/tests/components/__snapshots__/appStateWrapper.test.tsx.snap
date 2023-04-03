@@ -43,13 +43,13 @@ exports[`renders 1`] = `
                 class="c-ladder-page__routes-presets-toggle u-hide"
               >
                 <button
-                  class="c-ladder-page__routes_picker_button_selected"
+                  class="c-ladder-page__routes_picker_button--selected"
                   id="c-ladder-page__routes_picker_button"
                 >
                   Routes
                 </button>
                 <button
-                  class="c-ladder-page__routes_picker_button_unselected"
+                  class="c-ladder-page__routes_picker_button--unselected"
                   id="c-ladder-page__presets_picker_button"
                 >
                   Presets

@@ -168,13 +168,13 @@ $color-route-tabs-separator: #9fa2ac;
     padding-bottom: 0.375rem;
   }
 
-  .c-ladder-page__routes_picker_button_selected {
+  .c-ladder-page__routes_picker_button--selected {
     border-bottom: 2px inset $color-gray-900;
     color: $color-gray-900;
     font-weight: 700;
   }
 
-  .c-ladder-page__routes_picker_button_unselected {
+  .c-ladder-page__routes_picker_button--unselected {
     color: $color-gray-600;
     font-weight: 400;
   }

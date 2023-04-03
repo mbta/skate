@@ -194,8 +194,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
               id="c-ladder-page__routes_picker_button"
               className={
                 currentDrawerContent === "route_picker"
-                  ? "c-ladder-page__routes_picker_button_selected"
-                  : "c-ladder-page__routes_picker_button_unselected"
+                  ? "c-ladder-page__routes_picker_button--selected"
+                  : "c-ladder-page__routes_picker_button--unselected"
               }
               onClick={() => setCurrentDrawerContent("route_picker")}
             >
@@ -205,8 +205,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
               id="c-ladder-page__presets_picker_button"
               className={
                 currentDrawerContent === "presets"
-                  ? "c-ladder-page__routes_picker_button_selected"
-                  : "c-ladder-page__routes_picker_button_unselected"
+                  ? "c-ladder-page__routes_picker_button--selected"
+                  : "c-ladder-page__routes_picker_button--unselected"
               }
               onClick={() => setCurrentDrawerContent("presets")}
             >
