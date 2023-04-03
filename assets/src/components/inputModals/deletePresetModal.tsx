@@ -28,7 +28,7 @@ const DeletePresetModal = ({
         {/* eslint-disable jsx-a11y/no-autofocus */}
         <button
           autoFocus={true}
-          className="c-input-modal__button-danger"
+          className="c-input-modal__button--danger"
           onClick={() => {
             tagManagerEvent("preset_deleted")
             window.FS?.event("User deleted a preset")

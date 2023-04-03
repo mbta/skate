@@ -92,20 +92,20 @@
   background: #e5e7eb;
 }
 
-.c-input-modal__button-disabled {
+.c-input-modal__button--disabled {
   @include input-modal-button;
   cursor: default;
   color: #4f535f;
   background: #e5e7eb;
 }
 
-.c-input-modal__button-confirm {
+.c-input-modal__button--confirm {
   @include input-modal-button;
   color: $color-gray-50;
   background: #118d86;
 }
 
-.c-input-modal__button-danger {
+.c-input-modal__button--danger {
   @include input-modal-button;
   color: $color-gray-50;
   background: #f00d55;

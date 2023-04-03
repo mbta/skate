@@ -64,7 +64,7 @@ const CreatePresetModal = ({
             disabled={presetName.length === 0}
             className={
               "c-input-modal__button" +
-              (presetName.length === 0 ? "-disabled" : "-confirm")
+              (presetName.length === 0 ? "--disabled" : "--confirm")
             }
           >
             Save

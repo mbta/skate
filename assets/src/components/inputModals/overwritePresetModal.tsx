@@ -35,7 +35,7 @@ const OverwritePresetModal = ({
         {/* eslint-disable jsx-a11y/no-autofocus */}
         <button
           autoFocus={true}
-          className="c-input-modal__button-confirm"
+          className="c-input-modal__button--confirm"
           onClick={() => {
             window.FS?.event("User Overwrote a Saved Preset")
             confirmCallback(dispatch)
