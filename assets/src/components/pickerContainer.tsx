@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext } from "react"
 import DrawerTab from "../components/drawerTab"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { joinClasses } from "../helpers/dom"
 import { togglePickerContainer } from "../state"
 
 interface Props {
@@ -14,9 +15,12 @@ const PickerContainer = ({ children }: Props): ReactElement<HTMLDivElement> => {
   return (
     <>
       <div
-        className={`c-picker-container ${
-          state.pickerContainerIsVisible ? "visible" : "hidden"
-        }`}
+        className={joinClasses([
+          "c-picker-container",
+          ...(state.pickerContainerIsVisible
+            ? ["c-picker-container--visible"]
+            : ["c-picker-container--hidden", "u-hideable--hidden"]),
+        ])}
         data-testid="picker-container"
       >
         <DrawerTab

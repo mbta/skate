@@ -24,7 +24,7 @@ exports[`App renders 1`] = `
               class="c-notifications"
             />
             <div
-              class="c-picker-container visible"
+              class="c-picker-container c-picker-container--visible"
               data-testid="picker-container"
             >
               <div
