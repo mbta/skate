@@ -155,7 +155,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
             className="c-block-waiver-banner__badge c-block-waiver-banner__badge--future"
           >
             <span
-              className="m-notification-bell-icon--read"
+              className="c-notification-bell-icon--read"
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "<svg/>",

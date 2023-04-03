@@ -1,21 +1,21 @@
-.c-modal.m-notification-loading-modal {
+.c-modal.c-notification-loading-modal {
   width: 10rem;
 }
 
-.m-notification-loading-modal__spinner-wrapper,
-.m-notification-loading-modal__text-wrapper {
+.c-notification-loading-modal__spinner-wrapper,
+.c-notification-loading-modal__text-wrapper {
   display: flex;
   justify-content: center;
 }
 
-.m-notification-loading-modal__spinner-wrapper {
+.c-notification-loading-modal__spinner-wrapper {
   svg {
     height: 3rem;
     width: 3rem;
   }
 }
 
-.m-notification-loading-modal__text-wrapper {
+.c-notification-loading-modal__text-wrapper {
   font-weight: 700;
   font-size: 0.875rem;
   margin-top: 1rem;

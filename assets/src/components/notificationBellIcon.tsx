@@ -20,13 +20,13 @@ const NotificationBellIcon = ({
   return (
     <NotificationBellIconSvg
       className={joinClasses([
-        "m-notification-bell-icon",
+        "c-notification-bell-icon",
         openView === OpenView.NotificationDrawer
-          ? "m-notification-bell-icon--open"
-          : "m-notification-bell-icon--closed",
+          ? "c-notification-bell-icon--open"
+          : "c-notification-bell-icon--closed",
         unreadBadge
-          ? "m-notification-bell-icon--unread"
-          : "m-notification-bell-icon--read",
+          ? "c-notification-bell-icon--unread"
+          : "c-notification-bell-icon--read",
         ...(extraClasses || []),
       ])}
     />

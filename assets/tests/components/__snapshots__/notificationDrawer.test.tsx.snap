@@ -2,7 +2,7 @@
 
 exports[`NotificationDrawer renders empty state 1`] = `
 <div
-  className="m-notification-drawer"
+  className="c-notification-drawer"
 >
   <div
     className="c-view-header"
@@ -30,7 +30,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
     </button>
   </div>
   <div
-    className="m-notification-drawer__content"
+    className="c-notification-drawer__content"
   >
     <p>
       You have no notifications currently.
@@ -44,7 +44,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
 
 exports[`NotificationDrawer renders notifications 1`] = `
 <div
-  className="m-notification-drawer"
+  className="c-notification-drawer"
 >
   <div
     className="c-view-header"
@@ -72,22 +72,22 @@ exports[`NotificationDrawer renders notifications 1`] = `
     </button>
   </div>
   <div
-    className="m-notification-drawer__content"
+    className="c-notification-drawer__content"
   >
     <div
-      className="m-notification-drawer__cards"
+      className="c-notification-drawer__cards"
     >
       <div
-        className="m-notification-drawer__header"
+        className="c-notification-drawer__header"
       >
         <span
-          className="m-notification-drawer__n-unread"
+          className="c-notification-drawer__n-unread"
         >
           1
            new
         </span>
         <button
-          className="m-notification-drawer__mark-all-read-button"
+          className="c-notification-drawer__mark-all-read-button"
           onClick={[Function]}
         >
           Mark all as read

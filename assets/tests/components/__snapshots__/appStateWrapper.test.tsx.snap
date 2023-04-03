@@ -21,7 +21,7 @@ exports[`renders 1`] = `
             class="m-ladder-page m-ladder-page--picker-container-visible "
           >
             <div
-              class="m-notifications"
+              class="c-notifications"
             />
             <div
               class="m-picker-container visible"
@@ -279,7 +279,7 @@ exports[`renders 1`] = `
                     title="Notifications"
                   >
                     <span
-                      class="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read m-left-nav__icon m-left-nav__icon--notifications-view"
+                      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--read m-left-nav__icon m-left-nav__icon--notifications-view"
                     >
                       <svg />
                     </span>

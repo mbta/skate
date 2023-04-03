@@ -1,4 +1,4 @@
-.m-notification-drawer {
+.c-notification-drawer {
   @include modal-content;
   display: flex;
   flex-direction: column;
@@ -19,11 +19,11 @@
   }
 }
 
-.m-notification-drawer__content {
+.c-notification-drawer__content {
   padding: 1rem;
 }
 
-.m-notification-drawer__cards {
+.c-notification-drawer__cards {
   & > ul > li {
     &:not(:last-child) {
       margin-bottom: 0.5rem;
@@ -31,7 +31,7 @@
   }
 }
 
-.m-notification-drawer__mark-all-read-button {
+.c-notification-drawer__mark-all-read-button {
   color: $color-secondary-dark;
   cursor: pointer;
   position: absolute;
@@ -42,12 +42,12 @@
   }
 }
 
-.m-notification-drawer__n-unread {
+.c-notification-drawer__n-unread {
   color: $color-component-medium;
   text-transform: uppercase;
 }
 
-.m-notification-drawer__header {
+.c-notification-drawer__header {
   margin-bottom: 0.5rem;
   position: relative;
 }

@@ -26,7 +26,7 @@ export const Notifications = () => {
   }
 
   return (
-    <div className="m-notifications">
+    <div className="c-notifications">
       {notificationToShow && (
         <NotificationCard
           notification={notificationToShow}

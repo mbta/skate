@@ -1,6 +1,6 @@
 $search-page-search-panel-width: 22.0625rem;
 
-.m-search-page {
+.c-search-page {
   display: flex;
   flex: 1 1 auto;
   flex-direction: row;
@@ -9,17 +9,17 @@ $search-page-search-panel-width: 22.0625rem;
   overflow: visible;
 }
 
-.m-search-page__map {
+.c-search-page__map {
   display: flex;
   flex: 1 1 auto;
   position: relative;
 }
 
-.m-search-page__input {
+.c-search-page__input {
   padding: 0 1.5625rem;
 }
 
-.m-search-page__input-and-results {
+.c-search-page__input-and-results {
   background-color: $color-gray-300;
   display: flex;
   flex: 0 0 auto;
@@ -52,7 +52,7 @@ $search-page-search-panel-width: 22.0625rem;
   }
 }
 
-.m-search-page__toggle-mobile-display-button {
+.c-search-page__toggle-mobile-display-button {
   display: none;
   margin: 0.5rem auto 0;
 }
@@ -64,29 +64,29 @@ $search-page-search-panel-width: 22.0625rem;
 }
 
 @media screen and (max-width: $mobile-max-width) {
-  .m-search-page {
+  .c-search-page {
     flex-direction: column;
   }
 
-  .m-search-page__input-and-results .c-drawer-tab {
+  .c-search-page__input-and-results .c-drawer-tab {
     display: none;
   }
 
-  .m-search-page--show-list {
-    .m-search-page__input-and-results {
+  .c-search-page--show-list {
+    .c-search-page__input-and-results {
       flex: 1 1 auto;
       height: 100%;
     }
 
-    .m-search-page__map {
+    .c-search-page__map {
       // Needs to be hidden instead of not displayed so the map still gets drawn properly
       position: fixed;
       top: 100vh;
     }
   }
 
-  .m-search-page--show-map {
-    .m-search-page__input-and-results {
+  .c-search-page--show-map {
+    .c-search-page__input-and-results {
       flex: 0 0 auto;
       height: auto;
     }
@@ -96,17 +96,17 @@ $search-page-search-panel-width: 22.0625rem;
     }
   }
 
-  .m-search-page__input-and-results {
+  .c-search-page__input-and-results {
     box-sizing: border-box;
     width: 100%;
     position: relative;
   }
 
-  .m-search-page__toggle-mobile-display-button {
+  .c-search-page__toggle-mobile-display-button {
     display: block;
   }
 
-  .m-search-page__map {
+  .c-search-page__map {
     box-sizing: border-box;
     height: 75%;
     width: 100%;
@@ -115,7 +115,7 @@ $search-page-search-panel-width: 22.0625rem;
 
 $search-page-search-stub-size: 10px;
 
-.m-search-page__map .c-vehicle-properties-card {
+.c-search-page__map .c-vehicle-properties-card {
   position: absolute;
   top: 0.5rem;
   left: calc(
@@ -128,7 +128,7 @@ $search-page-search-stub-size: 10px;
   cursor: default;
 }
 
-.m-search-page__input-and-results[hidden] + *::before {
+.c-search-page__input-and-results[hidden] + *::before {
   content: "";
 
   height: 100%;
