@@ -107,8 +107,8 @@ export const Minischedule = ({
     return (
       <div
         className={joinClasses([
-          "m-minischedule",
-          `m-minischedule--${showPast ? "show-past" : "hide-past"}`,
+          "c-minischedule",
+          `c-minischedule--${showPast ? "show-past" : "hide-past"}`,
         ])}
       >
         <Header
@@ -152,17 +152,17 @@ const PastToggle = ({
   setShowPast: Dispatch<SetStateAction<boolean>>
 }) => (
   <button
-    className="m-minischedule__show-past"
+    className="c-minischedule__show-past"
     onClick={() => setShowPast(!showPast)}
   >
-    <UpDownIcon className="m-minischedule__show-past-icon" />
+    <UpDownIcon className="c-minischedule__show-past-icon" />
     {`${showPast ? "Hide" : "Show"} past trips`}
   </button>
 )
 
 const Header = ({ label, value }: { label: string; value: string }) => (
-  <div className="m-minischedule__header">
-    <span className="m-minischedule__header-label">{label}</span>
+  <div className="c-minischedule__header">
+    <span className="c-minischedule__header-label">{label}</span>
     {value}
   </div>
 )
@@ -176,19 +176,19 @@ const DutyDetails = ({ run }: { run: Run }) => {
   const formattedTotalHours = formattedDuration(totalHours)
 
   return (
-    <div className="m-minischedule__duty-details">
-      <span className="m-minischedule__header-label">Paid break</span>
-      <span className="m-minischedule__duty-details-data">
+    <div className="c-minischedule__duty-details">
+      <span className="c-minischedule__header-label">Paid break</span>
+      <span className="c-minischedule__duty-details-data">
         {formattedPaidBreakTotal}
       </span>
       <br />
-      <span className="m-minischedule__header-label">Working hours</span>
-      <span className="m-minischedule__duty-details-data">
+      <span className="c-minischedule__header-label">Working hours</span>
+      <span className="c-minischedule__duty-details-data">
         {formattedWorkingHours}
       </span>
       <br />
-      <span className="m-minischedule__header-label">Total hours</span>
-      <span className="m-minischedule__duty-details-data">
+      <span className="c-minischedule__header-label">Total hours</span>
+      <span className="c-minischedule__duty-details-data">
         {formattedTotalHours}
       </span>
     </div>
@@ -196,11 +196,11 @@ const DutyDetails = ({ run }: { run: Run }) => {
 }
 
 const DeparturePointHeader = () => (
-  <div className="m-minischedule__departure-point-header">
-    <span className="m-minischedule__departure-point-label">
+  <div className="c-minischedule__departure-point-header">
+    <span className="c-minischedule__departure-point-label">
       Departure point
     </span>
-    <span className="m-minischedule__scheduled-departure-label">
+    <span className="c-minischedule__scheduled-departure-label">
       Scheduled departure
     </span>
   </div>
@@ -305,7 +305,7 @@ const Layover = ({
       rightText={formattedDuration(layoverDuration)}
       timeBasedStyle={timeBasedStyle}
       activeStatus={activeStatus}
-      extraClasses={["m-minischedule__layover-row"]}
+      extraClasses={["c-minischedule__layover-row"]}
     />
   )
 }
@@ -344,9 +344,9 @@ const Piece = ({
     : undefined
 
   return (
-    <div className={`m-minischedule__piece--${pieceTimeBasedStyle}`}>
+    <div className={`c-minischedule__piece--${pieceTimeBasedStyle}`}>
       {view === "block" ? (
-        <div className="m-minischedule__run-header">{piece.runId}</div>
+        <div className="c-minischedule__run-header">{piece.runId}</div>
       ) : null}
       {view === "run" && piece.startMidRoute ? (
         <MidRouteSwingOnFirstHalf
@@ -362,7 +362,7 @@ const Piece = ({
           timeBasedStyle={startTimeBasedStyle}
         />
       )}
-      <div className="m-minischedule__piece-rows">
+      <div className="c-minischedule__piece-rows">
         {isSwingOn ? (
           <Row
             key="swing-on"
@@ -447,7 +447,7 @@ const MidRouteSwingOnFirstHalf = ({
     activeStatus={null}
     overloadOffset={overloadOffset}
     belowText={`Run ${trip.runId}`}
-    extraClasses={["m-minischedule__row--mid-route-first-half"]}
+    extraClasses={["c-minischedule__row--mid-route-first-half"]}
   />
 )
 
@@ -628,7 +628,7 @@ const iconForDirectionOnLadder: (
   ladderDirections: LadderDirections,
   routeId: RouteId
 ) => ReactElement = (directionId, ladderDirections, routeId) => {
-  const iconClassName = "m-minischedule__svg--revenue"
+  const iconClassName = "c-minischedule__svg--revenue"
   if (directionId === null) {
     return <QuestionMarkIcon className={iconClassName} />
   }
@@ -734,26 +734,26 @@ const Row = ({
   return (
     <div
       className={joinClasses([
-        "m-minischedule__row",
-        timeBasedStyle && "m-minischedule__row--" + timeBasedStyle,
+        "c-minischedule__row",
+        timeBasedStyle && "c-minischedule__row--" + timeBasedStyle,
         ...(activeStatus
           ? statusClasses(activeStatus, userSettings.vehicleAdherenceColors)
           : []),
         ...(extraClasses || []),
       ])}
     >
-      <div className="m-minischedule__icon">{icon}</div>
-      <div className="m-minischedule__left-text">
+      <div className="c-minischedule__icon">{icon}</div>
+      <div className="c-minischedule__left-text">
         {text}
         {belowText && (
           <>
             <br />
-            <span className="m-minischedule__below-text">{belowText}</span>
+            <span className="c-minischedule__below-text">{belowText}</span>
           </>
         )}
       </div>
       {rightText && (
-        <div className="m-minischedule__right-text">{rightText}</div>
+        <div className="c-minischedule__right-text">{rightText}</div>
       )}
     </div>
   )
