@@ -189,7 +189,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
       <PickerContainer>
         <>
-          <div className="c-ladder-page__routes-presets-toggle u-hide">
+          <div className="c-ladder-page__routes-presets-toggle u-hideable">
             <button
               id="c-ladder-page__routes_picker_button"
               className={

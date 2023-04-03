@@ -2,7 +2,7 @@
 
 exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
 <div
-  className="c-route-picker u-hide"
+  className="c-route-picker u-hideable"
 >
   <div
     className="c-route-filter"
@@ -127,7 +127,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
 
 exports[`RoutePicker renders a loading/empty state 1`] = `
 <div
-  className="c-route-picker u-hide"
+  className="c-route-picker u-hideable"
 >
   <div
     className="c-route-filter"

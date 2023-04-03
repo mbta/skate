@@ -45,7 +45,7 @@ const SearchInputAndResults = ({
 
   return (
     <>
-      <div className="c-map-page__input u-hide">
+      <div className="c-map-page__input u-hideable">
         <SearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
@@ -55,7 +55,7 @@ const SearchInputAndResults = ({
 
       <hr />
 
-      <div className="m-search-display u-hide">
+      <div className="m-search-display u-hideable">
         {searchVehicles !== null &&
         thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
           <SearchResults
