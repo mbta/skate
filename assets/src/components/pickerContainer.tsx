@@ -14,7 +14,7 @@ const PickerContainer = ({ children }: Props): ReactElement<HTMLDivElement> => {
   return (
     <>
       <div
-        className={`m-picker-container ${
+        className={`c-picker-container ${
           state.pickerContainerIsVisible ? "visible" : "hidden"
         }`}
         data-testid="picker-container"
