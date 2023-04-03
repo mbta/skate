@@ -1,6 +1,6 @@
 $late-view-background-color: $color-bg-light;
 
-.m-late-view {
+.c-late-view {
   @include modal-content;
   background-color: $late-view-background-color;
   height: 100%;
@@ -15,18 +15,18 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
-.m-late-view__content-wrapper {
+.c-late-view__content-wrapper {
   height: 100%;
   overflow-y: scroll;
 }
 
-.m-late-view__panels {
+.c-late-view__panels {
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem 0 1.6rem;
 }
 
-.m-late-view__panel {
+.c-late-view__panel {
   overflow-x: scroll;
   background-color: $white;
   border-radius: 0.5rem;
@@ -44,7 +44,7 @@ $late-view-background-color: $color-bg-light;
     display: none;
   }
 
-  .m-late-view__panel-header {
+  .c-late-view__panel-header {
     font: inherit;
     margin: 0;
     padding: 1rem 1.5rem;
@@ -96,21 +96,21 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
-.m-late-view__missing-logons {
+.c-late-view__missing-logons {
   width: 100%;
 }
 
-.m-late-view__late-buses {
+.c-late-view__late-buses {
   width: 100%;
 }
 
-.m-late-view__run-link {
+.c-late-view__run-link {
   align-items: center;
   display: flex;
   font-weight: 600;
   height: 100%;
 
-  .m-late-view__run-icon {
+  .c-late-view__run-icon {
     display: inline-block;
     margin-right: 0.375rem;
     position: relative;
@@ -122,7 +122,7 @@ $late-view-background-color: $color-bg-light;
     right: 0;
   }
 
-  .m-late-view__block-waiver-icon {
+  .c-late-view__block-waiver-icon {
     svg {
       height: 1.25rem;
       stroke: $color-primary-dark;
@@ -131,7 +131,7 @@ $late-view-background-color: $color-bg-light;
     }
   }
 
-  .m-late-view__ghost-icon {
+  .c-late-view__ghost-icon {
     svg {
       height: 1.25rem;
       top: -0.625rem;
@@ -139,7 +139,7 @@ $late-view-background-color: $color-bg-light;
     }
   }
 
-  .m-late-view__up-right-icon {
+  .c-late-view__up-right-icon {
     svg {
       height: 0.5rem;
       stroke: $color-primary-dark;
@@ -149,7 +149,7 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
-.m-late-view__hide-check-header {
+.c-late-view__hide-check-header {
   width: 5%;
   min-width: 3rem;
   display: flex;
@@ -157,36 +157,36 @@ $late-view-background-color: $color-bg-light;
   align-items: center;
 }
 
-.m-late-view__adherence-header {
+.c-late-view__adherence-header {
   width: 15%;
 }
 
-.m-late-view__route-header {
+.c-late-view__route-header {
   width: 15%;
 }
 
-.m-late-view__vehicle-header {
+.c-late-view__vehicle-header {
   width: 15%;
 }
 
-.m-late-view__run-number-header {
+.c-late-view__run-number-header {
   width: 15%;
 }
 
-.m-late-view__scheduled-logon-header {
+.c-late-view__scheduled-logon-header {
   width: 20%;
 }
 
-.m-late-view__location-header {
+.c-late-view__location-header {
   width: 45%;
 }
 
-.m-late-view__operator-header {
+.c-late-view__operator-header {
   padding-left: 0.5rem;
   width: 35%;
 }
 
-.m-late-view__run-number-cell {
+.c-late-view__run-number-cell {
   position: relative;
   text-decoration: underline;
 
@@ -195,11 +195,11 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
-.m-late-view__operator-name {
+.c-late-view__operator-name {
   padding-left: 0.5rem;
 }
 
-.m-late-view__route-pill {
+.c-late-view__route-pill {
   background: $color-primary-dark;
   border-radius: 0.25rem;
   font-family: $font-family-route-pill;
@@ -212,7 +212,7 @@ $late-view-background-color: $color-bg-light;
   color: $white;
 }
 
-.m-late-view__popup {
+.c-late-view__popup {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   border: 1px solid #e5e7eb;
   position: absolute;
@@ -242,7 +242,7 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
-.m-late-view__hide-popup {
+.c-late-view__hide-popup {
   button {
     background-color: #055c66;
     color: $color-gray-50;
@@ -257,14 +257,14 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
-.m-late-view__unhide-popup {
+.c-late-view__unhide-popup {
   button {
     background-color: $color-gray-50;
     color: #055c66;
   }
 }
 
-.m-late-view__data-row {
+.c-late-view__data-row {
   td:first-child {
     display: flex;
     justify-content: center;
@@ -286,18 +286,18 @@ $late-view-background-color: $color-bg-light;
   }
 }
 
-.m-late-view__data-row--selected {
+.c-late-view__data-row--selected {
   background-color: #f1f8f3;
 }
 
-.m-late-view__hide-toggle {
+.c-late-view__hide-toggle {
   svg {
     height: 1rem;
     width: 1rem;
   }
 }
 
-.m-late-view__toggle-exterior {
+.c-late-view__toggle-exterior {
   display: inline-block;
   width: 2rem;
   margin-left: 0.5rem;
@@ -305,47 +305,47 @@ $late-view-background-color: $color-bg-light;
   border-width: 1px;
 }
 
-.m-late-view__toggle-interior {
+.c-late-view__toggle-interior {
   width: 1rem;
   position: absolute;
   border-width: 1px;
   top: -1px;
 }
 
-.m-late-view__toggle-exterior,
-.m-late-view__toggle-interior {
+.c-late-view__toggle-exterior,
+.c-late-view__toggle-interior {
   height: 1rem;
   border-radius: 0.5rem;
   border-style: solid;
 }
 
-.m-late-view__hide-toggle--hidden {
+.c-late-view__hide-toggle--hidden {
   svg path {
     stroke: #6e717d;
   }
 
-  .m-late-view__toggle-interior {
+  .c-late-view__toggle-interior {
     left: -1px;
   }
 
-  .m-late-view__toggle-exterior,
-  .m-late-view__toggle-interior {
+  .c-late-view__toggle-exterior,
+  .c-late-view__toggle-interior {
     border-color: #6e717d;
   }
 }
 
-.m-late-view__hide-toggle--unhidden {
+.c-late-view__hide-toggle--unhidden {
   svg path {
     stroke: $color-gray-800;
   }
 
-  .m-late-view__toggle-interior {
+  .c-late-view__toggle-interior {
     right: -1px;
     background-color: $color-gray-800;
   }
 
-  .m-late-view__toggle-exterior,
-  .m-late-view__toggle-interior {
+  .c-late-view__toggle-exterior,
+  .c-late-view__toggle-interior {
     border-color: $color-gray-800;
   }
 }
