@@ -287,17 +287,17 @@ const LateView = (): ReactElement<HTMLElement> => {
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
-    <div className={`m-late-view ${mobileMenuClass}`}>
-      <div className="m-late-view__content-wrapper">
+    <div className={`c-late-view ${mobileMenuClass}`}>
+      <div className="c-late-view__content-wrapper">
         <ViewHeader
           title="Late View"
           closeView={() => dispatch(closeView())}
           backlinkToView={previousView}
           followBacklink={() => dispatch(returnToPreviousView())}
         />
-        <div className="m-late-view__panels">
-          <div className="m-late-view__panel m-late-view__missing-logons">
-            <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
+        <div className="c-late-view__panels">
+          <div className="c-late-view__panel c-late-view__missing-logons">
+            <h2 className="c-late-view__panel-header c-late-view__missing-logons-panel-header">
               Missing logons
               {anyRowsHidden && (
                 <UnhideToggle
@@ -309,7 +309,7 @@ const LateView = (): ReactElement<HTMLElement> => {
             <table>
               <thead>
                 <tr>
-                  <th className="m-late-view__hide-check-header">
+                  <th className="c-late-view__hide-check-header">
                     <MasterCheckbox
                       attachedVehiclesOrGhosts={missingLogons}
                       selectedIds={selectedIds}
@@ -318,12 +318,12 @@ const LateView = (): ReactElement<HTMLElement> => {
                       tableName="missing-logons"
                     />
                   </th>
-                  <th className="m-late-view__scheduled-logon-header">
+                  <th className="c-late-view__scheduled-logon-header">
                     Scheduled Logon
                   </th>
-                  <th className="m-late-view__route-header">Route</th>
-                  <th className="m-late-view__run-number-header">Run</th>
-                  <th className="m-late-view__location-header">Location</th>
+                  <th className="c-late-view__route-header">Route</th>
+                  <th className="c-late-view__run-number-header">Run</th>
+                  <th className="c-late-view__location-header">Location</th>
                 </tr>
               </thead>
               <tbody>
@@ -339,8 +339,8 @@ const LateView = (): ReactElement<HTMLElement> => {
               </tbody>
             </table>
           </div>
-          <div className="m-late-view__panel m-late-view__late-buses">
-            <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
+          <div className="c-late-view__panel c-late-view__late-buses">
+            <h2 className="c-late-view__panel-header c-late-view__late-buses-panel-header">
               Late buses
               {anyRowsHidden && (
                 <UnhideToggle
@@ -352,7 +352,7 @@ const LateView = (): ReactElement<HTMLElement> => {
             <table>
               <thead>
                 <tr>
-                  <th className="m-late-view__hide-check-header">
+                  <th className="c-late-view__hide-check-header">
                     <MasterCheckbox
                       attachedVehiclesOrGhosts={lateVehiclesAndGhosts}
                       selectedIds={selectedIds}
@@ -361,13 +361,13 @@ const LateView = (): ReactElement<HTMLElement> => {
                       tableName="late-buses"
                     />
                   </th>
-                  <th className="m-late-view__adherence-header">Adherence</th>
-                  <th className="m-late-view__route-header">Route</th>
-                  <th className="m-late-view__vehicle-header">Vehicle</th>
-                  <th className="m-late-view__run-number-header m-late-view__run-number-header--late">
+                  <th className="c-late-view__adherence-header">Adherence</th>
+                  <th className="c-late-view__route-header">Route</th>
+                  <th className="c-late-view__vehicle-header">Vehicle</th>
+                  <th className="c-late-view__run-number-header c-late-view__run-number-header--late">
                     Run
                   </th>
-                  <th className="m-late-view__operator-header">Driver</th>
+                  <th className="c-late-view__operator-header">Driver</th>
                 </tr>
               </thead>
               <tbody>
@@ -428,11 +428,11 @@ const LateGhostRow = ({
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
   const className = isSelected(selectedIds, ghost)
-    ? "m-late-view__data-row--selected"
-    : "m-late-view__data-row--unselected"
+    ? "c-late-view__data-row--selected"
+    : "c-late-view__data-row--unselected"
 
   return (
-    <tr className={`m-late-view__data-row ${className}`} data-testid="row-data">
+    <tr className={`c-late-view__data-row ${className}`} data-testid="row-data">
       <td>
         <HideCheckbox
           hidingTimestamps={hidingTimestamps}
@@ -441,16 +441,16 @@ const LateGhostRow = ({
           toggleCheckedState={toggleCheckedState}
         />
       </td>
-      <td className="m-late-view__adherence-cell">N/A</td>
+      <td className="c-late-view__adherence-cell">N/A</td>
       <td>
-        <span className="m-late-view__route-pill">
+        <span className="c-late-view__route-pill">
           {routeNameOrId(ghost.routeId, routes)}
         </span>
       </td>
       <td />
-      <td className="m-late-view__run-number-cell m-late-view__run-number-cell--late">
+      <td className="c-late-view__run-number-cell c-late-view__run-number-cell--late">
         <button
-          className="m-late-view__run-link"
+          className="c-late-view__run-link"
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number_ghost")
             window.FS?.event("User clicked Late View Run Number", {
@@ -461,9 +461,9 @@ const LateGhostRow = ({
           }}
         >
           {ghost.blockWaivers.length > 0 ? (
-            <LateViewGhostWithWaiverIcon className="m-late-view__run-icon m-late-view__ghost-icon" />
+            <LateViewGhostWithWaiverIcon className="c-late-view__run-icon c-late-view__ghost-icon" />
           ) : (
-            <LateViewGhostIcon className="m-late-view__run-icon m-late-view__ghost-icon" />
+            <LateViewGhostIcon className="c-late-view__run-icon c-late-view__ghost-icon" />
           )}
           {runIdToLabel(ghost.runId)}
         </button>
@@ -489,11 +489,11 @@ const LateBusRow = ({
   const routes = useContext(RoutesContext)
 
   const className = isSelected(selectedIds, vehicle)
-    ? "m-late-view__data-row--selected"
-    : "m-late-view__data-row--unselected"
+    ? "c-late-view__data-row--selected"
+    : "c-late-view__data-row--unselected"
 
   return (
-    <tr className={`m-late-view__data-row ${className}`} data-testid="row-data">
+    <tr className={`c-late-view__data-row ${className}`} data-testid="row-data">
       <td>
         <HideCheckbox
           vehicleOrGhost={vehicle}
@@ -502,18 +502,18 @@ const LateBusRow = ({
           toggleCheckedState={toggleCheckedState}
         />
       </td>
-      <td className="m-late-view__adherence-cell">
+      <td className="c-late-view__adherence-cell">
         {secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}
       </td>
       <td>
-        <span className="m-late-view__route-pill">
+        <span className="c-late-view__route-pill">
           {routeNameOrId(vehicle.routeId, routes)}
         </span>
       </td>
       <td>{vehicle.label}</td>
-      <td className="m-late-view__run-number-cell m-late-view__run-number-cell--late">
+      <td className="c-late-view__run-number-cell c-late-view__run-number-cell--late">
         <button
-          className="m-late-view__run-link"
+          className="c-late-view__run-link"
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number")
             window.FS?.event("User clicked Late View Run Number", {
@@ -523,14 +523,14 @@ const LateBusRow = ({
           }}
         >
           {vehicle.blockWaivers.length > 0 ? (
-            <BangIcon className="m-late-view__run-icon m-late-view__block-waiver-icon" />
+            <BangIcon className="c-late-view__run-icon c-late-view__block-waiver-icon" />
           ) : (
-            <UpRightIcon className="m-late-view__run-icon m-late-view__up-right-icon" />
+            <UpRightIcon className="c-late-view__run-icon c-late-view__up-right-icon" />
           )}
           {runIdToLabel(vehicle.runId)}
         </button>
       </td>
-      <td className="m-late-view__operator-name fs-mask">
+      <td className="c-late-view__operator-name fs-mask">
         {vehicle.operatorLastName} &ndash; {vehicle.operatorId}
       </td>
     </tr>
@@ -551,11 +551,11 @@ const MissingLogonRow = ({
   const routes = useContext(RoutesContext)
 
   const className = isSelected(selectedIds, ghost)
-    ? "m-late-view__data-row--selected"
-    : "m-late-view__data-row--unselected"
+    ? "c-late-view__data-row--selected"
+    : "c-late-view__data-row--unselected"
 
   return (
-    <tr className={`m-late-view__data-row ${className}`} data-testid="row-data">
+    <tr className={`c-late-view__data-row ${className}`} data-testid="row-data">
       <td>
         <HideCheckbox
           vehicleOrGhost={ghost}
@@ -570,7 +570,7 @@ const MissingLogonRow = ({
           : ""}
       </td>
       <td>
-        <span className="m-late-view__route-pill">
+        <span className="c-late-view__route-pill">
           {routeNameOrId(ghost.currentPieceFirstRoute, routes)}
         </span>
       </td>
@@ -628,7 +628,7 @@ const HidePopup = ({
   }
 
   return (
-    <div className="m-late-view__popup m-late-view__hide-popup">
+    <div className="c-late-view__popup c-late-view__hide-popup">
       {nRowsSelected} selected
       <button onClick={onclickCallback}>{<HiddenIcon />} Hide</button>
     </div>
@@ -642,7 +642,7 @@ const UnhidePopup = ({
   nRecentlyHidden: number
   unhideRecentlyHidden: () => void
 }): ReactElement<HTMLElement> => (
-  <div className="m-late-view__popup m-late-view__unhide-popup">
+  <div className="c-late-view__popup c-late-view__unhide-popup">
     {nRecentlyHidden} hidden
     <button onClick={unhideRecentlyHidden}>Undo</button>
   </div>
@@ -656,7 +656,7 @@ const UnhideToggle = ({
   toggleViewHidden: () => void
 }): ReactElement<HTMLElement> => (
   <button
-    className={`m-late-view__hide-toggle m-late-view__hide-toggle--${
+    className={`c-late-view__hide-toggle c-late-view__hide-toggle--${
       viewHidden ? "unhidden" : "hidden"
     }`}
     onClick={() => {
@@ -667,8 +667,8 @@ const UnhideToggle = ({
     title={viewHidden ? "Exclude Hidden" : "Include Hidden"}
   >
     {viewHidden ? <UnhiddenIcon /> : <HiddenIcon />}
-    <div className="m-late-view__toggle-exterior">
-      <div className="m-late-view__toggle-interior" />
+    <div className="c-late-view__toggle-exterior">
+      <div className="c-late-view__toggle-interior" />
     </div>
   </button>
 )
@@ -727,7 +727,7 @@ const MasterCheckbox = ({
   return (
     <input
       type="checkbox"
-      className={`m-late-view__master-checkbox`}
+      className={`c-late-view__master-checkbox`}
       data-testid={`${tableName}-master-checkbox`}
       readOnly={true}
       onClick={toggleRows}

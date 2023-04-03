@@ -776,7 +776,7 @@ describe("<MapPage />", () => {
           screen.queryByRole("button", { name: `route ${vehicle.routeId}` })
         ).not.toBeInTheDocument()
 
-        const mapContainer = container.querySelector(".m-map-page__map")!
+        const mapContainer = container.querySelector(".c-map-page__map")!
         expect(
           mapContainer.querySelector(".c-vehicle-icon__label")
         ).not.toBeInTheDocument()

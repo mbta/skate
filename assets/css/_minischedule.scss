@@ -1,11 +1,11 @@
-.m-minischedule--hide-past {
-  .m-minischedule__piece--past,
-  .m-minischedule__row--past {
+.c-minischedule--hide-past {
+  .c-minischedule__piece--past,
+  .c-minischedule__row--past {
     display: none;
   }
 }
 
-.m-minischedule__show-past {
+.c-minischedule__show-past {
   @include font-body;
   color: $color-primary-dark;
   padding-left: 1.875rem;
@@ -15,7 +15,7 @@
   width: 100%;
 }
 
-.m-minischedule__show-past-icon {
+.c-minischedule__show-past-icon {
   display: inline-block;
   margin-right: 0.25rem;
   vertical-align: middle;
@@ -27,36 +27,36 @@
   }
 }
 
-.m-minischedule__header {
+.c-minischedule__header {
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
 }
 
-.m-minischedule__header-label {
+.c-minischedule__header-label {
   @include font-label;
   margin-right: 1rem;
 }
 
-.m-minischedule__run-header {
+.c-minischedule__run-header {
   background-color: $color-bg-light;
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
 }
 
-.m-minischedule__duty-details {
+.c-minischedule__duty-details {
   background-color: $color-secondary-light;
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid $color-primary-dark;
 
-  .m-minischedule__header-label {
+  .c-minischedule__header-label {
     display: inline-block;
     margin-bottom: 0.5rem;
     width: 40%;
   }
 }
 
-.m-minischedule__row {
+.c-minischedule__row {
   @include font-body;
   display: flex;
   padding-bottom: 0.5rem;
@@ -67,20 +67,20 @@
     border-top: 1px solid $color-component-light;
   }
 
-  &.m-minischedule__layover-row {
+  &.c-minischedule__layover-row {
     border-top-style: none;
     padding-top: 0;
     padding-bottom: 0.25rem;
 
-    .m-minischedule__left-text,
-    .m-minischedule__right-text {
+    .c-minischedule__left-text,
+    .c-minischedule__right-text {
       border-top: 1px solid $color-component-light;
       padding-top: 0.25rem;
     }
   }
 }
 
-.m-minischedule__icon {
+.c-minischedule__icon {
   border-radius: 50%;
   flex: 0 0 auto;
   height: 1rem;
@@ -90,22 +90,22 @@
   z-index: 2;
 }
 
-.m-minischedule__left-text {
+.c-minischedule__left-text {
   flex: 1 1 auto;
 }
 
-.m-minischedule__right-text {
+.c-minischedule__right-text {
   flex: 0 0 auto;
   padding-right: 0.5rem;
 }
 
-.m-minischedule__below-text {
+.c-minischedule__below-text {
   @include font-small;
 }
 
-.m-minischedule__piece-rows {
+.c-minischedule__piece-rows {
   // this is all about drawing the line through the icons on the left
-  .m-minischedule__row {
+  .c-minischedule__row {
     position: relative;
 
     &::before,
@@ -116,7 +116,7 @@
       width: 0.375rem;
     }
 
-    &.m-minischedule__row--current {
+    &.c-minischedule__row--current {
       &::before,
       &::after {
         left: 1.25rem;
@@ -124,7 +124,7 @@
     }
   }
 
-  .m-minischedule__row:not(:first-child) {
+  .c-minischedule__row:not(:first-child) {
     &::before {
       bottom: calc(100% - 1rem);
       content: "";
@@ -132,7 +132,7 @@
     }
   }
 
-  .m-minischedule__row:not(:last-child) {
+  .c-minischedule__row:not(:last-child) {
     &::after {
       bottom: 0;
       content: "";
@@ -141,10 +141,10 @@
   }
 }
 
-.m-minischedule__piece--past,
-.m-minischedule__piece--future {
-  .m-minischedule__piece-rows {
-    .m-minischedule__icon {
+.c-minischedule__piece--past,
+.c-minischedule__piece--future {
+  .c-minischedule__piece-rows {
+    .c-minischedule__icon {
       &:not(:empty) {
         background-color: $color-component-light;
       }
@@ -154,7 +154,7 @@
       }
     }
 
-    .m-minischedule__row {
+    .c-minischedule__row {
       &::before,
       &::after {
         background-color: $color-component-light;
@@ -163,10 +163,10 @@
   }
 }
 
-.m-minischedule__piece--current,
-.m-minischedule__piece--unknown {
-  .m-minischedule__piece-rows {
-    .m-minischedule__icon {
+.c-minischedule__piece--current,
+.c-minischedule__piece--unknown {
+  .c-minischedule__piece-rows {
+    .c-minischedule__icon {
       &:not(:empty) {
         background-color: $color-primary;
       }
@@ -176,7 +176,7 @@
       }
     }
 
-    .m-minischedule__row {
+    .c-minischedule__row {
       &::before,
       &::after {
         background-color: $color-primary;
@@ -185,17 +185,17 @@
   }
 }
 
-.m-minischedule__row--past {
+.c-minischedule__row--past {
   color: $color-font-grey;
 }
 
-.m-minischedule__row--current {
+.c-minischedule__row--current {
   border-left-style: solid;
   border-left-width: 0.5rem;
   font-weight: bold;
   padding-left: 0.5rem;
 
-  .m-minischedule__svg--revenue svg {
+  .c-minischedule__svg--revenue svg {
     stroke: white;
     stroke-width: 0.25rem;
   }
@@ -253,10 +253,10 @@
   }
 }
 
-.m-minischedule__row--mid-route-first-half {
+.c-minischedule__row--mid-route-first-half {
   color: $color-font-grey;
 
-  .m-minischedule__icon {
+  .c-minischedule__icon {
     &:not(:empty) {
       background-color: $color-component-light;
     }
@@ -267,7 +267,7 @@
   }
 }
 
-.m-minischedule__departure-point-header {
+.c-minischedule__departure-point-header {
   color: $color-primary-dark;
   display: flex;
   justify-content: space-between;
@@ -278,11 +278,11 @@
   padding-bottom: 0.5rem;
   border-bottom: 1px solid $color-component-light;
 
-  .m-minischedule__departure-point-label {
+  .c-minischedule__departure-point-label {
     margin-left: 3rem;
   }
 
-  .m-minischedule__scheduled-departure-label {
+  .c-minischedule__scheduled-departure-label {
     margin-right: 0.5rem;
   }
 }

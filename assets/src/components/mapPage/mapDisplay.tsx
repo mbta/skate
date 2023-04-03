@@ -233,7 +233,7 @@ const SelectionCardContainer = ({
   return (
     <div
       {...keepUserInputFromLeaflet}
-      className="m-map-display__selected-entity-card-container"
+      className="c-map-selection-card-container"
     >
       {children}
     </div>

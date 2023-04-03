@@ -1,6 +1,6 @@
 $map-page-search-panel-width: 24rem;
 
-.m-map-page {
+.c-map-page {
   display: flex;
   flex: 1 1 auto;
   flex-direction: row;
@@ -9,17 +9,17 @@ $map-page-search-panel-width: 24rem;
   overflow: visible;
 }
 
-.m-map-page__map {
+.c-map-page__map {
   display: flex;
   flex: 1 1 auto;
   position: relative;
 }
 
-.m-map-page__input {
+.c-map-page__input {
   padding: 0 1.5625rem;
 }
 
-.m-map-page__input-and-results {
+.c-map-page__input-and-results {
   background-color: $color-gray-300;
   display: flex;
   flex: 0 0 auto;
@@ -64,7 +64,7 @@ $map-page-search-panel-width: 24rem;
   }
 }
 
-.m-map-page__input-and-results .c-drawer-tab {
+.c-map-page__input-and-results .c-drawer-tab {
   left: 100%;
   top: 0;
   background-color: $color-gray-300;
@@ -78,7 +78,7 @@ $map-page-search-panel-width: 24rem;
   }
 }
 
-.m-map-page__toggle-mobile-display-button {
+.c-map-page__toggle-mobile-display-button {
   display: none;
   margin: 0.5rem auto 0;
 }
@@ -91,7 +91,7 @@ $map-page-search-panel-width: 24rem;
 
 $map-page-search-stub-size: 10px;
 
-.m-map-page__map .m-map-display__selected-entity-card-container {
+.c-map-page__map .c-map-selection-card-container {
   position: absolute;
   display: flex;
   flex-direction: column;

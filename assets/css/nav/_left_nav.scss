@@ -1,4 +1,4 @@
-.m-left-nav {
+.c-left-nav {
   width: calc(11.5rem + 1px);
   height: 100%;
   box-sizing: border-box;
@@ -7,20 +7,20 @@
 
   border-right: 1px solid $color-gray-300;
 
-  .m-left-nav__icon {
+  .c-left-nav__icon {
     padding-right: 0.75rem;
   }
 }
 
-.m-left-nav--collapsed {
+.c-left-nav--collapsed {
   width: 4.25rem;
 
-  .m-left-nav__icon {
+  .c-left-nav__icon {
     padding-right: 0;
   }
 }
 
-.m-left-nav__modes-and-views {
+.c-left-nav__modes-and-views {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -40,7 +40,7 @@
   }
 }
 
-.m-left-nav__menu-button {
+.c-left-nav__menu-button {
   @include button-icon(1.25rem);
   display: flex;
   justify-content: center;
@@ -53,7 +53,7 @@
   background-color: $color-gray-200;
 }
 
-.m-left-nav__links {
+.c-left-nav__links {
   display: flex;
   flex-direction: column;
   width: calc(100% + 1px);
@@ -64,15 +64,15 @@
   }
 }
 
-.m-left-nav--collapsed {
-  .m-left-nav__link {
+.c-left-nav--collapsed {
+  .c-left-nav__link {
     padding: 0;
     width: 100%;
     justify-content: center;
   }
 }
 
-.m-left-nav__link {
+.c-left-nav__link {
   @include button-icon(1.25rem);
   display: flex;
   align-items: center;
@@ -93,7 +93,7 @@
     font-weight: 500;
   }
 
-  &.m-left-nav__link--active {
+  &.c-left-nav__link--active {
     background-color: $color-eggplant-700;
     font-weight: 500;
     color: $white;
@@ -104,17 +104,17 @@
   }
 }
 
-.m-left-nav__view {
+.c-left-nav__view {
   background-color: $white;
   border: 1px solid $color-gray-200;
 
-  &.m-left-nav__view--active {
+  &.c-left-nav__view--active {
     background-color: $color-eggplant-200;
     font-weight: 500;
     color: $color-eggplant-700;
     border: 1px solid transparent;
 
-    .m-left-nav__icon svg {
+    .c-left-nav__icon svg {
       stroke: $color-eggplant-700;
 
       circle {
@@ -123,14 +123,14 @@
     }
   }
 
-  &.m-left-nav__view--disabled {
+  &.c-left-nav__view--disabled {
     cursor: not-allowed;
     background-color: $color-gray-300;
     color: $color-gray-500;
     font-weight: var(--font-weight-reg);
   }
 
-  .m-left-nav__icon {
+  .c-left-nav__icon {
     svg {
       fill: $color-gray-50;
       stroke: $color-gray-600;
@@ -159,12 +159,12 @@
       }
     }
 
-    &.m-left-nav__icon--swings-view svg {
+    &.c-left-nav__icon--swings-view svg {
       fill: transparent;
       transform: scaleX(-1);
     }
 
-    &.m-left-nav__icon--notifications-view {
+    &.c-left-nav__icon--notifications-view {
       svg {
         path {
           fill: $color-gray-600;
@@ -187,7 +187,7 @@
       }
     }
 
-    &.m-left-nav__icon--notifications-view--active {
+    &.c-left-nav__icon--notifications-view--active {
       svg {
         path {
           fill: $color-eggplant-800;
