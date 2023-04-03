@@ -4,11 +4,11 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page inherit-box border-box"
+    class="c-map-page inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results visible"
+      class="c-map-page__input-and-results visible"
     >
       <div
         class="c-drawer-tab"
@@ -23,7 +23,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         </button>
       </div>
       <div
-        class="m-map-page__input u-hide"
+        class="c-map-page__input u-hide"
       >
         <form
           aria-label="Search Map"
@@ -159,7 +159,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       </div>
     </div>
     <div
-      class="m-map-page__map"
+      class="c-map-page__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -370,11 +370,11 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page inherit-box border-box"
+    class="c-map-page inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results visible"
+      class="c-map-page__input-and-results visible"
     >
       <div
         class="c-drawer-tab"
@@ -389,7 +389,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         </button>
       </div>
       <div
-        class="m-map-page__input u-hide"
+        class="c-map-page__input u-hide"
       >
         <form
           aria-label="Search Map"
@@ -525,7 +525,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       </div>
     </div>
     <div
-      class="m-map-page__map"
+      class="c-map-page__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -736,11 +736,11 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
 <DocumentFragment>
   <div
     aria-label="Search Map Page"
-    class="m-map-page inherit-box border-box"
+    class="c-map-page inherit-box border-box"
   >
     <div
       aria-label="Map Search Panel"
-      class="m-map-page__input-and-results hidden"
+      class="c-map-page__input-and-results hidden"
     >
       <div
         class="c-drawer-tab"
@@ -755,7 +755,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
         </button>
       </div>
       <div
-        class="m-map-page__input u-hide"
+        class="c-map-page__input u-hide"
       >
         <form
           aria-label="Search Map"
@@ -891,7 +891,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       </div>
     </div>
     <div
-      class="m-map-page__map"
+      class="c-map-page__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"

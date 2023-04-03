@@ -45,7 +45,7 @@ const SearchInputAndResults = ({
 
   return (
     <>
-      <div className="m-map-page__input u-hide">
+      <div className="c-map-page__input u-hide">
         <SearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
@@ -127,11 +127,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div
-      className="m-map-page inherit-box border-box"
+      className="c-map-page inherit-box border-box"
       aria-label="Search Map Page"
     >
       <div
-        className={`m-map-page__input-and-results ${
+        className={`c-map-page__input-and-results ${
           searchOpen ? "visible" : "hidden"
         }`}
         aria-label="Map Search Panel"
@@ -148,7 +148,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           }}
         />
       </div>
-      <div className="m-map-page__map">
+      <div className="c-map-page__map">
         <MapDisplay
           selectedEntity={selectedEntity}
           setSelection={setSelection}
