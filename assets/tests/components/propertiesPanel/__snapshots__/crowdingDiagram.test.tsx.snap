@@ -2,10 +2,10 @@
 
 exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
 <div
-  className="m-crowding-diagram"
+  className="c-crowding-diagram"
 >
   <div
-    className="m-crowding-diagram__properties"
+    className="c-crowding-diagram__properties"
   >
     <label
       className="c-properties-list__property-label"
@@ -32,7 +32,7 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
         <span
           aria-hidden={true}
           aria-label=""
-          className="m-crowding-diagram__tooltip-anchor"
+          className="c-crowding-diagram__tooltip-anchor"
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -49,16 +49,16 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
      seats
     <br />
     <span
-      className="m-crowding-diagram__status-description m-crowding-diagram__status-description--crowded"
+      className="c-crowding-diagram__status-description c-crowding-diagram__status-description--crowded"
     >
       Crowded
     </span>
   </div>
   <div
-    className="m-crowding-diagram__crowding-icon-wrapper"
+    className="c-crowding-diagram__crowding-icon-wrapper"
   >
     <span
-      className="m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--crowded"
+      className="c-crowding-diagram__crowding-icon c-crowding-diagram__crowding-icon--crowded"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<svg/>",
@@ -71,10 +71,10 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
 
 exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
 <div
-  className="m-crowding-diagram"
+  className="c-crowding-diagram"
 >
   <div
-    className="m-crowding-diagram__properties"
+    className="c-crowding-diagram__properties"
   >
     <label
       className="c-properties-list__property-label"
@@ -101,7 +101,7 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
         <span
           aria-hidden={true}
           aria-label=""
-          className="m-crowding-diagram__tooltip-anchor"
+          className="c-crowding-diagram__tooltip-anchor"
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -118,16 +118,16 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
      seats
     <br />
     <span
-      className="m-crowding-diagram__status-description m-crowding-diagram__status-description--some-crowding"
+      className="c-crowding-diagram__status-description c-crowding-diagram__status-description--some-crowding"
     >
       Some crowding
     </span>
   </div>
   <div
-    className="m-crowding-diagram__crowding-icon-wrapper"
+    className="c-crowding-diagram__crowding-icon-wrapper"
   >
     <span
-      className="m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--some-crowding"
+      className="c-crowding-diagram__crowding-icon c-crowding-diagram__crowding-icon--some-crowding"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<svg/>",
@@ -140,10 +140,10 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
 
 exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
 <div
-  className="m-crowding-diagram"
+  className="c-crowding-diagram"
 >
   <div
-    className="m-crowding-diagram__properties"
+    className="c-crowding-diagram__properties"
   >
     <label
       className="c-properties-list__property-label"
@@ -170,7 +170,7 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
         <span
           aria-hidden={true}
           aria-label=""
-          className="m-crowding-diagram__tooltip-anchor"
+          className="c-crowding-diagram__tooltip-anchor"
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -187,16 +187,16 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
      seats
     <br />
     <span
-      className="m-crowding-diagram__status-description m-crowding-diagram__status-description--empty"
+      className="c-crowding-diagram__status-description c-crowding-diagram__status-description--empty"
     >
       Empty
     </span>
   </div>
   <div
-    className="m-crowding-diagram__crowding-icon-wrapper"
+    className="c-crowding-diagram__crowding-icon-wrapper"
   >
     <span
-      className="m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--empty"
+      className="c-crowding-diagram__crowding-icon c-crowding-diagram__crowding-icon--empty"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<svg/>",
@@ -209,10 +209,10 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
 
 exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
 <div
-  className="m-crowding-diagram"
+  className="c-crowding-diagram"
 >
   <div
-    className="m-crowding-diagram__properties"
+    className="c-crowding-diagram__properties"
   >
     <label
       className="c-properties-list__property-label"
@@ -239,7 +239,7 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
         <span
           aria-hidden={true}
           aria-label=""
-          className="m-crowding-diagram__tooltip-anchor"
+          className="c-crowding-diagram__tooltip-anchor"
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -256,16 +256,16 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
      seats
     <br />
     <span
-      className="m-crowding-diagram__status-description m-crowding-diagram__status-description--not-crowded"
+      className="c-crowding-diagram__status-description c-crowding-diagram__status-description--not-crowded"
     >
       Not crowded
     </span>
   </div>
   <div
-    className="m-crowding-diagram__crowding-icon-wrapper"
+    className="c-crowding-diagram__crowding-icon-wrapper"
   >
     <span
-      className="m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--not-crowded"
+      className="c-crowding-diagram__crowding-icon c-crowding-diagram__crowding-icon--not-crowded"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<svg/>",
@@ -278,10 +278,10 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
 
 exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
 <div
-  className="m-crowding-diagram"
+  className="c-crowding-diagram"
 >
   <div
-    className="m-crowding-diagram__properties"
+    className="c-crowding-diagram__properties"
   >
     <label
       className="c-properties-list__property-label"
@@ -308,7 +308,7 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
         <span
           aria-hidden={true}
           aria-label=""
-          className="m-crowding-diagram__tooltip-anchor"
+          className="c-crowding-diagram__tooltip-anchor"
           dangerouslySetInnerHTML={
             Object {
               "__html": "<svg/>",
@@ -322,10 +322,10 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
     No data available
   </div>
   <div
-    className="m-crowding-diagram__crowding-icon-wrapper"
+    className="c-crowding-diagram__crowding-icon-wrapper"
   >
     <span
-      className="m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--no-data"
+      className="c-crowding-diagram__crowding-icon c-crowding-diagram__crowding-icon--no-data"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<svg/>",
