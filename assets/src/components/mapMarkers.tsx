@@ -1,6 +1,7 @@
 import Leaflet, {
   CircleMarker as LeafletCircleMarker,
   LatLngExpression,
+  LeafletEventHandlerFnMap,
 } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
@@ -225,40 +226,42 @@ const MobileFriendlyTooltip = ({
 }
 interface StopIconProps extends Omit<CircleMarkerProps, "center"> {
   stop: Stop
+  markerRef: null | LeafletCircleMarker
+  setMarkerRef: () => void
   radius?: number
   selected?: boolean
 }
 
 export const StopIcon = ({
   stop,
+  markerRef,
+  setMarkerRef,
   radius = 8,
   selected = false,
   ...props
 }: StopIconProps) => {
-  const [marker, setMarker] = useState<null | LeafletCircleMarker>(null)
-
   useEffect(() => {
-    if (marker == null) {
+    if (markerRef == null) {
       return
     }
 
-    const element = marker.getElement()
+    const element = markerRef.getElement()
     if (!element) {
       return
     }
 
     element.classList.toggle("selected", selected)
-  }, [selected, marker])
+  }, [selected, markerRef])
 
   return (
     <CircleMarker
       {...props}
-      ref={setMarker}
+      ref={setMarkerRef}
       className={joinClasses(["c-vehicle-map__stop"])}
       center={[stop.lat, stop.lon]}
       radius={radius}
     >
-      {props.children}
+      <div className="TEST">{props.children}</div>
     </CircleMarker>
   )
 }
@@ -274,24 +277,43 @@ export const StopMarker = React.memo(
     includeStopCard?: boolean
   }) => {
     const markerRadius = 8
+    const [markerRef, setMarkerRef] = useState<null | LeafletCircleMarker>(null)
     const [isSelected, setIsSelected] = useState(false)
-    const popupHandlers = {
+
+    const markerWithStopCardEventHandlers: LeafletEventHandlerFnMap = {
       popupopen: () => {
         includeStopCard && window.FS?.event("Bus stop card opened")
         setIsSelected(true)
       },
       popupclose: () => setIsSelected(false),
+      mouseover: () => markerRef?.openPopup(),
+      //   mouseout: () => markerRef?.closePopup(),
+    }
+
+    const stopCardEventHandlers: LeafletEventHandlerFnMap = {
+      mouseout: () => {
+        console.log("MOUSEOUT")
+        markerRef?.closePopup()
+      },
     }
 
     return (
       <StopIcon
         stop={stop}
         selected={isSelected}
-        eventHandlers={popupHandlers}
+        eventHandlers={
+          includeStopCard ? markerWithStopCardEventHandlers : undefined
+        }
         radius={markerRadius}
+        markerRef={markerRef}
+        setMarkerRef={setMarkerRef}
       >
         {includeStopCard ? (
-          <StopCard.WithSafeArea stop={stop} direction={direction} />
+          <StopCard.WithSafeArea
+            stop={stop}
+            direction={direction}
+            eventHandlers={stopCardEventHandlers}
+          />
         ) : (
           <MobileFriendlyTooltip
             className={"c-vehicle-map__stop-tooltip"}
