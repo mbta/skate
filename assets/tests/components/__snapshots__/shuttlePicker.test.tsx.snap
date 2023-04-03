@@ -2,7 +2,7 @@
 
 exports[`ShuttlePicker renders 1`] = `
 <div
-  className="m-shuttle-picker-container visible"
+  className="c-shuttle-picker-container visible"
   data-testid="shuttle-picker-container"
 >
   <div
@@ -302,7 +302,7 @@ exports[`ShuttlePicker renders 1`] = `
 
 exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
 <div
-  className="m-shuttle-picker-container visible"
+  className="c-shuttle-picker-container visible"
   data-testid="shuttle-picker-container"
 >
   <div
@@ -560,7 +560,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
 
 exports[`ShuttlePicker renders loading state 1`] = `
 <div
-  className="m-shuttle-picker-container visible"
+  className="c-shuttle-picker-container visible"
   data-testid="shuttle-picker-container"
 >
   <div
