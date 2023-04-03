@@ -91,7 +91,7 @@ $map-page-search-panel-width: 24rem;
 
 $map-page-search-stub-size: 10px;
 
-.c-map-page__map .m-map-display__selected-entity-card-container {
+.c-map-page__map .c-map-selection-card-container {
   position: absolute;
   display: flex;
   flex-direction: column;

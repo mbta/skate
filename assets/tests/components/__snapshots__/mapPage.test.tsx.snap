@@ -1415,7 +1415,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           </div>
         </div>
         <div
-          class="m-map-display__selected-entity-card-container"
+          class="c-map-selection-card-container"
         >
           <div
             aria-label="Vehicle Properties Card"
