@@ -19,11 +19,11 @@ const Presets = () => {
   const currentTab = currentRouteTab(routeTabs)
 
   return (
-    <div className="m-presets-panel u-hide">
+    <div className="c-presets-panel u-hide">
       <ul>
         {presets.map((preset) => (
           <li key={preset.uuid}>
-            <div className="m-presets-panel__preset-button-container">
+            <div className="c-presets-panel__preset-button-container">
               <button onClick={() => dispatch(instantiatePreset(preset.uuid))}>
                 {preset.presetName}
               </button>
@@ -38,7 +38,7 @@ const Presets = () => {
         ))}
       </ul>
       <button
-        className="m-presets-panel__save-as-preset-button"
+        className="c-presets-panel__save-as-preset-button"
         onClick={() => {
           if (currentTab) {
             tagManagerEvent("preset_saved_from_presets_panel")
@@ -52,7 +52,7 @@ const Presets = () => {
           !currentTab || (isPreset(currentTab) && !isEditedPreset(currentTab))
         }
       >
-        <PlusThinIcon className="m-presets-panel__save-as-preset-button-icon" />
+        <PlusThinIcon className="c-presets-panel__save-as-preset-button-icon" />
         Save as preset
       </button>
     </div>
