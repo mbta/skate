@@ -2,7 +2,7 @@ $stop-card-popup-box-border: 1px solid $color-gray-500;
 $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   0px 16px 24px rgba(176, 181, 192, 0.24);
 
-.m-stop-card .leaflet-popup-content-wrapper {
+.c-stop-card .leaflet-popup-content-wrapper {
   width: 295px;
 
   padding: 16px;
@@ -19,7 +19,7 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   }
 }
 
-.m-stop-card .leaflet-popup-tip-container {
+.c-stop-card .leaflet-popup-tip-container {
   left: calc(50% + 125px);
 
   .leaflet-popup-tip {
@@ -28,19 +28,19 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   }
 }
 
-.m-stop-card__stop-name {
+.c-stop-card__stop-name {
   font-size: 16px;
   font-weight: 700;
   color: $color-gray-900;
 }
 
-.m-stop-card__direction {
+.c-stop-card__direction {
   color: $color-gray-700;
   font-size: 14px;
   font-weight: 400;
 }
 
-.m-stop-card__connections {
+.c-stop-card__connections {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -52,13 +52,13 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   border-radius: 4px;
 }
 
-.m-stop-card__connections-label {
+.c-stop-card__connections-label {
   color: $color-gray-700;
   font-size: 14px;
   font-weight: 400;
 }
 
-.m-stop-card__connections-pills {
+.c-stop-card__connections-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;

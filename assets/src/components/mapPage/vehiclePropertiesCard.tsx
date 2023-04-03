@@ -95,8 +95,8 @@ const VehicleWorkInfo = ({
   vehicleOrGhost,
 }: VehicleOrGhostProp): React.ReactElement => (
   <>
-    <table className="m-vehicle-work-info">
-      <tbody className="m-vehicle-work-info__items">
+    <table className="c-vehicle-work-info">
+      <tbody className="c-vehicle-work-info__items">
         <TrNameValue name="run">{vehicleOrGhost.runId || "N/A"}</TrNameValue>
         <TrNameValue name="vehicle">
           {(isVehicle(vehicleOrGhost) && vehicleOrGhost.label) || "N/A"}

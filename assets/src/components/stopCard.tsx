@@ -66,31 +66,31 @@ const StopCard = ({
   return (
     <Popup
       pane="popupPane"
-      className="m-stop-card"
+      className="c-stop-card"
       closeButton={false}
       offset={[-125, 7]}
       autoPanPadding={autoPanPadding?.padding || [20, 20]}
       autoPanPaddingTopLeft={autoPanPadding?.paddingTopLeft}
       autoPanPaddingBottomRight={autoPanPadding?.paddingBottomRight}
     >
-      <div className="m-stop-card__stop-info">
-        <div className="m-stop-card__stop-name">{stop.name}</div>
+      <div className="c-stop-card__stop-info">
+        <div className="c-stop-card__stop-name">{stop.name}</div>
         {direction !== undefined && (
-          <div className="m-stop-card__direction">
+          <div className="c-stop-card__direction">
             {direction == 1 ? "Inbound" : "Outbound"}
           </div>
         )}
       </div>
       {connections.length > 0 ? (
-        <div className="m-stop-card__connections">
+        <div className="c-stop-card__connections">
           <div
-            className="m-stop-card__connections-label"
+            className="c-stop-card__connections-label"
             id={connectionsLabelId}
           >
             Connections
           </div>
           <ul
-            className="m-stop-card__connections-pills"
+            className="c-stop-card__connections-pills"
             aria-labelledby={connectionsLabelId}
           >
             {connections.map((c) => (

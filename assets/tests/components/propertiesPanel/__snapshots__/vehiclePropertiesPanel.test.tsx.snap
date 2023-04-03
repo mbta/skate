@@ -154,11 +154,11 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
       role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
+        className="c-tabs__tab c-tabs__tab--selected"
       >
         <button
           aria-selected={true}
@@ -166,18 +166,18 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -187,7 +187,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -195,18 +195,18 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -216,7 +216,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -224,18 +224,18 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -247,7 +247,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
       className="c-vehicle-properties-panel__notes"
@@ -522,11 +522,11 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
       role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
+        className="c-tabs__tab c-tabs__tab--selected"
       >
         <button
           aria-selected={true}
@@ -534,18 +534,18 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -555,7 +555,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -563,18 +563,18 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -584,7 +584,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -592,18 +592,18 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -615,7 +615,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
       className="c-vehicle-properties-panel__notes"
@@ -1126,11 +1126,11 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
       role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
+        className="c-tabs__tab c-tabs__tab--selected"
       >
         <button
           aria-selected={true}
@@ -1138,18 +1138,18 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -1159,7 +1159,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -1167,18 +1167,18 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -1188,7 +1188,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -1196,18 +1196,18 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -1219,7 +1219,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
       className="c-vehicle-properties-panel__notes"
@@ -1591,11 +1591,11 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
       role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
+        className="c-tabs__tab c-tabs__tab--selected"
       >
         <button
           aria-selected={true}
@@ -1603,18 +1603,18 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -1624,7 +1624,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -1632,18 +1632,18 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -1653,7 +1653,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -1661,18 +1661,18 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -1684,7 +1684,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
       className="c-vehicle-properties-panel__notes"
@@ -1957,11 +1957,11 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
       role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
+        className="c-tabs__tab c-tabs__tab--selected"
       >
         <button
           aria-selected={true}
@@ -1969,18 +1969,18 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -1990,7 +1990,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -1998,18 +1998,18 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -2019,7 +2019,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -2027,18 +2027,18 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -2050,7 +2050,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
       className="c-vehicle-properties-panel__notes"
@@ -2366,11 +2366,11 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
       role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
+        className="c-tabs__tab c-tabs__tab--selected"
       >
         <button
           aria-selected={true}
@@ -2378,18 +2378,18 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -2399,7 +2399,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -2407,18 +2407,18 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -2428,7 +2428,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </button>
       </li>
       <li
-        className="m-tabs__tab"
+        className="c-tabs__tab"
       >
         <button
           aria-selected={false}
@@ -2436,18 +2436,18 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           role="tab"
         >
           <svg
-            className="m-tabs__tab-status-icon"
+            className="c-tabs__tab-status-icon"
             height="14"
             width="14"
           >
             <circle
-              className="m-tabs__tab-status-icon-outer-circle"
+              className="c-tabs__tab-status-icon-outer-circle"
               cx="7"
               cy="7"
               r="6"
             />
             <circle
-              className="m-tabs__tab-status-icon-inner-circle"
+              className="c-tabs__tab-status-icon-inner-circle"
               cx="7"
               cy="7"
               r="4"
@@ -2459,7 +2459,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
       className="c-vehicle-properties-panel__notes"

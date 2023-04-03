@@ -52,7 +52,7 @@ export const VehicleRouteDirection = ({
   return (
     <output
       aria-label="Route Direction"
-      className={"m-vehicle-route-direction " + className}
+      className={"c-vehicle-route-direction " + className}
       {...props}
     >
       {directionName(vehicle, route)}
@@ -76,28 +76,28 @@ const VisualSeparator = ({
 export const VehicleRouteSummary = ({
   vehicle,
 }: VehicleOrGhostProp): React.ReactElement => (
-  <div className="m-vehicle-route-summary">
+  <div className="c-vehicle-route-summary">
     <VehicleRouteDirection
       vehicle={vehicle}
-      className="m-vehicle-route-summary__direction label font-xs-reg"
+      className="c-vehicle-route-summary__direction label font-xs-reg"
     />
 
     <RouteVariantName
       vehicle={vehicle}
-      className="m-vehicle-route-summary__route-variant headsign font-m-semi"
+      className="c-vehicle-route-summary__route-variant headsign font-m-semi"
     />
 
     <ScheduleAdherence
       vehicle={vehicle}
       title="Vehicle Schedule Adherence"
-      className="m-vehicle-route-summary__adherence label font-xs-reg"
+      className="c-vehicle-route-summary__adherence label font-xs-reg"
     />
 
     <VehicleStatusIcon
       vehicle={vehicle}
-      className="m-vehicle-route-summary__icon"
+      className="c-vehicle-route-summary__icon"
     />
 
-    <VisualSeparator className="m-vehicle-route-summary__separator" />
+    <VisualSeparator className="c-vehicle-route-summary__separator" />
   </div>
 )

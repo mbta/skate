@@ -135,11 +135,11 @@ Array [
           />
         </div>
         <ul
-          className="m-tabs__tab-list"
+          className="c-tabs__tab-list"
           role="tablist"
         >
           <li
-            className="m-tabs__tab m-tabs__tab--selected"
+            className="c-tabs__tab c-tabs__tab--selected"
           >
             <button
               aria-selected={true}
@@ -147,18 +147,18 @@ Array [
               role="tab"
             >
               <svg
-                className="m-tabs__tab-status-icon"
+                className="c-tabs__tab-status-icon"
                 height="14"
                 width="14"
               >
                 <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
+                  className="c-tabs__tab-status-icon-outer-circle"
                   cx="7"
                   cy="7"
                   r="6"
                 />
                 <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
+                  className="c-tabs__tab-status-icon-inner-circle"
                   cx="7"
                   cy="7"
                   r="4"
@@ -168,7 +168,7 @@ Array [
             </button>
           </li>
           <li
-            className="m-tabs__tab"
+            className="c-tabs__tab"
           >
             <button
               aria-selected={false}
@@ -176,18 +176,18 @@ Array [
               role="tab"
             >
               <svg
-                className="m-tabs__tab-status-icon"
+                className="c-tabs__tab-status-icon"
                 height="14"
                 width="14"
               >
                 <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
+                  className="c-tabs__tab-status-icon-outer-circle"
                   cx="7"
                   cy="7"
                   r="6"
                 />
                 <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
+                  className="c-tabs__tab-status-icon-inner-circle"
                   cx="7"
                   cy="7"
                   r="4"
@@ -197,7 +197,7 @@ Array [
             </button>
           </li>
           <li
-            className="m-tabs__tab"
+            className="c-tabs__tab"
           >
             <button
               aria-selected={false}
@@ -205,18 +205,18 @@ Array [
               role="tab"
             >
               <svg
-                className="m-tabs__tab-status-icon"
+                className="c-tabs__tab-status-icon"
                 height="14"
                 width="14"
               >
                 <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
+                  className="c-tabs__tab-status-icon-outer-circle"
                   cx="7"
                   cy="7"
                   r="6"
                 />
                 <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
+                  className="c-tabs__tab-status-icon-inner-circle"
                   cx="7"
                   cy="7"
                   r="4"
@@ -228,7 +228,7 @@ Array [
         </ul>
       </div>
       <div
-        className="m-tabs__tab-panel"
+        className="c-tabs__tab-panel"
       >
         <div
           className="c-ghost-properties-panel__notes"
@@ -478,11 +478,11 @@ Array [
           </div>
         </div>
         <ul
-          className="m-tabs__tab-list"
+          className="c-tabs__tab-list"
           role="tablist"
         >
           <li
-            className="m-tabs__tab m-tabs__tab--selected"
+            className="c-tabs__tab c-tabs__tab--selected"
           >
             <button
               aria-selected={true}
@@ -490,18 +490,18 @@ Array [
               role="tab"
             >
               <svg
-                className="m-tabs__tab-status-icon"
+                className="c-tabs__tab-status-icon"
                 height="14"
                 width="14"
               >
                 <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
+                  className="c-tabs__tab-status-icon-outer-circle"
                   cx="7"
                   cy="7"
                   r="6"
                 />
                 <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
+                  className="c-tabs__tab-status-icon-inner-circle"
                   cx="7"
                   cy="7"
                   r="4"
@@ -511,7 +511,7 @@ Array [
             </button>
           </li>
           <li
-            className="m-tabs__tab"
+            className="c-tabs__tab"
           >
             <button
               aria-selected={false}
@@ -519,18 +519,18 @@ Array [
               role="tab"
             >
               <svg
-                className="m-tabs__tab-status-icon"
+                className="c-tabs__tab-status-icon"
                 height="14"
                 width="14"
               >
                 <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
+                  className="c-tabs__tab-status-icon-outer-circle"
                   cx="7"
                   cy="7"
                   r="6"
                 />
                 <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
+                  className="c-tabs__tab-status-icon-inner-circle"
                   cx="7"
                   cy="7"
                   r="4"
@@ -540,7 +540,7 @@ Array [
             </button>
           </li>
           <li
-            className="m-tabs__tab"
+            className="c-tabs__tab"
           >
             <button
               aria-selected={false}
@@ -548,18 +548,18 @@ Array [
               role="tab"
             >
               <svg
-                className="m-tabs__tab-status-icon"
+                className="c-tabs__tab-status-icon"
                 height="14"
                 width="14"
               >
                 <circle
-                  className="m-tabs__tab-status-icon-outer-circle"
+                  className="c-tabs__tab-status-icon-outer-circle"
                   cx="7"
                   cy="7"
                   r="6"
                 />
                 <circle
-                  className="m-tabs__tab-status-icon-inner-circle"
+                  className="c-tabs__tab-status-icon-inner-circle"
                   cx="7"
                   cy="7"
                   r="4"
@@ -571,7 +571,7 @@ Array [
         </ul>
       </div>
       <div
-        className="m-tabs__tab-panel"
+        className="c-tabs__tab-panel"
       >
         <div
           className="c-vehicle-properties-panel__notes"
