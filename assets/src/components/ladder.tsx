@@ -107,9 +107,9 @@ const Ladder = ({
   const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, height].join(" ")
 
   return (
-    <div className="m-ladder" style={{ width }} ref={elementRef}>
+    <div className="c-ladder" style={{ width }} ref={elementRef}>
       <svg
-        className="m-ladder__svg"
+        className="c-ladder__svg"
         viewBox={viewBox}
         width={width}
         height={height}
@@ -201,8 +201,8 @@ const VehicleSvg = ({
     <VehicleTooltip vehicleOrGhost={vehicle}>
       <g
         className={joinClasses([
-          "m-ladder__vehicle",
-          vehicle.id === selectedVehicleId && "m-ladder__vehicle--selected",
+          "c-ladder__vehicle",
+          vehicle.id === selectedVehicleId && "c-ladder__vehicle--selected",
         ])}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(vehicle))}
@@ -240,14 +240,14 @@ const VehicleSvg = ({
 const RoadLines = ({ height }: { height: number }) => (
   <>
     <line
-      className="m-ladder__line"
+      className="c-ladder__line"
       x1={-CENTER_TO_LINE}
       y1="0"
       x2={-CENTER_TO_LINE}
       y2={height - MARGIN_TOP_BOTTOM * 2}
     />
     <line
-      className="m-ladder__line"
+      className="c-ladder__line"
       x1={CENTER_TO_LINE}
       y1="0"
       x2={CENTER_TO_LINE}
@@ -260,13 +260,13 @@ const LadderTimepoint = React.memo(
   ({ timepoint, y }: { timepoint: Timepoint; y: number }) => (
     <>
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-CENTER_TO_LINE}
         cy={y}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={CENTER_TO_LINE}
         cy={y}
         r="3"
@@ -274,10 +274,10 @@ const LadderTimepoint = React.memo(
       <Tippy
         content={timepoint.name}
         trigger="click"
-        className="m-ladder__timepoint-name-tooltip"
+        className="c-ladder__timepoint-name-tooltip"
       >
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           x="0"
           y={y}
           textAnchor="middle"
@@ -352,7 +352,7 @@ const ScheduledLine = ({
   return (
     <line
       className={joinClasses(
-        ["m-ladder__scheduled-line"].concat(
+        ["c-ladder__scheduled-line"].concat(
           statusClasses(status, userSettings.vehicleAdherenceColors)
         )
       )}

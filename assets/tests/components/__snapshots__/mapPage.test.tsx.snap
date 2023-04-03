@@ -1564,7 +1564,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               class="c-vehicle-properties-card__body"
             >
               <div
-                class="c-vehicle-properties-card__properties m-info-section"
+                class="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section"
               >
                 <table
                   class="c-vehicle-work-info"
@@ -1621,7 +1621,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </table>
               </div>
               <div
-                class="c-vehicle-properties-card__location-info m-info-section"
+                class="c-vehicle-properties-card__location-info c-vehicle-properties-card__info-section"
               >
                 <div
                   class="c-current-location"

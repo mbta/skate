@@ -42,8 +42,8 @@ const Crowd = React.memo(
       yOffset = -yOffset
     }
     const classNames = [
-      "m-ladder__crowding",
-      `m-ladder__crowding--${classModifierForStatus(occupancyStatus)}`,
+      "c-ladder__crowding",
+      `c-ladder__crowding--${classModifierForStatus(occupancyStatus)}`,
     ]
 
     return (

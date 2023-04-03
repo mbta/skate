@@ -13,18 +13,18 @@ const OverwritePresetModal = ({
   const [, dispatch] = useContext(StateDispatchContext)
   return (
     <InputModal>
-      <div className="m-input-modal__title">
+      <div className="c-input-modal__title">
         A preset named{" "}
-        <span className="m-input-modal__name-text">{presetName}</span> already
+        <span className="c-input-modal__name-text">{presetName}</span> already
         exists.
       </div>
-      <div className="m-input-modal__title">
-        Overwrite <span className="m-input-modal__name-text">{presetName}</span>
+      <div className="c-input-modal__title">
+        Overwrite <span className="c-input-modal__name-text">{presetName}</span>
         ?
       </div>
-      <div className="m-input-modal__buttons">
+      <div className="c-input-modal__buttons">
         <button
-          className="m-input-modal__button"
+          className="c-input-modal__button"
           onClick={() => {
             window.FS?.event("User canceled Overwriting a Saved Preset")
             dispatch(closeInputModal())
@@ -35,7 +35,7 @@ const OverwritePresetModal = ({
         {/* eslint-disable jsx-a11y/no-autofocus */}
         <button
           autoFocus={true}
-          className="m-input-modal__button-confirm"
+          className="c-input-modal__button--confirm"
           onClick={() => {
             window.FS?.event("User Overwrote a Saved Preset")
             confirmCallback(dispatch)

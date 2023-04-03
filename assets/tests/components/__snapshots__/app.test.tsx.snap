@@ -18,7 +18,7 @@ exports[`App renders 1`] = `
           class="l-nav__app-content"
         >
           <div
-            class="m-ladder-page m-ladder-page--picker-container-visible "
+            class="c-ladder-page c-ladder-page--picker-container-visible "
           >
             <div
               class="c-notifications"
@@ -40,17 +40,17 @@ exports[`App renders 1`] = `
                 </button>
               </div>
               <div
-                class="m-ladder-page__routes-presets-toggle u-hide"
+                class="c-ladder-page__routes-presets-toggle u-hide"
               >
                 <button
-                  class="m-ladder-page__routes_picker_button_selected"
-                  id="m-ladder-page__routes_picker_button"
+                  class="c-ladder-page__routes_picker_button--selected"
+                  id="c-ladder-page__routes_picker_button"
                 >
                   Routes
                 </button>
                 <button
-                  class="m-ladder-page__routes_picker_button_unselected"
-                  id="m-ladder-page__presets_picker_button"
+                  class="c-ladder-page__routes_picker_button--unselected"
+                  id="c-ladder-page__presets_picker_button"
                 >
                   Presets
                 </button>
@@ -109,18 +109,18 @@ exports[`App renders 1`] = `
               data-testid="picker-container-backdrop"
             />
             <div
-              class="m-ladder-page__tab-bar-and-ladders"
+              class="c-ladder-page__tab-bar-and-ladders"
             >
               <div
-                class="m-ladder-page__route-tab-bar"
+                class="c-ladder-page__route-tab-bar"
                 role="tablist"
               >
                 <button
-                  class="m-ladder-page__add-tab-button"
+                  class="c-ladder-page__add-tab-button"
                   title="Add Tab"
                 >
                   <span
-                    class="m-ladder-page__add-tab-icon"
+                    class="c-ladder-page__add-tab-icon"
                   >
                     <svg />
                   </span>

@@ -35,8 +35,8 @@ const CreatePresetModal = ({
           }
         }}
       >
-        <div className="m-input-modal__title">Save open routes as preset</div>
-        <div className="m-input-modal__input">
+        <div className="c-input-modal__title">Save open routes as preset</div>
+        <div className="c-input-modal__input">
           {/* eslint-disable jsx-a11y/no-autofocus */}
           <input
             autoFocus={true}
@@ -48,10 +48,10 @@ const CreatePresetModal = ({
           />
           {/* eslint-enable jsx-a11y/no-autofocus */}
         </div>
-        <div className="m-input-modal__buttons">
+        <div className="c-input-modal__buttons">
           <button
             type="button"
-            className="m-input-modal__button"
+            className="c-input-modal__button"
             onClick={() => {
               window.FS?.event("User canceled Creating a new Preset")
               dispatch(closeInputModal())
@@ -63,8 +63,8 @@ const CreatePresetModal = ({
             type="submit"
             disabled={presetName.length === 0}
             className={
-              "m-input-modal__button" +
-              (presetName.length === 0 ? "-disabled" : "-confirm")
+              "c-input-modal__button" +
+              (presetName.length === 0 ? "--disabled" : "--confirm")
             }
           >
             Save

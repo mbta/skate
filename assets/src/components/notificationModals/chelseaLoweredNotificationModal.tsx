@@ -13,13 +13,13 @@ const ChelseaLoweredNotificationModal = () => {
   return (
     <>
       <div className="c-modal">
-        <div className="m-inactive-notification-modal__close-button">
+        <div className="c-inactive-notification-modal__close-button">
           <button title="Close" onClick={closeModal}>
             <OldCloseIcon />
           </button>
         </div>
         <div className="m-notification__title">Chelsea St Bridge Lowered</div>
-        <div className="m-inactive-notification-modal__body">
+        <div className="c-inactive-notification-modal__body">
           OCC reported that the Chelsea St Bridge has been lowered.
         </div>
       </div>

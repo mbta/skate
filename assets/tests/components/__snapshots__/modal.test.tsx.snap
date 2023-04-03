@@ -6,7 +6,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -27,7 +27,7 @@ Array [
       Chelsea St Bridge Lowered
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       OCC reported that the Chelsea St Bridge has been lowered.
     </div>
@@ -45,7 +45,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -66,7 +66,7 @@ Array [
       Chelsea St Bridge Raised
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       OCC reported that the Chelsea St Bridge will be raised until 7:45 AM.
     </div>
@@ -84,7 +84,7 @@ Array [
     className="c-modal"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      className="c-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -106,7 +106,7 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-inactive-notification-modal__body"
+      className="c-inactive-notification-modal__body"
     >
       Sorry, there's no additional information that we can provide you about this notification.
     </div>

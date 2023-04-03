@@ -1,15 +1,15 @@
-.m-incoming-box {
+.c-incoming-box {
   background-color: $color-bg-light;
   display: flex;
   flex-direction: column;
-  grid-row-start: m-incoming-box;
+  grid-row-start: c-incoming-box;
   margin: 0 0.5rem;
   min-height: 2.5rem;
   background-color: rgba(255, 255, 255, 0.5);
   border: 2px solid $color-gray-300;
 }
 
-.m-incoming-box__vehicle {
+.c-incoming-box__vehicle {
   @include font-body;
   justify-content: center;
   display: flex;
@@ -21,7 +21,7 @@
     background-color: $color-secondary-light;
   }
 
-  &.selected {
+  &--selected {
     background-color: $color-secondary-medium;
   }
 
@@ -31,10 +31,10 @@
   }
 }
 
-.m-incoming-box__vehicle-icon {
+.c-incoming-box__vehicle-icon {
   margin-right: 0.25rem;
 }
 
-.m-incoming-box__vehicle-label {
+.c-incoming-box__vehicle-label {
   margin-left: 0.25rem;
 }
