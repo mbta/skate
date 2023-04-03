@@ -1,4 +1,4 @@
-.m-route-properties-card {
+.c-route-properties-card {
   width: 375px;
   background-color: white;
   border: 1px solid $color-gray-400;
@@ -11,7 +11,7 @@
   padding-bottom: 1rem;
 }
 
-.m-route-properties-card__header {
+.c-route-properties-card__header {
   flex: none;
   display: flex;
   flex-direction: row;
@@ -21,7 +21,7 @@
   margin: 0;
 }
 
-.m-route-properties-card__route-title {
+.c-route-properties-card__route-title {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
@@ -32,14 +32,14 @@
   }
 }
 
-.m-route-properties-card__route-description {
+.c-route-properties-card__route-description {
   font-size: var(--font-size-s);
   color: $color-gray-700;
   font-weight: var(--font-weight-reg);
   line-height: 1.1;
 }
 
-.m-route-properties-card__direction-picker {
+.c-route-properties-card__direction-picker {
   flex: none;
   display: flex;
   flex-direction: row;
@@ -58,7 +58,7 @@
   }
 }
 
-.m-route-properties-card__direction-picker .direction-button {
+.c-route-properties-card__direction-picker .direction-button {
   display: flex;
   align-items: center;
   flex: 1;
@@ -83,7 +83,7 @@
   }
 }
 
-.m-route-properties-card__disclosure_toggle::before {
+.c-route-properties-card__disclosure_toggle::before {
   display: inline-block;
   content: "▶";
   text-decoration: none;
@@ -91,7 +91,7 @@
   margin-right: 0.5rem;
 }
 
-.m-route-properties-card__disclosure_toggle[aria-expanded="true"]::before {
+.c-route-properties-card__disclosure_toggle[aria-expanded="true"]::before {
   display: inline-block;
   content: "▼";
   text-decoration: none;
@@ -99,7 +99,7 @@
   margin-right: 0.25rem;
 }
 
-.m-route-properties-card__disclosure_toggle {
+.c-route-properties-card__disclosure_toggle {
   text-align: left;
   font-size: var(--font-size-sm);
   text-decoration: underline;
@@ -110,29 +110,29 @@
   }
 }
 
-.m-route-properties-card__details-section {
+.c-route-properties-card__details-section {
   min-height: 1rem;
   display: flex;
   flex-direction: column;
 }
 
-.m-route-properties-card__details-section:not(
-    .m-route-properties-card__details-section--open
+.c-route-properties-card__details-section:not(
+    .c-route-properties-card__details-section--open
   ) {
   flex: none;
 }
 
-.m-route-properties-card__details {
+.c-route-properties-card__details {
   overflow-y: auto;
 }
 
-.m-route-properties-card__details.variant-picker fieldset {
+.c-route-properties-card__details.variant-picker fieldset {
   border: none;
   padding: 0rem;
   margin: 0rem;
 }
 
-.m-route-properties-card__variant-option {
+.c-route-properties-card__variant-option {
   input[type="radio"] {
     display: none;
   }
@@ -163,11 +163,11 @@
   }
 }
 
-.m-route-properties-card__variant-option--selected {
+.c-route-properties-card__variant-option--selected {
   background-color: $color-eggplant-100;
   color: $color-eggplant-800;
 
-  .m-route-properties-card__variant-option-description {
+  .c-route-properties-card__variant-option-description {
     color: $color-eggplant-700;
   }
   .variant-check {
@@ -175,16 +175,16 @@
   }
 }
 
-.m-route-properties-card__variant-option-name {
+.c-route-properties-card__variant-option-name {
   font-weight: var(--font-weight-semi);
 }
 
-.m-route-properties-card__variant-option-description {
+.c-route-properties-card__variant-option-description {
   font-size: var(--font-size-xs);
   color: $color-gray-700;
 }
 
-.m-route-properties-card hr {
+.c-route-properties-card hr {
   flex: none;
   height: 1px;
   background-color: $color-gray-400;
@@ -192,13 +192,13 @@
   border: none;
 }
 
-.m-route-properties-card__details.variant-stop-list {
+.c-route-properties-card__details.variant-stop-list {
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.m-route-properties-card__details.variant-stop-list ol {
+.c-route-properties-card__details.variant-stop-list ol {
   max-height: 490px;
   li {
     margin-left: 1rem;

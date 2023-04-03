@@ -46,10 +46,10 @@ export const RouteFilter = ({
   }
 
   return (
-    <div className="m-route-filter">
-      <div className="m-route-filter__text">
+    <div className="c-route-filter">
+      <div className="c-route-filter__text">
         <input
-          className="m-route-filter__input"
+          className="c-route-filter__input"
           type="text"
           value={filterText}
           placeholder="Search routes"
@@ -59,7 +59,7 @@ export const RouteFilter = ({
 
         {filterText.length > 0 ? (
           <button
-            className="m-route-filter__clear"
+            className="c-route-filter__clear"
             onClick={clearTextInput}
             title="Clear"
           >

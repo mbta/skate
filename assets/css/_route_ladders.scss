@@ -1,10 +1,10 @@
-.m-route-ladders {
+.c-route-ladders {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: auto;
   grid-template-rows:
-    [m-route-ladder__header] minmax(auto, max-content)
-    [m-route-ladder__controls] minmax(auto, max-content)
+    [c-route-ladder__header] minmax(auto, max-content)
+    [c-route-ladder__controls] minmax(auto, max-content)
     [c-ladder] auto
     [c-incoming-box] max-content;
   flex-grow: 1;

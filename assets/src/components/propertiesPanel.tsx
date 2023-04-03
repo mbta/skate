@@ -47,7 +47,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
 
   return (
     <>
-      <div id="m-properties-panel" className="m-properties-panel">
+      <div id="c-properties-panel" className="c-properties-panel">
         {dataIsStale && isVehicle(vehicleToDisplay) ? (
           <StaleDataPropertiesPanel selectedVehicle={vehicleToDisplay} />
         ) : isVehicle(vehicleToDisplay) ? (
@@ -57,7 +57,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
         )}
       </div>
       <div
-        className="m-properties-panel-backdrop"
+        className="c-properties-panel-backdrop"
         onClick={
           /* istanbul ignore next */
           () => hideMeIfNoCrowdingTooltip(hideMe)

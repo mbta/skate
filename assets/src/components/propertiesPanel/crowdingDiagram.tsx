@@ -25,7 +25,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
     <div className="m-crowding-diagram">
       <div className="m-crowding-diagram__properties">
         <label
-          className="m-properties-list__property-label"
+          className="c-properties-list__property-label"
           htmlFor={tooltipButtonId}
         >
           Riders onboard

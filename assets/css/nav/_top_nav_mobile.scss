@@ -1,5 +1,5 @@
-.m-top-nav-mobile__right-items,
-.m-top-nav-mobile__left-items {
+.c-top-nav-mobile__right-items,
+.c-top-nav-mobile__left-items {
   display: flex;
 
   color: $color-gray-600;
@@ -12,12 +12,12 @@
     color: $color-gray-500;
   }
 
-  &.m-top-nav__right-item--active {
+  &.c-top-nav__right-item--active {
     color: $color-eggplant-800;
   }
 }
 
-.m-top-nav-mobile__right-items {
+.c-top-nav-mobile__right-items {
   :not(:last-child) {
     padding-right: 1.5rem;
   }
@@ -25,17 +25,17 @@
   @include button-icon(1.5rem);
 }
 
-.m-top-nav-mobile__left-items {
+.c-top-nav-mobile__left-items {
   @include button-icon(1rem);
 
-  .m-top-nav-mobile__icon {
+  .c-top-nav-mobile__icon {
     /* Center the hamburger */
     display: block;
     height: 1rem;
   }
 }
 
-.m-top-nav-mobile__inner {
+.c-top-nav-mobile__inner {
   display: flex;
   box-sizing: border-box;
   padding: 0.625rem 1.5rem 0.625rem 1.5rem;
@@ -46,7 +46,7 @@
   align-items: center;
 }
 
-.m-top-nav-mobile__icon svg {
+.c-top-nav-mobile__icon svg {
   fill: $color-gray-600;
   &:hover,
   &:active,
@@ -55,7 +55,7 @@
   }
 }
 
-.m-top-nav-mobile__notifications-icon {
+.c-top-nav-mobile__notifications-icon {
   svg {
     path {
       fill: $color-gray-600;
@@ -83,6 +83,6 @@
   }
 }
 
-.m-top-nav-mobile__header-text {
+.c-top-nav-mobile__header-text {
   color: $color-gray-900;
 }

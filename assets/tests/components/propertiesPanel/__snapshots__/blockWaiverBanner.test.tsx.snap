@@ -70,50 +70,50 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
           className="c-card__body"
         >
           <div
-            className="m-properties-list"
+            className="c-properties-list"
           >
             <table
-              className="m-properties-list__table"
+              className="c-properties-list__table"
             >
               <tbody>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     Reason
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     Block Waiver
                   </td>
                 </tr>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     Start Time
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     3:53 PM
                   </td>
                 </tr>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     End Time
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     4:26 PM
                   </td>
@@ -173,50 +173,50 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
           className="c-card__body"
         >
           <div
-            className="m-properties-list"
+            className="c-properties-list"
           >
             <table
-              className="m-properties-list__table"
+              className="c-properties-list__table"
             >
               <tbody>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     Reason
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     Block Waiver
                   </td>
                 </tr>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     Start Time
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     4:26 PM
                   </td>
                 </tr>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     End Time
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     4:43 PM
                   </td>
@@ -268,50 +268,50 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
           className="c-card__body"
         >
           <div
-            className="m-properties-list"
+            className="c-properties-list"
           >
             <table
-              className="m-properties-list__table"
+              className="c-properties-list__table"
             >
               <tbody>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     Reason
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     Block Waiver
                   </td>
                 </tr>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     Start Time
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     3:36 PM
                   </td>
                 </tr>
                 <tr
-                  className="m-properties-list__property "
+                  className="c-properties-list__property "
                 >
                   <td
-                    className="m-properties-list__property-label"
+                    className="c-properties-list__property-label"
                   >
                     End Time
                   </td>
                   <td
-                    className="m-properties-list__property-value"
+                    className="c-properties-list__property-value"
                   >
                     3:53 PM
                   </td>

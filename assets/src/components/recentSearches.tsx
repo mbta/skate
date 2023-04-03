@@ -10,13 +10,13 @@ const RecentSearches = () => {
     dispatch,
   ] = useContext(StateDispatchContext)
   return (
-    <div className="m-recent-searches">
-      <div className="m-recent-searches__heading">Recent Searches</div>
+    <div className="c-recent-searches">
+      <div className="c-recent-searches__heading">Recent Searches</div>
       <ul>
         {savedQueries.map((savedQuery, i) => (
           <li key={i}>
             <button
-              className="m-recent-searches__button button-text"
+              className="c-recent-searches__button button-text"
               onClick={() => {
                 dispatch(setSearchText(savedQuery.text))
                 dispatch(submitSearch())

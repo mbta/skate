@@ -73,7 +73,7 @@ const LeftNav = ({
           onClick={toggleMobileMenu}
           title="Menu"
         >
-          <HamburgerIcon className="m-top-nav-mobile__icon" />
+          <HamburgerIcon className="c-top-nav-mobile__icon" />
         </button>
       ) : null}
       <div className="c-left-nav__modes-and-views">

@@ -1,10 +1,10 @@
-.m-route-filter__text {
+.c-route-filter__text {
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
-.m-route-filter__input {
+.c-route-filter__input {
   @include font-small;
   line-height: 1;
   border: 1px solid $color-gray-400;
@@ -33,7 +33,7 @@
   }
 }
 
-.m-route-filter__clear {
+.c-route-filter__clear {
   @include button-transparent;
   @include button-icon(0.875rem);
   position: absolute;

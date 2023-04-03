@@ -99,10 +99,10 @@
   color: $color-gray-700;
 }
 
-.c-card__contents .m-properties-list {
+.c-card__contents .c-properties-list {
   padding: 0;
 
-  .m-properties-list__table {
+  .c-properties-list__table {
     &:not(:first-child) {
       margin-top: 1rem;
     }
@@ -127,20 +127,20 @@
         background-color: $color-eggplant-200;
       }
 
-      .m-properties-list__property-label {
+      .c-properties-list__property-label {
         color: $color-gray-700;
         text-align: left;
         text-transform: initial;
         font-size: inherit;
       }
 
-      .m-properties-list__property-value {
+      .c-properties-list__property-value {
         color: $color-gray-600;
       }
     }
 
-    .m-properties-list__property--last-login
-      .m-properties-list__property-value {
+    .c-properties-list__property--last-login
+      .c-properties-list__property-value {
       color: $color-gray-600;
       font-size: inherit;
     }

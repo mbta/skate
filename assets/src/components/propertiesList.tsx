@@ -133,7 +133,7 @@ const highlightRegex = (highlightText: string): RegExp => {
 }
 
 const modifiedClassName = (classNameModifier?: string): string =>
-  classNameModifier ? `m-properties-list__property--${classNameModifier}` : ""
+  classNameModifier ? `c-properties-list__property--${classNameModifier}` : ""
 
 const PropertyRow = ({
   property: { label, value, classNameModifier, sensitive },
@@ -144,20 +144,20 @@ const PropertyRow = ({
 }) =>
   value === null ? null : (
     <tr
-      className={`m-properties-list__property ${modifiedClassName(
+      className={`c-properties-list__property ${modifiedClassName(
         classNameModifier
       )}${sensitive ? " fs-mask" : ""}`}
     >
-      <td className="m-properties-list__property-label">{label}</td>
-      <td className="m-properties-list__property-value">
+      <td className="c-properties-list__property-label">{label}</td>
+      <td className="c-properties-list__property-value">
         <Highlighted content={value} highlightText={highlightText} />
       </td>
     </tr>
   )
 
 const PropertiesList = ({ properties, highlightText }: Props) => (
-  <div className="m-properties-list">
-    <table className="m-properties-list__table">
+  <div className="c-properties-list">
+    <table className="c-properties-list__table">
       <tbody>
         {properties.map((property) => (
           <PropertyRow

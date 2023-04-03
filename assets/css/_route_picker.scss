@@ -1,4 +1,4 @@
-.m-route-picker {
+.c-route-picker {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -9,11 +9,11 @@
   }
 }
 
-.m-route-picker__label {
+.c-route-picker__label {
   @include font-label();
 }
 
-.m-route-picker__routes-container {
+.c-route-picker__routes-container {
   flex-grow: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -73,11 +73,11 @@
   }
 }
 
-.m-route-picker__route-list {
+.c-route-picker__route-list {
   grid-area: all;
 }
 
-.m-route-picker__route-list-button {
+.c-route-picker__route-list-button {
   @include route-picker-button;
   color: $color-gray-700;
   background-color: $color-gray-200;
@@ -95,11 +95,11 @@
   }
 }
 
-.m-route-picker__selected-routes {
+.c-route-picker__selected-routes {
   grid-area: selected;
 }
 
-.m-route-picker__selected-routes-button {
+.c-route-picker__selected-routes-button {
   @include route-picker-button;
   @include button-icon(0.75rem);
   color: $color-gray-100;

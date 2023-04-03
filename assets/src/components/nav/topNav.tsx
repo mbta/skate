@@ -5,18 +5,18 @@ import { reload } from "../../models/browser"
 
 const TopNav = (): JSX.Element => {
   return (
-    <div className="m-top-nav">
-      <Link className="m-top-nav__logo" to="/" title="Skate">
-        <LogoIcon className="m-top-nav__logo-icon" />
+    <div className="c-top-nav">
+      <Link className="c-top-nav__logo" to="/" title="Skate">
+        <LogoIcon className="c-top-nav__logo-icon" />
       </Link>
-      <ul className="m-top-nav__right-items">
+      <ul className="c-top-nav__right-items">
         <li>
           <button
-            className="m-top-nav__right-item"
+            className="c-top-nav__right-item"
             onClick={() => reload()}
             title="Refresh"
           >
-            <RefreshIcon className="m-top-nav__icon" />
+            <RefreshIcon className="c-top-nav__icon" />
           </button>
         </li>
       </ul>

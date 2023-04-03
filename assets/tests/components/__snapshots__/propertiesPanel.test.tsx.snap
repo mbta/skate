@@ -3,14 +3,14 @@
 exports[`PropertiesPanel renders a ghost 1`] = `
 Array [
   <div
-    className="m-properties-panel"
-    id="m-properties-panel"
+    className="c-properties-panel"
+    id="c-properties-panel"
   >
     <div
       className="c-ghost-properties-panel"
     >
       <div
-        className="m-properties-panel__header-wrapper"
+        className="c-properties-panel__header-wrapper"
       >
         <div
           className="c-view-header"
@@ -38,10 +38,10 @@ Array [
           </button>
         </div>
         <div
-          className="m-properties-panel__header"
+          className="c-properties-panel__header"
         >
           <div
-            className="m-properties-panel__label"
+            className="c-properties-panel__label"
           >
             <svg
               role="img"
@@ -104,10 +104,10 @@ Array [
             </svg>
           </div>
           <div
-            className="m-properties-panel__variant"
+            className="c-properties-panel__variant"
           >
             <div
-              className="m-properties-panel__inbound-outbound"
+              className="c-properties-panel__inbound-outbound"
             >
               Outbound
             </div>
@@ -131,7 +131,7 @@ Array [
             </output>
           </div>
           <div
-            className="m-properties-panel__ping-container"
+            className="c-properties-panel__ping-container"
           />
         </div>
         <ul
@@ -283,22 +283,22 @@ Array [
           </div>
         </div>
         <div
-          className="m-properties-list"
+          className="c-properties-list"
         >
           <table
-            className="m-properties-list__table"
+            className="c-properties-list__table"
           >
             <tbody>
               <tr
-                className="m-properties-list__property "
+                className="c-properties-list__property "
               >
                 <td
-                  className="m-properties-list__property-label"
+                  className="c-properties-list__property-label"
                 >
                   Run
                 </td>
                 <td
-                  className="m-properties-list__property-value"
+                  className="c-properties-list__property-value"
                 >
                   123-0123
                 </td>
@@ -311,7 +311,7 @@ Array [
   </div>,
   <div
     aria-hidden={true}
-    className="m-properties-panel-backdrop"
+    className="c-properties-panel-backdrop"
     onClick={[Function]}
   />,
 ]
@@ -320,14 +320,14 @@ Array [
 exports[`PropertiesPanel renders a vehicle 1`] = `
 Array [
   <div
-    className="m-properties-panel"
-    id="m-properties-panel"
+    className="c-properties-panel"
+    id="c-properties-panel"
   >
     <div
       className="c-vehicle-properties-panel"
     >
       <div
-        className="m-properties-panel__header-wrapper"
+        className="c-properties-panel__header-wrapper"
       >
         <div
           className="c-view-header"
@@ -355,10 +355,10 @@ Array [
           </button>
         </div>
         <div
-          className="m-properties-panel__header"
+          className="c-properties-panel__header"
         >
           <div
-            className="m-properties-panel__label"
+            className="c-properties-panel__label"
           >
             <svg
               role="img"
@@ -413,10 +413,10 @@ Array [
             </svg>
           </div>
           <div
-            className="m-properties-panel__variant"
+            className="c-properties-panel__variant"
           >
             <div
-              className="m-properties-panel__inbound-outbound"
+              className="c-properties-panel__inbound-outbound"
             >
               Outbound
             </div>
@@ -439,10 +439,10 @@ Array [
               </output>
             </output>
             <div
-              className="m-properties-panel__schedule-adherence on-time early-red"
+              className="c-properties-panel__schedule-adherence on-time early-red"
             >
               <div
-                className="m-properties-panel__schedule-adherence-status-icon"
+                className="c-properties-panel__schedule-adherence-status-icon"
               >
                 <svg
                   height="10"
@@ -456,22 +456,22 @@ Array [
                 </svg>
               </div>
               <div
-                className="m-properties-panel__schedule-adherence-status-string"
+                className="c-properties-panel__schedule-adherence-status-string"
               >
                 on time
               </div>
               <div
-                className="m-properties-panel__schedule-adherence-label"
+                className="c-properties-panel__schedule-adherence-label"
               >
                 (0 min early)
               </div>
             </div>
           </div>
           <div
-            className="m-properties-panel__ping-container"
+            className="c-properties-panel__ping-container"
           >
             <div
-              className="m-properties-panel__last-gps-ping"
+              className="c-properties-panel__last-gps-ping"
             >
               111s ago
             </div>
@@ -577,64 +577,64 @@ Array [
           className="c-vehicle-properties-panel__notes"
         />
         <div
-          className="m-properties-list"
+          className="c-properties-list"
         >
           <table
-            className="m-properties-list__table"
+            className="c-properties-list__table"
           >
             <tbody>
               <tr
-                className="m-properties-list__property "
+                className="c-properties-list__property "
               >
                 <td
-                  className="m-properties-list__property-label"
+                  className="c-properties-list__property-label"
                 >
                   Run
                 </td>
                 <td
-                  className="m-properties-list__property-value"
+                  className="c-properties-list__property-value"
                 >
                   run-1
                 </td>
               </tr>
               <tr
-                className="m-properties-list__property "
+                className="c-properties-list__property "
               >
                 <td
-                  className="m-properties-list__property-label"
+                  className="c-properties-list__property-label"
                 >
                   Vehicle
                 </td>
                 <td
-                  className="m-properties-list__property-value"
+                  className="c-properties-list__property-value"
                 >
                   v1-label
                 </td>
               </tr>
               <tr
-                className="m-properties-list__property m-properties-list__property--operator fs-mask"
+                className="c-properties-list__property c-properties-list__property--operator fs-mask"
               >
                 <td
-                  className="m-properties-list__property-label"
+                  className="c-properties-list__property-label"
                 >
                   Operator
                 </td>
                 <td
-                  className="m-properties-list__property-value"
+                  className="c-properties-list__property-value"
                 >
                   PATTI SMITH #op1
                 </td>
               </tr>
               <tr
-                className="m-properties-list__property m-properties-list__property--last-login"
+                className="c-properties-list__property c-properties-list__property--last-login"
               >
                 <td
-                  className="m-properties-list__property-label"
+                  className="c-properties-list__property-label"
                 >
                   Last Login
                 </td>
                 <td
-                  className="m-properties-list__property-value"
+                  className="c-properties-list__property-value"
                 >
                   4 hr 3 min; 1:38 PM
                 </td>
@@ -693,7 +693,7 @@ Array [
   </div>,
   <div
     aria-hidden={true}
-    className="m-properties-panel-backdrop"
+    className="c-properties-panel-backdrop"
     onClick={[Function]}
   />,
 ]

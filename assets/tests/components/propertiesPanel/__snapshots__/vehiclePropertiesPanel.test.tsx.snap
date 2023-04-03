@@ -5,7 +5,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
   className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
       className="c-view-header"
@@ -33,10 +33,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       </button>
     </div>
     <div
-      className="m-properties-panel__header"
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
           role="img"
@@ -91,10 +91,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         />
         <output
           aria-label="Route Variant Name"
@@ -115,10 +115,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           </output>
         </output>
         <div
-          className="m-properties-panel__schedule-adherence on-time early-red"
+          className="c-properties-panel__schedule-adherence on-time early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -132,22 +132,22 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             on time
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (0 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__ping-container"
+        className="c-properties-panel__ping-container"
       >
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -253,64 +253,64 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       className="c-vehicle-properties-panel__notes"
     />
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator fs-mask"
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -373,7 +373,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
   className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
       className="c-view-header"
@@ -401,10 +401,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       </button>
     </div>
     <div
-      className="m-properties-panel__header"
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
           role="img"
@@ -459,10 +459,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         />
         <output
           aria-label="Route Variant Name"
@@ -483,10 +483,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           </output>
         </output>
         <div
-          className="m-properties-panel__schedule-adherence late early-red"
+          className="c-properties-panel__schedule-adherence late early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -500,22 +500,22 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             late
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (6 min late)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__ping-container"
+        className="c-properties-panel__ping-container"
       >
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -621,64 +621,64 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       className="c-vehicle-properties-panel__notes"
     />
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator fs-mask"
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -741,7 +741,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
   className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
       className="c-view-header"
@@ -769,10 +769,10 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       </button>
     </div>
     <div
-      className="m-properties-panel__header"
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
           role="img"
@@ -827,10 +827,10 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         />
         <output
           aria-label="Route Variant Name"
@@ -840,10 +840,10 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         </output>
       </div>
       <div
-        className="m-properties-panel__ping-container"
+        className="c-properties-panel__ping-container"
       >
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -854,64 +854,64 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     className="c-vehicle-properties-panel__notes"
   />
   <div
-    className="m-properties-list"
+    className="c-properties-list"
   >
     <table
-      className="m-properties-list__table"
+      className="c-properties-list__table"
     >
       <tbody>
         <tr
-          className="m-properties-list__property "
+          className="c-properties-list__property "
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Run
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             Special 999 555
           </td>
         </tr>
         <tr
-          className="m-properties-list__property "
+          className="c-properties-list__property "
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Vehicle
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             v1-label
           </td>
         </tr>
         <tr
-          className="m-properties-list__property m-properties-list__property--operator fs-mask"
+          className="c-properties-list__property c-properties-list__property--operator fs-mask"
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Operator
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             PATTI SMITH #op1
           </td>
         </tr>
         <tr
-          className="m-properties-list__property m-properties-list__property--last-login"
+          className="c-properties-list__property c-properties-list__property--last-login"
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Last Login
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             4 hr 3 min; 1:38 PM
           </td>
@@ -977,7 +977,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
   className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
       className="c-view-header"
@@ -1005,10 +1005,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       </button>
     </div>
     <div
-      className="m-properties-panel__header"
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
           role="img"
@@ -1063,10 +1063,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         />
         <output
           aria-label="Route Variant Name"
@@ -1087,10 +1087,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           </output>
         </output>
         <div
-          className="m-properties-panel__schedule-adherence on-time early-red"
+          className="c-properties-panel__schedule-adherence on-time early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -1104,22 +1104,22 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             on time
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (0 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__ping-container"
+        className="c-properties-panel__ping-container"
       >
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -1263,50 +1263,50 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
                   className="c-card__body"
                 >
                   <div
-                    className="m-properties-list"
+                    className="c-properties-list"
                   >
                     <table
-                      className="m-properties-list__table"
+                      className="c-properties-list__table"
                     >
                       <tbody>
                         <tr
-                          className="m-properties-list__property "
+                          className="c-properties-list__property "
                         >
                           <td
-                            className="m-properties-list__property-label"
+                            className="c-properties-list__property-label"
                           >
                             Reason
                           </td>
                           <td
-                            className="m-properties-list__property-value"
+                            className="c-properties-list__property-value"
                           >
                             Block Waiver
                           </td>
                         </tr>
                         <tr
-                          className="m-properties-list__property "
+                          className="c-properties-list__property "
                         >
                           <td
-                            className="m-properties-list__property-label"
+                            className="c-properties-list__property-label"
                           >
                             Start Time
                           </td>
                           <td
-                            className="m-properties-list__property-value"
+                            className="c-properties-list__property-value"
                           >
                             5:05 AM
                           </td>
                         </tr>
                         <tr
-                          className="m-properties-list__property "
+                          className="c-properties-list__property "
                         >
                           <td
-                            className="m-properties-list__property-label"
+                            className="c-properties-list__property-label"
                           >
                             End Time
                           </td>
                           <td
-                            className="m-properties-list__property-value"
+                            className="c-properties-list__property-value"
                           >
                             12:38 PM
                           </td>
@@ -1322,64 +1322,64 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       </div>
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator fs-mask"
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -1442,7 +1442,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
   className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
       className="c-view-header"
@@ -1470,10 +1470,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       </button>
     </div>
     <div
-      className="m-properties-panel__header"
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
           role="img"
@@ -1528,10 +1528,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         />
         <output
           aria-label="Route Variant Name"
@@ -1552,10 +1552,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           </output>
         </output>
         <div
-          className="m-properties-panel__schedule-adherence early early-red"
+          className="c-properties-panel__schedule-adherence early early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -1569,22 +1569,22 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             early
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (2 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__ping-container"
+        className="c-properties-panel__ping-container"
       >
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -1690,64 +1690,64 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       className="c-vehicle-properties-panel__notes"
     />
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator fs-mask"
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -1810,7 +1810,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
   className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
       className="c-view-header"
@@ -1838,10 +1838,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       </button>
     </div>
     <div
-      className="m-properties-panel__header"
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
           role="img"
@@ -1896,10 +1896,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         />
         <output
           aria-label="Route Variant Name"
@@ -1920,10 +1920,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           </output>
         </output>
         <div
-          className="m-properties-panel__schedule-adherence off-course early-red"
+          className="c-properties-panel__schedule-adherence off-course early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -1937,20 +1937,20 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             Invalid
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           />
         </div>
       </div>
       <div
-        className="m-properties-panel__ping-container"
+        className="c-properties-panel__ping-container"
       >
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -2091,64 +2091,64 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       </div>
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator fs-mask"
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -2215,7 +2215,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
   className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
       className="c-view-header"
@@ -2243,10 +2243,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       </button>
     </div>
     <div
-      className="m-properties-panel__header"
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
           role="img"
@@ -2301,10 +2301,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         >
           Outbound
         </div>
@@ -2327,10 +2327,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           </output>
         </output>
         <div
-          className="m-properties-panel__schedule-adherence on-time early-red"
+          className="c-properties-panel__schedule-adherence on-time early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -2344,22 +2344,22 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             on time
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (0 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__ping-container"
+        className="c-properties-panel__ping-container"
       >
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -2465,64 +2465,64 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       className="c-vehicle-properties-panel__notes"
     />
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--operator fs-mask"
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>

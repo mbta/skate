@@ -2,7 +2,7 @@
 
 exports[`Header renders a header 1`] = `
 <div
-  className="m-properties-panel__header-wrapper"
+  className="c-properties-panel__header-wrapper"
 >
   <div
     className="c-view-header"
@@ -30,10 +30,10 @@ exports[`Header renders a header 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__header"
+    className="c-properties-panel__header"
   >
     <div
-      className="m-properties-panel__label"
+      className="c-properties-panel__label"
     >
       <svg
         role="img"
@@ -88,10 +88,10 @@ exports[`Header renders a header 1`] = `
       </svg>
     </div>
     <div
-      className="m-properties-panel__variant"
+      className="c-properties-panel__variant"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="c-properties-panel__inbound-outbound"
       />
       <output
         aria-label="Route Variant Name"
@@ -112,10 +112,10 @@ exports[`Header renders a header 1`] = `
         </output>
       </output>
       <div
-        className="m-properties-panel__schedule-adherence on-time early-red"
+        className="c-properties-panel__schedule-adherence on-time early-red"
       >
         <div
-          className="m-properties-panel__schedule-adherence-status-icon"
+          className="c-properties-panel__schedule-adherence-status-icon"
         >
           <svg
             height="10"
@@ -129,22 +129,22 @@ exports[`Header renders a header 1`] = `
           </svg>
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-status-string"
+          className="c-properties-panel__schedule-adherence-status-string"
         >
           on time
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-label"
+          className="c-properties-panel__schedule-adherence-label"
         >
           (0 min early)
         </div>
       </div>
     </div>
     <div
-      className="m-properties-panel__ping-container"
+      className="c-properties-panel__ping-container"
     >
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="c-properties-panel__last-gps-ping"
       >
         111s ago
       </div>
@@ -247,7 +247,7 @@ exports[`Header renders a header 1`] = `
 
 exports[`Header renders for a ghost 1`] = `
 <div
-  className="m-properties-panel__header-wrapper"
+  className="c-properties-panel__header-wrapper"
 >
   <div
     className="c-view-header"
@@ -275,10 +275,10 @@ exports[`Header renders for a ghost 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__header"
+    className="c-properties-panel__header"
   >
     <div
-      className="m-properties-panel__label"
+      className="c-properties-panel__label"
     >
       <svg
         role="img"
@@ -341,10 +341,10 @@ exports[`Header renders for a ghost 1`] = `
       </svg>
     </div>
     <div
-      className="m-properties-panel__variant"
+      className="c-properties-panel__variant"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="c-properties-panel__inbound-outbound"
       />
       <output
         aria-label="Route Variant Name"
@@ -366,7 +366,7 @@ exports[`Header renders for a ghost 1`] = `
       </output>
     </div>
     <div
-      className="m-properties-panel__ping-container"
+      className="c-properties-panel__ping-container"
     />
   </div>
   <ul
@@ -466,7 +466,7 @@ exports[`Header renders for a ghost 1`] = `
 
 exports[`Header renders for a late vehicle 1`] = `
 <div
-  className="m-properties-panel__header-wrapper"
+  className="c-properties-panel__header-wrapper"
 >
   <div
     className="c-view-header"
@@ -494,10 +494,10 @@ exports[`Header renders for a late vehicle 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__header"
+    className="c-properties-panel__header"
   >
     <div
-      className="m-properties-panel__label"
+      className="c-properties-panel__label"
     >
       <svg
         role="img"
@@ -552,10 +552,10 @@ exports[`Header renders for a late vehicle 1`] = `
       </svg>
     </div>
     <div
-      className="m-properties-panel__variant"
+      className="c-properties-panel__variant"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="c-properties-panel__inbound-outbound"
       />
       <output
         aria-label="Route Variant Name"
@@ -576,10 +576,10 @@ exports[`Header renders for a late vehicle 1`] = `
         </output>
       </output>
       <div
-        className="m-properties-panel__schedule-adherence late early-red"
+        className="c-properties-panel__schedule-adherence late early-red"
       >
         <div
-          className="m-properties-panel__schedule-adherence-status-icon"
+          className="c-properties-panel__schedule-adherence-status-icon"
         >
           <svg
             height="10"
@@ -593,22 +593,22 @@ exports[`Header renders for a late vehicle 1`] = `
           </svg>
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-status-string"
+          className="c-properties-panel__schedule-adherence-status-string"
         >
           late
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-label"
+          className="c-properties-panel__schedule-adherence-label"
         >
           (6 min late)
         </div>
       </div>
     </div>
     <div
-      className="m-properties-panel__ping-container"
+      className="c-properties-panel__ping-container"
     >
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="c-properties-panel__last-gps-ping"
       >
         111s ago
       </div>
@@ -711,7 +711,7 @@ exports[`Header renders for a late vehicle 1`] = `
 
 exports[`Header renders for a shuttle 1`] = `
 <div
-  className="m-properties-panel__header-wrapper"
+  className="c-properties-panel__header-wrapper"
 >
   <div
     className="c-view-header"
@@ -739,10 +739,10 @@ exports[`Header renders for a shuttle 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__header"
+    className="c-properties-panel__header"
   >
     <div
-      className="m-properties-panel__label"
+      className="c-properties-panel__label"
     >
       <svg
         role="img"
@@ -797,10 +797,10 @@ exports[`Header renders for a shuttle 1`] = `
       </svg>
     </div>
     <div
-      className="m-properties-panel__variant"
+      className="c-properties-panel__variant"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="c-properties-panel__inbound-outbound"
       />
       <output
         aria-label="Route Variant Name"
@@ -810,10 +810,10 @@ exports[`Header renders for a shuttle 1`] = `
       </output>
     </div>
     <div
-      className="m-properties-panel__ping-container"
+      className="c-properties-panel__ping-container"
     >
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="c-properties-panel__last-gps-ping"
       >
         111s ago
       </div>
@@ -824,7 +824,7 @@ exports[`Header renders for a shuttle 1`] = `
 
 exports[`Header renders for an early vehicle 1`] = `
 <div
-  className="m-properties-panel__header-wrapper"
+  className="c-properties-panel__header-wrapper"
 >
   <div
     className="c-view-header"
@@ -852,10 +852,10 @@ exports[`Header renders for an early vehicle 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__header"
+    className="c-properties-panel__header"
   >
     <div
-      className="m-properties-panel__label"
+      className="c-properties-panel__label"
     >
       <svg
         role="img"
@@ -910,10 +910,10 @@ exports[`Header renders for an early vehicle 1`] = `
       </svg>
     </div>
     <div
-      className="m-properties-panel__variant"
+      className="c-properties-panel__variant"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="c-properties-panel__inbound-outbound"
       />
       <output
         aria-label="Route Variant Name"
@@ -934,10 +934,10 @@ exports[`Header renders for an early vehicle 1`] = `
         </output>
       </output>
       <div
-        className="m-properties-panel__schedule-adherence early early-red"
+        className="c-properties-panel__schedule-adherence early early-red"
       >
         <div
-          className="m-properties-panel__schedule-adherence-status-icon"
+          className="c-properties-panel__schedule-adherence-status-icon"
         >
           <svg
             height="10"
@@ -951,22 +951,22 @@ exports[`Header renders for an early vehicle 1`] = `
           </svg>
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-status-string"
+          className="c-properties-panel__schedule-adherence-status-string"
         >
           early
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-label"
+          className="c-properties-panel__schedule-adherence-label"
         >
           (2 min early)
         </div>
       </div>
     </div>
     <div
-      className="m-properties-panel__ping-container"
+      className="c-properties-panel__ping-container"
     >
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="c-properties-panel__last-gps-ping"
       >
         111s ago
       </div>
@@ -1069,7 +1069,7 @@ exports[`Header renders for an early vehicle 1`] = `
 
 exports[`Header renders for an off-course vehicle 1`] = `
 <div
-  className="m-properties-panel__header-wrapper"
+  className="c-properties-panel__header-wrapper"
 >
   <div
     className="c-view-header"
@@ -1097,10 +1097,10 @@ exports[`Header renders for an off-course vehicle 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__header"
+    className="c-properties-panel__header"
   >
     <div
-      className="m-properties-panel__label"
+      className="c-properties-panel__label"
     >
       <svg
         role="img"
@@ -1155,10 +1155,10 @@ exports[`Header renders for an off-course vehicle 1`] = `
       </svg>
     </div>
     <div
-      className="m-properties-panel__variant"
+      className="c-properties-panel__variant"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="c-properties-panel__inbound-outbound"
       />
       <output
         aria-label="Route Variant Name"
@@ -1179,10 +1179,10 @@ exports[`Header renders for an off-course vehicle 1`] = `
         </output>
       </output>
       <div
-        className="m-properties-panel__schedule-adherence off-course early-red"
+        className="c-properties-panel__schedule-adherence off-course early-red"
       >
         <div
-          className="m-properties-panel__schedule-adherence-status-icon"
+          className="c-properties-panel__schedule-adherence-status-icon"
         >
           <svg
             height="10"
@@ -1196,20 +1196,20 @@ exports[`Header renders for an off-course vehicle 1`] = `
           </svg>
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-status-string"
+          className="c-properties-panel__schedule-adherence-status-string"
         >
           Invalid
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-label"
+          className="c-properties-panel__schedule-adherence-label"
         />
       </div>
     </div>
     <div
-      className="m-properties-panel__ping-container"
+      className="c-properties-panel__ping-container"
     >
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="c-properties-panel__last-gps-ping"
       >
         111s ago
       </div>
@@ -1312,7 +1312,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
 
 exports[`Header renders with route data 1`] = `
 <div
-  className="m-properties-panel__header-wrapper"
+  className="c-properties-panel__header-wrapper"
 >
   <div
     className="c-view-header"
@@ -1340,10 +1340,10 @@ exports[`Header renders with route data 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__header"
+    className="c-properties-panel__header"
   >
     <div
-      className="m-properties-panel__label"
+      className="c-properties-panel__label"
     >
       <svg
         role="img"
@@ -1398,10 +1398,10 @@ exports[`Header renders with route data 1`] = `
       </svg>
     </div>
     <div
-      className="m-properties-panel__variant"
+      className="c-properties-panel__variant"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="c-properties-panel__inbound-outbound"
       >
         Outbound
       </div>
@@ -1424,10 +1424,10 @@ exports[`Header renders with route data 1`] = `
         </output>
       </output>
       <div
-        className="m-properties-panel__schedule-adherence on-time early-red"
+        className="c-properties-panel__schedule-adherence on-time early-red"
       >
         <div
-          className="m-properties-panel__schedule-adherence-status-icon"
+          className="c-properties-panel__schedule-adherence-status-icon"
         >
           <svg
             height="10"
@@ -1441,22 +1441,22 @@ exports[`Header renders with route data 1`] = `
           </svg>
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-status-string"
+          className="c-properties-panel__schedule-adherence-status-string"
         >
           on time
         </div>
         <div
-          className="m-properties-panel__schedule-adherence-label"
+          className="c-properties-panel__schedule-adherence-label"
         >
           (0 min early)
         </div>
       </div>
     </div>
     <div
-      className="m-properties-panel__ping-container"
+      className="c-properties-panel__ping-container"
     >
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="c-properties-panel__last-gps-ping"
       >
         111s ago
       </div>

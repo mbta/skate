@@ -137,10 +137,10 @@ exports[`SearchPage renders the empty state 1`] = `
         class="m-search-display"
       >
         <div
-          class="m-recent-searches"
+          class="c-recent-searches"
         >
           <div
-            class="m-recent-searches__heading"
+            class="c-recent-searches__heading"
           >
             Recent Searches
           </div>
@@ -460,10 +460,10 @@ exports[`SearchPage renders vehicle data 1`] = `
         class="m-search-display"
       >
         <div
-          class="m-recent-searches"
+          class="c-recent-searches"
         >
           <div
-            class="m-recent-searches__heading"
+            class="c-recent-searches__heading"
           >
             Recent Searches
           </div>

@@ -28,7 +28,7 @@ interface Props {
 }
 
 const ScheduleAdherenceStatusIcon = () => (
-  <div className="m-properties-panel__schedule-adherence-status-icon">
+  <div className="c-properties-panel__schedule-adherence-status-icon">
     <svg width="10" height="10">
       <circle cx="5" cy="5" r="5" />
     </svg>
@@ -36,7 +36,7 @@ const ScheduleAdherenceStatusIcon = () => (
 )
 
 const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-properties-panel__schedule-adherence-status-string">
+  <div className="c-properties-panel__schedule-adherence-status-string">
     {humanReadableScheduleAdherence(vehicle)}
   </div>
 )
@@ -52,7 +52,7 @@ export const scheduleAdherenceLabelString = ({
   )}`
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-properties-panel__schedule-adherence-label">
+  <div className="c-properties-panel__schedule-adherence-label">
     {vehicle.isOffCourse ? "" : `(${scheduleAdherenceLabelString(vehicle)})`}
   </div>
 )
@@ -62,7 +62,7 @@ const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div
-      className={`m-properties-panel__schedule-adherence ${joinClasses(
+      className={`c-properties-panel__schedule-adherence ${joinClasses(
         statusClasses(drawnStatus(vehicle), userSettings.vehicleAdherenceColors)
       )}`}
     >
@@ -89,15 +89,15 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
     : emptyLadderDirectionsByRouteId
 
   return (
-    <div className="m-properties-panel__header-wrapper">
+    <div className="c-properties-panel__header-wrapper">
       <ViewHeader
         title="Vehicles"
         closeView={hideMe}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />
-      <div className="m-properties-panel__header">
-        <div className="m-properties-panel__label">
+      <div className="c-properties-panel__header">
+        <div className="c-properties-panel__label">
           <VehicleIcon
             size={Size.Large}
             orientation={vehicleOrientation(vehicle, ladderDirections)}
@@ -107,8 +107,8 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
             userSettings={userSettings}
           />
         </div>
-        <div className="m-properties-panel__variant">
-          <div className="m-properties-panel__inbound-outbound">
+        <div className="c-properties-panel__variant">
+          <div className="c-properties-panel__inbound-outbound">
             {directionName(vehicle, route)}
           </div>
 
@@ -118,9 +118,9 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
             <ScheduleAdherence vehicle={vehicle} />
           )}
         </div>
-        <div className="m-properties-panel__ping-container">
+        <div className="c-properties-panel__ping-container">
           {isVehicle(vehicle) && (
-            <div className="m-properties-panel__last-gps-ping">
+            <div className="c-properties-panel__last-gps-ping">
               {secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}
             </div>
           )}
