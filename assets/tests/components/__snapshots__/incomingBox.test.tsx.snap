@@ -51,7 +51,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
       </span>
     </div>
     <button
-      className="c-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
@@ -169,7 +169,7 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
       </span>
     </div>
     <button
-      className="c-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
@@ -287,7 +287,7 @@ exports[`IncomingBox renders a ghost 1`] = `
       </span>
     </div>
     <button
-      className="c-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
@@ -427,7 +427,7 @@ exports[`IncomingBox renders a vehicle 1`] = `
       </span>
     </div>
     <button
-      className="c-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
@@ -528,7 +528,7 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
       </span>
     </div>
     <button
-      className="c-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div

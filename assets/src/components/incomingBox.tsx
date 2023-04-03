@@ -29,7 +29,9 @@ const IncomingBoxVehicle = ({
 }) => {
   const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass =
-    vehicleOrGhost.id === selectedVehicleId ? "selected" : ""
+    vehicleOrGhost.id === selectedVehicleId
+      ? " c-incoming-box__vehicle--selected"
+      : ""
   const orientation =
     directionOnLadder(
       vehicleOrGhost.incomingTripDirectionId !== null
@@ -49,7 +51,7 @@ const IncomingBoxVehicle = ({
   return (
     <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
       <button
-        className={`c-incoming-box__vehicle ${selectedClass}`}
+        className={`c-incoming-box__vehicle${selectedClass}`}
         onClick={() => dispatch(selectVehicle(vehicleOrGhost))}
       >
         <div className="c-incoming-box__vehicle-icon">

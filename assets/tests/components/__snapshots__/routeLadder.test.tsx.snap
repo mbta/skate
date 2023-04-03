@@ -252,7 +252,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
     class="c-incoming-box"
   >
     <button
-      class="c-incoming-box__vehicle "
+      class="c-incoming-box__vehicle"
     >
       <div
         class="c-incoming-box__vehicle-icon"
@@ -489,7 +489,7 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
     class="c-incoming-box"
   >
     <button
-      class="c-incoming-box__vehicle "
+      class="c-incoming-box__vehicle"
     >
       <div
         class="c-incoming-box__vehicle-icon"
@@ -1758,7 +1758,7 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
     class="c-incoming-box"
   >
     <button
-      class="c-incoming-box__vehicle "
+      class="c-incoming-box__vehicle"
     >
       <div
         class="c-incoming-box__vehicle-icon"
@@ -1799,7 +1799,7 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
       </div>
     </button>
     <button
-      class="c-incoming-box__vehicle "
+      class="c-incoming-box__vehicle"
     >
       <div
         class="c-incoming-box__vehicle-icon"
