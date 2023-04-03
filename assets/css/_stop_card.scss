@@ -19,6 +19,15 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   }
 }
 
+.c-stop-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 295px;
+  height: 20px;
+  background-color: red;
+}
+
 .c-stop-card .leaflet-popup-tip-container {
   left: calc(50% + 125px);
 

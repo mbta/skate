@@ -287,7 +287,7 @@ export const StopMarker = React.memo(
       },
       popupclose: () => setIsSelected(false),
       mouseover: () => markerRef?.openPopup(),
-      //   mouseout: () => markerRef?.closePopup(),
+      //  mouseout: () => markerRef?.closePopup(),
     }
 
     const stopCardEventHandlers: LeafletEventHandlerFnMap = {
