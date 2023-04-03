@@ -392,7 +392,7 @@ describe("<MapPage />", () => {
     const routeShape = container.querySelector(".c-vehicle-map__route-shape")
     const vpc = vehiclePropertiesCard.get()
 
-    expect(mapSearchPanel).toHaveClass("hidden")
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--hidden")
     expect(routeShape).toBeVisible()
     expect(vpc).toBeVisible()
 
@@ -462,7 +462,7 @@ describe("<MapPage />", () => {
     )
 
     const mapSearchPanel = getMapSearchPanel()
-    expect(mapSearchPanel).toHaveClass("visible")
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
 
     await userEvent.click(
       screen.getByRole("button", {
@@ -471,7 +471,7 @@ describe("<MapPage />", () => {
     )
 
     expect(vehiclePropertiesCard.get()).toBeVisible()
-    expect(mapSearchPanel).toHaveClass("hidden")
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--hidden")
   })
 
   test("can collapse and un-collapse the search panel with the drawer tab", async () => {
@@ -480,13 +480,13 @@ describe("<MapPage />", () => {
     await userEvent.click(screen.getByRole("button", { name: "Collapse" }))
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
-      "hidden"
+      "c-map-page__input-and-results--hidden"
     )
 
     await userEvent.click(screen.getByRole("button", { name: "Expand" }))
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
-      "visible"
+      "c-map-page__input-and-results--visible"
     )
   })
 
