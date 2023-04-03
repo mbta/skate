@@ -53,14 +53,14 @@ const LeftNav = ({
   const bellIconClasses =
     openView == OpenView.NotificationDrawer
       ? [
-          "m-left-nav__icon",
-          "m-left-nav__icon--notifications-view",
-          "m-left-nav__icon--notifications-view--active",
+          "c-left-nav__icon",
+          "c-left-nav__icon--notifications-view",
+          "c-left-nav__icon--notifications-view--active",
         ]
-      : ["m-left-nav__icon", "m-left-nav__icon--notifications-view"]
+      : ["c-left-nav__icon", "c-left-nav__icon--notifications-view"]
 
   return (
-    <div className={"m-left-nav" + (collapsed ? " m-left-nav--collapsed" : "")}>
+    <div className={"c-left-nav" + (collapsed ? " c-left-nav--collapsed" : "")}>
       {toggleMobileMenu ? (
         <NavMenu
           mobileMenuIsOpen={mobileMenuIsOpen}
@@ -69,46 +69,46 @@ const LeftNav = ({
       ) : null}
       {toggleMobileMenu ? (
         <button
-          className="m-left-nav__menu-button"
+          className="c-left-nav__menu-button"
           onClick={toggleMobileMenu}
           title="Menu"
         >
           <HamburgerIcon className="m-top-nav-mobile__icon" />
         </button>
       ) : null}
-      <div className="m-left-nav__modes-and-views">
-        <ul className="m-left-nav__links">
+      <div className="c-left-nav__modes-and-views">
+        <ul className="c-left-nav__links">
           <li>
             <NavLink
               className={({ isActive }) =>
-                "m-left-nav__link" +
-                (isActive ? " m-left-nav__link--active" : "")
+                "c-left-nav__link" +
+                (isActive ? " c-left-nav__link--active" : "")
               }
               title="Route Ladders"
               to="/"
             >
-              <LadderIcon className="m-left-nav__icon" />
+              <LadderIcon className="c-left-nav__icon" />
               {collapsed ? null : "Route Ladders"}
             </NavLink>
           </li>
           <li>
             <NavLink
               className={({ isActive }) =>
-                "m-left-nav__link" +
-                (isActive ? " m-left-nav__link--active" : "")
+                "c-left-nav__link" +
+                (isActive ? " c-left-nav__link--active" : "")
               }
               title="Shuttle Map"
               to="/shuttle-map"
             >
-              <MapIcon className="m-left-nav__icon" />
+              <MapIcon className="c-left-nav__icon" />
               {collapsed ? null : "Shuttle Map"}
             </NavLink>
           </li>
           <li>
             <NavLink
               className={({ isActive }) =>
-                "m-left-nav__link" +
-                (isActive ? " m-left-nav__link--active" : "")
+                "c-left-nav__link" +
+                (isActive ? " c-left-nav__link--active" : "")
               }
               title={mapMode.title}
               to={mapMode.path}
@@ -116,7 +116,7 @@ const LeftNav = ({
                 mapMode.navEventText && window.FS?.event(mapMode.navEventText)
               }}
             >
-              <mapMode.navIcon className="m-left-nav__icon" />
+              <mapMode.navIcon className="c-left-nav__icon" />
               {collapsed ? null : mapMode.title}
             </NavLink>
           </li>
@@ -127,7 +127,7 @@ const LeftNav = ({
             <li>
               <ViewToggle
                 icon={
-                  <LateIcon className="m-left-nav__icon m-left-nav__icon--late-view" />
+                  <LateIcon className="c-left-nav__icon c-left-nav__icon--late-view" />
                 }
                 name="Late View"
                 viewIsOpen={openView === OpenView.Late}
@@ -151,7 +151,7 @@ const LeftNav = ({
           <li>
             <ViewToggle
               icon={
-                <SwingIcon className="m-left-nav__icon m-left-nav__icon--swings-view" />
+                <SwingIcon className="c-left-nav__icon c-left-nav__icon--swings-view" />
               }
               name="Swings View"
               viewIsOpen={openView === OpenView.Swings}
@@ -192,50 +192,50 @@ const LeftNav = ({
           </li>
         </ul>
         {toggleMobileMenu ? null : (
-          <ul className="m-left-nav__links">
+          <ul className="c-left-nav__links">
             <li>
               <button
-                className="m-left-nav__link"
+                className="c-left-nav__link"
                 onClick={openDrift}
                 title="Support"
               >
-                <SpeechBubbleIcon className="m-left-nav__icon" />
+                <SpeechBubbleIcon className="c-left-nav__icon" />
                 {collapsed ? null : "Support"}
               </button>
             </li>
             <li>
               <button
-                className="m-left-nav__link"
+                className="c-left-nav__link"
                 onClick={() => displayHelp(location)}
                 title="About Skate"
               >
-                <QuestionMarkIcon className="m-left-nav__icon" />
+                <QuestionMarkIcon className="c-left-nav__icon" />
                 {collapsed ? null : "About Skate"}
               </button>
             </li>
             <li>
               <NavLink
                 className={({ isActive }) =>
-                  "m-left-nav__link" +
-                  (isActive ? " m-left-nav__link--active" : "")
+                  "c-left-nav__link" +
+                  (isActive ? " c-left-nav__link--active" : "")
                 }
                 title="Settings"
                 to="/settings"
               >
-                <SettingsIcon className="m-left-nav__icon" />
+                <SettingsIcon className="c-left-nav__icon" />
                 {collapsed ? null : "Settings"}
               </NavLink>
             </li>
             <li>
               <button
-                className="m-left-nav__link"
+                className="c-left-nav__link"
                 onClick={() => setCollapsed(!collapsed)}
                 title={collapsed ? "Expand" : "Collapse"}
               >
                 {collapsed ? (
-                  <DoubleChevronRightIcon className="m-left-nav__icon" />
+                  <DoubleChevronRightIcon className="c-left-nav__icon" />
                 ) : (
-                  <DoubleChevronLeftIcon className="m-left-nav__icon" />
+                  <DoubleChevronLeftIcon className="c-left-nav__icon" />
                 )}
                 {collapsed ? null : "Collapse"}
               </button>
@@ -265,9 +265,9 @@ const ViewToggle = ({
   const buttonContent = (
     <button
       className={
-        "m-left-nav__link m-left-nav__view" +
-        (viewIsOpen ? " m-left-nav__view--active" : "") +
-        (disabled ? " m-left-nav__view--disabled" : "")
+        "c-left-nav__link c-left-nav__view" +
+        (viewIsOpen ? " c-left-nav__view--active" : "") +
+        (disabled ? " c-left-nav__view--disabled" : "")
       }
       onClick={toggleView}
       title={name}

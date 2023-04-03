@@ -172,23 +172,23 @@ exports[`App renders 1`] = `
           class="l-nav__nav-bar l-nav__nav-bar--left"
         >
           <div
-            class="m-left-nav"
+            class="c-left-nav"
           >
             <div
-              class="m-left-nav__modes-and-views"
+              class="c-left-nav__modes-and-views"
             >
               <ul
-                class="m-left-nav__links"
+                class="c-left-nav__links"
               >
                 <li>
                   <a
                     aria-current="page"
-                    class="m-left-nav__link m-left-nav__link--active"
+                    class="c-left-nav__link c-left-nav__link--active"
                     href="/"
                     title="Route Ladders"
                   >
                     <span
-                      class="m-left-nav__icon"
+                      class="c-left-nav__icon"
                     >
                       <svg />
                     </span>
@@ -197,12 +197,12 @@ exports[`App renders 1`] = `
                 </li>
                 <li>
                   <a
-                    class="m-left-nav__link"
+                    class="c-left-nav__link"
                     href="/shuttle-map"
                     title="Shuttle Map"
                   >
                     <span
-                      class="m-left-nav__icon"
+                      class="c-left-nav__icon"
                     >
                       <svg />
                     </span>
@@ -211,12 +211,12 @@ exports[`App renders 1`] = `
                 </li>
                 <li>
                   <a
-                    class="m-left-nav__link"
+                    class="c-left-nav__link"
                     href="/search"
                     title="Search"
                   >
                     <span
-                      class="m-left-nav__icon"
+                      class="c-left-nav__icon"
                     >
                       <svg />
                     </span>
@@ -229,11 +229,11 @@ exports[`App renders 1`] = `
                 <li>
                   <button
                     aria-disabled="false"
-                    class="m-left-nav__link m-left-nav__view"
+                    class="c-left-nav__link c-left-nav__view"
                     title="Swings View"
                   >
                     <span
-                      class="m-left-nav__icon m-left-nav__icon--swings-view"
+                      class="c-left-nav__icon c-left-nav__icon--swings-view"
                     >
                       <svg />
                     </span>
@@ -243,11 +243,11 @@ exports[`App renders 1`] = `
                 <li>
                   <button
                     aria-disabled="false"
-                    class="m-left-nav__link m-left-nav__view"
+                    class="c-left-nav__link c-left-nav__view"
                     title="Notifications"
                   >
                     <span
-                      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--read m-left-nav__icon m-left-nav__icon--notifications-view"
+                      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--read c-left-nav__icon c-left-nav__icon--notifications-view"
                     >
                       <svg />
                     </span>
@@ -256,15 +256,15 @@ exports[`App renders 1`] = `
                 </li>
               </ul>
               <ul
-                class="m-left-nav__links"
+                class="c-left-nav__links"
               >
                 <li>
                   <button
-                    class="m-left-nav__link"
+                    class="c-left-nav__link"
                     title="Support"
                   >
                     <span
-                      class="m-left-nav__icon"
+                      class="c-left-nav__icon"
                     >
                       <svg />
                     </span>
@@ -273,11 +273,11 @@ exports[`App renders 1`] = `
                 </li>
                 <li>
                   <button
-                    class="m-left-nav__link"
+                    class="c-left-nav__link"
                     title="About Skate"
                   >
                     <span
-                      class="m-left-nav__icon"
+                      class="c-left-nav__icon"
                     >
                       <svg />
                     </span>
@@ -286,12 +286,12 @@ exports[`App renders 1`] = `
                 </li>
                 <li>
                   <a
-                    class="m-left-nav__link"
+                    class="c-left-nav__link"
                     href="/settings"
                     title="Settings"
                   >
                     <span
-                      class="m-left-nav__icon"
+                      class="c-left-nav__icon"
                     >
                       <svg />
                     </span>
@@ -300,11 +300,11 @@ exports[`App renders 1`] = `
                 </li>
                 <li>
                   <button
-                    class="m-left-nav__link"
+                    class="c-left-nav__link"
                     title="Collapse"
                   >
                     <span
-                      class="m-left-nav__icon"
+                      class="c-left-nav__icon"
                     >
                       <svg />
                     </span>

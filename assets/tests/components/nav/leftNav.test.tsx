@@ -297,7 +297,7 @@ describe("LeftNav", () => {
     )
 
     expect(result.getByTitle("Late View")).toHaveClass(
-      "m-left-nav__view--active"
+      "c-left-nav__view--active"
     )
   })
 
@@ -398,7 +398,7 @@ describe("LeftNav", () => {
     )
 
     expect(result.getByTitle("Notifications").children[0]).toHaveClass(
-      "m-left-nav__icon--notifications-view--active"
+      "c-left-nav__icon--notifications-view--active"
     )
   })
 
@@ -420,7 +420,7 @@ describe("LeftNav", () => {
     )
 
     expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
-      "m-left-nav__icon--notifications-view--active"
+      "c-left-nav__icon--notifications-view--active"
     )
   })
 
