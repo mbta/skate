@@ -66,7 +66,7 @@ const VisualSeparator = ({
   // Visual accent to provide separation between elements
   // This object is strictly for visual presentation
   <img
-    className={className ?? "m-visual-separator"}
+    className={className ?? "c-visual-separator"}
     aria-hidden={true}
     role="img presentation"
     aria-label="presentation separator"
