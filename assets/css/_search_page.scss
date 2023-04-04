@@ -49,7 +49,7 @@ $search-page-search-panel-width: 22.0625rem;
   margin: 0.5rem auto 0;
 }
 
-.m-search-display {
+.c-search-display {
   flex: 1 1 auto;
   overflow-y: scroll;
   padding: 0.625rem 1rem 0 1rem;
@@ -83,7 +83,7 @@ $search-page-search-panel-width: 22.0625rem;
       height: auto;
     }
 
-    .m-search-display {
+    .c-search-display {
       display: none;
     }
   }

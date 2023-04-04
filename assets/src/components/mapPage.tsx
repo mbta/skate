@@ -56,7 +56,7 @@ const SearchInputAndResults = ({
 
       <hr />
 
-      <div className="m-search-display u-hideable">
+      <div className="c-search-display u-hideable">
         {searchVehicles !== null &&
         thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
           <SearchResults

@@ -144,7 +144,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hideable"
+        class="c-search-display u-hideable"
       >
         <div
           class="c-recent-searches"
@@ -510,7 +510,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hideable"
+        class="c-search-display u-hideable"
       >
         <div
           class="c-recent-searches"
@@ -876,7 +876,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hideable"
+        class="c-search-display u-hideable"
       >
         <div
           class="c-recent-searches"

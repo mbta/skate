@@ -134,7 +134,7 @@ exports[`SearchPage renders the empty state 1`] = `
         </button>
       </div>
       <div
-        class="m-search-display"
+        class="c-search-display"
       >
         <div
           class="c-recent-searches"
@@ -457,7 +457,7 @@ exports[`SearchPage renders vehicle data 1`] = `
         </button>
       </div>
       <div
-        class="m-search-display"
+        class="c-search-display"
       >
         <div
           class="c-recent-searches"
