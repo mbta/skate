@@ -22,7 +22,7 @@ Array [
       </button>
     </div>
     <div
-      className="m-notification__title"
+      className="c-notification__title"
     >
       Chelsea St Bridge Lowered
     </div>
@@ -61,7 +61,7 @@ Array [
       </button>
     </div>
     <div
-      className="m-notification__title"
+      className="c-notification__title"
     >
       Chelsea St Bridge Raised
     </div>
@@ -100,7 +100,7 @@ Array [
       </button>
     </div>
     <div
-      className="m-notification__title"
+      className="c-notification__title"
     >
       Other
        NOTIFICATION

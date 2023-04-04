@@ -45,7 +45,7 @@ const InactiveNotificationModal = ({
               <OldCloseIcon />
             </button>
           </div>
-          <div className="m-notification__title">
+          <div className="c-notification__title">
             {title(notification.reason)} NOTIFICATION
           </div>
           <div className="c-inactive-notification-modal__body">
