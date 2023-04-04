@@ -19,17 +19,68 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   }
 }
 
-.leaflet-popup-tip-container {
-  height: 200px;
-}
-.leaflet-popup-tip::after {
+.c-stop-card .leaflet-popup-tip::after {
   content: "";
   position: absolute;
 
   width: 200%;
   height: 200%;
   transform: rotate(-45deg);
-  background-color: red;
+  background-color: transparent;
+}
+
+.c-stop-card {
+  box-sizing: border-box;
+}
+
+.c-stop-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 25px;
+  height: 100%;
+  background-color: transparent;
+}
+
+.c-stop-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -25px;
+  width: 25px;
+  height: 100%;
+  background-color: transparent;
+}
+
+.c-stop-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 25px;
+  height: 100%;
+  background-color: transparent;
+}
+
+.c-stop-card .leaflet-popup-content-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  background-color: transparent;
+}
+
+.c-stop-card .leaflet-popup-content-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background-color: transparent;
 }
 
 .c-stop-card .leaflet-popup-tip-container {
