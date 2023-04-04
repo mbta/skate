@@ -15,7 +15,7 @@ export type LeafletPaddingOptions = {
 type StopCardProps = {
   stop: Stop
   direction?: DirectionId
-  eventHandlers: LeafletEventHandlerFnMap
+  eventHandlers?: LeafletEventHandlerFnMap
 }
 
 type AutoPanProps = {
