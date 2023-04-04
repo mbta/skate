@@ -261,7 +261,7 @@ export const StopIcon = ({
       center={[stop.lat, stop.lon]}
       radius={radius}
     >
-      <div className="TEST">{props.children}</div>
+      {props.children}
     </CircleMarker>
   )
 }
