@@ -3,7 +3,7 @@
 exports[`Shuttle Map Page renders 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -163,7 +163,7 @@ exports[`Shuttle Map Page renders 1`] = `
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -663,7 +663,7 @@ exports[`Shuttle Map Page renders 1`] = `
 exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -823,7 +823,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -1323,7 +1323,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
 exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -1483,7 +1483,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -1983,7 +1983,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 exports[`Shuttle Map Page renders with shapes selected 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -2008,7 +2008,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -2206,7 +2206,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
 exports[`Shuttle Map Page renders with train vehicles 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -2366,7 +2366,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
