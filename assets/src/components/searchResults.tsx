@@ -36,7 +36,7 @@ const SearchResultCard = ({
         style="white"
         title={<RouteVariantName vehicle={vehicleOrGhost} />}
         icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
-        additionalClass="m-search-results__result"
+        additionalClass="c-search-results__result"
         selected={isSelected}
       >
         <CardProperties
@@ -91,7 +91,7 @@ const ResultsList = ({
   onClick: (vehicle: VehicleOrGhost) => void
   selectedVehicleId: string | null
 }) => (
-  <ul className="m-search-results__list">
+  <ul className="c-search-results__list">
     {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
       <SearchResultCard
         vehicleOrGhost={vehicleOrGhost}
@@ -114,8 +114,8 @@ const NoResults = () => {
   ] = useContext(StateDispatchContext)
 
   return (
-    <div className="m-search-results__none">
-      <div className="m-search-results__heading">No Search Results</div>
+    <div className="c-search-results__none">
+      <div className="c-search-results__heading">No Search Results</div>
 
       <p>
         There were no matching results found for “{query.text}”. Please try
@@ -128,7 +128,7 @@ const NoResults = () => {
       </p>
 
       <button
-        className="m-search-results__clear-search-button"
+        className="c-search-results__clear-search-button"
         onClick={() => dispatch(setSearchText(""))}
       >
         Clear search
@@ -139,7 +139,7 @@ const NoResults = () => {
 
 const SearchResults = ({ vehicles, onClick, selectedVehicleId }: Props) => {
   return (
-    <div className="m-search-results">
+    <div className="c-search-results">
       {vehicles.length ? (
         <ResultsList
           vehicles={vehicles}
