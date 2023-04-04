@@ -1,4 +1,4 @@
-.m-search-form__row {
+.c-search-form__row {
   display: flex;
 
   &:not(:last-child) {
@@ -6,12 +6,12 @@
   }
 }
 
-.m-search-form__text {
+.c-search-form__text {
   position: relative;
   flex: 1 1 auto;
 }
 
-.m-search-form__input {
+.c-search-form__input {
   width: 100%;
   height: 2.375rem;
   box-sizing: border-box;
@@ -30,7 +30,7 @@
   }
 }
 
-.m-search-form__clear {
+.c-search-form__clear {
   @include button-icon(0.875rem);
   right: 0.75rem;
   position: absolute;
@@ -44,7 +44,7 @@
   }
 }
 
-.m-search-form__submit {
+.c-search-form__submit {
   @include button-icon(1rem);
 
   flex: 1 0 auto;
@@ -59,14 +59,14 @@
   align-items: center;
 }
 
-.m-search-form__property-buttons {
+.c-search-form__property-buttons {
   display: flex;
   flex: 1 0 auto;
   list-style-type: none;
   margin: 0;
 }
 
-.m-search-form__property-button {
+.c-search-form__property-button {
   flex: 1 0 0;
   margin-right: 0.75rem;
 
@@ -75,11 +75,11 @@
   }
 }
 
-.m-search-form__property-input {
+.c-search-form__property-input {
   display: none;
 }
 
-.m-search-form__property-label {
+.c-search-form__property-label {
   display: flex;
   justify-content: center;
   align-items: center;

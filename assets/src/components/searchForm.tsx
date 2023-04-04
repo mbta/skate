@@ -63,14 +63,14 @@ const SearchForm = ({
   return (
     <form
       onSubmit={subscribeToSearch}
-      className="m-search-form"
+      className="c-search-form"
       aria-label={formTitle || "Submit Search"}
     >
-      <div className="m-search-form__row">
-        <div className="m-search-form__text">
+      <div className="c-search-form__row">
+        <div className="c-search-form__text">
           <input
             type="text"
-            className="m-search-form__input"
+            className="c-search-form__input"
             placeholder="Search"
             aria-label={inputTitle || "Search"}
             value={query.text}
@@ -79,7 +79,7 @@ const SearchForm = ({
           <button
             type="reset"
             title="Clear Search"
-            className="m-search-form__clear"
+            className="c-search-form__clear"
             onClick={clearTextInput}
           >
             <CircleXIcon />
@@ -89,7 +89,7 @@ const SearchForm = ({
         <button
           type="submit"
           title="Submit"
-          className="m-search-form__submit button-submit"
+          className="c-search-form__submit button-submit"
           onClick={subscribeToSearch}
           disabled={!isValidSearchQuery(query)}
         >
@@ -97,16 +97,16 @@ const SearchForm = ({
         </button>
       </div>
 
-      <div className="m-search-form__row">
-        <ul className="m-search-form__property-buttons">
+      <div className="c-search-form__row">
+        <ul className="c-search-form__property-buttons">
           {SEARCH_PROPERTIES.map((property) => (
             <li
-              className="m-search-form__property-button"
+              className="c-search-form__property-button"
               key={`search-property-${property}`}
             >
               <input
                 id={`property-${property}`}
-                className="m-search-form__property-input"
+                className="c-search-form__property-input"
                 type="radio"
                 name="property"
                 value={property}
@@ -115,7 +115,7 @@ const SearchForm = ({
               />
               <label
                 htmlFor={`property-${property}`}
-                className="m-search-form__property-label button-search-filter"
+                className="c-search-form__property-label button-search-filter"
               >
                 {property}
               </label>

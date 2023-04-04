@@ -3,25 +3,25 @@
 exports[`SearchForm renders 1`] = `
 <form
   aria-label="Submit Search"
-  className="m-search-form"
+  className="c-search-form"
   onSubmit={[Function]}
 >
   <div
-    className="m-search-form__row"
+    className="c-search-form__row"
   >
     <div
-      className="m-search-form__text"
+      className="c-search-form__text"
     >
       <input
         aria-label="Search"
-        className="m-search-form__input"
+        className="c-search-form__input"
         onChange={[Function]}
         placeholder="Search"
         type="text"
         value=""
       />
       <button
-        className="m-search-form__clear"
+        className="c-search-form__clear"
         onClick={[Function]}
         title="Clear Search"
         type="reset"
@@ -36,7 +36,7 @@ exports[`SearchForm renders 1`] = `
       </button>
     </div>
     <button
-      className="m-search-form__submit button-submit"
+      className="c-search-form__submit button-submit"
       disabled={true}
       onClick={[Function]}
       title="Submit"
@@ -52,17 +52,17 @@ exports[`SearchForm renders 1`] = `
     </button>
   </div>
   <div
-    className="m-search-form__row"
+    className="c-search-form__row"
   >
     <ul
-      className="m-search-form__property-buttons"
+      className="c-search-form__property-buttons"
     >
       <li
-        className="m-search-form__property-button"
+        className="c-search-form__property-button"
       >
         <input
           checked={true}
-          className="m-search-form__property-input"
+          className="c-search-form__property-input"
           id="property-all"
           name="property"
           onChange={[Function]}
@@ -70,18 +70,18 @@ exports[`SearchForm renders 1`] = `
           value="all"
         />
         <label
-          className="m-search-form__property-label button-search-filter"
+          className="c-search-form__property-label button-search-filter"
           htmlFor="property-all"
         >
           all
         </label>
       </li>
       <li
-        className="m-search-form__property-button"
+        className="c-search-form__property-button"
       >
         <input
           checked={false}
-          className="m-search-form__property-input"
+          className="c-search-form__property-input"
           id="property-run"
           name="property"
           onChange={[Function]}
@@ -89,18 +89,18 @@ exports[`SearchForm renders 1`] = `
           value="run"
         />
         <label
-          className="m-search-form__property-label button-search-filter"
+          className="c-search-form__property-label button-search-filter"
           htmlFor="property-run"
         >
           run
         </label>
       </li>
       <li
-        className="m-search-form__property-button"
+        className="c-search-form__property-button"
       >
         <input
           checked={false}
-          className="m-search-form__property-input"
+          className="c-search-form__property-input"
           id="property-vehicle"
           name="property"
           onChange={[Function]}
@@ -108,18 +108,18 @@ exports[`SearchForm renders 1`] = `
           value="vehicle"
         />
         <label
-          className="m-search-form__property-label button-search-filter"
+          className="c-search-form__property-label button-search-filter"
           htmlFor="property-vehicle"
         >
           vehicle
         </label>
       </li>
       <li
-        className="m-search-form__property-button"
+        className="c-search-form__property-button"
       >
         <input
           checked={false}
-          className="m-search-form__property-input"
+          className="c-search-form__property-input"
           id="property-operator"
           name="property"
           onChange={[Function]}
@@ -127,7 +127,7 @@ exports[`SearchForm renders 1`] = `
           value="operator"
         />
         <label
-          className="m-search-form__property-label button-search-filter"
+          className="c-search-form__property-label button-search-filter"
           htmlFor="property-operator"
         >
           operator
