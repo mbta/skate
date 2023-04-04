@@ -8,7 +8,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="c-map-page__input-and-results visible"
+      class="c-map-page__input-and-results c-map-page__input-and-results--visible"
     >
       <div
         class="c-drawer-tab"
@@ -23,7 +23,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         </button>
       </div>
       <div
-        class="c-map-page__input u-hide"
+        class="c-map-page__input u-hideable"
       >
         <form
           aria-label="Search Map"
@@ -144,7 +144,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hide"
+        class="m-search-display u-hideable"
       >
         <div
           class="c-recent-searches"
@@ -374,7 +374,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="c-map-page__input-and-results visible"
+      class="c-map-page__input-and-results c-map-page__input-and-results--visible"
     >
       <div
         class="c-drawer-tab"
@@ -389,7 +389,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         </button>
       </div>
       <div
-        class="c-map-page__input u-hide"
+        class="c-map-page__input u-hideable"
       >
         <form
           aria-label="Search Map"
@@ -510,7 +510,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hide"
+        class="m-search-display u-hideable"
       >
         <div
           class="c-recent-searches"
@@ -740,7 +740,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="c-map-page__input-and-results hidden"
+      class="c-map-page__input-and-results c-map-page__input-and-results--hidden"
     >
       <div
         class="c-drawer-tab"
@@ -755,7 +755,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
         </button>
       </div>
       <div
-        class="c-map-page__input u-hide"
+        class="c-map-page__input u-hideable"
       >
         <form
           aria-label="Search Map"
@@ -876,7 +876,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hide"
+        class="m-search-display u-hideable"
       >
         <div
           class="c-recent-searches"

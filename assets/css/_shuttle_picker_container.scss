@@ -13,11 +13,11 @@
   width: $shuttle-picker-width;
   z-index: 1;
 
-  &.visible {
+  &--visible {
     left: 0;
   }
 
-  &.hidden {
+  &--hidden {
     left: -$shuttle-picker-width;
   }
 }

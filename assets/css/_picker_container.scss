@@ -17,11 +17,11 @@
     margin-bottom: 1rem;
   }
 
-  &.visible {
+  &--visible {
     left: 0;
   }
 
-  &.hidden {
+  &--hidden {
     left: -$route-picker-width;
   }
 }
@@ -43,7 +43,7 @@
     );
     width: var(--picker-container-width);
 
-    &.hidden {
+    &--hidden {
       left: calc(-1 * var(--picker-container-width));
     }
   }

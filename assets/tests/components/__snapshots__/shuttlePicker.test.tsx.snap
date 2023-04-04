@@ -2,7 +2,7 @@
 
 exports[`ShuttlePicker renders 1`] = `
 <div
-  className="c-shuttle-picker-container visible"
+  className="c-shuttle-picker-container c-shuttle-picker-container--visible"
   data-testid="shuttle-picker-container"
 >
   <div
@@ -23,7 +23,7 @@ exports[`ShuttlePicker renders 1`] = `
     </button>
   </div>
   <div
-    className="m-shuttle-picker u-hide"
+    className="m-shuttle-picker u-hideable"
   >
     <div
       className="m-shuttle-picker__label"
@@ -302,7 +302,7 @@ exports[`ShuttlePicker renders 1`] = `
 
 exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
 <div
-  className="c-shuttle-picker-container visible"
+  className="c-shuttle-picker-container c-shuttle-picker-container--visible"
   data-testid="shuttle-picker-container"
 >
   <div
@@ -323,7 +323,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
     </button>
   </div>
   <div
-    className="m-shuttle-picker u-hide"
+    className="m-shuttle-picker u-hideable"
   >
     <div
       className="m-shuttle-picker__label"
@@ -560,7 +560,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
 
 exports[`ShuttlePicker renders loading state 1`] = `
 <div
-  className="c-shuttle-picker-container visible"
+  className="c-shuttle-picker-container c-shuttle-picker-container--visible"
   data-testid="shuttle-picker-container"
 >
   <div
@@ -581,7 +581,7 @@ exports[`ShuttlePicker renders loading state 1`] = `
     </button>
   </div>
   <div
-    className="m-shuttle-picker u-hide"
+    className="m-shuttle-picker u-hideable"
   >
     loading...
   </div>

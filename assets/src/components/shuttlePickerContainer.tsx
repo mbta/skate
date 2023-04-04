@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext } from "react"
 import DrawerTab from "../components/drawerTab"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { joinClasses } from "../helpers/dom"
 import { togglePickerContainer } from "../state"
 
 interface Props {
@@ -15,9 +16,12 @@ const ShuttlePickerContainer = ({
 
   return (
     <div
-      className={`c-shuttle-picker-container ${
-        state.pickerContainerIsVisible ? "visible" : "hidden"
-      }`}
+      className={joinClasses([
+        "c-shuttle-picker-container",
+        ...(state.pickerContainerIsVisible
+          ? ["c-shuttle-picker-container--visible"]
+          : ["c-shuttle-picker-container--hidden", "u-hideable--hidden"]),
+      ])}
       data-testid="shuttle-picker-container"
     >
       <DrawerTab

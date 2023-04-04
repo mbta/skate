@@ -1,0 +1,11 @@
+.u-hideable {
+  // When revealing do not delay visibility change
+  transition: visibility 0s 0s;
+
+  .u-hideable--hidden & {
+    // when the controller hides, hide this element from screen and accessibility tree
+    visibility: hidden;
+    // Delay visibility transition to end of slide transition
+    transition-delay: $transition-slide-duration;
+  }
+}

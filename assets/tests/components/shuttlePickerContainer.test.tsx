@@ -18,7 +18,7 @@ describe("ShuttlePickerContainer", () => {
       </StateDispatchProvider>
     )
     expect(result.getByTestId("shuttle-picker-container")).toHaveClass(
-      "visible"
+      "c-shuttle-picker-container--visible"
     )
 
     await user.click(result.getByRole("button", { name: "Collapse" }))
@@ -38,6 +38,8 @@ describe("ShuttlePickerContainer", () => {
         </ShuttlePickerContainer>
       </StateDispatchProvider>
     )
-    expect(result.getByTestId("shuttle-picker-container")).toHaveClass("hidden")
+    expect(result.getByTestId("shuttle-picker-container")).toHaveClass(
+      "c-shuttle-picker-container--hidden"
+    )
   })
 })

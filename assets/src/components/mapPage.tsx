@@ -8,6 +8,7 @@ import React, {
 } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { joinClasses } from "../helpers/dom"
 import useSearchResults from "../hooks/useSearchResults"
 import { VehicleOrGhost } from "../realtime"
 import { OpenView, closeView } from "../state"
@@ -45,7 +46,7 @@ const SearchInputAndResults = ({
 
   return (
     <>
-      <div className="c-map-page__input u-hide">
+      <div className="c-map-page__input u-hideable">
         <SearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
@@ -55,7 +56,7 @@ const SearchInputAndResults = ({
 
       <hr />
 
-      <div className="m-search-display u-hide">
+      <div className="m-search-display u-hideable">
         {searchVehicles !== null &&
         thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
           <SearchResults
@@ -131,9 +132,12 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       aria-label="Search Map Page"
     >
       <div
-        className={`c-map-page__input-and-results ${
-          searchOpen ? "visible" : "hidden"
-        }`}
+        className={joinClasses([
+          "c-map-page__input-and-results",
+          searchOpen
+            ? "c-map-page__input-and-results--visible"
+            : "c-map-page__input-and-results--hidden",
+        ])}
         aria-label="Map Search Panel"
       >
         <DrawerTab

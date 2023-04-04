@@ -17,8 +17,12 @@ describe("PickerContainer", () => {
         </PickerContainer>
       </StateDispatchProvider>
     )
-    expect(result.getByTestId("picker-container")).toHaveClass("visible")
-    expect(result.getByTestId("picker-container")).not.toHaveClass("hidden")
+    expect(result.getByTestId("picker-container")).toHaveClass(
+      "c-picker-container--visible"
+    )
+    expect(result.getByTestId("picker-container")).not.toHaveClass(
+      "c-picker-container--hidden"
+    )
 
     await user.click(result.getByRole("button", { name: "Collapse" }))
 

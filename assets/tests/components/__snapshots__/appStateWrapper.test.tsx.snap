@@ -24,7 +24,7 @@ exports[`renders 1`] = `
               class="c-notifications"
             />
             <div
-              class="c-picker-container visible"
+              class="c-picker-container c-picker-container--visible"
               data-testid="picker-container"
             >
               <div
@@ -40,7 +40,7 @@ exports[`renders 1`] = `
                 </button>
               </div>
               <div
-                class="c-ladder-page__routes-presets-toggle u-hide"
+                class="c-ladder-page__routes-presets-toggle u-hideable"
               >
                 <button
                   class="c-ladder-page__routes_picker_button--selected"
@@ -56,7 +56,7 @@ exports[`renders 1`] = `
                 </button>
               </div>
               <div
-                class="c-route-picker u-hide"
+                class="c-route-picker u-hideable"
               >
                 <div
                   class="c-route-filter"
