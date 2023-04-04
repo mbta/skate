@@ -2,7 +2,7 @@
 
 exports[`BlockWaiverList renders 1`] = `
 <div
-  className="m-block-waiver-list"
+  className="c-block-waiver-list"
 >
   <div
     aria-labelledby="card-label-:r0:"

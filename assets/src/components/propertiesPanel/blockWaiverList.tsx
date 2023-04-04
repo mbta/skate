@@ -7,7 +7,7 @@ interface Props {
 }
 
 const BlockWaiverList = ({ blockWaivers }: Props) => (
-  <div className="m-block-waiver-list">
+  <div className="c-block-waiver-list">
     {blockWaivers.map((blockWaiver) => (
       <BlockWaiverBanner
         blockWaiver={blockWaiver}
