@@ -87,7 +87,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
 
-        <div className="m-search-display">
+        <div className="c-search-display">
           {vehicles != null &&
           thereIsAnActiveSearch(vehicles, searchPageState) ? (
             <SearchResults

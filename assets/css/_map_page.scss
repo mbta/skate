@@ -52,7 +52,7 @@ $map-page-search-panel-width: 24rem;
   &--hidden {
     left: calc(-1 * #{$map-page-search-panel-width} + 1rem);
 
-    .m-search-display {
+    .c-search-display {
       scrollbar-width: none;
       -ms-overflow-style: none;
 
@@ -83,7 +83,7 @@ $map-page-search-panel-width: 24rem;
   margin: 0.5rem auto 0;
 }
 
-.m-search-display {
+.c-search-display {
   flex: 1 1 auto;
   overflow-y: scroll;
   padding: 0.625rem 1rem 0 1rem;

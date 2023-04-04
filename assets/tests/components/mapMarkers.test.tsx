@@ -95,9 +95,9 @@ describe("StationMarker", () => {
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
     )
-    expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
+    expect(container.querySelector(".c-station-icon")).toBeInTheDocument()
 
-    await userEvent.hover(container.querySelector(".m-station-icon")!)
+    await userEvent.hover(container.querySelector(".c-station-icon")!)
 
     expect(screen.getByText(station.name)).toBeVisible()
     expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
@@ -110,8 +110,8 @@ describe("StationMarker", () => {
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
     )
-    expect(container.querySelector(".m-station-icon")).toBeInTheDocument()
-    await userEvent.click(container.querySelector(".m-station-icon")!)
+    expect(container.querySelector(".c-station-icon")).toBeInTheDocument()
+    await userEvent.click(container.querySelector(".c-station-icon")!)
     expect(screen.getByText(station.name)).toBeVisible()
     expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
   })
@@ -123,7 +123,7 @@ describe("RouteStopMarkers", () => {
       <RouteStopMarkers stops={[stop, station]} zoomLevel={13} />
     )
 
-    expect(container.querySelectorAll(".m-station-icon")).toHaveLength(1)
+    expect(container.querySelectorAll(".c-station-icon")).toHaveLength(1)
     expect(container.querySelectorAll(".c-vehicle-map__stop")).toHaveLength(1)
   })
 

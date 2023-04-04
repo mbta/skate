@@ -178,7 +178,7 @@ export const TrainVehicleMarker = ({
 const stationLeafletIcon = ({ size }: { size: number }): Leaflet.DivIcon => {
   return Leaflet.divIcon({
     html: stationIcon,
-    className: "m-station-icon",
+    className: "c-station-icon",
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   })

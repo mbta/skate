@@ -18,7 +18,7 @@ const ChelseaLoweredNotificationModal = () => {
             <OldCloseIcon />
           </button>
         </div>
-        <div className="m-notification__title">Chelsea St Bridge Lowered</div>
+        <div className="c-notification__title">Chelsea St Bridge Lowered</div>
         <div className="c-inactive-notification-modal__body">
           OCC reported that the Chelsea St Bridge has been lowered.
         </div>

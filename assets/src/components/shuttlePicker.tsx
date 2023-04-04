@@ -73,7 +73,7 @@ const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
 
   return (
     <ShuttlePickerContainer>
-      <div className="m-shuttle-picker u-hideable">
+      <div className="c-shuttle-picker u-hideable">
         {shuttles === null ? (
           <Loading />
         ) : (
@@ -89,8 +89,8 @@ const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
 
 const RunIds = ({ shuttles }: { shuttles: Vehicle[] }) => (
   <>
-    <div className="m-shuttle-picker__label">Run #</div>
-    <ul className="m-shuttle-picker__route-list m-shuttle-picker__shuttle-run-list">
+    <div className="c-shuttle-picker__label">Run #</div>
+    <ul className="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list">
       <RunIdButtons shuttles={shuttles} />
     </ul>
   </>
@@ -222,21 +222,21 @@ const RunButton = ({
 }): ReactElement<HTMLElement> => {
   const selectedClass = isActive
     ? isSelected
-      ? "m-shuttle-picker__route-list-button--selected"
-      : "m-shuttle-picker__route-list-button--unselected"
-    : "m-shuttle-picker__route-list-button--disabled"
+      ? "c-shuttle-picker__route-list-button--selected"
+      : "c-shuttle-picker__route-list-button--unselected"
+    : "c-shuttle-picker__route-list-button--disabled"
   return (
     <li>
       <button
-        className={`m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count ${selectedClass}`}
+        className={`c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count ${selectedClass}`}
         onClick={onClick}
         disabled={!isActive}
       >
-        <span className="m-shuttle-picker__route-list-button-name">
+        <span className="c-shuttle-picker__route-list-button-name">
           {icon}
           {name}
         </span>
-        <span className="m-shuttle-picker__route-list-button-count">
+        <span className="c-shuttle-picker__route-list-button-count">
           {count !== undefined && count}
         </span>
       </button>
@@ -246,9 +246,9 @@ const RunButton = ({
 
 const Routes = ({ shuttleRoutes }: { shuttleRoutes: Route[] | null }) => (
   <>
-    <div className="m-shuttle-picker__label">Routes</div>
+    <div className="c-shuttle-picker__label">Routes</div>
     {shuttleRoutes && (
-      <ul className="m-shuttle-picker__route-list m-shuttle-picker__shuttle-route-list">
+      <ul className="c-shuttle-picker__route-list c-shuttle-picker__shuttle-route-list">
         <RouteButtons shuttleRoutes={shuttleRoutes} />
       </ul>
     )}
@@ -277,8 +277,8 @@ const RouteButton = ({
   const [state, dispatch] = useContext(StateDispatchContext)
   const isSelected = state.selectedShuttleRouteIds.includes(id)
   const selectedClass = isSelected
-    ? "m-shuttle-picker__route-list-button--selected"
-    : "m-shuttle-picker__route-list-button--unselected"
+    ? "c-shuttle-picker__route-list-button--selected"
+    : "c-shuttle-picker__route-list-button--unselected"
 
   const toggleRoute = isSelected
     ? () => dispatch(deselectShuttleRoute(id))
@@ -287,7 +287,7 @@ const RouteButton = ({
   return (
     <li>
       <button
-        className={`m-shuttle-picker__route-list-button ${selectedClass}`}
+        className={`c-shuttle-picker__route-list-button ${selectedClass}`}
         onClick={toggleRoute}
       >
         {name}

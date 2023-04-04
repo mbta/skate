@@ -1,21 +1,21 @@
-.m-search-results {
+.c-search-results {
   @include font-body;
 }
 
-.m-search-results__heading {
+.c-search-results__heading {
   @include font-label;
 }
 
-.m-search-results__clear-search-button {
+.c-search-results__clear-search-button {
   @include button-text;
 }
 
-.m-search-results__none {
+.c-search-results__none {
   *:not(:last-child) {
     margin-bottom: 1rem;
   }
 
-  .m-search-results__heading {
+  .c-search-results__heading {
     font-size: var(--font-size-s);
     font-weight: var(--font-weight-bold);
     color: $black;
@@ -46,7 +46,7 @@
   }
 }
 
-.m-search-results__list {
+.c-search-results__list {
   margin: 0;
   position: relative;
 
@@ -55,7 +55,7 @@
   }
 }
 
-.m-search-results__result {
+.c-search-results__result {
   .c-card__icon {
     padding-right: 1rem;
 

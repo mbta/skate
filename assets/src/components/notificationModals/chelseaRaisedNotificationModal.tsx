@@ -34,7 +34,7 @@ const ChelseaRaisedNotificationModal = ({
             <OldCloseIcon />
           </button>
         </div>
-        <div className="m-notification__title">Chelsea St Bridge Raised</div>
+        <div className="c-notification__title">Chelsea St Bridge Raised</div>
         <div className="c-inactive-notification-modal__body">
           {contentString(notification.endTime)}
         </div>

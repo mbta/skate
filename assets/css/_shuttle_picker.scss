@@ -1,14 +1,14 @@
-.m-shuttle-picker {
+.c-shuttle-picker {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.m-shuttle-picker__label {
+.c-shuttle-picker__label {
   @include font-label();
 }
 
-.m-shuttle-picker__selected-routes {
+.c-shuttle-picker__selected-routes {
   display: flex;
   flex: 0 0 auto;
   flex-shrink: 0;
@@ -21,20 +21,20 @@
   }
 }
 
-.m-shuttle-picker__selected-routes-button {
+.c-shuttle-picker__selected-routes-button {
   @include button-primary;
   margin-bottom: 0.25rem;
   margin-right: 0.25rem;
   min-width: 2rem;
 }
 
-.m-shuttle-picker__route-list {
+.c-shuttle-picker__route-list {
   flex: 1 1 0;
   overflow-y: scroll;
   margin-top: 0rem;
 }
 
-.m-shuttle-picker__route-list-button {
+.c-shuttle-picker__route-list-button {
   margin-bottom: 0.25rem;
   width: 100%;
   word-break: break-word;
@@ -59,12 +59,12 @@
   }
 }
 
-.m-shuttle-picker__route-list-button-name,
-.m-shuttle-picker__route-list-button-count {
+.c-shuttle-picker__route-list-button-name,
+.c-shuttle-picker__route-list-button-count {
   padding: 0.3125rem 0.5rem;
 }
 
-.m-shuttle-picker__route-list-button-name {
+.c-shuttle-picker__route-list-button-name {
   flex: 1 1 auto;
   text-align: left;
 
@@ -77,7 +77,7 @@
   }
 }
 
-.m-shuttle-picker__route-list-button-count {
+.c-shuttle-picker__route-list-button-count {
   border-left: 1px solid $color-bg-medium;
   display: inline-block;
   flex: 0 0 auto;
@@ -86,7 +86,7 @@
   min-width: 0.5rem;
   padding-left: 0.3125rem;
 
-  .m-shuttle-picker__route-list-button--unselected & {
+  .c-shuttle-picker__route-list-button--unselected & {
     color: $color-font-grey;
   }
 }

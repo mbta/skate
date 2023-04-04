@@ -3,7 +3,7 @@
 exports[`Shuttle Map Page renders 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -22,27 +22,27 @@ exports[`Shuttle Map Page renders 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker u-hideable"
+        class="c-shuttle-picker u-hideable"
       >
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Run #
         </div>
         <ul
-          class="m-shuttle-picker__route-list m-shuttle-picker__shuttle-run-list"
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
         >
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--selected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 All Specials (999*)
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -50,15 +50,15 @@ exports[`Shuttle Map Page renders 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--unselected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 Special 999 555
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -66,11 +66,11 @@ exports[`Shuttle Map Page renders 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -78,17 +78,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 Blue 999 501
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -96,17 +96,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 Green 999 502
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -114,17 +114,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 Orange 999 503
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -132,17 +132,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 Red 999 504
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -150,20 +150,20 @@ exports[`Shuttle Map Page renders 1`] = `
                 CR 999 505
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
         </ul>
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Routes
         </div>
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -663,7 +663,7 @@ exports[`Shuttle Map Page renders 1`] = `
 exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -682,27 +682,27 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker u-hideable"
+        class="c-shuttle-picker u-hideable"
       >
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Run #
         </div>
         <ul
-          class="m-shuttle-picker__route-list m-shuttle-picker__shuttle-run-list"
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
         >
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--unselected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 All Specials (999*)
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -710,15 +710,15 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--selected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 Special 999 555
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -726,11 +726,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -738,17 +738,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 Blue 999 501
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -756,17 +756,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 Green 999 502
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -774,17 +774,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 Orange 999 503
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -792,17 +792,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 Red 999 504
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -810,20 +810,20 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 CR 999 505
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
         </ul>
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Routes
         </div>
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -1323,7 +1323,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
 exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -1342,27 +1342,27 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker u-hideable"
+        class="c-shuttle-picker u-hideable"
       >
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Run #
         </div>
         <ul
-          class="m-shuttle-picker__route-list m-shuttle-picker__shuttle-run-list"
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
         >
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--selected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 All Specials (999*)
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -1370,15 +1370,15 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--unselected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 Special 999 555
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -1386,11 +1386,11 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -1398,17 +1398,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 Blue 999 501
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -1416,17 +1416,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 Green 999 502
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -1434,17 +1434,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 Orange 999 503
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -1452,17 +1452,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 Red 999 504
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -1470,20 +1470,20 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 CR 999 505
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
         </ul>
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Routes
         </div>
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -1983,7 +1983,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 exports[`Shuttle Map Page renders with shapes selected 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -2002,13 +2002,13 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker u-hideable"
+        class="c-shuttle-picker u-hideable"
       >
         loading...
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"
@@ -2206,7 +2206,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
 exports[`Shuttle Map Page renders with train vehicles 1`] = `
 <DocumentFragment>
   <div
-    class="m-shuttle-map "
+    class="c-shuttle-map "
   >
     <div
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
@@ -2225,27 +2225,27 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
         </button>
       </div>
       <div
-        class="m-shuttle-picker u-hideable"
+        class="c-shuttle-picker u-hideable"
       >
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Run #
         </div>
         <ul
-          class="m-shuttle-picker__route-list m-shuttle-picker__shuttle-run-list"
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
         >
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--selected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 All Specials (999*)
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -2253,15 +2253,15 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--unselected"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 Special 999 555
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               >
                 1
               </span>
@@ -2269,11 +2269,11 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -2281,17 +2281,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 Blue 999 501
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -2299,17 +2299,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 Green 999 502
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -2317,17 +2317,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 Orange 999 503
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -2335,17 +2335,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 Red 999 504
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
           <li>
             <button
-              class="m-shuttle-picker__route-list-button m-shuttle-picker__route-list-button--with-count m-shuttle-picker__route-list-button--disabled"
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
               disabled=""
             >
               <span
-                class="m-shuttle-picker__route-list-button-name"
+                class="c-shuttle-picker__route-list-button-name"
               >
                 <span>
                   <svg />
@@ -2353,20 +2353,20 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 CR 999 505
               </span>
               <span
-                class="m-shuttle-picker__route-list-button-count"
+                class="c-shuttle-picker__route-list-button-count"
               />
             </button>
           </li>
         </ul>
         <div
-          class="m-shuttle-picker__label"
+          class="c-shuttle-picker__label"
         >
           Routes
         </div>
       </div>
     </div>
     <div
-      class="m-shuttle-map__map"
+      class="c-shuttle-map__map"
     >
       <div
         class="c-vehicle-map-state c-vehicle-map-state--auto-centering"

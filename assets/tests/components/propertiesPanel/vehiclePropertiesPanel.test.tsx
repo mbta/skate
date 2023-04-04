@@ -281,6 +281,6 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel selectedVehicle={vehicle} />
     )
 
-    expect(container.innerHTML).toContain("m-station-icon")
+    expect(container.innerHTML).toContain("c-station-icon")
   })
 })

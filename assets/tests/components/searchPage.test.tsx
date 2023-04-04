@@ -173,6 +173,6 @@ describe("SearchPage", () => {
     await userEvent.click(zoomInButton.get())
     await userEvent.click(zoomInButton.get())
 
-    expect(container.querySelector(".m-station-icon")).toBeVisible()
+    expect(container.querySelector(".c-station-icon")).toBeVisible()
   })
 })

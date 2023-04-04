@@ -62,10 +62,10 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
     selectedShuttleRunIds === "all" ? "all" : selectedShuttleRunIds.join(",")
 
   return (
-    <div className={`m-shuttle-map ${mobileMenuClass}`}>
+    <div className={`c-shuttle-map ${mobileMenuClass}`}>
       <ShuttlePicker shuttles={shuttles} />
 
-      <div className="m-shuttle-map__map">
+      <div className="c-shuttle-map__map">
         <MapFollowingSelectionKey
           selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={selectedShuttles}

@@ -99,7 +99,7 @@ function mockUseVehiclesForRouteMap(map: {
 }
 
 function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
-  return container.querySelectorAll(".m-station-icon")
+  return container.querySelectorAll(".c-station-icon")
 }
 
 describe("<MapDisplay />", () => {

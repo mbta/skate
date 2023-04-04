@@ -27,23 +27,23 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       >
         <form
           aria-label="Search Map"
-          class="m-search-form"
+          class="c-search-form"
         >
           <div
-            class="m-search-form__row"
+            class="c-search-form__row"
           >
             <div
-              class="m-search-form__text"
+              class="c-search-form__text"
             >
               <input
                 aria-label="Search Map Query"
-                class="m-search-form__input"
+                class="c-search-form__input"
                 placeholder="Search"
                 type="text"
                 value=""
               />
               <button
-                class="m-search-form__clear"
+                class="c-search-form__clear"
                 title="Clear Search"
                 type="reset"
               >
@@ -53,7 +53,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit button-submit"
+              class="c-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -64,75 +64,75 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </button>
           </div>
           <div
-            class="m-search-form__row"
+            class="c-search-form__row"
           >
             <ul
-              class="m-search-form__property-buttons"
+              class="c-search-form__property-buttons"
             >
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
                   checked=""
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-all"
                   name="property"
                   type="radio"
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-run"
                   name="property"
                   type="radio"
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-vehicle"
                   name="property"
                   type="radio"
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-operator"
                   name="property"
                   type="radio"
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -144,7 +144,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hideable"
+        class="c-search-display u-hideable"
       >
         <div
           class="c-recent-searches"
@@ -393,23 +393,23 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       >
         <form
           aria-label="Search Map"
-          class="m-search-form"
+          class="c-search-form"
         >
           <div
-            class="m-search-form__row"
+            class="c-search-form__row"
           >
             <div
-              class="m-search-form__text"
+              class="c-search-form__text"
             >
               <input
                 aria-label="Search Map Query"
-                class="m-search-form__input"
+                class="c-search-form__input"
                 placeholder="Search"
                 type="text"
                 value=""
               />
               <button
-                class="m-search-form__clear"
+                class="c-search-form__clear"
                 title="Clear Search"
                 type="reset"
               >
@@ -419,7 +419,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit button-submit"
+              class="c-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -430,75 +430,75 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             </button>
           </div>
           <div
-            class="m-search-form__row"
+            class="c-search-form__row"
           >
             <ul
-              class="m-search-form__property-buttons"
+              class="c-search-form__property-buttons"
             >
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
                   checked=""
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-all"
                   name="property"
                   type="radio"
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-run"
                   name="property"
                   type="radio"
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-vehicle"
                   name="property"
                   type="radio"
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-operator"
                   name="property"
                   type="radio"
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -510,7 +510,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hideable"
+        class="c-search-display u-hideable"
       >
         <div
           class="c-recent-searches"
@@ -759,23 +759,23 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       >
         <form
           aria-label="Search Map"
-          class="m-search-form"
+          class="c-search-form"
         >
           <div
-            class="m-search-form__row"
+            class="c-search-form__row"
           >
             <div
-              class="m-search-form__text"
+              class="c-search-form__text"
             >
               <input
                 aria-label="Search Map Query"
-                class="m-search-form__input"
+                class="c-search-form__input"
                 placeholder="Search"
                 type="text"
                 value=""
               />
               <button
-                class="m-search-form__clear"
+                class="c-search-form__clear"
                 title="Clear Search"
                 type="reset"
               >
@@ -785,7 +785,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </button>
             </div>
             <button
-              class="m-search-form__submit button-submit"
+              class="c-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -796,75 +796,75 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </button>
           </div>
           <div
-            class="m-search-form__row"
+            class="c-search-form__row"
           >
             <ul
-              class="m-search-form__property-buttons"
+              class="c-search-form__property-buttons"
             >
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
                   checked=""
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-all"
                   name="property"
                   type="radio"
                   value="all"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-run"
                   name="property"
                   type="radio"
                   value="run"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-vehicle"
                   name="property"
                   type="radio"
                   value="vehicle"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
                 </label>
               </li>
               <li
-                class="m-search-form__property-button"
+                class="c-search-form__property-button"
               >
                 <input
-                  class="m-search-form__property-input"
+                  class="c-search-form__property-input"
                   id="property-operator"
                   name="property"
                   type="radio"
                   value="operator"
                 />
                 <label
-                  class="m-search-form__property-label button-search-filter"
+                  class="c-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -876,7 +876,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       </div>
       <hr />
       <div
-        class="m-search-display u-hideable"
+        class="c-search-display u-hideable"
       >
         <div
           class="c-recent-searches"
@@ -1497,7 +1497,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   </output>
                    
                   <output
-                    class="m-vehicle-adherence-label label font-xs-reg"
+                    class="c-vehicle-adherence-label label font-xs-reg"
                   >
                     (0 min early)
                   </output>

@@ -180,7 +180,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       mapRef.current!.setZoom(14)
     })
     await animationFramePromise()
-    expect(container.querySelector(".m-station-icon")).not.toBeInTheDocument()
+    expect(container.querySelector(".c-station-icon")).not.toBeInTheDocument()
     expect(screen.queryByText(station.name)).toBeNull()
   })
 
@@ -200,7 +200,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
-    expect(container.querySelector(".m-station-icon")).toBeVisible()
+    expect(container.querySelector(".c-station-icon")).toBeVisible()
     expect(screen.queryByText(station.name)).toBeNull()
   })
 
@@ -220,7 +220,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       mapRef.current!.setZoom(15)
     })
     await animationFramePromise()
-    await userEvent.hover(container.querySelector(".m-station-icon")!)
+    await userEvent.hover(container.querySelector(".c-station-icon")!)
 
     expect(screen.queryByText(station.name)).toBeInTheDocument()
   })
@@ -241,7 +241,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       mapRef.current!.setZoom(14)
     })
     await animationFramePromise()
-    expect(container.querySelector(".m-station-icon")).toBeVisible()
+    expect(container.querySelector(".c-station-icon")).toBeVisible()
   })
 
   test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
