@@ -6,7 +6,7 @@ exports[`Shuttle Map Page renders 1`] = `
     class="m-shuttle-map "
   >
     <div
-      class="m-shuttle-picker-container visible"
+      class="c-shuttle-picker-container visible"
       data-testid="shuttle-picker-container"
     >
       <div
@@ -666,7 +666,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
     class="m-shuttle-map "
   >
     <div
-      class="m-shuttle-picker-container visible"
+      class="c-shuttle-picker-container visible"
       data-testid="shuttle-picker-container"
     >
       <div
@@ -1326,7 +1326,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
     class="m-shuttle-map "
   >
     <div
-      class="m-shuttle-picker-container visible"
+      class="c-shuttle-picker-container visible"
       data-testid="shuttle-picker-container"
     >
       <div
@@ -1986,7 +1986,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
     class="m-shuttle-map "
   >
     <div
-      class="m-shuttle-picker-container visible"
+      class="c-shuttle-picker-container visible"
       data-testid="shuttle-picker-container"
     >
       <div
@@ -2209,7 +2209,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
     class="m-shuttle-map "
   >
     <div
-      class="m-shuttle-picker-container visible"
+      class="c-shuttle-picker-container visible"
       data-testid="shuttle-picker-container"
     >
       <div

@@ -1,4 +1,4 @@
-.m-presets-panel {
+.c-presets-panel {
   ul {
     margin-top: 0rem;
     margin-bottom: 0.5rem;
@@ -10,7 +10,7 @@
       padding-bottom: 1rem;
       line-height: 0.75rem;
 
-      .m-presets-panel__preset-button-container {
+      .c-presets-panel__preset-button-container {
         button {
           color: #0041ea;
           font-size: 0.85rem;
@@ -24,7 +24,7 @@
     }
   }
 
-  .m-presets-panel__save-as-preset-button {
+  .c-presets-panel__save-as-preset-button {
     font-size: 0.85rem;
     font-weight: 700;
     color: $color-gray-50;
@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
 
-    .m-presets-panel__save-as-preset-button-icon {
+    .c-presets-panel__save-as-preset-button-icon {
       padding-right: 0.25rem;
       width: 0.75rem;
       height: 0.75rem;

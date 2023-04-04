@@ -15,7 +15,7 @@ interface Props {
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   const noTooltipOpen =
-    document.getElementsByClassName("m-crowding-diagram__crowding-tooltip")
+    document.getElementsByClassName("c-crowding-diagram__crowding-tooltip")
       .length === 0
   if (noTooltipOpen) {
     hideMe()

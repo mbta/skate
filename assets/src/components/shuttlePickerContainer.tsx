@@ -15,7 +15,7 @@ const ShuttlePickerContainer = ({
 
   return (
     <div
-      className={`m-shuttle-picker-container ${
+      className={`c-shuttle-picker-container ${
         state.pickerContainerIsVisible ? "visible" : "hidden"
       }`}
       data-testid="shuttle-picker-container"

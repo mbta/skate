@@ -52,7 +52,7 @@ $color-crowding-icon-bg: $color-bg-medium;
   }
 }
 
-.m-crowding-diagram {
+.c-crowding-diagram {
   border-top: 1px solid $color-rule;
   font-size: 0.875rem;
   line-height: 1.3rem;
@@ -60,12 +60,12 @@ $color-crowding-icon-bg: $color-bg-medium;
   position: relative;
 }
 
-.m-crowding-diagram__status-description {
+.c-crowding-diagram__status-description {
   font-weight: 500;
   text-transform: uppercase;
 }
 
-.m-crowding-diagram__crowding-icon {
+.c-crowding-diagram__crowding-icon {
   @include crowding-icon-colors;
 
   bottom: 1rem;
@@ -83,7 +83,7 @@ $color-crowding-icon-bg: $color-bg-medium;
   }
 }
 
-.m-crowding-diagram__tooltip-anchor {
+.c-crowding-diagram__tooltip-anchor {
   margin-left: 0.25rem;
   vertical-align: middle;
 

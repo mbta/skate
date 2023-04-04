@@ -2,12 +2,12 @@
 
 exports[`Presets renders current presets 1`] = `
 <div
-  className="m-presets-panel u-hide"
+  className="c-presets-panel u-hide"
 >
   <ul>
     <li>
       <div
-        className="m-presets-panel__preset-button-container"
+        className="c-presets-panel__preset-button-container"
       >
         <button
           onClick={[Function]}
@@ -34,7 +34,7 @@ exports[`Presets renders current presets 1`] = `
     </li>
     <li>
       <div
-        className="m-presets-panel__preset-button-container"
+        className="c-presets-panel__preset-button-container"
       >
         <button
           onClick={[Function]}
@@ -61,12 +61,12 @@ exports[`Presets renders current presets 1`] = `
     </li>
   </ul>
   <button
-    className="m-presets-panel__save-as-preset-button"
+    className="c-presets-panel__save-as-preset-button"
     disabled={true}
     onClick={[Function]}
   >
     <span
-      className="m-presets-panel__save-as-preset-button-icon"
+      className="c-presets-panel__save-as-preset-button-icon"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<svg/>",

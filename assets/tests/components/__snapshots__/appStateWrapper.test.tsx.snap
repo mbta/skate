@@ -24,7 +24,7 @@ exports[`renders 1`] = `
               class="c-notifications"
             />
             <div
-              class="m-picker-container visible"
+              class="c-picker-container visible"
               data-testid="picker-container"
             >
               <div
@@ -137,7 +137,7 @@ exports[`renders 1`] = `
                       </span>
                     </button>
                     <button
-                      class="m-old-close-button"
+                      class="c-old-close-button"
                       data-testid="close-button"
                       title="Close"
                     >
