@@ -111,6 +111,10 @@ const StopCard = ({
           longitude={stop.lon}
         ></StreetViewButton>
       </div>
+      <div className="c-stop-card__left-hover-padding"></div>
+      <div className="c-stop-card__right-hover-padding"></div>
+      <div className="c-stop-card__top-hover-padding"></div>
+      <div className="c-stop-card__bottom-hover-padding"></div>
     </Popup>
   )
 }

@@ -29,21 +29,7 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   background-color: transparent;
 }
 
-.c-stop-card {
-  box-sizing: border-box;
-}
-
-.c-stop-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 25px;
-  height: 100%;
-  background-color: transparent;
-}
-
-.c-stop-card::before {
+.c-stop-card__left-hover-padding {
   content: "";
   position: absolute;
   top: 0;
@@ -53,7 +39,7 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   background-color: transparent;
 }
 
-.c-stop-card::after {
+.c-stop-card__right-hover-padding {
   content: "";
   position: absolute;
   top: 0;
@@ -63,7 +49,7 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   background-color: transparent;
 }
 
-.c-stop-card .leaflet-popup-content-wrapper::before {
+.c-stop-card__top-hover-padding {
   content: "";
   position: absolute;
   top: -25px;
@@ -73,7 +59,7 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   background-color: transparent;
 }
 
-.c-stop-card .leaflet-popup-content-wrapper::after {
+.c-stop-card__bottom-hover-padding {
   content: "";
   position: absolute;
   bottom: -30px;
