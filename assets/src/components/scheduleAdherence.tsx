@@ -53,7 +53,7 @@ const ScheduleAdherenceMetric = ({
   className,
   ...props
 }: { vehicle: Vehicle } & ComponentPropsWithoutRef<"output">) => (
-  <output className={`m-vehicle-adherence-label ${className}`} {...props}>
+  <output className={`c-vehicle-adherence-label ${className}`} {...props}>
     {!vehicle.isOffCourse && <>({scheduleAdherenceLabelString(vehicle)})</>}
   </output>
 )

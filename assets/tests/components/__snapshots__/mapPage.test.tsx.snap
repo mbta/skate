@@ -1497,7 +1497,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   </output>
                    
                   <output
-                    class="m-vehicle-adherence-label label font-xs-reg"
+                    class="c-vehicle-adherence-label label font-xs-reg"
                   >
                     (0 min early)
                   </output>
