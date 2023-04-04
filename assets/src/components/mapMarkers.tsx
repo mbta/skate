@@ -5,7 +5,7 @@ import Leaflet, {
 } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
-import React, { useContext, useEffect, useState } from "react"
+import React, { Ref, useContext, useEffect, useState } from "react"
 import {
   CircleMarker,
   CircleMarkerProps,
@@ -227,7 +227,7 @@ const MobileFriendlyTooltip = ({
 interface StopIconProps extends Omit<CircleMarkerProps, "center"> {
   stop: Stop
   markerRef: null | LeafletCircleMarker
-  setMarkerRef: () => void
+  setMarkerRef: Ref<LeafletCircleMarker<any>> | undefined
   radius?: number
   selected?: boolean
 }
