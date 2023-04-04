@@ -287,13 +287,20 @@ export const StopMarker = React.memo(
       },
       popupclose: () => setIsSelected(false),
       mouseover: () => markerRef?.openPopup(),
-      //  mouseout: () => markerRef?.closePopup(),
+      autopanstart: () => {
+        markerRef?.openPopup()
+        console.log("STARTING")
+      },
     }
 
     const stopCardEventHandlers: LeafletEventHandlerFnMap = {
       mouseout: () => {
         console.log("MOUSEOUT")
         markerRef?.closePopup()
+      },
+      autopanstart: () => {
+        markerRef?.openPopup()
+        console.log("AUTOPANNING")
       },
     }
 
