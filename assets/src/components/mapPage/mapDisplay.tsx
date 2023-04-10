@@ -55,18 +55,19 @@ const RouteVehicles = ({
   const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
   return (
     <>
-      {filterVehicles(vehicles).map((vehicle: Vehicle) => {
-        const isSelected = vehicle.id === selectedVehicleId
-        return (
-          <VehicleMarker
-            key={vehicle.id}
-            vehicle={vehicle}
-            isPrimary={isSelected === true}
-            isSelected={isSelected}
-            onSelect={onPrimaryVehicleSelect}
-          />
-        )
-      })}
+      {filterVehicles(vehicles)
+        .filter((vehicle) => vehicle.id !== selectedVehicleId)
+        .map((vehicle: Vehicle) => {
+          return (
+            <VehicleMarker
+              key={vehicle.id}
+              vehicle={vehicle}
+              isPrimary={false}
+              isSelected={false}
+              onSelect={onPrimaryVehicleSelect}
+            />
+          )
+        })}
     </>
   )
 }
@@ -361,21 +362,22 @@ const SelectedVehicleDataLayers = ({
               />
             </SelectionCardContainer>
           )}
-          {isVehicle(selectedVehicleOrGhost) &&
-            (selectedVehicleOrGhost?.isShuttle ? (
+          {isVehicle(selectedVehicleOrGhost) && (
+            <>
               <VehicleMarker
                 key={selectedVehicleOrGhost.id}
                 vehicle={selectedVehicleOrGhost}
                 isPrimary={true}
                 isSelected={true}
               />
-            ) : (
+
               <RouteVehicles
                 selectedVehicleRoute={selectedVehicleOrGhost.routeId}
                 selectedVehicleId={selectedVehicleOrGhost.id}
                 onPrimaryVehicleSelect={selectVehicle}
               />
-            ))}
+            </>
+          )}
           {showShapeAndStops && routePatternForVehicle && (
             <RoutePatternLayers
               routePattern={routePatternForVehicle}
