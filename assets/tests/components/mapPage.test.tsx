@@ -170,11 +170,14 @@ describe("<MapPage />", () => {
 
       jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-      const vehicle = vehicleFactory.build()
+      const vehicle1 = vehicleFactory.build()
+      const vehicle2 = vehicleFactory.build()
       const ghost = ghostFactory.build()
 
-      mockUseVehicleForId([vehicle])
-      mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle, ghost] })
+      mockUseVehicleForId([vehicle1])
+      mockUseVehiclesForRouteMap({
+        [vehicle1.routeId!]: [vehicle1, vehicle2, ghost],
+      })
 
       const { asFragment } = render(
         <StateDispatchProvider
@@ -182,7 +185,7 @@ describe("<MapPage />", () => {
             searchPageState: {
               selectedEntity: {
                 type: SelectedEntityType.Vehicle,
-                vehicleId: vehicle.id,
+                vehicleId: vehicle1.id,
               },
             },
           })}
