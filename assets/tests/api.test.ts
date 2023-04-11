@@ -19,7 +19,7 @@ import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
-import { string, StructError, unknown } from "superstruct"
+import { string, unknown } from "superstruct"
 import { LocationType } from "../src/models/stopData"
 
 declare global {
@@ -128,28 +128,12 @@ describe("checkedApiCall", () => {
       url: "/",
       dataStruct: string(),
       parser: parse,
+      defaultResult: "default",
     }).then((parsed) => {
       expect(parse).toHaveBeenCalledWith("raw")
       expect(parsed).toEqual("parsed")
       done()
     })
-  })
-
-  test("raises error for malformed data when no default", async () => {
-    mockFetch(200, { data: 12 })
-
-    const parse = jest.fn(() => "parsed")
-
-    try {
-      await checkedApiCall({
-        url: "/",
-        dataStruct: string(),
-        parser: parse,
-      })
-      fail("did not raise an error")
-    } catch (error) {
-      expect(error).toBeInstanceOf(StructError)
-    }
   })
 
   test("returns default value when malformed data", async () => {
@@ -172,7 +156,8 @@ describe("checkedApiCall", () => {
       url: "/",
       dataStruct: unknown(),
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })
@@ -185,7 +170,8 @@ describe("checkedApiCall", () => {
       url: "/",
       dataStruct: unknown(),
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })

@@ -79,7 +79,7 @@ export const checkedApiCall = <T, U>({
   url: string
   dataStruct: Struct<T, any>
   parser: (data: T) => U
-  defaultResult?: U
+  defaultResult: U
   fetchArgs?: RequestInit
 }): Promise<U> =>
   fetch(url, fetchArgs)
@@ -89,13 +89,7 @@ export const checkedApiCall = <T, U>({
       assert(data, dataStruct)
       return parser(data)
     })
-    .catch((error) => {
-      if (defaultResult !== undefined) {
-        return defaultResult
-      } else {
-        throw error
-      }
-    })
+    .catch(() => defaultResult)
 
 export const parseRouteData = ({
   id,
@@ -208,6 +202,7 @@ export const fetchSwings = (routeIds: RouteId[]): Promise<Swing[] | null> =>
     url: `/api/swings?route_ids=${routeIds.join(",")}`,
     dataStruct: array(SwingData),
     parser: nullableParser(swingsFromData),
+    defaultResult: [],
   })
 
 export const putNotificationReadState = (
