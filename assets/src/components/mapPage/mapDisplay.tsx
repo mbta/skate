@@ -42,14 +42,14 @@ import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import RoutePropertiesCard from "./routePropertiesCard"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
-const RouteVehicles = ({
+const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
   selectedVehicleId,
-  onPrimaryVehicleSelect,
+  onVehicleSelect,
 }: {
   selectedVehicleId: VehicleId | null
   selectedVehicleRoute: RouteId | null
-  onPrimaryVehicleSelect: (vehicle: Vehicle) => void
+  onVehicleSelect: (vehicle: Vehicle) => void
 }) => {
   const { socket } = useSocket()
   const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
@@ -64,7 +64,7 @@ const RouteVehicles = ({
               vehicle={vehicle}
               isPrimary={false}
               isSelected={false}
-              onSelect={onPrimaryVehicleSelect}
+              onSelect={onVehicleSelect}
             />
           )
         })}
@@ -371,10 +371,10 @@ const SelectedVehicleDataLayers = ({
                 isSelected={true}
               />
 
-              <RouteVehicles
+              <SecondaryRouteVehicles
                 selectedVehicleRoute={selectedVehicleOrGhost.routeId}
                 selectedVehicleId={selectedVehicleOrGhost.id}
-                onPrimaryVehicleSelect={selectVehicle}
+                onVehicleSelect={selectVehicle}
               />
             </>
           )}
@@ -447,10 +447,10 @@ const SelectedRouteDataLayers = ({
           onShapeClick={() => selectRoutePattern(selectedRoutePattern)}
         />
       )}
-      <RouteVehicles
+      <SecondaryRouteVehicles
         selectedVehicleRoute={routePatternIdentifier.routeId}
         selectedVehicleId={null}
-        onPrimaryVehicleSelect={selectVehicle}
+        onVehicleSelect={selectVehicle}
       />
       <InterruptibleFollower
         onUpdate={onFollowerUpdate}
