@@ -58,6 +58,7 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: parse,
+      defaultResult: "default",
     }).then((parsed) => {
       expect(parse).toHaveBeenCalledWith("raw")
       expect(parsed).toEqual("parsed")
@@ -71,7 +72,8 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })
@@ -83,7 +85,8 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })
@@ -100,22 +103,6 @@ describe("apiCall", () => {
       expect(result).toEqual("default")
       done()
     })
-  })
-
-  test("throws an error for any other response status if there's no default", (done) => {
-    mockFetch(500, { data: null })
-
-    apiCall({
-      url: "/",
-      parser: () => null,
-    })
-      .then(() => {
-        done("fetchRoutes did not throw an error")
-      })
-      .catch((error) => {
-        expect(error).toBeDefined()
-        done()
-      })
   })
 })
 
@@ -216,23 +203,6 @@ describe("checkedApiCall", () => {
       expect(result).toEqual("default")
       done()
     })
-  })
-
-  test("throws an error for any other response status if there's no default", (done) => {
-    mockFetch(500, { data: null })
-
-    checkedApiCall({
-      url: "/",
-      dataStruct: unknown(),
-      parser: () => null,
-    })
-      .then(() => {
-        done("fetchRoutes did not throw an error")
-      })
-      .catch((error) => {
-        expect(error).toBeDefined()
-        done()
-      })
   })
 })
 

@@ -60,20 +60,14 @@ export const apiCall = <T>({
 }: {
   url: string
   parser: (data: any) => T
-  defaultResult?: T
+  defaultResult: T
   fetchArgs?: RequestInit
 }): Promise<T> =>
   fetch(url, fetchArgs)
     .then(checkResponseStatus)
     .then((response) => parseJson(response) as any)
     .then(({ data: data }: { data: any }) => parser(data))
-    .catch((error) => {
-      if (defaultResult === undefined) {
-        throw error
-      } else {
-        return defaultResult
-      }
-    })
+    .catch(() => defaultResult)
 
 export const checkedApiCall = <T, U>({
   url,
@@ -122,6 +116,7 @@ export const fetchRoutes = (): Promise<Route[]> =>
   apiCall({
     url: "/api/routes",
     parser: parseRoutesData,
+    defaultResult: [],
   })
 
 export const fetchRoutePatterns = (routeId: RouteId): Promise<RoutePattern[]> =>
