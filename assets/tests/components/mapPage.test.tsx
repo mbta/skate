@@ -898,6 +898,42 @@ describe("<MapPage />", () => {
               container.querySelector(".c-vehicle-map__route-shape")
             ).toBeInTheDocument()
           })
+
+          test("should display vehicle icon when selected vehicle is no longer on route", () => {
+            const changeApplicationState = jest.fn()
+
+            const route = routeFactory.build()
+
+            const selectedRouteVehicles = randomLocationVehicle.buildList(7, {
+              routeId: route.id,
+            })
+
+            const [selectedVehicle] = selectedRouteVehicles
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([{ ...selectedVehicle, routeId: null }])
+            mockUseVehiclesForRouteMap({
+              [route.id]: selectedRouteVehicles.slice(1),
+            })
+            mockUsePatternsByIdForVehicles([selectedVehicle], {
+              stopCount: 8,
+            })
+
+            render(
+              <StateDispatchProvider
+                state={selectedStateFactory(selectedVehicle.id).build()}
+                dispatch={changeApplicationState}
+              >
+                <MapPage />
+              </StateDispatchProvider>
+            )
+
+            expect(
+              screen.getAllByRole("button", {
+                name: runIdToLabel(selectedVehicle.runId!),
+              })
+            ).toHaveLength(1)
+          })
         })
 
         test("and vehicle is a shuttle; should display: vehicle icon, but not route shape or stops", () => {
