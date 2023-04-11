@@ -371,11 +371,13 @@ const SelectedVehicleDataLayers = ({
                 isSelected={true}
               />
 
-              <SecondaryRouteVehicles
-                selectedVehicleRoute={selectedVehicleOrGhost.routeId}
-                selectedVehicleId={selectedVehicleOrGhost.id}
-                onVehicleSelect={selectVehicle}
-              />
+              {!selectedVehicleOrGhost.isShuttle && (
+                <SecondaryRouteVehicles
+                  selectedVehicleRoute={selectedVehicleOrGhost.routeId}
+                  selectedVehicleId={selectedVehicleOrGhost.id}
+                  onVehicleSelect={selectVehicle}
+                />
+              )}
             </>
           )}
           {showShapeAndStops && routePatternForVehicle && (
