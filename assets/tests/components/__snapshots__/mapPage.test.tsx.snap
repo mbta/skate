@@ -1269,6 +1269,66 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           
               </svg>
             </div>
+            <div
+              class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 0px; z-index: 0; z-index: 0; z-index: 0; z-index: 0; z-index: 0;"
+              tabindex="0"
+            >
+              <svg
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                
+        
+                <path
+                  class="on-time early-red"
+                  d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                  transform="scale(0.8) rotate(33) translate(-12, -12)"
+                />
+                
+      
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon c-vehicle-map__label secondary leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -15px; margin-top: 10px; width: 12px; height: 12px; left: 223px; top: 0px; z-index: 0; z-index: 0; z-index: 0; z-index: 0; z-index: 0;"
+              tabindex="0"
+            >
+              <svg
+                height="12"
+                viewBox="0 0 30 12"
+                width="30"
+              >
+                
+            
+                <rect
+                  class="c-vehicle-icon__label-background"
+                  height="100%"
+                  rx="5.5px"
+                  ry="5.5px"
+                  width="100%"
+                />
+                
+            
+                <text
+                  class="c-vehicle-icon__label"
+                  dominant-baseline="central"
+                  text-anchor="middle"
+                  x="50%"
+                  y="50%"
+                >
+                  
+              2
+            
+                </text>
+                
+          
+              </svg>
+            </div>
           </div>
           <div
             class="leaflet-pane leaflet-tooltip-pane"

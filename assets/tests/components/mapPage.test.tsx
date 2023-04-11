@@ -170,11 +170,14 @@ describe("<MapPage />", () => {
 
       jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-      const vehicle = vehicleFactory.build()
+      const vehicle1 = vehicleFactory.build()
+      const vehicle2 = vehicleFactory.build()
       const ghost = ghostFactory.build()
 
-      mockUseVehicleForId([vehicle])
-      mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle, ghost] })
+      mockUseVehicleForId([vehicle1])
+      mockUseVehiclesForRouteMap({
+        [vehicle1.routeId!]: [vehicle1, vehicle2, ghost],
+      })
 
       const { asFragment } = render(
         <StateDispatchProvider
@@ -182,7 +185,7 @@ describe("<MapPage />", () => {
             searchPageState: {
               selectedEntity: {
                 type: SelectedEntityType.Vehicle,
-                vehicleId: vehicle.id,
+                vehicleId: vehicle1.id,
               },
             },
           })}
@@ -894,6 +897,42 @@ describe("<MapPage />", () => {
             expect(
               container.querySelector(".c-vehicle-map__route-shape")
             ).toBeInTheDocument()
+          })
+
+          test("should display vehicle icon when selected vehicle is no longer on route", () => {
+            const changeApplicationState = jest.fn()
+
+            const route = routeFactory.build()
+
+            const selectedRouteVehicles = randomLocationVehicle.buildList(7, {
+              routeId: route.id,
+            })
+
+            const [selectedVehicle] = selectedRouteVehicles
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([{ ...selectedVehicle, routeId: null }])
+            mockUseVehiclesForRouteMap({
+              [route.id]: selectedRouteVehicles.slice(1),
+            })
+            mockUsePatternsByIdForVehicles([selectedVehicle], {
+              stopCount: 8,
+            })
+
+            render(
+              <StateDispatchProvider
+                state={selectedStateFactory(selectedVehicle.id).build()}
+                dispatch={changeApplicationState}
+              >
+                <MapPage />
+              </StateDispatchProvider>
+            )
+
+            expect(
+              screen.getAllByRole("button", {
+                name: runIdToLabel(selectedVehicle.runId!),
+              })
+            ).toHaveLength(1)
           })
         })
 

@@ -42,31 +42,32 @@ import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import RoutePropertiesCard from "./routePropertiesCard"
 import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
-const RouteVehicles = ({
+const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
   selectedVehicleId,
-  onPrimaryVehicleSelect,
+  onVehicleSelect,
 }: {
   selectedVehicleId: VehicleId | null
   selectedVehicleRoute: RouteId | null
-  onPrimaryVehicleSelect: (vehicle: Vehicle) => void
+  onVehicleSelect: (vehicle: Vehicle) => void
 }) => {
   const { socket } = useSocket()
   const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
   return (
     <>
-      {filterVehicles(vehicles).map((vehicle: Vehicle) => {
-        const isSelected = vehicle.id === selectedVehicleId
-        return (
-          <VehicleMarker
-            key={vehicle.id}
-            vehicle={vehicle}
-            isPrimary={isSelected === true}
-            isSelected={isSelected}
-            onSelect={onPrimaryVehicleSelect}
-          />
-        )
-      })}
+      {filterVehicles(vehicles)
+        .filter((vehicle) => vehicle.id !== selectedVehicleId)
+        .map((vehicle: Vehicle) => {
+          return (
+            <VehicleMarker
+              key={vehicle.id}
+              vehicle={vehicle}
+              isPrimary={false}
+              isSelected={false}
+              onSelect={onVehicleSelect}
+            />
+          )
+        })}
     </>
   )
 }
@@ -361,21 +362,24 @@ const SelectedVehicleDataLayers = ({
               />
             </SelectionCardContainer>
           )}
-          {isVehicle(selectedVehicleOrGhost) &&
-            (selectedVehicleOrGhost?.isShuttle ? (
+          {isVehicle(selectedVehicleOrGhost) && (
+            <>
               <VehicleMarker
                 key={selectedVehicleOrGhost.id}
                 vehicle={selectedVehicleOrGhost}
                 isPrimary={true}
                 isSelected={true}
               />
-            ) : (
-              <RouteVehicles
-                selectedVehicleRoute={selectedVehicleOrGhost.routeId}
-                selectedVehicleId={selectedVehicleOrGhost.id}
-                onPrimaryVehicleSelect={selectVehicle}
-              />
-            ))}
+
+              {!selectedVehicleOrGhost.isShuttle && (
+                <SecondaryRouteVehicles
+                  selectedVehicleRoute={selectedVehicleOrGhost.routeId}
+                  selectedVehicleId={selectedVehicleOrGhost.id}
+                  onVehicleSelect={selectVehicle}
+                />
+              )}
+            </>
+          )}
           {showShapeAndStops && routePatternForVehicle && (
             <RoutePatternLayers
               routePattern={routePatternForVehicle}
@@ -445,10 +449,10 @@ const SelectedRouteDataLayers = ({
           onShapeClick={() => selectRoutePattern(selectedRoutePattern)}
         />
       )}
-      <RouteVehicles
+      <SecondaryRouteVehicles
         selectedVehicleRoute={routePatternIdentifier.routeId}
         selectedVehicleId={null}
-        onPrimaryVehicleSelect={selectVehicle}
+        onVehicleSelect={selectVehicle}
       />
       <InterruptibleFollower
         onUpdate={onFollowerUpdate}
