@@ -19,7 +19,9 @@ export const Notifications = () => {
   const [, stateDispatch] = useContext(StateDispatchContext)
 
   const notificationToShow =
-    showLatestNotification && notifications.length > 0 ? notifications[0] : null
+    showLatestNotification && notifications && notifications.length > 0
+      ? notifications[0]
+      : null
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
     openVPPForNotification(notification, stateDispatch, dispatch)

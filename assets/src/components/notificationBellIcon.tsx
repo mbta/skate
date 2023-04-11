@@ -12,7 +12,7 @@ const NotificationBellIcon = ({
 }) => {
   const [{ openView }] = useContext(StateDispatchContext)
   const { notifications } = useContext(NotificationsContext)
-  const unreadNotifications = notifications.filter(
+  const unreadNotifications = (notifications || []).filter(
     (notification) => notification.state === "unread"
   )
   const unreadBadge: boolean = unreadNotifications.length > 0

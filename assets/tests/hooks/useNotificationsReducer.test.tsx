@@ -84,7 +84,7 @@ describe("notificationsReducer", () => {
     }
     const resultState = reducer(initialState, markAllAsRead())
     expect(
-      resultState.notifications.map((notification) => notification.state)
+      resultState.notifications!.map((notification) => notification.state)
     ).toEqual(["read", "read"])
     expect(resultState.showLatestNotification).toEqual(true)
   })

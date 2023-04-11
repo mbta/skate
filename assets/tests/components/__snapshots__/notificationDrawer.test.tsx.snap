@@ -1,172 +1,161 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NotificationDrawer renders empty state 1`] = `
-<div
-  className="c-notification-drawer"
->
+<DocumentFragment>
   <div
-    className="c-view-header"
+    class="c-notification-drawer"
   >
-    <h2
-      className="c-view-header__title"
+    <div
+      class="c-view-header"
     >
-      Notifications
-    </h2>
-    <button
-      aria-label="Close"
-      className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      <h2
+        class="c-view-header__title"
+      >
+        Notifications
+      </h2>
+      <button
+        aria-label="Close"
+        class="c-close-button c-close-button--x-large c-close-button--light"
+      >
+        <span
+          aria-hidden="true"
+          aria-label=""
+          role="img"
+        >
+          <svg />
+        </span>
+      </button>
+    </div>
+    <div
+      class="c-notification-drawer__content"
     >
-      <span
-        aria-hidden={true}
-        aria-label=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-        role="img"
-      />
-    </button>
+      <p>
+        You have no notifications currently.
+      </p>
+      <p>
+        Here you'll be notified about events like accidents and ghost vehicles on any bus routes you have selected on the Route Ladders page.
+      </p>
+    </div>
   </div>
-  <div
-    className="c-notification-drawer__content"
-  >
-    <p>
-      You have no notifications currently.
-    </p>
-    <p>
-      Here you'll be notified about events like accidents and ghost vehicles on any bus routes you have selected on the Route Ladders page.
-    </p>
-  </div>
-</div>
+</DocumentFragment>
 `;
 
 exports[`NotificationDrawer renders notifications 1`] = `
-<div
-  className="c-notification-drawer"
->
+<DocumentFragment>
   <div
-    className="c-view-header"
-  >
-    <h2
-      className="c-view-header__title"
-    >
-      Notifications
-    </h2>
-    <button
-      aria-label="Close"
-      className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
-    >
-      <span
-        aria-hidden={true}
-        aria-label=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg/>",
-          }
-        }
-        role="img"
-      />
-    </button>
-  </div>
-  <div
-    className="c-notification-drawer__content"
+    class="c-notification-drawer"
   >
     <div
-      className="c-notification-drawer__cards"
+      class="c-view-header"
     >
-      <div
-        className="c-notification-drawer__header"
+      <h2
+        class="c-view-header__title"
+      >
+        Notifications
+      </h2>
+      <button
+        aria-label="Close"
+        class="c-close-button c-close-button--x-large c-close-button--light"
       >
         <span
-          className="c-notification-drawer__n-unread"
+          aria-hidden="true"
+          aria-label=""
+          role="img"
         >
-          1
-           new
+          <svg />
         </span>
-        <button
-          className="c-notification-drawer__mark-all-read-button"
-          onClick={[Function]}
+      </button>
+    </div>
+    <div
+      class="c-notification-drawer__content"
+    >
+      <div
+        class="c-notification-drawer__cards"
+      >
+        <div
+          class="c-notification-drawer__header"
         >
-          Mark all as read
-        </button>
-      </div>
-      <ul>
-        <li>
-          <div
-            aria-labelledby="card-label-:r0:"
-            className="c-card c-card--kiwi"
+          <span
+            class="c-notification-drawer__n-unread"
           >
-            <button
-              className="c-card__left"
-              onClick={[Function]}
+            1 new
+          </span>
+          <button
+            class="c-notification-drawer__mark-all-read-button"
+          >
+            Mark all as read
+          </button>
+        </div>
+        <ul>
+          <li>
+            <div
+              aria-labelledby="card-label-:r0:"
+              class="c-card c-card--kiwi"
             >
-              <div
-                className="c-card__left-content"
+              <button
+                class="c-card__left"
               >
                 <div
-                  className="c-card__top-row"
+                  class="c-card__left-content"
                 >
                   <div
-                    className="c-card__title"
-                    id="card-label-:r0:"
+                    class="c-card__top-row"
                   >
-                    <span
-                      dangerouslySetInnerHTML={
-                        Object {
-                          "__html": "<svg/>",
-                        }
-                      }
-                    />
-                    No Operator
-                  </div>
-                  <div
-                    className="c-card__time"
-                  >
-                    0 min
-                  </div>
-                </div>
-                <div
-                  className="c-card__contents"
-                >
-                  <div
-                    className="c-card__body"
-                  >
-                    OCC reported that an operator is not available on the r1, r2.
-                  </div>
-                  <div
-                    className="c-properties-list"
-                  >
-                    <table
-                      className="c-properties-list__table"
+                    <div
+                      class="c-card__title"
+                      id="card-label-:r0:"
                     >
-                      <tbody>
-                        <tr
-                          className="c-properties-list__property "
-                        >
-                          <td
-                            className="c-properties-list__property-label"
+                      <span>
+                        <svg />
+                      </span>
+                      No Operator
+                    </div>
+                    <div
+                      class="c-card__time"
+                    >
+                      0 min
+                    </div>
+                  </div>
+                  <div
+                    class="c-card__contents"
+                  >
+                    <div
+                      class="c-card__body"
+                    >
+                      OCC reported that an operator is not available on the r1, r2.
+                    </div>
+                    <div
+                      class="c-properties-list"
+                    >
+                      <table
+                        class="c-properties-list__table"
+                      >
+                        <tbody>
+                          <tr
+                            class="c-properties-list__property "
                           >
-                            Run
-                          </td>
-                          <td
-                            className="c-properties-list__property-value"
-                          >
-                            run1, run2
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                            <td
+                              class="c-properties-list__property-label"
+                            >
+                              Run
+                            </td>
+                            <td
+                              class="c-properties-list__property-value"
+                            >
+                              run1, run2
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </button>
-          </div>
-        </li>
-      </ul>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+</DocumentFragment>
 `;
