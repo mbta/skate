@@ -18,13 +18,14 @@ import {
   TripId,
 } from "./schedule.d"
 import { RouteTab } from "./models/routeTab"
-import { array, assert, Struct } from "superstruct"
+import { array, assert, Struct, StructError } from "superstruct"
 import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
 import { StopData, stopsFromData } from "./models/stopData"
 import {
   RoutePatternData,
   routePatternsFromData,
 } from "./models/routePatternData"
+import * as Sentry from "@sentry/react"
 
 export interface RouteData {
   id: string
@@ -60,20 +61,14 @@ export const apiCall = <T>({
 }: {
   url: string
   parser: (data: any) => T
-  defaultResult?: T
+  defaultResult: T
   fetchArgs?: RequestInit
 }): Promise<T> =>
   fetch(url, fetchArgs)
     .then(checkResponseStatus)
     .then((response) => parseJson(response) as any)
     .then(({ data: data }: { data: any }) => parser(data))
-    .catch((error) => {
-      if (defaultResult === undefined) {
-        throw error
-      } else {
-        return defaultResult
-      }
-    })
+    .catch(() => defaultResult)
 
 export const checkedApiCall = <T, U>({
   url,
@@ -85,7 +80,7 @@ export const checkedApiCall = <T, U>({
   url: string
   dataStruct: Struct<T, any>
   parser: (data: T) => U
-  defaultResult?: U
+  defaultResult: U
   fetchArgs?: RequestInit
 }): Promise<U> =>
   fetch(url, fetchArgs)
@@ -96,11 +91,11 @@ export const checkedApiCall = <T, U>({
       return parser(data)
     })
     .catch((error) => {
-      if (defaultResult !== undefined) {
-        return defaultResult
-      } else {
-        throw error
+      if (error instanceof StructError) {
+        Sentry.captureException(error)
       }
+
+      return defaultResult
     })
 
 export const parseRouteData = ({
@@ -122,6 +117,7 @@ export const fetchRoutes = (): Promise<Route[]> =>
   apiCall({
     url: "/api/routes",
     parser: parseRoutesData,
+    defaultResult: [],
   })
 
 export const fetchRoutePatterns = (routeId: RouteId): Promise<RoutePattern[]> =>
@@ -213,6 +209,7 @@ export const fetchSwings = (routeIds: RouteId[]): Promise<Swing[] | null> =>
     url: `/api/swings?route_ids=${routeIds.join(",")}`,
     dataStruct: array(SwingData),
     parser: nullableParser(swingsFromData),
+    defaultResult: [],
   })
 
 export const putNotificationReadState = (

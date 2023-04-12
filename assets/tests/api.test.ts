@@ -19,8 +19,14 @@ import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
-import { string, StructError, unknown } from "superstruct"
+import { string, unknown } from "superstruct"
 import { LocationType } from "../src/models/stopData"
+import * as Sentry from "@sentry/react"
+
+jest.mock("@sentry/react", () => ({
+  __esModule: true,
+  captureException: jest.fn(),
+}))
 
 declare global {
   interface Window {
@@ -58,6 +64,7 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: parse,
+      defaultResult: "default",
     }).then((parsed) => {
       expect(parse).toHaveBeenCalledWith("raw")
       expect(parsed).toEqual("parsed")
@@ -71,7 +78,8 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })
@@ -83,7 +91,8 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })
@@ -100,22 +109,6 @@ describe("apiCall", () => {
       expect(result).toEqual("default")
       done()
     })
-  })
-
-  test("throws an error for any other response status if there's no default", (done) => {
-    mockFetch(500, { data: null })
-
-    apiCall({
-      url: "/",
-      parser: () => null,
-    })
-      .then(() => {
-        done("fetchRoutes did not throw an error")
-      })
-      .catch((error) => {
-        expect(error).toBeDefined()
-        done()
-      })
   })
 })
 
@@ -141,6 +134,7 @@ describe("checkedApiCall", () => {
       url: "/",
       dataStruct: string(),
       parser: parse,
+      defaultResult: "default",
     }).then((parsed) => {
       expect(parse).toHaveBeenCalledWith("raw")
       expect(parsed).toEqual("parsed")
@@ -153,16 +147,14 @@ describe("checkedApiCall", () => {
 
     const parse = jest.fn(() => "parsed")
 
-    try {
-      await checkedApiCall({
-        url: "/",
-        dataStruct: string(),
-        parser: parse,
-      })
-      fail("did not raise an error")
-    } catch (error) {
-      expect(error).toBeInstanceOf(StructError)
-    }
+    await checkedApiCall({
+      url: "/",
+      dataStruct: string(),
+      parser: parse,
+      defaultResult: "default",
+    })
+
+    expect(Sentry.captureException).toHaveBeenCalled()
   })
 
   test("returns default value when malformed data", async () => {
@@ -185,7 +177,8 @@ describe("checkedApiCall", () => {
       url: "/",
       dataStruct: unknown(),
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })
@@ -198,7 +191,8 @@ describe("checkedApiCall", () => {
       url: "/",
       dataStruct: unknown(),
       parser: () => null,
-    }).catch(() => {
+      defaultResult: "default",
+    }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
       done()
     })
@@ -216,23 +210,6 @@ describe("checkedApiCall", () => {
       expect(result).toEqual("default")
       done()
     })
-  })
-
-  test("throws an error for any other response status if there's no default", (done) => {
-    mockFetch(500, { data: null })
-
-    checkedApiCall({
-      url: "/",
-      dataStruct: unknown(),
-      parser: () => null,
-    })
-      .then(() => {
-        done("fetchRoutes did not throw an error")
-      })
-      .catch((error) => {
-        expect(error).toBeDefined()
-        done()
-      })
   })
 })
 
