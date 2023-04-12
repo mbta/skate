@@ -12,6 +12,7 @@ import {
 import { openVPPForNotification } from "./notifications"
 import { NotificationCard } from "./notificationCard"
 import ViewHeader from "./viewHeader"
+import Loading from "./loading"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
@@ -59,8 +60,8 @@ const NotificationDrawer = () => {
 }
 
 const Content = () => {
-  const { notifications } = useContext(NotificationsContext)
-  const notificationsDispatch = useContext(NotificationsContext).dispatch
+  const { notifications, dispatch: notificationsDispatch } =
+    useContext(NotificationsContext)
 
   const currentTime = useCurrentTime()
 
@@ -68,6 +69,10 @@ const Content = () => {
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
     openVPPForNotification(notification, stateDispatch, notificationsDispatch)
+  }
+
+  if (notifications === null) {
+    return <Loading />
   }
 
   if (notifications.length === 0) {

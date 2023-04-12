@@ -61,7 +61,7 @@ describe("NotificationsProvider", () => {
     const { result } = renderHook(() => useContext(NotificationsContext), {
       wrapper: NotificationsProvider,
     })
-    expect(result.current.notifications).toEqual([])
+    expect(result.current.notifications).toBeNull()
   })
 
   test("receives incoming notifications and logs a tag manager event", () => {

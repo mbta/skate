@@ -19,12 +19,12 @@ import {
 } from "./useNotifications"
 
 export interface State {
-  notifications: Notification[]
+  notifications: Notification[] | null
   showLatestNotification: boolean
 }
 
 export const initialState: State = {
-  notifications: [],
+  notifications: null,
   showLatestNotification: false,
 }
 
@@ -107,40 +107,49 @@ export type Dispatch = ReactDispatch<Action>
 type Reducer = (state: State, action: Action) => State
 
 export const notificationsReducer = (
-  notifications: Notification[],
+  notifications: Notification[] | null,
   action: Action
-): Notification[] => {
+): Notification[] | null => {
   switch (action.type) {
     case "ADD_NOTIFICATION": {
       const newNotification = (action as AddNotificationAction).payload
         .notification
-      return [newNotification, ...notifications]
+      return [newNotification, ...(notifications || [])]
     }
     case "EXPIRE_NOTIFICATIONS":
-      return notifications.filter((notification) => {
-        const maxAgeInMs = 8 * 60 * 60 * 1000
-        const now = (action as ExpireNotificationsAction).payload.now
-        const ageInMs = now.valueOf() - notification.createdAt.valueOf()
-        return ageInMs < maxAgeInMs
-      })
+      return (
+        notifications &&
+        notifications.filter((notification) => {
+          const maxAgeInMs = 8 * 60 * 60 * 1000
+          const now = (action as ExpireNotificationsAction).payload.now
+          const ageInMs = now.valueOf() - notification.createdAt.valueOf()
+          return ageInMs < maxAgeInMs
+        })
+      )
     case "MARK_ALL_AS_READ":
-      return notifications.map((notification) => ({
-        ...notification,
-        state: "read",
-      }))
+      return (
+        notifications &&
+        notifications.map((notification) => ({
+          ...notification,
+          state: "read",
+        }))
+      )
     case "SET_NOTIFICATIONS": {
       return (action as SetNotificationsAction).payload.notifications
     }
     case "TOGGLE_READ_STATE": {
       const notificationToToggle = (action as ToggleReadStateAction).payload
         .notification
-      return notifications.map((notification) =>
-        notification.id === notificationToToggle.id
-          ? {
-              ...notification,
-              state: otherNotificationReadState(notification.state),
-            }
-          : notification
+      return (
+        notifications &&
+        notifications.map((notification) =>
+          notification.id === notificationToToggle.id
+            ? {
+                ...notification,
+                state: otherNotificationReadState(notification.state),
+              }
+            : notification
+        )
       )
     }
 
@@ -232,7 +241,7 @@ export const useNotificationsReducer = (
   const dispatchWithSideEffects: Dispatch = (action: Action): void => {
     switch (action.type) {
       case "MARK_ALL_AS_READ":
-        persistMarkAllAsRead(state.notifications)
+        persistMarkAllAsRead(state.notifications || [])
         break
       case "TOGGLE_READ_STATE": {
         const notificationToToggle = (action as ToggleReadStateAction).payload

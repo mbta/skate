@@ -1,6 +1,6 @@
 import React from "react"
-import { render } from "@testing-library/react"
-import renderer from "react-test-renderer"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import routeFactory from "../factories/route"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
@@ -54,9 +54,37 @@ const routes: Route[] = [
 ]
 
 describe("NotificationDrawer", () => {
+  test("renders loading state", () => {
+    render(
+      <NotificationsContext.Provider
+        value={{
+          notifications: null,
+          showLatestNotification: false,
+          dispatch: jest.fn(),
+          notificationWithOpenSubmenuId: null,
+          setNotificationWithOpenSubmenuId: jest.fn(),
+        }}
+      >
+        <NotificationDrawer />
+      </NotificationsContext.Provider>
+    )
+    expect(screen.getByText(/loading/)).toBeInTheDocument()
+  })
   test("renders empty state", () => {
-    const tree = renderer.create(<NotificationDrawer />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <NotificationsContext.Provider
+        value={{
+          notifications: [],
+          showLatestNotification: true,
+          dispatch: jest.fn(),
+          notificationWithOpenSubmenuId: null,
+          setNotificationWithOpenSubmenuId: jest.fn(),
+        }}
+      >
+        <NotificationDrawer />
+      </NotificationsContext.Provider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("close button closes the drawer", async () => {
@@ -76,24 +104,23 @@ describe("NotificationDrawer", () => {
   })
 
   test("renders notifications", () => {
-    const tree = renderer
-      .create(
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider
-            value={{
-              notifications: [notification],
-              showLatestNotification: true,
-              dispatch: jest.fn(),
-              notificationWithOpenSubmenuId: null,
-              setNotificationWithOpenSubmenuId: jest.fn(),
-            }}
-          >
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <RoutesProvider routes={routes}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [notification],
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </RoutesProvider>
+    )
+
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("clicking a notification tries to open the VPP for it", async () => {
