@@ -93,8 +93,13 @@
   "jest": {
     "clearMocks": true,
     "transform": {
-      "^.+\\.tsx?$": "ts-jest",
-      "\\.js$": "babel-jest"
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "tsconfig": "./tsconfig.test.json"
+        }
+      ]
     },
     "transformIgnorePatterns": [
       "/node_modules/(?!(@react-leaflet|react-leaflet|screenfull)/)"
@@ -104,12 +109,12 @@
       "<rootDir>/src"
     ],
     "moduleFileExtensions": [
-      "ts",
-      "tsx",
       "js",
-      "jsx",
       "json",
-      "node"
+      "jsx",
+      "node",
+      "ts",
+      "tsx"
     ],
     "moduleNameMapper": {
       "\\.(svg)$": "<rootDir>/tests/testHelpers/svgStubber.js",
@@ -119,11 +124,7 @@
       "<rootDir>/tests/setup.tsx"
     ],
     "collectCoverage": true,
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "./tsconfig.test.json"
-      }
-    },
-    "globalSetup": "./tests/global-setup.js"
+    "globalSetup": "./tests/global-setup.js",
+    "preset": "ts-jest/presets/js-with-babel"
   }
 }
