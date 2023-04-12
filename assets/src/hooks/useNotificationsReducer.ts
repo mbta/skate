@@ -117,37 +117,40 @@ export const notificationsReducer = (
       return [newNotification, ...(notifications || [])]
     }
     case "EXPIRE_NOTIFICATIONS":
-      return notifications
-        ? notifications.filter((notification) => {
-            const maxAgeInMs = 8 * 60 * 60 * 1000
-            const now = (action as ExpireNotificationsAction).payload.now
-            const ageInMs = now.valueOf() - notification.createdAt.valueOf()
-            return ageInMs < maxAgeInMs
-          })
-        : null
+      return (
+        notifications &&
+        notifications.filter((notification) => {
+          const maxAgeInMs = 8 * 60 * 60 * 1000
+          const now = (action as ExpireNotificationsAction).payload.now
+          const ageInMs = now.valueOf() - notification.createdAt.valueOf()
+          return ageInMs < maxAgeInMs
+        })
+      )
     case "MARK_ALL_AS_READ":
-      return notifications
-        ? notifications.map((notification) => ({
-            ...notification,
-            state: "read",
-          }))
-        : null
+      return (
+        notifications &&
+        notifications.map((notification) => ({
+          ...notification,
+          state: "read",
+        }))
+      )
     case "SET_NOTIFICATIONS": {
       return (action as SetNotificationsAction).payload.notifications
     }
     case "TOGGLE_READ_STATE": {
       const notificationToToggle = (action as ToggleReadStateAction).payload
         .notification
-      return notifications
-        ? notifications.map((notification) =>
-            notification.id === notificationToToggle.id
-              ? {
-                  ...notification,
-                  state: otherNotificationReadState(notification.state),
-                }
-              : notification
-          )
-        : null
+      return (
+        notifications &&
+        notifications.map((notification) =>
+          notification.id === notificationToToggle.id
+            ? {
+                ...notification,
+                state: otherNotificationReadState(notification.state),
+              }
+            : notification
+        )
+      )
     }
 
     default:
