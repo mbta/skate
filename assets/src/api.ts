@@ -18,13 +18,14 @@ import {
   TripId,
 } from "./schedule.d"
 import { RouteTab } from "./models/routeTab"
-import { array, assert, Struct } from "superstruct"
+import { array, assert, Struct, StructError } from "superstruct"
 import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
 import { StopData, stopsFromData } from "./models/stopData"
 import {
   RoutePatternData,
   routePatternsFromData,
 } from "./models/routePatternData"
+import * as Sentry from "@sentry/react"
 
 export interface RouteData {
   id: string
@@ -89,7 +90,13 @@ export const checkedApiCall = <T, U>({
       assert(data, dataStruct)
       return parser(data)
     })
-    .catch(() => defaultResult)
+    .catch((error) => {
+      if (error instanceof StructError) {
+        Sentry.captureException(error)
+      }
+
+      return defaultResult
+    })
 
 export const parseRouteData = ({
   id,

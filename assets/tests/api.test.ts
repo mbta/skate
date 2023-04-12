@@ -21,6 +21,12 @@ import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, unknown } from "superstruct"
 import { LocationType } from "../src/models/stopData"
+import * as Sentry from "@sentry/react"
+
+jest.mock("@sentry/react", () => ({
+  __esModule: true,
+  captureException: jest.fn(),
+}))
 
 declare global {
   interface Window {
@@ -134,6 +140,21 @@ describe("checkedApiCall", () => {
       expect(parsed).toEqual("parsed")
       done()
     })
+  })
+
+  test("raises error for malformed data when no default", async () => {
+    mockFetch(200, { data: 12 })
+
+    const parse = jest.fn(() => "parsed")
+
+    await checkedApiCall({
+      url: "/",
+      dataStruct: string(),
+      parser: parse,
+      defaultResult: "default",
+    })
+
+    expect(Sentry.captureException).toHaveBeenCalled()
   })
 
   test("returns default value when malformed data", async () => {
