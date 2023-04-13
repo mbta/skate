@@ -190,8 +190,8 @@ defmodule Skate.Factory do
   def user_factory do
     %Skate.Settings.Db.User{
       uuid: Ecto.UUID.generate(),
-      email: "test@mbta.com",
-      username: "test_user"
+      email: sequence("test@mbta.com"),
+      username: sequence("test_user")
     }
   end
 end

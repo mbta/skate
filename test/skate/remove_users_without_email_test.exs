@@ -5,11 +5,9 @@ defmodule Skate.RemoveUsersWithoutEmailTest do
 
   describe "run/0" do
     test "deletes only the users with missing email addresses" do
-      %{id: user_nil_id} =
-        Skate.Repo.insert!(build(:user, %{email: nil, username: "nil_email_user"}))
+      %{id: user_nil_id} = Skate.Repo.insert!(build(:user, %{email: nil}))
 
-      %{id: user_blank_id} =
-        Skate.Repo.insert!(build(:user, %{email: "", username: "blank_email_user"}))
+      %{id: user_blank_id} = Skate.Repo.insert!(build(:user, %{email: ""}))
 
       %{id: user_good_id} = Skate.Repo.insert!(build(:user))
       Skate.RemoveUsersWithoutEmail.run()
