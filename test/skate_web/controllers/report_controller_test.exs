@@ -1,7 +1,7 @@
 defmodule SkateWeb.ReportControllerTest do
   use SkateWeb.ConnCase
+  import Skate.Factory
 
-  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
   describe "index/2" do
@@ -32,11 +32,7 @@ defmodule SkateWeb.ReportControllerTest do
 
     @tag :authenticated_admin
     test "successfully runs a report", %{conn: conn} do
-      user =
-        Skate.Repo.insert!(
-          DbUser.changeset(%DbUser{}, %{username: "somebody"}),
-          returning: true
-        )
+      user = Skate.Repo.insert!(build(:user))
 
       Skate.Repo.insert!(
         DbUserSettings.changeset(%DbUserSettings{}, %{

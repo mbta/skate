@@ -1,5 +1,6 @@
 defmodule Skate.Settings.UserTest do
   use Skate.DataCase
+  import Skate.Factory
 
   alias Skate.Settings.User
   alias Skate.Settings.Db.User, as: DbUser
@@ -67,7 +68,7 @@ defmodule Skate.Settings.UserTest do
 
   describe "upsert/1" do
     test "assigns a UUID if none is present" do
-      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
+      Skate.Repo.insert!(build(:user, %{username: @username}))
 
       user = User.upsert(@username, @email)
 
@@ -83,7 +84,7 @@ defmodule Skate.Settings.UserTest do
     end
 
     test "assigns email address to existing user record" do
-      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
+      Skate.Repo.insert!(build(:user, %{username: @username}))
 
       user = User.upsert(@username, @email)
       assert length(Skate.Repo.all(DbUser)) == 1
@@ -91,7 +92,7 @@ defmodule Skate.Settings.UserTest do
     end
 
     test "downcases email" do
-      Skate.Repo.insert!(DbUser.changeset(%DbUser{}, %{username: @username}))
+      Skate.Repo.insert!(build(:user, %{username: @username}))
 
       user = User.upsert(@username, String.capitalize(@email))
       assert length(Skate.Repo.all(DbUser)) == 1
