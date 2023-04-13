@@ -186,4 +186,12 @@ defmodule Skate.Factory do
       save_changes_to_tab_uuid: nil
     }
   end
+
+  def user_factory do
+    %Skate.Settings.Db.User{
+      uuid: Ecto.UUID.generate(),
+      email: "test@mbta.com",
+      username: "test_user"
+    }
+  end
 end
