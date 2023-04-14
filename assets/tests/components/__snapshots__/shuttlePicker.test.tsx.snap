@@ -15,7 +15,7 @@ exports[`ShuttlePicker renders 1`] = `
     >
       <span
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -78,7 +78,7 @@ exports[`ShuttlePicker renders 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -101,7 +101,7 @@ exports[`ShuttlePicker renders 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -124,7 +124,7 @@ exports[`ShuttlePicker renders 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -149,7 +149,7 @@ exports[`ShuttlePicker renders 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -174,7 +174,7 @@ exports[`ShuttlePicker renders 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -315,7 +315,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
     >
       <span
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -376,7 +376,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -399,7 +399,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -422,7 +422,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -445,7 +445,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -468,7 +468,7 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
           >
             <span
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -573,7 +573,7 @@ exports[`ShuttlePicker renders loading state 1`] = `
     >
       <span
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }

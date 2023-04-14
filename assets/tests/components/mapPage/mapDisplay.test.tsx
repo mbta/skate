@@ -68,10 +68,6 @@ beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
-afterEach(() => {
-  jest.restoreAllMocks()
-})
-
 type VehicleIdToVehicle = {
   [vehicleId: VehicleId]: VehicleOrGhost
 }

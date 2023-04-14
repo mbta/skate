@@ -9,7 +9,7 @@ exports[`Highlighted can highlight the whole string 1`] = `
 `;
 
 exports[`Highlighted ignores spaces and hyphens 1`] = `
-Array [
+[
   "a",
   <span
     className="highlighted"
@@ -21,7 +21,7 @@ Array [
 `;
 
 exports[`Highlighted is insensitive in its matching 1`] = `
-Array [
+[
   "S",
   <span
     className="highlighted"
@@ -39,7 +39,7 @@ Array [
 `;
 
 exports[`Highlighted renders the content, wrapping the matching text in a span 1`] = `
-Array [
+[
   "SMITH #20",
   <span
     className="highlighted"

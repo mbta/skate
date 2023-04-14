@@ -24,7 +24,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -229,7 +229,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                   <span
                     className="c-late-view__run-icon c-late-view__ghost-icon"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "<svg/>",
                       }
                     }
@@ -277,7 +277,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                   <span
                     className="c-late-view__run-icon c-late-view__up-right-icon"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "<svg/>",
                       }
                     }
@@ -331,7 +331,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                   <span
                     className="c-late-view__run-icon c-late-view__up-right-icon"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "<svg/>",
                       }
                     }
@@ -385,7 +385,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                   <span
                     className="c-late-view__run-icon c-late-view__block-waiver-icon"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "<svg/>",
                       }
                     }

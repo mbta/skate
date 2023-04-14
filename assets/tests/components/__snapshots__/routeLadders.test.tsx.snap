@@ -21,7 +21,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -45,7 +45,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
       <span
         className="c-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -56,7 +56,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
   <div
     className="c-ladder"
     style={
-      Object {
+      {
         "width": 184,
       }
     }
@@ -191,7 +191,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -215,7 +215,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
       <span
         className="c-route-ladder__reverse-icon"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -226,7 +226,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
   <div
     className="c-ladder"
     style={
-      Object {
+      {
         "width": 184,
       }
     }

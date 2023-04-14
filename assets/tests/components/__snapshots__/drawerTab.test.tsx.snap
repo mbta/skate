@@ -11,7 +11,7 @@ exports[`drawerTab has correct icon when collapsed 1`] = `
   >
     <span
       dangerouslySetInnerHTML={
-        Object {
+        {
           "__html": "<svg/>",
         }
       }
@@ -31,7 +31,7 @@ exports[`drawerTab has correct icon when visible 1`] = `
   >
     <span
       dangerouslySetInnerHTML={
-        Object {
+        {
           "__html": "<svg/>",
         }
       }

@@ -24,7 +24,7 @@ exports[`Presets renders current presets 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -51,7 +51,7 @@ exports[`Presets renders current presets 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -68,7 +68,7 @@ exports[`Presets renders current presets 1`] = `
     <span
       className="c-presets-panel__save-as-preset-button-icon"
       dangerouslySetInnerHTML={
-        Object {
+        {
           "__html": "<svg/>",
         }
       }

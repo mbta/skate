@@ -28,7 +28,7 @@ exports[`SearchForm renders 1`] = `
       >
         <span
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -44,7 +44,7 @@ exports[`SearchForm renders 1`] = `
     >
       <span
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }

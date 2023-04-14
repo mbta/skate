@@ -22,7 +22,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
         aria-hidden={true}
         aria-label=""
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -106,7 +106,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
             <span
               className="c-swings-view__show-past-icon"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -191,7 +191,7 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
         aria-hidden={true}
         aria-label=""
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -275,7 +275,7 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
             <span
               className="c-swings-view__show-past-icon"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -358,7 +358,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
         aria-hidden={true}
         aria-label=""
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -442,7 +442,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
             <span
               className="c-swings-view__show-past-icon"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -471,7 +471,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
               <span
                 className="c-swings-view__run-icon c-swings-view__run-icon-arrow"
                 dangerouslySetInnerHTML={
-                  Object {
+                  {
                     "__html": "<svg/>",
                   }
                 }
@@ -492,7 +492,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
               <span
                 className="c-swings-view__run-icon c-swings-view__run-icon-arrow"
                 dangerouslySetInnerHTML={
-                  Object {
+                  {
                     "__html": "<svg/>",
                   }
                 }
@@ -551,7 +551,7 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
         aria-hidden={true}
         aria-label=""
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -635,7 +635,7 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
             <span
               className="c-swings-view__show-past-icon"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -671,7 +671,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
         aria-hidden={true}
         aria-label=""
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
@@ -755,7 +755,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             <span
               className="c-swings-view__show-past-icon"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "<svg/>",
                 }
               }
@@ -793,7 +793,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
               <span
                 className="c-swings-view__run-icon c-swings-view__run-icon-arrow"
                 dangerouslySetInnerHTML={
-                  Object {
+                  {
                     "__html": "<svg/>",
                   }
                 }
@@ -854,7 +854,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
               <span
                 className="c-swings-view__run-icon c-swings-view__run-icon-ghost"
                 dangerouslySetInnerHTML={
-                  Object {
+                  {
                     "__html": "<svg/>",
                   }
                 }
@@ -958,7 +958,7 @@ exports[`SwingsView renders loading message 1`] = `
         aria-hidden={true}
         aria-label=""
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }
