@@ -72,6 +72,7 @@
     "file-loader": "^6.2.0",
     "fishery": "^2.2.2",
     "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "jest-fail-on-console": "^3.1.0",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^8.0.0",
@@ -91,6 +92,7 @@
     "webpack-cli": "^5.0.1"
   },
   "jest": {
+    "testEnvironment": "jsdom",
     "clearMocks": true,
     "transform": {
       "^.+\\.jsx?$": "babel-jest",
