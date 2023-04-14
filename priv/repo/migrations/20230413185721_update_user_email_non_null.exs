@@ -1,9 +1,15 @@
 defmodule Skate.Repo.Migrations.UpdateUserEmailNonNill do
   use Ecto.Migration
 
-  def change do
+  def up do
     alter table(:users) do
       modify :email, :string, null: false
+    end
+  end
+
+  def down do
+    alter table(:users) do
+      modify :email, :string, null: true
     end
   end
 end
