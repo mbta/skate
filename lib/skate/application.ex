@@ -32,6 +32,7 @@ defmodule Skate.Application do
     link = Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
 
     Migrate.up()
+    Skate.RemoveUsersWithoutEmail.run()
 
     link
   end
