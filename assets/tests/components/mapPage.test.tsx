@@ -89,10 +89,6 @@ jest.mock("../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
 }))
 
-afterEach(() => {
-  jest.restoreAllMocks()
-})
-
 type VehicleIdToVehicle = {
   [vehicleId: VehicleId]: VehicleOrGhost
 }
