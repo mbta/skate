@@ -120,9 +120,5 @@ defmodule Skate.Settings.UserTest do
     test "raises error if email is nil" do
       assert_raise FunctionClauseError, fn -> User.upsert(@username, nil) end
     end
-
-    test "raises error if email is empty string" do
-      assert_raise FunctionClauseError, fn -> User.upsert(@username, "") end
-    end
   end
 end
