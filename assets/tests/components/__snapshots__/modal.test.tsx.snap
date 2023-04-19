@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Modal renders Chelsea Lowered modal 1`] = `
-Array [
+[
   <div
     className="c-modal"
   >
@@ -14,7 +14,7 @@ Array [
       >
         <span
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -40,7 +40,7 @@ Array [
 `;
 
 exports[`Modal renders Chelsea Raised modal 1`] = `
-Array [
+[
   <div
     className="c-modal"
   >
@@ -53,7 +53,7 @@ Array [
       >
         <span
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -79,7 +79,7 @@ Array [
 `;
 
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
-Array [
+[
   <div
     className="c-modal"
   >
@@ -92,7 +92,7 @@ Array [
       >
         <span
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -119,7 +119,7 @@ Array [
 `;
 
 exports[`Modal renders loading modal when appropriate 1`] = `
-Array [
+[
   <div
     className="c-modal c-notification-loading-modal"
   >
@@ -129,7 +129,7 @@ Array [
       <span
         className="c-loading-spinner"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "<svg/>",
           }
         }

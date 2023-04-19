@@ -74,9 +74,8 @@ export const mockUsePatternsByIdForVehicles = (
 }
 
 export const mockFullStoryEvent = (): void => {
-  const originalFS = window.FS
-  window.FS = { event: jest.fn(), identify: jest.fn() }
-  afterEach(() => {
-    window.FS = originalFS
+  Object.defineProperty(window, "FS", {
+    writable: true,
+    value: { event: jest.fn(), identify: jest.fn() },
   })
 }

@@ -59,7 +59,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
       >
         <svg
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
@@ -177,7 +177,7 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
       >
         <svg
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
@@ -296,7 +296,7 @@ exports[`IncomingBox renders a ghost 1`] = `
         <svg
           role="img"
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
@@ -436,7 +436,7 @@ exports[`IncomingBox renders a vehicle 1`] = `
         <svg
           role="img"
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
@@ -537,7 +537,7 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
         <svg
           role="img"
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }

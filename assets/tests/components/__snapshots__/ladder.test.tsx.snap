@@ -4,7 +4,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -294,7 +294,7 @@ exports[`ladder renders a ghost bus 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -545,7 +545,7 @@ exports[`ladder renders a ladder 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -915,7 +915,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -1028,7 +1028,7 @@ exports[`ladder renders a laying over vehicle 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -1231,7 +1231,7 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -1441,7 +1441,7 @@ exports[`ladder renders a reversed ladder 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -1651,7 +1651,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -1864,7 +1864,7 @@ exports[`ladder renders an overload vehicle 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -2067,7 +2067,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 184,
     }
   }
@@ -2277,7 +2277,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
 <div
   className="c-ladder"
   style={
-    Object {
+    {
       "width": 232,
     }
   }

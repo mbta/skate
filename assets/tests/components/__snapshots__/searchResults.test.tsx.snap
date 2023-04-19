@@ -24,7 +24,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               <svg
                 role="img"
                 style={
-                  Object {
+                  {
                     "height": 64,
                     "width": 64,
                   }
@@ -161,7 +161,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               <svg
                 role="img"
                 style={
-                  Object {
+                  {
                     "height": 64,
                     "width": 64,
                   }
@@ -343,7 +343,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               <svg
                 role="img"
                 style={
-                  Object {
+                  {
                     "height": 64,
                     "width": 64,
                   }
@@ -485,7 +485,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               <svg
                 role="img"
                 style={
-                  Object {
+                  {
                     "height": 64,
                     "width": 64,
                   }

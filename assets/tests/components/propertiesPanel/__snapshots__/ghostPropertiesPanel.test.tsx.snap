@@ -24,7 +24,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -41,7 +41,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
         <svg
           role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
@@ -255,7 +255,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
                 >
                   <span
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "<svg/>",
                       }
                     }
@@ -329,7 +329,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -346,7 +346,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         <svg
           role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
@@ -680,7 +680,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
           aria-hidden={true}
           aria-label=""
           dangerouslySetInnerHTML={
-            Object {
+            {
               "__html": "<svg/>",
             }
           }
@@ -697,7 +697,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         <svg
           role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
@@ -911,7 +911,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
                 >
                   <span
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "<svg/>",
                       }
                     }

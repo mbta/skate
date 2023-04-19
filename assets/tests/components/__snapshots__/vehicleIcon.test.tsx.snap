@@ -4,7 +4,7 @@ exports[`ghost going down puts label above it 1`] = `
 <svg
   role="img"
   style={
-    Object {
+    {
       "height": 36,
       "width": 40,
     }
@@ -71,7 +71,7 @@ exports[`ghost with variant doesn't have eyes 1`] = `
 <svg
   role="img"
   style={
-    Object {
+    {
       "height": 25,
       "width": 27.5,
     }
@@ -145,11 +145,11 @@ exports[`renders an unwrapped svg node 1`] = `
 `;
 
 exports[`renders extended labels 1`] = `
-Array [
+[
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 64,
         "width": 72,
       }
@@ -191,7 +191,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 64,
         "width": 72,
       }
@@ -234,11 +234,11 @@ Array [
 `;
 
 exports[`renders ghost with alert icon 1`] = `
-Array [
+[
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 15.72,
         "width": 18.38,
       }
@@ -314,7 +314,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 28.525,
       }
@@ -391,11 +391,11 @@ Array [
 `;
 
 exports[`renders in all directions and sizes 1`] = `
-Array [
+[
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 15.2,
         "width": 16.72,
       }
@@ -419,7 +419,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 16.72,
         "width": 15.2,
       }
@@ -443,7 +443,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 15.2,
         "width": 16.72,
       }
@@ -467,7 +467,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 16.72,
         "width": 15.2,
       }
@@ -491,7 +491,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -515,7 +515,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 27.5,
         "width": 25,
       }
@@ -539,7 +539,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -563,7 +563,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 27.5,
         "width": 25,
       }
@@ -587,7 +587,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 40,
         "width": 44,
       }
@@ -611,7 +611,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 44,
         "width": 40,
       }
@@ -635,7 +635,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 40,
         "width": 44,
       }
@@ -659,7 +659,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 44,
         "width": 40,
       }
@@ -684,11 +684,11 @@ Array [
 `;
 
 exports[`renders with all statuses 1`] = `
-Array [
+[
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -712,7 +712,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -736,7 +736,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -760,7 +760,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -784,7 +784,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -830,7 +830,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -854,7 +854,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 25,
         "width": 27.5,
       }
@@ -879,11 +879,11 @@ Array [
 `;
 
 exports[`renders with variants, labels, and alert icons 1`] = `
-Array [
+[
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 26.200000000000003,
         "width": 26,
       }
@@ -964,7 +964,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 27.72,
         "width": 26,
       }
@@ -1045,7 +1045,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 26.200000000000003,
         "width": 26,
       }
@@ -1126,7 +1126,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 28.62,
         "width": 26,
       }
@@ -1207,7 +1207,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 36,
         "width": 27.9,
       }
@@ -1288,7 +1288,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 38.5,
         "width": 26,
       }
@@ -1369,7 +1369,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 36,
         "width": 27.9,
       }
@@ -1450,7 +1450,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 38.9,
         "width": 26,
       }
@@ -1531,7 +1531,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 64,
         "width": 64,
       }
@@ -1612,7 +1612,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 68,
         "width": 64,
       }
@@ -1693,7 +1693,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 64,
         "width": 64,
       }
@@ -1774,7 +1774,7 @@ Array [
   <svg
     role="img"
     style={
-      Object {
+      {
         "height": 68.1,
         "width": 64,
       }
