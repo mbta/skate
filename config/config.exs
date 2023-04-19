@@ -13,7 +13,7 @@ config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
   api_url: {:system, "API_URL"},
   api_key: {:system, "API_KEY"},
-  restrict_environment_access?: System.get_env("RESTRICT_ENVIRONMENT_ACCESS") == "true",
+  restrict_environment_access?: false,
   google_tag_manager_id: {:system, "GOOGLE_TAG_MANAGER_ID"},
   tileset_url: {:system, "TILESET_URL"},
   gtfs_url: {:system, "GTFS_URL"},
