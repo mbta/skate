@@ -87,7 +87,7 @@
     "testing-library-selector": "^0.2.1",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.2",
-    "typescript": "^4.6.3",
+    "typescript": "^5.0.4",
     "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1"
   },
