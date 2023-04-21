@@ -5,9 +5,6 @@
     static_href = fn conn, path -> apply(static_href_module, static_href_fn, [conn, path]) end
   %>
   <head>
-    <%= if @google_tag_manager_id do %>
-      <%= render "_google_tag_manager.html", assigns %>
-    <% end %>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, viewport-fit=cover">
@@ -23,6 +20,10 @@
       <meta name="user-uuid" content="<%= @user_uuid %>">
     <% end %>
 
+    <%= if @google_tag_manager_id do %>
+      <%= render "_google_tag_manager.html", assigns %>
+    <% end %>
+
     <title>Skate</title>
 
     <link rel="apple-touch-icon" href="<%= static_href.(@conn, "/images/mbta-logo-t-180.png") %>" type="image/png">
@@ -30,6 +31,7 @@
     <link rel="icon" href="<%= static_href.(@conn, "/favicon.ico") %>" sizes="16x16" type="image/vnd.microsoft.icon">
 
     <link rel="stylesheet" href="<%= static_href.(@conn, "/css/app.css") %>"/>
+
 
     <%= if record_fullstory?() do %>
       <%= render "_fullstory.html", assigns %>
