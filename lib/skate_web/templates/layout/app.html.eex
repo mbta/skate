@@ -5,9 +5,7 @@
     static_href = fn conn, path -> apply(static_href_module, static_href_fn, [conn, path]) end
   %>
   <head>
-    <%= if @google_tag_manager_id do %>
-      <%= render "_google_tag_manager.html", assigns %>
-    <% end %>
+
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, viewport-fit=cover">
@@ -31,6 +29,9 @@
 
     <link rel="stylesheet" href="<%= static_href.(@conn, "/css/app.css") %>"/>
 
+    <%= if @google_tag_manager_id do %>
+      <%= render "_google_tag_manager.html", assigns %>
+    <% end %>
     <%= if record_fullstory?() do %>
       <%= render "_fullstory.html", assigns %>
     <% end %>
