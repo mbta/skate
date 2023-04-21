@@ -20,6 +20,10 @@
       <meta name="user-uuid" content="<%= @user_uuid %>">
     <% end %>
 
+    <%= if @google_tag_manager_id do %>
+      <%= render "_google_tag_manager.html", assigns %>
+    <% end %>
+
     <title>Skate</title>
 
     <link rel="apple-touch-icon" href="<%= static_href.(@conn, "/images/mbta-logo-t-180.png") %>" type="image/png">
@@ -28,9 +32,7 @@
 
     <link rel="stylesheet" href="<%= static_href.(@conn, "/css/app.css") %>"/>
 
-    <%= if @google_tag_manager_id do %>
-      <%= render "_google_tag_manager.html", assigns %>
-    <% end %>
+
     <%= if record_fullstory?() do %>
       <%= render "_fullstory.html", assigns %>
     <% end %>
