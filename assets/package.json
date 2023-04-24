@@ -19,7 +19,8 @@
     "lint": "eslint --fix \"{.,**}/*.{js,json,ts,tsx}\"",
     "lint:check": "eslint \"{.,**}/*.{js,json,ts,tsx}\"",
     "format": "prettier --write \"{.,**}/*.{js,json,ts,tsx,css,scss}\"",
-    "format:check": "prettier --check \"{.,**}/*.{js,json,ts,tsx,css,scss}\""
+    "format:check": "prettier --check \"{.,**}/*.{js,json,ts,tsx,css,scss}\"",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@react-hook/media-query": "^1.1.1",
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.19.3",
+    "@testing-library/cypress": "^9.0.0",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.4.0",
@@ -64,6 +66,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.0.0",
+    "cypress": "^12.10.0",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",

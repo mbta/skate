@@ -1,4 +1,5 @@
 webpack.config.js
 babel.config.js
 .eslintrc.js
+cypress.config.ts
 __mocks__
