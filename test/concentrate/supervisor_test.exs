@@ -23,9 +23,7 @@ defmodule Concentrate.SupervisorTest do
                  _pid,
                  :supervisor,
                  [Concentrate.Pipeline]
-               },
-               {Concentrate.Pipeline.StopTimeUpdatesPipeline, _other_pid, :supervisor,
-                [Concentrate.Pipeline]}
+               }
              ] = Supervisor.which_children(pid)
     end
   end
