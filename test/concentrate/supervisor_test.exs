@@ -13,6 +13,21 @@ defmodule Concentrate.SupervisorTest do
     test "can start the application" do
       assert {:ok, _pid} = Concentrate.Supervisor.start_link(@opts)
     end
+
+    test "starts the data pipelines" do
+      {:ok, pid} = Concentrate.Supervisor.start_link(@opts)
+
+      assert [
+               {
+                 Concentrate.Pipeline.VehiclePositionsPipeline,
+                 _pid,
+                 :supervisor,
+                 [Concentrate.Pipeline]
+               },
+               {Concentrate.Pipeline.StopTimeUpdatesPipeline, _other_pid, :supervisor,
+                [Concentrate.Pipeline]}
+             ] = Supervisor.which_children(pid)
+    end
   end
 
   describe "child_spec/1" do
