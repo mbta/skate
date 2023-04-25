@@ -4,12 +4,13 @@ defmodule Concentrate.Supervisor do
   """
 
   alias Concentrate.Pipeline
-  alias Concentrate.Pipeline.VehiclePositionsPipeline
+  alias Concentrate.Pipeline.{StopTimeUpdatesPipeline, VehiclePositionsPipeline}
 
   @spec start_link(keyword()) :: Supervisor.on_start()
   def start_link(opts) do
     Supervisor.start_link(
       [
+        {Pipeline, Keyword.merge(opts, module: StopTimeUpdatesPipeline)},
         {Pipeline, Keyword.merge(opts, module: VehiclePositionsPipeline)}
       ],
       strategy: :one_for_one
