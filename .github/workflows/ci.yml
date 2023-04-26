@@ -50,6 +50,7 @@ jobs:
       DATABASE_USER: postgres
       DATABASE_NAME: skate_test
       DATABASE_HOST: localhost
+      GUARDIAN_SECRET_KEY: test_guardian_secret_keys
     services:
       postgres:
         image: postgres
@@ -57,7 +58,7 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
-          POSTGRES_USER:  ${{env.DATABASE_USER}}
+          POSTGRES_USER: ${{env.DATABASE_USER}}
           POSTGRES_DB: ${{env.DATABASE_NAME}}
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
@@ -95,6 +96,7 @@ jobs:
           POSTGRES_USERNAME: ${{env.DATABASE_USER}}
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
           POSTGRES_HOSTNAME: ${{env.DATABASE_HOST}}
+          GUARDIAN_SECRET_KEY: ${{env.GUARDIAN_SECRET_KEY}}
       - name: Save PR information
         run: |
           echo "${{ github.event.pull_request.number }}" > cover/PR_NUMBER

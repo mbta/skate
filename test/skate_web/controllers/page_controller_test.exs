@@ -11,6 +11,26 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "when logged in but restricted from environment, redirects to restriction page", %{
+      conn: conn
+    } do
+      reassign_env(:skate, :restrict_environment_access?, true)
+      conn = get(conn, "/")
+
+      assert redirected_to(conn) == "/restricted"
+    end
+
+    @tag :authenticated_admin
+    test "when logged as admin in restricted from environment, shows user the app", %{
+      conn: conn
+    } do
+      reassign_env(:skate, :restrict_environment_access?, true)
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~ "div id=\"app\""
+    end
+
+    @tag :authenticated
     test "when logged in, shows you the app", %{conn: conn} do
       conn = get(conn, "/")
 

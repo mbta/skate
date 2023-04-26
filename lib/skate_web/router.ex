@@ -17,6 +17,10 @@ defmodule SkateWeb.Router do
     plug(Guardian.Plug.EnsureAuthenticated)
   end
 
+  pipeline :ensure_environment_access do
+    plug(SkateWeb.EnsureEnvironmentAccess)
+  end
+
   pipeline :ensure_admin_group do
     plug(SkateWeb.EnsureAdminGroup)
   end
@@ -57,6 +61,20 @@ defmodule SkateWeb.Router do
       :put_user_token
     ]
 
+    get "/restricted", UnauthorizedController, :restricted_environment
+  end
+
+  scope "/", SkateWeb do
+    pipe_through [
+      :redirect_prod_http,
+      :accepts_html,
+      :browser,
+      :auth,
+      :ensure_auth,
+      :ensure_environment_access,
+      :put_user_token
+    ]
+
     get "/", PageController, :index
     get "/shuttle-map", PageController, :index
     get "/search", PageController, :index
@@ -72,6 +90,7 @@ defmodule SkateWeb.Router do
       :browser,
       :auth,
       :ensure_auth,
+      :ensure_environment_access,
       :put_user_token,
       :ensure_admin_group
     ]
@@ -88,7 +107,7 @@ defmodule SkateWeb.Router do
   end
 
   scope "/api", SkateWeb do
-    pipe_through [:accepts_json, :browser, :auth, :ensure_auth]
+    pipe_through [:accepts_json, :browser, :auth, :ensure_auth, :ensure_environment_access]
 
     get "/routes", RouteController, :index
     get "/routes/:route_id", RouteController, :show
@@ -112,7 +131,8 @@ defmodule SkateWeb.Router do
       :accepts_html,
       :browser,
       :auth,
-      :ensure_auth
+      :ensure_auth,
+      :ensure_environment_access
     ]
 
     forward("/", Laboratory.Router)
