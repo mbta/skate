@@ -52,6 +52,5 @@
       <%= @inner_content %>
     </main>
     <script type="text/javascript" src="<%= static_href.(@conn, "/js/app.js") %>"></script>
-    <%= render "_drift.html" %>
   </body>
 </html>

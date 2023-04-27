@@ -25,7 +25,7 @@ defmodule Realtime.Supervisor do
          trip_updates_url: Application.get_env(:skate, :trip_updates_url)
        ]},
       {Realtime.DataStatusAlerter, []},
-      {Realtime.AlertsFetcher, []}
+      # {Realtime.AlertsFetcher, []}
     ]
 
     Supervisor.init(children, strategy: :one_for_all)

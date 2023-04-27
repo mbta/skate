@@ -55,6 +55,7 @@ defmodule Skate.Factory do
     }
   end
 
+  @spec piece_factory :: Schedule.Piece.t()
   def piece_factory do
     %Schedule.Piece{
       schedule_id: "schedule",
