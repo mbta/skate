@@ -13,7 +13,13 @@ defmodule SkateWeb.Endpoint do
     at: "/",
     from: :skate,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: (
+      ~w(css fonts images js favicon.ico robots.txt)
+      ++ if Application.get_env(:skate, :mock_data_sources) == true do
+        ~w(snapshot)
+      else
+        []
+      end)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -44,6 +50,8 @@ defmodule SkateWeb.Endpoint do
     signing_salt: "jkUgGkwy"
 
   plug SkateWeb.Router
+
+
 
   # callback for runtime configuration
   def init(:supervisor, config) do
