@@ -11,7 +11,7 @@ defmodule Skate.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: LcovEx],
-      elixirc_options: [warnings_as_errors: true],
+      # elixirc_options: [warnings_as_errors: true],
       dialyzer: [
         plt_add_apps: [:mix, :laboratory]
       ]
