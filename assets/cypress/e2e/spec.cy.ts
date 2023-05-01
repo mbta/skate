@@ -18,5 +18,8 @@ describe("template spec", () => {
     cy.visit("/")
 
     cy.findByRole("button", { name: /Swings View/i }).click()
+
+    // In an actual test, you would add assertions here, or call
+    // compareSnapshot for visual regression testing
   })
 })
