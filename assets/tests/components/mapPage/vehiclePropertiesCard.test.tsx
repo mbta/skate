@@ -9,7 +9,6 @@ import { useNearestIntersection } from "../../../src/hooks/useNearestIntersectio
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import ghostFactory from "../../factories/ghost"
 import { runIdFactory } from "../../factories/run"
-import { VehicleRouteSummary } from "../../../src/components/vehicleRouteSummary"
 
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
@@ -85,7 +84,6 @@ describe("<VehiclePropertiesCard/>", () => {
             <VehiclePropertiesCard vehicleOrGhost={vehicle} />
           </RoutesProvider>
         )
-
         // -- Assert
         expect(
           screen.getByRole("generic", { name: /vehicle properties card/i })
@@ -207,7 +205,7 @@ describe("<VehiclePropertiesCard/>", () => {
     test("vehicle is shuttle, should render shuttle text and no route or adherence info", () => {
       const vehicle = shuttleFactory.build()
 
-      render(<VehicleRouteSummary vehicle={vehicle} />)
+      render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 
       expect(
         screen.getByRole("status", { name: /Route Variant Name/i })

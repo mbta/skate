@@ -13,7 +13,7 @@ import vehicleFactory, {
 
 describe("<VehicleRouteSummary />", () => {
   describe("when rendering", () => {
-    test("a valid vehicle on route, should render direction, route variant, headsign, adherence information, and icon", () => {
+    test("a valid vehicle on route, should render direction, route variant, headsign, and icon", () => {
       const route = routeFactory.build()
       const vehicle = vehicleFactory.build({ routeId: route.id })
 
@@ -35,15 +35,11 @@ describe("<VehicleRouteSummary />", () => {
       expect(routeVariantName).toHaveTextContent(vehicle.headsign!)
 
       expect(
-        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
-      ).toHaveTextContent(/on time \(0 min early\)/i)
-
-      expect(
         screen.getByRole("img", { name: /vehicle status icon/i })
       ).toBeVisible()
     })
 
-    test("a shuttle, should show shuttle text, and should not show route or adherence info", () => {
+    test("a shuttle, should show shuttle text, and should not show route", () => {
       const route = routeFactory.build()
       const vehicle = shuttleFactory.build()
 
@@ -60,16 +56,13 @@ describe("<VehicleRouteSummary />", () => {
       expect(
         screen.getByRole("status", { name: /Route Direction/i })
       ).toBeEmptyDOMElement()
-      expect(
-        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
-      ).toBeEmptyDOMElement()
 
       expect(
         screen.getByRole("img", { name: /vehicle status icon/i })
       ).toBeVisible()
     })
 
-    test("an off course vehicle, should show invalid in adherence info", () => {
+    test("an off course vehicle, should show direction and route variant name", () => {
       const route = routeFactory.build()
       const vehicle = invalidVehicleFactory.build({ routeId: route.id })
 
@@ -78,11 +71,6 @@ describe("<VehicleRouteSummary />", () => {
           <VehicleRouteSummary vehicle={vehicle} />
         </RoutesProvider>
       )
-
-      // Show `invalid` in Adherence Info
-      expect(
-        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
-      ).toHaveTextContent(/invalid/i)
 
       expect(
         screen.getByRole("status", { name: /Route Variant Name/i })
@@ -100,7 +88,7 @@ describe("<VehicleRouteSummary />", () => {
       ).toBeVisible()
     })
 
-    test("a ghost bus, should show direction and route variant name, should not show adherence", () => {
+    test("a ghost bus, should show direction and route variant name", () => {
       const route = routeFactory.build()
       const ghost = ghostFactory.build({ routeId: route.id })
 
@@ -109,10 +97,6 @@ describe("<VehicleRouteSummary />", () => {
           <VehicleRouteSummary vehicle={ghost} />
         </RoutesProvider>
       )
-
-      expect(
-        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
-      ).toBeEmptyDOMElement()
 
       expect(
         screen.getByRole("img", { name: /vehicle status icon/i })
