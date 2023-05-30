@@ -8,6 +8,7 @@ import { isLoading, isOk } from "../../util/fetchResult"
 import Loading from "../loading"
 import StreetViewButton from "../streetViewButton"
 import { VehicleRouteSummary } from "../vehicleRouteSummary"
+import { ScheduleAdherence } from "../scheduleAdherence"
 
 interface VehicleProp {
   vehicle: Vehicle
@@ -175,6 +176,11 @@ const VehiclePropertiesCard = ({
   >
     <div className="c-vehicle-properties-card__title-bar">
       <VehicleDataStaleTime vehicleOrGhost={vehicleOrGhost} />
+      <ScheduleAdherence
+        vehicle={vehicleOrGhost}
+        title="Vehicle Schedule Adherence"
+        className="c-vehicle-route-summary__adherence label font-xs-reg"
+      />
     </div>
 
     <div className="c-vehicle-properties-card__summary">
