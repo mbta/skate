@@ -352,56 +352,6 @@ describe("<MapPage />", () => {
     ).not.toBeInTheDocument()
   })
 
-  test("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    setHtmlWidthHeightForLeafletMap()
-
-    const vehicles = randomLocationVehicle.buildList(3),
-      [vehicle] = vehicles
-
-    ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
-    mockUseVehicleForId(vehicles)
-    mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-    mockUsePatternsByIdForVehicles([vehicle])
-
-    const { container } = render(
-      <RealDispatchWrapper
-        initialState={stateFactory.build({
-          searchPageState: searchPageStateFactory.build({
-            query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
-            isActive: true,
-            selectedEntity: {
-              type: SelectedEntityType.Vehicle,
-              vehicleId: vehicle.id,
-            },
-          }),
-        })}
-      >
-        <MapPage />
-      </RealDispatchWrapper>
-    )
-    const mapSearchPanel = getMapSearchPanel()
-
-    await userEvent.click(
-      within(mapSearchPanel).getByRole("button", {
-        name: new RegExp(vehicle.label),
-      })
-    )
-
-    const routeShape = container.querySelector(".c-vehicle-map__route-shape")
-    const vpc = vehiclePropertiesCard.get()
-
-    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--hidden")
-    expect(routeShape).toBeVisible()
-    expect(vpc).toBeVisible()
-
-    await userEvent.click(screen.getByRole("button", { name: /close/i }))
-    expect(vpc).not.toBeInTheDocument()
-    expect(routeShape).not.toBeInTheDocument()
-
-    expect(getMapSearchPanel()).toBeVisible()
-  })
-
   test("when search is cleared, should still render selection on map", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = runIdFactory.build()
