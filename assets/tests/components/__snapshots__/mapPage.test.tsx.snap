@@ -1484,18 +1484,6 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             <div
               class="c-vehicle-properties-card__title-bar"
             >
-              <button
-                aria-label="Close Vehicle Properties Card"
-                class="c-close-button c-close-button--large c-close-button--light"
-              >
-                <span
-                  aria-hidden="true"
-                  aria-label=""
-                  role="img"
-                >
-                  <svg />
-                </span>
-              </button>
               <output
                 aria-label="Time Since Last Update Received"
                 class="data-stale-time label font-xs-reg"

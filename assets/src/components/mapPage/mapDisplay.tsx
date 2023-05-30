@@ -310,7 +310,6 @@ const SelectedVehicleDataLayers = ({
   showSelectionCard,
   selectVehicle,
   selectRoutePattern,
-  deleteSelection,
   setStateClasses,
 }: {
   vehicleOrGhost: VehicleOrGhost | null
@@ -318,7 +317,6 @@ const SelectedVehicleDataLayers = ({
   showSelectionCard: boolean
   selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
   selectRoutePattern: (routePattern: RoutePattern) => void
-  deleteSelection: () => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
   const position =
@@ -357,7 +355,6 @@ const SelectedVehicleDataLayers = ({
             <SelectionCardContainer>
               <VehiclePropertiesCard
                 vehicleOrGhost={selectedVehicleOrGhost}
-                onClose={deleteSelection}
                 key={selectedVehicleOrGhost.id}
               />
             </SelectionCardContainer>
@@ -508,7 +505,6 @@ const SelectionDataLayers = ({
           showSelectionCard={showSelectionCard}
           selectVehicle={selectVehicle}
           selectRoutePattern={selectRoutePattern}
-          deleteSelection={deleteSelection}
           setStateClasses={setStateClasses}
         />
       )

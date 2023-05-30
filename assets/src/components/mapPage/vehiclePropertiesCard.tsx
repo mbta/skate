@@ -5,7 +5,6 @@ import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { isLoading, isOk } from "../../util/fetchResult"
-import { CloseButton } from "../closeButton"
 import Loading from "../loading"
 import StreetViewButton from "../streetViewButton"
 import { VehicleRouteSummary } from "../vehicleRouteSummary"
@@ -169,21 +168,12 @@ const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
 
 const VehiclePropertiesCard = ({
   vehicleOrGhost,
-  onClose,
-}: VehicleOrGhostProp & {
-  onClose: () => void
-}): React.ReactElement => (
+}: VehicleOrGhostProp): React.ReactElement => (
   <div
     className="c-vehicle-properties-card"
     aria-label="Vehicle Properties Card"
   >
     <div className="c-vehicle-properties-card__title-bar">
-      <CloseButton
-        onClick={onClose}
-        closeButtonType={"l_light"}
-        aria-label="Close Vehicle Properties Card"
-      />
-
       <VehicleDataStaleTime vehicleOrGhost={vehicleOrGhost} />
     </div>
 
