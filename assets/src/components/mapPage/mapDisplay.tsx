@@ -40,7 +40,6 @@ import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import RoutePropertiesCard from "./routePropertiesCard"
-import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -307,14 +306,12 @@ const RoutePatternLayers = ({
 const SelectedVehicleDataLayers = ({
   vehicleOrGhost: selectedVehicleOrGhost,
   routePatterns,
-  showSelectionCard,
   selectVehicle,
   selectRoutePattern,
   setStateClasses,
 }: {
   vehicleOrGhost: VehicleOrGhost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
-  showSelectionCard: boolean
   selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
   selectRoutePattern: (routePattern: RoutePattern) => void
   setStateClasses: (classes: string | undefined) => void
@@ -351,14 +348,6 @@ const SelectedVehicleDataLayers = ({
     <>
       {selectedVehicleOrGhost && (
         <>
-          {showSelectionCard && (
-            <SelectionCardContainer>
-              <VehiclePropertiesCard
-                vehicleOrGhost={selectedVehicleOrGhost}
-                key={selectedVehicleOrGhost.id}
-              />
-            </SelectionCardContainer>
-          )}
           {isVehicle(selectedVehicleOrGhost) && (
             <>
               <VehicleMarker
@@ -502,7 +491,6 @@ const SelectionDataLayers = ({
         <SelectedVehicleDataLayers
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
           routePatterns={routePatterns}
-          showSelectionCard={showSelectionCard}
           selectVehicle={selectVehicle}
           selectRoutePattern={selectRoutePattern}
           setStateClasses={setStateClasses}
