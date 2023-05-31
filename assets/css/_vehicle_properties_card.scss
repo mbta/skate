@@ -12,8 +12,6 @@
 .c-vehicle-properties-card {
   font-family: $font-family;
 
-  // Static Design Width per spec
-  width: 395px;
   // Card Look
   border-radius: 8px;
   background-color: $white;
@@ -54,7 +52,7 @@
 }
 
 .c-vehicle-properties-card__title-bar {
-  padding: 6px 16px;
+  padding: 16px;
 }
 
 .c-vehicle-properties-card__summary {
@@ -74,7 +72,7 @@
 // #region Visual Information group Section
 .c-vehicle-properties-card__info-section {
   width: 100%;
-  padding: 16px 20px;
+  padding: 1em;
 
   border: 1px solid $color-gray-300;
   border-radius: 8px;

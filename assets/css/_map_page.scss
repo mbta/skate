@@ -19,6 +19,10 @@ $map-page-search-panel-width: 24rem;
   padding: 0 1.5625rem;
 }
 
+.c-map-page .c-vehicle-properties-card {
+  margin: 1em;
+}
+
 .c-map-page__input-and-results {
   background-color: $color-gray-300;
   display: flex;
@@ -90,6 +94,24 @@ $map-page-search-panel-width: 24rem;
 }
 
 $map-page-search-stub-size: 10px;
+
+.c-map-page__search-actions {
+  margin: 1em;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+.c-map-page__back-button {
+  // TODO: where should this live
+  background-color: #6c757d;
+  padding: 0.5em;
+}
+
+.c-map-page__new-search-button {
+  // TODO: where should this live
+  background-color: #165c96;
+  flex: 1;
+}
 
 .c-map-page__map .c-map-selection-card-container {
   position: absolute;

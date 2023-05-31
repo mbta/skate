@@ -1,11 +1,5 @@
 import "@testing-library/jest-dom"
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import React from "react"
 
 import userEvent from "@testing-library/user-event"
@@ -184,35 +178,6 @@ describe("<MapDisplay />", () => {
       const routeShape = container.querySelector(".c-vehicle-map__route-shape")
       expect(routeShape).toBeVisible()
       expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
-    })
-
-    test("when showSelectionCard is true, vehicle properties card should be visible", async () => {
-      setHtmlWidthHeightForLeafletMap()
-
-      const vehicles = randomLocationVehicle.buildList(3),
-        [vehicle] = vehicles
-
-      mockUseVehicleForId(vehicles)
-      mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-      mockUsePatternsByIdForVehicles([vehicle])
-
-      const setSelectedEntityMock = jest.fn()
-
-      const { container } = render(
-        <MapDisplay
-          selectedEntity={{
-            type: SelectedEntityType.Vehicle,
-            vehicleId: vehicle.id,
-          }}
-          setSelection={setSelectedEntityMock}
-          showSelectionCard={true}
-        />
-      )
-
-      const routeShape = container.querySelector(".c-vehicle-map__route-shape")
-
-      expect(routeShape).toBeVisible()
-      expect(vehiclePropertiesCard.get()).toBeVisible()
     })
 
     test("when showSelectionCard is true and route pattern is selected, route properties card should be visible", async () => {
@@ -490,11 +455,6 @@ describe("<MapDisplay />", () => {
           expect(
             container.querySelector(".c-vehicle-map__route-shape")
           ).not.toBeInTheDocument()
-          expect(
-            within(vehiclePropertiesCard.get()).getByRole("status", {
-              name: /route variant name/i,
-            })
-          ).toHaveTextContent("Shuttle")
         })
       })
 
@@ -518,7 +478,6 @@ describe("<MapDisplay />", () => {
           expect(
             screen.queryAllByRole("button", { name: /^run/ })
           ).toHaveLength(0)
-          expect(vehiclePropertiesCard.get()).toBeVisible()
         })
       })
 
