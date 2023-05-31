@@ -27,6 +27,7 @@ import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import Loading from "./loading"
 import useMostRecentVehicleById from "../hooks/useMosRecentVehicleById"
 import useSocket from "../hooks/useSocket"
+import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
 
 const thereIsAnActiveSearch = (
   vehicles: VehicleOrGhost[] | null,
@@ -104,24 +105,27 @@ const Selection = ({
       <div className="c-map-page__search-actions">
         {searchPageState.query.text !== "" && (
           <button
-            className="c-map-page__back-button"
+            className="button-secondary c-map-page__back-button"
             onClick={() => {
               setSelection(null)
             }}
           >
+            <ChevronLeftIcon />
             Back
           </button>
         )}
         <button
-          className="c-map-page__new-search-button"
+          className="button-submit c-map-page__new-search-button"
           onClick={() => {
             setSelection(null)
             dispatch(setSearchText(""))
           }}
         >
+          <SearchIcon />
           New Search
         </button>
       </div>
+      <hr />
       {selectedEntity.type === SelectedEntityType.Vehicle ? (
         <SelectedVehicle vehicleId={selectedEntity.vehicleId} />
       ) : (
