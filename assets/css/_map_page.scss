@@ -96,20 +96,36 @@ $map-page-search-panel-width: 24rem;
 $map-page-search-stub-size: 10px;
 
 .c-map-page__search-actions {
-  margin: 1em;
+  margin: 0 1em 1em 1em;
   display: flex;
-  justify-content: center;
   gap: 1em;
 }
 .c-map-page__back-button {
-  // TODO: where should this live
-  background-color: #6c757d;
-  padding: 0.5em;
+  @include button-icon(1rem);
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+
+  span {
+    svg {
+      fill: none;
+      stroke-width: 2;
+    }
+  }
 }
 
 .c-map-page__new-search-button {
-  // TODO: where should this live
-  background-color: #165c96;
+  @include button-icon(1rem);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+
+  padding: 0.5rem;
+}
+
+.c-map-page__new-search-button:only-child {
+  justify-content: center;
   flex: 1;
 }
 

@@ -759,11 +759,15 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           class="c-map-page__search-actions"
         >
           <button
-            class="c-map-page__new-search-button"
+            class="button-submit c-map-page__new-search-button"
           >
+            <span>
+              <svg />
+            </span>
             New Search
           </button>
         </div>
+        <hr />
         <div
           aria-label="Vehicle Properties Card"
           class="c-vehicle-properties-card"
