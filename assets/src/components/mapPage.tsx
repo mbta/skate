@@ -16,7 +16,8 @@ import {
   SelectedEntity,
   SelectedEntityType,
   SelectedRoutePattern,
-  clearSearch,
+  goBack,
+  newSearchSession,
   setSelectedEntity,
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
@@ -147,7 +148,6 @@ const Selection = ({
   setSelection: (selectedEntity: SelectedEntity | null) => void
 }): ReactElement => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
-
   const selectRoutePattern = (routePattern: RoutePattern) => {
     dispatch(
       setSelectedEntity({
@@ -158,14 +158,18 @@ const Selection = ({
     )
   }
 
+  const shouldShowBackButton =
+    searchPageState.selectedEntityHistory.length > 0 ||
+    searchPageState.query.text !== ""
+
   return (
     <div>
       <div className="c-map-page__search-actions">
-        {searchPageState.query.text !== "" && (
+        {shouldShowBackButton && (
           <button
             className="c-map-page__back-button"
             onClick={() => {
-              dispatch(setSelectedEntity(null))
+              dispatch(goBack())
             }}
           >
             <ChevronLeftIcon />
@@ -176,7 +180,7 @@ const Selection = ({
           className="button-submit c-map-page__new-search-button"
           onClick={() => {
             dispatch(setSelectedEntity(null))
-            dispatch(clearSearch())
+            dispatch(newSearchSession())
           }}
         >
           <SearchIcon />

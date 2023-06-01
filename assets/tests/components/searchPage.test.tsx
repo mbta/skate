@@ -17,6 +17,7 @@ import { SearchPageState } from "../../src/state/searchPageState"
 import { useStations } from "../../src/hooks/useStations"
 import { LocationType } from "../../src/models/stopData"
 import { zoomInButton } from "../testHelpers/selectors/components/map"
+import { searchPageStateFactory } from "../factories/searchPageState"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -116,11 +117,11 @@ describe("SearchPage", () => {
     const runId = "clickMe"
     const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
-    const activeSearch: SearchPageState = {
+    const activeSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "clickMe", property: "run" },
       isActive: true,
       savedQueries: [],
-    }
+    })
     const mockDispatch = jest.fn()
     render(
       <StateDispatchProvider

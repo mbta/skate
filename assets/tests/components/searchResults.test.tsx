@@ -14,6 +14,7 @@ import "@testing-library/jest-dom"
 
 import ghostFactory from "../factories/ghost"
 import vehicleFactory, { shuttleFactory } from "../factories/vehicle"
+import { searchPageStateFactory } from "../factories/searchPageState"
 
 jest
   .spyOn(dateTime, "now")
@@ -21,11 +22,10 @@ jest
 
 const state: State = {
   ...initialState,
-  searchPageState: {
+  searchPageState: searchPageStateFactory.build({
     query: { text: "test", property: "run" },
     isActive: true,
-    savedQueries: [],
-  },
+  }),
 }
 
 describe("SearchResults", () => {
