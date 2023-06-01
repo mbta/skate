@@ -105,7 +105,7 @@ const Selection = ({
       <div className="c-map-page__search-actions">
         {searchPageState.query.text !== "" && (
           <button
-            className="button-secondary c-map-page__back-button"
+            className="c-map-page__back-button"
             onClick={() => {
               setSelection(null)
             }}
