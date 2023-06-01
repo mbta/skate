@@ -10,18 +10,14 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       aria-label="Map Search Panel"
       class="c-map-page__input-and-results c-map-page__input-and-results--visible"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-map-page__input u-hideable"
       >
@@ -376,18 +372,14 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       aria-label="Map Search Panel"
       class="c-map-page__input-and-results c-map-page__input-and-results--visible"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-map-page__input u-hideable"
       >
@@ -742,18 +734,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
       aria-label="Map Search Panel"
       class="c-map-page__input-and-results c-map-page__input-and-results--hidden"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Expand"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Expand"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-map-page__input u-hideable"
       >

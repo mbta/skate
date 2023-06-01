@@ -254,6 +254,26 @@ $color-tooltip-background: #333333;
   }
 }
 
+@mixin button-primary-v2 {
+  color: $white;
+  background-color: $color-eggplant-700;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $color-eggplant-500;
+  }
+
+  &:focus {
+    background-color: $color-eggplant-500;
+    outline: 2px solid $color-eggplant-700;
+    outline-offset: -2px;
+  }
+
+  &:disabled {
+    background-color: $color-gray-500;
+  }
+}
+
 @mixin button-secondary {
   @include button-base;
   background-color: $color-button-secondary;

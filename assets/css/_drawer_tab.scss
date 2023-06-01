@@ -1,7 +1,9 @@
 .c-drawer-tab {
   background-color: $color-bg-medium;
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 1rem !important;
+  border-bottom-right-radius: 1rem !important;
+  border-bottom-left-radius: 0rem !important;
+  border-top-left-radius: 0rem !important;
   position: absolute;
   top: 2.5rem;
   width: $drawer-tab-width;

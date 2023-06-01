@@ -9,18 +9,14 @@ exports[`Shuttle Map Page renders 1`] = `
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
       data-testid="shuttle-picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-shuttle-picker u-hideable"
       >
@@ -669,18 +665,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
       data-testid="shuttle-picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-shuttle-picker u-hideable"
       >
@@ -1329,18 +1321,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
       data-testid="shuttle-picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-shuttle-picker u-hideable"
       >
@@ -1989,18 +1977,14 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
       data-testid="shuttle-picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-shuttle-picker u-hideable"
       >
@@ -2212,18 +2196,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
       class="c-shuttle-picker-container c-shuttle-picker-container--visible"
       data-testid="shuttle-picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-shuttle-picker u-hideable"
       >

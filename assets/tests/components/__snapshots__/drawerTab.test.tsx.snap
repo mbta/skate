@@ -1,41 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`drawerTab has correct icon when collapsed 1`] = `
-<div
-  className="c-drawer-tab"
+<button
+  className="c-drawer-tab c-drawer-tab__tab-button"
+  onClick={[MockFunction]}
+  title="Expand"
 >
-  <button
-    className="c-drawer-tab__tab-button"
-    onClick={[MockFunction]}
-    title="Expand"
-  >
-    <span
-      dangerouslySetInnerHTML={
-        {
-          "__html": "<svg/>",
-        }
+  <span
+    dangerouslySetInnerHTML={
+      {
+        "__html": "<svg/>",
       }
-    />
-  </button>
-</div>
+    }
+  />
+</button>
 `;
 
 exports[`drawerTab has correct icon when visible 1`] = `
-<div
-  className="c-drawer-tab"
+<button
+  className="c-drawer-tab c-drawer-tab__tab-button"
+  onClick={[MockFunction]}
+  title="Collapse"
 >
-  <button
-    className="c-drawer-tab__tab-button"
-    onClick={[MockFunction]}
-    title="Collapse"
-  >
-    <span
-      dangerouslySetInnerHTML={
-        {
-          "__html": "<svg/>",
-        }
+  <span
+    dangerouslySetInnerHTML={
+      {
+        "__html": "<svg/>",
       }
-    />
-  </button>
-</div>
+    }
+  />
+</button>
 `;

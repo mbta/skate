@@ -9,15 +9,13 @@ const DrawerTab = ({
   isVisible: boolean
   toggleVisibility: () => void
 }) => (
-  <div className="c-drawer-tab">
-    <button
-      className="c-drawer-tab__tab-button"
-      onClick={toggleVisibility}
-      title={isVisible ? "Collapse" : "Expand"}
-    >
-      {isVisible ? <CollapseIcon /> : <ExpandIcon />}
-    </button>
-  </div>
+  <button
+    className="c-drawer-tab c-drawer-tab__tab-button"
+    onClick={toggleVisibility}
+    title={isVisible ? "Collapse" : "Expand"}
+  >
+    {isVisible ? <CollapseIcon /> : <ExpandIcon />}
+  </button>
 )
 
 export default DrawerTab
