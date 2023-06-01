@@ -15,6 +15,7 @@ import {
   SearchPageState,
   SelectedEntity,
   SelectedEntityType,
+  goBack,
   setSearchText,
   setSelectedEntity,
 } from "../state/searchPageState"
@@ -107,7 +108,7 @@ const Selection = ({
           <button
             className="c-map-page__back-button"
             onClick={() => {
-              setSelection(null)
+              dispatch(goBack())
             }}
           >
             <ChevronLeftIcon />

@@ -34,12 +34,14 @@ export interface SearchPageState {
   isActive: boolean
   savedQueries: SavedSearchQuery[]
   selectedEntity?: SelectedEntity | null
+  selectedEntityHistory: SelectedEntity[]
 }
 
 export const initialSearchPageState = {
   query: emptySearchQuery,
   isActive: false,
   savedQueries: [],
+  selectedEntityHistory: [],
 }
 
 interface SetSearchTextAction {
@@ -86,6 +88,14 @@ interface SelectEntityAction {
   payload: SelectedEntity | null
 }
 
+interface GoBackAction {
+  type: "GO_BACK"
+}
+
+export const goBack = (): GoBackAction => {
+  return { type: "GO_BACK" }
+}
+
 export const setSelectedVehicle = (
   vehicleId: VehicleId | null
 ): SelectVehicleAction => ({
@@ -105,6 +115,7 @@ export type Action =
   | SubmitSearchAction
   | SelectVehicleAction
   | SelectEntityAction
+  | GoBackAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -149,12 +160,32 @@ export const reducer = (
               vehicleId: action.payload.vehicleId,
             }
           : null,
+        selectedEntityHistory: action.payload
+          ? [
+              ...state.selectedEntityHistory,
+              {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: action.payload.vehicleId,
+              },
+            ]
+          : state.selectedEntityHistory,
       }
 
     case "SELECT_SEARCH_ENTITY":
       return {
         ...state,
         selectedEntity: action.payload,
+        selectedEntityHistory: action.payload
+          ? [...state.selectedEntityHistory, action.payload]
+          : state.selectedEntityHistory,
+      }
+
+    case "GO_BACK":
+      state.selectedEntityHistory.slice
+      return {
+        ...state,
+        selectedEntity: state.selectedEntityHistory.at(-2) || null,
+        selectedEntityHistory: state.selectedEntityHistory.slice(0, -1),
       }
   }
   return state
