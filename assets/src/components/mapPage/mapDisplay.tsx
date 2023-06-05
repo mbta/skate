@@ -355,6 +355,7 @@ const SelectedVehicleDataLayers = ({
                 vehicle={selectedVehicleOrGhost}
                 isPrimary={true}
                 isSelected={true}
+                onSelect={selectVehicle}
               />
 
               {!selectedVehicleOrGhost.isShuttle && (

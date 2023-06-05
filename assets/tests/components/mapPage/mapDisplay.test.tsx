@@ -151,6 +151,41 @@ describe("<MapDisplay />", () => {
     })
   })
 
+  test("clicking a vehicle that is already selected still calls setSelection", async () => {
+    const route = routeFactory.build()
+    const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
+    const vehicles = [
+        routeVehicleFactory.build({ runId: runIdFactory.build() }),
+        routeVehicleFactory.build({ runId: runIdFactory.build() }),
+        ...routeVehicleFactory.buildList(3),
+      ],
+      [vehicle, nextVehicle] = vehicles
+
+    mockUsePatternsByIdForVehicles([vehicle, nextVehicle])
+
+    mockUseVehicleForId([vehicle, nextVehicle])
+    mockUseVehiclesForRouteMap({ [route.id]: vehicles })
+
+    const mockSetSelection = jest.fn()
+    render(
+      <MapDisplay
+        selectedEntity={{
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicle.id,
+        }}
+        setSelection={mockSetSelection}
+        showSelectionCard={false}
+      />
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: vehicle.runId! }))
+
+    expect(mockSetSelection).toHaveBeenCalledWith({
+      type: SelectedEntityType.Vehicle,
+      vehicleId: vehicle.id,
+    })
+  })
+
   describe("showSelectionCard", () => {
     test("when showSelectionCard is false, vehicle properties card should not be visible", async () => {
       setHtmlWidthHeightForLeafletMap()
