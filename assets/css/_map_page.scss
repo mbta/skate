@@ -20,7 +20,7 @@ $map-page-search-panel-width: 24rem;
 }
 
 .c-map-page .c-vehicle-properties-card {
-  margin: 1em;
+  margin: 1rem;
 }
 
 .c-map-page__input-and-results {
@@ -96,9 +96,9 @@ $map-page-search-panel-width: 24rem;
 $map-page-search-stub-size: 10px;
 
 .c-map-page__search-actions {
-  margin: 0 1em 1em 1em;
+  margin: 0 1rem 1rem 1rem;
   display: flex;
-  gap: 1em;
+  gap: 1rem;
 }
 .c-map-page__back-button {
   @include button-secondary;
