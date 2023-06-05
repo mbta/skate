@@ -22,17 +22,3 @@
   justify-content: center;
   margin-top: 1.5rem;
 }
-
-.c-inactive-notification-modal__keep-button {
-  @include button-simple;
-  flex: 0 1 auto;
-  margin-right: 0.25rem;
-  width: 30%;
-}
-
-.c-inactive-notification-modal__discard-button {
-  @include button-primary;
-  flex: 0 1 auto;
-  margin-left: 0.25rem;
-  width: 30%;
-}

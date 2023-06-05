@@ -7,7 +7,7 @@
 
 .c-minischedule__show-past {
   @include font-body;
-  color: $color-primary-dark;
+  color: $color-primary-dark-legacy;
   padding-left: 1.875rem;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -22,8 +22,8 @@
   width: 0.875rem;
 
   svg {
-    fill: $color-primary-dark;
-    stroke: $color-primary-dark;
+    fill: $color-primary-dark-legacy;
+    stroke: $color-primary-dark-legacy;
   }
 }
 
@@ -47,7 +47,7 @@
   background-color: $color-secondary-light;
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid $color-primary-dark;
+  border-bottom: 1px solid $color-primary-dark-legacy;
 
   .c-minischedule__header-label {
     display: inline-block;
@@ -168,7 +168,7 @@
   .c-minischedule__piece-rows {
     .c-minischedule__icon {
       &:not(:empty) {
-        background-color: $color-primary;
+        background-color: $color-primary-legacy;
       }
 
       svg {
@@ -179,7 +179,7 @@
     .c-minischedule__row {
       &::before,
       &::after {
-        background-color: $color-primary;
+        background-color: $color-primary-legacy;
       }
     }
   }
@@ -268,7 +268,7 @@
 }
 
 .c-minischedule__departure-point-header {
-  color: $color-primary-dark;
+  color: $color-primary-dark-legacy;
   display: flex;
   justify-content: space-between;
   text-transform: uppercase;

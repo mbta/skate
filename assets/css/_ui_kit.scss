@@ -13,8 +13,8 @@ $color-component-dark: #1c1e23;
 $color-component-red: #e45d32;
 $color-component-highlight: #e7ff36;
 
-$color-primary: #586f7c;
-$color-primary-dark: #465863;
+$color-primary-legacy: #586f7c;
+$color-primary-dark-legacy: #465863;
 $color-secondary-dark: #4db6ac;
 $color-secondary-medium: #b8dbd9;
 $color-secondary-light: #d4e7e7;
@@ -81,16 +81,16 @@ $color-mbta-blue: #003da5;
 
 $color-button-simple: $color-component-light;
 $color-button-simple-focus: $color-secondary-medium;
-$color-button-primary: $color-primary;
-$color-button-primary-focus: $color-primary-dark;
+$color-button-primary-legacy: $color-primary-legacy;
+$color-button-primary-focus-legacy: $color-primary-dark-legacy;
 $color-button-secondary: $color-secondary-dark;
 $color-button-secondary-focus: $color-secondary-medium;
 $color-button-light: $color-bg-base;
 $color-button-light-focus: $color-secondary-medium;
 $color-button-disabled: #e6e8ec;
 
-$color-toggle-selected-border: $color-primary-dark;
-$color-toggle-selected-text: $color-primary-dark;
+$color-toggle-selected-border: $color-primary-dark-legacy;
+$color-toggle-selected-text: $color-primary-dark-legacy;
 $color-toggle-selected-fill: #ebf4ff;
 $color-toggle-unselected-border: #d6d6d6;
 $color-toggle-unselected-text: $color-component-medium;
@@ -243,19 +243,20 @@ $color-tooltip-background: #333333;
   }
 }
 
-@mixin button-primary {
+@mixin button-primary-legacy {
   @include button-base;
-  background-color: $color-button-primary;
+  background-color: $color-button-primary-legacy;
   color: $color-font-light;
 
   &:focus,
   &:hover {
-    background-color: $color-button-primary-focus;
+    background-color: $color-button-primary-focus-legacy;
   }
 }
 
-@mixin button-primary-v2 {
+@mixin button-primary {
   color: $white;
+  padding: 8px;
   background-color: $color-eggplant-700;
   border-radius: 4px;
 
@@ -266,7 +267,6 @@ $color-tooltip-background: #333333;
   &:focus {
     background-color: $color-eggplant-500;
     outline: 2px solid $color-eggplant-700;
-    outline-offset: -2px;
   }
 
   &:disabled {
@@ -329,7 +329,7 @@ $color-tooltip-background: #333333;
 
   &:focus,
   &:hover {
-    color: $color-primary;
+    color: $color-primary-legacy;
   }
 }
 

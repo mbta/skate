@@ -64,7 +64,7 @@ $map-page-search-panel-width: 24rem;
 }
 
 .c-map-page__input-and-results .c-drawer-tab {
-  @include button-primary-v2;
+  @include button-primary;
   left: 100%;
   z-index: #{$max-leaflet-z-index + 100};
   box-shadow: 1px 0px 4px rgba(0, 0, 0, 0.25);
