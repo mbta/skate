@@ -15,7 +15,7 @@ import {
   SearchPageState,
   SelectedEntity,
   SelectedEntityType,
-  setSearchText,
+  clearSearch,
   setSelectedEntity,
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
@@ -118,7 +118,7 @@ const Selection = ({
           className="button-submit c-map-page__new-search-button"
           onClick={() => {
             setSelection(null)
-            dispatch(setSearchText(""))
+            dispatch(clearSearch())
           }}
         >
           <SearchIcon />
