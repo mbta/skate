@@ -44,6 +44,11 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 
 After updating merged changes or checking out a new branch (e.g. to test a new feature), you may need to do the following to update the dependencies:
 
+1. Update Elixir and Node.js dependencies at the same time by rerunning `mix setup`
+
+___OR___
+
+Update them independently with the following commands
 1. Update Elixir dependencies with `mix deps.get`
 1. Install Node.js dependencies with `cd assets && npm ci` 
 
