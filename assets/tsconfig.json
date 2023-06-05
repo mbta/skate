@@ -1,6 +1,6 @@
 {
   "include": ["src", "tests"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "cypress"],
   "files": [
     "src/skate.d.ts",
     "src/schedule.d.ts",
