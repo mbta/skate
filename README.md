@@ -34,8 +34,9 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 1. Install language dependencies with `asdf install`
 1. Setup project with `mix setup`
 	- This command will create the database, so you must first ensure your Postgres server is running and you've updated your credentials in `.envrc` as described in "Configuration" above.
-	- (not necessary to run the application) The `test` command will automatically setup the database when run. 
-		You can setup the the testing database manually by running `mix ecto.setup` in the `test` envrionment 
+1. (not necessary to run the application) 
+	- The `test` command will automatically setup the database when run. 
+	- You can setup the the testing database manually by running `mix ecto.setup` in the `test` envrionment 
 		specified via `MIX_ENV`
 		```
 		$ MIX_ENV=test mix ecto.setup
