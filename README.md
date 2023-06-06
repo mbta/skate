@@ -32,15 +32,24 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 ### Quick Setup
 
 1. Install language dependencies with `asdf install`
-1. Install Elixir dependencies with `mix deps.get`
-1. Install Node.js dependencies with `cd assets && npm ci` 
-1. To create the database, first ensure your Postgres server is running and you've updated your credentials in `.envrc` as described in "Configuration" above. Back in the Terminal, `` mix ecto.create && mix ecto.migrate ``
-1. To set up the testing database (not necessary to run the paplication, but must be done before you run tests): `` MIX_ENV=test mix ecto.create ``
-
+1. Setup project with `mix setup`
+	- This command will create the database, so you must first ensure your Postgres server is running and you've updated your credentials in `.envrc` as described in "Configuration" above.
+1. (not necessary to run the application) 
+	- The `test` command will automatically setup the database when run. 
+	- You can setup the the testing database manually by running `mix ecto.setup` in the `test` envrionment 
+		specified via `MIX_ENV`
+		```
+		$ MIX_ENV=test mix ecto.setup
+		```
 ### Updating
 
 After updating merged changes or checking out a new branch (e.g. to test a new feature), you may need to do the following to update the dependencies:
 
+1. Update Elixir and Node.js dependencies at the same time by rerunning `mix setup`
+
+___OR___
+
+Update them independently with the following commands
 1. Update Elixir dependencies with `mix deps.get`
 1. Install Node.js dependencies with `cd assets && npm ci` 
 

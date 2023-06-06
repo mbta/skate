@@ -9,6 +9,7 @@ defmodule Skate.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
+      aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: LcovEx],
       elixirc_options: [warnings_as_errors: true],
@@ -83,6 +84,23 @@ defmodule Skate.MixProject do
       {:timex, "~> 3.7.5"},
       {:ueberauth_cognito, "~> 0.4.0"},
       {:ueberauth, "~> 0.9.0"}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      setup: ["deps.get", "ecto.setup", "assets.setup"],
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "assets.setup": ["cmd npm --prefix=assets install"],
+      "assets.reset": ["cmd npm --prefix=assets ci"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 end
