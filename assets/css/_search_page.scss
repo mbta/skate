@@ -1,5 +1,10 @@
 $search-page-search-panel-width: 22.0625rem;
 
+$z-search-page-context: (
+  "map": 100,
+  "search-drawer": 200,
+);
+
 .c-search-page {
   display: flex;
   flex: 1 1 auto;
@@ -13,6 +18,7 @@ $search-page-search-panel-width: 22.0625rem;
   display: flex;
   flex: 1 1 auto;
   position: relative;
+  z-index: map-get($z-search-page-context, "map");
 }
 
 .c-search-page__input {
@@ -29,7 +35,7 @@ $search-page-search-panel-width: 22.0625rem;
   height: 100%;
   box-sizing: border-box;
   position: absolute;
-  z-index: #{$max-leaflet-z-index + 100};
+  z-index: map-get($z-search-page-context, "search-drawer");
 
   padding: 1.25rem 0 0 0;
 

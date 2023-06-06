@@ -1,5 +1,10 @@
 $map-page-search-panel-width: 24rem;
 
+$z-map-page-context: (
+  "map": 100,
+  "search-drawer": 200,
+);
+
 .c-map-page {
   display: flex;
   flex: 1 1 auto;
@@ -13,6 +18,7 @@ $map-page-search-panel-width: 24rem;
   display: flex;
   flex: 1 1 auto;
   position: relative;
+  z-index: map-get($z-map-page-context, "map");
 }
 
 .c-map-page__input {
@@ -29,7 +35,7 @@ $map-page-search-panel-width: 24rem;
   height: 100%;
   box-sizing: border-box;
   position: absolute;
-  z-index: #{$max-leaflet-z-index + 100};
+  z-index: map-get($z-map-page-context, "search-drawer");
 
   padding: 1.25rem 0 0 0;
 
@@ -66,7 +72,6 @@ $map-page-search-panel-width: 24rem;
 .c-map-page__input-and-results .c-drawer-tab {
   @include button-primary;
   left: 100%;
-  z-index: #{$max-leaflet-z-index + 100};
   box-shadow: 1px 0px 4px rgba(0, 0, 0, 0.25);
 }
 
