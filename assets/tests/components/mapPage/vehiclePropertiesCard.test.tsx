@@ -4,14 +4,11 @@ import "@testing-library/jest-dom"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { shuttleFactory } from "../../factories/vehicle"
 import routeFactory from "../../factories/route"
-
-import userEvent from "@testing-library/user-event"
 import VehiclePropertiesCard from "../../../src/components/mapPage/vehiclePropertiesCard"
 import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import ghostFactory from "../../factories/ghost"
 import { runIdFactory } from "../../factories/run"
-import { VehicleRouteSummary } from "../../../src/components/vehicleRouteSummary"
 
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
@@ -22,20 +19,6 @@ jest.mock("../../../src/hooks/useNearestIntersection", () => ({
 
 describe("<VehiclePropertiesCard/>", () => {
   describe("logic constraints", () => {
-    test("when `close` button is clicked, should fire `onClose` callback", async () => {
-      const onClose = jest.fn()
-      render(
-        <VehiclePropertiesCard
-          vehicleOrGhost={vehicleFactory.build()}
-          onClose={onClose}
-        />
-      )
-
-      await userEvent.click(screen.getByRole("button", { name: /close/i }))
-
-      expect(onClose).toHaveBeenCalled()
-    })
-
     test("when rerendered, should display latest intersection", () => {
       const vehicle = vehicleFactory.build()
       const intersection = "Massachusetts Ave @ 1"
@@ -45,7 +28,7 @@ describe("<VehiclePropertiesCard/>", () => {
         .mockReturnValueOnce({ ok: intersection2 })
 
       const { rerender } = render(
-        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} />
       )
       const locationElement = screen.getByRole("status", {
         name: "Current Location",
@@ -53,9 +36,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       expect(locationElement).toHaveTextContent(intersection)
 
-      rerender(
-        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
-      )
+      rerender(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 
       expect(locationElement).toHaveTextContent(intersection2)
     })
@@ -64,7 +45,7 @@ describe("<VehiclePropertiesCard/>", () => {
       const [vehicle, vehicle2] = vehicleFactory.buildList(2)
 
       const { rerender } = render(
-        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
+        <VehiclePropertiesCard vehicleOrGhost={vehicle} />
       )
       const runCell = screen.getByRole("cell", { name: /run/i })
       const vehicleCell = screen.getByRole("cell", { name: /vehicle/i })
@@ -72,9 +53,7 @@ describe("<VehiclePropertiesCard/>", () => {
       expect(runCell).toHaveTextContent(vehicle.runId!)
       expect(vehicleCell).toHaveTextContent(vehicle.label!)
 
-      rerender(
-        <VehiclePropertiesCard vehicleOrGhost={vehicle2} onClose={jest.fn()} />
-      )
+      rerender(<VehiclePropertiesCard vehicleOrGhost={vehicle2} />)
 
       expect(vehicleCell).toHaveTextContent(vehicle2.label!)
       expect(runCell).toHaveTextContent(vehicle2.runId!)
@@ -102,13 +81,9 @@ describe("<VehiclePropertiesCard/>", () => {
 
         render(
           <RoutesProvider routes={[route]}>
-            <VehiclePropertiesCard
-              vehicleOrGhost={vehicle}
-              onClose={jest.fn()}
-            />
+            <VehiclePropertiesCard vehicleOrGhost={vehicle} />
           </RoutesProvider>
         )
-
         // -- Assert
         expect(
           screen.getByRole("generic", { name: /vehicle properties card/i })
@@ -118,7 +93,6 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(
           screen.getByRole("status", { name: /Last Update/i })
         ).toHaveTextContent("Updated 111 sec ago")
-        expect(screen.getByRole("button", { name: /close/i })).toBeVisible()
 
         // - Vehicle Route Summary
         // Vehicle Icon
@@ -169,9 +143,7 @@ describe("<VehiclePropertiesCard/>", () => {
           is_loading: true,
         })
 
-        render(
-          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
-        )
+        render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 
         expect(
           screen.getByRole("status", { name: "Current Location" })
@@ -184,9 +156,7 @@ describe("<VehiclePropertiesCard/>", () => {
           is_error: true,
         })
 
-        render(
-          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
-        )
+        render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 
         expect(
           screen.getByRole("status", { name: "Current Location" })
@@ -200,9 +170,7 @@ describe("<VehiclePropertiesCard/>", () => {
           .mockReturnValueOnce({ is_loading: true })
           .mockReturnValueOnce({ ok: intersection })
 
-        render(
-          <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
-        )
+        render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
         const currentLocation = screen.getByRole("status", {
           name: "Current Location",
         })
@@ -221,9 +189,7 @@ describe("<VehiclePropertiesCard/>", () => {
     test("vehicle is off course, should render invalid bus design", () => {
       const vehicle = vehicleFactory.build({ isOffCourse: true })
 
-      render(
-        <VehiclePropertiesCard vehicleOrGhost={vehicle} onClose={jest.fn()} />
-      )
+      render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 
       // Show `invalid` in Adherence Info
       expect(
@@ -239,7 +205,7 @@ describe("<VehiclePropertiesCard/>", () => {
     test("vehicle is shuttle, should render shuttle text and no route or adherence info", () => {
       const vehicle = shuttleFactory.build()
 
-      render(<VehicleRouteSummary vehicle={vehicle} />)
+      render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 
       expect(
         screen.getByRole("status", { name: /Route Variant Name/i })
@@ -279,7 +245,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       render(
         <RoutesProvider routes={[route]}>
-          <VehiclePropertiesCard vehicleOrGhost={ghost} onClose={jest.fn()} />
+          <VehiclePropertiesCard vehicleOrGhost={ghost} />
         </RoutesProvider>
       )
 
@@ -292,7 +258,6 @@ describe("<VehiclePropertiesCard/>", () => {
       expect(
         screen.getByRole("status", { name: /Last Update/i })
       ).toHaveTextContent(/ghost bus or dropped trip/i)
-      expect(screen.getByRole("button", { name: /close/i })).toBeVisible()
 
       // - Vehicle Route Summary
       // Vehicle Icon

@@ -8,7 +8,6 @@ import { directionName } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { Ghost, Vehicle } from "../realtime"
 import { RouteVariantName } from "./routeVariantName"
-import { ScheduleAdherence } from "./scheduleAdherence"
 import { Size, VehicleIcon, vehicleOrientation } from "./vehicleIcon"
 
 interface VehicleOrGhostProp {
@@ -85,12 +84,6 @@ export const VehicleRouteSummary = ({
     <RouteVariantName
       vehicle={vehicle}
       className="c-vehicle-route-summary__route-variant headsign font-m-semi"
-    />
-
-    <ScheduleAdherence
-      vehicle={vehicle}
-      title="Vehicle Schedule Adherence"
-      className="c-vehicle-route-summary__adherence label font-xs-reg"
     />
 
     <VehicleStatusIcon

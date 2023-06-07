@@ -12,17 +12,12 @@
 .c-vehicle-properties-card {
   font-family: $font-family;
 
-  // Static Design Width per spec
-  width: 395px;
   // Card Look
   border-radius: 8px;
-  background-color: $color-gray-100;
+  background-color: $white;
   border: 1px solid $color-gray-400;
   // Clip children to keep rounded edges for background color
   overflow: clip;
-
-  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.16))
-    drop-shadow(0px 16px 24px rgba(176, 181, 192, 0.24));
 
   // all children expand to full width of card
   > * {
@@ -31,7 +26,7 @@
 }
 
 .c-vehicle-properties-card__title-bar {
-  background-color: $white;
+  background-color: $color-gray-100;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
@@ -57,11 +52,15 @@
 }
 
 .c-vehicle-properties-card__title-bar {
-  padding: 6px 16px;
+  padding: 16px;
 }
 
 .c-vehicle-properties-card__summary {
   padding-top: 16px;
+}
+
+.c-vehicle-properties-card__summary .c-vehicle-icon__label-background {
+  fill: $white;
 }
 
 .c-vehicle-properties-card__body {
@@ -73,7 +72,7 @@
 // #region Visual Information group Section
 .c-vehicle-properties-card__info-section {
   width: 100%;
-  padding: 16px 20px;
+  padding: 1rem;
 
   border: 1px solid $color-gray-300;
   border-radius: 8px;
@@ -103,5 +102,6 @@
 .c-vehicle-work-info th {
   padding-right: 36px;
   text-align: start;
+  vertical-align: top;
 }
 // #endregion
