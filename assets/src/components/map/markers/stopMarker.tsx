@@ -1,12 +1,14 @@
-import React from "react"
+import React, { useState } from "react"
 
 import "leaflet.fullscreen"
 import { MarkerProps } from "react-leaflet"
 
 import { joinClasses } from "../../../helpers/dom"
-import { Stop } from "../../../schedule"
+import { DirectionId, Stop } from "../../../schedule"
 import { ReactMarker } from "../utilities/reactMarker"
-import { PointTuple } from "leaflet"
+import { LeafletEventHandlerFnMap, PointTuple } from "leaflet"
+import { MobileFriendlyTooltip } from "../../mapMarkers"
+import StopCard from "../../stopCard"
 
 /**
  * Specific variants that the `StopIcon` can render
@@ -246,3 +248,61 @@ export const StopMarker = ({
     />
   )
 }
+
+export type StopCardProps = { direction?: DirectionId }
+export const StopMarkerWithStopCard = ({
+  direction,
+  ...props
+}: StopMarkerProps & StopCardProps) => {
+  const [isSelected, setIsSelected] = useState(props.selected || false)
+
+  const popupHandlers: LeafletEventHandlerFnMap = {
+    popupopen: (e) => {
+      window.FS?.event("Bus stop card opened")
+      setIsSelected(true)
+      props.eventHandlers?.popupopen?.(e)
+    },
+    popupclose: (e) => {
+      setIsSelected(false)
+      props.eventHandlers?.popupclose?.(e)
+    },
+  }
+
+  return (
+    <StopMarker
+      {...props}
+      // Override `eventHandlers` with our new `popupHandlers`
+      eventHandlers={{ ...props.eventHandlers, ...popupHandlers }}
+      selected={isSelected}
+    >
+      <StopCard.WithSafeArea stop={props.stop} direction={direction} />
+    </StopMarker>
+  )
+}
+
+export const StopMarkerWithToolTip = (props: StopMarkerProps) => {
+  const [, size_y] = StopIconSizeFromZoomLevel(props.zoomLevel || 0)
+  return (
+    <StopMarker {...props}>
+      <MobileFriendlyTooltip
+        className={"c-vehicle-map__stop-tooltip"}
+        markerRadius={size_y / 2}
+      >
+        {props.stop.name}
+      </MobileFriendlyTooltip>
+    </StopMarker>
+  )
+}
+
+export type InteractiveStopMarkerProps = {
+  includeStopCard?: boolean
+}
+export const StopMarkerWithInfo = ({
+  includeStopCard = false,
+  ...props
+}: StopMarkerProps & StopCardProps & InteractiveStopMarkerProps) =>
+  includeStopCard ? (
+    <StopMarkerWithStopCard {...props} />
+  ) : (
+    <StopMarkerWithToolTip {...props} />
+  )

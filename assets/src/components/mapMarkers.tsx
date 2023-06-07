@@ -1,18 +1,8 @@
-import Leaflet, {
-  CircleMarker as LeafletCircleMarker,
-  LatLngExpression,
-} from "leaflet"
+import Leaflet, { LatLngExpression } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
-import React, { useContext, useEffect, useState } from "react"
-import {
-  CircleMarker,
-  CircleMarkerProps,
-  Marker,
-  Polyline,
-  Popup,
-  Tooltip,
-} from "react-leaflet"
+import React, { useContext } from "react"
+import { Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
@@ -25,13 +15,14 @@ import { UserSettings } from "../userSettings"
 import garages, { Garage } from "../data/garages"
 import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
 import { LocationType } from "../models/stopData"
-import StopCard from "./stopCard"
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
+import { StopMarkerWithInfo } from "./map/markers/stopMarker"
+
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
 const makeVehicleIcon = (
@@ -188,7 +179,7 @@ const stationLeafletIcon = ({ size }: { size: number }): Leaflet.DivIcon => {
 For devices that support hover, only the tooltip will be visible.
 On devices that don't support hover, the popup will be visble on-click.
 */
-const MobileFriendlyTooltip = ({
+export const MobileFriendlyTooltip = ({
   children,
   markerRadius,
   className,
@@ -223,87 +214,6 @@ const MobileFriendlyTooltip = ({
     </Popup>
   )
 }
-interface StopIconProps extends Omit<CircleMarkerProps, "center"> {
-  stop: Stop
-  radius?: number
-  selected?: boolean
-}
-
-export const StopIcon = ({
-  stop,
-  radius = 8,
-  selected = false,
-  ...props
-}: StopIconProps) => {
-  const [marker, setMarker] = useState<null | LeafletCircleMarker>(null)
-
-  useEffect(() => {
-    if (marker == null) {
-      return
-    }
-
-    const element = marker.getElement()
-    if (!element) {
-      return
-    }
-
-    element.classList.toggle("selected", selected)
-  }, [selected, marker])
-
-  return (
-    <CircleMarker
-      {...props}
-      ref={setMarker}
-      className={joinClasses(["c-vehicle-map__stop"])}
-      center={[stop.lat, stop.lon]}
-      radius={radius}
-    >
-      {props.children}
-    </CircleMarker>
-  )
-}
-
-export const StopMarker = React.memo(
-  ({
-    stop,
-    direction,
-    includeStopCard,
-  }: {
-    stop: Stop
-    direction?: DirectionId
-    includeStopCard?: boolean
-  }) => {
-    const markerRadius = 8
-    const [isSelected, setIsSelected] = useState(false)
-    const popupHandlers = {
-      popupopen: () => {
-        includeStopCard && window.FS?.event("Bus stop card opened")
-        setIsSelected(true)
-      },
-      popupclose: () => setIsSelected(false),
-    }
-
-    return (
-      <StopIcon
-        stop={stop}
-        selected={isSelected}
-        eventHandlers={popupHandlers}
-        radius={markerRadius}
-      >
-        {includeStopCard ? (
-          <StopCard.WithSafeArea stop={stop} direction={direction} />
-        ) : (
-          <MobileFriendlyTooltip
-            className={"c-vehicle-map__stop-tooltip"}
-            markerRadius={markerRadius}
-          >
-            {stop.name}
-          </MobileFriendlyTooltip>
-        )}
-      </StopIcon>
-    )
-  }
-)
 
 enum StationIconSize {
   small,
@@ -367,11 +277,12 @@ export const RouteStopMarkers = ({
         stop.locationType === LocationType.Station ? (
           <StationMarker key={stop.id} station={stop} zoomLevel={zoomLevel} />
         ) : (
-          <StopMarker
+          <StopMarkerWithInfo
             key={stop.id}
             stop={stop}
             direction={direction}
             includeStopCard={includeStopCard}
+            zoomLevel={zoomLevel}
           />
         )
       )}
