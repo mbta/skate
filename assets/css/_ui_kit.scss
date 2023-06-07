@@ -255,12 +255,26 @@ $color-tooltip-background: #333333;
 }
 
 @mixin button-secondary {
-  @include button-base;
-  background-color: $color-button-secondary;
+  color: $color-eggplant-700;
+  background-color: $white;
+  border: 1px solid $color-eggplant-700;
+  border-radius: 4px;
+  span svg path {
+    stroke: currentColor;
+  }
 
-  &:focus,
   &:hover {
-    background-color: $color-button-secondary-focus;
+    color: $white;
+    background-color: $color-eggplant-700;
+  }
+
+  &:focus {
+    border: 2px solid $color-eggplant-500;
+  }
+
+  &:disabled {
+    color: $white;
+    background-color: $color-gray-500;
   }
 }
 

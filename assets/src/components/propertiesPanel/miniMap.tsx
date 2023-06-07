@@ -5,7 +5,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { useStations } from "../../hooks/useStations"
 import { Vehicle, VehicleId } from "../../realtime"
 import { Shape, Stop } from "../../schedule"
-import { setSelectedVehicle } from "../../state/searchPageState"
+import { clearSearch, setSelectedVehicle } from "../../state/searchPageState"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../../userInTestGroup"
 import { mapModeForUser } from "../../util/mapMode"
 import { MapFollowingPrimaryVehicles } from "../map"
@@ -26,7 +26,7 @@ const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
       to={mapModeForUser().path}
       onClick={() => {
         window.FS?.event("Map opened from VPP mini map")
-
+        dispatch(clearSearch())
         dispatch(setSelectedVehicle(vehicleId))
       }}
     >
