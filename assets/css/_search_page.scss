@@ -113,19 +113,6 @@ $z-search-page-context: (
 
 $search-page-search-stub-size: 10px;
 
-.c-search-page__map .c-vehicle-properties-card {
-  position: absolute;
-  top: 0.5rem;
-  left: calc(
-    env(safe-area-inset-left) + 60px - #{$search-page-search-stub-size}
-  );
-
-  // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
-  z-index: 7001;
-
-  cursor: default;
-}
-
 .c-search-page__input-and-results[hidden] + *::before {
   content: "";
 

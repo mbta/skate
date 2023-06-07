@@ -294,7 +294,7 @@ describe("<MapPage />", () => {
     expect(window.FS!.event).toHaveBeenCalledWith("VPC Opened")
   })
 
-  test("clicking a vehicle from a search result displays the route shape and card", async () => {
+  test("clicking a vehicle from a search result displays the route shape", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
@@ -352,57 +352,7 @@ describe("<MapPage />", () => {
     ).not.toBeInTheDocument()
   })
 
-  test("when vehicle properties card is closed, vehicle properties card should not be visible, search panel should be visible, elements should be removed from the map", async () => {
-    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    setHtmlWidthHeightForLeafletMap()
-
-    const vehicles = randomLocationVehicle.buildList(3),
-      [vehicle] = vehicles
-
-    ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
-    mockUseVehicleForId(vehicles)
-    mockUseVehiclesForRouteMap({ [vehicle.routeId!]: vehicles })
-    mockUsePatternsByIdForVehicles([vehicle])
-
-    const { container } = render(
-      <RealDispatchWrapper
-        initialState={stateFactory.build({
-          searchPageState: searchPageStateFactory.build({
-            query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
-            isActive: true,
-            selectedEntity: {
-              type: SelectedEntityType.Vehicle,
-              vehicleId: vehicle.id,
-            },
-          }),
-        })}
-      >
-        <MapPage />
-      </RealDispatchWrapper>
-    )
-    const mapSearchPanel = getMapSearchPanel()
-
-    await userEvent.click(
-      within(mapSearchPanel).getByRole("button", {
-        name: new RegExp(vehicle.label!),
-      })
-    )
-
-    const routeShape = container.querySelector(".c-vehicle-map__route-shape")
-    const vpc = vehiclePropertiesCard.get()
-
-    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--hidden")
-    expect(routeShape).toBeVisible()
-    expect(vpc).toBeVisible()
-
-    await userEvent.click(screen.getByRole("button", { name: /close/i }))
-    expect(vpc).not.toBeInTheDocument()
-    expect(routeShape).not.toBeInTheDocument()
-
-    expect(getMapSearchPanel()).toBeVisible()
-  })
-
-  test("when search is cleared, should still render selection on map", async () => {
+  test("when new search button is clicked, then the search query and map selection is cleared", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = runIdFactory.build()
     const vehicle = vehicleFactory.build({ runId })
@@ -434,11 +384,56 @@ describe("<MapPage />", () => {
       screen.getByRole("generic", { name: /map search panel/i })
     ).toBeVisible()
 
-    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
-    expect(container.querySelector(".c-vehicle-icon__label")).toBeVisible()
+    await userEvent.click(screen.getByRole("button", { name: /new search/i }))
+    expect(screen.getByPlaceholderText("Search")).toHaveProperty("value", "")
+    expect(
+      container.querySelector(".c-vehicle-icon__label")
+    ).not.toBeInTheDocument()
   })
 
-  test("When a vehicle is selected, the search panel should be collapsed", async () => {
+  test("when back is clicked, then the map is cleared but search is not", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const runId = runIdFactory.build()
+    const vehicle = vehicleFactory.build({ runId })
+    const activeSearch: SearchPageState = searchPageStateFactory.build({
+      query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
+      selectedEntity: {
+        type: SelectedEntityType.Vehicle,
+        vehicleId: vehicle.id,
+      },
+    })
+
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockUsePatternsByIdForVehicles([vehicle])
+    mockUseVehicleForId([vehicle])
+    mockUseVehiclesForRouteMap({
+      [vehicle.routeId!]: [vehicle],
+    })
+
+    const { container } = render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({ searchPageState: activeSearch })}
+      >
+        <MapPage />
+      </RealDispatchWrapper>
+    )
+
+    expect(container.querySelector(".c-vehicle-icon__label")).toBeVisible()
+    expect(
+      screen.getByRole("generic", { name: /map search panel/i })
+    ).toBeVisible()
+
+    await userEvent.click(screen.getByRole("button", { name: /back/i }))
+    expect(screen.getByPlaceholderText("Search")).toHaveProperty(
+      "value",
+      vehicle.runId!
+    )
+    expect(
+      container.querySelector(".c-vehicle-icon__label")
+    ).not.toBeInTheDocument()
+  })
+
+  test("When a vehicle is selected from the list of search results, then search panel should stay open and VPC visible", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
     const runId = runIdFactory.build()
@@ -470,7 +465,7 @@ describe("<MapPage />", () => {
     )
 
     expect(vehiclePropertiesCard.get()).toBeVisible()
-    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--hidden")
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
   })
 
   test("can collapse and un-collapse the search panel with the drawer tab", async () => {

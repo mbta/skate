@@ -40,7 +40,6 @@ import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import RoutePropertiesCard from "./routePropertiesCard"
-import VehiclePropertiesCard from "./vehiclePropertiesCard"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -307,18 +306,14 @@ const RoutePatternLayers = ({
 const SelectedVehicleDataLayers = ({
   vehicleOrGhost: selectedVehicleOrGhost,
   routePatterns,
-  showSelectionCard,
   selectVehicle,
   selectRoutePattern,
-  deleteSelection,
   setStateClasses,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
-  showSelectionCard: boolean
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   selectRoutePattern: (routePattern: RoutePattern) => void
-  deleteSelection: () => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
   const position =
@@ -353,15 +348,6 @@ const SelectedVehicleDataLayers = ({
     <>
       {selectedVehicleOrGhost && (
         <>
-          {showSelectionCard && (
-            <SelectionCardContainer>
-              <VehiclePropertiesCard
-                vehicleOrGhost={selectedVehicleOrGhost}
-                onClose={deleteSelection}
-                key={selectedVehicleOrGhost.id}
-              />
-            </SelectionCardContainer>
-          )}
           {isVehicle(selectedVehicleOrGhost) && (
             <>
               <VehicleMarker
@@ -369,6 +355,7 @@ const SelectedVehicleDataLayers = ({
                 vehicle={selectedVehicleOrGhost}
                 isPrimary={true}
                 isSelected={true}
+                onSelect={selectVehicle}
               />
 
               {!selectedVehicleOrGhost.isShuttle && (
@@ -505,10 +492,8 @@ const SelectionDataLayers = ({
         <SelectedVehicleDataLayers
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
           routePatterns={routePatterns}
-          showSelectionCard={showSelectionCard}
           selectVehicle={selectVehicle}
           selectRoutePattern={selectRoutePattern}
-          deleteSelection={deleteSelection}
           setStateClasses={setStateClasses}
         />
       )

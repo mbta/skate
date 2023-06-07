@@ -732,149 +732,258 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
   >
     <div
       aria-label="Map Search Panel"
-      class="c-map-page__input-and-results c-map-page__input-and-results--hidden"
+      class="c-map-page__input-and-results c-map-page__input-and-results--visible"
     >
       <button
         class="c-drawer-tab c-drawer-tab__tab-button"
-        title="Expand"
+        title="Collapse"
       >
         <span>
           <svg />
         </span>
       </button>
-      <div
-        class="c-map-page__input u-hideable"
-      >
-        <form
-          aria-label="Search Map"
-          class="c-search-form"
+      <div>
+        <div
+          class="c-map-page__search-actions"
+        >
+          <button
+            class="button-submit c-map-page__new-search-button"
+          >
+            <span>
+              <svg />
+            </span>
+            New Search
+          </button>
+        </div>
+        <hr />
+        <div
+          aria-label="Vehicle Properties Card"
+          class="c-vehicle-properties-card"
         >
           <div
-            class="c-search-form__row"
+            class="c-vehicle-properties-card__title-bar"
+          >
+            <output
+              aria-label="Time Since Last Update Received"
+              class="data-stale-time label font-xs-reg"
+            >
+              Updated 111 sec ago
+            </output>
+            <output
+              aria-label="Vehicle Schedule Adherence"
+              class="c-schedule-adherence on-time early-red c-vehicle-route-summary__adherence label font-xs-reg"
+            >
+              <svg
+                aria-hidden="true"
+                aria-label=""
+                class="c-schedule-adherence__status-icon"
+                height="8"
+                role="img"
+                viewBox="0 0 100 100"
+                width="8"
+              >
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="50"
+                />
+              </svg>
+              <output
+                class="c-schedule-adherence-status label font-xs-semi title-case"
+              >
+                on time
+              </output>
+               
+              <output
+                class="c-vehicle-adherence-label label font-xs-reg"
+              >
+                (0 min early)
+              </output>
+            </output>
+          </div>
+          <div
+            class="c-vehicle-properties-card__summary"
           >
             <div
-              class="c-search-form__text"
+              class="c-vehicle-route-summary"
             >
-              <input
-                aria-label="Search Map Query"
-                class="c-search-form__input"
-                placeholder="Search"
-                type="text"
-                value=""
+              <output
+                aria-label="Route Direction"
+                class="c-vehicle-route-direction c-vehicle-route-summary__direction label font-xs-reg"
               />
-              <button
-                class="c-search-form__clear"
-                title="Clear Search"
-                type="reset"
+              <output
+                aria-label="Route Variant Name"
+                class="c-route-variant-name c-vehicle-route-summary__route-variant headsign font-m-semi"
               >
-                <span>
+                <output
+                  aria-label="Route & Variant"
+                  class="c-route-variant-name__route-id"
+                >
+                  39_X
+                </output>
+                 
+                <output
+                  aria-label="Headsign"
+                  class="c-route-variant-name__headsign"
+                >
+                  Forest Hills
+                </output>
+              </output>
+              <div
+                class="c-vehicle-route-summary__icon"
+              >
+                <svg
+                  role="img"
+                  style="width: 64px; height: 64px;"
+                  viewBox="-32 -20 64 64"
+                >
+                  <title>
+                    Vehicle Status Icon
+                  </title>
+                  <g
+                    class="c-vehicle-icon c-vehicle-icon--large on-time early-red"
+                  >
+                    <rect
+                      class="c-vehicle-icon__label-background"
+                      height="24"
+                      rx="12"
+                      ry="12"
+                      width="64"
+                      x="-32"
+                      y="19"
+                    />
+                    <text
+                      class="c-vehicle-icon__label c-vehicle-icon__label--normal"
+                      dominant-baseline="central"
+                      text-anchor="middle"
+                      x="0"
+                      y="31"
+                    >
+                      1
+                    </text>
+                    <path
+                      class="c-vehicle-icon__triangle"
+                      d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                      data-testid="vehicle-triangle"
+                      transform="scale(1) rotate(0) translate(-24,-22)"
+                    />
+                    <text
+                      class="c-vehicle-icon__variant"
+                      dominant-baseline="alphabetic"
+                      text-anchor="middle"
+                      x="0"
+                      y="14"
+                    >
+                      X
+                    </text>
+                  </g>
+                </svg>
+              </div>
+              <img
+                aria-hidden="true"
+                aria-label="presentation separator"
+                class="c-vehicle-route-summary__separator"
+                role="img presentation"
+              />
+            </div>
+          </div>
+          <div
+            class="c-vehicle-properties-card__body"
+          >
+            <div
+              class="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section"
+            >
+              <table
+                class="c-vehicle-work-info"
+              >
+                <tbody
+                  class="c-vehicle-work-info__items"
+                >
+                  <tr>
+                    <th
+                      class="kv-key font-s-semi"
+                      id="run:r2:"
+                      scope="row"
+                    >
+                      run
+                    </th>
+                    <td
+                      aria-labelledby="run:r2:"
+                      class="kv-value font-s-reg"
+                    >
+                      run-1
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="kv-key font-s-semi"
+                      id="vehicle:r3:"
+                      scope="row"
+                    >
+                      vehicle
+                    </th>
+                    <td
+                      aria-labelledby="vehicle:r3:"
+                      class="kv-value font-s-reg"
+                    >
+                      v1-label
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="kv-key font-s-semi"
+                      id="operator:r4:"
+                      scope="row"
+                    >
+                      operator
+                    </th>
+                    <td
+                      aria-labelledby="operator:r4:"
+                      class="kv-value font-s-reg fs-mask"
+                    >
+                      WILL SMITH #op1
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="c-vehicle-properties-card__location-info c-vehicle-properties-card__info-section"
+            >
+              <div
+                class="c-current-location"
+              >
+                <label
+                  class="c-current-location__label label font-xs-reg title-case"
+                  for="current-location-:r5:"
+                >
+                  Current Location
+                </label>
+                <output
+                  class="c-current-location__value label font-s-semi"
+                  id="current-location-:r5:"
+                >
+                  loading...
+                </output>
+              </div>
+              <a
+                class="c-street-view-button button-dark-small"
+                href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.360718%2C-71.05891&heading=33&pitch=0&fov=80"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <span
+                  aria-hidden="true"
+                  aria-label=""
+                  class="c-street-view-button__icon"
+                  role="img"
+                >
                   <svg />
                 </span>
-              </button>
+                Street View
+              </a>
             </div>
-            <button
-              class="c-search-form__submit button-submit"
-              disabled=""
-              title="Submit"
-              type="submit"
-            >
-              <span>
-                <svg />
-              </span>
-            </button>
           </div>
-          <div
-            class="c-search-form__row"
-          >
-            <ul
-              class="c-search-form__property-buttons"
-            >
-              <li
-                class="c-search-form__property-button"
-              >
-                <input
-                  checked=""
-                  class="c-search-form__property-input"
-                  id="property-all"
-                  name="property"
-                  type="radio"
-                  value="all"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-all"
-                >
-                  all
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
-              >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-run"
-                  name="property"
-                  type="radio"
-                  value="run"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-run"
-                >
-                  run
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
-              >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-vehicle"
-                  name="property"
-                  type="radio"
-                  value="vehicle"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-vehicle"
-                >
-                  vehicle
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
-              >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-operator"
-                  name="property"
-                  type="radio"
-                  value="operator"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-operator"
-                >
-                  operator
-                </label>
-              </li>
-            </ul>
-          </div>
-        </form>
-      </div>
-      <hr />
-      <div
-        class="c-search-display u-hideable"
-      >
-        <div
-          class="c-recent-searches"
-        >
-          <div
-            class="c-recent-searches__heading"
-          >
-            Recent Searches
-          </div>
-          <ul />
         </div>
       </div>
     </div>
@@ -1435,7 +1544,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r2:"
+              for="street-view-toggle-:r6:"
               role="presentation"
             >
               <span
@@ -1446,7 +1555,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text"
-              for="street-view-toggle-:r2:"
+              for="street-view-toggle-:r6:"
             >
               Street View
             </label>
@@ -1455,255 +1564,10 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r2:"
+                id="street-view-toggle-:r6:"
                 role="switch"
                 type="checkbox"
               />
-            </div>
-          </div>
-        </div>
-        <div
-          class="c-map-selection-card-container"
-        >
-          <div
-            aria-label="Vehicle Properties Card"
-            class="c-vehicle-properties-card"
-          >
-            <div
-              class="c-vehicle-properties-card__title-bar"
-            >
-              <button
-                aria-label="Close Vehicle Properties Card"
-                class="c-close-button c-close-button--large c-close-button--light"
-              >
-                <span
-                  aria-hidden="true"
-                  aria-label=""
-                  role="img"
-                >
-                  <svg />
-                </span>
-              </button>
-              <output
-                aria-label="Time Since Last Update Received"
-                class="data-stale-time label font-xs-reg"
-              >
-                Updated 111 sec ago
-              </output>
-            </div>
-            <div
-              class="c-vehicle-properties-card__summary"
-            >
-              <div
-                class="c-vehicle-route-summary"
-              >
-                <output
-                  aria-label="Route Direction"
-                  class="c-vehicle-route-direction c-vehicle-route-summary__direction label font-xs-reg"
-                />
-                <output
-                  aria-label="Route Variant Name"
-                  class="c-route-variant-name c-vehicle-route-summary__route-variant headsign font-m-semi"
-                >
-                  <output
-                    aria-label="Route & Variant"
-                    class="c-route-variant-name__route-id"
-                  >
-                    39_X
-                  </output>
-                   
-                  <output
-                    aria-label="Headsign"
-                    class="c-route-variant-name__headsign"
-                  >
-                    Forest Hills
-                  </output>
-                </output>
-                <output
-                  aria-label="Vehicle Schedule Adherence"
-                  class="c-schedule-adherence on-time early-red c-vehicle-route-summary__adherence label font-xs-reg"
-                >
-                  <svg
-                    aria-hidden="true"
-                    aria-label=""
-                    class="c-schedule-adherence__status-icon"
-                    height="8"
-                    role="img"
-                    viewBox="0 0 100 100"
-                    width="8"
-                  >
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                    />
-                  </svg>
-                  <output
-                    class="c-schedule-adherence-status label font-xs-semi title-case"
-                  >
-                    on time
-                  </output>
-                   
-                  <output
-                    class="c-vehicle-adherence-label label font-xs-reg"
-                  >
-                    (0 min early)
-                  </output>
-                </output>
-                <div
-                  class="c-vehicle-route-summary__icon"
-                >
-                  <svg
-                    role="img"
-                    style="width: 64px; height: 64px;"
-                    viewBox="-32 -20 64 64"
-                  >
-                    <title>
-                      Vehicle Status Icon
-                    </title>
-                    <g
-                      class="c-vehicle-icon c-vehicle-icon--large on-time early-red"
-                    >
-                      <rect
-                        class="c-vehicle-icon__label-background"
-                        height="24"
-                        rx="12"
-                        ry="12"
-                        width="64"
-                        x="-32"
-                        y="19"
-                      />
-                      <text
-                        class="c-vehicle-icon__label c-vehicle-icon__label--normal"
-                        dominant-baseline="central"
-                        text-anchor="middle"
-                        x="0"
-                        y="31"
-                      >
-                        1
-                      </text>
-                      <path
-                        class="c-vehicle-icon__triangle"
-                        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                        data-testid="vehicle-triangle"
-                        transform="scale(1) rotate(0) translate(-24,-22)"
-                      />
-                      <text
-                        class="c-vehicle-icon__variant"
-                        dominant-baseline="alphabetic"
-                        text-anchor="middle"
-                        x="0"
-                        y="14"
-                      >
-                        X
-                      </text>
-                    </g>
-                  </svg>
-                </div>
-                <img
-                  aria-hidden="true"
-                  aria-label="presentation separator"
-                  class="c-vehicle-route-summary__separator"
-                  role="img presentation"
-                />
-              </div>
-            </div>
-            <div
-              class="c-vehicle-properties-card__body"
-            >
-              <div
-                class="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section"
-              >
-                <table
-                  class="c-vehicle-work-info"
-                >
-                  <tbody
-                    class="c-vehicle-work-info__items"
-                  >
-                    <tr>
-                      <th
-                        class="kv-key font-s-semi"
-                        id="run:r3:"
-                        scope="row"
-                      >
-                        run
-                      </th>
-                      <td
-                        aria-labelledby="run:r3:"
-                        class="kv-value font-s-reg"
-                      >
-                        run-1
-                      </td>
-                    </tr>
-                    <tr>
-                      <th
-                        class="kv-key font-s-semi"
-                        id="vehicle:r4:"
-                        scope="row"
-                      >
-                        vehicle
-                      </th>
-                      <td
-                        aria-labelledby="vehicle:r4:"
-                        class="kv-value font-s-reg"
-                      >
-                        v1-label
-                      </td>
-                    </tr>
-                    <tr>
-                      <th
-                        class="kv-key font-s-semi"
-                        id="operator:r5:"
-                        scope="row"
-                      >
-                        operator
-                      </th>
-                      <td
-                        aria-labelledby="operator:r5:"
-                        class="kv-value font-s-reg fs-mask"
-                      >
-                        WILL SMITH #op1
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div
-                class="c-vehicle-properties-card__location-info c-vehicle-properties-card__info-section"
-              >
-                <div
-                  class="c-current-location"
-                >
-                  <label
-                    class="c-current-location__label label font-xs-reg title-case"
-                    for="current-location-:r6:"
-                  >
-                    Current Location
-                  </label>
-                  <output
-                    class="c-current-location__value label font-s-semi"
-                    id="current-location-:r6:"
-                  >
-                    loading...
-                  </output>
-                </div>
-                <a
-                  class="c-street-view-button button-dark-small"
-                  href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.360718%2C-71.05891&heading=33&pitch=0&fov=80"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <span
-                    aria-hidden="true"
-                    aria-label=""
-                    class="c-street-view-button__icon"
-                    role="img"
-                  >
-                    <svg />
-                  </span>
-                  Street View
-                </a>
-              </div>
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { emptySearchQuery } from "../../src/models/searchQuery"
 import {
   addSavedQuery,
   initialSearchPageState,
@@ -9,6 +10,7 @@ import {
   submitSearch,
   SelectedEntityType,
   setSelectedEntity,
+  clearSearch,
 } from "../../src/state/searchPageState"
 
 describe("initialSearchPageState", () => {
@@ -96,6 +98,18 @@ describe("reducer", () => {
     const newSearch = reducer(invalidQuery, submitSearch())
 
     expect(newSearch.savedQueries).toEqual([])
+  })
+
+  test("clearSearch resets the search query ", () => {
+    const oldState: SearchPageState = {
+      query: { text: "12", property: "run" },
+      isActive: false,
+      savedQueries: [],
+    }
+    const newState = reducer(oldState, clearSearch())
+
+    expect(newState.isActive).toEqual(false)
+    expect(newState.query).toEqual(emptySearchQuery)
   })
 
   test("setSelectedVehicle sets the selected vehicle", () => {

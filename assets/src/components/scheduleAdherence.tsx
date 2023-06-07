@@ -20,7 +20,7 @@ const ScheduleAdherenceStatusIcon = () => (
     height={8}
     className="c-schedule-adherence__status-icon"
   >
-    <circle cx={50} cy={50} r={40} />
+    <circle cx={50} cy={50} r={50} />
   </svg>
 )
 
