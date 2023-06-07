@@ -1,12 +1,5 @@
 import Leaflet, { Bounds, Point } from "leaflet"
-import React, {
-  ComponentPropsWithoutRef,
-  MouseEventHandler,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Pane, Tooltip } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
@@ -39,7 +32,6 @@ import Map, {
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
-import RoutePropertiesCard from "./routePropertiesCard"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -213,33 +205,6 @@ const MapElementsNoSelection = ({
   )
 }
 
-const SelectionCardContainer = ({
-  children,
-}: {
-  children: JSX.Element
-}): JSX.Element => {
-  // #region Catching Events Before Leaflet
-  const cancelEvent: MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation()
-  }
-
-  const keepUserInputFromLeaflet: ComponentPropsWithoutRef<"div"> = {
-    onMouseDownCapture: cancelEvent,
-    onDoubleClickCapture: cancelEvent,
-    onScrollCapture: cancelEvent,
-    onWheelCapture: cancelEvent,
-  }
-  // #endregion
-  return (
-    <div
-      {...keepUserInputFromLeaflet}
-      className="c-map-selection-card-container"
-    >
-      {children}
-    </div>
-  )
-}
-
 const RoutePatternLayers = ({
   routePattern,
   isSelected,
@@ -389,19 +354,14 @@ const SelectedVehicleDataLayers = ({
 const SelectedRouteDataLayers = ({
   routePatternIdentifier,
   routePatterns,
-  showSelectionCard,
-  deleteSelection,
   selectVehicle,
   selectRoutePattern,
   setStateClasses,
 }: {
   routePatternIdentifier: RoutePatternIdentifier
   routePatterns: ByRoutePatternId<RoutePattern> | null
-  showSelectionCard: boolean
   selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
   selectRoutePattern: (routePattern: RoutePattern) => void
-  deleteSelection: () => void
-
   setStateClasses: (classes: string | undefined) => void
 }) => {
   const selectedRoutePattern: RoutePattern | undefined = routePatterns
@@ -419,16 +379,6 @@ const SelectedRouteDataLayers = ({
   }, [followerState.shouldFollow, setStateClasses])
   return (
     <>
-      {showSelectionCard && routePatterns && (
-        <SelectionCardContainer>
-          <RoutePropertiesCard
-            selectedRoutePatternId={routePatternIdentifier.routePatternId}
-            routePatterns={routePatterns}
-            selectRoutePattern={selectRoutePattern}
-            onClose={deleteSelection}
-          />
-        </SelectionCardContainer>
-      )}
       {selectedRoutePattern && (
         <RoutePatternLayers
           routePattern={selectedRoutePattern}
@@ -452,14 +402,10 @@ const SelectedRouteDataLayers = ({
 
 const SelectionDataLayers = ({
   selectedEntity,
-  showSelectionCard,
-  deleteSelection,
   setSelection,
   setStateClasses,
 }: {
   selectedEntity: SelectedEntity | null
-  showSelectionCard: boolean
-  deleteSelection: () => void
   setSelection: (selectedEntity: SelectedEntity | null) => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
@@ -505,10 +451,8 @@ const SelectionDataLayers = ({
             routePatternId: liveSelectedEntity.routePatternId,
           }}
           routePatterns={routePatterns}
-          showSelectionCard={showSelectionCard}
           selectVehicle={selectVehicle}
           selectRoutePattern={selectRoutePattern}
-          deleteSelection={deleteSelection}
           setStateClasses={setStateClasses}
         />
       )
@@ -520,16 +464,10 @@ const SelectionDataLayers = ({
 const MapDisplay = ({
   selectedEntity,
   setSelection,
-  showSelectionCard,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
-  showSelectionCard: boolean
 }) => {
-  const deleteSelection = useCallback(() => {
-    setSelection && setSelection(null)
-  }, [setSelection])
-
   const stations = useStations()
 
   const [stateClasses, setStateClasses] = useState<string | undefined>(
@@ -553,8 +491,6 @@ const MapDisplay = ({
       >
         <SelectionDataLayers
           selectedEntity={selectedEntity}
-          showSelectionCard={showSelectionCard}
-          deleteSelection={deleteSelection}
           setSelection={setSelection}
           setStateClasses={setStateClasses}
         />

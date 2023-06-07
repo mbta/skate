@@ -223,7 +223,7 @@ const RoutePropertiesCard = ({
   routePatterns: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId: RoutePatternId
   selectRoutePattern: (routePattern: RoutePattern) => void
-  onClose: () => void
+  onClose?: () => void
 }) => {
   const [openedDetails, setOpenedDetails] = useState<
     "variants" | "stops" | null
@@ -249,7 +249,9 @@ const RoutePropertiesCard = ({
             </div>
           </div>
         </div>
-        <CloseButton onClick={onClose} closeButtonType={"l_light"} />
+        {onClose && (
+          <CloseButton onClick={onClose} closeButtonType={"l_light"} />
+        )}
       </div>
       <DirectionPicker
         selectedRoutePattern={selectedRoutePattern}
