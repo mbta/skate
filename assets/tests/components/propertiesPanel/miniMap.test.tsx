@@ -10,7 +10,10 @@ import "@testing-library/jest-dom"
 import { MemoryRouter } from "react-router"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState } from "../../../src/state"
-import { setSelectedVehicle } from "../../../src/state/searchPageState"
+import {
+  clearSearch,
+  setSelectedVehicle,
+} from "../../../src/state/searchPageState"
 import userEvent from "@testing-library/user-event"
 import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
@@ -53,6 +56,7 @@ describe("MiniMap", () => {
       expect(screen.getByRole("link", { name: "Open Map" })).toBeInTheDocument()
       await userEvent.click(screen.getByRole("link", { name: "Open Map" }))
       expect(mockDispatch).toHaveBeenCalledWith(setSelectedVehicle(vehicle.id))
+      expect(mockDispatch).toHaveBeenCalledWith(clearSearch())
       expect(window.FS!.event).toHaveBeenCalledWith(
         "Map opened from VPP mini map"
       )
