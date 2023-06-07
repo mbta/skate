@@ -76,6 +76,13 @@ export const submitSearch = (): SubmitSearchAction => ({
   type: "SUBMIT_SEARCH",
 })
 
+interface ClearSearchAction {
+  type: "CLEAR_SEARCH"
+}
+export const clearSearch = (): ClearSearchAction => ({
+  type: "CLEAR_SEARCH",
+})
+
 interface SelectVehicleAction {
   type: "SELECT_SEARCH_VEHICLE"
   payload: { vehicleId: VehicleId } | null
@@ -103,6 +110,7 @@ export type Action =
   | SetSearchTextAction
   | SetSearchPropertyAction
   | SubmitSearchAction
+  | ClearSearchAction
   | SelectVehicleAction
   | SelectEntityAction
 
@@ -140,6 +148,9 @@ export const reducer = (
           isActive: false,
         }
       }
+
+    case "CLEAR_SEARCH":
+      return { ...state, isActive: false, query: emptySearchQuery }
     case "SELECT_SEARCH_VEHICLE":
       return {
         ...state,
