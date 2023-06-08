@@ -11,6 +11,7 @@ import {
 } from "../../schedule"
 import CloseButton from "../closeButton"
 import { RoutePill } from "../routePill"
+import { joinClasses } from "../../helpers/dom"
 
 const sortRoutePatterns = (routePatterns: RoutePattern[]): RoutePattern[] =>
   routePatterns.sort((rp1, rp2) => rp1.sortOrder - rp2.sortOrder)
@@ -36,12 +37,14 @@ const DetailSection = ({
   isOpen,
   toggleOpen,
   className,
+  toggleClassName,
   children,
 }: {
   title: string
   isOpen: boolean
   toggleOpen: () => void
   className: string
+  toggleClassName?: string
   children: JSX.Element
 }) => {
   return (
@@ -51,7 +54,10 @@ const DetailSection = ({
       }`}
     >
       <button
-        className={`c-route-properties-card__disclosure_toggle`}
+        className={joinClasses([
+          "c-route-properties-card__disclosure_toggle",
+          toggleClassName,
+        ])}
         aria-expanded={isOpen}
         aria-controls={"details" + className}
         onClick={toggleOpen}
@@ -268,6 +274,7 @@ const RoutePropertiesCard = ({
           )
         }
         className="variant-picker"
+        toggleClassName="c-route-properties-card__disclosure_toggle--variants"
       >
         <VariantPicker
           routePatterns={Object.values(routePatterns).filter(
