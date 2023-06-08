@@ -126,11 +126,13 @@ const Selection = ({
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
 
   const selectRoutePattern = (routePattern: RoutePattern) => {
-    setSelection({
-      type: SelectedEntityType.RoutePattern,
-      routeId: routePattern.routeId,
-      routePatternId: routePattern.id,
-    })
+    dispatch(
+      setSelectedEntity({
+        type: SelectedEntityType.RoutePattern,
+        routeId: routePattern.routeId,
+        routePatternId: routePattern.id,
+      })
+    )
   }
 
   return (
