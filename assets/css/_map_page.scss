@@ -139,18 +139,3 @@ $map-page-search-stub-size: 10px;
   justify-content: center;
   flex: 1;
 }
-
-.c-map-page__map .c-map-selection-card-container {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 0.5rem;
-  min-height: 200px;
-  max-height: calc(100% - 2rem);
-  left: calc(env(safe-area-inset-left) + 60px - #{$map-page-search-stub-size});
-
-  // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
-  z-index: 7001;
-
-  cursor: default;
-}
