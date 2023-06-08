@@ -23,6 +23,10 @@ $map-page-search-panel-width: 24rem;
   margin: 1rem;
 }
 
+.c-map-page .c-route-properties-card {
+  margin: 1rem;
+}
+
 .c-map-page__input-and-results {
   background-color: $color-gray-300;
   display: flex;
@@ -41,7 +45,13 @@ $map-page-search-panel-width: 24rem;
 
   filter: drop-shadow(2px 0px 10px rgba(0, 0, 0, 0.2));
 
-  hr {
+  & > div {
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  & > div > hr {
     height: 1px;
     background-color: $color-gray-100;
     border: none;
