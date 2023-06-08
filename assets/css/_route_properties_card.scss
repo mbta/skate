@@ -85,17 +85,17 @@
 
 .c-route-properties-card__disclosure_toggle::after {
   display: inline-block;
-  content: "▶";
+  content: "▼";
   text-decoration: none;
   font-size: var(--font-size-xxs);
-  margin-left: 0.5rem;
+  margin-left: 0.25rem;
 }
 
 .c-route-properties-card__disclosure_toggle[aria-expanded="true"]::after {
   display: inline-block;
-  content: "▼";
+  content: "▲";
   text-decoration: none;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   margin-left: 0.25rem;
 }
 
