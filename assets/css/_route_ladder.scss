@@ -5,7 +5,7 @@
 
 .c-route-ladder__header {
   @include font-header;
-  background-color: $color-primary;
+  background-color: $color-primary-legacy;
   border-radius: 4px;
   color: $color-font-light;
   grid-row-start: c-route-ladder__header;

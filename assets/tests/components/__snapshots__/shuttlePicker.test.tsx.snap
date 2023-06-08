@@ -5,23 +5,19 @@ exports[`ShuttlePicker renders 1`] = `
   className="c-shuttle-picker-container c-shuttle-picker-container--visible"
   data-testid="shuttle-picker-container"
 >
-  <div
-    className="c-drawer-tab"
+  <button
+    className="c-drawer-tab c-drawer-tab__tab-button"
+    onClick={[Function]}
+    title="Collapse"
   >
-    <button
-      className="c-drawer-tab__tab-button"
-      onClick={[Function]}
-      title="Collapse"
-    >
-      <span
-        dangerouslySetInnerHTML={
-          {
-            "__html": "<svg/>",
-          }
+    <span
+      dangerouslySetInnerHTML={
+        {
+          "__html": "<svg/>",
         }
-      />
-    </button>
-  </div>
+      }
+    />
+  </button>
   <div
     className="c-shuttle-picker u-hideable"
   >
@@ -305,23 +301,19 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
   className="c-shuttle-picker-container c-shuttle-picker-container--visible"
   data-testid="shuttle-picker-container"
 >
-  <div
-    className="c-drawer-tab"
+  <button
+    className="c-drawer-tab c-drawer-tab__tab-button"
+    onClick={[Function]}
+    title="Collapse"
   >
-    <button
-      className="c-drawer-tab__tab-button"
-      onClick={[Function]}
-      title="Collapse"
-    >
-      <span
-        dangerouslySetInnerHTML={
-          {
-            "__html": "<svg/>",
-          }
+    <span
+      dangerouslySetInnerHTML={
+        {
+          "__html": "<svg/>",
         }
-      />
-    </button>
-  </div>
+      }
+    />
+  </button>
   <div
     className="c-shuttle-picker u-hideable"
   >
@@ -563,23 +555,19 @@ exports[`ShuttlePicker renders loading state 1`] = `
   className="c-shuttle-picker-container c-shuttle-picker-container--visible"
   data-testid="shuttle-picker-container"
 >
-  <div
-    className="c-drawer-tab"
+  <button
+    className="c-drawer-tab c-drawer-tab__tab-button"
+    onClick={[Function]}
+    title="Collapse"
   >
-    <button
-      className="c-drawer-tab__tab-button"
-      onClick={[Function]}
-      title="Collapse"
-    >
-      <span
-        dangerouslySetInnerHTML={
-          {
-            "__html": "<svg/>",
-          }
+    <span
+      dangerouslySetInnerHTML={
+        {
+          "__html": "<svg/>",
         }
-      />
-    </button>
-  </div>
+      }
+    />
+  </button>
   <div
     className="c-shuttle-picker u-hideable"
   >

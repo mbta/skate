@@ -21,13 +21,6 @@
   }
 }
 
-.c-shuttle-picker__selected-routes-button {
-  @include button-primary;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-  min-width: 2rem;
-}
-
 .c-shuttle-picker__route-list {
   flex: 1 1 0;
   overflow-y: scroll;
@@ -40,7 +33,7 @@
   word-break: break-word;
 
   &--selected {
-    @include button-primary;
+    @include button-primary-legacy;
   }
 
   &--unselected {

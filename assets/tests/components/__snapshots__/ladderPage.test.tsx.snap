@@ -12,18 +12,14 @@ exports[`LadderPage renders the empty state 1`] = `
       class="c-picker-container c-picker-container--visible"
       data-testid="picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-ladder-page__routes-presets-toggle u-hideable"
       >
@@ -132,18 +128,14 @@ exports[`LadderPage renders with route tabs 1`] = `
       class="c-picker-container c-picker-container--visible"
       data-testid="picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-ladder-page__routes-presets-toggle u-hideable"
       >
@@ -372,18 +364,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       class="c-picker-container c-picker-container--visible"
       data-testid="picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-ladder-page__routes-presets-toggle u-hideable"
       >
@@ -632,18 +620,14 @@ exports[`LadderPage renders with timepoints 1`] = `
       class="c-picker-container c-picker-container--visible"
       data-testid="picker-container"
     >
-      <div
-        class="c-drawer-tab"
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <button
-          class="c-drawer-tab__tab-button"
-          title="Collapse"
-        >
-          <span>
-            <svg />
-          </span>
-        </button>
-      </div>
+        <span>
+          <svg />
+        </span>
+      </button>
       <div
         class="c-ladder-page__routes-presets-toggle u-hideable"
       >

@@ -59,7 +59,7 @@ $late-view-background-color: $color-bg-light;
 
     thead {
       background-color: $color-bg-light;
-      border-bottom: solid $color-primary-dark 1px;
+      border-bottom: solid $color-primary-dark-legacy 1px;
       border-top: solid $color-bg-medium 1px;
       color: $color-component-dark;
       font-weight: bold;
@@ -125,7 +125,7 @@ $late-view-background-color: $color-bg-light;
   .c-late-view__block-waiver-icon {
     svg {
       height: 1.25rem;
-      stroke: $color-primary-dark;
+      stroke: $color-primary-dark-legacy;
       top: -0.625rem;
       width: 1.25rem;
     }
@@ -142,7 +142,7 @@ $late-view-background-color: $color-bg-light;
   .c-late-view__up-right-icon {
     svg {
       height: 0.5rem;
-      stroke: $color-primary-dark;
+      stroke: $color-primary-dark-legacy;
       top: -0.25rem;
       width: 0.5rem;
     }
@@ -200,7 +200,7 @@ $late-view-background-color: $color-bg-light;
 }
 
 .c-late-view__route-pill {
-  background: $color-primary-dark;
+  background: $color-primary-dark-legacy;
   border-radius: 0.25rem;
   font-family: $font-family-route-pill;
   width: 1.625rem;

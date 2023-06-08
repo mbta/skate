@@ -20,7 +20,7 @@ $map-page-search-panel-width: 24rem;
 }
 
 .c-map-page__input-and-results {
-  background-color: $color-gray-300;
+  background-color: $color-gray-200;
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
@@ -35,8 +35,7 @@ $map-page-search-panel-width: 24rem;
 
   transition: $transition-slide;
 
-  filter: drop-shadow(2px 0px 10px rgba(0, 0, 0, 0.2));
-
+  box-shadow: 1px 0px 4px rgba(0, 0, 0, 0.25);
   hr {
     height: 1px;
     background-color: $color-gray-100;
@@ -65,17 +64,10 @@ $map-page-search-panel-width: 24rem;
 }
 
 .c-map-page__input-and-results .c-drawer-tab {
+  @include button-primary;
   left: 100%;
-  top: 0;
-  background-color: $color-gray-300;
   z-index: #{$max-leaflet-z-index + 100};
-
-  .c-drawer-tab__tab-button {
-    &:focus,
-    &:hover {
-      color: $color-eggplant-500;
-    }
-  }
+  box-shadow: 1px 0px 4px rgba(0, 0, 0, 0.25);
 }
 
 .c-map-page__toggle-mobile-display-button {
