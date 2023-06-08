@@ -118,10 +118,8 @@ const SelectedRoute = ({
 
 const Selection = ({
   selectedEntity,
-  setSelection,
 }: {
   selectedEntity: SelectedEntity
-  setSelection: (selectedEntity: SelectedEntity | null) => void
 }): ReactElement => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
 
@@ -142,7 +140,7 @@ const Selection = ({
           <button
             className="c-map-page__back-button"
             onClick={() => {
-              setSelection(null)
+              dispatch(setSelectedEntity(null))
             }}
           >
             <ChevronLeftIcon />
@@ -152,7 +150,7 @@ const Selection = ({
         <button
           className="button-submit c-map-page__new-search-button"
           onClick={() => {
-            setSelection(null)
+            dispatch(setSelectedEntity(null))
             dispatch(clearSearch())
           }}
         >
@@ -241,10 +239,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           toggleVisibility={toggleSearchDrawer}
         />
         {selectedEntity ? (
-          <Selection
-            selectedEntity={selectedEntity}
-            setSelection={setSelection}
-          />
+          <Selection selectedEntity={selectedEntity} />
         ) : (
           <SearchMode
             searchPageState={searchPageState}
