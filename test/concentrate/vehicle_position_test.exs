@@ -293,6 +293,51 @@ defmodule Concentrate.VehiclePositionTest do
                )
     end
 
+    test "merge/2 prioritizes the swiftly block_id when there isn't an overload" do
+      non_overloaded_swiftly =
+        new(
+          last_updated: 1,
+          block_id: "swiftly_block_id",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["swiftly"])
+        )
+
+      non_overloaded_other =
+        new(
+          last_updated: 2,
+          block_id: "other_block_id",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["other"])
+        )
+
+      overloaded =
+        new(
+          last_updated: 3,
+          block_id: "other_block_id-OL1",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["other"])
+        )
+
+      assert %{
+               block_id: "other_block_id-OL1"
+             } = Mergeable.merge(overloaded, non_overloaded_swiftly)
+
+      assert %{
+               block_id: "other_block_id-OL1"
+             } = Mergeable.merge(non_overloaded_swiftly, overloaded)
+
+      assert %{
+               block_id: "swiftly_block_id"
+             } = Mergeable.merge(non_overloaded_swiftly, non_overloaded_other)
+
+      assert %{
+               block_id: "swiftly_block_id"
+             } = Mergeable.merge(non_overloaded_other, non_overloaded_swiftly)
+    end
+
     test "merge/2 doesn't include any data discrepancies if they values are the same" do
       first =
         new(

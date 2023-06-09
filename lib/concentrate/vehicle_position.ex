@@ -99,7 +99,13 @@ defmodule Concentrate.VehiclePosition do
           speed: first_value(second.speed, first.speed),
           odometer: first_value(second.odometer, first.odometer),
           stop_sequence: first_value(second.stop_sequence, first.stop_sequence),
-          block_id: overload_priority(second.block_id, first.block_id),
+          block_id:
+            overload_or_swiftly_priority(
+              second.sources,
+              second.block_id,
+              first.sources,
+              first.block_id
+            ),
           operator_id: first_value(second.operator_id, first.operator_id),
           operator_first_name: first_value(second.operator_first_name, first.operator_first_name),
           operator_last_name: first_value(second.operator_last_name, first.operator_last_name),
@@ -179,11 +185,11 @@ defmodule Concentrate.VehiclePosition do
       end
     end
 
-    defp overload_priority(block_id1, nil), do: block_id1
+    defp overload_or_swiftly_priority(_sources1, block_id1, _sources2, nil), do: block_id1
 
-    defp overload_priority(nil, block_id2), do: block_id2
+    defp overload_or_swiftly_priority(_sources1, nil, _sources2, block_id2), do: block_id2
 
-    defp overload_priority(block_id1, block_id2) do
+    defp overload_or_swiftly_priority(sources1, block_id1, sources2, block_id2) do
       cond do
         Block.overload?(block_id1) ->
           block_id1
@@ -192,7 +198,7 @@ defmodule Concentrate.VehiclePosition do
           block_id2
 
         true ->
-          block_id1
+          swiftly_priority(sources1, block_id1, sources2, block_id2)
       end
     end
 
