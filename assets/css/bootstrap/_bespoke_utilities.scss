@@ -1,0 +1,78 @@
+// Tailwind Utility Approximations
+@mixin generate-bespoke-utilities($group_name) {
+  @include generate-utility(
+    (
+      property: scale,
+      values: (
+        0: 0,
+        1: 1.2,
+        2: 1.25,
+        3: 1.5,
+      ),
+      class: "#{$group_name}_scale",
+    ),
+    ""
+  );
+
+  @include generate-utility(
+    (
+      property: stroke-width,
+      values: (
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+      ),
+      class: "#{$group_name}_stroke-width",
+    ),
+    ""
+  );
+
+  @include generate-utility(
+    (
+      property: stroke,
+      values: $stop-colors,
+      class: "#{$group_name}_stroke",
+    ),
+    ""
+  );
+
+  @include generate-utility(
+    (
+      property: fill,
+      values: $stop-colors,
+      class: "#{$group_name}_fill",
+    ),
+    ""
+  );
+}
+
+// Allow specifying the group prefix name via mixin within existing class
+@mixin generate-bespoke-utility-states($group_name) {
+  // Manually call $generate-utility so that we can generate them with the `.group`
+  @at-root &:hover {
+    @include generate-bespoke-utilities("#{$group_name}-hover");
+  }
+
+  @at-root &:focus {
+    @include generate-bespoke-utilities("#{$group_name}-focus");
+  }
+
+  @at-root &[data-selected] {
+    @include generate-bespoke-utilities("#{$group_name}-selected");
+  }
+}
+
+.c-stop-icon {
+  @include generate-bespoke-utility-states("c-stop-icon");
+}
+
+.group {
+  @include generate-bespoke-utility-states("group");
+}
+
+.transform-origin-center {
+  transform-origin: center;
+}

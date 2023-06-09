@@ -41,6 +41,14 @@ $component-active-bg: $color-eggplant-700;
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
 @import "../node_modules/bootstrap/scss/forms";
+
+// #region Bootstrap Utility API
+@import "./bootstrap/utilities";
+
+@import "../node_modules/bootstrap/scss/bootstrap-utilities";
+
+@import "./bootstrap/bespoke_utilities";
+// #endregion
 // #endregion
 
 // #region Leaflet

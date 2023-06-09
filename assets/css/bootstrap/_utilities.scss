@@ -1,0 +1,86 @@
+$stop-colors: (
+  "eggplant-700": $color-eggplant-700,
+  "eggplant-500": $color-eggplant-500,
+  "eggplant-200": $color-eggplant-200,
+  "gray-700": $color-gray-700,
+  "grey-700": $color-gray-700,
+  "white": $white,
+  "transparent": transparent,
+);
+
+$utilities: (
+  "transition": (
+    property: transition,
+    values: (
+      0: 0s 0s,
+      1: 0.1s 0.1s,
+      2: 0.2s 0.2s,
+      3: 0.3s 0.3s,
+    ),
+    state: hover focus,
+  ),
+  // SVG Utilities missing from bootstrap utilities
+  "scale":
+    (
+      property: scale,
+      values: (
+        0: 0,
+        identity: 1,
+        "-4": 1 - 0.5,
+        "-3": 1 - 0.25,
+        "-2": 1 - 0.2,
+        "-1": 1 - 0.1,
+        1: 1 + 0.1,
+        2: 1 + 0.2,
+        3: 1 + 0.25,
+        4: 1 + 0.5,
+      ),
+      state: hover focus,
+    ),
+  // Hack to make bootstrap generate classes that can select the same element
+  // for properties & classes
+  "scale-selected":
+    (
+      property: scale,
+      values: (
+        "0-selected[data-selected]": 0,
+        "1-selected[data-selected]": 1.2,
+        "2-selected[data-selected]": 1.25,
+        "3-selected[data-selected]": 1.5,
+      ),
+    ),
+  "stroke-width": (
+    property: stroke-width,
+    values: (
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ),
+    state: hover focus,
+  ),
+  "fill": (
+    property: fill,
+    values: $stop-colors,
+    state: hover focus,
+  ),
+  "stroke": (
+    property: stroke,
+    values: $stop-colors,
+    state: hover focus,
+  ),
+  "transform-origin": (
+    property: transform-origin,
+    values: (
+      center,
+      revert,
+      unset,
+      left,
+      right,
+      top,
+      bottom,
+    ),
+  ),
+);
