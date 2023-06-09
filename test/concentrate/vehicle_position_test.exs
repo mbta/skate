@@ -374,6 +374,78 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(first, second) == expected
     end
 
+    test "merge/2 takes the latest non-nil value for crowding" do
+      crowding_1 = %{
+        load: 98,
+        capacity: 100,
+        occupancy_percentage: 0.98,
+        occupancy_status: "FULL"
+      }
+
+      first =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          crowding: crowding_1
+        )
+
+      crowding_2 = %{
+        load: 2,
+        capacity: 100,
+        occupancy_percentage: 0.02,
+        occupancy_status: "MANY_SEATS_AVAILABLE"
+      }
+
+      second =
+        new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          crowding: crowding_2
+        )
+
+      third_no_crowding =
+        new(
+          last_updated: 3,
+          latitude: 2,
+          longitude: 2,
+          crowding: nil
+        )
+
+      assert %{crowding: ^crowding_2} = Mergeable.merge(first, second)
+      assert %{crowding: ^crowding_2} = Mergeable.merge(second, third_no_crowding)
+    end
+
+    test "merge/2 takes the latest non-nil value for revenue" do
+      first =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          revenue: true
+        )
+
+      second =
+        new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          revenue: false
+        )
+
+      third_nil_rev =
+        new(
+          last_updated: 3,
+          latitude: 2,
+          longitude: 2,
+          revenue: nil
+        )
+
+      assert %{revenue: false} = Mergeable.merge(first, second)
+      assert %{revenue: false} = Mergeable.merge(second, third_nil_rev)
+    end
+
     test "merge/2 retains all timestamps" do
       first =
         new(
