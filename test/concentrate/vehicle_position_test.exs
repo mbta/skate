@@ -414,7 +414,10 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       assert %{crowding: ^crowding_2} = Mergeable.merge(first, second)
+      assert %{crowding: ^crowding_2} = Mergeable.merge(second, first)
+
       assert %{crowding: ^crowding_2} = Mergeable.merge(second, third_no_crowding)
+      assert %{crowding: ^crowding_2} = Mergeable.merge(third_no_crowding, second)
     end
 
     test "merge/2 takes the latest non-nil value for revenue" do
@@ -443,7 +446,10 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       assert %{revenue: false} = Mergeable.merge(first, second)
+      assert %{revenue: false} = Mergeable.merge(second, first)
+
       assert %{revenue: false} = Mergeable.merge(second, third_nil_rev)
+      assert %{revenue: false} = Mergeable.merge(third_nil_rev, second)
     end
 
     test "merge/2 retains all timestamps" do
