@@ -15,14 +15,14 @@ const renderHookReactDivIcon = (initialProps?: DivIconOptions) =>
   })
 
 describe("useReactDivIcon", () => {
-  test("Returns divIcon and icon element", () => {
+  test("should return divIcon and icon element", () => {
     const { result } = renderHookReactDivIcon()
 
     expect(result.current.divIcon).toBeInstanceOf(DivIcon)
     expect(result.current.iconContainer).toBeEmptyDOMElement()
   })
 
-  test("Returns divIcon and icon element with custom options", () => {
+  test("when given custom options, should return divIcon and icon element", () => {
     const { result } = renderHookReactDivIcon({
       className: "testClass",
       iconSize: [20, 20],
@@ -32,7 +32,7 @@ describe("useReactDivIcon", () => {
     expect(result.current.iconContainer).toBeEmptyDOMElement()
   })
 
-  test("Updates divIcon with new options on change", () => {
+  test("when options change, should replace divIcon", () => {
     const options: DivIconOptions = {
       className: "testClass",
       iconSize: [20, 20],
