@@ -16,7 +16,7 @@ export function useReactDivIcon(options?: DivIconOptions) {
   )
   const [divIcon, setDivIcon] = useState<DivIcon>()
 
-  // Create portal element and divIcon on creation and when `opts` change
+  // Create portal element and divIcon on creation and when divIcon `opts` change
   useEffect(() => {
     let element = iconContainer
     if (element === null) {
@@ -24,7 +24,7 @@ export function useReactDivIcon(options?: DivIconOptions) {
       setIconContainer(element)
     }
 
-    // Leaflet doesn't support updating a `divIcon` in place.
+    // Leaflet by default doesn't support updating a `divIcon` in place.
     // To ensure that the `divIcon` updates when `opts` change
     // regenerate the `divIcon` with the portal element and provided `opts`
     if (element !== null) {
