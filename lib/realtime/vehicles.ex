@@ -58,7 +58,6 @@ defmodule Realtime.Vehicles do
     incoming_from_another_route = incoming_from_another_route(incoming_trips, vehicles_and_ghosts)
 
     vehicles_and_ghosts
-    |> Enum.filter(fn vehicle_or_ghost -> vehicle_or_ghost.route_id != nil end)
     |> Enum.group_by(fn vehicle_or_ghost -> vehicle_or_ghost.route_id end)
     |> Map.merge(incoming_from_another_route, fn route_id, on_route, interlining ->
       {pulling_out, not_pulling_out} =

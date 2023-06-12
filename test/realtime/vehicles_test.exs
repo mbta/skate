@@ -56,6 +56,35 @@ defmodule Realtime.VehiclesTest do
              }
     end
 
+    test "keeps vehicles without route id" do
+      vehicle_with_route =
+        build(:vehicle,
+          id: "v1",
+          route_id: "66"
+        )
+
+      vehicle_without_route =
+        build(:vehicle,
+          id: "v2",
+          route_id: nil
+        )
+
+      ungrouped_vehicles = [vehicle_with_route, vehicle_without_route]
+      pulling_out_blocks_by_route = %{}
+
+      assert Vehicles.group_by_route_with_blocks(
+               ungrouped_vehicles,
+               pulling_out_blocks_by_route,
+               %{},
+               %{},
+               0,
+               @timepoint_names_by_id
+             ) == %{
+               "66" => [vehicle_with_route],
+               nil => [vehicle_without_route]
+             }
+    end
+
     test "includes vehicles incoming onto a new route in their new route" do
       vehicle =
         build(:vehicle,
@@ -167,7 +196,8 @@ defmodule Realtime.VehiclesTest do
                0,
                @timepoint_names_by_id
              ) == %{
-               "route2" => [%{vehicle | incoming_trip_direction_id: 0}]
+               "route2" => [%{vehicle | incoming_trip_direction_id: 0}],
+               nil => [vehicle]
              }
     end
 
