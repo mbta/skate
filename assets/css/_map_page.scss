@@ -19,12 +19,11 @@ $map-page-search-panel-width: 24rem;
   padding: 0 1.5625rem;
 }
 
-.c-map-page .c-vehicle-properties-card {
-  margin: 1rem;
-}
-
-.c-map-page .c-route-properties-card {
-  margin: 1rem;
+.c-map-page {
+  .c-vehicle-properties-card,
+  .c-route-properties-card {
+    margin: 1rem;
+  }
 }
 
 .c-map-page__input-and-results {
