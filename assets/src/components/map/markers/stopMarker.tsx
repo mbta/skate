@@ -126,7 +126,7 @@ export const StopIcon = ({
         "c-stop-icon", // Interaction Group
 
         // Interactions
-        "transition-1",
+        "transition-2",
         "scale-2-hover",
         "scale-2-focus",
         "scale-2-selected",

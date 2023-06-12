@@ -1,19 +1,6 @@
 // Tailwind Utility Approximations
+// https://tailwindcss.com/docs/hover-focus-and-other-states#styling-based-on-parent-state
 @mixin generate-bespoke-utilities($group_name) {
-  @include generate-utility(
-    (
-      property: scale,
-      values: (
-        0: 0,
-        1: 1.2,
-        2: 1.25,
-        3: 1.5,
-      ),
-      class: "#{$group_name}_scale",
-    ),
-    ""
-  );
-
   @include generate-utility(
     (
       property: stroke-width,
@@ -50,8 +37,7 @@
 }
 
 // Allow specifying the group prefix name via mixin within existing class
-@mixin generate-bespoke-utility-states($group_name) {
-  // Manually call $generate-utility so that we can generate them with the `.group`
+@mixin generate-state-group-utilities($group_name) {
   @at-root &:hover {
     @include generate-bespoke-utilities("#{$group_name}-hover");
   }
@@ -65,14 +51,13 @@
   }
 }
 
-.c-stop-icon {
-  @include generate-bespoke-utility-states("c-stop-icon");
-}
-
+// #region State Groups
+// Example Generic State Group
 .group {
-  @include generate-bespoke-utility-states("group");
+  @include generate-state-group-utilities("group");
 }
 
-.transform-origin-center {
-  transform-origin: center;
+.c-stop-icon {
+  @include generate-state-group-utilities("c-stop-icon");
 }
+// #endregion
