@@ -233,7 +233,7 @@ export const StopMarker = ({
       iconSize: StopIconSizeFromStopType(stopType),
       className: "c-vehicle-map__stop", // Prevent default leaflet class & outline
     }),
-    [zoomLevel]
+    [stopType]
   )
 
   return (
