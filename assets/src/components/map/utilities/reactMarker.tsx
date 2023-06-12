@@ -46,7 +46,7 @@ export const ReactMarker = ({
         {
           /*
           React Events bubble up the React Virtual DOM,
-          so any Events to Icon should bubble up to `Marker` first
+          so any Events to `icon` should bubble up to `Marker` first
           */
           createPortal(icon, iconContainer)
         }
