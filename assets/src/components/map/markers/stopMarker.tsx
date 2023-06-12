@@ -23,7 +23,7 @@ export enum StopType {
  * Produces the StopType assigned to the provided map Zoom-Level
  * @param zoomLevel The Map Zoom Level to use for figuring out the StopType
  */
-export const StopTypeFromZoomLevel = (zoomLevel: number) => {
+export const stopTypeFromZoomLevel = (zoomLevel: number) => {
   if (zoomLevel <= 14) {
     return StopType.Small
   } else if (15 <= zoomLevel && zoomLevel <= 16) {
@@ -37,8 +37,8 @@ export const StopTypeFromZoomLevel = (zoomLevel: number) => {
   }
 }
 
-export const StopIconSizeFromZoomLevel = (zoomLevel: number) =>
-  StopIconSizeFromStopType(StopTypeFromZoomLevel(zoomLevel))
+export const stopIconSizeFromZoomLevel = (zoomLevel: number) =>
+  stopIconSizeFromStopType(stopTypeFromZoomLevel(zoomLevel))
 
 /**
  * Represents the box size of the icon at each `StopType`.
@@ -47,7 +47,7 @@ export const StopIconSizeFromZoomLevel = (zoomLevel: number) =>
  * `stroke-width`, or specify `overflow-visible`. This will directly impact
  * the tap target on the leaflet map.
  */
-export const StopIconSizeFromStopType = (stopType: StopType): PointTuple => {
+export const stopIconSizeFromStopType = (stopType: StopType): PointTuple => {
   switch (stopType) {
     case StopType.Small:
       return [14, 14]
@@ -227,10 +227,10 @@ export const StopMarker = ({
   zoomLevel = 0,
   ...props
 }: StopMarkerProps) => {
-  const stopType = StopTypeFromZoomLevel(zoomLevel)
+  const stopType = stopTypeFromZoomLevel(zoomLevel)
   const divIconSettings = useMemo(
     () => ({
-      iconSize: StopIconSizeFromStopType(stopType),
+      iconSize: stopIconSizeFromStopType(stopType),
       className: "c-vehicle-map__stop", // Prevent default leaflet class & outline
     }),
     [stopType]
@@ -278,7 +278,7 @@ export const StopMarkerWithStopCard = ({
 }
 
 export const StopMarkerWithToolTip = (props: StopMarkerProps) => {
-  const [, size_y] = StopIconSizeFromZoomLevel(props.zoomLevel || 0)
+  const [, size_y] = stopIconSizeFromZoomLevel(props.zoomLevel || 0)
   return (
     <StopMarker {...props}>
       <MobileFriendlyTooltip
