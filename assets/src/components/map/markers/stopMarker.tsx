@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 
 import "leaflet.fullscreen"
 import { MarkerProps } from "react-leaflet"
@@ -233,10 +233,13 @@ export const StopMarker = ({
   ...props
 }: StopMarkerProps) => {
   const stopType = StopTypeFromZoomLevel(zoomLevel)
-  const divIconSettings = {
+  const divIconSettings = useMemo(
+    () => ({
     iconSize: StopIconSizeFromStopType(stopType),
     className: "c-vehicle-map__stop", // Prevent default leaflet class & outline
-  }
+    }),
+    [zoomLevel]
+  )
 
   return (
     <ReactMarker
