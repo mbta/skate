@@ -6,11 +6,9 @@ import { ReactMarker } from "../../../../src/components/map/utilities/reactMarke
 import { localGeoCoordinateFactory } from "../../../factories/geoCoordinate"
 import { DivIconOptions } from "../../../../src/components/map/utilities/reactDivIcon"
 
-const mapWrapper = ({
-  children,
-}: {
-  children: ReactNode
-}) => <MapContainer center={[0, 0]} zoom={0} children={children} />
+const mapWrapper = ({ children }: { children: ReactNode }) => (
+  <MapContainer center={[0, 0]} zoom={0} children={children} />
+)
 
 describe("ReactMarker", () => {
   test("should render icon onto the map", () => {
@@ -57,7 +55,7 @@ describe("ReactMarker", () => {
   })
 
   test("when divIconSettings change, should render changes onto map", () => {
-    const opts: DivIconOptions = {iconSize: [20, 20]}
+    const opts: DivIconOptions = { iconSize: [20, 20] }
     const { latitude, longitude } = localGeoCoordinateFactory.build()
     const testId = "test-id"
 
@@ -76,20 +74,20 @@ describe("ReactMarker", () => {
 
     expect(icon.parentElement?.parentElement).toHaveStyle({
       width: "20px",
-      height: "20px"
+      height: "20px",
     })
 
     rerender(
       <ReactMarker
         position={[latitude, longitude]}
-        divIconSettings={{iconSize: [40, 50]}}
+        divIconSettings={{ iconSize: [40, 50] }}
         icon={<div data-testid={testId} />}
       />
     )
 
     expect(icon.parentElement?.parentElement).toHaveStyle({
       width: "40px",
-      height: "50px"
+      height: "50px",
     })
   })
 })
