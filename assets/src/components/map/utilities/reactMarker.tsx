@@ -7,7 +7,7 @@ import { Marker, MarkerProps } from "react-leaflet"
 import Loading from "../../loading"
 import { useReactDivIcon } from "./reactDivIcon"
 
-interface ReactMarkerProps extends Partial<Omit<MarkerProps, "icon">> {
+export interface ReactMarkerProps extends Omit<MarkerProps, "icon"> {
   // Shadow `MarkerProps.icon` with a custom React compatible implementation
   /**
    * React Element to use as Marker Icon
