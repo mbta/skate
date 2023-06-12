@@ -133,6 +133,15 @@ export const StopIcon = ({
       ])}
       data-selected={selected || null} // Remove attribute if `false`
     >
+      {/* `width` and `height` is not specified on child SVG's so they size to
+       * the parent SVG. This makes `StopIconSizeFromStopType` the source of
+       * truth for the size on the map.
+       * Specifying the `viewbox` ensures that the aspect ratio is correct,
+       * and Leaflet specifies the container size on the map via `DivIconOptions.iconSize`,
+       * which the child SVG's fill because `width` and `height` are `auto` by
+       * default, and the parent SVG is explicitly setting `width` and `height`
+       * to `100%`
+       */}
       {/*
         It does suck that we're completely replacing the icon when the type
         changes, because that breaks any animations or states that were applied
@@ -140,13 +149,7 @@ export const StopIcon = ({
         art assets as possible, this was easiest.
        */}
       {type === StopType.Small && (
-        <svg
-          className={embeddedSvgClasses}
-          width="14"
-          height="14"
-          viewBox="0 0 14 14"
-          fill="none"
-        >
+        <svg className={embeddedSvgClasses} viewBox="0 0 14 14" fill="none">
           <FocusCircle cx="7" cy="7" r={5 + strokeWidthOffset} />
           <circle
             className={joinClasses([
@@ -163,13 +166,7 @@ export const StopIcon = ({
         </svg>
       )}
       {type === StopType.Medium && (
-        <svg
-          className={embeddedSvgClasses}
-          width="18"
-          height="18"
-          viewBox="0 0 18 18"
-          fill="none"
-        >
+        <svg className={embeddedSvgClasses} viewBox="0 0 18 18" fill="none">
           <FocusCircle cx="9" cy="9" r={7 + strokeWidthOffset} />
           <circle
             className={joinClasses(circleClasses)}
@@ -190,13 +187,7 @@ export const StopIcon = ({
         </svg>
       )}
       {type === StopType.Large && (
-        <svg
-          className={embeddedSvgClasses}
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-        >
+        <svg className={embeddedSvgClasses} viewBox="0 0 20 20" fill="none">
           <FocusCircle cx="10" cy="10" r={8 + strokeWidthOffset} />
           <circle
             className={joinClasses(circleClasses)}
