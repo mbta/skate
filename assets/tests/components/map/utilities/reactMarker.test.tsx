@@ -7,7 +7,9 @@ import { localGeoCoordinateFactory } from "../../../factories/geoCoordinate"
 import { DivIconOptions } from "../../../../src/components/map/utilities/reactDivIcon"
 
 const mapWrapper = ({ children }: { children: ReactNode }) => (
-  <MapContainer center={[0, 0]} zoom={0} children={children} />
+  <MapContainer center={[0, 0]} zoom={0}>
+    {children}
+  </MapContainer>
 )
 
 describe("ReactMarker", () => {

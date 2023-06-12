@@ -10,7 +10,7 @@ import {
 
 const renderHookReactDivIcon = (initialProps?: DivIconOptions) =>
   renderHook((props) => useReactDivIcon(props), {
-    wrapper: ({ children }) => <MapContainer children={children} />,
+    wrapper: ({ children }) => <MapContainer>{children}</MapContainer>,
     initialProps,
   })
 
