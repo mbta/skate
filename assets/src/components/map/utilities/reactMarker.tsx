@@ -30,7 +30,7 @@ export interface ReactMarkerProps extends Omit<MarkerProps, "icon"> {
 export const ReactMarker = ({
   icon,
   loadingState,
-  divIconSettings = {},
+  divIconSettings,
   children,
   ...markerProps
 }: ReactMarkerProps) => {
