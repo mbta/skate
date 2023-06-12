@@ -28,7 +28,6 @@ describe("ReactMarker", () => {
   })
 
   test("when icon changes, should render changes onto map", () => {
-    const opts = {}
     const { latitude, longitude } = localGeoCoordinateFactory.build()
     const testId = "test-id"
     const newContent = "hello!"
@@ -36,7 +35,6 @@ describe("ReactMarker", () => {
     const { rerender } = render(
       <ReactMarker
         position={[latitude, longitude]}
-        divIconSettings={opts}
         icon={<div data-testid={testId} />}
       />,
       { wrapper: mapWrapper }
@@ -48,7 +46,6 @@ describe("ReactMarker", () => {
     rerender(
       <ReactMarker
         position={[latitude, longitude]}
-        divIconSettings={opts}
         icon={<div data-testid={testId}>{newContent}</div>}
       />
     )
