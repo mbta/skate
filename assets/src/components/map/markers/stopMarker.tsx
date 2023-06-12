@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from "react"
 
+import { LeafletEventHandlerFnMap, PointTuple } from "leaflet"
 import "leaflet.fullscreen"
 import { MarkerProps } from "react-leaflet"
 
 import { joinClasses } from "../../../helpers/dom"
 import { DirectionId, Stop } from "../../../schedule"
-import { ReactMarker } from "../utilities/reactMarker"
-import { LeafletEventHandlerFnMap, PointTuple } from "leaflet"
 import { MobileFriendlyTooltip } from "../../mapMarkers"
 import StopCard from "../../stopCard"
+import { ReactMarker } from "../utilities/reactMarker"
 
 /**
  * Specific variants that the `StopIcon` can render
