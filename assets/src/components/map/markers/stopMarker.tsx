@@ -41,7 +41,11 @@ export const StopIconSizeFromZoomLevel = (zoomLevel: number) =>
   StopIconSizeFromStopType(StopTypeFromZoomLevel(zoomLevel))
 
 /**
- * Represents the box size of the icon at each `StopType`
+ * Represents the box size of the icon at each `StopType`.
+ *
+ * For a `<circle>`, this means the size needs to include the `radius` AND
+ * `stroke-width`, or specify `overflow-visible`. This will directly impact
+ * the tap target on the leaflet map.
  */
 export const StopIconSizeFromStopType = (stopType: StopType): PointTuple => {
   switch (stopType) {
@@ -226,8 +230,8 @@ export const StopMarker = ({
   const stopType = StopTypeFromZoomLevel(zoomLevel)
   const divIconSettings = useMemo(
     () => ({
-    iconSize: StopIconSizeFromStopType(stopType),
-    className: "c-vehicle-map__stop", // Prevent default leaflet class & outline
+      iconSize: StopIconSizeFromStopType(stopType),
+      className: "c-vehicle-map__stop", // Prevent default leaflet class & outline
     }),
     [zoomLevel]
   )
