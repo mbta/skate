@@ -238,7 +238,6 @@ export const StopMarker = ({
 
   return (
     <ReactMarker
-      key={stop.id}
       {...(props as MarkerProps)}
       position={[stop.lat, stop.lon]}
       divIconSettings={divIconSettings}
