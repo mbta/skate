@@ -5,8 +5,12 @@ import L, { DivIcon, DivIconOptions as LeafletDivIconOptions } from "leaflet"
 // Prevent user from setting parameters we intend to provide
 export type DivIconOptions = Omit<LeafletDivIconOptions, "html">
 
-export function useReactDivIcon(opts: DivIconOptions) {
-  // Constant element react portal to use between `divIcon` recreations
+// Prevent useEffect from triggering by providing stable default reference
+const defaultOptions = {}
+
+export function useReactDivIcon(options?: DivIconOptions) {
+  const opts = options || defaultOptions
+  // Persistent element for react portal to use between `divIcon` recreations
   const [iconContainer, setIconContainer] = useState<HTMLDivElement | null>(
     null
   )
