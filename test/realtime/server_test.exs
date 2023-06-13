@@ -294,6 +294,52 @@ defmodule Realtime.ServerTest do
 
       assert Server.lookup(lookup_args) == [@vehicle_on_inactive_block]
     end
+
+    test "unassigned vehicles are returned when include_unassigned_vehicles is true",
+         %{server_pid: pid} do
+      Server.subscribe_to_search(
+        %{property: :vehicle, text: "123", include_unassigned_vehicles: true},
+        pid
+      )
+
+      assigned_vehicle =
+        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
+
+      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+
+      Server.update_vehicles(
+        {%{
+           "1" => [assigned_vehicle],
+           nil => [unassigned_vehicle]
+         }, []},
+        pid
+      )
+
+      assert_receive {:new_realtime_data, lookup_args}
+      assert Server.lookup(lookup_args) == [assigned_vehicle, unassigned_vehicle]
+    end
+
+    test "unassigned vehicles are not returned when include_unassigned_vehicles is not set",
+         %{server_pid: pid} do
+      Server.subscribe_to_search(%{property: :vehicle, text: "123"}, pid)
+
+      assigned_vehicle =
+        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
+
+      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+
+      Server.update_vehicles(
+        {%{
+           "1" => [assigned_vehicle],
+           nil => [unassigned_vehicle]
+         }, []},
+        pid
+      )
+
+      assert_receive {:new_realtime_data, lookup_args}
+
+      assert Server.lookup(lookup_args) == [assigned_vehicle]
+    end
   end
 
   describe "subscribe_to_alerts/2" do

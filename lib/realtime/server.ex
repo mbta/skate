@@ -159,6 +159,7 @@ defmodule Realtime.Server do
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :assigned_vehicles}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), :unassigned_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
@@ -166,9 +167,16 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), {:block_ids, [Block.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:alerts, Route.id()}}) :: [String.t()]
   def lookup({table, {:search, search_params}}) do
-    {table, :assigned_vehicles}
-    |> lookup()
-    |> VehicleOrGhost.find_by(search_params)
+    assigned_vehicles = lookup({table, :assigned_vehicles})
+
+    vehicles_to_search =
+      if Map.get(search_params, :include_unassigned_vehicles, false) do
+        assigned_vehicles ++ lookup({table, :unassigned_vehicles})
+      else
+        assigned_vehicles
+      end
+
+    VehicleOrGhost.find_by(vehicles_to_search, search_params)
   end
 
   def lookup({table, {:run_ids, run_ids}}) do
