@@ -197,7 +197,7 @@ export const StopIcon = ({
   )
 }
 
-interface StopMarkerProps extends Partial<MarkerProps> {
+interface StopMarkerProps extends Omit<MarkerProps, "position"> {
   stop: Stop
   selected?: boolean
   zoomLevel?: number
