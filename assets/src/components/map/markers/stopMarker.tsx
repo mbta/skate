@@ -13,23 +13,23 @@ import { ReactMarker } from "../utilities/reactMarker"
 /**
  * Specific variants that the `StopIcon` can render
  */
-export enum StopType {
+export enum StopIconType {
   Small,
   Medium,
   Large,
 }
 
 /**
- * Produces the StopType assigned to the provided map Zoom-Level
- * @param zoomLevel The Map Zoom Level to use for figuring out the StopType
+ * Produces the {@link StopIconType} assigned to the provided map {@link zoomLevel}
+ * @param zoomLevel The zoom level to use for figuring out the {@link StopIconType}
  */
-export const stopTypeFromZoomLevel = (zoomLevel: number) => {
+export const stopIconTypeFromZoomLevel = (zoomLevel: number) => {
   if (zoomLevel <= 14) {
-    return StopType.Small
+    return StopIconType.Small
   } else if (15 <= zoomLevel && zoomLevel <= 16) {
-    return StopType.Medium
+    return StopIconType.Medium
   } else if (17 <= zoomLevel) {
-    return StopType.Large
+    return StopIconType.Large
   } else {
     throw new Error(
       "internal error: entered unreachable code: invalid zoom level"
@@ -38,22 +38,24 @@ export const stopTypeFromZoomLevel = (zoomLevel: number) => {
 }
 
 export const stopIconSizeFromZoomLevel = (zoomLevel: number) =>
-  stopIconSizeFromStopType(stopTypeFromZoomLevel(zoomLevel))
+  stopIconSizeFromStopIconType(stopIconTypeFromZoomLevel(zoomLevel))
 
 /**
- * Represents the box size of the icon at each `StopType`.
+ * Represents the box size of the icon at each {@link StopIconType}.
  *
- * For a `<circle>`, this means the size needs to include the `radius` AND
+ * For a {@link }, this means the size needs to include the `radius` AND
  * `stroke-width`, or specify `overflow-visible`. This will directly impact
  * the tap target on the leaflet map.
  */
-export const stopIconSizeFromStopType = (stopType: StopType): PointTuple => {
-  switch (stopType) {
-    case StopType.Small:
+export const stopIconSizeFromStopIconType = (
+  stopIconType: StopIconType
+): PointTuple => {
+  switch (stopIconType) {
+    case StopIconType.Small:
       return [14, 14]
-    case StopType.Medium:
+    case StopIconType.Medium:
       return [18, 18]
-    case StopType.Large:
+    case StopIconType.Large:
       return [20, 20]
   }
 }
@@ -80,7 +82,7 @@ export const StopIcon = ({
   type,
   selected = false,
 }: {
-  type: StopType
+  type: StopIconType
   selected?: boolean
 }) => {
   const commonSvgClasses = [
@@ -140,7 +142,7 @@ export const StopIcon = ({
       data-selected={selected || null} // Remove attribute if `false`
     >
       {/* `width` and `height` is not specified on child SVG's so they size to
-       * the parent SVG. This makes `StopIconSizeFromStopType` the source of
+       * the parent SVG. This makes `stopIconSizeFromStopIconType` the source of
        * truth for the size on the map.
        * Specifying the `viewbox` ensures that the aspect ratio is correct,
        * and Leaflet specifies the container size on the map via `DivIconOptions.iconSize`,
@@ -154,7 +156,7 @@ export const StopIcon = ({
         to the previous element, but in trying to stay as close to the provided
         art assets as possible, this was easiest.
        */}
-      {type === StopType.Small && (
+      {type === StopIconType.Small && (
         <svg className={embeddedSvgClasses} viewBox="0 0 14 14" fill="none">
           <FocusCircle cx="7" cy="7" r={5 + strokeWidthOffset} />
           <circle
@@ -168,7 +170,7 @@ export const StopIcon = ({
           />
         </svg>
       )}
-      {type === StopType.Medium && (
+      {type === StopIconType.Medium && (
         <svg className={embeddedSvgClasses} viewBox="0 0 18 18" fill="none">
           <FocusCircle cx="9" cy="9" r={7 + strokeWidthOffset} />
           <circle className={joinClasses(circleClasses)} cx="9" cy="9" r="7" />
@@ -178,7 +180,7 @@ export const StopIcon = ({
           />
         </svg>
       )}
-      {type === StopType.Large && (
+      {type === StopIconType.Large && (
         <svg className={embeddedSvgClasses} viewBox="0 0 20 20" fill="none">
           <FocusCircle cx="10" cy="10" r={8 + strokeWidthOffset} />
           <circle
@@ -208,13 +210,13 @@ export const StopMarker = ({
   zoomLevel = 0,
   ...props
 }: StopMarkerProps) => {
-  const stopType = stopTypeFromZoomLevel(zoomLevel)
+  const stopIconType = stopIconTypeFromZoomLevel(zoomLevel)
   const divIconSettings = useMemo(
     () => ({
-      iconSize: stopIconSizeFromStopType(stopType),
+      iconSize: stopIconSizeFromStopIconType(stopIconType),
       className: "c-vehicle-map__stop", // Prevent default leaflet class & outline
     }),
-    [stopType]
+    [stopIconType]
   )
 
   return (
@@ -222,7 +224,7 @@ export const StopMarker = ({
       {...(props as MarkerProps)}
       position={[stop.lat, stop.lon]}
       divIconSettings={divIconSettings}
-      icon={<StopIcon type={stopType} selected={selected} />}
+      icon={<StopIcon type={stopIconType} selected={selected} />}
     />
   )
 }
