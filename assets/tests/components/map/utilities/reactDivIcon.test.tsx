@@ -48,13 +48,14 @@ describe("useReactDivIcon", () => {
 
     const { result, rerender } = renderHookReactDivIcon(initialOptions)
 
-    expect(result.current.divIcon?.createIcon()).toHaveClass(initialClassName)
-
     const { divIcon: initialDivIcon } = result.current
+    const icon = initialDivIcon?.createIcon()
+    expect(icon).toHaveClass(initialClassName)
 
     rerender({ ...initialOptions, className: newClassName })
 
     expect(result.current.divIcon).not.toBe(initialDivIcon)
+    expect(result.current.divIcon?.createIcon(icon)).toHaveClass(newClassName)
     expect(result.current.divIcon?.createIcon()).toHaveClass(newClassName)
   })
 
