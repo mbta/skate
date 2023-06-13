@@ -307,15 +307,9 @@ defmodule Realtime.Server do
       |> Enum.map(& &1.block_id)
       |> Enum.filter(& &1)
 
-    _ =
-      update_vehicle_positions(
-        state,
-        vehicles_by_route_id,
-        shuttles,
-        new_active_route_ids,
-        new_active_run_ids,
-        new_active_block_ids
-      )
+    remove_inactive_keys(state, new_active_route_ids, new_active_run_ids, new_active_block_ids)
+
+    _ = update_vehicle_positions(state, vehicles_by_route_id, shuttles)
 
     new_state =
       Map.merge(state, %{
@@ -350,15 +344,13 @@ defmodule Realtime.Server do
     {:noreply, %{state | active_alert_route_ids: new_active_route_ids}}
   end
 
-  defp update_vehicle_positions(
+  defp remove_inactive_keys(
          %__MODULE__{
            ets: ets,
            active_route_ids: active_route_ids,
            active_run_ids: active_run_ids,
            active_block_ids: active_block_ids
          },
-         vehicles_by_route_id,
-         shuttles,
          new_active_route_ids,
          new_active_run_ids,
          new_active_block_ids
@@ -378,7 +370,15 @@ defmodule Realtime.Server do
     for block_id <- removed_block_ids do
       _ = :ets.delete(ets, {:block_id, block_id})
     end
+  end
 
+  defp update_vehicle_positions(
+         %__MODULE__{
+           ets: ets
+         },
+         vehicles_by_route_id,
+         shuttles
+       ) do
     for {route_id, vehicles_and_ghosts} <- vehicles_by_route_id do
       active_vehicles_and_ghosts = Enum.filter(vehicles_and_ghosts, &block_is_active?/1)
       _ = :ets.insert(ets, {{:route_id, route_id}, active_vehicles_and_ghosts})
