@@ -295,50 +295,50 @@ defmodule Realtime.ServerTest do
       assert Server.lookup(lookup_args) == [@vehicle_on_inactive_block]
     end
 
-    test "unassigned vehicles are returned when include_unassigned_vehicles is true",
+    test "logged out vehicles are returned when include_logged_out_vehicles is true",
          %{server_pid: pid} do
       Server.subscribe_to_search(
-        %{property: :vehicle, text: "123", include_unassigned_vehicles: true},
+        %{property: :vehicle, text: "123", include_logged_out_vehicles: true},
         pid
       )
 
-      assigned_vehicle =
+      logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
 
-      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
 
       Server.update_vehicles(
         {%{
-           "1" => [assigned_vehicle],
-           nil => [unassigned_vehicle]
+           "1" => [logged_in_vehicle],
+           nil => [logged_out_vehicle]
          }, []},
         pid
       )
 
       assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [assigned_vehicle, unassigned_vehicle]
+      assert Server.lookup(lookup_args) == [logged_in_vehicle, logged_out_vehicle]
     end
 
-    test "unassigned vehicles are not returned when include_unassigned_vehicles is not set",
+    test "logged out vehicles are not returned when include_logged_out_vehicles is not set",
          %{server_pid: pid} do
       Server.subscribe_to_search(%{property: :vehicle, text: "123"}, pid)
 
-      assigned_vehicle =
+      logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
 
-      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
 
       Server.update_vehicles(
         {%{
-           "1" => [assigned_vehicle],
-           nil => [unassigned_vehicle]
+           "1" => [logged_in_vehicle],
+           nil => [logged_out_vehicle]
          }, []},
         pid
       )
 
       assert_receive {:new_realtime_data, lookup_args}
 
-      assert Server.lookup(lookup_args) == [assigned_vehicle]
+      assert Server.lookup(lookup_args) == [logged_in_vehicle]
     end
   end
 
@@ -382,7 +382,7 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
       :ets.insert(ets, {{:trip_id, "t1"}, @vehicle})
       :ets.insert(ets, {{:trip_id, "t2"}, @ghost})
-      :ets.insert(ets, {:assigned_vehicles, [@vehicle, @shuttle]})
+      :ets.insert(ets, {:logged_in_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
       :ets.insert(ets, {{:block_id, @vehicle.block_id}, @vehicle})
       :ets.insert(ets, {{:alert, "1"}, ["Some alert"]})
@@ -399,7 +399,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "fetches all vehicles, on routes and shuttles", %{ets: ets} do
-      assert Server.lookup({ets, :assigned_vehicles}) == [@vehicle, @shuttle]
+      assert Server.lookup({ets, :logged_in_vehicles}) == [@vehicle, @shuttle]
     end
 
     test "fetches all shuttles from the ets table", %{ets: ets} do
@@ -493,7 +493,7 @@ defmodule Realtime.ServerTest do
     test "checks data status, filtering out ghosts" do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
-      :ets.insert(ets, {:assigned_vehicles, [@vehicle, @ghost]})
+      :ets.insert(ets, {:logged_in_vehicles, [@vehicle, @ghost]})
 
       state = %Server{ets: ets}
 
@@ -577,7 +577,7 @@ defmodule Realtime.ServerTest do
 
       :ets.insert(
         ets,
-        {:assigned_vehicles,
+        {:logged_in_vehicles,
          [
            @vehicle,
            ghost_unexplained,

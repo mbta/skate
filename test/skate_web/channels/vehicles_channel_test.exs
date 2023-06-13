@@ -175,38 +175,38 @@ defmodule SkateWeb.VehiclesChannelTest do
       test_group = Skate.Settings.TestGroup.create("search-logged-out-vehicles")
       Skate.Settings.TestGroup.update(%{test_group | users: [user]})
 
-      assigned_vehicle =
+      logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
 
-      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
 
       {:ok, _reply, _socket} =
         subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:123")
 
       Realtime.Server.update_vehicles(
-        {%{"1" => [assigned_vehicle], nil => [unassigned_vehicle]}, []}
+        {%{"1" => [logged_in_vehicle], nil => [logged_out_vehicle]}, []}
       )
 
-      assert_push("search", %{data: [^assigned_vehicle, ^unassigned_vehicle]})
+      assert_push("search", %{data: [^logged_in_vehicle, ^logged_out_vehicle]})
     end
 
     test "when user is not in a test group to enable searching logged out vehicles, then logged out vehicles are included in their search results",
          %{
            socket: socket
          } do
-      assigned_vehicle =
+      logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
 
-      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
 
       {:ok, _reply, _socket} =
         subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:123")
 
       Realtime.Server.update_vehicles(
-        {%{"1" => [assigned_vehicle], nil => [unassigned_vehicle]}, []}
+        {%{"1" => [logged_in_vehicle], nil => [logged_out_vehicle]}, []}
       )
 
-      assert_push("search", %{data: [^assigned_vehicle]})
+      assert_push("search", %{data: [^logged_in_vehicle]})
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{

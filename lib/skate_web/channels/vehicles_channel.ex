@@ -63,7 +63,7 @@ defmodule SkateWeb.VehiclesChannel do
     subscribe_args =
       Map.put(
         subscribe_args,
-        :include_unassigned_vehicles,
+        :include_logged_out_vehicles,
         Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
       )
 
