@@ -6,7 +6,6 @@ export const searchPageStateFactory = Factory.define<SearchPageState>(() => ({
   query: emptySearchQueryFactory.build(),
   isActive: false,
   savedQueries: [],
-  selectedVehicleId: null,
 }))
 
 export const activeSearchPageStateFactory = searchPageStateFactory.params({

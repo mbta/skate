@@ -468,6 +468,52 @@ describe("<MapPage />", () => {
     expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
   })
 
+  test("When a route is selected, then search panel should stay open and RPC visible", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+    const route = routeFactory.build()
+    const runId = runIdFactory.build()
+    const vehicle = vehicleFactory
+      .associations({ runId })
+      .build({ routeId: route.id })
+
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockUseVehicleForId([vehicle])
+    // mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle] })
+
+    const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
+      routeId: vehicle.routeId!,
+    })
+    ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+      [routePattern1.id]: routePattern1,
+      [routePattern2.id]: routePattern2,
+    })
+
+    render(
+      <RoutesProvider routes={[route]}>
+        <RealDispatchWrapper
+          initialState={stateFactory.build({
+            searchPageState: activeSearchPageStateFactory.build({
+              query: { text: vehicle.runId! },
+              selectedEntity: {
+                type: SelectedEntityType.RoutePattern,
+                routeId: route.id,
+                routePatternId: routePattern1.id,
+              },
+            }),
+          })}
+        >
+          <MapPage />
+        </RealDispatchWrapper>
+      </RoutesProvider>
+    )
+
+    expect(routePropertiesCard.get()).toBeVisible()
+    expect(getMapSearchPanel()).toHaveClass(
+      "c-map-page__input-and-results--visible"
+    )
+  })
+
   test("can collapse and un-collapse the search panel with the drawer tab", async () => {
     render(<MapPage />)
 

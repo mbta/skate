@@ -25,8 +25,11 @@ $z-map-page-context: (
   padding: 0 1.5625rem;
 }
 
-.c-map-page .c-vehicle-properties-card {
-  margin: 1rem;
+.c-map-page {
+  .c-vehicle-properties-card,
+  .c-route-properties-card {
+    margin: 1rem;
+  }
 }
 
 .c-map-page__input-and-results {
@@ -46,7 +49,14 @@ $z-map-page-context: (
   transition: $transition-slide;
 
   box-shadow: 1px 0px 4px rgba(0, 0, 0, 0.25);
-  hr {
+
+  & > div {
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  & > hr {
     height: 1px;
     background-color: $color-gray-100;
     border: none;
@@ -125,19 +135,4 @@ $map-page-search-stub-size: 10px;
 .c-map-page__new-search-button:only-child {
   justify-content: center;
   flex: 1;
-}
-
-.c-map-page__map .c-map-selection-card-container {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 0.5rem;
-  min-height: 200px;
-  max-height: calc(100% - 2rem);
-  left: calc(env(safe-area-inset-left) + 60px - #{$map-page-search-stub-size});
-
-  // Above the highest pane in the map (popup pane): https://leafletjs.com/reference.html#map
-  z-index: 7001;
-
-  cursor: default;
 }
