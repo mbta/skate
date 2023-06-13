@@ -15,6 +15,7 @@ import {
   SearchPageState,
   SelectedEntity,
   SelectedEntityType,
+  SelectedRoutePattern,
   clearSearch,
   setSelectedEntity,
 } from "../state/searchPageState"
@@ -30,6 +31,9 @@ import useSocket from "../hooks/useSocket"
 import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
 import { Socket } from "phoenix"
 import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
+import RoutePropertiesCard from "./mapPage/routePropertiesCard"
+import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
+import { RoutePattern } from "../schedule"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -95,14 +99,43 @@ const SelectedVehicle = ({ vehicleId }: { vehicleId: VehicleId }) => {
   )
 }
 
+const SelectedRoute = ({
+  selectedRoutePattern,
+  selectRoutePattern,
+}: {
+  selectedRoutePattern: SelectedRoutePattern
+  selectRoutePattern: (routePattern: RoutePattern) => void
+}): ReactElement => {
+  const routePatterns = usePatternsByIdForRoute(selectedRoutePattern.routeId)
+
+  return routePatterns ? (
+    <RoutePropertiesCard
+      routePatterns={routePatterns}
+      selectedRoutePatternId={selectedRoutePattern.routePatternId}
+      selectRoutePattern={selectRoutePattern}
+    />
+  ) : (
+    <Loading />
+  )
+}
+
 const Selection = ({
   selectedEntity,
-  setSelection,
 }: {
   selectedEntity: SelectedEntity
-  setSelection: (selectedEntity: SelectedEntity | null) => void
 }): ReactElement => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
+
+  const selectRoutePattern = (routePattern: RoutePattern) => {
+    dispatch(
+      setSelectedEntity({
+        type: SelectedEntityType.RoutePattern,
+        routeId: routePattern.routeId,
+        routePatternId: routePattern.id,
+      })
+    )
+  }
+
   return (
     <div>
       <div className="c-map-page__search-actions">
@@ -110,7 +143,7 @@ const Selection = ({
           <button
             className="c-map-page__back-button"
             onClick={() => {
-              setSelection(null)
+              dispatch(setSelectedEntity(null))
             }}
           >
             <ChevronLeftIcon />
@@ -120,7 +153,7 @@ const Selection = ({
         <button
           className="button-submit c-map-page__new-search-button"
           onClick={() => {
-            setSelection(null)
+            dispatch(setSelectedEntity(null))
             dispatch(clearSearch())
           }}
         >
@@ -132,7 +165,10 @@ const Selection = ({
       {selectedEntity.type === SelectedEntityType.Vehicle ? (
         <SelectedVehicle vehicleId={selectedEntity.vehicleId} />
       ) : (
-        <p>TODO: Route selection</p>
+        <SelectedRoute
+          selectedRoutePattern={selectedEntity}
+          selectRoutePattern={selectRoutePattern}
+        />
       )}
     </div>
   )
@@ -151,9 +187,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   }, [dispatch, openView])
 
   // #region Search Drawer Logic
-  const [searchOpen, setSearchOpen] = useState<boolean>(
-    !selectedEntity || selectedEntity.type === SelectedEntityType.Vehicle
-  )
+  const [searchOpen, setSearchOpen] = useState<boolean>(true)
   const toggleSearchDrawer = useCallback(
     () => setSearchOpen((open) => !open),
     [setSearchOpen]
@@ -171,11 +205,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       }
 
       dispatch(setSelectedEntity(selectedEntity))
-      setSearchOpen(
-        !selectedEntity || selectedEntity.type === SelectedEntityType.Vehicle
-      )
     },
-    [dispatch, setSearchOpen]
+    [dispatch]
   )
 
   const selectVehicle = useCallback(
@@ -210,13 +241,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           isVisible={searchOpen}
           toggleVisibility={toggleSearchDrawer}
         />
-        {selectedEntity &&
-        // TODO: support showing route selection
-        selectedEntity.type === SelectedEntityType.Vehicle ? (
-          <Selection
-            selectedEntity={selectedEntity}
-            setSelection={setSelection}
-          />
+        {selectedEntity ? (
+          <Selection selectedEntity={selectedEntity} />
         ) : (
           <SearchMode
             searchPageState={searchPageState}
@@ -229,7 +255,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         <MapDisplay
           selectedEntity={selectedEntity}
           setSelection={setSelection}
-          showSelectionCard={!searchOpen}
         />
       </div>
     </div>
