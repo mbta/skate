@@ -388,7 +388,7 @@ defmodule Realtime.Server do
       vehicles_by_route_id
       |> all_vehicles()
       |> Enum.concat(shuttles)
-      |> Enum.uniq()
+      |> Enum.uniq_by(& &1.id)
       |> Enum.split_with(&is_nil(&1.run_id))
 
     for vehicle <- logged_in_vehicles do
