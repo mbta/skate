@@ -43,7 +43,7 @@ export const stopIconSizeFromZoomLevel = (zoomLevel: number) =>
 /**
  * Represents the box size of the icon at each {@link StopIconType}.
  *
- * For a {@link }, this means the size needs to include the `radius` AND
+ * For a `<circle/>`, this means the size needs to include the `radius` AND
  * `stroke-width`, or specify `overflow-visible`. This will directly impact
  * the tap target on the leaflet map.
  */
