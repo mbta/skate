@@ -38,6 +38,10 @@ const thereIsAnActiveSearch = (
   searchPageState: SearchPageState
 ): boolean => vehicles !== null && searchPageState.isActive
 
+const HorizontalSeparator = () => (
+  <hr className="c-map-page__horizontal-separator" />
+)
+
 const SearchMode = ({
   searchPageState,
   selectVehicle,
@@ -61,7 +65,8 @@ const SearchMode = ({
         />
       </div>
 
-      <hr />
+      <HorizontalSeparator />
+
       <div className="c-search-display u-hideable">
         {searchVehicles !== null &&
         thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
@@ -158,7 +163,9 @@ const Selection = ({
           New Search
         </button>
       </div>
-      <hr />
+
+      <HorizontalSeparator />
+
       {selectedEntity.type === SelectedEntityType.Vehicle ? (
         <SelectedVehicle vehicleId={selectedEntity.vehicleId} />
       ) : (
