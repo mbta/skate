@@ -250,7 +250,7 @@ defmodule Realtime.ServerTest do
     end
   end
 
-  describe "subscribe_to_search" do
+  describe "subscribe_to_search/2" do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
@@ -260,7 +260,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get search results upon subscribing", %{server_pid: pid} do
-      results = Server.subscribe_to_search("90", :all, pid)
+      results = Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
 
       assert Enum.member?(results, @vehicle)
       assert Enum.member?(results, @ghost)
@@ -268,7 +268,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get updated search results pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_search("90", :all, pid)
+      Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
 
       Server.update_vehicles({%{}, [@shuttle]}, pid)
 
@@ -277,7 +277,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "does not receive duplicate vehicles", %{server_pid: pid} do
-      Server.subscribe_to_search("90", :all, pid)
+      Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
 
       Server.update_vehicles({%{}, [@shuttle, @shuttle]}, pid)
 
@@ -286,7 +286,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "vehicles on inactive blocks are included", %{server_pid: pid} do
-      Server.subscribe_to_search("v2-label", :vehicle, pid)
+      Server.subscribe_to_search(%{property: :vehicle, text: "v2-label"}, pid)
 
       Server.update_vehicles({%{"1" => [@vehicle_on_inactive_block]}, []}, pid)
 
@@ -336,7 +336,7 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
       :ets.insert(ets, {{:trip_id, "t1"}, @vehicle})
       :ets.insert(ets, {{:trip_id, "t2"}, @ghost})
-      :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
+      :ets.insert(ets, {:assigned_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
       :ets.insert(ets, {{:block_id, @vehicle.block_id}, @vehicle})
       :ets.insert(ets, {{:alert, "1"}, ["Some alert"]})
@@ -353,7 +353,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "fetches all vehicles, on routes and shuttles", %{ets: ets} do
-      assert Server.lookup({ets, :all_vehicles}) == [@vehicle, @shuttle]
+      assert Server.lookup({ets, :assigned_vehicles}) == [@vehicle, @shuttle]
     end
 
     test "fetches all shuttles from the ets table", %{ets: ets} do
@@ -447,7 +447,7 @@ defmodule Realtime.ServerTest do
     test "checks data status, filtering out ghosts" do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
-      :ets.insert(ets, {:all_vehicles, [@vehicle, @ghost]})
+      :ets.insert(ets, {:assigned_vehicles, [@vehicle, @ghost]})
 
       state = %Server{ets: ets}
 
@@ -531,7 +531,7 @@ defmodule Realtime.ServerTest do
 
       :ets.insert(
         ets,
-        {:all_vehicles,
+        {:assigned_vehicles,
          [
            @vehicle,
            ghost_unexplained,

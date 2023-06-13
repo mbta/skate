@@ -33,7 +33,7 @@ defmodule Realtime.Server do
   @type subscription_key ::
           {:route_id, Route.id()}
           | :all_shuttles
-          | :all_vehicles
+          | :assigned_vehicles
           | {:search, search_params()}
           | {:vehicle, String.t()}
           | {:run_ids, [Run.id()]}
@@ -41,8 +41,9 @@ defmodule Realtime.Server do
           | {:alerts, Route.id()}
 
   @type search_params :: %{
-          text: String.t(),
-          property: search_property()
+          :text => String.t(),
+          :property => search_property(),
+          optional(:include_unassigned_vehicles) => boolean()
         }
 
   @type search_property :: :all | :run | :vehicle | :operator
@@ -86,15 +87,11 @@ defmodule Realtime.Server do
     subscribe(server, :all_shuttles)
   end
 
-  @spec subscribe_to_search(String.t(), atom(), GenServer.server()) :: [VehicleOrGhost.t()]
-  def subscribe_to_search(text, property, server \\ default_name()) do
+  @spec subscribe_to_search(search_params(), GenServer.server()) :: [VehicleOrGhost.t()]
+  def subscribe_to_search(search_params, server \\ default_name()) do
     subscribe(
       server,
-      {:search,
-       %{
-         text: text,
-         property: property
-       }}
+      {:search, search_params}
     )
   end
 
@@ -132,7 +129,7 @@ defmodule Realtime.Server do
 
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
-  @spec subscribe(GenServer.server(), :all_vehicles) :: [Vehicle.t()]
+  @spec subscribe(GenServer.server(), :assigned_vehicles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:vehicle, String.t()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:run_ids, [Run.id()]}) :: [VehicleOrGhost.t()]
@@ -161,7 +158,7 @@ defmodule Realtime.Server do
   end
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
-  @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), :assigned_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
@@ -169,7 +166,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), {:block_ids, [Block.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:alerts, Route.id()}}) :: [String.t()]
   def lookup({table, {:search, search_params}}) do
-    {table, :all_vehicles}
+    {table, :assigned_vehicles}
     |> lookup()
     |> VehicleOrGhost.find_by(search_params)
   end
@@ -203,7 +200,7 @@ defmodule Realtime.Server do
   end
 
   def lookup({table, {:vehicle, vehicle_or_ghost_id}}) do
-    {table, :all_vehicles}
+    {table, :assigned_vehicles}
     |> lookup()
     |> Enum.filter(&(&1.id == vehicle_or_ghost_id))
   end
@@ -235,7 +232,7 @@ defmodule Realtime.Server do
 
   def handle_info(:check_data_status, %__MODULE{ets: ets} = state) do
     all_vehicles =
-      {ets, :all_vehicles}
+      {ets, :assigned_vehicles}
       |> lookup()
       |> Enum.filter(fn vehicle_or_ghost -> match?(%Vehicle{}, vehicle_or_ghost) end)
 
@@ -249,7 +246,7 @@ defmodule Realtime.Server do
 
   def handle_info(:ghost_stats, %__MODULE__{ets: ets} = state) do
     {explained_count, unexplained_count} =
-      {ets, :all_vehicles}
+      {ets, :assigned_vehicles}
       |> lookup()
       |> Enum.filter(&match?(%Ghost{}, &1))
       |> Enum.reduce({0, 0}, fn ghost, {explained_count, unexplained_count} ->
@@ -379,14 +376,20 @@ defmodule Realtime.Server do
       _ = :ets.insert(ets, {{:route_id, route_id}, active_vehicles_and_ghosts})
     end
 
-    all_vehicles = Enum.uniq(all_vehicles(vehicles_by_route_id) ++ shuttles)
+    {unassigned_vehicles, assigned_vehicles} =
+      vehicles_by_route_id
+      |> all_vehicles()
+      |> Enum.concat(shuttles)
+      |> Enum.uniq()
+      |> Enum.split_with(&is_nil(&1.run_id))
 
-    for vehicle <- all_vehicles do
+    for vehicle <- assigned_vehicles do
       _ = :ets.insert(ets, {{:run_id, vehicle.run_id}, vehicle})
       _ = :ets.insert(ets, {{:block_id, vehicle.block_id}, vehicle})
     end
 
-    :ets.insert(ets, {:all_vehicles, all_vehicles})
+    :ets.insert(ets, {:assigned_vehicles, assigned_vehicles})
+    :ets.insert(ets, {:unassigned_vehicles, unassigned_vehicles})
 
     :ets.insert(ets, {:all_shuttles, shuttles})
   end

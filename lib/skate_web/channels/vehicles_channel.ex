@@ -46,23 +46,23 @@ defmodule SkateWeb.VehiclesChannel do
     subscribe_args =
       case search_params do
         "all:" <> text ->
-          [text, :all]
+          %{text: text, property: :all}
 
         "run:" <> text ->
-          [text, :run]
+          %{text: text, property: :run}
 
         "vehicle:" <> text ->
-          [text, :vehicle]
+          %{text: text, property: :vehicle}
 
         "operator:" <> text ->
-          [text, :operator]
+          %{text: text, property: :operator}
       end
 
     Logger.info(fn ->
-      "User=#{username} searched for property=#{Enum.at(subscribe_args, 1)}, text=#{Enum.at(subscribe_args, 0)}"
+      "User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text}"
     end)
 
-    vehicles = Duration.log_duration(Server, :subscribe_to_search, subscribe_args)
+    vehicles = Duration.log_duration(Server, :subscribe_to_search, [subscribe_args])
 
     {:ok, %{data: vehicles}, socket}
   end
