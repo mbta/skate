@@ -23,7 +23,7 @@ export enum StopIconType {
  * Produces the {@link StopIconType} assigned to the provided map {@link zoomLevel}
  * @param zoomLevel The zoom level to use for figuring out the {@link StopIconType}
  */
-export const stopIconTypeFromZoomLevel = (zoomLevel: number) => {
+export const stopIconTypeFromZoomLevel = (zoomLevel: number): StopIconType => {
   if (zoomLevel <= 14) {
     return StopIconType.Small
   } else if (15 <= zoomLevel && zoomLevel <= 16) {
