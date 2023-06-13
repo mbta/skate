@@ -60,6 +60,21 @@ $utilities: (
     values: $stop-colors,
     state: hover focus,
   ),
+  "fill-rule": (
+    property: fill-rule,
+    values: (
+      evenodd,
+      nonzero,
+    ),
+  ),
+  "clip-rule": (
+    property: clip-rule,
+    values: (
+      nonzero,
+      evenodd,
+      inherit,
+    ),
+  ),
   "transform-origin": (
     property: transform-origin,
     values: (
