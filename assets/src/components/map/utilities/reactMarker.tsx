@@ -1,11 +1,10 @@
 import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
 
-import { DivIconOptions } from "leaflet"
 import { Marker, MarkerProps } from "react-leaflet"
 
 import Loading from "../../loading"
-import { useReactDivIcon } from "./reactDivIcon"
+import { DivIconOptions, useReactDivIcon } from "./reactDivIcon"
 
 export interface ReactMarkerProps extends Omit<MarkerProps, "icon"> {
   // Shadow `MarkerProps.icon` with a custom React compatible implementation
