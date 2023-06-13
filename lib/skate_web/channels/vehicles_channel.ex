@@ -58,6 +58,15 @@ defmodule SkateWeb.VehiclesChannel do
           %{text: text, property: :operator}
       end
 
+    %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
+
+    subscribe_args =
+      Map.put(
+        subscribe_args,
+        :include_unassigned_vehicles,
+        Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
+      )
+
     Logger.info(fn ->
       "User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text}"
     end)

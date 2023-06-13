@@ -13,12 +13,17 @@ defmodule SkateWeb.VehiclesChannelTest do
     reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
     reassign_env(:skate, :username_from_socket!, fn _socket -> "test_uid" end)
 
-    socket = socket(UserSocket, "", %{})
+    user = Skate.Settings.User.upsert("test_uid", "test_email")
+
+    socket =
+      UserSocket
+      |> socket("", %{})
+      |> Guardian.Phoenix.Socket.put_current_resource(%{id: user.id})
 
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
-    {:ok, socket: socket}
+    {:ok, socket: socket, user: user}
   end
 
   describe "join/3" do
@@ -160,6 +165,48 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       vehicle = @vehicle
       assert_push("search", %{data: [^vehicle]})
+    end
+
+    test "when user is in test group to enable searching logged out vehicles, then logged out vehicles are included in their search results",
+         %{
+           socket: socket,
+           user: user
+         } do
+      test_group = Skate.Settings.TestGroup.create("search-logged-out-vehicles")
+      Skate.Settings.TestGroup.update(%{test_group | users: [user]})
+
+      assigned_vehicle =
+        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
+
+      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+
+      {:ok, _reply, _socket} =
+        subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:123")
+
+      Realtime.Server.update_vehicles(
+        {%{"1" => [assigned_vehicle], nil => [unassigned_vehicle]}, []}
+      )
+
+      assert_push("search", %{data: [^assigned_vehicle, ^unassigned_vehicle]})
+    end
+
+    test "when user is not in a test group to enable searching logged out vehicles, then logged out vehicles are included in their search results",
+         %{
+           socket: socket
+         } do
+      assigned_vehicle =
+        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
+
+      unassigned_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+
+      {:ok, _reply, _socket} =
+        subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:123")
+
+      Realtime.Server.update_vehicles(
+        {%{"1" => [assigned_vehicle], nil => [unassigned_vehicle]}, []}
+      )
+
+      assert_push("search", %{data: [^assigned_vehicle]})
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{
