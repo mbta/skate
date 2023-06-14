@@ -139,6 +139,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         </form>
       </div>
       <img
+        alt=""
         aria-hidden="true"
         class="c-map-page__horizontal-separator"
       />
@@ -504,6 +505,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         </form>
       </div>
       <img
+        alt=""
         aria-hidden="true"
         class="c-map-page__horizontal-separator"
       />
@@ -762,6 +764,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
           </button>
         </div>
         <img
+          alt=""
           aria-hidden="true"
           class="c-map-page__horizontal-separator"
         />
@@ -889,6 +892,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </svg>
               </div>
               <img
+                alt=""
                 aria-hidden="true"
                 class="c-vehicle-route-summary__separator"
               />

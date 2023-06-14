@@ -25,5 +25,6 @@ export const VisualSeparator = ({
 }: VisualSeparatorProps): React.ReactElement => (
   <img
     className={className ?? "c-visual-separator"}
-    aria-hidden={true} />
+    aria-hidden={true}
+    alt="" />
 );
