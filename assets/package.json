@@ -65,7 +65,7 @@
     "babel-jest": "^29.4.3",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
-    "css-minimizer-webpack-plugin": "^4.0.0",
+    "css-minimizer-webpack-plugin": "^5.0.1",
     "cypress": "^12.10.0",
     "cypress-visual-regression": "^3.0.0",
     "eslint": "^8.38.0",
