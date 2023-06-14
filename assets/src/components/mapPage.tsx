@@ -62,8 +62,7 @@ const SearchMode = ({
         />
       </div>
 
-      <VisualSeparator className="c-map-page__horizontal-separator"/>
-
+      <VisualSeparator className="c-map-page__horizontal-separator" />
 
       <div className="c-search-display u-hideable">
         {searchVehicles !== null &&
@@ -162,8 +161,7 @@ const Selection = ({
         </button>
       </div>
 
-      <VisualSeparator className="c-map-page__horizontal-separator"/>
-
+      <VisualSeparator className="c-map-page__horizontal-separator" />
 
       {selectedEntity.type === SelectedEntityType.Vehicle ? (
         <SelectedVehicle vehicleId={selectedEntity.vehicleId} />

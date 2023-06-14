@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 /**
  * {@link VisualSeparator} Component Props
@@ -7,8 +7,8 @@ export type VisualSeparatorProps = {
   /**
    * Overrides the default `className` on the returned element.
    */
-  className?: string;
-};
+  className?: string
+}
 
 /**
  * A stylable accent for visually separating content.
@@ -26,5 +26,6 @@ export const VisualSeparator = ({
   <img
     className={className ?? "c-visual-separator"}
     aria-hidden={true}
-    alt="" />
-);
+    alt=""
+  />
+)
