@@ -141,15 +141,19 @@ defmodule Realtime.Server do
     lookup({ets, subscription_key})
   end
 
-  @spec update_vehicles({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}) :: term()
+  @spec update_vehicles({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()], [Vehicle.t()]}) ::
+          term()
   @spec update_vehicles(
-          {Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]},
+          {Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()], [Vehicle.t()]},
           GenServer.server()
         ) :: term()
   def update_vehicles(update_term, server \\ __MODULE__)
 
-  def update_vehicles({vehicles_by_route_id, shuttles}, server) do
-    GenServer.cast(server, {:update_vehicles, vehicles_by_route_id, shuttles})
+  def update_vehicles({vehicles_by_route_id, shuttles, logged_out_vehicles}, server) do
+    GenServer.cast(
+      server,
+      {:update_vehicles, vehicles_by_route_id, shuttles, logged_out_vehicles}
+    )
   end
 
   @spec update_alerts(Route.by_id([String.t()]), GenServer.server()) :: term()
@@ -287,7 +291,7 @@ defmodule Realtime.Server do
 
   @impl true
   def handle_cast(
-        {:update_vehicles, vehicles_by_route_id, shuttles},
+        {:update_vehicles, vehicles_by_route_id, shuttles, logged_out_vehicles},
         %__MODULE__{} = state
       ) do
     new_active_route_ids = Map.keys(vehicles_by_route_id)
@@ -309,7 +313,7 @@ defmodule Realtime.Server do
 
     remove_inactive_keys(state, new_active_route_ids, new_active_run_ids, new_active_block_ids)
 
-    _ = update_vehicle_positions(state, vehicles_by_route_id, shuttles)
+    _ = update_vehicle_positions(state, vehicles_by_route_id, shuttles, logged_out_vehicles)
 
     new_state =
       Map.merge(state, %{
@@ -377,19 +381,19 @@ defmodule Realtime.Server do
            ets: ets
          },
          vehicles_by_route_id,
-         shuttles
+         shuttles,
+         logged_out_vehicles
        ) do
     for {route_id, vehicles_and_ghosts} <- vehicles_by_route_id do
       active_vehicles_and_ghosts = Enum.filter(vehicles_and_ghosts, &block_is_active?/1)
       _ = :ets.insert(ets, {{:route_id, route_id}, active_vehicles_and_ghosts})
     end
 
-    {logged_out_vehicles, logged_in_vehicles} =
+    logged_in_vehicles =
       vehicles_by_route_id
       |> all_vehicles()
       |> Enum.concat(shuttles)
       |> Enum.uniq_by(& &1.id)
-      |> Enum.split_with(&is_nil(&1.run_id))
 
     for vehicle <- logged_in_vehicles do
       _ = :ets.insert(ets, {{:run_id, vehicle.run_id}, vehicle})
