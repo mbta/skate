@@ -56,7 +56,7 @@ $z-map-page-context: (
     flex-direction: column;
   }
 
-  hr {
+  .c-map-page__horizontal-separator {
     height: 1px;
     background-color: $color-gray-100;
     border: none;
