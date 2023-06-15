@@ -36,6 +36,10 @@
 }
 
 .c-stop-icon-group {
+  &:focus-visible {
+    outline-offset: 2px;
+  }
+
   &:hover .c-stop-icon,
   &:focus .c-stop-icon,
   & .c-stop-icon[data-selected] {
