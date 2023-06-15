@@ -57,6 +57,7 @@ $z-map-page-context: (
   }
 
   .c-map-page__horizontal-separator {
+    flex: 0 0 1px;
     height: 1px;
     background-color: $color-gray-100;
     border: none;
