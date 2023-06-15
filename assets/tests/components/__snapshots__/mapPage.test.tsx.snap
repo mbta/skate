@@ -138,7 +138,11 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
           </div>
         </form>
       </div>
-      <hr />
+      <img
+        alt=""
+        aria-hidden="true"
+        class="c-map-page__horizontal-separator"
+      />
       <div
         class="c-search-display u-hideable"
       >
@@ -500,7 +504,11 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
           </div>
         </form>
       </div>
-      <hr />
+      <img
+        alt=""
+        aria-hidden="true"
+        class="c-map-page__horizontal-separator"
+      />
       <div
         class="c-search-display u-hideable"
       >
@@ -755,7 +763,11 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             New Search
           </button>
         </div>
-        <hr />
+        <img
+          alt=""
+          aria-hidden="true"
+          class="c-map-page__horizontal-separator"
+        />
         <div
           aria-label="Vehicle Properties Card"
           class="c-vehicle-properties-card"
@@ -880,10 +892,9 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </svg>
               </div>
               <img
+                alt=""
                 aria-hidden="true"
-                aria-label="presentation separator"
                 class="c-vehicle-route-summary__separator"
-                role="img presentation"
               />
             </div>
           </div>

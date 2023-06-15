@@ -9,6 +9,7 @@ import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleOrGhost } from "../realtime"
 import { RouteVariantName } from "./routeVariantName"
 import { Size, VehicleIcon, vehicleOrientation } from "./vehicleIcon"
+import { VisualSeparator } from "./visualSeparator"
 
 interface VehicleOrGhostProp {
   vehicle: VehicleOrGhost
@@ -58,19 +59,6 @@ export const VehicleRouteDirection = ({
     </output>
   )
 }
-
-const VisualSeparator = ({
-  className,
-}: ComponentPropsWithoutRef<"object">): React.ReactElement => (
-  // Visual accent to provide separation between elements
-  // This object is strictly for visual presentation
-  <img
-    className={className ?? "c-visual-separator"}
-    aria-hidden={true}
-    role="img presentation"
-    aria-label="presentation separator"
-  />
-)
 
 export const VehicleRouteSummary = ({
   vehicle,
