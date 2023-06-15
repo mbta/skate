@@ -42,7 +42,7 @@
 
   &:hover .c-stop-icon,
   &:focus .c-stop-icon,
-  & .c-stop-icon[data-selected] {
+  .c-stop-icon[data-selected] {
     scale: 1.2;
 
     .c-stop-icon__circle {
