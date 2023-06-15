@@ -43,11 +43,7 @@ $component-active-bg: $color-eggplant-700;
 @import "../node_modules/bootstrap/scss/forms";
 
 // #region Bootstrap Utility API
-@import "./bootstrap/utilities";
-
 @import "../node_modules/bootstrap/scss/bootstrap-utilities";
-
-@import "./bootstrap/bespoke_utilities";
 // #endregion
 // #endregion
 
@@ -79,6 +75,7 @@ $component-active-bg: $color-eggplant-700;
 @import "loading_spinner";
 @import "map_page";
 @import "map/controls/street_view_switch";
+@import "map/markers/stop_icon";
 @import "minischedule";
 @import "modal";
 @import "nav";

@@ -1,0 +1,62 @@
+.c-stop-icon {
+  transition: 50ms 50ms;
+
+  &, svg {
+    display: block;
+    overflow: visible;
+  }
+
+  &, svg, .c-stop-icon__circle, .c-stop-icon__bus, .c-stop-icon__focus-circle{
+    transform-origin: center;
+  }
+
+  .c-stop-icon__circle {
+    fill: $white;
+    stroke: $color-gray-700;
+    stroke-width: 1px;
+  }
+
+  .c-stop-icon__focus-circle {
+    stroke: transparent;
+  }
+
+  .c-stop-icon__bus {
+    scale: 1 - 0.2;
+    fill: $color-gray-700;
+    stroke-width: 0;
+
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+  }
+
+  &:hover, &:focus, &[data-selected] {
+    scale: 1.2;
+
+    .c-stop-icon__circle {
+      stroke-width: 2px;
+    }
+
+    .c-stop-icon__bus {
+      fill: $color-eggplant-700;
+    }
+  }
+
+  &:focus {
+    .c-stop-icon__focus-circle {
+      stroke: $color-eggplant-500;
+    }
+  }
+
+  &:hover {
+    .c-stop-icon__circle--small {
+      stroke: $color-eggplant-700;
+    }
+  }
+
+  &[data-selected] {
+    .c-stop-icon__circle {
+      fill: $color-eggplant-200;
+      stroke: $color-eggplant-700;
+    }
+  }
+}
