@@ -384,7 +384,7 @@ describe("<MapPage />", () => {
 
     await userEvent.click(
       within(mapSearchPanel).getByRole("button", {
-        name: new RegExp(vehicle.label),
+        name: new RegExp(vehicle.label!),
       })
     )
 
@@ -502,7 +502,7 @@ describe("<MapPage />", () => {
             initialState={stateFactory.build({
               searchPageState: activeSearchPageStateFactory.build({
                 query: searchQueryVehicleFactory
-                  .searchFor(vehicle.label)
+                  .searchFor(vehicle.label!)
                   .build(),
               }),
             })}
@@ -553,7 +553,7 @@ describe("<MapPage />", () => {
 
         await userEvent.click(
           screen.getByRole("button", {
-            name: vehicleNext.label,
+            name: vehicleNext.label!,
           })
         )
         expect(vehiclePropertiesCard.get()).toBeVisible()
@@ -675,7 +675,7 @@ describe("<MapPage />", () => {
       expect(routePropertiesCard.get()).toBeVisible()
       await userEvent.click(
         screen.getByRole("button", {
-          name: vehicle.label,
+          name: vehicle.label!,
         })
       )
 

@@ -1,5 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
+import { array, assert, StructError } from "superstruct"
 import { reload } from "../models/browser"
 import {
   VehicleOrGhostData,
@@ -7,6 +8,9 @@ import {
 } from "../models/vehicleData"
 import { VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, RouteId } from "../schedule.d"
+import * as Sentry from "@sentry/react"
+
+const VehiclesOrGhostsData = array(VehicleOrGhostData)
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
@@ -116,10 +120,20 @@ const subscribe = (
   const handleVehicles = ({
     data: vehiclesAndGhostsData,
   }: {
-    data: VehicleOrGhostData[]
+    data: unknown
   }) => {
-    const vehiclesAndGhosts = vehiclesAndGhostsData.map(vehicleOrGhostFromData)
-    dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
+    try {
+      assert(vehiclesAndGhostsData, VehiclesOrGhostsData)
+
+      const vehiclesAndGhosts = vehiclesAndGhostsData.map(
+        vehicleOrGhostFromData
+      )
+      dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
+    } catch (error) {
+      if (error instanceof StructError) {
+        Sentry.captureException(error)
+      }
+    }
   }
 
   const topic = `vehicles:route:${routeId}`

@@ -106,7 +106,7 @@ export interface TrainVehicle {
 
 export interface Vehicle {
   id: VehicleId
-  label: string
+  label: string | null
   runId: RunId | null
   timestamp: number
   latitude: number
@@ -118,8 +118,8 @@ export interface Vehicle {
   headsign: string | null
   viaVariant: ViaVariant | null
   operatorId: string
-  operatorFirstName: string
-  operatorLastName: string
+  operatorFirstName: string | null
+  operatorLastName: string | null
   operatorLogonTime: Date | null
   overloadOffset?: number
   bearing: number
@@ -130,7 +130,7 @@ export interface Vehicle {
   isShuttle: boolean
   isOverload: boolean
   isOffCourse: boolean
-  isRevenue: boolean
+  isRevenue: boolean | null
   layoverDepartureTime: number | null
   dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus

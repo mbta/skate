@@ -138,7 +138,7 @@ export const VehicleTooltip = ({
         <TooltipContent
           blockId={vehicleOrGhost.blockId}
           runId={runId}
-          label={label}
+          label={label || ""}
           viaVariant={vehicleOrGhost.viaVariant}
           scheduleAdherenceLabel={scheduleAdherenceLabel}
           operatorDetails={operatorDetails}

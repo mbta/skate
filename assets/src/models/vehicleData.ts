@@ -70,7 +70,7 @@ type BlockWaiverData = Infer<typeof BlockWaiverData>
 
 export const VehicleData = type({
   id: string(),
-  label: string(),
+  label: nullable(string()),
   run_id: nullable(string()),
   timestamp: number(),
   latitude: number(),
@@ -82,10 +82,10 @@ export const VehicleData = type({
   headsign: nullable(string()),
   via_variant: nullable(string()),
   operator_id: string(),
-  operator_first_name: string(),
-  operator_last_name: string(),
+  operator_first_name: nullable(string()),
+  operator_last_name: nullable(string()),
   operator_logon_time: nullable(number()),
-  overload_offset: optional(number()),
+  overload_offset: nullable(number()),
   bearing: number(),
   block_id: string(),
   previous_vehicle_id: string(),
@@ -94,7 +94,7 @@ export const VehicleData = type({
   is_shuttle: boolean(),
   is_overload: boolean(),
   is_off_course: boolean(),
-  is_revenue: boolean(),
+  is_revenue: nullable(boolean()),
   layover_departure_time: nullable(number()),
   sources: array(string()),
   data_discrepancies: array(DataDiscrepancyData),
@@ -106,16 +106,18 @@ export const VehicleData = type({
   block_waivers: array(BlockWaiverData),
   crowding: nullable(
     type({
-      load: number(),
-      capacity: number(),
-      occupancy_status: enums([
-        "NO_DATA",
-        "EMPTY",
-        "MANY_SEATS_AVAILABLE",
-        "FEW_SEATS_AVAILABLE",
-        "FULL",
-      ]), // TODO: also pull this out
-      occupancy_percentage: number(),
+      load: nullable(number()),
+      capacity: nullable(number()),
+      occupancy_status: nullable(
+        enums([
+          "NO_DATA",
+          "EMPTY",
+          "MANY_SEATS_AVAILABLE",
+          "FEW_SEATS_AVAILABLE",
+          "FULL",
+        ])
+      ), // TODO: also pull this out
+      occupancy_percentage: nullable(number()),
     })
   ),
 })
@@ -125,7 +127,7 @@ export const GhostData = type({
   id: string(),
   direction_id: enums([0, 1]),
   route_id: string(),
-  route_pattern_id: nullable(string()),
+  route_pattern_id: optional(string()),
   trip_id: string(),
   headsign: string(),
   block_id: string(),
@@ -164,7 +166,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   operatorLogonTime: vehicleData.operator_logon_time
     ? dateFromEpochSeconds(vehicleData.operator_logon_time)
     : null,
-  overloadOffset: vehicleData.overload_offset,
+  overloadOffset: vehicleData.overload_offset || undefined,
   bearing: vehicleData.bearing,
   blockId: vehicleData.block_id,
   previousVehicleId: vehicleData.previous_vehicle_id,
@@ -189,7 +191,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   crowding: vehicleData.crowding && {
     load: vehicleData.crowding.load,
     capacity: vehicleData.crowding.capacity,
-    occupancyStatus: vehicleData.crowding.occupancy_status,
+    occupancyStatus: vehicleData.crowding.occupancy_status || "NO_DATA",
     occupancyPercentage: vehicleData.crowding.occupancy_percentage,
   },
 })
@@ -198,7 +200,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   id: ghostData.id,
   directionId: ghostData.direction_id,
   routeId: ghostData.route_id,
-  routePatternId: ghostData.route_pattern_id,
+  routePatternId: ghostData.route_pattern_id || null,
   tripId: ghostData.trip_id,
   headsign: ghostData.headsign,
   blockId: ghostData.block_id,
