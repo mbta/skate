@@ -32,6 +32,7 @@ import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
 import { RoutePattern } from "../schedule"
+import { VisualSeparator } from "./visualSeparator"
 
 const thereIsAnActiveSearch = (
   vehicles: VehicleOrGhost[] | null,
@@ -61,7 +62,8 @@ const SearchMode = ({
         />
       </div>
 
-      <hr />
+      <VisualSeparator className="c-map-page__horizontal-separator" />
+
       <div className="c-search-display u-hideable">
         {searchVehicles !== null &&
         thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
@@ -158,7 +160,9 @@ const Selection = ({
           New Search
         </button>
       </div>
-      <hr />
+
+      <VisualSeparator className="c-map-page__horizontal-separator" />
+
       {selectedEntity.type === SelectedEntityType.Vehicle ? (
         <SelectedVehicle vehicleId={selectedEntity.vehicleId} />
       ) : (
