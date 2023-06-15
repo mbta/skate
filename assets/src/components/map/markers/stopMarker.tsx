@@ -160,7 +160,7 @@ export const StopMarker = ({
   const divIconSettings = useMemo(
     () => ({
       iconSize: stopIconSizeFromStopIconType(stopIconType),
-      className: "c-vehicle-map__stop", // Prevent default leaflet class & outline
+      className: "c-stop-icon-group c-vehicle-map__stop", // Prevent default leaflet class & outline
     }),
     [stopIconType]
   )
