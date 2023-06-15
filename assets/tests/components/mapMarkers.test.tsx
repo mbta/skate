@@ -6,7 +6,6 @@ import {
   StationMarker,
   TrainVehicleMarker,
   VehicleMarker,
-  StopMarker,
 } from "../../src/components/mapMarkers"
 import stopFactory from "../factories/stop"
 import vehicleFactory from "../factories/vehicle"
@@ -17,6 +16,7 @@ import userEvent from "@testing-library/user-event"
 import { LocationType } from "../../src/models/stopData"
 import useDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import { StopMarkerWithInfo } from "../../src/components/map/markers/stopMarker"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -55,10 +55,10 @@ describe("TrainVehicleMarker", () => {
   })
 })
 
-describe("StopMarker", () => {
+describe("StopMarkerWithInfo", () => {
   test("Stop name displayed on hover when not including stop card", async () => {
     const { container } = renderInMap(
-      <StopMarker stop={stop} includeStopCard={false} />
+      <StopMarkerWithInfo stop={stop} includeStopCard={false} />
     )
     await userEvent.hover(container.querySelector(".c-vehicle-map__stop")!)
     expect(screen.getByText(stop.name)).toBeVisible()
@@ -68,7 +68,7 @@ describe("StopMarker", () => {
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValue(false)
 
     const { container } = renderInMap(
-      <StopMarker stop={stop} includeStopCard={false} />
+      <StopMarkerWithInfo stop={stop} includeStopCard={false} />
     )
     await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
     expect(screen.getByText(stop.name)).toBeVisible()
@@ -78,7 +78,7 @@ describe("StopMarker", () => {
     mockFullStoryEvent()
 
     const { container } = renderInMap(
-      <StopMarker stop={stop} direction={0} includeStopCard={true} />
+      <StopMarkerWithInfo stop={stop} direction={0} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
     expect(screen.getByText("Outbound")).toBeInTheDocument()
