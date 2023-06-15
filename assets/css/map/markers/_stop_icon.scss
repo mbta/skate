@@ -1,12 +1,17 @@
 .c-stop-icon {
   transition: 50ms 50ms;
 
-  &, svg {
+  &,
+  svg {
     display: block;
     overflow: visible;
   }
 
-  &, svg, .c-stop-icon__circle, .c-stop-icon__bus, .c-stop-icon__focus-circle{
+  &,
+  svg,
+  .c-stop-icon__circle,
+  .c-stop-icon__bus,
+  .c-stop-icon__focus-circle {
     transform-origin: center;
   }
 
@@ -29,7 +34,9 @@
     clip-rule: evenodd;
   }
 
-  &:hover, &:focus, &[data-selected] {
+  &:hover,
+  &:focus,
+  &[data-selected] {
     scale: 1.2;
 
     .c-stop-icon__circle {
