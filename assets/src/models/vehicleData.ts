@@ -8,19 +8,18 @@ import {
   optional,
   string,
   type,
+  union,
 } from "superstruct"
 import {
   BlockWaiver,
   DataDiscrepancy,
   Ghost,
-  RouteStatus,
   Vehicle,
   VehicleOrGhost,
   VehicleScheduledLocation,
   VehicleStopStatus,
   VehicleTimepointStatus,
 } from "../realtime.d"
-import { DirectionId, RoutePatternId } from "../schedule.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
 
 const DataDiscrepancySourceData = type({
@@ -122,27 +121,29 @@ export const VehicleData = type({
 })
 export type VehicleData = Infer<typeof VehicleData>
 
-export interface GhostData {
-  id: string
-  direction_id: DirectionId
-  route_id: string
-  route_pattern_id: RoutePatternId | null
-  trip_id: string
-  headsign: string
-  block_id: string
-  run_id: string | null
-  via_variant: string | null
-  layover_departure_time: number | null
-  scheduled_timepoint_status: VehicleTimepointStatusData
-  scheduled_logon: number | null
-  route_status: RouteStatus
-  block_waivers: BlockWaiverData[]
-  current_piece_start_place: string | null
-  current_piece_first_route: string | null
-  incoming_trip_direction_id: DirectionId | null
-}
+export const GhostData = type({
+  id: string(),
+  direction_id: enums([0, 1]),
+  route_id: string(),
+  route_pattern_id: nullable(string()),
+  trip_id: string(),
+  headsign: string(),
+  block_id: string(),
+  run_id: nullable(string()),
+  via_variant: nullable(string()),
+  layover_departure_time: nullable(number()),
+  scheduled_timepoint_status: VehicleTimepointStatusData,
+  scheduled_logon: nullable(number()),
+  route_status: enums(["on_route", "laying_over", "pulling_out"]), // TODO: pull this out
+  block_waivers: array(BlockWaiverData),
+  current_piece_start_place: nullable(string()),
+  current_piece_first_route: nullable(string()),
+  incoming_trip_direction_id: nullable(enums([0, 1])),
+})
+export type GhostData = Infer<typeof GhostData>
 
-export type VehicleOrGhostData = VehicleData | GhostData
+export const VehicleOrGhostData = union([VehicleData, GhostData])
+export type VehicleOrGhostData = Infer<typeof VehicleOrGhostData>
 
 export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   id: vehicleData.id,
