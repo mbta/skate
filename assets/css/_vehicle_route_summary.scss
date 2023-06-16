@@ -20,15 +20,15 @@
     grid-area: separator;
   }
 
-  .c-schedule-adherence {
+  .c-vehicle-route-summary__adherence {
     grid-area: adherence;
   }
 
-  .c-vehicle-route-direction {
+  .c-vehicle-route-summary__direction {
     grid-area: direction;
   }
 
-  .c-route-variant-name {
+  .c-vehicle-route-summary__route-variant {
     grid-area: route-name;
   }
   // #endregion
