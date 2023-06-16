@@ -85,14 +85,12 @@ export const VehicleRouteSummary = ({
     {onRouteVariantNameClicked ? (
       <button
         onClick={onRouteVariantNameClicked}
-        className={joinClasses(
-          [
-            "c-vehicle-route-summary__route-variant",
-            "c-vehicle-route-summary__route-variant--clickable",
-            "headsign",
-            "font-m-semi",
-          ]
-        )}
+        className={joinClasses([
+          "c-vehicle-route-summary__route-variant",
+          "c-vehicle-route-summary__route-variant--clickable",
+          "headsign",
+          "font-m-semi",
+        ])}
       >
         <RouteVariantName vehicle={vehicle} />
       </button>
