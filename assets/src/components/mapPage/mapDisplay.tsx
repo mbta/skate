@@ -1,6 +1,6 @@
 import Leaflet, { Bounds, Point } from "leaflet"
 import React, { useContext, useEffect, useState } from "react"
-import { Pane, Tooltip } from "react-leaflet"
+import { Pane } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -218,11 +218,6 @@ const RoutePatternLayers = ({
     <>
       <ZoomLevelWrapper>
         {(zoomLevel) => {
-          const routePatternIdSplit = routePattern.id.split("-")
-          const variantFormatted =
-            routePatternIdSplit.length === 3 && routePatternIdSplit[1] !== "_"
-              ? "_" + routePatternIdSplit[1]
-              : ""
           return (
             <>
               {routePattern.shape && (
@@ -231,19 +226,7 @@ const RoutePatternLayers = ({
                     shape={routePattern.shape}
                     isSelected={isSelected}
                     onClick={onShapeClick}
-                  >
-                    {(zoomLevel >= 16 && !isSelected && (
-                      <Tooltip
-                        className="route-shape__tooltip"
-                        sticky={true}
-                        direction="top"
-                      >
-                        Click to select route {routePattern.routeId}
-                        {variantFormatted}.
-                      </Tooltip>
-                    )) ||
-                      undefined}
-                  </RouteShape>
+                  />
                   <Pane
                     name="selectedRoutePatternStops"
                     pane="markerPane"
@@ -424,14 +407,6 @@ const SelectionDataLayers = ({
       vehicleId: vehicleOrGhost.id,
     })
 
-  const selectRoutePattern = (routePattern: RoutePattern) => {
-    setSelection({
-      type: SelectedEntityType.RoutePattern,
-      routeId: routePattern.routeId,
-      routePatternId: routePattern.id,
-    })
-  }
-
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
       return (
@@ -439,7 +414,6 @@ const SelectionDataLayers = ({
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
-          selectRoutePattern={selectRoutePattern}
           setStateClasses={setStateClasses}
         />
       )
@@ -452,7 +426,6 @@ const SelectionDataLayers = ({
           }}
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
-          selectRoutePattern={selectRoutePattern}
           setStateClasses={setStateClasses}
         />
       )
