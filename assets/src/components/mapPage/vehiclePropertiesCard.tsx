@@ -179,7 +179,7 @@ const VehiclePropertiesCard = ({
       <ScheduleAdherence
         vehicle={vehicleOrGhost}
         title="Vehicle Schedule Adherence"
-        className="c-vehicle-route-summary__adherence label font-xs-reg"
+        className="label font-xs-reg"
       />
     </div>
 
