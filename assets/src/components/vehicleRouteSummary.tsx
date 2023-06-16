@@ -91,7 +91,7 @@ export const VehicleRouteSummary = ({
             "c-vehicle-route-summary__route-variant--clickable",
             "headsign",
             "font-m-semi",
-          ].flat()
+          ]
         )}
       >
         <RouteVariantName vehicle={vehicle} />
