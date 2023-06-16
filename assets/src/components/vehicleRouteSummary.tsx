@@ -60,9 +60,11 @@ export const VehicleRouteDirection = ({
   )
 }
 
+export type VehicleRouteSummaryProps = VehicleOrGhostProp
+
 export const VehicleRouteSummary = ({
   vehicle,
-}: VehicleOrGhostProp): React.ReactElement => (
+}: VehicleRouteSummaryProps): React.ReactElement => (
   <div className="c-vehicle-route-summary">
     <VehicleRouteDirection
       vehicle={vehicle}
