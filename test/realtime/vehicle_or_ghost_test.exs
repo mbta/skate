@@ -1,6 +1,8 @@
 defmodule Realtime.VehicleOrGhostTest do
   use ExUnit.Case, async: true
 
+  import Skate.Factory
+
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
 
   @vehicle %Vehicle{
@@ -15,7 +17,7 @@ defmodule Realtime.VehicleOrGhostTest do
     trip_id: "vehicle-trip-1",
     bearing: nil,
     block_id: "A505-106",
-    operator_id: "71041",
+    operator_id: build(:operator_id),
     operator_first_name: "FRANCES",
     operator_last_name: "FRANKLIN",
     operator_name: "FRANKLIN",
@@ -62,6 +64,9 @@ defmodule Realtime.VehicleOrGhostTest do
 
   describe "find_by/2" do
     test "matches on any of run, vehicle, or operator" do
+      vehicle = @vehicle
+      vehicles = [vehicle, @ghost]
+
       assert VehicleOrGhost.find_by(@vehicles, %{text: "vehicle-run-1", property: :all}) ==
                [@vehicle]
 
@@ -92,8 +97,8 @@ defmodule Realtime.VehicleOrGhostTest do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "franklin, frances", property: :all}) ==
                [@vehicle]
 
-      assert VehicleOrGhost.find_by(@vehicles, %{text: "710", property: :all}) ==
-               [@vehicle]
+      assert VehicleOrGhost.find_by(vehicles, %{text: vehicle.operator_id, property: :all}) ==
+               [vehicle]
     end
 
     test "matches on run ID" do
@@ -141,8 +146,11 @@ defmodule Realtime.VehicleOrGhostTest do
     end
 
     test "matches on operator ID" do
-      assert VehicleOrGhost.find_by(@vehicles, %{text: "710", property: :operator}) ==
-               [@vehicle]
+      vehicle = @vehicle
+      vehicles = [vehicle, @ghost]
+
+      assert VehicleOrGhost.find_by(vehicles, %{text: vehicle.operator_id, property: :operator}) ==
+               [vehicle]
     end
 
     test "short circuits to an empty result if trying to match on the empty string" do

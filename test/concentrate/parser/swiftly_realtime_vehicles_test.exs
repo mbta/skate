@@ -1,6 +1,7 @@
 defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
   use ExUnit.Case, async: true
 
+  import Skate.Factory
   import Concentrate.TestHelpers
 
   alias Concentrate.VehiclePosition
@@ -20,6 +21,8 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
 
   describe "decode_vehicle/1" do
     test "decodes Swiftly vehicle data response JSON" do
+      operator_id = build(:operator_id)
+
       input = %{
         "id" => "y1714",
         "routeId" => "39",
@@ -39,7 +42,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
         "layoverDepTimeStr" => "14:43:00",
         "nextStopId" => "23391",
         "nextStopName" => "Back Bay",
-        "driver" => "PAUL - 71924",
+        "driver" => "PAUL - #{operator_id}",
         "field1Name" => "Run",
         "field1Value" => "122-1065",
         "runId" => "122-1065",
@@ -68,7 +71,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           trip_id: "39998535",
           block_id: "B36-173",
           run_id: "122-1065",
-          operator_id: "71924",
+          operator_id: operator_id,
           operator_last_name: "PAUL",
           last_updated: 1_559_672_827,
           last_updated_by_source: %{"swiftly" => 1_559_672_827},

@@ -1,6 +1,7 @@
 defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
   use ExUnit.Case, async: true
 
+  import Skate.Factory
   import Concentrate.TestHelpers
 
   alias Concentrate.{TripUpdate, StopTimeUpdate, VehiclePosition}
@@ -100,7 +101,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
         "occupancy_percentage" => 0.67,
         "occupancy_status" => "FEW_SEATS_AVAILABLE",
         "operator" => %{
-          "id" => "2841",
+          "id" => build(:operator_id),
           "logon_time" => 1_534_340_301,
           "first_name" => "JIMMY",
           "last_name" => "EVANS"
@@ -157,7 +158,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  trip_id: "37165437-X",
                  stop_sequence: 670,
                  block_id: "Q238-135",
-                 operator_id: "2841",
+                 operator_id: input["operator"]["id"],
                  operator_first_name: "JIMMY",
                  operator_last_name: "EVANS",
                  operator_logon_time: 1_534_340_301,

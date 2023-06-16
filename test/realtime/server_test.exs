@@ -13,7 +13,7 @@ defmodule Realtime.ServerTest do
              label: "v1-label",
              run_id: "123-9048",
              block_id: "vehicle_block",
-             operator_id: "71041",
+             operator_id: build(:operator_id),
              operator_first_name: "FRANK",
              operator_last_name: "FRANCIS",
              operator_name: "FRANCIS"
@@ -459,14 +459,16 @@ defmodule Realtime.ServerTest do
     end
 
     test "searches all vehicles by operator ID", %{ets: ets} do
+      vehicle = @vehicle
+
       search_params = %{
-        text: "710",
+        text: vehicle.operator_id,
         property: :operator
       }
 
       results = Server.lookup({ets, {:search, search_params}})
 
-      assert Enum.member?(results, @vehicle)
+      assert Enum.member?(results, vehicle)
     end
 
     test "fetches alerts by route from the ets table", %{ets: ets} do
