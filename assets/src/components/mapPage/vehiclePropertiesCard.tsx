@@ -7,7 +7,10 @@ import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { isLoading, isOk } from "../../util/fetchResult"
 import Loading from "../loading"
 import StreetViewButton from "../streetViewButton"
-import { VehicleRouteSummary } from "../vehicleRouteSummary"
+import {
+  VehicleRouteSummary,
+  VehicleRouteSummaryEventProps,
+} from "../vehicleRouteSummary"
 import { ScheduleAdherence } from "../scheduleAdherence"
 
 interface VehicleProp {
@@ -166,10 +169,13 @@ const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
 // #endregion
 
 // #region Vehicle Properties Card
+export type VehiclePropertiesCardProps = VehicleOrGhostProp &
+  VehicleRouteSummaryEventProps
 
 const VehiclePropertiesCard = ({
   vehicleOrGhost,
-}: VehicleOrGhostProp): React.ReactElement => (
+  onRouteVariantNameClicked,
+}: VehiclePropertiesCardProps): React.ReactElement => (
   <div
     className="c-vehicle-properties-card"
     aria-label="Vehicle Properties Card"
@@ -184,7 +190,10 @@ const VehiclePropertiesCard = ({
     </div>
 
     <div className="c-vehicle-properties-card__summary">
-      <VehicleRouteSummary vehicle={vehicleOrGhost} />
+      <VehicleRouteSummary
+        vehicle={vehicleOrGhost}
+        onRouteVariantNameClicked={onRouteVariantNameClicked}
+      />
     </div>
 
     <div className="c-vehicle-properties-card__body">
