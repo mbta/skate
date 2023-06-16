@@ -9,7 +9,7 @@ import React, {
 } from "react"
 import { Pane, Tooltip } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
-import useMostRecentVehicleById from "../../hooks/useMosRecentVehicleById"
+import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
 import useSocket from "../../hooks/useSocket"
 import { useStations } from "../../hooks/useStations"

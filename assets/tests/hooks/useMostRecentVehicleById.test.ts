@@ -1,7 +1,7 @@
 import { makeMockSocket } from "../testHelpers/socketHelpers"
 import { renderHook } from "@testing-library/react"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
-import useMostRecentVehicleById from "../../src/hooks/useMosRecentVehicleById"
+import useMostRecentVehicleById from "../../src/hooks/useMostRecentVehicleById"
 import vehicleFactory from "../factories/vehicle"
 import { VehicleId, VehicleOrGhost } from "../../src/realtime"
 
