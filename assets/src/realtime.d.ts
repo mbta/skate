@@ -111,7 +111,7 @@ export interface Vehicle {
   timestamp: number
   latitude: number
   longitude: number
-  directionId: DirectionId
+  directionId: DirectionId | null
   routeId: RouteId | null
   routePatternId: RoutePatternId | null
   tripId: TripId | null
@@ -124,8 +124,8 @@ export interface Vehicle {
   overloadOffset?: number
   bearing: number
   blockId: BlockId
-  previousVehicleId: string
-  scheduleAdherenceSecs: number
+  previousVehicleId: string | null
+  scheduleAdherenceSecs: number | null
   incomingTripDirectionId: DirectionId | null
   isShuttle: boolean
   isOverload: boolean
@@ -147,8 +147,8 @@ export type VehicleOrGhost = Vehicle | Ghost
 export type VehicleId = string
 
 export interface VehicleStopStatus {
-  stopId: StopId
-  stopName: string
+  stopId: StopId | null
+  stopName: string | null
 }
 
 export interface VehicleScheduledLocation {

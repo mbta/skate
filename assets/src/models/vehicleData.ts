@@ -35,8 +35,8 @@ const DataDiscrepancyData = type({
 type DataDiscrepancyData = Infer<typeof DataDiscrepancyData>
 
 const VehicleStopStatusData = type({
-  stop_id: string(),
-  stop_name: string(),
+  stop_id: nullable(string()),
+  stop_name: nullable(string()),
 })
 type VehicleStopStatusData = Infer<typeof VehicleStopStatusData>
 
@@ -75,10 +75,10 @@ export const VehicleData = type({
   timestamp: number(),
   latitude: number(),
   longitude: number(),
-  direction_id: enums([0, 1]),
-  route_id: string(),
+  direction_id: nullable(enums([0, 1])),
+  route_id: nullable(string()),
   route_pattern_id: nullable(string()),
-  trip_id: string(),
+  trip_id: nullable(string()),
   headsign: nullable(string()),
   via_variant: nullable(string()),
   operator_id: string(),
@@ -88,8 +88,8 @@ export const VehicleData = type({
   overload_offset: nullable(number()),
   bearing: number(),
   block_id: string(),
-  previous_vehicle_id: string(),
-  schedule_adherence_secs: number(),
+  previous_vehicle_id: nullable(string()),
+  schedule_adherence_secs: nullable(number()),
   incoming_trip_direction_id: nullable(enums([0, 1])), // TODO: reconcile with routePatternData
   is_shuttle: boolean(),
   is_overload: boolean(),
