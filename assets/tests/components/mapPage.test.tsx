@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom"
 import {
   fireEvent,
+  getByRole,
   render,
   screen,
   waitFor,
@@ -631,7 +632,7 @@ describe("<MapPage />", () => {
   })
 
   describe("<RoutePropertiesCard />", () => {
-    test("RPC replaces VPC vehicle's route shape is selected", async () => {
+    test("when VehiclePropertiesCard Route Button is clicked, should replace VPC with the associated route's RPC", async () => {
       jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
       mockFullStoryEvent()
 
@@ -650,7 +651,7 @@ describe("<MapPage />", () => {
         [routePattern.id]: routePattern,
       })
 
-      const { container } = render(
+      render(
         <RealDispatchWrapper
           initialState={stateFactory.build({
             searchPageState: {
@@ -671,10 +672,15 @@ describe("<MapPage />", () => {
       )
       expect(vehiclePropertiesCard.get()).toBeVisible()
 
-      fireEvent.click(container.querySelector(".c-vehicle-map__route-shape")!)
+      fireEvent.click(
+        getByRole(vehiclePropertiesCard.get(), "button", {
+          name: "Route Variant Name",
+        })
+      )
       await waitFor(() => expect(routePropertiesCard.get()).toBeVisible())
       expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
     })
+
     test("clicking vehicle when RPC is open closes RPC and opens VPC", async () => {
       jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 

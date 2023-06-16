@@ -84,6 +84,14 @@
     background-color: $color-gray-300;
     width: 1px;
   }
+
+  .c-vehicle-route-summary__route-variant--clickable {
+    color: $color-eggplant-700;
+    text-decoration: underline;
+    text-align: left;
+    text-underline-offset: 0.25rem;
+    text-underline-offset: 0.3ex;
+  }
   // #endregion
 }
 // #endregion
