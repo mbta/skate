@@ -212,7 +212,7 @@ const RoutePatternLayers = ({
 }: {
   routePattern: RoutePattern
   isSelected: boolean
-  onShapeClick: () => void
+  onShapeClick?: () => void
 }): JSX.Element => {
   return routePattern.shape ? (
     <>
