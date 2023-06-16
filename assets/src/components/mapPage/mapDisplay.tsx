@@ -261,7 +261,7 @@ const SelectedVehicleDataLayers = ({
   vehicleOrGhost: VehicleOrGhost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
-  selectRoutePattern: (routePattern: RoutePattern) => void
+  selectRoutePattern?: (routePattern: RoutePattern) => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
   const position =
@@ -319,7 +319,11 @@ const SelectedVehicleDataLayers = ({
             <RoutePatternLayers
               routePattern={routePatternForVehicle}
               isSelected={false}
-              onShapeClick={() => selectRoutePattern(routePatternForVehicle)}
+              onShapeClick={
+                selectRoutePattern &&
+                routePatternForVehicle &&
+                (() => selectRoutePattern(routePatternForVehicle))
+              }
             />
           )}
         </>
@@ -344,7 +348,7 @@ const SelectedRouteDataLayers = ({
   routePatternIdentifier: RoutePatternIdentifier
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
-  selectRoutePattern: (routePattern: RoutePattern) => void
+  selectRoutePattern?: (routePattern: RoutePattern) => void
   setStateClasses: (classes: string | undefined) => void
 }) => {
   const selectedRoutePattern: RoutePattern | undefined = routePatterns
@@ -366,7 +370,11 @@ const SelectedRouteDataLayers = ({
         <RoutePatternLayers
           routePattern={selectedRoutePattern}
           isSelected={true}
-          onShapeClick={() => selectRoutePattern(selectedRoutePattern)}
+          onShapeClick={
+            selectRoutePattern &&
+            selectedRoutePattern &&
+            (() => selectRoutePattern(selectedRoutePattern))
+          }
         />
       )}
       <SecondaryRouteVehicles
