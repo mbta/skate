@@ -74,7 +74,7 @@ defmodule Skate.MixProject do
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.3", only: :dev},
       {:phoenix_pubsub, "~> 2.0"},
-      {:phoenix, "~> 1.6.0"},
+      {:phoenix, "~> 1.7.6"},
       {:plug_cowboy, "~> 2.1"},
       {:postgrex, "~> 0.15"},
       {:sentry, "~> 7.0"},
