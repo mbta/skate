@@ -315,6 +315,7 @@ export const RouteShape = React.memo(
         }
         positions={positions}
         eventHandlers={onClick ? { click: onClick } : {}}
+        interactive={onClick !== undefined}
       >
         {children}
       </Polyline>
