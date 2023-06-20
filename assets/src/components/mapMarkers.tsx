@@ -294,12 +294,10 @@ export const RouteShape = React.memo(
   ({
     shape,
     isSelected,
-    onClick,
     children,
   }: {
     shape: Shape
     isSelected?: boolean
-    onClick?: () => void
     children?: JSX.Element
   }) => {
     const positions: LatLngExpression[] = shape.points.map((point) => [
@@ -308,14 +306,13 @@ export const RouteShape = React.memo(
     ])
     return (
       <Polyline
-        className={
-          `c-vehicle-map__route-shape ${shape.className || ""}` +
-          `${isSelected ? " c-vehicle-map__route-shape--selected" : ""}` +
-          `${onClick ? "" : " c-vehicle-map__route-shape--no-hover"}`
-        }
+        className={joinClasses([
+          "c-vehicle-map__route-shape",
+          isSelected && "c-vehicle-map__route-shape--selected",
+          shape.className,
+        ])}
         positions={positions}
-        eventHandlers={onClick ? { click: onClick } : {}}
-        interactive={onClick !== undefined}
+        interactive={false}
       >
         {children}
       </Polyline>

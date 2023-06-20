@@ -2039,7 +2039,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
             >
               <g>
                 <path
-                  class="c-vehicle-map__route-shape c-vehicle-map__route-shape--no-hover"
+                  class="c-vehicle-map__route-shape"
                   d="M0 0"
                   fill="none"
                   stroke="#3388ff"

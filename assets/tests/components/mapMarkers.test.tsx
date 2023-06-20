@@ -172,20 +172,6 @@ describe("RouteShape", () => {
       "route-shape--red"
     )
   })
-
-  test("onClick called on click", async () => {
-    const mockOnClick = jest.fn()
-    const { container } = renderInMap(
-      <RouteShape
-        shape={{ id: "shape1", points: [{ lat: 0, lon: 0 }] }}
-        onClick={mockOnClick}
-      />
-    )
-    await userEvent.click(
-      container.querySelector(".c-vehicle-map__route-shape")!
-    )
-    expect(mockOnClick).toHaveBeenCalled()
-  })
 })
 
 describe("GarageMarkers", () => {
