@@ -72,6 +72,15 @@ defmodule Skate.Settings.User do
     Skate.Repo.all(from(u in users_for_route_ids_query(route_ids), select: u.id))
   end
 
+  def is_in_test_group(user_id, test_group_name) do
+    %{test_groups: user_test_groups} =
+      DbUser
+      |> Skate.Repo.get(user_id)
+      |> Skate.Repo.preload(:test_groups)
+
+    Enum.any?(user_test_groups, &(&1.name == test_group_name))
+  end
+
   defp users_for_route_ids_query(route_ids) do
     from(u in DbUser,
       join: rt in assoc(u, :route_tabs),

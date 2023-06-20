@@ -3,6 +3,7 @@ defmodule Skate.Settings.UserTest do
 
   alias Skate.Settings.User
   alias Skate.Settings.Db.User, as: DbUser
+  alias Skate.Settings.TestGroup
   @username "username"
   @email "user@test.com"
 
@@ -119,6 +120,20 @@ defmodule Skate.Settings.UserTest do
 
     test "raises error if email is nil" do
       assert_raise FunctionClauseError, fn -> User.upsert(@username, nil) end
+    end
+  end
+
+  describe "is_in_test_group/2" do
+    test "returns true only if given is in test group" do
+      user_1 = User.upsert(@username, @email)
+      user_2 = User.upsert("otheruser", "otheruser@test.com")
+      target_test_group = TestGroup.create("target_test_group")
+      other_test_group = TestGroup.create("other_test_group")
+
+      target_test_group = TestGroup.update(%{target_test_group | users: [user_1, user_2]})
+      other_test_group = TestGroup.update(%{other_test_group | users: [user_2]})
+      assert User.is_in_test_group(user_1.id, target_test_group.name)
+      refute User.is_in_test_group(user_1.id, other_test_group.name)
     end
   end
 end

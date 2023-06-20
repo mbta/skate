@@ -41,8 +41,12 @@ defmodule Concentrate.Consumer.VehiclePositions do
 
     by_route = Vehicles.group_by_route(all_vehicles, timepoint_names_by_id)
     shuttles = Enum.filter(all_vehicles, & &1.is_shuttle)
+    logged_out_vehicles = Enum.filter(all_vehicles, &is_nil(&1.run_id))
 
-    _ = Server.update_vehicles({by_route, shuttles})
+    update_vehicles_fn =
+      Application.get_env(:skate, :update_vehicles_fn, &Server.update_vehicles/1)
+
+    _ = update_vehicles_fn.({by_route, shuttles, logged_out_vehicles})
 
     {:noreply, [], state}
   end

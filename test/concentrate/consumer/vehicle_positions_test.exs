@@ -5,6 +5,66 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
   alias Concentrate.Consumer.VehiclePositions
 
   describe "handle_events/3" do
+    @vehicle_position %Concentrate.VehiclePosition{
+      bearing: 0,
+      block_id: "A505-106",
+      id: "y0562",
+      label: "0562",
+      last_updated: 1_558_121_727,
+      latitude: 42.3408556,
+      license_plate: nil,
+      longitude: -71.0642766,
+      odometer: nil,
+      operator_id: "00001",
+      operator_last_name: "last_name",
+      run_id: "123-9048",
+      route_id: "505",
+      speed: nil,
+      current_status: :IN_TRANSIT_TO,
+      stop_id: "6551",
+      stop_sequence: 1,
+      trip_id: "39984755"
+    }
+    @vehicle_position_shuttle %Concentrate.VehiclePosition{
+      bearing: 0,
+      block_id: nil,
+      id: "y0563",
+      label: "0563",
+      last_updated: 1_558_121_727,
+      latitude: 42.3408556,
+      license_plate: nil,
+      longitude: -71.0642766,
+      odometer: nil,
+      operator_id: nil,
+      operator_last_name: nil,
+      run_id: "999-0000",
+      route_id: nil,
+      speed: nil,
+      current_status: nil,
+      stop_id: nil,
+      stop_sequence: nil,
+      trip_id: nil
+    }
+    @vehicle_position_logged_out %Concentrate.VehiclePosition{
+      bearing: 0,
+      block_id: nil,
+      id: "y0564",
+      label: "0564",
+      last_updated: 1_558_121_727,
+      latitude: 42.3408556,
+      license_plate: nil,
+      longitude: -71.0642766,
+      odometer: nil,
+      operator_id: nil,
+      operator_last_name: nil,
+      run_id: nil,
+      route_id: nil,
+      speed: nil,
+      current_status: nil,
+      stop_id: nil,
+      stop_sequence: nil,
+      trip_id: nil
+    }
     setup do
       reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
       reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
@@ -21,61 +81,11 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
               start_time: nil,
               trip_id: "39984755"
             },
-            [
-              %Concentrate.VehiclePosition{
-                bearing: 0,
-                block_id: "A505-106",
-                id: "y0562",
-                label: "0562",
-                last_updated: 1_558_121_727,
-                latitude: 42.3408556,
-                license_plate: nil,
-                longitude: -71.0642766,
-                odometer: nil,
-                operator_id: "71041",
-                operator_last_name: "FRANK",
-                run_id: "123-9048",
-                speed: nil,
-                current_status: :IN_TRANSIT_TO,
-                stop_id: "6551",
-                stop_sequence: 1,
-                trip_id: "39984755"
-              }
-            ],
+            [@vehicle_position],
             []
           },
-          {
-            %Concentrate.TripUpdate{
-              direction_id: 0,
-              route_id: "91",
-              schedule_relationship: :SCHEDULED,
-              start_date: nil,
-              start_time: nil,
-              trip_id: "40155689"
-            },
-            [
-              %Concentrate.VehiclePosition{
-                bearing: 0,
-                block_id: "G111-155",
-                id: "y0638",
-                label: "0638",
-                last_updated: 1_558_121_738,
-                latitude: 42.362946519,
-                license_plate: nil,
-                longitude: -71.0579357,
-                odometer: nil,
-                operator_id: "70112",
-                operator_last_name: "PANIAGUA",
-                run_id: "126-1430",
-                speed: 0.0,
-                current_status: :IN_TRANSIT_TO,
-                stop_id: "8310",
-                stop_sequence: 1,
-                trip_id: "40155689"
-              }
-            ],
-            []
-          }
+          {nil, [@vehicle_position_logged_out], []},
+          {nil, [@vehicle_position_shuttle], []}
         ]
       ]
 
@@ -87,6 +97,25 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
 
       assert response == {:noreply, [], %{}}
     end
+
+    test "calls update_vehicles with the expected parameters", %{events: events} do
+      %{route_id: route_id, id: vehicle_id} = @vehicle_position
+      shuttle_vehicle_id = @vehicle_position_shuttle.id
+      logged_out_vehicle_id = @vehicle_position_logged_out.id
+
+      pid = self()
+
+      reassign_env(:skate, :update_vehicles_fn, fn params ->
+        send(pid, params)
+      end)
+
+      VehiclePositions.handle_events(events, nil, %{})
+
+      assert_receive({vehicles_by_position, shuttles, logged_out_vehicles})
+      assert %{^route_id => [%{id: ^vehicle_id}]} = vehicles_by_position
+      assert [%{id: ^shuttle_vehicle_id}] = shuttles
+      assert [%{id: ^logged_out_vehicle_id}] = logged_out_vehicles
+    end
   end
 
   describe "backend implementation" do
@@ -94,7 +123,6 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
       state = %{}
 
       response = VehiclePositions.handle_info({make_ref(), %{}}, state)
-
       assert response == {:noreply, [], state}
     end
   end

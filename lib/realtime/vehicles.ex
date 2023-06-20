@@ -5,6 +5,8 @@ defmodule Realtime.Vehicles do
   alias Schedule.Run
 
   @doc """
+  Return a map of vehicles & ghosts by route_id, omitting those without a route_id.
+
   Also fills in ghost buses and checks for buses incoming from another route
 
   Vehicles are incoming from another route if they're scheduled to run within 15 minutes but are currently on another route.
@@ -33,7 +35,8 @@ defmodule Realtime.Vehicles do
   end
 
   @doc """
-  Exposed for testing
+  Exposed for testing.
+  Returns a map of vehicles & ghosts by route_id, omitting those without a route_id.
   """
   @spec group_by_route_with_blocks(
           [Vehicle.t()],

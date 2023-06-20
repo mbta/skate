@@ -33,7 +33,7 @@ defmodule Realtime.Server do
   @type subscription_key ::
           {:route_id, Route.id()}
           | :all_shuttles
-          | :all_vehicles
+          | :logged_in_vehicles
           | {:search, search_params()}
           | {:vehicle, String.t()}
           | {:run_ids, [Run.id()]}
@@ -41,8 +41,9 @@ defmodule Realtime.Server do
           | {:alerts, Route.id()}
 
   @type search_params :: %{
-          text: String.t(),
-          property: search_property()
+          :text => String.t(),
+          :property => search_property(),
+          optional(:include_logged_out_vehicles) => boolean()
         }
 
   @type search_property :: :all | :run | :vehicle | :operator
@@ -86,15 +87,11 @@ defmodule Realtime.Server do
     subscribe(server, :all_shuttles)
   end
 
-  @spec subscribe_to_search(String.t(), atom(), GenServer.server()) :: [VehicleOrGhost.t()]
-  def subscribe_to_search(text, property, server \\ default_name()) do
+  @spec subscribe_to_search(search_params(), GenServer.server()) :: [VehicleOrGhost.t()]
+  def subscribe_to_search(search_params, server \\ default_name()) do
     subscribe(
       server,
-      {:search,
-       %{
-         text: text,
-         property: property
-       }}
+      {:search, search_params}
     )
   end
 
@@ -132,7 +129,7 @@ defmodule Realtime.Server do
 
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
-  @spec subscribe(GenServer.server(), :all_vehicles) :: [Vehicle.t()]
+  @spec subscribe(GenServer.server(), :logged_in_vehicles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:vehicle, String.t()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:run_ids, [Run.id()]}) :: [VehicleOrGhost.t()]
@@ -144,15 +141,19 @@ defmodule Realtime.Server do
     lookup({ets, subscription_key})
   end
 
-  @spec update_vehicles({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}) :: term()
+  @spec update_vehicles({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()], [Vehicle.t()]}) ::
+          term()
   @spec update_vehicles(
-          {Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]},
+          {Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()], [Vehicle.t()]},
           GenServer.server()
         ) :: term()
   def update_vehicles(update_term, server \\ __MODULE__)
 
-  def update_vehicles({vehicles_by_route_id, shuttles}, server) do
-    GenServer.cast(server, {:update_vehicles, vehicles_by_route_id, shuttles})
+  def update_vehicles({vehicles_by_route_id, shuttles, logged_out_vehicles}, server) do
+    GenServer.cast(
+      server,
+      {:update_vehicles, vehicles_by_route_id, shuttles, logged_out_vehicles}
+    )
   end
 
   @spec update_alerts(Route.by_id([String.t()]), GenServer.server()) :: term()
@@ -161,7 +162,8 @@ defmodule Realtime.Server do
   end
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
-  @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), :logged_in_vehicles}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), :logged_out_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
@@ -169,9 +171,16 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), {:block_ids, [Block.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:alerts, Route.id()}}) :: [String.t()]
   def lookup({table, {:search, search_params}}) do
-    {table, :all_vehicles}
-    |> lookup()
-    |> VehicleOrGhost.find_by(search_params)
+    logged_in_vehicles = lookup({table, :logged_in_vehicles})
+
+    vehicles_to_search =
+      if Map.get(search_params, :include_logged_out_vehicles, false) do
+        logged_in_vehicles ++ lookup({table, :logged_out_vehicles})
+      else
+        logged_in_vehicles
+      end
+
+    VehicleOrGhost.find_by(vehicles_to_search, search_params)
   end
 
   def lookup({table, {:run_ids, run_ids}}) do
@@ -203,7 +212,7 @@ defmodule Realtime.Server do
   end
 
   def lookup({table, {:vehicle, vehicle_or_ghost_id}}) do
-    {table, :all_vehicles}
+    {table, :logged_in_vehicles}
     |> lookup()
     |> Enum.filter(&(&1.id == vehicle_or_ghost_id))
   end
@@ -235,7 +244,7 @@ defmodule Realtime.Server do
 
   def handle_info(:check_data_status, %__MODULE{ets: ets} = state) do
     all_vehicles =
-      {ets, :all_vehicles}
+      {ets, :logged_in_vehicles}
       |> lookup()
       |> Enum.filter(fn vehicle_or_ghost -> match?(%Vehicle{}, vehicle_or_ghost) end)
 
@@ -249,7 +258,7 @@ defmodule Realtime.Server do
 
   def handle_info(:ghost_stats, %__MODULE__{ets: ets} = state) do
     {explained_count, unexplained_count} =
-      {ets, :all_vehicles}
+      {ets, :logged_in_vehicles}
       |> lookup()
       |> Enum.filter(&match?(%Ghost{}, &1))
       |> Enum.reduce({0, 0}, fn ghost, {explained_count, unexplained_count} ->
@@ -282,7 +291,7 @@ defmodule Realtime.Server do
 
   @impl true
   def handle_cast(
-        {:update_vehicles, vehicles_by_route_id, shuttles},
+        {:update_vehicles, vehicles_by_route_id, shuttles, logged_out_vehicles},
         %__MODULE__{} = state
       ) do
     new_active_route_ids = Map.keys(vehicles_by_route_id)
@@ -302,15 +311,9 @@ defmodule Realtime.Server do
       |> Enum.map(& &1.block_id)
       |> Enum.filter(& &1)
 
-    _ =
-      update_vehicle_positions(
-        state,
-        vehicles_by_route_id,
-        shuttles,
-        new_active_route_ids,
-        new_active_run_ids,
-        new_active_block_ids
-      )
+    remove_inactive_keys(state, new_active_route_ids, new_active_run_ids, new_active_block_ids)
+
+    _ = update_vehicle_positions(state, vehicles_by_route_id, shuttles, logged_out_vehicles)
 
     new_state =
       Map.merge(state, %{
@@ -345,15 +348,13 @@ defmodule Realtime.Server do
     {:noreply, %{state | active_alert_route_ids: new_active_route_ids}}
   end
 
-  defp update_vehicle_positions(
+  defp remove_inactive_keys(
          %__MODULE__{
            ets: ets,
            active_route_ids: active_route_ids,
            active_run_ids: active_run_ids,
            active_block_ids: active_block_ids
          },
-         vehicles_by_route_id,
-         shuttles,
          new_active_route_ids,
          new_active_run_ids,
          new_active_block_ids
@@ -373,20 +374,34 @@ defmodule Realtime.Server do
     for block_id <- removed_block_ids do
       _ = :ets.delete(ets, {:block_id, block_id})
     end
+  end
 
+  defp update_vehicle_positions(
+         %__MODULE__{
+           ets: ets
+         },
+         vehicles_by_route_id,
+         shuttles,
+         logged_out_vehicles
+       ) do
     for {route_id, vehicles_and_ghosts} <- vehicles_by_route_id do
       active_vehicles_and_ghosts = Enum.filter(vehicles_and_ghosts, &block_is_active?/1)
       _ = :ets.insert(ets, {{:route_id, route_id}, active_vehicles_and_ghosts})
     end
 
-    all_vehicles = Enum.uniq(all_vehicles(vehicles_by_route_id) ++ shuttles)
+    logged_in_vehicles =
+      vehicles_by_route_id
+      |> all_vehicles()
+      |> Enum.concat(shuttles)
+      |> Enum.uniq_by(& &1.id)
 
-    for vehicle <- all_vehicles do
+    for vehicle <- logged_in_vehicles do
       _ = :ets.insert(ets, {{:run_id, vehicle.run_id}, vehicle})
       _ = :ets.insert(ets, {{:block_id, vehicle.block_id}, vehicle})
     end
 
-    :ets.insert(ets, {:all_vehicles, all_vehicles})
+    :ets.insert(ets, {:logged_in_vehicles, logged_in_vehicles})
+    :ets.insert(ets, {:logged_out_vehicles, logged_out_vehicles})
 
     :ets.insert(ets, {:all_shuttles, shuttles})
   end
