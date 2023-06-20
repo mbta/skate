@@ -1,11 +1,11 @@
 import { flatten, partition } from "../helpers/array"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, VehicleOrGhost } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule"
 import { isVehicle } from "./vehicle"
 
 interface NextAndPreviousVehicle {
-  nextVehicle?: Vehicle
-  previousVehicle?: Vehicle
+  nextVehicle?: VehicleInScheduledService
+  previousVehicle?: VehicleInScheduledService
 }
 
 export const allVehiclesAndGhosts = (
@@ -15,7 +15,7 @@ export const allVehiclesAndGhosts = (
 export const allVehiclesForRoute = (
   vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>,
   routeId: RouteId
-): Vehicle[] =>
+): VehicleInScheduledService[] =>
   (vehiclesByRouteId[routeId] || [])
     .filter(isVehicle)
     .filter((vehicle) => vehicle.routeId === routeId)
@@ -23,12 +23,17 @@ export const allVehiclesForRoute = (
 /**
  * Partition vehicles by direction
  */
-export const byDirection = (vehicles: Vehicle[]): Vehicle[][] =>
-  partition(vehicles, (vehicle: Vehicle): boolean => vehicle.directionId === 0)
+export const byDirection = (
+  vehicles: VehicleInScheduledService[]
+): VehicleInScheduledService[][] =>
+  partition(
+    vehicles,
+    (vehicle: VehicleInScheduledService): boolean => vehicle.directionId === 0
+  )
 
 export const nextAndPreviousVehicle = (
-  vehicles: Vehicle[],
-  currentVehicle: Vehicle
+  vehicles: VehicleInScheduledService[],
+  currentVehicle: VehicleInScheduledService
 ): NextAndPreviousVehicle => {
   const vehiclesGoingTheSameDirection =
     byDirection(vehicles)[currentVehicle.directionId]

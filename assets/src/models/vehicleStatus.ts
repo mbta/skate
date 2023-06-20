@@ -1,4 +1,4 @@
-import { Vehicle, VehicleOrGhost } from "../realtime.d"
+import { VehicleInScheduledService, VehicleOrGhost } from "../realtime.d"
 import { isGhost, isVehicle } from "./vehicle"
 import { VehicleAdherenceColorsSetting } from "../userSettings"
 
@@ -42,7 +42,9 @@ export const drawnStatus = (vehicleOrGhost: VehicleOrGhost): DrawnStatus => {
   return onTimeStatus(vehicle.scheduleAdherenceSecs)
 }
 
-export const humanReadableScheduleAdherence = (vehicle: Vehicle): string =>
+export const humanReadableScheduleAdherence = (
+  vehicle: VehicleInScheduledService
+): string =>
   vehicle.isOffCourse
     ? "Invalid"
     : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))

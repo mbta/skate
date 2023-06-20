@@ -3,7 +3,7 @@ import renderer from "react-test-renderer"
 import IncomingBox from "../../src/components/incomingBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { initialState, selectVehicle } from "../../src/state"
 
 import vehicleFactory from "../factories/vehicle"
@@ -27,7 +27,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a vehicle", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -151,7 +151,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a crowding view of a vehicle", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -224,7 +224,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a crowding view missing crowding data", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -294,7 +294,7 @@ describe("IncomingBox", () => {
   test("clicking an incoming crowding icon selects the associated vehicle", async () => {
     const mockDispatch = jest.fn()
 
-    const vehicle: Vehicle = vehicleFactory.build()
+    const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>

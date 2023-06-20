@@ -15,7 +15,11 @@ import useSocket from "../../hooks/useSocket"
 import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { isVehicle, filterVehicles } from "../../models/vehicle"
-import { Vehicle, VehicleId, VehicleOrGhost } from "../../realtime"
+import {
+  VehicleInScheduledService,
+  VehicleId,
+  VehicleOrGhost,
+} from "../../realtime"
 import {
   ByRoutePatternId,
   RouteId,
@@ -49,7 +53,7 @@ const SecondaryRouteVehicles = ({
 }: {
   selectedVehicleId: VehicleId | null
   selectedVehicleRoute: RouteId | null
-  onVehicleSelect: (vehicle: Vehicle) => void
+  onVehicleSelect: (vehicle: VehicleInScheduledService) => void
 }) => {
   const { socket } = useSocket()
   const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
@@ -57,7 +61,7 @@ const SecondaryRouteVehicles = ({
     <>
       {filterVehicles(vehicles)
         .filter((vehicle) => vehicle.id !== selectedVehicleId)
-        .map((vehicle: Vehicle) => {
+        .map((vehicle: VehicleInScheduledService) => {
           return (
             <VehicleMarker
               key={vehicle.id}

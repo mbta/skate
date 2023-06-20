@@ -23,7 +23,12 @@ import useInterval from "../hooks/useInterval"
 import { flatten, uniqBy } from "../helpers/array"
 import { saveState, loadState } from "../localStorage"
 import { isVehicle, isGhost } from "../models/vehicle"
-import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
+import {
+  VehicleInScheduledService,
+  Ghost,
+  RunId,
+  VehicleOrGhost,
+} from "../realtime"
 import { ByRouteId } from "../schedule"
 import {
   Action,
@@ -480,7 +485,7 @@ const LateBusRow = ({
   hidingTimestamps,
   toggleCheckedState,
 }: {
-  vehicle: Vehicle
+  vehicle: VehicleInScheduledService
   dispatch: Dispatch<Action>
   selectedIds: RunId[]
   hidingTimestamps: HidingTimestamps

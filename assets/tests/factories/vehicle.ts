@@ -1,6 +1,9 @@
 import { Factory } from "fishery"
 import { defaultCenter } from "../../src/components/map"
-import { Vehicle, VehicleTimepointStatus } from "../../src/realtime"
+import {
+  VehicleInScheduledService,
+  VehicleTimepointStatus,
+} from "../../src/realtime"
 import {
   dataDiscrepancyFactory,
   swiftlyDataDiscrepancySourceFactory,
@@ -9,7 +12,7 @@ import {
 import { localGeoCoordinateFactory } from "./geoCoordinate"
 import { runIdFactory } from "./run"
 
-export const randomLocationVehicle = Factory.define<Vehicle>(
+export const randomLocationVehicle = Factory.define<VehicleInScheduledService>(
   ({ sequence, associations }) => ({
     id: `v${sequence}`,
     label: `v${sequence}-label`,

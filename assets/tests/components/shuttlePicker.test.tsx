@@ -6,7 +6,7 @@ import ShuttlePicker, {
   formatRunId,
 } from "../../src/components/shuttlePicker"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { RunId, Vehicle } from "../../src/realtime"
+import { RunId, VehicleInScheduledService } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import {
   deselectAllShuttleRuns,
@@ -21,7 +21,7 @@ import vehicleFactory from "../factories/vehicle"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "y1818",
   label: "1818",
   runId: "999-0555",
@@ -103,7 +103,7 @@ describe("ShuttlePicker", () => {
     999-0512: unknown, selected
     */
     const selectedShuttleRunIds: RunId[] = ["999-0502", "999-0504", "999-0512"]
-    const shuttles: Vehicle[] = [
+    const shuttles: VehicleInScheduledService[] = [
       { ...vehicle, runId: "999-0503" },
       { ...vehicle, runId: "999-0504" },
       { ...vehicle, runId: "999-0511" },
@@ -234,7 +234,7 @@ describe("activeRunCounts", () => {
         id: "3",
         runId: "1",
       },
-    ] as Vehicle[]
+    ] as VehicleInScheduledService[]
 
     const expected = {
       "1": 2,
@@ -255,7 +255,7 @@ describe("activeRunCounts", () => {
         id: "2",
         runId: null,
       },
-    ] as Vehicle[]
+    ] as VehicleInScheduledService[]
 
     const expected = {
       "1": 1,

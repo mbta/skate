@@ -13,7 +13,7 @@ import useVehicles from "../../src/hooks/useVehicles"
 import {
   Ghost,
   Notification,
-  Vehicle,
+  VehicleInScheduledService,
   VehicleOrGhost,
 } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
@@ -581,11 +581,11 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
     {
       id: "on-route-23",
       routeStatus: "on_route",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "pulling-out-23",
       routeStatus: "pulling_out",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "ghost-23",
     } as Ghost,
@@ -594,11 +594,11 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
     {
       id: "on-route-39",
       routeStatus: "on_route",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "pulling-out-39",
       routeStatus: "pulling_out",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "ghost-39",
     } as Ghost,

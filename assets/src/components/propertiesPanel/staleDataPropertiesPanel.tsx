@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { Vehicle } from "../../realtime"
+import { VehicleInScheduledService } from "../../realtime"
 import BlockWaiverList from "./blockWaiverList"
 import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
@@ -12,7 +12,7 @@ import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
 
 interface Props {
-  selectedVehicle: Vehicle
+  selectedVehicle: VehicleInScheduledService
 }
 
 const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
@@ -39,7 +39,7 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
 }
 
 const StaleDataHeader: React.FC<{
-  vehicle: Vehicle
+  vehicle: VehicleInScheduledService
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
 }> = ({ vehicle, tabMode, setTabMode }) => {
@@ -79,11 +79,9 @@ const StaleDataHeader: React.FC<{
   )
 }
 
-const StaleContent: React.FC<{ selectedVehicle: Vehicle }> = ({
-  selectedVehicle,
-}: {
-  selectedVehicle: Vehicle
-}) => (
+const StaleContent: React.FC<{
+  selectedVehicle: VehicleInScheduledService
+}> = ({ selectedVehicle }: { selectedVehicle: VehicleInScheduledService }) => (
   <>
     {hasBlockWaiver(selectedVehicle) && (
       <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />

@@ -1,6 +1,9 @@
 import { renderHook } from "@testing-library/react"
 import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
-import { VehicleData, vehicleFromData } from "../../src/models/vehicleData"
+import {
+  VehicleData,
+  vehicleInScheduledServiceFromData,
+} from "../../src/models/vehicleData"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleDataFactory from "../factories/vehicle_data"
 
@@ -15,6 +18,8 @@ describe("useVehiclesForRunIds", () => {
     const { result } = renderHook(() => {
       return useVehiclesForRunIds(mockSocket, [vehicleData.run_id!])
     })
-    expect(result.current).toEqual([vehicleFromData(vehicleData)])
+    expect(result.current).toEqual([
+      vehicleInScheduledServiceFromData(vehicleData),
+    ])
   })
 })

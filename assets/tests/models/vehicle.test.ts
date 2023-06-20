@@ -4,7 +4,7 @@ import {
   isRecentlyLoggedOn,
   isVehicle,
 } from "../../src/models/vehicle"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
@@ -61,7 +61,7 @@ describe("isRecentlyLoggedOn", () => {
     const recentVehicle = {
       id: "1",
       operatorLogonTime: new Date("2020-03-17T11:31:00.000Z"),
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(isRecentlyLoggedOn(recentVehicle)).toBeTruthy()
   })
@@ -70,7 +70,7 @@ describe("isRecentlyLoggedOn", () => {
     const oldVehicle = {
       id: "1",
       operatorLogonTime: new Date("2020-03-17T11:29:00.000Z"),
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(isRecentlyLoggedOn(oldVehicle)).toBeFalsy()
   })
@@ -79,7 +79,7 @@ describe("isRecentlyLoggedOn", () => {
     const vehicleMissingLogonTime = {
       id: "1",
       operatorLogonTime: null,
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(isRecentlyLoggedOn(vehicleMissingLogonTime)).toBeFalsy()
   })

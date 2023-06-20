@@ -1,4 +1,7 @@
-import { ghostFromData, vehicleFromData } from "../../src/models/vehicleData"
+import {
+  ghostFromData,
+  vehicleInScheduledServiceFromData,
+} from "../../src/models/vehicleData"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
 import ghostDataFactory from "../factories/ghost_data"
 import vehicleDataFactory from "../factories/vehicle_data"
@@ -13,7 +16,7 @@ describe("vehicleFromData", () => {
         occupancy_status: "MANY_SEATS_AVAILABLE",
       },
     })
-    expect(vehicleFromData(vehicleData)).toEqual({
+    expect(vehicleInScheduledServiceFromData(vehicleData)).toEqual({
       bearing: vehicleData.bearing,
       blockId: vehicleData.block_id,
       blockWaivers: vehicleData.block_waivers,

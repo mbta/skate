@@ -3,7 +3,7 @@ import { intersperseString } from "../helpers/array"
 import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
 import { isVehicle } from "../models/vehicle"
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, VehicleInScheduledService, VehicleOrGhost } from "../realtime"
 import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
 
 interface Props {
@@ -25,7 +25,7 @@ export const formattedLogonTime = (logonDate: Date): string => {
 }
 
 export const vehicleProperties = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   operatorLastNameOnly?: boolean
 ): Property[] => {
   const {

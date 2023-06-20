@@ -7,7 +7,7 @@ import {
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../models/vehicleStatus"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, VehicleOrGhost } from "../realtime"
 import { secondsToMinutes } from "../util/dateTime"
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -28,7 +28,9 @@ const ScheduleAdherenceDescription = ({
   vehicle,
   className,
   ...props
-}: { vehicle: Vehicle } & ComponentPropsWithoutRef<"output">) => (
+}: {
+  vehicle: VehicleInScheduledService
+} & ComponentPropsWithoutRef<"output">) => (
   <output
     className={joinClasses(["c-schedule-adherence-status", className])}
     {...props}
@@ -42,7 +44,7 @@ const secondsToPunctuality = (seconds: number): string =>
 
 export const scheduleAdherenceLabelString = ({
   scheduleAdherenceSecs: seconds,
-}: Vehicle): string => {
+}: VehicleInScheduledService): string => {
   const minutes = secondsToMinutes(seconds)
   const punctuality = secondsToPunctuality(seconds)
   return `${minutes} min ${punctuality}`
@@ -52,7 +54,9 @@ const ScheduleAdherenceMetric = ({
   vehicle,
   className,
   ...props
-}: { vehicle: Vehicle } & ComponentPropsWithoutRef<"output">) => (
+}: {
+  vehicle: VehicleInScheduledService
+} & ComponentPropsWithoutRef<"output">) => (
   <output className={`c-vehicle-adherence-label ${className}`} {...props}>
     {!vehicle.isOffCourse && <>({scheduleAdherenceLabelString(vehicle)})</>}
   </output>

@@ -20,7 +20,11 @@ import {
   selectVehicle,
   toggleShowHidePastSwings,
 } from "../../src/state"
-import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
+import {
+  VehicleInScheduledService,
+  Ghost,
+  VehicleOrGhost,
+} from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import userEvent from "@testing-library/user-event"
@@ -51,7 +55,7 @@ jest.spyOn(dateTime, "now").mockImplementation(() => {
   return new Date(18000 * 1000)
 })
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   runId: "123-456",
   blockId: "A12-34",
 })

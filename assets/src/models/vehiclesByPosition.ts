@@ -5,7 +5,12 @@ import {
 } from "../models/ladderDirection"
 import { isVehicle } from "../models/vehicle"
 import { onTimeStatus } from "../models/vehicleStatus"
-import { Ghost, RunId, Vehicle, VehicleOrGhost } from "../realtime.d"
+import {
+  Ghost,
+  RunId,
+  VehicleInScheduledService,
+  VehicleOrGhost,
+} from "../realtime.d"
 import { RouteId } from "../schedule.d"
 
 /**
@@ -64,10 +69,10 @@ export const groupByPosition = (
     emptyVehiclesByPosition
   )
 
-  const vehiclesNeedingVirtualGhosts: Vehicle[] = lateStartingIncomingVehicles(
-    realVehicles.incoming,
-    routeId
-  ).filter(runNotSharedByAnotherVehicle(vehiclesAndGhosts || []))
+  const vehiclesNeedingVirtualGhosts: VehicleInScheduledService[] =
+    lateStartingIncomingVehicles(realVehicles.incoming, routeId).filter(
+      runNotSharedByAnotherVehicle(vehiclesAndGhosts || [])
+    )
 
   const incomingGhosts: Ghost[] = vehiclesNeedingVirtualGhosts.map((vehicle) =>
     ghostFromVehicleScheduledLocation(vehicle)
@@ -81,7 +86,7 @@ export const groupByPosition = (
 
 const runNotSharedByAnotherVehicle =
   (vehiclesAndGhosts: VehicleOrGhost[]) =>
-  (vehicle: Vehicle): boolean => {
+  (vehicle: VehicleInScheduledService): boolean => {
     if (vehicle.runId === null) {
       return false
     }
@@ -102,15 +107,18 @@ const runIds = (vehiclesAndGhosts: VehicleOrGhost[]): RunId[] =>
 const lateStartingIncomingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[],
   currentRouteId: RouteId
-): Vehicle[] =>
+): VehicleInScheduledService[] =>
   incomingVehiclesOrGhosts.filter(
     (vehicleOrGhost) =>
       isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
-      isScheduledForCurrentRoute(vehicleOrGhost as Vehicle, currentRouteId) &&
+      isScheduledForCurrentRoute(
+        vehicleOrGhost as VehicleInScheduledService,
+        currentRouteId
+      ) &&
       isLessThanOneHourLate(
-        vehicleOrGhost as Vehicle
+        vehicleOrGhost as VehicleInScheduledService
       ) /* virtually all trips are less than an hour, so trip should have ended if more than an hour after start time */
-  ) as Vehicle[]
+  ) as VehicleInScheduledService[]
 
 const isAVehicleThatIsLateStartingScheduledTrip = (
   vehicleOrGhost: VehicleOrGhost
@@ -120,25 +128,29 @@ const isAVehicleThatIsLateStartingScheduledTrip = (
   isLateStartingScheduledTrip(vehicleOrGhost)
 
 const isScheduledForCurrentRoute = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   currentRouteId: RouteId
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ): boolean => vehicle.scheduledLocation!.routeId === currentRouteId
 
-const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
+const hasAScheduleLocation = (vehicle: VehicleInScheduledService): boolean =>
   vehicle.scheduledLocation != null
 
-const isLateStartingScheduledTrip = (vehicle: Vehicle): boolean =>
+const isLateStartingScheduledTrip = (
+  vehicle: VehicleInScheduledService
+): boolean =>
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   onTimeStatus(vehicle.scheduledLocation!.timeSinceTripStartTime) === "late"
 
-const isLessThanOneHourLate = (vehicle: Vehicle): boolean => {
+const isLessThanOneHourLate = (vehicle: VehicleInScheduledService): boolean => {
   const oneHourInSeconds = 3600
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return vehicle.scheduledLocation!.timeSinceTripStartTime < oneHourInSeconds
 }
 
-const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
+const ghostFromVehicleScheduledLocation = (
+  vehicle: VehicleInScheduledService
+): Ghost => ({
   id: `ghost-incoming-${vehicle.id}`,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   directionId: vehicle.scheduledLocation!.directionId,

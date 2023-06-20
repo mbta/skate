@@ -3,7 +3,7 @@ import { joinTruthy, joinClasses } from "../../helpers/dom"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../../realtime"
+import { VehicleInScheduledService, VehicleOrGhost } from "../../realtime"
 import { isLoading, isOk } from "../../util/fetchResult"
 import { CloseButton } from "../closeButton"
 import Loading from "../loading"
@@ -11,7 +11,7 @@ import StreetViewButton from "../streetViewButton"
 import { VehicleRouteSummary } from "../vehicleRouteSummary"
 
 interface VehicleProp {
-  vehicle: Vehicle
+  vehicle: VehicleInScheduledService
 }
 interface VehicleOrGhostProp {
   vehicleOrGhost: VehicleOrGhost
@@ -155,7 +155,11 @@ const VehicleNearestIntersection = ({
   )
 }
 
-const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
+const VehicleLocationStreetViewButton = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => (
   <StreetViewButton
     aria-label="Go to Street View"
     latitude={vehicle.latitude}

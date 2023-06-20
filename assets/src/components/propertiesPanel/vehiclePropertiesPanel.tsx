@@ -8,7 +8,7 @@ import { hasBlockWaiver } from "../../models/blockWaiver"
 import { isVehicle } from "../../models/vehicle"
 import {
   DataDiscrepancy,
-  Vehicle,
+  VehicleInScheduledService,
   VehicleId,
   VehicleOrGhost,
 } from "../../realtime"
@@ -23,7 +23,7 @@ import MiniMap from "./miniMap"
 import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
-  selectedVehicle: Vehicle
+  selectedVehicle: VehicleInScheduledService
 }
 
 const InvalidBanner = () => (
@@ -56,7 +56,7 @@ const directionsUrl = (
 const useRouteVehicles = (
   routeId: RouteId | null,
   primaryVehicleId: VehicleId
-): Vehicle[] => {
+): VehicleInScheduledService[] => {
   // Get vehicles we've already fetched from the context.
   const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
 
@@ -73,8 +73,11 @@ const useRouteVehicles = (
     .filter((v) => v.id !== primaryVehicleId)
 }
 
-const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
+const Location = ({ vehicle }: { vehicle: VehicleInScheduledService }) => {
+  const routeVehicles: VehicleInScheduledService[] = useRouteVehicles(
+    vehicle.routeId,
+    vehicle.id
+  )
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
 
@@ -151,7 +154,7 @@ const Discrepancy = ({
 const DataDiscrepancies = ({
   vehicle: { dataDiscrepancies },
 }: {
-  vehicle: Vehicle
+  vehicle: VehicleInScheduledService
 }) => (
   <ul className="c-vehicle-properties-panel__data-discrepancies">
     {dataDiscrepancies.map((dataDiscrepancy) => (
@@ -165,10 +168,16 @@ const DataDiscrepancies = ({
 const inDebugMode = (): boolean =>
   !!new URL(document.location.href).searchParams.get("debug")
 
-const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
+const shouldShowDataDiscrepancies = ({
+  dataDiscrepancies,
+}: VehicleInScheduledService): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0
 
-const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
+const StatusContent = ({
+  selectedVehicle,
+}: {
+  selectedVehicle: VehicleInScheduledService
+}) => (
   <>
     <div className="c-vehicle-properties-panel__notes">
       {selectedVehicle.isOffCourse && <InvalidBanner />}

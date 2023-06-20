@@ -5,7 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useStations } from "../hooks/useStations"
 import { filterVehicles } from "../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, VehicleOrGhost } from "../realtime"
 import { Stop } from "../schedule"
 import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
@@ -56,7 +56,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     socket,
     searchPageState.isActive ? searchPageState.query : null
   )
-  const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
+  const onlyVehicles: VehicleInScheduledService[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
   const toggleMobileDisplay = () => {
     setMobileDisplay(

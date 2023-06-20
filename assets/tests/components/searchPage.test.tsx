@@ -5,7 +5,11 @@ import "@testing-library/jest-dom"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
+import {
+  Ghost,
+  VehicleInScheduledService,
+  VehicleOrGhost,
+} from "../../src/realtime"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -23,7 +27,7 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-const vehicle: Vehicle = vehicleFactory.build()
+const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",

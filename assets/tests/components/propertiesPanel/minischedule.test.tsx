@@ -15,7 +15,7 @@ import {
   useMinischeduleRun,
 } from "../../../src/hooks/useMinischedule"
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
-import { Vehicle } from "../../../src/realtime"
+import { VehicleInScheduledService } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
 import pieceFactory from "../../factories/piece"
 import { RunFactory } from "../../factories/run"
@@ -254,7 +254,7 @@ const multiPieceRun: Run = {
   activities: [piece1, break1, piece2, break2, piece3, break3, piece4, break4],
 }
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "vehicleId",
   label: "",
   runId: "123-4567",
@@ -304,7 +304,7 @@ const vehicle: Vehicle = vehicleFactory.build({
   crowding: null,
 })
 
-const vehicleWithOffset: Vehicle = {
+const vehicleWithOffset: VehicleInScheduledService = {
   ...vehicle,
   overloadOffset: 480,
   isOverload: true,
@@ -392,7 +392,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run with a current layover between trips", () => {
-    const vehicleOnLayover: Vehicle = {
+    const vehicleOnLayover: VehicleInScheduledService = {
       ...vehicle,
       tripId: "trip2",
       routeStatus: "laying_over",
@@ -410,7 +410,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run with a non-current layover between trips", () => {
-    const vehicleNotOnLayover: Vehicle = {
+    const vehicleNotOnLayover: VehicleInScheduledService = {
       ...vehicle,
       tripId: "trip2",
       routeStatus: "on_route",
@@ -447,7 +447,7 @@ describe("MinischeduleRun", () => {
       trips: [revenueTrip, revenueTrip2, revenueTrip3],
     }
 
-    const vehicleOnAParticularLayover: Vehicle = {
+    const vehicleOnAParticularLayover: VehicleInScheduledService = {
       ...vehicle,
       tripId: "trip3",
       routeStatus: "laying_over",
@@ -470,7 +470,7 @@ describe("MinischeduleRun", () => {
       trips: [revenueTrip, ...asDirectedPiece.trips],
     }
 
-    const vehicleWithLayover: Vehicle = {
+    const vehicleWithLayover: VehicleInScheduledService = {
       ...vehicle,
       tripId: null,
       routeStatus: "laying_over",

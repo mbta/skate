@@ -1,10 +1,10 @@
 import React from "react"
 import { render } from "@testing-library/react"
 import TabPanels from "../../../src/components/propertiesPanel/tabPanels"
-import { Vehicle } from "../../../src/realtime"
+import { VehicleInScheduledService } from "../../../src/realtime"
 import vehicleFactory from "../../factories/vehicle"
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "vehicleId",
   label: "",
   runId: "123-4567",

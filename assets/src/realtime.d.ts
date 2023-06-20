@@ -125,7 +125,7 @@ export interface Vehicle {
   bearing: number
   blockId: BlockId
   previousVehicleId: string | null
-  scheduleAdherenceSecs: number | null
+  scheduleAdherenceSecs: number
   incomingTripDirectionId: DirectionId | null
   isShuttle: boolean
   isOverload: boolean
@@ -142,7 +142,11 @@ export interface Vehicle {
   crowding: Crowding | null
 }
 
-export type VehicleOrGhost = Vehicle | Ghost
+export interface VehicleInScheduledService extends Vehicle {
+  directionId: DirectionId
+}
+
+export type VehicleOrGhost = VehicleInScheduledService | Ghost
 
 export type VehicleId = string
 

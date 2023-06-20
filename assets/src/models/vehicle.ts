@@ -1,10 +1,10 @@
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, VehicleInScheduledService, VehicleOrGhost } from "../realtime"
 import { Route } from "../schedule"
 import { now } from "../util/dateTime"
 
 export const isVehicle = (
   vehicleOrGhost: VehicleOrGhost
-): vehicleOrGhost is Vehicle => !isGhost(vehicleOrGhost)
+): vehicleOrGhost is VehicleInScheduledService => !isGhost(vehicleOrGhost)
 
 export const isGhost = (
   vehicleOrGhost: VehicleOrGhost
@@ -32,6 +32,6 @@ export const directionName = (
 
 export const filterVehicles = (
   vehiclesOrGhosts: VehicleOrGhost[] | null
-): Vehicle[] => {
+): VehicleInScheduledService[] => {
   return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
 }

@@ -1,4 +1,7 @@
-import { Vehicle, VehicleScheduledLocation } from "../../src/realtime.d"
+import {
+  VehicleInScheduledService,
+  VehicleScheduledLocation,
+} from "../../src/realtime.d"
 import {
   byLayoverDeparture,
   ladderVehiclesForLayovers,
@@ -7,30 +10,30 @@ import {
 import { VehicleDirection } from "../../src/models/ladderDirection"
 
 describe("ladderVehiclesForLayovers", () => {
-  const vehicle: Vehicle = {
+  const vehicle: VehicleInScheduledService = {
     id: "vehicle",
     tripId: "next-trip",
     layoverDepartureTime: 0,
     scheduledLocation: null,
-  } as Vehicle
-  const soonest: Vehicle = {
+  } as VehicleInScheduledService
+  const soonest: VehicleInScheduledService = {
     id: "soonest",
     tripId: "soonest",
     layoverDepartureTime: 1500000000,
     scheduledLocation: null,
-  } as Vehicle
-  const soon: Vehicle = {
+  } as VehicleInScheduledService
+  const soon: VehicleInScheduledService = {
     id: "soon",
     tripId: "soon",
     layoverDepartureTime: 1500000002,
     scheduledLocation: null,
-  } as Vehicle
-  const later: Vehicle = {
+  } as VehicleInScheduledService
+  const later: VehicleInScheduledService = {
     id: "later",
     tripId: "later",
     layoverDepartureTime: 1500000004,
     scheduledLocation: null,
-  } as Vehicle
+  } as VehicleInScheduledService
 
   test("works for 0 vehicles", () => {
     expect(
@@ -221,12 +224,12 @@ describe("ladderVehiclesForLayovers", () => {
 })
 
 describe("byLayoverDeparture", () => {
-  const vehicleDepartingSooner: Vehicle = {
+  const vehicleDepartingSooner: VehicleInScheduledService = {
     layoverDepartureTime: 1,
-  } as Vehicle
-  const vehicleDepartingLater: Vehicle = {
+  } as VehicleInScheduledService
+  const vehicleDepartingLater: VehicleInScheduledService = {
     layoverDepartureTime: 2,
-  } as Vehicle
+  } as VehicleInScheduledService
 
   test("orders in descending order for the bottom layover box, so that vehicles leaving sooner are to the right", () => {
     const isBottomLayoverBox = true
@@ -264,9 +267,9 @@ describe("byLayoverDeparture", () => {
 
   test("returns 0 if either vehicle is missing the layoverDepartureTime", () => {
     const isBottomLayoverBox = true
-    const vehicleMissingLayoverDepartureTime: Vehicle = {
+    const vehicleMissingLayoverDepartureTime: VehicleInScheduledService = {
       layoverDepartureTime: null,
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(
       byLayoverDeparture(isBottomLayoverBox)(

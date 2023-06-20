@@ -10,7 +10,11 @@ import {
 } from "../models/ladderDirection"
 import { isVehicle } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
-import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
+import {
+  VehicleInScheduledService,
+  VehicleId,
+  VehicleOrGhost,
+} from "../realtime.d"
 import { selectVehicle } from "../state"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
@@ -76,7 +80,7 @@ const IncomingBoxVehicle = ({
         )}
         <div className="c-incoming-box__vehicle-label">
           {displayCrowding
-            ? crowdingLabel(vehicleOrGhost as Vehicle)
+            ? crowdingLabel(vehicleOrGhost as VehicleInScheduledService)
             : vehicleLabel(vehicleOrGhost, userSettings)}
         </div>
       </button>

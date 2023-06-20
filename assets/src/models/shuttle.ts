@@ -1,6 +1,8 @@
-import { Vehicle } from "../realtime"
+import { VehicleInScheduledService } from "../realtime"
 
-export const formattedRunNumber = ({ runId }: Vehicle): string => {
+export const formattedRunNumber = ({
+  runId,
+}: VehicleInScheduledService): string => {
   if (runId === null) {
     return "Not Available"
   }

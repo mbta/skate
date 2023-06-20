@@ -7,16 +7,16 @@ import { useRouteShapes } from "../hooks/useShapes"
 import useShuttleVehicles from "../hooks/useShuttleVehicles"
 import useTrainVehicles from "../hooks/useTrainVehicles"
 import { isASubwayRoute } from "../models/subwayRoute"
-import { RunId, TrainVehicle, Vehicle } from "../realtime"
+import { RunId, TrainVehicle, VehicleInScheduledService } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { MapFollowingSelectionKey } from "./map"
 import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
-  shuttles: Vehicle[],
+  shuttles: VehicleInScheduledService[],
   selectedShuttleRunIds: RunId[] | "all"
-): Vehicle[] => {
+): VehicleInScheduledService[] => {
   if (selectedShuttleRunIds === "all") {
     return shuttles
   }
@@ -40,7 +40,8 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
     mobileMenuIsOpen,
   } = state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
+  const shuttles: VehicleInScheduledService[] | null =
+    useShuttleVehicles(socket)
   const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
 
   const selectedSubwayRouteIds: RouteId[] =
@@ -51,7 +52,7 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
   )
   const trainVehicles: TrainVehicle[] = allTrainVehicles(trainVehiclesByRouteId)
 
-  const selectedShuttles: Vehicle[] = filterShuttles(
+  const selectedShuttles: VehicleInScheduledService[] = filterShuttles(
     shuttles || [],
     selectedShuttleRunIds
   )

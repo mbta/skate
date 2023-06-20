@@ -14,7 +14,7 @@ import {
   BlockWaiver,
   DataDiscrepancy,
   Ghost,
-  Vehicle,
+  VehicleInScheduledService,
   VehicleOrGhost,
   VehicleScheduledLocation,
   VehicleStopStatus,
@@ -75,10 +75,10 @@ export const VehicleData = type({
   timestamp: number(),
   latitude: number(),
   longitude: number(),
-  direction_id: nullable(enums([0, 1])),
+  direction_id: enums([0, 1]),
   route_id: nullable(string()),
   route_pattern_id: nullable(string()),
-  trip_id: nullable(string()),
+  trip_id: string(),
   headsign: nullable(string()),
   via_variant: nullable(string()),
   operator_id: string(),
@@ -89,7 +89,7 @@ export const VehicleData = type({
   bearing: number(),
   block_id: string(),
   previous_vehicle_id: nullable(string()),
-  schedule_adherence_secs: nullable(number()),
+  schedule_adherence_secs: number(),
   incoming_trip_direction_id: nullable(enums([0, 1])), // TODO: reconcile with routePatternData
   is_shuttle: boolean(),
   is_overload: boolean(),
@@ -147,7 +147,9 @@ export type GhostData = Infer<typeof GhostData>
 export const VehicleOrGhostData = union([VehicleData, GhostData])
 export type VehicleOrGhostData = Infer<typeof VehicleOrGhostData>
 
-export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
+export const vehicleInScheduledServiceFromData = (
+  vehicleData: VehicleData
+): VehicleInScheduledService => ({
   id: vehicleData.id,
   label: vehicleData.label,
   runId: vehicleData.run_id,
@@ -226,7 +228,7 @@ export const vehicleOrGhostFromData = (
 ): VehicleOrGhost =>
   isGhost(vehicleOrGhostData)
     ? ghostFromData(vehicleOrGhostData as GhostData)
-    : vehicleFromData(vehicleOrGhostData as VehicleData)
+    : vehicleInScheduledServiceFromData(vehicleOrGhostData as VehicleData)
 
 const dataDiscrepanciesFromData = (
   dataDiscrepancies: DataDiscrepancyData[]

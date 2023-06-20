@@ -24,7 +24,11 @@ import {
 import { isGhost, isVehicle } from "../models/vehicle"
 import { VehiclesByPosition } from "../models/vehiclesByPosition"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
-import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
+import {
+  VehicleInScheduledService,
+  VehicleId,
+  VehicleTimepointStatus,
+} from "../realtime.d"
 import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
@@ -214,7 +218,7 @@ const VehicleSvg = ({
               isLayingOver,
               vehicleDirection
             )}
-            label={crowdingLabel(vehicle as Vehicle)}
+            label={crowdingLabel(vehicle as VehicleInScheduledService)}
             occupancyStatus={occupancyStatus}
           />
         ) : (

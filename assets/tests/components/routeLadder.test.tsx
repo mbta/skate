@@ -6,7 +6,7 @@ import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
 import {
   Ghost,
   RouteStatus,
-  Vehicle,
+  VehicleInScheduledService,
   VehicleOrGhost,
 } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
@@ -24,7 +24,7 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
   tagManagerEvent: jest.fn(),
 }))
 
-const vehicles: Vehicle[] = [
+const vehicles: VehicleInScheduledService[] = [
   vehicleFactory.build({
     id: "y1818",
     label: "1818",
@@ -235,10 +235,12 @@ describe("routeLadder", () => {
       <RouteLadder
         route={route}
         timepoints={timepoints}
-        vehiclesAndGhosts={vehicles.map((vehicle: Vehicle) => ({
-          ...vehicle,
-          routeStatus: "pulling_out" as RouteStatus,
-        }))}
+        vehiclesAndGhosts={vehicles.map(
+          (vehicle: VehicleInScheduledService) => ({
+            ...vehicle,
+            routeStatus: "pulling_out" as RouteStatus,
+          })
+        )}
         selectedVehicleId={undefined}
         deselectRoute={() => {}}
         reverseLadder={() => {}}
@@ -670,7 +672,7 @@ describe("routeLadder", () => {
       { id: "WELLH", name: "WELLH Name" },
       { id: "MORTN", name: "MORTN Name" },
     ]
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "v1",
       label: "v1",
       runId: "run1",

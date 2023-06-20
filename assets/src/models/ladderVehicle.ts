@@ -1,5 +1,5 @@
 import { TimepointStatusYFunc } from "../components/ladder"
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, VehicleInScheduledService, VehicleOrGhost } from "../realtime"
 import {
   directionOnLadder,
   LadderDirection,
@@ -113,7 +113,7 @@ export const putIntoLanes = (
     )
 
 const vehicleOnLadder = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
@@ -148,7 +148,7 @@ interface ScheduledToBe {
 }
 
 const scheduledToBe = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   ladderDirection: LadderDirection,
   timepointStatusY: TimepointStatusYFunc
 ): ScheduledToBe => {

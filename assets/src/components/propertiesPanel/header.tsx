@@ -12,7 +12,7 @@ import {
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../../models/vehicleStatus"
-import { Vehicle, VehicleOrGhost } from "../../realtime"
+import { VehicleInScheduledService, VehicleOrGhost } from "../../realtime"
 import { closeView, returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
@@ -35,7 +35,11 @@ const ScheduleAdherenceStatusIcon = () => (
   </div>
 )
 
-const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
+const ScheduleAdherenceStatusString = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => (
   <div className="c-properties-panel__schedule-adherence-status-string">
     {humanReadableScheduleAdherence(vehicle)}
   </div>
@@ -46,18 +50,26 @@ const earlyOrLate = (scheduleAdherenceSecs: number): string =>
 
 export const scheduleAdherenceLabelString = ({
   scheduleAdherenceSecs,
-}: Vehicle): string =>
+}: VehicleInScheduledService): string =>
   `${secondsToMinutes(scheduleAdherenceSecs)} min ${earlyOrLate(
     scheduleAdherenceSecs
   )}`
 
-const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
+const ScheduleAdherenceLabel = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => (
   <div className="c-properties-panel__schedule-adherence-label">
     {vehicle.isOffCourse ? "" : `(${scheduleAdherenceLabelString(vehicle)})`}
   </div>
 )
 
-const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
+const ScheduleAdherence = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
 
   return (
