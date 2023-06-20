@@ -18,7 +18,7 @@ defmodule Realtime.VehicleOrGhostTest do
     bearing: nil,
     block_id: "A505-106",
     operator_id: build(:operator_id),
-    operator_first_name: "FRANCES",
+    operator_first_name: build(:first_name),
     operator_last_name: "FRANKLIN",
     operator_name: "FRANKLIN",
     operator_logon_time: 1_558_121_726,
@@ -85,10 +85,13 @@ defmodule Realtime.VehicleOrGhostTest do
       assert VehicleOrGhost.find_by(vehicles, %{text: "franc", property: :all}) ==
                [vehicle]
 
-      assert VehicleOrGhost.find_by(vehicles, %{text: "fran", property: :all}) ==
+      assert VehicleOrGhost.find_by(vehicles, %{text: vehicle.operator_first_name, property: :all}) ==
                [vehicle]
 
-      assert VehicleOrGhost.find_by(vehicles, %{text: "frances", property: :all}) ==
+      assert VehicleOrGhost.find_by(vehicles, %{
+               text: String.slice(vehicle.operator_first_name, 1..-3),
+               property: :all
+             }) ==
                [vehicle]
 
       assert VehicleOrGhost.find_by(vehicles, %{text: "frances franklin", property: :all}) ==

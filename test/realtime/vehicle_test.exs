@@ -21,7 +21,7 @@ defmodule Realtime.VehicleTest do
     longitude: -71.08206019,
     odometer: nil,
     operator_id: build(:operator_id),
-    operator_first_name: "ARMISTEAD",
+    operator_first_name: build(:first_name),
     operator_last_name: "MAUPIN",
     operator_logon_time: 1_558_364_010,
     run_id: "138-1038",
@@ -115,7 +115,11 @@ defmodule Realtime.VehicleTest do
     end
 
     test "translates Concentrate VehiclePosition into a Vehicle struct" do
-      %VehiclePosition{operator_id: operator_id} = vehicle_position = @vehicle_position
+      %VehiclePosition{
+        operator_id: operator_id,
+        operator_first_name: operator_first_name
+      } = vehicle_position = @vehicle_position
+
       result = Vehicle.from_vehicle_position(vehicle_position)
 
       assert %Vehicle{
@@ -134,7 +138,7 @@ defmodule Realtime.VehicleTest do
                bearing: 0,
                block_id: "S28-2",
                operator_id: ^operator_id,
-               operator_first_name: "ARMISTEAD",
+               operator_first_name: ^operator_first_name,
                operator_last_name: "MAUPIN",
                operator_name: "MAUPIN",
                operator_logon_time: 1_558_364_010,
@@ -622,7 +626,7 @@ defmodule Realtime.VehicleTest do
         bearing: 0,
         block_id: "S28-2",
         operator_id: build(:operator_id),
-        operator_first_name: "ARMISTEAD",
+        operator_first_name: build(:first_name),
         operator_last_name: "MAUPIN",
         operator_name: "MAUPIN",
         operator_logon_time: 1_558_364_010,

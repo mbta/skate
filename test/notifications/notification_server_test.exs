@@ -91,7 +91,7 @@ defmodule Notifications.NotificationServerTest do
     bearing: nil,
     block_id: nil,
     operator_id: build(:operator_id),
-    operator_first_name: "CHARLIE",
+    operator_first_name: build(:first_name),
     operator_last_name: "ONTHEMTA",
     operator_name: "ONTHEMTA",
     operator_logon_time: nil,

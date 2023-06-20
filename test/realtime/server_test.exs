@@ -14,7 +14,7 @@ defmodule Realtime.ServerTest do
              run_id: "123-9048",
              block_id: "vehicle_block",
              operator_id: build(:operator_id),
-             operator_first_name: "FRANK",
+             operator_first_name: build(:first_name),
              operator_last_name: "FRANCIS",
              operator_name: "FRANCIS"
            )
@@ -449,7 +449,7 @@ defmodule Realtime.ServerTest do
 
     test "searches all vehicles by operator name", %{ets: ets} do
       search_params = %{
-        text: "franc",
+        text: String.slice(@vehicle.operator_first_name, 1..-3),
         property: :operator
       }
 

@@ -5,6 +5,10 @@ defmodule Skate.Factory do
     sequence(:operator_id, &to_string/1, start_at: 10000)
   end
 
+  def first_name_factory(_) do
+    sequence(:first_name, &"First(#{&1})")
+  end
+
   def vehicle_factory do
     %Realtime.Vehicle{
       id: "on_route",
