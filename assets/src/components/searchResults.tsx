@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
 import { Card, CardProperties } from "./card"
@@ -51,7 +51,8 @@ const SearchResultCard = ({
 const operatorLogonTimeForSorting = (
   vehicleOrGhost: VehicleOrGhost
 ): Date | undefined =>
-  isVehicle(vehicleOrGhost) && vehicleOrGhost.operatorLogonTime !== null
+  isVehicleInScheduledService(vehicleOrGhost) &&
+  vehicleOrGhost.operatorLogonTime !== null
     ? vehicleOrGhost.operatorLogonTime
     : undefined
 

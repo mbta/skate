@@ -1,5 +1,5 @@
-import { isVehicle } from "../models/vehicle"
-import { RunId, VehicleOrGhost } from "../realtime"
+import { isVehicleInScheduledService } from "../models/vehicle"
+import { Ghost, RunId, Vehicle } from "../realtime"
 import {
   UserSettings,
   vehicleLabelSetting,
@@ -7,32 +7,37 @@ import {
 } from "../userSettings"
 
 export const runOrBusNumberLabel = (
-  vehicleOrGhost: VehicleOrGhost,
+  vehicleOrGhost: Vehicle | Ghost,
   settings: UserSettings
 ): string => {
   switch (vehicleLabelSetting(settings, vehicleOrGhost)) {
     case VehicleLabelSetting.RunNumber:
       return runIdToLabel(vehicleOrGhost.runId)
     case VehicleLabelSetting.VehicleNumber:
-      return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label || "N/A" : "N/A"
+      return isVehicleInScheduledService(vehicleOrGhost)
+        ? vehicleOrGhost.label || "N/A"
+        : "N/A"
   }
 }
 
 const vehicleLabel = (
-  vehicleOrGhost: VehicleOrGhost,
+  vehicleOrGhost: Vehicle | Ghost,
   settings: UserSettings
 ): string => {
-  if (isVehicle(vehicleOrGhost) && vehicleOrGhost.isOverload) {
+  if (
+    isVehicleInScheduledService(vehicleOrGhost) &&
+    vehicleOrGhost.isOverload
+  ) {
     return "ADDED"
   }
   if (
-    isVehicle(vehicleOrGhost) &&
+    isVehicleInScheduledService(vehicleOrGhost) &&
     vehicleOrGhost.endOfTripType === "swing_off"
   ) {
     return "SW-OFF"
   }
   if (
-    isVehicle(vehicleOrGhost) &&
+    isVehicleInScheduledService(vehicleOrGhost) &&
     vehicleOrGhost.endOfTripType === "pull_back"
   ) {
     return "PULL-B"

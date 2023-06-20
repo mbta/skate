@@ -22,14 +22,13 @@ import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { flatten, uniqBy } from "../helpers/array"
 import { saveState, loadState } from "../localStorage"
-import { isVehicle, isGhost } from "../models/vehicle"
+import { isVehicleInScheduledService, isGhost } from "../models/vehicle"
 import {
   VehicleInScheduledService,
   Ghost,
   RunId,
   VehicleOrGhost,
 } from "../realtime"
-import { ByRouteId } from "../schedule"
 import {
   Action,
   closeView,
@@ -243,9 +242,7 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const anyRowsHidden = Object.keys(hidingTimestamps).length > 0
 
-  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
-    VehiclesByRouteIdContext
-  )
+  const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
 
   const vehiclesOrGhosts = uniqBy(
     flatten(Object.values(vehiclesByRouteId)),
@@ -281,13 +278,13 @@ const LateView = (): ReactElement<HTMLElement> => {
   const lateGhosts = unsortedLateGhosts.sort(compareGhosts)
 
   const lateBuses = vehiclesOrGhosts
-    .filter(isVehicle)
+    .filter(isVehicleInScheduledService)
     .filter((vehicle) => vehicle.scheduleAdherenceSecs >= lateBusThreshold)
     .sort((a, b) => b.scheduleAdherenceSecs - a.scheduleAdherenceSecs)
 
-  const lateVehiclesAndGhosts = (lateGhosts as VehicleOrGhost[]).concat(
-    lateBuses
-  )
+  const lateVehiclesAndGhosts = (
+    lateGhosts as (VehicleInScheduledService | Ghost)[]
+  ).concat(lateBuses)
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 

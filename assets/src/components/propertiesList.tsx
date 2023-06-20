@@ -2,7 +2,7 @@ import React from "react"
 import { intersperseString } from "../helpers/array"
 import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import { Ghost, VehicleInScheduledService, VehicleOrGhost } from "../realtime"
 import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
 
@@ -86,7 +86,7 @@ export const vehicleOrGhostProperties = (
   vehicleOrGhost: VehicleOrGhost,
   operatorLastNameOnly?: boolean
 ): Property[] =>
-  isVehicle(vehicleOrGhost)
+  isVehicleInScheduledService(vehicleOrGhost)
     ? vehicleProperties(vehicleOrGhost, operatorLastNameOnly)
     : ghostProperties(vehicleOrGhost)
 

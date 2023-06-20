@@ -2,7 +2,7 @@ import {
   isGhost,
   isLateVehicleIndicator,
   isRecentlyLoggedOn,
-  isVehicle,
+  isVehicleInScheduledService,
 } from "../../src/models/vehicle"
 import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
@@ -20,11 +20,11 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 
 describe("isVehicle", () => {
   test("returns true for a Vehicle", () => {
-    expect(isVehicle(vehicleFactory.build())).toBeTruthy()
+    expect(isVehicleInScheduledService(vehicleFactory.build())).toBeTruthy()
   })
 
   test("returns false for a Ghost", () => {
-    expect(isVehicle(ghostFactory.build())).toBeFalsy()
+    expect(isVehicleInScheduledService(ghostFactory.build())).toBeFalsy()
   })
 })
 

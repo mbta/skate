@@ -1,21 +1,15 @@
 import { Socket } from "phoenix"
 import { array } from "superstruct"
-import {
-  VehicleData,
-  vehicleInScheduledServiceFromData,
-} from "../models/vehicleData"
-import { VehicleInScheduledService } from "../realtime"
+import { VehicleData, vehicleFromData } from "../models/vehicleData"
+import { Vehicle } from "../realtime"
 import { useCheckedChannel } from "./useChannel"
 
-const parser = (data: VehicleData[]): VehicleInScheduledService[] =>
-  data.map(vehicleInScheduledServiceFromData)
+const parser = (data: VehicleData[]): Vehicle[] => data.map(vehicleFromData)
 
 const dataStruct = array(VehicleData)
 
-const useShuttleVehicles = (
-  socket: Socket | undefined
-): VehicleInScheduledService[] | null => {
-  return useCheckedChannel<VehicleData[], VehicleInScheduledService[] | null>({
+const useShuttleVehicles = (socket: Socket | undefined): Vehicle[] | null => {
+  return useCheckedChannel<VehicleData[], Vehicle[] | null>({
     socket,
     topic: "vehicles:shuttle:all",
     event: "shuttles",

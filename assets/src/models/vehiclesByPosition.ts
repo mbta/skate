@@ -3,7 +3,7 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import { onTimeStatus } from "../models/vehicleStatus"
 import {
   Ghost,
@@ -123,7 +123,7 @@ const lateStartingIncomingVehicles = (
 const isAVehicleThatIsLateStartingScheduledTrip = (
   vehicleOrGhost: VehicleOrGhost
 ): boolean =>
-  isVehicle(vehicleOrGhost) &&
+  isVehicleInScheduledService(vehicleOrGhost) &&
   hasAScheduleLocation(vehicleOrGhost) &&
   isLateStartingScheduledTrip(vehicleOrGhost)
 

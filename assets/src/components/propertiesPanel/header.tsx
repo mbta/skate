@@ -6,7 +6,10 @@ import vehicleLabel from "../../helpers/vehicleLabel"
 import { secondsAgoLabel, secondsToMinutes } from "../../util/dateTime"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { emptyLadderDirectionsByRouteId } from "../../models/ladderDirection"
-import { directionName, isVehicle } from "../../models/vehicle"
+import {
+  directionName,
+  isVehicleInScheduledService,
+} from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
@@ -93,7 +96,8 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
 
   const hideMe = () => dispatch(closeView())
 
-  const vehicleIsShuttle = isVehicle(vehicle) && vehicle.isShuttle
+  const vehicleIsShuttle =
+    isVehicleInScheduledService(vehicle) && vehicle.isShuttle
 
   const currentTab = currentRouteTab(routeTabs)
   const ladderDirections = currentTab
@@ -126,12 +130,12 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
 
           <RouteVariantName vehicle={vehicle} />
 
-          {isVehicle(vehicle) && !vehicle.isShuttle && (
+          {isVehicleInScheduledService(vehicle) && !vehicle.isShuttle && (
             <ScheduleAdherence vehicle={vehicle} />
           )}
         </div>
         <div className="c-properties-panel__ping-container">
-          {isVehicle(vehicle) && (
+          {isVehicleInScheduledService(vehicle) && (
             <div className="c-properties-panel__last-gps-ping">
               {secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}
             </div>

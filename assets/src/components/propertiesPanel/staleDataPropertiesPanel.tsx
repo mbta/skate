@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { VehicleInScheduledService } from "../../realtime"
+import { Vehicle } from "../../realtime"
 import BlockWaiverList from "./blockWaiverList"
 import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
@@ -10,9 +10,10 @@ import { closeView, returnToPreviousView } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
+import { isVehicleInScheduledService } from "../../models/vehicle"
 
 interface Props {
-  selectedVehicle: VehicleInScheduledService
+  selectedVehicle: Vehicle
 }
 
 const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
@@ -25,21 +26,21 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
         tabMode={tabMode}
         setTabMode={setTabMode}
       />
-      {selectedVehicle.isShuttle ? (
-        <StaleContent selectedVehicle={selectedVehicle} />
-      ) : (
+      {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
           vehicleOrGhost={selectedVehicle}
           statusContent={<StaleContent selectedVehicle={selectedVehicle} />}
           mode={tabMode}
         />
+      ) : (
+        <StaleContent selectedVehicle={selectedVehicle} />
       )}
     </div>
   )
 }
 
 const StaleDataHeader: React.FC<{
-  vehicle: VehicleInScheduledService
+  vehicle: Vehicle
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
 }> = ({ vehicle, tabMode, setTabMode }) => {
@@ -80,8 +81,8 @@ const StaleDataHeader: React.FC<{
 }
 
 const StaleContent: React.FC<{
-  selectedVehicle: VehicleInScheduledService
-}> = ({ selectedVehicle }: { selectedVehicle: VehicleInScheduledService }) => (
+  selectedVehicle: Vehicle
+}> = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
     {hasBlockWaiver(selectedVehicle) && (
       <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />

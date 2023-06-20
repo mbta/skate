@@ -2,7 +2,7 @@ import { VehicleDirection } from "../models/ladderDirection"
 import { LadderVehicle } from "../models/ladderVehicle"
 import { VehicleOrGhost } from "../realtime"
 import { TimepointStatusYFunc } from "../components/ladder"
-import { isVehicle } from "./vehicle"
+import { isVehicleInScheduledService } from "./vehicle"
 
 export enum LayoverBoxPosition {
   Top = 1,
@@ -68,7 +68,7 @@ const vehicleScheduledY = (
   timepointStatusY: TimepointStatusYFunc,
   scheduledVehicleDirection: VehicleDirection
 ) =>
-  isVehicle(vehicle) &&
+  isVehicleInScheduledService(vehicle) &&
   vehicle.scheduledLocation !== null &&
   vehicle.scheduledLocation.tripId === vehicle.tripId &&
   vehicle.scheduledLocation.timeSinceTripStartTime >= 0

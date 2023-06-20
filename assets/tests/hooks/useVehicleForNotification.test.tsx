@@ -6,7 +6,7 @@ import {
   GhostData,
   ghostFromData,
   VehicleData,
-  vehicleInScheduledServiceFromData,
+  vehicleFromData,
 } from "../../src/models/vehicleData"
 import { NotificationReason, NotificationState } from "../../src/realtime"
 import { initialState } from "../../src/state"
@@ -65,9 +65,7 @@ describe("useVehicleForNotification", () => {
       { wrapper }
     )
 
-    expect(result.current).toEqual(
-      vehicleInScheduledServiceFromData(vehicleData)
-    )
+    expect(result.current).toEqual(vehicleFromData(vehicleData))
 
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_linked_to_vpp")
   })

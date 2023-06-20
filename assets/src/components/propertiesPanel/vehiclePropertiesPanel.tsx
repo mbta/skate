@@ -5,7 +5,7 @@ import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { isVehicle } from "../../models/vehicle"
+import { isVehicleInScheduledService } from "../../models/vehicle"
 import {
   DataDiscrepancy,
   VehicleInScheduledService,
@@ -69,7 +69,7 @@ const useRouteVehicles = (
     existingVehiclesAndGhosts === undefined ? routeId : null
   )
   return (existingVehiclesAndGhosts || newVehiclesAndGhosts || [])
-    .filter(isVehicle)
+    .filter(isVehicleInScheduledService)
     .filter((v) => v.id !== primaryVehicleId)
 }
 

@@ -1,11 +1,8 @@
 import { renderHook } from "@testing-library/react"
 import useVehicles from "../../src/hooks/useVehicles"
 import * as browser from "../../src/models/browser"
-import {
-  VehicleData,
-  vehicleInScheduledServiceFromData,
-} from "../../src/models/vehicleData"
-import { Ghost, VehicleInScheduledService } from "../../src/realtime.d"
+import { VehicleData, vehicleFromData } from "../../src/models/vehicleData"
+import { Ghost, Vehicle } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
@@ -15,9 +12,7 @@ import ghostDataFactory from "../factories/ghost_data"
 describe("useVehicles", () => {
   const vehicleData = vehicleDataFactory.build()
   const vehiclesData: VehicleData[] = [vehicleData]
-  const vehicles: VehicleInScheduledService[] = [
-    vehicleInScheduledServiceFromData(vehicleData),
-  ]
+  const vehicles: Vehicle[] = [vehicleFromData(vehicleData)]
 
   test("vehicles is empty to start with", () => {
     const { result } = renderHook(() => useVehicles(undefined, []))

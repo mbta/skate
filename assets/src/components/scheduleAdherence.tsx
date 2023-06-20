@@ -1,13 +1,13 @@
 import React, { ComponentPropsWithoutRef, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../models/vehicleStatus"
-import { VehicleInScheduledService, VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
 import { secondsToMinutes } from "../util/dateTime"
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -64,7 +64,7 @@ const ScheduleAdherenceMetric = ({
 
 export interface ScheduleAdherenceProps
   extends ComponentPropsWithoutRef<"output"> {
-  vehicle: VehicleOrGhost
+  vehicle: Vehicle | Ghost
   title?: string
 }
 
@@ -82,7 +82,7 @@ export const ScheduleAdherence = ({
   ])
   return (
     <output aria-label={title ?? "Schedule Adherence"} className={classes}>
-      {isVehicle(vehicle) && !vehicle.isShuttle && (
+      {isVehicleInScheduledService(vehicle) && !vehicle.isShuttle && (
         <>
           <ScheduleAdherenceStatusIcon />
           <ScheduleAdherenceDescription

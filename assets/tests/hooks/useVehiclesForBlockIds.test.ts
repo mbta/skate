@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react"
 import useVehicleForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
-import { vehicleInScheduledServiceFromData } from "../../src/models/vehicleData"
+import { vehicleFromData } from "../../src/models/vehicleData"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleDataFactory from "../factories/vehicle_data"
 
@@ -14,8 +14,6 @@ describe("useVehiclesForBlockIds", () => {
     const { result } = renderHook(() => {
       return useVehicleForBlockIds(mockSocket, ["S12-34"])
     })
-    expect(result.current).toEqual([
-      vehicleInScheduledServiceFromData(vehicleData),
-    ])
+    expect(result.current).toEqual([vehicleFromData(vehicleData)])
   })
 })

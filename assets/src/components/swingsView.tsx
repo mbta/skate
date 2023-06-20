@@ -8,7 +8,7 @@ import React, {
 import { useRoutes } from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import Loading from "./loading"
 import { partition, flatten, uniq } from "../helpers/array"
 import { GhostSwingIcon, UpDownIcon, UpRightIcon } from "../helpers/icon"
@@ -269,7 +269,7 @@ const SwingRow = ({
         <div className="c-swings-view__table-cell-contents">
           {formattedScheduledTime(
             swing.time,
-            vehicleOrGhost && isVehicle(vehicleOrGhost)
+            vehicleOrGhost && isVehicleInScheduledService(vehicleOrGhost)
               ? vehicleOrGhost.overloadOffset
               : undefined
           )}
@@ -306,7 +306,8 @@ const SwingRow = ({
       </th>
       <th className="c-swings-view__table-cell">
         <div className="c-swings-view__table-cell-contents">
-          {swingVehicleForBlockId && isVehicle(swingVehicleForBlockId)
+          {swingVehicleForBlockId &&
+          isVehicleInScheduledService(swingVehicleForBlockId)
             ? swingVehicleForBlockId.label
             : null}
         </div>
@@ -330,7 +331,7 @@ const SwingCellContent = ({
     <>
       {vehicleOrGhost ? (
         <>
-          {isVehicle(vehicleOrGhost) ? (
+          {isVehicleInScheduledService(vehicleOrGhost) ? (
             <UpRightIcon className="c-swings-view__run-icon c-swings-view__run-icon-arrow" />
           ) : (
             <GhostSwingIcon className="c-swings-view__run-icon c-swings-view__run-icon-ghost" />

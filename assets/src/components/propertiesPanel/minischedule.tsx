@@ -49,7 +49,7 @@ import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 import { currentRouteTab } from "../../models/routeTab"
-import { isVehicle } from "../../models/vehicle"
+import { isVehicleInScheduledService } from "../../models/vehicle"
 
 export interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -339,7 +339,9 @@ const Piece = ({
     pieceTimeBasedStyle === "current" ? "past" : pieceTimeBasedStyle
   const doneTimeBasedStyle: TimeBasedStyle =
     pieceTimeBasedStyle === "current" ? "future" : pieceTimeBasedStyle
-  const overloadOffset: number | undefined = isVehicle(vehicleOrGhost)
+  const overloadOffset: number | undefined = isVehicleInScheduledService(
+    vehicleOrGhost
+  )
     ? vehicleOrGhost.overloadOffset
     : undefined
 
@@ -526,7 +528,9 @@ const Trip = ({
     onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
   const deadheadActiveStatus: DrawnStatus | null =
     deadheadTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
-  const overloadOffset: number | undefined = isVehicle(vehicleOrGhost)
+  const overloadOffset: number | undefined = isVehicleInScheduledService(
+    vehicleOrGhost
+  )
     ? vehicleOrGhost.overloadOffset
     : undefined
 

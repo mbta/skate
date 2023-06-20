@@ -1,5 +1,5 @@
 import { AlertIconStyle } from "../components/iconAlertCircle"
-import { BlockWaiver, VehicleOrGhost } from "../realtime"
+import { BlockWaiver, Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 import { now } from "../util/dateTime"
 import { isGhost, isLateVehicleIndicator } from "./vehicle"
 
@@ -27,7 +27,7 @@ export const currentFuturePastType = (
   }
 }
 
-export const hasBlockWaiver = ({ blockWaivers }: VehicleOrGhost): boolean =>
+export const hasBlockWaiver = ({ blockWaivers }: Vehicle | Ghost): boolean =>
   blockWaivers.length !== 0
 
 export const hasCurrentBlockWaiver = ({

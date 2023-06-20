@@ -1,20 +1,20 @@
 import React, { ComponentPropsWithoutRef } from "react"
 import { useRoute } from "../contexts/routesContext"
 import { joinClasses } from "../helpers/dom"
-import { isVehicle } from "../models/vehicle"
-import { VehicleOrGhost } from "../realtime"
+import { isVehicleInScheduledService } from "../models/vehicle"
+import { Ghost, Vehicle } from "../realtime"
 
 export const RouteVariantName = ({
   vehicle,
   className,
   ...props
-}: { vehicle: VehicleOrGhost } & ComponentPropsWithoutRef<"output">) => {
+}: { vehicle: Vehicle | Ghost } & ComponentPropsWithoutRef<"output">) => {
   const route = useRoute(vehicle.routeId)
 
   const { routeId, viaVariant, headsign } = vehicle
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
 
-  const isShuttle = isVehicle(vehicle) && vehicle.isShuttle
+  const isShuttle = isVehicleInScheduledService(vehicle) && vehicle.isShuttle
   return (
     <output
       aria-label="Route Variant Name"

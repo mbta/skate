@@ -15,11 +15,7 @@ import useSocket from "../../hooks/useSocket"
 import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { isVehicle, filterVehicles } from "../../models/vehicle"
-import {
-  VehicleInScheduledService,
-  VehicleId,
-  VehicleOrGhost,
-} from "../../realtime"
+import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../../realtime"
 import {
   ByRoutePatternId,
   RouteId,
@@ -53,7 +49,7 @@ const SecondaryRouteVehicles = ({
 }: {
   selectedVehicleId: VehicleId | null
   selectedVehicleRoute: RouteId | null
-  onVehicleSelect: (vehicle: VehicleInScheduledService) => void
+  onVehicleSelect: (vehicle: Vehicle) => void
 }) => {
   const { socket } = useSocket()
   const vehicles = useVehiclesForRoute(socket, selectedVehicleRoute)
@@ -61,7 +57,7 @@ const SecondaryRouteVehicles = ({
     <>
       {filterVehicles(vehicles)
         .filter((vehicle) => vehicle.id !== selectedVehicleId)
-        .map((vehicle: VehicleInScheduledService) => {
+        .map((vehicle: Vehicle) => {
           return (
             <VehicleMarker
               key={vehicle.id}
@@ -127,7 +123,7 @@ const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
 
 const useFollowingStateWithSelectionLogic = (
   selectedVehicleId: string | null,
-  selectedVehicleRef: VehicleOrGhost | null
+  selectedVehicleRef: Vehicle | Ghost | null
 ) => {
   const state = useInteractiveFollowerState(),
     { setShouldFollow } = state
@@ -317,10 +313,10 @@ const SelectedVehicleDataLayers = ({
   deleteSelection,
   setStateClasses,
 }: {
-  vehicleOrGhost: VehicleOrGhost | null
+  vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
   showSelectionCard: boolean
-  selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
+  selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   selectRoutePattern: (routePattern: RoutePattern) => void
   deleteSelection: () => void
   setStateClasses: (classes: string | undefined) => void
@@ -415,7 +411,7 @@ const SelectedRouteDataLayers = ({
   routePatternIdentifier: RoutePatternIdentifier
   routePatterns: ByRoutePatternId<RoutePattern> | null
   showSelectionCard: boolean
-  selectVehicle: (vehicleOrGhost: VehicleOrGhost) => void
+  selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   selectRoutePattern: (routePattern: RoutePattern) => void
   deleteSelection: () => void
 
@@ -489,7 +485,7 @@ const SelectionDataLayers = ({
   const routePatterns: ByRoutePatternId<RoutePattern> | null =
     usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
 
-  const selectVehicle = (vehicleOrGhost: VehicleOrGhost) =>
+  const selectVehicle = (vehicleOrGhost: Vehicle | Ghost) =>
     setSelection({
       type: SelectedEntityType.Vehicle,
       vehicleId: vehicleOrGhost.id,

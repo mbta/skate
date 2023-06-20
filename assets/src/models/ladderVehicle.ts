@@ -5,7 +5,7 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "./ladderDirection"
-import { isVehicle } from "./vehicle"
+import { isVehicleInScheduledService } from "./vehicle"
 
 export interface LadderVehicle {
   vehicle: VehicleOrGhost
@@ -57,7 +57,7 @@ export const ladderVehiclesFromVehicles = (
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehiclesAndGhosts.map(
     (vehicleOrGhost) =>
-      isVehicle(vehicleOrGhost)
+      isVehicleInScheduledService(vehicleOrGhost)
         ? vehicleOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
         : ghostOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
   )

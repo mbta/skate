@@ -9,7 +9,7 @@ import {
 } from "../helpers/icon"
 import useShuttleRoutes from "../hooks/useShuttleRoutes"
 import { SubwayRoute, subwayRoutes } from "../models/subwayRoute"
-import { RunId, VehicleInScheduledService } from "../realtime"
+import { RunId, Vehicle } from "../realtime"
 import { Route } from "../schedule"
 import {
   deselectAllShuttleRuns,
@@ -23,7 +23,7 @@ import Loading from "./loading"
 import ShuttlePickerContainer from "./shuttlePickerContainer"
 
 interface Props {
-  shuttles: VehicleInScheduledService[] | null
+  shuttles: Vehicle[] | null
 }
 
 interface KnownShuttle {
@@ -87,7 +87,7 @@ const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
-const RunIds = ({ shuttles }: { shuttles: VehicleInScheduledService[] }) => (
+const RunIds = ({ shuttles }: { shuttles: Vehicle[] }) => (
   <>
     <div className="c-shuttle-picker__label">Run #</div>
     <ul className="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list">
@@ -96,11 +96,7 @@ const RunIds = ({ shuttles }: { shuttles: VehicleInScheduledService[] }) => (
   </>
 )
 
-const RunIdButtons = ({
-  shuttles,
-}: {
-  shuttles: VehicleInScheduledService[]
-}) => {
+const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
   const runCounts = activeRunCounts(shuttles)
   const activeRunIds = Object.keys(runCounts).filter((runId) => runId !== "all")
 
@@ -135,9 +131,7 @@ const RunIdButtons = ({
 interface ActiveRunCounts {
   [runId: string]: number
 }
-export const activeRunCounts = (
-  shuttles: VehicleInScheduledService[]
-): ActiveRunCounts =>
+export const activeRunCounts = (shuttles: Vehicle[]): ActiveRunCounts =>
   shuttles.reduce((acc, { runId }) => {
     if (runId === null) {
       return acc

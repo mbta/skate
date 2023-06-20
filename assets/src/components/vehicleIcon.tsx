@@ -6,7 +6,7 @@ import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { isGhost } from "../models/vehicle"
-import { RunId, VehicleOrGhost } from "../realtime.d"
+import { Ghost, RunId, Vehicle, VehicleOrGhost } from "../realtime.d"
 import { BlockId, ViaVariant } from "../schedule.d"
 import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 import { UserSettings } from "../userSettings"
@@ -50,7 +50,7 @@ export interface TooltipProps {
 }
 
 export const vehicleOrientation = (
-  vehicle: VehicleOrGhost,
+  vehicle: Vehicle | Ghost,
   ladderDirections: LadderDirections
 ): Orientation => {
   if (vehicle.routeId !== null && vehicle.directionId !== null) {

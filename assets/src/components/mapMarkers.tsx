@@ -8,7 +8,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
-import { TrainVehicle, VehicleInScheduledService } from "../realtime"
+import { TrainVehicle, Vehicle } from "../realtime"
 import { DirectionId, Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 
@@ -26,7 +26,7 @@ import { StopMarkerWithInfo } from "./map/markers/stopMarker"
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
 const makeVehicleIcon = (
-  vehicle: VehicleInScheduledService,
+  vehicle: Vehicle,
   isPrimary: boolean,
   userSettings: UserSettings,
   isSelected: boolean
@@ -60,7 +60,7 @@ const makeVehicleIcon = (
 }
 
 const makeLabelIcon = (
-  vehicle: VehicleInScheduledService,
+  vehicle: Vehicle,
   isPrimary: boolean,
   settings: UserSettings,
   isSelected: boolean
@@ -96,10 +96,10 @@ export const VehicleMarker = ({
   onSelect,
   isSelected = false,
 }: {
-  vehicle: VehicleInScheduledService
+  vehicle: Vehicle
   isPrimary: boolean
   isSelected?: boolean
-  onSelect?: (vehicle: VehicleInScheduledService) => void
+  onSelect?: (vehicle: Vehicle) => void
 }) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
   const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}

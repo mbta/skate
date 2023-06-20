@@ -8,7 +8,7 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import {
   VehicleInScheduledService,
@@ -47,7 +47,9 @@ const IncomingBoxVehicle = ({
       : Orientation.Up
   const alertIconStyle: AlertIconStyle | undefined =
     blockWaiverAlertStyle(vehicleOrGhost)
-  const crowding = isVehicle(vehicleOrGhost) ? vehicleOrGhost.crowding : null
+  const crowding = isVehicleInScheduledService(vehicleOrGhost)
+    ? vehicleOrGhost.crowding
+    : null
   const occupancyStatus: OccupancyStatus = crowding
     ? crowding.occupancyStatus
     : "NO_DATA"
@@ -102,7 +104,9 @@ const IncomingBox = ({
   <div className="c-incoming-box">
     {vehiclesAndGhosts.map((vehicleOrGhost) => (
       <IncomingBoxVehicle
-        displayCrowding={!!displayCrowding && isVehicle(vehicleOrGhost)}
+        displayCrowding={
+          !!displayCrowding && isVehicleInScheduledService(vehicleOrGhost)
+        }
         vehicleOrGhost={vehicleOrGhost}
         ladderDirection={ladderDirection}
         selectedVehicleId={selectedVehicleId}

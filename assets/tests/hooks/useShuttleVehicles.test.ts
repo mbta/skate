@@ -1,15 +1,13 @@
 import { renderHook } from "@testing-library/react"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
-import { VehicleInScheduledService } from "../../src/realtime.d"
+import { Vehicle } from "../../src/realtime.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleDataFactory from "../factories/vehicle_data"
-import { vehicleInScheduledServiceFromData } from "../../src/models/vehicleData"
+import { vehicleFromData } from "../../src/models/vehicleData"
 
 const shuttle = vehicleDataFactory.build({ is_shuttle: true })
 const shuttlesData = [shuttle]
-const shuttles: VehicleInScheduledService[] = [
-  vehicleInScheduledServiceFromData(shuttle),
-]
+const shuttles: Vehicle[] = [vehicleFromData(shuttle)]
 
 describe("useShuttleVehicles", () => {
   test("returns null while loading", () => {

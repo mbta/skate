@@ -34,11 +34,7 @@ import { createControlComponent } from "@react-leaflet/core"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
-import {
-  TrainVehicle,
-  VehicleInScheduledService,
-  VehicleId,
-} from "../realtime.d"
+import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import appData from "../appData"
@@ -59,11 +55,11 @@ export interface Props {
   children?: ReactElement | ReactElement[]
   stateClasses?: string
 
-  onPrimaryVehicleSelect?: (vehicle: VehicleInScheduledService) => void
+  onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
   selectedVehicleId?: VehicleId
-  vehicles: VehicleInScheduledService[]
+  vehicles: Vehicle[]
   // secondaryVehicles are smaller, deemphasized, and don't affect follower in `MapFollowingPrimaryVehicles`
-  secondaryVehicles?: VehicleInScheduledService[]
+  secondaryVehicles?: Vehicle[]
   // trainVehicles are white, don't get a label, and don't affect follower in `MapFollowingPrimaryVehicles`
   trainVehicles?: TrainVehicle[]
   shapes?: Shape[]
@@ -355,7 +351,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         />
 
         <Pane name="primaryVehicles" pane="markerPane" style={{ zIndex: 499 }}>
-          {props.vehicles.map((vehicle: VehicleInScheduledService) => (
+          {props.vehicles.map((vehicle: Vehicle) => (
             <VehicleMarker
               key={vehicle.id}
               vehicle={vehicle}
@@ -371,15 +367,13 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           pane="markerPane"
           style={{ zIndex: 400 }}
         >
-          {(props.secondaryVehicles || []).map(
-            (vehicle: VehicleInScheduledService) => (
-              <VehicleMarker
-                key={vehicle.id}
-                vehicle={vehicle}
-                isPrimary={false}
-              />
-            )
-          )}
+          {(props.secondaryVehicles || []).map((vehicle) => (
+            <VehicleMarker
+              key={vehicle.id}
+              vehicle={vehicle}
+              isPrimary={false}
+            />
+          ))}
         </Pane>
 
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
@@ -439,8 +433,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 export const vehicleToLeafletLatLng = ({
   latitude,
   longitude,
-}: VehicleInScheduledService): Leaflet.LatLng =>
-  Leaflet.latLng(latitude, longitude)
+}: Vehicle): Leaflet.LatLng => Leaflet.latLng(latitude, longitude)
 
 // TODO: replacing with react controlled component which self-contains
 // state and does not rely on setting a class on the map container
