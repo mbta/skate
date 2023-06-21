@@ -59,8 +59,6 @@ export const StreetViewControl = ({
             })
 
             window.open(url, "_blank")
-
-            setStreetViewEnabled(false)
           },
 
           keydown: (e) => {
