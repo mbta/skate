@@ -42,9 +42,7 @@ const ScheduleAdherenceDescription = ({
 const secondsToPunctuality = (seconds: number): string =>
   seconds <= 0 ? "early" : "late"
 
-export const scheduleAdherenceLabelString = ({
-  scheduleAdherenceSecs: seconds,
-}: VehicleInScheduledService): string => {
+export const scheduleAdherenceLabelString = (seconds: number): string => {
   const minutes = secondsToMinutes(seconds)
   const punctuality = secondsToPunctuality(seconds)
   return `${minutes} min ${punctuality}`
@@ -58,7 +56,9 @@ const ScheduleAdherenceMetric = ({
   vehicle: VehicleInScheduledService
 } & ComponentPropsWithoutRef<"output">) => (
   <output className={`c-vehicle-adherence-label ${className}`} {...props}>
-    {!vehicle.isOffCourse && <>({scheduleAdherenceLabelString(vehicle)})</>}
+    {!vehicle.isOffCourse && vehicle.scheduleAdherenceSecs !== null && (
+      <>({scheduleAdherenceLabelString(vehicle.scheduleAdherenceSecs)})</>
+    )}
   </output>
 )
 

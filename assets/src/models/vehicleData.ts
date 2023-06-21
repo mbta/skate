@@ -129,7 +129,6 @@ export type VehicleData = Infer<typeof VehicleData>
 export const VehicleInScheduledServiceData = type({
   ...baseVehicleData,
   direction_id: enums([0, 1]),
-  schedule_adherence_secs: number(),
 })
 export type VehicleInScheduledServiceData = Infer<
   typeof VehicleInScheduledServiceData

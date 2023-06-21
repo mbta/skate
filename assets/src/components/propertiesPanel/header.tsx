@@ -52,9 +52,9 @@ const ScheduleAdherenceStatusString = ({
 const earlyOrLate = (scheduleAdherenceSecs: number): string =>
   scheduleAdherenceSecs <= 0 ? "early" : "late"
 
-export const scheduleAdherenceLabelString = ({
-  scheduleAdherenceSecs,
-}: VehicleInScheduledService): string =>
+export const scheduleAdherenceLabelString = (
+  scheduleAdherenceSecs: number
+): string =>
   `${secondsToMinutes(scheduleAdherenceSecs)} min ${earlyOrLate(
     scheduleAdherenceSecs
   )}`
@@ -65,7 +65,9 @@ const ScheduleAdherenceLabel = ({
   vehicle: VehicleInScheduledService
 }) => (
   <div className="c-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse ? "" : `(${scheduleAdherenceLabelString(vehicle)})`}
+    {vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
+      ? ""
+      : `(${scheduleAdherenceLabelString(vehicle.scheduleAdherenceSecs)})`}
   </div>
 )
 

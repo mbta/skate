@@ -279,8 +279,14 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const lateBuses = vehiclesOrGhosts
     .filter(isVehicleInScheduledService)
-    .filter((vehicle) => vehicle.scheduleAdherenceSecs >= lateBusThreshold)
-    .sort((a, b) => b.scheduleAdherenceSecs - a.scheduleAdherenceSecs)
+    .filter(
+      (vehicle) =>
+        vehicle.scheduleAdherenceSecs !== null &&
+        vehicle.scheduleAdherenceSecs >= lateBusThreshold
+    )
+    .sort(
+      (a, b) => (b.scheduleAdherenceSecs || 0) - (a.scheduleAdherenceSecs || 0)
+    )
 
   const lateVehiclesAndGhosts = (
     lateGhosts as (VehicleInScheduledService | Ghost)[]
@@ -505,7 +511,7 @@ const LateBusRow = ({
         />
       </td>
       <td className="c-late-view__adherence-cell">
-        {secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}
+        {secondsToMinutes(vehicle.scheduleAdherenceSecs || 0) * -1}
       </td>
       <td>
         <span className="c-late-view__route-pill">

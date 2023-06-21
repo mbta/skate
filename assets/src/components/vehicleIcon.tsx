@@ -122,9 +122,11 @@ export const VehicleTooltip = ({
   const runId = runIdToLabel(vehicleOrGhost.runId)
   const label = isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label
   const scheduleAdherenceLabel =
-    isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
+    isGhost(vehicleOrGhost) ||
+    vehicleOrGhost.isOffCourse ||
+    vehicleOrGhost.scheduleAdherenceSecs === null
       ? "N/A"
-      : scheduleAdherenceLabelString(vehicleOrGhost)
+      : scheduleAdherenceLabelString(vehicleOrGhost.scheduleAdherenceSecs)
 
   const operatorDetails = isGhost(vehicleOrGhost)
     ? "N/A"

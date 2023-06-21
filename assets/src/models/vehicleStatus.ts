@@ -49,7 +49,7 @@ export const drawnStatus = (vehicleOrGhost: Vehicle | Ghost): DrawnStatus => {
 export const humanReadableScheduleAdherence = (
   vehicle: VehicleInScheduledService
 ): string =>
-  vehicle.isOffCourse
+  vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
     ? "Invalid"
     : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))
 

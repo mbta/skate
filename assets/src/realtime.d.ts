@@ -144,7 +144,6 @@ export interface Vehicle {
 
 export interface VehicleInScheduledService extends Vehicle {
   directionId: DirectionId
-  scheduleAdherenceSecs: number
 }
 
 export type VehicleOrGhost = VehicleInScheduledService | Ghost
