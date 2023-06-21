@@ -5,6 +5,8 @@ defmodule Realtime.VehicleOrGhostTest do
 
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
 
+  @operator_last_name build(:last_name)
+
   @vehicle %Vehicle{
     id: "vehicle1",
     label: "v1-label",
@@ -19,8 +21,8 @@ defmodule Realtime.VehicleOrGhostTest do
     block_id: "A505-106",
     operator_id: build(:operator_id),
     operator_first_name: build(:first_name),
-    operator_last_name: "FRANKLIN",
-    operator_name: "FRANKLIN",
+    operator_last_name: @operator_last_name,
+    operator_name: @operator_last_name,
     operator_logon_time: 1_558_121_726,
     overload_offset: nil,
     run_id: "vehicle-run-1",
@@ -76,13 +78,13 @@ defmodule Realtime.VehicleOrGhostTest do
       assert VehicleOrGhost.find_by(vehicles, %{text: "ghost", property: :all}) ==
                [@ghost]
 
-      assert VehicleOrGhost.find_by(vehicles, %{text: "fran", property: :all}) ==
+      assert VehicleOrGhost.find_by(vehicles, %{text: vehicle.operator_last_name, property: :all}) ==
                [vehicle]
 
-      assert VehicleOrGhost.find_by(vehicles, %{text: "frank", property: :all}) ==
-               [vehicle]
-
-      assert VehicleOrGhost.find_by(vehicles, %{text: "franc", property: :all}) ==
+      assert VehicleOrGhost.find_by(vehicles, %{
+               text: String.slice(vehicle.operator_last_name, 1..-3),
+               property: :all
+             }) ==
                [vehicle]
 
       assert VehicleOrGhost.find_by(vehicles, %{text: vehicle.operator_first_name, property: :all}) ==
@@ -94,10 +96,16 @@ defmodule Realtime.VehicleOrGhostTest do
              }) ==
                [vehicle]
 
-      assert VehicleOrGhost.find_by(vehicles, %{text: "frances franklin", property: :all}) ==
+      assert VehicleOrGhost.find_by(vehicles, %{
+               text: "#{vehicle.operator_first_name} #{vehicle.operator_last_name}",
+               property: :all
+             }) ==
                [vehicle]
 
-      assert VehicleOrGhost.find_by(vehicles, %{text: "franklin, frances", property: :all}) ==
+      assert VehicleOrGhost.find_by(vehicles, %{
+               text: "#{vehicle.operator_last_name}, #{vehicle.operator_first_name}",
+               property: :all
+             }) ==
                [vehicle]
 
       assert VehicleOrGhost.find_by(vehicles, %{text: vehicle.operator_id, property: :all}) ==
@@ -144,7 +152,10 @@ defmodule Realtime.VehicleOrGhostTest do
     end
 
     test "matches on operator name" do
-      assert VehicleOrGhost.find_by(@vehicles, %{text: "frank", property: :operator}) ==
+      assert VehicleOrGhost.find_by(@vehicles, %{
+               text: String.slice(@vehicle.operator_last_name, 1..-3),
+               property: :operator
+             }) ==
                [@vehicle]
     end
 

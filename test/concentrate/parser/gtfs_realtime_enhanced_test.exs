@@ -160,7 +160,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  block_id: "Q238-135",
                  operator_id: input["operator"]["id"],
                  operator_first_name: input["operator"]["first_name"],
-                 operator_last_name: "EVANS",
+                 operator_last_name: input["operator"]["last_name"],
                  operator_logon_time: 1_534_340_301,
                  overload_offset: -6,
                  run_id: "128-1007",

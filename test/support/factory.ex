@@ -9,6 +9,10 @@ defmodule Skate.Factory do
     sequence(:first_name, &"First(#{&1})")
   end
 
+  def last_name_factory(_) do
+    sequence(:first_name, &"Last(#{&1})")
+  end
+
   def vehicle_factory do
     %Realtime.Vehicle{
       id: "on_route",

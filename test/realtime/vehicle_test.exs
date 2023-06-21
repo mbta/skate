@@ -22,7 +22,7 @@ defmodule Realtime.VehicleTest do
     odometer: nil,
     operator_id: build(:operator_id),
     operator_first_name: build(:first_name),
-    operator_last_name: "MAUPIN",
+    operator_last_name: build(:last_name),
     operator_logon_time: 1_558_364_010,
     run_id: "138-1038",
     layover_departure_time: nil,
@@ -117,7 +117,8 @@ defmodule Realtime.VehicleTest do
     test "translates Concentrate VehiclePosition into a Vehicle struct" do
       %VehiclePosition{
         operator_id: operator_id,
-        operator_first_name: operator_first_name
+        operator_first_name: operator_first_name,
+        operator_last_name: operator_last_name
       } = vehicle_position = @vehicle_position
 
       result = Vehicle.from_vehicle_position(vehicle_position)
@@ -139,8 +140,8 @@ defmodule Realtime.VehicleTest do
                block_id: "S28-2",
                operator_id: ^operator_id,
                operator_first_name: ^operator_first_name,
-               operator_last_name: "MAUPIN",
-               operator_name: "MAUPIN",
+               operator_last_name: ^operator_last_name,
+               operator_name: ^operator_last_name,
                operator_logon_time: 1_558_364_010,
                overload_offset: nil,
                run_id: "138-1038",
@@ -627,8 +628,8 @@ defmodule Realtime.VehicleTest do
         block_id: "S28-2",
         operator_id: build(:operator_id),
         operator_first_name: build(:first_name),
-        operator_last_name: "MAUPIN",
-        operator_name: "MAUPIN",
+        operator_last_name: build(:last_name),
+        operator_name: build(:last_name),
         operator_logon_time: 1_558_364_010,
         overload_offset: nil,
         run_id: "138-1038",

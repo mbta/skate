@@ -78,6 +78,8 @@ defmodule Notifications.NotificationServerTest do
     route_status: :on_route
   }
 
+  @operator_last_name build(:last_name)
+
   @vehicle %Vehicle{
     id: "y0507",
     label: "0507",
@@ -92,8 +94,8 @@ defmodule Notifications.NotificationServerTest do
     block_id: nil,
     operator_id: build(:operator_id),
     operator_first_name: build(:first_name),
-    operator_last_name: "ONTHEMTA",
-    operator_name: "ONTHEMTA",
+    operator_last_name: @operator_last_name,
+    operator_name: @operator_last_name,
     operator_logon_time: nil,
     overload_offset: nil,
     run_id: "123-4567",
@@ -310,7 +312,7 @@ defmodule Notifications.NotificationServerTest do
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_block_waiver_notification(cause_atom, cause_description, cause_id, server,
-          operator_name: "ONTHEMTA",
+          operator_name: vehicle.operator_last_name,
           operator_id: vehicle.operator_id,
           route_id_at_creation: "SL9001"
         )
@@ -404,7 +406,7 @@ defmodule Notifications.NotificationServerTest do
       existing_record = Skate.Repo.one(from(DbNotification))
 
       assert_block_waiver_notification(:other, "Other", 1, server,
-        operator_name: "ONTHEMTA",
+        operator_name: vehicle.operator_last_name,
         operator_id: vehicle.operator_id,
         route_id_at_creation: "SL9001",
         log_expected: false,
@@ -424,7 +426,7 @@ defmodule Notifications.NotificationServerTest do
           )
 
           assert_block_waiver_notification(:other, "Other", 1, server,
-            operator_name: "ONTHEMTA",
+            operator_name: vehicle.operator_last_name,
             operator_id: vehicle.operator_id,
             route_id_at_creation: "SL9001",
             log_expected: false,

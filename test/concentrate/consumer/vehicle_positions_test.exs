@@ -18,7 +18,7 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
       longitude: -71.0642766,
       odometer: nil,
       operator_id: build(:operator_id),
-      operator_last_name: "last_name",
+      operator_last_name: build(:last_name),
       run_id: "123-9048",
       route_id: "505",
       speed: nil,

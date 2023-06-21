@@ -7,6 +7,8 @@ defmodule Realtime.ServerTest do
   alias Realtime.BlockWaiver
   alias Realtime.Server
 
+  @operator_last_name build(:last_name)
+
   @vehicle build(:vehicle,
              route_id: "1",
              id: "v1",
@@ -15,8 +17,8 @@ defmodule Realtime.ServerTest do
              block_id: "vehicle_block",
              operator_id: build(:operator_id),
              operator_first_name: build(:first_name),
-             operator_last_name: "FRANCIS",
-             operator_name: "FRANCIS"
+             operator_last_name: @operator_last_name,
+             operator_name: @operator_last_name
            )
 
   @vehicle_on_inactive_block build(:vehicle,
@@ -420,7 +422,7 @@ defmodule Realtime.ServerTest do
       }
 
       operator_search_params = %{
-        text: "franc",
+        text: String.slice(@vehicle.operator_last_name, 1..-3),
         property: :all
       }
 
