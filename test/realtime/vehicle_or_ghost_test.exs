@@ -82,7 +82,7 @@ defmodule Realtime.VehicleOrGhostTest do
                [vehicle]
 
       assert VehicleOrGhost.find_by(vehicles, %{
-               text: String.slice(vehicle.operator_last_name, 1..-3),
+               text: String.slice(vehicle.operator_last_name, 0..-3),
                property: :all
              }) ==
                [vehicle]
@@ -91,7 +91,7 @@ defmodule Realtime.VehicleOrGhostTest do
                [vehicle]
 
       assert VehicleOrGhost.find_by(vehicles, %{
-               text: String.slice(vehicle.operator_first_name, 1..-3),
+               text: String.slice(vehicle.operator_first_name, 0..-3),
                property: :all
              }) ==
                [vehicle]
@@ -153,7 +153,7 @@ defmodule Realtime.VehicleOrGhostTest do
 
     test "matches on operator name" do
       assert VehicleOrGhost.find_by(@vehicles, %{
-               text: String.slice(@vehicle.operator_last_name, 1..-3),
+               text: String.slice(@vehicle.operator_last_name, 0..-3),
                property: :operator
              }) ==
                [@vehicle]
