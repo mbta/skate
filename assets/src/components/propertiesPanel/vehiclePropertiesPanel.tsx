@@ -11,6 +11,7 @@ import {
   VehicleInScheduledService,
   VehicleId,
   VehicleOrGhost,
+  Vehicle,
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
 import { isOk } from "../../util/fetchResult"
@@ -23,7 +24,7 @@ import MiniMap from "./miniMap"
 import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
-  selectedVehicle: VehicleInScheduledService
+  selectedVehicle: Vehicle
 }
 
 const InvalidBanner = () => (
@@ -73,7 +74,7 @@ const useRouteVehicles = (
     .filter((v) => v.id !== primaryVehicleId)
 }
 
-const Location = ({ vehicle }: { vehicle: VehicleInScheduledService }) => {
+const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const routeVehicles: VehicleInScheduledService[] = useRouteVehicles(
     vehicle.routeId,
     vehicle.id
@@ -154,7 +155,7 @@ const Discrepancy = ({
 const DataDiscrepancies = ({
   vehicle: { dataDiscrepancies },
 }: {
-  vehicle: VehicleInScheduledService
+  vehicle: Vehicle
 }) => (
   <ul className="c-vehicle-properties-panel__data-discrepancies">
     {dataDiscrepancies.map((dataDiscrepancy) => (
@@ -168,16 +169,10 @@ const DataDiscrepancies = ({
 const inDebugMode = (): boolean =>
   !!new URL(document.location.href).searchParams.get("debug")
 
-const shouldShowDataDiscrepancies = ({
-  dataDiscrepancies,
-}: VehicleInScheduledService): boolean =>
+const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0
 
-const StatusContent = ({
-  selectedVehicle,
-}: {
-  selectedVehicle: VehicleInScheduledService
-}) => (
+const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
     <div className="c-vehicle-properties-panel__notes">
       {selectedVehicle.isOffCourse && <InvalidBanner />}
@@ -210,14 +205,14 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         setTabMode={setTabMode}
       />
 
-      {selectedVehicle.isShuttle ? (
-        <StatusContent selectedVehicle={selectedVehicle} />
-      ) : (
+      {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
           vehicleOrGhost={selectedVehicle}
           statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
           mode={tabMode}
         />
+      ) : (
+        <StatusContent selectedVehicle={selectedVehicle} />
       )}
     </div>
   )

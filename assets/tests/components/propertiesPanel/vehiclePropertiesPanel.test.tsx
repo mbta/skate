@@ -11,6 +11,7 @@ import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import {
   BlockWaiver,
   Ghost,
+  Vehicle,
   VehicleInScheduledService,
 } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
@@ -171,8 +172,9 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("renders for a shuttle", () => {
-    const shuttleVehicle: VehicleInScheduledService = {
+    const shuttleVehicle: Vehicle = {
       ...vehicle,
+      directionId: null,
       runId: "999-0555",
       isShuttle: true,
     }

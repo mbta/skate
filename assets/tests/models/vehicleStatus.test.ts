@@ -4,11 +4,12 @@ import {
   onTimeStatus,
   statusClasses,
 } from "../../src/models/vehicleStatus"
-import { VehicleInScheduledService } from "../../src/realtime.d"
+import { Vehicle, VehicleInScheduledService } from "../../src/realtime.d"
 import {
   defaultUserSettings,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
+import vehicleFactory from "../factories/vehicle"
 
 describe("onTimeStatus", () => {
   test("returns on-time", () => {
@@ -51,6 +52,14 @@ describe("drawnStatus", () => {
       isOffCourse: false,
     } as VehicleInScheduledService
     expect(drawnStatus(vehicle)).toEqual("late")
+  })
+
+  test("returns 'plain' for all other vehicles", () => {
+    const vehicle: Vehicle = vehicleFactory.build({
+      isShuttle: false,
+    })
+    vehicle.scheduleAdherenceSecs = null
+    expect(drawnStatus(vehicle)).toEqual("plain")
   })
 })
 

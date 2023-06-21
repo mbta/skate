@@ -1,4 +1,4 @@
-import { isVehicleInScheduledService } from "../models/vehicle"
+import { isVehicle, isVehicleInScheduledService } from "../models/vehicle"
 import { Ghost, RunId, Vehicle } from "../realtime"
 import {
   UserSettings,
@@ -14,9 +14,7 @@ export const runOrBusNumberLabel = (
     case VehicleLabelSetting.RunNumber:
       return runIdToLabel(vehicleOrGhost.runId)
     case VehicleLabelSetting.VehicleNumber:
-      return isVehicleInScheduledService(vehicleOrGhost)
-        ? vehicleOrGhost.label || "N/A"
-        : "N/A"
+      return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label || "N/A" : "N/A"
   }
 }
 

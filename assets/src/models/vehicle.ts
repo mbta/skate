@@ -7,17 +7,14 @@ import {
 import { Route } from "../schedule"
 import { now } from "../util/dateTime"
 
-export function isVehicle(
+export const isVehicle = (
   vehicleOrGhost: Vehicle | Ghost
-): vehicleOrGhost is Vehicle {
-  return !isGhost(vehicleOrGhost)
-}
+): vehicleOrGhost is Vehicle => !isGhost(vehicleOrGhost)
 
-export function isVehicleInScheduledService(
+export const isVehicleInScheduledService = (
   vehicleOrGhost: Vehicle | Ghost
-): vehicleOrGhost is VehicleInScheduledService {
-  return !isGhost(vehicleOrGhost) && vehicleOrGhost.directionId !== null
-}
+): vehicleOrGhost is VehicleInScheduledService =>
+  !isGhost(vehicleOrGhost) && vehicleOrGhost.directionId !== null
 
 export const isGhost = (
   vehicleOrGhost: Vehicle | Ghost

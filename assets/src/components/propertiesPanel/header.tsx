@@ -8,6 +8,7 @@ import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { emptyLadderDirectionsByRouteId } from "../../models/ladderDirection"
 import {
   directionName,
+  isVehicle,
   isVehicleInScheduledService,
 } from "../../models/vehicle"
 import {
@@ -15,7 +16,7 @@ import {
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../../models/vehicleStatus"
-import { VehicleInScheduledService, VehicleOrGhost } from "../../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../../realtime"
 import { closeView, returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
@@ -25,7 +26,7 @@ import { currentRouteTab } from "../../models/routeTab"
 import ViewHeader from "../viewHeader"
 
 interface Props {
-  vehicle: VehicleOrGhost
+  vehicle: Vehicle | Ghost
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
 }
@@ -96,8 +97,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
 
   const hideMe = () => dispatch(closeView())
 
-  const vehicleIsShuttle =
-    isVehicleInScheduledService(vehicle) && vehicle.isShuttle
+  const vehicleIsShuttle = isVehicle(vehicle) && vehicle.isShuttle
 
   const currentTab = currentRouteTab(routeTabs)
   const ladderDirections = currentTab
@@ -135,7 +135,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
           )}
         </div>
         <div className="c-properties-panel__ping-container">
-          {isVehicleInScheduledService(vehicle) && (
+          {isVehicle(vehicle) && (
             <div className="c-properties-panel__last-gps-ping">
               {secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}
             </div>
