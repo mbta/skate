@@ -116,7 +116,9 @@ exports[`GhostPropertiesPanel renders 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
@@ -419,7 +421,9 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
@@ -772,7 +776,9 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"

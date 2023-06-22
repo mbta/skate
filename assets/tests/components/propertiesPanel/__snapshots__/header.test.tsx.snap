@@ -103,7 +103,9 @@ exports[`Header renders a header 1`] = `
         >
           39_X
         </output>
-         
+        <span>
+           
+        </span>
         <output
           aria-label="Headsign"
           className="c-route-variant-name__headsign"
@@ -356,7 +358,9 @@ exports[`Header renders for a ghost 1`] = `
         >
           39_X
         </output>
-         
+        <span>
+           
+        </span>
         <output
           aria-label="Headsign"
           className="c-route-variant-name__headsign"
@@ -567,7 +571,9 @@ exports[`Header renders for a late vehicle 1`] = `
         >
           39_X
         </output>
-         
+        <span>
+           
+        </span>
         <output
           aria-label="Headsign"
           className="c-route-variant-name__headsign"
@@ -925,7 +931,9 @@ exports[`Header renders for an early vehicle 1`] = `
         >
           39_X
         </output>
-         
+        <span>
+           
+        </span>
         <output
           aria-label="Headsign"
           className="c-route-variant-name__headsign"
@@ -1170,7 +1178,9 @@ exports[`Header renders for an off-course vehicle 1`] = `
         >
           39_X
         </output>
-         
+        <span>
+           
+        </span>
         <output
           aria-label="Headsign"
           className="c-route-variant-name__headsign"
@@ -1415,7 +1425,9 @@ exports[`Header renders with route data 1`] = `
         >
           39_X
         </output>
-         
+        <span>
+           
+        </span>
         <output
           aria-label="Headsign"
           className="c-route-variant-name__headsign"

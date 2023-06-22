@@ -836,7 +836,9 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   >
                     39_X
                   </output>
-                   
+                  <span>
+                     
+                  </span>
                   <output
                     aria-label="Headsign"
                     class="c-route-variant-name__headsign"
