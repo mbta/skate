@@ -22,12 +22,12 @@ import {
   VehicleTimepointStatus,
 } from "../realtime.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
+import { DirectionIdData } from "./miscData"
 
 const DataDiscrepancySourceData = type({
   id: string(),
   value: nullable(string()),
 })
-type DataDiscrepancySourceData = Infer<typeof DataDiscrepancySourceData>
 
 const DataDiscrepancyData = type({
   attribute: string(),
@@ -49,8 +49,8 @@ type VehicleTimepointStatusData = Infer<typeof VehicleTimepointStatusData>
 
 const VehicleScheduledLocationData = type({
   route_id: string(),
-  route_pattern_id: nullable(string()), // TODO: actually nullable?
-  direction_id: enums([0, 1]),
+  route_pattern_id: nullable(string()),
+  direction_id: DirectionIdData,
   trip_id: string(),
   run_id: string(),
   time_since_trip_start_time: number(),
@@ -69,6 +69,25 @@ const BlockWaiverData = type({
 })
 type BlockWaiverData = Infer<typeof BlockWaiverData>
 
+const RouteStatusData = enums(["on_route", "laying_over", "pulling_out"])
+
+const EndOfTripTypeData = enums(["another_trip", "swing_off", "pull_back"])
+
+const OccupancyStatusData = enums([
+  "NO_DATA",
+  "EMPTY",
+  "MANY_SEATS_AVAILABLE",
+  "FEW_SEATS_AVAILABLE",
+  "FULL",
+])
+
+const CrowdingData = type({
+  load: nullable(number()),
+  capacity: nullable(number()),
+  occupancy_status: nullable(OccupancyStatusData),
+  occupancy_percentage: nullable(number()),
+})
+
 const baseVehicleData = {
   id: string(),
   label: nullable(string()),
@@ -76,7 +95,7 @@ const baseVehicleData = {
   timestamp: number(),
   latitude: number(),
   longitude: number(),
-  direction_id: nullable(enums([0, 1])),
+  direction_id: nullable(DirectionIdData),
   route_id: nullable(string()),
   route_pattern_id: nullable(string()),
   trip_id: nullable(string()),
@@ -91,7 +110,7 @@ const baseVehicleData = {
   block_id: string(),
   previous_vehicle_id: nullable(string()),
   schedule_adherence_secs: nullable(number()),
-  incoming_trip_direction_id: nullable(enums([0, 1])), // TODO: reconcile with routePatternData
+  incoming_trip_direction_id: nullable(DirectionIdData),
   is_shuttle: boolean(),
   is_overload: boolean(),
   is_off_course: boolean(),
@@ -102,25 +121,10 @@ const baseVehicleData = {
   stop_status: VehicleStopStatusData,
   timepoint_status: nullable(VehicleTimepointStatusData),
   scheduled_location: nullable(VehicleScheduledLocationData),
-  route_status: enums(["on_route", "laying_over", "pulling_out"]), // TODO: pull this out
-  end_of_trip_type: enums(["another_trip", "swing_off", "pull_back"]), // TODO: same as the above
+  route_status: RouteStatusData,
+  end_of_trip_type: EndOfTripTypeData,
   block_waivers: array(BlockWaiverData),
-  crowding: nullable(
-    type({
-      load: nullable(number()),
-      capacity: nullable(number()),
-      occupancy_status: nullable(
-        enums([
-          "NO_DATA",
-          "EMPTY",
-          "MANY_SEATS_AVAILABLE",
-          "FEW_SEATS_AVAILABLE",
-          "FULL",
-        ])
-      ), // TODO: also pull this out
-      occupancy_percentage: nullable(number()),
-    })
-  ),
+  crowding: nullable(CrowdingData),
 }
 
 export const VehicleData = type(baseVehicleData)
@@ -128,7 +132,7 @@ export type VehicleData = Infer<typeof VehicleData>
 
 export const VehicleInScheduledServiceData = type({
   ...baseVehicleData,
-  direction_id: enums([0, 1]),
+  direction_id: DirectionIdData,
 })
 export type VehicleInScheduledServiceData = Infer<
   typeof VehicleInScheduledServiceData
@@ -136,7 +140,7 @@ export type VehicleInScheduledServiceData = Infer<
 
 export const GhostData = type({
   id: string(),
-  direction_id: enums([0, 1]),
+  direction_id: DirectionIdData,
   route_id: string(),
   route_pattern_id: optional(string()),
   trip_id: string(),
@@ -147,11 +151,11 @@ export const GhostData = type({
   layover_departure_time: nullable(number()),
   scheduled_timepoint_status: VehicleTimepointStatusData,
   scheduled_logon: nullable(number()),
-  route_status: enums(["on_route", "laying_over", "pulling_out"]), // TODO: pull this out
+  route_status: RouteStatusData,
   block_waivers: array(BlockWaiverData),
   current_piece_start_place: nullable(string()),
   current_piece_first_route: nullable(string()),
-  incoming_trip_direction_id: nullable(enums([0, 1])),
+  incoming_trip_direction_id: nullable(DirectionIdData),
 })
 export type GhostData = Infer<typeof GhostData>
 
