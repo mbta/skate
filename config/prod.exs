@@ -39,7 +39,8 @@ config :skate, Skate.Repo,
   database: "skate",
   ssl: true,
   show_sensitive_data_on_connection_error: false,
-  configure: {Skate.Repo, :add_prod_credentials, []}
+  configure: {Skate.Repo, :add_prod_credentials, []},
+  pool_size: 30
 
 # Do not print debug messages in production
 config :logger, level: :info
