@@ -1,6 +1,11 @@
-import React, { ComponentPropsWithoutRef, useContext } from "react"
+import React, {
+  ComponentPropsWithoutRef,
+  MouseEventHandler,
+  useContext,
+} from "react"
 import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { joinClasses } from "../helpers/dom"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
@@ -60,19 +65,41 @@ export const VehicleRouteDirection = ({
   )
 }
 
+export type VehicleRouteSummaryEventProps = {
+  onRouteVariantNameClicked?: MouseEventHandler<HTMLElement>
+}
+
+export type VehicleRouteSummaryProps = VehicleOrGhostProp &
+  VehicleRouteSummaryEventProps
+
 export const VehicleRouteSummary = ({
   vehicle,
-}: VehicleOrGhostProp): React.ReactElement => (
+  onRouteVariantNameClicked,
+}: VehicleRouteSummaryProps): React.ReactElement => (
   <div className="c-vehicle-route-summary">
     <VehicleRouteDirection
       vehicle={vehicle}
       className="c-vehicle-route-summary__direction label font-xs-reg"
     />
 
-    <RouteVariantName
-      vehicle={vehicle}
-      className="c-vehicle-route-summary__route-variant headsign font-m-semi"
-    />
+    {onRouteVariantNameClicked ? (
+      <button
+        onClick={onRouteVariantNameClicked}
+        className={joinClasses([
+          "c-vehicle-route-summary__route-variant",
+          "c-vehicle-route-summary__route-variant--clickable",
+          "headsign",
+          "font-m-semi",
+        ])}
+      >
+        <RouteVariantName vehicle={vehicle} />
+      </button>
+    ) : (
+      <RouteVariantName
+        vehicle={vehicle}
+        className="c-vehicle-route-summary__route-variant headsign font-m-semi"
+      />
+    )}
 
     <VehicleStatusIcon
       vehicle={vehicle}

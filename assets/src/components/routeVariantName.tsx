@@ -31,7 +31,10 @@ export const RouteVariantName = ({
           >
             {`${route?.name || routeId}_${viaVariantFormatted}`}
           </output>
-          &nbsp;
+          <span>
+            {/* Underline does not work on this space unless it is inside of a span */}
+            &nbsp;
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"

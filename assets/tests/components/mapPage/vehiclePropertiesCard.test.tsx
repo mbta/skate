@@ -9,6 +9,7 @@ import { useNearestIntersection } from "../../../src/hooks/useNearestIntersectio
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import ghostFactory from "../../factories/ghost"
 import { runIdFactory } from "../../factories/run"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
@@ -57,6 +58,24 @@ describe("<VehiclePropertiesCard/>", () => {
 
       expect(vehicleCell).toHaveTextContent(vehicle2.label)
       expect(runCell).toHaveTextContent(vehicle2.runId!)
+    })
+
+    test("should fire onRouteVariantName when route text button clicked", async () => {
+      const vehicle = vehicleFactory.build()
+      const event = jest.fn()
+
+      render(
+        <VehiclePropertiesCard
+          vehicleOrGhost={vehicle}
+          onRouteVariantNameClicked={event}
+        />
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Route Variant Name" })
+      )
+
+      expect(event).toBeCalledTimes(1)
     })
   })
 
