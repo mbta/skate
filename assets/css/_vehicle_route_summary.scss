@@ -1,6 +1,6 @@
 // #region Vehicle Route Summary
-// #region Layout
 .c-vehicle-route-summary {
+  // #region Layout
   display: grid;
   grid-template-rows: 3fr 8fr;
   grid-template-columns: min-content 1fr 6fr 12fr;
@@ -20,15 +20,15 @@
     grid-area: separator;
   }
 
-  .c-schedule-adherence {
+  .c-vehicle-route-summary__adherence {
     grid-area: adherence;
   }
 
-  .c-vehicle-route-direction {
+  .c-vehicle-route-summary__direction {
     grid-area: direction;
   }
 
-  .c-route-variant-name {
+  .c-vehicle-route-summary__route-variant {
     grid-area: route-name;
   }
   // #endregion
@@ -84,6 +84,26 @@
     background-color: $color-gray-300;
     width: 1px;
   }
+  // #endregion
+  // #endregion
+
+  // #region Appearance
+  .c-vehicle-route-summary__route-variant--clickable {
+    color: $color-eggplant-700;
+    text-decoration: underline;
+    text-align: left;
+    text-underline-offset: 0.25rem;
+
+    &:hover {
+      color: $color-eggplant-500;
+    }
+
+    &:focus {
+      color: $color-eggplant-500;
+      border: 1px solid $color-eggplant-700;
+      border-radius: 3px;
+    }
+  }
+  // #endregion
 }
-// #endregion
 // #endregion

@@ -106,7 +106,9 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
@@ -474,7 +476,9 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
@@ -1078,7 +1082,9 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
@@ -1543,7 +1549,9 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
@@ -1911,7 +1919,9 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
@@ -2318,7 +2328,9 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           >
             39_X
           </output>
-           
+          <span>
+             
+          </span>
           <output
             aria-label="Headsign"
             className="c-route-variant-name__headsign"
