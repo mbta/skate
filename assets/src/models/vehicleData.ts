@@ -16,7 +16,6 @@ import {
   Ghost,
   Vehicle,
   VehicleInScheduledService,
-  VehicleOrGhost,
   VehicleScheduledLocation,
   VehicleStopStatus,
   VehicleTimepointStatus,
@@ -246,17 +245,30 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   currentPieceStartPlace: ghostData.current_piece_start_place,
 })
 
-const isGhost = (
-  vehicleOrGhostData: VehicleOrGhostData
-): vehicleOrGhostData is GhostData =>
-  !Object.prototype.hasOwnProperty.call(vehicleOrGhostData, "operator_id")
+function isGhost(
+  vehicleOrGhostData: VehicleData | GhostData
+): vehicleOrGhostData is GhostData {
+  return !Object.prototype.hasOwnProperty.call(
+    vehicleOrGhostData,
+    "operator_id"
+  )
+}
 
-export const vehicleOrGhostFromData = (
-  vehicleOrGhostData: VehicleOrGhostData
-): VehicleOrGhost =>
-  isGhost(vehicleOrGhostData)
+export function vehicleOrGhostFromData(
+  vehicleOrGhostData: VehicleData | GhostData
+): Vehicle | Ghost {
+  return isGhost(vehicleOrGhostData)
     ? ghostFromData(vehicleOrGhostData)
     : vehicleFromData(vehicleOrGhostData)
+}
+
+export function vehicleInScheduledServiceOrGhostFromData(
+  vehicleOrGhostData: VehicleInScheduledServiceData | GhostData
+): VehicleInScheduledService | Ghost {
+  return isGhost(vehicleOrGhostData)
+    ? ghostFromData(vehicleOrGhostData)
+    : vehicleFromData(vehicleOrGhostData)
+}
 
 const dataDiscrepanciesFromData = (
   dataDiscrepancies: DataDiscrepancyData[]

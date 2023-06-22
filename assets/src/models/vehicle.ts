@@ -42,9 +42,7 @@ export const directionName = (
   directionId !== null && route ? route.directionNames[directionId] : ""
 
 export const filterVehicles = (
-  vehiclesOrGhosts: VehicleOrGhost[] | null
-): VehicleInScheduledService[] => {
-  return vehiclesOrGhosts === null
-    ? []
-    : vehiclesOrGhosts.filter(isVehicleInScheduledService)
+  vehiclesOrGhosts: (Vehicle | Ghost)[] | null
+): Vehicle[] => {
+  return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
 }

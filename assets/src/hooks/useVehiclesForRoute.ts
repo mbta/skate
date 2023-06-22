@@ -1,15 +1,15 @@
 import { Socket } from "phoenix"
 import { array } from "superstruct"
 import {
+  vehicleInScheduledServiceOrGhostFromData,
   VehicleOrGhostData,
-  vehicleOrGhostFromData,
 } from "../models/vehicleData"
 import { VehicleOrGhost } from "../realtime"
 import { RouteId } from "../schedule"
 import { useCheckedChannel } from "./useChannel"
 
 const parser = (data: VehicleOrGhostData[]): VehicleOrGhost[] =>
-  data.map(vehicleOrGhostFromData)
+  data.map(vehicleInScheduledServiceOrGhostFromData)
 
 const dataStruct = array(VehicleOrGhostData)
 

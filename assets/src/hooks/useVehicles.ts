@@ -3,8 +3,8 @@ import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import { array, assert, StructError } from "superstruct"
 import { reload } from "../models/browser"
 import {
+  vehicleInScheduledServiceOrGhostFromData,
   VehicleOrGhostData,
-  vehicleOrGhostFromData,
 } from "../models/vehicleData"
 import { VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, RouteId } from "../schedule.d"
@@ -126,7 +126,7 @@ const subscribe = (
       assert(vehiclesAndGhostsData, VehiclesOrGhostsData)
 
       const vehiclesAndGhosts = vehiclesAndGhostsData.map(
-        vehicleOrGhostFromData
+        vehicleInScheduledServiceOrGhostFromData
       )
       dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
     } catch (error) {

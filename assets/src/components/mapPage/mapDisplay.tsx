@@ -15,7 +15,7 @@ import useSocket from "../../hooks/useSocket"
 import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { isVehicle, filterVehicles } from "../../models/vehicle"
-import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../../realtime"
+import { Ghost, Vehicle, VehicleId } from "../../realtime"
 import {
   ByRoutePatternId,
   RouteId,
@@ -166,7 +166,7 @@ const routePatternIdentifierForSelection = (
 }
 type LiveSelectedEntity =
   | SelectedRoutePattern
-  | { type: SelectedEntityType.Vehicle; vehicleOrGhost: VehicleOrGhost | null }
+  | { type: SelectedEntityType.Vehicle; vehicleOrGhost: Vehicle | Ghost | null }
   | null
 
 const useLiveSelectedEntity = (

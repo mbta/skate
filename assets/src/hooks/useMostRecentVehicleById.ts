@@ -1,6 +1,6 @@
 import { Socket } from "phoenix"
 import { useRef } from "react"
-import { VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle } from "../realtime"
 import useVehicleForId from "./useVehicleForId"
 
 // While a new vehicle is loading, returns data for the most recently loaded vehicle
@@ -8,7 +8,7 @@ const useMostRecentVehicleById = (
   socket: Socket | undefined,
   vehicleId: string | null
 ) => {
-  const mostRecentVehicle = useRef<VehicleOrGhost | null>(null)
+  const mostRecentVehicle = useRef<Vehicle | Ghost | null>(null)
 
   const selectedVehicleOrGhost =
     useVehicleForId(socket, vehicleId ?? null) || null

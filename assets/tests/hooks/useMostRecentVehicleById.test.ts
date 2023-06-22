@@ -3,7 +3,7 @@ import { renderHook } from "@testing-library/react"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
 import useMostRecentVehicleById from "../../src/hooks/useMostRecentVehicleById"
 import vehicleFactory from "../factories/vehicle"
-import { VehicleId, VehicleOrGhost } from "../../src/realtime"
+import { Ghost, Vehicle, VehicleId } from "../../src/realtime"
 
 jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
@@ -59,7 +59,7 @@ describe("useMostRecentVehicleById", () => {
     const mockSocket = makeMockSocket()
 
     const { result, rerender } = renderHook<
-      VehicleOrGhost | null,
+      Vehicle | Ghost | null,
       string | null
     >((id) => useMostRecentVehicleById(mockSocket, id), {
       initialProps: firstVehicle.id,
@@ -78,7 +78,7 @@ describe("useMostRecentVehicleById", () => {
     const mockSocket = makeMockSocket()
 
     const { result, rerender } = renderHook<
-      VehicleOrGhost | null,
+      Vehicle | Ghost | null,
       string | null
     >((id) => useMostRecentVehicleById(mockSocket, id), {
       initialProps: firstVehicle.id,
