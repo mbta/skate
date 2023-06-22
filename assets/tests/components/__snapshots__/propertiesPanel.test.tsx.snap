@@ -121,7 +121,9 @@ exports[`PropertiesPanel renders a ghost 1`] = `
               >
                 39_X
               </output>
-               
+              <span>
+                 
+              </span>
               <output
                 aria-label="Headsign"
                 className="c-route-variant-name__headsign"
@@ -430,7 +432,9 @@ exports[`PropertiesPanel renders a vehicle 1`] = `
               >
                 39_X
               </output>
-               
+              <span>
+                 
+              </span>
               <output
                 aria-label="Headsign"
                 className="c-route-variant-name__headsign"

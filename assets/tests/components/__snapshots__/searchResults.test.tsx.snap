@@ -102,7 +102,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                   >
                     39_X
                   </output>
-                   
+                  <span>
+                     
+                  </span>
                   <output
                     aria-label="Headsign"
                     className="c-route-variant-name__headsign"
@@ -231,7 +233,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                   >
                     39_X
                   </output>
-                   
+                  <span>
+                     
+                  </span>
                   <output
                     aria-label="Headsign"
                     className="c-route-variant-name__headsign"
@@ -426,7 +430,9 @@ exports[`SearchResults renders a selected result card 1`] = `
                   >
                     1_
                   </output>
-                   
+                  <span>
+                     
+                  </span>
                   <output
                     aria-label="Headsign"
                     className="c-route-variant-name__headsign"
@@ -555,7 +561,9 @@ exports[`SearchResults renders a selected result card 1`] = `
                   >
                     39_X
                   </output>
-                   
+                  <span>
+                     
+                  </span>
                   <output
                     aria-label="Headsign"
                     className="c-route-variant-name__headsign"

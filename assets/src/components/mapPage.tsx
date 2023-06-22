@@ -83,7 +83,13 @@ const SearchMode = ({
   )
 }
 
-const SelectedVehicle = ({ vehicleId }: { vehicleId: VehicleId }) => {
+const SelectedVehicle = ({
+  vehicleId,
+  setSelection,
+}: {
+  vehicleId: VehicleId
+  setSelection: (selectedEntity: SelectedEntity | null) => void
+}) => {
   // TODO: When using socket from context, this doesn't work as-is
   // Presumably because the useMostRecentVehicleById hook is being used twice, but
   // haven't tracked down error yet
@@ -91,13 +97,28 @@ const SelectedVehicle = ({ vehicleId }: { vehicleId: VehicleId }) => {
 
   const selectedVehicleOrGhost = useMostRecentVehicleById(socket, vehicleId)
 
-  return selectedVehicleOrGhost ? (
+  if (selectedVehicleOrGhost === null) {
+    return <Loading />
+  }
+
+  const { routeId, routePatternId } = selectedVehicleOrGhost
+
+  const onRouteClicked =
+    routeId &&
+    routePatternId &&
+    (() =>
+      setSelection({
+        type: SelectedEntityType.RoutePattern,
+        routeId,
+        routePatternId,
+      }))
+
+  return (
     <VehiclePropertiesCard
       vehicleOrGhost={selectedVehicleOrGhost}
       key={selectedVehicleOrGhost.id}
+      onRouteVariantNameClicked={onRouteClicked || undefined}
     />
-  ) : (
-    <Loading />
   )
 }
 
@@ -123,8 +144,10 @@ const SelectedRoute = ({
 
 const Selection = ({
   selectedEntity,
+  setSelection,
 }: {
   selectedEntity: SelectedEntity
+  setSelection: (selectedEntity: SelectedEntity | null) => void
 }): ReactElement => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
 
@@ -167,7 +190,10 @@ const Selection = ({
       <VisualSeparator className="c-map-page__horizontal-separator" />
 
       {selectedEntity.type === SelectedEntityType.Vehicle ? (
-        <SelectedVehicle vehicleId={selectedEntity.vehicleId} />
+        <SelectedVehicle
+          vehicleId={selectedEntity.vehicleId}
+          setSelection={setSelection}
+        />
       ) : (
         <SelectedRoute
           selectedRoutePattern={selectedEntity}
@@ -246,7 +272,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           toggleVisibility={toggleSearchDrawer}
         />
         {selectedEntity ? (
-          <Selection selectedEntity={selectedEntity} />
+          <Selection
+            selectedEntity={selectedEntity}
+            setSelection={setSelection}
+          />
         ) : (
           <SearchMode
             searchPageState={searchPageState}
