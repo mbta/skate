@@ -14,7 +14,7 @@ export const runOrBusNumberLabel = (
     case VehicleLabelSetting.RunNumber:
       return runIdToLabel(vehicleOrGhost.runId)
     case VehicleLabelSetting.VehicleNumber:
-      return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label || "N/A" : "N/A"
+      return (isVehicle(vehicleOrGhost) && vehicleOrGhost.label) || "N/A"
   }
 }
 
