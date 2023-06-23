@@ -6,7 +6,7 @@ import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { isGhost } from "../models/vehicle"
-import { Ghost, RunId, Vehicle, VehicleOrGhost } from "../realtime.d"
+import { Ghost, RunId, Vehicle, VehicleInScheduledService } from "../realtime.d"
 import { BlockId, ViaVariant } from "../schedule.d"
 import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 import { UserSettings } from "../userSettings"
@@ -46,7 +46,7 @@ export interface Props extends ViewBoxProps {
 
 export interface TooltipProps {
   children: ReactElement<HTMLElement>
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 }
 
 export const vehicleOrientation = (

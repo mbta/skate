@@ -7,7 +7,6 @@ import {
   Ghost,
   RouteStatus,
   VehicleInScheduledService,
-  VehicleOrGhost,
 } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
@@ -207,7 +206,9 @@ describe("routeLadder", () => {
       <RouteLadder
         route={route}
         timepoints={timepoints}
-        vehiclesAndGhosts={(vehicles as VehicleOrGhost[]).concat([ghost])}
+        vehiclesAndGhosts={(
+          vehicles as (VehicleInScheduledService | Ghost)[]
+        ).concat([ghost])}
         selectedVehicleId={undefined}
         deselectRoute={() => {}}
         reverseLadder={() => {}}

@@ -20,11 +20,7 @@ import {
   selectVehicle,
   toggleShowHidePastSwings,
 } from "../../src/state"
-import {
-  VehicleInScheduledService,
-  Ghost,
-  VehicleOrGhost,
-} from "../../src/realtime"
+import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import userEvent from "@testing-library/user-event"
@@ -220,10 +216,10 @@ describe("SwingsView", () => {
       }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle, ghost]
+      (): (VehicleInScheduledService | Ghost)[] => [vehicle, ghost]
     )
     ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
+      (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
 
     const tree = renderer
@@ -241,10 +237,10 @@ describe("SwingsView", () => {
       swingFactory.build({ time: 19000 }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [{ ...vehicle, runId: null }]
+      (): (VehicleInScheduledService | Ghost)[] => [{ ...vehicle, runId: null }]
     )
     ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [{ ...vehicle, runId: null }]
+      (): (VehicleInScheduledService | Ghost)[] => [{ ...vehicle, runId: null }]
     )
 
     const tree = renderer
@@ -264,11 +260,19 @@ describe("SwingsView", () => {
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
     ;(useVehiclesForRunIds as jest.Mock)
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
     ;(useVehiclesForBlockIds as jest.Mock)
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
 
     const dispatch = jest.fn()
     const user = userEvent.setup()
@@ -299,11 +303,19 @@ describe("SwingsView", () => {
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
     ;(useVehiclesForRunIds as jest.Mock)
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
     ;(useVehiclesForBlockIds as jest.Mock)
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
-      .mockImplementationOnce((): VehicleOrGhost[] => [vehicle])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
+      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
+        vehicle,
+      ])
 
     const dispatch = jest.fn()
     const user = userEvent.setup()
@@ -330,10 +342,10 @@ describe("SwingsView", () => {
 
     const vehicle2 = vehicleFactory.build({ runId: "123-789" })
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle, vehicle2]
+      (): (VehicleInScheduledService | Ghost)[] => [vehicle, vehicle2]
     )
     ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
+      (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
 
     const tree = renderer.create(
@@ -351,10 +363,10 @@ describe("SwingsView", () => {
       swingFactory.build({ time: 19000 }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
+      (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
     ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
-      (): VehicleOrGhost[] => [vehicle]
+      (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
 
     const dispatch = jest.fn()

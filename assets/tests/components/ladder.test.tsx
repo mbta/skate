@@ -8,7 +8,6 @@ import {
   BlockWaiver,
   Ghost,
   VehicleInScheduledService,
-  VehicleOrGhost,
 } from "../../src/realtime.d"
 import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
@@ -482,7 +481,7 @@ describe("ladder", () => {
       ],
     }
 
-    const vehiclesAndGhosts: VehicleOrGhost[] = [
+    const vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] = [
       ghostWithBlockWaiver,
       vehicleWithOldBlockWaiver,
       vehicleWithCurrentBlockWaiver,

@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from "react"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
-import { VehicleOrGhost } from "../../src/realtime"
+import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { routePatternFactory } from "../factories/routePattern"
 import stopFactory from "../factories/stop"
 
@@ -43,7 +43,7 @@ export const mockUseReducerOnce = <StateT, ActionT>(
 }
 
 export const mockUsePatternsByIdForVehicles = (
-  vehicles: VehicleOrGhost[],
+  vehicles: (VehicleInScheduledService | Ghost)[],
   params?: { stopCount: number }
 ) => {
   const routePatternIdentifiers = Array.from(

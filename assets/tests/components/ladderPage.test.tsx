@@ -14,7 +14,6 @@ import {
   Ghost,
   Notification,
   VehicleInScheduledService,
-  VehicleOrGhost,
 } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import {
@@ -437,7 +436,9 @@ describe("LadderPage", () => {
       () => timepointsByRouteId
     )
 
-    const vehicle: VehicleOrGhost = vehicleFactory.build({ runId: "clickMe" })
+    const vehicle: VehicleInScheduledService | Ghost = vehicleFactory.build({
+      runId: "clickMe",
+    })
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -576,7 +577,7 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "73": null,
 }
 
-const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
+const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> = {
   "23": [
     {
       id: "on-route-23",

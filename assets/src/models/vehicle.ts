@@ -1,9 +1,4 @@
-import {
-  Ghost,
-  Vehicle,
-  VehicleInScheduledService,
-  VehicleOrGhost,
-} from "../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
 import { Route } from "../schedule"
 import { now } from "../util/dateTime"
 
@@ -23,7 +18,9 @@ export const isGhost = (
 export const isLateVehicleIndicator = ({ id }: Ghost): boolean =>
   id.startsWith("ghost-incoming-")
 
-export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
+export const isRecentlyLoggedOn = (
+  vehicleOrGhost: VehicleInScheduledService | Ghost
+): boolean => {
   if (isGhost(vehicleOrGhost) || !vehicleOrGhost.operatorLogonTime) {
     return false
   }

@@ -1,5 +1,5 @@
 import { flatten, partition } from "../helpers/array"
-import { VehicleInScheduledService, VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, Ghost } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule"
 import { isVehicleInScheduledService } from "./vehicle"
 
@@ -9,11 +9,12 @@ interface NextAndPreviousVehicle {
 }
 
 export const allVehiclesAndGhosts = (
-  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>
-): VehicleOrGhost[] => flatten(Object.values(vehiclesByRouteId))
+  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>
+): (VehicleInScheduledService | Ghost)[] =>
+  flatten(Object.values(vehiclesByRouteId))
 
 export const allVehiclesForRoute = (
-  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>,
+  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>,
   routeId: RouteId
 ): VehicleInScheduledService[] =>
   (vehiclesByRouteId[routeId] || [])

@@ -1,7 +1,10 @@
 import { renderHook } from "@testing-library/react"
 import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
-import { VehicleOrGhostData } from "../../src/models/vehicleData"
-import { VehicleOrGhost } from "../../src/realtime"
+import {
+  VehicleInScheduledServiceData,
+  GhostData,
+} from "../../src/models/vehicleData"
+import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
 import ghostDataFactory from "../factories/ghost_data"
@@ -24,11 +27,12 @@ describe("useVehiclesForRoute", () => {
   })
 
   test("subscribes to a channel and returns results", () => {
-    const vehicleData: VehicleOrGhostData = ghostDataFactory.build({
-      id: "id",
-      trip_id: "a_trip",
-    })
-    const vehicle: VehicleOrGhost = ghostFactory.build({
+    const vehicleData: VehicleInScheduledServiceData | GhostData =
+      ghostDataFactory.build({
+        id: "id",
+        trip_id: "a_trip",
+      })
+    const vehicle: VehicleInScheduledService | Ghost = ghostFactory.build({
       id: "id",
       tripId: "a_trip",
     })

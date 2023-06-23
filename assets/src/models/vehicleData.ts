@@ -8,7 +8,6 @@ import {
   optional,
   string,
   type,
-  union,
 } from "superstruct"
 import {
   BlockWaiver,
@@ -157,12 +156,6 @@ export const GhostData = type({
   incoming_trip_direction_id: nullable(DirectionIdData),
 })
 export type GhostData = Infer<typeof GhostData>
-
-export const VehicleOrGhostData = union([
-  VehicleInScheduledServiceData,
-  GhostData,
-])
-export type VehicleOrGhostData = Infer<typeof VehicleOrGhostData>
 
 export function vehicleFromData(
   vehicleData: VehicleInScheduledServiceData

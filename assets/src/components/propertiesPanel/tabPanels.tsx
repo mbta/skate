@@ -1,11 +1,11 @@
 import React from "react"
-import { VehicleOrGhost } from "../../realtime"
+import { VehicleInScheduledService, Ghost } from "../../realtime"
 import { MinischeduleBlock, MinischeduleRun } from "./minischedule"
 
 export type TabMode = "status" | "run" | "block"
 
 interface Props {
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   statusContent: JSX.Element
   mode: TabMode
 }

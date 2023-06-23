@@ -1,13 +1,13 @@
 import { Socket } from "phoenix"
 import useVehiclesForRunIds from "./useVehiclesForRunIds"
-import { Notification, VehicleOrGhost } from "../realtime.d"
+import { Notification, VehicleInScheduledService, Ghost } from "../realtime.d"
 import { useEffect, useState } from "react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 
 const useVehicleForNotification = (
   notification?: Notification,
   socket?: Socket
-): VehicleOrGhost | undefined | null => {
+): VehicleInScheduledService | Ghost | undefined | null => {
   // undefined means we're still trying to load the vehicle,
   // null means we tried and failed
   const runIds = notification?.runIds || []

@@ -43,7 +43,7 @@ import { setHtmlWidthHeightForLeafletMap } from "../testHelpers/leafletMapWidth"
 import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
 import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
-import { VehicleId, VehicleOrGhost } from "../../src/realtime"
+import { VehicleId, VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
 import { mockUsePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
@@ -90,7 +90,7 @@ jest.mock("../../src/hooks/useStations", () => ({
 }))
 
 type VehicleIdToVehicle = {
-  [vehicleId: VehicleId]: VehicleOrGhost
+  [vehicleId: VehicleId]: VehicleInScheduledService | Ghost
 }
 
 function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
@@ -99,7 +99,7 @@ function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
   )
 }
 
-function mockUseVehicleForId(vehicles: VehicleOrGhost[]) {
+function mockUseVehicleForId(vehicles: (VehicleInScheduledService | Ghost)[]) {
   const vehicleIdToVehicleMap = vehicles.reduce(
     (rest, vehicle) => ({ ...rest, [vehicle.id]: vehicle }),
     {}
@@ -108,7 +108,7 @@ function mockUseVehicleForId(vehicles: VehicleOrGhost[]) {
 }
 
 function mockUseVehiclesForRouteMap(map: {
-  [routeId: RouteId]: VehicleOrGhost[]
+  [routeId: RouteId]: (VehicleInScheduledService | Ghost)[]
 }) {
   ;(useVehiclesForRoute as jest.Mock).mockImplementation(
     (_, routeId: RouteId | null) => map[routeId!] || null

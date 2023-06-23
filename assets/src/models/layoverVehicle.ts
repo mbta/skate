@@ -1,6 +1,6 @@
 import { VehicleDirection } from "../models/ladderDirection"
 import { LadderVehicle } from "../models/ladderVehicle"
-import { VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, Ghost } from "../realtime"
 import { TimepointStatusYFunc } from "../components/ladder"
 import { isVehicleInScheduledService } from "./vehicle"
 
@@ -11,7 +11,10 @@ export enum LayoverBoxPosition {
 
 export const byLayoverDeparture =
   (isBottomLayoverBox: boolean) =>
-  (a: VehicleOrGhost, b: VehicleOrGhost): number => {
+  (
+    a: VehicleInScheduledService | Ghost,
+    b: VehicleInScheduledService | Ghost
+  ): number => {
     const [lt, gt] = isBottomLayoverBox ? [1, -1] : [-1, 1]
     if (
       !a.layoverDepartureTime ||
@@ -25,7 +28,7 @@ export const byLayoverDeparture =
   }
 
 export const ladderVehiclesForLayovers = (
-  vehiclesAndGhosts: VehicleOrGhost[],
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[],
   position: LayoverBoxPosition,
   timepointStatusY: TimepointStatusYFunc,
   y: number
@@ -64,7 +67,7 @@ const x = (index: number, numVehicles: number): number => {
 }
 
 const vehicleScheduledY = (
-  vehicle: VehicleOrGhost,
+  vehicle: VehicleInScheduledService | Ghost,
   timepointStatusY: TimepointStatusYFunc,
   scheduledVehicleDirection: VehicleDirection
 ) =>

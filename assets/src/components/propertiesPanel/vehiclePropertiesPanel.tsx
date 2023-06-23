@@ -10,8 +10,8 @@ import {
   DataDiscrepancy,
   VehicleInScheduledService,
   VehicleId,
-  VehicleOrGhost,
   Vehicle,
+  Ghost,
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
 import { isOk } from "../../util/fetchResult"
@@ -61,14 +61,16 @@ const useRouteVehicles = (
   // Get vehicles we've already fetched from the context.
   const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
 
-  const existingVehiclesAndGhosts: VehicleOrGhost[] | undefined =
-    routeId === null ? undefined : vehiclesByRouteId[routeId]
+  const existingVehiclesAndGhosts:
+    | (VehicleInScheduledService | Ghost)[]
+    | undefined = routeId === null ? undefined : vehiclesByRouteId[routeId]
   // If we haven't already fetched this route, open a new channel.
   const { socket } = useContext(SocketContext)
-  const newVehiclesAndGhosts: VehicleOrGhost[] | null = useVehiclesForRoute(
-    socket,
-    existingVehiclesAndGhosts === undefined ? routeId : null
-  )
+  const newVehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | null =
+    useVehiclesForRoute(
+      socket,
+      existingVehiclesAndGhosts === undefined ? routeId : null
+    )
   return (existingVehiclesAndGhosts || newVehiclesAndGhosts || [])
     .filter(isVehicleInScheduledService)
     .filter((v) => v.id !== primaryVehicleId)

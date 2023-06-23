@@ -10,11 +10,7 @@ import {
 } from "../models/ladderDirection"
 import { isVehicleInScheduledService } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
-import {
-  VehicleInScheduledService,
-  VehicleId,
-  VehicleOrGhost,
-} from "../realtime.d"
+import { VehicleInScheduledService, VehicleId, Ghost } from "../realtime.d"
 import { selectVehicle } from "../state"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
@@ -27,7 +23,7 @@ const IncomingBoxVehicle = ({
   selectedVehicleId,
 }: {
   displayCrowding: boolean
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => {
@@ -97,7 +93,7 @@ const IncomingBox = ({
   selectedVehicleId,
 }: {
   displayCrowding?: boolean
-  vehiclesAndGhosts: VehicleOrGhost[]
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[]
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => (

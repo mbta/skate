@@ -5,22 +5,17 @@ import {
 } from "../models/ladderDirection"
 import { isVehicleInScheduledService } from "../models/vehicle"
 import { onTimeStatus } from "../models/vehicleStatus"
-import {
-  Ghost,
-  RunId,
-  VehicleInScheduledService,
-  VehicleOrGhost,
-} from "../realtime.d"
+import { Ghost, RunId, VehicleInScheduledService } from "../realtime.d"
 import { RouteId } from "../schedule.d"
 
 /**
  * Groups vehicles and ghosts by where they should be drawn on the route ladder
  */
 export interface VehiclesByPosition {
-  onRoute: VehicleOrGhost[]
-  layingOverTop: VehicleOrGhost[]
-  layingOverBottom: VehicleOrGhost[]
-  incoming: VehicleOrGhost[]
+  onRoute: (VehicleInScheduledService | Ghost)[]
+  layingOverTop: (VehicleInScheduledService | Ghost)[]
+  layingOverBottom: (VehicleInScheduledService | Ghost)[]
+  incoming: (VehicleInScheduledService | Ghost)[]
 }
 
 export const emptyVehiclesByPosition: VehiclesByPosition = {
@@ -31,12 +26,12 @@ export const emptyVehiclesByPosition: VehiclesByPosition = {
 }
 
 export const groupByPosition = (
-  vehiclesAndGhosts: VehicleOrGhost[] | undefined,
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | undefined,
   routeId: RouteId,
   ladderDirection: LadderDirection
 ): VehiclesByPosition => {
   const realVehicles = (vehiclesAndGhosts || []).reduce(
-    (acc: VehiclesByPosition, current: VehicleOrGhost) => {
+    (acc: VehiclesByPosition, current: VehicleInScheduledService | Ghost) => {
       if (current.routeId === routeId) {
         switch (current.routeStatus) {
           case "on_route":
@@ -85,7 +80,7 @@ export const groupByPosition = (
 }
 
 const runNotSharedByAnotherVehicle =
-  (vehiclesAndGhosts: VehicleOrGhost[]) =>
+  (vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[]) =>
   (vehicle: VehicleInScheduledService): boolean => {
     if (vehicle.runId === null) {
       return false
@@ -99,13 +94,15 @@ const runNotSharedByAnotherVehicle =
     return !otherRunIds.includes(vehicle.runId)
   }
 
-const runIds = (vehiclesAndGhosts: VehicleOrGhost[]): RunId[] =>
+const runIds = (
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[]
+): RunId[] =>
   vehiclesAndGhosts
     .map(({ runId }) => runId)
     .filter((runId) => runId !== null) as RunId[]
 
 const lateStartingIncomingVehicles = (
-  incomingVehiclesOrGhosts: VehicleOrGhost[],
+  incomingVehiclesOrGhosts: (VehicleInScheduledService | Ghost)[],
   currentRouteId: RouteId
 ): VehicleInScheduledService[] =>
   incomingVehiclesOrGhosts.filter(
@@ -121,7 +118,7 @@ const lateStartingIncomingVehicles = (
   ) as VehicleInScheduledService[]
 
 const isAVehicleThatIsLateStartingScheduledTrip = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 ): boolean =>
   isVehicleInScheduledService(vehicleOrGhost) &&
   hasAScheduleLocation(vehicleOrGhost) &&

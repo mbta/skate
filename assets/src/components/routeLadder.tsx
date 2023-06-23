@@ -20,7 +20,7 @@ import {
   groupByPosition,
   VehiclesByPosition,
 } from "../models/vehiclesByPosition"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleId, VehicleInScheduledService, Ghost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
@@ -32,7 +32,7 @@ import { tagManagerEvent } from "../helpers/googleTagManager"
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
-  vehiclesAndGhosts?: VehicleOrGhost[]
+  vehiclesAndGhosts?: (VehicleInScheduledService | Ghost)[]
   selectedVehicleId: VehicleId | undefined
   deselectRoute: (routeId: RouteId) => void
   reverseLadder: (routeId: RouteId) => void
@@ -123,7 +123,7 @@ const Controls = ({
 }
 
 const someVehicleHasCrowding = (
-  vehiclesAndGhosts: VehicleOrGhost[] | undefined,
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | undefined,
   routeId: RouteId
 ): boolean => {
   if (vehiclesAndGhosts === undefined) {

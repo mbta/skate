@@ -146,8 +146,6 @@ export interface VehicleInScheduledService extends Vehicle {
   directionId: DirectionId
 }
 
-export type VehicleOrGhost = VehicleInScheduledService | Ghost
-
 export type VehicleId = string
 
 export interface VehicleStopStatus {

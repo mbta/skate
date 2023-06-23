@@ -5,14 +5,10 @@ import {
   byDirection,
   nextAndPreviousVehicle,
 } from "../../src/models/vehiclesByRouteId"
-import {
-  Ghost,
-  VehicleInScheduledService,
-  VehicleOrGhost,
-} from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { ByRouteId } from "../../src/schedule"
 
-const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
+const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> = {
   "1": [
     {
       id: "y101",

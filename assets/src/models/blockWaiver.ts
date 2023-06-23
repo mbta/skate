@@ -1,5 +1,5 @@
 import { AlertIconStyle } from "../components/iconAlertCircle"
-import { BlockWaiver, Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { BlockWaiver, Ghost, Vehicle } from "../realtime"
 import { now } from "../util/dateTime"
 import { isGhost, isLateVehicleIndicator } from "./vehicle"
 
@@ -32,7 +32,7 @@ export const hasBlockWaiver = ({ blockWaivers }: Vehicle | Ghost): boolean =>
 
 export const hasCurrentBlockWaiver = ({
   blockWaivers,
-}: VehicleOrGhost): boolean =>
+}: Vehicle | Ghost): boolean =>
   blockWaivers.some(
     (blockWaiver) =>
       currentFuturePastType(blockWaiver, 240) === CurrentFuturePastType.Current
@@ -46,7 +46,7 @@ export const hasCurrentBlockWaiver = ({
  * none                     | highlighted | none       | none
  */
 export const blockWaiverAlertStyle = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 ): AlertIconStyle | undefined => {
   if (hasCurrentBlockWaiver(vehicleOrGhost)) {
     return AlertIconStyle.Black

@@ -1,6 +1,6 @@
 import React, { useContext, useRef, WheelEventHandler } from "react"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleId, VehicleInScheduledService, Ghost } from "../realtime.d"
 import { ByRouteId, Route, TimepointsByRouteId, RouteId } from "../schedule.d"
 import RouteLadder from "./routeLadder"
 import { LadderDirections } from "../models/ladderDirection"
@@ -29,9 +29,8 @@ const RouteLadders = ({
   ladderCrowdingToggles,
   routesWithAlerts,
 }: Props) => {
-  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
-    VehiclesByRouteIdContext
-  )
+  const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
+    useContext(VehiclesByRouteIdContext)
   const laddersRef = useRef<HTMLDivElement | null>(null)
   const onWheel: WheelEventHandler<HTMLDivElement> = (e) => {
     if (laddersRef.current !== null) {

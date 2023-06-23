@@ -17,7 +17,7 @@ import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
 import useVehiclesForRunIds from "../hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
-import { ByRunId, VehicleOrGhost } from "../realtime"
+import { ByRunId, VehicleInScheduledService, Ghost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
 import {
   closeView,
@@ -149,8 +149,8 @@ const SwingsTable = ({
 }: {
   pastSwings: Swing[]
   activeSwings: Swing[]
-  swingVehiclesByRunId: ByRunId<VehicleOrGhost>
-  swingVehiclesByBlockId: ByBlockId<VehicleOrGhost>
+  swingVehiclesByRunId: ByRunId<VehicleInScheduledService | Ghost>
+  swingVehiclesByBlockId: ByBlockId<VehicleInScheduledService | Ghost>
   swingRoutesById: ByRouteId<Route>
   showPastSwings: boolean
   toggleShowPastSwings: () => void
@@ -248,8 +248,8 @@ const SwingRow = ({
   swing: Swing
   isPast: boolean
   isLastPast?: boolean
-  swingVehiclesByRunId: ByRunId<VehicleOrGhost>
-  swingVehicleForBlockId: VehicleOrGhost
+  swingVehiclesByRunId: ByRunId<VehicleInScheduledService | Ghost>
+  swingVehicleForBlockId: VehicleInScheduledService | Ghost
   route: Route | null
 }): ReactElement<HTMLElement> => {
   const swingOffVehicleOrGhost = swingVehiclesByRunId[swing.fromRunId]
@@ -321,7 +321,7 @@ const SwingCellContent = ({
   runId,
   onClick,
 }: {
-  vehicleOrGhost?: VehicleOrGhost
+  vehicleOrGhost?: VehicleInScheduledService | Ghost
   runId: string
   onClick?: () => void
 }): ReactElement<HTMLElement> => {

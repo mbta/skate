@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { GhostData, VehicleData } from "../../src/models/vehicleData"
-import { VehicleInScheduledService, VehicleOrGhost } from "../../src/realtime"
+import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleFactory from "../factories/vehicle"
@@ -205,7 +205,7 @@ describe("useSearchResults", () => {
       blockWaivers: [],
       crowding: null,
     })
-    const vehicles: VehicleOrGhost[] = [vehicle]
+    const vehicles: (VehicleInScheduledService | Ghost)[] = [vehicle]
 
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: searchResultsData })

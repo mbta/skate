@@ -2,13 +2,16 @@ import { Socket } from "phoenix"
 import { nullableParser } from "../api"
 import {
   vehicleInScheduledServiceOrGhostFromData,
-  VehicleOrGhostData,
+  VehicleInScheduledServiceData,
+  GhostData,
 } from "../models/vehicleData"
-import { VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, Ghost } from "../realtime"
 import { RunId } from "../realtime"
 import { useChannel } from "./useChannel"
 
-const parser = (data: VehicleOrGhostData[]): VehicleOrGhost[] =>
+const parser = (
+  data: (VehicleInScheduledServiceData | GhostData)[]
+): (VehicleInScheduledService | Ghost)[] =>
   data.map(vehicleInScheduledServiceOrGhostFromData)
 const parserWithNull = nullableParser(parser)
 
@@ -16,11 +19,11 @@ const useVehiclesForRunIds = (
   socket: Socket | undefined,
   runIds: RunId[],
   closeAfterFirstRead?: boolean
-): VehicleOrGhost[] | null | undefined => {
+): (VehicleInScheduledService | Ghost)[] | null | undefined => {
   const topic: string | null =
     runIds.length > 0 ? `vehicles:run_ids:${runIds.join(",")}` : null
 
-  return useChannel<VehicleOrGhost[] | null | undefined>({
+  return useChannel<(VehicleInScheduledService | Ghost)[] | null | undefined>({
     socket,
     topic,
     event: "vehicles",

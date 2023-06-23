@@ -23,12 +23,7 @@ import useInterval from "../hooks/useInterval"
 import { flatten, uniqBy } from "../helpers/array"
 import { saveState, loadState } from "../localStorage"
 import { isVehicleInScheduledService, isGhost } from "../models/vehicle"
-import {
-  VehicleInScheduledService,
-  Ghost,
-  RunId,
-  VehicleOrGhost,
-} from "../realtime"
+import { VehicleInScheduledService, Ghost, RunId } from "../realtime"
 import {
   Action,
   closeView,
@@ -66,7 +61,7 @@ type SelectionState = "none" | "some" | "all"
 
 const isSelected = (
   selectedIds: RunId[],
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 ): boolean => {
   return !!(vehicleOrGhost.runId && selectedIds.includes(vehicleOrGhost.runId))
 }
@@ -597,7 +592,7 @@ const HideCheckbox = ({
   hidingTimestamps: HidingTimestamps
   selectedIds: RunId[]
   toggleCheckedState: (runId: RunId) => void
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 }): ReactElement<HTMLElement> | null => {
   const runId = vehicleOrGhost.runId
 
@@ -688,7 +683,7 @@ const MasterCheckbox = ({
   hidingTimestamps,
   tableName,
 }: {
-  attachedVehiclesOrGhosts: VehicleOrGhost[]
+  attachedVehiclesOrGhosts: (VehicleInScheduledService | Ghost)[]
   selectedIds: RunId[]
   setSelectedIds: Dispatch<SetStateAction<RunId[]>>
   hidingTimestamps: HidingTimestamps
