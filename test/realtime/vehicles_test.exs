@@ -9,6 +9,82 @@ defmodule Realtime.VehiclesTest do
 
   @timepoint_names_by_id %{"garage" => "Somerville Garage", "other_garage" => "Other Garage"}
 
+  describe "group_by_route" do
+    test "when an interlining vehicle starts a trip on a new route before the previous trip was scheduled to finished, they are not included on that old route" do
+      date_of_trips = ~D[2019-01-01]
+      start_time_trip_1 = 0
+
+      trip_1 = %Trip{
+        id: "trip",
+        block_id: "block1",
+        route_id: "first_route",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 10,
+            timepoint_id: "t1"
+          }
+        ],
+        start_time: start_time_trip_1,
+        end_time: start_time_trip_1 + 10
+      }
+
+      trip_2 = %Trip{
+        id: "trip2",
+        block_id: trip_1.block_id,
+        route_id: "second_route",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: start_time_trip_1 + 20,
+        end_time: start_time_trip_1 + 30
+      }
+
+      reassign_env(:skate, :schedule_data_get_fn, fn _key, _fallback ->
+        {:loaded,
+         %Schedule.Data{
+           trips: %{trip_1.id => trip_1, trip_2.id => trip_2},
+           calendar: %{date_of_trips => ["service"]}
+         }}
+      end)
+
+      # trip 1 hasn't ended yet
+      now =
+        date_of_trips
+        |> DateTime.new!(Time.new!(0, 0, trip_1.end_time), "America/New_York")
+        |> DateTime.add(-5, :second)
+        |> DateTime.to_unix()
+
+      vehicle =
+        build(:vehicle,
+          route_id: trip_2.route_id,
+          block_id: "block1",
+          direction_id: 1,
+          # Vehicle has already started to trip_2, even though it is scheduled to start in the future
+          trip_id: trip_2.id
+        )
+
+      assert Vehicles.group_by_route(
+               [vehicle],
+               @timepoint_names_by_id,
+               now
+             ) == %{
+               "first_route" => [],
+               "second_route" => [vehicle]
+             }
+    end
+  end
+
   describe "group_by_route_with_blocks" do
     setup do
       reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->

@@ -221,13 +221,19 @@ defmodule Schedule do
   """
   @spec call_with_data(persistent_term_key(), any(), atom(), any()) :: any()
   def call_with_data(persistent_term_key, args, function_name, default_result) do
-    case :persistent_term.get(persistent_term_key, :not_loaded) do
+    data_get_fn = Application.get_env(:skate, :schedule_data_get_fn, &persistent_term_lookup/2)
+
+    case data_get_fn.(persistent_term_key, :not_loaded) do
       {:loaded, data} ->
         apply(Data, function_name, [data | args])
 
       :not_loaded ->
         default_result
     end
+  end
+
+  defp persistent_term_lookup(key, default_value) do
+    :persistent_term.get(key, default_value)
   end
 
   @spec update_state(state(), term()) :: :ok
