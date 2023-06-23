@@ -1,5 +1,7 @@
 defmodule Concentrate.Consumer.VehiclePositionsTest do
   use ExUnit.Case
+
+  import Skate.Factory
   import Test.Support.Helpers
 
   alias Concentrate.Consumer.VehiclePositions
@@ -15,8 +17,8 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
       license_plate: nil,
       longitude: -71.0642766,
       odometer: nil,
-      operator_id: "00001",
-      operator_last_name: "last_name",
+      operator_id: build(:operator_id),
+      operator_last_name: build(:last_name),
       run_id: "123-9048",
       route_id: "505",
       speed: nil,

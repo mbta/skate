@@ -7,16 +7,18 @@ defmodule Realtime.ServerTest do
   alias Realtime.BlockWaiver
   alias Realtime.Server
 
+  @operator_last_name build(:last_name)
+
   @vehicle build(:vehicle,
              route_id: "1",
              id: "v1",
              label: "v1-label",
              run_id: "123-9048",
              block_id: "vehicle_block",
-             operator_id: "71041",
-             operator_first_name: "FRANK",
-             operator_last_name: "FRANCIS",
-             operator_name: "FRANCIS"
+             operator_id: build(:operator_id),
+             operator_first_name: build(:first_name),
+             operator_last_name: @operator_last_name,
+             operator_name: @operator_last_name
            )
 
   @vehicle_on_inactive_block build(:vehicle,
@@ -420,7 +422,7 @@ defmodule Realtime.ServerTest do
       }
 
       operator_search_params = %{
-        text: "franc",
+        text: String.slice(@vehicle.operator_last_name, 0..-3),
         property: :all
       }
 
@@ -449,7 +451,7 @@ defmodule Realtime.ServerTest do
 
     test "searches all vehicles by operator name", %{ets: ets} do
       search_params = %{
-        text: "franc",
+        text: String.slice(@vehicle.operator_first_name, 0..-3),
         property: :operator
       }
 
@@ -459,14 +461,16 @@ defmodule Realtime.ServerTest do
     end
 
     test "searches all vehicles by operator ID", %{ets: ets} do
+      vehicle = @vehicle
+
       search_params = %{
-        text: "710",
+        text: vehicle.operator_id,
         property: :operator
       }
 
       results = Server.lookup({ets, {:search, search_params}})
 
-      assert Enum.member?(results, @vehicle)
+      assert Enum.member?(results, vehicle)
     end
 
     test "fetches alerts by route from the ets table", %{ets: ets} do
