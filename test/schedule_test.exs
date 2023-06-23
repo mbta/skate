@@ -507,8 +507,8 @@ defmodule ScheduleTest do
     end
   end
 
-  describe "active_trips" do
-    test "returns trips that are active right now" do
+  describe "trips_starting_in_range" do
+    test "returns only trips that start in the given range" do
       pid =
         Schedule.start_mocked(%{
           gtfs: %{
@@ -524,14 +524,17 @@ defmodule ScheduleTest do
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
-              "route,today,now,headsign,0,now,",
-              "route,today,later,headsign,0,later,"
+              "route,today,started_earlier,headsign,0,started_earlier,",
+              "route,today,started_in_range,headsign,0,started_in_range,",
+              "route,today,started_later,headsign,0,started_later,"
             ],
             "stop_times.txt" => [
               "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "now,,00:00:01,stop1,1,",
-              "now,,00:00:03,stop2,2,",
-              "later,,00:00:04,stop1,1,"
+              "started_earlier,,00:00:01,stop1,1,",
+              "started_earlier,,00:00:05,stop2,2,",
+              "started_in_range,,00:00:03,stop1,1,",
+              "started_in_range,,00:00:10,stop2,2,",
+              "started_later,,00:00:20,stop1,1,"
             ]
           }
         })
@@ -539,7 +542,8 @@ defmodule ScheduleTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert [%Trip{id: "now"}] = Schedule.active_trips(time0 + 2, time0 + 2, pid)
+      assert [%Trip{id: "started_in_range"}] =
+               Schedule.trips_starting_in_range(time0 + 2, time0 + 10, pid)
     end
   end
 

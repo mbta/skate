@@ -231,8 +231,8 @@ defmodule Schedule.DataTest do
     end
   end
 
-  describe "active_trips" do
-    test "returns an active trip" do
+  describe "trips_starting_in_range" do
+    test "doesn't return a trip starting before the range" do
       trip = %Schedule.Trip{
         id: "active",
         block_id: "active",
@@ -260,10 +260,41 @@ defmodule Schedule.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 2, time0 + 5) == [trip]
+      assert Data.trips_starting_in_range(data, time0 + 5, time0 + 10) == []
     end
 
-    test "doesn't return a trip active at a different time today" do
+    test "returns an trip starting in the range" do
+      trip = %Schedule.Trip{
+        id: "active",
+        block_id: "active",
+        service_id: "today",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 3
+          },
+          %StopTime{
+            stop_id: "stop",
+            time: 4
+          }
+        ],
+        start_time: 3,
+        end_time: 4
+      }
+
+      data = %Data{
+        trips: %{trip.id => trip},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert Data.trips_starting_in_range(data, time0 + 2, time0 + 5) == [trip]
+    end
+
+    test "doesn't return a trip starting at a later time today" do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -287,10 +318,10 @@ defmodule Schedule.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 2) == []
+      assert Data.trips_starting_in_range(data, time0 + 1, time0 + 2) == []
     end
 
-    test "doesn't return a trip active at this time on a different day" do
+    test "doesn't return a trip starting at this time on a different day" do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -314,37 +345,7 @@ defmodule Schedule.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 3) == []
-    end
-
-    test "returns late-night trips that are still active from yesterday" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        service_id: "yesterday",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop",
-            # 24:00:02
-            time: 86402
-          }
-        ],
-        start_time: 86402,
-        end_time: 86402
-      }
-
-      data = %Data{
-        trips: %{
-          "trip" => trip
-        },
-        calendar: %{
-          ~D[2018-12-31] => ["yesterday"]
-        }
-      }
-
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 3) == [trip]
+      assert Data.trips_starting_in_range(data, time0 + 1, time0 + 3) == []
     end
   end
 

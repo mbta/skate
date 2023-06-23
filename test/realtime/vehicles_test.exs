@@ -79,7 +79,6 @@ defmodule Realtime.VehiclesTest do
                @timepoint_names_by_id,
                now
              ) == %{
-               "first_route" => [],
                "second_route" => [vehicle]
              }
     end

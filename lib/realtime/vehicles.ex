@@ -17,7 +17,7 @@ defmodule Realtime.Vehicles do
     in_fifteen_minutes = now + 15 * 60
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
-    incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
+    incoming_trips = Schedule.trips_starting_in_range(now, in_fifteen_minutes)
 
     # Includes runs that are scheduled to be pulling out
     active_runs_by_date = Schedule.active_runs(now, now)
