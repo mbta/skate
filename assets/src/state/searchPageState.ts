@@ -102,14 +102,6 @@ export const goBack = (): GoBackAction => {
   return { type: "GO_BACK" }
 }
 
-export const setSelectedVehicle = (
-  vehicleId: VehicleId | null
-): SelectEntityAction => ({
-  type: "SELECT_SEARCH_ENTITY",
-  payload: vehicleId
-    ? { type: SelectedEntityType.Vehicle, vehicleId: vehicleId }
-    : null,
-})
 export const setSelectedEntity = (
   selectedEntity: SelectedEntity | null
 ): SelectEntityAction => ({

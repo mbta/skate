@@ -4,7 +4,6 @@ import {
   initialSearchPageState,
   reducer,
   SearchPageState,
-  setSelectedVehicle,
   setSearchProperty,
   setSearchText,
   submitSearch,
@@ -141,31 +140,6 @@ describe("reducer", () => {
       expect(newState.selectedEntity).toEqual(newVehicle)
 
       expect(newState.selectedEntityHistory).toEqual([])
-    })
-  })
-
-  describe("setSelectedVehicle", () => {
-    test("setSelectedVehicle sets the selected vehicle", () => {
-      const initialState: SearchPageState = {
-        ...initialSearchPageState,
-        selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
-      }
-
-      const updatedState = reducer(initialState, setSelectedVehicle("456"))
-      expect(updatedState.selectedEntity).toEqual({
-        type: SelectedEntityType.Vehicle,
-        vehicleId: "456",
-      })
-    })
-
-    test("can setSelectedVehicle to null", () => {
-      const initialState: SearchPageState = {
-        ...initialSearchPageState,
-        selectedEntity: { type: SelectedEntityType.Vehicle, vehicleId: "123" },
-      }
-
-      const updatedState = reducer(initialState, setSelectedVehicle(null))
-      expect(updatedState.selectedEntity).toBeNull()
     })
   })
 
