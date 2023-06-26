@@ -104,7 +104,7 @@ const baseVehicleData = {
   operator_last_name: nullable(string()),
   operator_logon_time: nullable(number()),
   overload_offset: nullable(number()),
-  bearing: number(),
+  bearing: nullable(number()),
   block_id: string(),
   previous_vehicle_id: nullable(string()),
   schedule_adherence_secs: nullable(number()),
@@ -184,7 +184,7 @@ export function vehicleFromData(
       ? dateFromEpochSeconds(vehicleData.operator_logon_time)
       : null,
     overloadOffset: vehicleData.overload_offset || undefined,
-    bearing: vehicleData.bearing,
+    bearing: vehicleData.bearing || undefined,
     blockId: vehicleData.block_id,
     previousVehicleId: vehicleData.previous_vehicle_id,
     scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,

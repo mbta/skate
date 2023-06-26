@@ -122,7 +122,7 @@ export interface Vehicle {
   operatorLastName: string | null
   operatorLogonTime: Date | null
   overloadOffset?: number
-  bearing: number
+  bearing?: number
   blockId: BlockId
   previousVehicleId: string | null
   scheduleAdherenceSecs: number | null
