@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSocket from "../hooks/useSocket"
 import useVehicleForId from "../hooks/useVehicleForId"
-import { isGhost, isVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime.d"
 import { closeView } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
@@ -50,10 +50,10 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
       <div id="c-properties-panel" className="c-properties-panel">
         {dataIsStale && isVehicle(vehicleToDisplay) ? (
           <StaleDataPropertiesPanel selectedVehicle={vehicleToDisplay} />
-        ) : isGhost(vehicleToDisplay) ? (
-          <GhostPropertiesPanel selectedGhost={vehicleToDisplay} />
-        ) : (
+        ) : isVehicle(vehicleToDisplay) ? (
           <VehiclePropertiesPanel selectedVehicle={vehicleToDisplay} />
+        ) : (
+          <GhostPropertiesPanel selectedGhost={vehicleToDisplay} />
         )}
       </div>
       <div
