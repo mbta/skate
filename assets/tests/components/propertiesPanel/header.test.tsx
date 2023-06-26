@@ -10,7 +10,11 @@ import {
   flipLadderDirectionForRoute,
   LadderDirections,
 } from "../../../src/models/ladderDirection"
-import { Ghost, VehicleInScheduledService } from "../../../src/realtime"
+import {
+  Ghost,
+  Vehicle,
+  VehicleInScheduledService,
+} from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import { closeView, initialState } from "../../../src/state"
 import vehicleFactory from "../../factories/vehicle"
@@ -268,7 +272,7 @@ describe("Header", () => {
   })
 
   test("renders a shuttle triangle as pointing up", () => {
-    const shuttleVehicle: VehicleInScheduledService = {
+    const shuttleVehicle: Vehicle = {
       ...vehicle,
       runId: "999-0555",
       routeId: null,

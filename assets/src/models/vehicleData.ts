@@ -131,6 +131,7 @@ export type VehicleData = Infer<typeof VehicleData>
 export const VehicleInScheduledServiceData = type({
   ...baseVehicleData,
   direction_id: DirectionIdData,
+  route_id: string(),
 })
 export type VehicleInScheduledServiceData = Infer<
   typeof VehicleInScheduledServiceData

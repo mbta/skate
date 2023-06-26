@@ -144,6 +144,7 @@ export interface Vehicle {
 
 export interface VehicleInScheduledService extends Vehicle {
   directionId: DirectionId
+  routeId: RouteId
 }
 
 export type VehicleId = string

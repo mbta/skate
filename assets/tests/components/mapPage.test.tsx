@@ -907,7 +907,9 @@ describe("<MapPage />", () => {
             const [selectedVehicle] = selectedRouteVehicles
 
             setHtmlWidthHeightForLeafletMap()
-            mockUseVehicleForId([{ ...selectedVehicle, routeId: null }])
+            mockUseVehicleForId([
+              { ...selectedVehicle, routeId: "some_other_route" },
+            ])
             mockUseVehiclesForRouteMap({
               [route.id]: selectedRouteVehicles.slice(1),
             })
