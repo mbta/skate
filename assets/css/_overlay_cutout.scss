@@ -1,0 +1,40 @@
+.c-overlay-cutout {
+  z-index: 800; // Below controls, above map
+
+  &,
+  &__rect,
+  &__mask-rect {
+    width: 100%;
+    height: 100%;
+  }
+
+  --circle-radius: 0;
+
+  // Cannot check hover on _this_ component due to `pointer-events: none`
+  :hover > & {
+    --circle-radius: clamp(50px, 10vw, 150px);
+  }
+
+  &__mask-rect {
+    fill: white; // Show rect in mask
+  }
+  &__mask-circle {
+    fill: black; // Cutout circle in mask
+
+    r: var(--circle-radius);
+
+    transition: none;
+    @media not (prefers-reduced-motion) {
+      // N Frames at 60 hz
+      --transition-frames: 2;
+      transition: r calc((1s / 60) * var(--transition-frames));
+    }
+  }
+
+  &__rect {
+    fill: $color-eggplant-500;
+    opacity: 25%;
+  }
+
+  pointer-events: none;
+}

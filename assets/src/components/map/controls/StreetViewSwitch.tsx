@@ -5,6 +5,7 @@ import { useMap, useMapEvents } from "react-leaflet"
 import { joinClasses } from "../../../helpers/dom"
 import { WalkingIcon } from "../../../helpers/icon"
 import { streetViewUrl } from "../../../util/streetViewUrl"
+import { CutoutOverlay } from "../../cutoutOverlay"
 
 export interface StreetViewControlProps extends ControlOptions {
   streetViewEnabled: boolean
@@ -107,5 +108,10 @@ export const StreetViewControl = ({
     </>
   )
 
-  return portalElement ? ReactDOM.createPortal(control, portalElement) : null
+  return (
+    <>
+      {portalElement && ReactDOM.createPortal(control, portalElement)}
+      {streetViewEnabled && <CutoutOverlay.FollowMapMouseMove />}
+    </>
+  )
 }

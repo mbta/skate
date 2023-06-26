@@ -4,6 +4,7 @@
   // Leaflet uses px for positioning of their controls so we use px here to match
   top: 10px;
   right: 55px;
+  z-index: 1000; // Same control layer as leaflet controls
   // #endregion
 
   // #region Look
