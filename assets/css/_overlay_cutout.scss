@@ -36,5 +36,7 @@
     opacity: 25%;
   }
 
+  // Do not intercept pointer events, instead pass them on to whatever is
+  // behind the overlay
   pointer-events: none;
 }
