@@ -283,9 +283,7 @@ const LateView = (): ReactElement<HTMLElement> => {
       (a, b) => (b.scheduleAdherenceSecs || 0) - (a.scheduleAdherenceSecs || 0)
     )
 
-  const lateVehiclesAndGhosts = (
-    lateGhosts as (VehicleInScheduledService | Ghost)[]
-  ).concat(lateBuses)
+  const lateVehiclesAndGhosts = [...lateGhosts, ...lateBuses]
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
