@@ -117,7 +117,7 @@ export interface Vehicle {
   tripId: TripId | null
   headsign: string | null
   viaVariant: ViaVariant | null
-  operatorId: string
+  operatorId: string | null
   operatorFirstName: string | null
   operatorLastName: string | null
   operatorLogonTime: Date | null

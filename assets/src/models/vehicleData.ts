@@ -99,7 +99,7 @@ const baseVehicleData = {
   trip_id: nullable(string()),
   headsign: nullable(string()),
   via_variant: nullable(string()),
-  operator_id: string(),
+  operator_id: nullable(string()),
   operator_first_name: nullable(string()),
   operator_last_name: nullable(string()),
   operator_logon_time: nullable(number()),
