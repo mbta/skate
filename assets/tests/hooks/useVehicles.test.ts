@@ -8,11 +8,18 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
 import vehicleDataFactory from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
+import * as Sentry from "@sentry/react"
+
+jest.mock("@sentry/react", () => ({
+  __esModule: true,
+  captureException: jest.fn(),
+}))
 
 describe("useVehicles", () => {
   const vehicleData = vehicleDataFactory.build()
   const vehiclesData: VehicleData[] = [vehicleData]
-  const vehicles: Vehicle[] = [vehicleFromData(vehicleData)]
+  const vehicle: Vehicle = vehicleFromData(vehicleData)
+  const vehicles: Vehicle[] = [vehicle]
 
   test("vehicles is empty to start with", () => {
     const { result } = renderHook(() => useVehicles(undefined, []))
@@ -65,6 +72,26 @@ describe("useVehicles", () => {
     expect(result.current).toEqual({
       "1": vehicles,
     })
+  })
+
+  test("still returns malformed data, but logs to Sentry", async () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockChannel.receive.mockImplementation((event, handler) => {
+      if (event === "ok") {
+        handler({ data: [{ ...vehicleData, timestamp: null }] })
+      }
+      return mockChannel
+    })
+
+    const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
+
+    expect(result.current).toEqual({
+      "1": [{ ...vehicle, timestamp: null }],
+    })
+
+    expect(Sentry.captureException).toHaveBeenCalled()
   })
 
   test("returns ghost vehicles", async () => {
