@@ -100,11 +100,15 @@ defmodule Schedule do
   @doc """
   All trips that are scheduled to be active at the given time, on all routes.
   """
-  @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
-  @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp(), persistent_term_key()) ::
+  @spec trips_starting_in_range(Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
+  @spec trips_starting_in_range(
+          Util.Time.timestamp(),
+          Util.Time.timestamp(),
+          persistent_term_key()
+        ) ::
           [Trip.t()]
-  def active_trips(start_time, end_time, persistent_term_key \\ __MODULE__) do
-    call_with_data(persistent_term_key, [start_time, end_time], :active_trips, [])
+  def trips_starting_in_range(start_time, end_time, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [start_time, end_time], :trips_starting_in_range, [])
   end
 
   @doc """
@@ -221,13 +225,19 @@ defmodule Schedule do
   """
   @spec call_with_data(persistent_term_key(), any(), atom(), any()) :: any()
   def call_with_data(persistent_term_key, args, function_name, default_result) do
-    case :persistent_term.get(persistent_term_key, :not_loaded) do
+    data_get_fn = Application.get_env(:skate, :schedule_data_get_fn, &persistent_term_lookup/2)
+
+    case data_get_fn.(persistent_term_key, :not_loaded) do
       {:loaded, data} ->
         apply(Data, function_name, [data | args])
 
       :not_loaded ->
         default_result
     end
+  end
+
+  defp persistent_term_lookup(key, default_value) do
+    :persistent_term.get(key, default_value)
   end
 
   @spec update_state(state(), term()) :: :ok

@@ -149,6 +149,32 @@ defmodule Schedule.TripTest do
     end
   end
 
+  describe "starts_in_range" do
+    test "when a trip that starts before the range and ends after, false" do
+      refute Trip.starts_in_range(@trip, 4, 5)
+    end
+
+    test "when a trip starts before the range and ends during, false" do
+      refute Trip.starts_in_range(@trip, 5, 7)
+    end
+
+    test "when a trip starts during the range and ends after, true" do
+      assert Trip.starts_in_range(@trip, 2, 4)
+    end
+
+    test "when a trip that's totally inside the time range, true" do
+      assert Trip.starts_in_range(@trip, 2, 7)
+    end
+
+    test "when a trip is trip totally before the range, false" do
+      refute Trip.starts_in_range(@trip, 10, 12)
+    end
+
+    test "when a trip is totally after the range, false" do
+      refute Trip.starts_in_range(@trip, 1, 2)
+    end
+  end
+
   describe "id_sans_overload/1" do
     test "removes the overload portion of the ID" do
       assert Trip.id_sans_overload("44169914-OL1") == "44169914"

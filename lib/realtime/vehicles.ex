@@ -9,16 +9,16 @@ defmodule Realtime.Vehicles do
 
   Also fills in ghost buses and checks for buses incoming from another route
 
-  Vehicles are incoming from another route if they're scheduled to run within 15 minutes but are currently on another route.
+  Vehicles are incoming from another route if they're scheduled to start a trip on a route within 15 minutes that is different from the route they are currently on.
   """
-  @spec group_by_route([Vehicle.t()], Timepoint.timepoint_names_by_id()) ::
+  @spec group_by_route([Vehicle.t()], Timepoint.timepoint_names_by_id(), Util.Time.timestamp()) ::
           Route.by_id([VehicleOrGhost.t()])
-  def group_by_route(ungrouped_vehicles, timepoint_names_by_id) do
-    now = Util.Time.now()
+  def group_by_route(ungrouped_vehicles, timepoint_names_by_id, now \\ Util.Time.now()) do
     in_fifteen_minutes = now + 15 * 60
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
-    incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
+    incoming_trips = Schedule.trips_starting_in_range(now, in_fifteen_minutes)
+
     # Includes runs that are scheduled to be pulling out
     active_runs_by_date = Schedule.active_runs(now, now)
 

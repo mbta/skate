@@ -134,6 +134,14 @@ defmodule Schedule.Trip do
       start_time_of_day < trip.end_time
   end
 
+  @doc """
+  Whether the trip starts within the given time_of_day range, exclusive
+  """
+  @spec starts_in_range(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
+  def starts_in_range(trip, start_time_of_day, end_time_of_day) do
+    start_time_of_day < trip.start_time and trip.start_time < end_time_of_day
+  end
+
   @spec id_sans_overload(id() | nil) :: id() | nil
   def id_sans_overload(nil), do: nil
 

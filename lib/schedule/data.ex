@@ -127,8 +127,10 @@ defmodule Schedule.Data do
     Enum.to_list(date_range)
   end
 
-  @spec active_trips(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [Schedule.Trip.t()]
-  def active_trips(%__MODULE__{calendar: calendar, trips: trips}, start_time, end_time) do
+  @spec trips_starting_in_range(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [
+          Schedule.Trip.t()
+        ]
+  def trips_starting_in_range(%__MODULE__{calendar: calendar, trips: trips}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
 
@@ -146,12 +148,12 @@ defmodule Schedule.Data do
           Map.get(trips_by_service, service_id, [])
         end)
 
-      active_trips_on_date =
+      trips_starting_in_range_on_date =
         Enum.filter(trips_on_date, fn trip ->
-          Schedule.Trip.is_active(trip, start_time_of_day, end_time_of_day)
+          Schedule.Trip.starts_in_range(trip, start_time_of_day, end_time_of_day)
         end)
 
-      active_trips_on_date
+      trips_starting_in_range_on_date
     end)
   end
 
