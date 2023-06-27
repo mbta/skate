@@ -125,7 +125,7 @@ const subscribe = (
       assert(vehiclesAndGhostsData, VehiclesOrGhostsData)
     } catch (error) {
       if (error instanceof StructError) {
-        Sentry.captureException(error)
+        Sentry.captureException({ error: error, route_id: routeId })
       }
     }
 
