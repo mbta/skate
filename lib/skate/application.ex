@@ -13,7 +13,7 @@ defmodule Skate.Application do
 
     # List all child processes to be supervised
     children =
-      [{Skate.Repo, []}] ++
+      [{Skate.Repo, []}, Skate.WarmUp] ++
         if Application.get_env(:skate, :start_data_processes) do
           [
             Schedule.Supervisor,
@@ -29,11 +29,14 @@ defmodule Skate.Application do
           SkateWeb.Endpoint
         ]
 
-    link = Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
+    case Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor) do
+      {:ok, _pid} = link ->
+        Migrate.up()
+        link
 
-    Migrate.up()
-
-    link
+      error ->
+        error
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration

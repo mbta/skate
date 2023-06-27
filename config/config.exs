@@ -106,6 +106,10 @@ config :skate, Skate.Repo,
   port: System.get_env("POSTGRES_PORT", "5432") |> String.to_integer(),
   show_sensitive_data_on_connection_error: true
 
+config :skate, Skate.WarmUp,
+  minimum_percent_queries_to_succeed: 0.6,
+  max_attempts: 3
+
 config :laboratory,
   features: [
     {:late_view, "Late View", "Grants access to experimental Late View"}
