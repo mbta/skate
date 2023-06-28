@@ -234,6 +234,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         case SelectedEntityType.RoutePattern:
           window.FS?.event("RPC Opened")
       }
+      if (selectedEntity) {
+        setSearchOpen(true)
+      }
 
       dispatch(setSelectedEntity(selectedEntity))
     },

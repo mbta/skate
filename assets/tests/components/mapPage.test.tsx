@@ -609,6 +609,50 @@ describe("<MapPage />", () => {
     )
   })
 
+  test("when the search panel is collapsed, clicking a vehicle reopens it", async () => {
+    mockFullStoryEvent()
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const route = routeFactory.build()
+    const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
+    const vehicle = routeVehicleFactory.build({ runId: runIdFactory.build() })
+    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+
+    mockUsePatternsByIdForVehicles([vehicle])
+
+    mockUseVehicleForId([vehicle])
+    mockUseVehiclesForRouteMap({ [route.id]: [vehicle] })
+
+    const mockDispatch = jest.fn()
+    const state = stateFactory.build({
+      searchPageState: searchPageStateFactory.build({
+        selectedEntity: {
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicle.id,
+        },
+      }),
+    })
+
+    render(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Collapse" }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "c-map-page__input-and-results--hidden"
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: vehicle.runId! }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "c-map-page__input-and-results--visible"
+    )
+  })
+
   describe("<VehiclePropertiesCard />", () => {
     describe("renders", () => {
       test("after search result is selected", async () => {
