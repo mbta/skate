@@ -123,7 +123,7 @@ export interface Vehicle {
   operatorLogonTime: Date | null
   overloadOffset?: number
   bearing?: number
-  blockId: BlockId
+  blockId: BlockId | null
   previousVehicleId: string | null
   scheduleAdherenceSecs: number | null
   incomingTripDirectionId: DirectionId | null
@@ -145,6 +145,7 @@ export interface Vehicle {
 export interface VehicleInScheduledService extends Vehicle {
   directionId: DirectionId
   routeId: RouteId
+  blockId: BlockId
 }
 
 export type VehicleId = string

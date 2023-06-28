@@ -105,7 +105,7 @@ const baseVehicleData = {
   operator_logon_time: nullable(number()),
   overload_offset: nullable(number()),
   bearing: nullable(number()),
-  block_id: string(),
+  block_id: nullable(string()),
   previous_vehicle_id: nullable(string()),
   schedule_adherence_secs: nullable(number()),
   incoming_trip_direction_id: nullable(DirectionIdData),
@@ -132,6 +132,7 @@ export const VehicleInScheduledServiceData = type({
   ...baseVehicleData,
   direction_id: DirectionIdData,
   route_id: string(),
+  block_id: string(),
 })
 export type VehicleInScheduledServiceData = Infer<
   typeof VehicleInScheduledServiceData
