@@ -214,7 +214,8 @@ defmodule Realtime.Server do
   def lookup({table, {:vehicle, vehicle_or_ghost_id}}) do
     {table, :logged_in_vehicles}
     |> lookup()
-    |> Enum.filter(&(&1.id == vehicle_or_ghost_id))
+    |> Enum.find(&(&1.id == vehicle_or_ghost_id))
+    |> List.wrap()
   end
 
   def lookup({table, key}) do
