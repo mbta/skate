@@ -16,7 +16,7 @@ defmodule Skate.WarmUpTest do
 
       {result, log} = with_log(fn -> Skate.WarmUp.init("initial_state") end)
 
-      assert {:ok, "initial_state"} = result
+      assert :ignore = result
 
       assert log =~
                "Elixir.Skate.WarmUp Repo warm-up attempt complete. status=success count_query_success=9 total_query_count=10"
@@ -38,7 +38,7 @@ defmodule Skate.WarmUpTest do
 
       {result, log} = with_log(fn -> Skate.WarmUp.init("initial_state") end)
 
-      assert {:ok, "initial_state"} = result
+      assert :ignore = result
 
       assert log =~
                "[warning] Elixir.Skate.WarmUp Repo warm-up attempt complete. status=failure count_query_success=0 total_query_count=10 attempt=1"

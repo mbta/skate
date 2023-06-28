@@ -7,7 +7,7 @@ defmodule Skate.WarmUp do
   end
 
   @impl true
-  def init(state) do
+  def init(_arg) do
     pool_size = Application.get_env(:skate, Skate.Repo)[:pool_size]
 
     minimum_percent_queries_to_succeed =
@@ -29,7 +29,7 @@ defmodule Skate.WarmUp do
          }) do
       %{status: :success} = result ->
         Logger.info(format_result_message(result))
-        {:ok, state}
+        :ignore
 
       %{status: :failure} = result ->
         message = format_result_message(result)
