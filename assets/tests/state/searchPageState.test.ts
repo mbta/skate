@@ -12,6 +12,7 @@ import {
   newSearchSession,
   SelectedEntity,
   goBack,
+  shouldAddLastSelectionToHistory,
 } from "../../src/state/searchPageState"
 import { searchPageStateFactory } from "../factories/searchPageState"
 
@@ -205,7 +206,7 @@ describe("reducer", () => {
       expect(updatedState.selectedEntityHistory).toEqual([])
     })
 
-    test("when there is already a selectedEntity, setting a new selection adds the old one to the history", () => {
+    test("when there is already a selected vehicle, selecting a new vehicle adds the old one to the history", () => {
       const firstSelection = {
         type: SelectedEntityType.Vehicle,
         vehicleId: "123",
@@ -222,6 +223,68 @@ describe("reducer", () => {
         })
       )
       expect(updatedState.selectedEntityHistory).toEqual([firstSelection])
+    })
+
+    test("when there is already a vehicle selected, calling setSelectedEntity for the same vehicle does not add the previous selection to the history", () => {
+      const firstSelection: SelectedEntity = {
+        type: SelectedEntityType.Vehicle,
+        vehicleId: "123",
+      }
+      const initialState = searchPageStateFactory.build({
+        selectedEntity: firstSelection,
+      })
+
+      const updatedState = reducer(
+        initialState,
+        setSelectedEntity(firstSelection)
+      )
+      expect(updatedState.selectedEntityHistory).toEqual([])
+    })
+
+    test("when there is already a selected route pattern, selecting a new route pattern on a different route adds the old one to the history", () => {
+      const firstSelection: SelectedEntity = {
+        type: SelectedEntityType.RoutePattern,
+        routeId: "66",
+        routePatternId: "_1",
+      }
+
+      const secondSelection: SelectedEntity = {
+        type: SelectedEntityType.RoutePattern,
+        routeId: "39",
+        routePatternId: "_2",
+      }
+      const initialState = searchPageStateFactory.build({
+        selectedEntity: firstSelection,
+      })
+
+      const updatedState = reducer(
+        initialState,
+        setSelectedEntity(secondSelection)
+      )
+      expect(updatedState.selectedEntityHistory).toEqual([firstSelection])
+    })
+
+    test("when there is already a selected route pattern, selecting a new route pattern on the same route does not add the old one to the history", () => {
+      const firstSelection: SelectedEntity = {
+        type: SelectedEntityType.RoutePattern,
+        routeId: "66",
+        routePatternId: "_1",
+      }
+
+      const secondSelection: SelectedEntity = {
+        type: SelectedEntityType.RoutePattern,
+        routeId: "66",
+        routePatternId: "_2",
+      }
+      const initialState = searchPageStateFactory.build({
+        selectedEntity: firstSelection,
+      })
+
+      const updatedState = reducer(
+        initialState,
+        setSelectedEntity(secondSelection)
+      )
+      expect(updatedState.selectedEntityHistory).toEqual([])
     })
   })
 
@@ -281,6 +344,55 @@ describe("reducer", () => {
       expect(updatedState.selectedEntity).toBeNull()
       expect(updatedState.selectedEntityHistory).toHaveLength(0)
     })
+  })
+})
+
+describe("shouldAddLastSelectionToHistory", () => {
+  const v1: SelectedEntity = {
+    type: SelectedEntityType.Vehicle,
+    vehicleId: "123",
+  }
+
+  const v2: SelectedEntity = {
+    type: SelectedEntityType.Vehicle,
+    vehicleId: "456",
+  }
+
+  const route66_1: SelectedEntity = {
+    type: SelectedEntityType.RoutePattern,
+    routeId: "66",
+    routePatternId: "66_1",
+  }
+
+  const route66_2: SelectedEntity = {
+    type: SelectedEntityType.RoutePattern,
+    routeId: "66",
+    routePatternId: "66_2",
+  }
+
+  const route39: SelectedEntity = {
+    type: SelectedEntityType.RoutePattern,
+    routeId: "39",
+    routePatternId: "_",
+  }
+
+  test("when adding route selection for same route as the last one, false", () => {
+    expect(shouldAddLastSelectionToHistory(route66_2, route66_1)).toBe(false)
+  })
+  test("when adding route selection for different route as the last one, true", () => {
+    expect(shouldAddLastSelectionToHistory(route66_2, route39)).toBe(true)
+  })
+  test("when adding a vehicle that is same as the last one, false", () => {
+    expect(shouldAddLastSelectionToHistory(v1, v1)).toBe(false)
+  })
+  test("when adding a vehicle that is different from the last one, true", () => {
+    expect(shouldAddLastSelectionToHistory(v1, v2)).toBe(true)
+  })
+  test("when adding vehicle after route, true", () => {
+    expect(shouldAddLastSelectionToHistory(v1, route66_1)).toBe(true)
+  })
+  test("when adding route after vehicle, true", () => {
+    expect(shouldAddLastSelectionToHistory(route66_1, v1)).toBe(true)
   })
 })
 

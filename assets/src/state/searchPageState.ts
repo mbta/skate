@@ -160,14 +160,18 @@ export const reducer = (
         query: emptySearchQuery,
         selectedEntityHistory: [],
       }
-    case "SELECT_SEARCH_ENTITY":
+    case "SELECT_SEARCH_ENTITY": {
+      const lastSelection = state.selectedEntity
       return {
         ...state,
         selectedEntity: action.payload,
-        selectedEntityHistory: state.selectedEntity
-          ? [state.selectedEntity, ...state.selectedEntityHistory]
-          : state.selectedEntityHistory,
+        selectedEntityHistory:
+          lastSelection &&
+          shouldAddLastSelectionToHistory(action.payload, lastSelection)
+            ? [lastSelection, ...state.selectedEntityHistory]
+            : state.selectedEntityHistory,
       }
+    }
 
     case "GO_BACK": {
       const [previousSelection, ...history] = state.selectedEntityHistory
@@ -179,6 +183,34 @@ export const reducer = (
     }
   }
   return state
+}
+/*
+The last selection should only be added to the selection history if it is different from the new selection.
+For vehicles, this means having a different vehicleId. 
+For route patterns, this means having a different routeId.
+ */
+export const shouldAddLastSelectionToHistory = (
+  newSelection: SelectedEntity | null,
+  lastSelection: SelectedEntity
+) => {
+  if (
+    newSelection &&
+    lastSelection.type === SelectedEntityType.RoutePattern &&
+    newSelection.type === SelectedEntityType.RoutePattern &&
+    lastSelection.routeId === newSelection.routeId
+  ) {
+    return false
+  }
+
+  if (
+    newSelection &&
+    lastSelection.type === SelectedEntityType.Vehicle &&
+    newSelection.type === SelectedEntityType.Vehicle &&
+    lastSelection.vehicleId === newSelection.vehicleId
+  ) {
+    return false
+  }
+  return true
 }
 
 export const addSavedQuery = (
