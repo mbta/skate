@@ -1,6 +1,7 @@
 import {
   isGhost,
   isLateVehicleIndicator,
+  isLoggedOut,
   isRecentlyLoggedOn,
   isVehicleInScheduledService,
 } from "../../src/models/vehicle"
@@ -53,6 +54,26 @@ describe("isLateVehicleIndicator", () => {
     } as Ghost
 
     expect(isLateVehicleIndicator(regularGhost)).toBeFalsy()
+  })
+})
+
+describe("isLoggedOut", () => {
+  test("true if vehicle is logged out", () => {
+    const vehicle = vehicleFactory.build({
+      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+      runId: "123-4567",
+    })
+
+    expect(isLoggedOut(vehicle)).toBeFalsy()
+  })
+
+  test("false if vehicle is logged in", () => {
+    const vehicle = vehicleFactory.build({
+      operatorLogonTime: null,
+      runId: null,
+    })
+
+    expect(isLoggedOut(vehicle)).toBeTruthy()
   })
 })
 

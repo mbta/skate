@@ -18,6 +18,9 @@ export const isGhost = (
 export const isLateVehicleIndicator = ({ id }: Ghost): boolean =>
   id.startsWith("ghost-incoming-")
 
+export const isLoggedOut = ({ operatorLogonTime, runId }: Vehicle) =>
+  operatorLogonTime === null && runId === null
+
 export const isRecentlyLoggedOn = (
   vehicleOrGhost: VehicleInScheduledService | Ghost
 ): boolean => {
