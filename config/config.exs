@@ -108,7 +108,8 @@ config :skate, Skate.Repo,
 
 config :skate, Skate.WarmUp,
   minimum_percent_queries_to_succeed: 0.6,
-  max_attempts: 3
+  max_attempts: 3,
+  seconds_between_attempts: 3
 
 config :laboratory,
   features: [

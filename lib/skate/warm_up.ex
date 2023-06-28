@@ -9,11 +9,11 @@ defmodule Skate.WarmUp do
   @impl true
   def init(_arg) do
     pool_size = Application.get_env(:skate, Skate.Repo)[:pool_size]
+    warmup_config = Application.get_env(:skate, Skate.WarmUp)
 
-    minimum_percent_queries_to_succeed =
-      Application.get_env(:skate, Skate.WarmUp)[:minimum_percent_queries_to_succeed] || 1
-
-    max_attempts = Application.get_env(:skate, Skate.WarmUp)[:max_attempts]
+    minimum_percent_queries_to_succeed = warmup_config[:minimum_percent_queries_to_succeed] || 1
+    max_attempts = warmup_config[:max_attempts] || 1
+    seconds_between_attempts = warmup_config[:seconds_between_attempts] || 0
 
     warm_up_check_fn =
       Application.get_env(:skate, :warm_up_test_fn, fn _index, _attemptgit ->
@@ -25,6 +25,7 @@ defmodule Skate.WarmUp do
            required_success_count: pool_size * minimum_percent_queries_to_succeed,
            max_attempts: max_attempts,
            attempt: 1,
+           seconds_between_attempts: seconds_between_attempts,
            check_fn: warm_up_check_fn
          }) do
       %{status: :success} = result ->
@@ -44,7 +45,8 @@ defmodule Skate.WarmUp do
            required_success_count: required_success_count,
            max_attempts: max_attempts,
            attempt: attempt,
-           check_fn: check_fn
+           check_fn: check_fn,
+           seconds_between_attempts: seconds_between_attempts
          } = config
        ) do
     count_success =
@@ -76,6 +78,7 @@ defmodule Skate.WarmUp do
         result
       else
         Logger.warn(format_result_message(result))
+        :timer.sleep(:timer.seconds(seconds_between_attempts))
         check_connections_warmed_up(%{config | attempt: attempt + 1})
       end
     end

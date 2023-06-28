@@ -1,11 +1,16 @@
 defmodule Skate.WarmUpTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   import Test.Support.Helpers
   import ExUnit.CaptureLog
 
   describe("init/1") do
     test "returns :ok if test function succeeds at least the required number of times" do
-      reassign_env(:skate, Skate.WarmUp, minimum_percent_queries_to_succeed: 0.5)
+      reassign_env(:skate, Skate.WarmUp,
+        minimum_percent_queries_to_succeed: 0.5,
+        seconds_between_attempts: 0,
+        max_attempts: 2
+      )
+
       reassign_env(:skate, Skate.Repo, pool_size: 10)
 
       reassign_env(:skate, :warm_up_test_fn, fn count, _attempt ->
@@ -23,8 +28,11 @@ defmodule Skate.WarmUpTest do
     end
 
     test "returns :ok if fails on first try and succeeds on second" do
-      reassign_env(:skate, Skate.WarmUp, minimum_percent_queries_to_succeed: 0.8)
-      reassign_env(:skate, Skate.WarmUp, max_attempts: 2)
+      reassign_env(:skate, Skate.WarmUp,
+        minimum_percent_queries_to_succeed: 0.8,
+        max_attempts: 2,
+        seconds_between_attempts: 0
+      )
 
       reassign_env(:skate, :warm_up_test_fn, fn _count, attempt ->
         if attempt == 1 do
@@ -48,8 +56,11 @@ defmodule Skate.WarmUpTest do
     end
 
     test "retries on failure the configured number of times before returning stop" do
-      reassign_env(:skate, Skate.WarmUp, minimum_percent_queries_to_succeed: 0.8)
-      reassign_env(:skate, Skate.WarmUp, max_attempts: 2)
+      reassign_env(:skate, Skate.WarmUp,
+        minimum_percent_queries_to_succeed: 0.8,
+        max_attempts: 2,
+        seconds_between_attempts: 0
+      )
 
       reassign_env(:skate, Skate.Repo, pool_size: 10)
 
