@@ -9,6 +9,7 @@ import {
 } from "../../src/components/mapMarkers"
 import stopFactory from "../factories/stop"
 import vehicleFactory from "../factories/vehicle"
+import trainVehicleFactory from "../factories/trainVehicle"
 import { render, screen } from "@testing-library/react"
 import React from "react"
 import { MapContainer } from "react-leaflet"
@@ -47,7 +48,7 @@ describe("VehicleMarker", () => {
 describe("TrainVehicleMarker", () => {
   test("Includes icon and label", () => {
     const { container } = renderInMap(
-      <TrainVehicleMarker trainVehicle={vehicleFactory.build()} />
+      <TrainVehicleMarker trainVehicle={trainVehicleFactory.build()} />
     )
     expect(
       container.querySelector(".c-vehicle-map__train-icon")

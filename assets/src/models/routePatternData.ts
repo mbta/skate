@@ -1,17 +1,13 @@
-import { define, Infer, nullable, number, string, type } from "superstruct"
+import { Infer, nullable, number, string, type } from "superstruct"
 import { RoutePattern } from "../schedule"
+import { DirectionIdData } from "./miscData"
 import { ShapeData, shapeFromData } from "./shapeData"
-
-const DirectionId = define<0 | 1>(
-  "DirectionId",
-  (value) => value === 1 || value === 0
-)
 
 export const RoutePatternData = type({
   id: string(),
   name: string(),
   route_id: string(),
-  direction_id: DirectionId,
+  direction_id: DirectionIdData,
   time_desc: nullable(string()),
   sort_order: number(),
   shape: nullable(ShapeData),

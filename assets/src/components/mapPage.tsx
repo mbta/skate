@@ -10,7 +10,7 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
 import useSearchResults from "../hooks/useSearchResults"
-import { VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle } from "../realtime"
 import { OpenView, closeView } from "../state"
 import {
   SearchPageState,
@@ -25,7 +25,7 @@ import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 
 const thereIsAnActiveSearch = (
-  vehicles: VehicleOrGhost[] | null,
+  vehicles: (Vehicle | Ghost)[] | null,
   searchPageState: SearchPageState
 ): boolean => vehicles !== null && searchPageState.isActive
 
@@ -36,10 +36,10 @@ const SearchInputAndResults = ({
 }: {
   searchPageState: SearchPageState
   selectedEntity: SelectedEntity | null
-  selectVehicle: (vehicle: VehicleOrGhost | null) => void
+  selectVehicle: (vehicle: Vehicle | Ghost | null) => void
 }): React.ReactElement => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const searchVehicles: VehicleOrGhost[] | null = useSearchResults(
+  const searchVehicles = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
   )
@@ -113,7 +113,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
 
   const selectVehicle = useCallback(
-    (vehicleOrGhost: VehicleOrGhost | null) => {
+    (vehicleOrGhost: Vehicle | Ghost | null) => {
       if (vehicleOrGhost) {
         setSelection({
           type: SelectedEntityType.Vehicle,

@@ -10,7 +10,11 @@ import {
   flipLadderDirectionForRoute,
   LadderDirections,
 } from "../../../src/models/ladderDirection"
-import { Ghost, Vehicle } from "../../../src/realtime"
+import {
+  Ghost,
+  Vehicle,
+  VehicleInScheduledService,
+} from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import { closeView, initialState } from "../../../src/state"
 import vehicleFactory from "../../factories/vehicle"
@@ -23,7 +27,7 @@ jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 const setTabMode = jest.fn()
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -110,7 +114,7 @@ describe("Header", () => {
   })
 
   test("renders for an early vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: -61,
     }
@@ -128,7 +132,7 @@ describe("Header", () => {
   })
 
   test("renders for a late vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: 361,
     }
@@ -146,7 +150,7 @@ describe("Header", () => {
   })
 
   test("renders for an off-course vehicle", () => {
-    const offCourseVehicle: Vehicle = {
+    const offCourseVehicle: VehicleInScheduledService = {
       ...vehicle,
       isOffCourse: true,
     }
@@ -165,7 +169,7 @@ describe("Header", () => {
   })
 
   test("renders for a shuttle", () => {
-    const shuttleVehicle: Vehicle = {
+    const shuttleVehicle: VehicleInScheduledService = {
       ...vehicle,
       isShuttle: true,
     }

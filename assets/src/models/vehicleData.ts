@@ -1,180 +1,227 @@
 import {
+  array,
+  boolean,
+  enums,
+  Infer,
+  nullable,
+  number,
+  optional,
+  string,
+  type,
+} from "superstruct"
+import {
   BlockWaiver,
   DataDiscrepancy,
-  EndOfTripType,
   Ghost,
-  RouteStatus,
-  RunId,
   Vehicle,
-  VehicleOrGhost,
+  VehicleInScheduledService,
   VehicleScheduledLocation,
   VehicleStopStatus,
   VehicleTimepointStatus,
 } from "../realtime.d"
-import { DirectionId, RouteId, RoutePatternId } from "../schedule.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
-import { OccupancyStatus } from "./crowding"
+import { DirectionIdData } from "./miscData"
 
-export interface VehicleData {
-  id: string
-  label: string
-  run_id: string | null
-  timestamp: number
-  latitude: number
-  longitude: number
-  direction_id: DirectionId
-  route_id: RouteId
-  route_pattern_id: RoutePatternId | null
-  trip_id: string
-  headsign: string | null
-  via_variant: string | null
-  operator_id: string
-  operator_first_name: string
-  operator_last_name: string
-  operator_logon_time: number | null
-  overload_offset?: number
-  bearing: number
-  block_id: string
-  previous_vehicle_id: string
-  schedule_adherence_secs: number
-  incoming_trip_direction_id: DirectionId | null
-  is_shuttle: boolean
-  is_overload: boolean
-  is_off_course: boolean
-  is_revenue: boolean
-  layover_departure_time: number | null
-  sources: string[]
-  data_discrepancies: DataDiscrepancyData[]
-  stop_status: VehicleStopStatusData
-  timepoint_status: VehicleTimepointStatusData | null
-  scheduled_location: VehicleScheduledLocationData | null
-  route_status: RouteStatus
-  end_of_trip_type: EndOfTripType
-  block_waivers: BlockWaiverData[]
-  crowding: {
-    load: number
-    capacity: number
-    occupancy_status: OccupancyStatus
-    occupancy_percentage: number
-  } | null
-}
-
-export interface GhostData {
-  id: string
-  direction_id: DirectionId
-  route_id: string
-  route_pattern_id: RoutePatternId | null
-  trip_id: string
-  headsign: string
-  block_id: string
-  run_id: string | null
-  via_variant: string | null
-  layover_departure_time: number | null
-  scheduled_timepoint_status: VehicleTimepointStatusData
-  scheduled_logon: number | null
-  route_status: RouteStatus
-  block_waivers: BlockWaiverData[]
-  current_piece_start_place: string | null
-  current_piece_first_route: string | null
-  incoming_trip_direction_id: DirectionId | null
-}
-
-export type VehicleOrGhostData = VehicleData | GhostData
-
-interface DataDiscrepancyData {
-  attribute: string
-  sources: DataDiscrepancySourceData[]
-}
-
-interface DataDiscrepancySourceData {
-  id: string
-  value: string | null
-}
-
-interface VehicleScheduledLocationData {
-  route_id: RouteId
-  route_pattern_id: RoutePatternId | null
-  direction_id: DirectionId
-  trip_id: string
-  run_id: RunId
-  time_since_trip_start_time: number
-  headsign: string
-  via_variant: string | null
-  timepoint_status: VehicleTimepointStatusData
-}
-
-interface VehicleStopStatusData {
-  stop_id: string
-  stop_name: string
-}
-
-interface VehicleTimepointStatusData {
-  timepoint_id: string
-  fraction_until_timepoint: number
-}
-
-interface BlockWaiverData {
-  start_time: number
-  end_time: number
-  cause_id: number
-  cause_description: string
-  remark: string | null
-}
-
-export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
-  id: vehicleData.id,
-  label: vehicleData.label,
-  runId: vehicleData.run_id,
-  timestamp: vehicleData.timestamp,
-  latitude: vehicleData.latitude,
-  longitude: vehicleData.longitude,
-  directionId: vehicleData.direction_id,
-  routeId: vehicleData.route_id,
-  routePatternId: vehicleData.route_pattern_id,
-  tripId: vehicleData.trip_id,
-  headsign: vehicleData.headsign,
-  viaVariant: vehicleData.via_variant,
-  operatorId: vehicleData.operator_id,
-  operatorFirstName: vehicleData.operator_first_name,
-  operatorLastName: vehicleData.operator_last_name,
-  operatorLogonTime: vehicleData.operator_logon_time
-    ? dateFromEpochSeconds(vehicleData.operator_logon_time)
-    : null,
-  overloadOffset: vehicleData.overload_offset,
-  bearing: vehicleData.bearing,
-  blockId: vehicleData.block_id,
-  previousVehicleId: vehicleData.previous_vehicle_id,
-  scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
-  incomingTripDirectionId: vehicleData.incoming_trip_direction_id,
-  isShuttle: vehicleData.is_shuttle,
-  isOverload: vehicleData.is_overload,
-  isOffCourse: vehicleData.is_off_course,
-  isRevenue: vehicleData.is_revenue,
-  layoverDepartureTime: vehicleData.layover_departure_time,
-  dataDiscrepancies: dataDiscrepanciesFromData(vehicleData.data_discrepancies),
-  stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),
-  timepointStatus:
-    vehicleData.timepoint_status &&
-    vehicleTimepointStatusFromData(vehicleData.timepoint_status),
-  scheduledLocation:
-    vehicleData.scheduled_location &&
-    vehicleScheduledLocationFromData(vehicleData.scheduled_location),
-  routeStatus: vehicleData.route_status,
-  endOfTripType: vehicleData.end_of_trip_type,
-  blockWaivers: blockWaiversFromData(vehicleData.block_waivers),
-  crowding: vehicleData.crowding && {
-    load: vehicleData.crowding.load,
-    capacity: vehicleData.crowding.capacity,
-    occupancyStatus: vehicleData.crowding.occupancy_status,
-    occupancyPercentage: vehicleData.crowding.occupancy_percentage,
-  },
+const DataDiscrepancySourceData = type({
+  id: string(),
+  value: nullable(string()),
 })
+
+const DataDiscrepancyData = type({
+  attribute: string(),
+  sources: array(DataDiscrepancySourceData),
+})
+type DataDiscrepancyData = Infer<typeof DataDiscrepancyData>
+
+const VehicleStopStatusData = type({
+  stop_id: nullable(string()),
+  stop_name: nullable(string()),
+})
+type VehicleStopStatusData = Infer<typeof VehicleStopStatusData>
+
+const VehicleTimepointStatusData = type({
+  timepoint_id: string(),
+  fraction_until_timepoint: number(),
+})
+type VehicleTimepointStatusData = Infer<typeof VehicleTimepointStatusData>
+
+const VehicleScheduledLocationData = type({
+  route_id: string(),
+  route_pattern_id: nullable(string()),
+  direction_id: DirectionIdData,
+  trip_id: string(),
+  run_id: string(),
+  time_since_trip_start_time: number(),
+  headsign: string(),
+  via_variant: nullable(string()),
+  timepoint_status: VehicleTimepointStatusData,
+})
+type VehicleScheduledLocationData = Infer<typeof VehicleScheduledLocationData>
+
+const BlockWaiverData = type({
+  start_time: number(),
+  end_time: number(),
+  cause_id: number(),
+  cause_description: string(),
+  remark: nullable(string()),
+})
+type BlockWaiverData = Infer<typeof BlockWaiverData>
+
+const RouteStatusData = enums(["on_route", "laying_over", "pulling_out"])
+
+const EndOfTripTypeData = enums(["another_trip", "swing_off", "pull_back"])
+
+const OccupancyStatusData = enums([
+  "NO_DATA",
+  "EMPTY",
+  "MANY_SEATS_AVAILABLE",
+  "FEW_SEATS_AVAILABLE",
+  "FULL",
+])
+
+const CrowdingData = type({
+  load: nullable(number()),
+  capacity: nullable(number()),
+  occupancy_status: nullable(OccupancyStatusData),
+  occupancy_percentage: nullable(number()),
+})
+
+const baseVehicleData = {
+  id: string(),
+  label: nullable(string()),
+  run_id: nullable(string()),
+  timestamp: number(),
+  latitude: number(),
+  longitude: number(),
+  direction_id: nullable(DirectionIdData),
+  route_id: nullable(string()),
+  route_pattern_id: nullable(string()),
+  trip_id: nullable(string()),
+  headsign: nullable(string()),
+  via_variant: nullable(string()),
+  operator_id: nullable(string()),
+  operator_first_name: nullable(string()),
+  operator_last_name: nullable(string()),
+  operator_logon_time: nullable(number()),
+  overload_offset: nullable(number()),
+  bearing: nullable(number()),
+  block_id: string(),
+  previous_vehicle_id: nullable(string()),
+  schedule_adherence_secs: nullable(number()),
+  incoming_trip_direction_id: nullable(DirectionIdData),
+  is_shuttle: boolean(),
+  is_overload: boolean(),
+  is_off_course: boolean(),
+  is_revenue: nullable(boolean()),
+  layover_departure_time: nullable(number()),
+  sources: array(string()),
+  data_discrepancies: array(DataDiscrepancyData),
+  stop_status: VehicleStopStatusData,
+  timepoint_status: nullable(VehicleTimepointStatusData),
+  scheduled_location: nullable(VehicleScheduledLocationData),
+  route_status: RouteStatusData,
+  end_of_trip_type: EndOfTripTypeData,
+  block_waivers: array(BlockWaiverData),
+  crowding: nullable(CrowdingData),
+}
+
+export const VehicleData = type(baseVehicleData)
+export type VehicleData = Infer<typeof VehicleData>
+
+export const VehicleInScheduledServiceData = type({
+  ...baseVehicleData,
+  direction_id: DirectionIdData,
+  route_id: string(),
+})
+export type VehicleInScheduledServiceData = Infer<
+  typeof VehicleInScheduledServiceData
+>
+
+export const GhostData = type({
+  id: string(),
+  direction_id: DirectionIdData,
+  route_id: string(),
+  route_pattern_id: optional(string()),
+  trip_id: string(),
+  headsign: string(),
+  block_id: string(),
+  run_id: nullable(string()),
+  via_variant: nullable(string()),
+  layover_departure_time: nullable(number()),
+  scheduled_timepoint_status: VehicleTimepointStatusData,
+  scheduled_logon: nullable(number()),
+  route_status: RouteStatusData,
+  block_waivers: array(BlockWaiverData),
+  current_piece_start_place: nullable(string()),
+  current_piece_first_route: nullable(string()),
+  incoming_trip_direction_id: nullable(DirectionIdData),
+})
+export type GhostData = Infer<typeof GhostData>
+
+export function vehicleFromData(
+  vehicleData: VehicleInScheduledServiceData
+): VehicleInScheduledService
+export function vehicleFromData(vehicleData: VehicleData): Vehicle
+export function vehicleFromData(
+  vehicleData: VehicleData | VehicleInScheduledServiceData
+): Vehicle | VehicleInScheduledService {
+  return {
+    id: vehicleData.id,
+    label: vehicleData.label,
+    runId: vehicleData.run_id,
+    timestamp: vehicleData.timestamp,
+    latitude: vehicleData.latitude,
+    longitude: vehicleData.longitude,
+    directionId: vehicleData.direction_id,
+    routeId: vehicleData.route_id,
+    routePatternId: vehicleData.route_pattern_id,
+    tripId: vehicleData.trip_id,
+    headsign: vehicleData.headsign,
+    viaVariant: vehicleData.via_variant,
+    operatorId: vehicleData.operator_id,
+    operatorFirstName: vehicleData.operator_first_name,
+    operatorLastName: vehicleData.operator_last_name,
+    operatorLogonTime: vehicleData.operator_logon_time
+      ? dateFromEpochSeconds(vehicleData.operator_logon_time)
+      : null,
+    overloadOffset: vehicleData.overload_offset || undefined,
+    bearing: vehicleData.bearing || undefined,
+    blockId: vehicleData.block_id,
+    previousVehicleId: vehicleData.previous_vehicle_id,
+    scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
+    incomingTripDirectionId: vehicleData.incoming_trip_direction_id,
+    isShuttle: vehicleData.is_shuttle,
+    isOverload: vehicleData.is_overload,
+    isOffCourse: vehicleData.is_off_course,
+    isRevenue: vehicleData.is_revenue,
+    layoverDepartureTime: vehicleData.layover_departure_time,
+    dataDiscrepancies: dataDiscrepanciesFromData(
+      vehicleData.data_discrepancies
+    ),
+    stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),
+    timepointStatus:
+      vehicleData.timepoint_status &&
+      vehicleTimepointStatusFromData(vehicleData.timepoint_status),
+    scheduledLocation:
+      vehicleData.scheduled_location &&
+      vehicleScheduledLocationFromData(vehicleData.scheduled_location),
+    routeStatus: vehicleData.route_status,
+    endOfTripType: vehicleData.end_of_trip_type,
+    blockWaivers: blockWaiversFromData(vehicleData.block_waivers),
+    crowding: vehicleData.crowding && {
+      load: vehicleData.crowding.load,
+      capacity: vehicleData.crowding.capacity,
+      occupancyStatus: vehicleData.crowding.occupancy_status || "NO_DATA",
+      occupancyPercentage: vehicleData.crowding.occupancy_percentage,
+    },
+  }
+}
 
 export const ghostFromData = (ghostData: GhostData): Ghost => ({
   id: ghostData.id,
   directionId: ghostData.direction_id,
   routeId: ghostData.route_id,
-  routePatternId: ghostData.route_pattern_id,
+  routePatternId: ghostData.route_pattern_id || null,
   tripId: ghostData.trip_id,
   headsign: ghostData.headsign,
   blockId: ghostData.block_id,
@@ -192,15 +239,30 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   currentPieceStartPlace: ghostData.current_piece_start_place,
 })
 
-const isGhost = (vehicleOrGhostData: VehicleOrGhostData): boolean =>
-  !Object.prototype.hasOwnProperty.call(vehicleOrGhostData, "operator_id")
+function isGhost(
+  vehicleOrGhostData: VehicleData | GhostData
+): vehicleOrGhostData is GhostData {
+  return !Object.prototype.hasOwnProperty.call(
+    vehicleOrGhostData,
+    "operator_id"
+  )
+}
 
-export const vehicleOrGhostFromData = (
-  vehicleOrGhostData: VehicleOrGhostData
-): VehicleOrGhost =>
-  isGhost(vehicleOrGhostData)
-    ? ghostFromData(vehicleOrGhostData as GhostData)
-    : vehicleFromData(vehicleOrGhostData as VehicleData)
+export function vehicleOrGhostFromData(
+  vehicleOrGhostData: VehicleData | GhostData
+): Vehicle | Ghost {
+  return isGhost(vehicleOrGhostData)
+    ? ghostFromData(vehicleOrGhostData)
+    : vehicleFromData(vehicleOrGhostData)
+}
+
+export function vehicleInScheduledServiceOrGhostFromData(
+  vehicleOrGhostData: VehicleInScheduledServiceData | GhostData
+): VehicleInScheduledService | Ghost {
+  return isGhost(vehicleOrGhostData)
+    ? ghostFromData(vehicleOrGhostData)
+    : vehicleFromData(vehicleOrGhostData)
+}
 
 const dataDiscrepanciesFromData = (
   dataDiscrepancies: DataDiscrepancyData[]

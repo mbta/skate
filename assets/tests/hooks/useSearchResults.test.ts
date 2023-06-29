@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
-import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
-import { Vehicle, VehicleOrGhost } from "../../src/realtime"
+import { GhostData, VehicleData } from "../../src/models/vehicleData"
+import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleFactory from "../factories/vehicle"
@@ -125,8 +125,8 @@ describe("useSearchResults", () => {
       block_waivers: [],
       crowding: null,
     })
-    const searchResultsData: VehicleOrGhostData[] = [vehicleData]
-    const vehicle: Vehicle = vehicleFactory.build({
+    const searchResultsData: (VehicleData | GhostData)[] = [vehicleData]
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "v1",
       label: "v1-label",
       runId: "run-1",
@@ -205,7 +205,7 @@ describe("useSearchResults", () => {
       blockWaivers: [],
       crowding: null,
     })
-    const vehicles: VehicleOrGhost[] = [vehicle]
+    const vehicles: (VehicleInScheduledService | Ghost)[] = [vehicle]
 
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: searchResultsData })
@@ -224,7 +224,7 @@ describe("useSearchResults", () => {
 
   test("leaves the channel and joins a new one when the search changes", () => {
     const mockSocket = makeMockSocket()
-    const vehicles: Vehicle[] = []
+    const vehicles: VehicleInScheduledService[] = []
     const channel1 = makeMockChannel("ok")
     const channel2 = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => channel1)

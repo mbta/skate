@@ -1,5 +1,5 @@
 import React from "react"
-import { Vehicle } from "../../../src/realtime"
+import { VehicleInScheduledService } from "../../../src/realtime"
 import vehicleFactory from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
@@ -14,7 +14,7 @@ import { setSelectedVehicle } from "../../../src/state/searchPageState"
 import userEvent from "@testing-library/user-event"
 import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
-const vehicle: Vehicle = vehicleFactory.build()
+const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,

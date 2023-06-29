@@ -7,7 +7,7 @@ import PropertiesList, {
   vehicleOrGhostProperties,
   vehicleProperties,
 } from "../../src/components/propertiesList"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
@@ -17,7 +17,7 @@ jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -170,7 +170,7 @@ describe("vehicleOrGhostProperties", () => {
 
 describe("vehicleProperties", () => {
   test("an overloaded vehicle's run has 'ADDED'", () => {
-    const overloadedVehicle: Vehicle = {
+    const overloadedVehicle: VehicleInScheduledService = {
       ...vehicle,
       isOverload: true,
     }
@@ -203,7 +203,9 @@ describe("vehicleProperties", () => {
       operatorLastName: null,
     } as unknown
 
-    const properties = vehicleProperties(vehicleSansOperator as Vehicle)
+    const properties = vehicleProperties(
+      vehicleSansOperator as VehicleInScheduledService
+    )
 
     expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
       "Not Available"
@@ -218,7 +220,9 @@ describe("vehicleProperties", () => {
       operatorLastName: "SMITH",
     } as unknown
 
-    const properties = vehicleProperties(vehicleSansOperator as Vehicle)
+    const properties = vehicleProperties(
+      vehicleSansOperator as VehicleInScheduledService
+    )
 
     expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
       "SMITH #1234"

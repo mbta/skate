@@ -367,7 +367,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           pane="markerPane"
           style={{ zIndex: 400 }}
         >
-          {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
+          {(props.secondaryVehicles || []).map((vehicle) => (
             <VehicleMarker
               key={vehicle.id}
               vehicle={vehicle}

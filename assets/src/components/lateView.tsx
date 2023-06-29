@@ -22,9 +22,8 @@ import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { flatten, uniqBy } from "../helpers/array"
 import { saveState, loadState } from "../localStorage"
-import { isVehicle, isGhost } from "../models/vehicle"
-import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
-import { ByRouteId } from "../schedule"
+import { isVehicleInScheduledService, isGhost } from "../models/vehicle"
+import { VehicleInScheduledService, Ghost, RunId } from "../realtime"
 import {
   Action,
   closeView,
@@ -62,7 +61,7 @@ type SelectionState = "none" | "some" | "all"
 
 const isSelected = (
   selectedIds: RunId[],
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 ): boolean => {
   return !!(vehicleOrGhost.runId && selectedIds.includes(vehicleOrGhost.runId))
 }
@@ -238,9 +237,7 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const anyRowsHidden = Object.keys(hidingTimestamps).length > 0
 
-  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
-    VehiclesByRouteIdContext
-  )
+  const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
 
   const vehiclesOrGhosts = uniqBy(
     flatten(Object.values(vehiclesByRouteId)),
@@ -276,13 +273,17 @@ const LateView = (): ReactElement<HTMLElement> => {
   const lateGhosts = unsortedLateGhosts.sort(compareGhosts)
 
   const lateBuses = vehiclesOrGhosts
-    .filter(isVehicle)
-    .filter((vehicle) => vehicle.scheduleAdherenceSecs >= lateBusThreshold)
-    .sort((a, b) => b.scheduleAdherenceSecs - a.scheduleAdherenceSecs)
+    .filter(isVehicleInScheduledService)
+    .filter(
+      (vehicle) =>
+        vehicle.scheduleAdherenceSecs !== null &&
+        vehicle.scheduleAdherenceSecs >= lateBusThreshold
+    )
+    .sort(
+      (a, b) => (b.scheduleAdherenceSecs || 0) - (a.scheduleAdherenceSecs || 0)
+    )
 
-  const lateVehiclesAndGhosts = (lateGhosts as VehicleOrGhost[]).concat(
-    lateBuses
-  )
+  const lateVehiclesAndGhosts = [...lateGhosts, ...lateBuses]
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
@@ -480,7 +481,7 @@ const LateBusRow = ({
   hidingTimestamps,
   toggleCheckedState,
 }: {
-  vehicle: Vehicle
+  vehicle: VehicleInScheduledService
   dispatch: Dispatch<Action>
   selectedIds: RunId[]
   hidingTimestamps: HidingTimestamps
@@ -503,7 +504,7 @@ const LateBusRow = ({
         />
       </td>
       <td className="c-late-view__adherence-cell">
-        {secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}
+        {secondsToMinutes(vehicle.scheduleAdherenceSecs || 0) * -1}
       </td>
       <td>
         <span className="c-late-view__route-pill">
@@ -589,7 +590,7 @@ const HideCheckbox = ({
   hidingTimestamps: HidingTimestamps
   selectedIds: RunId[]
   toggleCheckedState: (runId: RunId) => void
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 }): ReactElement<HTMLElement> | null => {
   const runId = vehicleOrGhost.runId
 
@@ -680,7 +681,7 @@ const MasterCheckbox = ({
   hidingTimestamps,
   tableName,
 }: {
-  attachedVehiclesOrGhosts: VehicleOrGhost[]
+  attachedVehiclesOrGhosts: (VehicleInScheduledService | Ghost)[]
   selectedIds: RunId[]
   setSelectedIds: Dispatch<SetStateAction<RunId[]>>
   hidingTimestamps: HidingTimestamps

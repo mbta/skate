@@ -8,7 +8,12 @@ import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRoute
 import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
 import { useStations } from "../../../src/hooks/useStations"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
-import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
+import {
+  BlockWaiver,
+  Ghost,
+  Vehicle,
+  VehicleInScheduledService,
+} from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
@@ -42,7 +47,7 @@ jest.mock("../../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
 }))
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -123,7 +128,7 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("renders for an early vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: -61,
     }
@@ -142,7 +147,7 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("renders for a late vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: 361,
     }
@@ -154,7 +159,7 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("renders for an off-course vehicle", () => {
-    const offCourseVehicle: Vehicle = {
+    const offCourseVehicle: VehicleInScheduledService = {
       ...vehicle,
       isOffCourse: true,
     }
@@ -169,6 +174,7 @@ describe("VehiclePropertiesPanel", () => {
   test("renders for a shuttle", () => {
     const shuttleVehicle: Vehicle = {
       ...vehicle,
+      directionId: null,
       runId: "999-0555",
       isShuttle: true,
     }
@@ -188,7 +194,7 @@ describe("VehiclePropertiesPanel", () => {
       causeDescription: "Block Waiver",
       remark: null,
     }
-    const vehicleWithBlockWaivers: Vehicle = {
+    const vehicleWithBlockWaivers: VehicleInScheduledService = {
       ...vehicle,
       blockWaivers: [blockWaiver],
     }

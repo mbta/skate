@@ -5,12 +5,13 @@ import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { isVehicle } from "../../models/vehicle"
+import { isVehicleInScheduledService } from "../../models/vehicle"
 import {
   DataDiscrepancy,
-  Vehicle,
+  VehicleInScheduledService,
   VehicleId,
-  VehicleOrGhost,
+  Vehicle,
+  Ghost,
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
 import { isOk } from "../../util/fetchResult"
@@ -56,25 +57,30 @@ const directionsUrl = (
 const useRouteVehicles = (
   routeId: RouteId | null,
   primaryVehicleId: VehicleId
-): Vehicle[] => {
+): VehicleInScheduledService[] => {
   // Get vehicles we've already fetched from the context.
   const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
 
-  const existingVehiclesAndGhosts: VehicleOrGhost[] | undefined =
-    routeId === null ? undefined : vehiclesByRouteId[routeId]
+  const existingVehiclesAndGhosts:
+    | (VehicleInScheduledService | Ghost)[]
+    | undefined = routeId === null ? undefined : vehiclesByRouteId[routeId]
   // If we haven't already fetched this route, open a new channel.
   const { socket } = useContext(SocketContext)
-  const newVehiclesAndGhosts: VehicleOrGhost[] | null = useVehiclesForRoute(
-    socket,
-    existingVehiclesAndGhosts === undefined ? routeId : null
-  )
+  const newVehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | null =
+    useVehiclesForRoute(
+      socket,
+      existingVehiclesAndGhosts === undefined ? routeId : null
+    )
   return (existingVehiclesAndGhosts || newVehiclesAndGhosts || [])
-    .filter(isVehicle)
+    .filter(isVehicleInScheduledService)
     .filter((v) => v.id !== primaryVehicleId)
 }
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
+  const routeVehicles: VehicleInScheduledService[] = useRouteVehicles(
+    vehicle.routeId,
+    vehicle.id
+  )
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
 
@@ -201,14 +207,14 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         setTabMode={setTabMode}
       />
 
-      {selectedVehicle.isShuttle ? (
-        <StatusContent selectedVehicle={selectedVehicle} />
-      ) : (
+      {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
           vehicleOrGhost={selectedVehicle}
           statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
           mode={tabMode}
         />
+      ) : (
+        <StatusContent selectedVehicle={selectedVehicle} />
       )}
     </div>
   )

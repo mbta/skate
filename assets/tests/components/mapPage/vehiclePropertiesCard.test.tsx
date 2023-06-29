@@ -70,13 +70,13 @@ describe("<VehiclePropertiesCard/>", () => {
       const vehicleCell = screen.getByRole("cell", { name: /vehicle/i })
 
       expect(runCell).toHaveTextContent(vehicle.runId!)
-      expect(vehicleCell).toHaveTextContent(vehicle.label)
+      expect(vehicleCell).toHaveTextContent(vehicle.label!)
 
       rerender(
         <VehiclePropertiesCard vehicleOrGhost={vehicle2} onClose={jest.fn()} />
       )
 
-      expect(vehicleCell).toHaveTextContent(vehicle2.label)
+      expect(vehicleCell).toHaveTextContent(vehicle2.label!)
       expect(runCell).toHaveTextContent(vehicle2.runId!)
     })
   })
@@ -144,7 +144,7 @@ describe("<VehiclePropertiesCard/>", () => {
         )
         // Vehicle  | Vehicle ID
         expect(screen.getByRole("cell", { name: /vehicle/ })).toHaveTextContent(
-          vehicle.label
+          vehicle.label!
         )
         // Operator | Operator First, Last, #BadgeID
         const operator = screen.getByRole("cell", { name: /operator/ })

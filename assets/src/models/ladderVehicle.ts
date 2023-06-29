@@ -1,14 +1,14 @@
 import { TimepointStatusYFunc } from "../components/ladder"
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, VehicleInScheduledService } from "../realtime"
 import {
   directionOnLadder,
   LadderDirection,
   VehicleDirection,
 } from "./ladderDirection"
-import { isVehicle } from "./vehicle"
+import { isVehicleInScheduledService } from "./vehicle"
 
 export interface LadderVehicle {
-  vehicle: VehicleOrGhost
+  vehicle: VehicleInScheduledService | Ghost
   x: number
   y: number
   vehicleDirection: VehicleDirection
@@ -17,7 +17,7 @@ export interface LadderVehicle {
 }
 
 interface WithVehicle {
-  vehicle: VehicleOrGhost
+  vehicle: VehicleInScheduledService | Ghost
 }
 
 interface OnLadder {
@@ -48,7 +48,7 @@ const heightOfVehicleGroup = 34
  *  3) Calculate the x property
  */
 export const ladderVehiclesFromVehicles = (
-  vehiclesAndGhosts: VehicleOrGhost[],
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[],
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): {
@@ -57,7 +57,7 @@ export const ladderVehiclesFromVehicles = (
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehiclesAndGhosts.map(
     (vehicleOrGhost) =>
-      isVehicle(vehicleOrGhost)
+      isVehicleInScheduledService(vehicleOrGhost)
         ? vehicleOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
         : ghostOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
   )
@@ -113,7 +113,7 @@ export const putIntoLanes = (
     )
 
 const vehicleOnLadder = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
@@ -148,7 +148,7 @@ interface ScheduledToBe {
 }
 
 const scheduledToBe = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   ladderDirection: LadderDirection,
   timepointStatusY: TimepointStatusYFunc
 ): ScheduledToBe => {

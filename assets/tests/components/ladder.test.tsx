@@ -7,8 +7,7 @@ import { emptyVehiclesByPosition } from "../../src/models/vehiclesByPosition"
 import {
   BlockWaiver,
   Ghost,
-  Vehicle,
-  VehicleOrGhost,
+  VehicleInScheduledService,
 } from "../../src/realtime.d"
 import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
@@ -30,7 +29,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "upward",
         label: "upward",
@@ -186,7 +185,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "downward",
         label: "downward",
@@ -261,7 +260,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "upward",
         label: "upward",
@@ -406,68 +405,69 @@ describe("ladder", () => {
         },
       ],
     })
-    const vehicleWithOldBlockWaiver: Vehicle = vehicleFactory.build({
-      id: "id",
-      label: "label",
-      runId: "run",
-      timestamp: 0,
-      latitude: 0,
-      longitude: 0,
-      directionId: 1,
-      routeId: "route",
-      tripId: "trip",
-      headsign: null,
-      viaVariant: null,
-      operatorId: "op",
-      operatorFirstName: "NORA",
-      operatorLastName: "JONES",
-      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-      bearing: 33,
-      blockId: "block",
-      previousVehicleId: "",
-      scheduleAdherenceSecs: 0,
-      isShuttle: false,
-      isOverload: false,
-      isOffCourse: false,
-      isRevenue: true,
-      layoverDepartureTime: null,
-      dataDiscrepancies: [],
-      stopStatus: {
-        stopId: "stop",
-        stopName: "stop",
-      },
-      timepointStatus: {
-        fractionUntilTimepoint: 0.75,
-        timepointId: "t2",
-      },
-      scheduledLocation: {
+    const vehicleWithOldBlockWaiver: VehicleInScheduledService =
+      vehicleFactory.build({
+        id: "id",
+        label: "label",
+        runId: "run",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
         routeId: "route",
-        directionId: 0,
-        tripId: "scheduled trip",
-        runId: "scheduled run",
-        timeSinceTripStartTime: 0,
-        headsign: "scheduled headsign",
-        viaVariant: "scheduled via variant",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op",
+        operatorFirstName: "NORA",
+        operatorLastName: "JONES",
+        operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+        bearing: 33,
+        blockId: "block",
+        previousVehicleId: "",
+        scheduleAdherenceSecs: 0,
+        isShuttle: false,
+        isOverload: false,
+        isOffCourse: false,
+        isRevenue: true,
+        layoverDepartureTime: null,
+        dataDiscrepancies: [],
+        stopStatus: {
+          stopId: "stop",
+          stopName: "stop",
+        },
         timepointStatus: {
-          timepointId: "t2",
           fractionUntilTimepoint: 0.75,
+          timepointId: "t2",
         },
-      },
-      routeStatus: "on_route",
-      endOfTripType: "another_trip",
-      blockWaivers: [
-        {
-          startTime: new Date("2019-12-31T22:00:00.000Z"),
-          endTime: new Date("2019-12-31T23:00:00.000Z"),
-          causeId: 0,
-          causeDescription: "Block Waiver",
-          remark: null,
+        scheduledLocation: {
+          routeId: "route",
+          directionId: 0,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
+          timepointStatus: {
+            timepointId: "t2",
+            fractionUntilTimepoint: 0.75,
+          },
         },
-      ],
-      crowding: null,
-    })
+        routeStatus: "on_route",
+        endOfTripType: "another_trip",
+        blockWaivers: [
+          {
+            startTime: new Date("2019-12-31T22:00:00.000Z"),
+            endTime: new Date("2019-12-31T23:00:00.000Z"),
+            causeId: 0,
+            causeDescription: "Block Waiver",
+            remark: null,
+          },
+        ],
+        crowding: null,
+      })
 
-    const vehicleWithCurrentBlockWaiver: Vehicle = {
+    const vehicleWithCurrentBlockWaiver: VehicleInScheduledService = {
       ...vehicleWithOldBlockWaiver,
       id: "otherVehicle",
       blockWaivers: [
@@ -481,7 +481,7 @@ describe("ladder", () => {
       ],
     }
 
-    const vehiclesAndGhosts: VehicleOrGhost[] = [
+    const vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] = [
       ghostWithBlockWaiver,
       vehicleWithOldBlockWaiver,
       vehicleWithCurrentBlockWaiver,
@@ -512,7 +512,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "upward",
       label: "upward",
       runId: "run-1",
@@ -617,7 +617,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "upward",
       label: "upward",
       runId: "run-1",
@@ -686,7 +686,7 @@ describe("ladder", () => {
 
   test("renders a ladder with no timepoints", () => {
     const timepoints: Timepoint[] = []
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "upward",
         label: "upward",
@@ -750,7 +750,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "upward",
         label: "upward",
@@ -821,7 +821,7 @@ describe("ladder", () => {
   })
 
   test("renders an off-course vehicle", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y1439",
       label: "1439",
       runId: "run-1",
@@ -915,7 +915,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "upward",
         label: "upward",
@@ -979,7 +979,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "laying-over",
         label: "laying-over",
@@ -1046,7 +1046,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "laying-over",
         label: "laying-over",

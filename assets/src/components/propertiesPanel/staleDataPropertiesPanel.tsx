@@ -10,6 +10,7 @@ import { closeView, returnToPreviousView } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
+import { isVehicleInScheduledService } from "../../models/vehicle"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -25,14 +26,14 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
         tabMode={tabMode}
         setTabMode={setTabMode}
       />
-      {selectedVehicle.isShuttle ? (
-        <StaleContent selectedVehicle={selectedVehicle} />
-      ) : (
+      {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
           vehicleOrGhost={selectedVehicle}
           statusContent={<StaleContent selectedVehicle={selectedVehicle} />}
           mode={tabMode}
         />
+      ) : (
+        <StaleContent selectedVehicle={selectedVehicle} />
       )}
     </div>
   )
@@ -79,11 +80,9 @@ const StaleDataHeader: React.FC<{
   )
 }
 
-const StaleContent: React.FC<{ selectedVehicle: Vehicle }> = ({
-  selectedVehicle,
-}: {
+const StaleContent: React.FC<{
   selectedVehicle: Vehicle
-}) => (
+}> = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
     {hasBlockWaiver(selectedVehicle) && (
       <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />

@@ -12,7 +12,7 @@ import {
 } from "../models/routeTab"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { Ghost, VehicleId, VehicleInScheduledService } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import { Notifications } from "./notifications"
 import Presets from "./presets"
@@ -42,9 +42,9 @@ export const findRouteById = (
 ): Route | undefined => (routes || []).find((route) => route.id === routeId)
 
 export const findSelectedVehicleOrGhost = (
-  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>,
+  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>,
   selectedVehicleId: VehicleId | undefined
-): VehicleOrGhost | undefined => {
+): VehicleInScheduledService | Ghost | undefined => {
   return allVehiclesAndGhosts(vehiclesByRouteId).find(
     (bus) => bus.id === selectedVehicleId
   )

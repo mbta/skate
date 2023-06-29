@@ -3,14 +3,14 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSocket from "../hooks/useSocket"
 import useVehicleForId from "../hooks/useVehicleForId"
 import { isVehicle } from "../models/vehicle"
-import { VehicleOrGhost } from "../realtime.d"
+import { Ghost, Vehicle } from "../realtime.d"
 import { closeView } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
 interface Props {
-  selectedVehicleOrGhost: VehicleOrGhost
+  selectedVehicleOrGhost: Vehicle | Ghost
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -26,7 +26,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
-  const [vehicleToDisplay, setVehicleToDisplay] = useState<VehicleOrGhost>(
+  const [vehicleToDisplay, setVehicleToDisplay] = useState<Vehicle | Ghost>(
     liveVehicle || selectedVehicleOrGhost
   )
   const [dataIsStale, setDataIsStale] = useState<boolean>(false)

@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
-import { VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
 import { Card, CardProperties } from "./card"
 import { vehicleOrGhostProperties } from "./propertiesList"
@@ -9,8 +9,8 @@ import { RouteVariantName } from "./routeVariantName"
 import { VehicleStatusIcon } from "./vehicleRouteSummary"
 
 interface Props {
-  vehicles: VehicleOrGhost[]
-  onClick: (vehicle: VehicleOrGhost) => void
+  vehicles: (Vehicle | Ghost)[]
+  onClick: (vehicle: Vehicle | Ghost) => void
   selectedVehicleId: string | null
 }
 
@@ -19,8 +19,8 @@ const SearchResultCard = ({
   onClick,
   isSelected,
 }: {
-  vehicleOrGhost: VehicleOrGhost
-  onClick: (vehicle: VehicleOrGhost) => void
+  vehicleOrGhost: Vehicle | Ghost
+  onClick: (vehicle: Vehicle | Ghost) => void
   isSelected: boolean
 }) => {
   const [
@@ -49,15 +49,15 @@ const SearchResultCard = ({
 }
 
 const operatorLogonTimeForSorting = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 ): Date | undefined =>
   isVehicle(vehicleOrGhost) && vehicleOrGhost.operatorLogonTime !== null
     ? vehicleOrGhost.operatorLogonTime
     : undefined
 
 export const byOperatorLogonTime = (
-  a: VehicleOrGhost,
-  b: VehicleOrGhost
+  a: Vehicle | Ghost,
+  b: Vehicle | Ghost
 ): number => {
   const operatorLogonTimeA = operatorLogonTimeForSorting(a)
   const operatorLogonTimeB = operatorLogonTimeForSorting(b)
@@ -87,8 +87,8 @@ const ResultsList = ({
   onClick,
   selectedVehicleId,
 }: {
-  vehicles: VehicleOrGhost[]
-  onClick: (vehicle: VehicleOrGhost) => void
+  vehicles: (Vehicle | Ghost)[]
+  onClick: (vehicle: Vehicle | Ghost) => void
   selectedVehicleId: string | null
 }) => (
   <ul className="c-search-results__list">

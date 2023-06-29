@@ -6,7 +6,7 @@ import {
   hasBlockWaiver,
   hasCurrentBlockWaiver,
 } from "../../src/models/blockWaiver"
-import { BlockWaiver, Vehicle } from "../../src/realtime"
+import { BlockWaiver, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 
 jest
@@ -59,64 +59,64 @@ describe("currentFuturePastType", () => {
 
 describe("hasBlockWaiver", () => {
   test("returns true if the vehicle or ghost has block waivers", () => {
-    const vehicleWithBlockWaivers: Vehicle = {
+    const vehicleWithBlockWaivers: VehicleInScheduledService = {
       blockWaivers: [currentBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(hasBlockWaiver(vehicleWithBlockWaivers)).toBeTruthy()
   })
 
   test("returns false if the vehicle or ghost has no block waivers", () => {
-    const vehicleWithoutBlockWaivers: Vehicle = {
+    const vehicleWithoutBlockWaivers: VehicleInScheduledService = {
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(hasBlockWaiver(vehicleWithoutBlockWaivers)).toBeFalsy()
   })
 })
 
 describe("hasCurrentBlockWaiver", () => {
   test("returns true if the vehicle or ghost has a current block waiver", () => {
-    const vehicleWithBlockWaivers: Vehicle = {
+    const vehicleWithBlockWaivers: VehicleInScheduledService = {
       blockWaivers: [currentBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(hasCurrentBlockWaiver(vehicleWithBlockWaivers)).toBeTruthy()
   })
 
   test("considers a block waiver starting within the next 240 minutes to be current", () => {
-    const vehicleWithWaiverBeforeCutoff: Vehicle = {
+    const vehicleWithWaiverBeforeCutoff: VehicleInScheduledService = {
       blockWaivers: [
         {
           ...currentBlockWaiver,
           startTime: new Date("2020-02-25T20:10:00.000Z"),
         },
       ],
-    } as Vehicle
+    } as VehicleInScheduledService
 
-    const vehicleWithWaiverAfterCutoff: Vehicle = {
+    const vehicleWithWaiverAfterCutoff: VehicleInScheduledService = {
       blockWaivers: [
         {
           ...currentBlockWaiver,
           startTime: new Date("2020-02-25T20:10:00.001Z"),
         },
       ],
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(hasCurrentBlockWaiver(vehicleWithWaiverBeforeCutoff)).toBeTruthy()
     expect(hasCurrentBlockWaiver(vehicleWithWaiverAfterCutoff)).toBeFalsy()
   })
 
   test("returns false if the vehicle or ghost has only non-current block waivers", () => {
-    const vehicleWithoutBlockWaivers: Vehicle = {
+    const vehicleWithoutBlockWaivers: VehicleInScheduledService = {
       blockWaivers: [pastBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(hasCurrentBlockWaiver(vehicleWithoutBlockWaivers)).toBeFalsy()
   })
 
   test("returns false if the vehicle or ghost has no block waivers", () => {
-    const vehicleWithoutBlockWaivers: Vehicle = {
+    const vehicleWithoutBlockWaivers: VehicleInScheduledService = {
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(hasCurrentBlockWaiver(vehicleWithoutBlockWaivers)).toBeFalsy()
   })
 })
@@ -126,7 +126,7 @@ describe("blockWaiverAlertStyle", () => {
     const vehicle = {
       id: "id",
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(vehicle)).toEqual(undefined)
   })
 
@@ -134,7 +134,7 @@ describe("blockWaiverAlertStyle", () => {
     const vehicle = {
       id: "id",
       blockWaivers: [currentBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Black)
   })
 
@@ -142,7 +142,7 @@ describe("blockWaiverAlertStyle", () => {
     const vehicle = {
       id: "id",
       blockWaivers: [pastBlockWaiver, futureBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(vehicle)).toEqual(undefined)
   })
 
@@ -150,7 +150,7 @@ describe("blockWaiverAlertStyle", () => {
     const ghost = {
       id: "ghost-id",
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(ghost)).toEqual(AlertIconStyle.Highlighted)
   })
 
@@ -158,7 +158,7 @@ describe("blockWaiverAlertStyle", () => {
     const ghost = {
       id: "ghost-id",
       blockWaivers: [currentBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(ghost)).toEqual(AlertIconStyle.Black)
   })
 
@@ -166,7 +166,7 @@ describe("blockWaiverAlertStyle", () => {
     const ghost = {
       id: "ghost-id",
       blockWaivers: [pastBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(ghost)).toEqual(AlertIconStyle.Highlighted)
   })
 
@@ -174,7 +174,7 @@ describe("blockWaiverAlertStyle", () => {
     const lateIndicatorGhost = {
       id: "ghost-incoming-id",
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(lateIndicatorGhost)).toEqual(undefined)
   })
 
@@ -182,7 +182,7 @@ describe("blockWaiverAlertStyle", () => {
     const lateIndicatorGhost = {
       id: "ghost-incoming-id",
       blockWaivers: [currentBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(lateIndicatorGhost)).toEqual(
       AlertIconStyle.Black
     )
@@ -192,7 +192,7 @@ describe("blockWaiverAlertStyle", () => {
     const lateIndicatorGhost = {
       id: "ghost-incoming-id",
       blockWaivers: [pastBlockWaiver, futureBlockWaiver],
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(blockWaiverAlertStyle(lateIndicatorGhost)).toEqual(undefined)
   })
 })

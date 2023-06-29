@@ -43,7 +43,7 @@ import { setHtmlWidthHeightForLeafletMap } from "../testHelpers/leafletMapWidth"
 import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
 import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
-import { VehicleId, VehicleOrGhost } from "../../src/realtime"
+import { VehicleId, VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
 import { mockUsePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
@@ -90,7 +90,7 @@ jest.mock("../../src/hooks/useStations", () => ({
 }))
 
 type VehicleIdToVehicle = {
-  [vehicleId: VehicleId]: VehicleOrGhost
+  [vehicleId: VehicleId]: VehicleInScheduledService | Ghost
 }
 
 function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
@@ -99,7 +99,7 @@ function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
   )
 }
 
-function mockUseVehicleForId(vehicles: VehicleOrGhost[]) {
+function mockUseVehicleForId(vehicles: (VehicleInScheduledService | Ghost)[]) {
   const vehicleIdToVehicleMap = vehicles.reduce(
     (rest, vehicle) => ({ ...rest, [vehicle.id]: vehicle }),
     {}
@@ -108,7 +108,7 @@ function mockUseVehicleForId(vehicles: VehicleOrGhost[]) {
 }
 
 function mockUseVehiclesForRouteMap(map: {
-  [routeId: RouteId]: VehicleOrGhost[]
+  [routeId: RouteId]: (VehicleInScheduledService | Ghost)[]
 }) {
   ;(useVehiclesForRoute as jest.Mock).mockImplementation(
     (_, routeId: RouteId | null) => map[routeId!] || null
@@ -384,7 +384,7 @@ describe("<MapPage />", () => {
 
     await userEvent.click(
       within(mapSearchPanel).getByRole("button", {
-        name: new RegExp(vehicle.label),
+        name: new RegExp(vehicle.label!),
       })
     )
 
@@ -502,7 +502,7 @@ describe("<MapPage />", () => {
             initialState={stateFactory.build({
               searchPageState: activeSearchPageStateFactory.build({
                 query: searchQueryVehicleFactory
-                  .searchFor(vehicle.label)
+                  .searchFor(vehicle.label!)
                   .build(),
               }),
             })}
@@ -553,7 +553,7 @@ describe("<MapPage />", () => {
 
         await userEvent.click(
           screen.getByRole("button", {
-            name: vehicleNext.label,
+            name: vehicleNext.label!,
           })
         )
         expect(vehiclePropertiesCard.get()).toBeVisible()
@@ -675,7 +675,7 @@ describe("<MapPage />", () => {
       expect(routePropertiesCard.get()).toBeVisible()
       await userEvent.click(
         screen.getByRole("button", {
-          name: vehicle.label,
+          name: vehicle.label!,
         })
       )
 
@@ -907,7 +907,9 @@ describe("<MapPage />", () => {
             const [selectedVehicle] = selectedRouteVehicles
 
             setHtmlWidthHeightForLeafletMap()
-            mockUseVehicleForId([{ ...selectedVehicle, routeId: null }])
+            mockUseVehicleForId([
+              { ...selectedVehicle, routeId: "some_other_route" },
+            ])
             mockUseVehiclesForRouteMap({
               [route.id]: selectedRouteVehicles.slice(1),
             })

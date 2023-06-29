@@ -5,7 +5,7 @@ import "@testing-library/jest-dom"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -23,7 +23,7 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-const vehicle: Vehicle = vehicleFactory.build()
+const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
@@ -68,7 +68,10 @@ describe("SearchPage", () => {
   })
 
   test("renders vehicle data", () => {
-    const searchResults: VehicleOrGhost[] = [vehicle, ghost]
+    const searchResults: (VehicleInScheduledService | Ghost)[] = [
+      vehicle,
+      ghost,
+    ]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
@@ -94,7 +97,9 @@ describe("SearchPage", () => {
   test("clicking a vehicle on the map selects it", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    const searchResults: (VehicleInScheduledService | Ghost)[] = [
+      { ...vehicle, runId: runId },
+    ]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const mockDispatch = jest.fn()
     const result = render(
@@ -114,7 +119,9 @@ describe("SearchPage", () => {
   test("clicking a search result selects that vehicle", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
-    const searchResults: VehicleOrGhost[] = [{ ...vehicle, runId: runId }]
+    const searchResults: (VehicleInScheduledService | Ghost)[] = [
+      { ...vehicle, runId: runId },
+    ]
     ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const activeSearch: SearchPageState = {
       query: { text: "clickMe", property: "run" },

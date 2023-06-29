@@ -6,13 +6,17 @@ import vehicleLabel from "../../helpers/vehicleLabel"
 import { secondsAgoLabel, secondsToMinutes } from "../../util/dateTime"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { emptyLadderDirectionsByRouteId } from "../../models/ladderDirection"
-import { directionName, isVehicle } from "../../models/vehicle"
+import {
+  directionName,
+  isVehicle,
+  isVehicleInScheduledService,
+} from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../../models/vehicleStatus"
-import { Vehicle, VehicleOrGhost } from "../../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../../realtime"
 import { closeView, returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
@@ -22,7 +26,7 @@ import { currentRouteTab } from "../../models/routeTab"
 import ViewHeader from "../viewHeader"
 
 interface Props {
-  vehicle: VehicleOrGhost
+  vehicle: Vehicle | Ghost
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
 }
@@ -35,7 +39,11 @@ const ScheduleAdherenceStatusIcon = () => (
   </div>
 )
 
-const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
+const ScheduleAdherenceStatusString = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => (
   <div className="c-properties-panel__schedule-adherence-status-string">
     {humanReadableScheduleAdherence(vehicle)}
   </div>
@@ -44,20 +52,30 @@ const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
 const earlyOrLate = (scheduleAdherenceSecs: number): string =>
   scheduleAdherenceSecs <= 0 ? "early" : "late"
 
-export const scheduleAdherenceLabelString = ({
-  scheduleAdherenceSecs,
-}: Vehicle): string =>
+export const scheduleAdherenceLabelString = (
+  scheduleAdherenceSecs: number
+): string =>
   `${secondsToMinutes(scheduleAdherenceSecs)} min ${earlyOrLate(
     scheduleAdherenceSecs
   )}`
 
-const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
+const ScheduleAdherenceLabel = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => (
   <div className="c-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse ? "" : `(${scheduleAdherenceLabelString(vehicle)})`}
+    {vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
+      ? ""
+      : `(${scheduleAdherenceLabelString(vehicle.scheduleAdherenceSecs)})`}
   </div>
 )
 
-const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
+const ScheduleAdherence = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
 
   return (
@@ -114,7 +132,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
 
           <RouteVariantName vehicle={vehicle} />
 
-          {isVehicle(vehicle) && !vehicle.isShuttle && (
+          {isVehicleInScheduledService(vehicle) && !vehicle.isShuttle && (
             <ScheduleAdherence vehicle={vehicle} />
           )}
         </div>

@@ -5,7 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { useStations } from "../hooks/useStations"
 import { filterVehicles } from "../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle } from "../realtime"
 import { Stop } from "../schedule"
 import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
@@ -20,7 +20,7 @@ enum MobileDisplay {
 }
 
 const thereIsAnActiveSearch = (
-  vehicles: VehicleOrGhost[] | null,
+  vehicles: (Vehicle | Ghost)[] | null,
   searchPageState: SearchPageState
 ): boolean => vehicles !== null && searchPageState.isActive
 
@@ -52,7 +52,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const stations: Stop[] | null = useStations()
 
-  const vehicles: VehicleOrGhost[] | null = useSearchResults(
+  const vehicles: (Vehicle | Ghost)[] | null = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
   )

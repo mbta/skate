@@ -2,12 +2,12 @@ import vehicleLabel, {
   runOrBusNumberLabel,
   runIdToLabel,
 } from "../../src/helpers/vehicleLabel"
-import { Vehicle } from "../../src/realtime"
+import { VehicleInScheduledService } from "../../src/realtime"
 import { UserSettings, VehicleLabelSetting } from "../../src/userSettings"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "y0479",
   label: "0479",
   runId: "133-2000",
@@ -62,7 +62,7 @@ const vehicle: Vehicle = vehicleFactory.build({
 
 describe("vehicleLabel", () => {
   test("displays 'SW-OFF' for a swinging off vehicle, regardless of settings", () => {
-    const swingingOffVehicle: Vehicle = {
+    const swingingOffVehicle: VehicleInScheduledService = {
       ...vehicle,
       endOfTripType: "swing_off",
     }
@@ -80,7 +80,7 @@ describe("vehicleLabel", () => {
   })
 
   test("displays 'PULL-B' for a pulling back vehicle, regardless of settings", () => {
-    const pullingBackVehicle: Vehicle = {
+    const pullingBackVehicle: VehicleInScheduledService = {
       ...vehicle,
       endOfTripType: "pull_back",
     }
@@ -98,7 +98,7 @@ describe("vehicleLabel", () => {
   })
 
   test("displays 'ADDED' for an overloaded vehicle given the run number setting", () => {
-    const overloadedVehicle: Vehicle = {
+    const overloadedVehicle: VehicleInScheduledService = {
       ...vehicle,
       isOverload: true,
     }

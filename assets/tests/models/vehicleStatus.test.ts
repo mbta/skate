@@ -4,11 +4,12 @@ import {
   onTimeStatus,
   statusClasses,
 } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
+import { Vehicle, VehicleInScheduledService } from "../../src/realtime.d"
 import {
   defaultUserSettings,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
+import vehicleFactory from "../factories/vehicle"
 
 describe("onTimeStatus", () => {
   test("returns on-time", () => {
@@ -26,55 +27,63 @@ describe("onTimeStatus", () => {
 
 describe("drawnStatus", () => {
   test("returns 'off-course' if isOffCourse", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
       scheduleAdherenceSecs: 0,
       isOffCourse: true,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(drawnStatus(vehicle)).toEqual("off-course")
   })
 
   test("returns 'plain' for a shuttle, even if off-course", () => {
-    const shuttle: Vehicle = {
+    const shuttle: VehicleInScheduledService = {
       id: "y0001",
       scheduleAdherenceSecs: 0,
       isShuttle: true,
       isOffCourse: true,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(drawnStatus(shuttle)).toEqual("plain")
   })
 
   test("return scheduled status", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
       scheduleAdherenceSecs: 500,
       isOffCourse: false,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(drawnStatus(vehicle)).toEqual("late")
+  })
+
+  test("returns 'plain' for all other vehicles", () => {
+    const vehicle: Vehicle = vehicleFactory.build({
+      isShuttle: false,
+    })
+    vehicle.scheduleAdherenceSecs = null
+    expect(drawnStatus(vehicle)).toEqual("plain")
   })
 })
 
 describe("humanReadableScheduleAdherence", () => {
   test("returns invalid for an off course vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       scheduleAdherenceSecs: 0,
       isOffCourse: true,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(vehicle)).toEqual("Invalid")
   })
 
   test("returns on time status for an on course vehicle", () => {
-    const onTime: Vehicle = {
+    const onTime: VehicleInScheduledService = {
       scheduleAdherenceSecs: 5,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(onTime)).toEqual("on time")
-    const early: Vehicle = {
+    const early: VehicleInScheduledService = {
       scheduleAdherenceSecs: -500,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(early)).toEqual("early")
-    const late: Vehicle = {
+    const late: VehicleInScheduledService = {
       scheduleAdherenceSecs: 500,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(late)).toEqual("late")
   })
 })

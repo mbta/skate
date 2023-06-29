@@ -3,7 +3,7 @@ import { joinTruthy, joinClasses } from "../../helpers/dom"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../../realtime"
+import { Ghost, Vehicle } from "../../realtime"
 import { isLoading, isOk } from "../../util/fetchResult"
 import { CloseButton } from "../closeButton"
 import Loading from "../loading"
@@ -14,7 +14,7 @@ interface VehicleProp {
   vehicle: Vehicle
 }
 interface VehicleOrGhostProp {
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 }
 
 // #region Card Title Bar

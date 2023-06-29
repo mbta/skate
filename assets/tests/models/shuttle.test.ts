@@ -1,20 +1,20 @@
 import { formattedRunNumber } from "../../src/models/shuttle"
-import { Vehicle } from "../../src/realtime"
+import { VehicleInScheduledService } from "../../src/realtime"
 
 describe("formattedRunNumber", () => {
   test("removes the dash and the leading zero from the second part of the run ID string", () => {
-    const shuttle = { runId: "999-0556" } as Vehicle
+    const shuttle = { runId: "999-0556" } as VehicleInScheduledService
 
     expect(formattedRunNumber(shuttle)).toEqual("999 556")
   })
 
   test("adds the line as a prefix if this a subway shuttle run", () => {
-    const blueShuttle = { runId: "999-0501" } as Vehicle
-    const greenShuttle = { runId: "999-0502" } as Vehicle
-    const orangeShuttle = { runId: "999-0503" } as Vehicle
-    const redShuttle = { runId: "999-0504" } as Vehicle
-    const crShuttle = { runId: "999-0505" } as Vehicle
-    const specialShuttle = { runId: "999-0555" } as Vehicle
+    const blueShuttle = { runId: "999-0501" } as VehicleInScheduledService
+    const greenShuttle = { runId: "999-0502" } as VehicleInScheduledService
+    const orangeShuttle = { runId: "999-0503" } as VehicleInScheduledService
+    const redShuttle = { runId: "999-0504" } as VehicleInScheduledService
+    const crShuttle = { runId: "999-0505" } as VehicleInScheduledService
+    const specialShuttle = { runId: "999-0555" } as VehicleInScheduledService
 
     expect(formattedRunNumber(blueShuttle)).toEqual("Blue 999 501")
     expect(formattedRunNumber(greenShuttle)).toEqual("Green 999 502")
@@ -25,7 +25,7 @@ describe("formattedRunNumber", () => {
   })
 
   test("returns Not Available if the run ID is null", () => {
-    const shuttle = { runId: null } as Vehicle
+    const shuttle = { runId: null } as VehicleInScheduledService
 
     expect(formattedRunNumber(shuttle)).toEqual("Not Available")
   })

@@ -1,16 +1,23 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
+import { array, assert, StructError, union } from "superstruct"
 import { reload } from "../models/browser"
 import {
-  VehicleOrGhostData,
-  vehicleOrGhostFromData,
+  vehicleInScheduledServiceOrGhostFromData,
+  VehicleInScheduledServiceData,
+  GhostData,
 } from "../models/vehicleData"
-import { VehicleOrGhost } from "../realtime.d"
+import { VehicleInScheduledService, Ghost } from "../realtime.d"
 import { ByRouteId, RouteId } from "../schedule.d"
+import * as Sentry from "@sentry/react"
+
+const VehiclesOrGhostsData = array(
+  union([VehicleInScheduledServiceData, GhostData])
+)
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
-  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>
+  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>
 }
 
 const initialState: State = {
@@ -38,13 +45,13 @@ interface SetVehiclesForRouteAction {
   type: "SET_VEHICLES_FOR_ROUTE"
   payload: {
     routeId: RouteId
-    vehiclesForRoute: VehicleOrGhost[]
+    vehiclesForRoute: (VehicleInScheduledService | Ghost)[]
   }
 }
 
 const setVehiclesForRoute = (
   routeId: RouteId,
-  vehiclesForRoute: VehicleOrGhost[]
+  vehiclesForRoute: (VehicleInScheduledService | Ghost)[]
 ): SetVehiclesForRouteAction => ({
   type: "SET_VEHICLES_FOR_ROUTE",
   payload: {
@@ -113,12 +120,18 @@ const subscribe = (
   routeId: RouteId,
   dispatch: Dispatch
 ): Channel => {
-  const handleVehicles = ({
-    data: vehiclesAndGhostsData,
-  }: {
-    data: VehicleOrGhostData[]
-  }) => {
-    const vehiclesAndGhosts = vehiclesAndGhostsData.map(vehicleOrGhostFromData)
+  const handleVehicles = ({ data: vehiclesAndGhostsData }: { data: any }) => {
+    try {
+      assert(vehiclesAndGhostsData, VehiclesOrGhostsData)
+    } catch (error) {
+      if (error instanceof StructError) {
+        Sentry.captureException({ error: error, route_id: routeId })
+      }
+    }
+
+    const vehiclesAndGhosts = vehiclesAndGhostsData.map(
+      vehicleInScheduledServiceOrGhostFromData
+    )
     dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
   }
 
@@ -142,7 +155,7 @@ const subscribe = (
 const useVehicles = (
   socket: Socket | undefined,
   selectedRouteIds: RouteId[]
-): ByRouteId<VehicleOrGhost[]> => {
+): ByRouteId<(VehicleInScheduledService | Ghost)[]> => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { channelsByRouteId, vehiclesByRouteId } = state
 

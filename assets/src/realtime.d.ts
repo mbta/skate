@@ -106,31 +106,31 @@ export interface TrainVehicle {
 
 export interface Vehicle {
   id: VehicleId
-  label: string
+  label: string | null
   runId: RunId | null
   timestamp: number
   latitude: number
   longitude: number
-  directionId: DirectionId
+  directionId: DirectionId | null
   routeId: RouteId | null
   routePatternId: RoutePatternId | null
   tripId: TripId | null
   headsign: string | null
   viaVariant: ViaVariant | null
-  operatorId: string
-  operatorFirstName: string
-  operatorLastName: string
+  operatorId: string | null
+  operatorFirstName: string | null
+  operatorLastName: string | null
   operatorLogonTime: Date | null
   overloadOffset?: number
-  bearing: number
+  bearing?: number
   blockId: BlockId
-  previousVehicleId: string
-  scheduleAdherenceSecs: number
+  previousVehicleId: string | null
+  scheduleAdherenceSecs: number | null
   incomingTripDirectionId: DirectionId | null
   isShuttle: boolean
   isOverload: boolean
   isOffCourse: boolean
-  isRevenue: boolean
+  isRevenue: boolean | null
   layoverDepartureTime: number | null
   dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus
@@ -142,13 +142,16 @@ export interface Vehicle {
   crowding: Crowding | null
 }
 
-export type VehicleOrGhost = Vehicle | Ghost
+export interface VehicleInScheduledService extends Vehicle {
+  directionId: DirectionId
+  routeId: RouteId
+}
 
 export type VehicleId = string
 
 export interface VehicleStopStatus {
-  stopId: StopId
-  stopName: string
+  stopId: StopId | null
+  stopName: string | null
 }
 
 export interface VehicleScheduledLocation {

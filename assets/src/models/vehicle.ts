@@ -1,19 +1,26 @@
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
 import { Route } from "../schedule"
 import { now } from "../util/dateTime"
 
 export const isVehicle = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 ): vehicleOrGhost is Vehicle => !isGhost(vehicleOrGhost)
 
+export const isVehicleInScheduledService = (
+  vehicleOrGhost: Vehicle | Ghost
+): vehicleOrGhost is VehicleInScheduledService =>
+  !isGhost(vehicleOrGhost) && vehicleOrGhost.directionId !== null
+
 export const isGhost = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 ): vehicleOrGhost is Ghost => vehicleOrGhost.id.startsWith("ghost")
 
 export const isLateVehicleIndicator = ({ id }: Ghost): boolean =>
   id.startsWith("ghost-incoming-")
 
-export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
+export const isRecentlyLoggedOn = (
+  vehicleOrGhost: VehicleInScheduledService | Ghost
+): boolean => {
   if (isGhost(vehicleOrGhost) || !vehicleOrGhost.operatorLogonTime) {
     return false
   }
@@ -26,12 +33,13 @@ export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
 }
 
 export const directionName = (
-  { directionId }: VehicleOrGhost,
+  { directionId }: Vehicle | Ghost,
   route: Route | null
-): string => (route ? route.directionNames[directionId] : "")
+): string =>
+  directionId !== null && route ? route.directionNames[directionId] : ""
 
 export const filterVehicles = (
-  vehiclesOrGhosts: VehicleOrGhost[] | null
+  vehiclesOrGhosts: (Vehicle | Ghost)[] | null
 ): Vehicle[] => {
   return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
 }

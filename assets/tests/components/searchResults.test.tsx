@@ -6,7 +6,7 @@ import SearchResults, {
   byOperatorLogonTime,
 } from "../../src/components/searchResults"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
 import * as dateTime from "../../src/util/dateTime"
@@ -46,7 +46,7 @@ describe("SearchResults", () => {
   })
 
   test("renders a list of results including vehicles and ghosts", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "v1",
       label: "v1-label",
       runId: "run-1",
@@ -135,7 +135,7 @@ describe("SearchResults", () => {
   })
 
   test("sorts vehicles by most recent operator logon time, ghosts at the top", () => {
-    const oldVehicle: Vehicle = vehicleFactory.build({
+    const oldVehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "old",
       label: "old-label",
       runId: "run-1",
@@ -189,7 +189,7 @@ describe("SearchResults", () => {
       blockWaivers: [],
       crowding: null,
     })
-    const newVehicle: Vehicle = vehicleFactory.build({
+    const newVehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "new",
       label: "new-label",
       runId: "run-1",
@@ -278,7 +278,7 @@ describe("SearchResults", () => {
   })
 
   test("renders a shuttle", () => {
-    const vehicle: Vehicle = shuttleFactory.build()
+    const vehicle: VehicleInScheduledService = shuttleFactory.build()
 
     render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
@@ -294,7 +294,7 @@ describe("SearchResults", () => {
   })
 
   test("renders a selected result card", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       runId: "run-1",
       label: "v1-label",
       operatorId: "op1",
@@ -318,7 +318,9 @@ describe("SearchResults", () => {
 
   test("clicking a result card selects that vehicle", async () => {
     const testDispatch = jest.fn()
-    const vehicle: Vehicle = vehicleFactory.build({ runId: "12345" })
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
+      runId: "12345",
+    })
     const mockOnClick = jest.fn()
     render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
@@ -354,14 +356,14 @@ describe("SearchResults", () => {
 
 describe("byOperatorLogonTime", () => {
   test("sorts more recent logons ahead of less recent ones", () => {
-    const oldVehicle: Vehicle = {
+    const oldVehicle: VehicleInScheduledService = {
       id: "1",
       operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
-    } as Vehicle
-    const newVehicle: Vehicle = {
+    } as VehicleInScheduledService
+    const newVehicle: VehicleInScheduledService = {
       id: "2",
       operatorLogonTime: new Date("2018-08-15T13:40:00.000Z"),
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect([oldVehicle, newVehicle].sort(byOperatorLogonTime)).toEqual([
       newVehicle,
@@ -378,13 +380,13 @@ describe("byOperatorLogonTime", () => {
   })
 
   test("sorts ghosts ahead of vehicles", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "1",
       operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
-    } as Vehicle
-    const ghost: Vehicle = {
+    } as VehicleInScheduledService
+    const ghost: VehicleInScheduledService = {
       id: "ghost-2",
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect([vehicle, ghost].sort(byOperatorLogonTime)).toEqual([ghost, vehicle])
     expect([ghost, vehicle].sort(byOperatorLogonTime)).toEqual([ghost, vehicle])

@@ -8,9 +8,9 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
-import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleInScheduledService, VehicleId, Ghost } from "../realtime.d"
 import { selectVehicle } from "../state"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
@@ -23,7 +23,7 @@ const IncomingBoxVehicle = ({
   selectedVehicleId,
 }: {
   displayCrowding: boolean
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => {
@@ -43,7 +43,9 @@ const IncomingBoxVehicle = ({
       : Orientation.Up
   const alertIconStyle: AlertIconStyle | undefined =
     blockWaiverAlertStyle(vehicleOrGhost)
-  const crowding = isVehicle(vehicleOrGhost) ? vehicleOrGhost.crowding : null
+  const crowding = isVehicleInScheduledService(vehicleOrGhost)
+    ? vehicleOrGhost.crowding
+    : null
   const occupancyStatus: OccupancyStatus = crowding
     ? crowding.occupancyStatus
     : "NO_DATA"
@@ -76,7 +78,7 @@ const IncomingBoxVehicle = ({
         )}
         <div className="c-incoming-box__vehicle-label">
           {displayCrowding
-            ? crowdingLabel(vehicleOrGhost as Vehicle)
+            ? crowdingLabel(vehicleOrGhost as VehicleInScheduledService)
             : vehicleLabel(vehicleOrGhost, userSettings)}
         </div>
       </button>
@@ -91,14 +93,16 @@ const IncomingBox = ({
   selectedVehicleId,
 }: {
   displayCrowding?: boolean
-  vehiclesAndGhosts: VehicleOrGhost[]
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[]
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => (
   <div className="c-incoming-box">
     {vehiclesAndGhosts.map((vehicleOrGhost) => (
       <IncomingBoxVehicle
-        displayCrowding={!!displayCrowding && isVehicle(vehicleOrGhost)}
+        displayCrowding={
+          !!displayCrowding && isVehicleInScheduledService(vehicleOrGhost)
+        }
         vehicleOrGhost={vehicleOrGhost}
         ladderDirection={ladderDirection}
         selectedVehicleId={selectedVehicleId}

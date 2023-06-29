@@ -10,7 +10,7 @@ import {
   MapFollowingPrimaryVehicles,
   MapFollowingSelectionKey,
 } from "../../src/components/map"
-import { TrainVehicle, Vehicle } from "../../src/realtime"
+import { TrainVehicle, VehicleInScheduledService } from "../../src/realtime"
 import vehicleFactory from "../factories/vehicle"
 import stopFactory from "../factories/stop"
 
@@ -490,7 +490,7 @@ const animationFramePromise = (): Promise<null> => {
 describe("auto centering", () => {
   test("auto centers on a vehicle", async () => {
     const location = { lat: 42, lng: -71 }
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       latitude: location.lat,
       longitude: location.lng,
     })
@@ -658,7 +658,7 @@ describe("auto centering", () => {
   describe("for MapFollowingSelectionKey", () => {
     test("changing followerResetKey turns on auto center", async () => {
       const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
-      const vehicles: Vehicle[] = []
+      const vehicles: VehicleInScheduledService[] = []
       const result = render(
         <MapFollowingSelectionKey
           vehicles={vehicles}

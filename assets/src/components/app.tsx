@@ -12,7 +12,6 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import { SocketContext } from "../contexts/socketContext"
 import { ByRouteId } from "../schedule.d"
-import { VehicleOrGhost } from "../realtime.d"
 import useAppcues from "../hooks/useAppcues"
 import useVehicles from "../hooks/useVehicles"
 import DataStatusBanner from "./dataStatusBanner"
@@ -26,6 +25,7 @@ import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
 import { mapModeForUser } from "../util/mapMode"
+import { Ghost, VehicleInScheduledService } from "../realtime"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -40,10 +40,11 @@ export const AppRoutes = () => {
   const vehiclesByRouteIdNeeded =
     openView === OpenView.Late || location.pathname === "/"
 
-  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(
-    socket,
-    vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
-  )
+  const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
+    useVehicles(
+      socket,
+      vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
+    )
 
   const mapMode = mapModeForUser()
 

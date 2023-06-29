@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { VehicleOrGhost } from "../realtime.d"
+import { Ghost, Vehicle } from "../realtime.d"
 import { OpenView } from "../state"
 import NotificationDrawer from "./notificationDrawer"
 import PropertiesPanel from "./propertiesPanel"
@@ -9,7 +9,7 @@ import SwingsView from "./swingsView"
 const RightPanel = ({
   selectedVehicleOrGhost,
 }: {
-  selectedVehicleOrGhost?: VehicleOrGhost | null
+  selectedVehicleOrGhost?: Vehicle | Ghost | null
 }): ReactElement<HTMLElement> | null => {
   const [state] = useContext(StateDispatchContext)
 

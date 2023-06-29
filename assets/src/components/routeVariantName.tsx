@@ -2,13 +2,13 @@ import React, { ComponentPropsWithoutRef } from "react"
 import { useRoute } from "../contexts/routesContext"
 import { joinClasses } from "../helpers/dom"
 import { isVehicle } from "../models/vehicle"
-import { VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle } from "../realtime"
 
 export const RouteVariantName = ({
   vehicle,
   className,
   ...props
-}: { vehicle: VehicleOrGhost } & ComponentPropsWithoutRef<"output">) => {
+}: { vehicle: Vehicle | Ghost } & ComponentPropsWithoutRef<"output">) => {
   const route = useRoute(vehicle.routeId)
 
   const { routeId, viaVariant, headsign } = vehicle

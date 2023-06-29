@@ -8,7 +8,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import useTrainVehicles from "../../src/hooks/useTrainVehicles"
-import { TrainVehicle, Vehicle } from "../../src/realtime"
+import { TrainVehicle, VehicleInScheduledService } from "../../src/realtime"
 import { ByRouteId, Shape } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
@@ -51,7 +51,9 @@ afterAll(() => {
   global.scrollTo = originalScrollTo
 })
 
-const shuttle: Vehicle = shuttleFactory.build({ label: "1818" })
+const shuttle: VehicleInScheduledService = shuttleFactory.build({
+  label: "1818",
+})
 
 const shape: Shape = shapeFactory.build({
   points: [],

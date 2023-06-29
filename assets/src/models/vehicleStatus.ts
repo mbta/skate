@@ -1,4 +1,4 @@
-import { Vehicle, VehicleOrGhost } from "../realtime.d"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime.d"
 import { isGhost, isVehicle } from "./vehicle"
 import { VehicleAdherenceColorsSetting } from "../userSettings"
 
@@ -25,7 +25,7 @@ export const onTimeStatus = (scheduleAdherenceSecs: number): OnTimeStatus => {
   }
 }
 
-export const drawnStatus = (vehicleOrGhost: VehicleOrGhost): DrawnStatus => {
+export const drawnStatus = (vehicleOrGhost: Vehicle | Ghost): DrawnStatus => {
   if (isGhost(vehicleOrGhost)) {
     return "ghost"
   }
@@ -39,11 +39,17 @@ export const drawnStatus = (vehicleOrGhost: VehicleOrGhost): DrawnStatus => {
     return "off-course"
   }
 
-  return onTimeStatus(vehicle.scheduleAdherenceSecs)
+  if (vehicle.scheduleAdherenceSecs !== null) {
+    return onTimeStatus(vehicle.scheduleAdherenceSecs)
+  }
+
+  return "plain"
 }
 
-export const humanReadableScheduleAdherence = (vehicle: Vehicle): string =>
-  vehicle.isOffCourse
+export const humanReadableScheduleAdherence = (
+  vehicle: VehicleInScheduledService
+): string =>
+  vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
     ? "Invalid"
     : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))
 

@@ -1,7 +1,8 @@
 import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
-import { is, Struct } from "superstruct"
+import { assert, Struct, StructError } from "superstruct"
 import { reload } from "../models/browser"
+import * as Sentry from "@sentry/react"
 
 /** Opens a channel for the given topic
  *  and returns the latest data that's been pushed to it
@@ -71,7 +72,6 @@ export const useCheckedChannel = <T, U>({
   parser,
   loadingState,
   closeAfterFirstRead,
-  onError,
 }: {
   socket: Socket | undefined
   topic: string | null
@@ -80,7 +80,6 @@ export const useCheckedChannel = <T, U>({
   parser: (data: T) => U
   loadingState: U
   closeAfterFirstRead?: boolean
-  onError?: (data: any) => void
 }): U => {
   const [state, setState] = useState<U>(loadingState)
 
@@ -90,20 +89,28 @@ export const useCheckedChannel = <T, U>({
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }: { data: unknown }) => {
-        if (is(data, dataStruct)) {
+        try {
+          assert(data, dataStruct)
+
           setState(parser(data))
-        } else if (onError) {
-          onError(data)
+        } catch (error) {
+          if (error instanceof StructError) {
+            Sentry.captureException(error)
+          }
         }
       })
 
       channel
         .join()
         .receive("ok", ({ data: data }: { data: unknown }) => {
-          if (is(data, dataStruct)) {
+          try {
+            assert(data, dataStruct)
+
             setState(parser(data))
-          } else if (onError) {
-            onError(data)
+          } catch (error) {
+            if (error instanceof StructError) {
+              Sentry.captureException(error)
+            }
           }
 
           if (closeAfterFirstRead) {
@@ -133,7 +140,6 @@ export const useCheckedChannel = <T, U>({
     dataStruct,
     parser,
     closeAfterFirstRead,
-    onError,
   ])
   return state
 }

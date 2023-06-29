@@ -8,7 +8,7 @@ import React, {
 import { useRoutes } from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import Loading from "./loading"
 import { partition, flatten, uniq } from "../helpers/array"
 import { GhostSwingIcon, UpDownIcon, UpRightIcon } from "../helpers/icon"
@@ -17,7 +17,7 @@ import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
 import useVehiclesForRunIds from "../hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
-import { ByRunId, VehicleOrGhost } from "../realtime"
+import { ByRunId, VehicleInScheduledService, Ghost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
 import {
   closeView,
@@ -149,8 +149,8 @@ const SwingsTable = ({
 }: {
   pastSwings: Swing[]
   activeSwings: Swing[]
-  swingVehiclesByRunId: ByRunId<VehicleOrGhost>
-  swingVehiclesByBlockId: ByBlockId<VehicleOrGhost>
+  swingVehiclesByRunId: ByRunId<VehicleInScheduledService | Ghost>
+  swingVehiclesByBlockId: ByBlockId<VehicleInScheduledService | Ghost>
   swingRoutesById: ByRouteId<Route>
   showPastSwings: boolean
   toggleShowPastSwings: () => void
@@ -248,8 +248,8 @@ const SwingRow = ({
   swing: Swing
   isPast: boolean
   isLastPast?: boolean
-  swingVehiclesByRunId: ByRunId<VehicleOrGhost>
-  swingVehicleForBlockId: VehicleOrGhost
+  swingVehiclesByRunId: ByRunId<VehicleInScheduledService | Ghost>
+  swingVehicleForBlockId: VehicleInScheduledService | Ghost
   route: Route | null
 }): ReactElement<HTMLElement> => {
   const swingOffVehicleOrGhost = swingVehiclesByRunId[swing.fromRunId]
@@ -269,7 +269,7 @@ const SwingRow = ({
         <div className="c-swings-view__table-cell-contents">
           {formattedScheduledTime(
             swing.time,
-            vehicleOrGhost && isVehicle(vehicleOrGhost)
+            vehicleOrGhost && isVehicleInScheduledService(vehicleOrGhost)
               ? vehicleOrGhost.overloadOffset
               : undefined
           )}
@@ -306,7 +306,8 @@ const SwingRow = ({
       </th>
       <th className="c-swings-view__table-cell">
         <div className="c-swings-view__table-cell-contents">
-          {swingVehicleForBlockId && isVehicle(swingVehicleForBlockId)
+          {swingVehicleForBlockId &&
+          isVehicleInScheduledService(swingVehicleForBlockId)
             ? swingVehicleForBlockId.label
             : null}
         </div>
@@ -320,7 +321,7 @@ const SwingCellContent = ({
   runId,
   onClick,
 }: {
-  vehicleOrGhost?: VehicleOrGhost
+  vehicleOrGhost?: VehicleInScheduledService | Ghost
   runId: string
   onClick?: () => void
 }): ReactElement<HTMLElement> => {
@@ -330,7 +331,7 @@ const SwingCellContent = ({
     <>
       {vehicleOrGhost ? (
         <>
-          {isVehicle(vehicleOrGhost) ? (
+          {isVehicleInScheduledService(vehicleOrGhost) ? (
             <UpRightIcon className="c-swings-view__run-icon c-swings-view__run-icon-arrow" />
           ) : (
             <GhostSwingIcon className="c-swings-view__run-icon c-swings-view__run-icon-ghost" />

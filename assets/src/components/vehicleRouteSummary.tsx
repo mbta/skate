@@ -6,13 +6,13 @@ import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
 import { directionName } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
-import { VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle } from "../realtime"
 import { RouteVariantName } from "./routeVariantName"
 import { ScheduleAdherence } from "./scheduleAdherence"
 import { Size, VehicleIcon, vehicleOrientation } from "./vehicleIcon"
 
 interface VehicleOrGhostProp {
-  vehicle: VehicleOrGhost
+  vehicle: Vehicle | Ghost
 }
 
 // #endregion

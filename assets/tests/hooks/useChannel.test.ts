@@ -3,6 +3,12 @@ import { string, unknown } from "superstruct"
 import { useChannel, useCheckedChannel } from "../../src/hooks/useChannel"
 import * as browser from "../../src/models/browser"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import * as Sentry from "@sentry/react"
+
+jest.mock("@sentry/react", () => ({
+  __esModule: true,
+  captureException: jest.fn(),
+}))
 
 describe("useChannel", () => {
   test("returns loadingState initially", () => {
@@ -415,7 +421,6 @@ describe("useCheckedChannel", () => {
     const mockChannel = makeMockChannel("ok", { data: 12 })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     const dataStruct = string()
-    const onError = jest.fn()
 
     renderHook(() =>
       useCheckedChannel({
@@ -425,10 +430,10 @@ describe("useCheckedChannel", () => {
         dataStruct,
         parser,
         loadingState: "loading",
-        onError,
       })
     )
-    expect(onError).toHaveBeenCalledWith(12)
+
+    expect(Sentry.captureException).toHaveBeenCalled()
   })
 
   test("returns data pushed to the channel", async () => {
@@ -473,7 +478,6 @@ describe("useCheckedChannel", () => {
       }
     })
     const dataStruct = string()
-    const onError = jest.fn()
 
     renderHook(() =>
       useCheckedChannel({
@@ -483,10 +487,10 @@ describe("useCheckedChannel", () => {
         dataStruct,
         parser,
         loadingState: "loading",
-        onError,
       })
     )
-    expect(onError).toHaveBeenCalledWith(12)
+
+    expect(Sentry.captureException).toHaveBeenCalled()
   })
 
   test("leaves the channel on unmount", () => {

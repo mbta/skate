@@ -6,7 +6,7 @@ import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { isGhost } from "../models/vehicle"
-import { RunId, VehicleOrGhost } from "../realtime.d"
+import { Ghost, RunId, Vehicle, VehicleInScheduledService } from "../realtime.d"
 import { BlockId, ViaVariant } from "../schedule.d"
 import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 import { UserSettings } from "../userSettings"
@@ -46,11 +46,11 @@ export interface Props extends ViewBoxProps {
 
 export interface TooltipProps {
   children: ReactElement<HTMLElement>
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 }
 
 export const vehicleOrientation = (
-  vehicle: VehicleOrGhost,
+  vehicle: Vehicle | Ghost,
   ladderDirections: LadderDirections
 ): Orientation => {
   if (vehicle.routeId !== null && vehicle.directionId !== null) {
@@ -122,9 +122,11 @@ export const VehicleTooltip = ({
   const runId = runIdToLabel(vehicleOrGhost.runId)
   const label = isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label
   const scheduleAdherenceLabel =
-    isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
+    isGhost(vehicleOrGhost) ||
+    vehicleOrGhost.isOffCourse ||
+    vehicleOrGhost.scheduleAdherenceSecs === null
       ? "N/A"
-      : scheduleAdherenceLabelString(vehicleOrGhost)
+      : scheduleAdherenceLabelString(vehicleOrGhost.scheduleAdherenceSecs)
 
   const operatorDetails = isGhost(vehicleOrGhost)
     ? "N/A"
@@ -138,7 +140,7 @@ export const VehicleTooltip = ({
         <TooltipContent
           blockId={vehicleOrGhost.blockId}
           runId={runId}
-          label={label}
+          label={label || ""}
           viaVariant={vehicleOrGhost.viaVariant}
           scheduleAdherenceLabel={scheduleAdherenceLabel}
           operatorDetails={operatorDetails}

@@ -1,7 +1,7 @@
 import {
   NotificationReason,
   NotificationState,
-  Vehicle,
+  VehicleInScheduledService,
   VehicleId,
 } from "../src/realtime.d"
 import * as State from "../src/state"
@@ -124,7 +124,7 @@ describe("reducer", () => {
   })
 
   test("selectVehicle", () => {
-    const vehicle: Vehicle = vehicleFactory.build()
+    const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
     const state = initialState
     const expectedState = {
@@ -138,7 +138,7 @@ describe("reducer", () => {
   })
 
   test("selectVehicle deselects other view", () => {
-    const vehicle: Vehicle = vehicleFactory.build()
+    const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
     const state = {
       ...initialState,
@@ -151,7 +151,7 @@ describe("reducer", () => {
   })
 
   test("selectVehicle closes notification drawer", () => {
-    const vehicle: Vehicle = vehicleFactory.build()
+    const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
     const state = {
       ...initialState,

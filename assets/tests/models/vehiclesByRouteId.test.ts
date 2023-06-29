@@ -1,14 +1,14 @@
-import { isVehicle } from "../../src/models/vehicle"
+import { isVehicleInScheduledService } from "../../src/models/vehicle"
 import {
   allVehiclesAndGhosts,
   allVehiclesForRoute,
   byDirection,
   nextAndPreviousVehicle,
 } from "../../src/models/vehiclesByRouteId"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { ByRouteId } from "../../src/schedule"
 
-const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
+const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> = {
   "1": [
     {
       id: "y101",
@@ -16,14 +16,14 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
       routeId: "1",
       previousVehicleId: "y102",
       routeStatus: "on_route",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "y102",
       directionId: 0,
       routeId: "1",
       previousVehicleId: "y103",
       routeStatus: "on_route",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     // Vehicle with direction 1 between vehicles with direction 0
     {
       id: "y111",
@@ -31,21 +31,21 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
       routeId: "1",
       previousVehicleId: "y112",
       routeStatus: "on_route",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "y103",
       directionId: 0,
       routeId: "1",
       previousVehicleId: "y104",
       routeStatus: "on_route",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "y104",
       directionId: 0,
       routeId: "1",
       previousVehicleId: "y105",
       routeStatus: "pulling_out",
-    } as Vehicle,
+    } as VehicleInScheduledService,
     {
       id: "ghost-1",
       directionId: 0,
@@ -59,7 +59,7 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
       routeId: "39",
       previousVehicleId: "y1250",
       routeStatus: "on_route",
-    } as Vehicle,
+    } as VehicleInScheduledService,
   ],
 }
 
@@ -78,13 +78,13 @@ describe("allVehiclesForRoute", () => {
             {
               id: "1",
               routeId: "1",
-            } as Vehicle,
+            } as VehicleInScheduledService,
           ],
           "2": [
             {
               id: "2",
               routeId: "2",
-            } as Vehicle,
+            } as VehicleInScheduledService,
           ],
         },
         "1"
@@ -100,7 +100,7 @@ describe("allVehiclesForRoute", () => {
             {
               id: "1",
               routeId: "1",
-            } as Vehicle,
+            } as VehicleInScheduledService,
             {
               id: "ghost",
               routeId: "1",
@@ -120,11 +120,11 @@ describe("allVehiclesForRoute", () => {
             {
               id: "1",
               routeId: "1",
-            } as Vehicle,
+            } as VehicleInScheduledService,
             {
               id: "2",
               routeId: "2",
-            } as Vehicle,
+            } as VehicleInScheduledService,
           ],
         },
         "1"
@@ -135,7 +135,9 @@ describe("allVehiclesForRoute", () => {
 
 describe("byDirection", () => {
   test("partitions vehicles into direction 0 and direction 1", () => {
-    const vehicles: Vehicle[] = vehiclesByRouteId["1"].filter(isVehicle)
+    const vehicles: VehicleInScheduledService[] = vehiclesByRouteId["1"].filter(
+      isVehicleInScheduledService
+    )
 
     const [direction0Vehicles, direction1Vehicles] = byDirection(vehicles)
 
@@ -149,7 +151,9 @@ describe("byDirection", () => {
 
 describe("nextAndPreviousVehicle", () => {
   test("returns the next and previous vehicles as described by the previousVehicleId property", () => {
-    const vehicles: Vehicle[] = vehiclesByRouteId["1"].filter(isVehicle)
+    const vehicles: VehicleInScheduledService[] = vehiclesByRouteId["1"].filter(
+      isVehicleInScheduledService
+    )
     // y102
     const currentVehicle = vehicles[1]
 
@@ -165,7 +169,9 @@ describe("nextAndPreviousVehicle", () => {
   })
 
   test("returns undefined if no next and/or previous vehicle", () => {
-    const vehicles: Vehicle[] = vehiclesByRouteId["39"].filter(isVehicle)
+    const vehicles: VehicleInScheduledService[] = vehiclesByRouteId[
+      "39"
+    ].filter(isVehicleInScheduledService)
     const currentVehicle = vehicles[0]
 
     expect(nextAndPreviousVehicle(vehicles, currentVehicle)).toEqual({

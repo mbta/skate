@@ -5,7 +5,7 @@ import PropertiesPanel, {
   hideMeIfNoCrowdingTooltip,
 } from "../../src/components/propertiesPanel"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
@@ -28,7 +28,7 @@ const route: Route = routeFactory.build({
   id: "39",
   name: "39",
 })
-const vehicle: Vehicle = vehicleFactory.build({
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -101,9 +101,9 @@ const ghost: Ghost = ghostFactory.build({
   blockWaivers: [],
 })
 
-const PropertiesPanelWrapper: React.FC<{ vehicleOrGhost: VehicleOrGhost }> = ({
-  vehicleOrGhost,
-}) => {
+const PropertiesPanelWrapper: React.FC<{
+  vehicleOrGhost: VehicleInScheduledService | Ghost
+}> = ({ vehicleOrGhost }) => {
   const routes = [route]
 
   return (

@@ -44,15 +44,15 @@ import {
   DrawnStatus,
   statusClasses,
 } from "../../models/vehicleStatus"
-import { RouteStatus, VehicleOrGhost } from "../../realtime"
+import { RouteStatus, VehicleInScheduledService, Ghost } from "../../realtime"
 import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 import { currentRouteTab } from "../../models/routeTab"
-import { isVehicle } from "../../models/vehicle"
+import { isVehicleInScheduledService } from "../../models/vehicle"
 
 export interface Props {
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
 }
 
 export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
@@ -87,7 +87,7 @@ export const Minischedule = ({
   view,
 }: {
   runOrBlock: Run | Block | null | undefined
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   view: "run" | "block"
 }) => {
   const [showPast, setShowPast] = useState<boolean>(false)
@@ -319,7 +319,7 @@ const Piece = ({
 }: {
   piece: Piece
   view: "run" | "block"
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   pieceIndex: number
   activeIndex: [number, number] | null
 }) => {
@@ -339,7 +339,9 @@ const Piece = ({
     pieceTimeBasedStyle === "current" ? "past" : pieceTimeBasedStyle
   const doneTimeBasedStyle: TimeBasedStyle =
     pieceTimeBasedStyle === "current" ? "future" : pieceTimeBasedStyle
-  const overloadOffset: number | undefined = isVehicle(vehicleOrGhost)
+  const overloadOffset: number | undefined = isVehicleInScheduledService(
+    vehicleOrGhost
+  )
     ? vehicleOrGhost.overloadOffset
     : undefined
 
@@ -504,7 +506,7 @@ const Trip = ({
   previousEndTime: Time | null
   sequence: "first" | "middle" | "last"
   tripTimeBasedStyle: TimeBasedStyle
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   view: "run" | "block"
 }) => {
   const layoverTimeBasedStyle =
@@ -526,7 +528,9 @@ const Trip = ({
     onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
   const deadheadActiveStatus: DrawnStatus | null =
     deadheadTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
-  const overloadOffset: number | undefined = isVehicle(vehicleOrGhost)
+  const overloadOffset: number | undefined = isVehicleInScheduledService(
+    vehicleOrGhost
+  )
     ? vehicleOrGhost.overloadOffset
     : undefined
 

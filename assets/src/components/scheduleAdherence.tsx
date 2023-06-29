@@ -1,13 +1,13 @@
 import React, { ComponentPropsWithoutRef, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../models/vehicleStatus"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
 import { secondsToMinutes } from "../util/dateTime"
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -28,7 +28,9 @@ const ScheduleAdherenceDescription = ({
   vehicle,
   className,
   ...props
-}: { vehicle: Vehicle } & ComponentPropsWithoutRef<"output">) => (
+}: {
+  vehicle: VehicleInScheduledService
+} & ComponentPropsWithoutRef<"output">) => (
   <output
     className={joinClasses(["c-schedule-adherence-status", className])}
     {...props}
@@ -40,9 +42,7 @@ const ScheduleAdherenceDescription = ({
 const secondsToPunctuality = (seconds: number): string =>
   seconds <= 0 ? "early" : "late"
 
-export const scheduleAdherenceLabelString = ({
-  scheduleAdherenceSecs: seconds,
-}: Vehicle): string => {
+export const scheduleAdherenceLabelString = (seconds: number): string => {
   const minutes = secondsToMinutes(seconds)
   const punctuality = secondsToPunctuality(seconds)
   return `${minutes} min ${punctuality}`
@@ -52,15 +52,19 @@ const ScheduleAdherenceMetric = ({
   vehicle,
   className,
   ...props
-}: { vehicle: Vehicle } & ComponentPropsWithoutRef<"output">) => (
+}: {
+  vehicle: VehicleInScheduledService
+} & ComponentPropsWithoutRef<"output">) => (
   <output className={`c-vehicle-adherence-label ${className}`} {...props}>
-    {!vehicle.isOffCourse && <>({scheduleAdherenceLabelString(vehicle)})</>}
+    {!vehicle.isOffCourse && vehicle.scheduleAdherenceSecs !== null && (
+      <>({scheduleAdherenceLabelString(vehicle.scheduleAdherenceSecs)})</>
+    )}
   </output>
 )
 
 export interface ScheduleAdherenceProps
   extends ComponentPropsWithoutRef<"output"> {
-  vehicle: VehicleOrGhost
+  vehicle: Vehicle | Ghost
   title?: string
 }
 
@@ -78,7 +82,7 @@ export const ScheduleAdherence = ({
   ])
   return (
     <output aria-label={title ?? "Schedule Adherence"} className={classes}>
-      {isVehicle(vehicle) && !vehicle.isShuttle && (
+      {isVehicleInScheduledService(vehicle) && !vehicle.isShuttle && (
         <>
           <ScheduleAdherenceStatusIcon />
           <ScheduleAdherenceDescription

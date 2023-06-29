@@ -1,6 +1,10 @@
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { groupByPosition } from "../../src/models/vehiclesByPosition"
-import { BlockWaiver, Ghost, Vehicle } from "../../src/realtime.d"
+import {
+  BlockWaiver,
+  Ghost,
+  VehicleInScheduledService,
+} from "../../src/realtime.d"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
@@ -18,12 +22,12 @@ describe("groupByPosition", () => {
   })
 
   test("on route", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
       routeId: "1",
       directionId: 0,
       routeStatus: "on_route",
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,
       onRoute: [vehicle],
@@ -32,18 +36,18 @@ describe("groupByPosition", () => {
 
   test("laying over", () => {
     const ladderDirection: LadderDirection = LadderDirection.ZeroToOne
-    const top: Vehicle = {
+    const top: VehicleInScheduledService = {
       id: "y0001",
       routeId: "1",
       directionId: 1,
       routeStatus: "laying_over",
-    } as Vehicle
-    const bottom: Vehicle = {
+    } as VehicleInScheduledService
+    const bottom: VehicleInScheduledService = {
       id: "y0002",
       routeId: "1",
       directionId: 0,
       routeStatus: "laying_over",
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(groupByPosition([top, bottom], "1", ladderDirection)).toEqual({
       ...emptyByPosition,
       layingOverTop: [top],
@@ -52,12 +56,12 @@ describe("groupByPosition", () => {
   })
 
   test("pulling out", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
       routeId: "1",
       directionId: 0,
       routeStatus: "pulling_out",
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,
       incoming: [vehicle],
@@ -65,12 +69,12 @@ describe("groupByPosition", () => {
   })
 
   test("incoming from another route", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
       routeId: "2",
       directionId: 0,
       routeStatus: "on_route",
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,
       incoming: [vehicle],
@@ -91,7 +95,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for incoming buses that are late", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "vehicleId",
       directionId: 0,
       routeId: "2",
@@ -145,7 +149,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for pulling out buses that are late", () => {
-    const vehicle: Vehicle = vehicleFactory.build({
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -199,7 +203,7 @@ describe("groupByPosition", () => {
   })
 
   test("does not generate a virtual ghost for incoming buses whose scheduled location isn't on the ladder route", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
       routeId: "2",
       tripId: "tripId",
@@ -223,7 +227,7 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,
@@ -233,7 +237,7 @@ describe("groupByPosition", () => {
   })
 
   test("does not generate a virtual ghost if another vehicle is on this run", () => {
-    const lateVehicle: Vehicle = {
+    const lateVehicle: VehicleInScheduledService = {
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -258,8 +262,8 @@ describe("groupByPosition", () => {
         },
       },
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
-    const otherVehicleOnRun: Vehicle = {
+    } as VehicleInScheduledService
+    const otherVehicleOnRun: VehicleInScheduledService = {
       id: "otherVehicleId",
       directionId: 0,
       routeId: "1",
@@ -284,7 +288,7 @@ describe("groupByPosition", () => {
         },
       },
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(
       groupByPosition(
@@ -300,7 +304,7 @@ describe("groupByPosition", () => {
   })
 
   test("does not generate a virtual ghost if the vehicle doesn't have a run ID", () => {
-    const lateVehicle: Vehicle = {
+    const lateVehicle: VehicleInScheduledService = {
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -325,7 +329,7 @@ describe("groupByPosition", () => {
         },
       },
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(
       groupByPosition([lateVehicle], "1", LadderDirection.ZeroToOne)
@@ -336,7 +340,7 @@ describe("groupByPosition", () => {
   })
 
   test("does not generate a virtual ghost if the vehicle is more than an hour late", () => {
-    const veryLateVehicle: Vehicle = {
+    const veryLateVehicle: VehicleInScheduledService = {
       id: "vehicleId",
       directionId: 0,
       routeId: "2",
@@ -361,7 +365,7 @@ describe("groupByPosition", () => {
         },
       },
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(
       groupByPosition([veryLateVehicle], "1", LadderDirection.ZeroToOne)

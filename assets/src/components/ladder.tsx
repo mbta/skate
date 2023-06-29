@@ -21,10 +21,14 @@ import {
   ladderVehiclesForLayovers,
   LayoverBoxPosition,
 } from "../models/layoverVehicle"
-import { isGhost, isVehicle } from "../models/vehicle"
+import { isGhost, isVehicleInScheduledService } from "../models/vehicle"
 import { VehiclesByPosition } from "../models/vehiclesByPosition"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
-import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
+import {
+  VehicleInScheduledService,
+  VehicleId,
+  VehicleTimepointStatus,
+} from "../realtime.d"
 import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
@@ -187,12 +191,15 @@ const VehicleSvg = ({
   selectedVehicleId: VehicleId | undefined
   isLayingOver: boolean
 }) => {
-  displayCrowding = !!displayCrowding && isVehicle(ladderVehicle.vehicle)
+  displayCrowding =
+    !!displayCrowding && isVehicleInScheduledService(ladderVehicle.vehicle)
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
-  const crowding = isVehicle(vehicle) ? vehicle.crowding : null
+  const crowding = isVehicleInScheduledService(vehicle)
+    ? vehicle.crowding
+    : null
   const occupancyStatus: OccupancyStatus = crowding
     ? crowding.occupancyStatus
     : "NO_DATA"
@@ -214,7 +221,7 @@ const VehicleSvg = ({
               isLayingOver,
               vehicleDirection
             )}
-            label={crowdingLabel(vehicle as Vehicle)}
+            label={crowdingLabel(vehicle as VehicleInScheduledService)}
             occupancyStatus={occupancyStatus}
           />
         ) : (

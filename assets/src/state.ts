@@ -1,7 +1,7 @@
 import { Dispatch as ReactDispatch } from "react"
 import { toggleLadderCrowdingForRoute } from "./models/ladderCrowdingToggle"
 import { flipLadderDirectionForRoute } from "./models/ladderDirection"
-import { Notification, RunId, VehicleOrGhost } from "./realtime.d"
+import { Vehicle, Ghost, Notification, RunId } from "./realtime.d"
 import { RouteId } from "./schedule.d"
 import {
   Action as SearchAction,
@@ -81,7 +81,7 @@ export interface State {
   routeTabsPushInProgress: boolean
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
-  selectedVehicleOrGhost?: VehicleOrGhost | null
+  selectedVehicleOrGhost?: Vehicle | Ghost | null
   userSettings: UserSettings
   selectedNotification?: Notification
   openView: OpenView
@@ -307,12 +307,12 @@ export const deselectShuttleRoute = (
 export interface SelectVehicleAction {
   type: "SELECT_VEHICLE"
   payload: {
-    vehicle: VehicleOrGhost | null | undefined
+    vehicle: Vehicle | Ghost | null | undefined
   }
 }
 
 export const selectVehicle = (
-  vehicle: VehicleOrGhost | null | undefined
+  vehicle: Vehicle | Ghost | null | undefined
 ): SelectVehicleAction => ({
   type: "SELECT_VEHICLE",
   payload: { vehicle },
@@ -432,11 +432,11 @@ export const closeView = (): CloseViewAction => ({
 
 interface SelectVehicleFromNotificationAction {
   type: "SELECT_VEHICLE_FROM_NOTIFICATION"
-  payload: { vehicle: VehicleOrGhost | null | undefined }
+  payload: { vehicle: Vehicle | Ghost | null | undefined }
 }
 
 export const selectVehicleFromNotification = (
-  vehicle: VehicleOrGhost | null | undefined
+  vehicle: Vehicle | Ghost | null | undefined
 ): SelectVehicleFromNotificationAction => ({
   type: "SELECT_VEHICLE_FROM_NOTIFICATION",
   payload: { vehicle },
@@ -934,12 +934,12 @@ const selectedShuttleRunIdsReducer = (
 const openViewPanelReducer = (
   openView: OpenView,
   previousView: OpenView,
-  selectedVehicleOrGhost: VehicleOrGhost | null | undefined,
+  selectedVehicleOrGhost: Vehicle | Ghost | null | undefined,
   action: Action
 ): {
   openView: OpenView
   previousView: OpenView
-  selectedVehicleOrGhost: VehicleOrGhost | null | undefined
+  selectedVehicleOrGhost: Vehicle | Ghost | null | undefined
 } => {
   switch (action.type) {
     case "OPEN_NOTIFICATION_DRAWER":
