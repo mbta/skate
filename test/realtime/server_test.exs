@@ -684,4 +684,17 @@ defmodule Realtime.ServerTest do
       assert Server.peek_at_vehicle_by_id("g1", server_pid) == [@ghost]
     end
   end
+
+  describe "peek_at_vehicles_by_id_with_logged_out/2" do
+    test "looks up the vehicle or ghost with given ID" do
+      {:ok, server_pid} = Server.start_link([])
+      Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, server_pid)
+
+      assert Server.peek_at_vehicle_by_id_with_logged_out("no_such_vehicle", server_pid) == []
+
+      assert Server.peek_at_vehicle_by_id_with_logged_out(@logged_out_vehicle.id, server_pid) == [
+               @logged_out_vehicle
+             ]
+    end
+  end
 end

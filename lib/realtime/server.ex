@@ -139,6 +139,11 @@ defmodule Realtime.Server do
     lookup({ets, {:vehicle, vehicle_or_ghost_id}})
   end
 
+  def peek_at_vehicle_by_id_with_logged_out(vehicle_or_ghost_id, server \\ default_name()) do
+    {_registry_key, ets} = GenServer.call(server, :subscription_info)
+    lookup({ets, {:vehicle_with_logged_out, vehicle_or_ghost_id}})
+  end
+
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), :logged_in_vehicles) :: [Vehicle.t()]
