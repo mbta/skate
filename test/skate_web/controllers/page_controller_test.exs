@@ -140,6 +140,19 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "correct tileset urls are set", %{conn: conn} do
+      reassign_env(:skate, :tileset_url, "tilesets.com/osm")
+      reassign_env(:skate, :base_tileset_url, "base_url")
+      reassign_env(:skate, :satellite_tileset_url, "satellite_url")
+
+      conn = get(conn, "/")
+      assert html_response(conn, 200) =~ "data-tileset-url=\"tilesets.com/osm\""
+
+      assert html_response(conn, 200) =~
+               "data-tileset-urls=\"{&quot;base&quot;:&quot;base_url&quot;,&quot;satellite&quot;:&quot;satellite_url&quot;}\""
+    end
+
+    @tag :authenticated
     test "correct tileset url set", %{conn: conn} do
       reassign_env(:skate, :tileset_url, "tilesets.com/osm")
 

@@ -5,6 +5,7 @@
   data-route-tabs="<%= Jason.encode!(@route_tabs) %>"
   data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"
   data-tileset-url="<%= @tileset_url %>"
+  data-tileset-urls="<%= Jason.encode!(@tileset_urls) %>"
   data-dispatcher-flag="<%= Jason.encode!(@dispatcher_flag) %>"
   data-user-test-groups="<%= Jason.encode!(@user_test_groups) %>"
 ></div>

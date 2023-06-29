@@ -29,6 +29,10 @@ defmodule SkateWeb.PageController do
     |> assign(:dispatcher_flag, dispatcher_flag)
     |> assign(:google_tag_manager_id, Application.get_env(:skate, :google_tag_manager_id))
     |> assign(:tileset_url, Application.get_env(:skate, :tileset_url))
+    |> assign(:tileset_urls, %{
+      base: Application.get_env(:skate, :base_tileset_url),
+      satellite: Application.get_env(:skate, :satellite_tileset_url)
+    })
     |> assign(:user_test_groups, user.test_groups |> Enum.map(& &1.name))
     |> render("index.html")
   end
