@@ -12,7 +12,6 @@ import {
   newSearchSession,
   SelectedEntity,
   goBack,
-  shouldAddLastSelectionToHistory,
 } from "../../src/state/searchPageState"
 import { searchPageStateFactory } from "../factories/searchPageState"
 
@@ -344,55 +343,6 @@ describe("reducer", () => {
       expect(updatedState.selectedEntity).toBeNull()
       expect(updatedState.selectedEntityHistory).toHaveLength(0)
     })
-  })
-})
-
-describe("shouldAddLastSelectionToHistory", () => {
-  const v1: SelectedEntity = {
-    type: SelectedEntityType.Vehicle,
-    vehicleId: "123",
-  }
-
-  const v2: SelectedEntity = {
-    type: SelectedEntityType.Vehicle,
-    vehicleId: "456",
-  }
-
-  const route66_1: SelectedEntity = {
-    type: SelectedEntityType.RoutePattern,
-    routeId: "66",
-    routePatternId: "66_1",
-  }
-
-  const route66_2: SelectedEntity = {
-    type: SelectedEntityType.RoutePattern,
-    routeId: "66",
-    routePatternId: "66_2",
-  }
-
-  const route39: SelectedEntity = {
-    type: SelectedEntityType.RoutePattern,
-    routeId: "39",
-    routePatternId: "_",
-  }
-
-  test("when adding route selection for same route as the last one, false", () => {
-    expect(shouldAddLastSelectionToHistory(route66_2, route66_1)).toBe(false)
-  })
-  test("when adding route selection for different route as the last one, true", () => {
-    expect(shouldAddLastSelectionToHistory(route66_2, route39)).toBe(true)
-  })
-  test("when adding a vehicle that is same as the last one, false", () => {
-    expect(shouldAddLastSelectionToHistory(v1, v1)).toBe(false)
-  })
-  test("when adding a vehicle that is different from the last one, true", () => {
-    expect(shouldAddLastSelectionToHistory(v1, v2)).toBe(true)
-  })
-  test("when adding vehicle after route, true", () => {
-    expect(shouldAddLastSelectionToHistory(v1, route66_1)).toBe(true)
-  })
-  test("when adding route after vehicle, true", () => {
-    expect(shouldAddLastSelectionToHistory(route66_1, v1)).toBe(true)
   })
 })
 

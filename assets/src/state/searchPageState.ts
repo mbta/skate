@@ -189,7 +189,7 @@ The last selection should only be added to the selection history if it is differ
 For vehicles, this means having a different vehicleId. 
 For route patterns, this means having a different routeId.
  */
-export const shouldAddLastSelectionToHistory = (
+const shouldAddLastSelectionToHistory = (
   newSelection: SelectedEntity | null,
   lastSelection: SelectedEntity
 ) => {
