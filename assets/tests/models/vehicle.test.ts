@@ -1,4 +1,5 @@
 import {
+  directionName,
   isGhost,
   isLateVehicleIndicator,
   isLoggedOut,
@@ -9,6 +10,7 @@ import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import routeFactory from "../factories/route"
 
 jest
   .spyOn(dateTime, "now")
@@ -107,5 +109,30 @@ describe("isRecentlyLoggedOn", () => {
 
   test("false if given a ghost", () => {
     expect(isRecentlyLoggedOn(ghostFactory.build())).toBeFalsy()
+  })
+})
+
+describe("directionName", () => {
+  test("returns route direction if available", () => {
+    const route = routeFactory.build()
+    const vehicle = vehicleFactory.build({ routeId: route.id, directionId: 0 })
+
+    expect(directionName(vehicle, route)).toEqual(route.directionNames[0])
+  })
+
+  test('returns "N/A" for logged out vehicles', () => {
+    const vehicle = vehicleFactory.build({
+      runId: null,
+      blockId: undefined,
+      operatorLogonTime: null,
+    })
+
+    expect(directionName(vehicle, null)).toEqual("N/A")
+  })
+
+  test("returns empty string otherwise", () => {
+    const vehicle = vehicleFactory.build()
+
+    expect(directionName(vehicle, null)).toEqual("")
   })
 })

@@ -1,5 +1,5 @@
 import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime.d"
-import { isGhost, isVehicle } from "./vehicle"
+import { isGhost, isLoggedOut, isVehicle } from "./vehicle"
 import { VehicleAdherenceColorsSetting } from "../userSettings"
 
 /** Where a vehicle is relative to its schedule.
@@ -10,7 +10,12 @@ export type OnTimeStatus = "on-time" | "early" | "late"
 /** How the vehicle triangle should be drawn,
  * taking into account the vehicle's state and the settings
  */
-export type DrawnStatus = OnTimeStatus | "off-course" | "ghost" | "plain"
+export type DrawnStatus =
+  | OnTimeStatus
+  | "off-course"
+  | "ghost"
+  | "plain"
+  | "logged-out"
 
 export const onTimeStatus = (scheduleAdherenceSecs: number): OnTimeStatus => {
   const oneMinuteInSeconds = 60
@@ -33,6 +38,10 @@ export const drawnStatus = (vehicleOrGhost: Vehicle | Ghost): DrawnStatus => {
 
   if (isVehicle(vehicle) && vehicle.isShuttle) {
     return "plain"
+  }
+
+  if (isVehicle(vehicle) && isLoggedOut(vehicle)) {
+    return "logged-out"
   }
 
   if (vehicle.isOffCourse) {
@@ -72,6 +81,8 @@ export const statusClasses = (
 ): string[] => {
   if (status === "plain") {
     return [""]
+  } else if (status === "logged-out") {
+    return ["logged-out"]
   } else {
     switch (vehicleAdherenceColors) {
       case VehicleAdherenceColorsSetting.EarlyRed:

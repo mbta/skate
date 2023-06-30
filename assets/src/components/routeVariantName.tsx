@@ -1,7 +1,7 @@
 import React, { ComponentPropsWithoutRef } from "react"
 import { useRoute } from "../contexts/routesContext"
 import { joinClasses } from "../helpers/dom"
-import { isVehicle } from "../models/vehicle"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 
 export const RouteVariantName = ({
@@ -15,6 +15,7 @@ export const RouteVariantName = ({
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
 
   const isShuttle = isVehicle(vehicle) && vehicle.isShuttle
+
   return (
     <output
       aria-label="Route Variant Name"
@@ -23,6 +24,8 @@ export const RouteVariantName = ({
     >
       {isShuttle ? (
         "Shuttle"
+      ) : isVehicle(vehicle) && isLoggedOut(vehicle) ? (
+        "Logged Off"
       ) : (
         <>
           <output
