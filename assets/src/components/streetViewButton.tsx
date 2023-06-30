@@ -31,7 +31,7 @@ const StreetViewButton = ({
     <a
       className={joinClasses([
         "c-street-view-button",
-        "button-dark-small",
+        "button-small",
         className,
       ])}
       href={streetViewUrl}

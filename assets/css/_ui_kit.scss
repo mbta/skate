@@ -265,8 +265,9 @@ $color-tooltip-background: #333333;
   }
 
   &:focus-visible {
-    background-color: $color-eggplant-500;
+    background-color: $color-eggplant-700;
     outline: 2px solid $color-eggplant-700;
+    outline-offset: 1px;
   }
 
   &:disabled {

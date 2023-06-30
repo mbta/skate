@@ -22,6 +22,7 @@ import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import MiniMap from "./miniMap"
 import TabPanels, { TabMode } from "./tabPanels"
+import { DiamondTurnRightSvg } from "../../helpers/icon"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -101,12 +102,13 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           </div>
         ) : null}
         <a
-          className="c-vehicle-properties-panel__link"
+          className="c-vehicle-properties-panel__directions button-small"
           href={directionsUrl(latitude, longitude)}
           target="_blank"
           rel="noreferrer"
         >
-          Directions
+          <DiamondTurnRightSvg />
+          Get directions to bus
         </a>
       </div>
       <div className="c-vehicle-properties-panel__next-stop">
