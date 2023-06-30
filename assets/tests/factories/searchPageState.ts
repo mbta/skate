@@ -6,6 +6,7 @@ export const searchPageStateFactory = Factory.define<SearchPageState>(() => ({
   query: emptySearchQueryFactory.build(),
   isActive: false,
   savedQueries: [],
+  selectedEntityHistory: [],
 }))
 
 export const activeSearchPageStateFactory = searchPageStateFactory.params({
