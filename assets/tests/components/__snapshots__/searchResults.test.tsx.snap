@@ -650,33 +650,3 @@ exports[`SearchResults renders a selected result card 1`] = `
   </ul>
 </div>
 `;
-
-exports[`SearchResults renders no results 1`] = `
-<div
-  className="c-search-results"
->
-  <div
-    className="c-search-results__none"
-  >
-    <div
-      className="c-search-results__heading"
-    >
-      No Search Results
-    </div>
-    <p>
-      There were no matching results found for “
-      test
-      ”. Please try again using numbers or last names only.
-    </p>
-    <p>
-      Please note that at this time search is limited to active vehicles and logged-in personnel.
-    </p>
-    <button
-      className="c-search-results__clear-search-button"
-      onClick={[Function]}
-    >
-      Clear search
-    </button>
-  </div>
-</div>
-`;

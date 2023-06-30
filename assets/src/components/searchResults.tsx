@@ -3,6 +3,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
+import inTestGroup from "../userInTestGroup"
 import { Card, CardProperties } from "./card"
 import { vehicleOrGhostProperties } from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
@@ -113,6 +114,8 @@ const NoResults = () => {
     dispatch,
   ] = useContext(StateDispatchContext)
 
+  const inLoggedOutVehiclesTestGroup = inTestGroup("search-logged-out-vehicles")
+
   return (
     <div className="c-search-results__none">
       <div className="c-search-results__heading">No Search Results</div>
@@ -122,10 +125,17 @@ const NoResults = () => {
         again using numbers or last names only.
       </p>
 
-      <p>
-        Please note that at this time search is limited to active vehicles and
-        logged-in personnel.
-      </p>
+      {inLoggedOutVehiclesTestGroup ? (
+        <p>
+          Please note that at this time run and operator search is limited to
+          logged-in personnel.
+        </p>
+      ) : (
+        <p>
+          Please note that at this time search is limited to active vehicles and
+          logged-in personnel.
+        </p>
+      )}
 
       <button
         className="c-search-results__clear-search-button"
