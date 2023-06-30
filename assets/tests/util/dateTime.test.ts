@@ -7,6 +7,7 @@ import {
   now,
   formattedScheduledTime,
   serviceDaySeconds,
+  formattedDate,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
@@ -61,6 +62,18 @@ describe("formattedTime", () => {
     )
     expect(formattedTime(new Date("Februrary 18, 2020 21:08"))).toEqual(
       "9:08 PM"
+    )
+  })
+})
+
+describe("formattedDate", () => {
+  test("returns a formatted string version of the date", () => {
+    expect(formattedDate(new Date("Februrary 18, 2020 21:08"))).toEqual(
+      "2/18/2020"
+    )
+
+    expect(formattedDate(new Date("Februrary 7, 2020 21:08"))).toEqual(
+      "2/07/2020"
     )
   })
 })

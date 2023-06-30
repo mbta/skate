@@ -156,6 +156,36 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(screen.getByRole("link", { name: /street view/i })).toBeVisible()
       })
 
+      test("renders last updated differently when more than 5 minutes in the past", () => {
+        jest.spyOn(Date, "now").mockReturnValue(483000)
+
+        const vehicle = vehicleFactory.build({
+          timestamp: 123,
+        })
+        const route = routeFactory.build({
+          id: vehicle.routeId!,
+          name: vehicle.routeId!,
+        })
+
+        const intersection = "Massachusetts Ave @ Marlborough St"
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+          ok: intersection,
+        })
+
+        render(
+          <RoutesProvider routes={[route]}>
+            <VehiclePropertiesCard
+              vehicleOrGhost={vehicle}
+              onClose={jest.fn()}
+            />
+          </RoutesProvider>
+        )
+
+        expect(
+          screen.getByRole("status", { name: /Last Update/i })
+        ).toHaveTextContent("Updated at 12:02 AM; 1/01/1970")
+      })
+
       test("when location is initially loading, should show `loading...` backup text", () => {
         const vehicle = vehicleFactory.build()
         ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({

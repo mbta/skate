@@ -4,6 +4,7 @@ import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isVehicle } from "../../models/vehicle"
 import { Ghost, Vehicle } from "../../realtime"
+import { formattedDate, formattedTime } from "../../util/dateTime"
 import { isLoading, isOk } from "../../util/fetchResult"
 import Loading from "../loading"
 import StreetViewButton from "../streetViewButton"
@@ -12,6 +13,8 @@ import {
   VehicleRouteSummaryEventProps,
 } from "../vehicleRouteSummary"
 import { ScheduleAdherence } from "../scheduleAdherence"
+
+const maxAgeToShowInSeconds = 5 * 60
 
 interface VehicleProp {
   vehicle: Vehicle
@@ -27,7 +30,18 @@ const DataStaleTime = ({
   timestamp: number
 }): React.ReactElement => {
   const epochNowInSeconds = useCurrentTimeSeconds()
-  return <>Updated {epochNowInSeconds - timestamp} sec ago</>
+  const age = epochNowInSeconds - timestamp
+
+  if (age <= maxAgeToShowInSeconds) {
+    return <>Updated {age} sec ago</>
+  } else {
+    const date = new Date(timestamp * 1000)
+    return (
+      <>
+        Updated at {formattedTime(date)}; {formattedDate(date)}
+      </>
+    )
+  }
 }
 
 const VehicleDataStaleTime = ({
