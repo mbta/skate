@@ -50,7 +50,7 @@ const makeVehicleIcon = (
           ])}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
           transform="scale(${isPrimary ? 1.0 : 0.8}) rotate(${
-      vehicle.bearing
+      vehicle.bearing || 0
     }) translate(${-centerX}, ${-centerY})"
         />
       </svg>`,
