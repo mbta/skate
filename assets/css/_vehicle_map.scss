@@ -44,6 +44,12 @@
       fill: $color-vehicle-off-course;
     }
 
+    &.logged-out {
+      fill: $color-gray-300;
+      stroke: $color-gray-600;
+      stroke-width: 1px;
+    }
+
     &.selected {
       stroke: $color-eggplant-600;
       stroke-width: 1.5;
