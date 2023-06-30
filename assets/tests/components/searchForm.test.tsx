@@ -13,6 +13,7 @@ import {
   submitSearch,
 } from "../../src/state/searchPageState"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import { searchPageStateFactory } from "../factories/searchPageState"
 
 const mockDispatch = jest.fn()
 
@@ -30,11 +31,9 @@ describe("SearchForm", () => {
   })
 
   test("submit button is disabled if there are fewer than 2 characters in the text field", () => {
-    const invalidSearch: SearchPageState = {
+    const invalidSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "1", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const invalidSearchState = {
       ...initialState,
       searchPageState: invalidSearch,
@@ -51,11 +50,9 @@ describe("SearchForm", () => {
   })
 
   test("submit button is enabled if there are at least 2 characters in the text field", () => {
-    const validSearch: SearchPageState = {
+    const validSearch = searchPageStateFactory.build({
       query: { text: "12", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const validSearchState = {
       ...initialState,
       searchPageState: validSearch,
@@ -73,11 +70,9 @@ describe("SearchForm", () => {
 
   test("clicking the submit button submits the query", async () => {
     const testDispatch = jest.fn()
-    const validSearch: SearchPageState = {
+    const validSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "12", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const validSearchState = {
       ...initialState,
       searchPageState: validSearch,
@@ -95,11 +90,9 @@ describe("SearchForm", () => {
   test("clicking the submit button also calls onSubmit when set", async () => {
     const testDispatch = jest.fn()
     const onSubmit = jest.fn()
-    const validSearch: SearchPageState = {
+    const validSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "12", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const validSearchState = {
       ...initialState,
       searchPageState: validSearch,
@@ -118,11 +111,9 @@ describe("SearchForm", () => {
   test("clicking the submit button logs a FullStory event when provided", async () => {
     const testDispatch = jest.fn()
     const onSubmit = jest.fn()
-    const validSearch: SearchPageState = {
+    const validSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "12", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const validSearchState = {
       ...initialState,
       searchPageState: validSearch,
@@ -141,11 +132,9 @@ describe("SearchForm", () => {
   })
 
   test("entering text sets it as the search text", async () => {
-    const validSearch: SearchPageState = {
+    const validSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "12", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const validSearchState = {
       ...initialState,
       searchPageState: validSearch,
@@ -166,11 +155,9 @@ describe("SearchForm", () => {
 
   test("clicking the clear button empties the search text", async () => {
     const testDispatch = jest.fn()
-    const validSearch: SearchPageState = {
+    const validSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "12", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const validSearchState = {
       ...initialState,
       searchPageState: validSearch,
@@ -189,11 +176,9 @@ describe("SearchForm", () => {
   test("clicking the clear button also calls onClear when set", async () => {
     const testDispatch = jest.fn()
     const onClear = jest.fn()
-    const validSearch: SearchPageState = {
+    const validSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "12", property: "run" },
-      isActive: false,
-      savedQueries: [],
-    }
+    })
     const validSearchState = {
       ...initialState,
       searchPageState: validSearch,

@@ -34,12 +34,14 @@ export interface SearchPageState {
   isActive: boolean
   savedQueries: SavedSearchQuery[]
   selectedEntity?: SelectedEntity | null
+  selectedEntityHistory: SelectedEntity[]
 }
 
 export const initialSearchPageState = {
   query: emptySearchQuery,
   isActive: false,
   savedQueries: [],
+  selectedEntityHistory: [],
 }
 
 interface SetSearchTextAction {
@@ -76,29 +78,30 @@ export const submitSearch = (): SubmitSearchAction => ({
   type: "SUBMIT_SEARCH",
 })
 
-interface ClearSearchAction {
-  type: "CLEAR_SEARCH"
+interface NewSearchSessionAction {
+  type: "NEW_SEARCH_SESSION"
+  payload: SelectedEntity | null
 }
-export const clearSearch = (): ClearSearchAction => ({
-  type: "CLEAR_SEARCH",
+export const newSearchSession = (
+  newSelection?: SelectedEntity | null
+): NewSearchSessionAction => ({
+  type: "NEW_SEARCH_SESSION",
+  payload: newSelection || null,
 })
-
-interface SelectVehicleAction {
-  type: "SELECT_SEARCH_VEHICLE"
-  payload: { vehicleId: VehicleId } | null
-}
 
 interface SelectEntityAction {
   type: "SELECT_SEARCH_ENTITY"
   payload: SelectedEntity | null
 }
 
-export const setSelectedVehicle = (
-  vehicleId: VehicleId | null
-): SelectVehicleAction => ({
-  type: "SELECT_SEARCH_VEHICLE",
-  payload: vehicleId ? { vehicleId: vehicleId } : null,
-})
+interface GoBackAction {
+  type: "GO_BACK"
+}
+
+export const goBack = (): GoBackAction => {
+  return { type: "GO_BACK" }
+}
+
 export const setSelectedEntity = (
   selectedEntity: SelectedEntity | null
 ): SelectEntityAction => ({
@@ -110,9 +113,9 @@ export type Action =
   | SetSearchTextAction
   | SetSearchPropertyAction
   | SubmitSearchAction
-  | ClearSearchAction
-  | SelectVehicleAction
+  | NewSearchSessionAction
   | SelectEntityAction
+  | GoBackAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -149,26 +152,65 @@ export const reducer = (
         }
       }
 
-    case "CLEAR_SEARCH":
-      return { ...state, isActive: false, query: emptySearchQuery }
-    case "SELECT_SEARCH_VEHICLE":
-      return {
-        ...state,
-        selectedEntity: action.payload
-          ? {
-              type: SelectedEntityType.Vehicle,
-              vehicleId: action.payload.vehicleId,
-            }
-          : null,
-      }
-
-    case "SELECT_SEARCH_ENTITY":
+    case "NEW_SEARCH_SESSION":
       return {
         ...state,
         selectedEntity: action.payload,
+        isActive: false,
+        query: emptySearchQuery,
+        selectedEntityHistory: [],
       }
+    case "SELECT_SEARCH_ENTITY": {
+      const lastSelection = state.selectedEntity
+      return {
+        ...state,
+        selectedEntity: action.payload,
+        selectedEntityHistory:
+          lastSelection &&
+          shouldAddLastSelectionToHistory(action.payload, lastSelection)
+            ? [lastSelection, ...state.selectedEntityHistory]
+            : state.selectedEntityHistory,
+      }
+    }
+
+    case "GO_BACK": {
+      const [previousSelection, ...history] = state.selectedEntityHistory
+      return {
+        ...state,
+        selectedEntity: previousSelection || null,
+        selectedEntityHistory: history,
+      }
+    }
   }
   return state
+}
+/*
+The last selection should only be added to the selection history if it is different from the new selection.
+For vehicles, this means having a different vehicleId. 
+For route patterns, this means having a different routeId.
+ */
+const shouldAddLastSelectionToHistory = (
+  newSelection: SelectedEntity | null,
+  lastSelection: SelectedEntity
+) => {
+  if (
+    newSelection &&
+    lastSelection.type === SelectedEntityType.RoutePattern &&
+    newSelection.type === SelectedEntityType.RoutePattern &&
+    lastSelection.routeId === newSelection.routeId
+  ) {
+    return false
+  }
+
+  if (
+    newSelection &&
+    lastSelection.type === SelectedEntityType.Vehicle &&
+    newSelection.type === SelectedEntityType.Vehicle &&
+    lastSelection.vehicleId === newSelection.vehicleId
+  ) {
+    return false
+  }
+  return true
 }
 
 export const addSavedQuery = (

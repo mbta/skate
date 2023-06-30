@@ -16,7 +16,7 @@ describe("RecentSearches", () => {
   })
 
   test("renders with data", () => {
-    const searchWithData = {
+    const searchWithData = searchPageStateFactory.build({
       query: { text: "999-555", property: "run" },
       isActive: false,
       savedQueries: [
@@ -24,7 +24,7 @@ describe("RecentSearches", () => {
         { text: "999-502" },
         { text: "999-501" },
       ],
-    }
+    })
     const mockDispatch = jest.fn()
     const tree = renderer
       .create(
