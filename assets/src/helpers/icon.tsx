@@ -151,7 +151,7 @@ export const CommuterRailIcon = svgIcon(commuterRailIconSvg)
 
 export const CrowdingIcon = svgIcon(crowdingIconSvg)
 
-export const DiamondTurnRightSvg = svgIcon(diamondTurnRightSvg)
+export const DiamondTurnRightIcon = svgIcon(diamondTurnRightSvg)
 
 export const DoubleChevronLeftIcon = svgIcon(doubleChevronLeftIconSvg)
 

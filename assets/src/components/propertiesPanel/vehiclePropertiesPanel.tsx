@@ -22,7 +22,7 @@ import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import MiniMap from "./miniMap"
 import TabPanels, { TabMode } from "./tabPanels"
-import { DiamondTurnRightSvg } from "../../helpers/icon"
+import { DiamondTurnRightIcon } from "../../helpers/icon"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -107,7 +107,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           target="_blank"
           rel="noreferrer"
         >
-          <DiamondTurnRightSvg />
+          <DiamondTurnRightIcon />
           Get directions to bus
         </a>
       </div>
