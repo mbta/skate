@@ -323,6 +323,29 @@ describe("SearchResults", () => {
     expect(screen.getByText(/Shuttle/)).toBeInTheDocument()
   })
 
+  test("renders logged out vehicles at the end of the list", () => {
+    const loggedInVehicle = vehicleFactory.build()
+    const loggedOutVehicle = vehicleFactory.build({
+      operatorLogonTime: null,
+      runId: null,
+      blockId: undefined,
+    })
+
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[loggedOutVehicle, loggedInVehicle]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
+
+    const headsigns = screen.queryAllByLabelText(/route variant name/i)
+
+    expect(headsigns[1]).toHaveTextContent(/logged off/i)
+  })
+
   test("renders a selected result card", () => {
     const vehicle: VehicleInScheduledService = vehicleFactory.build({
       runId: "run-1",
