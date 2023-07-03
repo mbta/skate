@@ -131,6 +131,7 @@ export const FullscreenControl = createControlComponent(
   Leaflet.control.fullscreen
 )
 
+// TODO: use tilesetForType instead
 const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = (): ReactElement => {

@@ -1,7 +1,6 @@
 import Config
 
 config :skate,
-  tileset_url: "https://mbta-map-tiles-dev.s3.amazonaws.com/skate_osm_tiles",
   geonames_url_base: "http://api.geonames.org",
   log_duration_timing: false
 
