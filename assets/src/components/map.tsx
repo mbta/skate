@@ -49,6 +49,7 @@ import {
 } from "./mapMarkers"
 import ZoomLevelWrapper from "./ZoomLevelWrapper"
 import { StreetViewControl } from "./map/controls/StreetViewSwitch"
+import StreetViewModeContext from "../contexts/streetViewModeContext"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
@@ -425,7 +426,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             </>
           )}
         </ZoomLevelWrapper>
-        {props.children}
+        <StreetViewModeContext.Provider value={streetViewEnabled}>
+          {props.children}
+        </StreetViewModeContext.Provider>
       </MapContainer>
     </>
   )
