@@ -1,5 +1,7 @@
 .c-overlay-cutout {
   z-index: 800; // Below controls, above map
+  position: absolute;
+  inset: 0px;
 
   &,
   &__rect,

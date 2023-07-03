@@ -27,12 +27,7 @@ export const CutoutOverlay = ({
   containerTargetRef: containerTarget,
 }: CutoutOverlayProps) => {
   return (
-    <svg
-      ref={containerTarget}
-      className={
-        "c-overlay-cutout position-absolute top-0 start-0 bottom-0 end-0"
-      }
-    >
+    <svg ref={containerTarget} className={"c-overlay-cutout"}>
       <mask id="mask">
         <rect className="c-overlay-cutout__mask-rect" />
         <circle
