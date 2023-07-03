@@ -54,14 +54,14 @@ const CutoutOverlayFollowMouseMove = () => {
   useMapEvents({
     mousemove: (e: LeafletMouseEvent): void => {
       if (circleTarget.current && hoverTarget.current) {
-        const { clientX: screenX, clientY: screenY } = e.originalEvent
-        const { x: containerX, y: containerY } =
+        const { clientX: cursorScreenX, clientY: cursorScreenY } = e.originalEvent
+        const { x: containerScreenX, y: containerScreenY } =
           hoverTarget.current.getBoundingClientRect()
 
-        const offsetX = screenX - containerX
-        const offsetY = screenY - containerY
+        const containerOffsetX = cursorScreenX - containerScreenX
+        const containerOffsetY = cursorScreenY - containerScreenY
 
-        const maskPosition = `${offsetX}px ${offsetY}px`
+        const maskPosition = `${containerOffsetX}px ${containerOffsetY}px`
 
         circleTarget.current.style.translate = maskPosition
       }
