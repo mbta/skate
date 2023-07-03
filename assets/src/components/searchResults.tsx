@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isVehicle } from "../models/vehicle"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
 import inTestGroup from "../userInTestGroup"
@@ -83,6 +83,22 @@ export const byOperatorLogonTime = (
   return 0
 }
 
+export const byLoggedOutStatus = (
+  a: Vehicle | Ghost,
+  b: Vehicle | Ghost
+): number => {
+  const aIsLoggedOutVehicle = isVehicle(a) && isLoggedOut(a)
+  const bIsLoggedOutVehicle = isVehicle(b) && isLoggedOut(b)
+
+  if (aIsLoggedOutVehicle && !bIsLoggedOutVehicle) {
+    return 1
+  } else if (!aIsLoggedOutVehicle && bIsLoggedOutVehicle) {
+    return -1
+  }
+
+  return 0
+}
+
 const ResultsList = ({
   vehicles,
   onClick,
@@ -93,16 +109,19 @@ const ResultsList = ({
   selectedVehicleId: string | null
 }) => (
   <ul className="c-search-results__list">
-    {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
-      <SearchResultCard
-        vehicleOrGhost={vehicleOrGhost}
-        onClick={() => onClick(vehicleOrGhost)}
-        isSelected={
-          selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
-        }
-        key={`search-result-card-${vehicleOrGhost.id}`}
-      />
-    ))}
+    {vehicles
+      .sort(byOperatorLogonTime)
+      .sort(byLoggedOutStatus)
+      .map((vehicleOrGhost) => (
+        <SearchResultCard
+          vehicleOrGhost={vehicleOrGhost}
+          onClick={() => onClick(vehicleOrGhost)}
+          isSelected={
+            selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
+          }
+          key={`search-result-card-${vehicleOrGhost.id}`}
+        />
+      ))}
   </ul>
 )
 
