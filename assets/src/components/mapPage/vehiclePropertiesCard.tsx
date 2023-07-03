@@ -2,7 +2,7 @@ import React, { ReactNode, useId } from "react"
 import { joinTruthy, joinClasses } from "../../helpers/dom"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
-import { isGhost, isVehicle } from "../../models/vehicle"
+import { isGhost, isLoggedOut, isVehicle } from "../../models/vehicle"
 import { Ghost, Vehicle } from "../../realtime"
 import { formattedDate, formattedTime } from "../../util/dateTime"
 import { isLoading, isOk } from "../../util/fetchResult"
@@ -110,27 +110,36 @@ const TrNameValue = ({
 
 const VehicleWorkInfo = ({
   vehicleOrGhost,
-}: VehicleOrGhostProp): React.ReactElement => (
-  <>
-    <table className="c-vehicle-work-info">
-      <tbody className="c-vehicle-work-info__items">
-        <TrNameValue name="run">{vehicleOrGhost.runId || "N/A"}</TrNameValue>
-        <TrNameValue name="vehicle">
-          {(isVehicle(vehicleOrGhost) && vehicleOrGhost.label) || "N/A"}
-        </TrNameValue>
-        <TrNameValue name="operator" sensitivity={HideSensitiveInfo.Value}>
-          {(isVehicle(vehicleOrGhost) &&
-            joinTruthy([
-              vehicleOrGhost.operatorFirstName,
-              vehicleOrGhost.operatorLastName,
-              vehicleOrGhost.operatorId && `#${vehicleOrGhost.operatorId}`,
-            ])) ||
-            "N/A"}
-        </TrNameValue>
-      </tbody>
-    </table>
-  </>
-)
+}: VehicleOrGhostProp): React.ReactElement => {
+  const isLoggedOutVehicle =
+    isVehicle(vehicleOrGhost) && isLoggedOut(vehicleOrGhost)
+  const noRunText = isLoggedOutVehicle ? "No run logged in" : "N/A"
+  const noOperatorText = isLoggedOutVehicle ? "No operator logged in" : "N/A"
+
+  return (
+    <>
+      <table className="c-vehicle-work-info">
+        <tbody className="c-vehicle-work-info__items">
+          <TrNameValue name="run">
+            {vehicleOrGhost.runId || noRunText}
+          </TrNameValue>
+          <TrNameValue name="vehicle">
+            {(isVehicle(vehicleOrGhost) && vehicleOrGhost.label) || "N/A"}
+          </TrNameValue>
+          <TrNameValue name="operator" sensitivity={HideSensitiveInfo.Value}>
+            {(isVehicle(vehicleOrGhost) &&
+              joinTruthy([
+                vehicleOrGhost.operatorFirstName,
+                vehicleOrGhost.operatorLastName,
+                vehicleOrGhost.operatorId && `#${vehicleOrGhost.operatorId}`,
+              ])) ||
+              noOperatorText}
+          </TrNameValue>
+        </tbody>
+      </table>
+    </>
+  )
+}
 // #endregion
 
 // #region Vehicle Location

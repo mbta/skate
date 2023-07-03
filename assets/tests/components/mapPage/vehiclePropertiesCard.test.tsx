@@ -269,6 +269,33 @@ describe("<VehiclePropertiesCard/>", () => {
       ).toBeVisible()
     })
 
+    test("vehicle is logged out, should render special text in missing data fields", () => {
+      const vehicle = vehicleFactory.build({
+        operatorLogonTime: null,
+        operatorFirstName: null,
+        operatorLastName: null,
+        operatorId: null,
+        runId: null,
+        blockId: undefined,
+      })
+
+      render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
+
+      expect(
+        screen.getByRole("status", { name: /Route Variant Name/i })
+      ).toHaveTextContent("Logged Off")
+      expect(
+        screen.getByRole("status", { name: /Route Direction/i })
+      ).toHaveTextContent("No direction available")
+
+      expect(screen.getByRole("cell", { name: /run/ })).toHaveTextContent(
+        "No run logged in"
+      )
+      expect(screen.getByRole("cell", { name: /operator/ })).toHaveTextContent(
+        "No operator logged in"
+      )
+    })
+
     // - Ghost Bus is not Displayable on map
     test("vehicle is ghost bus, should render ghost bus design", () => {
       // Display "Ghost Bus or Dropped Trip" in `LastUpdated`
