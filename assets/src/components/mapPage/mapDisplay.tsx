@@ -32,7 +32,7 @@ import Map, {
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
-import StreetViewModeContext from "../../contexts/streetViewModeContext"
+import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../../util/streetViewUrl"
 
 const SecondaryRouteVehicles = ({
@@ -394,7 +394,7 @@ const SelectionDataLayers = ({
   const routePatterns: ByRoutePatternId<RoutePattern> | null =
     usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
 
-  const streetViewActive = useContext(StreetViewModeContext)
+  const streetViewActive = useContext(StreetViewModeEnabledContext)
 
   const selectVehicle = !streetViewActive
     ? function selectVehicle(vehicleOrGhost: Vehicle | Ghost) {

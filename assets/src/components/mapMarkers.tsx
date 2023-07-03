@@ -22,7 +22,7 @@ import garageIcon from "../../static/images/icon-bus-garage.svg"
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
 import { StopMarkerWithInfo } from "./map/markers/stopMarker"
-import StreetViewModeContext from "../contexts/streetViewModeContext"
+import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../util/streetViewUrl"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
@@ -273,7 +273,7 @@ export const RouteStopMarkers = ({
     return []
   })
 
-  const streetViewActive = useContext(StreetViewModeContext)
+  const streetViewActive = useContext(StreetViewModeEnabledContext)
 
   return (
     <>
