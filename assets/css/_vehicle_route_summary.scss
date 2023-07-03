@@ -3,10 +3,10 @@
   // #region Layout
   display: grid;
   grid-template-rows: 3fr 8fr;
-  grid-template-columns: min-content 1fr 6fr 12fr;
+  grid-template-columns: min-content 1fr 18fr;
   grid-template-areas:
-    "icon separator direction  adherence"
-    "icon separator route-name route-name";
+    "icon separator direction"
+    "icon separator route-name";
 
   align-items: start; // align element vertically within cell
   justify-items: start; // align element horizontally within the cell
@@ -18,10 +18,6 @@
 
   .c-vehicle-route-summary__separator {
     grid-area: separator;
-  }
-
-  .c-vehicle-route-summary__adherence {
-    grid-area: adherence;
   }
 
   .c-vehicle-route-summary__direction {

@@ -62,6 +62,32 @@ describe("<VehicleRouteSummary />", () => {
       ).toBeVisible()
     })
 
+    test("a logged out vehicle should alternate text for fields not available", () => {
+      const vehicle = vehicleFactory.build({
+        operatorLogonTime: null,
+        runId: null,
+        blockId: undefined,
+      })
+
+      render(
+        <RoutesProvider routes={[]}>
+          <VehicleRouteSummary vehicle={vehicle} />
+        </RoutesProvider>
+      )
+
+      expect(
+        screen.getByRole("status", { name: /Route Variant Name/i })
+      ).toHaveTextContent("Logged Off")
+
+      expect(
+        screen.getByRole("status", { name: /Route Direction/i })
+      ).toHaveTextContent("No direction available")
+
+      expect(
+        screen.getByRole("img", { name: /vehicle status icon/i })
+      ).toBeVisible()
+    })
+
     test("an off course vehicle, should show direction and route variant name", () => {
       const route = routeFactory.build()
       const vehicle = invalidVehicleFactory.build({ routeId: route.id })

@@ -9,7 +9,7 @@ import { joinClasses } from "../helpers/dom"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
-import { directionName } from "../models/vehicle"
+import { directionName, isLoggedOut, isVehicle } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { Ghost, Vehicle } from "../realtime"
 import { RouteVariantName } from "./routeVariantName"
@@ -60,7 +60,9 @@ export const VehicleRouteDirection = ({
       className={"c-vehicle-route-direction " + className}
       {...props}
     >
-      {directionName(vehicle, route)}
+      {isVehicle(vehicle) && isLoggedOut(vehicle)
+        ? "No direction available"
+        : directionName(vehicle, route)}
     </output>
   )
 }
