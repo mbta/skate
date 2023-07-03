@@ -174,10 +174,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
         render(
           <RoutesProvider routes={[route]}>
-            <VehiclePropertiesCard
-              vehicleOrGhost={vehicle}
-              onClose={jest.fn()}
-            />
+            <VehiclePropertiesCard vehicleOrGhost={vehicle} />
           </RoutesProvider>
         )
 
