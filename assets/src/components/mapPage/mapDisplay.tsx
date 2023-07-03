@@ -32,6 +32,8 @@ import Map, {
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
+import StreetViewModeContext from "../../contexts/streetViewModeContext"
+import { streetViewUrl } from "../../util/streetViewUrl"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -392,11 +394,35 @@ const SelectionDataLayers = ({
   const routePatterns: ByRoutePatternId<RoutePattern> | null =
     usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
 
-  const selectVehicle = (vehicleOrGhost: Vehicle | Ghost) =>
-    setSelection({
-      type: SelectedEntityType.Vehicle,
-      vehicleId: vehicleOrGhost.id,
-    })
+  const streetViewActive = useContext(StreetViewModeContext)
+
+  const selectVehicle = !streetViewActive
+    ? function selectVehicle(vehicleOrGhost: Vehicle | Ghost) {
+        setSelection({
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicleOrGhost.id,
+        })
+      }
+    : function openStreetViewForVehicle(vehicleOrGhost: Vehicle | Ghost) {
+        if (isVehicle(vehicleOrGhost)) {
+          const url = streetViewUrl({
+            latitude: vehicleOrGhost.latitude,
+            longitude: vehicleOrGhost.longitude,
+            bearing: vehicleOrGhost.bearing,
+          })
+
+          window.FS?.event("User clicked map vehicle to open street view", {
+            streetViewUrl_str: url,
+            clickedMapAt: {
+              latitude_real: vehicleOrGhost.latitude,
+              longitude_real: vehicleOrGhost.longitude,
+              bearing_real: vehicleOrGhost.bearing,
+            },
+          })
+
+          window.open(url)
+        }
+      }
 
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
