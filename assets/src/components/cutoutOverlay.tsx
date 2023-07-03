@@ -54,7 +54,8 @@ const CutoutOverlayFollowMouseMove = () => {
   useMapEvents({
     mousemove: (e: LeafletMouseEvent): void => {
       if (circleTarget.current && hoverTarget.current) {
-        const { clientX: cursorScreenX, clientY: cursorScreenY } = e.originalEvent
+        const { clientX: cursorScreenX, clientY: cursorScreenY } =
+          e.originalEvent
         const { x: containerScreenX, y: containerScreenY } =
           hoverTarget.current.getBoundingClientRect()
 
