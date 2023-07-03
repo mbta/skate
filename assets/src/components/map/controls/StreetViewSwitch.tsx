@@ -33,6 +33,7 @@ export const StreetViewControl = ({
         "leaflet-control",
         "leaflet-bar",
         "c-street-view-switch",
+        "position-absolute",
       ])
       portalParent.append(portalElement)
       Leaflet.DomEvent.disableClickPropagation(portalElement)
@@ -84,7 +85,7 @@ export const StreetViewControl = ({
       </label>
       <label
         htmlFor={id}
-        className="c-street-view-switch__label c-street-view-switch__label-text"
+        className="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
       >
         Street View
       </label>
