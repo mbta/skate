@@ -36,7 +36,9 @@ export const CutoutOverlay = ({
         ></circle>
       </mask>
       <rect
-        // Set inline, so that rect updates when parent sizes update
+        // When the parent container (e.g., the map container) changes sizes,
+        // the parent SVG resizes, but that does not propagate down to this rect
+        // unless `width` and `height` are set inline.
         width="100%"
         height="100%"
         className="c-overlay-cutout__rect"
