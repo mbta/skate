@@ -12,6 +12,7 @@ import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { MapFollowingSelectionKey } from "./map"
 import ShuttlePicker from "./shuttlePicker"
+import { LayersControl } from "./map/controls/LayersControl"
 
 const filterShuttles = (
   shuttles: Vehicle[],
@@ -73,7 +74,9 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
           trainVehicles={trainVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
           selectionKey={followerResetKey}
-        />
+        >
+          <LayersControl />
+        </MapFollowingSelectionKey>
       </div>
     </div>
   )

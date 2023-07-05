@@ -13,6 +13,7 @@ import { MapFollowingPrimaryVehicles } from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
+import { LayersControl } from "./map/controls/LayersControl"
 
 enum MobileDisplay {
   List = 1,
@@ -109,7 +110,9 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
           stations={stations}
-        />
+        >
+          <LayersControl />
+        </MapFollowingPrimaryVehicles>
       </div>
     </div>
   )

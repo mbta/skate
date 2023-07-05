@@ -25,7 +25,6 @@ import {
   AttributionControl,
   MapContainer,
   Pane,
-  TileLayer,
   useMap,
   useMapEvents,
   ZoomControl,
@@ -37,7 +36,6 @@ import { joinClasses } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
-import appData from "../appData"
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
 import {
   GarageMarkers,
@@ -132,9 +130,6 @@ export const RecenterControl = createControlComponent(
 export const FullscreenControl = createControlComponent(
   Leaflet.control.fullscreen
 )
-
-// TODO: use tilesetForType instead
-const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = (): ReactElement => {
   useMapEvents({
@@ -347,14 +342,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             setStreetViewEnabled={setStreetViewEnabled}
           />
         )}
+
         <ZoomControl position="topright" />
+
         {allowFullscreen && <FullscreenControl position="topright" />}
         <AttributionControl position="bottomright" prefix={false} />
-        <TileLayer
-          url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-
         <Pane name="primaryVehicles" pane="markerPane" style={{ zIndex: 499 }}>
           {props.vehicles.map((vehicle: Vehicle) => (
             <VehicleMarker

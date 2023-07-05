@@ -1,0 +1,18 @@
+.c-layers-control {
+  display: flex;
+  flex-direction: row-reverse;
+  border: none !important;
+  gap: 5px;
+  align-items: flex-start;
+}
+
+.c-layers-control__button {
+  background-color: $white;
+  flex: 0;
+  height: 40px;
+  width: 40px;
+}
+
+.c-layers-control__layers_list {
+  background-color: $white;
+}

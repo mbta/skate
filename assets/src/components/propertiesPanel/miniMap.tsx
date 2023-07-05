@@ -12,6 +12,8 @@ import {
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../../userInTestGroup"
 import { mapModeForUser } from "../../util/mapMode"
 import { MapFollowingPrimaryVehicles } from "../map"
+import { TileLayer } from "react-leaflet"
+import { tilesetUrlForType } from "../../tilesetUrls"
 
 const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
   const [, dispatch] = useContext(StateDispatchContext)
@@ -53,25 +55,26 @@ const MiniMap = ({
 }) => {
   const stations: Stop[] | null = useStations()
 
-  return inTestGroup(MAP_BETA_GROUP_NAME) ? (
+  const inMapBetaGroup = inTestGroup(MAP_BETA_GROUP_NAME)
+
+  return (
     <MapFollowingPrimaryVehicles
       selectedVehicleId={vehicle.id}
       vehicles={[vehicle]}
       shapes={shapes}
       secondaryVehicles={routeVehicles}
       stations={stations}
-      allowFullscreen={false}
+      allowFullscreen={!inMapBetaGroup}
     >
-      <SearchMapLink vehicleId={vehicle.id} />
+      <>
+        {inMapBetaGroup && <SearchMapLink vehicleId={vehicle.id} />}
+
+        <TileLayer
+          url={`${tilesetUrlForType("base")}`}
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+      </>
     </MapFollowingPrimaryVehicles>
-  ) : (
-    <MapFollowingPrimaryVehicles
-      selectedVehicleId={vehicle.id}
-      vehicles={[vehicle]}
-      shapes={shapes}
-      secondaryVehicles={routeVehicles}
-      stations={stations}
-    />
   )
 }
 

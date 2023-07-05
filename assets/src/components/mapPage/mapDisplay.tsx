@@ -34,6 +34,7 @@ import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../../util/streetViewUrl"
+import { LayersControl } from "../map/controls/LayersControl"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -466,6 +467,7 @@ const MapDisplay = ({
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
   )
+  const [tileType, setTileType] = useState<"satellite" | "base">("base")
 
   return (
     <Map
@@ -488,6 +490,7 @@ const MapDisplay = ({
           setSelection={setSelection}
           setStateClasses={setStateClasses}
         />
+        <LayersControl />
       </MapSafeAreaContext.Provider>
     </Map>
   )
