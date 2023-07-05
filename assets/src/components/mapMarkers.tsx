@@ -305,7 +305,7 @@ export const RouteStopMarkers = ({
                           },
                         }
                       )
-                      window.open(url)
+                      window.open(url, "_blank")
                     },
                   }
                 : {}

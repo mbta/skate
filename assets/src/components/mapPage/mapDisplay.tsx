@@ -420,7 +420,7 @@ const SelectionDataLayers = ({
             },
           })
 
-          window.open(url)
+          window.open(url, "_blank")
         }
       }
 
