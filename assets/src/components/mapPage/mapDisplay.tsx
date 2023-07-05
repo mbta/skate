@@ -396,33 +396,34 @@ const SelectionDataLayers = ({
 
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
-  const selectVehicle = !streetViewActive
-    ? function selectVehicle(vehicleOrGhost: Vehicle | Ghost) {
-        setSelection({
-          type: SelectedEntityType.Vehicle,
-          vehicleId: vehicleOrGhost.id,
-        })
-      }
-    : function openStreetViewForVehicle(vehicleOrGhost: Vehicle | Ghost) {
-        if (isVehicle(vehicleOrGhost)) {
-          const url = streetViewUrl({
-            latitude: vehicleOrGhost.latitude,
-            longitude: vehicleOrGhost.longitude,
-            bearing: vehicleOrGhost.bearing,
+  const selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void =
+    !streetViewActive
+      ? (vehicleOrGhost) => {
+          setSelection({
+            type: SelectedEntityType.Vehicle,
+            vehicleId: vehicleOrGhost.id,
           })
-
-          window.FS?.event("User clicked map vehicle to open street view", {
-            streetViewUrl_str: url,
-            clickedMapAt: {
-              latitude_real: vehicleOrGhost.latitude,
-              longitude_real: vehicleOrGhost.longitude,
-              bearing_real: vehicleOrGhost.bearing,
-            },
-          })
-
-          window.open(url, "_blank")
         }
-      }
+      : (vehicleOrGhost) => {
+          if (isVehicle(vehicleOrGhost)) {
+            const url = streetViewUrl({
+              latitude: vehicleOrGhost.latitude,
+              longitude: vehicleOrGhost.longitude,
+              bearing: vehicleOrGhost.bearing,
+            })
+
+            window.FS?.event("User clicked map vehicle to open street view", {
+              streetViewUrl_str: url,
+              clickedMapAt: {
+                latitude_real: vehicleOrGhost.latitude,
+                longitude_real: vehicleOrGhost.longitude,
+                bearing_real: vehicleOrGhost.bearing,
+              },
+            })
+
+            window.open(url, "_blank")
+          }
+        }
 
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
