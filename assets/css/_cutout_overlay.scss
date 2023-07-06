@@ -1,4 +1,4 @@
-.c-overlay-cutout {
+.c-cutout-overlay {
   position: absolute;
   inset: 0px;
 
@@ -11,7 +11,7 @@
 
   --circle-radius: 0;
 
-  // Cannot check hover on the `c-overlay-cutout` component due to `pointer-events: none`
+  // Cannot check hover on the `c-cutout-overlay` component due to `pointer-events: none`
   :hover > & {
     --circle-radius: clamp(50px, 10vw, 150px);
   }

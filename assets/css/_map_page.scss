@@ -33,7 +33,7 @@ $z-map-page-context: (
     margin: 1rem;
   }
 
-  .c-overlay-cutout {
+  .c-cutout-overlay {
     // Below controls, above map
     z-index: map-get($z-map-page-context, "overlay-cutout");
   }
