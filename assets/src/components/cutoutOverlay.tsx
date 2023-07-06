@@ -49,7 +49,7 @@ export const CutoutOverlay = ({
 }
 
 /** {@see {@link CutoutOverlay.FollowMapMouseMove }} */
-const CutoutOverlayFollowMouseMove = () => {
+const CutoutOverlayFollowMapMouseMove = () => {
   const circleTarget = useRef<SVGCircleElement | null>(null)
   const hoverTarget = useRef<SVGSVGElement | null>(null)
 
@@ -83,4 +83,4 @@ const CutoutOverlayFollowMouseMove = () => {
  * A {@link CutoutOverlay} which follows mouse movements on a
  * `react-leaflet.MapContainer`
  */
-CutoutOverlay.FollowMapMouseMove = CutoutOverlayFollowMouseMove
+CutoutOverlay.FollowMapMouseMove = CutoutOverlayFollowMapMouseMove
