@@ -1,23 +1,46 @@
 import { Dispatch as ReactDispatch } from "react"
 import { Action } from "../state"
+import { TileType } from "../tilesetUrls"
 
 export interface MapLayersState {
-  tileType: "base" | "satellite"
+  searchMap: {
+    tileType: TileType
+  }
+  shuttleMap: {
+    tileType: TileType
+  }
+  legacySearchMap: {
+    tileType: TileType
+  }
 }
 
-export const initialMapLayersState = {
-  tileType: "base",
+type MapKey = keyof MapLayersState
+
+export const initialMapLayersState: MapLayersState = {
+  searchMap: {
+    tileType: "base",
+  },
+
+  shuttleMap: {
+    tileType: "base",
+  },
+  legacySearchMap: {
+    tileType: "base",
+  },
 }
 
 interface SetTileTypeAction {
   type: "SET_TILE_TYPE"
-  payload: "base" | "satellite"
+  key: MapKey
+  payload: TileType
 }
 
 export const setTileType = (
-  tileType: "base" | "satellite"
+  key: MapKey,
+  tileType: TileType
 ): SetTileTypeAction => ({
   type: "SET_TILE_TYPE",
+  key: key,
   payload: tileType,
 })
 
@@ -33,7 +56,7 @@ export const reducer = (
     case "SET_TILE_TYPE":
       return {
         ...state,
-        tileType: action.payload,
+        [action.key]: { ...state[action.key], tileType: action.payload },
       }
   }
 

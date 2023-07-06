@@ -35,6 +35,9 @@ import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../../util/streetViewUrl"
 import { LayersControl } from "../map/controls/LayersControl"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { setTileType } from "../../state/mapLayersState"
+import { TileType } from "../../tilesetUrls"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -467,7 +470,14 @@ const MapDisplay = ({
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
   )
-  const [tileType, setTileType] = useState<"satellite" | "base">("base")
+  const [
+    {
+      mapLayers: {
+        searchMap: { tileType: tileType },
+      },
+    },
+    dispatch,
+  ] = useContext(StateDispatchContext)
 
   return (
     <Map
@@ -490,7 +500,12 @@ const MapDisplay = ({
           setSelection={setSelection}
           setStateClasses={setStateClasses}
         />
-        <LayersControl />
+        <LayersControl
+          tileType={tileType}
+          setTileType={(tileType: TileType) =>
+            dispatch(setTileType("searchMap", tileType))
+          }
+        />
       </MapSafeAreaContext.Provider>
     </Map>
   )

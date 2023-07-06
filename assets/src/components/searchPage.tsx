@@ -14,6 +14,8 @@ import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 import { LayersControl } from "./map/controls/LayersControl"
+import { TileType } from "../tilesetUrls"
+import { setTileType } from "../state/mapLayersState"
 
 enum MobileDisplay {
   List = 1,
@@ -46,7 +48,14 @@ const ToggleMobileDisplayButton = ({
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
   const [
-    { searchPageState, mobileMenuIsOpen, selectedVehicleOrGhost },
+    {
+      searchPageState,
+      mobileMenuIsOpen,
+      selectedVehicleOrGhost,
+      mapLayers: {
+        searchMap: { tileType: tileType },
+      },
+    },
     dispatch,
   ] = useContext(StateDispatchContext)
 
@@ -111,7 +120,12 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
           stations={stations}
         >
-          <LayersControl />
+          <LayersControl
+            tileType={tileType}
+            setTileType={(tileType: TileType) =>
+              dispatch(setTileType("legacySearchMap", tileType))
+            }
+          />
         </MapFollowingPrimaryVehicles>
       </div>
     </div>

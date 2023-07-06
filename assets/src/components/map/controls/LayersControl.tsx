@@ -1,15 +1,17 @@
 import Leaflet from "leaflet"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import { TileLayer, useMap, useMapEvents } from "react-leaflet"
 import { joinClasses } from "../../../helpers/dom"
-import { tilesetUrlForType } from "../../../tilesetUrls"
-import { StateDispatchContext } from "../../../contexts/stateDispatchContext"
-import { setTileType } from "../../../state/mapLayersState"
+import { TileType, tilesetUrlForType } from "../../../tilesetUrls"
 
-export const LayersControl = (): JSX.Element | null => {
-  const [{ mapLayers }, dispatch] = useContext(StateDispatchContext)
-  const tileType = mapLayers.tileType
+export const LayersControl = ({
+  tileType,
+  setTileType,
+}: {
+  tileType: TileType
+  setTileType: (tileType: TileType) => void
+}): JSX.Element | null => {
   const map = useMap()
   const portalParent = map
     .getContainer()
@@ -59,7 +61,7 @@ export const LayersControl = (): JSX.Element | null => {
                   value=""
                   id="base"
                   checked={tileType === "base"}
-                  onChange={() => dispatch(setTileType("base"))}
+                  onChange={() => setTileType("base")}
                 />
                 Map (default)
               </label>
@@ -73,7 +75,7 @@ export const LayersControl = (): JSX.Element | null => {
                   value=""
                   id="satellite"
                   checked={tileType === "satellite"}
-                  onChange={() => dispatch(setTileType("satellite"))}
+                  onChange={() => setTileType("satellite")}
                 />
                 Satellite
               </label>
