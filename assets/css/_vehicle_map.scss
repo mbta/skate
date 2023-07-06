@@ -1,3 +1,21 @@
+$map-component-z-index: (
+  "overlay-cutout": 800,
+  "control-layer": 1000,
+);
+
+.c-vehicle-map {
+  .c-street-view-switch {
+    // Same control layer as leaflet controls
+    z-index: map-get($map-component-z-index, "control-layer");
+  }
+
+  .c-cutout-overlay {
+    // Below controls, above map
+    z-index: map-get($map-component-z-index, "overlay-cutout");
+  }
+}
+
+
 .c-vehicle-map__label {
   svg {
     overflow: visible;

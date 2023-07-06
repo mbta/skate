@@ -3,8 +3,6 @@ $map-page-search-panel-width: 24rem;
 $z-map-page-context: (
   "map": 100,
   "search-drawer": 200,
-  "overlay-cutout": 800,
-  "control-layer": 1000,
 );
 
 .c-map-page {
@@ -31,16 +29,6 @@ $z-map-page-context: (
   .c-vehicle-properties-card,
   .c-route-properties-card {
     margin: 1rem;
-  }
-
-  .c-cutout-overlay {
-    // Below controls, above map
-    z-index: map-get($z-map-page-context, "overlay-cutout");
-  }
-
-  .c-street-view-switch {
-    // Same control layer as leaflet controls
-    z-index: map-get($z-map-page-context, "control-layer");
   }
 }
 
