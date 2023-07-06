@@ -9,12 +9,22 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
+import getTestGroups from "../../src/userTestGroups"
 import * as dateTime from "../../src/util/dateTime"
 import "@testing-library/jest-dom"
 
 import ghostFactory from "../factories/ghost"
 import vehicleFactory, { shuttleFactory } from "../factories/vehicle"
 import { searchPageStateFactory } from "../factories/searchPageState"
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
+
+beforeEach(() => {
+  ;(getTestGroups as jest.Mock).mockReturnValue([])
+})
 
 jest
   .spyOn(dateTime, "now")
@@ -30,19 +40,39 @@ const state: State = {
 
 describe("SearchResults", () => {
   test("renders no results", () => {
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults
-            vehicles={[]}
-            onClick={jest.fn()}
-            selectedVehicleId={null}
-          />
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(
+      screen.queryByText(/at this time search is limited/)
+    ).toBeInTheDocument()
+  })
+
+  test("renders no results with user in logged out vehicle test group", () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue([
+      "search-logged-out-vehicles",
+    ])
+
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
+
+    expect(
+      screen.queryByText(/at this time run and operator search is limited/)
+    ).toBeInTheDocument()
   })
 
   test("renders a list of results including vehicles and ghosts", () => {
@@ -291,6 +321,29 @@ describe("SearchResults", () => {
     )
 
     expect(screen.getByText(/Shuttle/)).toBeInTheDocument()
+  })
+
+  test("renders logged out vehicles at the end of the list", () => {
+    const loggedInVehicle = vehicleFactory.build()
+    const loggedOutVehicle = vehicleFactory.build({
+      operatorLogonTime: null,
+      runId: null,
+      blockId: undefined,
+    })
+
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[loggedOutVehicle, loggedInVehicle]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
+
+    const headsigns = screen.queryAllByLabelText(/route variant name/i)
+
+    expect(headsigns[1]).toHaveTextContent(/logged off/i)
   })
 
   test("renders a selected result card", () => {

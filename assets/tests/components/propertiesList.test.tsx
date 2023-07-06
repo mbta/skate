@@ -244,6 +244,18 @@ describe("vehicleProperties", () => {
     )
   })
 
+  test("logged out vehicles show only vehicle label", () => {
+    const vehicle = vehicleFactory.build({
+      operatorLogonTime: null,
+      runId: null,
+      blockId: undefined,
+    })
+
+    expect(vehicleProperties(vehicle)).toStrictEqual([
+      { label: "Vehicle", value: vehicle.label },
+    ])
+  })
+
   test("operator information is marked sensitive", () => {
     const vehicle = vehicleFactory.build()
 

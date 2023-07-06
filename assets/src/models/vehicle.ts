@@ -18,6 +18,9 @@ export const isGhost = (
 export const isLateVehicleIndicator = ({ id }: Ghost): boolean =>
   id.startsWith("ghost-incoming-")
 
+export const isLoggedOut = ({ operatorLogonTime, runId }: Vehicle) =>
+  operatorLogonTime === null && runId === null
+
 export const isRecentlyLoggedOn = (
   vehicleOrGhost: VehicleInScheduledService | Ghost
 ): boolean => {
@@ -33,10 +36,17 @@ export const isRecentlyLoggedOn = (
 }
 
 export const directionName = (
-  { directionId }: Vehicle | Ghost,
+  vehicle: Vehicle | Ghost,
   route: Route | null
-): string =>
-  directionId !== null && route ? route.directionNames[directionId] : ""
+): string => {
+  if (vehicle.directionId !== null && route) {
+    return route.directionNames[vehicle.directionId]
+  } else if (isVehicle(vehicle) && isLoggedOut(vehicle)) {
+    return "N/A"
+  }
+
+  return ""
+}
 
 export const filterVehicles = (
   vehiclesOrGhosts: (Vehicle | Ghost)[] | null

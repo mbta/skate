@@ -36,6 +36,7 @@ defmodule Realtime.Server do
           | :logged_in_vehicles
           | {:search, search_params()}
           | {:vehicle, String.t()}
+          | {:vehicle_with_logged_out, String.t()}
           | {:run_ids, [Run.id()]}
           | {:block_ids, [Block.id()]}
           | {:alerts, Route.id()}
@@ -95,10 +96,21 @@ defmodule Realtime.Server do
     )
   end
 
+  @spec subscribe_to_vehicle(String.t(), GenServer.server()) :: [VehicleOrGhost.t()]
   def subscribe_to_vehicle(vehicle_id, server \\ default_name()) do
     subscribe(
       server,
       {:vehicle, vehicle_id}
+    )
+  end
+
+  @spec subscribe_to_vehicle_with_logged_out(String.t(), GenServer.server()) :: [
+          VehicleOrGhost.t()
+        ]
+  def subscribe_to_vehicle_with_logged_out(vehicle_id, server \\ default_name()) do
+    subscribe(
+      server,
+      {:vehicle_with_logged_out, vehicle_id}
     )
   end
 
@@ -127,11 +139,19 @@ defmodule Realtime.Server do
     lookup({ets, {:vehicle, vehicle_or_ghost_id}})
   end
 
+  def peek_at_vehicle_by_id_with_logged_out(vehicle_or_ghost_id, server \\ default_name()) do
+    {_registry_key, ets} = GenServer.call(server, :subscription_info)
+    lookup({ets, {:vehicle_with_logged_out, vehicle_or_ghost_id}})
+  end
+
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), :logged_in_vehicles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:vehicle, String.t()}) :: [VehicleOrGhost.t()]
+  @spec subscribe(GenServer.server(), {:vehicle_with_logged_out, String.t()}) :: [
+          VehicleOrGhost.t()
+        ]
   @spec subscribe(GenServer.server(), {:run_ids, [Run.id()]}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:block_ids, [Block.id()]}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:alerts, Route.id()}) :: [String.t()]
@@ -167,6 +187,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), {:vehicle_with_logged_out, String.t()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:run_ids, [Run.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:block_ids, [Block.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:alerts, Route.id()}}) :: [String.t()]
@@ -214,7 +235,17 @@ defmodule Realtime.Server do
   def lookup({table, {:vehicle, vehicle_or_ghost_id}}) do
     {table, :logged_in_vehicles}
     |> lookup()
-    |> Enum.filter(&(&1.id == vehicle_or_ghost_id))
+    |> Enum.find(&(&1.id == vehicle_or_ghost_id))
+    |> List.wrap()
+  end
+
+  def lookup({table, {:vehicle_with_logged_out, vehicle_or_ghost_id}}) do
+    logged_in_vehicles = lookup({table, :logged_in_vehicles})
+    logged_out_vehicles = lookup({table, :logged_out_vehicles})
+
+    (logged_in_vehicles ++ logged_out_vehicles)
+    |> Enum.find(&(&1.id == vehicle_or_ghost_id))
+    |> List.wrap()
   end
 
   def lookup({table, key}) do

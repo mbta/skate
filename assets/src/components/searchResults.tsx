@@ -1,8 +1,9 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isVehicle } from "../models/vehicle"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
+import inTestGroup from "../userInTestGroup"
 import { Card, CardProperties } from "./card"
 import { vehicleOrGhostProperties } from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
@@ -82,6 +83,22 @@ export const byOperatorLogonTime = (
   return 0
 }
 
+export const byLoggedOutStatus = (
+  a: Vehicle | Ghost,
+  b: Vehicle | Ghost
+): number => {
+  const aIsLoggedOutVehicle = isVehicle(a) && isLoggedOut(a)
+  const bIsLoggedOutVehicle = isVehicle(b) && isLoggedOut(b)
+
+  if (aIsLoggedOutVehicle && !bIsLoggedOutVehicle) {
+    return 1
+  } else if (!aIsLoggedOutVehicle && bIsLoggedOutVehicle) {
+    return -1
+  }
+
+  return 0
+}
+
 const ResultsList = ({
   vehicles,
   onClick,
@@ -92,16 +109,19 @@ const ResultsList = ({
   selectedVehicleId: string | null
 }) => (
   <ul className="c-search-results__list">
-    {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
-      <SearchResultCard
-        vehicleOrGhost={vehicleOrGhost}
-        onClick={() => onClick(vehicleOrGhost)}
-        isSelected={
-          selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
-        }
-        key={`search-result-card-${vehicleOrGhost.id}`}
-      />
-    ))}
+    {vehicles
+      .sort(byOperatorLogonTime)
+      .sort(byLoggedOutStatus)
+      .map((vehicleOrGhost) => (
+        <SearchResultCard
+          vehicleOrGhost={vehicleOrGhost}
+          onClick={() => onClick(vehicleOrGhost)}
+          isSelected={
+            selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
+          }
+          key={`search-result-card-${vehicleOrGhost.id}`}
+        />
+      ))}
   </ul>
 )
 
@@ -113,6 +133,8 @@ const NoResults = () => {
     dispatch,
   ] = useContext(StateDispatchContext)
 
+  const inLoggedOutVehiclesTestGroup = inTestGroup("search-logged-out-vehicles")
+
   return (
     <div className="c-search-results__none">
       <div className="c-search-results__heading">No Search Results</div>
@@ -122,10 +144,17 @@ const NoResults = () => {
         again using numbers or last names only.
       </p>
 
-      <p>
-        Please note that at this time search is limited to active vehicles and
-        logged-in personnel.
-      </p>
+      {inLoggedOutVehiclesTestGroup ? (
+        <p>
+          Please note that at this time run and operator search is limited to
+          logged-in personnel.
+        </p>
+      ) : (
+        <p>
+          Please note that at this time search is limited to active vehicles and
+          logged-in personnel.
+        </p>
+      )}
 
       <button
         className="c-search-results__clear-search-button"

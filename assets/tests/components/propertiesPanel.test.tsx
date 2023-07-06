@@ -5,7 +5,7 @@ import PropertiesPanel, {
   hideMeIfNoCrowdingTooltip,
 } from "../../src/components/propertiesPanel"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { Ghost, VehicleInScheduledService } from "../../src/realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
@@ -102,7 +102,7 @@ const ghost: Ghost = ghostFactory.build({
 })
 
 const PropertiesPanelWrapper: React.FC<{
-  vehicleOrGhost: VehicleInScheduledService | Ghost
+  vehicleOrGhost: Vehicle | Ghost
 }> = ({ vehicleOrGhost }) => {
   const routes = [route]
 
@@ -144,6 +144,25 @@ describe("PropertiesPanel", () => {
       .mockImplementationOnce(() => null)
 
     const result = render(<PropertiesPanelWrapper vehicleOrGhost={vehicle} />)
+
+    expect(result.queryByText(/Status data is not available/)).not.toBeNull()
+  })
+
+  test("renders stale data message for logged out vehicle", () => {
+    const loggedOutVehicle = {
+      ...vehicle,
+      runId: null,
+      blockId: null,
+      operatorLogonTime: null,
+    }
+
+    ;(useVehicleForId as jest.Mock)
+      .mockImplementationOnce(() => loggedOutVehicle)
+      .mockImplementationOnce(() => loggedOutVehicle)
+
+    const result = render(
+      <PropertiesPanelWrapper vehicleOrGhost={loggedOutVehicle} />
+    )
 
     expect(result.queryByText(/Status data is not available/)).not.toBeNull()
   })

@@ -23,6 +23,15 @@ export const formattedTime = (date: Date): string => {
   return formattedHoursMinutes(date.getHours(), date.getMinutes())
 }
 
+export const formattedDate = (date: Date): string => {
+  const displayMonth = date.getMonth() + 1
+  const day = date.getDate()
+  const displayDay = day < 10 ? `0${day}` : `${day}`
+  const displayYear = date.getFullYear()
+
+  return `${displayMonth}/${displayDay}/${displayYear}`
+}
+
 export const formattedDuration = (duration: number): string => {
   const diffHours = Math.floor(duration / 3_600)
   const diffMinutes = Math.floor((duration % 3_600) / 60)

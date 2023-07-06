@@ -45,6 +45,15 @@ describe("drawnStatus", () => {
     expect(drawnStatus(shuttle)).toEqual("plain")
   })
 
+  test("returns 'logged-out' for a logged out vehicle", () => {
+    const vehicle = vehicleFactory.build({
+      runId: null,
+      blockId: undefined,
+      operatorLogonTime: null,
+    })
+    expect(drawnStatus(vehicle)).toEqual("logged-out")
+  })
+
   test("return scheduled status", () => {
     const vehicle: VehicleInScheduledService = {
       id: "y0001",
@@ -93,6 +102,12 @@ describe("statusClasses", () => {
     expect(
       statusClasses("plain", defaultUserSettings.vehicleAdherenceColors)
     ).toEqual([""])
+  })
+
+  test("correct class for logged out", () => {
+    expect(
+      statusClasses("logged-out", defaultUserSettings.vehicleAdherenceColors)
+    ).toEqual(["logged-out"])
   })
 
   test("other statuses have a class", () => {

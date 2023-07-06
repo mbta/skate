@@ -56,6 +56,20 @@ describe("RouteVariantName", () => {
     ).toHaveTextContent(/shuttle/i)
   })
 
+  test("renders a static label for a logged out vehicle", () => {
+    const testVehicle = vehicleFactory.build({
+      runId: null,
+      blockId: undefined,
+      operatorLogonTime: null,
+    })
+
+    render(<RouteVariantName vehicle={testVehicle} />)
+
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent(/logged off/i)
+  })
+
   test("uses route name if available", () => {
     const vehicle = vehicleFactory.build()
     const route: Route = routeFactory.build({

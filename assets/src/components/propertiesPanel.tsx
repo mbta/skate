@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSocket from "../hooks/useSocket"
 import useVehicleForId from "../hooks/useVehicleForId"
-import { isVehicle } from "../models/vehicle"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime.d"
 import { closeView } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
@@ -48,7 +48,8 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
   return (
     <>
       <div id="c-properties-panel" className="c-properties-panel">
-        {dataIsStale && isVehicle(vehicleToDisplay) ? (
+        {isVehicle(vehicleToDisplay) &&
+        (dataIsStale || isLoggedOut(vehicleToDisplay)) ? (
           <StaleDataPropertiesPanel selectedVehicle={vehicleToDisplay} />
         ) : isVehicle(vehicleToDisplay) ? (
           <VehiclePropertiesPanel selectedVehicle={vehicleToDisplay} />

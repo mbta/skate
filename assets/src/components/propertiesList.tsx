@@ -2,7 +2,7 @@ import React from "react"
 import { intersperseString } from "../helpers/array"
 import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
-import { isVehicle } from "../models/vehicle"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
 
@@ -37,6 +37,8 @@ export const vehicleProperties = (
     operatorLogonTime,
   } = vehicle
 
+  const isLoggedOutVehicle = isVehicle(vehicle) && isLoggedOut(vehicle)
+
   const operatorValue =
     [
       operatorLastNameOnly ? null : operatorFirstName,
@@ -47,31 +49,39 @@ export const vehicleProperties = (
       .join(" ") || "Not Available"
 
   return [
-    {
-      label: "Run",
-      value: vehicle.isShuttle
-        ? formattedRunNumber(vehicle)
-        : vehicle.isOverload && !!vehicle.runId
-        ? `ADDED ${runId}`
-        : runId || "Not Available",
-    },
+    ...(isLoggedOutVehicle
+      ? []
+      : [
+          {
+            label: "Run",
+            value: vehicle.isShuttle
+              ? formattedRunNumber(vehicle)
+              : vehicle.isOverload && !!vehicle.runId
+              ? `ADDED ${runId}`
+              : runId || "Not Available",
+          },
+        ]),
     {
       label: "Vehicle",
       value: label,
     },
-    {
-      label: "Operator",
-      value: operatorValue,
-      classNameModifier: "operator",
-      sensitive: true,
-    },
-    {
-      label: "Last Login",
-      value: operatorLogonTime
-        ? formattedLogonTime(operatorLogonTime)
-        : "Not Available",
-      classNameModifier: "last-login",
-    },
+    ...(isLoggedOutVehicle
+      ? []
+      : [
+          {
+            label: "Operator",
+            value: operatorValue,
+            classNameModifier: "operator",
+            sensitive: true,
+          },
+          {
+            label: "Last Login",
+            value: operatorLogonTime
+              ? formattedLogonTime(operatorLogonTime)
+              : "Not Available",
+            classNameModifier: "last-login",
+          },
+        ]),
   ]
 }
 

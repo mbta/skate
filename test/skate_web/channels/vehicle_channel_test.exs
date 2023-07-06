@@ -2,6 +2,7 @@ defmodule SkateWeb.VehicleChannelTest do
   use SkateWeb.ChannelCase
 
   import Test.Support.Helpers
+  import Skate.Factory
 
   alias Phoenix.Socket
   alias Realtime.Vehicle
@@ -46,15 +47,22 @@ defmodule SkateWeb.VehicleChannelTest do
     route_status: :on_route,
     end_of_trip_type: :another_trip
   }
+
   setup do
     reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
+    reassign_env(:skate, :username_from_socket!, fn _socket -> "test_uid" end)
 
-    socket = socket(UserSocket, "", %{})
+    user = Skate.Settings.User.upsert("test_uid", "test_email")
+
+    socket =
+      UserSocket
+      |> socket("", %{})
+      |> Guardian.Phoenix.Socket.put_current_resource(%{id: user.id})
 
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
-    {:ok, socket: socket}
+    {:ok, socket: socket, user: user}
   end
 
   describe "join/3" do
@@ -68,6 +76,23 @@ defmodule SkateWeb.VehicleChannelTest do
 
       assert {:ok, ^expected_payload, %Socket{} = _socket} =
                subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
+    end
+
+    test "subscribes to the logged out vehicle for given ID when user is in the test group", %{
+      socket: socket,
+      user: user
+    } do
+      test_group = Skate.Settings.TestGroup.create("search-logged-out-vehicles")
+      Skate.Settings.TestGroup.update(%{test_group | users: [user]})
+
+      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+
+      Realtime.Server.update_vehicles({%{}, [], [logged_out_vehicle]})
+
+      expected_payload = %{data: logged_out_vehicle}
+
+      assert {:ok, ^expected_payload, %Socket{} = _socket} =
+               subscribe_and_join(socket, VehicleChannel, "vehicle:id:y1234")
     end
 
     test "deny topic subscription when socket token validation fails", %{socket: socket} do

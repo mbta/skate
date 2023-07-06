@@ -21,6 +21,18 @@ defmodule Realtime.ServerTest do
              operator_name: @operator_last_name
            )
 
+  @logged_out_vehicle build(:vehicle,
+                        route_id: "1",
+                        id: "v1",
+                        label: "v1-label",
+                        run_id: nil,
+                        block_id: nil,
+                        operator_id: nil,
+                        operator_first_name: nil,
+                        operator_last_name: nil,
+                        operator_name: nil
+                      )
+
   @vehicle_on_inactive_block build(:vehicle,
                                route_id: "1",
                                block_is_active: false,
@@ -249,6 +261,54 @@ defmodule Realtime.ServerTest do
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
+    end
+  end
+
+  describe "subscribe_to_vehicle/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get vehicle by ID upon subscribing", %{server_pid: pid} do
+      assert Server.subscribe_to_vehicle(@vehicle.id, pid) == [@vehicle]
+    end
+
+    test "clients get updated data pushed to them", %{server_pid: pid} do
+      Server.subscribe_to_vehicle(@vehicle.id, pid)
+
+      Server.update_vehicles({@vehicles_by_route_id, [], []}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+      assert Server.lookup(lookup_args) == [@vehicle]
+    end
+  end
+
+  describe "subscribe_to_vehicle_with_logged_out/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get vehicle by ID upon subscribing", %{server_pid: pid} do
+      assert Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid) == [
+               @logged_out_vehicle
+             ]
+    end
+
+    test "clients get updated data pushed to them", %{server_pid: pid} do
+      Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid)
+
+      Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+      assert Server.lookup(lookup_args) == [@logged_out_vehicle]
     end
   end
 
@@ -622,6 +682,19 @@ defmodule Realtime.ServerTest do
       assert Server.peek_at_vehicle_by_id("no_such_vehicle", server_pid) == []
       assert Server.peek_at_vehicle_by_id("v1", server_pid) == [@vehicle]
       assert Server.peek_at_vehicle_by_id("g1", server_pid) == [@ghost]
+    end
+  end
+
+  describe "peek_at_vehicles_by_id_with_logged_out/2" do
+    test "looks up the vehicle or ghost with given ID" do
+      {:ok, server_pid} = Server.start_link([])
+      Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, server_pid)
+
+      assert Server.peek_at_vehicle_by_id_with_logged_out("no_such_vehicle", server_pid) == []
+
+      assert Server.peek_at_vehicle_by_id_with_logged_out(@logged_out_vehicle.id, server_pid) == [
+               @logged_out_vehicle
+             ]
     end
   end
 end

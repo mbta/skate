@@ -3,6 +3,11 @@
   stroke: $color-bg-base;
   stroke-width: 2;
 
+  .logged-out & {
+    fill: $color-gray-300;
+    stroke: $color-gray-600;
+    stroke-width: 1px;
+  }
   .on-time & {
     fill: $color-vehicle-ontime;
   }
