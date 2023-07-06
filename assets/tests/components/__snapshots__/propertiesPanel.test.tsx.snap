@@ -658,12 +658,19 @@ exports[`PropertiesPanel renders a vehicle 1`] = `
               Current Location
             </div>
             <a
-              className="c-vehicle-properties-panel__link"
+              className="c-vehicle-properties-panel__directions button-small"
               href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
               rel="noreferrer"
               target="_blank"
             >
-              Directions
+              <span
+                dangerouslySetInnerHTML={
+                  {
+                    "__html": "<svg/>",
+                  }
+                }
+              />
+              Get directions to bus
             </a>
           </div>
           <div

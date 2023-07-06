@@ -16,6 +16,8 @@ import closeXIconSvg from "../../static/images/icon-close-x.svg"
 // @ts-ignore
 import collapseIconSvg from "../../static/images/icon-caret-left.svg"
 // @ts-ignore
+import diamondTurnRightSvg from "../../static/images/icon-diamond-turn-right-solid.svg"
+// @ts-ignore
 import doubleChevronLeftIconSvg from "../../static/images/icon-double-chevron-left.svg"
 // @ts-ignore
 import doubleChevronRightIconSvg from "../../static/images/icon-double-chevron-right.svg"
@@ -148,6 +150,8 @@ export const CollapseIcon = svgIcon(collapseIconSvg)
 export const CommuterRailIcon = svgIcon(commuterRailIconSvg)
 
 export const CrowdingIcon = svgIcon(crowdingIconSvg)
+
+export const DiamondTurnRightIcon = svgIcon(diamondTurnRightSvg)
 
 export const DoubleChevronLeftIcon = svgIcon(doubleChevronLeftIconSvg)
 
