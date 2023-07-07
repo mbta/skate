@@ -46,7 +46,10 @@ import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
-import { mockUsePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
+import {
+  mockTileUrls,
+  mockUsePatternsByIdForVehicles,
+} from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
@@ -90,6 +93,11 @@ jest.mock("../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
 }))
 
+jest.mock("../../src/tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
+}))
+
 type VehicleIdToVehicle = {
   [vehicleId: VehicleId]: VehicleInScheduledService | Ghost
 }
@@ -126,6 +134,10 @@ function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
   return container.querySelectorAll(".c-station-icon")
 }
 
+beforeAll(() => {
+  mockTileUrls()
+})
+
 describe("<MapPage />", () => {
   describe("Snapshot", () => {
     test("renders the null state", () => {
@@ -142,6 +154,21 @@ describe("<MapPage />", () => {
       )
 
       expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Has the layers control", () => {
+      ;(useSearchResults as jest.Mock).mockReturnValue([])
+      render(
+        <StateDispatchProvider
+          state={stateFactory.build()}
+          dispatch={jest.fn()}
+        >
+          <BrowserRouter>
+            <MapPage />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
+      expect(screen.getByRole("button", { name: "Layers" })).toBeInTheDocument()
     })
 
     test("renders the empty state", () => {

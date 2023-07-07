@@ -188,7 +188,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="undefined"
+                  src="test_base_url.com/13/2479/3029"
                   style="width: 256px; height: 256px; left: -4px; top: -239px;"
                 />
               </div>
@@ -315,6 +315,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               >
                 <button
                   class="c-layers-control__button leaflet-bar"
+                  title="Layers"
                 >
                   <span>
                     <svg />
@@ -348,7 +349,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r1:"
+              for="street-view-toggle-:r2:"
               role="presentation"
             >
               <span
@@ -368,7 +369,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r1:"
+                id="street-view-toggle-:r2:"
                 role="switch"
                 type="checkbox"
               />
@@ -569,7 +570,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="undefined"
+                  src="test_base_url.com/13/2479/3029"
                   style="width: 256px; height: 256px; left: -4px; top: -239px;"
                 />
               </div>
@@ -696,6 +697,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               >
                 <button
                   class="c-layers-control__button leaflet-bar"
+                  title="Layers"
                 >
                   <span>
                     <svg />
@@ -949,13 +951,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="run:r2:"
+                      id="run:r3:"
                       scope="row"
                     >
                       run
                     </th>
                     <td
-                      aria-labelledby="run:r2:"
+                      aria-labelledby="run:r3:"
                       class="kv-value font-s-reg"
                     >
                       run-1
@@ -964,13 +966,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="vehicle:r3:"
+                      id="vehicle:r4:"
                       scope="row"
                     >
                       vehicle
                     </th>
                     <td
-                      aria-labelledby="vehicle:r3:"
+                      aria-labelledby="vehicle:r4:"
                       class="kv-value font-s-reg"
                     >
                       v1-label
@@ -979,13 +981,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="operator:r4:"
+                      id="operator:r5:"
                       scope="row"
                     >
                       operator
                     </th>
                     <td
-                      aria-labelledby="operator:r4:"
+                      aria-labelledby="operator:r5:"
                       class="kv-value font-s-reg fs-mask"
                     >
                       WILL SMITH #op1
@@ -1002,13 +1004,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               >
                 <label
                   class="c-current-location__label label font-xs-reg title-case"
-                  for="current-location-:r5:"
+                  for="current-location-:r6:"
                 >
                   Current Location
                 </label>
                 <output
                   class="c-current-location__value label font-s-semi"
-                  id="current-location-:r5:"
+                  id="current-location-:r6:"
                 >
                   loading...
                 </output>
@@ -1064,7 +1066,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="undefined"
+                  src="test_base_url.com/16/19831/24239"
                   style="width: 256px; height: 256px; left: -64px; top: -119px;"
                 />
               </div>
@@ -1573,6 +1575,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               >
                 <button
                   class="c-layers-control__button leaflet-bar"
+                  title="Layers"
                 >
                   <span>
                     <svg />
@@ -1606,7 +1609,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r6:"
+              for="street-view-toggle-:r7:"
               role="presentation"
             >
               <span
@@ -1626,7 +1629,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r6:"
+                id="street-view-toggle-:r7:"
                 role="switch"
                 type="checkbox"
               />

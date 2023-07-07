@@ -18,6 +18,7 @@ import { useStations } from "../../src/hooks/useStations"
 import { LocationType } from "../../src/models/stopData"
 import { zoomInButton } from "../testHelpers/selectors/components/map"
 import { searchPageStateFactory } from "../factories/searchPageState"
+import { mockTileUrls } from "../testHelpers/mockHelpers"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -54,6 +55,15 @@ jest.mock("../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
 }))
 
+jest.mock("../../src/tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
+}))
+
+beforeAll(() => {
+  mockTileUrls()
+})
+
 describe("SearchPage", () => {
   test("renders the empty state", () => {
     ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
@@ -66,6 +76,18 @@ describe("SearchPage", () => {
     )
 
     expect(result.asFragment()).toMatchSnapshot()
+  })
+
+  test("Has the layers control", () => {
+    ;(useSearchResults as jest.Mock).mockReturnValue([])
+    render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <SearchPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(screen.getByRole("button", { name: "Layers" })).toBeInTheDocument()
   })
 
   test("renders vehicle data", () => {

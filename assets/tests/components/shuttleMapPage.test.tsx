@@ -1,5 +1,6 @@
 import React from "react"
 import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import { BrowserRouter } from "react-router-dom"
 import ShuttleMapPage, {
   allTrainVehicles,
@@ -19,6 +20,7 @@ import {
   zoomInButton,
   zoomOutButton,
 } from "../testHelpers/selectors/components/map"
+import { mockTileUrls } from "../testHelpers/mockHelpers"
 
 jest
   .spyOn(dateTime, "now")
@@ -42,6 +44,15 @@ jest.mock("../../src/hooks/useTrainVehicles", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }))
+
+jest.mock("../../src/tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
+}))
+
+beforeAll(() => {
+  mockTileUrls()
+})
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -69,6 +80,15 @@ describe("Shuttle Map Page", () => {
       </BrowserRouter>
     )
     expect(result.asFragment()).toMatchSnapshot()
+  })
+
+  test("Has the layers control", () => {
+    render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(screen.getByRole("button", { name: "Layers" })).toBeInTheDocument()
   })
 
   // TODO: based on the snapshot, this test does not appear to be correctly testing

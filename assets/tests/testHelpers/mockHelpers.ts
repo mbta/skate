@@ -5,6 +5,7 @@ import { routePatternFactory } from "../factories/routePattern"
 import stopFactory from "../factories/stop"
 
 import shape from "../factories/shape"
+import { TileType, tilesetUrlForType } from "../../src/tilesetUrls"
 
 /**
  * A promise that resolves synchronously.
@@ -77,5 +78,16 @@ export const mockFullStoryEvent = (): void => {
   Object.defineProperty(window, "FS", {
     writable: true,
     value: { event: jest.fn(), identify: jest.fn() },
+  })
+}
+
+export const mockTileUrls = (): void => {
+  ;(tilesetUrlForType as jest.Mock).mockImplementation((type: TileType) => {
+    switch (type) {
+      case "base":
+        return "test_base_url.com/{z}/{x}/{y}"
+      case "satellite":
+        return "test_satellite_url.com/{z}/{x}/{y}"
+    }
   })
 }
