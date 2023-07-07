@@ -57,7 +57,10 @@ import { routePatternFactory } from "../factories/routePattern"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { vehiclePropertiesCard } from "../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
 import { routePropertiesCard } from "../testHelpers/selectors/components/mapPage/routePropertiesCard"
-import { zoomInButton } from "../testHelpers/selectors/components/map"
+import {
+  layersControlButton,
+  zoomInButton,
+} from "../testHelpers/selectors/components/map"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -168,7 +171,7 @@ describe("<MapPage />", () => {
           </BrowserRouter>
         </StateDispatchProvider>
       )
-      expect(screen.getByRole("button", { name: "Layers" })).toBeInTheDocument()
+      expect(layersControlButton.get()).toBeInTheDocument()
     })
 
     test("renders the empty state", () => {

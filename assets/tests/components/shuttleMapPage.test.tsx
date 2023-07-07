@@ -17,6 +17,7 @@ import { shuttleFactory } from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import shapeFactory from "../factories/shape"
 import {
+  layersControlButton,
   zoomInButton,
   zoomOutButton,
 } from "../testHelpers/selectors/components/map"
@@ -88,7 +89,7 @@ describe("Shuttle Map Page", () => {
         <ShuttleMapPage />
       </BrowserRouter>
     )
-    expect(screen.getByRole("button", { name: "Layers" })).toBeInTheDocument()
+    expect(layersControlButton.get()).toBeInTheDocument()
   })
 
   // TODO: based on the snapshot, this test does not appear to be correctly testing

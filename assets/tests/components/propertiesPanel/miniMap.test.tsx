@@ -16,6 +16,7 @@ import {
 } from "../../../src/state/searchPageState"
 import userEvent from "@testing-library/user-event"
 import { mockFullStoryEvent, mockTileUrls } from "../../testHelpers/mockHelpers"
+import { layersControlButton } from "../../testHelpers/selectors/components/map"
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
@@ -119,7 +120,7 @@ describe("MiniMap", () => {
           <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
         </MemoryRouter>
       )
-      expect(screen.queryByRole("button", { name: "Layers" })).toBeNull()
+      expect(layersControlButton.query()).toBeNull()
     })
   })
 })

@@ -5,6 +5,7 @@ import { MapContainer } from "react-leaflet"
 import { LayersControl } from "../../../../src/components/map/controls/LayersControl"
 import userEvent from "@testing-library/user-event"
 import { mockTileUrls } from "../../../testHelpers/mockHelpers"
+import { layersControlButton } from "../../../testHelpers/selectors/components/map"
 
 jest.mock("../../../../src/tilesetUrls", () => ({
   __esModule: true,
@@ -26,7 +27,7 @@ describe("LayersControl", () => {
     render(<LayersControl tileType="base" setTileType={jest.fn} />, {
       wrapper: mapWrapper,
     })
-    await userEvent.click(screen.getByRole("button", { name: "Layers" }))
+    await userEvent.click(layersControlButton.get())
 
     expect(screen.getByLabelText("Map (default)")).toBeChecked()
     expect(screen.getByLabelText("Satellite")).not.toBeChecked()
@@ -37,7 +38,7 @@ describe("LayersControl", () => {
     render(<LayersControl tileType="base" setTileType={setTileTypeMock} />, {
       wrapper: mapWrapper,
     })
-    await userEvent.click(screen.getByRole("button", { name: "Layers" }))
+    await userEvent.click(layersControlButton.get())
     await userEvent.click(screen.getByLabelText("Satellite"))
 
     expect(setTileTypeMock).toHaveBeenCalled()
@@ -47,10 +48,10 @@ describe("LayersControl", () => {
     render(<LayersControl tileType="base" setTileType={setTileTypeMock} />, {
       wrapper: mapWrapper,
     })
-    await userEvent.click(screen.getByRole("button", { name: "Layers" }))
+    await userEvent.click(layersControlButton.get())
     expect(screen.getByLabelText("Map (default)")).toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole("button", { name: "Layers" }))
+    await userEvent.click(layersControlButton.get())
 
     expect(screen.queryByLabelText("Map (default)")).toBeNull()
   })
@@ -64,7 +65,7 @@ describe("LayersControl", () => {
       }
     )
 
-    await userEvent.click(screen.getByRole("button", { name: "Layers" }))
+    await userEvent.click(layersControlButton.get())
     expect(screen.getByLabelText("Map (default)")).toBeInTheDocument()
 
     await userEvent.click(container.querySelector(".leaflet-container")!)

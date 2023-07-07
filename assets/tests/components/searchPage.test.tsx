@@ -16,7 +16,10 @@ import userEvent from "@testing-library/user-event"
 import { SearchPageState } from "../../src/state/searchPageState"
 import { useStations } from "../../src/hooks/useStations"
 import { LocationType } from "../../src/models/stopData"
-import { zoomInButton } from "../testHelpers/selectors/components/map"
+import {
+  layersControlButton,
+  zoomInButton,
+} from "../testHelpers/selectors/components/map"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import { mockTileUrls } from "../testHelpers/mockHelpers"
 jest
@@ -87,7 +90,7 @@ describe("SearchPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(screen.getByRole("button", { name: "Layers" })).toBeInTheDocument()
+    expect(layersControlButton.get()).toBeInTheDocument()
   })
 
   test("renders vehicle data", () => {
