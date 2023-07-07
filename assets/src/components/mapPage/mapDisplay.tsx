@@ -455,9 +455,11 @@ const SelectionDataLayers = ({
 const MapDisplay = ({
   selectedEntity,
   setSelection,
+  streetViewInitiallyEnabled = false,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
+  streetViewInitiallyEnabled?: boolean
 }) => {
   const stations = useStations()
 
@@ -473,6 +475,7 @@ const MapDisplay = ({
       stations={stations}
       shapes={[]}
       stateClasses={stateClasses}
+      streetViewInitiallyEnabled={streetViewInitiallyEnabled}
     >
       <MapSafeAreaContext.Provider
         value={{

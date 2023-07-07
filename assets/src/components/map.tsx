@@ -65,6 +65,7 @@ export interface Props {
   trainVehicles?: TrainVehicle[]
   shapes?: Shape[]
   allowStreetView?: boolean
+  streetViewInitiallyEnabled?: boolean
   allowFullscreen?: boolean
   stopCardDirection?: DirectionId
   includeStopCard?: boolean
@@ -309,7 +310,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     props.reactLeafletRef || useRef(null)
   const defaultZoom = 13
-  const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(false)
+  const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(
+    props.streetViewInitiallyEnabled || false
+  )
   const { allowFullscreen = true } = props
 
   const stateClasses = joinClasses([
