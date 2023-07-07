@@ -44,3 +44,18 @@ $max-leaflet-z-index: 1000;
   left: 0px !important;
   z-index: 99999;
 }
+
+.leaflet-map-pane:hover ~ .c-cutout-overlay {
+  /**
+   * Only when hovering over map elements(i.e., not Controls),
+   * expand the cutout in the overlay.
+   *
+   * Because `c-cutout-overlay-hover-target` is not a parent of
+   * `leaflet-map-pane`, we need to enable the circle-expanded state when
+   * hovering over map elements. Unfortunately, this relies on
+   * `c-cutout-overlay` being a direct child of the leaflet map, and must be a
+   * CSS selectable sibling of the `leaflet-map-pane`
+   * (in addition to the `c-cutout-overlay-hover-target`).
+  */
+  @extend .c-cutout-overlay--circle-expanded;
+}

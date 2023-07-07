@@ -1,7 +1,4 @@
 .c-cutout-overlay {
-  position: absolute;
-  inset: 0px;
-
   &,
   &__rect,
   &__mask-rect {
@@ -11,8 +8,14 @@
 
   --circle-radius: 0;
 
-  // Cannot check hover on the `c-cutout-overlay` component due to `pointer-events: none`
-  :hover > & {
+  // Cannot check hover state on the `c-cutout-overlay` component due to
+  // `pointer-events: none`, instead, check if `c-cutout-overlay-hover-target`
+  // is hovered.
+  //
+  // Unfortunately, this means `c-cutout-overlay-hover-target` must come before
+  // `c-cutout-overlay`.
+  .c-cutout-overlay-hover-target:hover ~ &,
+  &.c-cutout-overlay--circle-expanded {
     --circle-radius: clamp(50px, 10vw, 150px);
   }
 
@@ -40,4 +43,11 @@
   // Do not intercept pointer events, instead pass them on to whatever is
   // behind the overlay
   pointer-events: none;
+}
+
+// Stretch overlay cutout and hover target to parent container
+.c-cutout-overlay,
+.c-cutout-overlay-hover-target {
+  position: absolute;
+  inset: 0;
 }

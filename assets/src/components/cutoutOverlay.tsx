@@ -72,10 +72,16 @@ const CutoutOverlayFollowMapMouseMove = () => {
   })
 
   return (
-    <CutoutOverlay
-      containerTargetRef={hoverTarget}
-      circleTargetRef={circleTarget}
-    />
+    <>
+      {/* This hover target is required so that the radius of the cutout is 0
+          when hovering over controls. This target _must_ come before the
+          overlay so that the CSS sibling selector works. */}
+      <div className="c-cutout-overlay-hover-target" />
+      <CutoutOverlay
+        containerTargetRef={hoverTarget}
+        circleTargetRef={circleTarget}
+      />
+    </>
   )
 }
 
