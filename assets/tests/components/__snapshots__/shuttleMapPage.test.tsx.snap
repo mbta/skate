@@ -588,6 +588,22 @@ exports[`Shuttle Map Page renders 1`] = `
               </a>
             </div>
             <div
+              class="c-map__layer-control"
+            >
+              <div
+                class="leaflet-control leaflet-bar c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
               class="leaflet-bar leaflet-control"
             >
               <a
@@ -629,22 +645,6 @@ exports[`Shuttle Map Page renders 1`] = `
                 
 		
               </a>
-            </div>
-            <div
-              class="c-map__layer-control"
-            >
-              <div
-                class="c-layers-control leaflet-control leaflet-bar"
-              >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
           <div
@@ -1260,6 +1260,22 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               </a>
             </div>
             <div
+              class="c-map__layer-control"
+            >
+              <div
+                class="leaflet-control leaflet-bar c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
               class="leaflet-bar leaflet-control"
             >
               <a
@@ -1301,22 +1317,6 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 
 		
               </a>
-            </div>
-            <div
-              class="c-map__layer-control"
-            >
-              <div
-                class="c-layers-control leaflet-control leaflet-bar"
-              >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
           <div
@@ -1932,6 +1932,22 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               </a>
             </div>
             <div
+              class="c-map__layer-control"
+            >
+              <div
+                class="leaflet-control leaflet-bar c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
               class="leaflet-bar leaflet-control"
             >
               <a
@@ -1973,22 +1989,6 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 
 		
               </a>
-            </div>
-            <div
-              class="c-map__layer-control"
-            >
-              <div
-                class="c-layers-control leaflet-control leaflet-bar"
-              >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
           <div
@@ -2167,6 +2167,22 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
               </a>
             </div>
             <div
+              class="c-map__layer-control"
+            >
+              <div
+                class="leaflet-control leaflet-bar c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
               class="leaflet-bar leaflet-control"
             >
               <a
@@ -2208,22 +2224,6 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                 
 		
               </a>
-            </div>
-            <div
-              class="c-map__layer-control"
-            >
-              <div
-                class="c-layers-control leaflet-control leaflet-bar"
-              >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
           <div
@@ -2868,6 +2868,22 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               </a>
             </div>
             <div
+              class="c-map__layer-control"
+            >
+              <div
+                class="leaflet-control leaflet-bar c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
               class="leaflet-bar leaflet-control"
             >
               <a
@@ -2909,22 +2925,6 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 
 		
               </a>
-            </div>
-            <div
-              class="c-map__layer-control"
-            >
-              <div
-                class="c-layers-control leaflet-control leaflet-bar"
-              >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
           <div
