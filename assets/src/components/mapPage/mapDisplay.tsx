@@ -1,6 +1,6 @@
 import Leaflet, { Bounds, Point } from "leaflet"
 import React, { useContext, useEffect, useState } from "react"
-import { Pane } from "react-leaflet"
+import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -32,6 +32,7 @@ import Map, {
 import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
+import DraggableLines from "leaflet-draggable-lines"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -348,6 +349,14 @@ const SelectedRouteDataLayers = ({
       ) || []
     : []
   const followerState = useInteractiveFollowerState()
+
+  const map = useMap()
+
+  useEffect(() => {
+    const draggable = new DraggableLines(map)
+
+    draggable.enable()
+  }, [map])
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))

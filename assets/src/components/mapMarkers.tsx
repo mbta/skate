@@ -312,7 +312,7 @@ export const RouteShape = React.memo(
           shape.className,
         ])}
         positions={positions}
-        interactive={false}
+        interactive={true}
       >
         {children}
       </Polyline>
