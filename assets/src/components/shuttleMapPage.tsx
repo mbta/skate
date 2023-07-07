@@ -12,7 +12,7 @@ import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { MapFollowingSelectionKey } from "./map"
 import ShuttlePicker from "./shuttlePicker"
-import { LayersControl } from "./map/controls/LayersControl"
+import { LayersControl } from "./map/controls/layersControl"
 import { setTileType } from "../state/mapLayersState"
 import { TileType } from "../tilesetUrls"
 

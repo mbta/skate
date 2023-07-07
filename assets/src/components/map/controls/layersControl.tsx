@@ -16,7 +16,6 @@ export const LayersControl = ({
   const map = useMap()
   const portalParent = map
     .getContainer()
-    // TODO: handle two maps?
     .querySelector(".leaflet-control-container .leaflet-top.leaflet-right")
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
 

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import React, { ReactNode } from "react"
 import { MapContainer } from "react-leaflet"
-import { LayersControl } from "../../../../src/components/map/controls/LayersControl"
+import { LayersControl } from "../../../../src/components/map/controls/layersControl"
 import userEvent from "@testing-library/user-event"
 import { mockTileUrls } from "../../../testHelpers/mockHelpers"
 import { layersControlButton } from "../../../testHelpers/selectors/components/map"
@@ -41,7 +41,7 @@ describe("LayersControl", () => {
     await userEvent.click(layersControlButton.get())
     await userEvent.click(screen.getByLabelText("Satellite"))
 
-    expect(setTileTypeMock).toHaveBeenCalled()
+    expect(setTileTypeMock).toHaveBeenCalledWith("satellite")
   })
   test("when the control button is clicked while the layer options are open, then the layer options are closed", async () => {
     const setTileTypeMock = jest.fn()

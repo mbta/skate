@@ -20,7 +20,6 @@ export const initialMapLayersState: MapLayersState = {
   searchMap: {
     tileType: "base",
   },
-
   shuttleMap: {
     tileType: "base",
   },

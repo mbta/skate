@@ -13,7 +13,7 @@ import { MapFollowingPrimaryVehicles } from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
-import { LayersControl } from "./map/controls/LayersControl"
+import { LayersControl } from "./map/controls/layersControl"
 import { TileType } from "../tilesetUrls"
 import { setTileType } from "../state/mapLayersState"
 
