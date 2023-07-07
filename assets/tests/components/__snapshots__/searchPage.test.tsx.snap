@@ -178,7 +178,7 @@ exports[`SearchPage renders the empty state 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="test_base_url.com/13/2479/3029"
+                  src="test_base_url/13/2479/3029"
                   style="width: 256px; height: 256px; left: -4px; top: -239px;"
                 />
               </div>
@@ -517,7 +517,7 @@ exports[`SearchPage renders vehicle data 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="test_base_url.com/16/19832/24239"
+                  src="test_base_url/16/19832/24239"
                   style="width: 256px; height: 256px; left: -31px; top: -119px;"
                 />
               </div>

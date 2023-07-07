@@ -85,9 +85,9 @@ export const mockTileUrls = (): void => {
   ;(tilesetUrlForType as jest.Mock).mockImplementation((type: TileType) => {
     switch (type) {
       case "base":
-        return "test_base_url.com/{z}/{x}/{y}"
+        return "test_base_url/{z}/{x}/{y}"
       case "satellite":
-        return "test_satellite_url.com/{z}/{x}/{y}"
+        return "test_satellite_url/{z}/{x}/{y}"
     }
   })
 }
