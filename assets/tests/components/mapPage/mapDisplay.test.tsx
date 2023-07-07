@@ -3,34 +3,38 @@ import { render, screen } from "@testing-library/react"
 import React from "react"
 
 import userEvent from "@testing-library/user-event"
-import useVehicleForId from "../../../src/hooks/useVehicleForId"
+
+import MapDisplay from "../../../src/components/mapPage/mapDisplay"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
+import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
 import { useStations } from "../../../src/hooks/useStations"
+import useVehicleForId from "../../../src/hooks/useVehicleForId"
+import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { LocationType } from "../../../src/models/stopData"
+import {
+  Ghost,
+  VehicleId,
+  VehicleInScheduledService,
+} from "../../../src/realtime"
+import { RouteId } from "../../../src/schedule"
 import { SelectedEntityType } from "../../../src/state/searchPageState"
+
 import ghostFactory from "../../factories/ghost"
+import routeFactory from "../../factories/route"
+import { routePatternFactory } from "../../factories/routePattern"
 import { runIdFactory } from "../../factories/run"
 import stopFactory from "../../factories/stop"
 import vehicleFactory, {
   randomLocationVehicle,
   shuttleFactory,
 } from "../../factories/vehicle"
+
 import { setHtmlWidthHeightForLeafletMap } from "../../testHelpers/leafletMapWidth"
-import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
-import routeFactory from "../../factories/route"
-import {
-  VehicleId,
-  VehicleInScheduledService,
-  Ghost,
-} from "../../../src/realtime"
-import { RouteId } from "../../../src/schedule"
-import MapDisplay from "../../../src/components/mapPage/mapDisplay"
 import { mockUsePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
-import { RoutesProvider } from "../../../src/contexts/routesContext"
-import { routePatternFactory } from "../../factories/routePattern"
-import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
+
+import { zoomInButton } from "../../testHelpers/selectors/components/map"
 import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"
 import { vehiclePropertiesCard } from "../../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
-import { zoomInButton } from "../../testHelpers/selectors/components/map"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
