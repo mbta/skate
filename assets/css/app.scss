@@ -35,12 +35,14 @@ $z-properties-panel-context: (
 
 // Bootstrap variable customization
 $component-active-bg: $color-eggplant-700;
+$list-group-border-color: $color-gray-300;
 
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/maps";
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
 @import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/list-group";
 
 // #region Bootstrap Utility API
 @import "../node_modules/bootstrap/scss/bootstrap-utilities";

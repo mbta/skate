@@ -314,9 +314,11 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                 class="c-layers-control leaflet-control leaflet-bar"
               >
                 <button
-                  class=" c-layers-control__button leaflet-bar"
+                  class="c-layers-control__button leaflet-bar"
                 >
-                  Show layers
+                  <span>
+                    <svg />
+                  </span>
                 </button>
               </div>
             </div>
@@ -693,9 +695,11 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                 class="c-layers-control leaflet-control leaflet-bar"
               >
                 <button
-                  class=" c-layers-control__button leaflet-bar"
+                  class="c-layers-control__button leaflet-bar"
                 >
-                  Show layers
+                  <span>
+                    <svg />
+                  </span>
                 </button>
               </div>
             </div>
@@ -1568,9 +1572,11 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 class="c-layers-control leaflet-control leaflet-bar"
               >
                 <button
-                  class=" c-layers-control__button leaflet-bar"
+                  class="c-layers-control__button leaflet-bar"
                 >
-                  Show layers
+                  <span>
+                    <svg />
+                  </span>
                 </button>
               </div>
             </div>

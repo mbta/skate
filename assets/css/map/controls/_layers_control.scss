@@ -7,12 +7,21 @@
 }
 
 .c-layers-control__button {
+  @include button-icon(20px);
   background-color: $white;
   flex: 0;
-  height: 40px;
-  width: 40px;
+  padding: 5px;
+  span svg {
+    stroke: none;
+  }
 }
 
 .c-layers-control__layers_list {
+  .list-group {
+    margin: 0rem;
+    border-radius: 0px;
+  }
+  font-family: $font-family;
+
   background-color: $white;
 }

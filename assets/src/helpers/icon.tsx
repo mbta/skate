@@ -68,6 +68,8 @@ import logoIconSvg from "../../static/images/icon-logo.svg"
 // @ts-ignore
 import mapIconSvg from "../../static/images/icon-map.svg"
 // @ts-ignore
+import mapLayersIconSvg from "../../static/images/icon-map-layers.svg"
+// @ts-ignore
 import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
 // @ts-ignore
 import minusIconSvg from "../../static/images/icon-minus.svg"
@@ -196,6 +198,8 @@ export const LoadingIcon = svgIcon(loadingIconSvg)
 export const LogoIcon = svgIcon(logoIconSvg)
 
 export const MapIcon = svgIcon(mapIconSvg)
+
+export const MapLayersIcon = svgIcon(mapLayersIconSvg)
 
 export const MattapanLineIcon = svgIcon(mattapanLineIconSvg)
 

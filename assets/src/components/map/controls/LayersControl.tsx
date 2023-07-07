@@ -4,6 +4,7 @@ import ReactDOM from "react-dom"
 import { TileLayer, useMap, useMapEvents } from "react-leaflet"
 import { joinClasses } from "../../../helpers/dom"
 import { TileType, tilesetUrlForType } from "../../../tilesetUrls"
+import { MapLayersIcon } from "../../../helpers/icon"
 
 export const LayersControl = ({
   tileType,
@@ -44,10 +45,10 @@ export const LayersControl = ({
   const control = (
     <div className="c-layers-control leaflet-control leaflet-bar">
       <button
-        className=" c-layers-control__button leaflet-bar"
+        className="c-layers-control__button leaflet-bar"
         onClick={() => setShowLayersList((currentVal) => !currentVal)}
       >
-        Show layers
+        <MapLayersIcon />
       </button>
       {showLayersList && (
         <div className="c-layers-control__layers_list leaflet-bar">
