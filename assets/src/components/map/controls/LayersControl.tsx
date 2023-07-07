@@ -28,7 +28,7 @@ export const LayersControl = ({
     }
 
     if (portalParent && portalElement) {
-      portalElement.className = joinClasses(["c-map__layer-control"])
+      portalElement.className = "c-map__layer-control"
       portalParent.append(portalElement)
       Leaflet.DomEvent.disableClickPropagation(portalElement)
     }
@@ -45,7 +45,12 @@ export const LayersControl = ({
   const control = (
     <div className="c-layers-control leaflet-control leaflet-bar">
       <button
-        className="c-layers-control__button leaflet-bar"
+        title="Layers"
+        className={joinClasses([
+          "c-layers-control__button",
+          showLayersList && "c-layers-control__button--selected",
+          "leaflet-bar",
+        ])}
         onClick={() => setShowLayersList((currentVal) => !currentVal)}
       >
         <MapLayersIcon />
