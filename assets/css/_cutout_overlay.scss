@@ -16,7 +16,7 @@
   // `c-cutout-overlay`.
   .c-cutout-overlay-hover-target:hover ~ &,
   &.c-cutout-overlay--circle-expanded {
-    --circle-radius: clamp(50px, 10vw, 150px);
+    --circle-radius: clamp(48px, 10vw, 152px);
   }
 
   &__mask-rect {
