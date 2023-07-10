@@ -26,13 +26,6 @@
     fill: black; // Cutout circle in mask
 
     r: var(--circle-radius);
-
-    transition: none;
-    @media not (prefers-reduced-motion) {
-      // N Frames at 60 hz
-      --transition-frames: 2;
-      transition: r calc((1s / 60) * var(--transition-frames));
-    }
   }
 
   &__rect {
