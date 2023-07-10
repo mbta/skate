@@ -148,6 +148,7 @@ main,
 #app,
 .l-app {
   height: 100%;
+  width: 100%;
 }
 
 body {
@@ -160,7 +161,6 @@ body {
 .l-app {
   display: flex;
   flex-direction: column;
-  width: 100vw;
 }
 
 .l-app__banner {
