@@ -107,8 +107,8 @@ config :skate, Skate.Repo,
   show_sensitive_data_on_connection_error: true
 
 config :skate, Skate.WarmUp,
-  minimum_percent_queries_to_succeed: 0.6,
-  max_attempts: 3,
+  minimum_percent_queries_to_succeed: 0.8,
+  max_attempts: 5,
   seconds_between_attempts: 3
 
 config :laboratory,
