@@ -588,20 +588,16 @@ exports[`Shuttle Map Page renders 1`] = `
               </a>
             </div>
             <div
-              class="c-map__layer-control"
+              class="leaflet-control c-layers-control"
             >
-              <div
-                class="leaflet-control c-layers-control"
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
               >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -1260,20 +1256,16 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               </a>
             </div>
             <div
-              class="c-map__layer-control"
+              class="leaflet-control c-layers-control"
             >
-              <div
-                class="leaflet-control c-layers-control"
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
               >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -1932,20 +1924,16 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               </a>
             </div>
             <div
-              class="c-map__layer-control"
+              class="leaflet-control c-layers-control"
             >
-              <div
-                class="leaflet-control c-layers-control"
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
               >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -2167,20 +2155,16 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
               </a>
             </div>
             <div
-              class="c-map__layer-control"
+              class="leaflet-control c-layers-control"
             >
-              <div
-                class="leaflet-control c-layers-control"
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
               >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -2868,20 +2852,16 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               </a>
             </div>
             <div
-              class="c-map__layer-control"
+              class="leaflet-control c-layers-control"
             >
-              <div
-                class="leaflet-control c-layers-control"
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
               >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"

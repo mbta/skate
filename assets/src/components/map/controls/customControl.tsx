@@ -1,5 +1,5 @@
 import Leaflet, { ControlOptions, ControlPosition } from "leaflet"
-import React, { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import { useMap } from "react-leaflet"
 
@@ -42,7 +42,7 @@ export const CustomControl = ({
     }
 
     if (portalParent && portalElement) {
-      portalElement.className = "c-map__layer-control"
+      portalElement.className = `leaflet-control ${className}`
 
       const elementToInsertAfter = insertAfterSelector
         ? portalParent.querySelector(insertAfterSelector)
@@ -58,9 +58,5 @@ export const CustomControl = ({
     return () => portalElement?.remove()
   }, [portalElement, portalParent])
 
-  const control = (
-    <div className={`leaflet-control ${className}`}>{children}</div>
-  )
-
-  return portalElement ? ReactDOM.createPortal(control, portalElement) : null
+  return portalElement ? ReactDOM.createPortal(children, portalElement) : null
 }

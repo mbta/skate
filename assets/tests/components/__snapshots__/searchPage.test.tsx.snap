@@ -255,20 +255,16 @@ exports[`SearchPage renders the empty state 1`] = `
               </a>
             </div>
             <div
-              class="c-map__layer-control"
+              class="leaflet-control c-layers-control"
             >
-              <div
-                class="leaflet-control c-layers-control"
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
               >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -917,20 +913,16 @@ exports[`SearchPage renders vehicle data 1`] = `
               </a>
             </div>
             <div
-              class="c-map__layer-control"
+              class="leaflet-control c-layers-control"
             >
-              <div
-                class="leaflet-control c-layers-control"
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
               >
-                <button
-                  class="c-layers-control__button leaflet-bar"
-                  title="Layers"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"
