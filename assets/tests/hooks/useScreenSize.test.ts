@@ -1,4 +1,5 @@
-import { useMediaQueries } from "@react-hook/media-query"
+import { renderHook } from "@testing-library/react"
+
 const useScreenSize = jest.requireActual(
   "../../src/hooks/useScreenSize"
 ).default
@@ -8,68 +9,41 @@ jest.mock("@react-hook/media-query", () => ({
   useMediaQueries: jest.fn(() => {}),
 }))
 
+const windowInnerWidthBeforeSpy = window.innerWidth
+beforeAll(() => {
+  Object.defineProperty(window, "innerWidth", {
+    get: jest.fn(),
+    set: jest.fn(),
+    configurable: true,
+  })
+})
+
+afterAll(() => {
+  jest
+    .spyOn(window, "innerWidth", "get")
+    .mockReturnValue(windowInnerWidthBeforeSpy)
+})
+
+const mockWindowWidth = (value: number) =>
+  jest.spyOn(window, "innerWidth", "get").mockReturnValue(value)
+
 describe("useScreenSize", () => {
-  test("returns mobile when media query matches mobile", () => {
-    ;(useMediaQueries as jest.Mock).mockImplementationOnce(() => {
-      return {
-        matches: {
-          mobile: true,
-          mobile_landscape_tablet_portrait: false,
-          tablet: false,
-        },
-        matchesAny: true,
-        matchesAll: false,
-      }
-    })
-
-    expect(useScreenSize()).toBe("mobile")
-  })
-
-  test("returns mobile landscape / tablet portrair when media query matches", () => {
-    ;(useMediaQueries as jest.Mock).mockImplementationOnce(() => {
-      return {
-        matches: {
-          mobile: false,
-          mobile_landscape_tablet_portrait: true,
-          tablet: false,
-        },
-        matchesAny: true,
-        matchesAll: false,
-      }
-    })
-
-    expect(useScreenSize()).toBe("mobile_landscape_tablet_portrait")
-  })
-
-  test("returns tablet when media query matches tablet", () => {
-    ;(useMediaQueries as jest.Mock).mockImplementationOnce(() => {
-      return {
-        matches: {
-          mobile: false,
-          mobile_landscape_tablet_portrait: false,
-          tablet: true,
-        },
-        matchesAny: true,
-        matchesAll: false,
-      }
-    })
-
-    expect(useScreenSize()).toBe("tablet")
-  })
-
-  test("returns desktop in other cases", () => {
-    ;(useMediaQueries as jest.Mock).mockImplementationOnce(() => {
-      return {
-        matches: {
-          mobile: false,
-          mobile_landscape_tablet_portrait: false,
-          tablet: false,
-        },
-        matchesAny: false,
-        matchesAll: false,
-      }
-    })
-
-    expect(useScreenSize()).toBe("desktop")
-  })
+  test.only.each([
+    { screenWidth: 0, deviceType: "mobile" },
+    { screenWidth: 480, deviceType: "mobile" },
+    { screenWidth: 481, deviceType: "mobile_landscape_tablet_portrait" },
+    { screenWidth: 800, deviceType: "mobile_landscape_tablet_portrait" },
+    { screenWidth: 801, deviceType: "tablet" },
+    { screenWidth: 1340, deviceType: "tablet" },
+    { screenWidth: 1341, deviceType: "desktop" },
+    { screenWidth: 2000, deviceType: "desktop" },
+    { screenWidth: 4000, deviceType: "desktop" },
+  ])(
+    "when screen size is '$screenWidth' should return '$deviceType'",
+    ({ deviceType, screenWidth }) => {
+      mockWindowWidth(screenWidth)
+      const { result } = renderHook(useScreenSize)
+      expect(result.current).toBe(deviceType)
+    }
+  )
 })
