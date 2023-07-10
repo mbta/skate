@@ -39,33 +39,33 @@ export const LayersControl = ({
           <MapLayersIcon />
         </button>
         {showLayersList && (
-          <div className="c-layers-control__layers_list leaflet-bar">
+          <div className="c-layers-control__layers_list">
             <ul className="list-group">
               <li className="list-group-item">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="tileType"
-                    value=""
-                    id="base"
-                    checked={tileType === "base"}
-                    onChange={() => setTileType("base")}
-                  />
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="tileType"
+                  value=""
+                  id="base"
+                  checked={tileType === "base"}
+                  onChange={() => setTileType("base")}
+                />
+                <label className="form-check-label" htmlFor="base">
                   Map (default)
                 </label>
               </li>
               <li className="list-group-item">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="tileType"
-                    value=""
-                    id="satellite"
-                    checked={tileType === "satellite"}
-                    onChange={() => setTileType("satellite")}
-                  />
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="tileType"
+                  value=""
+                  id="satellite"
+                  checked={tileType === "satellite"}
+                  onChange={() => setTileType("satellite")}
+                />
+                <label className="form-check-label" htmlFor="satellite">
                   Satellite
                 </label>
               </li>
