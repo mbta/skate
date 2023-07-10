@@ -591,7 +591,7 @@ exports[`Shuttle Map Page renders 1`] = `
               class="c-map__layer-control"
             >
               <div
-                class="leaflet-control leaflet-bar c-layers-control"
+                class="leaflet-control c-layers-control"
               >
                 <button
                   class="c-layers-control__button leaflet-bar"
@@ -1263,7 +1263,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               class="c-map__layer-control"
             >
               <div
-                class="leaflet-control leaflet-bar c-layers-control"
+                class="leaflet-control c-layers-control"
               >
                 <button
                   class="c-layers-control__button leaflet-bar"
@@ -1935,7 +1935,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               class="c-map__layer-control"
             >
               <div
-                class="leaflet-control leaflet-bar c-layers-control"
+                class="leaflet-control c-layers-control"
               >
                 <button
                   class="c-layers-control__button leaflet-bar"
@@ -2170,7 +2170,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
               class="c-map__layer-control"
             >
               <div
-                class="leaflet-control leaflet-bar c-layers-control"
+                class="leaflet-control c-layers-control"
               >
                 <button
                   class="c-layers-control__button leaflet-bar"
@@ -2871,7 +2871,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               class="c-map__layer-control"
             >
               <div
-                class="leaflet-control leaflet-bar c-layers-control"
+                class="leaflet-control c-layers-control"
               >
                 <button
                   class="c-layers-control__button leaflet-bar"

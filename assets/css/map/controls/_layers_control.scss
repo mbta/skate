@@ -1,9 +1,8 @@
 .c-layers-control {
   display: flex;
-  flex-direction: row-reverse;
   border: none !important;
   gap: 5px;
-  align-items: flex-start;
+  // align-items: flex-start;
 }
 
 .c-layers-control__button {
@@ -21,6 +20,8 @@
 }
 
 .c-layers-control__layers_list {
+  position: fixed;
+  right: 55px;
   .list-group {
     margin: 0rem;
     border-radius: 0px;

@@ -59,7 +59,7 @@ export const CustomControl = ({
   }, [portalElement, portalParent])
 
   const control = (
-    <div className={`leaflet-control leaflet-bar ${className}`}>{children}</div>
+    <div className={`leaflet-control ${className}`}>{children}</div>
   )
 
   return portalElement ? ReactDOM.createPortal(control, portalElement) : null
