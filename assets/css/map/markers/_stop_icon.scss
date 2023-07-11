@@ -35,7 +35,7 @@
   }
 }
 
-.c-stop-icon-container {
+.c-stop-icon-container:not(.c-stop-icon-container--interactions-disabled) {
   &:focus-visible {
     outline-offset: 2px;
   }

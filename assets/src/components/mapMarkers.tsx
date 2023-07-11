@@ -287,6 +287,7 @@ export const RouteStopMarkers = ({
             direction={direction}
             includeStopCard={includeStopCard && !streetViewActive}
             zoomLevel={zoomLevel}
+            interactionStatesDisabled={streetViewActive}
             eventHandlers={
               streetViewActive
                 ? {
