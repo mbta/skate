@@ -73,7 +73,7 @@ describe("LayersControl", () => {
     expect(screen.queryByLabelText("Map (default)")).toBeNull()
   })
 
-  test("when the selected layer is base, the base tiles are rendered", () => {
+  test("when the selected layer is base, the base tiles and attribution are rendered", () => {
     const { container } = render(
       <LayersControl tileType="base" setTileType={jest.fn} />,
       {
@@ -82,9 +82,13 @@ describe("LayersControl", () => {
     )
 
     expect(container.querySelector("img[src^=test_base_url")).not.toBeNull()
+
+    expect(
+      screen.getByRole("link", { name: "OpenStreetMap" })
+    ).toBeInTheDocument()
   })
 
-  test("when the selected layer is satellite, the satellite tiles are rendered", () => {
+  test("when the selected layer is satellite, the satellite tiles and attribution are rendered", () => {
     const { container } = render(
       <LayersControl tileType="satellite" setTileType={jest.fn} />,
       {
@@ -95,5 +99,9 @@ describe("LayersControl", () => {
     expect(
       container.querySelector("img[src^=test_satellite_url")
     ).not.toBeNull()
+
+    expect(
+      screen.getByRole("link", { name: "MassGIS 2021" })
+    ).toBeInTheDocument()
   })
 })

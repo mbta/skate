@@ -75,7 +75,11 @@ export const LayersControl = ({
       </CustomControl>
       <TileLayer
         url={`${tilesetUrlForType(tileType)}`}
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        attribution={
+          tileType === "base"
+            ? '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            : '<a href="https://massgis.maps.arcgis.com/home/item.html?id=bd1ea555a71649508cb215edcc73feaa">MassGIS 2021</a>'
+        }
       />
     </>
   )
