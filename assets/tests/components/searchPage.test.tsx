@@ -22,6 +22,7 @@ import {
 } from "../testHelpers/selectors/components/map"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import { mockTileUrls } from "../testHelpers/mockHelpers"
+import { RealDispatchWrapper } from "../testHelpers/wrappers"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -207,5 +208,23 @@ describe("SearchPage", () => {
     await userEvent.click(zoomInButton.get())
 
     expect(container.querySelector(".c-station-icon")).toBeVisible()
+  })
+
+  describe("Map controls", () => {
+    test("Can change tile layer to satellite", async () => {
+      const { container } = render(
+        <RealDispatchWrapper>
+          <SearchPage />
+        </RealDispatchWrapper>
+      )
+
+      await userEvent.click(layersControlButton.get())
+
+      await userEvent.click(screen.getByLabelText("Satellite"))
+
+      expect(
+        container.querySelector("img[src^=test_satellite_url")
+      ).not.toBeNull()
+    })
   })
 })

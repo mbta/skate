@@ -1203,5 +1203,23 @@ describe("<MapPage />", () => {
         })
       })
     })
+
+    describe("Map controls", () => {
+      test("Can change tile layer to satellite", async () => {
+        const { container } = render(
+          <RealDispatchWrapper>
+            <MapPage />
+          </RealDispatchWrapper>
+        )
+
+        await userEvent.click(layersControlButton.get())
+
+        await userEvent.click(screen.getByLabelText("Satellite"))
+
+        expect(
+          container.querySelector("img[src^=test_satellite_url")
+        ).not.toBeNull()
+      })
+    })
   })
 })

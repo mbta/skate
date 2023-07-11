@@ -53,7 +53,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       mobileMenuIsOpen,
       selectedVehicleOrGhost,
       mapLayers: {
-        searchMap: { tileType: tileType },
+        legacySearchMap: { tileType: tileType },
       },
     },
     dispatch,
