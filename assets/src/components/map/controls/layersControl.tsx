@@ -78,7 +78,7 @@ export const LayersControl = ({
         attribution={
           tileType === "base"
             ? '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            : '<a href="https://massgis.maps.arcgis.com/home/item.html?id=bd1ea555a71649508cb215edcc73feaa">MassGIS 2021</a>'
+            : '<a href="https://www.mass.gov/info-details/massgis-data-2021-aerial-imagery">MassGIS 2021</a>'
         }
       />
     </>
