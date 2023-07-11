@@ -22,6 +22,8 @@ import garageIcon from "../../static/images/icon-bus-garage.svg"
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
 import { StopMarkerWithInfo } from "./map/markers/stopMarker"
+import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"
+import { streetViewUrl } from "../util/streetViewUrl"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -271,6 +273,8 @@ export const RouteStopMarkers = ({
     return []
   })
 
+  const streetViewActive = useContext(StreetViewModeEnabledContext)
+
   return (
     <>
       {uniqueStops.map((stop) =>
@@ -281,8 +285,32 @@ export const RouteStopMarkers = ({
             key={stop.id}
             stop={stop}
             direction={direction}
-            includeStopCard={includeStopCard}
+            includeStopCard={includeStopCard && !streetViewActive}
             zoomLevel={zoomLevel}
+            interactionStatesDisabled={streetViewActive}
+            eventHandlers={
+              streetViewActive
+                ? {
+                    click: () => {
+                      const url = streetViewUrl({
+                        latitude: stop.lat,
+                        longitude: stop.lon,
+                      })
+                      window.FS?.event(
+                        "User clicked map bus stop to open street view",
+                        {
+                          streetViewUrl_str: url,
+                          clickedMapAt: {
+                            latitude_real: stop.lat,
+                            longitude_real: stop.lon,
+                          },
+                        }
+                      )
+                      window.open(url, "_blank")
+                    },
+                  }
+                : {}
+            }
           />
         )
       )}

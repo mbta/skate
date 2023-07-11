@@ -1,36 +1,47 @@
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import React from "react"
 
 import userEvent from "@testing-library/user-event"
-import useVehicleForId from "../../../src/hooks/useVehicleForId"
+
+import MapDisplay from "../../../src/components/mapPage/mapDisplay"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
+import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
+import { useRouteShapes } from "../../../src/hooks/useShapes"
 import { useStations } from "../../../src/hooks/useStations"
+import useVehicleForId from "../../../src/hooks/useVehicleForId"
+import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { LocationType } from "../../../src/models/stopData"
+import {
+  Ghost,
+  VehicleId,
+  VehicleInScheduledService,
+} from "../../../src/realtime"
+import { RouteId } from "../../../src/schedule"
 import { SelectedEntityType } from "../../../src/state/searchPageState"
+import { streetViewUrl } from "../../../src/util/streetViewUrl"
+
 import ghostFactory from "../../factories/ghost"
+import routeFactory from "../../factories/route"
+import { routePatternFactory } from "../../factories/routePattern"
 import { runIdFactory } from "../../factories/run"
 import stopFactory from "../../factories/stop"
 import vehicleFactory, {
   randomLocationVehicle,
   shuttleFactory,
 } from "../../factories/vehicle"
+
 import { setHtmlWidthHeightForLeafletMap } from "../../testHelpers/leafletMapWidth"
-import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
-import routeFactory from "../../factories/route"
 import {
-  VehicleId,
-  VehicleInScheduledService,
-  Ghost,
-} from "../../../src/realtime"
-import { RouteId } from "../../../src/schedule"
-import MapDisplay from "../../../src/components/mapPage/mapDisplay"
-import { mockUsePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
-import { RoutesProvider } from "../../../src/contexts/routesContext"
-import { routePatternFactory } from "../../factories/routePattern"
-import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
+  mockFullStoryEvent,
+  mockUsePatternsByIdForVehicles,
+} from "../../testHelpers/mockHelpers"
+
+import shapeFactory from "../../factories/shape"
+import { zoomInButton } from "../../testHelpers/selectors/components/map"
+import { stopIcon } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"
 import { vehiclePropertiesCard } from "../../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
-import { zoomInButton } from "../../testHelpers/selectors/components/map"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -59,6 +70,11 @@ jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
 jest.mock("../../../src/hooks/useStations", () => ({
   __esModule: true,
   useStations: jest.fn(() => []),
+}))
+
+jest.mock("../../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useRouteShapes: jest.fn(() => []),
 }))
 
 beforeEach(() => {
@@ -369,6 +385,130 @@ describe("<MapDisplay />", () => {
           expect(routePropertiesCard.query()).not.toBeInTheDocument()
         })
       })
+    })
+  })
+
+  describe("when street view is enabled", () => {
+    test("when a vehicle is clicked, should open street view at vehicle location", async () => {
+      mockFullStoryEvent()
+      const mockSetSelection = jest.fn()
+      const openSpy = jest.spyOn(window, "open").mockImplementation(jest.fn())
+
+      const latitude = 0
+      const longitude = 0
+      const bearing = 0
+
+      const { id: routeId } = routeFactory.build()
+      const vehicle = vehicleFactory.build({
+        runId: runIdFactory.build(),
+        routeId,
+        latitude,
+        longitude,
+        bearing,
+      })
+
+      mockUseVehicleForId([vehicle])
+      mockUseVehiclesForRouteMap({ [routeId]: [vehicle] })
+      mockUsePatternsByIdForVehicles([vehicle])
+
+      render(
+        <MapDisplay
+          selectedEntity={{
+            type: SelectedEntityType.Vehicle,
+            vehicleId: vehicle.id,
+          }}
+          setSelection={mockSetSelection}
+          streetViewInitiallyEnabled
+        />
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: vehicle.runId! })
+      )
+
+      const expectedStreetViewUrl = streetViewUrl({
+        latitude,
+        longitude,
+        bearing,
+      })
+      expect(window.FS!.event).toHaveBeenCalledWith(
+        "User clicked map vehicle to open street view",
+        {
+          clickedMapAt: {
+            bearing_real: bearing,
+            latitude_real: latitude,
+            longitude_real: longitude,
+          },
+          streetViewUrl_str: expectedStreetViewUrl,
+        }
+      )
+      expect(openSpy).toHaveBeenCalledWith(expectedStreetViewUrl, "_blank")
+      expect(mockSetSelection).not.toHaveBeenCalled()
+    })
+
+    test("when a bus stop is clicked, should open street view at bus stop location", async () => {
+      mockFullStoryEvent()
+      setHtmlWidthHeightForLeafletMap()
+      mockUseVehicleForId([])
+      mockUseVehiclesForRouteMap({})
+      const mockSetSelection = jest.fn()
+      const openSpy = jest.spyOn(window, "open").mockImplementation(jest.fn())
+
+      const latitude = 0
+      const longitude = 0
+
+      // Add a stop to the map
+      const shape = shapeFactory.build({
+        stops: [
+          stopFactory.build({
+            lat: latitude,
+            lon: longitude,
+          }),
+        ],
+      })
+      ;(useRouteShapes as jest.Mock).mockReturnValue([shape])
+
+      // Ensure shape and stop are associated with selected route
+      const route = routeFactory.build()
+      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+        [route.id]: routePatternFactory.build({
+          shape: shape,
+        }),
+      })
+
+      // Render map with route selected and street view enabled
+      const { container } = render(
+        <MapDisplay
+          selectedEntity={{
+            type: SelectedEntityType.RoutePattern,
+            routeId: route.id,
+            routePatternId: route.id,
+          }}
+          setSelection={mockSetSelection}
+          streetViewInitiallyEnabled
+        />
+      )
+
+      // Click Stop Marker while in street view mode
+      fireEvent.click(stopIcon.get(container))
+
+      const expectedStreetViewUrl = streetViewUrl({
+        latitude,
+        longitude,
+      })
+
+      expect(window.FS!.event).toHaveBeenCalledWith(
+        "User clicked map bus stop to open street view",
+        {
+          clickedMapAt: {
+            latitude_real: latitude,
+            longitude_real: longitude,
+          },
+          streetViewUrl_str: expectedStreetViewUrl,
+        }
+      )
+      expect(openSpy).toHaveBeenCalledWith(expectedStreetViewUrl, "_blank")
+      expect(mockSetSelection).not.toHaveBeenCalled()
     })
   })
 })

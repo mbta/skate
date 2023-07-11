@@ -149,20 +149,43 @@ interface StopMarkerProps extends Omit<MarkerProps, "position"> {
   stop: Stop
   selected?: boolean
   zoomLevel?: number
+  /**
+   * Whether the component _style_ should respond to mouse and keyboard events
+   * such as:
+   * - `hover`
+   * - `focus`
+   * - `focus-visible`
+   * - `selected`
+   *
+   * ---
+   *
+   * This does not affect tooltips, popups, or other events.
+   *
+   * Use {@link StopMarkerProps.interactive `StopMarkerProps.interactive`} to
+   * ignore other mouse events.
+   */
+  interactionStatesDisabled?: boolean
 }
 export const StopMarker = ({
   stop,
   selected = false,
   zoomLevel = 0,
+  interactionStatesDisabled = true,
   ...props
 }: StopMarkerProps) => {
   const stopIconType = stopIconTypeFromZoomLevel(zoomLevel)
   const divIconSettings = useMemo(
     () => ({
       iconSize: stopIconSizeFromStopIconType(stopIconType),
-      className: "c-stop-icon-container c-vehicle-map__stop", // Prevent default leaflet class & outline
+      // Prevent default leaflet class & outline
+      className: joinClasses([
+        "c-stop-icon-container",
+        "c-vehicle-map__stop",
+        interactionStatesDisabled &&
+          "c-stop-icon-container--interactions-disabled",
+      ]),
     }),
-    [stopIconType]
+    [stopIconType, interactionStatesDisabled]
   )
 
   return (
@@ -170,7 +193,12 @@ export const StopMarker = ({
       {...(props as MarkerProps)}
       position={[stop.lat, stop.lon]}
       divIconSettings={divIconSettings}
-      icon={<StopIcon type={stopIconType} selected={selected} />}
+      icon={
+        <StopIcon
+          type={stopIconType}
+          selected={selected && !interactionStatesDisabled}
+        />
+      }
     />
   )
 }
