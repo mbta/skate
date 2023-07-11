@@ -131,6 +131,11 @@ $map-component-z-index: (
   stroke-width: 7;
 }
 
+.c-vehicle-map__route-shape--satellite {
+  stroke: $color-kiwi-300;
+  stroke-opacity: 1;
+}
+
 .leaflet-tooltip.c-vehicle-map__mobile-friendly-tooltip,
 .leaflet-tooltip.route-shape__tooltip {
   background-color: $color-tooltip-background;
@@ -200,4 +205,9 @@ $map-component-z-index: (
   font-family: $font-family;
   font-weight: 600;
   color: $color-gray-800;
+
+  &--satellite {
+    stroke-width: 4px;
+    letter-spacing: 0.03rem;
+  }
 }
