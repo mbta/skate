@@ -25,6 +25,7 @@ import {
   AttributionControl,
   MapContainer,
   Pane,
+  TileLayer,
   useMap,
   useMapEvents,
   ZoomControl,
@@ -48,10 +49,13 @@ import {
 import ZoomLevelWrapper from "./ZoomLevelWrapper"
 import { StreetViewControl } from "./map/controls/StreetViewSwitch"
 import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"
+import { TileType, tilesetUrlForType } from "../tilesetUrls"
+import { TileTypeContext } from "../contexts/tileTypeContext"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
   children?: ReactElement | ReactElement[]
+  tileType?: TileType
   stateClasses?: string
 
   onPrimaryVehicleSelect?: (vehicle: Vehicle) => void
@@ -317,6 +321,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   ])
 
   const stops = (props.shapes || []).flatMap((shape) => shape.stops || [])
+  const tileType = props.tileType || "base"
 
   return (
     <>
@@ -334,6 +339,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ref={mapRef}
         attributionControl={false}
       >
+        <TileLayer
+          url={`${tilesetUrlForType(tileType)}`}
+          attribution={
+            tileType === "base"
+              ? '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              : '<a href="https://www.mass.gov/info-details/massgis-data-2021-aerial-imagery">MassGIS 2021</a>'
+          }
+        />
         <EventAdder />
         {props.allowStreetView && (
           <StreetViewControl
@@ -347,83 +360,90 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
         {allowFullscreen && <FullscreenControl position="topright" />}
         <AttributionControl position="bottomright" prefix={false} />
-        <Pane name="primaryVehicles" pane="markerPane" style={{ zIndex: 499 }}>
-          {props.vehicles.map((vehicle: Vehicle) => (
-            <VehicleMarker
-              key={vehicle.id}
-              vehicle={vehicle}
-              isPrimary={true}
-              isSelected={props.selectedVehicleId === vehicle.id}
-              onSelect={props.onPrimaryVehicleSelect}
+        <TileTypeContext.Provider value={tileType}>
+          <Pane
+            name="primaryVehicles"
+            pane="markerPane"
+            style={{ zIndex: 499 }}
+          >
+            {props.vehicles.map((vehicle: Vehicle) => (
+              <VehicleMarker
+                key={vehicle.id}
+                vehicle={vehicle}
+                isPrimary={true}
+                isSelected={props.selectedVehicleId === vehicle.id}
+                onSelect={props.onPrimaryVehicleSelect}
+              />
+            ))}
+          </Pane>
+
+          <Pane
+            name="secondaryVehicles"
+            pane="markerPane"
+            style={{ zIndex: 400 }}
+          >
+            {(props.secondaryVehicles || []).map((vehicle) => (
+              <VehicleMarker
+                key={vehicle.id}
+                vehicle={vehicle}
+                isPrimary={false}
+              />
+            ))}
+          </Pane>
+
+          {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
+            <TrainVehicleMarker
+              key={trainVehicle.id}
+              trainVehicle={trainVehicle}
             />
           ))}
-        </Pane>
-
-        <Pane
-          name="secondaryVehicles"
-          pane="markerPane"
-          style={{ zIndex: 400 }}
-        >
-          {(props.secondaryVehicles || []).map((vehicle) => (
-            <VehicleMarker
-              key={vehicle.id}
-              vehicle={vehicle}
-              isPrimary={false}
-            />
+          {(props.shapes || []).map((shape) => (
+            <RouteShape key={shape.id} shape={shape} />
           ))}
-        </Pane>
 
-        {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
-          <TrainVehicleMarker
-            key={trainVehicle.id}
-            trainVehicle={trainVehicle}
-          />
-        ))}
-        {(props.shapes || []).map((shape) => (
-          <RouteShape key={shape.id} shape={shape} />
-        ))}
-
-        <ZoomLevelWrapper>
-          {(zoomLevel) => (
-            <>
-              {stops.length > 0 && (
-                <Pane
-                  name="routeStopMarkers"
-                  pane="markerPane"
-                  style={{ zIndex: 450 }} // should be above other non-interactive elements
-                >
-                  <RouteStopMarkers
-                    stops={stops}
-                    zoomLevel={zoomLevel}
-                    direction={props.stopCardDirection}
-                    includeStopCard={
-                      props.includeStopCard && inTestGroup(MAP_BETA_GROUP_NAME)
-                    }
-                  />
-                </Pane>
-              )}
-
-              <Pane
-                name="notableLocationMarkers"
-                pane="markerPane"
-                style={{ zIndex: 410 }}
-              >
-                {zoomLevel >= 15 &&
-                  props.stations?.map((station) => (
-                    <StationMarker
-                      key={station.id}
-                      station={station}
+          <ZoomLevelWrapper>
+            {(zoomLevel) => (
+              <>
+                {stops.length > 0 && (
+                  <Pane
+                    name="routeStopMarkers"
+                    pane="markerPane"
+                    style={{ zIndex: 450 }} // should be above other non-interactive elements
+                  >
+                    <RouteStopMarkers
+                      stops={stops}
                       zoomLevel={zoomLevel}
+                      direction={props.stopCardDirection}
+                      includeStopCard={
+                        props.includeStopCard &&
+                        inTestGroup(MAP_BETA_GROUP_NAME)
+                      }
                     />
-                  ))}
-                {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
-              </Pane>
-            </>
-          )}
-        </ZoomLevelWrapper>
-        <StreetViewModeEnabledContext.Provider value={streetViewEnabled}>
-          {props.children}
-        </StreetViewModeEnabledContext.Provider>
+                  </Pane>
+                )}
+
+                <Pane
+                  name="notableLocationMarkers"
+                  pane="markerPane"
+                  style={{ zIndex: 410 }}
+                >
+                  {zoomLevel >= 15 &&
+                    props.stations?.map((station) => (
+                      <StationMarker
+                        key={station.id}
+                        station={station}
+                        zoomLevel={zoomLevel}
+                      />
+                    ))}
+                  {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
+                </Pane>
+              </>
+            )}
+          </ZoomLevelWrapper>
+          <StreetViewModeEnabledContext.Provider value={streetViewEnabled}>
+            {props.children}
+          </StreetViewModeEnabledContext.Provider>
+        </TileTypeContext.Provider>
       </MapContainer>
     </>
   )

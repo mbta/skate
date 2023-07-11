@@ -12,8 +12,6 @@ import {
 import inTestGroup, { MAP_BETA_GROUP_NAME } from "../../userInTestGroup"
 import { mapModeForUser } from "../../util/mapMode"
 import { MapFollowingPrimaryVehicles } from "../map"
-import { TileLayer } from "react-leaflet"
-import { tilesetUrlForType } from "../../tilesetUrls"
 
 const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
   const [, dispatch] = useContext(StateDispatchContext)
@@ -66,14 +64,7 @@ const MiniMap = ({
       stations={stations}
       allowFullscreen={!inMapBetaGroup}
     >
-      <>
-        {inMapBetaGroup && <SearchMapLink vehicleId={vehicle.id} />}
-
-        <TileLayer
-          url={`${tilesetUrlForType("base")}`}
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-      </>
+      <>{inMapBetaGroup && <SearchMapLink vehicleId={vehicle.id} />}</>
     </MapFollowingPrimaryVehicles>
   )
 }

@@ -79,9 +79,9 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
           trainVehicles={trainVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
           selectionKey={followerResetKey}
+          tileType={tileType}
         >
-          <LayersControl
-            tileType={tileType}
+          <LayersControl.WithTileContext
             setTileType={(tileType: TileType) =>
               dispatch(setTileType("shuttleMap", tileType))
             }

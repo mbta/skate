@@ -356,7 +356,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:r1:"
+              for="street-view-toggle-:r2:"
             >
               Street View
             </label>
@@ -1608,7 +1608,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:r6:"
+              for="street-view-toggle-:r7:"
             >
               Street View
             </label>

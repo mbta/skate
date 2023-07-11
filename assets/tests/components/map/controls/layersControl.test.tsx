@@ -4,23 +4,13 @@ import React, { ReactNode } from "react"
 import { MapContainer } from "react-leaflet"
 import { LayersControl } from "../../../../src/components/map/controls/layersControl"
 import userEvent from "@testing-library/user-event"
-import { mockTileUrls } from "../../../testHelpers/mockHelpers"
 import { layersControlButton } from "../../../testHelpers/selectors/components/map"
-
-jest.mock("../../../../src/tilesetUrls", () => ({
-  __esModule: true,
-  tilesetUrlForType: jest.fn(() => null),
-}))
 
 const mapWrapper = ({ children }: { children: ReactNode }) => (
   <MapContainer center={[0, 0]} zoom={0}>
     {children}
   </MapContainer>
 )
-
-beforeAll(() => {
-  mockTileUrls()
-})
 
 describe("LayersControl", () => {
   test("when the control button is clicked, the list of layers is rendered with the selected layer marked as selected", async () => {
@@ -71,37 +61,5 @@ describe("LayersControl", () => {
     await userEvent.click(container.querySelector(".leaflet-container")!)
 
     expect(screen.queryByLabelText("Map (default)")).toBeNull()
-  })
-
-  test("when the selected layer is base, the base tiles and attribution are rendered", () => {
-    const { container } = render(
-      <LayersControl tileType="base" setTileType={jest.fn} />,
-      {
-        wrapper: mapWrapper,
-      }
-    )
-
-    expect(container.querySelector("img[src^=test_base_url")).not.toBeNull()
-
-    expect(
-      screen.getByRole("link", { name: "OpenStreetMap" })
-    ).toBeInTheDocument()
-  })
-
-  test("when the selected layer is satellite, the satellite tiles and attribution are rendered", () => {
-    const { container } = render(
-      <LayersControl tileType="satellite" setTileType={jest.fn} />,
-      {
-        wrapper: mapWrapper,
-      }
-    )
-
-    expect(
-      container.querySelector("img[src^=test_satellite_url")
-    ).not.toBeNull()
-
-    expect(
-      screen.getByRole("link", { name: "MassGIS 2021" })
-    ).toBeInTheDocument()
   })
 })

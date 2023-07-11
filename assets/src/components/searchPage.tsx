@@ -119,9 +119,9 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           vehicles={onlyVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
           stations={stations}
+          tileType={tileType}
         >
-          <LayersControl
-            tileType={tileType}
+          <LayersControl.WithTileContext
             setTileType={(tileType: TileType) =>
               dispatch(setTileType("legacySearchMap", tileType))
             }

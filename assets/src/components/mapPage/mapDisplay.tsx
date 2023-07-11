@@ -488,6 +488,7 @@ const MapDisplay = ({
       shapes={[]}
       stateClasses={stateClasses}
       streetViewInitiallyEnabled={streetViewInitiallyEnabled}
+      tileType={tileType}
     >
       <MapSafeAreaContext.Provider
         value={{
@@ -500,8 +501,7 @@ const MapDisplay = ({
           setSelection={setSelection}
           setStateClasses={setStateClasses}
         />
-        <LayersControl
-          tileType={tileType}
+        <LayersControl.WithTileContext
           setTileType={(tileType: TileType) =>
             dispatch(setTileType("searchMap", tileType))
           }
