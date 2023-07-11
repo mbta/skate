@@ -17,7 +17,7 @@
     background-color: $color-gray-200;
   }
   &:focus-visible {
-    outline: auto -webkit-focus-ring-color;
+    outline: revert;
   }
 }
 
