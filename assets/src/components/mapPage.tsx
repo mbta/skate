@@ -23,7 +23,7 @@ import {
 import DrawerTab from "./drawerTab"
 import MapDisplay from "./mapPage/mapDisplay"
 import RecentSearches from "./recentSearches"
-import SearchForm from "./searchForm"
+import OldSearchForm from "./oldSearchForm"
 import SearchResults from "./searchResults"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import Loading from "./loading"
@@ -59,7 +59,7 @@ const SearchMode = ({
   return (
     <>
       <div className="c-map-page__input u-hideable">
-        <SearchForm
+        <OldSearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
           submitEvent="Search submitted from map page"

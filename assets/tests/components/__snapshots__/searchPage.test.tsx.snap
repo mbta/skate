@@ -13,23 +13,23 @@ exports[`SearchPage renders the empty state 1`] = `
       >
         <form
           aria-label="Submit Search"
-          class="c-search-form"
+          class="c-old-search-form"
         >
           <div
-            class="c-search-form__row"
+            class="c-old-search-form__row"
           >
             <div
-              class="c-search-form__text"
+              class="c-old-search-form__text"
             >
               <input
                 aria-label="Search"
-                class="c-search-form__input"
+                class="c-old-search-form__input"
                 placeholder="Search"
                 type="text"
                 value=""
               />
               <button
-                class="c-search-form__clear"
+                class="c-old-search-form__clear"
                 title="Clear Search"
                 type="reset"
               >
@@ -39,7 +39,7 @@ exports[`SearchPage renders the empty state 1`] = `
               </button>
             </div>
             <button
-              class="c-search-form__submit button-submit"
+              class="c-old-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -50,75 +50,75 @@ exports[`SearchPage renders the empty state 1`] = `
             </button>
           </div>
           <div
-            class="c-search-form__row"
+            class="c-old-search-form__row"
           >
             <ul
-              class="c-search-form__property-buttons"
+              class="c-old-search-form__property-buttons"
             >
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
                   checked=""
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-all"
                   name="property"
                   type="radio"
                   value="all"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
                 </label>
               </li>
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-run"
                   name="property"
                   type="radio"
                   value="run"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
                 </label>
               </li>
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-vehicle"
                   name="property"
                   type="radio"
                   value="vehicle"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
                 </label>
               </li>
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-operator"
                   name="property"
                   type="radio"
                   value="operator"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
@@ -348,23 +348,23 @@ exports[`SearchPage renders vehicle data 1`] = `
       >
         <form
           aria-label="Submit Search"
-          class="c-search-form"
+          class="c-old-search-form"
         >
           <div
-            class="c-search-form__row"
+            class="c-old-search-form__row"
           >
             <div
-              class="c-search-form__text"
+              class="c-old-search-form__text"
             >
               <input
                 aria-label="Search"
-                class="c-search-form__input"
+                class="c-old-search-form__input"
                 placeholder="Search"
                 type="text"
                 value=""
               />
               <button
-                class="c-search-form__clear"
+                class="c-old-search-form__clear"
                 title="Clear Search"
                 type="reset"
               >
@@ -374,7 +374,7 @@ exports[`SearchPage renders vehicle data 1`] = `
               </button>
             </div>
             <button
-              class="c-search-form__submit button-submit"
+              class="c-old-search-form__submit button-submit"
               disabled=""
               title="Submit"
               type="submit"
@@ -385,75 +385,75 @@ exports[`SearchPage renders vehicle data 1`] = `
             </button>
           </div>
           <div
-            class="c-search-form__row"
+            class="c-old-search-form__row"
           >
             <ul
-              class="c-search-form__property-buttons"
+              class="c-old-search-form__property-buttons"
             >
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
                   checked=""
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-all"
                   name="property"
                   type="radio"
                   value="all"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-all"
                 >
                   all
                 </label>
               </li>
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-run"
                   name="property"
                   type="radio"
                   value="run"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-run"
                 >
                   run
                 </label>
               </li>
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-vehicle"
                   name="property"
                   type="radio"
                   value="vehicle"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-vehicle"
                 >
                   vehicle
                 </label>
               </li>
               <li
-                class="c-search-form__property-button"
+                class="c-old-search-form__property-button"
               >
                 <input
-                  class="c-search-form__property-input"
+                  class="c-old-search-form__property-input"
                   id="property-operator"
                   name="property"
                   type="radio"
                   value="operator"
                 />
                 <label
-                  class="c-search-form__property-label button-search-filter"
+                  class="c-old-search-form__property-label button-search-filter"
                   for="property-operator"
                 >
                   operator
