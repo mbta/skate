@@ -3,9 +3,9 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { SearchIcon } from "../helpers/icon"
 import { CircleXIcon } from "./circleXIcon"
 import { FilterAccordion } from "./filterAccordion"
-import { SearchQueryType, isValidSearchText } from "../models/searchQuery"
+import { isValidSearchText, OldSearchQueryType } from "../models/searchQuery"
 import {
-  setSearchProperty,
+  setOldSearchProperty,
   setSearchText,
   submitSearch,
 } from "../state/searchPageState"
@@ -51,7 +51,7 @@ type SearchFiltersState = {
  */
 function filterNameToSearchProperty(
   name: keyof SearchFiltersState
-): SearchQueryType {
+): OldSearchQueryType {
   switch (name) {
     case "Locations":
       return "all"
@@ -216,7 +216,7 @@ const SearchFormFromStateDispatchContext = ({
         onClear?.(event)
       }}
       onFiltersChanged={(name, _) => {
-        dispatch(setSearchProperty(filterNameToSearchProperty(name)))
+        dispatch(setOldSearchProperty(filterNameToSearchProperty(name)))
         dispatch(submitSearch())
       }}
     />

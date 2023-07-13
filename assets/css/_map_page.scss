@@ -133,6 +133,24 @@ $map-page-search-stub-size: 10px;
   padding: 0.5rem;
 }
 
+.c-map-page__search_results_section {
+  margin-bottom: 0.5rem;
+}
+
+.c-map-page__search_results_header {
+  color: $color-gray-900;
+  font-feature-settings: "clig" off, "liga" off;
+  font-size: var(--font-size-xs);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.c-map_page__search_results_actions {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
 .c-map-page__new-search-button:only-child {
   justify-content: center;
   flex: 1;

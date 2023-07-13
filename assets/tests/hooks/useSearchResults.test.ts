@@ -7,6 +7,7 @@ import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleFactory from "../factories/vehicle"
 import vehicleDataFactory from "../factories/vehicle_data"
+import { searchQueryRunFactory } from "../factories/searchQuery"
 
 describe("useSearchResults", () => {
   test("returns null initially", () => {
@@ -21,10 +22,9 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const searchQuery: SearchQuery = {
+    const searchQuery: SearchQuery = searchQueryRunFactory.build({
       text: "test",
-      property: "run",
-    }
+    })
 
     renderHook(() => useSearchResults(mockSocket, searchQuery))
 
@@ -211,10 +211,9 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok", { data: searchResultsData })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const searchQuery: SearchQuery = {
+    const searchQuery: SearchQuery = searchQueryRunFactory.build({
       text: "test",
-      property: "run",
-    }
+    })
     const { result } = renderHook(() =>
       useSearchResults(mockSocket, searchQuery)
     )
@@ -234,19 +233,17 @@ describe("useSearchResults", () => {
     mockUseStateOnce(vehicles)
     mockUseStateOnce(channel2)
 
-    const search1: SearchQuery = {
+    const search1: SearchQuery = searchQueryRunFactory.build({
       text: "one",
-      property: "run",
-    }
+    })
     const { rerender } = renderHook(
       (searchQuery) => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 }
     )
 
-    const search2: SearchQuery = {
+    const search2: SearchQuery = searchQueryRunFactory.build({
       text: "two",
-      property: "run",
-    }
+    })
     rerender(search2)
 
     expect(channel1.leave).toHaveBeenCalled()
@@ -258,10 +255,9 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const search1: SearchQuery | null = {
+    const search1: SearchQuery | null = searchQueryRunFactory.build({
       text: "validSearch",
-      property: "run",
-    }
+    })
     const { rerender } = renderHook(
       (searchQuery) => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 as SearchQuery | null }

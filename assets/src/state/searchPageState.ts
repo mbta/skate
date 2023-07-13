@@ -4,6 +4,7 @@ import {
   isValidSearchQuery,
   SavedSearchQuery,
   SearchQuery,
+  SearchProperty,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -56,18 +57,34 @@ export const setSearchText = (text: string): SetSearchTextAction => ({
   payload: { text },
 })
 
-interface SetSearchPropertyAction {
+interface setOldSearchPropertyAction {
   type: "SET_SEARCH_PROPERTY"
   payload: {
     property: string
   }
 }
 
-export const setSearchProperty = (
+export const setOldSearchProperty = (
   property: string
-): SetSearchPropertyAction => ({
+): setOldSearchPropertyAction => ({
   type: "SET_SEARCH_PROPERTY",
   payload: { property },
+})
+
+interface SetPropertyMatchLimitAction {
+  type: "SET_PROPERTY_MATCH_LIMIT"
+  payload: {
+    property: SearchProperty
+    limit: number
+  }
+}
+
+export const setPropertyMatchLimit = (
+  property: SearchProperty,
+  limit: number
+): SetPropertyMatchLimitAction => ({
+  type: "SET_PROPERTY_MATCH_LIMIT",
+  payload: { property, limit },
 })
 
 interface SubmitSearchAction {
@@ -111,7 +128,8 @@ export const setSelectedEntity = (
 
 export type Action =
   | SetSearchTextAction
-  | SetSearchPropertyAction
+  | setOldSearchPropertyAction
+  | SetPropertyMatchLimitAction
   | SubmitSearchAction
   | NewSearchSessionAction
   | SelectEntityAction
@@ -135,6 +153,26 @@ export const reducer = (
         ...state,
         query: { ...state.query, property: action.payload.property },
         isActive: false,
+      }
+    case "SET_PROPERTY_MATCH_LIMIT":
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          properties:
+            action.payload.limit === 0
+              ? state.query.properties.filter(
+                  ({ property }) => property !== action.payload.property
+                )
+              : state.query.properties.map((existingProperty) =>
+                  existingProperty.property === action.payload.property
+                    ? {
+                        property: existingProperty.property,
+                        limit: action.payload.limit,
+                      }
+                    : existingProperty
+                ),
+        },
       }
     case "SUBMIT_SEARCH":
       if (isValidSearchQuery(state.query)) {

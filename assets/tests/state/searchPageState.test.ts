@@ -4,7 +4,7 @@ import {
   initialSearchPageState,
   reducer,
   SearchPageState,
-  setSearchProperty,
+  setOldSearchProperty,
   setSearchText,
   submitSearch,
   SelectedEntityType,
@@ -42,18 +42,21 @@ describe("reducer", () => {
     expect(newSearch.isActive).toEqual(false)
   })
 
-  test("setSearchProperty allows you to set property", () => {
-    const newSearch = reducer(initialSearchPageState, setSearchProperty("run"))
+  test("setOldSearchProperty allows you to set property", () => {
+    const newSearch = reducer(
+      initialSearchPageState,
+      setOldSearchProperty("run")
+    )
 
     expect(newSearch.query.property).toEqual("run")
   })
 
-  test("setSearchProperty sets isActive to false", () => {
+  test("setOldSearchProperty sets isActive to false", () => {
     const activeSearch = {
       ...initialSearchPageState,
       isActive: true,
     }
-    const newSearch = reducer(activeSearch, setSearchProperty("run"))
+    const newSearch = reducer(activeSearch, setOldSearchProperty("run"))
 
     expect(newSearch.isActive).toEqual(false)
   })

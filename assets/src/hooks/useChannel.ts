@@ -1,5 +1,5 @@
 import { Channel, Socket } from "phoenix"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { assert, Struct, StructError } from "superstruct"
 import { reload } from "../models/browser"
 import * as Sentry from "@sentry/react"
@@ -142,4 +142,83 @@ export const useCheckedChannel = <T, U>({
     closeAfterFirstRead,
   ])
   return state
+}
+
+export const useCheckedTwoWayChannel = <T, U>({
+  socket,
+  topic,
+  event,
+  dataStruct,
+  parser,
+  loadingState,
+  initialMessage,
+}: {
+  socket: Socket | undefined
+  topic: string | null
+  event: string
+  initialMessage: any
+  dataStruct: Struct<T, any>
+  parser: (data: T) => U
+  loadingState: U
+}): [U, (event: string, payload: any) => void] => {
+  const [state, setState] = useState<U>(loadingState)
+  const [channel, setChannel] = useState<Channel | undefined>()
+
+  const onOk = ({ data: data }: { data: unknown }) => {
+    try {
+      assert(data, dataStruct)
+      setState(parser(data))
+    } catch (error) {
+      if (error instanceof StructError) {
+        Sentry.captureException(error)
+      }
+    }
+  }
+
+  const pushUpdate = useCallback(
+    (event: string, payload: any): void => {
+      if (channel) {
+        channel
+          .push(event, payload)
+          .receive("ok", (data: { data: unknown }) => {
+            onOk(data)
+          })
+      }
+    },
+    [channel]
+  )
+
+  useEffect(() => {
+    setState(loadingState)
+    let channel: Channel | undefined
+    if (socket !== undefined && topic !== null) {
+      channel = initialMessage
+        ? socket.channel(topic, initialMessage)
+        : socket.channel(topic)
+      channel.on(event, (data: { data: unknown }) => {
+        onOk(data)
+      })
+      channel.onError((error) => console.log(error))
+
+      channel
+        .join()
+        .receive("ok", (data: { data: unknown }) => {
+          onOk(data)
+          setChannel(channel)
+        })
+        .receive("error", ({ reason }) =>
+          // eslint-disable-next-line no-console
+          console.error(`joining topic ${topic} failed`, reason)
+        )
+        .receive("timeout", reload)
+    }
+
+    return () => {
+      if (channel !== undefined) {
+        channel.leave()
+        channel = undefined
+      }
+    }
+  }, [socket, topic, event, loadingState, dataStruct, parser])
+  return [state, pushUpdate]
 }

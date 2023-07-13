@@ -2,11 +2,11 @@ import { Factory } from "fishery"
 import {
   emptySearchQuery,
   SearchQuery,
-  SearchQueryType,
+  OldSearchQueryType,
 } from "../../src/models/searchQuery"
 
 class SearchQueryFactory extends Factory<SearchQuery> {
-  searchType(property: SearchQueryType) {
+  searchType(property: OldSearchQueryType) {
     return this.params({ property })
   }
 
