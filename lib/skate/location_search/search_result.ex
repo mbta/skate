@@ -14,6 +14,7 @@ defmodule Skate.LocationSearch.SearchResult do
     :longitude
   ]
 
+  @derive {Jason.Encoder, only: [:id, :name, :address, :latitude, :longitude]}
   defstruct [
     :id,
     :name,
@@ -21,6 +22,4 @@ defmodule Skate.LocationSearch.SearchResult do
     :latitude,
     :longitude
   ]
-
-  @derive Jason.Encoder
 end

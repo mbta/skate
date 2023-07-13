@@ -123,6 +123,7 @@ defmodule SkateWeb.Router do
     put "/route_tabs", RouteTabsController, :update
     put "/notification_read_state", NotificationReadStatesController, :update
     get "/swings", SwingsController, :index
+    get "/location_search/search", LocationSearchController, :search
   end
 
   scope "/_flags" do
