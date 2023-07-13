@@ -30,6 +30,12 @@ import {
   findFirstOpenTabWith,
   selectTabByUUID,
 } from "./models/routeTab"
+import {
+  MapLayersAction,
+  MapLayersState,
+  initialMapLayersState,
+  reducer as mapLayersReducer,
+} from "./state/mapLayersState"
 
 export enum OpenView {
   None = 1,
@@ -92,6 +98,7 @@ export interface State {
   openInputModal: OpenInputModal | null
   mobileMenuIsOpen: boolean
   showGaragesFilter: boolean
+  mapLayers: MapLayersState
 }
 
 export const initialState: State = {
@@ -114,6 +121,7 @@ export const initialState: State = {
   openInputModal: null,
   mobileMenuIsOpen: false,
   showGaragesFilter: false,
+  mapLayers: initialMapLayersState,
 }
 
 interface CreateRouteTabAction {
@@ -646,6 +654,8 @@ export type Action =
   | ToggleMobileMenuAction
   // Routepicker Garage Filter
   | ToggleShowGaragesFilterAction
+  // MapLayerAction
+  | MapLayersAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -1235,5 +1245,6 @@ export const reducer = (state: State, action: Action): State => {
     openInputModal: openInputModalReducer(state.openInputModal, action),
     mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
     showGaragesFilter: garageFilterReducer(state.showGaragesFilter, action),
+    mapLayers: mapLayersReducer(state.mapLayers, action),
   }
 }

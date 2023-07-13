@@ -1,5 +1,7 @@
 import appData from "./appData"
 
+export type TileType = "base" | "satellite"
+
 export const tilesetUrlForType = (
   type: "base" | "satellite"
 ): string | undefined => {

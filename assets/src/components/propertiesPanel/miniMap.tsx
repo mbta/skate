@@ -53,25 +53,19 @@ const MiniMap = ({
 }) => {
   const stations: Stop[] | null = useStations()
 
-  return inTestGroup(MAP_BETA_GROUP_NAME) ? (
+  const inMapBetaGroup = inTestGroup(MAP_BETA_GROUP_NAME)
+
+  return (
     <MapFollowingPrimaryVehicles
       selectedVehicleId={vehicle.id}
       vehicles={[vehicle]}
       shapes={shapes}
       secondaryVehicles={routeVehicles}
       stations={stations}
-      allowFullscreen={false}
+      allowFullscreen={!inMapBetaGroup}
     >
-      <SearchMapLink vehicleId={vehicle.id} />
+      <>{inMapBetaGroup && <SearchMapLink vehicleId={vehicle.id} />}</>
     </MapFollowingPrimaryVehicles>
-  ) : (
-    <MapFollowingPrimaryVehicles
-      selectedVehicleId={vehicle.id}
-      vehicles={[vehicle]}
-      shapes={shapes}
-      secondaryVehicles={routeVehicles}
-      stations={stations}
-    />
   )
 }
 

@@ -15,7 +15,8 @@ import {
   newSearchSession,
 } from "../../../src/state/searchPageState"
 import userEvent from "@testing-library/user-event"
-import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
+import { mockFullStoryEvent, mockTileUrls } from "../../testHelpers/mockHelpers"
+import { layersControlButton } from "../../testHelpers/selectors/components/map"
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
@@ -29,9 +30,18 @@ jest.mock("../../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
 }))
 
+jest.mock("../../../src/tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
+}))
+
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
 jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
+beforeAll(() => {
+  mockTileUrls()
+})
 
 afterAll(() => {
   global.scrollTo = originalScrollTo
@@ -102,6 +112,15 @@ describe("MiniMap", () => {
       expect(
         screen.getByRole("button", { name: "Full Screen" })
       ).toBeInTheDocument()
+    })
+
+    test("Doesn't have layers control", () => {
+      render(
+        <MemoryRouter initialEntries={["/"]}>
+          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
+        </MemoryRouter>
+      )
+      expect(layersControlButton.query()).toBeNull()
     })
   })
 })

@@ -12,6 +12,9 @@ import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { MapFollowingSelectionKey } from "./map"
 import ShuttlePicker from "./shuttlePicker"
+import { LayersControl } from "./map/controls/layersControl"
+import { setTileType } from "../state/mapLayersState"
+import { TileType } from "../tilesetUrls"
 
 const filterShuttles = (
   shuttles: Vehicle[],
@@ -38,6 +41,9 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
     selectedShuttleRouteIds,
     selectedShuttleRunIds,
     mobileMenuIsOpen,
+    mapLayers: {
+      shuttleMap: { tileType: tileType },
+    },
   } = state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
@@ -73,7 +79,14 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
           trainVehicles={trainVehicles}
           onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
           selectionKey={followerResetKey}
-        />
+          tileType={tileType}
+        >
+          <LayersControl.WithTileContext
+            setTileType={(tileType: TileType) =>
+              dispatch(setTileType("shuttleMap", tileType))
+            }
+          />
+        </MapFollowingSelectionKey>
       </div>
     </div>
   )

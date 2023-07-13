@@ -1,5 +1,6 @@
 import React from "react"
 import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import { BrowserRouter } from "react-router-dom"
 import ShuttleMapPage, {
   allTrainVehicles,
@@ -16,9 +17,12 @@ import { shuttleFactory } from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import shapeFactory from "../factories/shape"
 import {
+  layersControlButton,
   zoomInButton,
   zoomOutButton,
 } from "../testHelpers/selectors/components/map"
+import { mockTileUrls } from "../testHelpers/mockHelpers"
+import { RealDispatchWrapper } from "../testHelpers/wrappers"
 
 jest
   .spyOn(dateTime, "now")
@@ -42,6 +46,15 @@ jest.mock("../../src/hooks/useTrainVehicles", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }))
+
+jest.mock("../../src/tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
+}))
+
+beforeAll(() => {
+  mockTileUrls()
+})
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -69,6 +82,15 @@ describe("Shuttle Map Page", () => {
       </BrowserRouter>
     )
     expect(result.asFragment()).toMatchSnapshot()
+  })
+
+  test("Has the layers control", () => {
+    render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(layersControlButton.get()).toBeInTheDocument()
   })
 
   // TODO: based on the snapshot, this test does not appear to be correctly testing
@@ -214,6 +236,24 @@ describe("allTrainVehicles", () => {
     }
 
     expect(allTrainVehicles(trainVehiclesByRouteId)).toEqual([trainVehicle])
+  })
+})
+
+describe("Map controls", () => {
+  test("Can change tile layer to satellite", async () => {
+    const { container } = render(
+      <RealDispatchWrapper>
+        <ShuttleMapPage />
+      </RealDispatchWrapper>
+    )
+
+    await userEvent.click(layersControlButton.get())
+
+    await userEvent.click(screen.getByLabelText("Satellite"))
+
+    expect(
+      container.querySelector("img[src^=test_satellite_url")
+    ).not.toBeNull()
   })
 })
 

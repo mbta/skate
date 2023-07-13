@@ -46,7 +46,10 @@ import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import { VehicleId, VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
-import { mockUsePatternsByIdForVehicles } from "../testHelpers/mockHelpers"
+import {
+  mockTileUrls,
+  mockUsePatternsByIdForVehicles,
+} from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
@@ -54,7 +57,10 @@ import { routePatternFactory } from "../factories/routePattern"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { vehiclePropertiesCard } from "../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
 import { routePropertiesCard } from "../testHelpers/selectors/components/mapPage/routePropertiesCard"
-import { zoomInButton } from "../testHelpers/selectors/components/map"
+import {
+  layersControlButton,
+  zoomInButton,
+} from "../testHelpers/selectors/components/map"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -88,6 +94,11 @@ jest.mock("../../src/hooks/useVehiclesForRoute", () => ({
 jest.mock("../../src/hooks/useStations", () => ({
   __esModule: true,
   useStations: jest.fn(() => []),
+}))
+
+jest.mock("../../src/tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
 }))
 
 type VehicleIdToVehicle = {
@@ -126,6 +137,10 @@ function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
   return container.querySelectorAll(".c-station-icon")
 }
 
+beforeAll(() => {
+  mockTileUrls()
+})
+
 describe("<MapPage />", () => {
   describe("Snapshot", () => {
     test("renders the null state", () => {
@@ -142,6 +157,21 @@ describe("<MapPage />", () => {
       )
 
       expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Has the layers control", () => {
+      ;(useSearchResults as jest.Mock).mockReturnValue([])
+      render(
+        <StateDispatchProvider
+          state={stateFactory.build()}
+          dispatch={jest.fn()}
+        >
+          <BrowserRouter>
+            <MapPage />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
+      expect(layersControlButton.get()).toBeInTheDocument()
     })
 
     test("renders the empty state", () => {
@@ -1171,6 +1201,24 @@ describe("<MapPage />", () => {
           ).toHaveLength(0)
           expect(vehiclePropertiesCard.get()).toBeVisible()
         })
+      })
+    })
+
+    describe("Map controls", () => {
+      test("Can change tile layer to satellite", async () => {
+        const { container } = render(
+          <RealDispatchWrapper>
+            <MapPage />
+          </RealDispatchWrapper>
+        )
+
+        await userEvent.click(layersControlButton.get())
+
+        await userEvent.click(screen.getByLabelText("Satellite"))
+
+        expect(
+          container.querySelector("img[src^=test_satellite_url")
+        ).not.toBeNull()
       })
     })
   })

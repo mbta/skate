@@ -4,7 +4,7 @@ import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
 import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
-import {
+import Map, {
   autoCenter,
   defaultCenter,
   MapFollowingPrimaryVehicles,
@@ -21,7 +21,7 @@ import getTestGroups from "../../src/userTestGroups"
 import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
 import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import { mockFullStoryEvent, mockTileUrls } from "../testHelpers/mockHelpers"
 import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPage/map"
 import { streetViewUrl } from "../../src/util/streetViewUrl"
 
@@ -47,10 +47,18 @@ jest.mock("userTestGroups", () => ({
   __esModule: true,
   default: jest.fn(() => []),
 }))
+jest.mock("tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
+}))
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
 jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
+beforeAll(() => {
+  mockTileUrls()
+})
 
 beforeEach(() => {
   ;(getTestGroups as jest.Mock).mockReturnValue([])
@@ -689,5 +697,29 @@ describe("auto centering", () => {
       )
       expect(getCenter(mapRef)).toEqual(defaultCenter)
     })
+  })
+})
+
+describe("TileLayer", () => {
+  test("when the selected layer is base, the base tiles and attribution are rendered", () => {
+    const { container } = render(<Map tileType="base" vehicles={[]} />)
+
+    expect(container.querySelector("img[src^=test_base_url")).not.toBeNull()
+
+    expect(
+      screen.getByRole("link", { name: "OpenStreetMap" })
+    ).toBeInTheDocument()
+  })
+
+  test("when the selected layer is satellite, the satellite tiles and attribution are rendered", () => {
+    const { container } = render(<Map tileType="satellite" vehicles={[]} />)
+
+    expect(
+      container.querySelector("img[src^=test_satellite_url")
+    ).not.toBeNull()
+
+    expect(
+      screen.getByRole("link", { name: "MassGIS 2021" })
+    ).toBeInTheDocument()
   })
 })

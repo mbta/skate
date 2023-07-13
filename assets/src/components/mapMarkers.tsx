@@ -24,6 +24,8 @@ import stationIcon from "../../static/images/icon-station.svg"
 import { StopMarkerWithInfo } from "./map/markers/stopMarker"
 import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../util/streetViewUrl"
+import { TileTypeContext } from "../contexts/tileTypeContext"
+import { ReactMarker } from "./map/utilities/reactMarker"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -332,12 +334,18 @@ export const RouteShape = React.memo(
       point.lat,
       point.lon,
     ])
+
+    const tileType = useContext(TileTypeContext)
+
     return (
       <Polyline
+        // workaround to className not being mutable - inclue tileType in key to force rerender when tileType changes
+        key={shape.id + tileType}
         className={joinClasses([
           "c-vehicle-map__route-shape",
           isSelected && "c-vehicle-map__route-shape--selected",
           shape.className,
+          `c-vehicle-map__route-shape--${tileType}`,
         ])}
         positions={positions}
         interactive={false}
@@ -363,6 +371,8 @@ const Garage = ({
   zoomLevel: number
 }) => {
   const showLabel = zoomLevel >= 16
+  const tileType = useContext(TileTypeContext)
+
   return (
     <>
       <Marker
@@ -372,16 +382,20 @@ const Garage = ({
         icon={garageLeafletIcon}
       />
       {showLabel && (
-        <Marker
+        <ReactMarker
           interactive={false}
           position={[garage.lat, garage.lon]}
-          icon={Leaflet.divIcon({
+          divIconSettings={{
             iconAnchor: new Leaflet.Point(-14, 25),
-            className: "c-garage-icon__label",
-            html: `<svg height="30" width="200">
-				    <text y=15>${garage.name}</text>
-				</svg>`,
-          })}
+            className: `c-garage-icon__label c-garage-icon__label--${tileType}`,
+          }}
+          icon={
+            <svg height="30" width="200">
+              <text y="15" x="1">
+                {garage.name}
+              </text>
+            </svg>
+          }
         />
       )}
     </>

@@ -188,7 +188,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="/13/2479/3029.png"
+                  src="test_base_url/13/2479/3029"
                   style="width: 256px; height: 256px; left: -4px; top: -239px;"
                 />
               </div>
@@ -265,6 +265,18 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               </a>
             </div>
             <div
+              class="leaflet-control c-layers-control"
+            >
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
+              >
+                <span>
+                  <svg />
+                </span>
+              </button>
+            </div>
+            <div
               class="leaflet-bar leaflet-control"
             >
               <a
@@ -333,7 +345,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r1:"
+              for="street-view-toggle-:r2:"
               role="presentation"
             >
               <span
@@ -344,7 +356,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:r1:"
+              for="street-view-toggle-:r2:"
             >
               Street View
             </label>
@@ -353,7 +365,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r1:"
+                id="street-view-toggle-:r2:"
                 role="switch"
                 type="checkbox"
               />
@@ -554,7 +566,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="/13/2479/3029.png"
+                  src="test_base_url/13/2479/3029"
                   style="width: 256px; height: 256px; left: -4px; top: -239px;"
                 />
               </div>
@@ -629,6 +641,18 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                   −
                 </span>
               </a>
+            </div>
+            <div
+              class="leaflet-control c-layers-control"
+            >
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
+              >
+                <span>
+                  <svg />
+                </span>
+              </button>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -919,13 +943,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="run:r2:"
+                      id="run:r3:"
                       scope="row"
                     >
                       run
                     </th>
                     <td
-                      aria-labelledby="run:r2:"
+                      aria-labelledby="run:r3:"
                       class="kv-value font-s-reg"
                     >
                       run-1
@@ -934,13 +958,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="vehicle:r3:"
+                      id="vehicle:r4:"
                       scope="row"
                     >
                       vehicle
                     </th>
                     <td
-                      aria-labelledby="vehicle:r3:"
+                      aria-labelledby="vehicle:r4:"
                       class="kv-value font-s-reg"
                     >
                       v1-label
@@ -949,13 +973,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="operator:r4:"
+                      id="operator:r5:"
                       scope="row"
                     >
                       operator
                     </th>
                     <td
-                      aria-labelledby="operator:r4:"
+                      aria-labelledby="operator:r5:"
                       class="kv-value font-s-reg fs-mask"
                     >
                       WILL SMITH #op1
@@ -972,13 +996,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               >
                 <label
                   class="c-current-location__label label font-xs-reg title-case"
-                  for="current-location-:r5:"
+                  for="current-location-:r6:"
                 >
                   Current Location
                 </label>
                 <output
                   class="c-current-location__value label font-s-semi"
-                  id="current-location-:r5:"
+                  id="current-location-:r6:"
                 >
                   loading...
                 </output>
@@ -1034,7 +1058,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <img
                   alt=""
                   class="leaflet-tile"
-                  src="/16/19831/24239.png"
+                  src="test_base_url/16/19831/24239"
                   style="width: 256px; height: 256px; left: -64px; top: -119px;"
                 />
               </div>
@@ -1070,54 +1094,12 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -57px; top: 1268px; z-index: 1268;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    Albany
-                  </text>
-                  
-				
-                </svg>
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
                 role="button"
                 style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2115px; top: 3590px; z-index: 3590;"
                 tabindex="0"
               >
                 <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2115px; top: 3590px; z-index: 3590;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    Arborway
-                  </text>
-                  
-				
-                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1128,54 +1110,12 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 273px; top: 1292px; z-index: 1292;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    Cabot
-                  </text>
-                  
-				
-                </svg>
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
                 role="button"
                 style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -456px; top: -1747px; z-index: -1747;"
                 tabindex="0"
               >
                 <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -456px; top: -1747px; z-index: -1747;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    Charlestown and Somerville
-                  </text>
-                  
-				
-                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1186,54 +1126,12 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1173px; top: -3850px; z-index: -3850;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    Fellsway
-                  </text>
-                  
-				
-                </svg>
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
                 role="button"
                 style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 4158px; top: -5974px; z-index: -5974;"
                 tabindex="0"
               >
                 <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 4158px; top: -5974px; z-index: -5974;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    Lynn
-                  </text>
-                  
-				
-                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1244,54 +1142,12 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3032px; top: -2293px; z-index: -2293;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    North Cambridge
-                  </text>
-                  
-				
-                </svg>
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
                 role="button"
                 style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2539px; top: 6363px; z-index: 6363;"
                 tabindex="0"
               >
                 <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
-                role="button"
-                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2539px; top: 6363px; z-index: 6363;"
-                tabindex="0"
-              >
-                <svg
-                  height="30"
-                  width="200"
-                >
-                  
-				    
-                  <text
-                    y="15"
-                  >
-                    Quincy
-                  </text>
-                  
-				
-                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1302,25 +1158,202 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon__label leaflet-zoom-hide"
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -57px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Albany
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2115px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Arborway
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 273px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Cabot
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -456px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Charlestown and Somerville
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1173px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Fellsway
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 4158px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Lynn
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3032px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      North Cambridge
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2539px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <div
+                  class="w-100 h-100"
+                >
+                  <svg
+                    height="30"
+                    width="200"
+                  >
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Quincy
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -65px; top: 1827px; z-index: 1827;"
                 tabindex="0"
               >
-                <svg
-                  height="30"
-                  width="200"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-				    
-                  <text
-                    y="15"
+                  <svg
+                    height="30"
+                    width="200"
                   >
-                    Southampton
-                  </text>
-                  
-				
-                </svg>
+                    <text
+                      x="1"
+                      y="15"
+                    >
+                      Southampton
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
             <div
@@ -1493,6 +1526,18 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </a>
             </div>
             <div
+              class="leaflet-control c-layers-control"
+            >
+              <button
+                class="c-layers-control__button leaflet-bar"
+                title="Layers"
+              >
+                <span>
+                  <svg />
+                </span>
+              </button>
+            </div>
+            <div
               class="leaflet-bar leaflet-control"
             >
               <a
@@ -1561,7 +1606,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r6:"
+              for="street-view-toggle-:r7:"
               role="presentation"
             >
               <span
@@ -1572,7 +1617,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:r6:"
+              for="street-view-toggle-:r7:"
             >
               Street View
             </label>
@@ -1581,7 +1626,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r6:"
+                id="street-view-toggle-:r7:"
                 role="switch"
                 type="checkbox"
               />
