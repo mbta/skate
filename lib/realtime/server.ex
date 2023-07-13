@@ -96,6 +96,14 @@ defmodule Realtime.Server do
     )
   end
 
+  @spec update_search_subscription(search_params(), GenServer.server()) :: [VehicleOrGhost.t()]
+  def update_search_subscription(search_params, server \\ default_name()) do
+    update_subscription(
+      server,
+      {:search, search_params}
+    )
+  end
+
   @spec subscribe_to_vehicle(String.t(), GenServer.server()) :: [VehicleOrGhost.t()]
   def subscribe_to_vehicle(vehicle_id, server \\ default_name()) do
     subscribe(
@@ -157,6 +165,14 @@ defmodule Realtime.Server do
   @spec subscribe(GenServer.server(), {:alerts, Route.id()}) :: [String.t()]
   defp subscribe(server, subscription_key) do
     {registry_key, ets} = GenServer.call(server, :subscription_info)
+    Registry.register(Realtime.Registry, registry_key, subscription_key)
+    lookup({ets, subscription_key})
+  end
+
+  defp update_subscription(server, {:search, _search_params} = subscription_key) do
+    {registry_key, ets} = GenServer.call(server, :subscription_info)
+    # Replace the old search subscription with the new one
+    Registry.unregister_match(Realtime.Registry, registry_key, {:search, %{}})
     Registry.register(Realtime.Registry, registry_key, subscription_key)
     lookup({ets, subscription_key})
   end

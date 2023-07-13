@@ -397,6 +397,32 @@ defmodule Realtime.ServerTest do
     end
   end
 
+  describe "update_search_subscription/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_vehicles({@vehicles_by_route_id, [@shuttle], []}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "when update_search_subscription is called, then when vehicles update the subscribing process is pushed only a message with their latest search params",
+         %{server_pid: pid} do
+      first_search_params = %{property: :all, text: "90"}
+      second_search_params = %{property: :all, text: "asdf"}
+
+      Server.subscribe_to_search(first_search_params, pid)
+      Server.update_vehicles({%{}, [@shuttle], []}, pid)
+
+      assert_receive {:new_realtime_data, {_ets_tid, {:search, ^first_search_params}}}
+
+      Server.update_search_subscription(second_search_params, pid)
+      Server.update_vehicles({%{}, [@shuttle], []}, pid)
+      assert_receive {:new_realtime_data, {_ets_tid, {:search, ^second_search_params}}}
+      refute_receive {:new_realtime_data, {_ets_tid, {:search, ^first_search_params}}}
+    end
+  end
+
   describe "subscribe_to_alerts/2" do
     setup do
       {:ok, server_pid} = Server.start_link([])
