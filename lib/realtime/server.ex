@@ -44,7 +44,8 @@ defmodule Realtime.Server do
   @type search_params :: %{
           :text => String.t(),
           :property => search_property(),
-          optional(:include_logged_out_vehicles) => boolean()
+          optional(:include_logged_out_vehicles) => boolean(),
+          optional(:limit) => pos_integer()
         }
 
   @type search_property :: :all | :run | :vehicle | :operator
