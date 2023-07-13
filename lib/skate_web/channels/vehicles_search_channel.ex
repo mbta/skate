@@ -8,7 +8,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
 
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated(
-        "vehicles_search:",
+        "vehicles_search:" <> _unique_id,
         %{"limit" => limit, "text" => text, "property" => property},
         socket
       ) do
