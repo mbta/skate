@@ -50,6 +50,7 @@ defmodule Skate.MixProject do
     [
       {:bypass, "~> 2.1.0", only: :test},
       {:castore, "~> 0.1.5"},
+      {:configparser_ex, "~> 4.0", only: :dev},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:csv, "~> 2.4.1"},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
