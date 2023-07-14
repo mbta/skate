@@ -9,7 +9,7 @@ interface FilterAccordionProps {
   /**
    * The title of the Filter Accordion.
    */
-  heading: String
+  heading: string
   /**
    * Whether the accordion should be expanded or not.
    */
