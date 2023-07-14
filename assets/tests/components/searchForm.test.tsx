@@ -14,6 +14,8 @@ import {
 } from "../../src/state/searchPageState"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import { searchPageStateFactory } from "../factories/searchPageState"
+import stateFactory from "../factories/applicationState"
+import { searchFormClearSearchButton } from "../testHelpers/selectors/components/searchForm"
 
 const mockDispatch = jest.fn()
 
@@ -157,6 +159,34 @@ describe("SearchForm", () => {
     )
   })
 
+  test("when search input is empty, should not display clear button", () => {
+    const validSearchState = stateFactory.build({
+      searchPageState: { query: { text: "", property: "run" } },
+    })
+
+    render(
+      <StateDispatchProvider state={validSearchState} dispatch={jest.fn()}>
+        <SearchForm />
+      </StateDispatchProvider>
+    )
+
+    expect(searchFormClearSearchButton.query()).not.toBeInTheDocument()
+  })
+
+  test("when search input is not empty, should display clear button", () => {
+    const validSearchState = stateFactory.build({
+      searchPageState: { query: { text: "1", property: "run" } },
+    })
+
+    render(
+      <StateDispatchProvider state={validSearchState} dispatch={jest.fn()}>
+        <SearchForm />
+      </StateDispatchProvider>
+    )
+
+    expect(searchFormClearSearchButton.get()).toBeInTheDocument()
+  })
+
   test("clicking the clear button empties the search text", async () => {
     const testDispatch = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
@@ -172,7 +202,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
+    await userEvent.click(searchFormClearSearchButton.get())
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
@@ -193,7 +223,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
+    await userEvent.click(searchFormClearSearchButton.get())
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
     expect(onClear).toHaveBeenCalledTimes(1)
