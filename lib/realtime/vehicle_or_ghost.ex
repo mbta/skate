@@ -3,14 +3,17 @@ defmodule Realtime.VehicleOrGhost do
 
   @type t :: Vehicle.t() | Ghost.t()
 
-  @spec find_by([t()], Server.search_params()) :: [t()]
-  def find_by(vehicles, %{text: text, property: search_property, limit: limit}) do
+  @spec take_limited_matches([t()], Server.search_params()) :: %{
+          matching_vehicles: [t()],
+          has_more_matches: boolean()
+        }
+  def take_limited_matches(vehicles, %{text: text, property: search_property, limit: limit}) do
     search_terms = text |> clean_for_matching |> Enum.reject(&(String.length(&1) < 2))
 
     if search_terms == [] do
       []
     else
-      take_by_props_matching(
+      take_limited_props_matching(
         vehicles,
         prop_names_for_search_prop(search_property),
         search_terms,
@@ -20,6 +23,7 @@ defmodule Realtime.VehicleOrGhost do
     end
   end
 
+  @spec find_by([t()], Server.search_params()) :: [t()]
   def find_by(vehicles, %{text: text, property: search_property}) do
     filter_by_prop_matching(
       vehicles,
@@ -38,13 +42,27 @@ defmodule Realtime.VehicleOrGhost do
   defp prop_names_for_search_prop(:all),
     do: [:operator_id, :operator_first_name, :operator_last_name, :label, :run_id]
 
-  @spec take_by_props_matching([t()], [atom()], [String.t()], pos_integer(), [t()]) :: [t()]
-  defp take_by_props_matching(vehicles, _prop_names, _search_terms, limit, acc_matching_vehicles)
-       when limit <= 0 or vehicles == [] do
-    Enum.reverse(acc_matching_vehicles)
+  @spec take_limited_props_matching([t()], [atom()], [String.t()], pos_integer(), [t()]) ::
+          %{matching_vehicles: [t()], has_more_matches: boolean}
+  defp take_limited_props_matching(
+         remaining_vehicles,
+         prop_names,
+         search_terms,
+         limit,
+         acc_matching_vehicles
+       )
+       when limit <= 0 or remaining_vehicles == [] do
+    %{
+      matching_vehicles: Enum.reverse(acc_matching_vehicles),
+      has_more_matches:
+        Enum.any?(
+          remaining_vehicles,
+          &vehicle_matches_all_search_terms(&1, prop_names, search_terms)
+        )
+    }
   end
 
-  defp take_by_props_matching(
+  defp take_limited_props_matching(
          [first_vehicle | remaining_vehicles],
          prop_names,
          search_terms,
@@ -54,11 +72,17 @@ defmodule Realtime.VehicleOrGhost do
     vehicle_matches = vehicle_matches_all_search_terms(first_vehicle, prop_names, search_terms)
 
     if vehicle_matches do
-      take_by_props_matching(remaining_vehicles, prop_names, search_terms, limit - 1, [
-        first_vehicle | acc_matching_vehicles
-      ])
+      take_limited_props_matching(
+        remaining_vehicles,
+        prop_names,
+        search_terms,
+        limit - 1,
+        [
+          first_vehicle | acc_matching_vehicles
+        ]
+      )
     else
-      take_by_props_matching(
+      take_limited_props_matching(
         remaining_vehicles,
         prop_names,
         search_terms,

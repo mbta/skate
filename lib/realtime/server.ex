@@ -35,6 +35,7 @@ defmodule Realtime.Server do
           | :all_shuttles
           | :logged_in_vehicles
           | {:search, search_params()}
+          | {:limited_search, limited_search_params()}
           | {:vehicle, String.t()}
           | {:vehicle_with_logged_out, String.t()}
           | {:run_ids, [Run.id()]}
@@ -48,11 +49,23 @@ defmodule Realtime.Server do
           optional(:limit) => pos_integer()
         }
 
+  @type limited_search_params :: %{
+          :text => String.t(),
+          :property => search_property(),
+          optional(:include_logged_out_vehicles) => boolean(),
+          optional(:limit) => pos_integer()
+        }
+
   @type search_property :: :all | :run | :vehicle | :operator
 
   @type lookup_key :: {:ets.tid(), subscription_key}
 
   @type broadcast_message :: {:new_realtime_data, lookup_key}
+
+  @type limited_search_result :: %{
+          matching_vehicles: [VehicleOrGhost.t()],
+          has_more_matches: boolean()
+        }
 
   @typep t :: %__MODULE__{
            ets: :ets.tid(),
@@ -94,9 +107,16 @@ defmodule Realtime.Server do
     subscribe(server, {:search, search_params})
   end
 
-  @spec update_search_subscription(search_params(), GenServer.server()) :: [VehicleOrGhost.t()]
-  def update_search_subscription(search_params, server \\ default_name()) do
-    update_subscription(server, {:search, search_params})
+  @spec subscribe_to_limited_search(search_params(), GenServer.server()) ::
+          limited_search_result()
+  def subscribe_to_limited_search(search_params, server \\ default_name()) do
+    subscribe(server, {:limited_search, search_params})
+  end
+
+  @spec update_limited_search_subscription(search_params(), GenServer.server()) ::
+          limited_search_result()
+  def update_limited_search_subscription(search_params, server \\ default_name()) do
+    update_subscription(server, {:limited_search, search_params})
   end
 
   @spec subscribe_to_vehicle(String.t(), GenServer.server()) :: [VehicleOrGhost.t()]
@@ -151,6 +171,8 @@ defmodule Realtime.Server do
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), :logged_in_vehicles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
+  @spec subscribe(GenServer.server(), {:limited_search, search_params()}) ::
+          limited_search_result()
   @spec subscribe(GenServer.server(), {:vehicle, String.t()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:vehicle_with_logged_out, String.t()}) :: [
           VehicleOrGhost.t()
@@ -164,10 +186,10 @@ defmodule Realtime.Server do
     lookup({ets, subscription_key})
   end
 
-  defp update_subscription(server, {:search, _search_params} = subscription_key) do
+  defp update_subscription(server, {:limited_search, _search_params} = subscription_key) do
     {registry_key, ets} = GenServer.call(server, :subscription_info)
     # Replace the old search subscription with the new one
-    Registry.unregister_match(Realtime.Registry, registry_key, {:search, %{}})
+    Registry.unregister_match(Realtime.Registry, registry_key, {:limited_search, %{}})
     Registry.register(Realtime.Registry, registry_key, subscription_key)
 
     lookup({ets, subscription_key})
@@ -198,6 +220,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), :logged_out_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), {:limited_search, search_params()}}) :: limited_search_result()
   @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:vehicle_with_logged_out, String.t()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:run_ids, [Run.id()]}}) :: [VehicleOrGhost.t()]
@@ -214,6 +237,19 @@ defmodule Realtime.Server do
       end
 
     VehicleOrGhost.find_by(vehicles_to_search, search_params)
+  end
+
+  def lookup({table, {:limited_search, search_params}}) do
+    logged_in_vehicles = lookup({table, :logged_in_vehicles})
+
+    vehicles_to_search =
+      if Map.get(search_params, :include_logged_out_vehicles, false) do
+        logged_in_vehicles ++ lookup({table, :logged_out_vehicles})
+      else
+        logged_in_vehicles
+      end
+
+    VehicleOrGhost.take_limited_matches(vehicles_to_search, search_params)
   end
 
   def lookup({table, {:run_ids, run_ids}}) do

@@ -39,9 +39,9 @@ defmodule SkateWeb.VehiclesSearchChannel do
       "User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text} limit=#{subscribe_args.limit}"
     end)
 
-    vehicles = Duration.log_duration(Server, :subscribe_to_search, [subscribe_args])
+    result = Duration.log_duration(Server, :subscribe_to_limited_search, [subscribe_args])
 
-    {:ok, %{data: vehicles}, socket}
+    {:ok, %{data: result}, socket}
   end
 
   @impl Phoenix.Channel
@@ -50,12 +50,12 @@ defmodule SkateWeb.VehiclesSearchChannel do
         %{"text" => text, "limit" => limit, "property" => property},
         socket
       ) do
-    vehicles =
-      Duration.log_duration(Server, :update_search_subscription, [
+    result =
+      Duration.log_duration(Server, :update_limited_search_subscription, [
         %{text: text, limit: limit, property: String.to_existing_atom(property)}
       ])
 
-    {:reply, {:ok, %{data: vehicles}}, socket}
+    {:reply, {:ok, %{data: result}}, socket}
   end
 
   @impl Phoenix.Channel
@@ -72,5 +72,5 @@ defmodule SkateWeb.VehiclesSearchChannel do
   end
 
   @spec event_name(Server.lookup_key()) :: String.t()
-  defp event_name({_ets, {:search, _}}), do: "search"
+  defp event_name({_ets, {:limited_search, _}}), do: "limited_search"
 end

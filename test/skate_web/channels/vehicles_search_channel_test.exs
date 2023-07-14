@@ -41,7 +41,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
     } do
       [match_1, _other, match_2, _other_2, _match_3] = vehicles
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
-      expected_payload = %{data: [match_1, match_2]}
+      expected_payload = %{data: %{matching_vehicles: [match_1, match_2], has_more_matches: true}}
 
       assert {:ok, ^expected_payload, %Socket{} = _socket} =
                subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:", %{
@@ -58,7 +58,8 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       [match_1, _other, match_2, _other_2, _match_3] = vehicles
       assert :ok = Realtime.Server.update_vehicles({%{"1" => []}, [], []})
 
-      assert {:ok, %{data: []}, %Socket{} = _socket} =
+      assert {:ok, %{data: %{matching_vehicles: [], has_more_matches: false}},
+              %Socket{} = _socket} =
                subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:", %{
                  "property" => "vehicle",
                  "text" => "000",
@@ -67,7 +68,9 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
 
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
 
-      assert_push("search", %{data: [^match_1, ^match_2]})
+      assert_push("limited_search", %{
+        data: %{matching_vehicles: [^match_1, ^match_2], has_more_matches: true}
+      })
     end
   end
 
@@ -90,11 +93,13 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       assert {:noreply, _socket} =
                VehiclesSearchChannel.handle_info(
                  {:new_realtime_data,
-                  {ets, {:search, %{property: :vehicle, text: "000", limit: 2}}}},
+                  {ets, {:limited_search, %{property: :vehicle, text: "000", limit: 2}}}},
                  socket
                )
 
-      assert_push("search", %{data: [^match_1, ^match_2]})
+      assert_push("limited_search", %{
+        data: %{matching_vehicles: [^match_1, ^match_2], has_more_matches: true}
+      })
     end
   end
 
@@ -108,7 +113,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
 
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
 
-      {:ok, %{data: [^match_1, ^match_2]}, socket} =
+      {:ok, %{data: %{matching_vehicles: [^match_1, ^match_2], has_more_matches: true}}, socket} =
         subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:", %{
           "property" => "vehicle",
           "text" => "000",
@@ -122,12 +127,16 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
           "limit" => 3
         })
 
-      assert_reply ref, :ok, %{data: [^match_1, ^match_2, ^match_3]}
+      assert_reply ref, :ok, %{
+        data: %{matching_vehicles: [^match_1, ^match_2, ^match_3], has_more_matches: false}
+      }
 
       assert :ok =
                Realtime.Server.update_vehicles({%{"1" => [new_match, match_1, match_2]}, [], []})
 
-      assert_push("search", %{data: [^new_match, ^match_1, ^match_2]})
+      assert_push("limited_search", %{
+        data: %{matching_vehicles: [^new_match, ^match_1, ^match_2], has_more_matches: false}
+      })
     end
   end
 end
