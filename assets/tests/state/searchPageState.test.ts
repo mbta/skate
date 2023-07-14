@@ -60,7 +60,7 @@ describe("reducer", () => {
 
   test("submitSearch sets isActive to true if the query is valid", () => {
     const validQuery: SearchPageState = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: "123", property: "run" },
       isActive: false,
     })
     const newSearch = reducer(validQuery, submitSearch())
@@ -79,14 +79,15 @@ describe("reducer", () => {
   })
 
   test("submitSearch saves the query if it's valid", () => {
+    const searchText = "123"
     const validQuery: SearchPageState = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: searchText, property: "run" },
       isActive: false,
       savedQueries: [],
     })
     const newSearch = reducer(validQuery, submitSearch())
 
-    expect(newSearch.savedQueries).toEqual([{ text: "12" }])
+    expect(newSearch.savedQueries).toEqual([{ text: searchText }])
   })
 
   test("submitSearch does not save the query if it's not valid", () => {
