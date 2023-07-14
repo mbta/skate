@@ -1,3 +1,4 @@
+import { Socket } from "phoenix"
 import React, {
   ReactElement,
   useCallback,
@@ -5,37 +6,36 @@ import React, {
   useEffect,
   useState,
 } from "react"
-import { Socket } from "phoenix"
 
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
+import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
+import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
+import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
 import useSearchResults from "../hooks/useSearchResults"
+import useSocket from "../hooks/useSocket"
 import { Ghost, Vehicle, VehicleId } from "../realtime"
-import { OpenView, closeView } from "../state"
+import { RoutePattern } from "../schedule"
+import { closeView, OpenView } from "../state"
 import {
+  goBack,
+  newSearchSession,
   SearchPageState,
   SelectedEntity,
   SelectedEntityType,
   SelectedRoutePattern,
-  goBack,
-  newSearchSession,
   setSelectedEntity,
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
-import MapDisplay from "./mapPage/mapDisplay"
-import RecentSearches from "./recentSearches"
-import SearchResults from "./searchResults"
-import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import Loading from "./loading"
-import useSocket from "../hooks/useSocket"
-import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
-import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
+import MapDisplay from "./mapPage/mapDisplay"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
-import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
-import { RoutePattern } from "../schedule"
-import { VisualSeparator } from "./visualSeparator"
+import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
+import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
+import SearchResults from "./searchResults"
+import { VisualSeparator } from "./visualSeparator"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
