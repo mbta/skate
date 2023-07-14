@@ -43,6 +43,33 @@ defmodule SkateWeb.LocationSearchControllerTest do
     end
   end
 
+  describe "GET /api/location_search/suggest" do
+    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/location_search/suggest?query=test")
+
+      assert redirected_to(conn) == "/auth/cognito"
+    end
+
+    @tag :authenticated
+    test "returns data", %{conn: conn} do
+      result = "suggested search"
+
+      reassign_env(:skate, :location_suggest_fn, fn _query -> {:ok, %{status_code: 200}} end)
+
+      reassign_env(:skate, :location_parse_fn, fn _query -> [result] end)
+
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/location_search/suggest?query=test")
+
+      assert json_response(conn, 200) == %{"data" => [result]}
+    end
+  end
+
   defp api_headers(conn) do
     conn
     |> put_req_header("accept", "application/json")
