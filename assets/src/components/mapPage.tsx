@@ -23,7 +23,6 @@ import {
 import DrawerTab from "./drawerTab"
 import MapDisplay from "./mapPage/mapDisplay"
 import RecentSearches from "./recentSearches"
-import OldSearchForm from "./oldSearchForm"
 import SearchResults from "./searchResults"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import Loading from "./loading"
@@ -36,6 +35,7 @@ import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
 import { RoutePattern } from "../schedule"
 import { VisualSeparator } from "./visualSeparator"
+import SearchForm from "./searchForm"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -59,7 +59,7 @@ const SearchMode = ({
   return (
     <>
       <div className="c-map-page__input u-hideable">
-        <OldSearchForm
+        <SearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
           submitEvent="Search submitted from map page"
