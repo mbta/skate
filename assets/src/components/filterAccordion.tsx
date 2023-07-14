@@ -53,7 +53,7 @@ export const FilterAccordion = ({
           {showFilters ? <CollapseIcon /> : <ExpandIcon />}
         </div>
       </button>
-      <div className="c-filter-accordion__body" hidden={!showFilters}>
+      <div className="c-filter-accordion__body">
         <ul className="c-filter-accordion__filters">{children}</ul>
       </div>
     </div>

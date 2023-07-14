@@ -28,6 +28,10 @@
   &__body {
     // Display visual separator between content and header when body is visible
     border-top: 1px solid #d8dde1;
+
+    .c-filter-accordion[aria-expanded="false"] & {
+      display: none;
+    }
   }
 
   &__filters {
