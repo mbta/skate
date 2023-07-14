@@ -330,8 +330,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         className="c-vehicle-map"
         id="id-vehicle-map"
         maxBounds={[
-          [41.2, -72],
-          [43, -69.8],
+          [42.05, -71.55],
+          [42.65, -70.6],
         ]}
         zoomControl={false}
         center={defaultCenter}

@@ -497,7 +497,7 @@ const animationFramePromise = (): Promise<null> => {
 
 describe("auto centering", () => {
   test("auto centers on a vehicle", async () => {
-    const location = { lat: 42, lng: -71 }
+    const location = { lat: 42.25, lng: -71 }
     const vehicle: VehicleInScheduledService = vehicleFactory.build({
       latitude: location.lat,
       longitude: location.lng,
@@ -517,7 +517,7 @@ describe("auto centering", () => {
   test("tracks a vehicle when it moves", async () => {
     const vehicle = vehicleFactory.build({})
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
-    const oldLatLng = { lat: 42, lng: -71 }
+    const oldLatLng = { lat: 42.25, lng: -71 }
     const oldVehicle = {
       ...vehicle,
       latitude: oldLatLng.lat,
@@ -530,7 +530,7 @@ describe("auto centering", () => {
       />
     )
     await animationFramePromise()
-    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newLatLng = { lat: 42.35, lng: -71.1 }
     const newVehicle = {
       ...vehicle,
       latitude: newLatLng.lat,
@@ -559,7 +559,7 @@ describe("auto centering", () => {
     expect(container.firstChild).toHaveClass(
       "c-vehicle-map-state--auto-centering"
     )
-    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    const manualLatLng = { lat: 42.25, lng: -70.9 }
 
     act(() => {
       mapRef.current!.fire("dragstart")
@@ -567,7 +567,7 @@ describe("auto centering", () => {
     })
 
     await animationFramePromise()
-    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newLatLng = { lat: 42.35, lng: -71.1 }
     const newVehicle = {
       ...vehicle,
       latitude: newLatLng.lat,
@@ -589,9 +589,9 @@ describe("auto centering", () => {
   test("auto recentering does not disable auto centering", async () => {
     const vehicle = vehicleFactory.build({})
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
-    const latLng1 = { lat: 42, lng: -71 }
-    const latLng2 = { lat: 42.1, lng: -71.1 }
-    const latLng3 = { lat: 42.2, lng: -71.2 }
+    const latLng1 = { lat: 42.1, lng: -71 }
+    const latLng2 = { lat: 42.2, lng: -71.1 }
+    const latLng3 = { lat: 42.3, lng: -71.2 }
     const vehicle1 = {
       ...vehicle,
       latitude: latLng1.lat,
@@ -642,7 +642,7 @@ describe("auto centering", () => {
     await animationFramePromise()
 
     // Manual move to turn off auto centering
-    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    const manualLatLng = { lat: 42.25, lng: -70.9 }
     act(() => {
       mapRef.current!.fire("dragstart")
       mapRef.current!.panTo(manualLatLng)
@@ -677,7 +677,7 @@ describe("auto centering", () => {
       await animationFramePromise()
 
       // Manual move to turn off auto centering
-      const manualLatLng = { lat: 41.9, lng: -70.9 }
+      const manualLatLng = { lat: 42.35, lng: -70.9 }
       act(() => {
         mapRef.current!.fire("dragstart")
         mapRef.current!.panTo(manualLatLng)
