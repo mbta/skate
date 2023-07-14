@@ -84,81 +84,97 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </div>
           </div>
           <div
-            class="c-search-form__row"
+            aria-expanded="true"
+            class="c-filter-accordion"
           >
-            <ul
-              class="c-search-form__property-buttons"
+            <button
+              class="c-filter-accordion__toggle-button"
             >
-              <li
-                class="c-search-form__property-button"
+              <div
+                class="c-filter-accordion__header"
               >
-                <input
-                  checked=""
-                  class="c-search-form__property-input"
-                  id="property-all"
-                  name="property"
-                  type="radio"
-                  value="all"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-all"
-                >
-                  all
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
+                Filter results
+              </div>
+              <div
+                class="c-filter-accordion__show-hide-icon"
               >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-run"
-                  name="property"
-                  type="radio"
-                  value="run"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-run"
-                >
-                  run
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
+                <span>
+                  <svg />
+                </span>
+              </div>
+            </button>
+            <div
+              class="c-filter-accordion__body"
+            >
+              <ul
+                class="c-filter-accordion__filters"
               >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-vehicle"
-                  name="property"
-                  type="radio"
-                  value="vehicle"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-vehicle"
+                <li
+                  class="c-filter-accordion__filter"
                 >
-                  vehicle
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
-              >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-operator"
-                  name="property"
-                  type="radio"
-                  value="operator"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-operator"
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Vehicles
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+                <li
+                  class="c-filter-accordion__filter"
                 >
-                  operator
-                </label>
-              </li>
-            </ul>
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Operators
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+                <li
+                  class="c-filter-accordion__filter"
+                >
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Runs
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+                <li
+                  class="c-filter-accordion__filter"
+                >
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Locations
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </form>
       </div>
@@ -486,81 +502,97 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             </div>
           </div>
           <div
-            class="c-search-form__row"
+            aria-expanded="true"
+            class="c-filter-accordion"
           >
-            <ul
-              class="c-search-form__property-buttons"
+            <button
+              class="c-filter-accordion__toggle-button"
             >
-              <li
-                class="c-search-form__property-button"
+              <div
+                class="c-filter-accordion__header"
               >
-                <input
-                  checked=""
-                  class="c-search-form__property-input"
-                  id="property-all"
-                  name="property"
-                  type="radio"
-                  value="all"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-all"
-                >
-                  all
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
+                Filter results
+              </div>
+              <div
+                class="c-filter-accordion__show-hide-icon"
               >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-run"
-                  name="property"
-                  type="radio"
-                  value="run"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-run"
-                >
-                  run
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
+                <span>
+                  <svg />
+                </span>
+              </div>
+            </button>
+            <div
+              class="c-filter-accordion__body"
+            >
+              <ul
+                class="c-filter-accordion__filters"
               >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-vehicle"
-                  name="property"
-                  type="radio"
-                  value="vehicle"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-vehicle"
+                <li
+                  class="c-filter-accordion__filter"
                 >
-                  vehicle
-                </label>
-              </li>
-              <li
-                class="c-search-form__property-button"
-              >
-                <input
-                  class="c-search-form__property-input"
-                  id="property-operator"
-                  name="property"
-                  type="radio"
-                  value="operator"
-                />
-                <label
-                  class="c-search-form__property-label button-search-filter"
-                  for="property-operator"
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Vehicles
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+                <li
+                  class="c-filter-accordion__filter"
                 >
-                  operator
-                </label>
-              </li>
-            </ul>
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Operators
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+                <li
+                  class="c-filter-accordion__filter"
+                >
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Runs
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+                <li
+                  class="c-filter-accordion__filter"
+                >
+                  <button
+                    class="c-filter-accordion__filter-toggle"
+                  >
+                    <span>
+                      Locations
+                    </span>
+                    <span
+                      class="c-filter-accordion__toggle-icon"
+                    >
+                      <svg />
+                    </span>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </form>
       </div>

@@ -99,10 +99,18 @@ export const FilterAccordionToggleFilter = (
   )
 }
 
-export const FilterAccordionWithState = (
-  props: Omit<FilterAccordionProps, "showFilters" | "setShowFilters">
-) => {
-  const [showFilters, setShowFilters] = useState(true)
+export interface FilterAccordionWithExpansionStateProps
+  extends Omit<FilterAccordionProps, "showFilters" | "setShowFilters"> {
+  initialActiveState?: boolean
+}
+
+export const FilterAccordionWithExpansionState = ({
+  initialActiveState,
+  ...props
+}: FilterAccordionWithExpansionStateProps) => {
+  const [showFilters, setShowFilters] = useState<boolean>(
+    initialActiveState || true
+  )
   return (
     <FilterAccordion
       {...props}
@@ -134,4 +142,4 @@ export const FilterAccordionFilterWithState = ({
 FilterAccordion.ToggleFilter = FilterAccordionToggleFilter
 
 FilterAccordionToggleFilter.WithState = FilterAccordionFilterWithState
-FilterAccordion.WithState = FilterAccordionWithState
+FilterAccordion.WithExpansionState = FilterAccordionWithExpansionState

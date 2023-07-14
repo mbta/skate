@@ -2,14 +2,14 @@ import React, { useContext, useRef } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { SearchIcon } from "../helpers/icon"
 import { CircleXIcon } from "./circleXIcon"
-import { isValidSearchQuery } from "../models/searchQuery"
+import { FilterAccordion } from "./filterAccordion"
+import { isValidSearchQuery, SearchQueryType } from "../models/searchQuery"
 import {
   setSearchProperty,
   setSearchText,
   submitSearch,
 } from "../state/searchPageState"
 
-const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 type SearchFormProps = {
   onSubmit?: () => void
   onClear?: () => void
@@ -31,10 +31,6 @@ const SearchForm = ({
     },
     dispatch,
   ] = useContext(StateDispatchContext)
-  const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void => {
-    const value = event.currentTarget.value
-    dispatch(setSearchText(value))
-  }
 
   const formSearchInput = useRef<HTMLInputElement | null>(null)
   const clearTextInput = (event: React.FormEvent<EventTarget>): void => {
@@ -47,10 +43,13 @@ const SearchForm = ({
     }
   }
 
-  const handlePropertyChange = (
-    event: React.FormEvent<HTMLInputElement>
-  ): void => {
-    dispatch(setSearchProperty(event.currentTarget.value))
+  const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void => {
+    const value = event.currentTarget.value
+    dispatch(setSearchText(value))
+  }
+
+  const handlePropertyChange = (value: SearchQueryType): void => {
+    dispatch(setSearchProperty(value))
     dispatch(submitSearch())
   }
 
@@ -105,33 +104,28 @@ const SearchForm = ({
           </div>
         </div>
       </div>
-
-      <div className="c-search-form__row">
-        <ul className="c-search-form__property-buttons">
-          {SEARCH_PROPERTIES.map((property) => (
-            <li
-              className="c-search-form__property-button"
-              key={`search-property-${property}`}
-            >
-              <input
-                id={`property-${property}`}
-                className="c-search-form__property-input"
-                type="radio"
-                name="property"
-                value={property}
-                checked={query.property === property}
-                onChange={handlePropertyChange}
+      <FilterAccordion.WithExpansionState heading="Filter results">
+        <FilterAccordion.ToggleFilter
+          name={"Vehicles"}
+          active={query.property === "vehicle"}
+          onClick={() => handlePropertyChange("vehicle")}
         />
-              <label
-                htmlFor={`property-${property}`}
-                className="c-search-form__property-label button-search-filter"
-              >
-                {property}
-              </label>
-            </li>
-          ))}
-        </ul>
-      </div>
+        <FilterAccordion.ToggleFilter
+          name={"Operators"}
+          active={query.property === "operator"}
+          onClick={() => handlePropertyChange("operator")}
+        />
+        <FilterAccordion.ToggleFilter
+          name={"Runs"}
+          active={query.property === "run"}
+          onClick={() => handlePropertyChange("run")}
+        />
+        <FilterAccordion.ToggleFilter
+          name={"Locations"}
+          active={false}
+          onClick={() => handlePropertyChange("all")}
+        />
+      </FilterAccordion.WithExpansionState>
     </form>
   )
 }

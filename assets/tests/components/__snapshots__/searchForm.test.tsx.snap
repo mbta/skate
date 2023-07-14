@@ -72,88 +72,119 @@ exports[`SearchForm renders 1`] = `
     </div>
   </div>
   <div
-    className="c-search-form__row"
+    aria-expanded={true}
+    className="c-filter-accordion"
   >
-    <ul
-      className="c-search-form__property-buttons"
+    <button
+      className="c-filter-accordion__toggle-button"
+      onClick={[Function]}
     >
-      <li
-        className="c-search-form__property-button"
+      <div
+        className="c-filter-accordion__header"
       >
-        <input
-          checked={true}
-          className="c-search-form__property-input"
-          id="property-all"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="all"
-        />
-        <label
-          className="c-search-form__property-label button-search-filter"
-          htmlFor="property-all"
-        >
-          all
-        </label>
-      </li>
-      <li
-        className="c-search-form__property-button"
+        Filter results
+      </div>
+      <div
+        className="c-filter-accordion__show-hide-icon"
       >
-        <input
-          checked={false}
-          className="c-search-form__property-input"
-          id="property-run"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="run"
+        <span
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
         />
-        <label
-          className="c-search-form__property-label button-search-filter"
-          htmlFor="property-run"
-        >
-          run
-        </label>
-      </li>
-      <li
-        className="c-search-form__property-button"
+      </div>
+    </button>
+    <div
+      className="c-filter-accordion__body"
+      hidden={false}
+    >
+      <ul
+        className="c-filter-accordion__filters"
       >
-        <input
-          checked={false}
-          className="c-search-form__property-input"
-          id="property-vehicle"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="vehicle"
-        />
-        <label
-          className="c-search-form__property-label button-search-filter"
-          htmlFor="property-vehicle"
+        <li
+          className="c-filter-accordion__filter"
         >
-          vehicle
-        </label>
-      </li>
-      <li
-        className="c-search-form__property-button"
-      >
-        <input
-          checked={false}
-          className="c-search-form__property-input"
-          id="property-operator"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="operator"
-        />
-        <label
-          className="c-search-form__property-label button-search-filter"
-          htmlFor="property-operator"
+          <button
+            className="c-filter-accordion__filter-toggle"
+            onClick={[Function]}
+          >
+            <span>
+              Vehicles
+            </span>
+            <span
+              className="c-filter-accordion__toggle-icon"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </button>
+        </li>
+        <li
+          className="c-filter-accordion__filter"
         >
-          operator
-        </label>
-      </li>
-    </ul>
+          <button
+            className="c-filter-accordion__filter-toggle"
+            onClick={[Function]}
+          >
+            <span>
+              Operators
+            </span>
+            <span
+              className="c-filter-accordion__toggle-icon"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </button>
+        </li>
+        <li
+          className="c-filter-accordion__filter"
+        >
+          <button
+            className="c-filter-accordion__filter-toggle"
+            onClick={[Function]}
+          >
+            <span>
+              Runs
+            </span>
+            <span
+              className="c-filter-accordion__toggle-icon"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </button>
+        </li>
+        <li
+          className="c-filter-accordion__filter"
+        >
+          <button
+            className="c-filter-accordion__filter-toggle"
+            onClick={[Function]}
+          >
+            <span>
+              Locations
+            </span>
+            <span
+              className="c-filter-accordion__toggle-icon"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </form>
 `;
