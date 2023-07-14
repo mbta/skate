@@ -2,7 +2,8 @@ import React, { ReactNode } from "react"
 import { useState } from "react"
 import { joinClasses } from "../helpers/dom"
 
-import { CollapseIcon, ExpandIcon, ToggleOffIcon, ToggleOnIcon } from "../helpers/icon"
+import { CollapseIcon, ExpandIcon } from "../helpers/icon"
+import { ToggleIcon } from "./toggleIcon"
 
 interface FilterAccordionProps {
   /**
@@ -84,7 +85,7 @@ export const FilterAccordionToggle = ({
 }: FilterAccordionToggleProps) => (
   <button className="c-filter-accordion__filter-toggle" onClick={onClick}>
     <span>{name}</span>
-    {active ? <ToggleOnIcon className="c-filter-accordion__toggle-icon" /> : <ToggleOffIcon className="c-filter-accordion__toggle-icon" />}
+    <ToggleIcon active={active} className="c-filter-accordion__toggle-icon" />
   </button>
 )
 
