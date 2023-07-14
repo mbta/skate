@@ -98,7 +98,6 @@ exports[`SearchForm renders 1`] = `
     </button>
     <div
       className="c-filter-accordion__body"
-      hidden={false}
     >
       <ul
         className="c-filter-accordion__filters"
