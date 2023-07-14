@@ -8,4 +8,5 @@
   data-tileset-urls="<%= Jason.encode!(@tileset_urls) %>"
   data-dispatcher-flag="<%= Jason.encode!(@dispatcher_flag) %>"
   data-user-test-groups="<%= Jason.encode!(@user_test_groups) %>"
+  data-map-limits="<%= Jason.encode!(@map_limits) %>"
 ></div>

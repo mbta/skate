@@ -1,10 +1,6 @@
 defmodule Skate.LocationSearch.AwsLocationRequest do
   alias Skate.LocationSearch.SearchResult
 
-  @base_arguments %{
-    FilterBBox: [-71.55, 42.05, -70.6, 42.65]
-  }
-
   @spec search(String.t()) :: {:ok, map()} | {:error, term()}
   def search(text) do
     request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
@@ -15,7 +11,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     %ExAws.Operation.RestQuery{
       http_method: :post,
       path: path,
-      body: Map.merge(@base_arguments, %{Text: text}),
+      body: Map.merge(base_arguments(), %{Text: text}),
       service: :places
     }
     |> request_fn.()
@@ -32,7 +28,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     %ExAws.Operation.RestQuery{
       http_method: :post,
       path: path,
-      body: Map.merge(@base_arguments, %{Text: text}),
+      body: Map.merge(base_arguments(), %{Text: text}),
       service: :places
     }
     |> request_fn.()
@@ -85,5 +81,13 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       [prefix, address] ->
         {nil, prefix <> address}
     end
+  end
+
+  defp base_arguments do
+    map_limits = Application.get_env(:skate, :map_limits)
+
+    %{
+      FilterBBox: [map_limits[:west], map_limits[:south], map_limits[:east], map_limits[:north]]
+    }
   end
 end

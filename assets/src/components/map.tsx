@@ -51,6 +51,7 @@ import { StreetViewControl } from "./map/controls/StreetViewSwitch"
 import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"
 import { TileType, tilesetUrlForType } from "../tilesetUrls"
 import { TileTypeContext } from "../contexts/tileTypeContext"
+import getMapLimits from "../mapLimits"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
@@ -312,6 +313,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(
     props.streetViewInitiallyEnabled || false
   )
+
+  const mapLimits = getMapLimits()
   const { allowFullscreen = true } = props
 
   const stateClasses = joinClasses([
@@ -329,10 +332,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       <MapContainer
         className="c-vehicle-map"
         id="id-vehicle-map"
-        maxBounds={[
-          [42.05, -71.55],
-          [42.65, -70.6],
-        ]}
+        maxBounds={
+          mapLimits
+            ? [
+                [mapLimits.south, mapLimits.west],
+                [mapLimits.north, mapLimits.east],
+              ]
+            : undefined
+        }
         zoomControl={false}
         center={defaultCenter}
         zoom={defaultZoom}

@@ -20,6 +20,8 @@ defmodule SkateWeb.PageController do
     dispatcher_flag =
       conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
 
+    map_limits = Application.get_env(:skate, :map_limits)
+
     conn
     |> assign(:username, username)
     |> assign(:user_uuid, user.uuid)
@@ -34,6 +36,7 @@ defmodule SkateWeb.PageController do
       satellite: Application.get_env(:skate, :satellite_tileset_url)
     })
     |> assign(:user_test_groups, user.test_groups |> Enum.map(& &1.name))
+    |> assign(:map_limits, map_limits)
     |> render("index.html")
   end
 

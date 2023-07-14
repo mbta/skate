@@ -161,6 +161,16 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "correct map limits set", %{conn: conn} do
+      reassign_env(:skate, :map_limits, %{north: 1, south: 2, east: 3, west: 4})
+
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~
+               "data-map-limits=\"{&quot;east&quot;:3,&quot;north&quot;:1,&quot;south&quot;:2,&quot;west&quot;:4}\""
+    end
+
+    @tag :authenticated
     test "correct username set", %{conn: conn} do
       conn = get(conn, "/")
       assert html_response(conn, 200) =~ "<meta name=\"username\" content=\"test_user\">"
