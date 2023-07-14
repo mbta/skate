@@ -30,7 +30,7 @@ describe("SearchForm", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("submit button is disabled if there are fewer than 2 characters in the text field", () => {
+  test("submit button is disabled if there are fewer than 3 characters in the text field", () => {
     const invalidSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "1", property: "run" },
     })
@@ -49,9 +49,10 @@ describe("SearchForm", () => {
     expect(result.getByTitle("Submit")).toBeDisabled()
   })
 
-  test("submit button is enabled if there are at least 2 characters in the text field", () => {
+  test("submit button is enabled if there are at least 3 characters in the text field", () => {
+    const searchText = "123"
     const validSearch = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: searchText, property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -63,7 +64,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.getByPlaceholderText("Search")).toHaveValue("12")
+    expect(result.getByPlaceholderText("Search")).toHaveValue(searchText)
 
     expect(result.getByTitle("Submit")).not.toBeDisabled()
   })
@@ -71,7 +72,7 @@ describe("SearchForm", () => {
   test("clicking the submit button submits the query", async () => {
     const testDispatch = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: "123", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -91,7 +92,7 @@ describe("SearchForm", () => {
     const testDispatch = jest.fn()
     const onSubmit = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: "123", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -112,7 +113,7 @@ describe("SearchForm", () => {
     const testDispatch = jest.fn()
     const onSubmit = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: "123", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -125,15 +126,16 @@ describe("SearchForm", () => {
         <SearchForm onSubmit={onSubmit} submitEvent="Test event" />
       </StateDispatchProvider>
     )
-
     await userEvent.click(screen.getByTitle("Submit"))
 
     expect(window.FS!.event).toHaveBeenCalledWith("Test event")
   })
 
   test("entering text sets it as the search text", async () => {
+    const searchText = "12"
+    const searchInput = "3"
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: searchText, property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -148,15 +150,17 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.type(result.getByPlaceholderText("Search"), "3")
+    await userEvent.type(result.getByPlaceholderText("Search"), searchInput)
 
-    expect(testDispatch).toHaveBeenCalledWith(setSearchText("123"))
+    expect(testDispatch).toHaveBeenCalledWith(
+      setSearchText(searchText + searchInput)
+    )
   })
 
   test("clicking the clear button empties the search text", async () => {
     const testDispatch = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "12", property: "run" },
+      query: { text: "123", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -203,7 +207,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByRole("radio", { name: "run" }))
+    await userEvent.click(result.getByRole("button", { name: "Runs" }))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchProperty("run"))
   })
@@ -216,7 +220,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByRole("radio", { name: "run" }))
+    await userEvent.click(result.getByRole("button", { name: "Runs" }))
 
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })
