@@ -13,9 +13,30 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
     end
 
     test "makes Amazon Location Service request" do
-      reassign_env(:skate, :aws_request_fn, fn _ -> {:ok, %{status_code: 200}} end)
+      reassign_env(:skate, :aws_request_fn, fn %{
+                                                 path: "/places/v0/indexes/test-index/search/text"
+                                               } ->
+        {:ok, %{status_code: 200}}
+      end)
 
       assert {:ok, %{status_code: 200}} = AwsLocationRequest.search("search term")
+    end
+  end
+
+  describe "suggest/1" do
+    setup do
+      reassign_env(:skate, :aws_place_index, "test-index")
+    end
+
+    test "makes Amazon Location Service request" do
+      reassign_env(:skate, :aws_request_fn, fn %{
+                                                 path:
+                                                   "/places/v0/indexes/test-index/search/suggestions"
+                                               } ->
+        {:ok, %{status_code: 200}}
+      end)
+
+      assert {:ok, %{status_code: 200}} = AwsLocationRequest.suggest("search term")
     end
   end
 
@@ -93,6 +114,20 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
 
       assert [%SearchResult{name: nil, address: ^address_suffix}] =
                AwsLocationRequest.parse_search_response(reponse)
+    end
+  end
+
+  describe "parse_suggest_response/1" do
+    test "pulls out suggested search text" do
+      reponse = %{
+        status_code: 200,
+        body:
+          Jason.encode!(%{
+            "Results" => [build(:amazon_location_suggest_result, %{"Text" => "some place"})]
+          })
+      }
+
+      assert ["some place"] = AwsLocationRequest.parse_suggest_response(reponse)
     end
   end
 end

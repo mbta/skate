@@ -21,6 +21,23 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     |> request_fn.()
   end
 
+  @spec suggest(String.t()) :: {:ok, map()} | {:error, term()}
+  def suggest(text) do
+    request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
+
+    path =
+      "/places/v0/indexes/" <>
+        Application.get_env(:skate, :aws_place_index) <> "/search/suggestions"
+
+    %ExAws.Operation.RestQuery{
+      http_method: :post,
+      path: path,
+      body: Map.merge(@base_arguments, %{Text: text}),
+      service: :places
+    }
+    |> request_fn.()
+  end
+
   def parse_search_response(%{status_code: 200, body: body}) do
     %{"Results" => results} = Jason.decode!(body)
 
@@ -40,6 +57,12 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
         longitude: longitude
       }
     end)
+  end
+
+  def parse_suggest_response(%{status_code: 200, body: body}) do
+    %{"Results" => results} = Jason.decode!(body)
+
+    Enum.map(results, fn result -> Map.get(result, "Text") end)
   end
 
   @spec separate_label_text(String.t(), String.t() | nil, String.t() | nil) ::

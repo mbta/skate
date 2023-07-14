@@ -220,4 +220,12 @@ defmodule Skate.Factory do
 
     result |> merge_attributes(attrs) |> evaluate_lazy_attributes()
   end
+
+  def amazon_location_suggest_result_factory do
+    %{
+      "Text" =>
+        "#{sequence(:address_number, &to_string/1)} Test St, Boston, MA 02201, United States",
+      "PlaceId" => "test_id_#{sequence(:place_id, &to_string/1)}"
+    }
+  end
 end
