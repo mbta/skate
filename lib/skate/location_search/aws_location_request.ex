@@ -2,7 +2,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
   alias Skate.LocationSearch.SearchResult
 
   @base_arguments %{
-    FilterBBox: [-72, 41.2, -69.8, 43]
+    FilterBBox: [-71.55, 42.05, -70.6, 42.65]
   }
 
   @spec search(String.t()) :: {:ok, map()} | {:error, term()}
