@@ -24,9 +24,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
         longitude: 0
       }
 
-      reassign_env(:skate, :location_search_fn, fn _query -> {:ok, %{status_code: 200}} end)
-
-      reassign_env(:skate, :location_parse_fn, fn _query -> [result] end)
+      reassign_env(:skate, :location_search_fn, fn _query -> {:ok, [result]} end)
 
       conn =
         conn
@@ -57,9 +55,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
     test "returns data", %{conn: conn} do
       result = "suggested search"
 
-      reassign_env(:skate, :location_suggest_fn, fn _query -> {:ok, %{status_code: 200}} end)
-
-      reassign_env(:skate, :location_parse_fn, fn _query -> [result] end)
+      reassign_env(:skate, :location_suggest_fn, fn _query -> {:ok, [result]} end)
 
       conn =
         conn

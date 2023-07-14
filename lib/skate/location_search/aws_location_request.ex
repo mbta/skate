@@ -8,13 +8,16 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     path =
       "/places/v0/indexes/" <> Application.get_env(:skate, :aws_place_index) <> "/search/text"
 
-    %ExAws.Operation.RestQuery{
-      http_method: :post,
-      path: path,
-      body: Map.merge(base_arguments(), %{Text: text}),
-      service: :places
-    }
-    |> request_fn.()
+    case %ExAws.Operation.RestQuery{
+           http_method: :post,
+           path: path,
+           body: Map.merge(base_arguments(), %{Text: text}),
+           service: :places
+         }
+         |> request_fn.() do
+      {:ok, response} -> parse_search_response(response)
+      {:error, error} -> {:error, error}
+    end
   end
 
   @spec suggest(String.t()) :: {:ok, map()} | {:error, term()}
@@ -25,16 +28,19 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       "/places/v0/indexes/" <>
         Application.get_env(:skate, :aws_place_index) <> "/search/suggestions"
 
-    %ExAws.Operation.RestQuery{
-      http_method: :post,
-      path: path,
-      body: Map.merge(base_arguments(), %{Text: text}),
-      service: :places
-    }
-    |> request_fn.()
+    case %ExAws.Operation.RestQuery{
+           http_method: :post,
+           path: path,
+           body: Map.merge(base_arguments(), %{Text: text}),
+           service: :places
+         }
+         |> request_fn.() do
+      {:ok, response} -> parse_suggest_response(response)
+      {:error, error} -> {:error, error}
+    end
   end
 
-  def parse_search_response(%{status_code: 200, body: body}) do
+  defp parse_search_response(%{status_code: 200, body: body}) do
     %{"Results" => results} = Jason.decode!(body)
 
     Enum.map(results, fn result ->
@@ -55,7 +61,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     end)
   end
 
-  def parse_suggest_response(%{status_code: 200, body: body}) do
+  defp parse_suggest_response(%{status_code: 200, body: body}) do
     %{"Results" => results} = Jason.decode!(body)
 
     Enum.map(results, fn result -> Map.get(result, "Text") end)
