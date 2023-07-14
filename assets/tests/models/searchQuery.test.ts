@@ -3,7 +3,7 @@ import { isValidSearchQuery, SearchQuery } from "../../src/models/searchQuery"
 describe("isValidSearchQuery", () => {
   test("returns true if the query text contains at least 2 characters", () => {
     const validQuery: SearchQuery = {
-      text: "12",
+      text: "123",
       property: "run",
     }
 
