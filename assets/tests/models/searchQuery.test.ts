@@ -19,7 +19,7 @@ describe("isValidSearchQuery", () => {
     expect(isValidSearchQuery(invalidQuery)).toBeFalsy()
   })
 
-  test("returns false if the query contains more than 2 characters but they're not alphanumeric", () => {
+  test("returns false if the query contains more than 3 characters but they're not alphanumeric", () => {
     const invalidQuery: SearchQuery = {
       text: " -1 -",
       property: "run",
