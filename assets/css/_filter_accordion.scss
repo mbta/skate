@@ -15,7 +15,8 @@
 
     user-select: none;
 
-    &:focus .c-garage-filter__show-hide-icon {
+    // Fill icon when button is focused
+    &:focus .c-filter-accordion__show-hide-icon {
       border-radius: 4px;
       background-color: $color-gray-200;
     }
