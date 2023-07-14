@@ -5,6 +5,8 @@ import React, {
   useEffect,
   useState,
 } from "react"
+import { Socket } from "phoenix"
+
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
@@ -26,10 +28,8 @@ import RecentSearches from "./recentSearches"
 import SearchResults from "./searchResults"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import Loading from "./loading"
-
 import useSocket from "../hooks/useSocket"
 import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
-import { Socket } from "phoenix"
 import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
