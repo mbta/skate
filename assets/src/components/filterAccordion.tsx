@@ -29,8 +29,12 @@ interface FilterAccordionProps {
 }
 
 /**
- * A accordion that provides a configurable header and contents.
+ * A accordion that provides a configurable header and filter contents.
  * Specifically implements the designs for Filter Accordions within Skate.
+ *
+ * ---
+ *
+ * Split off from `<GarageFilter/>`
  */
 export const FilterAccordion = ({
   heading,
@@ -76,7 +80,7 @@ export interface FilterAccordionToggleProps {
 }
 
 /**
- *
+ * {@link FilterAccordion} Toggle button component.
  */
 export const FilterAccordionToggle = ({
   name,
@@ -89,6 +93,9 @@ export const FilterAccordionToggle = ({
   </button>
 )
 
+/**
+ * {@link FilterAccordion} Toggle Button list item
+ */
 export const FilterAccordionToggleFilter = (
   props: FilterAccordionToggleProps
 ) => {
@@ -104,6 +111,13 @@ export interface FilterAccordionWithExpansionStateProps
   initialActiveState?: boolean
 }
 
+/**
+ * {@link FilterAccordion} which contains it's own expanded state.
+ *
+ * ---
+ *
+ * Useful for prototyping and debugging.
+ */
 export const FilterAccordionWithExpansionState = ({
   initialActiveState,
   ...props
@@ -125,7 +139,16 @@ export interface FilterAccordionFilterWithStateProps
   initialActiveState?: boolean
 }
 
-export const FilterAccordionFilterWithState = ({
+/**
+ * {@link FilterAccordionToggleFilter} with self contained active state.
+ *
+ * ---
+ *
+ * There is not a good way to get the data out of this component, although it's
+ * useful for prototyping, you probably want {@link FilterAccordionToggleFilter}
+ * to receive events and control the state from another component.
+ */
+export const FilterAccordionToggleFilterWithState = ({
   initialActiveState = false,
   ...props
 }: FilterAccordionFilterWithStateProps) => {
@@ -139,7 +162,11 @@ export const FilterAccordionFilterWithState = ({
   )
 }
 
+/** @see {@link FilterAccordionToggleFilterWithState } */
+FilterAccordionToggleFilter.WithState = FilterAccordionToggleFilterWithState
+
+/** @see {@link FilterAccordionToggleFilter } */
 FilterAccordion.ToggleFilter = FilterAccordionToggleFilter
 
-FilterAccordionToggleFilter.WithState = FilterAccordionFilterWithState
+/** @see {@link FilterAccordionWithExpansionState } */
 FilterAccordion.WithExpansionState = FilterAccordionWithExpansionState

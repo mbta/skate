@@ -1,5 +1,10 @@
 import React, { ComponentPropsWithoutRef } from "react"
 
+/**
+ * Interactive variant of the `CircleXIcon`.
+ *
+ * Implements focus and hover states via CSS and SVG.
+ */
 export const CircleXIcon = (props: ComponentPropsWithoutRef<"svg">) => (
   <svg
     className="c-circle-x-icon"
