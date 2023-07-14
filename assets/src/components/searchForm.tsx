@@ -10,6 +10,13 @@ import {
 } from "../state/searchPageState"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
+type SearchFormProps = {
+  onSubmit?: () => void
+  onClear?: () => void
+  inputTitle?: string
+  formTitle?: string
+  submitEvent?: string
+}
 
 const SearchForm = ({
   onSubmit,
@@ -17,13 +24,7 @@ const SearchForm = ({
   inputTitle,
   formTitle,
   submitEvent,
-}: {
-  onSubmit?: () => void
-  onClear?: () => void
-  inputTitle?: string
-  formTitle?: string
-  submitEvent?: string
-}) => {
+}: SearchFormProps) => {
   const [
     {
       searchPageState: { query },
