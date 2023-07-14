@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { CircleXIcon, SearchIcon } from "../helpers/icon"
-import { isValidSearchQuery } from "../models/searchQuery"
+import { filterToAlphanumeric } from "../models/searchQuery"
 import {
   setSearchProperty,
   setSearchText,
@@ -91,7 +91,7 @@ const OldSearchForm = ({
           title="Submit"
           className="c-old-search-form__submit button-submit"
           onClick={subscribeToSearch}
-          disabled={!isValidSearchQuery(query)}
+          disabled={!(filterToAlphanumeric(query.text).length >= 2)}
         >
           <SearchIcon />
         </button>

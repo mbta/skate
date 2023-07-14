@@ -18,4 +18,4 @@ export const filterToAlphanumeric = (text: string): string =>
   text.replace(/[^0-9a-zA-Z]/g, "")
 
 export const isValidSearchQuery = ({ text }: SearchQuery): boolean =>
-  filterToAlphanumeric(text).length >= 2
+  filterToAlphanumeric(text).length >= 3

@@ -1,6 +1,7 @@
-import React, { useContext } from "react"
+import React, { useContext, useRef } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { CircleXIcon, SearchIcon } from "../helpers/icon"
+import { SearchIcon } from "../helpers/icon"
+import { CircleXIcon } from "./circleXIcon"
 import { isValidSearchQuery } from "../models/searchQuery"
 import {
   setSearchProperty,
@@ -34,9 +35,12 @@ const SearchForm = ({
     dispatch(setSearchText(value))
   }
 
+  const formSearchInput = useRef<HTMLInputElement | null>(null)
   const clearTextInput = (event: React.FormEvent<EventTarget>): void => {
     event.preventDefault()
     dispatch(setSearchText(""))
+    // Focus text box after clearing input
+    formSearchInput.current?.focus()
     if (onClear) {
       onClear()
     }
@@ -66,8 +70,8 @@ const SearchForm = ({
       className="c-search-form"
       aria-label={formTitle || "Submit Search"}
     >
-      <div className="c-search-form__row">
-        <div className="c-search-form__text">
+      <div className="c-search-form__search-control">
+        <div className="c-search-form__search-input-container">
           <input
             type="text"
             className="c-search-form__input"
@@ -75,26 +79,30 @@ const SearchForm = ({
             aria-label={inputTitle || "Search"}
             value={query.text}
             onChange={handleTextInput}
+            ref={formSearchInput}
           />
-          <button
-            type="reset"
-            title="Clear Search"
-            className="c-search-form__clear"
-            onClick={clearTextInput}
-          >
-            <CircleXIcon />
-          </button>
+          <div className="c-search-form__input-controls">
+            <button
+              hidden={query.text.length === 0}
+              type="reset"
+              title="Clear Search"
+              className="c-search-form__clear c-circle-x-icon-container"
+              onClick={clearTextInput}
+            >
+              <CircleXIcon />
+            </button>
+            <button
+              type="submit"
+              title="Submit"
+              className="c-search-form__submit"
+              onClick={subscribeToSearch}
+              // TODO(design): add error states instead of using `disabled`
+              disabled={!isValidSearchQuery(query)}
+            >
+              <SearchIcon />
+            </button>
+          </div>
         </div>
-
-        <button
-          type="submit"
-          title="Submit"
-          className="c-search-form__submit button-submit"
-          onClick={subscribeToSearch}
-          disabled={!isValidSearchQuery(query)}
-        >
-          <SearchIcon />
-        </button>
       </div>
 
       <div className="c-search-form__row">
@@ -112,7 +120,7 @@ const SearchForm = ({
                 value={property}
                 checked={query.property === property}
                 onChange={handlePropertyChange}
-              />
+        />
               <label
                 htmlFor={`property-${property}`}
                 className="c-search-form__property-label button-search-filter"
