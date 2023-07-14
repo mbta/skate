@@ -44,9 +44,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       expected_payload = %{data: %{matching_vehicles: [match_1, match_2], has_more_matches: true}}
 
       assert {:ok, ^expected_payload, %Socket{} = _socket} =
-               subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:", %{
-                 "property" => "vehicle",
-                 "text" => "000",
+               subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
                  "limit" => 2
                })
     end
@@ -60,9 +58,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
 
       assert {:ok, %{data: %{matching_vehicles: [], has_more_matches: false}},
               %Socket{} = _socket} =
-               subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:", %{
-                 "property" => "vehicle",
-                 "text" => "000",
+               subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
                  "limit" => 2
                })
 
@@ -84,9 +80,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
 
       {:ok, _data, socket} =
-        subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:", %{
-          "property" => "vehicle",
-          "text" => "000",
+        subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
           "limit" => 2
         })
 
@@ -114,16 +108,12 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
 
       {:ok, %{data: %{matching_vehicles: [^match_1, ^match_2], has_more_matches: true}}, socket} =
-        subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:", %{
-          "property" => "vehicle",
-          "text" => "000",
+        subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
           "limit" => 2
         })
 
       ref =
         Phoenix.ChannelTest.push(socket, "update_search_query", %{
-          "property" => "vehicle",
-          "text" => "000",
           "limit" => 3
         })
 

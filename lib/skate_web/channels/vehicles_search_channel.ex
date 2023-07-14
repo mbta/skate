@@ -8,8 +8,8 @@ defmodule SkateWeb.VehiclesSearchChannel do
 
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated(
-        "vehicles_search:" <> _unique_id,
-        %{"limit" => limit, "text" => text, "property" => property},
+        "vehicles_search:" <> subtopic,
+        %{"limit" => limit},
         socket
       ) do
     username_from_socket! =
@@ -22,18 +22,15 @@ defmodule SkateWeb.VehiclesSearchChannel do
     username = username_from_socket!.(socket)
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
 
-    subscribe_args = %{
-      property: String.to_existing_atom(property),
-      limit: limit,
-      text: text
-    }
+    %{property: property, text: text} = search_params_from_subtopic(subtopic)
 
-    subscribe_args =
-      Map.put(
-        subscribe_args,
-        :include_logged_out_vehicles,
+    subscribe_args = %{
+      property: property,
+      text: text,
+      limit: limit,
+      include_logged_out_vehicles:
         Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
-      )
+    }
 
     Logger.info(fn ->
       "User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text} limit=#{subscribe_args.limit}"
@@ -47,15 +44,32 @@ defmodule SkateWeb.VehiclesSearchChannel do
   @impl Phoenix.Channel
   def handle_in(
         "update_search_query",
-        %{"text" => text, "limit" => limit, "property" => property},
+        %{"limit" => limit},
         socket
       ) do
+    "vehicles_search:" <> subtopic = socket.topic
+
+    %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
+
+    %{property: property, text: text} = search_params_from_subtopic(subtopic)
+
     result =
       Duration.log_duration(Server, :update_limited_search_subscription, [
-        %{text: text, limit: limit, property: String.to_existing_atom(property)}
+        %{
+          property: property,
+          text: text,
+          limit: limit,
+          include_logged_out_vehicles:
+            Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
+        }
       ])
 
     {:reply, {:ok, %{data: result}}, socket}
+  end
+
+  defp search_params_from_subtopic(subtopic) do
+    [property, text] = String.split(subtopic, ":", parts: 2)
+    %{property: String.to_existing_atom(property), text: text}
   end
 
   @impl Phoenix.Channel
