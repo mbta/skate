@@ -50,8 +50,9 @@
 .c-search-form__input-controls {
   position: absolute;
   // Stick to right side of box, do not intercept mouse events to the text input
-  inset-block: 0;
-  right: 0;
+  inset: 0;
+  left: unset;
+
   width: 0;
 
   // Layout controls from the right side
