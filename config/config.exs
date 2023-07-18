@@ -33,6 +33,12 @@ config :skate,
   sentry_frontend_dsn: {:system, "SENTRY_FRONTEND_DSN"},
   sentry_environment: {:system, "SENTRY_ENV"},
   log_duration_timing: true,
+  map_limits: %{
+    north: 42.65,
+    south: 42.05,
+    east: -70.6,
+    west: -71.55
+  },
   redirect_http?: false,
   static_href: {SkateWeb.Router.Helpers, :static_path},
   timezone: "America/New_York",

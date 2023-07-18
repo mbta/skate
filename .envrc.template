@@ -29,6 +29,9 @@ export BUSLOC_URL=
 ## Source of GTFS-realtime enhanced TripUpdates json data file (optional)
 export TRIP_UPDATES_URL=
 
+## Amazon Location Service place index to use for location search
+export AWS_PLACE_INDEX=
+
 ## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 export ERL_FLAGS="+MIscs 2048"
 

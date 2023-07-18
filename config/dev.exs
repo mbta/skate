@@ -31,6 +31,10 @@ config :skate, SkateWeb.Endpoint,
 
 config :skate, SkateWeb.AuthManager, secret_key: "dev key"
 
+config :ex_aws,
+  access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, {:awscli, "default", 30}],
+  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, {:awscli, "default", 30}]
+
 config :ueberauth, Ueberauth,
   providers: [
     cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]}
