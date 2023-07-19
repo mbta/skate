@@ -61,6 +61,10 @@ import {
   layersControlButton,
   zoomInButton,
 } from "../testHelpers/selectors/components/map"
+import {
+  searchInput as searchFormSearchInput,
+  submitButton as searchFormSubmitButton,
+} from "../testHelpers/selectors/components/searchForm"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -377,10 +381,39 @@ describe("<MapPage />", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /submit/i }))
+    await userEvent.click(searchFormSubmitButton.get())
     expect(
       container.querySelector(".c-vehicle-map__route-shape")
     ).not.toBeInTheDocument()
+  })
+
+  test("when a search is submitted, should fire FS event for map page", async () => {
+    mockFullStoryEvent()
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    ;(useSearchResults as jest.Mock).mockReturnValue([])
+    const mockDispatch = jest.fn()
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: {
+            query: { text: "123" },
+            isActive: true,
+          },
+        })}
+        dispatch={mockDispatch}
+      >
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(searchFormSubmitButton.get())
+
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Search submitted from map page"
+    )
   })
 
   test("when new search button is clicked, then the search query and map selection is cleared", async () => {
@@ -901,7 +934,7 @@ describe("<MapPage />", () => {
           </StateDispatchProvider>
         )
 
-        const searchInput = screen.getByRole("textbox", { name: /search map/i })
+        const searchInput = searchFormSearchInput.get()
         expect(searchInput).toHaveTextContent("")
         expect(searchInput).toHaveAttribute("placeholder", "Search")
 
@@ -934,7 +967,7 @@ describe("<MapPage />", () => {
           </StateDispatchProvider>
         )
 
-        const searchInput = screen.getByRole("textbox", { name: /search map/i })
+        const searchInput = searchFormSearchInput.get()
         expect(searchInput).toHaveTextContent("")
         expect(searchInput).toHaveAttribute("placeholder", "Search")
 

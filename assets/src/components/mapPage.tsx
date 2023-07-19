@@ -33,7 +33,7 @@ import MapDisplay from "./mapPage/mapDisplay"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import RecentSearches from "./recentSearches"
-import SearchForm from "./searchForm"
+import SearchFormFromStateDispatchContext from "./searchForm"
 import SearchResults from "./searchResults"
 import { VisualSeparator } from "./visualSeparator"
 import OldSearchForm from "./oldSearchForm"
@@ -59,7 +59,7 @@ const SearchMode = ({
   )
 
   const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
-    ? SearchForm
+    ? SearchFormFromStateDispatchContext
     : OldSearchForm
 
   return (
@@ -68,7 +68,9 @@ const SearchMode = ({
         <CurrentSearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
-          submitEvent="Search submitted from map page"
+          onSubmit={() => {
+            window.FS?.event("Search submitted from map page")
+          }}
         />
       </div>
 
