@@ -1,5 +1,5 @@
 import { byRole } from "testing-library-selector"
 
-export const searchFormClearSearchButton = byRole("button", {
+export const clearButton = byRole("button", {
   name: /clear search/i,
 })

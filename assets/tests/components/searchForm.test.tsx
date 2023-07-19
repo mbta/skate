@@ -15,7 +15,7 @@ import {
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import stateFactory from "../factories/applicationState"
-import { searchFormClearSearchButton } from "../testHelpers/selectors/components/searchForm"
+import { clearButton } from "../testHelpers/selectors/components/searchForm"
 
 const mockDispatch = jest.fn()
 
@@ -170,7 +170,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    expect(searchFormClearSearchButton.query()).not.toBeInTheDocument()
+    expect(clearButton.query()).not.toBeInTheDocument()
   })
 
   test("when search input is not empty, should display clear button", () => {
@@ -184,7 +184,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    expect(searchFormClearSearchButton.get()).toBeInTheDocument()
+    expect(clearButton.get()).toBeInTheDocument()
   })
 
   test("clicking the clear button empties the search text", async () => {
@@ -202,7 +202,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(searchFormClearSearchButton.get())
+    await userEvent.click(clearButton.get())
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
@@ -223,7 +223,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    await userEvent.click(searchFormClearSearchButton.get())
+    await userEvent.click(clearButton.get())
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
     expect(onClear).toHaveBeenCalledTimes(1)
