@@ -20,3 +20,8 @@ export const locationSearchResultFromData = ({
   latitude,
   longitude,
 })
+
+export const locationSearchResultsFromData = (
+  locationSearchResultsData: LocationSearchResultData[]
+): LocationSearchResult[] =>
+  locationSearchResultsData.map(locationSearchResultFromData)

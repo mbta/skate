@@ -26,6 +26,11 @@ import {
   routePatternsFromData,
 } from "./models/routePatternData"
 import * as Sentry from "@sentry/react"
+import { LocationSearchResult } from "./models/locationSearchResult"
+import {
+  LocationSearchResultData,
+  locationSearchResultsFromData,
+} from "./models/locationSearchResultData"
 
 export interface RouteData {
   id: string
@@ -209,6 +214,16 @@ export const fetchSwings = (routeIds: RouteId[]): Promise<Swing[] | null> =>
     url: `/api/swings?route_ids=${routeIds.join(",")}`,
     dataStruct: array(SwingData),
     parser: nullableParser(swingsFromData),
+    defaultResult: [],
+  })
+
+export const fetchLocationSearchResults = (
+  searchText: string
+): Promise<LocationSearchResult[] | null> =>
+  checkedApiCall<LocationSearchResultData[], LocationSearchResult[] | null>({
+    url: `api/location_search/search?query=${searchText}`,
+    dataStruct: array(LocationSearchResultData),
+    parser: nullableParser(locationSearchResultsFromData),
     defaultResult: [],
   })
 
