@@ -10,7 +10,7 @@ import { initialState, OpenView, State } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import vehicleFactory from "../factories/vehicle"
-import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
+import { TestGroups } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
 import { MemoryRouter } from "react-router-dom"
 import appData from "../../src/appData"
@@ -143,7 +143,7 @@ describe("App", () => {
     const mockDispatch = jest.fn()
 
     beforeAll(() => {
-      ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
+      ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
     })
 
     afterAll(() => {
@@ -155,7 +155,7 @@ describe("App", () => {
         ...initialState,
         selectedVehicleOrGhost: vehicleFactory.build(),
       }
-      ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+      ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
 
       render(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
@@ -189,7 +189,7 @@ describe("App", () => {
   })
 
   test("disables view nav entries on search map page", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
     ;(appData as jest.Mock).mockImplementationOnce(() => {
       return {
         dispatcherFlag: "true",
@@ -228,7 +228,7 @@ describe("App", () => {
   })
 
   test("renders new map page for users in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
 
     render(
       <MemoryRouter initialEntries={["/map"]}>

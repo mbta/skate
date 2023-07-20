@@ -16,7 +16,7 @@ import {
   OpenView,
   togglePickerContainer,
 } from "../../../src/state"
-import { MAP_BETA_GROUP_NAME } from "../../../src/userInTestGroup"
+import { TestGroups } from "../../../src/userInTestGroup"
 import getTestGroups from "../../../src/userTestGroups"
 import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
@@ -94,7 +94,7 @@ describe("LeftNav", () => {
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>
@@ -112,7 +112,7 @@ describe("LeftNav", () => {
 
   test("clicking 'Search Map' nav item triggers FullStory event", async () => {
     mockFullStoryEvent()
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>

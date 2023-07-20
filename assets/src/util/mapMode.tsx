@@ -3,7 +3,7 @@ import { ReactElement } from "react"
 import MapPage from "../components/mapPage"
 import SearchPage from "../components/searchPage"
 import { SearchIcon, SearchMapIcon } from "../helpers/icon"
-import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 
@@ -34,4 +34,4 @@ export const searchMapConfig = {
 }
 
 export const mapModeForUser = (): NavMode =>
-  inTestGroup(MAP_BETA_GROUP_NAME) ? searchMapConfig : legacyMapConfig
+  inTestGroup(TestGroups.MapBeta) ? searchMapConfig : legacyMapConfig

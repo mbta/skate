@@ -3,7 +3,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
-import inTestGroup from "../userInTestGroup"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { Card, CardProperties } from "./card"
 import { vehicleOrGhostProperties } from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
@@ -133,7 +133,9 @@ const NoResults = () => {
     dispatch,
   ] = useContext(StateDispatchContext)
 
-  const inLoggedOutVehiclesTestGroup = inTestGroup("search-logged-out-vehicles")
+  const inLoggedOutVehiclesTestGroup = inTestGroup(
+    TestGroups.SearchLoggedOutVehicles
+  )
 
   return (
     <div className="c-search-results__none">
