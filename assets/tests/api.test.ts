@@ -23,6 +23,8 @@ import * as browser from "../src/models/browser"
 import { string, unknown } from "superstruct"
 import { LocationType } from "../src/models/stopData"
 import * as Sentry from "@sentry/react"
+import locationSearchResultDataFactory from "./factories/locationSearchResultData"
+import locationSearchResultFactory from "./factories/locationSearchResult"
 
 jest.mock("@sentry/react", () => ({
   __esModule: true,
@@ -737,12 +739,12 @@ describe("fetchSwings", () => {
 
 describe("fetchLocationSearchResults", () => {
   test("parses location search results", (done) => {
-    const result = {
+    const result = locationSearchResultDataFactory.build({
       name: "Some Landmark",
       address: "123 Test St",
       latitude: 1,
       longitude: 2,
-    }
+    })
 
     mockFetch(200, {
       data: [result],
@@ -750,12 +752,12 @@ describe("fetchLocationSearchResults", () => {
 
     fetchLocationSearchResults("query").then((results) => {
       expect(results).toEqual([
-        {
+        locationSearchResultFactory.build({
           name: "Some Landmark",
           address: "123 Test St",
           latitude: 1,
           longitude: 2,
-        },
+        }),
       ])
       done()
     })
