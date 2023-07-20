@@ -36,6 +36,8 @@ import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 import { VisualSeparator } from "./visualSeparator"
+import OldSearchForm from "./oldSearchForm"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -56,10 +58,14 @@ const SearchMode = ({
     searchPageState.isActive ? searchPageState.query : null
   )
 
+  const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
+    ? SearchForm
+    : OldSearchForm
+
   return (
     <>
       <div className="c-map-page__input u-hideable">
-        <SearchForm
+        <CurrentSearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
           submitEvent="Search submitted from map page"
