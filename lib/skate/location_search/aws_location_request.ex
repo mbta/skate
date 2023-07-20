@@ -15,7 +15,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
            service: :places
          }
          |> request_fn.() do
-      {:ok, response} -> parse_search_response(response)
+      {:ok, response} -> {:ok, parse_search_response(response)}
       {:error, error} -> {:error, error}
     end
   end
@@ -35,7 +35,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
            service: :places
          }
          |> request_fn.() do
-      {:ok, response} -> parse_suggest_response(response)
+      {:ok, response} -> {:ok, parse_suggest_response(response)}
       {:error, error} -> {:error, error}
     end
   end

@@ -41,7 +41,7 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
 
       expected_address = "#{address_number} #{street}, #{address_suffix}"
 
-      assert [%SearchResult{name: ^name, address: ^expected_address}] =
+      assert {:ok, [%SearchResult{name: ^name, address: ^expected_address}]} =
                AwsLocationRequest.search("search text")
     end
 
@@ -73,7 +73,7 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
 
       expected_address = "#{address_number} #{street}, #{address_suffix}"
 
-      assert [%SearchResult{name: nil, address: ^expected_address}] =
+      assert {:ok, [%SearchResult{name: nil, address: ^expected_address}]} =
                AwsLocationRequest.search("search text")
     end
 
@@ -101,7 +101,7 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
         {:ok, response}
       end)
 
-      assert [%SearchResult{name: nil, address: ^address_suffix}] =
+      assert {:ok, [%SearchResult{name: nil, address: ^address_suffix}]} =
                AwsLocationRequest.search("search text")
     end
 
@@ -133,7 +133,7 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
         {:ok, response}
       end)
 
-      assert ["some place"] = AwsLocationRequest.suggest("text")
+      assert {:ok, ["some place"]} = AwsLocationRequest.suggest("text")
     end
 
     test "returns errors" do
