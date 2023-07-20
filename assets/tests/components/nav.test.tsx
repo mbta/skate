@@ -6,7 +6,7 @@ import "@testing-library/jest-dom"
 import Nav from "../../src/components/nav"
 import useScreenSize from "../../src/hooks/useScreenSize"
 import getTestGroups from "../../src/userTestGroups"
-import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
+import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,
@@ -65,7 +65,7 @@ describe("Nav", () => {
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
+    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>

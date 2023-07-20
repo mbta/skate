@@ -9,7 +9,7 @@ import {
   SelectedEntityType,
   newSearchSession,
 } from "../../state/searchPageState"
-import inTestGroup, { MAP_BETA_GROUP_NAME } from "../../userInTestGroup"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { mapModeForUser } from "../../util/mapMode"
 import { MapFollowingPrimaryVehicles } from "../map"
 
@@ -53,7 +53,7 @@ const MiniMap = ({
 }) => {
   const stations: Stop[] | null = useStations()
 
-  const inMapBetaGroup = inTestGroup(MAP_BETA_GROUP_NAME)
+  const inMapBetaGroup = inTestGroup(TestGroups.MapBeta)
 
   return (
     <MapFollowingPrimaryVehicles

@@ -2,7 +2,7 @@ import React from "react"
 import MapPage from "../../src/components/mapPage"
 import SearchPage from "../../src/components/searchPage"
 import { SearchIcon, SearchMapIcon } from "../../src/helpers/icon"
-import { MAP_BETA_GROUP_NAME } from "../../src/userInTestGroup"
+import { TestGroups } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
 import { mapModeForUser } from "../../src/util/mapMode"
 
@@ -13,7 +13,7 @@ jest.mock("userTestGroups", () => ({
 
 describe("mapModeForUser", () => {
   test("returns new map mode when a part of new map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([MAP_BETA_GROUP_NAME])
+    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
     expect(mapModeForUser()).toEqual({
       path: "/map",
       title: "Search Map",

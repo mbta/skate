@@ -1,8 +1,8 @@
 import { array, create, Infer, string } from "superstruct"
 import appData from "./appData"
 
-const TestGroups = array(string())
-type TestGroups = Infer<typeof TestGroups>
+const TestGroupStrings = array(string())
+type TestGroupStrings = Infer<typeof TestGroupStrings>
 
 const getTestGroups = (): string[] => {
   const testGroupsJson = appData()?.userTestGroups
@@ -11,7 +11,10 @@ const getTestGroups = (): string[] => {
     return []
   }
 
-  const testGroups = create(JSON.parse(testGroupsJson) as unknown, TestGroups)
+  const testGroups = create(
+    JSON.parse(testGroupsJson) as unknown,
+    TestGroupStrings
+  )
 
   return testGroups
 }

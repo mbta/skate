@@ -4,7 +4,7 @@ import vehicleFactory from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import getTestGroups from "../../../src/userTestGroups"
-import { MAP_BETA_GROUP_NAME } from "../../../src/userInTestGroup"
+import { TestGroups } from "../../../src/userInTestGroup"
 import MiniMap from "../../../src/components/propertiesPanel/miniMap"
 import "@testing-library/jest-dom"
 import { MemoryRouter } from "react-router"
@@ -50,7 +50,7 @@ afterAll(() => {
 describe("MiniMap", () => {
   describe("For users in map test group", () => {
     beforeAll(() => {
-      ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
+      ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
     })
     test("Map includes link to open vehicle in search map page", async () => {
       const mockDispatch = jest.fn()

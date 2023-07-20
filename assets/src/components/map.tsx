@@ -37,7 +37,7 @@ import { joinClasses } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
-import inTestGroup, { MAP_BETA_GROUP_NAME } from "../userInTestGroup"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 import {
   GarageMarkers,
   RouteShape,
@@ -422,8 +422,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
                       zoomLevel={zoomLevel}
                       direction={props.stopCardDirection}
                       includeStopCard={
-                        props.includeStopCard &&
-                        inTestGroup(MAP_BETA_GROUP_NAME)
+                        props.includeStopCard && inTestGroup(TestGroups.MapBeta)
                       }
                     />
                   </Pane>

@@ -7,7 +7,7 @@ import { initialState } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 import getTestGroups from "../../../src/userTestGroups"
-import { MAP_BETA_GROUP_NAME } from "../../../src/userInTestGroup"
+import { TestGroups } from "../../../src/userInTestGroup"
 import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 jest.mock("../../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -41,7 +41,7 @@ describe("BottomNavMobile", () => {
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([MAP_BETA_GROUP_NAME])
+    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>
