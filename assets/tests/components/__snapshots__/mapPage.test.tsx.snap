@@ -23,158 +23,118 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
       >
         <form
           aria-label="Search Map"
-          class="c-search-form"
+          class="c-old-search-form"
         >
           <div
-            class="c-search-form__search-control"
+            class="c-old-search-form__row"
           >
             <div
-              class="c-search-form__search-input-container"
+              class="c-old-search-form__text"
             >
               <input
                 aria-label="Search Map Query"
-                class="c-search-form__input"
+                class="c-old-search-form__input"
                 placeholder="Search"
                 type="text"
                 value=""
               />
-              <div
-                class="c-search-form__input-controls"
-              >
-                <button
-                  class="c-search-form__clear c-circle-x-icon-container"
-                  hidden=""
-                  title="Clear Search"
-                  type="reset"
-                >
-                  <svg
-                    class="c-circle-x-icon"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      class="c-circle-x-icon__focus-circle"
-                      cx="50%"
-                      cy="50%"
-                      r="75%"
-                    />
-                    <circle
-                      class="c-circle-x-icon__white-fill"
-                      cx="50%"
-                      cy="50%"
-                      r="75%"
-                    />
-                    <path
-                      class="c-circle-x-icon__path"
-                      d="m24 .05a24 24 0 1 0 24 23.95 24 24 0 0 0 -24-23.95zm13.19 32.54a3.33 3.33 0 1 1 -4.73 4.69l-8.46-8.57-8.57 8.48a3.33 3.33 0 1 1 -4.69-4.73l8.55-8.46-8.48-8.57a3.33 3.33 0 1 1 4.73-4.69l8.46 8.55 8.57-8.48a3.33 3.33 0 0 1 2.35-1 3.35 3.35 0 0 1 3.33 3.35 3.33 3.33 0 0 1 -1 2.35l-8.54 8.49z"
-                    />
-                  </svg>
-                </button>
-                <button
-                  class="c-search-form__submit"
-                  disabled=""
-                  title="Submit"
-                  type="submit"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-expanded="true"
-            class="c-filter-accordion"
-          >
-            <button
-              class="c-filter-accordion__toggle-button"
-            >
-              <div
-                class="c-filter-accordion__header"
-              >
-                Filter results
-              </div>
-              <div
-                class="c-filter-accordion__show-hide-icon"
+              <button
+                class="c-old-search-form__clear"
+                title="Clear Search"
+                type="reset"
               >
                 <span>
                   <svg />
                 </span>
-              </div>
-            </button>
-            <div
-              class="c-filter-accordion__body"
-            >
-              <ul
-                class="c-filter-accordion__filters"
-              >
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Vehicles
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Operators
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Runs
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Locations
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-              </ul>
+              </button>
             </div>
+            <button
+              class="c-old-search-form__submit button-submit"
+              disabled=""
+              title="Submit"
+              type="submit"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+          </div>
+          <div
+            class="c-old-search-form__row"
+          >
+            <ul
+              class="c-old-search-form__property-buttons"
+            >
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  checked=""
+                  class="c-old-search-form__property-input"
+                  id="property-all"
+                  name="property"
+                  type="radio"
+                  value="all"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-all"
+                >
+                  all
+                </label>
+              </li>
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  class="c-old-search-form__property-input"
+                  id="property-run"
+                  name="property"
+                  type="radio"
+                  value="run"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-run"
+                >
+                  run
+                </label>
+              </li>
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  class="c-old-search-form__property-input"
+                  id="property-vehicle"
+                  name="property"
+                  type="radio"
+                  value="vehicle"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-vehicle"
+                >
+                  vehicle
+                </label>
+              </li>
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  class="c-old-search-form__property-input"
+                  id="property-operator"
+                  name="property"
+                  type="radio"
+                  value="operator"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-operator"
+                >
+                  operator
+                </label>
+              </li>
+            </ul>
           </div>
         </form>
       </div>
@@ -441,158 +401,118 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
       >
         <form
           aria-label="Search Map"
-          class="c-search-form"
+          class="c-old-search-form"
         >
           <div
-            class="c-search-form__search-control"
+            class="c-old-search-form__row"
           >
             <div
-              class="c-search-form__search-input-container"
+              class="c-old-search-form__text"
             >
               <input
                 aria-label="Search Map Query"
-                class="c-search-form__input"
+                class="c-old-search-form__input"
                 placeholder="Search"
                 type="text"
                 value=""
               />
-              <div
-                class="c-search-form__input-controls"
-              >
-                <button
-                  class="c-search-form__clear c-circle-x-icon-container"
-                  hidden=""
-                  title="Clear Search"
-                  type="reset"
-                >
-                  <svg
-                    class="c-circle-x-icon"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      class="c-circle-x-icon__focus-circle"
-                      cx="50%"
-                      cy="50%"
-                      r="75%"
-                    />
-                    <circle
-                      class="c-circle-x-icon__white-fill"
-                      cx="50%"
-                      cy="50%"
-                      r="75%"
-                    />
-                    <path
-                      class="c-circle-x-icon__path"
-                      d="m24 .05a24 24 0 1 0 24 23.95 24 24 0 0 0 -24-23.95zm13.19 32.54a3.33 3.33 0 1 1 -4.73 4.69l-8.46-8.57-8.57 8.48a3.33 3.33 0 1 1 -4.69-4.73l8.55-8.46-8.48-8.57a3.33 3.33 0 1 1 4.73-4.69l8.46 8.55 8.57-8.48a3.33 3.33 0 0 1 2.35-1 3.35 3.35 0 0 1 3.33 3.35 3.33 3.33 0 0 1 -1 2.35l-8.54 8.49z"
-                    />
-                  </svg>
-                </button>
-                <button
-                  class="c-search-form__submit"
-                  disabled=""
-                  title="Submit"
-                  type="submit"
-                >
-                  <span>
-                    <svg />
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-expanded="true"
-            class="c-filter-accordion"
-          >
-            <button
-              class="c-filter-accordion__toggle-button"
-            >
-              <div
-                class="c-filter-accordion__header"
-              >
-                Filter results
-              </div>
-              <div
-                class="c-filter-accordion__show-hide-icon"
+              <button
+                class="c-old-search-form__clear"
+                title="Clear Search"
+                type="reset"
               >
                 <span>
                   <svg />
                 </span>
-              </div>
-            </button>
-            <div
-              class="c-filter-accordion__body"
-            >
-              <ul
-                class="c-filter-accordion__filters"
-              >
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Vehicles
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Operators
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Runs
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-                <li
-                  class="c-filter-accordion__filter"
-                >
-                  <button
-                    class="c-filter-accordion__filter-toggle"
-                  >
-                    <span>
-                      Locations
-                    </span>
-                    <span
-                      class="c-filter-accordion__toggle-icon"
-                    >
-                      <svg />
-                    </span>
-                  </button>
-                </li>
-              </ul>
+              </button>
             </div>
+            <button
+              class="c-old-search-form__submit button-submit"
+              disabled=""
+              title="Submit"
+              type="submit"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+          </div>
+          <div
+            class="c-old-search-form__row"
+          >
+            <ul
+              class="c-old-search-form__property-buttons"
+            >
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  checked=""
+                  class="c-old-search-form__property-input"
+                  id="property-all"
+                  name="property"
+                  type="radio"
+                  value="all"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-all"
+                >
+                  all
+                </label>
+              </li>
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  class="c-old-search-form__property-input"
+                  id="property-run"
+                  name="property"
+                  type="radio"
+                  value="run"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-run"
+                >
+                  run
+                </label>
+              </li>
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  class="c-old-search-form__property-input"
+                  id="property-vehicle"
+                  name="property"
+                  type="radio"
+                  value="vehicle"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-vehicle"
+                >
+                  vehicle
+                </label>
+              </li>
+              <li
+                class="c-old-search-form__property-button"
+              >
+                <input
+                  class="c-old-search-form__property-input"
+                  id="property-operator"
+                  name="property"
+                  type="radio"
+                  value="operator"
+                />
+                <label
+                  class="c-old-search-form__property-label button-search-filter"
+                  for="property-operator"
+                >
+                  operator
+                </label>
+              </li>
+            </ul>
           </div>
         </form>
       </div>
