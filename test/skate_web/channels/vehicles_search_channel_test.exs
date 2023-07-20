@@ -44,9 +44,14 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       expected_payload = %{data: %{matching_vehicles: [match_1, match_2], has_more_matches: true}}
 
       assert {:ok, ^expected_payload, %Socket{} = _socket} =
-               subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
-                 "limit" => 2
-               })
+               subscribe_and_join(
+                 socket,
+                 VehiclesSearchChannel,
+                 "vehicles_search:limited:vehicle:000",
+                 %{
+                   "limit" => 2
+                 }
+               )
     end
 
     test "subscribes to vehicle updates", %{
@@ -58,9 +63,14 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
 
       assert {:ok, %{data: %{matching_vehicles: [], has_more_matches: false}},
               %Socket{} = _socket} =
-               subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
-                 "limit" => 2
-               })
+               subscribe_and_join(
+                 socket,
+                 VehiclesSearchChannel,
+                 "vehicles_search:limited:vehicle:000",
+                 %{
+                   "limit" => 2
+                 }
+               )
 
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
 
@@ -80,9 +90,14 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
 
       {:ok, _data, socket} =
-        subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
-          "limit" => 2
-        })
+        subscribe_and_join(
+          socket,
+          VehiclesSearchChannel,
+          "vehicles_search:limited:vehicle:000",
+          %{
+            "limit" => 2
+          }
+        )
 
       assert {:noreply, _socket} =
                VehiclesSearchChannel.handle_info(
@@ -108,9 +123,14 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
 
       {:ok, %{data: %{matching_vehicles: [^match_1, ^match_2], has_more_matches: true}}, socket} =
-        subscribe_and_join(socket, VehiclesSearchChannel, "vehicles_search:vehicle:000", %{
-          "limit" => 2
-        })
+        subscribe_and_join(
+          socket,
+          VehiclesSearchChannel,
+          "vehicles_search:limited:vehicle:000",
+          %{
+            "limit" => 2
+          }
+        )
 
       ref =
         Phoenix.ChannelTest.push(socket, "update_search_query", %{

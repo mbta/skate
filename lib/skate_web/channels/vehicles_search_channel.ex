@@ -8,7 +8,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
 
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated(
-        "vehicles_search:" <> subtopic,
+        "vehicles_search:limited:" <> subtopic,
         %{"limit" => limit},
         socket
       ) do
@@ -33,7 +33,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
     }
 
     Logger.info(fn ->
-      "User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text} limit=#{subscribe_args.limit}"
+      "#{__MODULE__} limited_search User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text} limit=#{subscribe_args.limit}"
     end)
 
     result = Duration.log_duration(Server, :subscribe_to_limited_search, [subscribe_args])
@@ -47,9 +47,17 @@ defmodule SkateWeb.VehiclesSearchChannel do
         %{"limit" => limit},
         socket
       ) do
-    "vehicles_search:" <> subtopic = socket.topic
+    "vehicles_search:limited:" <> subtopic = socket.topic
+
+    username_from_socket! =
+      Application.get_env(
+        :skate,
+        :username_from_socket!,
+        &SkateWeb.AuthManager.username_from_socket!/1
+      )
 
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
+    username = username_from_socket!.(socket)
 
     %{property: property, text: text} = search_params_from_subtopic(subtopic)
 
@@ -63,6 +71,10 @@ defmodule SkateWeb.VehiclesSearchChannel do
             Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
         }
       ])
+
+    Logger.info(fn ->
+      "#{__MODULE__} limited_search User=#{username} updated limit for property=#{property}limit=#{limit}"
+    end)
 
     {:reply, {:ok, %{data: result}}, socket}
   end
