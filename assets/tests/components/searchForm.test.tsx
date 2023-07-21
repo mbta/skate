@@ -32,7 +32,7 @@ describe("SearchForm", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("submit button is disabled if there are fewer than 3 characters in the text field", () => {
+  test("when search input has less than the minimum amount of characters, should disable submit button", () => {
     const invalidSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "1", property: "run" },
     })
@@ -51,8 +51,8 @@ describe("SearchForm", () => {
     expect(result.getByTitle("Submit")).toBeDisabled()
   })
 
-  test("submit button is enabled if there are at least 3 characters in the text field", () => {
-    const searchText = "123"
+  test("when search input has the minimum amount of characters, should enable submit button", () => {
+    const searchText = "12"
     const validSearch = searchPageStateFactory.build({
       query: { text: searchText, property: "run" },
     })
