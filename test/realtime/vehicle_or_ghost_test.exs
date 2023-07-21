@@ -177,4 +177,42 @@ defmodule Realtime.VehicleOrGhostTest do
       assert VehicleOrGhost.find_by([ghost_with_nil_run_id], %{text: "710", property: :all}) == []
     end
   end
+
+  describe "take_limited_matches/2" do
+    test "when given a limit, takes only the limited number of matches" do
+      match_1 = build(:vehicle, %{label: "0001"})
+      other_1 = build(:vehicle, %{label: "not_match_1"})
+      match_2 = build(:vehicle, %{label: "0002"})
+      other_2 = build(:vehicle, %{label: "not_match_2"})
+      match_3 = build(:vehicle, %{label: "0003"})
+
+      assert %{matching_vehicles: [match_1, match_2], has_more_matches: true} ==
+               VehicleOrGhost.take_limited_matches(
+                 [match_1, other_1, match_2, other_2, match_3],
+                 %{
+                   text: "000",
+                   property: :vehicle,
+                   limit: 2
+                 }
+               )
+    end
+
+    test "when limit exceeds number of matches, returns all matches" do
+      match_1 = build(:vehicle, %{label: "0001"})
+      other_1 = build(:vehicle, %{label: "not_match_1"})
+      match_2 = build(:vehicle, %{label: "0002"})
+      other_2 = build(:vehicle, %{label: "not_match_2"})
+      match_3 = build(:vehicle, %{label: "0003"})
+
+      assert %{matching_vehicles: [match_1, match_2, match_3], has_more_matches: false} ==
+               VehicleOrGhost.take_limited_matches(
+                 [match_1, other_1, match_2, other_2, match_3],
+                 %{
+                   text: "000",
+                   property: :vehicle,
+                   limit: 5
+                 }
+               )
+    end
+  end
 end

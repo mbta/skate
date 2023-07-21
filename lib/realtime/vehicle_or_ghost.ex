@@ -3,60 +3,112 @@ defmodule Realtime.VehicleOrGhost do
 
   @type t :: Vehicle.t() | Ghost.t()
 
+  @spec take_limited_matches([t()], Server.search_params()) :: %{
+          matching_vehicles: [t()],
+          has_more_matches: boolean()
+        }
+  def take_limited_matches(vehicles, %{text: text, property: search_property, limit: limit}) do
+    search_terms = text |> clean_for_matching |> Enum.reject(&(String.length(&1) < 2))
+
+    if search_terms == [] do
+      []
+    else
+      take_limited_props_matching(
+        vehicles,
+        prop_names_for_search_prop(search_property),
+        search_terms,
+        limit,
+        []
+      )
+    end
+  end
+
   @spec find_by([t()], Server.search_params()) :: [t()]
-  def find_by(vehicles, %{
-        text: text,
-        property: :all
-      }),
-      do:
-        filter_by_prop_matching(
-          vehicles,
-          [:run_id, :label, :operator_id, :operator_first_name, :operator_last_name],
-          text
+  def find_by(vehicles, %{text: text, property: search_property}) do
+    filter_by_prop_matching(
+      vehicles,
+      prop_names_for_search_prop(search_property),
+      text
+    )
+  end
+
+  @spec prop_names_for_search_prop(Server.search_property()) :: [atom()]
+  defp prop_names_for_search_prop(:operator),
+    do: [:operator_id, :operator_first_name, :operator_last_name]
+
+  defp prop_names_for_search_prop(:vehicle), do: [:label]
+  defp prop_names_for_search_prop(:run), do: [:run_id]
+
+  defp prop_names_for_search_prop(:all),
+    do: [:operator_id, :operator_first_name, :operator_last_name, :label, :run_id]
+
+  @spec take_limited_props_matching([t()], [atom()], [String.t()], pos_integer(), [t()]) ::
+          %{matching_vehicles: [t()], has_more_matches: boolean}
+  defp take_limited_props_matching(
+         remaining_vehicles,
+         prop_names,
+         search_terms,
+         limit,
+         acc_matching_vehicles
+       )
+       when limit <= 0 or remaining_vehicles == [] do
+    %{
+      matching_vehicles: Enum.reverse(acc_matching_vehicles),
+      has_more_matches:
+        Enum.any?(
+          remaining_vehicles,
+          &vehicle_matches_all_search_terms(&1, prop_names, search_terms)
         )
+    }
+  end
 
-  def find_by(vehicles, %{
-        text: text,
-        property: :run
-      }),
-      do: filter_by_prop_matching(vehicles, :run_id, text)
+  defp take_limited_props_matching(
+         [first_vehicle | remaining_vehicles],
+         prop_names,
+         search_terms,
+         limit,
+         acc_matching_vehicles
+       ) do
+    vehicle_matches = vehicle_matches_all_search_terms(first_vehicle, prop_names, search_terms)
 
-  def find_by(vehicles, %{
-        text: text,
-        property: :vehicle
-      }),
-      do: filter_by_prop_matching(vehicles, :label, text)
+    if vehicle_matches do
+      take_limited_props_matching(
+        remaining_vehicles,
+        prop_names,
+        search_terms,
+        limit - 1,
+        [
+          first_vehicle | acc_matching_vehicles
+        ]
+      )
+    else
+      take_limited_props_matching(
+        remaining_vehicles,
+        prop_names,
+        search_terms,
+        limit,
+        acc_matching_vehicles
+      )
+    end
+  end
 
-  def find_by(vehicles, %{
-        text: text,
-        property: :operator
-      }),
-      do:
-        filter_by_prop_matching(
-          vehicles,
-          [:operator_id, :operator_first_name, :operator_last_name],
-          text
-        )
-
-  @spec filter_by_prop_matching([t()], atom() | [atom()], String.t()) :: [t()]
+  @spec filter_by_prop_matching([t()], [atom()], String.t()) :: [t()]
   defp filter_by_prop_matching(vehicles, prop_names, text) when is_list(prop_names) do
     search_terms = text |> clean_for_matching |> Enum.reject(&(String.length(&1) < 2))
 
     if search_terms == [] do
       []
     else
-      Enum.filter(vehicles, fn vehicle ->
-        Enum.all?(search_terms, fn search_term ->
-          Enum.any?(prop_names, fn prop_name ->
-            vehicle_matches?(vehicle, prop_name, search_term)
-          end)
-        end)
-      end)
+      Enum.filter(vehicles, &vehicle_matches_all_search_terms(&1, prop_names, search_terms))
     end
   end
 
-  defp filter_by_prop_matching(vehicles, prop_name, text) do
-    filter_by_prop_matching(vehicles, [prop_name], text)
+  defp vehicle_matches_all_search_terms(vehicle, prop_names, search_terms) do
+    Enum.all?(search_terms, fn search_term ->
+      Enum.any?(prop_names, fn prop_name ->
+        vehicle_matches?(vehicle, prop_name, search_term)
+      end)
+    end)
   end
 
   @spec vehicle_matches?(t(), atom(), String.t()) :: boolean()

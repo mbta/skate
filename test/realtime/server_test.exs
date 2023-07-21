@@ -397,6 +397,124 @@ defmodule Realtime.ServerTest do
     end
   end
 
+  describe "subscribe_to_limited_search/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_vehicles({@vehicles_by_route_id, [@shuttle], []}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get limited search results upon subscribing", %{server_pid: pid} do
+      assert %{matching_vehicles: [@vehicle], has_more_matches: true} ==
+               Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 1}, pid)
+    end
+
+    test "clients get updated limited search results pushed to them", %{server_pid: pid} do
+      Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 5}, pid)
+
+      Server.update_vehicles({%{}, [@shuttle], []}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+
+      assert %{matching_vehicles: [@shuttle], has_more_matches: false} ==
+               Server.lookup(lookup_args)
+    end
+
+    test "does not receive duplicate vehicles", %{server_pid: pid} do
+      Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 5}, pid)
+
+      Server.update_vehicles({%{}, [@shuttle, @shuttle], []}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+
+      assert %{matching_vehicles: [@shuttle], has_more_matches: false} =
+               Server.lookup(lookup_args)
+    end
+
+    test "vehicles on inactive blocks are included", %{server_pid: pid} do
+      Server.subscribe_to_limited_search(%{property: :vehicle, text: "v2-label", limit: 2}, pid)
+
+      Server.update_vehicles({%{"1" => [@vehicle_on_inactive_block]}, [], []}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+
+      assert %{matching_vehicles: [@vehicle_on_inactive_block], has_more_matches: false} =
+               Server.lookup(lookup_args)
+    end
+
+    test "logged out vehicles are returned when include_logged_out_vehicles is true",
+         %{server_pid: pid} do
+      Server.subscribe_to_limited_search(
+        %{property: :vehicle, text: "123", include_logged_out_vehicles: true, limit: 4},
+        pid
+      )
+
+      logged_in_vehicle =
+        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
+
+      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+
+      Server.update_vehicles(
+        {%{
+           "1" => [logged_in_vehicle]
+         }, [], [logged_out_vehicle]},
+        pid
+      )
+
+      assert_receive {:new_realtime_data, lookup_args}
+
+      assert %{
+               matching_vehicles: [logged_in_vehicle, logged_out_vehicle],
+               has_more_matches: false
+             } == Server.lookup(lookup_args)
+    end
+
+    test "logged out vehicles are not returned when include_logged_out_vehicles is not set",
+         %{server_pid: pid} do
+      Server.subscribe_to_limited_search(%{property: :vehicle, text: "123", limit: 5}, pid)
+
+      logged_in_vehicle =
+        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
+
+      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
+
+      Server.update_vehicles({%{"1" => [logged_in_vehicle]}, [], [logged_out_vehicle]}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+
+      assert %{matching_vehicles: [logged_in_vehicle], has_more_matches: false} ==
+               Server.lookup(lookup_args)
+    end
+  end
+
+  describe "update_limited_search_subscription/2" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_vehicles({@vehicles_by_route_id, [@shuttle], []}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "when update_limited_search_subscription is called, then when vehicles update the subscribing process is pushed only a message with their latest search params",
+         %{server_pid: pid} do
+      first_search_params = %{property: :all, text: "90", limit: 5}
+      second_search_params = %{property: :all, text: "asdf", limit: 5}
+
+      Server.subscribe_to_limited_search(first_search_params, pid)
+      Server.update_vehicles({%{}, [@shuttle], []}, pid)
+
+      assert_receive {:new_realtime_data, {_ets_tid, {:limited_search, ^first_search_params}}}
+
+      Server.update_limited_search_subscription(second_search_params, pid)
+      Server.update_vehicles({%{}, [@shuttle], []}, pid)
+      assert_receive {:new_realtime_data, {_ets_tid, {:limited_search, ^second_search_params}}}
+      refute_receive {:new_realtime_data, {_ets_tid, {:limited_search, ^first_search_params}}}
+    end
+  end
+
   describe "subscribe_to_alerts/2" do
     setup do
       {:ok, server_pid} = Server.start_link([])
