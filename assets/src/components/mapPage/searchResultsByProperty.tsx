@@ -33,11 +33,16 @@ const SearchResultSection = ({
   })
 
   return (
-    <div className="c-map-page__search_results_section">
-      <div className="c-map-page__search_results_header">
+    <section
+      className="c-map-page__search_results_section"
+      aria-labelledby={`search-results__${property}`}
+    >
+      <h2
+        className="c-map-page__search_results_header"
+        id={`search-results__${property}`}
+      >
         {searchPropertyDisplayConfig[property].name}
-      </div>
-
+      </h2>
       {limitedSearchResults == null ? (
         <Loading />
       ) : limitedSearchResults.matchingVehicles.length > 0 ? (
@@ -61,7 +66,7 @@ const SearchResultSection = ({
       ) : (
         "No results found"
       )}
-    </div>
+    </section>
   )
 }
 
@@ -80,19 +85,18 @@ const SearchResultsByProperty = ({
             searchPropertyDisplayConfig[second.property].order
         )
         .map(({ property, limit }) => (
-          <div key={property}>
-            <SearchResultSection
-              property={property}
-              text={searchPageState.query.text}
-              limit={limit}
-              selectVehicle={selectSearchResult}
-              showMore={() =>
-                dispatch(
-                  setPropertyMatchLimit(property as SearchProperty, limit + 25)
-                )
-              }
-            />
-          </div>
+          <SearchResultSection
+            key={property}
+            property={property}
+            text={searchPageState.query.text}
+            limit={limit}
+            selectVehicle={selectSearchResult}
+            showMore={() =>
+              dispatch(
+                setPropertyMatchLimit(property as SearchProperty, limit + 25)
+              )
+            }
+          />
         ))}
     </>
   )
