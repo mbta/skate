@@ -56,9 +56,12 @@ export const useLimitedSearchResults = (
   socket: Socket | undefined,
   query: { property: SearchProperty; text: string; limit: number } | null
 ): LimitedSearchResults | null => {
-  const [initialMessage, setInitialMessage] = useState<{
-    limit: number
-  } | null>()
+  const [initialMessage, setInitialMessage] = useState<
+    | {
+        limit: number
+      }
+    | undefined
+  >()
 
   const topic: string | null =
     query && `vehicles_search:limited:${query.property}:${query.text}`
@@ -72,7 +75,8 @@ export const useLimitedSearchResults = (
 
   const [state, pushUpdate] = useCheckedTwoWayChannel<
     LimitedSearchResultsData,
-    LimitedSearchResults | null
+    LimitedSearchResults | null,
+    { limit: number }
   >({
     socket,
     // Only set the topic once ready to connect.

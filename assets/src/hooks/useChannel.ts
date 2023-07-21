@@ -81,38 +81,80 @@ export const useCheckedChannel = <T, U>({
   loadingState: U
   closeAfterFirstRead?: boolean
 }): U => {
+  const [results, _push_updates] = useCheckedTwoWayChannel({
+    socket,
+    topic,
+    event,
+    dataStruct,
+    parser,
+    loadingState,
+    closeAfterFirstRead,
+  })
+  return results
+}
+
+export const useCheckedTwoWayChannel = <T, U, V extends object | undefined>({
+  socket,
+  topic,
+  initialMessage,
+  event,
+  dataStruct,
+  parser,
+  loadingState,
+  closeAfterFirstRead,
+}: {
+  socket: Socket | undefined
+  topic: string | null
+  initialMessage?: V
+  event: string
+  dataStruct: Struct<T, any>
+  parser: (data: T) => U
+  loadingState: U
+  closeAfterFirstRead?: boolean
+}): [U, (event: string, payload: V) => void] => {
   const [state, setState] = useState<U>(loadingState)
+  const [joinedChannel, setJoinedChannel] = useState<Channel | undefined>()
+
+  const onOk = ({ data: data }: { data: unknown }) => {
+    try {
+      assert(data, dataStruct)
+      setState(parser(data))
+    } catch (error) {
+      if (error instanceof StructError) {
+        Sentry.captureException(error)
+      }
+    }
+  }
+
+  const pushUpdate = useCallback(
+    (event: string, payload: any): void => {
+      if (joinedChannel) {
+        joinedChannel
+          .push(event, payload)
+          .receive("ok", (data: { data: unknown }) => {
+            onOk(data)
+          })
+      }
+    },
+    [joinedChannel]
+  )
 
   useEffect(() => {
     setState(loadingState)
     let channel: Channel | undefined
     if (socket !== undefined && topic !== null) {
-      channel = socket.channel(topic)
-      channel.on(event, ({ data: data }: { data: unknown }) => {
-        try {
-          assert(data, dataStruct)
-
-          setState(parser(data))
-        } catch (error) {
-          if (error instanceof StructError) {
-            Sentry.captureException(error)
-          }
-        }
+      channel = initialMessage
+        ? socket.channel(topic, initialMessage)
+        : socket.channel(topic)
+      channel.on(event, (data: { data: unknown }) => {
+        onOk(data)
       })
 
       channel
         .join()
-        .receive("ok", ({ data: data }: { data: unknown }) => {
-          try {
-            assert(data, dataStruct)
-
-            setState(parser(data))
-          } catch (error) {
-            if (error instanceof StructError) {
-              Sentry.captureException(error)
-            }
-          }
-
+        .receive("ok", (data: { data: unknown }) => {
+          onOk(data)
+          setJoinedChannel(channel)
           if (closeAfterFirstRead) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             channel!.leave()
@@ -139,86 +181,8 @@ export const useCheckedChannel = <T, U>({
     loadingState,
     dataStruct,
     parser,
+    initialMessage,
     closeAfterFirstRead,
   ])
-  return state
-}
-
-export const useCheckedTwoWayChannel = <T, U>({
-  socket,
-  topic,
-  event,
-  dataStruct,
-  parser,
-  loadingState,
-  initialMessage,
-}: {
-  socket: Socket | undefined
-  topic: string | null
-  event: string
-  initialMessage: any
-  dataStruct: Struct<T, any>
-  parser: (data: T) => U
-  loadingState: U
-}): [U, (event: string, payload: any) => void] => {
-  const [state, setState] = useState<U>(loadingState)
-  const [channel, setChannel] = useState<Channel | undefined>()
-
-  const onOk = ({ data: data }: { data: unknown }) => {
-    try {
-      assert(data, dataStruct)
-      setState(parser(data))
-    } catch (error) {
-      if (error instanceof StructError) {
-        Sentry.captureException(error)
-      }
-    }
-  }
-
-  const pushUpdate = useCallback(
-    (event: string, payload: any): void => {
-      if (channel) {
-        channel
-          .push(event, payload)
-          .receive("ok", (data: { data: unknown }) => {
-            onOk(data)
-          })
-      }
-    },
-    [channel]
-  )
-
-  useEffect(() => {
-    setState(loadingState)
-    let channel: Channel | undefined
-    if (socket !== undefined && topic !== null) {
-      channel = initialMessage
-        ? socket.channel(topic, initialMessage)
-        : socket.channel(topic)
-      channel.on(event, (data: { data: unknown }) => {
-        onOk(data)
-      })
-      channel.onError((error) => console.log(error))
-
-      channel
-        .join()
-        .receive("ok", (data: { data: unknown }) => {
-          onOk(data)
-          setChannel(channel)
-        })
-        .receive("error", ({ reason }) =>
-          // eslint-disable-next-line no-console
-          console.error(`joining topic ${topic} failed`, reason)
-        )
-        .receive("timeout", reload)
-    }
-
-    return () => {
-      if (channel !== undefined) {
-        channel.leave()
-        channel = undefined
-      }
-    }
-  }, [socket, topic, event, loadingState, dataStruct, parser, initialMessage])
   return [state, pushUpdate]
 }
