@@ -15,6 +15,7 @@
   &__focus-circle {
     display: none;
 
+    vector-effect: non-scaling-stroke;
     stroke-width: 1px;
     stroke: $color-eggplant-700;
     fill: $color-eggplant-200;
