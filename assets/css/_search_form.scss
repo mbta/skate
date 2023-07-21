@@ -72,7 +72,13 @@
 }
 
 .c-search-form__submit {
-  @include button-icon(1rem);
+  span > svg {
+    fill: currentColor;
+
+    display: block;
+    height: 1rem;
+    aspect-ratio: 1/1;
+  }
 
   display: flex;
 
