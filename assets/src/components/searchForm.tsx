@@ -81,27 +81,27 @@ const SearchForm = ({
             onChange={handleTextInput}
             ref={formSearchInput}
           />
-          <div className="c-search-form__input-controls">
-            <button
-              hidden={query.text.length === 0}
-              type="reset"
-              title="Clear Search"
-              className="c-search-form__clear c-circle-x-icon-container"
-              onClick={clearTextInput}
-            >
-              <CircleXIcon />
-            </button>
-            <button
-              type="submit"
-              title="Submit"
-              className="c-search-form__submit"
-              onClick={subscribeToSearch}
-              // TODO(design): add error states instead of using `disabled`
-              disabled={!isValidSearchQuery(query)}
-            >
-              <SearchIcon />
-            </button>
-          </div>
+        </div>
+        <div className="c-search-form__input-controls">
+          <button
+            hidden={query.text.length === 0}
+            type="reset"
+            title="Clear Search"
+            className="c-search-form__clear c-circle-x-icon-container"
+            onClick={clearTextInput}
+          >
+            <CircleXIcon />
+          </button>
+          <button
+            type="submit"
+            title="Submit"
+            className="c-search-form__submit"
+            onClick={subscribeToSearch}
+            // TODO(design): add error states instead of using `disabled`
+            disabled={!isValidSearchQuery(query)}
+          >
+            <SearchIcon />
+          </button>
         </div>
       </div>
       <FilterAccordion.WithExpansionState heading="Filter results">

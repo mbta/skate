@@ -7,12 +7,12 @@
 .c-search-form__search-control {
   // Make control area match designs
   height: 2.25rem;
+
+  // Layout floating `input-controls` over the `search-input-container`
+  position: relative;
 }
 
 .c-search-form__search-input-container {
-  // Layout floating `input-controls` over the `search-input-container`
-  position: relative;
-
   // Use bootstrap control as base for now
   @extend .form-control;
 
