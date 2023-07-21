@@ -219,6 +219,6 @@ export const useCheckedTwoWayChannel = <T, U>({
         channel = undefined
       }
     }
-  }, [socket, topic, event, loadingState, dataStruct, parser])
+  }, [socket, topic, event, loadingState, dataStruct, parser, initialMessage])
   return [state, pushUpdate]
 }

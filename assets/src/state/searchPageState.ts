@@ -146,6 +146,7 @@ export const reducer = (
       return {
         ...state,
         query: { ...state.query, text: action.payload.text },
+        // TODO: Reset limits?
         isActive: false,
       }
     case "SET_SEARCH_PROPERTY":
