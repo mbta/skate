@@ -81,7 +81,7 @@ const SearchResultsByProperty = ({
 }) => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
   return (
-    <>
+    <div aria-label="Grouped Search Results">
       {searchPageState.query.properties
         .sort(
           (first, second) =>
@@ -100,7 +100,7 @@ const SearchResultsByProperty = ({
             }
           />
         ))}
-    </>
+    </div>
   )
 }
 

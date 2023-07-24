@@ -136,7 +136,6 @@ export const useCheckedTwoWayChannel = <T, U, V>({
             onOk(data)
           })
           .receive("error", ({ reason }) => {
-            // eslint-disable-next-line no-console
             Sentry.captureMessage(
               `parsing response from push to ${topic} failed: ${reason}`,
               "error"
