@@ -93,10 +93,9 @@ export const useCheckedChannel = <T, U>({
   return results
 }
 
-export const useCheckedTwoWayChannel = <T, U, V extends object | undefined>({
+export const useCheckedTwoWayChannel = <T, U, V>({
   socket,
   topic,
-  initialMessage,
   event,
   dataStruct,
   parser,
@@ -105,7 +104,6 @@ export const useCheckedTwoWayChannel = <T, U, V extends object | undefined>({
 }: {
   socket: Socket | undefined
   topic: string | null
-  initialMessage?: V
   event: string
   dataStruct: Struct<T, any>
   parser: (data: T) => U
@@ -115,16 +113,19 @@ export const useCheckedTwoWayChannel = <T, U, V extends object | undefined>({
   const [state, setState] = useState<U>(loadingState)
   const [joinedChannel, setJoinedChannel] = useState<Channel | undefined>()
 
-  const onOk = ({ data: data }: { data: unknown }) => {
-    try {
-      assert(data, dataStruct)
-      setState(parser(data))
-    } catch (error) {
-      if (error instanceof StructError) {
-        Sentry.captureException(error)
+  const onOk = useCallback(
+    ({ data: data }: { data: unknown }) => {
+      try {
+        assert(data, dataStruct)
+        setState(parser(data))
+      } catch (error) {
+        if (error instanceof StructError) {
+          Sentry.captureException(error)
+        }
       }
-    }
-  }
+    },
+    [dataStruct, parser, setState]
+  )
 
   const pushUpdate = useCallback(
     (event: string, payload: any): void => {
@@ -136,16 +137,14 @@ export const useCheckedTwoWayChannel = <T, U, V extends object | undefined>({
           })
       }
     },
-    [joinedChannel]
+    [joinedChannel, onOk]
   )
 
   useEffect(() => {
     setState(loadingState)
     let channel: Channel | undefined
     if (socket !== undefined && topic !== null) {
-      channel = initialMessage
-        ? socket.channel(topic, initialMessage)
-        : socket.channel(topic)
+      channel = socket.channel(topic)
       channel.on(event, (data: { data: unknown }) => {
         onOk(data)
       })
@@ -181,8 +180,8 @@ export const useCheckedTwoWayChannel = <T, U, V extends object | undefined>({
     loadingState,
     dataStruct,
     parser,
-    initialMessage,
     closeAfterFirstRead,
+    onOk,
   ])
   return [state, pushUpdate]
 }

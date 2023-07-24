@@ -8,7 +8,7 @@ import {
 } from "../models/vehicleData"
 import { Ghost, Vehicle } from "../realtime"
 import { useCheckedChannel, useCheckedTwoWayChannel } from "./useChannel"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 const parser = (data: (VehicleData | GhostData)[]): (Vehicle | Ghost)[] =>
   data.map(vehicleOrGhostFromData)
@@ -56,22 +56,8 @@ export const useLimitedSearchResults = (
   socket: Socket | undefined,
   query: { property: SearchProperty; text: string; limit: number } | null
 ): LimitedSearchResults | null => {
-  const [initialMessage, setInitialMessage] = useState<
-    | {
-        limit: number
-      }
-    | undefined
-  >()
-
   const topic: string | null =
     query && `vehicles_search:limited:${query.property}:${query.text}`
-
-  // When the topic changes, update the message to be sent when joining the new topic
-  useEffect(() => {
-    if (!initialMessage) {
-      setInitialMessage({ limit: query!.limit })
-    }
-  }, [topic])
 
   const [state, pushUpdate] = useCheckedTwoWayChannel<
     LimitedSearchResultsData,
@@ -79,27 +65,20 @@ export const useLimitedSearchResults = (
     { limit: number }
   >({
     socket,
-    // Only set the topic once ready to connect.
-    // Ready to connect once both the topic & initialMessage are present.
-    topic: initialMessage ? topic : null,
+    topic: topic,
     event: "search",
     dataStruct: limitedSearchResultsData,
     parser: parseLimitedSearchResults,
     loadingState: null,
-    initialMessage: initialMessage,
   })
 
   useEffect(() => {
-    if (
-      query?.limit &&
-      initialMessage &&
-      query?.limit !== initialMessage.limit
-    ) {
+    if (query?.limit) {
       pushUpdate("update_search_query", {
         limit: query.limit,
       })
     }
-  }, [query?.limit, initialMessage, pushUpdate])
+  }, [query?.limit, pushUpdate])
 
   return state
 }
