@@ -32,6 +32,33 @@ defmodule Realtime.VehicleOrGhost do
     )
   end
 
+  @spec sort_for_search_results([t()]) :: [t()]
+  def sort_for_search_results(vehicles) do
+    Enum.sort(vehicles, fn v1, v2 ->
+      case {v1, v2} do
+        {%Vehicle{}, %Ghost{}} ->
+          false
+
+        {%Vehicle{operator_logon_time: nil}, %Vehicle{operator_logon_time: t}}
+        when not is_nil(t) ->
+          false
+
+        {%Vehicle{} = v1, %Vehicle{} = v2} ->
+          v1_logon_time = Map.get(v1, :operator_logon_time)
+          v2_logon_time = Map.get(v2, :operator_logon_time)
+
+          cond do
+            is_nil(v1_logon_time) or is_nil(v2_logon_time) -> true
+            v1_logon_time > v2_logon_time -> false
+            true -> true
+          end
+
+        {_, _} ->
+          true
+      end
+    end)
+  end
+
   @spec prop_names_for_search_prop(Server.search_property()) :: [atom()]
   defp prop_names_for_search_prop(:operator),
     do: [:operator_id, :operator_first_name, :operator_last_name]

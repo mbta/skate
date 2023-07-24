@@ -249,7 +249,9 @@ defmodule Realtime.Server do
         logged_in_vehicles
       end
 
-    VehicleOrGhost.take_limited_matches(vehicles_to_search, search_params)
+    vehicles_to_search
+    |> VehicleOrGhost.take_limited_matches(search_params)
+    |> Map.update!(:matching_vehicles, &VehicleOrGhost.sort_for_search_results/1)
   end
 
   def lookup({table, {:run_ids, run_ids}}) do

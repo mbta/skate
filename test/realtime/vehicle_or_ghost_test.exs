@@ -215,4 +215,23 @@ defmodule Realtime.VehicleOrGhostTest do
                )
     end
   end
+
+  describe "sort_for_search_results/1" do
+    test "puts results in correct order" do
+      vehicle1 = build(:vehicle, %{operator_logon_time: 100})
+      vehicle2 = build(:vehicle, %{operator_logon_time: 200})
+      vehicle3 = build(:vehicle, %{operator_logon_time: 300})
+      ghost = build(:ghost)
+      logged_out_vehicle = build(:vehicle, %{operator_logon_time: nil})
+
+      assert [^ghost, ^vehicle1, ^vehicle2, ^vehicle3, ^logged_out_vehicle] =
+               VehicleOrGhost.sort_for_search_results([
+                 vehicle2,
+                 vehicle3,
+                 ghost,
+                 logged_out_vehicle,
+                 vehicle1
+               ])
+    end
+  end
 end
