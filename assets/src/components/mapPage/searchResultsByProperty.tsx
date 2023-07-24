@@ -32,6 +32,10 @@ const SearchResultSection = ({
     limit,
   })
 
+  if (limitedSearchResults?.matchingVehicles.length === 0) {
+    return <></>
+  }
+
   return (
     <section
       className="c-map-page__search_results_section"
@@ -92,9 +96,7 @@ const SearchResultsByProperty = ({
             limit={limit}
             selectVehicle={selectSearchResult}
             showMore={() =>
-              dispatch(
-                setPropertyMatchLimit(property as SearchProperty, limit + 25)
-              )
+              dispatch(setPropertyMatchLimit(property, limit + 25))
             }
           />
         ))}
