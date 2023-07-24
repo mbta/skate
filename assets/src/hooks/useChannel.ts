@@ -143,7 +143,7 @@ export const useCheckedTwoWayChannel = <T, U, V>({
           })
       }
     },
-    [joinedChannel, onOk]
+    [joinedChannel, onOk, topic]
   )
 
   useEffect(() => {
