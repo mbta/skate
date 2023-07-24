@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import "@testing-library/jest-dom"
-import SearchForm from "../../src/components/searchForm"
+import OldSearchForm from "../../src/components/oldSearchForm"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 import {
@@ -14,8 +14,6 @@ import {
 } from "../../src/state/searchPageState"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import { searchPageStateFactory } from "../factories/searchPageState"
-import stateFactory from "../factories/applicationState"
-import { clearButton } from "../testHelpers/selectors/components/searchForm"
 
 const mockDispatch = jest.fn()
 
@@ -24,7 +22,7 @@ describe("SearchForm", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-          <SearchForm />
+          <OldSearchForm />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -32,7 +30,7 @@ describe("SearchForm", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("when search input has less than the minimum amount of characters, should disable submit button", () => {
+  test("submit button is disabled if there are fewer than 2 characters in the text field", () => {
     const invalidSearch: SearchPageState = searchPageStateFactory.build({
       query: { text: "1", property: "run" },
     })
@@ -42,7 +40,7 @@ describe("SearchForm", () => {
     }
     const result = render(
       <StateDispatchProvider state={invalidSearchState} dispatch={mockDispatch}>
-        <SearchForm />
+        <OldSearchForm />
       </StateDispatchProvider>
     )
 
@@ -51,10 +49,9 @@ describe("SearchForm", () => {
     expect(result.getByTitle("Submit")).toBeDisabled()
   })
 
-  test("when search input has the minimum amount of characters, should enable submit button", () => {
-    const searchText = "12"
+  test("submit button is enabled if there are at least 2 characters in the text field", () => {
     const validSearch = searchPageStateFactory.build({
-      query: { text: searchText, property: "run" },
+      query: { text: "12", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -62,11 +59,11 @@ describe("SearchForm", () => {
     }
     const result = render(
       <StateDispatchProvider state={validSearchState} dispatch={mockDispatch}>
-        <SearchForm />
+        <OldSearchForm />
       </StateDispatchProvider>
     )
 
-    expect(result.getByPlaceholderText("Search")).toHaveValue(searchText)
+    expect(result.getByPlaceholderText("Search")).toHaveValue("12")
 
     expect(result.getByTitle("Submit")).not.toBeDisabled()
   })
@@ -74,7 +71,7 @@ describe("SearchForm", () => {
   test("clicking the submit button submits the query", async () => {
     const testDispatch = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "123", property: "run" },
+      query: { text: "12", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -82,7 +79,7 @@ describe("SearchForm", () => {
     }
     const result = render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
-        <SearchForm />
+        <OldSearchForm />
       </StateDispatchProvider>
     )
 
@@ -94,7 +91,7 @@ describe("SearchForm", () => {
     const testDispatch = jest.fn()
     const onSubmit = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "123", property: "run" },
+      query: { text: "12", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -102,7 +99,7 @@ describe("SearchForm", () => {
     }
     render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
-        <SearchForm onSubmit={onSubmit} />
+        <OldSearchForm onSubmit={onSubmit} />
       </StateDispatchProvider>
     )
 
@@ -115,7 +112,7 @@ describe("SearchForm", () => {
     const testDispatch = jest.fn()
     const onSubmit = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "123", property: "run" },
+      query: { text: "12", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -125,19 +122,18 @@ describe("SearchForm", () => {
 
     render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
-        <SearchForm onSubmit={onSubmit} submitEvent="Test event" />
+        <OldSearchForm onSubmit={onSubmit} submitEvent="Test event" />
       </StateDispatchProvider>
     )
+
     await userEvent.click(screen.getByTitle("Submit"))
 
     expect(window.FS!.event).toHaveBeenCalledWith("Test event")
   })
 
   test("entering text sets it as the search text", async () => {
-    const searchText = "12"
-    const searchInput = "3"
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: searchText, property: "run" },
+      query: { text: "12", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -148,49 +144,19 @@ describe("SearchForm", () => {
 
     const result = render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
-        <SearchForm />
+        <OldSearchForm />
       </StateDispatchProvider>
     )
 
-    await userEvent.type(result.getByPlaceholderText("Search"), searchInput)
+    await userEvent.type(result.getByPlaceholderText("Search"), "3")
 
-    expect(testDispatch).toHaveBeenCalledWith(
-      setSearchText(searchText + searchInput)
-    )
-  })
-
-  test("when search input is empty, should not display clear button", () => {
-    const validSearchState = stateFactory.build({
-      searchPageState: { query: { text: "", property: "run" } },
-    })
-
-    render(
-      <StateDispatchProvider state={validSearchState} dispatch={jest.fn()}>
-        <SearchForm />
-      </StateDispatchProvider>
-    )
-
-    expect(clearButton.query()).not.toBeInTheDocument()
-  })
-
-  test("when search input is not empty, should display clear button", () => {
-    const validSearchState = stateFactory.build({
-      searchPageState: { query: { text: "1", property: "run" } },
-    })
-
-    render(
-      <StateDispatchProvider state={validSearchState} dispatch={jest.fn()}>
-        <SearchForm />
-      </StateDispatchProvider>
-    )
-
-    expect(clearButton.get()).toBeInTheDocument()
+    expect(testDispatch).toHaveBeenCalledWith(setSearchText("123"))
   })
 
   test("clicking the clear button empties the search text", async () => {
     const testDispatch = jest.fn()
     const validSearch: SearchPageState = searchPageStateFactory.build({
-      query: { text: "123", property: "run" },
+      query: { text: "12", property: "run" },
     })
     const validSearchState = {
       ...initialState,
@@ -198,11 +164,11 @@ describe("SearchForm", () => {
     }
     render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
-        <SearchForm />
+        <OldSearchForm />
       </StateDispatchProvider>
     )
 
-    await userEvent.click(clearButton.get())
+    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
@@ -219,11 +185,11 @@ describe("SearchForm", () => {
     }
     render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
-        <SearchForm onClear={onClear} />
+        <OldSearchForm onClear={onClear} />
       </StateDispatchProvider>
     )
 
-    await userEvent.click(clearButton.get())
+    await userEvent.click(screen.getByRole("button", { name: /clear search/i }))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
     expect(onClear).toHaveBeenCalledTimes(1)
@@ -233,11 +199,11 @@ describe("SearchForm", () => {
     const testDispatch = jest.fn()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SearchForm />
+        <OldSearchForm />
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByRole("button", { name: "Runs" }))
+    await userEvent.click(result.getByRole("radio", { name: "run" }))
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchProperty("run"))
   })
@@ -246,11 +212,11 @@ describe("SearchForm", () => {
     const testDispatch = jest.fn()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SearchForm />
+        <OldSearchForm />
       </StateDispatchProvider>
     )
 
-    await userEvent.click(result.getByRole("button", { name: "Runs" }))
+    await userEvent.click(result.getByRole("radio", { name: "run" }))
 
     expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })

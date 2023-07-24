@@ -14,6 +14,7 @@ import { TestGroups } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
 import { MemoryRouter } from "react-router-dom"
 import appData from "../../src/appData"
+import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -117,7 +118,7 @@ describe("App", () => {
             </MemoryRouter>
           </StateDispatchProvider>
         )
-        expect(screen.getByText("Vehicles")).toBeInTheDocument()
+        expect(vehiclePropertiesPanelHeader.get()).toBeInTheDocument()
       })
       test.each([
         ["Late View", OpenView.Late],
@@ -164,7 +165,7 @@ describe("App", () => {
           </MemoryRouter>
         </StateDispatchProvider>
       )
-      expect(screen.queryByText("Vehicles")).not.toBeInTheDocument()
+      expect(vehiclePropertiesPanelHeader.query()).not.toBeInTheDocument()
     })
 
     test.each([

@@ -1,3 +1,4 @@
+import { Socket } from "phoenix"
 import React, {
   ReactElement,
   useCallback,
@@ -5,37 +6,38 @@ import React, {
   useEffect,
   useState,
 } from "react"
+
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
+import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
+import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
+import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
 import useSearchResults from "../hooks/useSearchResults"
+import useSocket from "../hooks/useSocket"
 import { Ghost, Vehicle, VehicleId } from "../realtime"
-import { OpenView, closeView } from "../state"
+import { RoutePattern } from "../schedule"
+import { closeView, OpenView } from "../state"
 import {
+  goBack,
+  newSearchSession,
   SearchPageState,
   SelectedEntity,
   SelectedEntityType,
   SelectedRoutePattern,
-  goBack,
-  newSearchSession,
   setSelectedEntity,
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
+import Loading from "./loading"
 import MapDisplay from "./mapPage/mapDisplay"
+import RoutePropertiesCard from "./mapPage/routePropertiesCard"
+import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
-import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
-import Loading from "./loading"
-
-import useSocket from "../hooks/useSocket"
-import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
-import { Socket } from "phoenix"
-import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
-import RoutePropertiesCard from "./mapPage/routePropertiesCard"
-import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
-import { RoutePattern } from "../schedule"
 import { VisualSeparator } from "./visualSeparator"
+import OldSearchForm from "./oldSearchForm"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -56,10 +58,14 @@ const SearchMode = ({
     searchPageState.isActive ? searchPageState.query : null
   )
 
+  const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
+    ? SearchForm
+    : OldSearchForm
+
   return (
     <>
       <div className="c-map-page__input u-hideable">
-        <SearchForm
+        <CurrentSearchForm
           formTitle="Search Map"
           inputTitle="Search Map Query"
           submitEvent="Search submitted from map page"

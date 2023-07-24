@@ -11,7 +11,7 @@ import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
 import { MapFollowingPrimaryVehicles } from "./map"
 import RecentSearches from "./recentSearches"
-import SearchForm from "./searchForm"
+import OldSearchForm from "./oldSearchForm"
 import SearchResults from "./searchResults"
 import { LayersControl } from "./map/controls/layersControl"
 import { TileType } from "../tilesetUrls"
@@ -89,7 +89,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     >
       <div className="c-search-page__input-and-results">
         <div className="c-search-page__input">
-          <SearchForm />
+          <OldSearchForm />
 
           <ToggleMobileDisplayButton
             mobileDisplay={mobileDisplay}

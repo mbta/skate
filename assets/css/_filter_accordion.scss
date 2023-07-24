@@ -1,0 +1,66 @@
+.c-filter-accordion {
+  @extend .c-garage-filter;
+
+  // Visible when collapsed
+  &__toggle-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 2.25rem;
+    width: 100%;
+    padding: 0 0.5rem 0 1rem;
+
+    line-height: 1;
+
+    user-select: none;
+
+    // Fill icon when button is focused
+    &:focus .c-filter-accordion__show-hide-icon {
+      border-radius: 4px;
+      background-color: $color-gray-200;
+    }
+  }
+
+  &__show-hide-icon {
+    @extend .c-garage-filter__show-hide-icon;
+  }
+
+  &__body {
+    // Display visual separator between content and header when body is visible
+    border-top: 1px solid #d8dde1;
+
+    .c-filter-accordion[aria-expanded="false"] & {
+      display: none;
+    }
+  }
+
+  &__filters {
+    margin: 1rem;
+
+    color: $color-gray-700;
+  }
+
+  &__filter-toggle {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    // Expand tap target
+    padding-block: 0.25rem;
+
+    .c-filter-accordion__toggle-icon {
+      display: inline-block;
+      width: 1.6875rem;
+    }
+
+    &:hover .c-filter-accordion__toggle-icon {
+      outline: 1px solid $color-eggplant-400;
+    }
+
+    &:focus-within .c-filter-accordion__toggle-icon {
+      box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
+      outline: 1px solid $color-eggplant-500;
+    }
+  }
+}

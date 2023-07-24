@@ -1,7 +1,9 @@
 import React, { ComponentPropsWithoutRef, forwardRef } from "react"
 
+export type SvgIconWrapperProps = ComponentPropsWithoutRef<"span">
+
 // https://react-typescript-cheatsheet.netlify.app/docs/advanced/patterns_by_usecase/#wrappingmirroring
-interface SvgIconProps extends ComponentPropsWithoutRef<"span"> {
+interface SvgIconProps extends SvgIconWrapperProps {
   svgText: string
 }
 
