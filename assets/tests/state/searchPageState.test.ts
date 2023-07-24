@@ -1,4 +1,7 @@
-import { emptySearchQuery } from "../../src/models/searchQuery"
+import {
+  defaultResultLimit,
+  emptySearchQuery,
+} from "../../src/models/searchQuery"
 import {
   addSavedQuery,
   initialSearchPageState,
@@ -12,8 +15,13 @@ import {
   newSearchSession,
   SelectedEntity,
   goBack,
+  setPropertyMatchLimit,
 } from "../../src/state/searchPageState"
 import { searchPageStateFactory } from "../factories/searchPageState"
+import {
+  emptySearchQueryFactory,
+  searchQueryAllFactory,
+} from "../factories/searchQuery"
 
 describe("initialSearchPageState", () => {
   test("sets text to empty string", () => {
@@ -40,6 +48,21 @@ describe("reducer", () => {
     const newSearch = reducer(activeSearch, setSearchText("new text"))
 
     expect(newSearch.isActive).toEqual(false)
+  })
+
+  test("setSearchText resets the result limit for properties back to default", () => {
+    const oldState = searchPageStateFactory.build({
+      query: searchQueryAllFactory.build({
+        text: "123",
+        properties: [{ property: "run", limit: 10 }],
+      }),
+    })
+    const newState = reducer(oldState, setSearchText("new text"))
+
+    expect(newState.query.properties).toContainEqual({
+      property: "run",
+      limit: defaultResultLimit,
+    })
   })
 
   test("setOldSearchProperty allows you to set property", () => {
@@ -102,6 +125,51 @@ describe("reducer", () => {
     const newSearch = reducer(invalidQuery, submitSearch())
 
     expect(newSearch.savedQueries).toEqual([])
+  })
+
+  describe("setPropertyMatchLimit", () => {
+    test("when the property is already within the list of search query properties, updates the value", () => {
+      const oldState: SearchPageState = searchPageStateFactory.build({
+        query: emptySearchQueryFactory.build({
+          text: "123",
+          properties: [{ property: "run", limit: defaultResultLimit }],
+        }),
+      })
+
+      const newState = reducer(oldState, setPropertyMatchLimit("run", 10))
+      expect(newState.query.properties).toEqual([
+        { property: "run", limit: 10 },
+      ])
+    })
+    test("when the property is not already in the list, adds it to the list with the default limit", () => {
+      const oldState: SearchPageState = searchPageStateFactory.build({
+        query: emptySearchQueryFactory.build({
+          text: "123",
+          properties: [{ property: "vehicle", limit: defaultResultLimit }],
+        }),
+      })
+
+      const newState = reducer(oldState, setPropertyMatchLimit("run", 5))
+      expect(newState.query.properties).toContainEqual({
+        property: "run",
+        limit: defaultResultLimit,
+      })
+      expect(newState.query.properties).toContainEqual({
+        property: "vehicle",
+        limit: defaultResultLimit,
+      })
+    })
+    test("when the new limit is 0, removes it from the list", () => {
+      const oldState: SearchPageState = searchPageStateFactory.build({
+        query: emptySearchQueryFactory.build({
+          text: "123",
+          properties: [{ property: "vehicle", limit: defaultResultLimit }],
+        }),
+      })
+
+      const newState = reducer(oldState, setPropertyMatchLimit("vehicle", 0))
+      expect(newState.query.properties).toEqual([])
+    })
   })
 
   describe("newSearchSession", () => {

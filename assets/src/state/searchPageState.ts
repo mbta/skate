@@ -5,6 +5,7 @@ import {
   SavedSearchQuery,
   SearchQuery,
   SearchProperty,
+  defaultResultLimit,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -145,8 +146,15 @@ export const reducer = (
     case "SET_SEARCH_TEXT":
       return {
         ...state,
-        query: { ...state.query, text: action.payload.text },
-        // TODO: Reset limits?
+        query: {
+          ...state.query,
+          text: action.payload.text,
+          properties: state.query.properties.map(({ property }) => ({
+            property,
+            limit: defaultResultLimit,
+          })),
+        },
+
         isActive: false,
       }
     case "SET_SEARCH_PROPERTY":
@@ -160,21 +168,14 @@ export const reducer = (
         ...state,
         query: {
           ...state.query,
-          properties:
-            action.payload.limit === 0
-              ? state.query.properties.filter(
-                  ({ property }) => property !== action.payload.property
-                )
-              : state.query.properties.map((existingProperty) =>
-                  existingProperty.property === action.payload.property
-                    ? {
-                        property: existingProperty.property,
-                        limit: action.payload.limit,
-                      }
-                    : existingProperty
-                ),
+          properties: updatePropertyLimit(
+            state.query.properties,
+            action.payload.property,
+            action.payload.limit
+          ),
         },
       }
+
     case "SUBMIT_SEARCH":
       if (isValidSearchQuery(state.query)) {
         return {
@@ -222,6 +223,29 @@ export const reducer = (
     }
   }
   return state
+}
+
+const updatePropertyLimit = (
+  properties: { property: SearchProperty; limit: number }[],
+  targetProperty: SearchProperty,
+  newLimit: number
+) => {
+  if (newLimit === 0) {
+    return properties.filter(({ property }) => property !== targetProperty)
+  }
+
+  if (properties.some(({ property }) => property === targetProperty)) {
+    return properties.map((existingProperty) =>
+      existingProperty.property === targetProperty
+        ? {
+            property: existingProperty.property,
+            limit: newLimit,
+          }
+        : existingProperty
+    )
+  }
+
+  return [...properties, { property: targetProperty, limit: newLimit }]
 }
 /*
 The last selection should only be added to the selection history if it is different from the new selection.

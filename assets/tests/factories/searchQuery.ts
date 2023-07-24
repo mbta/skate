@@ -3,11 +3,17 @@ import {
   emptySearchQuery,
   SearchQuery,
   OldSearchQueryType,
+  defaultResultLimit,
 } from "../../src/models/searchQuery"
 
 class SearchQueryFactory extends Factory<SearchQuery> {
   searchType(property: OldSearchQueryType) {
-    return this.params({ property })
+    return property === "all"
+      ? this.params({ property, properties: emptySearchQuery.properties })
+      : this.params({
+          property,
+          properties: [{ property: property, limit: defaultResultLimit }],
+        })
   }
 
   searchFor(text: string) {

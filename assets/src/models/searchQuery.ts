@@ -18,13 +18,15 @@ export interface SavedSearchQuery {
   text: string
 }
 
+export const defaultResultLimit = 5
+
 export const emptySearchQuery: SearchQuery = {
   text: "",
   property: "all",
   properties: [
-    { property: "run", limit: 5 },
-    { property: "vehicle", limit: 5 },
-    { property: "operator", limit: 5 },
+    { property: "run", limit: defaultResultLimit },
+    { property: "vehicle", limit: defaultResultLimit },
+    { property: "operator", limit: defaultResultLimit },
   ],
 }
 
