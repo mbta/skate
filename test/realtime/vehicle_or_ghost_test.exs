@@ -214,5 +214,28 @@ defmodule Realtime.VehicleOrGhostTest do
                  }
                )
     end
+
+    test "puts results in correct order" do
+      vehicle1 = build(:vehicle, %{operator_logon_time: 100, run_id: "123-1000"})
+      vehicle2 = build(:vehicle, %{operator_logon_time: 200, run_id: "123-2000"})
+      vehicle3 = build(:vehicle, %{operator_logon_time: 300, run_id: "123-3000"})
+      ghost = build(:ghost, %{run_id: "123-4000"})
+      logged_out_vehicle = build(:vehicle, %{operator_logon_time: nil, label: "1000"})
+
+      assert %{
+               matching_vehicles: [^ghost, ^vehicle1, ^vehicle2, ^vehicle3, ^logged_out_vehicle],
+               has_more_matches: false
+             } =
+               VehicleOrGhost.take_limited_matches(
+                 [
+                   vehicle2,
+                   vehicle3,
+                   ghost,
+                   logged_out_vehicle,
+                   vehicle1
+                 ],
+                 %{text: "000", property: :all, limit: 5}
+               )
+    end
   end
 end
