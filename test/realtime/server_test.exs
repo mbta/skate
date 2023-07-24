@@ -407,7 +407,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get limited search results upon subscribing", %{server_pid: pid} do
-      assert %{matching_vehicles: [@vehicle], has_more_matches: true} ==
+      assert %{matching_vehicles: [@ghost], has_more_matches: true} ==
                Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 1}, pid)
     end
 

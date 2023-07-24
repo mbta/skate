@@ -14,7 +14,7 @@ defmodule Realtime.VehicleOrGhost do
       []
     else
       take_limited_props_matching(
-        vehicles,
+        sort_for_search_results(vehicles),
         prop_names_for_search_prop(search_property),
         search_terms,
         limit,
@@ -33,7 +33,7 @@ defmodule Realtime.VehicleOrGhost do
   end
 
   @spec sort_for_search_results([t()]) :: [t()]
-  def sort_for_search_results(vehicles) do
+  defp sort_for_search_results(vehicles) do
     Enum.sort(vehicles, fn v1, v2 ->
       case {v1, v2} do
         {%Vehicle{}, %Ghost{}} ->
