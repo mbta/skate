@@ -1,6 +1,10 @@
-import { renderHook } from "@testing-library/react"
+import { act, renderHook } from "@testing-library/react"
 import { string, unknown } from "superstruct"
-import { useChannel, useCheckedChannel } from "../../src/hooks/useChannel"
+import {
+  useChannel,
+  useCheckedChannel,
+  useCheckedTwoWayChannel,
+} from "../../src/hooks/useChannel"
 import * as browser from "../../src/models/browser"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import * as Sentry from "@sentry/react"
@@ -8,6 +12,7 @@ import * as Sentry from "@sentry/react"
 jest.mock("@sentry/react", () => ({
   __esModule: true,
   captureException: jest.fn(),
+  captureMessage: jest.fn(),
 }))
 
 describe("useChannel", () => {
@@ -334,7 +339,6 @@ describe("useCheckedChannel", () => {
     )
     expect(result.current).toEqual("loading")
   })
-
   test("if given no topic, doesn't open a channel and returns loadingState", () => {
     const mockSocket = makeMockSocket()
     const dataStruct = unknown()
@@ -702,5 +706,145 @@ describe("useCheckedChannel", () => {
     expect(parser).toHaveBeenCalledWith("raw")
     expect(result.current).toEqual("parsed")
     expect(mockChannel.leave).toHaveBeenCalled()
+  })
+})
+
+describe("useCheckedTwoWayChannel", () => {
+  test("when a pushed message receives a parsable result, the result is returned", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel(
+      "ok",
+      jest
+        .fn()
+        .mockReturnValueOnce({ data: "raw" })
+        .mockReturnValueOnce({ data: "push_success" })
+    )
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    const dataStruct = string()
+
+    const parser = jest.fn((data) => "parsed " + data)
+    const { result } = renderHook<
+      [string | null, (event: string, payload: unknown) => void],
+      any
+    >(
+      (topic) =>
+        useCheckedTwoWayChannel({
+          socket: mockSocket,
+          topic,
+          event: "event",
+          dataStruct,
+          parser,
+          loadingState: "loading",
+        }),
+      { initialProps: "topic" }
+    )
+
+    const [state, pushFn] = result.current
+
+    expect(state).toEqual("parsed raw")
+    act(() => {
+      pushFn("hello", "pushed")
+    })
+
+    expect(mockChannel.push).toHaveBeenCalledWith("hello", "pushed")
+
+    const [updatedState] = result.current
+
+    expect(updatedState).toEqual("parsed push_success")
+  })
+
+  test("when a pushed message receives a result that isn't parsable, the last result is still returned", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel(
+      "ok",
+      jest
+        .fn()
+        .mockReturnValueOnce({ data: "raw" })
+        .mockReturnValueOnce("poorly_formatted")
+    )
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    const dataStruct = string()
+
+    const parser = jest.fn((data) => "parsed " + data)
+    const { result } = renderHook<
+      [string | null, (event: string, payload: unknown) => void],
+      any
+    >(
+      (topic) =>
+        useCheckedTwoWayChannel({
+          socket: mockSocket,
+          topic,
+          event: "event",
+          dataStruct,
+          parser,
+          loadingState: "loading",
+        }),
+      { initialProps: "topic" }
+    )
+
+    const [state, pushFn] = result.current
+
+    expect(state).toEqual("parsed raw")
+    act(() => {
+      pushFn("hello", "pushed")
+    })
+
+    expect(mockChannel.push).toHaveBeenCalledWith("hello", "pushed")
+    expect(Sentry.captureException).toHaveBeenCalled()
+
+    const [updatedState] = result.current
+
+    expect(updatedState).toEqual("parsed raw")
+  })
+
+  test("when receives an error on message push, logs to sentry", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel(
+      jest
+        .fn()
+        // Return OK while joining, then error on push
+        .mockReturnValueOnce("ok")
+        .mockReturnValueOnce("ok")
+        .mockReturnValueOnce("ok")
+        .mockReturnValueOnce("error")
+        .mockReturnValueOnce("error"),
+      jest
+        .fn()
+        .mockReturnValueOnce({ data: "raw" })
+        .mockReturnValueOnce({ data: "welformatted, but error" })
+    )
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    const dataStruct = string()
+
+    const parser = jest.fn((data) => "parsed " + data)
+    const { result } = renderHook<
+      [string | null, (event: string, payload: unknown) => void],
+      any
+    >(
+      (topic) =>
+        useCheckedTwoWayChannel({
+          socket: mockSocket,
+          topic,
+          event: "event",
+          dataStruct,
+          parser,
+          loadingState: "loading",
+        }),
+      { initialProps: "topic" }
+    )
+
+    const [state, pushFn] = result.current
+
+    expect(state).toEqual("parsed raw")
+    act(() => {
+      pushFn("hello", "pushed")
+    })
+
+    expect(mockChannel.push).toHaveBeenCalledWith("hello", "pushed")
+    expect(Sentry.captureMessage).toHaveBeenCalled()
+
+    const [updatedState] = result.current
+
+    expect(updatedState).toEqual("parsed raw")
   })
 })

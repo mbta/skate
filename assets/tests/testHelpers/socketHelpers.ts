@@ -6,22 +6,38 @@ export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
   } as Socket & { channel: jest.Mock })
 
 export const makeMockChannel = (
-  expectedJoinMessage?: "ok" | "error" | "timeout",
-  expectedJoinData?: any
+  expectedReceiveMessage?:
+    | "ok"
+    | "error"
+    | "timeout"
+    | (() => "ok" | "error" | "timeout"),
+  expectedReceiveData?: (() => any) | any
 ) => {
   const result = {
     join: jest.fn(),
     leave: jest.fn(),
     on: jest.fn(),
     receive: jest.fn(),
+    push: jest.fn(),
   }
   result.join.mockImplementation(() => result)
+  result.push.mockImplementation(() => result)
   result.receive.mockImplementation((message, handler) => {
-    if (message === expectedJoinMessage) {
+    const receiveMessage =
+      typeof expectedReceiveMessage === "function"
+        ? expectedReceiveMessage()
+        : expectedReceiveMessage
+
+    if (message === receiveMessage) {
       switch (message) {
         case "ok":
-          if (expectedJoinData !== undefined) {
-            handler(expectedJoinData)
+          if (expectedReceiveData !== undefined) {
+            if (typeof expectedReceiveData === "function") {
+              const expectedReceived = expectedReceiveData()
+              handler(expectedReceived)
+            } else {
+              handler(expectedReceiveData)
+            }
           }
           return result
 
