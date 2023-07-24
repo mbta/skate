@@ -141,7 +141,9 @@ $map-page-search-stub-size: 10px;
   color: $color-gray-900;
   font-feature-settings: "clig" off, "liga" off;
   font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-reg);
   line-height: 1;
+  margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
