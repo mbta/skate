@@ -11,6 +11,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
   setup do
     reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
     reassign_env(:skate, :username_from_socket!, fn _socket -> "test_uid" end)
+    reassign_env(:skate, :vehicle_search_default_limit, 2)
 
     user = Skate.Settings.User.upsert("test_uid", "test_email")
 
@@ -47,10 +48,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
                subscribe_and_join(
                  socket,
                  VehiclesSearchChannel,
-                 "vehicles_search:limited:vehicle:000",
-                 %{
-                   "limit" => 2
-                 }
+                 "vehicles_search:limited:vehicle:000"
                )
     end
 
@@ -66,10 +64,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
                subscribe_and_join(
                  socket,
                  VehiclesSearchChannel,
-                 "vehicles_search:limited:vehicle:000",
-                 %{
-                   "limit" => 2
-                 }
+                 "vehicles_search:limited:vehicle:000"
                )
 
       assert :ok = Realtime.Server.update_vehicles({%{"1" => vehicles}, [], []})
@@ -93,10 +88,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
         subscribe_and_join(
           socket,
           VehiclesSearchChannel,
-          "vehicles_search:limited:vehicle:000",
-          %{
-            "limit" => 2
-          }
+          "vehicles_search:limited:vehicle:000"
         )
 
       assert {:noreply, _socket} =
@@ -128,10 +120,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
         subscribe_and_join(
           socket,
           VehiclesSearchChannel,
-          "vehicles_search:limited:vehicle:000",
-          %{
-            "limit" => 2
-          }
+          "vehicles_search:limited:vehicle:000"
         )
 
       ref =
