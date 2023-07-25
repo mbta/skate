@@ -54,7 +54,7 @@ describe("reducer", () => {
     const oldState = searchPageStateFactory.build({
       query: searchQueryAllFactory.build({
         text: "123",
-        properties: { run: 10 },
+        properties: { run: 10, vehicle: 0 },
       }),
     })
     const newState = reducer(oldState, setSearchText("new text"))
@@ -63,7 +63,7 @@ describe("reducer", () => {
       run: defaultResultLimit,
       location: defaultResultLimit,
       operator: defaultResultLimit,
-      vehicle: defaultResultLimit,
+      vehicle: 0,
     })
   })
 

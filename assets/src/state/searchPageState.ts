@@ -5,8 +5,8 @@ import {
   SavedSearchQuery,
   SearchQuery,
   SearchProperty,
-  defaultAllProperties,
   PropertyLimits,
+  defaultResultLimit,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -150,17 +150,23 @@ export const reducer = (
   action: Action
 ): SearchPageState => {
   switch (action.type) {
-    case "SET_SEARCH_TEXT":
+    case "SET_SEARCH_TEXT": {
       return {
         ...state,
         query: {
           ...state.query,
           text: action.payload.text,
-          properties: defaultAllProperties,
+          properties: Object.fromEntries(
+            Object.entries(state.query.properties).map(([property, limit]) => [
+              property,
+              limit === 0 ? limit : defaultResultLimit,
+            ])
+          ) as PropertyLimits,
         },
 
         isActive: false,
       }
+    }
     case "SET_SEARCH_PROPERTY":
       return {
         ...state,
