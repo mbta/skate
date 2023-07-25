@@ -58,7 +58,7 @@ export const setSearchText = (text: string): SetSearchTextAction => ({
   payload: { text },
 })
 
-interface setOldSearchPropertyAction {
+interface SetOldSearchPropertyAction {
   type: "SET_SEARCH_PROPERTY"
   payload: {
     property: string
@@ -67,7 +67,7 @@ interface setOldSearchPropertyAction {
 
 export const setOldSearchProperty = (
   property: string
-): setOldSearchPropertyAction => ({
+): SetOldSearchPropertyAction => ({
   type: "SET_SEARCH_PROPERTY",
   payload: { property },
 })
@@ -129,7 +129,7 @@ export const setSelectedEntity = (
 
 export type Action =
   | SetSearchTextAction
-  | setOldSearchPropertyAction
+  | SetOldSearchPropertyAction
   | SetPropertyMatchLimitAction
   | SubmitSearchAction
   | NewSearchSessionAction
