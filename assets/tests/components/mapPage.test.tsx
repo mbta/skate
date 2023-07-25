@@ -1273,7 +1273,7 @@ describe("<MapPage />", () => {
       <StateDispatchProvider
         state={stateFactory.build({
           searchPageState: searchPageStateFactory.build({
-            query: { text: "123", properties: [{ property: "run", limit: 5 }] },
+            query: { text: "123", properties: { run: 5 } },
             isActive: true,
           }),
         })}

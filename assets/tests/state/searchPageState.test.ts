@@ -54,14 +54,16 @@ describe("reducer", () => {
     const oldState = searchPageStateFactory.build({
       query: searchQueryAllFactory.build({
         text: "123",
-        properties: [{ property: "run", limit: 10 }],
+        properties: { run: 10 },
       }),
     })
     const newState = reducer(oldState, setSearchText("new text"))
 
-    expect(newState.query.properties).toContainEqual({
-      property: "run",
-      limit: defaultResultLimit,
+    expect(newState.query.properties).toEqual({
+      run: defaultResultLimit,
+      location: defaultResultLimit,
+      operator: defaultResultLimit,
+      vehicle: defaultResultLimit,
     })
   })
 
@@ -128,47 +130,21 @@ describe("reducer", () => {
   })
 
   describe("setPropertyMatchLimit", () => {
-    test("when the property is already within the list of search query properties, updates the value", () => {
+    test("updates the value for only the matching property", () => {
       const oldState: SearchPageState = searchPageStateFactory.build({
         query: emptySearchQueryFactory.build({
           text: "123",
-          properties: [{ property: "run", limit: defaultResultLimit }],
+          properties: { run: defaultResultLimit, vehicle: 100 },
         }),
       })
 
       const newState = reducer(oldState, setPropertyMatchLimit("run", 10))
-      expect(newState.query.properties).toEqual([
-        { property: "run", limit: 10 },
-      ])
-    })
-    test("when the property is not already in the list, adds it to the list with the default limit", () => {
-      const oldState: SearchPageState = searchPageStateFactory.build({
-        query: emptySearchQueryFactory.build({
-          text: "123",
-          properties: [{ property: "vehicle", limit: defaultResultLimit }],
-        }),
+      expect(newState.query.properties).toEqual({
+        location: 5,
+        operator: 5,
+        run: 10,
+        vehicle: 100,
       })
-
-      const newState = reducer(oldState, setPropertyMatchLimit("run", 5))
-      expect(newState.query.properties).toContainEqual({
-        property: "run",
-        limit: defaultResultLimit,
-      })
-      expect(newState.query.properties).toContainEqual({
-        property: "vehicle",
-        limit: defaultResultLimit,
-      })
-    })
-    test("when the new limit is 0, removes it from the list", () => {
-      const oldState: SearchPageState = searchPageStateFactory.build({
-        query: emptySearchQueryFactory.build({
-          text: "123",
-          properties: [{ property: "vehicle", limit: defaultResultLimit }],
-        }),
-      })
-
-      const newState = reducer(oldState, setPropertyMatchLimit("vehicle", 0))
-      expect(newState.query.properties).toEqual([])
     })
   })
 

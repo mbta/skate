@@ -5,7 +5,7 @@ import {
   SavedSearchQuery,
   SearchQuery,
   SearchProperty,
-  defaultResultLimit,
+  defaultAllProperties,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -149,10 +149,7 @@ export const reducer = (
         query: {
           ...state.query,
           text: action.payload.text,
-          properties: state.query.properties.map(({ property }) => ({
-            property,
-            limit: defaultResultLimit,
-          })),
+          properties: defaultAllProperties,
         },
 
         isActive: false,
@@ -168,11 +165,10 @@ export const reducer = (
         ...state,
         query: {
           ...state.query,
-          properties: updatePropertyLimit(
-            state.query.properties,
-            action.payload.property,
-            action.payload.limit
-          ),
+          properties: {
+            ...state.query.properties,
+            [action.payload.property]: action.payload.limit,
+          },
         },
       }
 
@@ -225,28 +221,6 @@ export const reducer = (
   return state
 }
 
-const updatePropertyLimit = (
-  properties: { property: SearchProperty; limit: number }[],
-  targetProperty: SearchProperty,
-  newLimit: number
-) => {
-  if (newLimit === 0) {
-    return properties.filter(({ property }) => property !== targetProperty)
-  }
-
-  if (properties.some(({ property }) => property === targetProperty)) {
-    return properties.map((existingProperty) =>
-      existingProperty.property === targetProperty
-        ? {
-            property: existingProperty.property,
-            limit: newLimit,
-          }
-        : existingProperty
-    )
-  }
-
-  return [...properties, { property: targetProperty, limit: newLimit }]
-}
 /*
 The last selection should only be added to the selection history if it is different from the new selection.
 For vehicles, this means having a different vehicleId. 

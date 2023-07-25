@@ -80,13 +80,19 @@ const SearchResultsByProperty = ({
   selectSearchResult: (result: Vehicle | Ghost | null) => void
 }) => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
+
   return (
     <div aria-label="Grouped Search Results">
-      {searchPageState.query.properties
+      {Object.entries(searchPageState.query.properties)
+        .filter(([property, limit]) => limit > 0 && property != "location")
+        .map(([property, limit]) => ({
+          property: property as SearchProperty,
+          limit,
+        }))
         .sort(
-          (first, second) =>
-            searchPropertyDisplayConfig[first.property].order -
-            searchPropertyDisplayConfig[second.property].order
+          ({ property: first_property }, { property: second_property }) =>
+            searchPropertyDisplayConfig[first_property].order -
+            searchPropertyDisplayConfig[second_property].order
         )
         .map(({ property, limit }) => (
           <SearchResultSection

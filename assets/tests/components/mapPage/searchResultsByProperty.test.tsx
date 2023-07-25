@@ -42,6 +42,11 @@ describe("searchResultsByProperty", () => {
               matchingVehicles: [operatorMatch],
               hasMoreMatches: false,
             }
+          case "location":
+            return {
+              matchingVehicles: [],
+              hasMoreMatches: false,
+            }
         }
       }
     )
@@ -78,7 +83,7 @@ describe("searchResultsByProperty", () => {
           searchPageState: searchPageStateFactory.build({
             query: {
               text: "123",
-              properties: [{ property: "vehicle", limit: 5 }],
+              properties: { vehicle: 5, run: 0, operator: 0 },
             },
             isActive: true,
           }),
@@ -116,6 +121,11 @@ describe("searchResultsByProperty", () => {
           case "operator":
             return {
               matchingVehicles: [operatorMatch],
+              hasMoreMatches: false,
+            }
+          case "location":
+            return {
+              matchingVehicles: [],
               hasMoreMatches: false,
             }
         }
@@ -158,6 +168,11 @@ describe("searchResultsByProperty", () => {
           case "operator":
             return {
               matchingVehicles: [operatorMatch],
+              hasMoreMatches: false,
+            }
+          case "location":
+            return {
+              matchingVehicles: [],
               hasMoreMatches: false,
             }
         }
@@ -205,7 +220,7 @@ describe("searchResultsByProperty", () => {
           searchPageState: searchPageStateFactory.build({
             query: {
               text: "123",
-              properties: [{ property: "vehicle", limit: 5 }],
+              properties: { vehicle: 5 },
             },
 
             isActive: true,
@@ -217,7 +232,9 @@ describe("searchResultsByProperty", () => {
       </StateDispatchProvider>
     )
     expect(
-      screen.getByRole("button", { name: "Show more" })
+      within(screen.getByLabelText("Vehicles")).getByRole("button", {
+        name: "Show more",
+      })
     ).toBeInTheDocument()
   })
 })

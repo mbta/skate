@@ -12,7 +12,7 @@ class SearchQueryFactory extends Factory<SearchQuery> {
       ? this.params({ property, properties: emptySearchQuery.properties })
       : this.params({
           property,
-          properties: [{ property: property, limit: defaultResultLimit }],
+          properties: { [property]: defaultResultLimit },
         })
   }
 

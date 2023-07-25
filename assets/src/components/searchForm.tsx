@@ -3,7 +3,11 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { SearchIcon } from "../helpers/icon"
 import { CircleXIcon } from "./circleXIcon"
 import { FilterAccordion } from "./filterAccordion"
-import { isValidSearchText, OldSearchQueryType } from "../models/searchQuery"
+import {
+  isValidSearchText,
+  SearchProperty,
+  searchPropertyDisplayConfig,
+} from "../models/searchQuery"
 import {
   setOldSearchProperty,
   setSearchText,
@@ -11,58 +15,15 @@ import {
 } from "../state/searchPageState"
 
 // #region Search Filters
-/**
- * Unordered enumeration of the UI exposed controls.
- *
- * ---
- *
- * TODO: merge with {@link SearchQueryType}
- */
-enum SearchFilters {
-  Vehicles,
-  Operators,
-  Runs,
-  Locations,
-}
-
-/**
- * Union type of {@link SearchFilters} as strings.
- *
- * Useful for defining objects in terms of possible search filters.
- */
-type SearchFilterKeys = keyof typeof SearchFilters
 
 /**
  * Object describing the current toggle state of the possible
- * {@link SearchFilters}.
+ * {@link SearchProperty}.
  */
 type SearchFiltersState = {
-  [K in SearchFilterKeys]: boolean
+  [K in SearchProperty]: boolean
 }
 
-/**
- * Temporary function to convert {@link SearchFiltersState} to
- * {@link SearchQueryType}.
- *
- * ---
- *
- * This should be removed when {@link SearchFormFromStateDispatchContext} and
- * it's context are refactored to use the new filter requirements.
- */
-function filterNameToSearchProperty(
-  name: keyof SearchFiltersState
-): OldSearchQueryType {
-  switch (name) {
-    case "Locations":
-      return "all"
-    case "Operators":
-      return "operator"
-    case "Runs":
-      return "run"
-    case "Vehicles":
-      return "vehicle"
-  }
-}
 // #endregion search filters
 
 type SearchFormEventProps = {
@@ -93,7 +54,7 @@ type SearchFormProps = SearchFormEventProps & {
   /**
    * Callback to run when {@link filters} should be updated.
    */
-  onFiltersChanged: (name: SearchFilterKeys, currentValue: boolean) => void
+  onFiltersChanged: (name: SearchProperty, currentValue: boolean) => void
 }
 
 /**
@@ -151,26 +112,24 @@ export const SearchForm = ({
         </div>
       </div>
       <FilterAccordion.WithExpansionState heading="Filter results">
-        <FilterAccordion.ToggleFilter
-          name={"Vehicles"}
-          active={filters.Vehicles}
-          onClick={() => onFiltersChanged("Vehicles", filters.Vehicles)}
-        />
-        <FilterAccordion.ToggleFilter
-          name={"Operators"}
-          active={filters.Operators}
-          onClick={() => onFiltersChanged("Operators", filters.Operators)}
-        />
-        <FilterAccordion.ToggleFilter
-          name={"Runs"}
-          active={filters.Runs}
-          onClick={() => onFiltersChanged("Runs", filters.Runs)}
-        />
-        <FilterAccordion.ToggleFilter
-          name={"Locations"}
-          active={filters.Locations}
-          onClick={() => onFiltersChanged("Locations", filters.Locations)}
-        />
+        {Object.entries(filters)
+          .map(([property, isActive]) => ({
+            property: property as SearchProperty,
+            isActive,
+          }))
+          .sort(
+            ({ property: first_property }, { property: second_property }) =>
+              searchPropertyDisplayConfig[first_property].order -
+              searchPropertyDisplayConfig[second_property].order
+          )
+          .map(({ property, isActive }) => (
+            <FilterAccordion.ToggleFilter
+              key={property}
+              name={searchPropertyDisplayConfig[property].name}
+              active={isActive}
+              onClick={() => onFiltersChanged(property, isActive)}
+            />
+          ))}
       </FilterAccordion.WithExpansionState>
     </form>
   )
@@ -191,15 +150,17 @@ const SearchFormFromStateDispatchContext = ({
     dispatch,
   ] = useContext(StateDispatchContext)
 
+  const filters = Object.fromEntries(
+    Object.entries(query.properties).map(([property, limit]) => [
+      property as SearchProperty,
+      limit > 0,
+    ])
+  ) as { [K in SearchProperty]: boolean }
+
   return (
     <SearchForm
       inputText={query.text}
-      filters={{
-        Locations: query.property === "all",
-        Operators: query.property === "operator",
-        Runs: query.property === "run",
-        Vehicles: query.property === "vehicle",
-      }}
+      filters={filters}
       onInputTextChanged={({ currentTarget: { value } }) => {
         dispatch(setSearchText(value))
       }}
@@ -215,8 +176,8 @@ const SearchFormFromStateDispatchContext = ({
         dispatch(setSearchText(""))
         onClear?.(event)
       }}
-      onFiltersChanged={(name, _) => {
-        dispatch(setOldSearchProperty(filterNameToSearchProperty(name)))
+      onFiltersChanged={(name, _isActive) => {
+        dispatch(setOldSearchProperty(name))
         dispatch(submitSearch())
       }}
     />
