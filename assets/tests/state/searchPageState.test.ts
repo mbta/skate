@@ -16,6 +16,7 @@ import {
   SelectedEntity,
   goBack,
   setPropertyMatchLimit,
+  setSearchProperties,
 } from "../../src/state/searchPageState"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import {
@@ -144,6 +145,35 @@ describe("reducer", () => {
         operator: 5,
         run: 10,
         vehicle: 100,
+      })
+    })
+  })
+
+  describe("setSearchProperties", () => {
+    test("ensures limit is nonzero for all properties in the given list", () => {
+      const oldState: SearchPageState = searchPageStateFactory.build({
+        query: emptySearchQueryFactory.build({
+          text: "123",
+          properties: { run: 100, vehicle: 0 },
+        }),
+      })
+
+      expect(oldState.query.properties).toEqual({
+        location: defaultResultLimit,
+        operator: defaultResultLimit,
+        vehicle: 0,
+        run: 100,
+      })
+      const newState = reducer(
+        oldState,
+        setSearchProperties(["run", "vehicle"])
+      )
+
+      expect(newState.query.properties).toEqual({
+        location: 0,
+        operator: 0,
+        vehicle: defaultResultLimit,
+        run: 100,
       })
     })
   })

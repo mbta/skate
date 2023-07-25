@@ -8,7 +8,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 import {
   SearchPageState,
-  setPropertyMatchLimits,
+  setSearchProperties,
   setSearchText,
   submitSearch,
 } from "../../src/state/searchPageState"
@@ -23,7 +23,6 @@ import {
   vehicleFilter,
 } from "../testHelpers/selectors/components/searchForm"
 import { searchPageStateFactory } from "../factories/searchPageState"
-import { defaultResultLimit } from "../../src/models/searchQuery"
 import { searchQueryVehicleFactory } from "../factories/searchQuery"
 
 const mockDispatch = jest.fn()
@@ -276,7 +275,7 @@ describe("SearchForm", () => {
       expect(locationFilter.get()).toHaveAttribute("aria-pressed", "false")
     })
 
-    test("when the first filter is toggled on, then the limit for all other properties is set to 0", async () => {
+    test("when the first filter is toggled on, dispatches that only that filter should be active", async () => {
       const testDispatch = jest.fn()
       render(
         <StateDispatchProvider state={initialState} dispatch={testDispatch}>
@@ -286,12 +285,7 @@ describe("SearchForm", () => {
 
       await userEvent.click(vehicleFilter.get())
       expect(testDispatch).toHaveBeenCalledWith(
-        setPropertyMatchLimits({
-          vehicle: defaultResultLimit,
-          run: 0,
-          operator: 0,
-          location: 0,
-        })
+        setSearchProperties(["vehicle"])
       )
     })
 
@@ -314,7 +308,7 @@ describe("SearchForm", () => {
       expect(locationFilter.get()).toHaveAttribute("aria-pressed", "true")
     })
 
-    test("when the only filter that is toggled on is toggled off, then the limit for all properties is reset to the default ", async () => {
+    test("when the only filter that is toggled on is toggled off, then sets the list of search properties to all properties", async () => {
       const testDispatch = jest.fn()
       render(
         <StateDispatchProvider
@@ -335,12 +329,9 @@ describe("SearchForm", () => {
 
       await userEvent.click(vehicleFilter.get())
       expect(testDispatch).toHaveBeenCalledWith(
-        setPropertyMatchLimits({
-          vehicle: defaultResultLimit,
-          run: defaultResultLimit,
-          operator: defaultResultLimit,
-          location: defaultResultLimit,
-        })
+        setSearchProperties(
+          expect.arrayContaining(["vehicle", "operator", "run", "location"])
+        )
       )
     })
 

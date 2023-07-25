@@ -73,26 +73,28 @@ export const setOldSearchProperty = (
   payload: { property },
 })
 
-interface SetPropertyMatchLimitsAction {
-  type: "SET_PROPERTY_MATCH_LIMITS"
-  payload: Partial<{
-    [K in SearchProperty]: number
-  }>
+interface SetPropertyMatchLimitAction {
+  type: "SET_PROPERTY_MATCH_LIMIT"
+  payload: { property: SearchProperty; limit: number }
 }
-
-export const setPropertyMatchLimits = (
-  limits: PropertyLimits
-): SetPropertyMatchLimitsAction => ({
-  type: "SET_PROPERTY_MATCH_LIMITS",
-  payload: limits,
-})
 
 export const setPropertyMatchLimit = (
   property: SearchProperty,
   limit: number
-): SetPropertyMatchLimitsAction => ({
-  type: "SET_PROPERTY_MATCH_LIMITS",
-  payload: { [property]: limit },
+): SetPropertyMatchLimitAction => ({
+  type: "SET_PROPERTY_MATCH_LIMIT",
+  payload: { property, limit },
+})
+
+interface SetSearchPropertiesAction {
+  type: "SET_SEARCH_PROPERTIES"
+  payload: SearchProperty[]
+}
+export const setSearchProperties = (
+  properties: SearchProperty[]
+): SetSearchPropertiesAction => ({
+  type: "SET_SEARCH_PROPERTIES",
+  payload: properties,
 })
 
 interface SubmitSearchAction {
@@ -137,7 +139,8 @@ export const setSelectedEntity = (
 export type Action =
   | SetSearchTextAction
   | SetOldSearchPropertyAction
-  | SetPropertyMatchLimitsAction
+  | SetPropertyMatchLimitAction
+  | SetSearchPropertiesAction
   | SubmitSearchAction
   | NewSearchSessionAction
   | SelectEntityAction
@@ -173,15 +176,27 @@ export const reducer = (
         query: { ...state.query, property: action.payload.property },
         isActive: false,
       }
-    case "SET_PROPERTY_MATCH_LIMITS":
+    case "SET_PROPERTY_MATCH_LIMIT":
       return {
         ...state,
         query: {
           ...state.query,
           properties: {
             ...state.query.properties,
-            ...action.payload,
+            [action.payload.property]: action.payload.limit,
           },
+        },
+      }
+
+    case "SET_SEARCH_PROPERTIES":
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          properties: setSearchPropertyLimits(
+            state.query.properties,
+            action.payload
+          ),
         },
       }
 
@@ -232,6 +247,28 @@ export const reducer = (
     }
   }
   return state
+}
+
+const setSearchPropertyLimits = (
+  properties: PropertyLimits,
+  desiredProperties: SearchProperty[]
+) => {
+  return Object.fromEntries(
+    Object.entries(properties).map(([oldProperty, oldLimit]) => {
+      const propertyIsDesired = desiredProperties.some(
+        (desiredProperty) => desiredProperty === oldProperty
+      )
+
+      return [
+        oldProperty,
+        propertyIsDesired
+          ? oldLimit === 0
+            ? defaultResultLimit
+            : oldLimit
+          : 0,
+      ]
+    })
+  ) as PropertyLimits
 }
 
 /*

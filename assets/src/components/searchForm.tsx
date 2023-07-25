@@ -4,14 +4,12 @@ import { SearchIcon } from "../helpers/icon"
 import { CircleXIcon } from "./circleXIcon"
 import { FilterAccordion } from "./filterAccordion"
 import {
-  defaultResultLimit,
   isValidSearchText,
-  PropertyLimits,
   SearchProperty,
   searchPropertyDisplayConfig,
 } from "../models/searchQuery"
 import {
-  setPropertyMatchLimits,
+  setSearchProperties,
   setSearchText,
   submitSearch,
 } from "../state/searchPageState"
@@ -235,17 +233,11 @@ const SearchFormFromStateDispatchContext = ({
         onClear?.(event)
       }}
       onFiltersChanged={(newFilters) => {
-        dispatch(
-          setPropertyMatchLimits(
-            Object.fromEntries(
-              Object.entries(newFilters).map(([property, isActive]) => [
-                property,
-                isActive ? defaultResultLimit : 0,
-              ])
-            ) as PropertyLimits
-          )
-        )
+        const newProperties = Object.entries(newFilters)
+          .filter(([_property, isActive]) => isActive)
+          .map(([property]) => property) as SearchProperty[]
 
+        dispatch(setSearchProperties(newProperties))
         dispatch(submitSearch())
       }}
     />
