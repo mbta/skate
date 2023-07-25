@@ -1,17 +1,37 @@
-export type SearchQueryType = "all" | "run" | "vehicle" | "operator"
+export type OldSearchQueryType = "all" | "run" | "vehicle" | "operator"
+
+export const searchPropertyDisplayConfig = {
+  vehicle: { order: 0, name: "Vehicles" },
+  operator: { order: 1, name: "Operators" },
+  run: { order: 2, name: "Runs" },
+  location: { order: 3, name: "Locations" },
+}
+
+export type SearchProperty = keyof typeof searchPropertyDisplayConfig
 
 export interface SearchQuery {
   text: string
-  property: SearchQueryType | string
+  property: OldSearchQueryType | string
+  properties: { [K in SearchProperty]: number }
 }
 
 export interface SavedSearchQuery {
   text: string
 }
 
+export const defaultResultLimit = 5
+
+export const defaultAllProperties = {
+  run: defaultResultLimit,
+  vehicle: defaultResultLimit,
+  operator: defaultResultLimit,
+  location: defaultResultLimit,
+}
+
 export const emptySearchQuery: SearchQuery = {
   text: "",
   property: "all",
+  properties: defaultAllProperties,
 }
 
 export const filterToAlphanumeric = (text: string): string =>

@@ -4,6 +4,8 @@ import {
   isValidSearchQuery,
   SavedSearchQuery,
   SearchQuery,
+  SearchProperty,
+  defaultAllProperties,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -56,18 +58,34 @@ export const setSearchText = (text: string): SetSearchTextAction => ({
   payload: { text },
 })
 
-interface SetSearchPropertyAction {
+interface SetOldSearchPropertyAction {
   type: "SET_SEARCH_PROPERTY"
   payload: {
     property: string
   }
 }
 
-export const setSearchProperty = (
+export const setOldSearchProperty = (
   property: string
-): SetSearchPropertyAction => ({
+): SetOldSearchPropertyAction => ({
   type: "SET_SEARCH_PROPERTY",
   payload: { property },
+})
+
+interface SetPropertyMatchLimitAction {
+  type: "SET_PROPERTY_MATCH_LIMIT"
+  payload: {
+    property: SearchProperty
+    limit: number
+  }
+}
+
+export const setPropertyMatchLimit = (
+  property: SearchProperty,
+  limit: number
+): SetPropertyMatchLimitAction => ({
+  type: "SET_PROPERTY_MATCH_LIMIT",
+  payload: { property, limit },
 })
 
 interface SubmitSearchAction {
@@ -111,7 +129,8 @@ export const setSelectedEntity = (
 
 export type Action =
   | SetSearchTextAction
-  | SetSearchPropertyAction
+  | SetOldSearchPropertyAction
+  | SetPropertyMatchLimitAction
   | SubmitSearchAction
   | NewSearchSessionAction
   | SelectEntityAction
@@ -127,7 +146,12 @@ export const reducer = (
     case "SET_SEARCH_TEXT":
       return {
         ...state,
-        query: { ...state.query, text: action.payload.text },
+        query: {
+          ...state.query,
+          text: action.payload.text,
+          properties: defaultAllProperties,
+        },
+
         isActive: false,
       }
     case "SET_SEARCH_PROPERTY":
@@ -136,6 +160,18 @@ export const reducer = (
         query: { ...state.query, property: action.payload.property },
         isActive: false,
       }
+    case "SET_PROPERTY_MATCH_LIMIT":
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          properties: {
+            ...state.query.properties,
+            [action.payload.property]: action.payload.limit,
+          },
+        },
+      }
+
     case "SUBMIT_SEARCH":
       if (isValidSearchQuery(state.query)) {
         return {
@@ -184,6 +220,7 @@ export const reducer = (
   }
   return state
 }
+
 /*
 The last selection should only be added to the selection history if it is different from the new selection.
 For vehicles, this means having a different vehicleId. 

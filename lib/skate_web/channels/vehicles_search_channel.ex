@@ -9,7 +9,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated(
         "vehicles_search:limited:" <> subtopic,
-        %{"limit" => limit},
+        _params,
         socket
       ) do
     username_from_socket! =
@@ -24,6 +24,13 @@ defmodule SkateWeb.VehiclesSearchChannel do
 
     %{property: property, text: text} = search_params_from_subtopic(subtopic)
 
+    limit =
+      Application.get_env(
+        :skate,
+        :vehicle_search_default_limit,
+        5
+      )
+
     subscribe_args = %{
       property: property,
       text: text,
@@ -33,7 +40,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
     }
 
     Logger.info(fn ->
-      "#{__MODULE__} limited_search User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text} limit=#{subscribe_args.limit}"
+      "#{__MODULE__} limited_search User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text}"
     end)
 
     result = Duration.log_duration(Server, :subscribe_to_limited_search, [subscribe_args])

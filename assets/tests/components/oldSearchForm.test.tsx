@@ -8,7 +8,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 import {
   SearchPageState,
-  setSearchProperty,
+  setOldSearchProperty,
   setSearchText,
   submitSearch,
 } from "../../src/state/searchPageState"
@@ -205,7 +205,7 @@ describe("SearchForm", () => {
 
     await userEvent.click(result.getByRole("radio", { name: "run" }))
 
-    expect(testDispatch).toHaveBeenCalledWith(setSearchProperty("run"))
+    expect(testDispatch).toHaveBeenCalledWith(setOldSearchProperty("run"))
   })
 
   test("clicking a search property submits the search", async () => {

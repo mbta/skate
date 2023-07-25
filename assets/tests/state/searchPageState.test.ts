@@ -1,10 +1,13 @@
-import { emptySearchQuery } from "../../src/models/searchQuery"
+import {
+  defaultResultLimit,
+  emptySearchQuery,
+} from "../../src/models/searchQuery"
 import {
   addSavedQuery,
   initialSearchPageState,
   reducer,
   SearchPageState,
-  setSearchProperty,
+  setOldSearchProperty,
   setSearchText,
   submitSearch,
   SelectedEntityType,
@@ -12,8 +15,13 @@ import {
   newSearchSession,
   SelectedEntity,
   goBack,
+  setPropertyMatchLimit,
 } from "../../src/state/searchPageState"
 import { searchPageStateFactory } from "../factories/searchPageState"
+import {
+  emptySearchQueryFactory,
+  searchQueryAllFactory,
+} from "../factories/searchQuery"
 
 describe("initialSearchPageState", () => {
   test("sets text to empty string", () => {
@@ -42,18 +50,38 @@ describe("reducer", () => {
     expect(newSearch.isActive).toEqual(false)
   })
 
-  test("setSearchProperty allows you to set property", () => {
-    const newSearch = reducer(initialSearchPageState, setSearchProperty("run"))
+  test("setSearchText resets the result limit for properties back to default", () => {
+    const oldState = searchPageStateFactory.build({
+      query: searchQueryAllFactory.build({
+        text: "123",
+        properties: { run: 10 },
+      }),
+    })
+    const newState = reducer(oldState, setSearchText("new text"))
+
+    expect(newState.query.properties).toEqual({
+      run: defaultResultLimit,
+      location: defaultResultLimit,
+      operator: defaultResultLimit,
+      vehicle: defaultResultLimit,
+    })
+  })
+
+  test("setOldSearchProperty allows you to set property", () => {
+    const newSearch = reducer(
+      initialSearchPageState,
+      setOldSearchProperty("run")
+    )
 
     expect(newSearch.query.property).toEqual("run")
   })
 
-  test("setSearchProperty sets isActive to false", () => {
+  test("setOldSearchProperty sets isActive to false", () => {
     const activeSearch = {
       ...initialSearchPageState,
       isActive: true,
     }
-    const newSearch = reducer(activeSearch, setSearchProperty("run"))
+    const newSearch = reducer(activeSearch, setOldSearchProperty("run"))
 
     expect(newSearch.isActive).toEqual(false)
   })
@@ -99,6 +127,25 @@ describe("reducer", () => {
     const newSearch = reducer(invalidQuery, submitSearch())
 
     expect(newSearch.savedQueries).toEqual([])
+  })
+
+  describe("setPropertyMatchLimit", () => {
+    test("updates the value for only the matching property", () => {
+      const oldState: SearchPageState = searchPageStateFactory.build({
+        query: emptySearchQueryFactory.build({
+          text: "123",
+          properties: { run: defaultResultLimit, vehicle: 100 },
+        }),
+      })
+
+      const newState = reducer(oldState, setPropertyMatchLimit("run", 10))
+      expect(newState.query.properties).toEqual({
+        location: 5,
+        operator: 5,
+        run: 10,
+        vehicle: 100,
+      })
+    })
   })
 
   describe("newSearchSession", () => {

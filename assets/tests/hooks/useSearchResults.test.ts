@@ -1,12 +1,23 @@
-import { renderHook } from "@testing-library/react"
-import useSearchResults from "../../src/hooks/useSearchResults"
-import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
-import { GhostData, VehicleData } from "../../src/models/vehicleData"
+import { act, renderHook } from "@testing-library/react"
+import useSearchResults, {
+  useLimitedSearchResults,
+} from "../../src/hooks/useSearchResults"
+import {
+  emptySearchQuery,
+  SearchProperty,
+  SearchQuery,
+} from "../../src/models/searchQuery"
+import {
+  GhostData,
+  VehicleData,
+  vehicleFromData,
+} from "../../src/models/vehicleData"
 import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleFactory from "../factories/vehicle"
 import vehicleDataFactory from "../factories/vehicle_data"
+import { searchQueryRunFactory } from "../factories/searchQuery"
 
 describe("useSearchResults", () => {
   test("returns null initially", () => {
@@ -15,16 +26,14 @@ describe("useSearchResults", () => {
     )
     expect(result.current).toEqual(null)
   })
-
   test("initializing the hook subscribes to the search results", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const searchQuery: SearchQuery = {
+    const searchQuery: SearchQuery = searchQueryRunFactory.build({
       text: "test",
-      property: "run",
-    }
+    })
 
     renderHook(() => useSearchResults(mockSocket, searchQuery))
 
@@ -211,10 +220,9 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok", { data: searchResultsData })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const searchQuery: SearchQuery = {
+    const searchQuery: SearchQuery = searchQueryRunFactory.build({
       text: "test",
-      property: "run",
-    }
+    })
     const { result } = renderHook(() =>
       useSearchResults(mockSocket, searchQuery)
     )
@@ -234,19 +242,17 @@ describe("useSearchResults", () => {
     mockUseStateOnce(vehicles)
     mockUseStateOnce(channel2)
 
-    const search1: SearchQuery = {
+    const search1: SearchQuery = searchQueryRunFactory.build({
       text: "one",
-      property: "run",
-    }
+    })
     const { rerender } = renderHook(
       (searchQuery) => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 }
     )
 
-    const search2: SearchQuery = {
+    const search2: SearchQuery = searchQueryRunFactory.build({
       text: "two",
-      property: "run",
-    }
+    })
     rerender(search2)
 
     expect(channel1.leave).toHaveBeenCalled()
@@ -258,10 +264,9 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const search1: SearchQuery | null = {
+    const search1: SearchQuery | null = searchQueryRunFactory.build({
       text: "validSearch",
-      property: "run",
-    }
+    })
     const { rerender } = renderHook(
       (searchQuery) => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 as SearchQuery | null }
@@ -271,5 +276,113 @@ describe("useSearchResults", () => {
     rerender(search2)
 
     expect(mockChannel.leave).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe("useLimitedSearchResults", () => {
+  test("returns null initially", () => {
+    const mockSocket = makeMockSocket()
+
+    const { result } = renderHook(() =>
+      useLimitedSearchResults(mockSocket, null)
+    )
+    expect(result.current).toEqual(null)
+  })
+  test("initializing the hook subscribes to the search results", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    renderHook(() =>
+      useLimitedSearchResults(mockSocket, {
+        text: "123",
+        property: "run",
+        limit: 5,
+      })
+    )
+
+    expect(mockSocket.channel).toHaveBeenCalledTimes(1)
+    expect(mockSocket.channel).toHaveBeenCalledWith(
+      "vehicles_search:limited:run:123"
+    )
+    expect(mockChannel.join).toHaveBeenCalledTimes(1)
+  })
+
+  test("returns results pushed to the channel", () => {
+    const vehicleData: VehicleData = vehicleDataFactory.build()
+
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      data: { matching_vehicles: [vehicleData], has_more_matches: false },
+    })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { result } = renderHook(() =>
+      useLimitedSearchResults(mockSocket, {
+        property: "run",
+        text: "123",
+        limit: 5,
+      })
+    )
+
+    expect(result.current).toEqual({
+      matchingVehicles: [vehicleFromData(vehicleData)],
+      hasMoreMatches: false,
+    })
+  })
+
+  test("when the limit changes, stays subscribed to the existing topic and pushes message to increase limit", () => {
+    const mockSocket = makeMockSocket()
+    const vehicleDataAfterLimitIncrease = vehicleDataFactory.build()
+    const channel1 = makeMockChannel(
+      "ok",
+      jest
+        .fn()
+        .mockReturnValueOnce({
+          data: { matching_vehicles: [], has_more_matches: false },
+        })
+        // For first no-op push on channel join
+        .mockReturnValueOnce({
+          data: {
+            matching_vehicles: [vehicleDataFactory.build()],
+            has_more_matches: true,
+          },
+        })
+        // For push on limit increase
+        .mockReturnValueOnce({
+          data: {
+            matching_vehicles: [vehicleDataAfterLimitIncrease],
+            has_more_matches: true,
+          },
+        })
+    )
+    mockSocket.channel.mockImplementation(() => channel1)
+
+    const initialQuery = {
+      property: "run" as SearchProperty,
+      text: "123",
+      limit: 5,
+    }
+
+    const { rerender, result } = renderHook(
+      (query) => useLimitedSearchResults(mockSocket, query),
+      {
+        initialProps: initialQuery,
+      }
+    )
+
+    act(() => {
+      rerender({ ...initialQuery, limit: 30 })
+    })
+
+    expect(channel1.leave).not.toHaveBeenCalled()
+
+    expect(channel1.push).toHaveBeenCalledWith("update_search_query", {
+      limit: 30,
+    })
+    expect(result.current).toEqual({
+      hasMoreMatches: true,
+      matchingVehicles: [vehicleFromData(vehicleDataAfterLimitIncrease)],
+    })
   })
 })

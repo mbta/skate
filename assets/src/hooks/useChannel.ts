@@ -1,5 +1,5 @@
 import { Channel, Socket } from "phoenix"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { assert, Struct, StructError } from "superstruct"
 import { reload } from "../models/browser"
 import * as Sentry from "@sentry/react"
@@ -81,38 +81,85 @@ export const useCheckedChannel = <T, U>({
   loadingState: U
   closeAfterFirstRead?: boolean
 }): U => {
+  const [results, _push_updates] = useCheckedTwoWayChannel({
+    socket,
+    topic,
+    event,
+    dataStruct,
+    parser,
+    loadingState,
+    closeAfterFirstRead,
+  })
+  return results
+}
+
+export const useCheckedTwoWayChannel = <T, U, V>({
+  socket,
+  topic,
+  event,
+  dataStruct,
+  parser,
+  loadingState,
+  closeAfterFirstRead,
+}: {
+  socket: Socket | undefined
+  topic: string | null
+  event: string
+  dataStruct: Struct<T, any>
+  parser: (data: T) => U
+  loadingState: U
+  closeAfterFirstRead?: boolean
+}): [U, (event: string, payload: V) => void] => {
   const [state, setState] = useState<U>(loadingState)
+  const [joinedChannel, setJoinedChannel] = useState<Channel | undefined>()
+
+  const onOk = useCallback(
+    ({ data: data }: { data: unknown }) => {
+      try {
+        assert(data, dataStruct)
+        setState(parser(data))
+      } catch (error) {
+        if (error instanceof StructError) {
+          Sentry.captureException(error)
+        }
+      }
+    },
+    [dataStruct, parser, setState]
+  )
+
+  const pushUpdate = useCallback(
+    (event: string, payload: any): void => {
+      if (joinedChannel) {
+        joinedChannel
+          .push(event, payload)
+          .receive("ok", (data: { data: unknown }) => {
+            onOk(data)
+          })
+          .receive("error", ({ reason }) => {
+            Sentry.captureMessage(
+              `parsing response from push to ${topic} failed: ${reason}`,
+              "error"
+            )
+          })
+      }
+    },
+    [joinedChannel, onOk, topic]
+  )
 
   useEffect(() => {
     setState(loadingState)
     let channel: Channel | undefined
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
-      channel.on(event, ({ data: data }: { data: unknown }) => {
-        try {
-          assert(data, dataStruct)
-
-          setState(parser(data))
-        } catch (error) {
-          if (error instanceof StructError) {
-            Sentry.captureException(error)
-          }
-        }
+      channel.on(event, (data: { data: unknown }) => {
+        onOk(data)
       })
 
       channel
         .join()
-        .receive("ok", ({ data: data }: { data: unknown }) => {
-          try {
-            assert(data, dataStruct)
-
-            setState(parser(data))
-          } catch (error) {
-            if (error instanceof StructError) {
-              Sentry.captureException(error)
-            }
-          }
-
+        .receive("ok", (data: { data: unknown }) => {
+          onOk(data)
+          setJoinedChannel(channel)
           if (closeAfterFirstRead) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             channel!.leave()
@@ -140,6 +187,7 @@ export const useCheckedChannel = <T, U>({
     dataStruct,
     parser,
     closeAfterFirstRead,
+    onOk,
   ])
-  return state
+  return [state, pushUpdate]
 }

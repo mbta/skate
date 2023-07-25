@@ -65,10 +65,13 @@ import {
   searchInput as searchFormSearchInput,
   submitButton as searchFormSubmitButton,
 } from "../testHelpers/selectors/components/searchForm"
+import getTestGroups from "../../src/userTestGroups"
+import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(() => null),
+  useLimitedSearchResults: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
@@ -103,6 +106,11 @@ jest.mock("../../src/hooks/useStations", () => ({
 jest.mock("../../src/tilesetUrls", () => ({
   __esModule: true,
   tilesetUrlForType: jest.fn(() => null),
+}))
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
 }))
 
 type VehicleIdToVehicle = {
@@ -145,6 +153,9 @@ beforeAll(() => {
   mockTileUrls()
 })
 
+afterEach(() => {
+  ;(getTestGroups as jest.Mock).mockReturnValue([])
+})
 describe("<MapPage />", () => {
   describe("Snapshot", () => {
     test("renders the null state", () => {
@@ -1254,5 +1265,24 @@ describe("<MapPage />", () => {
         ).not.toBeNull()
       })
     })
+  })
+
+  test("when in the location-search test group, can see search results grouped by property", () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.LocationSearch])
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: { text: "123", properties: { run: 5 } },
+            isActive: true,
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <MapPage />
+      </StateDispatchProvider>
+    )
+
+    expect(screen.getByLabelText("Grouped Search Results")).toBeInTheDocument()
   })
 })
