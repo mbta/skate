@@ -60,7 +60,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-leaflet": "^2.8.2",
     "@types/react-test-renderer": "^18.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.53.0",
     "babel-jest": "^29.4.3",
     "copy-webpack-plugin": "^11.0.0",
