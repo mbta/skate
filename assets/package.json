@@ -42,7 +42,7 @@
     "react-router-dom": "^6.3.0",
     "superstruct": "^1.0.3",
     "uuid": "^9.0.0",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.17"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
