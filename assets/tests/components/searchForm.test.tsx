@@ -8,17 +8,23 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 import {
   SearchPageState,
-  setOldSearchProperty,
+  setPropertyMatchLimits,
   setSearchText,
   submitSearch,
 } from "../../src/state/searchPageState"
 import stateFactory from "../factories/applicationState"
 import {
   clearButton,
+  locationFilter,
+  operatorFilter,
+  runFilter,
   searchInput,
   submitButton,
+  vehicleFilter,
 } from "../testHelpers/selectors/components/searchForm"
 import { searchPageStateFactory } from "../factories/searchPageState"
+import { defaultResultLimit } from "../../src/models/searchQuery"
+import { searchQueryVehicleFactory } from "../factories/searchQuery"
 
 const mockDispatch = jest.fn()
 
@@ -230,29 +236,125 @@ describe("SearchForm", () => {
     expect(onClear).toHaveBeenCalledTimes(1)
   })
 
-  test("clicking a search property selects it", async () => {
-    const testDispatch = jest.fn()
-    const result = render(
-      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SearchFormFromStateDispatchContext />
-      </StateDispatchProvider>
-    )
+  describe("filters", () => {
+    test("all filters are shown as inactive by default", () => {
+      const testDispatch = jest.fn()
+      render(
+        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+          <SearchFormFromStateDispatchContext />
+        </StateDispatchProvider>
+      )
 
-    await userEvent.click(result.getByRole("button", { name: "Runs" }))
+      expect(vehicleFilter.get()).toHaveAttribute("aria-pressed", "false")
+      expect(operatorFilter.get()).toHaveAttribute("aria-pressed", "false")
+      expect(runFilter.get()).toHaveAttribute("aria-pressed", "false")
+      expect(locationFilter.get()).toHaveAttribute("aria-pressed", "false")
+    })
 
-    expect(testDispatch).toHaveBeenCalledWith(setOldSearchProperty("run"))
-  })
+    test("when some but not all of the properties have limits, those filters are active", () => {
+      const testDispatch = jest.fn()
+      render(
+        <StateDispatchProvider
+          state={{
+            ...initialState,
+            searchPageState: searchPageStateFactory.build({
+              query: searchQueryVehicleFactory.build({
+                text: "123",
+                properties: { vehicle: 5 },
+              }),
+            }),
+          }}
+          dispatch={testDispatch}
+        >
+          <SearchFormFromStateDispatchContext />
+        </StateDispatchProvider>
+      )
 
-  test("clicking a search property submits the search", async () => {
-    const testDispatch = jest.fn()
-    const result = render(
-      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SearchFormFromStateDispatchContext />
-      </StateDispatchProvider>
-    )
+      expect(vehicleFilter.get()).toHaveAttribute("aria-pressed", "true")
+      expect(operatorFilter.get()).toHaveAttribute("aria-pressed", "false")
+      expect(runFilter.get()).toHaveAttribute("aria-pressed", "false")
+      expect(locationFilter.get()).toHaveAttribute("aria-pressed", "false")
+    })
 
-    await userEvent.click(result.getByRole("button", { name: "Runs" }))
+    test("when the first filter is toggled on, then the limit for all other properties is set to 0", async () => {
+      const testDispatch = jest.fn()
+      render(
+        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+          <SearchFormFromStateDispatchContext />
+        </StateDispatchProvider>
+      )
 
-    expect(testDispatch).toHaveBeenCalledWith(submitSearch())
+      await userEvent.click(vehicleFilter.get())
+      expect(testDispatch).toHaveBeenCalledWith(
+        setPropertyMatchLimits({
+          vehicle: defaultResultLimit,
+          run: 0,
+          operator: 0,
+          location: 0,
+        })
+      )
+    })
+
+    test("when all filters are toggled on, then all filters are shown as active", async () => {
+      const testDispatch = jest.fn()
+      render(
+        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+          <SearchFormFromStateDispatchContext />
+        </StateDispatchProvider>
+      )
+
+      await userEvent.click(vehicleFilter.get())
+      await userEvent.click(operatorFilter.get())
+      await userEvent.click(runFilter.get())
+      await userEvent.click(locationFilter.get())
+
+      expect(vehicleFilter.get()).toHaveAttribute("aria-pressed", "true")
+      expect(operatorFilter.get()).toHaveAttribute("aria-pressed", "true")
+      expect(runFilter.get()).toHaveAttribute("aria-pressed", "true")
+      expect(locationFilter.get()).toHaveAttribute("aria-pressed", "true")
+    })
+
+    test("when the only filter that is toggled on is toggled off, then the limit for all properties is reset to the default ", async () => {
+      const testDispatch = jest.fn()
+      render(
+        <StateDispatchProvider
+          state={{
+            ...initialState,
+            searchPageState: searchPageStateFactory.build({
+              query: searchQueryVehicleFactory.build({
+                text: "123",
+                properties: { vehicle: 5 },
+              }),
+            }),
+          }}
+          dispatch={testDispatch}
+        >
+          <SearchFormFromStateDispatchContext />
+        </StateDispatchProvider>
+      )
+
+      await userEvent.click(vehicleFilter.get())
+      expect(testDispatch).toHaveBeenCalledWith(
+        setPropertyMatchLimits({
+          vehicle: defaultResultLimit,
+          run: defaultResultLimit,
+          operator: defaultResultLimit,
+          location: defaultResultLimit,
+        })
+      )
+    })
+
+    test("clicking a search property submits the search", async () => {
+      const testDispatch = jest.fn()
+      const result = render(
+        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+          <SearchFormFromStateDispatchContext />
+        </StateDispatchProvider>
+      )
+
+      await userEvent.click(result.getByRole("button", { name: "Runs" }))
+
+      expect(testDispatch).toHaveBeenCalledWith(submitSearch())
+    })
   })
 })

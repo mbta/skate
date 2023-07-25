@@ -6,6 +6,7 @@ import {
   SearchQuery,
   SearchProperty,
   defaultAllProperties,
+  PropertyLimits,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -72,20 +73,26 @@ export const setOldSearchProperty = (
   payload: { property },
 })
 
-interface SetPropertyMatchLimitAction {
-  type: "SET_PROPERTY_MATCH_LIMIT"
-  payload: {
-    property: SearchProperty
-    limit: number
-  }
+interface SetPropertyMatchLimitsAction {
+  type: "SET_PROPERTY_MATCH_LIMITS"
+  payload: Partial<{
+    [K in SearchProperty]: number
+  }>
 }
+
+export const setPropertyMatchLimits = (
+  limits: PropertyLimits
+): SetPropertyMatchLimitsAction => ({
+  type: "SET_PROPERTY_MATCH_LIMITS",
+  payload: limits,
+})
 
 export const setPropertyMatchLimit = (
   property: SearchProperty,
   limit: number
-): SetPropertyMatchLimitAction => ({
-  type: "SET_PROPERTY_MATCH_LIMIT",
-  payload: { property, limit },
+): SetPropertyMatchLimitsAction => ({
+  type: "SET_PROPERTY_MATCH_LIMITS",
+  payload: { [property]: limit },
 })
 
 interface SubmitSearchAction {
@@ -130,7 +137,7 @@ export const setSelectedEntity = (
 export type Action =
   | SetSearchTextAction
   | SetOldSearchPropertyAction
-  | SetPropertyMatchLimitAction
+  | SetPropertyMatchLimitsAction
   | SubmitSearchAction
   | NewSearchSessionAction
   | SelectEntityAction
@@ -160,14 +167,14 @@ export const reducer = (
         query: { ...state.query, property: action.payload.property },
         isActive: false,
       }
-    case "SET_PROPERTY_MATCH_LIMIT":
+    case "SET_PROPERTY_MATCH_LIMITS":
       return {
         ...state,
         query: {
           ...state.query,
           properties: {
             ...state.query.properties,
-            [action.payload.property]: action.payload.limit,
+            ...action.payload,
           },
         },
       }

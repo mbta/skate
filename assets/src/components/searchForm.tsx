@@ -1,15 +1,17 @@
-import React, { useContext, useRef } from "react"
+import React, { useContext, useRef, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { SearchIcon } from "../helpers/icon"
 import { CircleXIcon } from "./circleXIcon"
 import { FilterAccordion } from "./filterAccordion"
 import {
+  defaultResultLimit,
   isValidSearchText,
+  PropertyLimits,
   SearchProperty,
   searchPropertyDisplayConfig,
 } from "../models/searchQuery"
 import {
-  setOldSearchProperty,
+  setPropertyMatchLimits,
   setSearchText,
   submitSearch,
 } from "../state/searchPageState"
@@ -54,7 +56,82 @@ type SearchFormProps = SearchFormEventProps & {
   /**
    * Callback to run when {@link filters} should be updated.
    */
-  onFiltersChanged: (name: SearchProperty, currentValue: boolean) => void
+  onFiltersChanged: (searchFilterState: SearchFiltersState) => void
+}
+
+const allFiltersOn: SearchFiltersState = {
+  vehicle: true,
+  operator: true,
+  run: true,
+  location: true,
+}
+const allFiltersOff: SearchFiltersState = {
+  vehicle: false,
+  operator: false,
+  run: false,
+  location: false,
+}
+
+const Filters = ({
+  filters,
+  onFiltersChanged,
+}: {
+  filters: SearchFiltersState
+  onFiltersChanged: (searchFilterState: SearchFiltersState) => void
+}) => {
+  const countActiveFilters = Object.values(filters).filter(
+    (isActive) => isActive
+  ).length
+  const [hasAManuallyActivatedFilter, setHasAManuallyActivatedFilter] =
+    useState(
+      countActiveFilters > 0 && countActiveFilters < Object.keys(filters).length
+    )
+
+  const allFiltersActive = Object.values(filters).every((isActive) => isActive)
+  const displayAsInactive = allFiltersActive && !hasAManuallyActivatedFilter
+  return (
+    <FilterAccordion.WithExpansionState heading="Filter results">
+      {Object.entries(filters)
+        .map(([property, isActive]) => ({
+          property: property as SearchProperty,
+          isActive,
+        }))
+        .sort(
+          ({ property: first_property }, { property: second_property }) =>
+            searchPropertyDisplayConfig[first_property].order -
+            searchPropertyDisplayConfig[second_property].order
+        )
+        .map(({ property, isActive }) => {
+          return (
+            <FilterAccordion.ToggleFilter
+              key={property}
+              name={searchPropertyDisplayConfig[property].name}
+              active={isActive && !displayAsInactive}
+              onClick={() => {
+                if (displayAsInactive) {
+                  // Filter to only this property
+                  setHasAManuallyActivatedFilter(true)
+                  onFiltersChanged({ ...allFiltersOff, [property]: true })
+                } else if (
+                  isActive &&
+                  Object.values(filters).filter((isActive) => isActive)
+                    .length === 1
+                ) {
+                  // This filter is the last one on. Toggling it off turns all filters on
+                  setHasAManuallyActivatedFilter(false)
+                  onFiltersChanged(allFiltersOn)
+                } else {
+                  onFiltersChanged({
+                    ...filters,
+                    [property]: !isActive,
+                  })
+                }
+              }}
+            />
+          )
+        })}
+    </FilterAccordion.WithExpansionState>
+  )
 }
 
 /**
@@ -111,26 +188,7 @@ export const SearchForm = ({
           </div>
         </div>
       </div>
-      <FilterAccordion.WithExpansionState heading="Filter results">
-        {Object.entries(filters)
-          .map(([property, isActive]) => ({
-            property: property as SearchProperty,
-            isActive,
-          }))
-          .sort(
-            ({ property: first_property }, { property: second_property }) =>
-              searchPropertyDisplayConfig[first_property].order -
-              searchPropertyDisplayConfig[second_property].order
-          )
-          .map(({ property, isActive }) => (
-            <FilterAccordion.ToggleFilter
-              key={property}
-              name={searchPropertyDisplayConfig[property].name}
-              active={isActive}
-              onClick={() => onFiltersChanged(property, isActive)}
-            />
-          ))}
-      </FilterAccordion.WithExpansionState>
+      <Filters filters={filters} onFiltersChanged={onFiltersChanged} />
     </form>
   )
 }
@@ -155,7 +213,7 @@ const SearchFormFromStateDispatchContext = ({
       property as SearchProperty,
       limit > 0,
     ])
-  ) as { [K in SearchProperty]: boolean }
+  ) as SearchFiltersState
 
   return (
     <SearchForm
@@ -176,8 +234,18 @@ const SearchFormFromStateDispatchContext = ({
         dispatch(setSearchText(""))
         onClear?.(event)
       }}
-      onFiltersChanged={(name, _isActive) => {
-        dispatch(setOldSearchProperty(name))
+      onFiltersChanged={(newFilters) => {
+        dispatch(
+          setPropertyMatchLimits(
+            Object.fromEntries(
+              Object.entries(newFilters).map(([property, isActive]) => [
+                property,
+                isActive ? defaultResultLimit : 0,
+              ])
+            ) as PropertyLimits
+          )
+        )
+
         dispatch(submitSearch())
       }}
     />

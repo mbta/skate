@@ -105,6 +105,7 @@ exports[`SearchForm renders 1`] = `
           className="c-filter-accordion__filter"
         >
           <button
+            aria-pressed={false}
             className="c-filter-accordion__filter-toggle"
             onClick={[Function]}
           >
@@ -125,6 +126,7 @@ exports[`SearchForm renders 1`] = `
           className="c-filter-accordion__filter"
         >
           <button
+            aria-pressed={false}
             className="c-filter-accordion__filter-toggle"
             onClick={[Function]}
           >
@@ -145,6 +147,7 @@ exports[`SearchForm renders 1`] = `
           className="c-filter-accordion__filter"
         >
           <button
+            aria-pressed={false}
             className="c-filter-accordion__filter-toggle"
             onClick={[Function]}
           >
@@ -165,6 +168,7 @@ exports[`SearchForm renders 1`] = `
           className="c-filter-accordion__filter"
         >
           <button
+            aria-pressed={false}
             className="c-filter-accordion__filter-toggle"
             onClick={[Function]}
           >

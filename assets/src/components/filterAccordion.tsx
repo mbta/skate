@@ -86,12 +86,18 @@ export const FilterAccordionToggle = ({
   name,
   active = false,
   onClick,
-}: FilterAccordionToggleProps) => (
-  <button className="c-filter-accordion__filter-toggle" onClick={onClick}>
-    <span>{name}</span>
-    <ToggleIcon active={active} className="c-filter-accordion__toggle-icon" />
-  </button>
-)
+}: FilterAccordionToggleProps) => {
+  return (
+    <button
+      className="c-filter-accordion__filter-toggle"
+      onClick={onClick}
+      aria-pressed={active}
+    >
+      <span>{name}</span>
+      <ToggleIcon active={active} className="c-filter-accordion__toggle-icon" />
+    </button>
+  )
+}
 
 /**
  * {@link FilterAccordion} Toggle Button list item
