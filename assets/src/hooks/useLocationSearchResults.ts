@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
 import { fetchLocationSearchResults } from "../api"
 import { LocationSearchResult } from "../models/locationSearchResult"
-import { SearchQuery } from "../models/searchQuery"
 
 export const useLocationSearchResults = (
-  searchQuery: SearchQuery | null
+  text: string | null
 ): LocationSearchResult[] | null => {
   const [searchResults, setSearchResults] = useState<
     LocationSearchResult[] | null
@@ -13,9 +12,8 @@ export const useLocationSearchResults = (
   useEffect(() => {
     let shouldUpdate = true
 
-    // TODO: also make sure location is among selected categories
-    if (searchQuery) {
-      fetchLocationSearchResults(searchQuery.text).then((results) => {
+    if (text) {
+      fetchLocationSearchResults(text).then((results) => {
         if (shouldUpdate) {
           setSearchResults(results)
         }
@@ -27,7 +25,7 @@ export const useLocationSearchResults = (
     return () => {
       shouldUpdate = false
     }
-  }, [searchQuery])
+  }, [text])
 
   return searchResults
 }

@@ -1,7 +1,6 @@
 import { useLocationSearchResults } from "../../src/hooks/useLocationSearchResults"
 import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"
-import { searchQueryAllFactory } from "../factories/searchQuery"
 import { instantPromise } from "../testHelpers/mockHelpers"
 import locationSearchResultFactory from "../factories/locationSearchResult"
 
@@ -27,7 +26,7 @@ describe("useLocationSearchResults", () => {
       Api.fetchLocationSearchResults as jest.Mock
 
     const { result } = renderHook(() =>
-      useLocationSearchResults(searchQueryAllFactory.build())
+      useLocationSearchResults("search string")
     )
 
     expect(result.current).toBeNull()
@@ -43,7 +42,7 @@ describe("useLocationSearchResults", () => {
     )
 
     const { result } = renderHook(() =>
-      useLocationSearchResults(searchQueryAllFactory.build())
+      useLocationSearchResults("search string")
     )
 
     expect(result.current).toEqual(results)
