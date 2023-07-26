@@ -12,7 +12,21 @@ import Loading from "../loading"
 import SearchResults from "../searchResults"
 import React from "react"
 
-const SearchResultSection = ({
+const SearchResultSection = (props: {
+  property: SearchProperty
+  text: string
+  limit: number
+  selectVehicle: (vehicle: Vehicle | Ghost) => void
+  showMore: () => void
+}) => {
+  if (props.property === "location") {
+    return <></>
+  } else {
+    return <VehicleSearchResultSection {...props} />
+  }
+}
+
+const VehicleSearchResultSection = ({
   property,
   text,
   limit,
@@ -84,7 +98,7 @@ const SearchResultsByProperty = ({
   return (
     <div aria-label="Grouped Search Results">
       {Object.entries(searchPageState.query.properties)
-        .filter(([property, limit]) => limit != null && property != "location")
+        .filter(([_, limit]) => limit != null)
         .map(([property, limit]) => ({
           property: property as SearchProperty,
           limit: limit as number,
