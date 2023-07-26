@@ -154,15 +154,8 @@ describe("reducer", () => {
       const oldState: SearchPageState = searchPageStateFactory.build({
         query: emptySearchQueryFactory.build({
           text: "123",
-          properties: { run: 100, vehicle: 0 },
+          properties: { run: 100, vehicle: 0, location: 5, operator: 5 },
         }),
-      })
-
-      expect(oldState.query.properties).toEqual({
-        location: defaultResultLimit,
-        operator: defaultResultLimit,
-        vehicle: 0,
-        run: 100,
       })
       const newState = reducer(
         oldState,
