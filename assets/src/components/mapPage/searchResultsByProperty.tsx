@@ -12,6 +12,7 @@ import Loading from "../loading"
 import SearchResults from "../searchResults"
 import React from "react"
 import { useLocationSearchResults } from "../../hooks/useLocationSearchResults"
+import { Card, CardBody } from "../card"
 
 const SearchResultSection = (props: {
   property: SearchProperty
@@ -122,7 +123,17 @@ const LocationSearchResultSection = ({
           <ul className="c-search-results__list">
             {shownLocationSearchResults.map((locationSearchResult, index) => (
               <li key={index}>
-                {locationSearchResult.name || locationSearchResult.address}
+                <Card
+                  style="white"
+                  title={
+                    locationSearchResult.name || locationSearchResult.address
+                  }
+                >
+                  {locationSearchResult.name &&
+                    locationSearchResult.address && (
+                      <CardBody>{locationSearchResult.address}</CardBody>
+                    )}
+                </Card>
               </li>
             ))}
           </ul>
