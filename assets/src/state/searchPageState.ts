@@ -162,7 +162,7 @@ export const reducer = (
           properties: Object.fromEntries(
             Object.entries(state.query.properties).map(([property, limit]) => [
               property,
-              limit === 0 ? limit : defaultResultLimit,
+              limit === null ? limit : defaultResultLimit,
             ])
           ) as PropertyLimits,
         },
@@ -262,10 +262,10 @@ const setSearchPropertyLimits = (
       return [
         oldProperty,
         propertyIsDesired
-          ? oldLimit === 0
+          ? oldLimit === null
             ? defaultResultLimit
             : oldLimit
-          : 0,
+          : null,
       ]
     })
   ) as PropertyLimits

@@ -84,10 +84,10 @@ const SearchResultsByProperty = ({
   return (
     <div aria-label="Grouped Search Results">
       {Object.entries(searchPageState.query.properties)
-        .filter(([property, limit]) => limit > 0 && property != "location")
+        .filter(([property, limit]) => limit != null && property != "location")
         .map(([property, limit]) => ({
           property: property as SearchProperty,
-          limit,
+          limit: limit as number,
         }))
         .sort(
           ({ property: first_property }, { property: second_property }) =>

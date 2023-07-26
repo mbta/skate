@@ -51,11 +51,11 @@ describe("reducer", () => {
     expect(newSearch.isActive).toEqual(false)
   })
 
-  test("setSearchText resets the result limit for properties back to default", () => {
+  test("setSearchText resets the result limit for properties back to default where the limit isn't null", () => {
     const oldState = searchPageStateFactory.build({
       query: searchQueryAllFactory.build({
         text: "123",
-        properties: { run: 10, vehicle: 0 },
+        properties: { run: 10, vehicle: null },
       }),
     })
     const newState = reducer(oldState, setSearchText("new text"))
@@ -64,7 +64,7 @@ describe("reducer", () => {
       run: defaultResultLimit,
       location: defaultResultLimit,
       operator: defaultResultLimit,
-      vehicle: 0,
+      vehicle: null,
     })
   })
 
@@ -150,11 +150,11 @@ describe("reducer", () => {
   })
 
   describe("setSearchProperties", () => {
-    test("ensures limit is nonzero for all properties in the given list", () => {
+    test("ensures limit is only null for only properties not in the given list", () => {
       const oldState: SearchPageState = searchPageStateFactory.build({
         query: emptySearchQueryFactory.build({
           text: "123",
-          properties: { run: 100, vehicle: 0, location: 5, operator: 5 },
+          properties: { run: 100, vehicle: null, location: 5, operator: 5 },
         }),
       })
       const newState = reducer(
@@ -163,8 +163,8 @@ describe("reducer", () => {
       )
 
       expect(newState.query.properties).toEqual({
-        location: 0,
-        operator: 0,
+        location: null,
+        operator: null,
         vehicle: defaultResultLimit,
         run: 100,
       })

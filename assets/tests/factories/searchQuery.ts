@@ -14,7 +14,7 @@ class SearchQueryFactory extends Factory<SearchQuery> {
       return this.params({
         property,
         properties: {
-          ...{ vehicle: 0, run: 0, operator: 0, location: 0 },
+          ...{ vehicle: null, run: null, operator: null, location: null },
           [property]: defaultResultLimit,
         },
       })

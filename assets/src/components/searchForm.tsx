@@ -209,7 +209,7 @@ const SearchFormFromStateDispatchContext = ({
   const filters = Object.fromEntries(
     Object.entries(query.properties).map(([property, limit]) => [
       property as SearchProperty,
-      limit > 0,
+      limit != null,
     ])
   ) as SearchFiltersState
 
