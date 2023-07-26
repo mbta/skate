@@ -11,6 +11,7 @@ import { setPropertyMatchLimit } from "../../state/searchPageState"
 import Loading from "../loading"
 import SearchResults from "../searchResults"
 import React from "react"
+import { useLocationSearchResults } from "../../hooks/useLocationSearchResults"
 
 const SearchResultSection = (props: {
   property: SearchProperty
@@ -20,7 +21,7 @@ const SearchResultSection = (props: {
   showMore: () => void
 }) => {
   if (props.property === "location") {
-    return <></>
+    return <LocationSearchResultSection {...props} />
   } else {
     return <VehicleSearchResultSection {...props} />
   }
@@ -71,6 +72,61 @@ const VehicleSearchResultSection = ({
             onClick={selectVehicle}
           />
           {limitedSearchResults.hasMoreMatches && (
+            <div className="c-map_page__search_results_actions">
+              <button
+                className="c-map-page__show_more button-text"
+                onClick={() => showMore()}
+              >
+                Show more
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        "No results found"
+      )}
+    </section>
+  )
+}
+
+const LocationSearchResultSection = ({
+  text,
+  limit,
+  showMore,
+}: {
+  text: string
+  limit: number
+  showMore: () => void
+}) => {
+  const locationSearchResults = useLocationSearchResults(text)
+
+  if (locationSearchResults === null) {
+    return <Loading />
+  }
+
+  const shownLocationSearchResults = locationSearchResults.slice(0, limit)
+
+  return (
+    <section
+      className="c-map-page__search_results_section"
+      aria-labelledby={`search-results__location`}
+    >
+      <h2
+        className="c-map-page__search_results_header"
+        id={`search-results__location`}
+      >
+        {searchPropertyDisplayConfig.location.name}
+      </h2>
+      {shownLocationSearchResults.length > 0 ? (
+        <>
+          <ul className="c-search-results__list">
+            {shownLocationSearchResults.map((locationSearchResult, index) => (
+              <li key={index}>
+                {locationSearchResult.name || locationSearchResult.address}
+              </li>
+            ))}
+          </ul>
+          {locationSearchResults.length > shownLocationSearchResults.length && (
             <div className="c-map_page__search_results_actions">
               <button
                 className="c-map-page__show_more button-text"
