@@ -8,12 +8,16 @@ import {
 
 class SearchQueryFactory extends Factory<SearchQuery> {
   searchType(property: OldSearchQueryType) {
-    return property === "all"
-      ? this.params({ property, properties: emptySearchQuery.properties })
-      : this.params({
-          property,
-          properties: { [property]: defaultResultLimit },
-        })
+    if (property === "all") {
+      return this.params({ property, properties: emptySearchQuery.properties })
+    } else
+      return this.params({
+        property,
+        properties: {
+          ...{ vehicle: null, run: null, operator: null, location: null },
+          [property]: defaultResultLimit,
+        },
+      })
   }
 
   searchFor(text: string) {

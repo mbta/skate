@@ -16,6 +16,7 @@ import {
   SelectedEntity,
   goBack,
   setPropertyMatchLimit,
+  setSearchProperties,
 } from "../../src/state/searchPageState"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import {
@@ -50,11 +51,11 @@ describe("reducer", () => {
     expect(newSearch.isActive).toEqual(false)
   })
 
-  test("setSearchText resets the result limit for properties back to default", () => {
+  test("setSearchText resets the result limit for properties back to default where the limit isn't null", () => {
     const oldState = searchPageStateFactory.build({
       query: searchQueryAllFactory.build({
         text: "123",
-        properties: { run: 10 },
+        properties: { run: 10, vehicle: null },
       }),
     })
     const newState = reducer(oldState, setSearchText("new text"))
@@ -63,7 +64,7 @@ describe("reducer", () => {
       run: defaultResultLimit,
       location: defaultResultLimit,
       operator: defaultResultLimit,
-      vehicle: defaultResultLimit,
+      vehicle: null,
     })
   })
 
@@ -144,6 +145,28 @@ describe("reducer", () => {
         operator: 5,
         run: 10,
         vehicle: 100,
+      })
+    })
+  })
+
+  describe("setSearchProperties", () => {
+    test("ensures limit is only null for only properties not in the given list", () => {
+      const oldState: SearchPageState = searchPageStateFactory.build({
+        query: emptySearchQueryFactory.build({
+          text: "123",
+          properties: { run: 100, vehicle: null, location: 5, operator: 5 },
+        }),
+      })
+      const newState = reducer(
+        oldState,
+        setSearchProperties(["run", "vehicle"])
+      )
+
+      expect(newState.query.properties).toEqual({
+        location: null,
+        operator: null,
+        vehicle: defaultResultLimit,
+        run: 100,
       })
     })
   })

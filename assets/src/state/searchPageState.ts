@@ -5,7 +5,8 @@ import {
   SavedSearchQuery,
   SearchQuery,
   SearchProperty,
-  defaultAllProperties,
+  PropertyLimits,
+  defaultResultLimit,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -74,10 +75,7 @@ export const setOldSearchProperty = (
 
 interface SetPropertyMatchLimitAction {
   type: "SET_PROPERTY_MATCH_LIMIT"
-  payload: {
-    property: SearchProperty
-    limit: number
-  }
+  payload: { property: SearchProperty; limit: number }
 }
 
 export const setPropertyMatchLimit = (
@@ -86,6 +84,17 @@ export const setPropertyMatchLimit = (
 ): SetPropertyMatchLimitAction => ({
   type: "SET_PROPERTY_MATCH_LIMIT",
   payload: { property, limit },
+})
+
+interface SetSearchPropertiesAction {
+  type: "SET_SEARCH_PROPERTIES"
+  payload: SearchProperty[]
+}
+export const setSearchProperties = (
+  properties: SearchProperty[]
+): SetSearchPropertiesAction => ({
+  type: "SET_SEARCH_PROPERTIES",
+  payload: properties,
 })
 
 interface SubmitSearchAction {
@@ -131,6 +140,7 @@ export type Action =
   | SetSearchTextAction
   | SetOldSearchPropertyAction
   | SetPropertyMatchLimitAction
+  | SetSearchPropertiesAction
   | SubmitSearchAction
   | NewSearchSessionAction
   | SelectEntityAction
@@ -143,17 +153,23 @@ export const reducer = (
   action: Action
 ): SearchPageState => {
   switch (action.type) {
-    case "SET_SEARCH_TEXT":
+    case "SET_SEARCH_TEXT": {
       return {
         ...state,
         query: {
           ...state.query,
           text: action.payload.text,
-          properties: defaultAllProperties,
+          properties: Object.fromEntries(
+            Object.entries(state.query.properties).map(([property, limit]) => [
+              property,
+              limit === null ? limit : defaultResultLimit,
+            ])
+          ) as PropertyLimits,
         },
 
         isActive: false,
       }
+    }
     case "SET_SEARCH_PROPERTY":
       return {
         ...state,
@@ -169,6 +185,18 @@ export const reducer = (
             ...state.query.properties,
             [action.payload.property]: action.payload.limit,
           },
+        },
+      }
+
+    case "SET_SEARCH_PROPERTIES":
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          properties: setSearchPropertyLimits(
+            state.query.properties,
+            action.payload
+          ),
         },
       }
 
@@ -219,6 +247,28 @@ export const reducer = (
     }
   }
   return state
+}
+
+const setSearchPropertyLimits = (
+  properties: PropertyLimits,
+  desiredProperties: SearchProperty[]
+) => {
+  return Object.fromEntries(
+    Object.entries(properties).map(([oldProperty, oldLimit]) => {
+      const propertyIsDesired = desiredProperties.some(
+        (desiredProperty) => desiredProperty === oldProperty
+      )
+
+      return [
+        oldProperty,
+        propertyIsDesired
+          ? oldLimit === null
+            ? defaultResultLimit
+            : oldLimit
+          : null,
+      ]
+    })
+  ) as PropertyLimits
 }
 
 /*
