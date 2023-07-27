@@ -39,6 +39,7 @@ import OldSearchForm from "./oldSearchForm"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { Socket } from "phoenix"
 import SearchResultsByProperty from "./mapPage/searchResultsByProperty"
+import { LocationSearchResult } from "../models/locationSearchResult"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -70,8 +71,10 @@ const OldSearchResultList = ({
 
 const SearchMode = ({
   selectVehicleResult,
+  selectLocationResult,
 }: {
   selectVehicleResult: (result: Vehicle | Ghost | null) => void
+  selectLocationResult: (result: LocationSearchResult | null) => void
 }): React.ReactElement => {
   const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
     ? SearchFormFromStateDispatchContext
@@ -97,6 +100,7 @@ const SearchMode = ({
           inTestGroup(TestGroups.LocationSearch) ? (
             <SearchResultsByProperty
               selectVehicleResult={selectVehicleResult}
+              selectLocationResult={selectLocationResult}
             />
           ) : (
             <OldSearchResultList selectSearchResult={selectVehicleResult} />
@@ -285,6 +289,21 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     [setVehicleSelection]
   )
 
+  const selectLocationResult = (
+    location: LocationSearchResult | null
+  ): void => {
+    if (location) {
+      dispatch(
+        setSelectedEntity({
+          type: SelectedEntityType.Location,
+          location,
+        })
+      )
+    } else {
+      dispatch(setSelectedEntity(null))
+    }
+  }
+
   return (
     <div
       className="c-map-page inherit-box border-box"
@@ -309,7 +328,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
             setSelection={setVehicleSelection}
           />
         ) : (
-          <SearchMode selectVehicleResult={selectVehicleResult} />
+          <SearchMode
+            selectVehicleResult={selectVehicleResult}
+            selectLocationResult={selectLocationResult}
+          />
         )}
       </div>
       <div className="c-map-page__map">

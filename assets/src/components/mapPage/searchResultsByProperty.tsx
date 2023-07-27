@@ -13,12 +13,14 @@ import SearchResults from "../searchResults"
 import React from "react"
 import { useLocationSearchResults } from "../../hooks/useLocationSearchResults"
 import { Card, CardBody } from "../card"
+import { LocationSearchResult } from "../../models/locationSearchResult"
 
 const SearchResultSection = (props: {
   property: SearchProperty
   text: string
   limit: number
   selectVehicle: (vehicle: Vehicle | Ghost) => void
+  selectLocation: (location: LocationSearchResult) => void
   showMore: () => void
 }) => {
   if (props.property === "location") {
@@ -93,10 +95,12 @@ const VehicleSearchResultSection = ({
 const LocationSearchResultSection = ({
   text,
   limit,
+  selectLocation,
   showMore,
 }: {
   text: string
   limit: number
+  selectLocation: (location: LocationSearchResult) => void
   showMore: () => void
 }) => {
   const locationSearchResults = useLocationSearchResults(text)
@@ -126,6 +130,7 @@ const LocationSearchResultSection = ({
                     title={
                       locationSearchResult.name || locationSearchResult.address
                     }
+                    openCallback={() => selectLocation(locationSearchResult)}
                   >
                     {locationSearchResult.name &&
                       locationSearchResult.address && (
@@ -155,8 +160,10 @@ const LocationSearchResultSection = ({
 
 const SearchResultsByProperty = ({
   selectVehicleResult,
+  selectLocationResult,
 }: {
   selectVehicleResult: (result: Vehicle | Ghost | null) => void
+  selectLocationResult: (result: LocationSearchResult | null) => void
 }) => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
 
@@ -180,6 +187,7 @@ const SearchResultsByProperty = ({
             text={searchPageState.query.text}
             limit={limit}
             selectVehicle={selectVehicleResult}
+            selectLocation={selectLocationResult}
             showMore={() =>
               dispatch(setPropertyMatchLimit(property, limit + 25))
             }

@@ -70,7 +70,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     expect(
@@ -100,7 +103,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     expect(
@@ -153,7 +159,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     const [vehicles, operators, runs, locations] =
@@ -203,7 +212,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     const vehicles = screen.getByLabelText("Vehicles")
@@ -238,7 +250,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     const locations = screen.getByLabelText("Locations")
@@ -260,7 +275,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     const locations = screen.getByLabelText("Locations")
@@ -288,7 +306,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     expect(
@@ -321,7 +342,10 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty selectVehicleResult={jest.fn()} />
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
       </StateDispatchProvider>
     )
     expect(
