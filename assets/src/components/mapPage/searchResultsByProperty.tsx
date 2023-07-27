@@ -154,9 +154,9 @@ const LocationSearchResultSection = ({
 }
 
 const SearchResultsByProperty = ({
-  selectSearchResult,
+  selectVehicleResult,
 }: {
-  selectSearchResult: (result: Vehicle | Ghost | null) => void
+  selectVehicleResult: (result: Vehicle | Ghost | null) => void
 }) => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
 
@@ -179,7 +179,7 @@ const SearchResultsByProperty = ({
             property={property}
             text={searchPageState.query.text}
             limit={limit}
-            selectVehicle={selectSearchResult}
+            selectVehicle={selectVehicleResult}
             showMore={() =>
               dispatch(setPropertyMatchLimit(property, limit + 25))
             }

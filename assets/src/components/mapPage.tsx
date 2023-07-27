@@ -69,17 +69,13 @@ const OldSearchResultList = ({
 }
 
 const SearchMode = ({
-  selectSearchResult,
+  selectVehicleResult,
 }: {
-  selectSearchResult: (result: Vehicle | Ghost | null) => void
+  selectVehicleResult: (result: Vehicle | Ghost | null) => void
 }): React.ReactElement => {
   const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
     ? SearchFormFromStateDispatchContext
     : OldSearchForm
-
-  const CurrentSearchResults = inTestGroup(TestGroups.LocationSearch)
-    ? SearchResultsByProperty
-    : OldSearchResultList
 
   const [{ searchPageState }] = useContext(StateDispatchContext)
   return (
@@ -98,7 +94,13 @@ const SearchMode = ({
 
       <div className="c-search-display u-hideable">
         {searchPageState.isActive ? (
-          <CurrentSearchResults selectSearchResult={selectSearchResult} />
+          inTestGroup(TestGroups.LocationSearch) ? (
+            <SearchResultsByProperty
+              selectVehicleResult={selectVehicleResult}
+            />
+          ) : (
+            <OldSearchResultList selectSearchResult={selectVehicleResult} />
+          )
         ) : (
           <RecentSearches />
         )}
@@ -221,12 +223,12 @@ const Selection = ({
           vehicleId={selectedEntity.vehicleId}
           setSelection={setSelection}
         />
-      ) : (
+      ) : selectedEntity.type === SelectedEntityType.RoutePattern ? (
         <SelectedRoute
           selectedRoutePattern={selectedEntity}
           selectRoutePattern={selectRoutePattern}
         />
-      )}
+      ) : null}
     </div>
   )
 }
@@ -251,7 +253,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   // #endregion
 
-  const setSelection = useCallback(
+  const setVehicleSelection = useCallback(
     (selectedEntity: SelectedEntity | null) => {
       switch (selectedEntity?.type) {
         case SelectedEntityType.Vehicle:
@@ -269,18 +271,18 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     [dispatch]
   )
 
-  const selectSearchResult = useCallback(
+  const selectVehicleResult = useCallback(
     (vehicleOrGhost: Vehicle | Ghost | null) => {
       if (vehicleOrGhost) {
-        setSelection({
+        setVehicleSelection({
           type: SelectedEntityType.Vehicle,
           vehicleId: vehicleOrGhost.id,
         })
       } else {
-        setSelection(null)
+        setVehicleSelection(null)
       }
     },
-    [setSelection]
+    [setVehicleSelection]
   )
 
   return (
@@ -304,16 +306,16 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         {selectedEntity ? (
           <Selection
             selectedEntity={selectedEntity}
-            setSelection={setSelection}
+            setSelection={setVehicleSelection}
           />
         ) : (
-          <SearchMode selectSearchResult={selectSearchResult} />
+          <SearchMode selectVehicleResult={selectVehicleResult} />
         )}
       </div>
       <div className="c-map-page__map">
         <MapDisplay
           selectedEntity={selectedEntity}
-          setSelection={setSelection}
+          setSelection={setVehicleSelection}
         />
       </div>
     </div>
