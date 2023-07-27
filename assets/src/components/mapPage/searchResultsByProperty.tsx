@@ -101,12 +101,6 @@ const LocationSearchResultSection = ({
 }) => {
   const locationSearchResults = useLocationSearchResults(text)
 
-  if (locationSearchResults === null) {
-    return <Loading />
-  }
-
-  const shownLocationSearchResults = locationSearchResults.slice(0, limit)
-
   return (
     <section
       className="c-map-page__search_results_section"
@@ -118,26 +112,30 @@ const LocationSearchResultSection = ({
       >
         {searchPropertyDisplayConfig.location.name}
       </h2>
-      {shownLocationSearchResults.length > 0 ? (
+      {locationSearchResults === null ? (
+        <Loading />
+      ) : locationSearchResults.length > 0 ? (
         <>
           <ul className="c-search-results__list">
-            {shownLocationSearchResults.map((locationSearchResult, index) => (
-              <li key={index}>
-                <Card
-                  style="white"
-                  title={
-                    locationSearchResult.name || locationSearchResult.address
-                  }
-                >
-                  {locationSearchResult.name &&
-                    locationSearchResult.address && (
-                      <CardBody>{locationSearchResult.address}</CardBody>
-                    )}
-                </Card>
-              </li>
-            ))}
+            {locationSearchResults
+              .slice(0, limit)
+              .map((locationSearchResult, index) => (
+                <li key={index}>
+                  <Card
+                    style="white"
+                    title={
+                      locationSearchResult.name || locationSearchResult.address
+                    }
+                  >
+                    {locationSearchResult.name &&
+                      locationSearchResult.address && (
+                        <CardBody>{locationSearchResult.address}</CardBody>
+                      )}
+                  </Card>
+                </li>
+              ))}
           </ul>
-          {locationSearchResults.length > shownLocationSearchResults.length && (
+          {locationSearchResults.length > limit && (
             <div className="c-map_page__search_results_actions">
               <button
                 className="c-map-page__show_more button-text"

@@ -3,15 +3,23 @@ import { render, screen, within } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import SearchResultsByProperty from "../../../src/components/mapPage/searchResultsByProperty"
 import { useLimitedSearchResults } from "../../../src/hooks/useSearchResults"
+import { useLocationSearchResults } from "../../../src/hooks/useLocationSearchResults"
 import vehicleFactory from "../../factories/vehicle"
 import { SearchProperty } from "../../../src/models/searchQuery"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import stateFactory from "../../factories/applicationState"
 import { searchPageStateFactory } from "../../factories/searchPageState"
+import locationSearchResultFactory from "../../factories/locationSearchResult"
+import { LocationSearchResult } from "../../../src/models/locationSearchResult"
 
 jest.mock("../../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   useLimitedSearchResults: jest.fn(() => null),
+}))
+
+jest.mock("../../../src/hooks/useLocationSearchResults", () => ({
+  __esModule: true,
+  useLocationSearchResults: jest.fn(() => null),
 }))
 
 afterEach(() => {
@@ -50,6 +58,7 @@ describe("searchResultsByProperty", () => {
         }
       }
     )
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
       <StateDispatchProvider
@@ -76,6 +85,7 @@ describe("searchResultsByProperty", () => {
       matchingVehicles: [vehicleMatch],
       hasMoreMatches: false,
     })
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
       <StateDispatchProvider
@@ -131,6 +141,7 @@ describe("searchResultsByProperty", () => {
         }
       }
     )
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
       <StateDispatchProvider
@@ -145,10 +156,12 @@ describe("searchResultsByProperty", () => {
         <SearchResultsByProperty selectSearchResult={jest.fn()} />
       </StateDispatchProvider>
     )
-    const [vehicles, operators, runs] = screen.getAllByRole("heading")
+    const [vehicles, operators, runs, locations] =
+      screen.getAllByRole("heading")
     expect(vehicles).toHaveTextContent("Vehicles")
     expect(operators).toHaveTextContent("Operators")
     expect(runs).toHaveTextContent("Runs")
+    expect(locations).toHaveTextContent("Locations")
   })
 
   test("Lists the matching vehicles under the appropriate header", () => {
@@ -178,6 +191,7 @@ describe("searchResultsByProperty", () => {
         }
       }
     )
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
       <StateDispatchProvider
@@ -208,11 +222,57 @@ describe("searchResultsByProperty", () => {
     ).toBeInTheDocument()
   })
 
+  test("Lists the matching locations under the locations header", () => {
+    const locationMatch = locationSearchResultFactory.build()
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [
+      locationMatch,
+    ])
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: { text: "location" },
+            isActive: true,
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <SearchResultsByProperty selectSearchResult={jest.fn()} />
+      </StateDispatchProvider>
+    )
+    const locations = screen.getByLabelText("Locations")
+    expect(
+      within(locations).getByLabelText(locationMatch.name!)
+    ).toBeInTheDocument()
+  })
+
+  test("Shows loading indication for locations", () => {
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => null)
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: { text: "location" },
+            isActive: true,
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <SearchResultsByProperty selectSearchResult={jest.fn()} />
+      </StateDispatchProvider>
+    )
+    const locations = screen.getByLabelText("Locations")
+    expect(locations).toHaveTextContent(/loading/i)
+  })
+
   test("For sections that have more matches, includes a 'Show more' button", () => {
     ;(useLimitedSearchResults as jest.Mock).mockReturnValue({
       matchingVehicles: [vehicleMatch],
       hasMoreMatches: true,
     })
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
       <StateDispatchProvider
@@ -233,6 +293,39 @@ describe("searchResultsByProperty", () => {
     )
     expect(
       within(screen.getByLabelText("Vehicles")).getByRole("button", {
+        name: "Show more",
+      })
+    ).toBeInTheDocument()
+  })
+
+  test("When locations section has more matches, includes a 'Show more' button", () => {
+    const locations: LocationSearchResult[] = []
+
+    for (let i = 0; i <= 5; i++) {
+      locations.push(locationSearchResultFactory.build())
+    }
+
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => locations)
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: {
+              text: "location",
+              properties: { location: 5 },
+            },
+
+            isActive: true,
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <SearchResultsByProperty selectSearchResult={jest.fn()} />
+      </StateDispatchProvider>
+    )
+    expect(
+      within(screen.getByLabelText("Locations")).getByRole("button", {
         name: "Show more",
       })
     ).toBeInTheDocument()
