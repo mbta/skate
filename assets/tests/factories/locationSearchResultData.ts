@@ -3,6 +3,7 @@ import { LocationSearchResultData } from "../../src/models/locationSearchResultD
 
 const locationSearchResultDataFactory =
   Factory.define<LocationSearchResultData>(({ sequence }) => ({
+    id: `${sequence}`,
     address: `${sequence} Test St`,
     name: "Some Landmark",
     latitude: 1,

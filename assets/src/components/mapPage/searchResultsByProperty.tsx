@@ -123,8 +123,8 @@ const LocationSearchResultSection = ({
           <ul className="c-search-results__list">
             {locationSearchResults
               .slice(0, limit)
-              .map((locationSearchResult, index) => (
-                <li key={index}>
+              .map((locationSearchResult) => (
+                <li key={locationSearchResult.id}>
                   <Card
                     style="white"
                     title={
