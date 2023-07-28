@@ -1,18 +1,34 @@
-import React, { useContext, useRef, useState } from "react"
+import React, {
+  SyntheticEvent,
+  useContext,
+  useId,
+  useRef,
+  useState,
+} from "react"
+
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { SearchIcon } from "../helpers/icon"
+import {
+  SearchProperties,
+  SearchProperty,
+  isValidSearchText,
+  searchPropertyDisplayConfig,
+} from "../models/searchQuery"
+import { Ghost, Vehicle } from "../realtime"
+import {
+  SelectedEntityType,
+  setSearchProperties,
+  setSearchText,
+  setSelectedEntity,
+  submitSearch,
+} from "../state/searchPageState"
+
 import { CircleXIcon } from "./circleXIcon"
 import { FilterAccordion } from "./filterAccordion"
 import {
-  isValidSearchText,
-  SearchProperty,
-  searchPropertyDisplayConfig,
-} from "../models/searchQuery"
-import {
-  setSearchProperties,
-  setSearchText,
-  submitSearch,
-} from "../state/searchPageState"
+  GroupedAutocompleteControls,
+  GroupedAutocompleteFromSearchTextResults,
+} from "./groupedAutocomplete"
 
 // #region Search Filters
 
@@ -20,12 +36,23 @@ import {
  * Object describing the current toggle state of the possible
  * {@link SearchProperty}.
  */
-type SearchFiltersState = {
-  [K in SearchProperty]: boolean
-}
+export type SearchFiltersState = SearchProperties<boolean>
 
 // #endregion search filters
 
+/**
+ * Non-Essential configuration props related to {@link SearchForm}.
+ */
+type SearchFormConfigProps = {
+  /**
+   * Whether to show the autocomplete box or not
+   */
+  showAutocomplete?: boolean
+}
+
+/**
+ * Event props related to {@link SearchForm}.
+ */
 type SearchFormEventProps = {
   /**
    * Callback to run when the form is submitted.
@@ -37,25 +64,30 @@ type SearchFormEventProps = {
   onClear?: React.ReactEventHandler
 }
 
-type SearchFormProps = SearchFormEventProps & {
-  /**
-   * Text to show in the search input box.
-   */
-  inputText: string
-  /**
-   * Callback to run when {@link inputText} should be updated.
-   */
-  onInputTextChanged?: React.ChangeEventHandler<HTMLInputElement>
+type SearchFormProps = SearchFormEventProps &
+  SearchFormConfigProps & {
+    /**
+     * Text to show in the search input box.
+     */
+    inputText: string
+    /**
+     * Callback to run when {@link inputText} should be updated.
+     */
+    onInputTextChange?: React.ChangeEventHandler<HTMLInputElement>
 
-  /**
-   * The state of the search filters.
-   */
-  filters: SearchFiltersState
-  /**
-   * Callback to run when {@link filters} should be updated.
-   */
-  onFiltersChanged: (searchFilterState: SearchFiltersState) => void
-}
+    /**
+     * The state of the search filters.
+     */
+    filters: SearchFiltersState
+    /**
+     * Callback to run when {@link filters} should be updated.
+     */
+    onFiltersChanged: (searchFilterState: SearchFiltersState) => void
+    /**
+     * Callback to run when a autocomplete option is chosen.
+     */
+    onVehicleOptionChosen: (chosenOption: Vehicle | Ghost) => void
+  }
 
 const allFiltersOn: SearchFiltersState = {
   vehicle: true,
@@ -133,57 +165,145 @@ const Filters = ({
 }
 
 /**
- * Search form which exposes all configurable state and callbacks via props.
+ * Search form which exposes all configurable state and callbacks via {@link SearchFormProps props}.
  */
 export const SearchForm = ({
   inputText,
-  onInputTextChanged,
+  onInputTextChange,
 
   filters,
   onFiltersChanged,
 
-  onClear,
-  onSubmit,
+  onClear: onClearProp,
+  onSubmit: onSubmitProp,
+  onVehicleOptionChosen,
+
+  showAutocomplete: showAutocompleteProp = true,
 }: SearchFormProps) => {
   const formSearchInput = useRef<HTMLInputElement | null>(null)
+  const [autocompleteEnabled, setAutocompleteEnabled] = useState(true)
+
+  const onSubmit = (e: SyntheticEvent) => {
+    // Hide autocomplete on submit, should show when next character is entered
+    // or next time the input is focused.
+    setAutocompleteEnabled(false)
+    onSubmitProp?.(e)
+  }
+
+  const onClear = (e: SyntheticEvent) => {
+    // Set focus on input after input is cleared
+    formSearchInput.current?.focus()
+    onClearProp?.(e)
+  }
+
+  const autocompleteController = useRef<null | GroupedAutocompleteControls>(
+    null
+  )
+
+  const autocompleteVisible =
+    autocompleteEnabled && showAutocompleteProp && inputText.length >= 3
+  const autocompleteId = useId()
 
   return (
     <form onSubmit={onSubmit} className="c-search-form" autoComplete="off">
-      <div className="c-search-form__search-control">
-        <div className="c-search-form__search-input-container">
+      <div
+        className="c-search-form__search-control"
+        data-autocomplete-visible={autocompleteVisible}
+        role="presentation"
+        onKeyDown={(event) => {
+          const ignoredKeysList = [
+            "ArrowDown",
+            "ArrowUp",
+            "Control",
+            "Shift",
+            "Tab",
+            "Enter",
+          ]
+          if (
+            !ignoredKeysList.includes(event.key) &&
+            document.activeElement !== formSearchInput.current
+          ) {
+            formSearchInput.current?.focus()
+          }
+        }}
+      >
+        <div
+          className="c-search-form__search-input-container"
+          role="presentation"
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") {
+              autocompleteController.current?.focusCursorToFirstOption()
+
+              e.preventDefault()
+              e.stopPropagation()
+            }
+          }}
+        >
           <input
-            type="text"
             className="c-search-form__input"
             placeholder="Search"
+            type="text"
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-controls={autocompleteId}
+            aria-owns={autocompleteId}
+            aria-expanded={autocompleteVisible}
             value={inputText}
-            onChange={onInputTextChanged}
+            onChange={(e) => {
+              // Show autocomplete again on next change
+              setAutocompleteEnabled(true)
+              onInputTextChange?.(e)
+            }}
             ref={formSearchInput}
+            onFocus={() => setAutocompleteEnabled(true)}
           />
-          <div className="c-search-form__input-controls">
-            <button
-              hidden={inputText.length === 0}
-              className="c-search-form__clear c-circle-x-icon-container"
-              type="button"
-              title="Clear Search"
-              onClick={(e) => {
-                // Set focus on input after input is cleared
-                formSearchInput.current?.focus()
-                onClear?.(e)
-              }}
-            >
-              <CircleXIcon />
-            </button>
-            <button
-              type="submit"
-              title="Submit"
-              className="c-search-form__submit"
-              onClick={onSubmit}
-              // TODO(design): add error states instead of using `disabled`
-              disabled={!isValidSearchText(inputText)}
-            >
-              <SearchIcon />
-            </button>
-          </div>
+        </div>
+        <div
+          className="c-search-form__input-controls"
+          role="presentation"
+          onKeyDown={(e) => {
+            // Allow buttons to be pressed by space bar by preventing the parent
+            // keydown handler
+            if (e.key === " ") {
+              e.stopPropagation()
+            }
+          }}
+        >
+          <button
+            hidden={inputText.length === 0}
+            className="c-search-form__clear c-circle-x-icon-container"
+            type="button"
+            title="Clear Search"
+            onClick={(e) => {
+              e.stopPropagation()
+              onClear?.(e)
+            }}
+          >
+            <CircleXIcon />
+          </button>
+          <button
+            type="submit"
+            title="Submit"
+            className="c-search-form__submit"
+            onClick={onSubmit}
+            // TODO(design): add error states instead of using `disabled`
+            disabled={!isValidSearchText(inputText)}
+          >
+            <SearchIcon />
+          </button>
+        </div>
+        <div className="c-search-form__autocomplete-container">
+          <GroupedAutocompleteFromSearchTextResults
+            id={autocompleteId}
+            controlName="Search Suggestions"
+            maxElementsPerGroup={5}
+            searchFilters={filters}
+            searchText={inputText}
+            fallbackOption={inputText}
+            onFallbackOptionChosen={onSubmit}
+            onVehicleOptionChosen={onVehicleOptionChosen}
+            controllerRef={autocompleteController}
+          />
         </div>
       </div>
       <Filters filters={filters} onFiltersChanged={onFiltersChanged} />
@@ -198,7 +318,8 @@ export const SearchForm = ({
 const SearchFormFromStateDispatchContext = ({
   onSubmit,
   onClear,
-}: SearchFormEventProps) => {
+  ...props
+}: SearchFormEventProps & SearchFormConfigProps) => {
   const [
     {
       searchPageState: { query },
@@ -215,9 +336,10 @@ const SearchFormFromStateDispatchContext = ({
 
   return (
     <SearchForm
+      {...props}
       inputText={query.text}
       filters={filters}
-      onInputTextChanged={({ currentTarget: { value } }) => {
+      onInputTextChange={({ currentTarget: { value } }) => {
         dispatch(setSearchText(value))
       }}
       onSubmit={(event) => {
@@ -239,6 +361,14 @@ const SearchFormFromStateDispatchContext = ({
 
         dispatch(setSearchProperties(newProperties))
         dispatch(submitSearch())
+      }}
+      onVehicleOptionChosen={(vehicle) => {
+        dispatch(
+          setSelectedEntity({
+            type: SelectedEntityType.Vehicle,
+            vehicleId: vehicle.id,
+          })
+        )
       }}
     />
   )

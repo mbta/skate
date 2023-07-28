@@ -348,4 +348,26 @@ describe("SearchForm", () => {
       expect(testDispatch).toHaveBeenCalledWith(submitSearch())
     })
   })
+
+  test.todo(
+    "when the search text length is more than the minium character count, should show autocomplete"
+  )
+
+  test.todo(
+    "when the search text length is less than the minium character count, should not show autocomplete"
+  )
+
+  test.todo(
+    "when the clear search button is clicked, should not show autocomplete "
+  )
+
+  test.todo("when the search is submitted, should not show autocomplete")
+
+  test.todo(
+    "when a autocomplete option is clicked, should fire event 'onAutocompleteResultSelected'" // THINK: figure out if there's a better name
+  )
+
+  test.todo("when search text is updated, should show new autocomplete results")
+
+  test.todo("when a filter is applied, should not show disabled categories")
 })
