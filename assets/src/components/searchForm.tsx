@@ -292,7 +292,10 @@ export const SearchForm = ({
             <SearchIcon />
           </button>
         </div>
-        <div className="c-search-form__autocomplete-container">
+        <div
+          className="c-search-form__autocomplete-container"
+          hidden={!autocompleteVisible}
+        >
           <GroupedAutocompleteFromSearchTextResults
             id={autocompleteId}
             controlName="Search Suggestions"
