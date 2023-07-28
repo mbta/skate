@@ -3,7 +3,6 @@ import { getAllByRole, render, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React, { MutableRefObject } from "react"
 import { act } from "react-dom/test-utils"
-import { byRole } from "testing-library-selector"
 
 import {
   GroupedAutocomplete,
@@ -28,7 +27,7 @@ const autocompleteOption = (name: string) => byRole("option", { name })
 
 describe("<SearchAutocomplete/>", () => {
   test("when rendered, should show results", () => {
-    const onOptionChosen = jest.fn()
+    const onSelectOption = jest.fn()
 
     const group1Title = "Group 1"
     const group2Title = "Group 2"
@@ -49,19 +48,19 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: option1Label,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: <div>Option 2</div>,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: <em>Option 3</em>,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -74,7 +73,7 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: option4Label,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -87,31 +86,31 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: "Option 5",
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: "Option 6",
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: "Option 7",
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: "Option 8",
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: <label>{option9Label}</label>,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -160,7 +159,7 @@ describe("<SearchAutocomplete/>", () => {
   })
 
   test("when autocomplete is focused, should move cursor and focus to first result", async () => {
-    const onOptionChosen = jest.fn()
+    const onSelectOption = jest.fn()
 
     const option1Label = "Option 1"
 
@@ -176,7 +175,7 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: option1Label,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -227,7 +226,7 @@ describe("<SearchAutocomplete/>", () => {
 
   describe("when down arrow is pressed, should select next result", () => {
     test("in same group", async () => {
-      const onOptionChosen = jest.fn()
+      const onSelectOption = jest.fn()
       const group1Title = "Group 1"
       const option1Label = "Option 1"
       const option2Label = "Option 2"
@@ -244,13 +243,13 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: option1Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                   {
                     option: {
                       label: option2Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -271,7 +270,7 @@ describe("<SearchAutocomplete/>", () => {
     })
 
     test("in next group", async () => {
-      const onOptionChosen = jest.fn()
+      const onSelectOption = jest.fn()
       const option1Label = "Option 1"
       const option2Label = "Option 2"
 
@@ -289,7 +288,7 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: option1Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -302,7 +301,7 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: option2Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -330,7 +329,7 @@ describe("<SearchAutocomplete/>", () => {
 
   describe("when up arrow is pressed, should select previous result", () => {
     test("in same group", async () => {
-      const onOptionChosen = jest.fn()
+      const onSelectOption = jest.fn()
       const group1Title = "Group 1"
       const option1Label = "Option 1"
       const option2Label = "Option 2"
@@ -347,13 +346,13 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: option1Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                   {
                     option: {
                       label: option2Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -374,7 +373,7 @@ describe("<SearchAutocomplete/>", () => {
     })
 
     test("in next group", async () => {
-      const onOptionChosen = jest.fn()
+      const onSelectOption = jest.fn()
       const option1Label = "Option 1"
       const option2Label = "Option 2"
 
@@ -392,7 +391,7 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: option1Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -405,7 +404,7 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: option2Label,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -431,7 +430,7 @@ describe("<SearchAutocomplete/>", () => {
   })
 
   test("when home is pressed, should select first result", async () => {
-    const onOptionChosen = jest.fn()
+    const onSelectOption = jest.fn()
     const option1Label = "Option 1"
     const option2Label = "Option 2"
 
@@ -449,13 +448,13 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: option1Label,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: "Unrelated Option",
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -468,7 +467,7 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: option2Label,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -493,7 +492,7 @@ describe("<SearchAutocomplete/>", () => {
   })
 
   test("when end is pressed, should select last result", async () => {
-    const onOptionChosen = jest.fn()
+    const onSelectOption = jest.fn()
     const firstOptionLabel = "Option First"
     const lastOptionLabel = "Option Last"
 
@@ -511,13 +510,13 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: firstOptionLabel,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: "Unrelated Option",
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -530,7 +529,7 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: lastOptionLabel,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -554,9 +553,9 @@ describe("<SearchAutocomplete/>", () => {
     await waitFor(() => expect(lastOption).toHaveFocus())
   })
 
-  describe("should fire event `onOptionChosen`", () => {
+  describe("should fire event `onSelectOption`", () => {
     test("when enter is pressed", async () => {
-      const onOptionChosen = jest.fn()
+      const onSelectOption = jest.fn()
       const optionLabel = "Option Label"
 
       render(
@@ -571,7 +570,7 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: optionLabel,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -586,12 +585,12 @@ describe("<SearchAutocomplete/>", () => {
       await userEvent.type(btn, "{Enter}")
 
       await waitFor(() => {
-        expect(onOptionChosen).toHaveBeenCalled()
+        expect(onSelectOption).toHaveBeenCalled()
       })
     })
 
     test("when item is clicked", async () => {
-      const onOptionChosen = jest.fn()
+      const onSelectOption = jest.fn()
       const [idVehicle] = vehicleFactory.buildList(1)
 
       render(
@@ -606,7 +605,7 @@ describe("<SearchAutocomplete/>", () => {
                   {
                     option: {
                       label: idVehicle.label!,
-                      onOptionChosen,
+                      onSelectOption,
                     },
                   },
                 ],
@@ -622,30 +621,30 @@ describe("<SearchAutocomplete/>", () => {
 
       await userEvent.click(btn)
 
-      expect(onOptionChosen).toHaveBeenCalled()
+      expect(onSelectOption).toHaveBeenCalled()
     })
   })
 
-  test("when fallback option is clicked, should fire `onFallbackOptionChosen`", async () => {
-    const onFallbackOptionChosen = jest.fn()
+  test("when fallback option is clicked, should fire `onSelectFallbackOption`", async () => {
+    const onSelectFallbackOption = jest.fn()
     const fallbackLabel = "Fallback Option"
 
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
         fallbackOption={fallbackLabel}
-        onFallbackOptionChosen={onFallbackOptionChosen}
+        onSelectFallbackOption={onSelectFallbackOption}
         groups={[]}
       />
     )
 
     await userEvent.click(autocompleteOption(fallbackLabel).get())
 
-    expect(onFallbackOptionChosen).toHaveBeenCalledTimes(1)
+    expect(onSelectFallbackOption).toHaveBeenCalledTimes(1)
   })
 
   test("when controller function `focusCursorToFirstOption` is called, should move cursor and focus to first option", () => {
-    const onOptionChosen = jest.fn()
+    const onSelectOption = jest.fn()
     const option1Label = "Option 1"
 
     const controller: MutableRefObject<GroupedAutocompleteControls | null> = {
@@ -664,13 +663,13 @@ describe("<SearchAutocomplete/>", () => {
                 {
                   option: {
                     label: option1Label,
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
                 {
                   option: {
                     label: "Option 2",
-                    onOptionChosen,
+                    onSelectOption,
                   },
                 },
               ],
@@ -718,7 +717,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
       <GroupedAutocompleteFromSearchTextResults
         controlName="Search Suggestions"
         fallbackOption={null}
-        onVehicleOptionChosen={() => {}}
+        onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={{
           location: false,
@@ -772,7 +771,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
         controlName="Search Suggestions"
         maxElementsPerGroup={maxLength}
         fallbackOption={null}
-        onVehicleOptionChosen={() => {}}
+        onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={{
           location: false,

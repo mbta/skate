@@ -84,9 +84,9 @@ type SearchFormProps = SearchFormEventProps &
      */
     onFiltersChanged: (searchFilterState: SearchFiltersState) => void
     /**
-     * Callback to run when a autocomplete option is chosen.
+     * Callback to run when a autocomplete vehicle option is selected.
      */
-    onVehicleOptionChosen: (chosenOption: Vehicle | Ghost) => void
+    onSelectVehicleOption: (selectedOption: Vehicle | Ghost) => void
   }
 
 const allFiltersOn: SearchFiltersState = {
@@ -176,7 +176,7 @@ export const SearchForm = ({
 
   onClear: onClearProp,
   onSubmit: onSubmitProp,
-  onVehicleOptionChosen,
+  onSelectVehicleOption,
 
   showAutocomplete: showAutocompleteProp = true,
 }: SearchFormProps) => {
@@ -300,8 +300,8 @@ export const SearchForm = ({
             searchFilters={filters}
             searchText={inputText}
             fallbackOption={inputText}
-            onFallbackOptionChosen={onSubmit}
-            onVehicleOptionChosen={onVehicleOptionChosen}
+            onSelectFallbackOption={onSubmit}
+            onSelectVehicleOption={onSelectVehicleOption}
             controllerRef={autocompleteController}
           />
         </div>
@@ -362,7 +362,7 @@ const SearchFormFromStateDispatchContext = ({
         dispatch(setSearchProperties(newProperties))
         dispatch(submitSearch())
       }}
-      onVehicleOptionChosen={(vehicle) => {
+      onSelectVehicleOption={(vehicle) => {
         dispatch(
           setSelectedEntity({
             type: SelectedEntityType.Vehicle,
