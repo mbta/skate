@@ -74,6 +74,7 @@ $list-group-border-color: $color-gray-300;
 @import "incoming_box";
 @import "input_modal";
 @import "ladder_page";
+@import "grouped_autocomplete";
 @import "ladder";
 @import "late_view";
 @import "loading_modal";
@@ -145,7 +146,7 @@ $list-group-border-color: $color-gray-300;
   box-sizing: border-box;
 }
 
-.inherit-box :is(*, *::before, *::after) {
+.inherit-box :where(*, *::before, *::after) {
   box-sizing: inherit;
 }
 
