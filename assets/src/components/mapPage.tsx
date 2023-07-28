@@ -70,11 +70,11 @@ const OldSearchResultList = ({
 }
 
 const SearchMode = ({
-  selectVehicleResult,
-  selectLocationResult,
+  onSelectVehicleResult,
+  onSelectLocationResult,
 }: {
-  selectVehicleResult: (result: Vehicle | Ghost | null) => void
-  selectLocationResult: (result: LocationSearchResult | null) => void
+  onSelectVehicleResult: (result: Vehicle | Ghost | null) => void
+  onSelectLocationResult: (result: LocationSearchResult | null) => void
 }): React.ReactElement => {
   const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
     ? SearchFormFromStateDispatchContext
@@ -99,11 +99,11 @@ const SearchMode = ({
         {searchPageState.isActive ? (
           inTestGroup(TestGroups.LocationSearch) ? (
             <SearchResultsByProperty
-              selectVehicleResult={selectVehicleResult}
-              selectLocationResult={selectLocationResult}
+              onSelectVehicleResult={onSelectVehicleResult}
+              onSelectLocationResult={onSelectLocationResult}
             />
           ) : (
-            <OldSearchResultList selectSearchResult={selectVehicleResult} />
+            <OldSearchResultList selectSearchResult={onSelectVehicleResult} />
           )
         ) : (
           <RecentSearches />
@@ -329,8 +329,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           />
         ) : (
           <SearchMode
-            selectVehicleResult={selectVehicleResult}
-            selectLocationResult={selectLocationResult}
+            onSelectVehicleResult={selectVehicleResult}
+            onSelectLocationResult={selectLocationResult}
           />
         )}
       </div>

@@ -71,8 +71,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -104,8 +104,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -160,8 +160,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -213,8 +213,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -251,8 +251,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -276,8 +276,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -307,8 +307,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -343,8 +343,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -375,8 +375,8 @@ describe("searchResultsByProperty", () => {
         dispatch={jest.fn()}
       >
         <SearchResultsByProperty
-          selectVehicleResult={jest.fn()}
-          selectLocationResult={jest.fn()}
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )

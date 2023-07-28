@@ -19,8 +19,8 @@ const SearchResultSection = (props: {
   property: SearchProperty
   text: string
   limit: number
-  selectVehicle: (vehicle: Vehicle | Ghost) => void
-  selectLocation: (location: LocationSearchResult) => void
+  onSelectVehicle: (vehicle: Vehicle | Ghost) => void
+  onSelectLocation: (location: LocationSearchResult) => void
   showMore: () => void
 }) => {
   if (props.property === "location") {
@@ -34,13 +34,13 @@ const VehicleSearchResultSection = ({
   property,
   text,
   limit,
-  selectVehicle,
+  onSelectVehicle,
   showMore,
 }: {
   property: SearchProperty
   text: string
   limit: number
-  selectVehicle: (vehicle: Vehicle | Ghost) => void
+  onSelectVehicle: (vehicle: Vehicle | Ghost) => void
   showMore: () => void
 }) => {
   const { socket } = useContext(SocketContext)
@@ -72,7 +72,7 @@ const VehicleSearchResultSection = ({
           <SearchResults
             vehicles={limitedSearchResults.matchingVehicles}
             selectedVehicleId={null}
-            onClick={selectVehicle}
+            onClick={onSelectVehicle}
           />
           {limitedSearchResults.hasMoreMatches && (
             <div className="c-map_page__search_results_actions">
@@ -95,12 +95,12 @@ const VehicleSearchResultSection = ({
 const LocationSearchResultSection = ({
   text,
   limit,
-  selectLocation,
+  onSelectLocation,
   showMore,
 }: {
   text: string
   limit: number
-  selectLocation: (location: LocationSearchResult) => void
+  onSelectLocation: (location: LocationSearchResult) => void
   showMore: () => void
 }) => {
   const locationSearchResults = useLocationSearchResults(text)
@@ -130,7 +130,7 @@ const LocationSearchResultSection = ({
                     title={
                       locationSearchResult.name || locationSearchResult.address
                     }
-                    openCallback={() => selectLocation(locationSearchResult)}
+                    openCallback={() => onSelectLocation(locationSearchResult)}
                   >
                     {locationSearchResult.name &&
                       locationSearchResult.address && (
@@ -159,11 +159,11 @@ const LocationSearchResultSection = ({
 }
 
 const SearchResultsByProperty = ({
-  selectVehicleResult,
-  selectLocationResult,
+  onSelectVehicleResult,
+  onSelectLocationResult,
 }: {
-  selectVehicleResult: (result: Vehicle | Ghost | null) => void
-  selectLocationResult: (result: LocationSearchResult | null) => void
+  onSelectVehicleResult: (result: Vehicle | Ghost | null) => void
+  onSelectLocationResult: (result: LocationSearchResult | null) => void
 }) => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
 
@@ -186,8 +186,8 @@ const SearchResultsByProperty = ({
             property={property}
             text={searchPageState.query.text}
             limit={limit}
-            selectVehicle={selectVehicleResult}
-            selectLocation={selectLocationResult}
+            onSelectVehicle={onSelectVehicleResult}
+            onSelectLocation={onSelectLocationResult}
             showMore={() =>
               dispatch(setPropertyMatchLimit(property, limit + 25))
             }
