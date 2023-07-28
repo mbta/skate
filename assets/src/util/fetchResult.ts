@@ -1,8 +1,8 @@
-interface Loading {
+export interface Loading {
   is_loading: true
 }
 
-interface Ok<T> {
+export interface Ok<T> {
   ok: T
 }
 

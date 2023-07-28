@@ -1,56 +1,42 @@
 import { useContext } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { useLimitedSearchResults } from "../../hooks/useSearchResults"
+import { LimitedSearchResults } from "../../hooks/useSearchResults"
 import {
   SearchProperty,
   searchPropertyDisplayConfig,
 } from "../../models/searchQuery"
 import { Vehicle, Ghost } from "../../realtime"
 import { setPropertyMatchLimit } from "../../state/searchPageState"
-import Loading from "../loading"
 import SearchResults from "../searchResults"
 import React from "react"
 import { useLocationSearchResults } from "../../hooks/useLocationSearchResults"
 import { Card, CardBody } from "../card"
 import { LocationSearchResult } from "../../models/locationSearchResult"
-
-const SearchResultSection = (props: {
-  property: SearchProperty
-  text: string
-  limit: number
-  onSelectVehicle: (vehicle: Vehicle | Ghost) => void
-  onSelectLocation: (location: LocationSearchResult) => void
-  showMore: () => void
-}) => {
-  if (props.property === "location") {
-    return <LocationSearchResultSection {...props} />
-  } else {
-    return <VehicleSearchResultSection {...props} />
-  }
-}
+import {
+  Loading as LoadingResult,
+  Ok,
+  isLoading,
+  isOk,
+} from "../../util/fetchResult"
+import Loading from "../loading"
+import useSearchResultsByProperty from "../../hooks/useSearchResultsByProperty"
 
 const VehicleSearchResultSection = ({
   property,
-  text,
-  limit,
+  results,
   onSelectVehicle,
-  showMore,
+  onShowMore,
 }: {
   property: SearchProperty
-  text: string
-  limit: number
+  results: LoadingResult | Ok<LimitedSearchResults> | null
   onSelectVehicle: (vehicle: Vehicle | Ghost) => void
-  showMore: () => void
+  onShowMore: () => void
 }) => {
-  const { socket } = useContext(SocketContext)
-  const limitedSearchResults = useLimitedSearchResults(socket, {
-    property,
-    text,
-    limit,
-  })
-
-  if (limitedSearchResults?.matchingVehicles.length === 0) {
+  if (
+    results === null ||
+    (isOk(results) && results.ok.matchingVehicles.length === 0)
+  ) {
     return <></>
   }
 
@@ -65,20 +51,20 @@ const VehicleSearchResultSection = ({
       >
         {searchPropertyDisplayConfig[property].name}
       </h2>
-      {limitedSearchResults == null ? (
+      {isLoading(results) ? (
         <Loading />
-      ) : limitedSearchResults.matchingVehicles.length > 0 ? (
+      ) : results.ok.matchingVehicles.length > 0 ? (
         <>
           <SearchResults
-            vehicles={limitedSearchResults.matchingVehicles}
+            vehicles={results.ok.matchingVehicles}
             selectedVehicleId={null}
             onClick={onSelectVehicle}
           />
-          {limitedSearchResults.hasMoreMatches && (
+          {results.ok.hasMoreMatches && (
             <div className="c-map_page__search_results_actions">
               <button
                 className="c-map-page__show_more button-text"
-                onClick={() => showMore()}
+                onClick={() => onShowMore()}
               >
                 Show more
               </button>
@@ -96,12 +82,12 @@ const LocationSearchResultSection = ({
   text,
   limit,
   onSelectLocation,
-  showMore,
+  onShowMore,
 }: {
   text: string
   limit: number
   onSelectLocation: (location: LocationSearchResult) => void
-  showMore: () => void
+  onShowMore: () => void
 }) => {
   const locationSearchResults = useLocationSearchResults(text)
 
@@ -144,7 +130,7 @@ const LocationSearchResultSection = ({
             <div className="c-map_page__search_results_actions">
               <button
                 className="c-map-page__show_more button-text"
-                onClick={() => showMore()}
+                onClick={() => onShowMore()}
               >
                 Show more
               </button>
@@ -158,6 +144,12 @@ const LocationSearchResultSection = ({
   )
 }
 
+const onShowMore = (property: SearchProperty, currentLimit: number): void => {
+  const [_state, dispatch] = useContext(StateDispatchContext)
+
+  dispatch(setPropertyMatchLimit(property, currentLimit + 25))
+}
+
 const SearchResultsByProperty = ({
   onSelectVehicleResult,
   onSelectLocationResult,
@@ -165,7 +157,13 @@ const SearchResultsByProperty = ({
   onSelectVehicleResult: (result: Vehicle | Ghost | null) => void
   onSelectLocationResult: (result: LocationSearchResult | null) => void
 }) => {
-  const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
+  const [{ searchPageState }] = useContext(StateDispatchContext)
+  const { socket } = useContext(SocketContext)
+  const resultsByProperty = useSearchResultsByProperty(
+    socket,
+    searchPageState.query.text,
+    searchPageState.query.properties
+  )
 
   return (
     <div aria-label="Grouped Search Results">
@@ -180,19 +178,25 @@ const SearchResultsByProperty = ({
             searchPropertyDisplayConfig[first_property].order -
             searchPropertyDisplayConfig[second_property].order
         )
-        .map(({ property, limit }) => (
-          <SearchResultSection
-            key={property}
-            property={property}
-            text={searchPageState.query.text}
-            limit={limit}
-            onSelectVehicle={onSelectVehicleResult}
-            onSelectLocation={onSelectLocationResult}
-            showMore={() =>
-              dispatch(setPropertyMatchLimit(property, limit + 25))
-            }
-          />
-        ))}
+        .map(({ property, limit }) =>
+          property === "location" ? (
+            <LocationSearchResultSection
+              key={property}
+              text={searchPageState.query.text}
+              limit={limit}
+              onSelectLocation={onSelectLocationResult}
+              onShowMore={() => onShowMore(property, limit)}
+            />
+          ) : (
+            <VehicleSearchResultSection
+              key={property}
+              property={property}
+              results={resultsByProperty[property]}
+              onSelectVehicle={onSelectVehicleResult}
+              onShowMore={() => onShowMore(property, limit)}
+            />
+          )
+        )}
     </div>
   )
 }

@@ -9,6 +9,7 @@ import {
 import { Ghost, Vehicle } from "../realtime"
 import { useCheckedChannel, useCheckedTwoWayChannel } from "./useChannel"
 import { useEffect } from "react"
+import { Loading, Ok } from "../util/fetchResult"
 
 const parser = (data: (VehicleData | GhostData)[]): (Vehicle | Ghost)[] =>
   data.map(vehicleOrGhostFromData)
@@ -47,21 +48,25 @@ export type LimitedSearchResults = {
 
 const parseLimitedSearchResults = (
   data: LimitedSearchResultsData
-): LimitedSearchResults => ({
-  matchingVehicles: parser(data.matching_vehicles),
-  hasMoreMatches: data.has_more_matches,
+): Ok<LimitedSearchResults> => ({
+  ok: {
+    matchingVehicles: parser(data.matching_vehicles),
+    hasMoreMatches: data.has_more_matches,
+  },
 })
+
+const loadingState: Loading = { is_loading: true }
 
 export const useLimitedSearchResults = (
   socket: Socket | undefined,
   query: { property: SearchProperty; text: string; limit: number } | null
-): LimitedSearchResults | null => {
+): Ok<LimitedSearchResults> | Loading | null => {
   const topic: string | null =
     query && `vehicles_search:limited:${query.property}:${query.text}`
 
   const [state, pushUpdate] = useCheckedTwoWayChannel<
     LimitedSearchResultsData,
-    LimitedSearchResults | null,
+    Ok<LimitedSearchResults> | Loading,
     { limit: number }
   >({
     socket,
@@ -69,7 +74,7 @@ export const useLimitedSearchResults = (
     event: "search",
     dataStruct: limitedSearchResultsData,
     parser: parseLimitedSearchResults,
-    loadingState: null,
+    loadingState: loadingState,
   })
 
   useEffect(() => {
@@ -80,7 +85,7 @@ export const useLimitedSearchResults = (
     }
   }, [query?.limit, pushUpdate])
 
-  return state
+  return topic ? state : null
 }
 
 export default useSearchResults
