@@ -84,6 +84,7 @@ exports[`SearchForm renders 1`] = `
     </div>
     <div
       className="c-search-form__autocomplete-container"
+      hidden={true}
     >
       <div
         className="c-autocomplete"
