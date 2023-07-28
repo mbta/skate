@@ -353,15 +353,15 @@ export interface GroupedAutocompleteProps
    */
   fallbackOption: ReactNode
   /**
-   * Callback when the {@link fallbackOption} is chosen in the autocomplete.
+   * Callback when the {@link fallbackOption} is selected in the autocomplete.
    */
-  onFallbackOptionChosen?: React.ReactEventHandler
+  onSelectFallbackOption?: React.ReactEventHandler
 }
 
 type AutocompleteOptionData = {
   option: {
     label: ReactNode
-    onOptionChosen: ReactEventHandler
+    onSelectOption: ReactEventHandler
   }
 }
 
@@ -382,7 +382,7 @@ export const GroupedAutocomplete = ({
   groups,
   controllerRef,
   fallbackOption,
-  onFallbackOptionChosen,
+  onSelectFallbackOption,
   Heading = "h2",
 }: GroupedAutocompleteProps) => {
   const listHeadingId = useId()
@@ -397,7 +397,7 @@ export const GroupedAutocomplete = ({
             {
               option: {
                 label: fallbackOption,
-                onOptionChosen: (e) => onFallbackOptionChosen?.(e),
+                onSelectOption: (e) => onSelectFallbackOption?.(e),
               },
             },
           ],
@@ -488,7 +488,7 @@ export const GroupedAutocomplete = ({
         {groups.map(({ group: { title, options } }, groupIndex) => (
           <GroupOptionList key={groupIndex} heading={title}>
             {options.map(
-              ({ option: { label, onOptionChosen } }, optionIndex) => {
+              ({ option: { label, onSelectOption } }, optionIndex) => {
                 const selected =
                   cursorLocation &&
                   cursorLocation.group === groupIndex &&
@@ -508,15 +508,15 @@ export const GroupedAutocomplete = ({
                         })
                       e.stopPropagation()
                     }}
-                    onClick={onOptionChosen}
+                    onClick={onSelectOption}
                     onKeyDown={(e) => {
-                      // Fire `optionChosen` if enter is pressed
+                      // Fire `onSelectOption` if enter is pressed
                       if (!["Enter"].includes(e.key)) {
                         return
                       }
                       e.preventDefault()
                       e.stopPropagation()
-                      onOptionChosen?.(e)
+                      onSelectOption?.(e)
                     }}
                     // If this element is selected by the cursor,
                     // set document focus to this element when mounted.
@@ -605,7 +605,7 @@ interface GroupedAutocompleteFromSearchTextResultsProps
   maxElementsPerGroup?: number
   /**
    * Callback when a autocomplete vehicle option is selected.
-   * @param chosenOption The selected option vehicle
+   * @param selectedOption The selected option vehicle
    *
    * ---
    * @todo
@@ -614,7 +614,7 @@ interface GroupedAutocompleteFromSearchTextResultsProps
    *   Alternatively provide more callbacks for specific types to avoid
    *   type deduction.
    */
-  onVehicleOptionChosen: (chosenOption: Vehicle | Ghost) => void
+  onSelectVehicleOption: (selectedOption: Vehicle | Ghost) => void
 }
 
 /**
@@ -622,7 +622,7 @@ interface GroupedAutocompleteFromSearchTextResultsProps
  * {@link searchText} provided and {@link useAutocompleteResults}.
  */
 export const GroupedAutocompleteFromSearchTextResults = ({
-  onVehicleOptionChosen: onVehicleOptionChosenProp,
+  onSelectVehicleOption: onSelectVehicleOptionProp,
   searchText,
   searchFilters,
   maxElementsPerGroup = 5,
@@ -634,8 +634,8 @@ export const GroupedAutocompleteFromSearchTextResults = ({
     operator: operators,
   } = useAutocompleteResults(searchText, searchFilters, maxElementsPerGroup)
 
-  const onVehicleOptionChosen = (chosenOption: Vehicle | Ghost) => () => {
-    onVehicleOptionChosenProp(chosenOption)
+  const onSelectVehicleOption = (selectedOption: Vehicle | Ghost) => () => {
+    onSelectVehicleOptionProp(selectedOption)
   }
 
   // Build groups and options from search results.
@@ -645,7 +645,7 @@ export const GroupedAutocompleteFromSearchTextResults = ({
         title: <h2>{searchPropertyDisplayConfig.vehicle.name}</h2>,
         options: vehicles.slice(0, maxElementsPerGroup).map((v) => ({
           option: {
-            onOptionChosen: onVehicleOptionChosen(v),
+            onSelectOption: onSelectVehicleOption(v),
             label: (isVehicle(v) && v.label) || v.id,
           },
         })),
@@ -659,7 +659,7 @@ export const GroupedAutocompleteFromSearchTextResults = ({
           .filter(isVehicle)
           .map((v) => ({
             option: {
-              onOptionChosen: onVehicleOptionChosen(v),
+              onSelectOption: onSelectVehicleOption(v),
               label: formatOperatorNameFromVehicle(v),
             },
           })),
@@ -670,7 +670,7 @@ export const GroupedAutocompleteFromSearchTextResults = ({
         title: <h2>{searchPropertyDisplayConfig.run.name}</h2>,
         options: runs.slice(0, maxElementsPerGroup).map((v) => ({
           option: {
-            onOptionChosen: onVehicleOptionChosen(v),
+            onSelectOption: onSelectVehicleOption(v),
             label: v.runId,
           },
         })),
