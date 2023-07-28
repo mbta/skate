@@ -13,17 +13,21 @@ import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import { searchPropertyDisplayConfig } from "../../src/models/searchQuery"
 import vehicleFactory from "../factories/vehicle"
 import { formatOperatorNameFromVehicle } from "../../src/util/operatorFormatting"
+import {
+  listbox,
+  optionGroup,
+  option,
+} from "../testHelpers/selectors/components/groupedAutocomplete"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
-  useAutocompleteResults: jest.fn(),
+  useAutocompleteResults: jest.fn().mockImplementation(() => ({
+    operator: [],
+    run: [],
+    vehicle: [],
+  })),
 }))
 
-const autocompleteList = (name = "Search Suggestions") =>
-  byRole("listbox", { name })
-
-const makeAutocompleteGroup = (name: string) => byRole("group", { name })
-
-const autocompleteOption = (name: string) => byRole("option", { name })
+// FIXME: make accessible https://adamsilver.io/blog/building-an-accessible-autocomplete-control/
 
 describe("<SearchAutocomplete/>", () => {
   test("when rendered, should show results", () => {
@@ -122,24 +126,18 @@ describe("<SearchAutocomplete/>", () => {
 
     // Render form and autocomplete results
 
-    const autocompleteResults = autocompleteList("Autocomplete List").get()
+    const autocompleteResults = listbox("Autocomplete List").get()
     expect(getAllByRole(autocompleteResults, "group")).toHaveLength(3)
 
-    const group1Results = makeAutocompleteGroup(group1Title).get()
-    const group2Results = makeAutocompleteGroup(group2Title).get()
-    const group3Results = makeAutocompleteGroup(group3Title).get()
+    const group1Results = optionGroup(group1Title).get()
+    const group2Results = optionGroup(group2Title).get()
+    const group3Results = optionGroup(group3Title).get()
 
-    expect(
-      autocompleteOption(option1Label).get(group1Results)
-    ).toBeInTheDocument()
+    expect(option(option1Label).get(group1Results)).toBeInTheDocument()
 
-    expect(
-      autocompleteOption(option4Label).get(group2Results)
-    ).toBeInTheDocument()
+    expect(option(option4Label).get(group2Results)).toBeInTheDocument()
 
-    expect(
-      autocompleteOption(option9Label).get(group3Results)
-    ).toBeInTheDocument()
+    expect(option(option9Label).get(group3Results)).toBeInTheDocument()
   })
 
   test("when rendered with an empty list of groups, should show fallback option", async () => {
@@ -153,9 +151,7 @@ describe("<SearchAutocomplete/>", () => {
       />
     )
 
-    expect(
-      autocompleteOption(fallbackLabel).get(autocompleteList().get())
-    ).toBeInTheDocument()
+    expect(option(fallbackLabel).get(listbox().get())).toBeInTheDocument()
   })
 
   test("when autocomplete is focused, should move cursor and focus to first result", async () => {
@@ -185,14 +181,14 @@ describe("<SearchAutocomplete/>", () => {
       />
     )
 
-    const autocomplete = autocompleteList().get()
+    const autocomplete = listbox().get()
 
     act(() => {
       autocomplete.focus()
     })
 
     await waitFor(() =>
-      expect(autocompleteOption(option1Label).get(autocomplete)).toHaveFocus()
+      expect(option(option1Label).get(autocomplete)).toHaveFocus()
     )
   })
 
@@ -211,16 +207,14 @@ describe("<SearchAutocomplete/>", () => {
       />
     )
 
-    const autocomplete = autocompleteList().get()
+    const autocomplete = listbox().get()
 
     act(() => {
       autocomplete.focus()
     })
 
     await waitFor(() =>
-      expect(
-        autocompleteOption(fallbackOptionLabel).get(autocomplete)
-      ).toHaveFocus()
+      expect(option(fallbackOptionLabel).get(autocomplete)).toHaveFocus()
     )
   })
 
@@ -259,8 +253,8 @@ describe("<SearchAutocomplete/>", () => {
         />
       )
 
-      const option1 = autocompleteOption(option1Label).get()
-      const option2 = autocompleteOption(option2Label).get()
+      const option1 = option(option1Label).get()
+      const option2 = option(option2Label).get()
 
       act(() => option1.focus())
 
@@ -311,11 +305,11 @@ describe("<SearchAutocomplete/>", () => {
         />
       )
 
-      const group1 = makeAutocompleteGroup(group1Title).get()
-      const group2 = makeAutocompleteGroup(group2Title).get()
+      const group1 = optionGroup(group1Title).get()
+      const group2 = optionGroup(group2Title).get()
 
-      const option1 = autocompleteOption(option1Label).get(group1)
-      const option2 = autocompleteOption(option2Label).get(group2)
+      const option1 = option(option1Label).get(group1)
+      const option2 = option(option2Label).get(group2)
 
       act(() => {
         option1.focus()
@@ -362,8 +356,8 @@ describe("<SearchAutocomplete/>", () => {
         />
       )
 
-      const option1 = autocompleteOption(option1Label).get()
-      const option2 = autocompleteOption(option2Label).get()
+      const option1 = option(option1Label).get()
+      const option2 = option(option2Label).get()
 
       act(() => option2.focus())
 
@@ -414,11 +408,11 @@ describe("<SearchAutocomplete/>", () => {
         />
       )
 
-      const group1 = makeAutocompleteGroup(group1Title).get()
-      const group2 = makeAutocompleteGroup(group2Title).get()
+      const group1 = optionGroup(group1Title).get()
+      const group2 = optionGroup(group2Title).get()
 
-      const option1 = autocompleteOption(option1Label).get(group1)
-      const option2 = autocompleteOption(option2Label).get(group2)
+      const option1 = option(option1Label).get(group1)
+      const option2 = option(option2Label).get(group2)
 
       act(() => {
         option2.focus()
@@ -477,11 +471,11 @@ describe("<SearchAutocomplete/>", () => {
       />
     )
 
-    const group1 = makeAutocompleteGroup(group1Title).get()
-    const group2 = makeAutocompleteGroup(group2Title).get()
+    const group1 = optionGroup(group1Title).get()
+    const group2 = optionGroup(group2Title).get()
 
-    const option1 = autocompleteOption(option1Label).get(group1)
-    const option2 = autocompleteOption(option2Label).get(group2)
+    const option1 = option(option1Label).get(group1)
+    const option2 = option(option2Label).get(group2)
 
     act(() => {
       option2.focus()
@@ -539,11 +533,11 @@ describe("<SearchAutocomplete/>", () => {
       />
     )
 
-    const group1 = makeAutocompleteGroup(group1Title).get()
-    const group2 = makeAutocompleteGroup(group2Title).get()
+    const group1 = optionGroup(group1Title).get()
+    const group2 = optionGroup(group2Title).get()
 
-    const firstOption = autocompleteOption(firstOptionLabel).get(group1)
-    const lastOption = autocompleteOption(lastOptionLabel).get(group2)
+    const firstOption = option(firstOptionLabel).get(group1)
+    const lastOption = option(lastOptionLabel).get(group2)
 
     act(() => {
       firstOption.focus()
@@ -580,7 +574,7 @@ describe("<SearchAutocomplete/>", () => {
         />
       )
 
-      const btn = autocompleteOption(optionLabel).get(autocompleteList().get())
+      const btn = option(optionLabel).get(listbox().get())
 
       await userEvent.type(btn, "{Enter}")
 
@@ -615,9 +609,7 @@ describe("<SearchAutocomplete/>", () => {
         />
       )
 
-      const btn = autocompleteOption(idVehicle.label!).get(
-        autocompleteList().get()
-      )
+      const btn = option(idVehicle.label!).get(listbox().get())
 
       await userEvent.click(btn)
 
@@ -638,7 +630,7 @@ describe("<SearchAutocomplete/>", () => {
       />
     )
 
-    await userEvent.click(autocompleteOption(fallbackLabel).get())
+    await userEvent.click(option(fallbackLabel).get())
 
     expect(onSelectFallbackOption).toHaveBeenCalledTimes(1)
   })
@@ -683,18 +675,16 @@ describe("<SearchAutocomplete/>", () => {
       controller.current?.focusCursorToFirstOption()
     })
 
-    expect(autocompleteOption(option1Label).get()).toHaveFocus()
+    expect(option(option1Label).get()).toHaveFocus()
   })
 })
 
 describe("<SearchAutocomplete.FromHook/>", () => {
-  const vehiclesResultsGroup = makeAutocompleteGroup(
+  const vehiclesResultsGroup = optionGroup(
     searchPropertyDisplayConfig.vehicle.name
   )
-  const runResultsGroup = makeAutocompleteGroup(
-    searchPropertyDisplayConfig.run.name
-  )
-  const operatorsResultsGroup = makeAutocompleteGroup(
+  const runResultsGroup = optionGroup(searchPropertyDisplayConfig.run.name)
+  const operatorsResultsGroup = optionGroup(
     searchPropertyDisplayConfig.operator.name
   )
 
@@ -729,23 +719,19 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     )
 
     // Render form and autocomplete results
-    const autocompleteResults = autocompleteList().get()
+    const autocompleteResults = listbox().get()
     expect(getAllByRole(autocompleteResults, "group")).toHaveLength(3)
 
     const vehiclesResults = vehiclesResultsGroup.get()
     const runResults = runResultsGroup.get()
     const operatorsResults = operatorsResultsGroup.get()
 
-    expect(
-      autocompleteOption(idVehicle.label!).get(vehiclesResults)
-    ).toBeInTheDocument()
+    expect(option(idVehicle.label!).get(vehiclesResults)).toBeInTheDocument()
+
+    expect(option(runVehicle.runId!).get(runResults)).toBeInTheDocument()
 
     expect(
-      autocompleteOption(runVehicle.runId!).get(runResults)
-    ).toBeInTheDocument()
-
-    expect(
-      autocompleteOption(formatOperatorNameFromVehicle(operatorVehicle)).get(
+      option(formatOperatorNameFromVehicle(operatorVehicle)).get(
         operatorsResults
       )
     ).toBeInTheDocument()
@@ -783,7 +769,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     )
 
     // Render form and autocomplete results
-    const autocompleteResults = autocompleteList().get()
+    const autocompleteResults = listbox().get()
     expect(getAllByRole(autocompleteResults, "group")).toHaveLength(1)
 
     const vehiclesResults = vehiclesResultsGroup.get()
@@ -791,13 +777,91 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     expect(vehiclesResults.children).toHaveLength(maxLength)
   })
 
-  test.todo("when searchText changes, should show new results")
+  test.todo(
+    "when searchText changes, should show new results"
+    // , () => {
+    //   const searchText = "12345"
+    //   const updatedSearchText = searchText + "123"
+    //   const { rerender } = render(<SearchAutocomplete searchText={searchText} />)
+    //   rerender(<SearchAutocomplete searchText={updatedSearchText} />)
+    //   // Render form and autocomplete results
+
+    //   const autocompleteContainer = autocomplete.get()
+    //   expect(autocompleteContainer).toBeInTheDocument()
+
+    //   expect(
+    //     within(autocompleteContainer).getByRole("listitem", {
+    //       name: "New Search Result",
+    //     })
+    //   ).not.toBeInTheDocument()
+    //   expect(
+    //     within(autocompleteContainer).getByRole("listitem", {
+    //       name: "Old Search Result",
+    //     })
+    //   ).toBeInTheDocument()
+
+    //   // Update search
+
+    //   expect(
+    //     within(autocompleteContainer).getByRole("listitem", {
+    //       name: "New Search Result",
+    //     })
+    //   ).toBeInTheDocument()
+    //   expect(
+    //     within(autocompleteContainer).getByRole("listitem", {
+    //       name: "Old Search Result",
+    //     })
+    //   ).not.toBeInTheDocument()
+    // }
+  )
 
   test.todo(
     "when showing results, should not show a category if there are no results"
+    //   () => {
+    //     const validSearchState = validSearchFactory.build()
+
+    //     const autocompleteContainer = autocomplete.get()
+    //     expect(autocompleteContainer).toBeInTheDocument()
+
+    //     function validateGroup(groupName: string) {
+    //       const group = within(autocompleteContainer).getByRole("group", {
+    //         name: groupName,
+    //       })
+    //       expect(group).toBeInTheDocument()
+    //       expect(within(group).getAllByRole("listitem")).toHaveLength(5)
+    //     }
+
+    //     expect(
+    //       within(autocompleteContainer).queryByRole("group", { name: "Vehicles" })
+    //     ).not.toBeInTheDocument()
+    //     validateGroup("Operators")
+    //     validateGroup("Runs")
+    //     validateGroup("Locations")
+    //   }
   )
 
   test.todo(
     "when supplied with search filters, should not show disabled categories"
+    //   () => {
+    //     const validSearchState = validSearchFactory.build()
+
+    //     const autocompleteContainer = autocomplete.get()
+    //     expect(autocompleteContainer).toBeInTheDocument()
+
+    //     function validateGroup(groupName: string) {
+    //       const group = within(autocompleteContainer).getByRole("group", {
+    //         name: groupName,
+    //       })
+    //       expect(group).toBeInTheDocument()
+    //       expect(within(group).getAllByRole("listitem")).toHaveLength(5)
+    //     }
+
+    //     expect(
+    //       within(autocompleteContainer).queryByRole("group", { name: "Vehicles" })
+    //     ).not.toBeInTheDocument()
+    //     validateGroup("Operators")
+    //     validateGroup("Runs")
+    //     validateGroup("Locations")
+    //   }
   )
 })
