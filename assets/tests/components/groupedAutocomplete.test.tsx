@@ -8,8 +8,16 @@ import { byRole } from "testing-library-selector"
 import {
   GroupedAutocomplete,
   GroupedAutocompleteControls,
+  GroupedAutocompleteFromSearchTextResults,
 } from "../../src/components/groupedAutocomplete"
+import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
+import { searchPropertyDisplayConfig } from "../../src/models/searchQuery"
 import vehicleFactory from "../factories/vehicle"
+import { formatOperatorNameFromVehicle } from "../../src/util/operatorFormatting"
+
+jest.mock("../../src/hooks/useAutocompleteResults", () => ({
+  useAutocompleteResults: jest.fn(),
+}))
 
 const autocompleteList = (name = "Search Suggestions") =>
   byRole("listbox", { name })
@@ -678,4 +686,119 @@ describe("<SearchAutocomplete/>", () => {
 
     expect(autocompleteOption(option1Label).get()).toHaveFocus()
   })
+})
+
+describe("<SearchAutocomplete.FromHook/>", () => {
+  const vehiclesResultsGroup = makeAutocompleteGroup(
+    searchPropertyDisplayConfig.vehicle.name
+  )
+  const runResultsGroup = makeAutocompleteGroup(
+    searchPropertyDisplayConfig.run.name
+  )
+  const operatorsResultsGroup = makeAutocompleteGroup(
+    searchPropertyDisplayConfig.operator.name
+  )
+
+  test("when rendered, should show results", () => {
+    const searchText = "12345"
+    const [idVehicle, runVehicle, operatorVehicle] = vehicleFactory.buildList(3)
+
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(
+      (text: string, _) =>
+        ({
+          [searchText]: {
+            vehicle: [idVehicle],
+            operator: [operatorVehicle],
+            run: [runVehicle],
+          },
+        }[text] || {})
+    )
+
+    render(
+      <GroupedAutocompleteFromSearchTextResults
+        controlName="Search Suggestions"
+        fallbackOption={null}
+        onVehicleOptionChosen={() => {}}
+        searchText={searchText}
+        searchFilters={{
+          location: false,
+          operator: true,
+          run: true,
+          vehicle: true,
+        }}
+      />
+    )
+
+    // Render form and autocomplete results
+    const autocompleteResults = autocompleteList().get()
+    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(3)
+
+    const vehiclesResults = vehiclesResultsGroup.get()
+    const runResults = runResultsGroup.get()
+    const operatorsResults = operatorsResultsGroup.get()
+
+    expect(
+      autocompleteOption(idVehicle.label!).get(vehiclesResults)
+    ).toBeInTheDocument()
+
+    expect(
+      autocompleteOption(runVehicle.runId!).get(runResults)
+    ).toBeInTheDocument()
+
+    expect(
+      autocompleteOption(formatOperatorNameFromVehicle(operatorVehicle)).get(
+        operatorsResults
+      )
+    ).toBeInTheDocument()
+  })
+
+  test("when rendered, should not show more than `maxElementsPerGroup` results", () => {
+    const searchText = "12345"
+    const maxLength = 5
+
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(
+      (text: string, _) =>
+        ({
+          [searchText]: {
+            vehicle: vehicleFactory.buildList(maxLength + 2),
+            operator: [],
+            run: [],
+          },
+        }[text] || {})
+    )
+
+    render(
+      <GroupedAutocompleteFromSearchTextResults
+        controlName="Search Suggestions"
+        maxElementsPerGroup={maxLength}
+        fallbackOption={null}
+        onVehicleOptionChosen={() => {}}
+        searchText={searchText}
+        searchFilters={{
+          location: false,
+          operator: true,
+          run: true,
+          vehicle: true,
+        }}
+      />
+    )
+
+    // Render form and autocomplete results
+    const autocompleteResults = autocompleteList().get()
+    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(1)
+
+    const vehiclesResults = vehiclesResultsGroup.get()
+
+    expect(vehiclesResults.children).toHaveLength(maxLength)
+  })
+
+  test.todo("when searchText changes, should show new results")
+
+  test.todo(
+    "when showing results, should not show a category if there are no results"
+  )
+
+  test.todo(
+    "when supplied with search filters, should not show disabled categories"
+  )
 })
