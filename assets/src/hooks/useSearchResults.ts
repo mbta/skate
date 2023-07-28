@@ -35,22 +35,22 @@ const useSearchResults = (
   })
 }
 
-const limitedSearchResultsData = type({
+const limitedVehicleSearchResultsData = type({
   matching_vehicles: dataStruct,
   has_more_matches: boolean(),
 })
 
-type LimitedSearchResultsData = Infer<typeof limitedSearchResultsData>
-export type LimitedSearchResults = {
-  matchingVehicles: (Vehicle | Ghost)[]
+type LimitedSearchResultsData = Infer<typeof limitedVehicleSearchResultsData>
+export type LimitedSearchResults<T> = {
+  matches: T[]
   hasMoreMatches: boolean
 }
 
 const parseLimitedSearchResults = (
   data: LimitedSearchResultsData
-): Ok<LimitedSearchResults> => ({
+): Ok<LimitedSearchResults<Vehicle | Ghost>> => ({
   ok: {
-    matchingVehicles: parser(data.matching_vehicles),
+    matches: parser(data.matching_vehicles),
     hasMoreMatches: data.has_more_matches,
   },
 })
@@ -60,19 +60,19 @@ const loadingState: Loading = { is_loading: true }
 export const useLimitedSearchResults = (
   socket: Socket | undefined,
   query: { property: SearchProperty; text: string; limit: number } | null
-): Ok<LimitedSearchResults> | Loading | null => {
+): Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading | null => {
   const topic: string | null =
     query && `vehicles_search:limited:${query.property}:${query.text}`
 
   const [state, pushUpdate] = useCheckedTwoWayChannel<
     LimitedSearchResultsData,
-    Ok<LimitedSearchResults> | Loading,
+    Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading,
     { limit: number }
   >({
     socket,
     topic: topic,
     event: "search",
-    dataStruct: limitedSearchResultsData,
+    dataStruct: limitedVehicleSearchResultsData,
     parser: parseLimitedSearchResults,
     loadingState: loadingState,
   })

@@ -10,7 +10,6 @@ import { Vehicle, Ghost } from "../../realtime"
 import { setPropertyMatchLimit } from "../../state/searchPageState"
 import SearchResults, { NoResults } from "../searchResults"
 import React from "react"
-import { useLocationSearchResults } from "../../hooks/useLocationSearchResults"
 import { Card, CardBody } from "../card"
 import { LocationSearchResult } from "../../models/locationSearchResult"
 import {
@@ -29,14 +28,11 @@ const VehicleSearchResultSection = ({
   onShowMore,
 }: {
   property: SearchProperty
-  results: LoadingResult | Ok<LimitedSearchResults> | null
+  results: LoadingResult | Ok<LimitedSearchResults<Vehicle | Ghost>> | null
   onSelectVehicle: (vehicle: Vehicle | Ghost) => void
   onShowMore: () => void
 }) => {
-  if (
-    results === null ||
-    (isOk(results) && results.ok.matchingVehicles.length === 0)
-  ) {
+  if (results === null || (isOk(results) && results.ok.matches.length === 0)) {
     return <></>
   }
 
@@ -53,10 +49,10 @@ const VehicleSearchResultSection = ({
       </h2>
       {isLoading(results) ? (
         <Loading />
-      ) : results.ok.matchingVehicles.length > 0 ? (
+      ) : results.ok.matches.length > 0 ? (
         <>
           <SearchResults
-            vehicles={results.ok.matchingVehicles}
+            vehicles={results.ok.matches}
             selectedVehicleId={null}
             onClick={onSelectVehicle}
           />
@@ -79,18 +75,17 @@ const VehicleSearchResultSection = ({
 }
 
 const LocationSearchResultSection = ({
-  text,
-  limit,
+  results,
   onSelectLocation,
   onShowMore,
 }: {
-  text: string
-  limit: number
+  results: LoadingResult | Ok<LimitedSearchResults<LocationSearchResult>> | null
   onSelectLocation: (location: LocationSearchResult) => void
   onShowMore: () => void
 }) => {
-  const locationSearchResults = useLocationSearchResults(text)
-
+  if (results === null || (isOk(results) && results.ok.matches.length === 0)) {
+    return <></>
+  }
   return (
     <section
       className="c-map-page__search_results_section"
@@ -102,31 +97,29 @@ const LocationSearchResultSection = ({
       >
         {searchPropertyDisplayConfig.location.name}
       </h2>
-      {locationSearchResults === null ? (
+      {isLoading(results) ? (
         <Loading />
-      ) : locationSearchResults.length > 0 ? (
+      ) : (
         <>
           <ul className="c-search-results__list">
-            {locationSearchResults
-              .slice(0, limit)
-              .map((locationSearchResult) => (
-                <li key={locationSearchResult.id}>
-                  <Card
-                    style="white"
-                    title={
-                      locationSearchResult.name || locationSearchResult.address
-                    }
-                    openCallback={() => onSelectLocation(locationSearchResult)}
-                  >
-                    {locationSearchResult.name &&
-                      locationSearchResult.address && (
-                        <CardBody>{locationSearchResult.address}</CardBody>
-                      )}
-                  </Card>
-                </li>
-              ))}
+            {results.ok.matches.map((locationSearchResult) => (
+              <li key={locationSearchResult.id}>
+                <Card
+                  style="white"
+                  title={
+                    locationSearchResult.name || locationSearchResult.address
+                  }
+                  openCallback={() => onSelectLocation(locationSearchResult)}
+                >
+                  {locationSearchResult.name &&
+                    locationSearchResult.address && (
+                      <CardBody>{locationSearchResult.address}</CardBody>
+                    )}
+                </Card>
+              </li>
+            ))}
           </ul>
-          {locationSearchResults.length > limit && (
+          {results.ok.hasMoreMatches && (
             <div className="c-map_page__search_results_actions">
               <button
                 className="c-map-page__show_more button-text"
@@ -137,8 +130,6 @@ const LocationSearchResultSection = ({
             </div>
           )}
         </>
-      ) : (
-        "No results found"
       )}
     </section>
   )
@@ -167,10 +158,16 @@ const SearchResultsByProperty = ({
 
   const searchHasNoResults = Object.values(resultsByProperty)
     .filter(
-      (result): result is LoadingResult | Ok<LimitedSearchResults> =>
-        result !== null
+      (
+        result
+      ): result is
+        | LoadingResult
+        | Ok<LimitedSearchResults<Vehicle | Ghost>>
+        | Ok<LimitedSearchResults<LocationSearchResult>> => result !== null
     )
-    .every((result) => isOk(result) && result.ok.matchingVehicles.length === 0)
+    .every(
+      (result) => !("is_loading" in result) && result.ok.matches.length === 0
+    )
 
   return (
     <div aria-label="Grouped Search Results">
@@ -192,8 +189,7 @@ const SearchResultsByProperty = ({
             property === "location" ? (
               <LocationSearchResultSection
                 key={property}
-                text={searchPageState.query.text}
-                limit={limit}
+                results={resultsByProperty[property]}
                 onSelectLocation={onSelectLocationResult}
                 onShowMore={() => onShowMore(property, limit)}
               />

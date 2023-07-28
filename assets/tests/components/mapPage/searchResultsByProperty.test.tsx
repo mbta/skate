@@ -2,7 +2,6 @@ import React from "react"
 import { render, screen, within } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import SearchResultsByProperty from "../../../src/components/mapPage/searchResultsByProperty"
-import { useLocationSearchResults } from "../../../src/hooks/useLocationSearchResults"
 import vehicleFactory from "../../factories/vehicle"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import stateFactory from "../../factories/applicationState"
@@ -18,38 +17,34 @@ jest.mock("../../../src/hooks/useSearchResultsByProperty", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../../src/hooks/useLocationSearchResults", () => ({
-  __esModule: true,
-  useLocationSearchResults: jest.fn(() => null),
-}))
-
 const runMatch = vehicleFactory.build()
 const operatorMatch = vehicleFactory.build()
 const vehicleMatch = vehicleFactory.build()
+const locationMatch = locationSearchResultFactory.build()
 
 beforeEach(() => {
   ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
     run: {
       ok: {
-        matchingVehicles: [runMatch],
+        matches: [runMatch],
         hasMoreMatches: false,
       },
     },
     vehicle: {
       ok: {
-        matchingVehicles: [vehicleMatch],
+        matches: [vehicleMatch],
         hasMoreMatches: true,
       },
     },
     operator: {
       ok: {
-        matchingVehicles: [operatorMatch],
+        matches: [operatorMatch],
         hasMoreMatches: false,
       },
     },
     location: {
       ok: {
-        matchingVehicles: [],
+        matches: [locationMatch],
         hasMoreMatches: false,
       },
     },
@@ -63,27 +58,23 @@ afterEach(() => {
 describe("searchResultsByProperty", () => {
   test("Includes only sections that have results", () => {
     ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-      run: { ok: { matchingVehicles: [], hasMoreMatches: false } },
+      run: { ok: { matches: [], hasMoreMatches: false } },
       vehicle: {
         ok: {
-          matchingVehicles: [],
+          matches: [],
           hasMoreMatches: false,
         },
       },
       operator: {
         ok: {
-          matchingVehicles: [operatorMatch],
+          matches: [operatorMatch],
           hasMoreMatches: false,
         },
       },
       location: {
-        ok: {
-          matchingVehicles: [],
-          hasMoreMatches: false,
-        },
+        ok: { matches: [], hasMoreMatches: false },
       },
     })
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
       <StateDispatchProvider
@@ -109,8 +100,6 @@ describe("searchResultsByProperty", () => {
   })
 
   test("only includes results for the properties included in the query", () => {
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
-
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -139,11 +128,12 @@ describe("searchResultsByProperty", () => {
     expect(
       screen.queryByRole("heading", { name: "Operators" })
     ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole("heading", { name: "location" })
+    ).not.toBeInTheDocument()
   })
 
   test("Includes the sections in the expected order", () => {
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
-
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -169,8 +159,6 @@ describe("searchResultsByProperty", () => {
   })
 
   test("Lists the matching vehicles under the appropriate header", () => {
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
-
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -204,11 +192,6 @@ describe("searchResultsByProperty", () => {
   })
 
   test("Lists the matching locations under the locations header", () => {
-    const locationMatch = locationSearchResultFactory.build()
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [
-      locationMatch,
-    ])
-
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -232,8 +215,12 @@ describe("searchResultsByProperty", () => {
   })
 
   test("Shows loading indication for locations", () => {
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => null)
-
+    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
+      run: null,
+      vehicle: null,
+      operator: null,
+      location: { is_loading: true },
+    })
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -258,30 +245,29 @@ describe("searchResultsByProperty", () => {
     ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
       run: {
         ok: {
-          matchingVehicles: [runMatch],
+          matches: [runMatch],
           hasMoreMatches: false,
         },
       },
       vehicle: {
         ok: {
-          matchingVehicles: [vehicleMatch],
+          matches: [vehicleMatch],
           hasMoreMatches: true,
         },
       },
       operator: {
         ok: {
-          matchingVehicles: [operatorMatch],
+          matches: [operatorMatch],
           hasMoreMatches: false,
         },
       },
       location: {
         ok: {
-          matchingVehicles: [],
+          matches: [],
           hasMoreMatches: false,
         },
       },
     })
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
       <StateDispatchProvider
@@ -317,8 +303,12 @@ describe("searchResultsByProperty", () => {
       locations.push(locationSearchResultFactory.build())
     }
 
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => locations)
-
+    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
+      run: null,
+      vehicle: null,
+      operator: null,
+      location: { ok: { matches: locations, hasMoreMatches: true } },
+    })
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -343,10 +333,6 @@ describe("searchResultsByProperty", () => {
   })
 
   test("When locations section does not have more matches, doesn't include a 'Show more' button", () => {
-    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [
-      locationSearchResultFactory.build(),
-    ])
-
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -374,22 +360,19 @@ describe("searchResultsByProperty", () => {
     ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
       run: {
         ok: {
-          matchingVehicles: [],
+          matches: [],
           hasMoreMatches: false,
         },
       },
       vehicle: {
         ok: {
-          matchingVehicles: [],
+          matches: [],
           hasMoreMatches: true,
         },
       },
       operator: null,
       location: {
-        ok: {
-          matchingVehicles: [],
-          hasMoreMatches: false,
-        },
+        ok: { matches: [], hasMoreMatches: false },
       },
     })
 
