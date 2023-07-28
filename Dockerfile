@@ -36,7 +36,7 @@ WORKDIR /root
 
 RUN curl https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem \
     -o aws-cert-bundle.pem
-RUN echo "fefac91d6800404461cece76724bc0a2383f4f556a1c9beb0813fac6f2e1e49f  aws-cert-bundle.pem" | sha256sum -c -
+RUN echo "2c151768edd48e9ef6719de74fdcbdebe290d1e87bc02ce9014ea6eea557d2a0  aws-cert-bundle.pem" | sha256sum -c -
 
 # Add frontend assets compiled in node container, required by phx.digest
 COPY --from=assets-builder /root/priv/static ./priv/static
