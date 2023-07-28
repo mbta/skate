@@ -9,7 +9,15 @@ import React, {
   useReducer,
 } from "react"
 
+import { useAutocompleteResults } from "../hooks/useAutocompleteResults"
+import {
+  SearchProperties,
+  searchPropertyDisplayConfig,
+} from "../models/searchQuery"
+import { isVehicle } from "../models/vehicle"
+import { Ghost, Vehicle } from "../realtime"
 import { clamp } from "../util/math"
+import { formatOperatorNameFromVehicle } from "../util/operatorFormatting"
 
 // #region Autocomplete Control
 // #region Cursor Reducer
@@ -575,3 +583,101 @@ const GroupOptionList = (props: LabelledListProps) => (
 // #endregion LabelledList Components
 // #endregion Autocomplete Control Impl
 // #endregion Autocomplete Control
+
+// #region Autocomplete From Search Context
+/**
+ * {@link GroupedAutocompleteFromSearchTextResults} Props
+ */
+interface GroupedAutocompleteFromSearchTextResultsProps
+  extends GroupedAutocompleteControlRefProps,
+    Omit<GroupedAutocompleteProps, "groups"> {
+  /**
+   * Text to search to populate the autocomplete options with.
+   */
+  searchText: string
+  /**
+   * Filters to apply when searching for {@link searchText}.
+   */
+  searchFilters: SearchProperties<boolean>
+  /**
+   * Max number of options to render in a group.
+   */
+  maxElementsPerGroup?: number
+  /**
+   * Callback when a autocomplete vehicle option is selected.
+   * @param chosenOption The selected option vehicle
+   *
+   * ---
+   * @todo
+   *   Potentially rewrite this to be generic across option values.
+   *
+   *   Alternatively provide more callbacks for specific types to avoid
+   *   type deduction.
+   */
+  onVehicleOptionChosen: (chosenOption: Vehicle | Ghost) => void
+}
+
+/**
+ * A {@link GroupedAutocomplete} which retrieves it's options from the
+ * {@link searchText} provided and {@link useAutocompleteResults}.
+ */
+export const GroupedAutocompleteFromSearchTextResults = ({
+  onVehicleOptionChosen: onVehicleOptionChosenProp,
+  searchText,
+  searchFilters,
+  maxElementsPerGroup = 5,
+  ...props
+}: GroupedAutocompleteFromSearchTextResultsProps) => {
+  const {
+    vehicle: vehicles,
+    run: runs,
+    operator: operators,
+  } = useAutocompleteResults(searchText, searchFilters, maxElementsPerGroup)
+
+  const onVehicleOptionChosen = (chosenOption: Vehicle | Ghost) => () => {
+    onVehicleOptionChosenProp(chosenOption)
+  }
+
+  // Build groups and options from search results.
+  const groups = [
+    {
+      group: {
+        title: <h2>{searchPropertyDisplayConfig.vehicle.name}</h2>,
+        options: vehicles.slice(0, maxElementsPerGroup).map((v) => ({
+          option: {
+            onOptionChosen: onVehicleOptionChosen(v),
+            label: (isVehicle(v) && v.label) || v.id,
+          },
+        })),
+      },
+    },
+    {
+      group: {
+        title: <h2>{searchPropertyDisplayConfig.operator.name}</h2>,
+        options: operators
+          .slice(0, maxElementsPerGroup)
+          .filter(isVehicle)
+          .map((v) => ({
+            option: {
+              onOptionChosen: onVehicleOptionChosen(v),
+              label: formatOperatorNameFromVehicle(v),
+            },
+          })),
+      },
+    },
+    {
+      group: {
+        title: <h2>{searchPropertyDisplayConfig.run.name}</h2>,
+        options: runs.slice(0, maxElementsPerGroup).map((v) => ({
+          option: {
+            onOptionChosen: onVehicleOptionChosen(v),
+            label: v.runId,
+          },
+        })),
+      },
+    },
+  ].filter(({ group: { options } }) => options.length > 0)
+
+  return <GroupedAutocomplete {...props} groups={groups} />
+}
+// #endregion Autocomplete From Search Context
