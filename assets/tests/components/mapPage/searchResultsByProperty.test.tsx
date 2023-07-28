@@ -11,6 +11,7 @@ import locationSearchResultFactory from "../../factories/locationSearchResult"
 import { LocationSearchResult } from "../../../src/models/locationSearchResult"
 import useSearchResultsByProperty from "../../../src/hooks/useSearchResultsByProperty"
 import { searchQueryLocationFactory } from "../../factories/searchQuery"
+import { searchQueryVehicleFactory } from "../../factories/searchQuery"
 
 jest.mock("../../../src/hooks/useSearchResultsByProperty", () => ({
   __esModule: true,
@@ -22,13 +23,42 @@ jest.mock("../../../src/hooks/useLocationSearchResults", () => ({
   useLocationSearchResults: jest.fn(() => null),
 }))
 
-afterEach(() => {
-  jest.resetAllMocks()
-})
-
 const runMatch = vehicleFactory.build()
 const operatorMatch = vehicleFactory.build()
 const vehicleMatch = vehicleFactory.build()
+
+beforeEach(() => {
+  ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
+    run: {
+      ok: {
+        matchingVehicles: [runMatch],
+        hasMoreMatches: false,
+      },
+    },
+    vehicle: {
+      ok: {
+        matchingVehicles: [vehicleMatch],
+        hasMoreMatches: true,
+      },
+    },
+    operator: {
+      ok: {
+        matchingVehicles: [operatorMatch],
+        hasMoreMatches: false,
+      },
+    },
+    location: {
+      ok: {
+        matchingVehicles: [],
+        hasMoreMatches: false,
+      },
+    },
+  })
+})
+
+afterEach(() => {
+  jest.resetAllMocks()
+})
 
 describe("searchResultsByProperty", () => {
   test("Includes only sections that have results", () => {
@@ -79,32 +109,6 @@ describe("searchResultsByProperty", () => {
   })
 
   test("only includes results for the properties included in the query", () => {
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-      run: {
-        ok: {
-          matchingVehicles: [runMatch],
-          hasMoreMatches: false,
-        },
-      },
-      vehicle: {
-        ok: {
-          matchingVehicles: [vehicleMatch],
-          hasMoreMatches: false,
-        },
-      },
-      operator: {
-        ok: {
-          matchingVehicles: [operatorMatch],
-          hasMoreMatches: false,
-        },
-      },
-      location: {
-        ok: {
-          matchingVehicles: [],
-          hasMoreMatches: false,
-        },
-      },
-    })
     ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
@@ -138,32 +142,6 @@ describe("searchResultsByProperty", () => {
   })
 
   test("Includes the sections in the expected order", () => {
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-      run: {
-        ok: {
-          matchingVehicles: [runMatch],
-          hasMoreMatches: false,
-        },
-      },
-      vehicle: {
-        ok: {
-          matchingVehicles: [vehicleMatch],
-          hasMoreMatches: false,
-        },
-      },
-      operator: {
-        ok: {
-          matchingVehicles: [operatorMatch],
-          hasMoreMatches: false,
-        },
-      },
-      location: {
-        ok: {
-          matchingVehicles: [],
-          hasMoreMatches: false,
-        },
-      },
-    })
     ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
@@ -191,32 +169,6 @@ describe("searchResultsByProperty", () => {
   })
 
   test("Lists the matching vehicles under the appropriate header", () => {
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-      run: {
-        ok: {
-          matchingVehicles: [runMatch],
-          hasMoreMatches: false,
-        },
-      },
-      vehicle: {
-        ok: {
-          matchingVehicles: [vehicleMatch],
-          hasMoreMatches: false,
-        },
-      },
-      operator: {
-        ok: {
-          matchingVehicles: [operatorMatch],
-          hasMoreMatches: false,
-        },
-      },
-      location: {
-        ok: {
-          matchingVehicles: [],
-          hasMoreMatches: false,
-        },
-      },
-    })
     ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [])
 
     render(
@@ -416,5 +368,47 @@ describe("searchResultsByProperty", () => {
         name: "Show more",
       })
     ).not.toBeInTheDocument()
+  })
+
+  test("when there are no results for the given properties, display no results message", () => {
+    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
+      run: {
+        ok: {
+          matchingVehicles: [],
+          hasMoreMatches: false,
+        },
+      },
+      vehicle: {
+        ok: {
+          matchingVehicles: [],
+          hasMoreMatches: true,
+        },
+      },
+      operator: null,
+      location: {
+        ok: {
+          matchingVehicles: [],
+          hasMoreMatches: false,
+        },
+      },
+    })
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: searchQueryVehicleFactory.build({ text: "123" }),
+            isActive: true,
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <SearchResultsByProperty
+          onSelectVehicleResult={jest.fn()}
+          onSelectLocationResult={jest.fn()}
+        />
+      </StateDispatchProvider>
+    )
+    expect(screen.getByText("No Search Results")).toBeInTheDocument()
   })
 })

@@ -8,7 +8,7 @@ import {
 } from "../../models/searchQuery"
 import { Vehicle, Ghost } from "../../realtime"
 import { setPropertyMatchLimit } from "../../state/searchPageState"
-import SearchResults from "../searchResults"
+import SearchResults, { NoResults } from "../searchResults"
 import React from "react"
 import { useLocationSearchResults } from "../../hooks/useLocationSearchResults"
 import { Card, CardBody } from "../card"
@@ -165,38 +165,49 @@ const SearchResultsByProperty = ({
     searchPageState.query.properties
   )
 
+  const searchHasNoResults = Object.values(resultsByProperty)
+    .filter(
+      (result): result is LoadingResult | Ok<LimitedSearchResults> =>
+        result !== null
+    )
+    .every((result) => isOk(result) && result.ok.matchingVehicles.length === 0)
+
   return (
     <div aria-label="Grouped Search Results">
-      {Object.entries(searchPageState.query.properties)
-        .filter(([, limit]) => limit != null)
-        .map(([property, limit]) => ({
-          property: property as SearchProperty,
-          limit: limit as number,
-        }))
-        .sort(
-          ({ property: first_property }, { property: second_property }) =>
-            searchPropertyDisplayConfig[first_property].order -
-            searchPropertyDisplayConfig[second_property].order
-        )
-        .map(({ property, limit }) =>
-          property === "location" ? (
-            <LocationSearchResultSection
-              key={property}
-              text={searchPageState.query.text}
-              limit={limit}
-              onSelectLocation={onSelectLocationResult}
-              onShowMore={() => onShowMore(property, limit)}
-            />
-          ) : (
-            <VehicleSearchResultSection
-              key={property}
-              property={property}
-              results={resultsByProperty[property]}
-              onSelectVehicle={onSelectVehicleResult}
-              onShowMore={() => onShowMore(property, limit)}
-            />
+      {searchHasNoResults ? (
+        <NoResults />
+      ) : (
+        Object.entries(searchPageState.query.properties)
+          .filter(([, limit]) => limit != null)
+          .map(([property, limit]) => ({
+            property: property as SearchProperty,
+            limit: limit as number,
+          }))
+          .sort(
+            ({ property: first_property }, { property: second_property }) =>
+              searchPropertyDisplayConfig[first_property].order -
+              searchPropertyDisplayConfig[second_property].order
           )
-        )}
+          .map(({ property, limit }) =>
+            property === "location" ? (
+              <LocationSearchResultSection
+                key={property}
+                text={searchPageState.query.text}
+                limit={limit}
+                onSelectLocation={onSelectLocationResult}
+                onShowMore={() => onShowMore(property, limit)}
+              />
+            ) : (
+              <VehicleSearchResultSection
+                key={property}
+                property={property}
+                results={resultsByProperty[property]}
+                onSelectVehicle={onSelectVehicleResult}
+                onShowMore={() => onShowMore(property, limit)}
+              />
+            )
+          )
+      )}
     </div>
   )
 }

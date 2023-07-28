@@ -125,7 +125,7 @@ const ResultsList = ({
   </ul>
 )
 
-const NoResults = () => {
+export const NoResults = () => {
   const [
     {
       searchPageState: { query },
