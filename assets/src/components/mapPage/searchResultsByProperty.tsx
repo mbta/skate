@@ -11,18 +11,36 @@ import { setPropertyMatchLimit } from "../../state/searchPageState"
 import Loading from "../loading"
 import SearchResults from "../searchResults"
 import React from "react"
+import { useLocationSearchResults } from "../../hooks/useLocationSearchResults"
+import { Card, CardBody } from "../card"
+import { LocationSearchResult } from "../../models/locationSearchResult"
 
-const SearchResultSection = ({
+const SearchResultSection = (props: {
+  property: SearchProperty
+  text: string
+  limit: number
+  onSelectVehicle: (vehicle: Vehicle | Ghost) => void
+  onSelectLocation: (location: LocationSearchResult) => void
+  showMore: () => void
+}) => {
+  if (props.property === "location") {
+    return <LocationSearchResultSection {...props} />
+  } else {
+    return <VehicleSearchResultSection {...props} />
+  }
+}
+
+const VehicleSearchResultSection = ({
   property,
   text,
   limit,
-  selectVehicle,
+  onSelectVehicle,
   showMore,
 }: {
   property: SearchProperty
   text: string
   limit: number
-  selectVehicle: (vehicle: Vehicle | Ghost) => void
+  onSelectVehicle: (vehicle: Vehicle | Ghost) => void
   showMore: () => void
 }) => {
   const { socket } = useContext(SocketContext)
@@ -54,7 +72,7 @@ const SearchResultSection = ({
           <SearchResults
             vehicles={limitedSearchResults.matchingVehicles}
             selectedVehicleId={null}
-            onClick={selectVehicle}
+            onClick={onSelectVehicle}
           />
           {limitedSearchResults.hasMoreMatches && (
             <div className="c-map_page__search_results_actions">
@@ -74,17 +92,85 @@ const SearchResultSection = ({
   )
 }
 
-const SearchResultsByProperty = ({
-  selectSearchResult,
+const LocationSearchResultSection = ({
+  text,
+  limit,
+  onSelectLocation,
+  showMore,
 }: {
-  selectSearchResult: (result: Vehicle | Ghost | null) => void
+  text: string
+  limit: number
+  onSelectLocation: (location: LocationSearchResult) => void
+  showMore: () => void
+}) => {
+  const locationSearchResults = useLocationSearchResults(text)
+
+  return (
+    <section
+      className="c-map-page__search_results_section"
+      aria-labelledby={`search-results__location`}
+    >
+      <h2
+        className="c-map-page__search_results_header"
+        id={`search-results__location`}
+      >
+        {searchPropertyDisplayConfig.location.name}
+      </h2>
+      {locationSearchResults === null ? (
+        <Loading />
+      ) : locationSearchResults.length > 0 ? (
+        <>
+          <ul className="c-search-results__list">
+            {locationSearchResults
+              .slice(0, limit)
+              .map((locationSearchResult) => (
+                <li key={locationSearchResult.id}>
+                  <Card
+                    style="white"
+                    title={
+                      locationSearchResult.name || locationSearchResult.address
+                    }
+                    openCallback={() => onSelectLocation(locationSearchResult)}
+                  >
+                    {locationSearchResult.name &&
+                      locationSearchResult.address && (
+                        <CardBody>{locationSearchResult.address}</CardBody>
+                      )}
+                  </Card>
+                </li>
+              ))}
+          </ul>
+          {locationSearchResults.length > limit && (
+            <div className="c-map_page__search_results_actions">
+              <button
+                className="c-map-page__show_more button-text"
+                onClick={() => showMore()}
+              >
+                Show more
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        "No results found"
+      )}
+    </section>
+  )
+}
+
+const SearchResultsByProperty = ({
+  onSelectVehicleResult,
+  onSelectLocationResult,
+}: {
+  onSelectVehicleResult: (result: Vehicle | Ghost | null) => void
+  onSelectLocationResult: (result: LocationSearchResult | null) => void
 }) => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
 
   return (
     <div aria-label="Grouped Search Results">
       {Object.entries(searchPageState.query.properties)
-        .filter(([property, limit]) => limit != null && property != "location")
+        .filter(([, limit]) => limit != null)
         .map(([property, limit]) => ({
           property: property as SearchProperty,
           limit: limit as number,
@@ -100,7 +186,8 @@ const SearchResultsByProperty = ({
             property={property}
             text={searchPageState.query.text}
             limit={limit}
-            selectVehicle={selectSearchResult}
+            onSelectVehicle={onSelectVehicleResult}
+            onSelectLocation={onSelectLocationResult}
             showMore={() =>
               dispatch(setPropertyMatchLimit(property, limit + 25))
             }

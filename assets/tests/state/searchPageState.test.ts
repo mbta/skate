@@ -18,6 +18,7 @@ import {
   setPropertyMatchLimit,
   setSearchProperties,
 } from "../../src/state/searchPageState"
+import locationSearchResultFactory from "../factories/locationSearchResult"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import {
   emptySearchQueryFactory,
@@ -260,6 +261,26 @@ describe("reducer", () => {
         type: SelectedEntityType.RoutePattern,
         routeId: "66",
         routePatternId: "66-_-0",
+      })
+    })
+
+    test("can set to location", () => {
+      const initialState: SearchPageState = {
+        ...initialSearchPageState,
+      }
+
+      const location = locationSearchResultFactory.build()
+
+      const updatedState = reducer(
+        initialState,
+        setSelectedEntity({
+          type: SelectedEntityType.Location,
+          location,
+        })
+      )
+      expect(updatedState.selectedEntity).toEqual({
+        type: SelectedEntityType.Location,
+        location,
       })
     })
 

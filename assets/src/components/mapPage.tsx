@@ -39,6 +39,7 @@ import OldSearchForm from "./oldSearchForm"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { Socket } from "phoenix"
 import SearchResultsByProperty from "./mapPage/searchResultsByProperty"
+import { LocationSearchResult } from "../models/locationSearchResult"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -69,17 +70,15 @@ const OldSearchResultList = ({
 }
 
 const SearchMode = ({
-  selectSearchResult,
+  onSelectVehicleResult,
+  onSelectLocationResult,
 }: {
-  selectSearchResult: (result: Vehicle | Ghost | null) => void
+  onSelectVehicleResult: (result: Vehicle | Ghost | null) => void
+  onSelectLocationResult: (result: LocationSearchResult | null) => void
 }): React.ReactElement => {
   const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
     ? SearchFormFromStateDispatchContext
     : OldSearchForm
-
-  const CurrentSearchResults = inTestGroup(TestGroups.LocationSearch)
-    ? SearchResultsByProperty
-    : OldSearchResultList
 
   const [{ searchPageState }] = useContext(StateDispatchContext)
   return (
@@ -98,7 +97,14 @@ const SearchMode = ({
 
       <div className="c-search-display u-hideable">
         {searchPageState.isActive ? (
-          <CurrentSearchResults selectSearchResult={selectSearchResult} />
+          inTestGroup(TestGroups.LocationSearch) ? (
+            <SearchResultsByProperty
+              onSelectVehicleResult={onSelectVehicleResult}
+              onSelectLocationResult={onSelectLocationResult}
+            />
+          ) : (
+            <OldSearchResultList selectSearchResult={onSelectVehicleResult} />
+          )
         ) : (
           <RecentSearches />
         )}
@@ -221,12 +227,12 @@ const Selection = ({
           vehicleId={selectedEntity.vehicleId}
           setSelection={setSelection}
         />
-      ) : (
+      ) : selectedEntity.type === SelectedEntityType.RoutePattern ? (
         <SelectedRoute
           selectedRoutePattern={selectedEntity}
           selectRoutePattern={selectRoutePattern}
         />
-      )}
+      ) : null}
     </div>
   )
 }
@@ -251,7 +257,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   )
   // #endregion
 
-  const setSelection = useCallback(
+  const setVehicleSelection = useCallback(
     (selectedEntity: SelectedEntity | null) => {
       switch (selectedEntity?.type) {
         case SelectedEntityType.Vehicle:
@@ -269,19 +275,34 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     [dispatch]
   )
 
-  const selectSearchResult = useCallback(
+  const selectVehicleResult = useCallback(
     (vehicleOrGhost: Vehicle | Ghost | null) => {
       if (vehicleOrGhost) {
-        setSelection({
+        setVehicleSelection({
           type: SelectedEntityType.Vehicle,
           vehicleId: vehicleOrGhost.id,
         })
       } else {
-        setSelection(null)
+        setVehicleSelection(null)
       }
     },
-    [setSelection]
+    [setVehicleSelection]
   )
+
+  const selectLocationResult = (
+    location: LocationSearchResult | null
+  ): void => {
+    if (location) {
+      dispatch(
+        setSelectedEntity({
+          type: SelectedEntityType.Location,
+          location,
+        })
+      )
+    } else {
+      dispatch(setSelectedEntity(null))
+    }
+  }
 
   return (
     <div
@@ -304,16 +325,19 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         {selectedEntity ? (
           <Selection
             selectedEntity={selectedEntity}
-            setSelection={setSelection}
+            setSelection={setVehicleSelection}
           />
         ) : (
-          <SearchMode selectSearchResult={selectSearchResult} />
+          <SearchMode
+            onSelectVehicleResult={selectVehicleResult}
+            onSelectLocationResult={selectLocationResult}
+          />
         )}
       </div>
       <div className="c-map-page__map">
         <MapDisplay
           selectedEntity={selectedEntity}
-          setSelection={setSelection}
+          setSelection={setVehicleSelection}
         />
       </div>
     </div>

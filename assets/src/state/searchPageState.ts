@@ -1,4 +1,5 @@
 import { Dispatch as ReactDispatch } from "react"
+import { LocationSearchResult } from "../models/locationSearchResult"
 import {
   emptySearchQuery,
   isValidSearchQuery,
@@ -14,6 +15,7 @@ import { RouteId, RoutePatternId } from "../schedule"
 export enum SelectedEntityType {
   Vehicle = 1,
   RoutePattern,
+  Location,
 }
 
 interface SelectedVehicleId {
@@ -30,7 +32,15 @@ export interface SelectedRoutePattern extends RoutePatternIdentifier {
   type: SelectedEntityType.RoutePattern
 }
 
-export type SelectedEntity = SelectedVehicleId | SelectedRoutePattern
+export interface SelectedLocation {
+  type: SelectedEntityType.Location
+  location: LocationSearchResult
+}
+
+export type SelectedEntity =
+  | SelectedVehicleId
+  | SelectedRoutePattern
+  | SelectedLocation
 
 export interface SearchPageState {
   query: SearchQuery
