@@ -354,4 +354,36 @@ describe("searchResultsByProperty", () => {
       })
     ).toBeInTheDocument()
   })
+
+  test("When locations section does not have more matches, doesn't include a 'Show more' button", () => {
+    ;(useLocationSearchResults as jest.Mock).mockImplementation(() => [
+      locationSearchResultFactory.build(),
+    ])
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: searchPageStateFactory.build({
+            query: {
+              text: "location",
+              properties: { location: 5 },
+            },
+
+            isActive: true,
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <SearchResultsByProperty
+          selectVehicleResult={jest.fn()}
+          selectLocationResult={jest.fn()}
+        />
+      </StateDispatchProvider>
+    )
+    expect(
+      within(screen.getByLabelText("Locations")).queryByRole("button", {
+        name: "Show more",
+      })
+    ).not.toBeInTheDocument()
+  })
 })
