@@ -195,10 +195,6 @@ describe("<SearchAutocomplete/>", () => {
     )
   })
 
-  test.todo(
-    "when a user focuses autocomplete option {} and then presses {}, should move cursor to the {} result"
-  )
-
   test("when there are no results and autocomplete is focused, should move cursor and focus to fallback option", async () => {
     const fallbackOptionLabel = "Option 1"
 
