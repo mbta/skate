@@ -704,8 +704,8 @@ export const GroupedAutocompleteFromSearchTextResults = ({
       group: {
         title: <h2>{searchPropertyDisplayConfig.operator.name}</h2>,
         options: operators
-          .slice(0, maxElementsPerGroup)
           .filter(isVehicle)
+          .slice(0, maxElementsPerGroup)
           .map((v) =>
             autocompleteOptionData(
               formatOperatorNameFromVehicle(v),
