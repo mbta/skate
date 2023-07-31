@@ -24,6 +24,7 @@ import {
   option,
 } from "../testHelpers/selectors/components/groupedAutocomplete"
 import { searchFiltersFactory } from "../factories/searchProperties"
+import ghostFactory from "../factories/ghost"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -823,6 +824,44 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     expect(getAllByRole(autocompleteResults, "group")).toHaveLength(1)
 
     const vehiclesResults = vehiclesResultsGroup.get()
+
+    expect(vehiclesResults.children).toHaveLength(maxLength)
+  })
+
+  test("when rendered, should not show more than `maxElementsPerGroup` results", () => {
+    const searchText = "12345"
+    const maxLength = 5
+
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(
+      (_socket, text: string, _) =>
+        ({
+          [searchText]: {
+            vehicle: [],
+            operator: [
+              ...ghostFactory.buildList(maxLength),
+              ...vehicleFactory.buildList(maxLength),
+            ],
+            run: [],
+          },
+        }[text] || {})
+    )
+
+    render(
+      <GroupedAutocompleteFromSearchTextResults
+        controlName="Search Suggestions"
+        maxElementsPerGroup={maxLength}
+        fallbackOption={autocompleteOptionData(null)}
+        onSelectVehicleOption={() => {}}
+        searchText={searchText}
+        searchFilters={searchFiltersFactory.build()}
+      />
+    )
+
+    // Render form and autocomplete results
+    const autocompleteResults = listbox().get()
+    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(1)
+
+    const vehiclesResults = operatorsResultsGroup.get()
 
     expect(vehiclesResults.children).toHaveLength(maxLength)
   })
