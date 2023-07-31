@@ -1,25 +1,8 @@
-import { Factory } from "fishery"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
-import { SearchProperties } from "../../src/models/searchQuery"
 import { renderHook } from "@testing-library/react"
 import { makeMockSocket, makeMockChannel } from "../testHelpers/socketHelpers"
 import vehicleDataFactory from "../factories/vehicle_data"
-
-export const searchFiltersFactory = Factory.define<SearchProperties<boolean>>(
-  () => ({
-    location: true,
-    operator: true,
-    run: true,
-    vehicle: true,
-  })
-)
-
-export const searchFiltersOffFactory = searchFiltersFactory.params({
-  location: false,
-  operator: false,
-  run: false,
-  vehicle: false,
-})
+import { searchFiltersFactory } from "../factories/searchProperties"
 
 describe("useAutocompleteResults", () => {
   test("returns empty lists initially", () => {

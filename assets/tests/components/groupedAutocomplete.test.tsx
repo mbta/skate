@@ -23,6 +23,7 @@ import {
   optionGroup,
   option,
 } from "../testHelpers/selectors/components/groupedAutocomplete"
+import { searchFiltersFactory } from "../factories/searchProperties"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -768,12 +769,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
         fallbackOption={autocompleteOptionData(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
-        searchFilters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
+        searchFilters={searchFiltersFactory.build()}
       />
     )
 
@@ -818,12 +814,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
         fallbackOption={autocompleteOptionData(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
-        searchFilters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
+        searchFilters={searchFiltersFactory.build()}
       />
     )
 
@@ -878,12 +869,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
         fallbackOption={autocompleteOptionData(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
-        searchFilters={{
-          run: true,
-          vehicle: true,
-          operator: false,
-          location: false,
-        }}
+        searchFilters={searchFiltersFactory.build()}
       />
     )
     const { rerender } = render(<Autocomplete searchText={inputText} />)
@@ -920,12 +906,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
         fallbackOption={autocompleteOptionData(null)}
         onSelectVehicleOption={() => {}}
         searchText={""}
-        searchFilters={{
-          location: true,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
+        searchFilters={searchFiltersFactory.build()}
       />
     )
     const { rerender } = render(<Autocomplete />)
@@ -982,14 +963,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
       />
     )
     const { rerender } = render(
-      <Autocomplete
-        filters={{
-          location: false,
-          operator: false,
-          run: true,
-          vehicle: true,
-        }}
-      />
+      <Autocomplete filters={searchFiltersFactory.build()} />
     )
 
     const vehicleOptions = vehiclesResultsGroup.get()
@@ -1002,14 +976,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     expect(runOption.get(runOptions)).toBeInTheDocument()
 
     rerender(
-      <Autocomplete
-        filters={{
-          location: false,
-          operator: false,
-          run: false,
-          vehicle: true,
-        }}
-      />
+      <Autocomplete filters={searchFiltersFactory.build({ run: false })} />
     )
 
     expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
