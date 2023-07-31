@@ -16,8 +16,8 @@ defmodule Skate.WarmUp do
     seconds_between_attempts = warmup_config[:seconds_between_attempts] || 0
 
     warm_up_check_fn =
-      Application.get_env(:skate, :warm_up_test_fn, fn _index, _attemptgit ->
-        Skate.Repo.query("SELECT 1", [])
+      Application.get_env(:skate, :warm_up_test_fn, fn index, attempt ->
+        attempt_query(index, attempt)
       end)
 
     case check_connections_warmed_up(%{
@@ -36,6 +36,20 @@ defmodule Skate.WarmUp do
         message = format_result_message(result)
         Logger.error(message)
         {:stop, message}
+    end
+  end
+
+  defp attempt_query(index, attempt) do
+    case Skate.Repo.query("SELECT 1", []) do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, error} ->
+        Logger.warn(
+          "#{__MODULE__} warmup query failed. attempt=#{attempt} query_number=#{index} reason=#{inspect(error)}"
+        )
+
+        {:error, error}
     end
   end
 
