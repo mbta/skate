@@ -5,12 +5,17 @@ import React, { MutableRefObject } from "react"
 import { act } from "react-dom/test-utils"
 
 import {
+  CursorExitDirection,
   GroupedAutocomplete,
   GroupedAutocompleteControls,
   GroupedAutocompleteFromSearchTextResults,
+  autocompleteOptionData,
 } from "../../src/components/groupedAutocomplete"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
-import { searchPropertyDisplayConfig } from "../../src/models/searchQuery"
+import {
+  SearchProperties,
+  searchPropertyDisplayConfig,
+} from "../../src/models/searchQuery"
 import vehicleFactory from "../factories/vehicle"
 import { formatOperatorNameFromVehicle } from "../../src/util/operatorFormatting"
 import {
@@ -27,8 +32,6 @@ jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   })),
 }))
 
-// FIXME: make accessible https://adamsilver.io/blog/building-an-accessible-autocomplete-control/
-
 describe("<SearchAutocomplete/>", () => {
   test("when rendered, should show results", () => {
     const onSelectOption = jest.fn()
@@ -43,8 +46,8 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Autocomplete List"
-        fallbackOption={null}
-        groups={[
+        fallbackOption={autocompleteOptionData(null)}
+        optionGroups={[
           {
             group: {
               title: <h1>{group1Title}</h1>,
@@ -146,8 +149,8 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={fallbackLabel}
-        groups={[]}
+        fallbackOption={autocompleteOptionData(fallbackLabel)}
+        optionGroups={[]}
       />
     )
 
@@ -162,8 +165,8 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={null}
-        groups={[
+        fallbackOption={autocompleteOptionData(null)}
+        optionGroups={[
           {
             group: {
               title: null,
@@ -202,8 +205,8 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={fallbackOptionLabel}
-        groups={[]}
+        fallbackOption={autocompleteOptionData(fallbackOptionLabel)}
+        optionGroups={[]}
       />
     )
 
@@ -228,8 +231,8 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={null}
-          groups={[
+          fallbackOption={autocompleteOptionData(null)}
+          optionGroups={[
             {
               group: {
                 title: group1Title,
@@ -273,8 +276,8 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={null}
-          groups={[
+          fallbackOption={autocompleteOptionData(null)}
+          optionGroups={[
             {
               group: {
                 title: group1Title,
@@ -331,8 +334,8 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={null}
-          groups={[
+          fallbackOption={autocompleteOptionData(null)}
+          optionGroups={[
             {
               group: {
                 title: group1Title,
@@ -376,8 +379,8 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={null}
-          groups={[
+          fallbackOption={autocompleteOptionData(null)}
+          optionGroups={[
             {
               group: {
                 title: group1Title,
@@ -433,8 +436,8 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={null}
-        groups={[
+        fallbackOption={autocompleteOptionData(null)}
+        optionGroups={[
           {
             group: {
               title: group1Title,
@@ -495,8 +498,8 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={null}
-        groups={[
+        fallbackOption={autocompleteOptionData(null)}
+        optionGroups={[
           {
             group: {
               title: group1Title,
@@ -555,8 +558,8 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={null}
-          groups={[
+          fallbackOption={autocompleteOptionData(null)}
+          optionGroups={[
             {
               group: {
                 title: null,
@@ -590,8 +593,8 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={null}
-          groups={[
+          fallbackOption={autocompleteOptionData(null)}
+          optionGroups={[
             {
               group: {
                 title: null,
@@ -624,9 +627,11 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={fallbackLabel}
-        onSelectFallbackOption={onSelectFallbackOption}
-        groups={[]}
+        fallbackOption={autocompleteOptionData(
+          fallbackLabel,
+          onSelectFallbackOption
+        )}
+        optionGroups={[]}
       />
     )
 
@@ -646,8 +651,8 @@ describe("<SearchAutocomplete/>", () => {
       <GroupedAutocomplete
         controllerRef={controller}
         controlName="Search Suggestions"
-        fallbackOption={null}
-        groups={[
+        fallbackOption={autocompleteOptionData(null)}
+        optionGroups={[
           {
             group: {
               title: null,
@@ -677,6 +682,64 @@ describe("<SearchAutocomplete/>", () => {
 
     expect(option(option1Label).get()).toHaveFocus()
   })
+
+  test.each([
+    {
+      key: "{ArrowDown}",
+      expectedDirection: CursorExitDirection.ExitEnd,
+    },
+    {
+      key: "{ArrowUp}",
+      expectedDirection: CursorExitDirection.ExitStart,
+    },
+  ])(
+    "when user presses `$key` to move out of the listbox, should fire `onCursorExitEdge($expectedDirection)` and focus should remain on last selected element",
+    async ({ key, expectedDirection }) => {
+      const onCursorExitEdge = jest.fn()
+      const option1Label = "option1Label"
+      const option2Label = "option2Label"
+
+      const targetOptionLabel =
+        expectedDirection === CursorExitDirection.ExitStart
+          ? option1Label
+          : option2Label
+
+      render(
+        <GroupedAutocomplete
+          controlName=""
+          fallbackOption={autocompleteOptionData(null)}
+          optionGroups={[
+            {
+              group: {
+                title: null,
+                options: [
+                  autocompleteOptionData(option1Label),
+                  autocompleteOptionData(option2Label),
+                ],
+              },
+            },
+          ]}
+          onCursor={{
+            onCursorExitEdge,
+          }}
+        />
+      )
+
+      const targetOption = option(targetOptionLabel).get()
+
+      act(() => {
+        targetOption.focus()
+      })
+
+      expect(targetOption).toHaveFocus()
+
+      await userEvent.keyboard(key)
+
+      expect(targetOption).toHaveFocus()
+
+      expect(onCursorExitEdge).toHaveBeenCalledWith(expectedDirection)
+    }
+  )
 })
 
 describe("<SearchAutocomplete.FromHook/>", () => {
@@ -706,7 +769,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     render(
       <GroupedAutocompleteFromSearchTextResults
         controlName="Search Suggestions"
-        fallbackOption={null}
+        fallbackOption={autocompleteOptionData(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={{
@@ -756,7 +819,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
       <GroupedAutocompleteFromSearchTextResults
         controlName="Search Suggestions"
         maxElementsPerGroup={maxLength}
-        fallbackOption={null}
+        fallbackOption={autocompleteOptionData(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={{
@@ -777,91 +840,176 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     expect(vehiclesResults.children).toHaveLength(maxLength)
   })
 
-  test.todo(
-    "when searchText changes, should show new results"
-    // , () => {
-    //   const searchText = "12345"
-    //   const updatedSearchText = searchText + "123"
-    //   const { rerender } = render(<SearchAutocomplete searchText={searchText} />)
-    //   rerender(<SearchAutocomplete searchText={updatedSearchText} />)
-    //   // Render form and autocomplete results
+  test("when searchText changes, should show new results", () => {
+    const inputText = "12345"
+    const updatedInputText = inputText + "123"
 
-    //   const autocompleteContainer = autocomplete.get()
-    //   expect(autocompleteContainer).toBeInTheDocument()
+    const [vehicle, nextVehicle] = vehicleFactory.buildList(2)
 
-    //   expect(
-    //     within(autocompleteContainer).getByRole("listitem", {
-    //       name: "New Search Result",
-    //     })
-    //   ).not.toBeInTheDocument()
-    //   expect(
-    //     within(autocompleteContainer).getByRole("listitem", {
-    //       name: "Old Search Result",
-    //     })
-    //   ).toBeInTheDocument()
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(((searchText) => {
+      switch (searchText) {
+        case inputText: {
+          return {
+            vehicle: [vehicle],
+            operator: [],
+            run: [],
+          }
+        }
+        case updatedInputText: {
+          return {
+            vehicle: [],
+            operator: [],
+            run: [nextVehicle],
+          }
+        }
+        default: {
+          return {
+            operator: [],
+            run: [],
+            vehicle: [],
+          }
+        }
+      }
+    }) as typeof useAutocompleteResults)
 
-    //   // Update search
+    // Autocomplete results from search
+    const Autocomplete = ({ searchText }: { searchText: string }) => (
+      <GroupedAutocompleteFromSearchTextResults
+        controlName=""
+        fallbackOption={autocompleteOptionData(null)}
+        onSelectVehicleOption={() => {}}
+        searchText={searchText}
+        searchFilters={{
+          run: true,
+          vehicle: true,
+          operator: false,
+          location: false,
+        }}
+      />
+    )
+    const { rerender } = render(<Autocomplete searchText={inputText} />)
 
-    //   expect(
-    //     within(autocompleteContainer).getByRole("listitem", {
-    //       name: "New Search Result",
-    //     })
-    //   ).toBeInTheDocument()
-    //   expect(
-    //     within(autocompleteContainer).getByRole("listitem", {
-    //       name: "Old Search Result",
-    //     })
-    //   ).not.toBeInTheDocument()
-    // }
-  )
+    const vehiclesGroup = vehiclesResultsGroup.get()
 
-  test.todo(
-    "when showing results, should not show a category if there are no results"
-    //   () => {
-    //     const validSearchState = validSearchFactory.build()
+    const option1 = option(vehicle.label!)
+    const option2 = option(nextVehicle.runId!)
 
-    //     const autocompleteContainer = autocomplete.get()
-    //     expect(autocompleteContainer).toBeInTheDocument()
+    expect(option1.get(vehiclesGroup)).toBeInTheDocument()
+    expect(option2.query()).not.toBeInTheDocument()
 
-    //     function validateGroup(groupName: string) {
-    //       const group = within(autocompleteContainer).getByRole("group", {
-    //         name: groupName,
-    //       })
-    //       expect(group).toBeInTheDocument()
-    //       expect(within(group).getAllByRole("listitem")).toHaveLength(5)
-    //     }
+    // Update search
+    rerender(<Autocomplete searchText={updatedInputText} />)
 
-    //     expect(
-    //       within(autocompleteContainer).queryByRole("group", { name: "Vehicles" })
-    //     ).not.toBeInTheDocument()
-    //     validateGroup("Operators")
-    //     validateGroup("Runs")
-    //     validateGroup("Locations")
-    //   }
-  )
+    const runResults = runResultsGroup.get()
 
-  test.todo(
-    "when supplied with search filters, should not show disabled categories"
-    //   () => {
-    //     const validSearchState = validSearchFactory.build()
+    expect(option2.get(runResults)).toBeInTheDocument()
+    expect(option1.query()).not.toBeInTheDocument()
+  })
 
-    //     const autocompleteContainer = autocomplete.get()
-    //     expect(autocompleteContainer).toBeInTheDocument()
+  test("when showing results, should not show a category if there are no results", () => {
+    const [vehicle, runVehicle] = vehicleFactory.buildList(2)
 
-    //     function validateGroup(groupName: string) {
-    //       const group = within(autocompleteContainer).getByRole("group", {
-    //         name: groupName,
-    //       })
-    //       expect(group).toBeInTheDocument()
-    //       expect(within(group).getAllByRole("listitem")).toHaveLength(5)
-    //     }
+    ;(useAutocompleteResults as jest.Mock).mockReturnValue({
+      vehicle: [vehicle],
+      operator: [],
+      run: [runVehicle],
+    })
 
-    //     expect(
-    //       within(autocompleteContainer).queryByRole("group", { name: "Vehicles" })
-    //     ).not.toBeInTheDocument()
-    //     validateGroup("Operators")
-    //     validateGroup("Runs")
-    //     validateGroup("Locations")
-    //   }
-  )
+    const Autocomplete = () => (
+      <GroupedAutocompleteFromSearchTextResults
+        controlName=""
+        fallbackOption={autocompleteOptionData(null)}
+        onSelectVehicleOption={() => {}}
+        searchText={""}
+        searchFilters={{
+          location: true,
+          operator: true,
+          run: true,
+          vehicle: true,
+        }}
+      />
+    )
+    const { rerender } = render(<Autocomplete />)
+
+    const vehicleOptions = vehiclesResultsGroup.get()
+    const runOptions = runResultsGroup.get()
+
+    const vehicleOption = option(vehicle.label!)
+    const runOption = option(runVehicle.runId!)
+
+    expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
+    expect(runOption.get(runOptions)).toBeInTheDocument()
+    ;(useAutocompleteResults as jest.Mock).mockImplementation((() => {
+      return {
+        vehicle: [vehicle],
+        operator: [],
+        run: [],
+      }
+    }) as typeof useAutocompleteResults)
+    rerender(<Autocomplete />)
+
+    expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
+
+    expect(runOptions).not.toBeInTheDocument()
+    expect(runOption.query()).not.toBeInTheDocument()
+  })
+
+  test("when supplied with search filters, should not show disabled categories", () => {
+    const [vehicle, runVehicle] = vehicleFactory.buildList(2)
+
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(((_, filters) => {
+      return {
+        vehicle: filters.vehicle ? [vehicle] : [],
+        operator: [],
+        run: filters.run ? [runVehicle] : [],
+      }
+    }) as typeof useAutocompleteResults)
+
+    const Autocomplete = ({
+      filters,
+    }: {
+      filters: SearchProperties<boolean>
+    }) => (
+      <GroupedAutocompleteFromSearchTextResults
+        controlName=""
+        fallbackOption={autocompleteOptionData(null)}
+        onSelectVehicleOption={() => {}}
+        searchText={""}
+        searchFilters={filters}
+      />
+    )
+    const { rerender } = render(
+      <Autocomplete
+        filters={{
+          location: false,
+          operator: false,
+          run: true,
+          vehicle: true,
+        }}
+      />
+    )
+
+    const vehicleOptions = vehiclesResultsGroup.get()
+    const runOptions = runResultsGroup.get()
+
+    const vehicleOption = option(vehicle.label!)
+    const runOption = option(runVehicle.runId!)
+
+    expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
+    expect(runOption.get(runOptions)).toBeInTheDocument()
+
+    rerender(
+      <Autocomplete
+        filters={{
+          location: false,
+          operator: false,
+          run: false,
+          vehicle: true,
+        }}
+      />
+    )
+
+    expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
+    expect(runOption.query()).not.toBeInTheDocument()
+  })
 })

@@ -28,6 +28,7 @@ import { FilterAccordion } from "./filterAccordion"
 import {
   GroupedAutocompleteControls,
   GroupedAutocompleteFromSearchTextResults,
+  autocompleteOptionData,
 } from "./groupedAutocomplete"
 
 // #region Search Filters
@@ -302,8 +303,7 @@ export const SearchForm = ({
             maxElementsPerGroup={5}
             searchFilters={filters}
             searchText={inputText}
-            fallbackOption={inputText}
-            onSelectFallbackOption={onSubmit}
+            fallbackOption={autocompleteOptionData(inputText, onSubmit)}
             onSelectVehicleOption={onSelectVehicleOption}
             controllerRef={autocompleteController}
           />

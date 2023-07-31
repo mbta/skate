@@ -484,10 +484,17 @@ describe("SearchForm", () => {
   })
 
   test("when search text is updated, should show new autocomplete results", async () => {
-    const onSelectVehicleOption = jest.fn()
+    const [vehicle, nextVehicle] = vehicleFactory.buildList(2)
+
     const inputText = "123"
     const nextInputText = inputText + "456"
-    const [vehicle, nextVehicle] = vehicleFactory.buildList(2)
+    const filters = {
+      location: false,
+      operator: true,
+      run: true,
+      vehicle: true,
+    }
+    const maxElements = 5
 
     ;(useAutocompleteResults as jest.Mock).mockImplementation(((searchText) => {
       switch (searchText) {
@@ -518,19 +525,14 @@ describe("SearchForm", () => {
     const { rerender } = render(
       <SearchForm
         inputText={inputText}
-        filters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
+        filters={filters}
         // Prevent the following error by preventing default event.
         // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        onFiltersChanged={() => {}}
-        onSelectVehicleOption={onSelectVehicleOption}
+        onFiltersChanged={jest.fn()}
+        onSelectVehicleOption={jest.fn()}
       />
     )
 
@@ -541,22 +543,28 @@ describe("SearchForm", () => {
     rerender(
       <SearchForm
         inputText={nextInputText}
-        filters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
+        filters={filters}
         // Prevent the following error by preventing default event.
         // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        onFiltersChanged={() => {}}
-        onSelectVehicleOption={onSelectVehicleOption}
+        onFiltersChanged={jest.fn()}
+        onSelectVehicleOption={jest.fn()}
       />
     )
-
+    expect(useAutocompleteResults).toHaveBeenNthCalledWith(
+      1,
+      inputText,
+      filters,
+      maxElements
+    )
+    expect(useAutocompleteResults).toHaveBeenNthCalledWith(
+      2,
+      nextInputText,
+      filters,
+      maxElements
+    )
     expect(autocompleteOption(nextVehicle.label!).get()).toBeVisible()
     expect(vehicleOption.query()).not.toBeInTheDocument()
   })
