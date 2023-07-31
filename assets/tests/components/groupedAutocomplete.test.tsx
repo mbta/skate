@@ -756,7 +756,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     const [idVehicle, runVehicle, operatorVehicle] = vehicleFactory.buildList(3)
 
     ;(useAutocompleteResults as jest.Mock).mockImplementation(
-      (text: string, _) =>
+      (_socket, text: string, _filters) =>
         ({
           [searchText]: {
             vehicle: [idVehicle],
@@ -805,7 +805,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     const maxLength = 5
 
     ;(useAutocompleteResults as jest.Mock).mockImplementation(
-      (text: string, _) =>
+      (_socket, text: string, _) =>
         ({
           [searchText]: {
             vehicle: vehicleFactory.buildList(maxLength + 2),
@@ -846,7 +846,10 @@ describe("<SearchAutocomplete.FromHook/>", () => {
 
     const [vehicle, nextVehicle] = vehicleFactory.buildList(2)
 
-    ;(useAutocompleteResults as jest.Mock).mockImplementation(((searchText) => {
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
+      _socket,
+      searchText
+    ) => {
       switch (searchText) {
         case inputText: {
           return {
@@ -957,7 +960,11 @@ describe("<SearchAutocomplete.FromHook/>", () => {
   test("when supplied with search filters, should not show disabled categories", () => {
     const [vehicle, runVehicle] = vehicleFactory.buildList(2)
 
-    ;(useAutocompleteResults as jest.Mock).mockImplementation(((_, filters) => {
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
+      _socket,
+      _searchText,
+      filters
+    ) => {
       return {
         vehicle: filters.vehicle ? [vehicle] : [],
         operator: [],
