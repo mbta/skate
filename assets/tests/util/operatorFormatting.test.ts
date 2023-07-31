@@ -1,5 +1,5 @@
 import {
-  DefaultFallbackString,
+  defaultFallbackString,
   formatOperatorName,
   formatOperatorNameFromVehicle,
 } from "../../src/util/operatorFormatting"
@@ -42,7 +42,7 @@ describe("formatOperatorName", () => {
   })
 
   test("when all inputs are null and there is no fallback parameter, should return default fallback string", () => {
-    expect(formatOperatorName(null, null, null)).toBe(DefaultFallbackString)
+    expect(formatOperatorName(null, null, null)).toBe(defaultFallbackString)
   })
 
   test("when all inputs are null and there is a fallback parameter, should return fallback parameter", () => {
@@ -84,7 +84,7 @@ describe("formatOperatorNameFromVehicle", () => {
       operatorLastName: null,
       operatorId: null,
     })
-    expect(formatOperatorNameFromVehicle(vehicle)).toBe(DefaultFallbackString)
+    expect(formatOperatorNameFromVehicle(vehicle)).toBe(defaultFallbackString)
   })
 
   test("when given vehicle with all null operator data and fallback parameter, should return fallback parameter", () => {
