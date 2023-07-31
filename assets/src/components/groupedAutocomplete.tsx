@@ -551,7 +551,7 @@ export const GroupedAutocomplete = ({
                     onClick={onSelectOption}
                     onKeyDown={(e) => {
                       // Fire `onSelectOption` if enter is pressed
-                      if (!["Enter"].includes(e.key)) {
+                      if (e.key != "Enter") {
                         return
                       }
                       e.preventDefault()
