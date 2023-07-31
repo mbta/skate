@@ -11,7 +11,7 @@ export const formatOperatorName = (
   operatorFirstName: string | null,
   operatorLastName: string | null,
   operatorId: string | null,
-  _options?: OptionParameters
+  options?: OptionParameters
 ): string => {
   return (
     joinTruthy([
@@ -19,7 +19,7 @@ export const formatOperatorName = (
       operatorLastName,
       operatorId && `#${operatorId}`,
     ]) ||
-    _options?.fallbackText ||
+    options?.fallbackText ||
     defaultFallbackString
   )
 }
