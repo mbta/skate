@@ -1,7 +1,7 @@
 import { joinTruthy } from "../helpers/dom"
 import { Vehicle } from "../realtime"
 
-export const DefaultFallbackString = "Not Available"
+export const defaultFallbackString = "Not Available"
 
 type OptionParameters = {
   fallbackText?: string
@@ -20,7 +20,7 @@ export const formatOperatorName = (
       operatorId && `#${operatorId}`,
     ]) ||
     _options?.fallbackText ||
-    DefaultFallbackString
+    defaultFallbackString
   )
 }
 
