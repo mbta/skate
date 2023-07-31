@@ -26,47 +26,47 @@ export const useAutocompleteResults = (
   searchFilters: SearchProperties<boolean>,
   maxResults = 5
 ): AutocompleteResults => {
-  const fallback: LimitedSearchResults = {
-    hasMoreMatches: false,
-    matchingVehicles: [],
-  }
-
   // Search for all the properties we need to return, but if it's filtered,
   // set `query` parameter to `null`
   // If there are no results, use fallback containing zero results.
-  const { matchingVehicles: operator } =
-    useLimitedSearchResults(
-      socket,
-      (searchFilters.vehicle || null) && {
-        property: "operator",
-        text: searchText,
-        limit: maxResults,
-      }
-    ) || fallback
+  const { matchingVehicles: operator } = useLimitedSearchResultsForProperty(
+    searchFilters.operator,
+    "operator"
+  )
 
-  const { matchingVehicles: vehicle } =
-    useLimitedSearchResults(
-      socket,
-      (searchFilters.run || null) && {
-        property: "vehicle",
-        text: searchText,
-        limit: maxResults,
-      }
-    ) || fallback
+  const { matchingVehicles: vehicle } = useLimitedSearchResultsForProperty(
+    searchFilters.vehicle,
+    "vehicle"
+  )
 
-  const { matchingVehicles: run } =
-    useLimitedSearchResults(
-      socket,
-      (searchFilters.operator || null) && {
-        property: "run",
-        text: searchText,
-        limit: maxResults,
-      }
-    ) || fallback
+  const { matchingVehicles: run } = useLimitedSearchResultsForProperty(
+    searchFilters.run,
+    "run"
+  )
 
   return {
     vehicle,
     run,
     operator,
+  }
+
+  function useLimitedSearchResultsForProperty(
+    enableSearch: boolean,
+    property: SearchProperty
+  ) {
+    const fallback: LimitedSearchResults = {
+      hasMoreMatches: false,
+      matchingVehicles: [],
+    }
+    return (
+      useLimitedSearchResults(
+        socket,
+        (enableSearch || null) && {
+          property,
+          text: searchText,
+          limit: maxResults,
+        }
+      ) || fallback
+    )
   }
 }
