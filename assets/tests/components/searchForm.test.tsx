@@ -365,17 +365,6 @@ describe("SearchForm", () => {
     })
   })
 
-  // const activeSearchStateFactory = stateFactory.params({
-  //   searchPageState: { isActive: true, query: { property: "all" } },
-  // })
-  // const validSearchFactory = activeSearchStateFactory.params({
-  //   searchPageState: {
-  //     query: {
-  //       text: "123",
-  //     },
-  //   },
-  // })
-
   test("when the search text length is greater than or equal to the minium character count, should show autocomplete", () => {
     render(
       <SearchForm
