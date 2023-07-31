@@ -96,6 +96,7 @@ enum CursorLocationAction {
  */
 type CursorStateAction = {
   lengthsContext: LengthsContext
+  onCursor?: AutocompleteCursorEventProps
 } & (
   | {
       action: CursorLocationAction
@@ -113,7 +114,7 @@ const cursorLocationReducer = (
   cursorState: CursorState,
   nextAction: CursorStateAction
 ): CursorState => {
-  const { lengthsContext } = nextAction
+  const { lengthsContext, onCursor } = nextAction
 
   // Curry `lengthsContext` into `getValidLocationOrUnset`
   const getValidLocationOrUnsetWithLengthsContext = (
@@ -159,16 +160,11 @@ const cursorLocationReducer = (
   switch (action) {
     case CursorLocationAction.FindNearestValidLocation: {
       // Constrain current cursor to bounds of `lengthsContext`
-      const group = clamp(cursorState.group, 0, lengthsContext.length - 1)
-      return getValidLocationOrUnsetWithLengthsContext({
-        group,
-        option: clamp(cursorState.option, 0, lengthsContext[group] - 1),
-      })
+      return findNearestValidLocation()
     }
 
     case CursorLocationAction.MoveNext: {
-      return (
-        // Try the option index after the current option
+      const validCursorLocation =
         getValidLocationOrUnsetWithLengthsContext({
           ...cursorState,
           option: cursorState.option + 1,
@@ -177,20 +173,19 @@ const cursorLocationReducer = (
         getValidLocationOrUnsetWithLengthsContext({
           group: cursorState.group + 1,
           option: 0,
-        }) ||
-        // If the cursor state no longer matches up with the `lengthsContext`
-        // Move cursor to nearest valid location
-        cursorLocationReducer(cursorState, {
-          lengthsContext,
-          action: CursorLocationAction.FindNearestValidLocation,
-        }) ||
-        // Otherwise return the current state as we've reached the end
-        cursorState
-      )
+        })
+
+      if (validCursorLocation !== undefined) {
+        return validCursorLocation
+      }
+
+      // Otherwise return the current state as we've reached the end
+      onCursor?.onCursorExitEdge?.(CursorExitDirection.ExitEnd)
+      return cursorState
     }
 
     case CursorLocationAction.MovePrev: {
-      return (
+      const validCursorLocation =
         // Try the option index before the current option
         getValidLocationOrUnsetWithLengthsContext({
           ...cursorState,
@@ -200,16 +195,15 @@ const cursorLocationReducer = (
         getValidLocationOrUnsetWithLengthsContext({
           group: cursorState.group - 1,
           option: lengthsContext[cursorState.group - 1] - 1,
-        }) ||
-        // If the cursor state no longer matches up with the `lengthsContext`
-        // Move cursor to nearest valid location
-        cursorLocationReducer(cursorState, {
-          lengthsContext,
-          action: CursorLocationAction.FindNearestValidLocation,
-        }) ||
-        // Otherwise return the current cursor, as we've reached the beginning
-        cursorState
-      )
+        })
+
+      if (validCursorLocation) {
+        return validCursorLocation
+      }
+
+      onCursor?.onCursorExitEdge?.(CursorExitDirection.ExitStart)
+
+      return cursorState
     }
   }
 
@@ -228,6 +222,26 @@ const cursorLocationReducer = (
     }
   )
   return cursorState
+
+  /**
+   * Constrain {@link cursorState} onto the region defined by the
+   * {@link lengthsContext}.
+   */
+  function findNearestValidLocation() {
+    // Do not snap an undefined cursor.
+    if (cursorState === undefined) {
+      return undefined
+    }
+
+    // Clamp existing cursor into [0, Array.length) in each dimension
+    const group = clamp(cursorState.group, 0, lengthsContext.length - 1)
+    const option = clamp(cursorState.option, 0, lengthsContext[group] - 1)
+    // Check that answer is correct
+    return getValidLocationOrUnsetWithLengthsContext({
+      group,
+      option,
+    })
+  }
 }
 
 /**
@@ -262,7 +276,8 @@ interface CursorReducerControls {
  * @returns The current cursor state and functions to modify the state.
  */
 const useCursorLocationFromGroups = (
-  groups: AutocompleteDataGroup[]
+  groups: AutocompleteDataGroup[],
+  onCursor?: AutocompleteCursorEventProps
 ): CursorReducerControls => {
   const lengthsContext = groups.map(({ group }) => group.options.length)
 
@@ -270,6 +285,8 @@ const useCursorLocationFromGroups = (
     cursorLocationReducer,
     undefined
   )
+
+  const commonArgs = { lengthsContext, onCursor }
 
   return {
     /**
@@ -281,13 +298,13 @@ const useCursorLocationFromGroups = (
      * within the {@link LengthsContext}
      */
     updateCursorLocation: (action: CursorLocationAction) =>
-      dispatchCursorLocation({ action, lengthsContext }),
+      dispatchCursorLocation({ action, ...commonArgs }),
     /**
      * Set the {@link CursorLocation}, if the {@link CursorLocation} is valid
      * within the {@link LengthsContext}.
      */
     setCursorLocation: (forceLocation: CursorState) =>
-      dispatchCursorLocation({ forceLocation, lengthsContext }),
+      dispatchCursorLocation({ forceLocation, ...commonArgs }),
   }
 }
 // #endregion Cursor Reducer
@@ -332,7 +349,7 @@ export interface GroupedAutocompleteProps
   /**
    * The groups and options to render as clickable elements in the control.
    */
-  groups: AutocompleteDataGroup[]
+  optionGroups: AutocompleteDataGroup[]
   /**
    * The name of the control. Read to screen readers when control receives focus.
    */
@@ -351,19 +368,47 @@ export interface GroupedAutocompleteProps
   /**
    * Component to display when there are 0 search results.
    */
-  fallbackOption: ReactNode
+  fallbackOption: AutocompleteOptionData
   /**
-   * Callback when the {@link fallbackOption} is selected in the autocomplete.
+   * Events related to cursor action callbacks.
    */
-  onSelectFallbackOption?: React.ReactEventHandler
+  onCursor?: AutocompleteCursorEventProps
+}
+
+export enum CursorExitDirection {
+  ExitStart = "ExitStart",
+  ExitEnd = "ExitEnd",
+}
+
+/**
+ * Props related to callbacks from the {@link cursorLocationReducer}.
+ */
+interface AutocompleteCursorEventProps {
+  /**
+   * Callback when the cursor attempts to leave the listbox.
+   * @param CursorExitDirection The direction the cursor attempted to exit from.
+   */
+  onCursorExitEdge?: (direction: CursorExitDirection) => void
 }
 
 type AutocompleteOptionData = {
   option: {
     label: ReactNode
-    onSelectOption: ReactEventHandler
+    onSelectOption?: ReactEventHandler
   }
 }
+/**
+ * {@link AutocompleteOptionData} constructor.
+ */
+export const autocompleteOptionData = (
+  label: ReactNode,
+  onSelectOption?: ReactEventHandler
+): AutocompleteOptionData => ({
+  option: {
+    label,
+    onSelectOption,
+  },
+})
 
 export type AutocompleteDataGroup = {
   group: {
@@ -379,35 +424,28 @@ export type AutocompleteDataGroup = {
 export const GroupedAutocomplete = ({
   id,
   controlName,
-  groups,
+  optionGroups,
   controllerRef,
   fallbackOption,
-  onSelectFallbackOption,
+  onCursor,
   Heading = "h2",
 }: GroupedAutocompleteProps) => {
   const listHeadingId = useId()
 
   // Fallback option and group
-  if (groups.length === 0) {
-    groups = [
+  if (optionGroups.length === 0) {
+    optionGroups = [
       {
         group: {
           title: null,
-          options: [
-            {
-              option: {
-                label: fallbackOption,
-                onSelectOption: (e) => onSelectFallbackOption?.(e),
-              },
-            },
-          ],
+          options: [fallbackOption],
         },
       },
     ]
   }
 
   const { cursorLocation, updateCursorLocation, setCursorLocation } =
-    useCursorLocationFromGroups(groups)
+    useCursorLocationFromGroups(optionGroups, onCursor)
 
   useImperativeHandle(
     controllerRef,
@@ -485,7 +523,7 @@ export const GroupedAutocomplete = ({
         aria-labelledby={listHeadingId}
         tabIndex={-1}
       >
-        {groups.map(({ group: { title, options } }, groupIndex) => (
+        {optionGroups.map(({ group: { title, options } }, groupIndex) => (
           <GroupOptionList key={groupIndex} heading={title}>
             {options.map(
               ({ option: { label, onSelectOption } }, optionIndex) => {
@@ -523,6 +561,7 @@ export const GroupedAutocomplete = ({
                     ref={(selected || null) && ((r) => r?.focus())}
                     // Allow user to tab into the first option and out of
                     // the autocomplete control on next `Tab` key.
+                    // > Composite controls should have one tab stop
                     tabIndex={groupIndex === 0 && optionIndex === 0 ? 0 : -1}
                   >
                     {label}
@@ -590,7 +629,7 @@ const GroupOptionList = (props: LabelledListProps) => (
  */
 interface GroupedAutocompleteFromSearchTextResultsProps
   extends GroupedAutocompleteControlRefProps,
-    Omit<GroupedAutocompleteProps, "groups"> {
+    Omit<GroupedAutocompleteProps, "optionGroups"> {
   /**
    * Text to search to populate the autocomplete options with.
    */
@@ -643,12 +682,14 @@ export const GroupedAutocompleteFromSearchTextResults = ({
     {
       group: {
         title: <h2>{searchPropertyDisplayConfig.vehicle.name}</h2>,
-        options: vehicles.slice(0, maxElementsPerGroup).map((v) => ({
-          option: {
-            onSelectOption: onSelectVehicleOption(v),
-            label: (isVehicle(v) && v.label) || v.id,
-          },
-        })),
+        options: vehicles
+          .slice(0, maxElementsPerGroup)
+          .map((v) =>
+            autocompleteOptionData(
+              (isVehicle(v) && v.label) || v.id,
+              onSelectVehicleOption(v)
+            )
+          ),
       },
     },
     {
@@ -657,27 +698,26 @@ export const GroupedAutocompleteFromSearchTextResults = ({
         options: operators
           .slice(0, maxElementsPerGroup)
           .filter(isVehicle)
-          .map((v) => ({
-            option: {
-              onSelectOption: onSelectVehicleOption(v),
-              label: formatOperatorNameFromVehicle(v),
-            },
-          })),
+          .map((v) =>
+            autocompleteOptionData(
+              formatOperatorNameFromVehicle(v),
+              onSelectVehicleOption(v)
+            )
+          ),
       },
     },
     {
       group: {
         title: <h2>{searchPropertyDisplayConfig.run.name}</h2>,
-        options: runs.slice(0, maxElementsPerGroup).map((v) => ({
-          option: {
-            onSelectOption: onSelectVehicleOption(v),
-            label: v.runId,
-          },
-        })),
+        options: runs
+          .slice(0, maxElementsPerGroup)
+          .map((v) =>
+            autocompleteOptionData(v.runId, onSelectVehicleOption(v))
+          ),
       },
     },
   ].filter(({ group: { options } }) => options.length > 0)
 
-  return <GroupedAutocomplete {...props} groups={groups} />
+  return <GroupedAutocomplete {...props} optionGroups={groups} />
 }
 // #endregion Autocomplete From Search Context
