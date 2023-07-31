@@ -1,6 +1,5 @@
-import { useContext } from "react"
+import { Socket } from "phoenix"
 
-import { SocketContext } from "../contexts/socketContext"
 import { SearchProperties, SearchProperty } from "../models/searchQuery"
 import { Ghost, Vehicle } from "../realtime"
 import {
@@ -22,12 +21,11 @@ type AutocompleteResults = Record<
  * Filtered properties return an empty list
  */
 export const useAutocompleteResults = (
+  socket: Socket | undefined,
   searchText: string,
   searchFilters: SearchProperties<boolean>,
   maxResults = 5
 ): AutocompleteResults => {
-  const { socket } = useContext(SocketContext)
-
   const fallback: LimitedSearchResults = {
     hasMoreMatches: false,
     matchingVehicles: [],

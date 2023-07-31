@@ -4,6 +4,7 @@ import React, {
   MutableRefObject,
   ReactEventHandler,
   ReactNode,
+  useContext,
   useId,
   useImperativeHandle,
   useReducer,
@@ -18,6 +19,7 @@ import { isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { clamp } from "../util/math"
 import { formatOperatorNameFromVehicle } from "../util/operatorFormatting"
+import { SocketContext } from "../contexts/socketContext"
 
 // #region Autocomplete Control
 // #region Cursor Reducer
@@ -667,11 +669,17 @@ export const GroupedAutocompleteFromSearchTextResults = ({
   maxElementsPerGroup = 5,
   ...props
 }: GroupedAutocompleteFromSearchTextResultsProps) => {
+  const { socket } = useContext(SocketContext)
   const {
     vehicle: vehicles,
     run: runs,
     operator: operators,
-  } = useAutocompleteResults(searchText, searchFilters, maxElementsPerGroup)
+  } = useAutocompleteResults(
+    socket,
+    searchText,
+    searchFilters,
+    maxElementsPerGroup
+  )
 
   const onSelectVehicleOption = (selectedOption: Vehicle | Ghost) => () => {
     onSelectVehicleOptionProp(selectedOption)
