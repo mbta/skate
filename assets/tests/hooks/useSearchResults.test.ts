@@ -341,7 +341,7 @@ describe("useLimitedSearchResults", () => {
 
     expect(result.current).toEqual({
       ok: {
-        matchingVehicles: [vehicleFromData(vehicleData)],
+        matches: [vehicleFromData(vehicleData)],
         hasMoreMatches: false,
       },
     })
@@ -399,7 +399,7 @@ describe("useLimitedSearchResults", () => {
     expect(result.current).toEqual({
       ok: {
         hasMoreMatches: true,
-        matchingVehicles: [vehicleFromData(vehicleDataAfterLimitIncrease)],
+        matches: [vehicleFromData(vehicleDataAfterLimitIncrease)],
       },
     })
   })

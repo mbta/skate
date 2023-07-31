@@ -25,12 +25,10 @@ const VehicleSearchResultSection = ({
   property,
   results,
   onSelectVehicle,
-  onShowMore,
 }: {
   property: SearchProperty
   results: LoadingResult | Ok<LimitedSearchResults<Vehicle | Ghost>> | null
   onSelectVehicle: (vehicle: Vehicle | Ghost) => void
-  onShowMore: () => void
 }) => {
   if (results === null || (isOk(results) && results.ok.matches.length === 0)) {
     return <></>
@@ -49,26 +47,15 @@ const VehicleSearchResultSection = ({
       </h2>
       {isLoading(results) ? (
         <Loading />
-      ) : results.ok.matches.length > 0 ? (
+      ) : (
         <>
           <SearchResults
             vehicles={results.ok.matches}
             selectedVehicleId={null}
             onClick={onSelectVehicle}
           />
-          {results.ok.hasMoreMatches && (
-            <div className="c-map_page__search_results_actions">
-              <button
-                className="c-map-page__show_more button-text"
-                onClick={() => onShowMore()}
-              >
-                Show more
-              </button>
-            </div>
-          )}
+          {results.ok.hasMoreMatches && <ShowMore property={property} />}
         </>
-      ) : (
-        "No results found"
       )}
     </section>
   )
@@ -77,11 +64,9 @@ const VehicleSearchResultSection = ({
 const LocationSearchResultSection = ({
   results,
   onSelectLocation,
-  onShowMore,
 }: {
   results: LoadingResult | Ok<LimitedSearchResults<LocationSearchResult>> | null
   onSelectLocation: (location: LocationSearchResult) => void
-  onShowMore: () => void
 }) => {
   if (results === null || (isOk(results) && results.ok.matches.length === 0)) {
     return <></>
@@ -119,26 +104,28 @@ const LocationSearchResultSection = ({
               </li>
             ))}
           </ul>
-          {results.ok.hasMoreMatches && (
-            <div className="c-map_page__search_results_actions">
-              <button
-                className="c-map-page__show_more button-text"
-                onClick={() => onShowMore()}
-              >
-                Show more
-              </button>
-            </div>
-          )}
+          {results.ok.hasMoreMatches && <ShowMore property={"location"} />}
         </>
       )}
     </section>
   )
 }
 
-const onShowMore = (property: SearchProperty, currentLimit: number): void => {
-  const [_state, dispatch] = useContext(StateDispatchContext)
-
-  dispatch(setPropertyMatchLimit(property, currentLimit + 25))
+const ShowMore = ({ property }: { property: SearchProperty }) => {
+  const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
+  const currentLimit = searchPageState.query.properties[property] || 0
+  return (
+    <div className="c-map_page__search_results_actions">
+      <button
+        className="c-map-page__show_more button-text"
+        onClick={() =>
+          dispatch(setPropertyMatchLimit(property, currentLimit + 25))
+        }
+      >
+        Show more
+      </button>
+    </div>
+  )
 }
 
 const SearchResultsByProperty = ({
@@ -176,22 +163,18 @@ const SearchResultsByProperty = ({
       ) : (
         Object.entries(searchPageState.query.properties)
           .filter(([, limit]) => limit != null)
-          .map(([property, limit]) => ({
-            property: property as SearchProperty,
-            limit: limit as number,
-          }))
+          .map(([property, _limit]) => property as SearchProperty)
           .sort(
-            ({ property: first_property }, { property: second_property }) =>
+            (first_property, second_property) =>
               searchPropertyDisplayConfig[first_property].order -
               searchPropertyDisplayConfig[second_property].order
           )
-          .map(({ property, limit }) =>
+          .map((property) =>
             property === "location" ? (
               <LocationSearchResultSection
                 key={property}
                 results={resultsByProperty[property]}
                 onSelectLocation={onSelectLocationResult}
-                onShowMore={() => onShowMore(property, limit)}
               />
             ) : (
               <VehicleSearchResultSection
@@ -199,7 +182,6 @@ const SearchResultsByProperty = ({
                 property={property}
                 results={resultsByProperty[property]}
                 onSelectVehicle={onSelectVehicleResult}
-                onShowMore={() => onShowMore(property, limit)}
               />
             )
           )
