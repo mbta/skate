@@ -17,6 +17,7 @@ import {
 import Loading from "../loading"
 import useSearchResultsByCategory from "../../hooks/useSearchResultsByCategory"
 import { setCategoryMatchLimit } from "../../state/searchPageState"
+import { LocationDotIcon } from "../../helpers/icon"
 
 const VehicleSearchResultSection = ({
   results,
@@ -86,9 +87,15 @@ const LocationSearchResultSection = ({
               <li key={locationSearchResult.id}>
                 <Card
                   style="white"
+                  additionalClass="c-search-results__location_result"
                   title={
-                    locationSearchResult.name || locationSearchResult.address
+                    locationSearchResult.name || (
+                      <span className="c-search-results__address-only-location-result-title">
+                        {locationSearchResult.address}
+                      </span>
+                    )
                   }
+                  icon={<LocationDotIcon />}
                   openCallback={() => onSelectLocation(locationSearchResult)}
                 >
                   {locationSearchResult.name &&

@@ -55,7 +55,7 @@
   }
 }
 
-.c-search-results__result {
+.c-search-results__vehicle_result {
   .c-card__icon {
     padding-right: 1rem;
 
@@ -64,6 +64,44 @@
 
       .c-vehicle-icon__label-background {
         fill: none;
+      }
+    }
+  }
+}
+
+.c-search-results__location_result {
+  padding: 1rem;
+
+  .c-card__top-row {
+    margin-top: 0;
+
+    &:empty {
+      min-height: 0;
+    }
+  }
+
+  .c-search-results__address-only-location-result-title {
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-reg);
+  }
+
+  .c-card__contents {
+    margin-top: 0.19rem;
+
+    &:empty {
+      margin-top: 0;
+    }
+  }
+
+  .c-card__icon {
+    padding-right: 0.5rem;
+
+    svg {
+      width: 1.125rem !important;
+      height: 1.5rem !important;
+
+      path {
+        fill: #ea5382;
       }
     }
   }

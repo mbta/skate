@@ -37,7 +37,7 @@ const SearchResultCard = ({
         style="white"
         title={<RouteVariantName vehicle={vehicleOrGhost} />}
         icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
-        additionalClass="c-search-results__result"
+        additionalClass="c-search-results__vehicle_result"
         selected={isSelected}
       >
         <CardProperties

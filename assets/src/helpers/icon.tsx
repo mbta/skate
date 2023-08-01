@@ -64,6 +64,8 @@ import lateViewGhostWithWaiverIconSvg from "../../static/images/icon-late-view-g
 // @ts-ignore
 import loadingIconSvg from "../../static/images/icon-loading.svg"
 // @ts-ignore
+import locationDotIconSvg from "../../static/images/icon-location-dot.svg"
+// @ts-ignore
 import logoIconSvg from "../../static/images/icon-logo.svg"
 // @ts-ignore
 import mapIconSvg from "../../static/images/icon-map.svg"
@@ -194,6 +196,8 @@ export const LateViewGhostWithWaiverIcon = svgIcon(
 )
 
 export const LoadingIcon = svgIcon(loadingIconSvg)
+
+export const LocationDotIcon = svgIcon(locationDotIconSvg)
 
 export const LogoIcon = svgIcon(logoIconSvg)
 
