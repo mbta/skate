@@ -32,6 +32,7 @@ import {
 } from "../testHelpers/selectors/components/groupedAutocomplete"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import vehicleFactory from "../factories/vehicle"
+import useSocket from "../../src/hooks/useSocket"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -40,6 +41,22 @@ jest.mock("../../src/hooks/useAutocompleteResults", () => ({
     vehicle: [],
   })),
 }))
+
+// Mocking _only_ `useSocket`, for a small number of tests
+jest.mock("../../src/hooks/useSocket", () => ({
+  __esModule: true,
+  default: jest.fn(),
+  readUserToken: jest.requireActual("../../src/hooks/useSocket").readUserToken,
+  ConnectionStatus: jest.requireActual("../../src/hooks/useSocket")
+    .ConnectionStatus,
+  SocketStatus: jest.requireActual("../../src/hooks/useSocket").SocketStatus,
+}))
+
+beforeEach(() => {
+  ;(useSocket as jest.Mock).mockImplementation(
+    jest.requireActual("../../src/hooks/useSocket").default
+  )
+})
 
 const mockDispatch = jest.fn()
 
@@ -476,6 +493,8 @@ describe("SearchForm", () => {
   })
 
   test("when search text is updated, should show new autocomplete results", async () => {
+    ;(useSocket as jest.Mock).mockReturnValue({ socket: undefined })
+
     const [vehicle, nextVehicle] = vehicleFactory.buildList(2)
 
     const inputText = "123"
