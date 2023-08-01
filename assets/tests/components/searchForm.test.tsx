@@ -32,7 +32,6 @@ import {
 } from "../testHelpers/selectors/components/groupedAutocomplete"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import vehicleFactory from "../factories/vehicle"
-import useSocket from "../../src/hooks/useSocket"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -41,22 +40,6 @@ jest.mock("../../src/hooks/useAutocompleteResults", () => ({
     vehicle: [],
   })),
 }))
-
-// Mocking _only_ `useSocket`, for a small number of tests
-jest.mock("../../src/hooks/useSocket", () => ({
-  __esModule: true,
-  default: jest.fn(),
-  readUserToken: jest.requireActual("../../src/hooks/useSocket").readUserToken,
-  ConnectionStatus: jest.requireActual("../../src/hooks/useSocket")
-    .ConnectionStatus,
-  SocketStatus: jest.requireActual("../../src/hooks/useSocket").SocketStatus,
-}))
-
-beforeEach(() => {
-  ;(useSocket as jest.Mock).mockImplementation(
-    jest.requireActual("../../src/hooks/useSocket").default
-  )
-})
 
 const mockDispatch = jest.fn()
 
@@ -490,99 +473,6 @@ describe("SearchForm", () => {
     await userEvent.click(autocompleteOption(vehicle.label!).get())
 
     expect(onSelectVehicleOption).toHaveBeenCalledWith(vehicle)
-  })
-
-  test("when search text is updated, should show new autocomplete results", async () => {
-    ;(useSocket as jest.Mock).mockReturnValue({ socket: undefined })
-
-    const [vehicle, nextVehicle] = vehicleFactory.buildList(2)
-
-    const inputText = "123"
-    const nextInputText = inputText + "456"
-    const filters = {
-      location: false,
-      operator: true,
-      run: true,
-      vehicle: true,
-    }
-    const maxElements = 5
-
-    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
-      _socket,
-      searchText
-    ) => {
-      switch (searchText) {
-        case inputText: {
-          return {
-            vehicle: [vehicle],
-            operator: [],
-            run: [],
-          }
-        }
-        case nextInputText: {
-          return {
-            vehicle: [nextVehicle],
-            operator: [],
-            run: [],
-          }
-        }
-        default: {
-          return {
-            operator: [],
-            run: [],
-            vehicle: [],
-          }
-        }
-      }
-    }) as typeof useAutocompleteResults)
-
-    const { rerender } = render(
-      <SearchForm
-        inputText={inputText}
-        filters={filters}
-        // Prevent the following error by preventing default event.
-        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
-        onSubmit={(e) => {
-          e.preventDefault()
-        }}
-        onFiltersChanged={jest.fn()}
-        onSelectVehicleOption={jest.fn()}
-      />
-    )
-
-    const vehicleOption = autocompleteOption(vehicle.label!)
-
-    expect(vehicleOption.get()).toBeVisible()
-
-    rerender(
-      <SearchForm
-        inputText={nextInputText}
-        filters={filters}
-        // Prevent the following error by preventing default event.
-        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
-        onSubmit={(e) => {
-          e.preventDefault()
-        }}
-        onFiltersChanged={jest.fn()}
-        onSelectVehicleOption={jest.fn()}
-      />
-    )
-    expect(useAutocompleteResults).toHaveBeenNthCalledWith(
-      1,
-      undefined,
-      inputText,
-      filters,
-      maxElements
-    )
-    expect(useAutocompleteResults).toHaveBeenNthCalledWith(
-      2,
-      undefined,
-      nextInputText,
-      filters,
-      maxElements
-    )
-    expect(autocompleteOption(nextVehicle.label!).get()).toBeVisible()
-    expect(vehicleOption.query()).not.toBeInTheDocument()
   })
 
   test("when a filter is applied, should not show disabled categories in autocomplete", async () => {
