@@ -388,6 +388,9 @@ interface AutocompleteCursorEventProps {
   onCursorExitEdge?: (direction: CursorExitDirection) => void
 }
 
+/**
+ * Use {@link autocompleteOption} to construct this type.
+ */
 type AutocompleteOptionData = {
   option: {
     label: ReactNode
@@ -397,7 +400,7 @@ type AutocompleteOptionData = {
 /**
  * {@link AutocompleteOptionData} constructor.
  */
-export const autocompleteOptionData = (
+export const autocompleteOption = (
   label: ReactNode,
   onSelectOption?: ReactEventHandler
 ): AutocompleteOptionData => ({
@@ -686,7 +689,7 @@ export const GroupedAutocompleteFromSearchTextResults = ({
         options: vehicles
           .slice(0, maxElementsPerGroup)
           .map((v) =>
-            autocompleteOptionData(
+            autocompleteOption(
               (isVehicle(v) && v.label) || v.id,
               onSelectVehicleOption(v)
             )
@@ -700,7 +703,7 @@ export const GroupedAutocompleteFromSearchTextResults = ({
           .filter(isVehicle)
           .slice(0, maxElementsPerGroup)
           .map((v) =>
-            autocompleteOptionData(
+            autocompleteOption(
               formatOperatorNameFromVehicle(v),
               onSelectVehicleOption(v)
             )
@@ -712,9 +715,7 @@ export const GroupedAutocompleteFromSearchTextResults = ({
         title: <h2>{searchPropertyDisplayConfig.run.name}</h2>,
         options: runs
           .slice(0, maxElementsPerGroup)
-          .map((v) =>
-            autocompleteOptionData(v.runId, onSelectVehicleOption(v))
-          ),
+          .map((v) => autocompleteOption(v.runId, onSelectVehicleOption(v))),
       },
     },
   ].filter(({ group: { options } }) => options.length > 0)
