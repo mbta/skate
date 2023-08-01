@@ -301,6 +301,9 @@ export const SearchForm = ({
             fallbackOption={autocompleteOptionData(inputText, onSubmit)}
             onSelectVehicleOption={onSelectVehicleOption}
             controllerRef={autocompleteController}
+              onCursor={{
+                onCursorExitEdge: () => formSearchInput.current?.focus(),
+              }}
           />
         </div>
       </div>
