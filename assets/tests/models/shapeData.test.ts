@@ -22,14 +22,14 @@ describe("shapeFromData", () => {
     expect(shapeFromData(data)).toEqual(expectedResult)
   })
 
-  test("handles data with connections", () => {
+  test("handles data with routes", () => {
     const shapeId = "shape1"
     const data: ShapeData = shapeDataFactory.build({
       id: shapeId,
       stops: [
         stopFactory.build({
           id: "1",
-          connections: [{ type: 3, id: "747", name: "CT2" }],
+          routes: [{ type: 3, id: "747", name: "CT2" }],
         }),
       ],
     })
