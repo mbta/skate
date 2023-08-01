@@ -5,7 +5,7 @@ import React, { MutableRefObject } from "react"
 import { act } from "react-dom/test-utils"
 
 import {
-  CursorExitDirection,
+  CursorStatus,
   GroupedAutocomplete,
   GroupedAutocompleteControls,
   GroupedAutocompleteFromSearchTextResults,
@@ -555,11 +555,11 @@ describe("<GroupedAutocomplete/>", () => {
   test.each([
     {
       key: "{ArrowDown}",
-      expectedDirection: CursorExitDirection.ExitEnd,
+      expectedDirection: CursorStatus.ExitEnd,
     },
     {
       key: "{ArrowUp}",
-      expectedDirection: CursorExitDirection.ExitStart,
+      expectedDirection: CursorStatus.ExitStart,
     },
   ])(
     "when user presses `$key` to move out of the listbox, should fire `onCursorExitEdge($expectedDirection)` and focus should remain on last selected element",
@@ -569,7 +569,7 @@ describe("<GroupedAutocomplete/>", () => {
       const option2Label = "option2Label"
 
       const targetOptionLabel =
-        expectedDirection === CursorExitDirection.ExitStart
+        expectedDirection === CursorStatus.ExitStart
           ? option1Label
           : option2Label
 
@@ -599,9 +599,11 @@ describe("<GroupedAutocomplete/>", () => {
       expect(targetOption).toHaveFocus()
 
       await userEvent.keyboard(key)
+      await userEvent.keyboard(key)
 
       expect(targetOption).toHaveFocus()
 
+      expect(onCursorExitEdge).toHaveBeenCalledTimes(2)
       expect(onCursorExitEdge).toHaveBeenCalledWith(expectedDirection)
     }
   )

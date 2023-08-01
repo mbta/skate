@@ -5,6 +5,7 @@ import React, {
   ReactEventHandler,
   ReactNode,
   useContext,
+  useEffect,
   useId,
   useImperativeHandle,
   useReducer,
@@ -33,24 +34,41 @@ import { SocketContext } from "../contexts/socketContext"
 type LengthsContext = number[]
 
 /**
- * The possible cursor states.
+ * The possible cursor location.
  *
- * - `undefined` when there is no cursor state.
- * - Group and Option are defined to be a position contained within a
+ * - `undefined` when there is no location.
+ * - `group` and `option` are defined to be a position contained within a
  * {@link LengthsContext}.
  */
-type CursorState = { group: number; option: number } | undefined
+type CursorLocation = { group: number; option: number } | undefined
+
+/**
+ * The {@link cursorLocationReducer} state type.
+ *
+ * Contains the last reported status
+ */
+type CursorState = {
+  /**
+   * Provides the current location of the cursor within the {@link LengthsContext}.
+   */
+  location: CursorLocation
+  /**
+   * The status result of the last reducer update.
+   * This is set to `undefined` on next update that does not have a notable status.
+   */
+  status: CursorStatus
+}
 
 /**
  * Check if the {@link proposedLocation} is a valid location within
  * {@link lengthsContext}.
  *
- * @param proposedLocation The {@link CursorState} to test if it is valid
+ * @param proposedLocation The {@link CursorLocation} to test if it is valid
  * @param lengthsContext The {@link LengthsContext} used to bounds check {@link proposedLocation}
  * @returns `true` if the {@link proposedLocation} is within the {@link lengthsContext}, otherwise `false`
  */
 const isValidLocation = (
-  proposedLocation: CursorState,
+  proposedLocation: CursorLocation,
   lengthsContext: LengthsContext
 ): boolean => {
   if (!proposedLocation) {
@@ -65,16 +83,16 @@ const isValidLocation = (
 
 /**
  * Checks if the {@link proposedLocation} is valid and returns a
- * {@link CursorState} based on the {@link isValidLocation} validity check.
+ * {@link CursorLocation} based on the {@link isValidLocation} validity check.
  *
- * @param proposedLocation The {@link CursorState} to test and return if it is valid.
+ * @param proposedLocation The {@link CursorLocation} to test and return if it is valid.
  * @param lengthsContext The {@link LengthsContext} used to bounds check {@link proposedLocation}.
  * @returns {} {@link proposedLocation} if {@link proposedLocation} is valid, otherwise `undefined`.
  */
 const getValidLocationOrUnset = (
-  proposedLocation: CursorState,
+  proposedLocation: CursorLocation,
   lengthsContext: LengthsContext
-): CursorState => {
+): CursorLocation => {
   return isValidLocation(proposedLocation, lengthsContext)
     ? proposedLocation
     : undefined
@@ -98,34 +116,36 @@ enum CursorLocationAction {
  */
 type CursorStateAction = {
   lengthsContext: LengthsContext
-  onCursor?: AutocompleteCursorEventProps
 } & (
   | {
       action: CursorLocationAction
     }
   | {
-      forceLocation: CursorState
+      forceLocation: CursorLocation
     }
 )
 
 /**
- * A State Reducer that moves a {@link CursorState cursor} to leaf coordinates
+ * A State Reducer that moves a {@link CursorLocation cursor} to leaf coordinates
  * within a 2d jagged array defined by a {@link LengthsContext}.
  */
 const cursorLocationReducer = (
-  cursorState: CursorState,
+  state: CursorState,
   nextAction: CursorStateAction
 ): CursorState => {
-  const { lengthsContext, onCursor } = nextAction
+  const { location } = state
+  const { lengthsContext } = nextAction
 
   // Curry `lengthsContext` into `getValidLocationOrUnset`
   const getValidLocationOrUnsetWithLengthsContext = (
-    proposedLocation: CursorState
+    proposedLocation: CursorLocation
   ) => getValidLocationOrUnset(proposedLocation, lengthsContext)
 
   // Early exit if we're simply setting the position
   if ("forceLocation" in nextAction) {
-    return getValidLocationOrUnsetWithLengthsContext(nextAction.forceLocation)
+    return cursorState(
+      getValidLocationOrUnsetWithLengthsContext(nextAction.forceLocation)
+    )
   }
 
   const { action } = nextAction
@@ -133,79 +153,80 @@ const cursorLocationReducer = (
   // Do actions that don't require knowing the type of the `cursorState`
   switch (action) {
     case CursorLocationAction.DeleteCursor: {
-      return undefined
+      return cursorState(undefined)
     }
 
     case CursorLocationAction.MoveToStart: {
       // In case the length of the arrays are zero
       // Check if the first value is valid
-      return getValidLocationOrUnsetWithLengthsContext({ group: 0, option: 0 })
+      return cursorState(
+        getValidLocationOrUnsetWithLengthsContext({ group: 0, option: 0 })
+      )
     }
 
     case CursorLocationAction.MoveToEnd: {
       // Check if the last value of each length is valid
-      return getValidLocationOrUnsetWithLengthsContext({
-        group: lengthsContext.length - 1,
-        // move out of bounds ( < 0) if it doesn't exist
-        option: lengthsContext[lengthsContext.length - 1] - 1,
-      })
+      return cursorState(
+        getValidLocationOrUnsetWithLengthsContext({
+          group: lengthsContext.length - 1,
+          // move out of bounds ( < 0) if it doesn't exist
+          option: lengthsContext[lengthsContext.length - 1] - 1,
+        })
+      )
     }
   }
 
   // Do actions that require the `cursorState`
 
   // Return the current state if it's invalid
-  if (!cursorState) {
-    return cursorState
+  if (!location) {
+    return cursorState(location)
   }
 
   switch (action) {
     case CursorLocationAction.FindNearestValidLocation: {
       // Constrain current cursor to bounds of `lengthsContext`
-      return findNearestValidLocation()
+      return cursorState(findNearestValidLocation())
     }
 
     case CursorLocationAction.MoveNext: {
       const validCursorLocation =
         getValidLocationOrUnsetWithLengthsContext({
-          ...cursorState,
-          option: cursorState.option + 1,
+          ...location,
+          option: location.option + 1,
         }) ||
         // Then the first option in the next group
         getValidLocationOrUnsetWithLengthsContext({
-          group: cursorState.group + 1,
+          group: location.group + 1,
           option: 0,
         })
 
       if (validCursorLocation !== undefined) {
-        return validCursorLocation
+        return cursorState(validCursorLocation)
       }
 
       // Otherwise return the current state as we've reached the end
-      onCursor?.onCursorExitEdge?.(CursorExitDirection.ExitEnd)
-      return cursorState
+      return cursorState(location, CursorStatus.ExitEnd)
     }
 
     case CursorLocationAction.MovePrev: {
       const validCursorLocation =
         // Try the option index before the current option
         getValidLocationOrUnsetWithLengthsContext({
-          ...cursorState,
-          option: cursorState.option - 1,
+          ...location,
+          option: location.option - 1,
         }) ||
         // Try the last option of the previous group
         getValidLocationOrUnsetWithLengthsContext({
-          group: cursorState.group - 1,
-          option: lengthsContext[cursorState.group - 1] - 1,
+          group: location.group - 1,
+          option: lengthsContext[location.group - 1] - 1,
         })
 
       if (validCursorLocation) {
-        return validCursorLocation
+        return cursorState(validCursorLocation)
       }
 
-      onCursor?.onCursorExitEdge?.(CursorExitDirection.ExitStart)
-
-      return cursorState
+      return cursorState(location, CursorStatus.ExitStart)
     }
   }
 
@@ -217,32 +238,45 @@ const cursorLocationReducer = (
     ),
     {
       extra: {
-        cursorState,
-        lengthsContext,
+        state,
         action,
+        lengthsContext,
       },
     }
   )
-  return cursorState
+  return cursorState(location)
 
   /**
-   * Constrain {@link cursorState} onto the region defined by the
+   * Constrain {@link location} onto the region defined by the
    * {@link lengthsContext}.
    */
   function findNearestValidLocation() {
     // Do not snap an undefined cursor.
-    if (cursorState === undefined) {
+    if (location === undefined) {
       return undefined
     }
 
     // Clamp existing cursor into [0, Array.length) in each dimension
-    const group = clamp(cursorState.group, 0, lengthsContext.length - 1)
-    const option = clamp(cursorState.option, 0, lengthsContext[group] - 1)
-    // Check that answer is correct
-    return getValidLocationOrUnsetWithLengthsContext({
+    const group = clamp(location.group, 0, lengthsContext.length - 1)
+    const option = clamp(location.option, 0, lengthsContext[group] - 1)
+    return {
       group,
       option,
-    })
+    }
+  }
+
+  /**
+   * {@link CursorState} constructor that defaults the {@link status `status`}
+   * to `undefined` if the {@link status `status`} parameter is not provided.
+   *
+   * This ensures that {@link status `status`} only describes the status of the
+   * last iteration.
+   */
+  function cursorState(
+    location: CursorLocation,
+    status = CursorStatus.None
+  ): CursorState {
+    return { location, status }
   }
 }
 
@@ -251,29 +285,29 @@ const cursorLocationReducer = (
  */
 interface CursorReducerControls {
   /**
-   * The current {@link CursorState `cursorLocation`}
+   * The current {@link CursorState}
    */
-  cursorLocation: CursorState
+  cursorState: CursorState
 
   /**
-   * Function to move the {@link CursorState `cursorLocation`} relatively
-   * within the {@link LengthsContext}
+   * Function to move the state {@link CursorLocation `cursorLocation`}
+   * relatively within the {@link LengthsContext}
    */
   updateCursorLocation: (action: CursorLocationAction) => void
 
   /**
-   * Set the {@link CursorState}, if the {@link CursorState} is valid
+   * Set the {@link CursorLocation}, if the {@link CursorLocation} is valid
    * within the {@link LengthsContext}.
    */
-  setCursorLocation: (forceLocation: CursorState) => void
+  setCursorLocation: (forceLocation: CursorLocation) => void
 }
 
 /**
  * Helper hook to pre-configure functions with {@link LengthsContext} from the
  * {@link groups groups parameter} and a few specialty functions.
  *
- * @param groups The {@link AutocompleteDataGroup} array used to bounds check
- * {@link CursorState} arguments and changes.
+ * @param groups The {@link AutocompleteDataGroup} array used to generate a
+ * {@link LengthsContext} to check the {@link CursorState} argument and actions.
  *
  * @returns The current cursor state and functions to modify the state.
  */
@@ -285,7 +319,7 @@ const useCursorLocationFromGroups = (
 
   const [cursorLocation, dispatchCursorLocation] = useReducer(
     cursorLocationReducer,
-    undefined
+    { location: undefined, status: CursorStatus.None }
   )
 
   const commonArgs = { lengthsContext, onCursor }
@@ -294,7 +328,7 @@ const useCursorLocationFromGroups = (
     /**
      * The current {@link CursorLocation `cursorLocation`}
      */
-    cursorLocation,
+    cursorState: cursorLocation,
     /**
      * Function to move the {@link CursorLocation `cursorLocation`} relatively
      * within the {@link LengthsContext}
@@ -305,7 +339,7 @@ const useCursorLocationFromGroups = (
      * Set the {@link CursorLocation}, if the {@link CursorLocation} is valid
      * within the {@link LengthsContext}.
      */
-    setCursorLocation: (forceLocation: CursorState) =>
+    setCursorLocation: (forceLocation: CursorLocation) =>
       dispatchCursorLocation({ forceLocation, ...commonArgs }),
   }
 }
@@ -372,9 +406,20 @@ export interface GroupedAutocompleteProps
   onCursor?: AutocompleteCursorEventProps
 }
 
-export enum CursorExitDirection {
+/**
+ * The status result of the {@link cursorLocationReducer}.
+ * Describes the
+ */
+export enum CursorStatus {
+  None = "None",
   ExitStart = "ExitStart",
   ExitEnd = "ExitEnd",
+}
+
+export type CursorExitStatus = CursorStatus.ExitEnd | CursorStatus.ExitStart
+
+function isCursorExitStatus(status: CursorStatus): status is CursorExitStatus {
+  return status === CursorStatus.ExitEnd || status === CursorStatus.ExitStart
 }
 
 /**
@@ -385,7 +430,7 @@ interface AutocompleteCursorEventProps {
    * Callback when the cursor attempts to leave the listbox.
    * @param CursorExitDirection The direction the cursor attempted to exit from.
    */
-  onCursorExitEdge?: (direction: CursorExitDirection) => void
+  onCursorExitEdge?: (direction: CursorExitStatus) => void
 }
 
 /**
@@ -464,8 +509,17 @@ export const GroupedAutocomplete = ({
     ]
   }
 
-  const { cursorLocation, updateCursorLocation, setCursorLocation } =
-    useCursorLocationFromGroups(optionGroups, onCursor)
+  const {
+    cursorState: { location: cursorLocation, status },
+    updateCursorLocation,
+    setCursorLocation,
+  } = useCursorLocationFromGroups(optionGroups, onCursor)
+
+  useEffect(() => {
+    if (isCursorExitStatus(status)) {
+      onCursor?.onCursorExitEdge?.(status)
+    }
+  }, [status])
 
   useImperativeHandle(
     controllerRef,
