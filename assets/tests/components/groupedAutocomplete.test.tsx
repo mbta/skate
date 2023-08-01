@@ -51,81 +51,26 @@ describe("<GroupedAutocomplete/>", () => {
         controlName="Autocomplete List"
         fallbackOption={autocompleteOption(null)}
         optionGroups={[
-          {
-            group: {
-              title: <h1>{group1Title}</h1>,
-              options: [
-                {
-                  option: {
-                    label: option1Label,
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: <div>Option 2</div>,
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: <em>Option 3</em>,
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
-          {
-            group: {
-              title: <h1>{group2Title}</h1>,
-              options: [
-                {
-                  option: {
-                    label: option4Label,
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
-          {
-            group: {
-              title: <h1>{group3Title}</h1>,
-              options: [
-                {
-                  option: {
-                    label: "Option 5",
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: "Option 6",
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: "Option 7",
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: "Option 8",
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: <label>{option9Label}</label>,
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
+          autocompleteGroup(
+            <h1>{group1Title}</h1>,
+            autocompleteOption(option1Label, onSelectOption),
+            autocompleteOption(<div>Option 2</div>, onSelectOption),
+            autocompleteOption(<em>Option 3</em>, onSelectOption)
+          ),
+
+          autocompleteGroup(
+            <h1>{group2Title}</h1>,
+            autocompleteOption(option4Label, onSelectOption)
+          ),
+
+          autocompleteGroup(
+            <h1>{group3Title}</h1>,
+            autocompleteOption("Option 5", onSelectOption),
+            autocompleteOption("Option 6", onSelectOption),
+            autocompleteOption("Option 7", onSelectOption),
+            autocompleteOption("Option 8", onSelectOption),
+            autocompleteOption(<label>{option9Label}</label>, onSelectOption)
+          ),
         ]}
       />
     )
@@ -245,19 +190,10 @@ describe("<GroupedAutocomplete/>", () => {
         controlName="Search Suggestions"
         fallbackOption={autocompleteOption(null)}
         optionGroups={[
-          {
-            group: {
-              title: null,
-              options: [
-                {
-                  option: {
-                    label: option1Label,
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
+          autocompleteGroup(
+            null,
+            autocompleteOption(option1Label, onSelectOption)
+          ),
         ]}
       />
     )
@@ -307,25 +243,11 @@ describe("<GroupedAutocomplete/>", () => {
           controlName="Search Suggestions"
           fallbackOption={autocompleteOption(null)}
           optionGroups={[
-            {
-              group: {
-                title: group1Title,
-                options: [
-                  {
-                    option: {
-                      label: option1Label,
-                      onSelectOption,
-                    },
-                  },
-                  {
-                    option: {
-                      label: option2Label,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
+            autocompleteGroup(
+              group1Title,
+              autocompleteOption(option1Label, onSelectOption),
+              autocompleteOption(option2Label, onSelectOption)
+            ),
           ]}
         />
       )
@@ -352,32 +274,14 @@ describe("<GroupedAutocomplete/>", () => {
           controlName="Search Suggestions"
           fallbackOption={autocompleteOption(null)}
           optionGroups={[
-            {
-              group: {
-                title: group1Title,
-                options: [
-                  {
-                    option: {
-                      label: option1Label,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              group: {
-                title: group2Title,
-                options: [
-                  {
-                    option: {
-                      label: option2Label,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
+            autocompleteGroup(
+              group1Title,
+              autocompleteOption(option1Label, onSelectOption)
+            ),
+            autocompleteGroup(
+              group2Title,
+              autocompleteOption(option2Label, onSelectOption)
+            ),
           ]}
         />
       )
@@ -410,25 +314,11 @@ describe("<GroupedAutocomplete/>", () => {
           controlName="Search Suggestions"
           fallbackOption={autocompleteOption(null)}
           optionGroups={[
-            {
-              group: {
-                title: group1Title,
-                options: [
-                  {
-                    option: {
-                      label: option1Label,
-                      onSelectOption,
-                    },
-                  },
-                  {
-                    option: {
-                      label: option2Label,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
+            autocompleteGroup(
+              group1Title,
+              autocompleteOption(option1Label, onSelectOption),
+              autocompleteOption(option2Label, onSelectOption)
+            ),
           ]}
         />
       )
@@ -455,32 +345,14 @@ describe("<GroupedAutocomplete/>", () => {
           controlName="Search Suggestions"
           fallbackOption={autocompleteOption(null)}
           optionGroups={[
-            {
-              group: {
-                title: group1Title,
-                options: [
-                  {
-                    option: {
-                      label: option1Label,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              group: {
-                title: group2Title,
-                options: [
-                  {
-                    option: {
-                      label: option2Label,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
+            autocompleteGroup(
+              group1Title,
+              autocompleteOption(option1Label, onSelectOption)
+            ),
+            autocompleteGroup(
+              group2Title,
+              autocompleteOption(option2Label, onSelectOption)
+            ),
           ]}
         />
       )
@@ -512,38 +384,15 @@ describe("<GroupedAutocomplete/>", () => {
         controlName="Search Suggestions"
         fallbackOption={autocompleteOption(null)}
         optionGroups={[
-          {
-            group: {
-              title: group1Title,
-              options: [
-                {
-                  option: {
-                    label: option1Label,
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: "Unrelated Option",
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
-          {
-            group: {
-              title: group2Title,
-              options: [
-                {
-                  option: {
-                    label: option2Label,
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
+          autocompleteGroup(
+            group1Title,
+            autocompleteOption(option1Label, onSelectOption),
+            autocompleteOption("Unrelated Option", onSelectOption)
+          ),
+          autocompleteGroup(
+            group2Title,
+            autocompleteOption(option2Label, onSelectOption)
+          ),
         ]}
       />
     )
@@ -574,38 +423,16 @@ describe("<GroupedAutocomplete/>", () => {
         controlName="Search Suggestions"
         fallbackOption={autocompleteOption(null)}
         optionGroups={[
-          {
-            group: {
-              title: group1Title,
-              options: [
-                {
-                  option: {
-                    label: firstOptionLabel,
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: "Unrelated Option",
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
-          {
-            group: {
-              title: group2Title,
-              options: [
-                {
-                  option: {
-                    label: lastOptionLabel,
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
+          autocompleteGroup(
+            group1Title,
+            autocompleteOption(firstOptionLabel, onSelectOption),
+            autocompleteOption("Unrelated Option", onSelectOption)
+          ),
+
+          autocompleteGroup(
+            group2Title,
+            autocompleteOption(lastOptionLabel, onSelectOption)
+          ),
         ]}
       />
     )
@@ -634,19 +461,10 @@ describe("<GroupedAutocomplete/>", () => {
           controlName="Search Suggestions"
           fallbackOption={autocompleteOption(null)}
           optionGroups={[
-            {
-              group: {
-                title: null,
-                options: [
-                  {
-                    option: {
-                      label: optionLabel,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
+            autocompleteGroup(
+              null,
+              autocompleteOption(optionLabel, onSelectOption)
+            ),
           ]}
         />
       )
@@ -669,19 +487,10 @@ describe("<GroupedAutocomplete/>", () => {
           controlName="Search Suggestions"
           fallbackOption={autocompleteOption(null)}
           optionGroups={[
-            {
-              group: {
-                title: null,
-                options: [
-                  {
-                    option: {
-                      label: idVehicle.label!,
-                      onSelectOption,
-                    },
-                  },
-                ],
-              },
-            },
+            autocompleteGroup(
+              null,
+              autocompleteOption(idVehicle.label!, onSelectOption)
+            ),
           ]}
         />
       )
@@ -727,25 +536,11 @@ describe("<GroupedAutocomplete/>", () => {
         controlName="Search Suggestions"
         fallbackOption={autocompleteOption(null)}
         optionGroups={[
-          {
-            group: {
-              title: null,
-              options: [
-                {
-                  option: {
-                    label: option1Label,
-                    onSelectOption,
-                  },
-                },
-                {
-                  option: {
-                    label: "Option 2",
-                    onSelectOption,
-                  },
-                },
-              ],
-            },
-          },
+          autocompleteGroup(
+            null,
+            autocompleteOption(option1Label, onSelectOption),
+            autocompleteOption("Option 2", onSelectOption)
+          ),
         ]}
       />
     )
@@ -783,15 +578,11 @@ describe("<GroupedAutocomplete/>", () => {
           controlName=""
           fallbackOption={autocompleteOption(null)}
           optionGroups={[
-            {
-              group: {
-                title: null,
-                options: [
-                  autocompleteOption(option1Label),
-                  autocompleteOption(option2Label),
-                ],
-              },
-            },
+            autocompleteGroup(
+              null,
+              autocompleteOption(option1Label),
+              autocompleteOption(option2Label)
+            ),
           ]}
           onCursor={{
             onCursorExitEdge,

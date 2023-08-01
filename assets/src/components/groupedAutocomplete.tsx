@@ -703,41 +703,35 @@ export const GroupedAutocompleteFromSearchTextResults = ({
 
   // Build groups and options from search results.
   const groups = [
-    {
-      group: {
-        title: <h2>{searchPropertyDisplayConfig.vehicle.name}</h2>,
-        options: vehicles
-          .slice(0, maxElementsPerGroup)
-          .map((v) =>
-            autocompleteOption(
-              (isVehicle(v) && v.label) || v.id,
-              onSelectVehicleOption(v)
-            )
-          ),
-      },
-    },
-    {
-      group: {
-        title: <h2>{searchPropertyDisplayConfig.operator.name}</h2>,
-        options: operators
-          .filter(isVehicle)
-          .slice(0, maxElementsPerGroup)
-          .map((v) =>
-            autocompleteOption(
-              formatOperatorNameFromVehicle(v),
-              onSelectVehicleOption(v)
-            )
-          ),
-      },
-    },
-    {
-      group: {
-        title: <h2>{searchPropertyDisplayConfig.run.name}</h2>,
-        options: runs
-          .slice(0, maxElementsPerGroup)
-          .map((v) => autocompleteOption(v.runId, onSelectVehicleOption(v))),
-      },
-    },
+    autocompleteGroup(
+      <h2>{searchPropertyDisplayConfig.vehicle.name}</h2>,
+      ...vehicles
+        .slice(0, maxElementsPerGroup)
+        .map((v) =>
+          autocompleteOption(
+            (isVehicle(v) && v.label) || v.id,
+            onSelectVehicleOption(v)
+          )
+        )
+    ),
+    autocompleteGroup(
+      <h2>{searchPropertyDisplayConfig.operator.name}</h2>,
+      ...operators
+        .filter(isVehicle)
+        .slice(0, maxElementsPerGroup)
+        .map((v) =>
+          autocompleteOption(
+            formatOperatorNameFromVehicle(v),
+            onSelectVehicleOption(v)
+          )
+        )
+    ),
+    autocompleteGroup(
+      <h2>{searchPropertyDisplayConfig.run.name}</h2>,
+      ...runs
+        .slice(0, maxElementsPerGroup)
+        .map((v) => autocompleteOption(v.runId, onSelectVehicleOption(v)))
+    ),
   ].filter(({ group: { options } }) => options.length > 0)
 
   return <GroupedAutocomplete {...props} optionGroups={groups} />
