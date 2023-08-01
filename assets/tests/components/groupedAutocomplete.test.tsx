@@ -35,7 +35,7 @@ jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   })),
 }))
 
-describe("<SearchAutocomplete/>", () => {
+describe("<GroupedAutocomplete/>", () => {
   test("when rendered, should show results", () => {
     const onSelectOption = jest.fn()
 
@@ -144,6 +144,81 @@ describe("<SearchAutocomplete/>", () => {
     expect(option(option4Label).get(group2Results)).toBeInTheDocument()
 
     expect(option(option9Label).get(group3Results)).toBeInTheDocument()
+  })
+
+  test("when rerendered with new options, should show new options", () => {
+    const persistentGroupTitle = "Group 1"
+    const firstRenderGroup2Title = "Group 2.1"
+    const secondRenderGroup2Title = "Group 2.2"
+
+    const option1Label = "Option 1"
+    const option2Label = "Option 2"
+    const option3Label = "Option 3"
+    const option4Label = "Option 4"
+
+    const { rerender } = render(
+      <GroupedAutocomplete
+        controlName="Autocomplete List"
+        fallbackOption={autocompleteOption(null)}
+        optionGroups={[
+          autocompleteGroup(
+            persistentGroupTitle,
+            autocompleteOption(option1Label),
+            autocompleteOption(option2Label)
+          ),
+          autocompleteGroup(
+            firstRenderGroup2Title,
+            autocompleteOption(option1Label),
+            autocompleteOption(option2Label)
+          ),
+        ]}
+      />
+    )
+
+    const persistentGroup = optionGroup(persistentGroupTitle).get()
+    const option1Selector = option(option1Label)
+    const option2Selector = option(option2Label)
+    const option3Selector = option(option3Label)
+    const option4Selector = option(option4Label)
+
+    expect(option1Selector.get(persistentGroup)).toBeInTheDocument()
+    expect(option2Selector.get(persistentGroup)).toBeInTheDocument()
+
+    expect(
+      option1Selector.get(optionGroup(firstRenderGroup2Title).get())
+    ).toBeInTheDocument()
+    expect(
+      option2Selector.get(optionGroup(firstRenderGroup2Title).get())
+    ).toBeInTheDocument()
+
+    rerender(
+      <GroupedAutocomplete
+        controlName="Autocomplete List"
+        fallbackOption={autocompleteOption(null)}
+        optionGroups={[
+          autocompleteGroup(
+            persistentGroupTitle,
+            autocompleteOption(option3Label),
+            autocompleteOption(option4Label)
+          ),
+          autocompleteGroup(
+            secondRenderGroup2Title,
+            autocompleteOption(option2Label),
+            autocompleteOption(option4Label)
+          ),
+        ]}
+      />
+    )
+
+    expect(option3Selector.get(persistentGroup)).toBeInTheDocument()
+    expect(option4Selector.get(persistentGroup)).toBeInTheDocument()
+
+    expect(
+      option2Selector.get(optionGroup(secondRenderGroup2Title).get())
+    ).toBeInTheDocument()
+    expect(
+      option4Selector.get(optionGroup(secondRenderGroup2Title).get())
+    ).toBeInTheDocument()
   })
 
   test("when rendered with an empty list of groups, should show fallback option", async () => {

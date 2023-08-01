@@ -410,13 +410,33 @@ export const autocompleteOption = (
   },
 })
 
-export type AutocompleteDataGroup = {
+/**
+ * Use {@link autocompleteGroup} to construct this type.
+ */
+type AutocompleteDataGroup = {
   group: {
     title: ReactNode
     options: AutocompleteOptionData[]
   }
 }
 
+/**
+ *
+ *
+ * @param title Group Heading
+ * @param options Options belonging to the group
+ */
+export function autocompleteGroup(
+  title: ReactNode,
+  ...options: AutocompleteOptionData[]
+): AutocompleteDataGroup {
+  return {
+    group: {
+      title,
+      options,
+    },
+  }
+}
 /**
  * A keyboard & mouse navigable control containing a list of list of options.
  * Provides callbacks when options are selected.
