@@ -269,7 +269,7 @@ defmodule ScheduleTest do
       assert Schedule.stop("id", pid) == nil
     end
 
-    test "bus stop has included bus and subway connections" do
+    test "bus stop has included bus and subway routes" do
       pid =
         Schedule.start_mocked(%{
           gtfs: %{
@@ -307,7 +307,7 @@ defmodule ScheduleTest do
       %Stop{
         id: "stop1_id",
         name: "One",
-        connections: [
+        routes: [
           %Route{
             id: "route",
             name: "route",
@@ -796,7 +796,7 @@ defmodule ScheduleTest do
   end
 
   describe "shape_with_stops_for_trip" do
-    test "returns the shape for the trip with stops and connections excluding the trip's route" do
+    test "returns the shape for the trip with stops and routes" do
       pid =
         Schedule.start_mocked(%{
           gtfs: %{
@@ -847,7 +847,14 @@ defmodule ScheduleTest do
                    name: "One",
                    latitude: 1.0,
                    longitude: 1.5,
-                   connections: [
+                   routes: [
+                     %Schedule.Gtfs.Route{
+                       description: "Key Bus",
+                       direction_names: %{0 => nil, 1 => nil},
+                       id: "route",
+                       name: "route",
+                       type: 3
+                     },
                      %Schedule.Gtfs.Route{
                        id: "subway_route",
                        name: "subway_route_name",

@@ -12,7 +12,7 @@ defmodule Schedule.Gtfs.Stop do
           parent_station_id: id() | nil,
           latitude: float() | nil,
           longitude: float() | nil,
-          connections: [Route.t()],
+          routes: [Route.t()],
           location_type: location_type()
         }
   @type by_id :: %{id() => t()}
@@ -28,7 +28,7 @@ defmodule Schedule.Gtfs.Stop do
     :parent_station_id,
     :latitude,
     :longitude,
-    connections: [],
+    routes: [],
     location_type: :stop
   ]
 
@@ -85,23 +85,15 @@ defmodule Schedule.Gtfs.Stop do
   def is_station?(stop), do: stop.location_type == :station
 
   @doc """
-  Remove any stop connections with the given route_id
+  Add routes to a map of stops by id based on the given route, pattern, and stop time data.
+  The list of routes for a stop will include routes for all sibling and parent stops.
   """
-  @spec reject_connections_for_route(t(), Route.id()) :: t()
-  def reject_connections_for_route(stop, route_id) do
-    %{stop | connections: Enum.reject(stop.connections, &(&1.id == route_id))}
-  end
-
-  @doc """
-  Add connections to a map of stops by id based on the given route, pattern, and stop time data.
-  The list of connections for a stop will include connections for all sibling and parent stops.
-  """
-  @spec stops_with_connections(by_id(), [Route.t()], [RoutePattern.t()], StopTime.by_trip_id()) ::
+  @spec stops_with_routes(by_id(), [Route.t()], [RoutePattern.t()], StopTime.by_trip_id()) ::
           by_id()
-  def stops_with_connections(stops_by_id, routes, route_patterns, stop_times_by_trip_id) do
+  def stops_with_routes(stops_by_id, routes, route_patterns, stop_times_by_trip_id) do
     routes_by_id = routes |> Enum.reject(&Route.shuttle_route?(&1)) |> Map.new(&{&1.id, &1})
 
-    connections_by_parent_or_stop_id =
+    routes_by_parent_or_stop_id =
       route_patterns
       |> Enum.reduce(%{}, fn route_pattern, acc_stop_id_to_routes ->
         route_pattern
@@ -115,18 +107,18 @@ defmodule Schedule.Gtfs.Stop do
         end)
       end)
 
-    stops_with_connections(stops_by_id, connections_by_parent_or_stop_id)
+    stops_with_routes(stops_by_id, routes_by_parent_or_stop_id)
   end
 
-  @spec stops_with_connections(by_id(), %{id() => MapSet.t(Route.t())}) :: by_id()
-  defp stops_with_connections(stops_by_id, connections_by_parent_or_stop_id) do
+  @spec stops_with_routes(by_id(), %{id() => MapSet.t(Route.t())}) :: by_id()
+  defp stops_with_routes(stops_by_id, routes_by_parent_or_stop_id) do
     Map.new(stops_by_id, fn {stop_id, stop} ->
       {
         stop_id,
         %{
           stop
-          | connections:
-              connections_by_parent_or_stop_id
+          | routes:
+              routes_by_parent_or_stop_id
               |> Map.get(stop_id_for_route_association(stop), MapSet.new())
               |> MapSet.to_list()
         }

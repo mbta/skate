@@ -128,35 +128,7 @@ defmodule Schedule.Gtfs.StopTest do
     end
   end
 
-  describe "reject_connections_for_route/2" do
-    test "only rejects connections with the matching route id " do
-      matching_route = %Route{
-        id: "39",
-        name: "first_bus",
-        description: "bus_route",
-        direction_names: %{}
-      }
-
-      other_route = %Route{
-        id: "86",
-        name: "second_bus",
-        description: "bus_route",
-        direction_names: %{}
-      }
-
-      stop = %Stop{
-        id: "1",
-        name: "name",
-        parent_station_id: nil,
-        connections: [matching_route, other_route]
-      }
-
-      assert %{connections: [^other_route]} =
-               Stop.reject_connections_for_route(stop, matching_route.id)
-    end
-  end
-
-  describe "stops_with_connections/4" do
+  describe "stops_with_routes/4" do
     setup do
       %{
         stop_1: %Stop{id: 1, name: "stop 1", parent_station_id: nil},
@@ -213,12 +185,12 @@ defmodule Schedule.Gtfs.StopTest do
       }
     end
 
-    test "connections is empty for a stop when no connections found", data do
+    test "routes is empty for a stop when no routes found", data do
       trip_id = data.route_1_pattern_1.representative_trip_id
       stop_id = data.stop_1.id
 
-      assert %{^stop_id => %{connections: []}} =
-               Stop.stops_with_connections(
+      assert %{^stop_id => %{routes: []}} =
+               Stop.stops_with_routes(
                  %{stop_id => data.stop_1},
                  [data.route_1, data.route_2],
                  [data.route_1_pattern_1],
@@ -237,10 +209,10 @@ defmodule Schedule.Gtfs.StopTest do
       route_2_trip_id = data.route_2_pattern_1.representative_trip_id
 
       assert %{
-               ^stop_1_id => %{connections: [^route_1, ^route_2]},
-               ^stop_2_id => %{connections: [^route_1]}
+               ^stop_1_id => %{routes: [^route_1, ^route_2]},
+               ^stop_2_id => %{routes: [^route_1]}
              } =
-               Stop.stops_with_connections(
+               Stop.stops_with_routes(
                  %{stop_1_id => data.stop_1, stop_2_id => data.stop_2},
                  [data.route_1, data.route_2],
                  [data.route_1_pattern_1, data.route_2_pattern_1],
@@ -266,9 +238,9 @@ defmodule Schedule.Gtfs.StopTest do
       route_2_trip_id = data.shuttle_route_pattern_1.representative_trip_id
 
       assert %{
-               ^stop_1_id => %{connections: [^route_1]}
+               ^stop_1_id => %{routes: [^route_1]}
              } =
-               Stop.stops_with_connections(
+               Stop.stops_with_routes(
                  %{stop_1_id => data.stop_1},
                  [route_1, route_2],
                  [data.route_1_pattern_1, data.shuttle_route_pattern_1],
@@ -279,7 +251,7 @@ defmodule Schedule.Gtfs.StopTest do
                )
     end
 
-    test "connections include routes that stop at sibling stops", data do
+    test "routes include routes that stop at sibling stops", data do
       sibling_stop_1_id = data.child_stop_1.id
       sibling_stop_2_id = data.child_stop_2.id
 
@@ -290,10 +262,10 @@ defmodule Schedule.Gtfs.StopTest do
       route_2_trip_id = data.route_2_pattern_1.representative_trip_id
 
       assert %{
-               ^sibling_stop_1_id => %{connections: [^route_1, ^route_2]},
-               ^sibling_stop_2_id => %{connections: [^route_1, ^route_2]}
+               ^sibling_stop_1_id => %{routes: [^route_1, ^route_2]},
+               ^sibling_stop_2_id => %{routes: [^route_1, ^route_2]}
              } =
-               Stop.stops_with_connections(
+               Stop.stops_with_routes(
                  %{
                    sibling_stop_1_id => data.child_stop_1,
                    sibling_stop_2_id => data.child_stop_2
@@ -311,7 +283,7 @@ defmodule Schedule.Gtfs.StopTest do
                )
     end
 
-    test "connections include routes that stop at parent stops", data do
+    test "routes include routes that stop at parent stops", data do
       child_stop_id = data.child_stop_1.id
       parent_stop_id = data.parent_stop.id
 
@@ -322,10 +294,10 @@ defmodule Schedule.Gtfs.StopTest do
       route_2_trip_id = data.route_2_pattern_1.representative_trip_id
 
       assert %{
-               ^child_stop_id => %{connections: [^route_1, ^route_2]},
-               ^parent_stop_id => %{connections: [^route_1, ^route_2]}
+               ^child_stop_id => %{routes: [^route_1, ^route_2]},
+               ^parent_stop_id => %{routes: [^route_1, ^route_2]}
              } =
-               Stop.stops_with_connections(
+               Stop.stops_with_routes(
                  %{child_stop_id => data.child_stop_1, parent_stop_id => data.parent_stop},
                  [data.route_1, data.route_2],
                  [data.route_1_pattern_1, data.route_2_pattern_1],
@@ -340,7 +312,7 @@ defmodule Schedule.Gtfs.StopTest do
                )
     end
 
-    test "connections are unique when multiple route patterns go to same stop", data do
+    test "routes are unique when multiple route patterns go to same stop", data do
       stop_1_id = data.stop_1.id
 
       route_1 = data.route_1
@@ -349,9 +321,9 @@ defmodule Schedule.Gtfs.StopTest do
       route_1_trip_id_2 = data.route_1_pattern_2.representative_trip_id
 
       assert %{
-               ^stop_1_id => %{connections: [^route_1]}
+               ^stop_1_id => %{routes: [^route_1]}
              } =
-               Stop.stops_with_connections(
+               Stop.stops_with_routes(
                  %{stop_1_id => data.stop_1},
                  [data.route_1],
                  [data.route_1_pattern_1, data.route_1_pattern_2],

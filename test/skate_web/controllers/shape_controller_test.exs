@@ -46,7 +46,7 @@ defmodule SkateWeb.ShapeControllerTest do
         name: "One",
         latitude: 42.01,
         longitude: -71.01,
-        connections: [
+        routes: [
           %Route{
             id: "route_1",
             name: "route_1_name",
@@ -55,7 +55,7 @@ defmodule SkateWeb.ShapeControllerTest do
           }
         ]
       },
-      %Stop{id: "stop_2", name: "Two", latitude: 42.02, longitude: -71.02, connections: []}
+      %Stop{id: "stop_2", name: "Two", latitude: 42.02, longitude: -71.02, routes: []}
     ]
   }
 
@@ -76,7 +76,7 @@ defmodule SkateWeb.ShapeControllerTest do
         "lat" => 42.01,
         "lon" => -71.01,
         "location_type" => "stop",
-        "connections" => [
+        "routes" => [
           %{
             "id" => "route_1",
             "name" => "route_1_name",
@@ -93,7 +93,7 @@ defmodule SkateWeb.ShapeControllerTest do
         "lat" => 42.02,
         "lon" => -71.02,
         "location_type" => "stop",
-        "connections" => []
+        "routes" => []
       }
     ]
   }
