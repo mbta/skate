@@ -28,7 +28,7 @@ import { FilterAccordion } from "./filterAccordion"
 import {
   GroupedAutocompleteControls,
   GroupedAutocompleteFromSearchTextResults,
-  autocompleteOptionData,
+  autocompleteOption,
 } from "./groupedAutocomplete"
 import { SocketContext } from "../contexts/socketContext"
 import useSocket from "../hooks/useSocket"
@@ -301,7 +301,7 @@ export const SearchForm = ({
               maxElementsPerGroup={5}
               searchFilters={filters}
               searchText={inputText}
-              fallbackOption={autocompleteOptionData(inputText, onSubmit)}
+              fallbackOption={autocompleteOption(inputText, onSubmit)}
               onSelectVehicleOption={onSelectVehicleOption}
               controllerRef={autocompleteController}
               onCursor={{

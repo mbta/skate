@@ -9,7 +9,8 @@ import {
   GroupedAutocomplete,
   GroupedAutocompleteControls,
   GroupedAutocompleteFromSearchTextResults,
-  autocompleteOptionData,
+  autocompleteGroup,
+  autocompleteOption,
 } from "../../src/components/groupedAutocomplete"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import {
@@ -48,7 +49,7 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Autocomplete List"
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         optionGroups={[
           {
             group: {
@@ -151,7 +152,7 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(fallbackLabel)}
+        fallbackOption={autocompleteOption(fallbackLabel)}
         optionGroups={[]}
       />
     )
@@ -167,7 +168,7 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         optionGroups={[
           {
             group: {
@@ -203,7 +204,7 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(fallbackOptionLabel)}
+        fallbackOption={autocompleteOption(fallbackOptionLabel)}
         optionGroups={[]}
       />
     )
@@ -229,7 +230,7 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={autocompleteOptionData(null)}
+          fallbackOption={autocompleteOption(null)}
           optionGroups={[
             {
               group: {
@@ -274,7 +275,7 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={autocompleteOptionData(null)}
+          fallbackOption={autocompleteOption(null)}
           optionGroups={[
             {
               group: {
@@ -332,7 +333,7 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={autocompleteOptionData(null)}
+          fallbackOption={autocompleteOption(null)}
           optionGroups={[
             {
               group: {
@@ -377,7 +378,7 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={autocompleteOptionData(null)}
+          fallbackOption={autocompleteOption(null)}
           optionGroups={[
             {
               group: {
@@ -434,7 +435,7 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         optionGroups={[
           {
             group: {
@@ -496,7 +497,7 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         optionGroups={[
           {
             group: {
@@ -556,7 +557,7 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={autocompleteOptionData(null)}
+          fallbackOption={autocompleteOption(null)}
           optionGroups={[
             {
               group: {
@@ -591,7 +592,7 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName="Search Suggestions"
-          fallbackOption={autocompleteOptionData(null)}
+          fallbackOption={autocompleteOption(null)}
           optionGroups={[
             {
               group: {
@@ -625,7 +626,7 @@ describe("<SearchAutocomplete/>", () => {
     render(
       <GroupedAutocomplete
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(
+        fallbackOption={autocompleteOption(
           fallbackLabel,
           onSelectFallbackOption
         )}
@@ -649,7 +650,7 @@ describe("<SearchAutocomplete/>", () => {
       <GroupedAutocomplete
         controllerRef={controller}
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         optionGroups={[
           {
             group: {
@@ -705,14 +706,14 @@ describe("<SearchAutocomplete/>", () => {
       render(
         <GroupedAutocomplete
           controlName=""
-          fallbackOption={autocompleteOptionData(null)}
+          fallbackOption={autocompleteOption(null)}
           optionGroups={[
             {
               group: {
                 title: null,
                 options: [
-                  autocompleteOptionData(option1Label),
-                  autocompleteOptionData(option2Label),
+                  autocompleteOption(option1Label),
+                  autocompleteOption(option2Label),
                 ],
               },
             },
@@ -740,7 +741,7 @@ describe("<SearchAutocomplete/>", () => {
   )
 })
 
-describe("<SearchAutocomplete.FromHook/>", () => {
+describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
   const vehiclesResultsGroup = optionGroup(
     searchPropertyDisplayConfig.vehicle.name
   )
@@ -767,7 +768,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     render(
       <GroupedAutocompleteFromSearchTextResults
         controlName="Search Suggestions"
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={searchFiltersFactory.build()}
@@ -812,7 +813,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
       <GroupedAutocompleteFromSearchTextResults
         controlName="Search Suggestions"
         maxElementsPerGroup={maxLength}
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={searchFiltersFactory.build()}
@@ -850,7 +851,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
       <GroupedAutocompleteFromSearchTextResults
         controlName="Search Suggestions"
         maxElementsPerGroup={maxLength}
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={searchFiltersFactory.build()}
@@ -905,7 +906,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     const Autocomplete = ({ searchText }: { searchText: string }) => (
       <GroupedAutocompleteFromSearchTextResults
         controlName=""
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={searchFiltersFactory.build()}
@@ -942,7 +943,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     const Autocomplete = () => (
       <GroupedAutocompleteFromSearchTextResults
         controlName=""
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         onSelectVehicleOption={() => {}}
         searchText={""}
         searchFilters={searchFiltersFactory.build()}
@@ -995,7 +996,7 @@ describe("<SearchAutocomplete.FromHook/>", () => {
     }) => (
       <GroupedAutocompleteFromSearchTextResults
         controlName=""
-        fallbackOption={autocompleteOptionData(null)}
+        fallbackOption={autocompleteOption(null)}
         onSelectVehicleOption={() => {}}
         searchText={""}
         searchFilters={filters}
