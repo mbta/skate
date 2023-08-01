@@ -14,8 +14,6 @@ exports[`SearchForm renders 1`] = `
   >
     <div
       className="c-search-form__search-input-container"
-      onKeyDown={[Function]}
-      role="presentation"
     >
       <input
         aria-controls=":r0:"
