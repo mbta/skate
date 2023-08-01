@@ -212,6 +212,12 @@ export const SearchForm = ({
         data-autocomplete-visible={autocompleteVisible}
         role="presentation"
         onKeyDown={(event) => {
+          if (event.key === "ArrowDown") {
+            autocompleteController.current?.focusCursorToFirstOption()
+
+            event.preventDefault()
+            event.stopPropagation()
+          }
           const ignoredKeysList = [
             "ArrowDown",
             "ArrowUp",
@@ -228,18 +234,7 @@ export const SearchForm = ({
           }
         }}
       >
-        <div
-          className="c-search-form__search-input-container"
-          role="presentation"
-          onKeyDown={(e) => {
-            if (e.key === "ArrowDown") {
-              autocompleteController.current?.focusCursorToFirstOption()
-
-              e.preventDefault()
-              e.stopPropagation()
-            }
-          }}
-        >
+        <div className="c-search-form__search-input-container">
           <input
             className="c-search-form__input"
             placeholder="Search"
