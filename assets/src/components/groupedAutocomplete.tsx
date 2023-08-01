@@ -359,11 +359,6 @@ export interface GroupedAutocompleteProps
   /**
    * React Component to use as the heading and aria-label for the results list.
    *
-   * This component must expose the following props
-   * - `aria-hidden`
-   * - `className`
-   * - `id`
-   *
    * Defaults to "h2".
    */
   Heading?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
