@@ -127,7 +127,7 @@ exports[`SearchForm renders 1`] = `
               onFocus={[Function]}
               onKeyDown={[Function]}
               role="option"
-              tabIndex={0}
+              tabIndex={-1}
             />
           </ul>
         </div>

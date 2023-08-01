@@ -561,10 +561,8 @@ export const GroupedAutocomplete = ({
                     // If this element is selected by the cursor,
                     // set document focus to this element when mounted.
                     ref={(selected || null) && ((r) => r?.focus())}
-                    // Allow user to tab into the first option and out of
-                    // the autocomplete control on next `Tab` key.
-                    // > Composite controls should have one tab stop
-                    tabIndex={groupIndex === 0 && optionIndex === 0 ? 0 : -1}
+                    // Allow element to be focused as a control.
+                    tabIndex={-1}
                   >
                     {label}
                   </li>
