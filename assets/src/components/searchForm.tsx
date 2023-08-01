@@ -30,6 +30,8 @@ import {
   GroupedAutocompleteFromSearchTextResults,
   autocompleteOptionData,
 } from "./groupedAutocomplete"
+import { SocketContext } from "../contexts/socketContext"
+import useSocket from "../hooks/useSocket"
 
 // #region Search Filters
 
@@ -292,19 +294,21 @@ export const SearchForm = ({
           className="c-search-form__autocomplete-container"
           hidden={!autocompleteVisible}
         >
-          <GroupedAutocompleteFromSearchTextResults
-            id={autocompleteId}
-            controlName="Search Suggestions"
-            maxElementsPerGroup={5}
-            searchFilters={filters}
-            searchText={inputText}
-            fallbackOption={autocompleteOptionData(inputText, onSubmit)}
-            onSelectVehicleOption={onSelectVehicleOption}
-            controllerRef={autocompleteController}
+          <SocketContext.Provider value={useSocket()}>
+            <GroupedAutocompleteFromSearchTextResults
+              id={autocompleteId}
+              controlName="Search Suggestions"
+              maxElementsPerGroup={5}
+              searchFilters={filters}
+              searchText={inputText}
+              fallbackOption={autocompleteOptionData(inputText, onSubmit)}
+              onSelectVehicleOption={onSelectVehicleOption}
+              controllerRef={autocompleteController}
               onCursor={{
                 onCursorExitEdge: () => formSearchInput.current?.focus(),
               }}
-          />
+            />
+          </SocketContext.Provider>
         </div>
       </div>
       <Filters filters={filters} onFiltersChanged={onFiltersChanged} />
