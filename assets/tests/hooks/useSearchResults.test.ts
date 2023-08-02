@@ -280,7 +280,21 @@ describe("useSearchResults", () => {
 })
 
 describe("useLimitedSearchResults", () => {
-  test("returns null initially", () => {
+  test("when query given and loading, returns loading", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { result } = renderHook(() =>
+      useLimitedSearchResults(mockSocket, {
+        property: "vehicle",
+        text: "1234",
+        limit: 5,
+      })
+    )
+    expect(result.current).toEqual({ is_loading: true })
+  })
+  test("when no query given, returns null", () => {
     const mockSocket = makeMockSocket()
 
     const { result } = renderHook(() =>
@@ -326,8 +340,10 @@ describe("useLimitedSearchResults", () => {
     )
 
     expect(result.current).toEqual({
-      matchingVehicles: [vehicleFromData(vehicleData)],
-      hasMoreMatches: false,
+      ok: {
+        matches: [vehicleFromData(vehicleData)],
+        hasMoreMatches: false,
+      },
     })
   })
 
@@ -381,8 +397,10 @@ describe("useLimitedSearchResults", () => {
       limit: 30,
     })
     expect(result.current).toEqual({
-      hasMoreMatches: true,
-      matchingVehicles: [vehicleFromData(vehicleDataAfterLimitIncrease)],
+      ok: {
+        hasMoreMatches: true,
+        matches: [vehicleFromData(vehicleDataAfterLimitIncrease)],
+      },
     })
   })
 })

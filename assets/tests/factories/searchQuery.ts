@@ -4,10 +4,11 @@ import {
   SearchQuery,
   OldSearchQueryType,
   defaultResultLimit,
+  SearchProperty,
 } from "../../src/models/searchQuery"
 
 class SearchQueryFactory extends Factory<SearchQuery> {
-  searchType(property: OldSearchQueryType) {
+  searchType(property: OldSearchQueryType | SearchProperty) {
     if (property === "all") {
       return this.params({ property, properties: emptySearchQuery.properties })
     } else
@@ -38,5 +39,8 @@ export const searchQueryRunFactory = searchQueryFactory.searchType("run")
 
 export const searchQueryVehicleFactory =
   searchQueryFactory.searchType("vehicle")
+
+export const searchQueryLocationFactory =
+  searchQueryFactory.searchType("location")
 
 export const emptySearchQueryFactory = searchQueryFactory
