@@ -28,7 +28,7 @@ const sortRoutes = (
     // exclude commuter rail
     .filter((c) => c.type !== 2)
     .sort((a, b) => {
-      // non-bubs (i.e. rapid transit) routes go before bus
+      // non-bus (i.e. rapid transit) routes go before bus
       if (a.type === 3 && b.type !== 3) {
         return 1
       } else if (a.type !== 3 && b.type === 3) {
