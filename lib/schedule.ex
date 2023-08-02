@@ -159,6 +159,10 @@ defmodule Schedule do
     call_with_data(persistent_term_key, [], :stations, [])
   end
 
+  def all_stops(persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [], :all_stops, [])
+  end
+
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   @spec first_route_pattern_for_route_and_direction(
@@ -216,6 +220,19 @@ defmodule Schedule do
       persistent_term_key,
       [route_id, start_time, end_time],
       :swings_for_route,
+      nil
+    )
+  end
+
+  @doc """
+  Get the version for the loaded schedule data
+  """
+  @spec version(persistent_term_key()) :: String.t() | nil
+  def version(persistent_term_key \\ __MODULE__) do
+    call_with_data(
+      persistent_term_key,
+      [],
+      :version,
       nil
     )
   end

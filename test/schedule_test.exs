@@ -376,6 +376,33 @@ defmodule ScheduleTest do
     end
   end
 
+  describe "stops/0" do
+    test "returns stops and stations" do
+      pid =
+        Schedule.start_mocked(%{
+          gtfs: %{
+            "stops.txt" => [
+              "stop_id,stop_name,stop_lat,stop_lon,parent_station,location_type",
+              "stop-1,No Location Type,1.0,1.5,,",
+              "stop-2,Stop,2.0,2.5,,0",
+              "stop-3,Platform,2.0,2.5,stop-4,0",
+              "stop-4,Station,2.0,2.5,,1",
+              "stop-5,Enterance,2.0,2.5,,2",
+              "stop-6,Generic Node,2.0,2.5,,3",
+              "stop-7,Boarding Area,2.0,2.5,,4"
+            ]
+          }
+        })
+
+      assert [
+               %Stop{id: "stop-1", location_type: :stop},
+               %Stop{id: "stop-2", location_type: :stop},
+               %Stop{id: "stop-3", location_type: :stop},
+               %Stop{id: "stop-4", location_type: :station}
+             ] = Schedule.all_stops(pid)
+    end
+  end
+
   describe "trip" do
     test "returns the trip, including stop_times" do
       pid =
