@@ -223,7 +223,7 @@ defmodule Realtime.VehicleOrGhostTest do
       logged_out_vehicle = build(:vehicle, %{operator_logon_time: nil, label: "1000"})
 
       assert %{
-               matching_vehicles: [^ghost, ^vehicle1, ^vehicle2, ^vehicle3, ^logged_out_vehicle],
+               matching_vehicles: [^ghost, ^vehicle3, ^vehicle2, ^vehicle1, ^logged_out_vehicle],
                has_more_matches: false
              } =
                VehicleOrGhost.take_limited_matches(

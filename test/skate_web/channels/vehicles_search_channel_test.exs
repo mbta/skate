@@ -27,11 +27,11 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
      socket: socket,
      user: user,
      vehicles: [
-       build(:vehicle, %{id: "1", label: "0001", route_id: "1", operator_logon_time: 100}),
+       build(:vehicle, %{id: "1", label: "0001", route_id: "1", operator_logon_time: 300}),
        build(:vehicle, %{id: "2", label: "not_match_2", route_id: "1"}),
        build(:vehicle, %{id: "3", label: "0002", route_id: "1", operator_logon_time: 200}),
        build(:vehicle, %{id: "4", label: "not_match_3", route_id: "1"}),
-       build(:vehicle, %{id: "5", label: "0003", route_id: "1", operator_logon_time: 300})
+       build(:vehicle, %{id: "5", label: "0003", route_id: "1", operator_logon_time: 100})
      ]}
   end
 
@@ -136,7 +136,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
                Realtime.Server.update_vehicles({%{"1" => [new_match, match_1, match_2]}, [], []})
 
       assert_push("limited_search", %{
-        data: %{matching_vehicles: [^match_1, ^match_2, ^new_match], has_more_matches: false}
+        data: %{matching_vehicles: [^new_match, ^match_1, ^match_2], has_more_matches: false}
       })
     end
   end
