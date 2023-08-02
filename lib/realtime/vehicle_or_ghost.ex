@@ -49,7 +49,7 @@ defmodule Realtime.VehicleOrGhost do
 
           cond do
             is_nil(v1_logon_time) or is_nil(v2_logon_time) -> true
-            v1_logon_time > v2_logon_time -> false
+            v1_logon_time < v2_logon_time -> false
             true -> true
           end
 
