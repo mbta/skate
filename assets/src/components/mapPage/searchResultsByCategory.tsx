@@ -6,7 +6,6 @@ import { SearchResultCategory } from "../../models/searchQuery"
 import { Vehicle, Ghost } from "../../realtime"
 import SearchResults, { NoResults } from "../searchResults"
 import React from "react"
-import { Card, CardBody } from "../card"
 import { LocationSearchResult } from "../../models/locationSearchResult"
 import {
   Loading as LoadingResult,
@@ -17,7 +16,7 @@ import {
 import Loading from "../loading"
 import useSearchResultsByCategory from "../../hooks/useSearchResultsByCategory"
 import { setCategoryMatchLimit } from "../../state/searchPageState"
-import { LocationDotIcon } from "../../helpers/icon"
+import LocationCard from "./locationCard"
 
 const VehicleSearchResultSection = ({
   results,
@@ -85,24 +84,10 @@ const LocationSearchResultSection = ({
           <ul className="c-search-results__list">
             {results.ok.matches.map((locationSearchResult) => (
               <li key={locationSearchResult.id}>
-                <Card
-                  style="white"
-                  additionalClass="c-search-results__location_result"
-                  title={
-                    locationSearchResult.name || (
-                      <span className="c-search-results__address-only-location-result-title">
-                        {locationSearchResult.address}
-                      </span>
-                    )
-                  }
-                  icon={<LocationDotIcon />}
-                  openCallback={() => onSelectLocation(locationSearchResult)}
-                >
-                  {locationSearchResult.name &&
-                    locationSearchResult.address && (
-                      <CardBody>{locationSearchResult.address}</CardBody>
-                    )}
-                </Card>
+                <LocationCard
+                  location={locationSearchResult}
+                  onSelectLocation={onSelectLocation}
+                />
               </li>
             ))}
           </ul>

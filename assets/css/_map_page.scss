@@ -27,7 +27,8 @@ $z-map-page-context: (
 
 .c-map-page {
   .c-vehicle-properties-card,
-  .c-route-properties-card {
+  .c-route-properties-card,
+  .c-location-card--selection {
     margin: 1rem;
   }
 }

@@ -12,6 +12,7 @@ import { BrowserRouter } from "react-router-dom"
 import MapPage from "../../src/components/mapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
+import { useLocationSearchResults } from "../../src/hooks/useLocationSearchResults"
 import * as dateTime from "../../src/util/dateTime"
 
 import userEvent from "@testing-library/user-event"
@@ -67,11 +68,18 @@ import {
 } from "../testHelpers/selectors/components/searchForm"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import locationSearchResultFactory from "../factories/locationSearchResult"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(() => null),
   useLimitedSearchResults: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useLocationSearchResults", () => ({
+  __esModule: true,
+  default: jest.fn(() => null),
+  useLocationSearchResults: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
@@ -665,6 +673,40 @@ describe("<MapPage />", () => {
     expect(getMapSearchPanel()).toHaveClass(
       "c-map-page__input-and-results--visible"
     )
+  })
+
+  test("When a location is selected from the list of search results, location card should be visible", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+    const location = locationSearchResultFactory.build()
+
+    ;(useLocationSearchResults as jest.Mock).mockReturnValue([location])
+
+    render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({
+          searchPageState: activeSearchPageStateFactory.build({
+            query: { text: location.name! },
+            selectedEntity: {
+              type: SelectedEntityType.Location,
+              location: location,
+            },
+          }),
+        })}
+      >
+        <MapPage />
+      </RealDispatchWrapper>
+    )
+
+    const mapSearchPanel = getMapSearchPanel()
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
+
+    const locationCard = screen.getByLabelText(location.name!)
+    expect(locationCard).toBeVisible()
+    // Selected location has street view button, whereas a location in the
+    // results list does not
+    expect(within(locationCard).getByText(/Street View/)).toBeInTheDocument()
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
   })
 
   test("can collapse and un-collapse the search panel with the drawer tab", async () => {

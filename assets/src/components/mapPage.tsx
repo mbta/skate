@@ -40,6 +40,7 @@ import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { Socket } from "phoenix"
 import SearchResultsByCategory from "./mapPage/searchResultsByCategory"
 import { LocationSearchResult } from "../models/locationSearchResult"
+import LocationCard from "./mapPage/locationCard"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -232,7 +233,13 @@ const Selection = ({
           selectedRoutePattern={selectedEntity}
           selectRoutePattern={selectRoutePattern}
         />
-      ) : null}
+      ) : (
+        <LocationCard
+          location={selectedEntity.location}
+          includeStreetView={true}
+          additionalClass="c-location-card--selection"
+        />
+      )}
     </div>
   )
 }
