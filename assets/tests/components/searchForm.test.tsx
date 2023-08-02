@@ -3,7 +3,9 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
-import SearchFormFromStateDispatchContext from "../../src/components/searchForm"
+import SearchFormFromStateDispatchContext, {
+  SearchForm,
+} from "../../src/components/searchForm"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 import {
@@ -24,6 +26,20 @@ import {
 } from "../testHelpers/selectors/components/searchForm"
 import { searchPageStateFactory } from "../factories/searchPageState"
 import { searchQueryVehicleFactory } from "../factories/searchQuery"
+import {
+  listbox as autocompleteListbox,
+  option as autocompleteOption,
+} from "../testHelpers/selectors/components/groupedAutocomplete"
+import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
+import vehicleFactory from "../factories/vehicle"
+
+jest.mock("../../src/hooks/useAutocompleteResults", () => ({
+  useAutocompleteResults: jest.fn().mockImplementation(() => ({
+    operator: [],
+    run: [],
+    vehicle: [],
+  })),
+}))
 
 const mockDispatch = jest.fn()
 
@@ -347,5 +363,156 @@ describe("SearchForm", () => {
 
       expect(testDispatch).toHaveBeenCalledWith(submitSearch())
     })
+  })
+
+  test("when the search text length is greater than or equal to the minium character count, should show autocomplete", () => {
+    render(
+      <SearchForm
+        inputText="123"
+        filters={{
+          location: false,
+          operator: true,
+          run: true,
+          vehicle: true,
+        }}
+        onFiltersChanged={() => {}}
+        onSelectVehicleOption={() => {}}
+      />
+    )
+
+    expect(autocompleteListbox().get()).toBeInTheDocument()
+  })
+
+  test("when the search text length is less than the minium character count, should not show autocomplete", () => {
+    render(
+      <SearchForm
+        inputText="12"
+        filters={{
+          location: false,
+          operator: true,
+          run: true,
+          vehicle: true,
+        }}
+        onFiltersChanged={() => {}}
+        onSelectVehicleOption={() => {}}
+      />
+    )
+
+    expect(autocompleteListbox().get()).not.toBeVisible()
+  })
+
+  test("when the search is submitted, should not show autocomplete", async () => {
+    render(
+      <SearchForm
+        inputText="123"
+        filters={{
+          location: false,
+          operator: true,
+          run: true,
+          vehicle: true,
+        }}
+        // Prevent the following error by preventing default event.
+        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}
+        onFiltersChanged={() => {}}
+        onSelectVehicleOption={() => {}}
+      />
+    )
+
+    expect(autocompleteListbox().get()).toBeInTheDocument()
+
+    await userEvent.click(submitButton.get())
+
+    expect(autocompleteListbox().get()).not.toBeVisible()
+  })
+
+  test("when a autocomplete option is clicked, should fire event 'onSelectVehicleOption'", async () => {
+    const onSelectVehicleOption = jest.fn()
+    const inputText = "123"
+    const vehicle = vehicleFactory.build()
+
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
+      _socket,
+      searchText
+    ) => {
+      if (inputText === searchText) {
+        return {
+          vehicle: [vehicle],
+          operator: [],
+          run: [],
+        }
+      }
+      return {
+        operator: [],
+        run: [],
+        vehicle: [],
+      }
+    }) as typeof useAutocompleteResults)
+
+    render(
+      <SearchForm
+        inputText={inputText}
+        filters={{
+          location: false,
+          operator: true,
+          run: true,
+          vehicle: true,
+        }}
+        // Prevent the following error by preventing default event.
+        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}
+        onFiltersChanged={() => {}}
+        onSelectVehicleOption={onSelectVehicleOption}
+      />
+    )
+
+    await userEvent.click(autocompleteOption(vehicle.label!).get())
+
+    expect(onSelectVehicleOption).toHaveBeenCalledWith(vehicle)
+  })
+
+  test("when a filter is applied, should not show disabled categories in autocomplete", async () => {
+    const inputText = "123"
+    const [vehicle, runVehicle] = vehicleFactory.buildList(2)
+
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
+      _socket,
+      searchText,
+      filters
+    ) => {
+      if (inputText === searchText) {
+        return {
+          vehicle: filters.vehicle ? [vehicle] : [],
+          operator: [],
+          run: [runVehicle],
+        }
+      }
+      return {
+        operator: [],
+        run: [],
+        vehicle: [],
+      }
+    }) as typeof useAutocompleteResults)
+
+    render(
+      <SearchForm
+        inputText={inputText}
+        filters={{
+          location: false,
+          operator: true,
+          run: true,
+          vehicle: false,
+        }}
+        onFiltersChanged={() => {}}
+        onSelectVehicleOption={() => {}}
+      />
+    )
+
+    expect(autocompleteOption(vehicle.label!).query()).not.toBeInTheDocument()
+    expect(autocompleteOption(runVehicle.runId!).get()).toBeInTheDocument()
   })
 })

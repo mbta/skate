@@ -2,6 +2,16 @@
   display: flex;
   flex-flow: column nowrap;
   gap: 1rem;
+
+  // Prevent intersection between accordion and autocomplete popup
+  .c-filter-accordion,
+  .c-search-form__search-control {
+    isolation: isolate;
+  }
+  .c-search-form__search-control {
+    // Stack items within search-control on top of accordion
+    z-index: 1;
+  }
 }
 
 .c-search-form__search-control {
@@ -105,3 +115,41 @@
   }
 }
 // #endregion Search Input Buttons
+
+// #region Autocomplete Control
+// Hide the autocomplete control by default
+.c-search-form__autocomplete-container {
+  display: none;
+}
+
+// When input controls have focus --
+.c-search-form__search-control[data-autocomplete-visible="true"]:focus-within {
+  // -- Show Autocomplete control
+  .c-search-form__autocomplete-container {
+    display: block;
+  }
+
+  // -- Visually join the bottom of the input bar with autocomplete by squaring
+  //    off the bottom
+  .c-search-form__search-input-container {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.c-search-form__autocomplete-container {
+  // Isolate to ensure that floating on top of other elements doesn't intersect
+  // in the Z axis.
+  isolation: isolate;
+  // Move behind the input control so focus styles overlap the autocomplete
+  // control
+  position: relative;
+  z-index: -1;
+
+  &:focus-within {
+    // Attempt to put the autocomplete control on top of the input control if
+    // the autocomplete control has focus
+    z-index: 1;
+  }
+}
+// #endregion Autocomplete Control

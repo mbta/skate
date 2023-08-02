@@ -9,7 +9,11 @@ export const searchPropertyDisplayConfig = {
 
 export type SearchProperty = keyof typeof searchPropertyDisplayConfig
 
-export type PropertyLimits = { [K in SearchProperty]: number | null }
+export type SearchProperties<T> = {
+  [K in SearchProperty]: T
+}
+
+export type PropertyLimits = SearchProperties<number | null>
 
 export interface SearchQuery {
   text: string
