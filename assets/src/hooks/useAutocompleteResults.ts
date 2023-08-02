@@ -2,10 +2,8 @@ import { Socket } from "phoenix"
 
 import { SearchProperties, SearchProperty } from "../models/searchQuery"
 import { Ghost, Vehicle } from "../realtime"
-import {
-  LimitedSearchResults,
-  useLimitedSearchResults,
-} from "./useSearchResults"
+import { useLimitedSearchResults } from "./useSearchResults"
+import { isLoading } from "../util/fetchResult"
 
 type AutocompleteResults = Record<
   Exclude<SearchProperty, "location">,
@@ -26,23 +24,17 @@ export const useAutocompleteResults = (
   searchFilters: SearchProperties<boolean>,
   maxResults = 5
 ): AutocompleteResults => {
-  // Search for all the properties we need to return, but if it's filtered,
-  // set `query` parameter to `null`
-  // If there are no results, use fallback containing zero results.
-  const { matchingVehicles: operator } = useLimitedSearchResultsForProperty(
+  const operator = useLimitedSearchResultsForProperty(
     searchFilters.operator,
     "operator"
   )
 
-  const { matchingVehicles: vehicle } = useLimitedSearchResultsForProperty(
+  const vehicle = useLimitedSearchResultsForProperty(
     searchFilters.vehicle,
     "vehicle"
   )
 
-  const { matchingVehicles: run } = useLimitedSearchResultsForProperty(
-    searchFilters.run,
-    "run"
-  )
+  const run = useLimitedSearchResultsForProperty(searchFilters.run, "run")
 
   return {
     vehicle,
@@ -53,20 +45,23 @@ export const useAutocompleteResults = (
   function useLimitedSearchResultsForProperty(
     enableSearch: boolean,
     property: SearchProperty
-  ) {
-    const fallback: LimitedSearchResults = {
-      hasMoreMatches: false,
-      matchingVehicles: [],
-    }
-    return (
-      useLimitedSearchResults(
-        socket,
-        (enableSearch || null) && {
-          property,
-          text: searchText,
-          limit: maxResults,
-        }
-      ) || fallback
+  ): (Vehicle | Ghost)[] {
+    // Search for the property we need to return, but if it's filtered,
+    // set `query` parameter to `null`
+    const res = useLimitedSearchResults(
+      socket,
+      (enableSearch || null) && {
+        property,
+        text: searchText,
+        limit: maxResults,
+      }
     )
+
+    // If there are no results, or is loading, use empty array as fallback.
+    if (!res || isLoading(res)) {
+      return []
+    }
+
+    return res.ok.matches
   }
 }
