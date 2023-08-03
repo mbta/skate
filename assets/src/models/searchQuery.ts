@@ -15,9 +15,14 @@ export type SearchProperties<T> = {
 
 export type PropertyLimits = SearchProperties<number | null>
 
+export type SearchResultCategory = "vehicle" | "location"
+export type CategoryResultLimits = { vehicle: number; location: number }
+
 export interface SearchQuery {
   text: string
   property: OldSearchQueryType | string
+  categoryResultLimits: CategoryResultLimits
+  // TODO: Remove Properties
   properties: PropertyLimits
 }
 
@@ -34,10 +39,16 @@ export const defaultAllProperties = {
   location: defaultResultLimit,
 }
 
+export const defaultCategoryResultLimits = {
+  vehicle: defaultResultLimit,
+  location: defaultResultLimit,
+}
+
 export const emptySearchQuery: SearchQuery = {
   text: "",
   property: "all",
   properties: defaultAllProperties,
+  categoryResultLimits: defaultCategoryResultLimits,
 }
 
 export const filterToAlphanumeric = (text: string): string =>
