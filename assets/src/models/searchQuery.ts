@@ -25,8 +25,6 @@ export interface SearchQuery {
   text: string
   property: SearchPropertyQuery
   categoryResultLimits: CategoryResultLimits
-  // TODO: Remove Properties
-  properties: PropertyLimits
 }
 
 export interface SavedSearchQuery {
@@ -50,7 +48,6 @@ export const defaultCategoryResultLimits = {
 export const emptySearchQuery: SearchQuery = {
   text: "",
   property: "all",
-  properties: defaultAllProperties,
   categoryResultLimits: defaultCategoryResultLimits,
 }
 

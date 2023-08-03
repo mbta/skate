@@ -230,7 +230,6 @@ describe("searchResultsByProperty", () => {
           searchPageState: searchPageStateFactory.build({
             query: {
               text: "123",
-              properties: { vehicle: 5 },
             },
 
             isActive: true,
