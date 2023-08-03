@@ -4,10 +4,11 @@ export const clearButton = byRole("button", {
   name: /clear/i,
 })
 
-export const vehicleFilter = byRole("button", { name: "Vehicles" })
-export const operatorFilter = byRole("button", { name: "Operators" })
-export const runFilter = byRole("button", { name: "Runs" })
-export const locationFilter = byRole("button", { name: "Locations" })
+export const allFilter = byRole("radio", { name: "All" })
+export const vehicleFilter = byRole("radio", { name: "Vehicles" })
+export const operatorFilter = byRole("radio", { name: "Operators" })
+export const runFilter = byRole("radio", { name: "Runs" })
+export const locationFilter = byRole("radio", { name: "Locations" })
 
 export const submitButton = byRole("button", { name: "Submit" })
 

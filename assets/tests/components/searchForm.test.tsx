@@ -10,12 +10,13 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 import {
   SearchPageState,
-  setSearchProperties,
+  setOldSearchProperty,
   setSearchText,
   submitSearch,
 } from "../../src/state/searchPageState"
 import stateFactory from "../factories/applicationState"
 import {
+  allFilter,
   clearButton,
   locationFilter,
   operatorFilter,
@@ -25,13 +26,18 @@ import {
   vehicleFilter,
 } from "../testHelpers/selectors/components/searchForm"
 import { searchPageStateFactory } from "../factories/searchPageState"
-import { searchQueryVehicleFactory } from "../factories/searchQuery"
+import {
+  emptySearchQueryFactory,
+  searchQueryVehicleFactory,
+} from "../factories/searchQuery"
 import {
   listbox as autocompleteListbox,
   option as autocompleteOption,
 } from "../testHelpers/selectors/components/groupedAutocomplete"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import vehicleFactory from "../factories/vehicle"
+import { SearchPropertyQuery } from "../../src/models/searchQuery"
+import { formatOperatorName } from "../../src/util/operatorFormatting"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -252,115 +258,69 @@ describe("SearchForm", () => {
   })
 
   describe("filters", () => {
-    test("all filters are shown as inactive by default", () => {
-      const testDispatch = jest.fn()
-      render(
-        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-          <SearchFormFromStateDispatchContext />
-        </StateDispatchProvider>
-      )
-
-      expect(vehicleFilter.get()).toHaveAttribute("aria-pressed", "false")
-      expect(operatorFilter.get()).toHaveAttribute("aria-pressed", "false")
-      expect(runFilter.get()).toHaveAttribute("aria-pressed", "false")
-      expect(locationFilter.get()).toHaveAttribute("aria-pressed", "false")
-    })
-
-    test("when some but not all of the properties have limits, those filters are active", () => {
-      const testDispatch = jest.fn()
-      render(
-        <StateDispatchProvider
-          state={{
-            ...initialState,
-            searchPageState: searchPageStateFactory.build({
-              query: searchQueryVehicleFactory.build({
-                text: "123",
-                properties: { vehicle: 5 },
-              }),
-            }),
-          }}
-          dispatch={testDispatch}
-        >
-          <SearchFormFromStateDispatchContext />
-        </StateDispatchProvider>
-      )
-
-      expect(vehicleFilter.get()).toHaveAttribute("aria-pressed", "true")
-      expect(operatorFilter.get()).toHaveAttribute("aria-pressed", "false")
-      expect(runFilter.get()).toHaveAttribute("aria-pressed", "false")
-      expect(locationFilter.get()).toHaveAttribute("aria-pressed", "false")
-    })
-
-    test("when the first filter is toggled on, dispatches that only that filter should be active", async () => {
-      const testDispatch = jest.fn()
-      render(
-        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-          <SearchFormFromStateDispatchContext />
-        </StateDispatchProvider>
-      )
-
-      await userEvent.click(vehicleFilter.get())
-      expect(testDispatch).toHaveBeenCalledWith(
-        setSearchProperties(["vehicle"])
-      )
-    })
-
-    test("when all filters are toggled on, then all filters are shown as active", async () => {
-      const testDispatch = jest.fn()
-      render(
-        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-          <SearchFormFromStateDispatchContext />
-        </StateDispatchProvider>
-      )
-
-      await userEvent.click(vehicleFilter.get())
-      await userEvent.click(operatorFilter.get())
-      await userEvent.click(runFilter.get())
-      await userEvent.click(locationFilter.get())
-
-      expect(vehicleFilter.get()).toHaveAttribute("aria-pressed", "true")
-      expect(operatorFilter.get()).toHaveAttribute("aria-pressed", "true")
-      expect(runFilter.get()).toHaveAttribute("aria-pressed", "true")
-      expect(locationFilter.get()).toHaveAttribute("aria-pressed", "true")
-    })
-
-    test("when the only filter that is toggled on is toggled off, then sets the list of search properties to all properties", async () => {
-      const testDispatch = jest.fn()
-      render(
-        <StateDispatchProvider
-          state={{
-            ...initialState,
-            searchPageState: searchPageStateFactory.build({
-              query: searchQueryVehicleFactory.build({
-                text: "123",
-                properties: { vehicle: 5 },
-              }),
-            }),
-          }}
-          dispatch={testDispatch}
-        >
-          <SearchFormFromStateDispatchContext />
-        </StateDispatchProvider>
-      )
-
-      await userEvent.click(vehicleFilter.get())
-      expect(testDispatch).toHaveBeenCalledWith(
-        setSearchProperties(
-          expect.arrayContaining(["vehicle", "operator", "run", "location"])
+    describe("the selected property is checked by default", () => {
+      const propertyToSelector = {
+        all: allFilter,
+        vehicle: vehicleFilter,
+        operator: operatorFilter,
+        run: runFilter,
+        location: locationFilter,
+      }
+      const filters: SearchPropertyQuery[] = [
+        "all",
+        "vehicle",
+        "operator",
+        "run",
+        "location",
+      ]
+      test.each(filters)("%s checked", (selectedProperty) => {
+        const testDispatch = jest.fn()
+        render(
+          <StateDispatchProvider
+            state={{
+              ...initialState,
+              searchPageState: {
+                ...initialState.searchPageState,
+                query: emptySearchQueryFactory.build({
+                  text: "123",
+                  property: selectedProperty,
+                }),
+              },
+            }}
+            dispatch={testDispatch}
+          >
+            <SearchFormFromStateDispatchContext />
+          </StateDispatchProvider>
         )
-      )
+
+        expect(
+          propertyToSelector[selectedProperty as SearchPropertyQuery].get()
+        ).toBeChecked()
+      })
     })
 
-    test("clicking a search property submits the search", async () => {
+    test("when filter is selected, dispatches event to change search property and submit search", async () => {
       const testDispatch = jest.fn()
-      const result = render(
-        <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+      render(
+        <StateDispatchProvider
+          state={{
+            ...initialState,
+            searchPageState: searchPageStateFactory.build({
+              query: searchQueryVehicleFactory.build({
+                text: "123",
+              }),
+            }),
+          }}
+          dispatch={testDispatch}
+        >
           <SearchFormFromStateDispatchContext />
         </StateDispatchProvider>
       )
 
-      await userEvent.click(result.getByRole("button", { name: "Runs" }))
-
+      await userEvent.click(locationFilter.get())
+      expect(testDispatch).toHaveBeenCalledWith(
+        setOldSearchProperty("location")
+      )
       expect(testDispatch).toHaveBeenCalledWith(submitSearch())
     })
   })
@@ -369,13 +329,8 @@ describe("SearchForm", () => {
     render(
       <SearchForm
         inputText="123"
-        filters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
-        onFiltersChanged={() => {}}
+        property="all"
+        onPropertyChange={jest.fn()}
         onSelectVehicleOption={() => {}}
       />
     )
@@ -387,13 +342,8 @@ describe("SearchForm", () => {
     render(
       <SearchForm
         inputText="12"
-        filters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
-        onFiltersChanged={() => {}}
+        property="all"
+        onPropertyChange={jest.fn()}
         onSelectVehicleOption={() => {}}
       />
     )
@@ -405,18 +355,13 @@ describe("SearchForm", () => {
     render(
       <SearchForm
         inputText="123"
-        filters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
+        property="all"
+        onPropertyChange={jest.fn()}
         // Prevent the following error by preventing default event.
         // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        onFiltersChanged={() => {}}
         onSelectVehicleOption={() => {}}
       />
     )
@@ -454,18 +399,13 @@ describe("SearchForm", () => {
     render(
       <SearchForm
         inputText={inputText}
-        filters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: true,
-        }}
+        property="all"
+        onPropertyChange={jest.fn()}
         // Prevent the following error by preventing default event.
         // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        onFiltersChanged={() => {}}
         onSelectVehicleOption={onSelectVehicleOption}
       />
     )
@@ -501,18 +441,58 @@ describe("SearchForm", () => {
     render(
       <SearchForm
         inputText={inputText}
-        filters={{
-          location: false,
-          operator: true,
-          run: true,
-          vehicle: false,
-        }}
-        onFiltersChanged={() => {}}
+        property="run"
+        onPropertyChange={jest.fn()}
         onSelectVehicleOption={() => {}}
       />
     )
 
     expect(autocompleteOption(vehicle.label!).query()).not.toBeInTheDocument()
+    expect(autocompleteOption(runVehicle.runId!).get()).toBeInTheDocument()
+  })
+
+  test("when all property selected, should show all categories in autocomplete", async () => {
+    const inputText = "123"
+    const [vehicle, runVehicle, operatorVehicle] = vehicleFactory.buildList(3)
+
+    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
+      _socket,
+      searchText
+    ) => {
+      if (inputText === searchText) {
+        return {
+          vehicle: [vehicle],
+          operator: [operatorVehicle],
+          run: [runVehicle],
+        }
+      }
+      return {
+        operator: [],
+        run: [],
+        vehicle: [],
+      }
+    }) as typeof useAutocompleteResults)
+
+    render(
+      <SearchForm
+        inputText={inputText}
+        property="all"
+        onPropertyChange={jest.fn()}
+        onSelectVehicleOption={() => {}}
+      />
+    )
+
+    expect(autocompleteOption(vehicle.label!).query()).toBeInTheDocument()
+    expect(
+      autocompleteOption(
+        formatOperatorName(
+          operatorVehicle.operatorFirstName,
+          operatorVehicle.operatorLastName,
+          operatorVehicle.operatorId
+        )
+      ).query()
+    ).toBeInTheDocument()
+
     expect(autocompleteOption(runVehicle.runId!).get()).toBeInTheDocument()
   })
 })
