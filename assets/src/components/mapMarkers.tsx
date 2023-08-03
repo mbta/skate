@@ -21,11 +21,14 @@ import { LocationType } from "../models/stopData"
 import garageIcon from "../../static/images/icon-bus-garage.svg"
 // @ts-ignore
 import stationIcon from "../../static/images/icon-station.svg"
+// @ts-ignore
+import locationDotIcon from "../../static/images/icon-location-dot.svg"
 import { StopMarkerWithInfo } from "./map/markers/stopMarker"
 import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../util/streetViewUrl"
 import { TileTypeContext } from "../contexts/tileTypeContext"
 import { ReactMarker } from "./map/utilities/reactMarker"
+import { LocationSearchResult } from "../models/locationSearchResult"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -408,4 +411,22 @@ export const GarageMarkers = ({ zoomLevel }: { zoomLevel: number }) => (
       <Garage key={garage.name} garage={garage} zoomLevel={zoomLevel} />
     ))}
   </>
+)
+
+const locationLeafletIcon = Leaflet.divIcon({
+  html: locationDotIcon,
+  className: "c-location-dot-icon",
+  iconAnchor: new Leaflet.Point(9, 24),
+  iconSize: [24, 18],
+})
+
+export const LocationMarker = ({
+  location,
+}: {
+  location: LocationSearchResult
+}) => (
+  <Marker
+    position={[location.latitude, location.longitude]}
+    icon={locationLeafletIcon}
+  />
 )

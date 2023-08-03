@@ -1,6 +1,6 @@
 import Leaflet, { Bounds, Point } from "leaflet"
 import React, { useContext, useEffect, useState } from "react"
-import { Pane } from "react-leaflet"
+import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -19,6 +19,7 @@ import {
   RoutePatternIdentifier,
   SelectedEntity,
   SelectedEntityType,
+  SelectedLocation,
   SelectedRoutePattern,
 } from "../../state/searchPageState"
 import Map, {
@@ -28,8 +29,14 @@ import Map, {
   defaultCenter,
   UpdateMapFromPointsFn,
   useInteractiveFollowerState,
+  autoCenter,
 } from "../map"
-import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
+import {
+  LocationMarker,
+  RouteShape,
+  RouteStopMarkers,
+  VehicleMarker,
+} from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
@@ -38,6 +45,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { setTileType } from "../../state/mapLayersState"
 import { TileType } from "../../tilesetUrls"
 import { LayersControl } from "../map/controls/layersControl"
+import { LocationSearchResult } from "../../models/locationSearchResult"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -164,6 +172,7 @@ const routePatternIdentifierForSelection = (
 type LiveSelectedEntity =
   | SelectedRoutePattern
   | { type: SelectedEntityType.Vehicle; vehicleOrGhost: Vehicle | Ghost | null }
+  | SelectedLocation
   | null
 
 const useLiveSelectedEntity = (
@@ -186,6 +195,8 @@ const useLiveSelectedEntity = (
       }
     case SelectedEntityType.RoutePattern:
       return selectedEntity // no live updates for route pattern
+    case SelectedEntityType.Location:
+      return selectedEntity
     default:
       return null
   }
@@ -380,6 +391,25 @@ const SelectedRouteDataLayers = ({
   )
 }
 
+const SelectedLocationDataLayer = ({
+  location,
+}: {
+  location: LocationSearchResult
+}) => {
+  const map = useMap()
+  const [{ pickerContainerIsVisible }] = useContext(StateDispatchContext)
+
+  useEffect(() => {
+    autoCenter(
+      map,
+      [[location.latitude, location.longitude]],
+      pickerContainerIsVisible
+    )
+  }, [location, map, pickerContainerIsVisible])
+
+  return <LocationMarker location={location} />
+}
+
 const SelectionDataLayers = ({
   selectedEntity,
   setSelection,
@@ -450,6 +480,10 @@ const SelectionDataLayers = ({
           selectVehicle={selectVehicle}
           setStateClasses={setStateClasses}
         />
+      )
+    case SelectedEntityType.Location:
+      return (
+        <SelectedLocationDataLayer location={liveSelectedEntity.location} />
       )
     default:
       return <MapElementsNoSelection setStateClasses={setStateClasses} />
