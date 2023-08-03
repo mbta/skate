@@ -1,7 +1,7 @@
 import { PointExpression } from "leaflet"
 import React, { useContext, useId } from "react"
 import { Popup } from "react-leaflet"
-import { DirectionId, Stop } from "../schedule"
+import { DirectionId, RouteId, Stop } from "../schedule"
 import { MapSafeAreaContext } from "../contexts/mapSafeAreaContext"
 import { RoutePill } from "./routePill"
 import StreetViewButton from "./streetViewButton"
@@ -21,47 +21,53 @@ type AutoPanProps = {
   autoPanPadding?: LeafletPaddingOptions
 }
 
+const sortRoutes = (
+  routes: { type: number; id: RouteId; name: string }[]
+): { type: number; id: RouteId; name: string }[] =>
+  routes
+    // exclude commuter rail
+    .filter((c) => c.type !== 2)
+    .sort((a, b) => {
+      // non-bus (i.e. rapid transit) routes go before bus
+      if (a.type === 3 && b.type !== 3) {
+        return 1
+      } else if (a.type !== 3 && b.type === 3) {
+        return -1
+      } else {
+        const aNumeric = Number(a.name)
+        const bNumeric = Number(b.name)
+
+        // SL comes before CT, other than that use localeCompare for non-numeric routes
+        if (isNaN(aNumeric) && isNaN(bNumeric)) {
+          if (a.name.match(/^SL*/) && b.name.match(/^CT*/)) {
+            return -1
+          } else if (a.name.match(/^CT*/) && b.name.match(/^SL*/)) {
+            return 1
+          } else {
+            return a.name.localeCompare(b.name)
+          }
+        } else if (isNaN(aNumeric)) {
+          // purely numeric routes come last
+          return -1
+        } else if (isNaN(bNumeric)) {
+          return 1
+        }
+
+        return aNumeric - bNumeric
+      }
+    })
+
 const StopCard = ({
   stop,
   direction,
   autoPanPadding,
 }: StopCardProps & AutoPanProps): JSX.Element => {
-  const connectionsLabelId = "stop-card-connections-label-" + useId()
+  const routesLabelId = "stop-card-routes-label-" + useId()
 
-  const connections = stop.connections
-    ? stop.connections
-        // exclude commuter rail
-        .filter((c) => c.type !== 2)
-        .sort((a, b) => {
-          // non-bubs (i.e. rapid transit) routes go before bus
-          if (a.type === 3 && b.type !== 3) {
-            return 1
-          } else if (a.type !== 3 && b.type === 3) {
-            return -1
-          } else {
-            const aNumeric = Number(a.name)
-            const bNumeric = Number(b.name)
-
-            // SL comes before CT, other than that use localeCompare for non-numeric routes
-            if (isNaN(aNumeric) && isNaN(bNumeric)) {
-              if (a.name.match(/^SL*/) && b.name.match(/^CT*/)) {
-                return -1
-              } else if (a.name.match(/^CT*/) && b.name.match(/^SL*/)) {
-                return 1
-              } else {
-                return a.name.localeCompare(b.name)
-              }
-            } else if (isNaN(aNumeric)) {
-              // purely numeric routes come last
-              return -1
-            } else if (isNaN(bNumeric)) {
-              return 1
-            }
-
-            return aNumeric - bNumeric
-          }
-        })
-    : []
+  const hasRouteField = stop.routes !== undefined
+  const sortedDisplayRoutes = hasRouteField
+    ? sortRoutes(stop.routes || [])
+    : sortRoutes(stop.connections || [])
 
   return (
     <Popup
@@ -81,19 +87,16 @@ const StopCard = ({
           </div>
         )}
       </div>
-      {connections.length > 0 ? (
-        <div className="c-stop-card__connections">
-          <div
-            className="c-stop-card__connections-label"
-            id={connectionsLabelId}
-          >
-            Connections
+      {sortedDisplayRoutes.length > 0 ? (
+        <div className="c-stop-card__routes">
+          <div className="c-stop-card__routes-label" id={routesLabelId}>
+            {hasRouteField ? "Routes" : "Connections"}
           </div>
           <ul
-            className="c-stop-card__connections-pills"
-            aria-labelledby={connectionsLabelId}
+            className="c-stop-card__routes-pills"
+            aria-labelledby={routesLabelId}
           >
-            {connections.map((c) => (
+            {sortedDisplayRoutes.map((c) => (
               <li key={c.id}>
                 <RoutePill routeName={c.name} />
               </li>

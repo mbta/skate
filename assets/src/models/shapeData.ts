@@ -27,6 +27,15 @@ export const ShapeData = type({
             })
           )
         ),
+        routes: optional(
+          array(
+            type({
+              type: number(),
+              id: string(),
+              name: string(),
+            })
+          )
+        ),
       })
     )
   ),

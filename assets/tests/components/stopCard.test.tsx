@@ -21,6 +21,16 @@ describe("StopCard", () => {
     ).not.toBeInTheDocument()
   })
 
+  test("doesn't render routes when none are present", () => {
+    const stop = stopFactory.build()
+
+    render(<StopCard stop={stop} />)
+
+    expect(
+      screen.queryByRole("list", { name: "Routes" })
+    ).not.toBeInTheDocument()
+  })
+
   test("doesn't render direction when none is present", () => {
     const stop = stopFactory.build()
 
@@ -47,7 +57,7 @@ describe("StopCard", () => {
     expect(screen.getByText(/Outbound/)).toBeInTheDocument()
   })
 
-  test("renders connections", () => {
+  test("when routes aren't present but connections are, renders connections", () => {
     const stop = stopFactory.build({
       connections: [{ type: 1, name: "Red", id: "Red" }],
     })
@@ -57,6 +67,32 @@ describe("StopCard", () => {
     expect(
       screen.getByRole("list", { name: "Connections" })
     ).toBeInTheDocument()
+    expect(
+      screen.queryByRole("list", { name: "Routes" })
+    ).not.toBeInTheDocument()
+  })
+
+  test("when routes are present, renders the routes", () => {
+    const stop = stopFactory.build({
+      routes: [{ type: 1, name: "Red", id: "Red" }],
+      connections: [{ type: 1, name: "Blue", id: "Blue" }],
+    })
+
+    render(<StopCard stop={stop} />)
+
+    expect(screen.getByRole("list", { name: "Routes" })).toBeInTheDocument()
+    expect(
+      screen.getAllByRole("listitem").find((item) => item.textContent === "Red")
+    ).toBeInTheDocument()
+
+    expect(
+      screen.queryByRole("list", { name: "Connections" })
+    ).not.toBeInTheDocument()
+    expect(
+      screen
+        .getAllByRole("listitem")
+        .find((item) => item.textContent === "Blue")
+    ).toBeUndefined()
   })
 
   test("sorts rendered connections and excludes commuter rail", () => {

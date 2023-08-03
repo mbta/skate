@@ -15,6 +15,7 @@ export interface Stop {
   lat: number
   lon: number
   connections?: { type: number; id: RouteId; name: string }[]
+  routes?: { type: number; id: RouteId; name: string }[]
   locationType?: LocationType
 }
 

@@ -40,7 +40,7 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   font-weight: 400;
 }
 
-.c-stop-card__connections {
+.c-stop-card__routes {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -52,13 +52,13 @@ $stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
   border-radius: 4px;
 }
 
-.c-stop-card__connections-label {
+.c-stop-card__routes-label {
   color: $color-gray-700;
   font-size: 14px;
   font-weight: 400;
 }
 
-.c-stop-card__connections-pills {
+.c-stop-card__routes-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
