@@ -178,7 +178,6 @@ describe("reducer", () => {
       const newState = reducer(oldState, setCategoryMatchLimit("location", 15))
       expect(newState.query.categoryResultLimits).toEqual({
         location: 15,
-
         vehicle: 20,
       })
     })
