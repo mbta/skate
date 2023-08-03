@@ -158,8 +158,8 @@ describe("reducer", () => {
 
       const newState = reducer(oldState, setPropertyMatchLimit("run", 10))
       expect(newState.query.properties).toEqual({
-        location: 5,
-        operator: 5,
+        location: defaultResultLimit,
+        operator: defaultResultLimit,
         run: 10,
         vehicle: 100,
       })

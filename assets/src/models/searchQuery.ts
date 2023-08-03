@@ -33,7 +33,7 @@ export interface SavedSearchQuery {
   text: string
 }
 
-export const defaultResultLimit = 5
+export const defaultResultLimit = 25
 
 export const defaultAllProperties = {
   run: defaultResultLimit,
