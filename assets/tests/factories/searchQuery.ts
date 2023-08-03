@@ -2,13 +2,13 @@ import { Factory } from "fishery"
 import {
   emptySearchQuery,
   SearchQuery,
-  OldSearchQueryType,
+  OldSearchPropertyQuery,
   defaultResultLimit,
   SearchProperty,
 } from "../../src/models/searchQuery"
 
 class SearchQueryFactory extends Factory<SearchQuery> {
-  searchType(property: OldSearchQueryType | SearchProperty) {
+  searchType(property: OldSearchPropertyQuery | SearchProperty) {
     if (property === "all") {
       return this.params({ property, properties: emptySearchQuery.properties })
     } else

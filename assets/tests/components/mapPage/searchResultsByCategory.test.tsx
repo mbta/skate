@@ -1,18 +1,21 @@
 import React from "react"
 import { render, screen, within } from "@testing-library/react"
 import "@testing-library/jest-dom"
-import SearchResultsByProperty from "../../../src/components/mapPage/searchResultsByProperty"
+import SearchResultsByCategory from "../../../src/components/mapPage/searchResultsByCategory"
 import vehicleFactory from "../../factories/vehicle"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import stateFactory from "../../factories/applicationState"
 import { searchPageStateFactory } from "../../factories/searchPageState"
 import locationSearchResultFactory from "../../factories/locationSearchResult"
 import { LocationSearchResult } from "../../../src/models/locationSearchResult"
-import useSearchResultsByProperty from "../../../src/hooks/useSearchResultsByProperty"
+import useSearchResultsByCategory from "../../../src/hooks/useSearchResultsByCategory"
 import { searchQueryLocationFactory } from "../../factories/searchQuery"
 import { searchQueryVehicleFactory } from "../../factories/searchQuery"
+import userEvent from "@testing-library/user-event"
+import { setCategoryMatchLimit } from "../../../src/state/searchPageState"
+import { defaultResultLimit } from "../../../src/models/searchQuery"
 
-jest.mock("../../../src/hooks/useSearchResultsByProperty", () => ({
+jest.mock("../../../src/hooks/useSearchResultsByCategory", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }))
@@ -23,23 +26,11 @@ const vehicleMatch = vehicleFactory.build()
 const locationMatch = locationSearchResultFactory.build()
 
 beforeEach(() => {
-  ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-    run: {
-      ok: {
-        matches: [runMatch],
-        hasMoreMatches: false,
-      },
-    },
+  ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
     vehicle: {
       ok: {
-        matches: [vehicleMatch],
+        matches: [vehicleMatch, runMatch, operatorMatch],
         hasMoreMatches: true,
-      },
-    },
-    operator: {
-      ok: {
-        matches: [operatorMatch],
-        hasMoreMatches: false,
       },
     },
     location: {
@@ -57,17 +48,11 @@ afterEach(() => {
 
 describe("searchResultsByProperty", () => {
   test("Includes only sections that have results", () => {
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       run: { ok: { matches: [], hasMoreMatches: false } },
       vehicle: {
         ok: {
-          matches: [],
-          hasMoreMatches: false,
-        },
-      },
-      operator: {
-        ok: {
-          matches: [operatorMatch],
+          matches: [vehicleMatch],
           hasMoreMatches: false,
         },
       },
@@ -86,34 +71,33 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
     expect(
-      screen.getByRole("heading", { name: "Operators" })
+      screen.getByRole("heading", { name: "Vehicles" })
     ).toBeInTheDocument()
-    expect(screen.queryByRole("heading", { name: "Vehicles" })).toBeNull()
-    expect(screen.queryByRole("heading", { name: "Runs" })).toBeNull()
+    expect(screen.queryByRole("heading", { name: "Locations" })).toBeNull()
   })
 
-  test("only includes results for the properties included in the query", () => {
+  test("when search property is a vehicle property, doesn't show location results", () => {
     render(
       <StateDispatchProvider
         state={stateFactory.build({
           searchPageState: searchPageStateFactory.build({
             query: {
               text: "123",
-              properties: { vehicle: 5, run: null, operator: null },
+              property: "vehicle",
             },
             isActive: true,
           }),
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
@@ -123,13 +107,7 @@ describe("searchResultsByProperty", () => {
       screen.getByRole("heading", { name: "Vehicles" })
     ).toBeInTheDocument()
     expect(
-      screen.queryByRole("heading", { name: "Runs" })
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole("heading", { name: "Operators" })
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole("heading", { name: "location" })
+      screen.queryByRole("heading", { name: "Locations" })
     ).not.toBeInTheDocument()
   })
 
@@ -144,17 +122,14 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
-    const [vehicles, operators, runs, locations] =
-      screen.getAllByRole("heading")
+    const [vehicles, locations] = screen.getAllByRole("heading")
     expect(vehicles).toHaveTextContent("Vehicles")
-    expect(operators).toHaveTextContent("Operators")
-    expect(runs).toHaveTextContent("Runs")
     expect(locations).toHaveTextContent("Locations")
   })
 
@@ -169,7 +144,7 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
@@ -178,16 +153,6 @@ describe("searchResultsByProperty", () => {
     const vehicles = screen.getByLabelText("Vehicles")
     expect(
       within(vehicles).getByRole("cell", { name: vehicleMatch.label! })
-    ).toBeInTheDocument()
-
-    const operators = screen.getByLabelText("Operators")
-    expect(
-      within(operators).getByRole("cell", { name: operatorMatch.label! })
-    ).toBeInTheDocument()
-
-    const runs = screen.getByLabelText("Runs")
-    expect(
-      within(runs).getByRole("cell", { name: runMatch.label! })
     ).toBeInTheDocument()
   })
 
@@ -202,7 +167,7 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
@@ -215,7 +180,7 @@ describe("searchResultsByProperty", () => {
   })
 
   test("Shows loading indication for locations", () => {
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       run: null,
       vehicle: null,
       operator: null,
@@ -231,7 +196,7 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
@@ -241,24 +206,12 @@ describe("searchResultsByProperty", () => {
     expect(locations).toHaveTextContent(/loading/i)
   })
 
-  test("For sections that have more matches, includes a 'Show more' button", () => {
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-      run: {
-        ok: {
-          matches: [runMatch],
-          hasMoreMatches: false,
-        },
-      },
+  test("When there are more vehicl matches, includes a 'Show more' button which updates the vehicle result limit on click", async () => {
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       vehicle: {
         ok: {
           matches: [vehicleMatch],
           hasMoreMatches: true,
-        },
-      },
-      operator: {
-        ok: {
-          matches: [operatorMatch],
-          hasMoreMatches: false,
         },
       },
       location: {
@@ -268,6 +221,8 @@ describe("searchResultsByProperty", () => {
         },
       },
     })
+
+    const mockDispatch = jest.fn()
 
     render(
       <StateDispatchProvider
@@ -281,34 +236,37 @@ describe("searchResultsByProperty", () => {
             isActive: true,
           }),
         })}
-        dispatch={jest.fn()}
+        dispatch={mockDispatch}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
-    expect(
+    await userEvent.click(
       within(screen.getByLabelText("Vehicles")).getByRole("button", {
         name: "Show more",
       })
-    ).toBeInTheDocument()
+    )
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      setCategoryMatchLimit("vehicle", defaultResultLimit + 25)
+    )
   })
 
-  test("When locations section has more matches, includes a 'Show more' button", () => {
+  test("When locations section has more matches, includes a 'Show more' button which updates the location result limit on click", async () => {
     const locations: LocationSearchResult[] = []
 
     for (let i = 0; i <= 5; i++) {
       locations.push(locationSearchResultFactory.build())
     }
 
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-      run: null,
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       vehicle: null,
-      operator: null,
       location: { ok: { matches: locations, hasMoreMatches: true } },
     })
+    const mockDispatch = jest.fn()
     render(
       <StateDispatchProvider
         state={stateFactory.build({
@@ -317,19 +275,23 @@ describe("searchResultsByProperty", () => {
             isActive: true,
           }),
         })}
-        dispatch={jest.fn()}
+        dispatch={mockDispatch}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
       </StateDispatchProvider>
     )
-    expect(
+    await userEvent.click(
       within(screen.getByLabelText("Locations")).getByRole("button", {
         name: "Show more",
       })
-    ).toBeInTheDocument()
+    )
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      setCategoryMatchLimit("location", defaultResultLimit + 25)
+    )
   })
 
   test("When locations section does not have more matches, doesn't include a 'Show more' button", () => {
@@ -343,7 +305,7 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />
@@ -357,20 +319,13 @@ describe("searchResultsByProperty", () => {
   })
 
   test("when there are no results for the given properties, display no results message", () => {
-    ;(useSearchResultsByProperty as jest.Mock).mockReturnValue({
-      run: {
-        ok: {
-          matches: [],
-          hasMoreMatches: false,
-        },
-      },
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       vehicle: {
         ok: {
           matches: [],
           hasMoreMatches: true,
         },
       },
-      operator: null,
       location: {
         ok: { matches: [], hasMoreMatches: false },
       },
@@ -386,7 +341,7 @@ describe("searchResultsByProperty", () => {
         })}
         dispatch={jest.fn()}
       >
-        <SearchResultsByProperty
+        <SearchResultsByCategory
           onSelectVehicleResult={jest.fn()}
           onSelectLocationResult={jest.fn()}
         />

@@ -10,6 +10,7 @@ import {
   defaultResultLimit,
   SearchResultCategory,
   defaultCategoryResultLimits,
+  SearchPropertyQuery,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -74,12 +75,12 @@ export const setSearchText = (text: string): SetSearchTextAction => ({
 interface SetOldSearchPropertyAction {
   type: "SET_SEARCH_PROPERTY"
   payload: {
-    property: string
+    property: SearchPropertyQuery
   }
 }
 
 export const setOldSearchProperty = (
-  property: string
+  property: SearchPropertyQuery
 ): SetOldSearchPropertyAction => ({
   type: "SET_SEARCH_PROPERTY",
   payload: { property },

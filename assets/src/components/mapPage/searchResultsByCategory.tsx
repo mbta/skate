@@ -2,12 +2,8 @@ import { useContext } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { LimitedSearchResults } from "../../hooks/useSearchResults"
-import {
-  SearchProperty,
-  searchPropertyDisplayConfig,
-} from "../../models/searchQuery"
+import { SearchResultCategory } from "../../models/searchQuery"
 import { Vehicle, Ghost } from "../../realtime"
-import { setPropertyMatchLimit } from "../../state/searchPageState"
 import SearchResults, { NoResults } from "../searchResults"
 import React from "react"
 import { Card, CardBody } from "../card"
@@ -19,14 +15,13 @@ import {
   isOk,
 } from "../../util/fetchResult"
 import Loading from "../loading"
-import useSearchResultsByProperty from "../../hooks/useSearchResultsByProperty"
+import useSearchResultsByCategory from "../../hooks/useSearchResultsByCategory"
+import { setCategoryMatchLimit } from "../../state/searchPageState"
 
 const VehicleSearchResultSection = ({
-  property,
   results,
   onSelectVehicle,
 }: {
-  property: SearchProperty
   results: LoadingResult | Ok<LimitedSearchResults<Vehicle | Ghost>> | null
   onSelectVehicle: (vehicle: Vehicle | Ghost) => void
 }) => {
@@ -37,13 +32,13 @@ const VehicleSearchResultSection = ({
   return (
     <section
       className="c-map-page__search_results_section"
-      aria-labelledby={`search-results__${property}`}
+      aria-labelledby="search-results__vehicle"
     >
       <h2
         className="c-map-page__search_results_header"
-        id={`search-results__${property}`}
+        id="search-results__vehicle"
       >
-        {searchPropertyDisplayConfig[property].name}
+        Vehicles
       </h2>
       {isLoading(results) ? (
         <Loading />
@@ -54,7 +49,7 @@ const VehicleSearchResultSection = ({
             selectedVehicleId={null}
             onClick={onSelectVehicle}
           />
-          {results.ok.hasMoreMatches && <ShowMore property={property} />}
+          {results.ok.hasMoreMatches && <ShowMore category={"vehicle"} />}
         </>
       )}
     </section>
@@ -80,7 +75,7 @@ const LocationSearchResultSection = ({
         className="c-map-page__search_results_header"
         id={`search-results__location`}
       >
-        {searchPropertyDisplayConfig.location.name}
+        Locations
       </h2>
       {isLoading(results) ? (
         <Loading />
@@ -104,22 +99,22 @@ const LocationSearchResultSection = ({
               </li>
             ))}
           </ul>
-          {results.ok.hasMoreMatches && <ShowMore property={"location"} />}
+          {results.ok.hasMoreMatches && <ShowMore category={"location"} />}
         </>
       )}
     </section>
   )
 }
 
-const ShowMore = ({ property }: { property: SearchProperty }) => {
+const ShowMore = ({ category }: { category: SearchResultCategory }) => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
-  const currentLimit = searchPageState.query.properties[property] || 0
+  const currentLimit = searchPageState.query.categoryResultLimits[category]
   return (
     <div className="c-map_page__search_results_actions">
       <button
         className="c-map-page__show_more button-text"
         onClick={() =>
-          dispatch(setPropertyMatchLimit(property, currentLimit + 25))
+          dispatch(setCategoryMatchLimit(category, currentLimit + 25))
         }
       >
         Show more
@@ -128,19 +123,24 @@ const ShowMore = ({ property }: { property: SearchProperty }) => {
   )
 }
 
-const SearchResultsByProperty = ({
+const SearchResultsByCategory = ({
   onSelectVehicleResult,
   onSelectLocationResult,
 }: {
   onSelectVehicleResult: (result: Vehicle | Ghost | null) => void
   onSelectLocationResult: (result: LocationSearchResult | null) => void
 }) => {
-  const [{ searchPageState }] = useContext(StateDispatchContext)
+  const [
+    {
+      searchPageState: { query },
+    },
+  ] = useContext(StateDispatchContext)
   const { socket } = useContext(SocketContext)
-  const resultsByProperty = useSearchResultsByProperty(
+  const resultsByProperty = useSearchResultsByCategory(
     socket,
-    searchPageState.query.text,
-    searchPageState.query.properties
+    query.text,
+    query.property,
+    query.categoryResultLimits
   )
 
   const searchHasNoResults = Object.values(resultsByProperty)
@@ -161,33 +161,24 @@ const SearchResultsByProperty = ({
       {searchHasNoResults ? (
         <NoResults />
       ) : (
-        Object.entries(searchPageState.query.properties)
-          .filter(([, limit]) => limit != null)
-          .map(([property, _limit]) => property as SearchProperty)
-          .sort(
-            (first_property, second_property) =>
-              searchPropertyDisplayConfig[first_property].order -
-              searchPropertyDisplayConfig[second_property].order
-          )
-          .map((property) =>
-            property === "location" ? (
-              <LocationSearchResultSection
-                key={property}
-                results={resultsByProperty[property]}
-                onSelectLocation={onSelectLocationResult}
-              />
-            ) : (
-              <VehicleSearchResultSection
-                key={property}
-                property={property}
-                results={resultsByProperty[property]}
-                onSelectVehicle={onSelectVehicleResult}
-              />
-            )
-          )
+        <>
+          {(query.property === "all" || query.property !== "location") && (
+            <VehicleSearchResultSection
+              results={resultsByProperty.vehicle}
+              onSelectVehicle={onSelectVehicleResult}
+            />
+          )}
+
+          {(query.property === "all" || query.property === "location") && (
+            <LocationSearchResultSection
+              results={resultsByProperty.location}
+              onSelectLocation={onSelectLocationResult}
+            />
+          )}
+        </>
       )}
     </div>
   )
 }
 
-export default SearchResultsByProperty
+export default SearchResultsByCategory
