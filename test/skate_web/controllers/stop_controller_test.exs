@@ -4,7 +4,7 @@ defmodule SkateWeb.StopControllerTest do
   import Skate.Factory
 
   @stations [
-    build(:gtfs_stop, %{location_type: :station, connections: [build(:gtfs_route)]}),
+    build(:gtfs_stop, %{location_type: :station, routes: [build(:gtfs_route)]}),
     build(:gtfs_stop, %{
       id: "stop2",
       name: "Stop 2",
@@ -29,7 +29,7 @@ defmodule SkateWeb.StopControllerTest do
       assert %{
                "data" => [
                  %{
-                   "connections" => [
+                   "routes" => [
                      %{
                        "description" => "Key Bus",
                        "direction_names" => %{"0" => "Outbound", "1" => "Inbound"},
@@ -46,7 +46,7 @@ defmodule SkateWeb.StopControllerTest do
                    "name" => "Stop 1"
                  },
                  %{
-                   "connections" => [],
+                   "routes" => [],
                    "id" => "stop2",
                    "lat" => 42.01,
                    "location_type" => "station",

@@ -228,22 +228,7 @@ defmodule Schedule.Data do
 
   @spec shape_with_stops_for_trip(t(), Schedule.Trip.id()) :: Schedule.ShapeWithStops.t()
   def shape_with_stops_for_trip(data, trip_id) do
-    %{trips: trips_by_id} = data
-
-    trip = Map.get(trips_by_id, trip_id)
-    trip_route_id = if trip, do: trip.route_id, else: nil
-
-    stops_for_trip =
-      case trip_route_id do
-        # This trip doesn't have a route - no connections to filter
-        nil ->
-          stops_for_trip(data, trip_id)
-
-        trip_route_id ->
-          data
-          |> stops_for_trip(trip_id)
-          |> Enum.map(&Stop.reject_connections_for_route(&1, trip_route_id))
-      end
+    stops_for_trip = stops_for_trip(data, trip_id)
 
     case shape_for_trip(data, trip_id) do
       nil -> nil
@@ -376,7 +361,7 @@ defmodule Schedule.Data do
     bus_routes = Garage.add_garages_to_routes(gtfs_data.bus_only.routes, schedule_trips_by_id)
 
     stops =
-      Stop.stops_with_connections(
+      Stop.stops_with_routes(
         gtfs_data.all_modes.stops_by_id,
         gtfs_data.all_modes.routes,
         gtfs_data.all_modes.route_patterns,
