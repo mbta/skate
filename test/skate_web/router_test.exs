@@ -42,4 +42,12 @@ defmodule SkateWeb.RouterTest do
       assert html_response(conn, 200) =~ "<div class=\"window-title\">Features</div>"
     end
   end
+
+  describe "GET /docs" do
+    test "GET /agency-policies/AUP, should return :skate, :acceptable_use_policy", %{conn: conn} do
+      conn = get(conn, "/docs/agency-policies/AUP")
+
+      assert redirected_to(conn) == Application.get_env(:skate, :acceptable_use_policy)
+    end
+  end
 end

@@ -42,8 +42,7 @@ defmodule SkateWeb.Router do
 
   scope "/docs", SkateWeb do
     get "/agency-policies/AUP", Redirect,
-      external:
-        "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn"
+      external: Application.compile_env(:skate, :acceptable_use_policy)
   end
 
   scope "/auth", SkateWeb do
