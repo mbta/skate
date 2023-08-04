@@ -1,6 +1,6 @@
-import Leaflet, { Bounds, Point } from "leaflet"
+import Leaflet from "leaflet"
 import React, { useContext, useEffect, useState } from "react"
-import { Pane, useMap } from "react-leaflet"
+import { Pane } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -26,10 +26,8 @@ import Map, {
   vehicleToLeafletLatLng,
   FollowerStatusClasses,
   InterruptibleFollower,
-  defaultCenter,
-  UpdateMapFromPointsFn,
   useInteractiveFollowerState,
-  autoCenter,
+  drawerOffsetAutoCenter,
 } from "../map"
 import {
   LocationMarker,
@@ -75,55 +73,6 @@ const SecondaryRouteVehicles = ({
         })}
     </>
   )
-}
-
-const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
-  if (points.length === 0) {
-    // If there are no points, blink to default center
-    map.setView(defaultCenter, 13, { animate: false })
-    return
-  }
-
-  const { width, height } = map.getContainer().getBoundingClientRect()
-  const mapContainerBounds = new Bounds([0, 0], [width, height])
-
-  // ```
-  // vpcElement.getBoundingClientRect().right - mapElement.getBoundingClientRect().left
-  //  -> 445
-  // ```
-  // Create a new inner bounds from the map bounds + "padding" to shrink the
-  // inner bounds
-  // In this case, we get the top left of the inner bounds by padding the left
-  // with the distance from the right side of the VPC to the left side of the
-  // map container
-  const topLeft = new Point(445, 0)
-
-  if (points.length === 1) {
-    const targetZoom = 16
-    const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
-    // The "new center" is the offset between the two bounding boxes centers
-    const offset = innerBounds
-      .getCenter()
-      .subtract(mapContainerBounds.getCenter())
-
-    const targetPoint = map
-        // Project the target point into screenspace for the target zoom
-        .project(points[0], targetZoom)
-        // Offset the target point in screenspace to move the center of the map
-        // to apply the padding to the center
-        .subtract(offset),
-      // convert the target point to worldspace from screenspace
-      targetLatLng = map.unproject(targetPoint, targetZoom)
-
-    // Zoom/Pan center of map to offset location in worldspace
-    map.setView(targetLatLng, targetZoom)
-  } else {
-    const pointsBounds = Leaflet.latLngBounds(points)
-    map.fitBounds(pointsBounds, {
-      paddingBottomRight: [50, 20],
-      paddingTopLeft: topLeft,
-    })
-  }
 }
 
 const useFollowingStateWithSelectionLogic = (
@@ -215,7 +164,7 @@ const MapElementsNoSelection = ({
 
   return (
     <InterruptibleFollower
-      onUpdate={onFollowerUpdate}
+      onUpdate={drawerOffsetAutoCenter}
       positions={[]}
       {...followerState}
     />
@@ -337,7 +286,7 @@ const SelectedVehicleDataLayers = ({
       )}
 
       <InterruptibleFollower
-        onUpdate={onFollowerUpdate}
+        onUpdate={drawerOffsetAutoCenter}
         positions={position}
         {...followerState}
       />
@@ -383,7 +332,7 @@ const SelectedRouteDataLayers = ({
         onVehicleSelect={selectVehicle}
       />
       <InterruptibleFollower
-        onUpdate={onFollowerUpdate}
+        onUpdate={drawerOffsetAutoCenter}
         positions={routeShapePositions}
         {...followerState}
       />
@@ -393,21 +342,27 @@ const SelectedRouteDataLayers = ({
 
 const SelectedLocationDataLayer = ({
   location,
+  setStateClasses,
 }: {
   location: LocationSearchResult
+  setStateClasses: (classes: string | undefined) => void
 }) => {
-  const map = useMap()
-  const [{ pickerContainerIsVisible }] = useContext(StateDispatchContext)
+  const followerState = useInteractiveFollowerState()
 
   useEffect(() => {
-    autoCenter(
-      map,
-      [[location.latitude, location.longitude]],
-      pickerContainerIsVisible
-    )
-  }, [location, map, pickerContainerIsVisible])
+    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
+  }, [followerState.shouldFollow, setStateClasses])
 
-  return <LocationMarker location={location} selected={true} />
+  return (
+    <>
+      <LocationMarker location={location} selected={true} />
+      <InterruptibleFollower
+        onUpdate={drawerOffsetAutoCenter}
+        positions={[Leaflet.latLng(location.latitude, location.longitude)]}
+        {...followerState}
+      />
+    </>
+  )
 }
 
 const SelectionDataLayers = ({
@@ -483,7 +438,10 @@ const SelectionDataLayers = ({
       )
     case SelectedEntityType.Location:
       return (
-        <SelectedLocationDataLayer location={liveSelectedEntity.location} />
+        <SelectedLocationDataLayer
+          location={liveSelectedEntity.location}
+          setStateClasses={setStateClasses}
+        />
       )
     default:
       return <MapElementsNoSelection setStateClasses={setStateClasses} />
