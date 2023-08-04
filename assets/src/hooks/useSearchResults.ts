@@ -1,6 +1,6 @@
 import { Socket } from "phoenix"
 import { Infer, array, boolean, type, union } from "superstruct"
-import { SearchQuery, SearchProperty } from "../models/searchQuery"
+import { SearchQuery, VehiclePropertyQuery } from "../models/searchQuery"
 import {
   GhostData,
   VehicleData,
@@ -59,7 +59,7 @@ const loadingState: Loading = { is_loading: true }
 
 export const useLimitedSearchResults = (
   socket: Socket | undefined,
-  query: { property: SearchProperty; text: string; limit: number } | null
+  query: { property: VehiclePropertyQuery; text: string; limit: number } | null
 ): Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading | null => {
   const topic: string | null =
     query && `vehicles_search:limited:${query.property}:${query.text}`

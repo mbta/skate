@@ -15,8 +15,9 @@ import {
   newSearchSession,
   SelectedEntity,
   goBack,
-  setPropertyMatchLimit,
   setSearchProperties,
+  setCategoryMatchLimit,
+  setPropertyMatchLimit,
 } from "../../src/state/searchPageState"
 import locationSearchResultFactory from "../factories/locationSearchResult"
 import { searchPageStateFactory } from "../factories/searchPageState"
@@ -66,6 +67,21 @@ describe("reducer", () => {
       location: defaultResultLimit,
       operator: defaultResultLimit,
       vehicle: null,
+    })
+  })
+
+  test("setSearchText resets the category limits", () => {
+    const oldState = searchPageStateFactory.build({
+      query: searchQueryAllFactory.build({
+        text: "123",
+        categoryResultLimits: { location: 10, vehicle: 10 },
+      }),
+    })
+    const newState = reducer(oldState, setSearchText("new text"))
+
+    expect(newState.query.categoryResultLimits).toEqual({
+      location: defaultResultLimit,
+      vehicle: defaultResultLimit,
     })
   })
 
@@ -142,10 +158,27 @@ describe("reducer", () => {
 
       const newState = reducer(oldState, setPropertyMatchLimit("run", 10))
       expect(newState.query.properties).toEqual({
-        location: 5,
-        operator: 5,
+        location: defaultResultLimit,
+        operator: defaultResultLimit,
         run: 10,
         vehicle: 100,
+      })
+    })
+  })
+
+  describe("setCategoryResultMatchLimit", () => {
+    test("updates the value for only given category", () => {
+      const oldState: SearchPageState = searchPageStateFactory.build({
+        query: emptySearchQueryFactory.build({
+          text: "123",
+          categoryResultLimits: { location: 10, vehicle: 20 },
+        }),
+      })
+
+      const newState = reducer(oldState, setCategoryMatchLimit("location", 15))
+      expect(newState.query.categoryResultLimits).toEqual({
+        location: 15,
+        vehicle: 20,
       })
     })
   })

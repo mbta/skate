@@ -4,8 +4,8 @@ import useSearchResults, {
 } from "../../src/hooks/useSearchResults"
 import {
   emptySearchQuery,
-  SearchProperty,
   SearchQuery,
+  VehiclePropertyQuery,
 } from "../../src/models/searchQuery"
 import {
   GhostData,
@@ -375,7 +375,7 @@ describe("useLimitedSearchResults", () => {
     mockSocket.channel.mockImplementation(() => channel1)
 
     const initialQuery = {
-      property: "run" as SearchProperty,
+      property: "run" as VehiclePropertyQuery,
       text: "123",
       limit: 5,
     }

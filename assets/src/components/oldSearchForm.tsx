@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { CircleXIcon, SearchIcon } from "../helpers/icon"
-import { isValidSearchQuery } from "../models/searchQuery"
+import { SearchPropertyQuery, isValidSearchQuery } from "../models/searchQuery"
 import {
   setOldSearchProperty,
   setSearchText,
@@ -45,7 +45,9 @@ const OldSearchForm = ({
   const handlePropertyChange = (
     event: React.FormEvent<HTMLInputElement>
   ): void => {
-    dispatch(setOldSearchProperty(event.currentTarget.value))
+    dispatch(
+      setOldSearchProperty(event.currentTarget.value as SearchPropertyQuery)
+    )
     dispatch(submitSearch())
   }
 

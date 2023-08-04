@@ -1,6 +1,10 @@
 import { Socket } from "phoenix"
 
-import { SearchProperties, SearchProperty } from "../models/searchQuery"
+import {
+  SearchProperties,
+  SearchProperty,
+  VehiclePropertyQuery,
+} from "../models/searchQuery"
 import { Ghost, Vehicle } from "../realtime"
 import { useLimitedSearchResults } from "./useSearchResults"
 import { isLoading } from "../util/fetchResult"
@@ -44,7 +48,7 @@ export const useAutocompleteResults = (
 
   function useLimitedSearchResultsForProperty(
     enableSearch: boolean,
-    property: SearchProperty
+    property: VehiclePropertyQuery
   ): (Vehicle | Ghost)[] {
     // Search for the property we need to return, but if it's filtered,
     // set `query` parameter to `null`

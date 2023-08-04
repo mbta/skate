@@ -8,6 +8,9 @@ import {
   SearchProperty,
   PropertyLimits,
   defaultResultLimit,
+  SearchResultCategory,
+  defaultCategoryResultLimits,
+  SearchPropertyQuery,
 } from "../models/searchQuery"
 import { VehicleId } from "../realtime"
 import { RouteId, RoutePatternId } from "../schedule"
@@ -72,15 +75,28 @@ export const setSearchText = (text: string): SetSearchTextAction => ({
 interface SetOldSearchPropertyAction {
   type: "SET_SEARCH_PROPERTY"
   payload: {
-    property: string
+    property: SearchPropertyQuery
   }
 }
 
 export const setOldSearchProperty = (
-  property: string
+  property: SearchPropertyQuery
 ): SetOldSearchPropertyAction => ({
   type: "SET_SEARCH_PROPERTY",
   payload: { property },
+})
+
+interface SetCategoryMatchLimitAction {
+  type: "SET_CATEGORY_MATCH_LIMIT"
+  payload: { category: SearchResultCategory; limit: number }
+}
+
+export const setCategoryMatchLimit = (
+  category: SearchResultCategory,
+  limit: number
+): SetCategoryMatchLimitAction => ({
+  type: "SET_CATEGORY_MATCH_LIMIT",
+  payload: { category, limit },
 })
 
 interface SetPropertyMatchLimitAction {
@@ -150,6 +166,7 @@ export type Action =
   | SetSearchTextAction
   | SetOldSearchPropertyAction
   | SetPropertyMatchLimitAction
+  | SetCategoryMatchLimitAction
   | SetSearchPropertiesAction
   | SubmitSearchAction
   | NewSearchSessionAction
@@ -175,6 +192,7 @@ export const reducer = (
               limit === null ? limit : defaultResultLimit,
             ])
           ) as PropertyLimits,
+          categoryResultLimits: defaultCategoryResultLimits,
         },
 
         isActive: false,
@@ -194,6 +212,17 @@ export const reducer = (
           properties: {
             ...state.query.properties,
             [action.payload.property]: action.payload.limit,
+          },
+        },
+      }
+    case "SET_CATEGORY_MATCH_LIMIT":
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          categoryResultLimits: {
+            ...state.query.categoryResultLimits,
+            [action.payload.category]: action.payload.limit,
           },
         },
       }

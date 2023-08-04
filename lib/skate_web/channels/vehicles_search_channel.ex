@@ -28,7 +28,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
       Application.get_env(
         :skate,
         :vehicle_search_default_limit,
-        5
+        25
       )
 
     subscribe_args = %{

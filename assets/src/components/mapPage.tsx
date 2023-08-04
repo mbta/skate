@@ -38,7 +38,7 @@ import { VisualSeparator } from "./visualSeparator"
 import OldSearchForm from "./oldSearchForm"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { Socket } from "phoenix"
-import SearchResultsByProperty from "./mapPage/searchResultsByProperty"
+import SearchResultsByCategory from "./mapPage/searchResultsByCategory"
 import { LocationSearchResult } from "../models/locationSearchResult"
 
 const thereIsAnActiveSearch = (
@@ -98,7 +98,7 @@ const SearchMode = ({
       <div className="c-search-display u-hideable">
         {searchPageState.isActive ? (
           inTestGroup(TestGroups.LocationSearch) ? (
-            <SearchResultsByProperty
+            <SearchResultsByCategory
               onSelectVehicleResult={onSelectVehicleResult}
               onSelectLocationResult={onSelectLocationResult}
             />

@@ -2,9 +2,9 @@ import { renderHook } from "@testing-library/react"
 import { useLimitedSearchResults } from "../../src/hooks/useSearchResults"
 import { makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleFactory from "../factories/vehicle"
-import useSearchResultsByProperty, {
+import useSearchResultsByCategory, {
   VehicleResultType,
-} from "../../src/hooks/useSearchResultsByProperty"
+} from "../../src/hooks/useSearchResultsByCategory"
 import locationSearchResultFactory from "../factories/locationSearchResult"
 import { useLocationSearchResults } from "../../src/hooks/useLocationSearchResults"
 import { LocationSearchResult } from "../../src/models/locationSearchResult"
@@ -25,10 +25,11 @@ const operatorMatch = vehicleFactory.build()
 const locationMatch = locationSearchResultFactory.build()
 
 const mockSearchResults = (rawResults: {
-  vehicle: VehicleResultType
-  operator: VehicleResultType
-  run: VehicleResultType
-  location: LocationSearchResult[] | null
+  all?: VehicleResultType
+  vehicle?: VehicleResultType
+  operator?: VehicleResultType
+  run?: VehicleResultType
+  location?: LocationSearchResult[] | null
 }) => {
   ;(useLimitedSearchResults as jest.Mock).mockImplementation(
     (_socket, query) => {
@@ -39,6 +40,8 @@ const mockSearchResults = (rawResults: {
           return rawResults.run
         case "operator":
           return rawResults.operator
+        case "all":
+          return rawResults.all
         default:
           return null
       }
@@ -51,109 +54,111 @@ afterEach(() => {
   jest.restoreAllMocks()
 })
 
-describe("useSearchResultsByProperty", () => {
-  test("when property limits are null, returns null", () => {
+describe("useSearchResultsByCategory", () => {
+  test("when results are loading, returns loading", () => {
     const mockSocket = makeMockSocket()
     mockSearchResults({
-      vehicle: { ok: { matches: [vehicleMatch], hasMoreMatches: true } },
-      operator: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
-      run: { ok: { matches: [runMatch], hasMoreMatches: true } },
-      location: [locationMatch],
-    })
-
-    const { result } = renderHook(() =>
-      useSearchResultsByProperty(mockSocket, "1234", {
-        vehicle: null,
-        run: null,
-        operator: null,
-        location: null,
-      })
-    )
-    expect(result.current).toEqual({
-      vehicle: null,
-      run: null,
-      operator: null,
-      location: null,
-    })
-  })
-  test("when result is loading, returns loading", () => {
-    const mockSocket = makeMockSocket()
-    mockSearchResults({
-      vehicle: { is_loading: true },
-      operator: { is_loading: true },
-      run: { is_loading: true },
+      all: { is_loading: true },
       location: null,
     })
 
     const { result } = renderHook(() =>
-      useSearchResultsByProperty(mockSocket, "1234", {
+      useSearchResultsByCategory(mockSocket, "1234", "all", {
         vehicle: 5,
-        run: 5,
-        operator: 5,
         location: 5,
       })
     )
     expect(result.current).toEqual({
       vehicle: { is_loading: true },
-      run: { is_loading: true },
-      operator: { is_loading: true },
       location: { is_loading: true },
     })
   })
-  test("when results are loaded, returns data for each property", () => {
+  test("when query property is 'all', returns all vehicle matches and location matches", () => {
     const mockSocket = makeMockSocket()
     mockSearchResults({
-      vehicle: { ok: { matches: [vehicleMatch], hasMoreMatches: true } },
-      operator: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
-      run: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
+      all: {
+        ok: {
+          matches: [vehicleMatch, operatorMatch, runMatch],
+          hasMoreMatches: true,
+        },
+      },
+
+      vehicle: {
+        ok: { matches: [vehicleFactory.build()], hasMoreMatches: true },
+      },
+      operator: {
+        ok: { matches: [vehicleFactory.build()], hasMoreMatches: true },
+      },
+      run: { ok: { matches: [vehicleFactory.build()], hasMoreMatches: true } },
       location: [locationMatch],
     })
 
     const { result } = renderHook(() =>
-      useSearchResultsByProperty(mockSocket, "1234", {
+      useSearchResultsByCategory(mockSocket, "1234", "all", {
         vehicle: 5,
-        run: 5,
-        operator: 5,
         location: 5,
       })
     )
     expect(result.current).toEqual({
-      vehicle: { ok: { matches: [vehicleMatch], hasMoreMatches: true } },
-      operator: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
-      run: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
+      vehicle: {
+        ok: {
+          matches: [vehicleMatch, operatorMatch, runMatch],
+          hasMoreMatches: true,
+        },
+      },
       location: {
         ok: { matches: [locationMatch], hasMoreMatches: false },
       },
     })
   })
-  test("when some properties have null limits, returns results for all other properties", () => {
+
+  test("when query property is a vehicle property, returns only vehicle matches", () => {
     const mockSocket = makeMockSocket()
     mockSearchResults({
-      vehicle: { is_loading: true },
-      run: {
-        ok: { matches: [runMatch], hasMoreMatches: false },
-      },
-      operator: {
-        ok: { matches: [operatorMatch], hasMoreMatches: true },
-      },
+      vehicle: { ok: { matches: [vehicleMatch], hasMoreMatches: true } },
       location: [locationMatch],
     })
 
     const { result } = renderHook(() =>
-      useSearchResultsByProperty(mockSocket, "1234", {
+      useSearchResultsByCategory(mockSocket, "1234", "vehicle", {
         vehicle: 5,
-        run: null,
-        operator: 5,
         location: 5,
       })
     )
     expect(result.current).toEqual({
-      vehicle: { is_loading: true },
-      run: null,
-      operator: {
-        ok: { matches: [operatorMatch], hasMoreMatches: true },
+      vehicle: {
+        ok: {
+          matches: [vehicleMatch],
+          hasMoreMatches: true,
+        },
       },
-      location: { ok: { matches: [locationMatch], hasMoreMatches: false } },
+      location: null,
+    })
+  })
+
+  test("when query property is 'location', returns only location matches", () => {
+    const mockSocket = makeMockSocket()
+    mockSearchResults({
+      vehicle: { ok: { matches: [vehicleMatch], hasMoreMatches: true } },
+      operator: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
+      run: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
+      location: [locationMatch],
+    })
+
+    const { result } = renderHook(() =>
+      useSearchResultsByCategory(mockSocket, "1234", "location", {
+        vehicle: 5,
+        location: 5,
+      })
+    )
+    expect(result.current).toEqual({
+      vehicle: null,
+      location: {
+        ok: {
+          matches: [locationMatch],
+          hasMoreMatches: false,
+        },
+      },
     })
   })
 })
