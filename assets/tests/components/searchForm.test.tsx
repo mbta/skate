@@ -277,16 +277,14 @@ describe("SearchForm", () => {
         const testDispatch = jest.fn()
         render(
           <StateDispatchProvider
-            state={{
-              ...initialState,
-              searchPageState: {
-                ...initialState.searchPageState,
+            state={stateFactory.build({
+              searchPageState: searchPageStateFactory.build({
                 query: emptySearchQueryFactory.build({
                   text: "123",
                   property: selectedProperty,
                 }),
-              },
-            }}
+              }),
+            })}
             dispatch={testDispatch}
           >
             <SearchFormFromStateDispatchContext />
