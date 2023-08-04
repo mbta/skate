@@ -713,6 +713,7 @@ describe("<MapPage />", () => {
         ".leaflet-marker-pane .c-location-dot-icon--selected"
       )
     ).toBeVisible()
+    expect(screen.getByTitle("Recenter Map")).toBeVisible()
   })
 
   test("can collapse and un-collapse the search panel with the drawer tab", async () => {
