@@ -206,7 +206,7 @@ describe("searchResultsByProperty", () => {
     expect(locations).toHaveTextContent(/loading/i)
   })
 
-  test("When there are more vehicl matches, includes a 'Show more' button which updates the vehicle result limit on click", async () => {
+  test("When there are more vehicle matches, includes a 'Show more' button which updates the vehicle result limit on click", async () => {
     ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       vehicle: {
         ok: {
