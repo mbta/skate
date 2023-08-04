@@ -21,13 +21,7 @@ const LocationCard = ({
       additionalClass={
         "c-location-card" + (additionalClass ? " " + additionalClass : "")
       }
-      title={
-        location.name || (
-          <span className="c-location-card__title--address-only">
-            {location.address}
-          </span>
-        )
-      }
+      title={location.name || location.address}
       icon={<LocationDotIcon />}
       openCallback={onSelectLocation && (() => onSelectLocation(location))}
     >
