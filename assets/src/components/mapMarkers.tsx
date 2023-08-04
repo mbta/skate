@@ -413,20 +413,25 @@ export const GarageMarkers = ({ zoomLevel }: { zoomLevel: number }) => (
   </>
 )
 
-const locationLeafletIcon = Leaflet.divIcon({
-  html: locationDotIcon,
-  className: "c-location-dot-icon",
-  iconAnchor: new Leaflet.Point(9, 24),
-  iconSize: [24, 18],
-})
+const locationLeafletIcon = (selected?: boolean): Leaflet.DivIcon =>
+  Leaflet.divIcon({
+    html: locationDotIcon,
+    className:
+      "c-location-dot-icon" +
+      (selected ? " c-location-dot-icon--selected" : ""),
+    iconAnchor: new Leaflet.Point(9, 24),
+    iconSize: [24, 18],
+  })
 
 export const LocationMarker = ({
   location,
+  selected,
 }: {
   location: LocationSearchResult
+  selected?: boolean
 }) => (
   <Marker
     position={[location.latitude, location.longitude]}
-    icon={locationLeafletIcon}
+    icon={locationLeafletIcon(selected)}
   />
 )

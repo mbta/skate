@@ -407,7 +407,7 @@ const SelectedLocationDataLayer = ({
     )
   }, [location, map, pickerContainerIsVisible])
 
-  return <LocationMarker location={location} />
+  return <LocationMarker location={location} selected={true} />
 }
 
 const SelectionDataLayers = ({
