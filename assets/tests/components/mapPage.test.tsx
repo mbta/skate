@@ -704,10 +704,15 @@ describe("<MapPage />", () => {
 
     const locationCard = screen.getByLabelText(location.name!)
     expect(locationCard).toBeVisible()
+
     // Selected location has street view button, whereas a location in the
     // results list does not
     expect(within(locationCard).getByText(/Street View/)).toBeInTheDocument()
+
+    expect(screen.getByRole("button", { name: "New Search" })).toBeVisible()
+
     expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
+
     expect(
       container.querySelector(
         ".leaflet-marker-pane .c-location-dot-icon--selected"
