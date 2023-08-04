@@ -40,6 +40,12 @@ defmodule SkateWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  scope "/docs", SkateWeb do
+    get "/agency-policies/AUP", Redirect,
+      external:
+        "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn"
+  end
+
   scope "/auth", SkateWeb do
     pipe_through([:redirect_prod_http, :accepts_html, :browser])
 
