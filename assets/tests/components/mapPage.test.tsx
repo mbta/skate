@@ -682,9 +682,9 @@ describe("<MapPage />", () => {
 
     ;(useLocationSearchResults as jest.Mock).mockReturnValue([location])
 
-    render(
-      <RealDispatchWrapper
-        initialState={stateFactory.build({
+    const { container } = render(
+      <StateDispatchProvider
+        state={stateFactory.build({
           searchPageState: activeSearchPageStateFactory.build({
             query: { text: location.name! },
             selectedEntity: {
@@ -693,9 +693,10 @@ describe("<MapPage />", () => {
             },
           }),
         })}
+        dispatch={jest.fn()}
       >
         <MapPage />
-      </RealDispatchWrapper>
+      </StateDispatchProvider>
     )
 
     const mapSearchPanel = getMapSearchPanel()
@@ -707,6 +708,11 @@ describe("<MapPage />", () => {
     // results list does not
     expect(within(locationCard).getByText(/Street View/)).toBeInTheDocument()
     expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
+    expect(
+      container.querySelector(
+        ".leaflet-marker-pane .c-location-dot-icon--selected"
+      )
+    ).toBeVisible()
   })
 
   test("can collapse and un-collapse the search panel with the drawer tab", async () => {
