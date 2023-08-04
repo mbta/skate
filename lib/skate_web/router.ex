@@ -40,6 +40,13 @@ defmodule SkateWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  scope "/docs" do
+    for {key, value} <- Application.compile_env(:skate, SkateWeb.ConfigPagesController)[:pages] do
+      get key, SkateWeb.ConfigPagesController, :index,
+        private: %{SkateWeb.ConfigPagesController => %{external: value}}
+    end
+  end
+
   scope "/auth", SkateWeb do
     pipe_through([:redirect_prod_http, :accepts_html, :browser])
 

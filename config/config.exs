@@ -104,6 +104,12 @@ config :skate, SkateWeb.AuthManager,
   issuer: "skate",
   secret_key: nil
 
+config :skate, SkateWeb.ConfigPagesController,
+  pages: %{
+    "/agency-policies/AUP" =>
+      "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn"
+  }
+
 config :skate, Skate.Repo,
   database: "skate_dev",
   username: System.get_env("POSTGRES_USERNAME", System.get_env("USER")),
