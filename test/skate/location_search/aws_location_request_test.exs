@@ -6,6 +6,7 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
 
   alias Skate.LocationSearch.AwsLocationRequest
   alias Skate.LocationSearch.Place
+  alias Skate.LocationSearch.Suggestion
 
   setup do
     reassign_env(:skate, :aws_place_index, "test-index")
@@ -117,12 +118,14 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
   end
 
   describe "suggest/1" do
-    test "pulls out suggested search text" do
+    test "pulls out suggested search text and place ID" do
+      suggestion = build(:amazon_location_suggest_result, %{"Text" => "some place"})
+
       response = %{
         status_code: 200,
         body:
           Jason.encode!(%{
-            "Results" => [build(:amazon_location_suggest_result, %{"Text" => "some place"})]
+            "Results" => [suggestion]
           })
       }
 
@@ -133,7 +136,33 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
         {:ok, response}
       end)
 
-      assert {:ok, ["some place"]} = AwsLocationRequest.suggest("text")
+      place_id = Map.get(suggestion, "PlaceId")
+
+      assert {:ok, [%Suggestion{text: "some place", place_id: ^place_id}]} =
+               AwsLocationRequest.suggest("text")
+    end
+
+    test "pulls out suggested search text when no place ID present" do
+      suggestion =
+        build(:amazon_location_suggest_result, %{"Text" => "some place", "PlaceId" => nil})
+
+      response = %{
+        status_code: 200,
+        body:
+          Jason.encode!(%{
+            "Results" => [suggestion]
+          })
+      }
+
+      reassign_env(:skate, :aws_request_fn, fn %{
+                                                 path:
+                                                   "/places/v0/indexes/test-index/search/suggestions"
+                                               } ->
+        {:ok, response}
+      end)
+
+      assert {:ok, [%Suggestion{text: "some place", place_id: nil}]} =
+               AwsLocationRequest.suggest("text")
     end
 
     test "returns errors" do

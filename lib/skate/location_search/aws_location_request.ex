@@ -1,5 +1,6 @@
 defmodule Skate.LocationSearch.AwsLocationRequest do
   alias Skate.LocationSearch.Place
+  alias Skate.LocationSearch.Suggestion
 
   @spec search(String.t()) :: {:ok, map()} | {:error, term()}
   def search(text) do
@@ -20,7 +21,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     end
   end
 
-  @spec suggest(String.t()) :: {:ok, map()} | {:error, term()}
+  @spec suggest(String.t()) :: {:ok, [Suggestion.t()]} | {:error, term()}
   def suggest(text) do
     request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
 
@@ -64,7 +65,12 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
   defp parse_suggest_response(%{status_code: 200, body: body}) do
     %{"Results" => results} = Jason.decode!(body)
 
-    Enum.map(results, fn result -> Map.get(result, "Text") end)
+    Enum.map(results, fn result ->
+      text = Map.get(result, "Text")
+      place_id = Map.get(result, "PlaceId")
+
+      %Suggestion{text: text, place_id: place_id}
+    end)
   end
 
   @spec separate_label_text(String.t(), String.t() | nil, String.t() | nil) ::
