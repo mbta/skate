@@ -1,4 +1,4 @@
-defmodule Skate.LocationSearch.SearchResult do
+defmodule Skate.LocationSearch.Place do
   @type t :: %__MODULE__{
           id: String.t(),
           name: String.t() | nil,

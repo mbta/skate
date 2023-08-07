@@ -1,5 +1,5 @@
 defmodule Skate.LocationSearch.AwsLocationRequest do
-  alias Skate.LocationSearch.SearchResult
+  alias Skate.LocationSearch.Place
 
   @spec search(String.t()) :: {:ok, map()} | {:error, term()}
   def search(text) do
@@ -51,7 +51,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       {name, address} =
         separate_label_text(label, Map.get(place, "AddressNumber"), Map.get(place, "Street"))
 
-      %SearchResult{
+      %Place{
         id: id,
         name: name,
         address: address,

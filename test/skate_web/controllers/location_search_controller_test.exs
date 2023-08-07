@@ -2,7 +2,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Skate.LocationSearch.SearchResult
+  alias Skate.LocationSearch.Place
 
   describe "GET /api/location_search/search" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -16,7 +16,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
 
     @tag :authenticated
     test "returns data", %{conn: conn} do
-      result = %SearchResult{
+      result = %Place{
         id: "test_id",
         name: "Landmark",
         address: "123 Fake St",
