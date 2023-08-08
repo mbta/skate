@@ -6,8 +6,9 @@ defmodule SkateWeb.RedirectTest do
   defmodule Router do
     use Phoenix.Router
 
-    get "/1", Redirect, external: "https://test-site-1"
-    get "/1/2", Redirect, external: "https://test-site-2"
+    get "/valid", Redirect, external: :aup
+    get "/valid/nested", Redirect, external: :aup
+    get "/invalid", Redirect, external: :invalid
     get "/exceptional", Redirect, []
   end
 
@@ -17,28 +18,24 @@ defmodule SkateWeb.RedirectTest do
     end
   end
 
-  test "ignores query parameters" do
-    # Test that a route without a `:external` parameter doesn't pull `external` from query parameter
-    assert_raise Plug.Conn.WrapperError, ~R[Missing required external: option in redirect], fn ->
-      call(Router, :get, "/exceptional?external=https://bad-url")
-    end
-
-    # Test that a route with a `:external` parameter doesn't redirect to a `external` query parameter
-    conn = call(Router, :get, "/1?external=https://bad-url")
-
-    assert Phoenix.ConnTest.redirected_to(conn) == "https://test-site-1"
-  end
-
   test "route redirected to external route" do
-    conn = call(Router, :get, "/1")
+    conn = call(Router, :get, "/valid")
 
-    assert Phoenix.ConnTest.redirected_to(conn) == "https://test-site-1"
+    assert Phoenix.ConnTest.redirected_to(conn) ==
+             Application.get_env(:skate, :acceptable_use_policy)
   end
 
   test "nested route redirected to external route" do
-    conn = call(Router, :get, "/1/2")
+    conn = call(Router, :get, "/valid/nested")
 
-    assert Phoenix.ConnTest.redirected_to(conn) == "https://test-site-2"
+    assert Phoenix.ConnTest.redirected_to(conn) ==
+             Application.get_env(:skate, :acceptable_use_policy)
+  end
+
+  test "when atom is not in allow list, should return :not_found" do
+    conn = call(Router, :get, "/invalid")
+
+    assert Phoenix.ConnTest.response(conn, :not_found) == "URL not found"
   end
 
   defp call(router, verb, path) do

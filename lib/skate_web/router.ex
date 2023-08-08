@@ -41,8 +41,7 @@ defmodule SkateWeb.Router do
   end
 
   scope "/docs", SkateWeb do
-    get "/agency-policies/AUP", Redirect,
-      external: Application.compile_env(:skate, :acceptable_use_policy)
+    get "/agency-policies/AUP", Redirect, external: :aup
   end
 
   scope "/auth", SkateWeb do
