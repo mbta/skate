@@ -2,7 +2,26 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
   alias Skate.LocationSearch.Place
   alias Skate.LocationSearch.Suggestion
 
-  @spec search(String.t()) :: {:ok, map()} | {:error, term()}
+  @spec get(Place.id()) :: {:ok, Place.t()} | {:error, term()}
+  def get(place_id) do
+    request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
+
+    path =
+      "/places/v0/indexes/" <>
+        Application.get_env(:skate, :aws_place_index) <> "/places/" <> place_id
+
+    case %ExAws.Operation.RestQuery{
+           http_method: :get,
+           path: path,
+           service: :places
+         }
+         |> request_fn.() do
+      {:ok, response} -> {:ok, parse_get_response(response, place_id)}
+      {:error, error} -> {:error, error}
+    end
+  end
+
+  @spec search(String.t()) :: {:ok, [Place.t()]} | {:error, term()}
   def search(text) do
     request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
 
@@ -39,6 +58,23 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       {:ok, response} -> {:ok, parse_suggest_response(response)}
       {:error, error} -> {:error, error}
     end
+  end
+
+  defp parse_get_response(%{status_code: 200, body: body}, place_id) do
+    %{"Place" => place} = Jason.decode!(body)
+
+    %{"Label" => label, "Geometry" => %{"Point" => [longitude, latitude]}} = place
+
+    {name, address} =
+      separate_label_text(label, Map.get(place, "AddressNumber"), Map.get(place, "Street"))
+
+    %Place{
+      id: place_id,
+      name: name,
+      address: address,
+      latitude: latitude,
+      longitude: longitude
+    }
   end
 
   defp parse_search_response(%{status_code: 200, body: body}) do

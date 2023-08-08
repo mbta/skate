@@ -5,6 +5,42 @@ defmodule SkateWeb.LocationSearchControllerTest do
   alias Skate.LocationSearch.Place
   alias Skate.LocationSearch.Suggestion
 
+  describe "GET /api/location_search/place" do
+    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/location_search/place/place_id")
+
+      assert redirected_to(conn) == "/auth/cognito"
+    end
+
+    @tag :authenticated
+    test "returns data", %{conn: conn} do
+      place = %Place{
+        id: "test_id",
+        name: "Landmark",
+        address: "123 Fake St",
+        latitude: 0,
+        longitude: 0
+      }
+
+      reassign_env(:skate, :location_get_fn, fn _query -> {:ok, place} end)
+
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/location_search/place/#{place.id}")
+
+      assert json_response(conn, 200) == %{
+               "data" =>
+                 place
+                 |> Map.from_struct()
+                 |> Map.new(fn {key, value} -> {Atom.to_string(key), value} end)
+             }
+    end
+  end
+
   describe "GET /api/location_search/search" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn =

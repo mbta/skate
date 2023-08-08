@@ -1,6 +1,8 @@
 defmodule Skate.LocationSearch.Place do
+  @type id :: String.t()
+
   @type t :: %__MODULE__{
-          id: String.t(),
+          id: id(),
           name: String.t() | nil,
           address: String.t(),
           latitude: float(),

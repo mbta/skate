@@ -12,6 +12,39 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
     reassign_env(:skate, :aws_place_index, "test-index")
   end
 
+  describe "get/1" do
+    test "returns a place when found" do
+      place = build(:amazon_location_place)
+
+      response = %{
+        status_code: 200,
+        body: Jason.encode!(%{"Place" => place})
+      }
+
+      reassign_env(:skate, :aws_request_fn, fn %{
+                                                 path:
+                                                   "/places/v0/indexes/test-index/places/" <>
+                                                     _place_id
+                                               } ->
+        {:ok, response}
+      end)
+
+      assert {:ok, %Place{}} = AwsLocationRequest.get("place_id")
+    end
+
+    test "returns errors" do
+      reassign_env(:skate, :aws_request_fn, fn %{
+                                                 path:
+                                                   "/places/v0/indexes/test-index/places/" <>
+                                                     _place_id
+                                               } ->
+        {:error, "error"}
+      end)
+
+      assert {:error, "error"} = AwsLocationRequest.get("place_id")
+    end
+  end
+
   describe "search/1" do
     test "transforms result with name into Place structs" do
       name = "Some Landmark"
