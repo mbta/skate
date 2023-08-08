@@ -2,16 +2,19 @@ import React, { ReactElement } from "react"
 import { LocationDotIcon } from "../../helpers/icon"
 import { LocationSearchResult } from "../../models/locationSearchResult"
 import { Card, CardBody } from "../card"
+import { HighlightedMatch } from "../highlightedMatch"
 import StreetViewButton from "../streetViewButton"
 
 const LocationCard = ({
   location,
   onSelectLocation,
   searchSelection,
+  highlightText,
 }: {
   location: any
   onSelectLocation?: (location: LocationSearchResult) => void
   searchSelection?: boolean
+  highlightText?: string
 }): ReactElement => {
   return (
     <Card
@@ -21,9 +24,17 @@ const LocationCard = ({
         (searchSelection ? " c-location-card--selection" : "")
       }
       title={
-        location.name || (
+        location.name ? (
+          <HighlightedMatch
+            content={location.name}
+            highlightText={highlightText}
+          />
+        ) : (
           <span className="c-location-card__title--address-only">
-            {location.address}
+            <HighlightedMatch
+              content={location.address}
+              highlightText={highlightText}
+            />
           </span>
         )
       }
@@ -32,7 +43,14 @@ const LocationCard = ({
     >
       {((location.name && location.address) || searchSelection) && (
         <CardBody>
-          {location.name && location.address && <div>{location.address}</div>}
+          {location.name && location.address && (
+            <div>
+              <HighlightedMatch
+                content={location.address}
+                highlightText={highlightText}
+              />
+            </div>
+          )}
           {searchSelection && (
             <StreetViewButton
               latitude={location.latitude}

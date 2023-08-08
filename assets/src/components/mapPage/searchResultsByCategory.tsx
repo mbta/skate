@@ -59,9 +59,11 @@ const VehicleSearchResultSection = ({
 const LocationSearchResultSection = ({
   results,
   onSelectLocation,
+  highlightText,
 }: {
   results: LoadingResult | Ok<LimitedSearchResults<LocationSearchResult>> | null
   onSelectLocation: (location: LocationSearchResult) => void
+  highlightText?: string
 }) => {
   if (results === null || (isOk(results) && results.ok.matches.length === 0)) {
     return <></>
@@ -87,6 +89,7 @@ const LocationSearchResultSection = ({
                 <LocationCard
                   location={locationSearchResult}
                   onSelectLocation={onSelectLocation}
+                  highlightText={highlightText}
                 />
               </li>
             ))}
@@ -165,6 +168,7 @@ const SearchResultsByCategory = ({
             <LocationSearchResultSection
               results={resultsByProperty.location}
               onSelectLocation={onSelectLocationResult}
+              highlightText={query.text}
             />
           )}
         </>

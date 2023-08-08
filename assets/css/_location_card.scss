@@ -1,6 +1,10 @@
 .c-location-card {
   padding: 1rem;
 
+  .c-card__title {
+    display: block;
+  }
+
   .c-card__top-row {
     margin-top: 0;
 
@@ -37,6 +41,10 @@
   &:not(.c-location-card--selection) .c-location-card__title--address-only {
     font-size: var(--font-size-s);
     font-weight: var(--font-weight-reg);
+  }
+
+  .highlighted {
+    background-color: $color-eggplant-200;
   }
 }
 

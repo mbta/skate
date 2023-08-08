@@ -54,4 +54,34 @@ describe("LocationCard", () => {
       "c-location-card--selection"
     )
   })
+
+  test("highlights given text in name", () => {
+    const name = "Some Name"
+    const location = locationSearchResultFactory.build({ name })
+
+    render(<LocationCard location={location} highlightText="some" />)
+
+    expect(screen.getByText("Some")).toHaveClass("highlighted")
+  })
+
+  test("highlights given text in address", () => {
+    const address = "123 Test St"
+    const location = locationSearchResultFactory.build({ address })
+
+    render(<LocationCard location={location} highlightText="123" />)
+
+    expect(screen.getByText("123")).toHaveClass("highlighted")
+  })
+
+  test("highlights given text in address when there is no location name", () => {
+    const address = "123 Test St"
+    const location = locationSearchResultFactory.build({
+      name: null,
+      address,
+    })
+
+    render(<LocationCard location={location} highlightText="123" />)
+
+    expect(screen.getByText("123")).toHaveClass("highlighted")
+  })
 })
