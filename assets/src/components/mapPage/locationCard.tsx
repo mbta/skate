@@ -40,6 +40,7 @@ const LocationCard = ({
       }
       icon={<LocationDotIcon />}
       openCallback={onSelectLocation && (() => onSelectLocation(location))}
+      noFocusOrHover={searchSelection}
     >
       {((location.name && location.address) || searchSelection) && (
         <CardBody>
