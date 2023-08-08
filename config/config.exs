@@ -90,7 +90,9 @@ config :skate,
         min_length: 5
       }
     ]
-  }
+  },
+  acceptable_use_policy:
+    "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn"
 
 config :skate, Schedule.CacheFile, cache_filename: nil
 
