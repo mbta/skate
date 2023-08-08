@@ -64,10 +64,7 @@ const StopCard = ({
 }: StopCardProps & AutoPanProps): JSX.Element => {
   const routesLabelId = "stop-card-routes-label-" + useId()
 
-  const hasRouteField = stop.routes !== undefined
-  const sortedDisplayRoutes = hasRouteField
-    ? sortRoutes(stop.routes || [])
-    : sortRoutes(stop.connections || [])
+  const routes = sortRoutes(stop.routes || [])
 
   return (
     <Popup
@@ -87,16 +84,16 @@ const StopCard = ({
           </div>
         )}
       </div>
-      {sortedDisplayRoutes.length > 0 ? (
+      {routes.length > 0 ? (
         <div className="c-stop-card__routes">
           <div className="c-stop-card__routes-label" id={routesLabelId}>
-            {hasRouteField ? "Routes" : "Connections"}
+            Routes
           </div>
           <ul
             className="c-stop-card__routes-pills"
             aria-labelledby={routesLabelId}
           >
-            {sortedDisplayRoutes.map((c) => (
+            {routes.map((c) => (
               <li key={c.id}>
                 <RoutePill routeName={c.name} />
               </li>

@@ -11,16 +11,6 @@ jest.mock("react-leaflet", () => ({
 }))
 
 describe("StopCard", () => {
-  test("doesn't render connections when none are present", () => {
-    const stop = stopFactory.build()
-
-    render(<StopCard stop={stop} />)
-
-    expect(
-      screen.queryByRole("list", { name: "Connections" })
-    ).not.toBeInTheDocument()
-  })
-
   test("doesn't render routes when none are present", () => {
     const stop = stopFactory.build()
 
@@ -57,25 +47,9 @@ describe("StopCard", () => {
     expect(screen.getByText(/Outbound/)).toBeInTheDocument()
   })
 
-  test("when routes aren't present but connections are, renders connections", () => {
-    const stop = stopFactory.build({
-      connections: [{ type: 1, name: "Red", id: "Red" }],
-    })
-
-    render(<StopCard stop={stop} />)
-
-    expect(
-      screen.getByRole("list", { name: "Connections" })
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByRole("list", { name: "Routes" })
-    ).not.toBeInTheDocument()
-  })
-
   test("when routes are present, renders the routes", () => {
     const stop = stopFactory.build({
       routes: [{ type: 1, name: "Red", id: "Red" }],
-      connections: [{ type: 1, name: "Blue", id: "Blue" }],
     })
 
     render(<StopCard stop={stop} />)
@@ -84,20 +58,11 @@ describe("StopCard", () => {
     expect(
       screen.getAllByRole("listitem").find((item) => item.textContent === "Red")
     ).toBeInTheDocument()
-
-    expect(
-      screen.queryByRole("list", { name: "Connections" })
-    ).not.toBeInTheDocument()
-    expect(
-      screen
-        .getAllByRole("listitem")
-        .find((item) => item.textContent === "Blue")
-    ).toBeUndefined()
   })
 
-  test("sorts rendered connections and excludes commuter rail", () => {
+  test("sorts rendered routes and excludes commuter rail", () => {
     const stop = stopFactory.build({
-      connections: [
+      routes: [
         { type: 1, name: "Orange Line", id: "Orange" },
         { type: 3, name: "CT3", id: "708" },
         { type: 3, name: "28", id: "28" },
@@ -111,22 +76,12 @@ describe("StopCard", () => {
 
     render(<StopCard stop={stop} />)
 
-    const connectionItems = within(
-      screen.getByRole("list", { name: "Connections" })
+    const routeItems = within(
+      screen.getByRole("list", { name: "Routes" })
     ).getAllByRole("listitem")
 
-    const connectionRoutes = connectionItems.map(
-      (item) => item.children[0].innerHTML
-    )
+    const routes = routeItems.map((item) => item.children[0].innerHTML)
 
-    expect(connectionRoutes).toEqual([
-      "OL",
-      "RL",
-      "SL1",
-      "CT2",
-      "CT3",
-      "1",
-      "28",
-    ])
+    expect(routes).toEqual(["OL", "RL", "SL1", "CT2", "CT3", "1", "28"])
   })
 })
