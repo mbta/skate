@@ -44,8 +44,8 @@ defmodule SkateWeb.RouterTest do
   end
 
   describe "GET /docs" do
-    test "GET /agency-policies/AUP, should return :skate, :acceptable_use_policy", %{conn: conn} do
-      conn = get(conn, "/docs/agency-policies/AUP")
+    test "GET /agency-policies/aup, should return :skate, :acceptable_use_policy", %{conn: conn} do
+      conn = get(conn, "/docs/agency-policies/aup")
 
       assert redirected_to(conn) == Application.get_env(:skate, :acceptable_use_policy)
     end
