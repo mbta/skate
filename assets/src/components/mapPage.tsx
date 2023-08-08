@@ -236,8 +236,7 @@ const Selection = ({
       ) : (
         <LocationCard
           location={selectedEntity.location}
-          includeStreetView={true}
-          additionalClass="c-location-card--selection"
+          searchSelection={true}
         />
       )}
     </div>

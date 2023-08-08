@@ -24,14 +24,6 @@ describe("LocationCard", () => {
     expect(screen.getByLabelText(address)).toBeInTheDocument()
   })
 
-  test("can specify additionalClass", () => {
-    const location = locationSearchResultFactory.build()
-
-    render(<LocationCard location={location} additionalClass="test-class" />)
-
-    expect(screen.getByLabelText(location.name!)).toHaveClass("test-class")
-  })
-
   test("onSelectLocation is invoked on click", async () => {
     const location = locationSearchResultFactory.build()
     const onSelectLocation = jest.fn()
@@ -45,13 +37,17 @@ describe("LocationCard", () => {
     expect(onSelectLocation).toHaveBeenCalledWith(location)
   })
 
-  test("can include street view button", () => {
+  test("search selection version includes street view button and additional class", () => {
     const location = locationSearchResultFactory.build()
 
-    render(<LocationCard location={location} includeStreetView={true} />)
+    render(<LocationCard location={location} searchSelection={true} />)
 
     expect(
       screen.getByRole("link", { name: "Street View" })
     ).toBeInTheDocument()
+
+    expect(screen.getByLabelText(location.name!)).toHaveClass(
+      "c-location-card--selection"
+    )
   })
 })

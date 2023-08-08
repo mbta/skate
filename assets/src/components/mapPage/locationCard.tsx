@@ -7,28 +7,26 @@ import StreetViewButton from "../streetViewButton"
 const LocationCard = ({
   location,
   onSelectLocation,
-  includeStreetView,
-  additionalClass,
+  searchSelection,
 }: {
   location: any
   onSelectLocation?: (location: LocationSearchResult) => void
-  includeStreetView?: boolean
-  additionalClass?: string
+  searchSelection?: boolean
 }): ReactElement => {
   return (
     <Card
       style="white"
       additionalClass={
-        "c-location-card" + (additionalClass ? " " + additionalClass : "")
+        "c-location-card" + (searchSelection && " c-location-card--selection")
       }
       title={location.name || location.address}
       icon={<LocationDotIcon />}
       openCallback={onSelectLocation && (() => onSelectLocation(location))}
     >
-      {((location.name && location.address) || includeStreetView) && (
+      {((location.name && location.address) || searchSelection) && (
         <CardBody>
           {location.name && location.address && <div>{location.address}</div>}
-          {includeStreetView && (
+          {searchSelection && (
             <StreetViewButton
               latitude={location.latitude}
               longitude={location.longitude}
