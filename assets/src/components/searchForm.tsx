@@ -26,6 +26,7 @@ import {
 import { CircleXIcon } from "./circleXIcon"
 import {
   GroupedAutocompleteControls,
+  GroupedAutocompleteFromSearchTextEventProps,
   GroupedAutocompleteFromSearchTextResults,
   autocompleteOption,
 } from "./groupedAutocomplete"
@@ -68,7 +69,8 @@ type SearchFormEventProps = {
 }
 
 type SearchFormProps = SearchFormEventProps &
-  SearchFormConfigProps & {
+  SearchFormConfigProps &
+  GroupedAutocompleteFromSearchTextEventProps & {
     /**
      * Text to show in the search input box.
      */
@@ -86,10 +88,6 @@ type SearchFormProps = SearchFormEventProps &
      * Callback to run when {@link property} should be updated.
      */
     onPropertyChange: (property: SearchPropertyQuery) => void
-    /**
-     * Callback to run when a autocomplete vehicle option is selected.
-     */
-    onSelectVehicleOption: (selectedOption: Vehicle | Ghost) => void
   }
 
 const allFiltersOn: SearchFiltersState = {
@@ -160,6 +158,8 @@ export const SearchForm = ({
   onClear: onClearProp,
   onSubmit: onSubmitProp,
   onSelectVehicleOption,
+  onSelectedLocationId,
+  onSelectedLocationText
 
   showAutocomplete: showAutocompleteProp = true,
 }: SearchFormProps) => {
@@ -287,6 +287,8 @@ export const SearchForm = ({
               searchText={inputText}
               fallbackOption={autocompleteOption(inputText, onSubmit)}
               onSelectVehicleOption={onSelectVehicleOption}
+              onSelectedLocationId={onSelectedLocationId}
+              onSelectedLocationText={onSelectedLocationText}
               controllerRef={autocompleteController}
               onCursor={{
                 onCursorExitEdge: () => formSearchInput.current?.focus(),
@@ -350,6 +352,14 @@ const SearchFormFromStateDispatchContext = ({
             vehicleId: vehicle.id,
           })
         )
+      }}
+      onSelectedLocationId={(id) => {
+
+      }}
+      onSelectedLocationText={(text) => {
+        dispatch(setSearchText(text))
+        dispatch(submitSearch())
+
       }}
     />
   )
