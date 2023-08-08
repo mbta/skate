@@ -1,5 +1,6 @@
 import React from "react"
-import renderer from "react-test-renderer"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom"
 import { HighlightedMatch } from "../../src/components/highlightedMatch"
 
 describe("HighlightedMatch", () => {
@@ -7,49 +8,51 @@ describe("HighlightedMatch", () => {
     const content = "SMITH #20138713820"
     const highlightText = "138"
 
-    const tree = renderer.create(
-      <HighlightedMatch content={content} highlightText={highlightText} />
-    )
+    render(<HighlightedMatch content={content} highlightText={highlightText} />)
 
-    expect(tree).toMatchSnapshot()
+    const matches = screen.getAllByText(highlightText)
+
+    expect(matches).toHaveLength(2)
+
+    matches.forEach((element) => expect(element).toHaveClass("highlighted"))
   })
 
   test("is insensitive in its matching", () => {
     const content = "SMITH #201387 tmits"
     const highlightText = "mit"
 
-    const tree = renderer.create(
-      <HighlightedMatch content={content} highlightText={highlightText} />
-    )
+    render(<HighlightedMatch content={content} highlightText={highlightText} />)
 
-    expect(tree).toMatchSnapshot()
+    const matches = screen.getAllByText(new RegExp(highlightText, "i"))
+
+    expect(matches).toHaveLength(2)
+
+    matches.forEach((element) => expect(element).toHaveClass("highlighted"))
   })
 
   test("ignores spaces and hyphens", () => {
     const content = "abcde-f gh"
     const highlightText = "b c-defg"
-    const tree = renderer.create(
-      <HighlightedMatch content={content} highlightText={highlightText} />
-    )
 
-    expect(tree).toMatchSnapshot()
+    render(<HighlightedMatch content={content} highlightText={highlightText} />)
+
+    expect(screen.getByText("bcde-f g")).toHaveClass("highlighted")
   })
 
   test("can highlight the whole string", () => {
     const content = "abc"
     const highlightText = "abc"
-    const tree = renderer.create(
-      <HighlightedMatch content={content} highlightText={highlightText} />
-    )
 
-    expect(tree).toMatchSnapshot()
+    render(<HighlightedMatch content={content} highlightText={highlightText} />)
+
+    expect(screen.getByText(highlightText)).toHaveClass("highlighted")
   })
 
   test("renders the original content if no highlight text is specified", () => {
     const content = "SMITH #201387"
 
-    const tree = renderer.create(<HighlightedMatch content={content} />)
+    render(<HighlightedMatch content={content} />)
 
-    expect(tree).toMatchSnapshot()
+    expect(screen.getByText(content)).not.toHaveClass("highlighted")
   })
 })
