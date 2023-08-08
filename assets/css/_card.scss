@@ -60,7 +60,6 @@
 }
 
 .c-card__title {
-  @include button-icon(0.5rem);
   flex-grow: 1;
 
   display: flex;
@@ -68,12 +67,6 @@
 
   font-size: 1rem;
   font-weight: 600;
-
-  span {
-    display: inline-flex;
-    margin-right: 0.75rem;
-    margin-left: 0.1875rem;
-  }
 }
 
 .c-card__time {

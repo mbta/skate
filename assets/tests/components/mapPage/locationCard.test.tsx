@@ -15,13 +15,17 @@ describe("LocationCard", () => {
     expect(screen.getByLabelText(name)).toBeInTheDocument()
   })
 
-  test("renders a location with no name, making address the label", () => {
+  test("renders a location with no name, making address the label and giving it an additional class", () => {
     const address = "123 Fake St"
     const location = locationSearchResultFactory.build({ address, name: null })
 
     render(<LocationCard location={location} />)
 
     expect(screen.getByLabelText(address)).toBeInTheDocument()
+
+    expect(screen.getByText(address)).toHaveClass(
+      "c-location-card__title--address-only"
+    )
   })
 
   test("onSelectLocation is invoked on click", async () => {

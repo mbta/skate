@@ -17,9 +17,16 @@ const LocationCard = ({
     <Card
       style="white"
       additionalClass={
-        "c-location-card" + (searchSelection && " c-location-card--selection")
+        "c-location-card" +
+        (searchSelection ? " c-location-card--selection" : "")
       }
-      title={location.name || location.address}
+      title={
+        location.name || (
+          <span className="c-location-card__title--address-only">
+            {location.address}
+          </span>
+        )
+      }
       icon={<LocationDotIcon />}
       openCallback={onSelectLocation && (() => onSelectLocation(location))}
     >

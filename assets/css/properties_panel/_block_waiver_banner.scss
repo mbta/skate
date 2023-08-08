@@ -1,4 +1,6 @@
 .c-block-waiver-banner .c-card__title {
+  @include button-icon(0.5rem);
+
   justify-content: space-between;
 
   .c-block-waiver-banner__title {
@@ -7,7 +9,9 @@
     margin: 0;
   }
   span {
+    display: inline-flex;
     margin-right: 0.25rem;
+    margin-left: 0.1875rem;
   }
 }
 
