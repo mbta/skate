@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HighlightedMatch can highlight the whole string 1`] = `
+<span
+  className="highlighted"
+>
+  abc
+</span>
+`;
+
+exports[`HighlightedMatch ignores spaces and hyphens 1`] = `
+[
+  "a",
+  <span
+    className="highlighted"
+  >
+    bcde-f g
+  </span>,
+  "h",
+]
+`;
+
+exports[`HighlightedMatch is insensitive in its matching 1`] = `
+[
+  "S",
+  <span
+    className="highlighted"
+  >
+    MIT
+  </span>,
+  "H #201387 t",
+  <span
+    className="highlighted"
+  >
+    mit
+  </span>,
+  "s",
+]
+`;
+
+exports[`HighlightedMatch renders the content, wrapping the matching text in a span 1`] = `
+[
+  "SMITH #20",
+  <span
+    className="highlighted"
+  >
+    138
+  </span>,
+  "7",
+  <span
+    className="highlighted"
+  >
+    138
+  </span>,
+  "20",
+]
+`;
+
+exports[`HighlightedMatch renders the original content if no highlight text is specified 1`] = `"SMITH #201387"`;

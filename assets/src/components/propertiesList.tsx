@@ -1,10 +1,9 @@
 import React from "react"
-import { intersperseString } from "../helpers/array"
-import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
 import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
+import { HighlightedMatch } from "./highlightedMatch"
 
 interface Props {
   properties: Property[]
@@ -100,48 +99,6 @@ export const vehicleOrGhostProperties = (
     ? vehicleProperties(vehicleOrGhost, operatorLastNameOnly)
     : ghostProperties(vehicleOrGhost)
 
-export const Highlighted = ({
-  content,
-  highlightText,
-}: {
-  content: string
-  highlightText?: string
-}): JSX.Element => {
-  if (highlightText === undefined) {
-    return <>{content}</>
-  }
-
-  const match = content.match(highlightRegex(highlightText))
-
-  if (match === null || match.index === undefined) {
-    return <>{content}</>
-  }
-
-  const matchingString = match[0]
-
-  return (
-    <>
-      {[
-        content.slice(0, match.index),
-        <span className="highlighted" key={`highlighted-${match.index}`}>
-          {matchingString}
-        </span>,
-        <Highlighted
-          content={content.slice(match.index + match[0].length)}
-          highlightText={highlightText}
-          key={`highlighted-extension-${match.index + match[0].length}`}
-        />,
-      ]}
-    </>
-  )
-}
-
-const highlightRegex = (highlightText: string): RegExp => {
-  const stripped = filterToAlphanumeric(highlightText)
-  const allowNonAlphanumeric = intersperseString(stripped, "[^0-9a-zA-Z]*")
-  return new RegExp(allowNonAlphanumeric, "i")
-}
-
 const modifiedClassName = (classNameModifier?: string): string =>
   classNameModifier ? `c-properties-list__property--${classNameModifier}` : ""
 
@@ -160,7 +117,7 @@ const PropertyRow = ({
     >
       <td className="c-properties-list__property-label">{label}</td>
       <td className="c-properties-list__property-value">
-        <Highlighted content={value} highlightText={highlightText} />
+        <HighlightedMatch content={value} highlightText={highlightText} />
       </td>
     </tr>
   )
