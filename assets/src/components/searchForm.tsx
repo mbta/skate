@@ -31,6 +31,7 @@ import {
 } from "./groupedAutocomplete"
 import { SocketContext } from "../contexts/socketContext"
 import useSocket from "../hooks/useSocket"
+import { FilterAccordion } from "./filterAccordion"
 
 // #region Search Filters
 
@@ -119,25 +120,34 @@ const Filters = ({
     "location",
   ]
   return (
-    <ul>
+    <FilterAccordion.WithExpansionState
+      heading="Filter results"
+    >
       {filters.map((property) => (
-        <li key={`search-property-${property}`}>
+        <li
+          key={`search-property-${property}`}
+          className="form-check position-relative"
+        >
           <input
             id={`property-${property}`}
             type="radio"
+            className="form-check-input"
             name="property"
             value={property}
             checked={selectedProperty === property}
             onChange={() => onSelectProperty(property as SearchPropertyQuery)}
           />
-          <label htmlFor={`property-${property}`}>
+          <label
+            htmlFor={`property-${property}`}
+            className="stretched-link form-check-label"
+          >
             {property === "all"
               ? "All"
               : searchPropertyDisplayConfig[property].name}
           </label>
         </li>
       ))}
-    </ul>
+    </FilterAccordion>
   )
 }
 
