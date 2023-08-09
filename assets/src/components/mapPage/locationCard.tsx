@@ -28,12 +28,14 @@ const LocationCard = ({
           <HighlightedMatch
             content={location.name}
             highlightText={highlightText}
+            individualWordMatch={true}
           />
         ) : (
           <span className="c-location-card__title--address-only">
             <HighlightedMatch
               content={location.address}
               highlightText={highlightText}
+              individualWordMatch={true}
             />
           </span>
         )
@@ -49,6 +51,7 @@ const LocationCard = ({
               <HighlightedMatch
                 content={location.address}
                 highlightText={highlightText}
+                individualWordMatch={true}
               />
             </div>
           )}

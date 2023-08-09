@@ -55,4 +55,30 @@ describe("HighlightedMatch", () => {
 
     expect(screen.getByText(content)).not.toHaveClass("highlighted")
   })
+
+  test("when matching individual words, will still match the whole highlightText if possible", () => {
+    const content = "test string"
+
+    render(
+      <HighlightedMatch
+        content={content}
+        highlightText={content}
+        individualWordMatch={true}
+      />
+    )
+
+    expect(screen.getByText(content)).toHaveClass("highlighted")
+  })
+
+  test("can match by individual words in the highlightText", () => {
+    render(
+      <HighlightedMatch
+        content={"test string"}
+        highlightText={"other string"}
+        individualWordMatch={true}
+      />
+    )
+
+    expect(screen.getByText("string")).toHaveClass("highlighted")
+  })
 })
