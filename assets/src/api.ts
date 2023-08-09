@@ -32,6 +32,11 @@ import {
   locationSearchResultFromData,
   locationSearchResultsFromData,
 } from "./models/locationSearchResultData"
+import {
+  LocationSearchSuggestionData,
+  locationSearchSuggestionsFromData,
+} from "./models/locationSearchSuggestionData"
+import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 
 export interface RouteData {
   id: string
@@ -235,6 +240,19 @@ export const fetchLocationSearchResultById = (
     url: `api/location_search/place/${placeId}`,
     dataStruct: LocationSearchResultData,
     parser: nullableParser(locationSearchResultFromData),
+    defaultResult: null,
+  })
+
+export const fetchLocationSearchSuggestions = (
+  searchText: string
+): Promise<LocationSearchSuggestion[] | null> =>
+  checkedApiCall<
+    LocationSearchSuggestionData[],
+    LocationSearchSuggestion[] | null
+  >({
+    url: `api/location_search/suggest?query=${searchText}`,
+    dataStruct: array(LocationSearchSuggestionData),
+    parser: nullableParser(locationSearchSuggestionsFromData),
     defaultResult: null,
   })
 

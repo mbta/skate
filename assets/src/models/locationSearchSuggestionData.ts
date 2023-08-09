@@ -16,3 +16,8 @@ export const locationSearchSuggestionFromData = ({
   text,
   placeId: place_id,
 })
+
+export const locationSearchSuggestionsFromData = (
+  locationSearchSuggestionsData: LocationSearchSuggestionData[]
+): LocationSearchSuggestion[] =>
+  locationSearchSuggestionsData.map(locationSearchSuggestionFromData)
