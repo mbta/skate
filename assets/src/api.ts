@@ -29,6 +29,7 @@ import * as Sentry from "@sentry/react"
 import { LocationSearchResult } from "./models/locationSearchResult"
 import {
   LocationSearchResultData,
+  locationSearchResultFromData,
   locationSearchResultsFromData,
 } from "./models/locationSearchResultData"
 
@@ -225,6 +226,16 @@ export const fetchLocationSearchResults = (
     dataStruct: array(LocationSearchResultData),
     parser: nullableParser(locationSearchResultsFromData),
     defaultResult: [],
+  })
+
+export const fetchLocationSearchResultById = (
+  placeId: string
+): Promise<LocationSearchResult | null> =>
+  checkedApiCall<LocationSearchResultData, LocationSearchResult | null>({
+    url: `api/location_search/place/${placeId}`,
+    dataStruct: LocationSearchResultData,
+    parser: nullableParser(locationSearchResultFromData),
+    defaultResult: null,
   })
 
 export const putNotificationReadState = (

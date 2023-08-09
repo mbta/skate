@@ -15,6 +15,7 @@ import {
   fetchStations,
   fetchRoutePatterns,
   fetchLocationSearchResults,
+  fetchLocationSearchResultById,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
@@ -759,6 +760,33 @@ describe("fetchLocationSearchResults", () => {
           longitude: 2,
         }),
       ])
+      done()
+    })
+  })
+})
+
+describe("fetchLocationSearchResultById", () => {
+  test("parses location search results", (done) => {
+    const result = locationSearchResultDataFactory.build({
+      name: "Some Landmark",
+      address: "123 Test St",
+      latitude: 1,
+      longitude: 2,
+    })
+
+    mockFetch(200, {
+      data: result,
+    })
+
+    fetchLocationSearchResultById("query").then((results) => {
+      expect(results).toEqual(
+        locationSearchResultFactory.build({
+          name: "Some Landmark",
+          address: "123 Test St",
+          latitude: 1,
+          longitude: 2,
+        })
+      )
       done()
     })
   })
