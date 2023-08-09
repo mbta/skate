@@ -38,7 +38,7 @@ const VehicleSearchResultSection = ({
         className="c-map-page__search_results_header"
         id="search-results__vehicle"
       >
-        Vehicles
+        Buses
       </h2>
       {isLoading(results) ? (
         <Loading />

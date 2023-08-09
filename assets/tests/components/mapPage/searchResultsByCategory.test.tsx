@@ -14,6 +14,11 @@ import { searchQueryVehicleFactory } from "../../factories/searchQuery"
 import userEvent from "@testing-library/user-event"
 import { setCategoryMatchLimit } from "../../../src/state/searchPageState"
 import { defaultResultLimit } from "../../../src/models/searchQuery"
+import {
+  busesCategory,
+  category,
+  locationsCategory,
+} from "../../testHelpers/selectors/components/mapPage/searchResultsByCategory"
 
 jest.mock("../../../src/hooks/useSearchResultsByCategory", () => ({
   __esModule: true,
@@ -77,10 +82,8 @@ describe("searchResultsByProperty", () => {
         />
       </StateDispatchProvider>
     )
-    expect(
-      screen.getByRole("heading", { name: "Vehicles" })
-    ).toBeInTheDocument()
-    expect(screen.queryByRole("heading", { name: "Locations" })).toBeNull()
+    expect(busesCategory.get()).toBeInTheDocument()
+    expect(locationsCategory.query()).not.toBeInTheDocument()
   })
 
   test("when search property is a vehicle property, doesn't show location results", () => {
@@ -103,12 +106,8 @@ describe("searchResultsByProperty", () => {
         />
       </StateDispatchProvider>
     )
-    expect(
-      screen.getByRole("heading", { name: "Vehicles" })
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByRole("heading", { name: "Locations" })
-    ).not.toBeInTheDocument()
+    expect(busesCategory.get()).toBeInTheDocument()
+    expect(locationsCategory.query()).not.toBeInTheDocument()
   })
 
   test("Includes the sections in the expected order", () => {
@@ -128,9 +127,9 @@ describe("searchResultsByProperty", () => {
         />
       </StateDispatchProvider>
     )
-    const [vehicles, locations] = screen.getAllByRole("heading")
-    expect(vehicles).toHaveTextContent("Vehicles")
-    expect(locations).toHaveTextContent("Locations")
+    const [vehicles, locations] = category.getAll()
+    expect(vehicles).toBe(busesCategory.get())
+    expect(locations).toBe(locationsCategory.get())
   })
 
   test("Lists the matching vehicles under the appropriate header", () => {
@@ -150,7 +149,7 @@ describe("searchResultsByProperty", () => {
         />
       </StateDispatchProvider>
     )
-    const vehicles = screen.getByLabelText("Vehicles")
+    const vehicles = busesCategory.get()
     expect(
       within(vehicles).getByRole("cell", { name: vehicleMatch.label! })
     ).toBeInTheDocument()
@@ -173,9 +172,8 @@ describe("searchResultsByProperty", () => {
         />
       </StateDispatchProvider>
     )
-    const locations = screen.getByLabelText("Locations")
     expect(
-      within(locations).getByLabelText(locationMatch.name!)
+      within(locationsCategory.get()).getByLabelText(locationMatch.name!)
     ).toBeInTheDocument()
   })
 
@@ -202,8 +200,7 @@ describe("searchResultsByProperty", () => {
         />
       </StateDispatchProvider>
     )
-    const locations = screen.getByLabelText("Locations")
-    expect(locations).toHaveTextContent(/loading/i)
+    expect(locationsCategory.get()).toHaveTextContent(/loading/i)
   })
 
   test("When there are more vehicle matches, includes a 'Show more' button which updates the vehicle result limit on click", async () => {
@@ -244,7 +241,7 @@ describe("searchResultsByProperty", () => {
       </StateDispatchProvider>
     )
     await userEvent.click(
-      within(screen.getByLabelText("Vehicles")).getByRole("button", {
+      within(busesCategory.get()).getByRole("button", {
         name: "Show more",
       })
     )
@@ -283,7 +280,7 @@ describe("searchResultsByProperty", () => {
       </StateDispatchProvider>
     )
     await userEvent.click(
-      within(screen.getByLabelText("Locations")).getByRole("button", {
+      within(locationsCategory.get()).getByRole("button", {
         name: "Show more",
       })
     )
@@ -311,7 +308,7 @@ describe("searchResultsByProperty", () => {
       </StateDispatchProvider>
     )
     expect(
-      within(screen.getByLabelText("Locations")).queryByRole("button", {
+      within(locationsCategory.get()).queryByRole("button", {
         name: "Show more",
       })
     ).not.toBeInTheDocument()
