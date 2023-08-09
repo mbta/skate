@@ -22,6 +22,7 @@ import { formatOperatorNameFromVehicle } from "../util/operatorFormatting"
 import { SocketContext } from "../contexts/socketContext"
 import { Socket } from "phoenix"
 import { Factory } from "fishery"
+import { LocationSearchSuggestion } from "../models/locationSearchSuggestion"
 
 // #region Autocomplete Control
 // #region Cursor Reducer
@@ -753,8 +754,8 @@ export const GroupedAutocompleteFromSearchTextResults = ({
       <h2>{searchPropertyDisplayConfig.location.name}</h2>,
       ...locationResults
         .slice(0, maxElementsPerGroup)
-        .map(({ Text, PlaceId }) =>
-          autocompleteOption(Text, PlaceId ? () => onSelectedLocationId(PlaceId) : () => onSelectedLocationText(Text) )
+        .map(({ text, placeId }) =>
+          autocompleteOption(text, placeId ? () => onSelectedLocationId(placeId) : () => onSelectedLocationText(text) )
         )
     ),
   ].filter(({ group: { options } }) => options.length > 0)
@@ -763,14 +764,10 @@ export const GroupedAutocompleteFromSearchTextResults = ({
 }
 // #endregion Autocomplete From Search Context
 
-interface LocationResult {
-  Text: string
-  PlaceId?: string
-}
-const autocompleteLocationResultsFactory = Factory.define<LocationResult>(
+const autocompleteLocationResultsFactory = Factory.define<LocationSearchSuggestion>(
   ({ sequence }) => ({
-    Text: `location-${sequence}`,
-    // PlaceId: `PlaceID-${sequence}`,
+    text: `location-${sequence}`,
+    placeId: null
   })
 )
 const useAutocompleteLocationResults = (
