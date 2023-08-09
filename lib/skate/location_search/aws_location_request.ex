@@ -10,12 +10,11 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       "/places/v0/indexes/" <>
         Application.get_env(:skate, :aws_place_index) <> "/places/" <> place_id
 
-    case %ExAws.Operation.RestQuery{
+    case request_fn.(%ExAws.Operation.RestQuery{
            http_method: :get,
            path: path,
            service: :places
-         }
-         |> request_fn.() do
+         }) do
       {:ok, response} -> {:ok, parse_get_response(response, place_id)}
       {:error, error} -> {:error, error}
     end
@@ -28,13 +27,12 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     path =
       "/places/v0/indexes/" <> Application.get_env(:skate, :aws_place_index) <> "/search/text"
 
-    case %ExAws.Operation.RestQuery{
+    case request_fn.(%ExAws.Operation.RestQuery{
            http_method: :post,
            path: path,
            body: Map.merge(base_arguments(), %{Text: text}),
            service: :places
-         }
-         |> request_fn.() do
+         }) do
       {:ok, response} -> {:ok, parse_search_response(response)}
       {:error, error} -> {:error, error}
     end
@@ -48,13 +46,12 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       "/places/v0/indexes/" <>
         Application.get_env(:skate, :aws_place_index) <> "/search/suggestions"
 
-    case %ExAws.Operation.RestQuery{
+    case request_fn.(%ExAws.Operation.RestQuery{
            http_method: :post,
            path: path,
            body: Map.merge(base_arguments(), %{Text: text}),
            service: :places
-         }
-         |> request_fn.() do
+         }) do
       {:ok, response} -> {:ok, parse_suggest_response(response)}
       {:error, error} -> {:error, error}
     end
