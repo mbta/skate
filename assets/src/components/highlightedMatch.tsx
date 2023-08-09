@@ -15,18 +15,28 @@ export const HighlightedMatch = ({
     return <>{content}</>
   }
 
-  const match = content.match(
-    individualWordMatch
-      ? new RegExp(
-          "(" +
-            [highlightText, ...highlightText.split(/ +/)]
-              .map((s) => highlightRegex(s).source)
-              .join("|") +
-            ")",
-          "i"
-        )
-      : highlightRegex(highlightText)
-  )
+  const regexp = individualWordMatch
+    ? new RegExp(
+        "(" +
+          [highlightText, ...highlightText.split(/ +/)]
+            .map((s) => highlightRegex(s).source)
+            .join("|") +
+          ")",
+        "i"
+      )
+    : highlightRegex(highlightText)
+
+  return <HighlightedMatchHelper content={content} regexp={regexp} />
+}
+
+const HighlightedMatchHelper = ({
+  content,
+  regexp,
+}: {
+  content: string
+  regexp: RegExp
+}): JSX.Element => {
+  const match = content.match(regexp)
 
   if (match === null || match.index === undefined) {
     return <>{content}</>
@@ -41,11 +51,10 @@ export const HighlightedMatch = ({
         <span className="highlighted" key={`highlighted-${match.index}`}>
           {matchingString}
         </span>,
-        <HighlightedMatch
+        <HighlightedMatchHelper
           content={content.slice(match.index + match[0].length)}
-          highlightText={highlightText}
+          regexp={regexp}
           key={`highlighted-extension-${match.index + match[0].length}`}
-          individualWordMatch={individualWordMatch}
         />,
       ]}
     </>
