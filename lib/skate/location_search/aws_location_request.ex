@@ -1,26 +1,44 @@
 defmodule Skate.LocationSearch.AwsLocationRequest do
-  alias Skate.LocationSearch.SearchResult
+  alias Skate.LocationSearch.Place
+  alias Skate.LocationSearch.Suggestion
 
-  @spec search(String.t()) :: {:ok, map()} | {:error, term()}
+  @spec get(Place.id()) :: {:ok, Place.t()} | {:error, term()}
+  def get(place_id) do
+    request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
+
+    path =
+      "/places/v0/indexes/" <>
+        Application.get_env(:skate, :aws_place_index) <> "/places/" <> place_id
+
+    case request_fn.(%ExAws.Operation.RestQuery{
+           http_method: :get,
+           path: path,
+           service: :places
+         }) do
+      {:ok, response} -> {:ok, parse_get_response(response, place_id)}
+      {:error, error} -> {:error, error}
+    end
+  end
+
+  @spec search(String.t()) :: {:ok, [Place.t()]} | {:error, term()}
   def search(text) do
     request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
 
     path =
       "/places/v0/indexes/" <> Application.get_env(:skate, :aws_place_index) <> "/search/text"
 
-    case %ExAws.Operation.RestQuery{
+    case request_fn.(%ExAws.Operation.RestQuery{
            http_method: :post,
            path: path,
            body: Map.merge(base_arguments(), %{Text: text}),
            service: :places
-         }
-         |> request_fn.() do
+         }) do
       {:ok, response} -> {:ok, parse_search_response(response)}
       {:error, error} -> {:error, error}
     end
   end
 
-  @spec suggest(String.t()) :: {:ok, map()} | {:error, term()}
+  @spec suggest(String.t()) :: {:ok, [Suggestion.t()]} | {:error, term()}
   def suggest(text) do
     request_fn = Application.get_env(:skate, :aws_request_fn, &ExAws.request/1)
 
@@ -28,16 +46,32 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       "/places/v0/indexes/" <>
         Application.get_env(:skate, :aws_place_index) <> "/search/suggestions"
 
-    case %ExAws.Operation.RestQuery{
+    case request_fn.(%ExAws.Operation.RestQuery{
            http_method: :post,
            path: path,
            body: Map.merge(base_arguments(), %{Text: text}),
            service: :places
-         }
-         |> request_fn.() do
+         }) do
       {:ok, response} -> {:ok, parse_suggest_response(response)}
       {:error, error} -> {:error, error}
     end
+  end
+
+  defp parse_get_response(%{status_code: 200, body: body}, place_id) do
+    %{"Place" => place} = Jason.decode!(body)
+
+    %{"Label" => label, "Geometry" => %{"Point" => [longitude, latitude]}} = place
+
+    {name, address} =
+      separate_label_text(label, Map.get(place, "AddressNumber"), Map.get(place, "Street"))
+
+    %Place{
+      id: place_id,
+      name: name,
+      address: address,
+      latitude: latitude,
+      longitude: longitude
+    }
   end
 
   defp parse_search_response(%{status_code: 200, body: body}) do
@@ -51,7 +85,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
       {name, address} =
         separate_label_text(label, Map.get(place, "AddressNumber"), Map.get(place, "Street"))
 
-      %SearchResult{
+      %Place{
         id: id,
         name: name,
         address: address,
@@ -64,7 +98,12 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
   defp parse_suggest_response(%{status_code: 200, body: body}) do
     %{"Results" => results} = Jason.decode!(body)
 
-    Enum.map(results, fn result -> Map.get(result, "Text") end)
+    Enum.map(results, fn result ->
+      text = Map.get(result, "Text")
+      place_id = Map.get(result, "PlaceId")
+
+      %Suggestion{text: text, place_id: place_id}
+    end)
   end
 
   @spec separate_label_text(String.t(), String.t() | nil, String.t() | nil) ::

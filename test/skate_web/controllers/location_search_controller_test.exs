@@ -2,7 +2,44 @@ defmodule SkateWeb.LocationSearchControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Skate.LocationSearch.SearchResult
+  alias Skate.LocationSearch.Place
+  alias Skate.LocationSearch.Suggestion
+
+  describe "GET /api/location_search/place" do
+    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/location_search/place/place_id")
+
+      assert redirected_to(conn) == "/auth/cognito"
+    end
+
+    @tag :authenticated
+    test "returns data", %{conn: conn} do
+      place = %Place{
+        id: "test_id",
+        name: "Landmark",
+        address: "123 Fake St",
+        latitude: 0,
+        longitude: 0
+      }
+
+      reassign_env(:skate, :location_get_fn, fn _query -> {:ok, place} end)
+
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/location_search/place/#{place.id}")
+
+      assert json_response(conn, 200) == %{
+               "data" =>
+                 place
+                 |> Map.from_struct()
+                 |> Map.new(fn {key, value} -> {Atom.to_string(key), value} end)
+             }
+    end
+  end
 
   describe "GET /api/location_search/search" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -16,7 +53,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
 
     @tag :authenticated
     test "returns data", %{conn: conn} do
-      result = %SearchResult{
+      result = %Place{
         id: "test_id",
         name: "Landmark",
         address: "123 Fake St",
@@ -53,7 +90,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
 
     @tag :authenticated
     test "returns data", %{conn: conn} do
-      result = "suggested search"
+      result = %Suggestion{text: "suggested search", place_id: nil}
 
       reassign_env(:skate, :location_suggest_fn, fn _query -> {:ok, [result]} end)
 
@@ -62,7 +99,9 @@ defmodule SkateWeb.LocationSearchControllerTest do
         |> api_headers()
         |> get("/api/location_search/suggest?query=test")
 
-      assert json_response(conn, 200) == %{"data" => [result]}
+      assert json_response(conn, 200) == %{
+               "data" => [%{"text" => "suggested search", "place_id" => nil}]
+             }
     end
   end
 

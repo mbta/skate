@@ -15,6 +15,8 @@ import {
   fetchStations,
   fetchRoutePatterns,
   fetchLocationSearchResults,
+  fetchLocationSearchResultById,
+  fetchLocationSearchSuggestions,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
@@ -25,6 +27,8 @@ import { LocationType } from "../src/models/stopData"
 import * as Sentry from "@sentry/react"
 import locationSearchResultDataFactory from "./factories/locationSearchResultData"
 import locationSearchResultFactory from "./factories/locationSearchResult"
+import locationSearchSuggestionDataFactory from "./factories/locationSearchSuggestionData"
+import locationSearchSuggestionFactory from "./factories/locationSearchSuggestion"
 
 jest.mock("@sentry/react", () => ({
   __esModule: true,
@@ -757,6 +761,56 @@ describe("fetchLocationSearchResults", () => {
           address: "123 Test St",
           latitude: 1,
           longitude: 2,
+        }),
+      ])
+      done()
+    })
+  })
+})
+
+describe("fetchLocationSearchResultById", () => {
+  test("parses location returned", (done) => {
+    const result = locationSearchResultDataFactory.build({
+      name: "Some Landmark",
+      address: "123 Test St",
+      latitude: 1,
+      longitude: 2,
+    })
+
+    mockFetch(200, {
+      data: result,
+    })
+
+    fetchLocationSearchResultById("query").then((results) => {
+      expect(results).toEqual(
+        locationSearchResultFactory.build({
+          name: "Some Landmark",
+          address: "123 Test St",
+          latitude: 1,
+          longitude: 2,
+        })
+      )
+      done()
+    })
+  })
+})
+
+describe("fetchLocationSearchSuggestions", () => {
+  test("parses location search suggestions", (done) => {
+    const result = locationSearchSuggestionDataFactory.build({
+      text: "Some Landmark",
+      place_id: "test-place",
+    })
+
+    mockFetch(200, {
+      data: [result],
+    })
+
+    fetchLocationSearchSuggestions("query").then((result) => {
+      expect(result).toEqual([
+        locationSearchSuggestionFactory.build({
+          text: "Some Landmark",
+          placeId: "test-place",
         }),
       ])
       done()

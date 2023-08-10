@@ -199,22 +199,26 @@ defmodule Skate.Factory do
     }
   end
 
-  def amazon_location_search_result_factory(attrs) do
+  def amazon_location_place_factory(attrs) do
     address_number = Map.get(attrs, :address_number, sequence(:address_number, &to_string/1))
     street = Map.get(attrs, :street, "Test St")
     name = Map.get(attrs, :name, "Landmark")
     address_suffix = Map.get(attrs, :address_suffix, "MA 02201, United States")
 
-    result = %{
-      "Place" => %{
-        "AddressNumber" => address_number,
-        "Geometry" => %{
-          "Point" => [0, 0]
-        },
-        "Label" =>
-          "#{name && name <> ", "}#{address_number && address_number <> " "}#{street && street <> ", "}#{address_suffix}",
-        "Street" => street
+    %{
+      "AddressNumber" => address_number,
+      "Geometry" => %{
+        "Point" => [0, 0]
       },
+      "Label" =>
+        "#{name && name <> ", "}#{address_number && address_number <> " "}#{street && street <> ", "}#{address_suffix}",
+      "Street" => street
+    }
+  end
+
+  def amazon_location_search_result_factory(attrs) do
+    result = %{
+      "Place" => fn -> build(:amazon_location_place, attrs) end,
       "PlaceId" => "test_id_#{sequence(:place_id, &to_string/1)}"
     }
 
