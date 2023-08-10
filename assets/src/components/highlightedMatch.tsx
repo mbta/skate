@@ -18,7 +18,7 @@ export const HighlightedMatch = ({
   const regexp = individualWordMatch
     ? new RegExp(
         "(" +
-          [highlightText, ...highlightText.split(/ +/)]
+          [highlightText, ...highlightText.split(/\s+/)]
             .map((s) => highlightRegex(s).source)
             .join("|") +
           ")",
