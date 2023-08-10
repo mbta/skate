@@ -134,82 +134,134 @@ exports[`SearchForm renders 1`] = `
       </div>
     </div>
   </div>
-  <ul>
-    <li>
-      <input
-        checked={true}
-        id="property-all"
-        name="property"
-        onChange={[Function]}
-        type="radio"
-        value="all"
-      />
-      <label
-        htmlFor="property-all"
+  <div
+    aria-expanded={true}
+    className="c-filter-accordion"
+  >
+    <button
+      className="c-filter-accordion__toggle-button"
+      onClick={[Function]}
+    >
+      <div
+        className="c-filter-accordion__header"
       >
-        All
-      </label>
-    </li>
-    <li>
-      <input
-        checked={false}
-        id="property-vehicle"
-        name="property"
-        onChange={[Function]}
-        type="radio"
-        value="vehicle"
-      />
-      <label
-        htmlFor="property-vehicle"
+        Filter results
+      </div>
+      <div
+        className="c-filter-accordion__show-hide-icon"
       >
-        Vehicles
-      </label>
-    </li>
-    <li>
-      <input
-        checked={false}
-        id="property-operator"
-        name="property"
-        onChange={[Function]}
-        type="radio"
-        value="operator"
-      />
-      <label
-        htmlFor="property-operator"
+        <span
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+        />
+      </div>
+    </button>
+    <div
+      className="c-filter-accordion__body"
+    >
+      <ul
+        className="c-filter-accordion__filters"
       >
-        Operators
-      </label>
-    </li>
-    <li>
-      <input
-        checked={false}
-        id="property-run"
-        name="property"
-        onChange={[Function]}
-        type="radio"
-        value="run"
-      />
-      <label
-        htmlFor="property-run"
-      >
-        Runs
-      </label>
-    </li>
-    <li>
-      <input
-        checked={false}
-        id="property-location"
-        name="property"
-        onChange={[Function]}
-        type="radio"
-        value="location"
-      />
-      <label
-        htmlFor="property-location"
-      >
-        Locations
-      </label>
-    </li>
-  </ul>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={true}
+            className="form-check-input"
+            id="property-all"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="all"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-all"
+          >
+            All
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-vehicle"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="vehicle"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-vehicle"
+          >
+            Vehicles
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-operator"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="operator"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-operator"
+          >
+            Operators
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-run"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="run"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-run"
+          >
+            Runs
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-location"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="location"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-location"
+          >
+            Locations
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
 </form>
 `;
