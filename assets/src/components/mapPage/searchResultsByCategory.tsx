@@ -6,7 +6,6 @@ import { SearchResultCategory } from "../../models/searchQuery"
 import { Vehicle, Ghost } from "../../realtime"
 import SearchResults, { NoResults } from "../searchResults"
 import React from "react"
-import { Card, CardBody } from "../card"
 import { LocationSearchResult } from "../../models/locationSearchResult"
 import {
   Loading as LoadingResult,
@@ -17,6 +16,7 @@ import {
 import Loading from "../loading"
 import useSearchResultsByCategory from "../../hooks/useSearchResultsByCategory"
 import { setCategoryMatchLimit } from "../../state/searchPageState"
+import LocationCard from "./locationCard"
 
 const VehicleSearchResultSection = ({
   results,
@@ -59,9 +59,11 @@ const VehicleSearchResultSection = ({
 const LocationSearchResultSection = ({
   results,
   onSelectLocation,
+  highlightText,
 }: {
   results: LoadingResult | Ok<LimitedSearchResults<LocationSearchResult>> | null
   onSelectLocation: (location: LocationSearchResult) => void
+  highlightText?: string
 }) => {
   if (results === null || (isOk(results) && results.ok.matches.length === 0)) {
     return <></>
@@ -84,18 +86,11 @@ const LocationSearchResultSection = ({
           <ul className="c-search-results__list">
             {results.ok.matches.map((locationSearchResult) => (
               <li key={locationSearchResult.id}>
-                <Card
-                  style="white"
-                  title={
-                    locationSearchResult.name || locationSearchResult.address
-                  }
-                  openCallback={() => onSelectLocation(locationSearchResult)}
-                >
-                  {locationSearchResult.name &&
-                    locationSearchResult.address && (
-                      <CardBody>{locationSearchResult.address}</CardBody>
-                    )}
-                </Card>
+                <LocationCard
+                  location={locationSearchResult}
+                  onSelectLocation={onSelectLocation}
+                  highlightText={highlightText}
+                />
               </li>
             ))}
           </ul>
@@ -173,6 +168,7 @@ const SearchResultsByCategory = ({
             <LocationSearchResultSection
               results={resultsByProperty.location}
               onSelectLocation={onSelectLocationResult}
+              highlightText={query.text}
             />
           )}
         </>

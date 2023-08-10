@@ -1,0 +1,60 @@
+.c-location-card {
+  padding: 1rem;
+
+  .c-card__title {
+    display: block;
+  }
+
+  .c-card__top-row {
+    margin-top: 0;
+
+    &:empty {
+      min-height: 0;
+    }
+  }
+
+  .c-card__contents {
+    margin-top: 0.19rem;
+
+    &:empty {
+      margin-top: 0;
+    }
+
+    .c-street-view-button {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .c-card__icon {
+    padding-right: 0.5rem;
+
+    svg {
+      width: 1.125rem !important;
+      height: 1.5rem !important;
+
+      path {
+        fill: $color-strawberry-500;
+      }
+    }
+  }
+
+  &:not(.c-location-card--selection) .c-location-card__title--address-only {
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-reg);
+  }
+
+  .highlighted {
+    background-color: $color-eggplant-200;
+  }
+}
+
+.c-location-card.c-location-card--selection {
+  width: calc(100% - 2rem);
+
+  .c-card__icon {
+    svg {
+      width: 1.6875rem !important;
+      height: 2.25rem !important;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import Leaflet, { Bounds, Point } from "leaflet"
+import Leaflet from "leaflet"
 import React, { useContext, useEffect, useState } from "react"
 import { Pane } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
@@ -19,17 +19,22 @@ import {
   RoutePatternIdentifier,
   SelectedEntity,
   SelectedEntityType,
+  SelectedLocation,
   SelectedRoutePattern,
 } from "../../state/searchPageState"
 import Map, {
   vehicleToLeafletLatLng,
   FollowerStatusClasses,
   InterruptibleFollower,
-  defaultCenter,
-  UpdateMapFromPointsFn,
   useInteractiveFollowerState,
+  drawerOffsetAutoCenter,
 } from "../map"
-import { RouteShape, RouteStopMarkers, VehicleMarker } from "../mapMarkers"
+import {
+  LocationMarker,
+  RouteShape,
+  RouteStopMarkers,
+  VehicleMarker,
+} from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
@@ -38,6 +43,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { setTileType } from "../../state/mapLayersState"
 import { TileType } from "../../tilesetUrls"
 import { LayersControl } from "../map/controls/layersControl"
+import { LocationSearchResult } from "../../models/locationSearchResult"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -67,55 +73,6 @@ const SecondaryRouteVehicles = ({
         })}
     </>
   )
-}
-
-const onFollowerUpdate: UpdateMapFromPointsFn = (map, points) => {
-  if (points.length === 0) {
-    // If there are no points, blink to default center
-    map.setView(defaultCenter, 13, { animate: false })
-    return
-  }
-
-  const { width, height } = map.getContainer().getBoundingClientRect()
-  const mapContainerBounds = new Bounds([0, 0], [width, height])
-
-  // ```
-  // vpcElement.getBoundingClientRect().right - mapElement.getBoundingClientRect().left
-  //  -> 445
-  // ```
-  // Create a new inner bounds from the map bounds + "padding" to shrink the
-  // inner bounds
-  // In this case, we get the top left of the inner bounds by padding the left
-  // with the distance from the right side of the VPC to the left side of the
-  // map container
-  const topLeft = new Point(445, 0)
-
-  if (points.length === 1) {
-    const targetZoom = 16
-    const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
-    // The "new center" is the offset between the two bounding boxes centers
-    const offset = innerBounds
-      .getCenter()
-      .subtract(mapContainerBounds.getCenter())
-
-    const targetPoint = map
-        // Project the target point into screenspace for the target zoom
-        .project(points[0], targetZoom)
-        // Offset the target point in screenspace to move the center of the map
-        // to apply the padding to the center
-        .subtract(offset),
-      // convert the target point to worldspace from screenspace
-      targetLatLng = map.unproject(targetPoint, targetZoom)
-
-    // Zoom/Pan center of map to offset location in worldspace
-    map.setView(targetLatLng, targetZoom)
-  } else {
-    const pointsBounds = Leaflet.latLngBounds(points)
-    map.fitBounds(pointsBounds, {
-      paddingBottomRight: [50, 20],
-      paddingTopLeft: topLeft,
-    })
-  }
 }
 
 const useFollowingStateWithSelectionLogic = (
@@ -164,6 +121,7 @@ const routePatternIdentifierForSelection = (
 type LiveSelectedEntity =
   | SelectedRoutePattern
   | { type: SelectedEntityType.Vehicle; vehicleOrGhost: Vehicle | Ghost | null }
+  | SelectedLocation
   | null
 
 const useLiveSelectedEntity = (
@@ -186,6 +144,8 @@ const useLiveSelectedEntity = (
       }
     case SelectedEntityType.RoutePattern:
       return selectedEntity // no live updates for route pattern
+    case SelectedEntityType.Location:
+      return selectedEntity
     default:
       return null
   }
@@ -204,7 +164,7 @@ const MapElementsNoSelection = ({
 
   return (
     <InterruptibleFollower
-      onUpdate={onFollowerUpdate}
+      onUpdate={drawerOffsetAutoCenter}
       positions={[]}
       {...followerState}
     />
@@ -326,7 +286,7 @@ const SelectedVehicleDataLayers = ({
       )}
 
       <InterruptibleFollower
-        onUpdate={onFollowerUpdate}
+        onUpdate={drawerOffsetAutoCenter}
         positions={position}
         {...followerState}
       />
@@ -372,8 +332,33 @@ const SelectedRouteDataLayers = ({
         onVehicleSelect={selectVehicle}
       />
       <InterruptibleFollower
-        onUpdate={onFollowerUpdate}
+        onUpdate={drawerOffsetAutoCenter}
         positions={routeShapePositions}
+        {...followerState}
+      />
+    </>
+  )
+}
+
+const SelectedLocationDataLayer = ({
+  location,
+  setStateClasses,
+}: {
+  location: LocationSearchResult
+  setStateClasses: (classes: string | undefined) => void
+}) => {
+  const followerState = useInteractiveFollowerState()
+
+  useEffect(() => {
+    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
+  }, [followerState.shouldFollow, setStateClasses])
+
+  return (
+    <>
+      <LocationMarker location={location} selected={true} />
+      <InterruptibleFollower
+        onUpdate={drawerOffsetAutoCenter}
+        positions={[Leaflet.latLng(location.latitude, location.longitude)]}
         {...followerState}
       />
     </>
@@ -448,6 +433,13 @@ const SelectionDataLayers = ({
           }}
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
+          setStateClasses={setStateClasses}
+        />
+      )
+    case SelectedEntityType.Location:
+      return (
+        <SelectedLocationDataLayer
+          location={liveSelectedEntity.location}
           setStateClasses={setStateClasses}
         />
       )

@@ -1,0 +1,15 @@
+.c-location-dot-icon {
+  svg {
+    overflow: visible;
+
+    path {
+      fill: $color-strawberry-500;
+    }
+  }
+}
+
+.c-location-dot-icon--selected svg path {
+  stroke: $color-eggplant-500;
+  stroke-width: 24px;
+  filter: drop-shadow(0px 0px 32px $color-eggplant-500);
+}

@@ -11,7 +11,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       <div
         aria-current={false}
         aria-labelledby="card-label-:r0:"
-        className="c-card c-card--white c-search-results__result c-card--inactive"
+        className="c-card c-card--white c-search-results__vehicle_result c-card--inactive"
       >
         <button
           className="c-card__left"
@@ -150,7 +150,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       <div
         aria-current={false}
         aria-labelledby="card-label-:r1:"
-        className="c-card c-card--white c-search-results__result c-card--inactive"
+        className="c-card c-card--white c-search-results__vehicle_result c-card--inactive"
       >
         <button
           className="c-card__left"
@@ -334,7 +334,7 @@ exports[`SearchResults renders a selected result card 1`] = `
       <div
         aria-current={false}
         aria-labelledby="card-label-:r5:"
-        className="c-card c-card--white c-search-results__result c-card--inactive"
+        className="c-card c-card--white c-search-results__vehicle_result c-card--inactive"
       >
         <button
           className="c-card__left"
@@ -478,7 +478,7 @@ exports[`SearchResults renders a selected result card 1`] = `
       <div
         aria-current={true}
         aria-labelledby="card-label-:r6:"
-        className="c-card c-card--white c-search-results__result c-card--inactive c-card--selected"
+        className="c-card c-card--white c-search-results__vehicle_result c-card--inactive c-card--selected"
       >
         <button
           className="c-card__left"

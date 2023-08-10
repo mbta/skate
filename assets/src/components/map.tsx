@@ -1,4 +1,5 @@
 import Leaflet, {
+  Bounds,
   Control,
   ControlOptions,
   DomUtil,
@@ -6,6 +7,7 @@ import Leaflet, {
   LatLngExpression,
   LatLngLiteral,
   Map as LeafletMap,
+  Point,
 } from "leaflet"
 
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
@@ -286,6 +288,55 @@ export const autoCenter = (
     map.fitBounds(Leaflet.latLngBounds(latLngs), {
       paddingBottomRight: [20, 50],
       paddingTopLeft: [pickerContainerIsVisible ? 220 : 20, 20],
+    })
+  }
+}
+
+export const drawerOffsetAutoCenter: UpdateMapFromPointsFn = (map, points) => {
+  if (points.length === 0) {
+    // If there are no points, blink to default center
+    map.setView(defaultCenter, 13, { animate: false })
+    return
+  }
+
+  const { width, height } = map.getContainer().getBoundingClientRect()
+  const mapContainerBounds = new Bounds([0, 0], [width, height])
+
+  // ```
+  // vpcElement.getBoundingClientRect().right - mapElement.getBoundingClientRect().left
+  //  -> 445
+  // ```
+  // Create a new inner bounds from the map bounds + "padding" to shrink the
+  // inner bounds
+  // In this case, we get the top left of the inner bounds by padding the left
+  // with the distance from the right side of the VPC to the left side of the
+  // map container
+  const topLeft = new Point(445, 0)
+
+  if (points.length === 1) {
+    const targetZoom = 16
+    const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
+    // The "new center" is the offset between the two bounding boxes centers
+    const offset = innerBounds
+      .getCenter()
+      .subtract(mapContainerBounds.getCenter())
+
+    const targetPoint = map
+        // Project the target point into screenspace for the target zoom
+        .project(points[0], targetZoom)
+        // Offset the target point in screenspace to move the center of the map
+        // to apply the padding to the center
+        .subtract(offset),
+      // convert the target point to worldspace from screenspace
+      targetLatLng = map.unproject(targetPoint, targetZoom)
+
+    // Zoom/Pan center of map to offset location in worldspace
+    map.setView(targetLatLng, targetZoom)
+  } else {
+    const pointsBounds = Leaflet.latLngBounds(points)
+    map.fitBounds(pointsBounds, {
+      paddingBottomRight: [50, 20],
+      paddingTopLeft: topLeft,
     })
   }
 }
