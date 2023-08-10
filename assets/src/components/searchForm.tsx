@@ -120,9 +120,7 @@ const Filters = ({
     "location",
   ]
   return (
-    <FilterAccordion.WithExpansionState
-      heading="Filter results"
-    >
+    <FilterAccordion.WithExpansionState heading="Filter results">
       {filters.map((property) => (
         <li
           key={`search-property-${property}`}
@@ -147,7 +145,7 @@ const Filters = ({
           </label>
         </li>
       ))}
-    </FilterAccordion>
+    </FilterAccordion.WithExpansionState>
   )
 }
 
