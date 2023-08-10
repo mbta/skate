@@ -126,7 +126,7 @@ const Filters = ({
       {filters.map((property) => (
         <li
           key={`search-property-${property}`}
-          className="form-check position-relative"
+          className="form-check position-relative lh-base"
         >
           <input
             id={`property-${property}`}
