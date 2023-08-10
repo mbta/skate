@@ -11,7 +11,7 @@ const LocationCard = ({
   searchSelection,
   highlightText,
 }: {
-  location: any
+  location: LocationSearchResult
   onSelectLocation?: (location: LocationSearchResult) => void
   searchSelection?: boolean
   highlightText?: string
