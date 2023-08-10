@@ -4,10 +4,6 @@
   gap: 1rem;
 
   // Prevent intersection between accordion and autocomplete popup
-  .c-filter-accordion__filters {
-    font-size: 14px;
-  }
-
   .c-filter-accordion,
   .c-search-form__search-control {
     isolation: isolate;
@@ -15,6 +11,11 @@
   .c-search-form__search-control {
     // Stack items within search-control on top of accordion
     z-index: 1;
+  }
+
+  // Make filter's text size larger
+  .c-filter-accordion__filters {
+    font-size: var(--font-size-s);
   }
 }
 
