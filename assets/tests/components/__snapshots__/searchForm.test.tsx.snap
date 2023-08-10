@@ -166,88 +166,99 @@ exports[`SearchForm renders 1`] = `
         className="c-filter-accordion__filters"
       >
         <li
-          className="c-filter-accordion__filter"
+          className="form-check position-relative lh-base"
         >
-          <button
-            aria-pressed={false}
-            className="c-filter-accordion__filter-toggle"
-            onClick={[Function]}
+          <input
+            checked={true}
+            className="form-check-input"
+            id="property-all"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="all"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-all"
           >
-            <span>
-              Vehicles
-            </span>
-            <span
-              className="c-filter-accordion__toggle-icon"
-              dangerouslySetInnerHTML={
-                {
-                  "__html": "<svg/>",
-                }
-              }
-            />
-          </button>
+            All
+          </label>
         </li>
         <li
-          className="c-filter-accordion__filter"
+          className="form-check position-relative lh-base"
         >
-          <button
-            aria-pressed={false}
-            className="c-filter-accordion__filter-toggle"
-            onClick={[Function]}
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-vehicle"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="vehicle"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-vehicle"
           >
-            <span>
-              Operators
-            </span>
-            <span
-              className="c-filter-accordion__toggle-icon"
-              dangerouslySetInnerHTML={
-                {
-                  "__html": "<svg/>",
-                }
-              }
-            />
-          </button>
+            Vehicles
+          </label>
         </li>
         <li
-          className="c-filter-accordion__filter"
+          className="form-check position-relative lh-base"
         >
-          <button
-            aria-pressed={false}
-            className="c-filter-accordion__filter-toggle"
-            onClick={[Function]}
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-operator"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="operator"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-operator"
           >
-            <span>
-              Runs
-            </span>
-            <span
-              className="c-filter-accordion__toggle-icon"
-              dangerouslySetInnerHTML={
-                {
-                  "__html": "<svg/>",
-                }
-              }
-            />
-          </button>
+            Operators
+          </label>
         </li>
         <li
-          className="c-filter-accordion__filter"
+          className="form-check position-relative lh-base"
         >
-          <button
-            aria-pressed={false}
-            className="c-filter-accordion__filter-toggle"
-            onClick={[Function]}
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-run"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="run"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-run"
           >
-            <span>
-              Locations
-            </span>
-            <span
-              className="c-filter-accordion__toggle-icon"
-              dangerouslySetInnerHTML={
-                {
-                  "__html": "<svg/>",
-                }
-              }
-            />
-          </button>
+            Runs
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-location"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="location"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-location"
+          >
+            Locations
+          </label>
         </li>
       </ul>
     </div>

@@ -5,9 +5,6 @@ import {
   isValidSearchQuery,
   SavedSearchQuery,
   SearchQuery,
-  SearchProperty,
-  PropertyLimits,
-  defaultResultLimit,
   SearchResultCategory,
   defaultCategoryResultLimits,
   SearchPropertyQuery,
@@ -99,30 +96,6 @@ export const setCategoryMatchLimit = (
   payload: { category, limit },
 })
 
-interface SetPropertyMatchLimitAction {
-  type: "SET_PROPERTY_MATCH_LIMIT"
-  payload: { property: SearchProperty; limit: number }
-}
-
-export const setPropertyMatchLimit = (
-  property: SearchProperty,
-  limit: number
-): SetPropertyMatchLimitAction => ({
-  type: "SET_PROPERTY_MATCH_LIMIT",
-  payload: { property, limit },
-})
-
-interface SetSearchPropertiesAction {
-  type: "SET_SEARCH_PROPERTIES"
-  payload: SearchProperty[]
-}
-export const setSearchProperties = (
-  properties: SearchProperty[]
-): SetSearchPropertiesAction => ({
-  type: "SET_SEARCH_PROPERTIES",
-  payload: properties,
-})
-
 interface SubmitSearchAction {
   type: "SUBMIT_SEARCH"
 }
@@ -165,9 +138,7 @@ export const setSelectedEntity = (
 export type Action =
   | SetSearchTextAction
   | SetOldSearchPropertyAction
-  | SetPropertyMatchLimitAction
   | SetCategoryMatchLimitAction
-  | SetSearchPropertiesAction
   | SubmitSearchAction
   | NewSearchSessionAction
   | SelectEntityAction
@@ -186,12 +157,6 @@ export const reducer = (
         query: {
           ...state.query,
           text: action.payload.text,
-          properties: Object.fromEntries(
-            Object.entries(state.query.properties).map(([property, limit]) => [
-              property,
-              limit === null ? limit : defaultResultLimit,
-            ])
-          ) as PropertyLimits,
           categoryResultLimits: defaultCategoryResultLimits,
         },
 
@@ -204,17 +169,6 @@ export const reducer = (
         query: { ...state.query, property: action.payload.property },
         isActive: false,
       }
-    case "SET_PROPERTY_MATCH_LIMIT":
-      return {
-        ...state,
-        query: {
-          ...state.query,
-          properties: {
-            ...state.query.properties,
-            [action.payload.property]: action.payload.limit,
-          },
-        },
-      }
     case "SET_CATEGORY_MATCH_LIMIT":
       return {
         ...state,
@@ -226,19 +180,6 @@ export const reducer = (
           },
         },
       }
-
-    case "SET_SEARCH_PROPERTIES":
-      return {
-        ...state,
-        query: {
-          ...state.query,
-          properties: setSearchPropertyLimits(
-            state.query.properties,
-            action.payload
-          ),
-        },
-      }
-
     case "SUBMIT_SEARCH":
       if (isValidSearchQuery(state.query)) {
         return {
@@ -286,28 +227,6 @@ export const reducer = (
     }
   }
   return state
-}
-
-const setSearchPropertyLimits = (
-  properties: PropertyLimits,
-  desiredProperties: SearchProperty[]
-) => {
-  return Object.fromEntries(
-    Object.entries(properties).map(([oldProperty, oldLimit]) => {
-      const propertyIsDesired = desiredProperties.some(
-        (desiredProperty) => desiredProperty === oldProperty
-      )
-
-      return [
-        oldProperty,
-        propertyIsDesired
-          ? oldLimit === null
-            ? defaultResultLimit
-            : oldLimit
-          : null,
-      ]
-    })
-  ) as PropertyLimits
 }
 
 /*

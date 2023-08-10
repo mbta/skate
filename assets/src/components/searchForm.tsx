@@ -10,21 +10,20 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { SearchIcon } from "../helpers/icon"
 import {
   SearchProperties,
-  SearchProperty,
+  SearchPropertyQuery,
   isValidSearchText,
   searchPropertyDisplayConfig,
 } from "../models/searchQuery"
 import { Ghost, Vehicle } from "../realtime"
 import {
   SelectedEntityType,
-  setSearchProperties,
+  setOldSearchProperty,
   setSearchText,
   setSelectedEntity,
   submitSearch,
 } from "../state/searchPageState"
 
 import { CircleXIcon } from "./circleXIcon"
-import { FilterAccordion } from "./filterAccordion"
 import {
   GroupedAutocompleteControls,
   GroupedAutocompleteFromSearchTextResults,
@@ -32,6 +31,7 @@ import {
 } from "./groupedAutocomplete"
 import { SocketContext } from "../contexts/socketContext"
 import useSocket from "../hooks/useSocket"
+import { FilterAccordion } from "./filterAccordion"
 
 // #region Search Filters
 
@@ -79,13 +79,13 @@ type SearchFormProps = SearchFormEventProps &
     onInputTextChange?: React.ChangeEventHandler<HTMLInputElement>
 
     /**
-     * The state of the search filters.
+     * The property being searched
      */
-    filters: SearchFiltersState
+    property: SearchPropertyQuery
     /**
-     * Callback to run when {@link filters} should be updated.
+     * Callback to run when {@link property} should be updated.
      */
-    onFiltersChanged: (searchFilterState: SearchFiltersState) => void
+    onPropertyChange: (property: SearchPropertyQuery) => void
     /**
      * Callback to run when a autocomplete vehicle option is selected.
      */
@@ -106,63 +106,45 @@ const allFiltersOff: SearchFiltersState = {
 }
 
 const Filters = ({
-  filters,
-  onFiltersChanged,
+  selectedProperty,
+  onSelectProperty,
 }: {
-  filters: SearchFiltersState
-  onFiltersChanged: (searchFilterState: SearchFiltersState) => void
+  selectedProperty: SearchPropertyQuery
+  onSelectProperty: (property: SearchPropertyQuery) => void
 }) => {
-  const countActiveFilters = Object.values(filters).filter(
-    (isActive) => isActive
-  ).length
-  const [hasAManuallyActivatedFilter, setHasAManuallyActivatedFilter] =
-    useState(
-      countActiveFilters > 0 && countActiveFilters < Object.keys(filters).length
-    )
-
-  const allFiltersActive = Object.values(filters).every((isActive) => isActive)
-  const displayAsInactive = allFiltersActive && !hasAManuallyActivatedFilter
+  const filters: SearchPropertyQuery[] = [
+    "all",
+    "vehicle",
+    "operator",
+    "run",
+    "location",
+  ]
   return (
     <FilterAccordion.WithExpansionState heading="Filter results">
-      {Object.entries(filters)
-        .map(([property, isActive]) => ({
-          property: property as SearchProperty,
-          isActive,
-        }))
-        .sort(
-          ({ property: first_property }, { property: second_property }) =>
-            searchPropertyDisplayConfig[first_property].order -
-            searchPropertyDisplayConfig[second_property].order
-        )
-        .map(({ property, isActive }) => {
-          return (
-            <FilterAccordion.ToggleFilter
-              key={property}
-              name={searchPropertyDisplayConfig[property].name}
-              active={isActive && !displayAsInactive}
-              onClick={() => {
-                if (displayAsInactive) {
-                  // Filter to only this property
-                  setHasAManuallyActivatedFilter(true)
-                  onFiltersChanged({ ...allFiltersOff, [property]: true })
-                } else if (
-                  isActive &&
-                  Object.values(filters).filter((isActive) => isActive)
-                    .length === 1
-                ) {
-                  // This filter is the last one on. Toggling it off turns all filters on
-                  setHasAManuallyActivatedFilter(false)
-                  onFiltersChanged(allFiltersOn)
-                } else {
-                  onFiltersChanged({
-                    ...filters,
-                    [property]: !isActive,
-                  })
-                }
-              }}
-            />
-          )
-        })}
+      {filters.map((property) => (
+        <li
+          key={`search-property-${property}`}
+          className="form-check position-relative lh-base"
+        >
+          <input
+            id={`property-${property}`}
+            type="radio"
+            className="form-check-input"
+            name="property"
+            value={property}
+            checked={selectedProperty === property}
+            onChange={() => onSelectProperty(property as SearchPropertyQuery)}
+          />
+          <label
+            htmlFor={`property-${property}`}
+            className="stretched-link form-check-label"
+          >
+            {property === "all"
+              ? "All"
+              : searchPropertyDisplayConfig[property].name}
+          </label>
+        </li>
+      ))}
     </FilterAccordion.WithExpansionState>
   )
 }
@@ -173,10 +155,8 @@ const Filters = ({
 export const SearchForm = ({
   inputText,
   onInputTextChange,
-
-  filters,
-  onFiltersChanged,
-
+  property,
+  onPropertyChange,
   onClear: onClearProp,
   onSubmit: onSubmitProp,
   onSelectVehicleOption,
@@ -299,7 +279,11 @@ export const SearchForm = ({
               id={autocompleteId}
               controlName="Search Suggestions"
               maxElementsPerGroup={5}
-              searchFilters={filters}
+              searchFilters={
+                property === "all"
+                  ? allFiltersOn
+                  : { ...allFiltersOff, [property]: true }
+              }
               searchText={inputText}
               fallbackOption={autocompleteOption(inputText, onSubmit)}
               onSelectVehicleOption={onSelectVehicleOption}
@@ -311,7 +295,10 @@ export const SearchForm = ({
           </SocketContext.Provider>
         </div>
       </div>
-      <Filters filters={filters} onFiltersChanged={onFiltersChanged} />
+      <Filters
+        selectedProperty={property}
+        onSelectProperty={onPropertyChange}
+      />
     </form>
   )
 }
@@ -332,18 +319,11 @@ const SearchFormFromStateDispatchContext = ({
     dispatch,
   ] = useContext(StateDispatchContext)
 
-  const filters = Object.fromEntries(
-    Object.entries(query.properties).map(([property, limit]) => [
-      property as SearchProperty,
-      limit != null,
-    ])
-  ) as SearchFiltersState
-
   return (
     <SearchForm
       {...props}
       inputText={query.text}
-      filters={filters}
+      property={query.property}
       onInputTextChange={({ currentTarget: { value } }) => {
         dispatch(setSearchText(value))
       }}
@@ -359,12 +339,8 @@ const SearchFormFromStateDispatchContext = ({
         dispatch(setSearchText(""))
         onClear?.(event)
       }}
-      onFiltersChanged={(newFilters) => {
-        const newProperties = Object.entries(newFilters)
-          .filter(([_property, isActive]) => isActive)
-          .map(([property]) => property) as SearchProperty[]
-
-        dispatch(setSearchProperties(newProperties))
+      onPropertyChange={(property: SearchPropertyQuery) => {
+        dispatch(setOldSearchProperty(property))
         dispatch(submitSearch())
       }}
       onSelectVehicleOption={(vehicle) => {
