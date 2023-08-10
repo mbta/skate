@@ -14,7 +14,6 @@ import {
   isValidSearchText,
   searchPropertyDisplayConfig,
 } from "../models/searchQuery"
-import { Ghost, Vehicle } from "../realtime"
 import {
   SelectedEntityType,
   setOldSearchProperty,
@@ -159,8 +158,7 @@ export const SearchForm = ({
   onSubmit: onSubmitProp,
   onSelectVehicleOption,
   onSelectedLocationId,
-  onSelectedLocationText
-
+  onSelectedLocationText,
   showAutocomplete: showAutocompleteProp = true,
 }: SearchFormProps) => {
   const formSearchInput = useRef<HTMLInputElement | null>(null)
@@ -354,12 +352,16 @@ const SearchFormFromStateDispatchContext = ({
         )
       }}
       onSelectedLocationId={(id) => {
-
+        dispatch(
+          setSelectedEntity({
+            type: SelectedEntityType.LocationByPlaceId,
+            placeId: id,
+          })
+        )
       }}
       onSelectedLocationText={(text) => {
         dispatch(setSearchText(text))
         dispatch(submitSearch())
-
       }}
     />
   )

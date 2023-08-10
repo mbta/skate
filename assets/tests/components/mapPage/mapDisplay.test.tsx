@@ -118,7 +118,11 @@ describe("<MapDisplay />", () => {
     )
 
     const { container } = render(
-      <MapDisplay selectedEntity={null} setSelection={jest.fn()} />
+      <MapDisplay
+        selectedEntity={null}
+        setSelection={jest.fn()}
+        fetchedSelectedLocation={null}
+      />
     )
 
     expect(getAllStationIcons(container)).toHaveLength(0)
@@ -154,6 +158,7 @@ describe("<MapDisplay />", () => {
           vehicleId: vehicle.id,
         }}
         setSelection={mockSetSelection}
+        fetchedSelectedLocation={null}
       />
     )
 
@@ -188,6 +193,7 @@ describe("<MapDisplay />", () => {
           vehicleId: vehicle.id,
         }}
         setSelection={mockSetSelection}
+        fetchedSelectedLocation={null}
       />
     )
 
@@ -219,6 +225,7 @@ describe("<MapDisplay />", () => {
             vehicleId: vehicle.id,
           }}
           setSelection={setSelectedEntityMock}
+          fetchedSelectedLocation={null}
         />
       )
 
@@ -257,6 +264,7 @@ describe("<MapDisplay />", () => {
                   vehicleId: selectedVehicle.id,
                 }}
                 setSelection={jest.fn()}
+                fetchedSelectedLocation={null}
               />
             )
 
@@ -288,6 +296,7 @@ describe("<MapDisplay />", () => {
                 vehicleId: selectedVehicle.id,
               }}
               setSelection={jest.fn()}
+              fetchedSelectedLocation={null}
             />
           )
 
@@ -320,6 +329,7 @@ describe("<MapDisplay />", () => {
                 vehicleId: ghost.id,
               }}
               setSelection={jest.fn()}
+              fetchedSelectedLocation={null}
             />
           )
 
@@ -351,6 +361,7 @@ describe("<MapDisplay />", () => {
                   routePatternId: routePattern.id,
                 }}
                 setSelection={jest.fn()}
+                fetchedSelectedLocation={null}
               />
             </RoutesProvider>
           )
@@ -378,6 +389,7 @@ describe("<MapDisplay />", () => {
                   routePatternId: "otherRoutePatternId",
                 }}
                 setSelection={jest.fn()}
+                fetchedSelectedLocation={null}
               />
             </RoutesProvider>
           )
@@ -419,6 +431,7 @@ describe("<MapDisplay />", () => {
           }}
           setSelection={mockSetSelection}
           streetViewInitiallyEnabled
+          fetchedSelectedLocation={null}
         />
       )
 
@@ -486,6 +499,7 @@ describe("<MapDisplay />", () => {
           }}
           setSelection={mockSetSelection}
           streetViewInitiallyEnabled
+          fetchedSelectedLocation={null}
         />
       )
 

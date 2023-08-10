@@ -35,6 +35,7 @@ import {
   option as autocompleteOption,
 } from "../testHelpers/selectors/components/groupedAutocomplete"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
+// import { useLocationSearchResults } from "../../src/hooks/useLocationSearchResults"
 import vehicleFactory from "../factories/vehicle"
 import { SearchPropertyQuery } from "../../src/models/searchQuery"
 import { formatOperatorName } from "../../src/util/operatorFormatting"
@@ -45,6 +46,10 @@ jest.mock("../../src/hooks/useAutocompleteResults", () => ({
     run: [],
     vehicle: [],
   })),
+}))
+
+jest.mock("../../src/hooks/useLocationSearchSuggestions", () => ({
+  useLocationSearchSuggestions: jest.fn().mockImplementation(() => []),
 }))
 
 const mockDispatch = jest.fn()
@@ -330,6 +335,8 @@ describe("SearchForm", () => {
         property="all"
         onPropertyChange={jest.fn()}
         onSelectVehicleOption={() => {}}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 
@@ -343,6 +350,8 @@ describe("SearchForm", () => {
         property="all"
         onPropertyChange={jest.fn()}
         onSelectVehicleOption={() => {}}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 
@@ -361,6 +370,8 @@ describe("SearchForm", () => {
           e.preventDefault()
         }}
         onSelectVehicleOption={() => {}}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 
@@ -405,6 +416,8 @@ describe("SearchForm", () => {
           e.preventDefault()
         }}
         onSelectVehicleOption={onSelectVehicleOption}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 
@@ -442,6 +455,8 @@ describe("SearchForm", () => {
         property="run"
         onPropertyChange={jest.fn()}
         onSelectVehicleOption={() => {}}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 
@@ -477,6 +492,8 @@ describe("SearchForm", () => {
         property="all"
         onPropertyChange={jest.fn()}
         onSelectVehicleOption={() => {}}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 

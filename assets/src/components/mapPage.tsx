@@ -41,6 +41,7 @@ import { Socket } from "phoenix"
 import SearchResultsByCategory from "./mapPage/searchResultsByCategory"
 import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
+import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 
 const thereIsAnActiveSearch = (
   vehicles: (Vehicle | Ghost)[] | null,
@@ -176,9 +177,11 @@ const SelectedRoute = ({
 const Selection = ({
   selectedEntity,
   setSelection,
+  fetchedSelectedLocation,
 }: {
   selectedEntity: SelectedEntity
   setSelection: (selectedEntity: SelectedEntity | null) => void
+  fetchedSelectedLocation: LocationSearchResult | null
 }): ReactElement => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
   const selectRoutePattern = (routePattern: RoutePattern) => {
@@ -233,11 +236,13 @@ const Selection = ({
           selectedRoutePattern={selectedEntity}
           selectRoutePattern={selectRoutePattern}
         />
-      ) : (
+      ) : fetchedSelectedLocation ? (
         <LocationCard
-          location={selectedEntity.location}
+          location={fetchedSelectedLocation}
           searchSelection={true}
         />
+      ) : (
+        <Loading />
       )}
     </div>
   )
@@ -262,6 +267,17 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     [setSearchOpen]
   )
   // #endregion
+
+  const selectedLocationById = useLocationSearchResultById(
+    selectedEntity?.type === SelectedEntityType.LocationByPlaceId
+      ? selectedEntity.placeId
+      : null
+  )
+
+  const fetchedSelectedLocation =
+    selectedEntity?.type === SelectedEntityType.Location
+      ? selectedEntity.location
+      : selectedLocationById
 
   const setVehicleSelection = useCallback(
     (selectedEntity: SelectedEntity | null) => {
@@ -332,6 +348,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           <Selection
             selectedEntity={selectedEntity}
             setSelection={setVehicleSelection}
+            fetchedSelectedLocation={fetchedSelectedLocation}
           />
         ) : (
           <SearchMode
@@ -344,6 +361,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         <MapDisplay
           selectedEntity={selectedEntity}
           setSelection={setVehicleSelection}
+          fetchedSelectedLocation={fetchedSelectedLocation}
         />
       </div>
     </div>

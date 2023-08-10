@@ -16,6 +16,7 @@ export enum SelectedEntityType {
   Vehicle = 1,
   RoutePattern,
   Location,
+  LocationByPlaceId,
 }
 
 interface SelectedVehicleId {
@@ -37,10 +38,16 @@ export interface SelectedLocation {
   location: LocationSearchResult
 }
 
+export interface SelectedLocationByPlaceId {
+  type: SelectedEntityType.LocationByPlaceId
+  placeId: string
+}
+
 export type SelectedEntity =
   | SelectedVehicleId
   | SelectedRoutePattern
   | SelectedLocation
+  | SelectedLocationByPlaceId
 
 export interface SearchPageState {
   query: SearchQuery

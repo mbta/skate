@@ -125,7 +125,8 @@ type LiveSelectedEntity =
   | null
 
 const useLiveSelectedEntity = (
-  selectedEntity: SelectedEntity | null
+  selectedEntity: SelectedEntity | null,
+  fetchedSelectedLocation: LocationSearchResult | null
 ): LiveSelectedEntity => {
   const { socket } = useContext(SocketContext)
 
@@ -146,6 +147,13 @@ const useLiveSelectedEntity = (
       return selectedEntity // no live updates for route pattern
     case SelectedEntityType.Location:
       return selectedEntity
+    case SelectedEntityType.LocationByPlaceId:
+      return fetchedSelectedLocation
+        ? {
+            type: SelectedEntityType.Location,
+            location: fetchedSelectedLocation,
+          }
+        : null
     default:
       return null
   }
@@ -369,13 +377,17 @@ const SelectionDataLayers = ({
   selectedEntity,
   setSelection,
   setStateClasses,
+  fetchedSelectedLocation,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
   setStateClasses: (classes: string | undefined) => void
+  fetchedSelectedLocation: LocationSearchResult | null
 }) => {
-  const liveSelectedEntity: LiveSelectedEntity | null =
-    useLiveSelectedEntity(selectedEntity)
+  const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
+    selectedEntity,
+    fetchedSelectedLocation
+  )
 
   const routePatternIdentifier =
     routePatternIdentifierForSelection(liveSelectedEntity)
@@ -452,10 +464,12 @@ const MapDisplay = ({
   selectedEntity,
   setSelection,
   streetViewInitiallyEnabled = false,
+  fetchedSelectedLocation,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
   streetViewInitiallyEnabled?: boolean
+  fetchedSelectedLocation: LocationSearchResult | null
 }) => {
   const stations = useStations()
 
@@ -492,6 +506,7 @@ const MapDisplay = ({
           selectedEntity={selectedEntity}
           setSelection={setSelection}
           setStateClasses={setStateClasses}
+          fetchedSelectedLocation={fetchedSelectedLocation}
         />
         <LayersControl.WithTileContext
           setTileType={(tileType: TileType) =>

@@ -20,9 +20,7 @@ import { Ghost, Vehicle } from "../realtime"
 import { clamp } from "../util/math"
 import { formatOperatorNameFromVehicle } from "../util/operatorFormatting"
 import { SocketContext } from "../contexts/socketContext"
-import { Socket } from "phoenix"
-import { Factory } from "fishery"
-import { LocationSearchSuggestion } from "../models/locationSearchSuggestion"
+import { useLocationSearchSuggestions } from "../hooks/useLocationSearchSuggestions"
 
 // #region Autocomplete Control
 // #region Cursor Reducer
@@ -666,7 +664,7 @@ interface GroupedAutocompleteFromSearchTextResultsProps
   maxElementsPerGroup?: number
 }
 
-export interface GroupedAutocompleteFromSearchTextEventProps{
+export interface GroupedAutocompleteFromSearchTextEventProps {
   /**
    * Callback when a autocomplete vehicle option is selected.
    * @param selectedOption The selected option vehicle
@@ -691,7 +689,7 @@ export interface GroupedAutocompleteFromSearchTextEventProps{
 export const GroupedAutocompleteFromSearchTextResults = ({
   onSelectVehicleOption: onSelectVehicleOptionProp,
   onSelectedLocationId,
-  onSelectedLocationText
+  onSelectedLocationText,
   searchText,
   searchFilters,
   maxElementsPerGroup = 5,
@@ -709,11 +707,9 @@ export const GroupedAutocompleteFromSearchTextResults = ({
     maxElementsPerGroup
   )
 
-  const locationResults = useAutocompleteLocationResults(
-    socket,
-    searchText,
-    searchFilters.location
-  )
+  const locationResults =
+    useLocationSearchSuggestions(searchFilters.location ? searchText : null) ||
+    []
 
   const onSelectVehicleOption = (selectedOption: Vehicle | Ghost) => () => {
     onSelectVehicleOptionProp(selectedOption)
@@ -755,7 +751,12 @@ export const GroupedAutocompleteFromSearchTextResults = ({
       ...locationResults
         .slice(0, maxElementsPerGroup)
         .map(({ text, placeId }) =>
-          autocompleteOption(text, placeId ? () => onSelectedLocationId(placeId) : () => onSelectedLocationText(text) )
+          autocompleteOption(
+            text,
+            placeId
+              ? () => onSelectedLocationId(placeId)
+              : () => onSelectedLocationText(text)
+          )
         )
     ),
   ].filter(({ group: { options } }) => options.length > 0)
@@ -763,17 +764,3 @@ export const GroupedAutocompleteFromSearchTextResults = ({
   return <GroupedAutocomplete {...props} optionGroups={groups} />
 }
 // #endregion Autocomplete From Search Context
-
-const autocompleteLocationResultsFactory = Factory.define<LocationSearchSuggestion>(
-  ({ sequence }) => ({
-    text: `location-${sequence}`,
-    placeId: null
-  })
-)
-const useAutocompleteLocationResults = (
-  _socket: Socket | undefined,
-  _searchText: string,
-  _enabled?: boolean
-) => {
-  return autocompleteLocationResultsFactory.buildList(5)
-}
