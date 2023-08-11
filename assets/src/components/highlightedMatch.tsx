@@ -19,12 +19,18 @@ export const HighlightedMatch = ({
     ? new RegExp(
         "(" +
           [highlightText, ...highlightText.split(/\s+/)]
-            .map((s) => highlightRegex(s).source)
+            .map((s) => highlightRegex(s))
+            .filter((r): r is RegExp => r !== null)
+            .map((r) => r.source)
             .join("|") +
           ")",
         "i"
       )
     : highlightRegex(highlightText)
+
+  if (regexp === null) {
+    return <>{content}</>
+  }
 
   return <HighlightedMatchHelper content={content} regexp={regexp} />
 }
@@ -61,8 +67,13 @@ const HighlightedMatchHelper = ({
   )
 }
 
-const highlightRegex = (highlightText: string): RegExp => {
+const highlightRegex = (highlightText: string): RegExp | null => {
   const stripped = filterToAlphanumeric(highlightText)
   const allowNonAlphanumeric = intersperseString(stripped, "[^0-9a-zA-Z]*")
-  return new RegExp(allowNonAlphanumeric, "i")
+
+  if (allowNonAlphanumeric === "") {
+    return null
+  } else {
+    return new RegExp(allowNonAlphanumeric, "i")
+  }
 }
