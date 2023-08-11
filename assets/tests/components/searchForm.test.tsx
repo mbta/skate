@@ -39,6 +39,9 @@ import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import vehicleFactory from "../factories/vehicle"
 import { SearchPropertyQuery } from "../../src/models/searchQuery"
 import { formatOperatorName } from "../../src/util/operatorFormatting"
+import locationSearchResultFactory from "../factories/locationSearchResult"
+import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
+import locationSearchSuggestionFactory from "../factories/locationSearchSuggestion"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -424,6 +427,75 @@ describe("SearchForm", () => {
     await userEvent.click(autocompleteOption(vehicle.label!).get())
 
     expect(onSelectVehicleOption).toHaveBeenCalledWith(vehicle)
+  })
+
+  test("when a location autocomplete option is clicked, should fire event 'onSelectedLocationId'", async () => {
+    const onSelectLocationId = jest.fn()
+    const inputText = "123 Test St"
+    const location = locationSearchResultFactory.build({
+      name: "Search Suggestion",
+    })
+    const locationSuggestion = locationSearchSuggestionFactory.build({
+      text: location.name!,
+      placeId: location.id,
+    })
+
+    ;(useLocationSearchSuggestions as jest.Mock).mockReturnValue([
+      locationSuggestion,
+    ])
+
+    render(
+      <SearchForm
+        inputText={inputText}
+        property="all"
+        onPropertyChange={jest.fn()}
+        // Prevent the following error by preventing default event.
+        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}
+        onSelectVehicleOption={() => {}}
+        onSelectedLocationId={onSelectLocationId}
+        onSelectedLocationText={() => {}}
+      />
+    )
+
+    await userEvent.click(autocompleteOption(location.name!).get())
+
+    expect(onSelectLocationId).toHaveBeenCalledWith(location.id)
+  })
+
+  test("when a text-only location autocomplete option is clicked, should fire event 'onSelectedLocationText'", async () => {
+    const onSelectLocationText = jest.fn()
+    const inputText = "123 Test St"
+    const locationSuggestion = locationSearchSuggestionFactory.build({
+      text: "Suggested Search Term",
+      placeId: null,
+    })
+
+    ;(useLocationSearchSuggestions as jest.Mock).mockReturnValue([
+      locationSuggestion,
+    ])
+
+    render(
+      <SearchForm
+        inputText={inputText}
+        property="all"
+        onPropertyChange={jest.fn()}
+        // Prevent the following error by preventing default event.
+        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}
+        onSelectVehicleOption={() => {}}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={onSelectLocationText}
+      />
+    )
+
+    await userEvent.click(autocompleteOption(locationSuggestion.text).get())
+
+    expect(onSelectLocationText).toHaveBeenCalledWith(locationSuggestion.text)
   })
 
   test("when a filter is applied, should not show disabled categories in autocomplete", async () => {
