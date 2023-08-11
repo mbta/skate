@@ -678,7 +678,15 @@ export interface GroupedAutocompleteFromSearchTextEventProps {
    */
   onSelectVehicleOption: (selectedOption: Vehicle | Ghost) => void
 
+  /**
+   * Fired when a autocomplete option with a PlaceId is selected.
+   * @param selectedPlaceId Suggested PlaceId.
+   */
   onSelectedLocationId: (selectedPlaceId: string) => void
+  /**
+   * Fired when a autocomplete option without a PlaceId is selected.
+   * @param selectedLocationText Suggested Location Search Text.
+   */
   onSelectedLocationText: (selectedLocationText: string) => void
 }
 
