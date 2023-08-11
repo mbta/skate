@@ -42,6 +42,7 @@ import { zoomInButton } from "../../testHelpers/selectors/components/map"
 import { stopIcon } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"
 import { vehiclePropertiesCard } from "../../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
+import locationSearchResultFactory from "../../factories/locationSearchResult"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -395,6 +396,54 @@ describe("<MapDisplay />", () => {
           )
 
           expect(routePropertiesCard.query()).not.toBeInTheDocument()
+        })
+      })
+
+      describe("selection is a location", () => {
+        test("should display location marker", () => {
+          setHtmlWidthHeightForLeafletMap()
+
+          const location = locationSearchResultFactory.build({
+            name: "Location Name",
+          })
+
+          const { container } = render(
+            <MapDisplay
+              selectedEntity={{
+                type: SelectedEntityType.Location,
+                location: location,
+              }}
+              setSelection={jest.fn()}
+              fetchedSelectedLocation={null}
+            />
+          )
+
+          expect(
+            container.querySelectorAll(".c-location-dot-icon")
+          ).toHaveLength(1)
+        })
+
+        test("should display location marker if location is fetched separately from autocomplete", () => {
+          setHtmlWidthHeightForLeafletMap()
+
+          const location = locationSearchResultFactory.build({
+            name: "Location Name",
+          })
+
+          const { container } = render(
+            <MapDisplay
+              selectedEntity={{
+                type: SelectedEntityType.LocationByPlaceId,
+                placeId: location.id,
+              }}
+              setSelection={jest.fn()}
+              fetchedSelectedLocation={location}
+            />
+          )
+
+          expect(
+            container.querySelectorAll(".c-location-dot-icon")
+          ).toHaveLength(1)
         })
       })
     })
