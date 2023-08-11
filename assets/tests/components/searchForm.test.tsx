@@ -464,7 +464,7 @@ describe("SearchForm", () => {
     expect(onSelectLocationId).toHaveBeenCalledWith(location.id)
   })
 
-  test("when a text-only location autocomplete option is clicked, should fire event 'onSelectedLocationText'", async () => {
+  test("when a text-only location autocomplete option is clicked, should fire event 'onSelectedLocationText' and close autocomplete", async () => {
     const onSelectLocationText = jest.fn()
     const inputText = "123 Test St"
     const locationSuggestion = locationSearchSuggestionFactory.build({
@@ -495,6 +495,8 @@ describe("SearchForm", () => {
     await userEvent.click(autocompleteOption(locationSuggestion.text).get())
 
     expect(onSelectLocationText).toHaveBeenCalledWith(locationSuggestion.text)
+
+    expect(autocompleteListbox().get()).not.toBeVisible()
   })
 
   test("when a filter is applied, should not show disabled categories in autocomplete", async () => {
