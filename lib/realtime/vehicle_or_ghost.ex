@@ -11,7 +11,10 @@ defmodule Realtime.VehicleOrGhost do
     search_terms = text |> clean_for_matching |> Enum.reject(&(String.length(&1) < 2))
 
     if search_terms == [] do
-      []
+      %{
+        matching_vehicles: [],
+        has_more_matches: false
+      }
     else
       take_limited_props_matching(
         sort_for_search_results(vehicles),
