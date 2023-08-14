@@ -27,5 +27,5 @@ aws s3 sync "$STATIC_DIR/fonts" "$S3_DIR/fonts" --size-only --exclude "*" --incl
 aws s3 sync $STATIC_DIR $S3_DIR --size-only
 
 # upload source maps to Sentry
-SENTRY_RELEASE=$(npx @sentry/cli@2.3.1 releases propose-version)
-npx @sentry/cli@2.3.1 releases files "$SENTRY_RELEASE" upload-sourcemaps "$STATIC_DIR/js"
+npx @sentry/cli@2.17.0 sourcemaps inject "$STATIC_DIR/js"
+npx @sentry/cli@2.17.0 sourcemaps upload "$STATIC_DIR/js"
