@@ -96,7 +96,9 @@ $z-map-page-context: (
   margin: 0.5rem auto 0;
 }
 
-.c-search-display {
+.c-map-page .c-search-display {
+  isolation: isolate;
+  z-index: -1;
   flex: 1 1 auto;
   overflow-y: scroll;
   padding: 0.625rem 1rem 0 1rem;
