@@ -20,6 +20,7 @@ import { Ghost, Vehicle } from "../realtime"
 import { clamp } from "../util/math"
 import { formatOperatorNameFromVehicle } from "../util/operatorFormatting"
 import { SocketContext } from "../contexts/socketContext"
+import { useLocationSearchSuggestions } from "../hooks/useLocationSearchSuggestions"
 
 // #region Autocomplete Control
 // #region Cursor Reducer
@@ -647,7 +648,8 @@ const GroupOptionList = (props: LabelledListProps) => (
  */
 interface GroupedAutocompleteFromSearchTextResultsProps
   extends GroupedAutocompleteControlRefProps,
-    Omit<GroupedAutocompleteProps, "optionGroups"> {
+    Omit<GroupedAutocompleteProps, "optionGroups">,
+    GroupedAutocompleteFromSearchTextEventProps {
   /**
    * Text to search to populate the autocomplete options with.
    */
@@ -660,6 +662,9 @@ interface GroupedAutocompleteFromSearchTextResultsProps
    * Max number of options to render in a group.
    */
   maxElementsPerGroup?: number
+}
+
+export interface GroupedAutocompleteFromSearchTextEventProps {
   /**
    * Callback when a autocomplete vehicle option is selected.
    * @param selectedOption The selected option vehicle
@@ -672,6 +677,17 @@ interface GroupedAutocompleteFromSearchTextResultsProps
    *   type deduction.
    */
   onSelectVehicleOption: (selectedOption: Vehicle | Ghost) => void
+
+  /**
+   * Fired when a autocomplete option with a PlaceId is selected.
+   * @param selectedPlaceId Suggested PlaceId.
+   */
+  onSelectedLocationId: (selectedPlaceId: string) => void
+  /**
+   * Fired when a autocomplete option without a PlaceId is selected.
+   * @param selectedLocationText Suggested Location Search Text.
+   */
+  onSelectedLocationText: (selectedLocationText: string) => void
 }
 
 /**
@@ -680,6 +696,8 @@ interface GroupedAutocompleteFromSearchTextResultsProps
  */
 export const GroupedAutocompleteFromSearchTextResults = ({
   onSelectVehicleOption: onSelectVehicleOptionProp,
+  onSelectedLocationId,
+  onSelectedLocationText,
   searchText,
   searchFilters,
   maxElementsPerGroup = 5,
@@ -696,6 +714,10 @@ export const GroupedAutocompleteFromSearchTextResults = ({
     searchFilters,
     maxElementsPerGroup
   )
+
+  const locationResults =
+    useLocationSearchSuggestions(searchFilters.location ? searchText : null) ||
+    []
 
   const onSelectVehicleOption = (selectedOption: Vehicle | Ghost) => () => {
     onSelectVehicleOptionProp(selectedOption)
@@ -731,6 +753,19 @@ export const GroupedAutocompleteFromSearchTextResults = ({
       ...runs
         .slice(0, maxElementsPerGroup)
         .map((v) => autocompleteOption(v.runId, onSelectVehicleOption(v)))
+    ),
+    autocompleteGroup(
+      <h2>{searchPropertyDisplayConfig.location.name}</h2>,
+      ...locationResults
+        .slice(0, maxElementsPerGroup)
+        .map(({ text, placeId }) =>
+          autocompleteOption(
+            text,
+            placeId
+              ? () => onSelectedLocationId(placeId)
+              : () => onSelectedLocationText(text)
+          )
+        )
     ),
   ].filter(({ group: { options } }) => options.length > 0)
 

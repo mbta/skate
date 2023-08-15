@@ -56,6 +56,14 @@ describe("HighlightedMatch", () => {
     expect(screen.getByText(content)).not.toHaveClass("highlighted")
   })
 
+  test("renders the original content if highlight text only contains whitespace and symbols", () => {
+    const content = "test string"
+
+    render(<HighlightedMatch content={content} highlightText="  &" />)
+
+    expect(screen.getByText(content)).not.toHaveClass("highlighted")
+  })
+
   test("when matching individual words, will still match the whole highlightText if possible", () => {
     const content = "test string"
 

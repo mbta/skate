@@ -237,5 +237,16 @@ defmodule Realtime.VehicleOrGhostTest do
                  %{text: "000", property: :all, limit: 5}
                )
     end
+
+    test "handles case with no search terms" do
+      assert %{
+               matching_vehicles: [],
+               has_more_matches: false
+             } =
+               VehicleOrGhost.take_limited_matches(
+                 [],
+                 %{text: "", property: :all, limit: 5}
+               )
+    end
   end
 end

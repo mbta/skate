@@ -15,6 +15,10 @@ $street-view-button-text-color: $color-eggplant-50;
 
   /* Text Decoration */
   text-decoration: none;
+
+  span svg {
+    stroke: none;
+  }
 }
 
 /* Override `.leaflet-container a` */

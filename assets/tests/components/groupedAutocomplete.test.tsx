@@ -25,7 +25,8 @@ import {
   option,
 } from "../testHelpers/selectors/components/groupedAutocomplete"
 import { searchFiltersFactory } from "../factories/searchProperties"
-import ghostFactory from "../factories/ghost"
+import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
+import locationSearchSuggestionFactory from "../factories/locationSearchSuggestion"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -33,6 +34,10 @@ jest.mock("../../src/hooks/useAutocompleteResults", () => ({
     run: [],
     vehicle: [],
   })),
+}))
+
+jest.mock("../../src/hooks/useLocationSearchSuggestions", () => ({
+  useLocationSearchSuggestions: jest.fn().mockImplementation(() => []),
 }))
 
 describe("<GroupedAutocomplete/>", () => {
@@ -615,10 +620,14 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
   const operatorsResultsGroup = optionGroup(
     searchPropertyDisplayConfig.operator.name
   )
+  const locationResultsGroup = optionGroup(
+    searchPropertyDisplayConfig.location.name
+  )
 
   test("when rendered, should show results", () => {
     const searchText = "12345"
     const [idVehicle, runVehicle, operatorVehicle] = vehicleFactory.buildList(3)
+    const locationSuggestion = locationSearchSuggestionFactory.build()
 
     ;(useAutocompleteResults as jest.Mock).mockImplementation(
       (_socket, text: string, _filters) =>
@@ -630,6 +639,9 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
           },
         }[text] || {})
     )
+    ;(useLocationSearchSuggestions as jest.Mock).mockImplementation(() => [
+      locationSuggestion,
+    ])
 
     render(
       <GroupedAutocompleteFromSearchTextResults
@@ -638,16 +650,19 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={searchFiltersFactory.build()}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 
     // Render form and autocomplete results
     const autocompleteResults = listbox().get()
-    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(3)
+    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(4)
 
     const vehiclesResults = vehiclesResultsGroup.get()
     const runResults = runResultsGroup.get()
     const operatorsResults = operatorsResultsGroup.get()
+    const locationResults = locationResultsGroup.get()
 
     expect(option(idVehicle.label!).get(vehiclesResults)).toBeInTheDocument()
 
@@ -657,6 +672,10 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
       option(formatOperatorNameFromVehicle(operatorVehicle)).get(
         operatorsResults
       )
+    ).toBeInTheDocument()
+
+    expect(
+      option(locationSuggestion.text).get(locationResults)
     ).toBeInTheDocument()
   })
 
@@ -674,6 +693,9 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
           },
         }[text] || {})
     )
+    ;(useLocationSearchSuggestions as jest.Mock).mockImplementation(() =>
+      locationSearchSuggestionFactory.buildList(maxLength + 2)
+    )
 
     render(
       <GroupedAutocompleteFromSearchTextResults
@@ -683,54 +705,22 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={searchFiltersFactory.build()}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
 
     // Render form and autocomplete results
     const autocompleteResults = listbox().get()
-    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(1)
+    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(2)
 
     const vehiclesResults = vehiclesResultsGroup.get()
 
     expect(vehiclesResults.children).toHaveLength(maxLength)
-  })
 
-  test("when rendered, should not show more than `maxElementsPerGroup` results", () => {
-    const searchText = "12345"
-    const maxLength = 5
+    const locationResults = locationResultsGroup.get()
 
-    ;(useAutocompleteResults as jest.Mock).mockImplementation(
-      (_socket, text: string, _) =>
-        ({
-          [searchText]: {
-            vehicle: [],
-            operator: [
-              ...ghostFactory.buildList(maxLength),
-              ...vehicleFactory.buildList(maxLength),
-            ],
-            run: [],
-          },
-        }[text] || {})
-    )
-
-    render(
-      <GroupedAutocompleteFromSearchTextResults
-        controlName="Search Suggestions"
-        maxElementsPerGroup={maxLength}
-        fallbackOption={autocompleteOption(null)}
-        onSelectVehicleOption={() => {}}
-        searchText={searchText}
-        searchFilters={searchFiltersFactory.build()}
-      />
-    )
-
-    // Render form and autocomplete results
-    const autocompleteResults = listbox().get()
-    expect(getAllByRole(autocompleteResults, "group")).toHaveLength(1)
-
-    const vehiclesResults = operatorsResultsGroup.get()
-
-    expect(vehiclesResults.children).toHaveLength(maxLength)
+    expect(locationResults.children).toHaveLength(maxLength)
   })
 
   test("when searchText changes, should show new results", () => {
@@ -776,6 +766,8 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
         onSelectVehicleOption={() => {}}
         searchText={searchText}
         searchFilters={searchFiltersFactory.build()}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
     const { rerender } = render(<Autocomplete searchText={inputText} />)
@@ -813,6 +805,8 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
         onSelectVehicleOption={() => {}}
         searchText={""}
         searchFilters={searchFiltersFactory.build()}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
     const { rerender } = render(<Autocomplete />)
@@ -836,7 +830,6 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
 
     expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
 
-    expect(runOptions).not.toBeInTheDocument()
     expect(runOption.query()).not.toBeInTheDocument()
   })
 
@@ -866,6 +859,8 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
         onSelectVehicleOption={() => {}}
         searchText={""}
         searchFilters={filters}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
       />
     )
     const { rerender } = render(

@@ -227,7 +227,7 @@ export const fetchLocationSearchResults = (
   searchText: string
 ): Promise<LocationSearchResult[] | null> =>
   checkedApiCall<LocationSearchResultData[], LocationSearchResult[] | null>({
-    url: `api/location_search/search?query=${searchText}`,
+    url: `api/location_search/search?query=${encodeURIComponent(searchText)}`,
     dataStruct: array(LocationSearchResultData),
     parser: nullableParser(locationSearchResultsFromData),
     defaultResult: [],
@@ -250,7 +250,7 @@ export const fetchLocationSearchSuggestions = (
     LocationSearchSuggestionData[],
     LocationSearchSuggestion[] | null
   >({
-    url: `api/location_search/suggest?query=${searchText}`,
+    url: `api/location_search/suggest?query=${encodeURIComponent(searchText)}`,
     dataStruct: array(LocationSearchSuggestionData),
     parser: nullableParser(locationSearchSuggestionsFromData),
     defaultResult: null,

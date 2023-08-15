@@ -69,6 +69,7 @@ import {
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
 import locationSearchResultFactory from "../factories/locationSearchResult"
+import { useLocationSearchResultById } from "../../src/hooks/useLocationSearchResultById"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -80,6 +81,12 @@ jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   __esModule: true,
   default: jest.fn(() => null),
   useLocationSearchResults: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useLocationSearchResultById", () => ({
+  __esModule: true,
+  default: jest.fn(() => null),
+  useLocationSearchResultById: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
@@ -719,6 +726,42 @@ describe("<MapPage />", () => {
       )
     ).toBeVisible()
     expect(screen.getByTitle("Recenter Map")).toBeVisible()
+  })
+
+  test("Locations selected by ID result in the location card being visible", async () => {
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+    const location = locationSearchResultFactory.build()
+
+    ;(useLocationSearchResultById as jest.Mock).mockImplementation((id) => {
+      if (id === location.id) {
+        return location
+      }
+      return null
+    })
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: activeSearchPageStateFactory.build({
+            query: { text: location.name! },
+            selectedEntity: {
+              type: SelectedEntityType.LocationByPlaceId,
+              placeId: location.id,
+            },
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <MapPage />
+      </StateDispatchProvider>
+    )
+
+    const mapSearchPanel = getMapSearchPanel()
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
+
+    const locationCard = screen.getByLabelText(location.name!)
+    expect(locationCard).toBeVisible()
   })
 
   test("can collapse and un-collapse the search panel with the drawer tab", async () => {
