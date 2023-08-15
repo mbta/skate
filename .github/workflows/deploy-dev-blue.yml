@@ -1,4 +1,4 @@
-name: Deploy to Dev-Blue ECS
+name: Deploy to Dev-blue (ECS)
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Dev-Blue
+    name: Deploy to Dev-blue (ECS)
     concurrency:
       group: dev-blue
       cancel-in-progress: true
