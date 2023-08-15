@@ -8,7 +8,6 @@ jobs:
     name: Deploy to Prod (ECS)
     concurrency:
       group: prod
-      cancel-in-progress: true
     uses: ./.github/workflows/deploy-base.yml
     with:
       env: prod

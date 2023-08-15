@@ -10,7 +10,6 @@ jobs:
     name: Deploy to Dev (ECS)
     concurrency:
       group: dev
-      cancel-in-progress: true
     uses: ./.github/workflows/deploy-base.yml
     with:
       env: dev

@@ -12,7 +12,6 @@ jobs:
     name: Deploy to Dev-green (ECS)
     concurrency:
       group: dev-green
-      cancel-in-progress: true
     if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-to-dev-green') }}
     uses: ./.github/workflows/deploy-base.yml
     with:
