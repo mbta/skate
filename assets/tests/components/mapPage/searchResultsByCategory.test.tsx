@@ -1,6 +1,14 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterEach,
+} from "@jest/globals"
 import React from "react"
 import { render, screen, within } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import SearchResultsByCategory from "../../../src/components/mapPage/searchResultsByCategory"
 import vehicleFactory from "../../factories/vehicle"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"

@@ -1,6 +1,7 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen, waitFor } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { shuttleFactory } from "../../factories/vehicle"
 import routeFactory from "../../factories/route"

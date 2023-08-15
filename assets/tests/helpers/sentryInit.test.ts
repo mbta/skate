@@ -1,3 +1,4 @@
+import { jest, test, expect } from "@jest/globals"
 import sentryInit from "../../src/helpers/sentryInit"
 import * as Sentry from "@sentry/react"
 

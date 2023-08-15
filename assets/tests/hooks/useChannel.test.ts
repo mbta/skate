@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { act, renderHook } from "@testing-library/react"
 import { string, unknown } from "superstruct"
 import {
@@ -8,6 +9,7 @@ import {
 import * as browser from "../../src/models/browser"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import * as Sentry from "@sentry/react"
+import { PushStatus } from "phoenix"
 
 jest.mock("@sentry/react", () => ({
   __esModule: true,
@@ -112,6 +114,7 @@ describe("useChannel", () => {
           data: "raw",
         })
       }
+      return 1
     })
 
     const { result } = renderHook(() =>
@@ -451,6 +454,7 @@ describe("useCheckedChannel", () => {
           data: "raw",
         })
       }
+      return 1
     })
     const dataStruct = string()
 
@@ -480,6 +484,7 @@ describe("useCheckedChannel", () => {
           data: 12,
         })
       }
+      return 1
     })
     const dataStruct = string()
 
@@ -801,7 +806,7 @@ describe("useCheckedTwoWayChannel", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel(
       jest
-        .fn()
+        .fn<() => PushStatus>()
         // Return OK while joining, then error on push
         .mockReturnValueOnce("ok")
         .mockReturnValueOnce("ok")

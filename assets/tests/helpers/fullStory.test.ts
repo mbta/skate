@@ -1,3 +1,4 @@
+import { jest, describe, test, expect, afterEach } from "@jest/globals"
 import { fullStoryIdentify } from "../../src/helpers/fullStory"
 
 const originalFS = window.FS

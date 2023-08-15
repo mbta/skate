@@ -1,4 +1,13 @@
 import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterAll,
+} from "@jest/globals"
+import { SpyInstance } from "jest-mock"
+import {
   apiCall,
   checkedApiCall,
   fetchScheduleBlock,
@@ -51,7 +60,7 @@ const mockFetch = (status: number, json: any): void => {
 }
 
 describe("apiCall", () => {
-  let browserReloadSpy: jest.SpyInstance
+  let browserReloadSpy: SpyInstance
 
   beforeEach(() => {
     browserReloadSpy = jest
@@ -120,7 +129,7 @@ describe("apiCall", () => {
 })
 
 describe("checkedApiCall", () => {
-  let browserReloadSpy: jest.SpyInstance
+  let browserReloadSpy: SpyInstance
 
   beforeEach(() => {
     browserReloadSpy = jest
@@ -823,9 +832,10 @@ describe("putUserSetting", () => {
     mockFetch(200, "")
     putUserSetting("name", "value")
     expect(window.fetch).toHaveBeenCalledTimes(1)
-    const args = (window.fetch as jest.Mock).mock.calls[0][1]
-    expect(args.method).toEqual("PUT")
-    expect(args.headers).toHaveProperty("x-csrf-token")
+    const args = (window.fetch as jest.Mock<typeof window.fetch>).mock
+      .calls[0][1]
+    expect(args!.method).toEqual("PUT")
+    expect(args!.headers).toHaveProperty("x-csrf-token")
   })
 })
 
@@ -858,9 +868,10 @@ describe("putRouteTabs", () => {
     putRouteTabs(routeTabs)
 
     expect(window.fetch).toHaveBeenCalledTimes(1)
-    const args = (window.fetch as jest.Mock).mock.calls[0][1]
-    expect(args.method).toEqual("PUT")
-    expect(args.headers).toHaveProperty("x-csrf-token")
-    expect(args.body).toEqual(JSON.stringify({ route_tabs: routeTabs }))
+    const args = (window.fetch as jest.Mock<typeof window.fetch>).mock
+      .calls[0][1]
+    expect(args!.method).toEqual("PUT")
+    expect(args!.headers).toHaveProperty("x-csrf-token")
+    expect(args!.body).toEqual(JSON.stringify({ route_tabs: routeTabs }))
   })
 })

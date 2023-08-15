@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import useAlerts from "../../src/hooks/useAlerts"
 import * as browser from "../../src/models/browser"
@@ -65,6 +66,7 @@ describe("useAlerts", () => {
       if (event === "alerts") {
         handler({ data: ["alert text"] })
       }
+      return 1
     })
 
     const { result } = renderHook(() => useAlerts(mockSocket, ["1"]))

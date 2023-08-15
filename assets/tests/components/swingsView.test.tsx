@@ -1,6 +1,7 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"

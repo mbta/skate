@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { act, renderHook } from "@testing-library/react"
 import { Socket } from "phoenix"
@@ -161,7 +162,7 @@ describe("notificationsReducer", () => {
 
 describe("useNotificationsReducer", () => {
   test("persists to server when mark all as read", () => {
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
     const mockSetIsInitialLoad = jest.fn()
 
     const initialState = {
@@ -186,7 +187,7 @@ describe("useNotificationsReducer", () => {
   })
 
   test("persists state toggle", () => {
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
     const mockSetIsInitialLoad = jest.fn()
 
     const initialState = {
@@ -245,6 +246,7 @@ describe("useNotificationsReducer", () => {
       dataHandler({
         data: notification1Data,
       })
+      return 1
     })
 
     const { result } = renderHook(

@@ -1,6 +1,7 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import routeFactory from "../factories/route"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
@@ -156,7 +157,7 @@ describe("NotificationDrawer", () => {
     const mockNotificationsDispatch = jest.fn()
 
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
             value={{

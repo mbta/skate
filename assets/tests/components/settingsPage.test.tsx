@@ -1,7 +1,8 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import { render, waitFor } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -75,7 +76,7 @@ describe("SettingsPage", () => {
 
   test("selecting a ladder vehicle label setting sets that value", async () => {
     const testDispatch = jest.fn()
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
@@ -121,7 +122,7 @@ describe("SettingsPage", () => {
 
   test("selecting a map vehicle label setting sets that value", async () => {
     const testDispatch = jest.fn()
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
@@ -150,7 +151,7 @@ describe("SettingsPage", () => {
     )
 
     const testDispatch = jest.fn()
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>

@@ -1,4 +1,12 @@
-import "@testing-library/jest-dom"
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeAll,
+  afterEach,
+} from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import {
   fireEvent,
   getByRole,
@@ -133,7 +141,7 @@ type VehicleIdToVehicle = {
 }
 
 function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
-  ;(useVehicleForId as jest.Mock).mockImplementation(
+  ;(useVehicleForId as jest.Mock<typeof useVehicleForId>).mockImplementation(
     (_, vehicleId) => map[vehicleId!] || null
   )
 }
@@ -149,9 +157,9 @@ function mockUseVehicleForId(vehicles: (VehicleInScheduledService | Ghost)[]) {
 function mockUseVehiclesForRouteMap(map: {
   [routeId: RouteId]: (VehicleInScheduledService | Ghost)[]
 }) {
-  ;(useVehiclesForRoute as jest.Mock).mockImplementation(
-    (_, routeId: RouteId | null) => map[routeId!] || null
-  )
+  ;(
+    useVehiclesForRoute as jest.Mock<typeof useVehiclesForRoute>
+  ).mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
 }
 
 function getMapSearchPanel() {

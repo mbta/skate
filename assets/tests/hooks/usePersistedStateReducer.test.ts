@@ -1,3 +1,11 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterAll,
+} from "@jest/globals"
 import { act, renderHook, waitFor } from "@testing-library/react"
 import { putUserSetting, putRouteTabs } from "../../src/api"
 import appData from "../../src/appData"
@@ -78,7 +86,11 @@ describe("usePersistedStateReducer", () => {
     expect(state.selectedShuttleRunIds).toEqual(["123"])
 
     // last call is persisting the edit we're testing
-    const calls = (window.localStorage.setItem as jest.Mock).mock.calls
+    const calls = (
+      window.localStorage.setItem as jest.Mock<
+        typeof window.localStorage.setItem
+      >
+    ).mock.calls
     const lastCallIndex = calls.length - 1
     const persistedState = JSON.parse(calls[lastCallIndex][1])
     expect(persistedState.selectedShuttleRunIds).toEqual(["123"])

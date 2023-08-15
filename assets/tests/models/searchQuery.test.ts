@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import { isValidSearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { searchQueryRunFactory } from "../factories/searchQuery"
 

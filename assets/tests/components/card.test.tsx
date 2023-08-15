@@ -1,8 +1,9 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import { Card, CardBody, CardProperties } from "../../src/components/card"
 import userEvent from "@testing-library/user-event"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 
 describe("Card", () => {
   test("renders content", () => {

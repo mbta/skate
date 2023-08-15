@@ -1,6 +1,7 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import RoutePropertiesCard, {
   patternDisplayName,
 } from "../../../src/components/mapPage/routePropertiesCard"

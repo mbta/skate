@@ -1,3 +1,4 @@
+import { jest, describe, test, expect, afterEach } from "@jest/globals"
 import { renderHook, waitFor, act } from "@testing-library/react"
 import * as Api from "../../src/api"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
@@ -74,9 +75,11 @@ export const MockIntersectionWithCoordinateIntersectionMap = (
 ) => {
   const result = CoordinateIntersectionMap(numberOfEntries, errorValue)
 
-  ;(Api.fetchNearestIntersection as jest.Mock).mockImplementation(
-    result.mockImplementation
-  )
+  ;(
+    Api.fetchNearestIntersection as jest.Mock<
+      typeof Api.fetchNearestIntersection
+    >
+  ).mockImplementation(result.mockImplementation)
 
   return result
 }

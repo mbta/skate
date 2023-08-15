@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import useInterval from "../../src/hooks/useInterval"
 

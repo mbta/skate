@@ -1,3 +1,11 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterEach,
+} from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
@@ -14,7 +22,7 @@ import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 

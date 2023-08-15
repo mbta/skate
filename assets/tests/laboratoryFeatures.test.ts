@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import featureIsEnabled from "../src/laboratoryFeatures"
 
 const testFeatures = {

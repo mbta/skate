@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import MapPage from "../../src/components/mapPage"
 import SearchPage from "../../src/components/searchPage"

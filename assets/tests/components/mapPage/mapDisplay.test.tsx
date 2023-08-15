@@ -1,4 +1,5 @@
-import "@testing-library/jest-dom"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import { fireEvent, render, screen } from "@testing-library/react"
 import React from "react"
 
@@ -87,7 +88,7 @@ type VehicleIdToVehicle = {
 }
 
 function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
-  ;(useVehicleForId as jest.Mock).mockImplementation(
+  ;(useVehicleForId as jest.Mock<typeof useVehicleForId>).mockImplementation(
     (_, vehicleId) => map[vehicleId!] || null
   )
 }
@@ -103,9 +104,9 @@ function mockUseVehicleForId(vehicles: (VehicleInScheduledService | Ghost)[]) {
 function mockUseVehiclesForRouteMap(map: {
   [routeId: RouteId]: (VehicleInScheduledService | Ghost)[]
 }) {
-  ;(useVehiclesForRoute as jest.Mock).mockImplementation(
-    (_, routeId: RouteId | null) => map[routeId!] || null
-  )
+  ;(
+    useVehiclesForRoute as jest.Mock<typeof useVehiclesForRoute>
+  ).mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
 }
 
 function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
@@ -453,7 +454,9 @@ describe("<MapDisplay />", () => {
     test("when a vehicle is clicked, should open street view at vehicle location", async () => {
       mockFullStoryEvent()
       const mockSetSelection = jest.fn()
-      const openSpy = jest.spyOn(window, "open").mockImplementation(jest.fn())
+      const openSpy = jest
+        .spyOn(window, "open")
+        .mockImplementation(jest.fn<typeof window.open>())
 
       const latitude = 0
       const longitude = 0
@@ -514,7 +517,9 @@ describe("<MapDisplay />", () => {
       mockUseVehicleForId([])
       mockUseVehiclesForRouteMap({})
       const mockSetSelection = jest.fn()
-      const openSpy = jest.spyOn(window, "open").mockImplementation(jest.fn())
+      const openSpy = jest
+        .spyOn(window, "open")
+        .mockImplementation(jest.fn<typeof window.open>())
 
       const latitude = 0
       const longitude = 0

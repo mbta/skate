@@ -1,4 +1,5 @@
-import "@testing-library/jest-dom"
+import { jest, describe, test, expect, afterAll } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import {
   GarageMarkers,
   RouteShape,

@@ -1,4 +1,5 @@
-import "@testing-library/jest-dom"
+import { jest, describe, test, expect } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
@@ -389,10 +390,9 @@ describe("SearchForm", () => {
     const inputText = "123"
     const vehicle = vehicleFactory.build()
 
-    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
-      _socket,
-      searchText
-    ) => {
+    ;(
+      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
+    ).mockImplementation(((_socket, searchText) => {
       if (inputText === searchText) {
         return {
           vehicle: [vehicle],
@@ -503,11 +503,9 @@ describe("SearchForm", () => {
     const inputText = "123"
     const [vehicle, runVehicle] = vehicleFactory.buildList(2)
 
-    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
-      _socket,
-      searchText,
-      filters
-    ) => {
+    ;(
+      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
+    ).mockImplementation(((_socket, searchText, filters) => {
       if (inputText === searchText) {
         return {
           vehicle: filters.vehicle ? [vehicle] : [],
@@ -541,10 +539,9 @@ describe("SearchForm", () => {
     const inputText = "123"
     const [vehicle, runVehicle, operatorVehicle] = vehicleFactory.buildList(3)
 
-    ;(useAutocompleteResults as jest.Mock).mockImplementation(((
-      _socket,
-      searchText
-    ) => {
+    ;(
+      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
+    ).mockImplementation(((_socket, searchText) => {
       if (inputText === searchText) {
         return {
           vehicle: [vehicle],

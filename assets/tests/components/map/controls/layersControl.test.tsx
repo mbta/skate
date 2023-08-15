@@ -1,5 +1,6 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import React, { ReactNode } from "react"
 import { MapContainer } from "react-leaflet"
 import { LayersControl } from "../../../../src/components/map/controls/layersControl"
@@ -14,7 +15,7 @@ const mapWrapper = ({ children }: { children: ReactNode }) => (
 
 describe("LayersControl", () => {
   test("when the control button is clicked, the list of layers is rendered with the selected layer marked as selected", async () => {
-    render(<LayersControl tileType="base" setTileType={jest.fn} />, {
+    render(<LayersControl tileType="base" setTileType={jest.fn()} />, {
       wrapper: mapWrapper,
     })
     await userEvent.click(layersControlButton.get())
@@ -49,7 +50,7 @@ describe("LayersControl", () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
     const { container } = render(
-      <LayersControl tileType="base" setTileType={jest.fn} />,
+      <LayersControl tileType="base" setTileType={jest.fn()} />,
       {
         wrapper: mapWrapper,
       }

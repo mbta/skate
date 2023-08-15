@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../../factories/route"
@@ -18,7 +19,7 @@ import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 
 jest
   .spyOn(dateTime, "now")
@@ -249,8 +250,11 @@ describe("VehiclePropertiesPanel", () => {
       </VehiclesByRouteIdProvider>
     )
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = (map.MapFollowingPrimaryVehicles as jest.Mock)
-      .mock.calls[0][0]
+    const mapArgs: map.Props = (
+      map.MapFollowingPrimaryVehicles as jest.Mock<
+        typeof map.MapFollowingPrimaryVehicles
+      >
+    ).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
@@ -267,8 +271,11 @@ describe("VehiclePropertiesPanel", () => {
     renderer.create(<VehiclePropertiesPanel selectedVehicle={thisVehicle} />)
     expect(useVehiclesForRoute).toHaveBeenCalled()
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = (map.MapFollowingPrimaryVehicles as jest.Mock)
-      .mock.calls[0][0]
+    const mapArgs: map.Props = (
+      map.MapFollowingPrimaryVehicles as jest.Mock<
+        typeof map.MapFollowingPrimaryVehicles
+      >
+    ).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 

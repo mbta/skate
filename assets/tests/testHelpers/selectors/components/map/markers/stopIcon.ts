@@ -1,3 +1,5 @@
+import { expect } from "@jest/globals"
+
 // Placeholder while Stop Icon is inaccessible via Accessibility API's
 export const stopIcon = {
   get: (container: HTMLElement) => {

@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../factories/route"
@@ -117,7 +118,7 @@ describe("Notification", () => {
     const mockNotificationsDispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
             value={{

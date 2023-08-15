@@ -1,7 +1,10 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { useMediaQuery } from "@react-hook/media-query"
-const useDeviceSupportsHover = jest.requireActual(
-  "../../src/hooks/useDeviceSupportsHover"
-).default
+import * as UseDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
+
+const useDeviceSupportsHover = jest.requireActual<
+  typeof UseDeviceSupportsHover
+>("../../src/hooks/useDeviceSupportsHover").default
 
 jest.mock("@react-hook/media-query", () => ({
   __esModule: true,

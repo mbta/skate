@@ -1,13 +1,16 @@
-import React from "react"
+import { jest, describe, test, expect } from "@jest/globals"
+import React, { ReactNode } from "react"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { within } from "@testing-library/dom"
 import StopCard from "../../src/components/stopCard"
 import stopFactory from "../factories/stop"
 
 jest.mock("react-leaflet", () => ({
   __esModule: true,
-  Popup: jest.fn().mockImplementation(({ children }) => <div>{children}</div>),
+  Popup: jest
+    .fn<React.FC<{ children: ReactNode }>>()
+    .mockImplementation(({ children }) => <div>{children}</div>),
 }))
 
 describe("StopCard", () => {
