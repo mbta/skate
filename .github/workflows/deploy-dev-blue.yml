@@ -2,6 +2,8 @@ name: Deploy to Dev-blue (ECS)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [kb-sentry-include-release]
 
 jobs:
   deploy:
