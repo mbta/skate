@@ -323,4 +323,26 @@ describe("VehiclePropertiesPanel", () => {
       )
     }
   )
+
+  test.each<{ clickTarget: string; initialTab?: TabMode }>([
+    { clickTarget: "Run", initialTab: "run" },
+    { clickTarget: "Block", initialTab: "block" },
+    { clickTarget: "Status", initialTab: "status" },
+  ])(
+    "when active tab '$initialTab' is clicked, does not fire fullstory event",
+    ({ clickTarget, initialTab }) => {
+      mockFullStoryEvent()
+
+      render(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          initialTab={initialTab}
+        />
+      )
+
+      fireEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(window.FS!.event).not.toHaveBeenCalled()
+    }
+  )
 })
