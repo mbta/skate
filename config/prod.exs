@@ -9,6 +9,9 @@ config :skate,
   record_sentry: true,
   static_href: {SkateWeb.Router.Helpers, :static_url}
 
+config :sentry,
+  release: System.get_env("SENTRY_RELEASE")
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
