@@ -315,6 +315,7 @@ describe("useLimitedSearchResults", () => {
     )
     expect(result.current).toEqual(null)
   })
+
   test("initializing the hook subscribes to the search results", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
