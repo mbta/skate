@@ -21,6 +21,7 @@ import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
 import { fireEvent, render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
+import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
 
 jest
   .spyOn(dateTime, "now")
@@ -298,14 +299,23 @@ describe("VehiclePropertiesPanel", () => {
     expect(container.innerHTML).toContain("c-station-icon")
   })
 
-  test("when active tab changes, fires fullstory event", () => {
-    mockFullStoryEvent()
+  test.each([
+    { tab: "run", clickTarget: "Run" },
+    { tab: "block", clickTarget: "Block" },
+  ])(
+    "when active tab changes to '$tab', fires fullstory event",
+    ({ tab, clickTarget }) => {
+      mockFullStoryEvent()
 
     render(<VehiclePropertiesPanel
       selectedVehicle={vehicleFactory.build()}
     />)
-    fireEvent.click(screen.getByRole("tab", {name: "Run"}))
+    fireEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
-    expect(window.FS!.event).toHaveBeenCalledWith("Switched tab in Vehicle Properties Panel", {tab: "run"})
-  })
+      expect(window.FS!.event).toHaveBeenCalledWith(
+        "Switched tab in Vehicle Properties Panel",
+        { tab_str: tab }
+      )
+    }
+  )
 })
