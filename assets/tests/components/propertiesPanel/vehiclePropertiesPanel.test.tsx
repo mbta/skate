@@ -18,8 +18,9 @@ import {
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
+import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 
 jest
   .spyOn(dateTime, "now")
@@ -295,5 +296,16 @@ describe("VehiclePropertiesPanel", () => {
     )
 
     expect(container.innerHTML).toContain("c-station-icon")
+  })
+
+  test("when active tab changes, fires fullstory event", () => {
+    mockFullStoryEvent()
+
+    render(<VehiclePropertiesPanel
+      selectedVehicle={vehicleFactory.build()}
+    />)
+    fireEvent.click(screen.getByRole("tab", {name: "Run"}))
+
+    expect(window.FS!.event).toHaveBeenCalledWith("Switched tab in Vehicle Properties Panel", {tab: "run"})
   })
 })
