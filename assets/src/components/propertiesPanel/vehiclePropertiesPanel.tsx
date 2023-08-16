@@ -210,13 +210,13 @@ const VehiclePropertiesPanel = ({
       <Header
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={(tab) => {
-          if (tab !== tabMode) {
+        setTabMode={(newTabMode) => {
+          if (newTabMode !== tabMode) {
             window.FS?.event("Switched tab in Vehicle Properties Panel", {
-              tab_str: tab,
+              tab_str: newTabMode,
             })
           }
-          setTabMode(tab)
+          setTabMode(newTabMode)
         }}
       />
 
