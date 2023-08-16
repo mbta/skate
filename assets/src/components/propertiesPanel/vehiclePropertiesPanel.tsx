@@ -206,7 +206,14 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
       <Header
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={setTabMode}
+        setTabMode={(tab) => {
+          if (tab !== tabMode) {
+            window.FS?.event("Switched tab in Vehicle Properties Panel", {
+              tab_str: tab,
+            })
+          }
+          setTabMode(tab)
+        }}
       />
 
       {isVehicleInScheduledService(selectedVehicle) ? (
