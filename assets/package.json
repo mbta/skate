@@ -17,7 +17,7 @@
     "test:debugger": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "check": "tsc --noEmit && npm run lint:check && npm run format:check",
     "lint": "eslint --fix \"{.,**}/*.{js,json,ts,tsx}\"",
-    "lint:check": "eslint \"{.,**}/*.{js,json,ts,tsx}\"",
+    "lint:check": "eslint --max-warnings 0 \"{.,**}/*.{js,json,ts,tsx}\"",
     "format": "prettier --write \"{.,**}/*.{js,json,ts,tsx,css,scss}\"",
     "format:check": "prettier --check \"{.,**}/*.{js,json,ts,tsx,css,scss}\"",
     "cypress:open": "cypress open"
