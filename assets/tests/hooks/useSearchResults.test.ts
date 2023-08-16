@@ -302,6 +302,19 @@ describe("useLimitedSearchResults", () => {
     )
     expect(result.current).toEqual(null)
   })
+
+  test("when no query is for empty string, returns null", () => {
+    const mockSocket = makeMockSocket()
+
+    const { result } = renderHook(() =>
+      useLimitedSearchResults(mockSocket, {
+        text: "",
+        property: "run",
+        limit: 5,
+      })
+    )
+    expect(result.current).toEqual(null)
+  })
   test("initializing the hook subscribes to the search results", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")

@@ -62,7 +62,9 @@ export const useLimitedSearchResults = (
   query: { property: VehiclePropertyQuery; text: string; limit: number } | null
 ): Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading | null => {
   const topic: string | null =
-    query && `vehicles_search:limited:${query.property}:${query.text}`
+    query?.text && query.text != ""
+      ? `vehicles_search:limited:${query.property}:${query.text}`
+      : null
 
   const [state, pushUpdate] = useCheckedTwoWayChannel<
     LimitedSearchResultsData,
