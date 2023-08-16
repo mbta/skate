@@ -26,6 +26,7 @@ import { DiamondTurnRightIcon } from "../../helpers/icon"
 
 interface Props {
   selectedVehicle: Vehicle
+  initialTab?: TabMode
 }
 
 const InvalidBanner = () => (
@@ -198,8 +199,11 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   </>
 )
 
-const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
-  const [tabMode, setTabMode] = useState<TabMode>("status")
+const VehiclePropertiesPanel = ({
+  selectedVehicle,
+  initialTab = "status",
+}: Props) => {
+  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
 
   return (
     <div className="c-vehicle-properties-panel">
