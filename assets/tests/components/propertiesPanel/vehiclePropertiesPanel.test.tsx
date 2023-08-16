@@ -299,18 +299,23 @@ describe("VehiclePropertiesPanel", () => {
     expect(container.innerHTML).toContain("c-station-icon")
   })
 
-  test.each([
+  test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
     { tab: "run", clickTarget: "Run" },
     { tab: "block", clickTarget: "Block" },
+    { tab: "status", clickTarget: "Status", initialTab: "block" },
   ])(
     "when active tab changes to '$tab', fires fullstory event",
-    ({ tab, clickTarget }) => {
+    ({ tab, clickTarget, initialTab }) => {
       mockFullStoryEvent()
 
-    render(<VehiclePropertiesPanel
-      selectedVehicle={vehicleFactory.build()}
-    />)
-    fireEvent.click(screen.getByRole("tab", { name: clickTarget }))
+      render(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          initialTab={initialTab}
+        />
+      )
+
+      fireEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
       expect(window.FS!.event).toHaveBeenCalledWith(
         "Switched tab in Vehicle Properties Panel",
