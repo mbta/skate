@@ -1,4 +1,4 @@
 elixir 1.13.3-otp-24
 erlang 24.3.2
-nodejs 18.17.1
+nodejs 20.5.1
 adr-tools 3.0.0
