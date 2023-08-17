@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer, useRef } from "react"
 import { putRouteTabs } from "../api"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
@@ -48,32 +48,31 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
 
   const { routeTabsToPush, routeTabsPushInProgress } = state
 
-  const [routeTabsPushRetriesLeft, setRouteTabsPushRetriesLeft] =
-    useState(routeTabsPushRetries)
+  const routeTabsPushRetriesLeft = useRef(routeTabsPushRetries)
 
-  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (routeTabsToPush && !routeTabsPushInProgress) {
+      const currentTriesLeft = routeTabsPushRetriesLeft.current
       dispatch(startingRouteTabsPush())
       putRouteTabs(routeTabsToPush)
         .then((response) => {
           if (response.ok) {
-            setRouteTabsPushRetriesLeft(routeTabsPushRetries)
+            routeTabsPushRetriesLeft.current = routeTabsPushRetries
             dispatch(routeTabsPushComplete())
-          } else if (routeTabsPushRetriesLeft > 0) {
-            setRouteTabsPushRetriesLeft(routeTabsPushRetriesLeft - 1)
+          } else if (currentTriesLeft > 0) {
+            routeTabsPushRetriesLeft.current = currentTriesLeft - 1
             dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
           } else {
-            setRouteTabsPushRetriesLeft(routeTabsPushRetries)
+            routeTabsPushRetriesLeft.current = routeTabsPushRetries
             dispatch(routeTabsPushComplete())
           }
         })
         .catch(() => {
-          if (routeTabsPushRetriesLeft > 0) {
-            setRouteTabsPushRetriesLeft(routeTabsPushRetriesLeft - 1)
+          if (currentTriesLeft > 0) {
+            routeTabsPushRetriesLeft.current = currentTriesLeft - 1
             dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
           } else {
-            setRouteTabsPushRetriesLeft(routeTabsPushRetries)
+            routeTabsPushRetriesLeft.current = routeTabsPushRetries
             dispatch(routeTabsPushComplete())
           }
         })
