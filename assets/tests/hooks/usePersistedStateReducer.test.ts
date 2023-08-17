@@ -6,7 +6,7 @@ import {
   beforeEach,
   afterAll,
 } from "@jest/globals"
-import { act, renderHook, waitFor } from "@testing-library/react"
+import { act, renderHook } from "@testing-library/react"
 import { putUserSetting, putRouteTabs } from "../../src/api"
 import appData from "../../src/appData"
 import usePersistedStateReducer, {
@@ -351,16 +351,13 @@ describe("usePersistedStateReducer", () => {
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
 
-    act(() => {
+    await act(async () => {
       dispatch(createRouteTab())
-    })
-    const initialValue = result.current
-    await waitFor(() => {
-      expect(result.current).not.toBe(initialValue)
     })
 
     const [state] = result.current
 
+    expect(putRouteTabs).toHaveBeenCalledTimes(3)
     expect(state.routeTabs).toMatchObject([
       {
         ordering: 0,
@@ -370,7 +367,6 @@ describe("usePersistedStateReducer", () => {
     expect(state.routeTabsToPush).toBeNull()
     expect(state.routeTabsToPushNext).toBeNull()
     expect(state.routeTabsPushInProgress).toEqual(false)
-    expect(putRouteTabs).toHaveBeenCalledTimes(3)
   })
 })
 
