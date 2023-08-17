@@ -320,24 +320,13 @@ describe("usePersistedStateReducer", () => {
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
 
-    const firstValue = result.current
-
-    act(() => {
+    await act(async () => {
       dispatch(createRouteTab())
-    })
-    await waitFor(() => {
-      expect(result.current).not.toBe(firstValue)
-    })
-
-    // wait for changes from dispatch call in catch handler
-    const secondValue = result.current
-
-    await waitFor(() => {
-      expect(result.current).not.toBe(secondValue)
     })
 
     const [state] = result.current
 
+    expect(putRouteTabs).toHaveBeenCalledTimes(3)
     expect(state.routeTabs).toMatchObject([
       {
         ordering: 0,
@@ -347,7 +336,6 @@ describe("usePersistedStateReducer", () => {
     expect(state.routeTabsToPush).toBeNull()
     expect(state.routeTabsToPushNext).toBeNull()
     expect(state.routeTabsPushInProgress).toEqual(false)
-    expect(putRouteTabs).toHaveBeenCalledTimes(3)
   })
 
   test("retries at most two more times, with final failure being a client error", async () => {
