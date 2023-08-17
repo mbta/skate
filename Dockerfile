@@ -23,6 +23,9 @@ ADD . .
 # Copy in elixir deps required to build node modules for phoenix
 COPY --from=elixir-builder /root/deps ./deps
 
+# Build dependencies in case certain packages don't have prebuild binaries
+RUN apk add --no-cache --update python3 build-base
+
 RUN npm --prefix assets ci
 RUN npm --prefix assets run deploy
 
