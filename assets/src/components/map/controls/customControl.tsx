@@ -56,7 +56,7 @@ export const CustomControl = ({
     }
 
     return () => portalElement?.remove()
-  }, [portalElement, portalParent])
+  }, [portalElement, portalParent, className, insertAfterSelector])
 
   return portalElement ? ReactDOM.createPortal(children, portalElement) : null
 }
