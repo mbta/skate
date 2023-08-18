@@ -43,7 +43,6 @@ jobs:
         with:
           environment: ${{ inputs.env }}
           version: ${{steps.version-ids.outputs.sentry-release}}
-          set_commits: "skip"
           ignore_missing: true
       - uses: mbta/actions/build-push-ecr@v1
         id: build-push
