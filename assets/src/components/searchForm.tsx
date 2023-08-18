@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react"
-import * as Sentry from "@sentry/react"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { SearchIcon } from "../helpers/icon"
@@ -346,7 +345,6 @@ const SearchFormFromStateDispatchContext = ({
       onPropertyChange={(property: SearchPropertyQuery) => {
         dispatch(setOldSearchProperty(property))
         dispatch(submitSearch())
-        Sentry.captureException({ error: "ohNo! Test error hit" })
       }}
       onSelectVehicleOption={(vehicle) => {
         dispatch(
