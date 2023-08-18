@@ -3,7 +3,6 @@ import { Dispatch, initialState, State } from "../state"
 
 export type StateDispatchContextData = [State, Dispatch]
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noopDispatch: Dispatch = () => {}
 export const StateDispatchContext = createContext([
   initialState,

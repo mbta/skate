@@ -43,10 +43,10 @@ export interface State extends ReducerState {
 export const NotificationsContext = createContext<State>({
   notifications: [],
   showLatestNotification: false,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+
   dispatch: () => {},
   notificationWithOpenSubmenuId: null,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+
   setNotificationWithOpenSubmenuId: () => {},
 })
 
