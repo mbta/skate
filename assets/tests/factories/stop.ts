@@ -8,6 +8,7 @@ const stopFactory = Factory.define<Stop>(({ sequence }) => ({
   locationType: LocationType.Stop,
   lat: 0,
   lon: 0,
+  routes: undefined,
 }))
 
 export default stopFactory

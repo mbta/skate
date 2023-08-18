@@ -26,6 +26,7 @@ import {
   fetchLocationSearchResults,
   fetchLocationSearchResultById,
   fetchLocationSearchSuggestions,
+  fetchAllStops,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
@@ -527,6 +528,54 @@ describe("fetchStations", () => {
 
     fetchStations().then((stations) => {
       expect(stations).toEqual([station1, station2])
+      done()
+    })
+  })
+
+  test("returns empty list on error", (done) => {
+    mockFetch(500, {
+      data: null,
+    })
+
+    fetchStations().then((stations) => {
+      expect(stations).toEqual([])
+      done()
+    })
+  })
+})
+
+describe("fetchAllStops", () => {
+  test("fetches a list of stops", (done) => {
+    const route1 = routeFactory.build()
+    const [station1, stop1] = [
+      stopFactory.build({ locationType: LocationType.Station }),
+      stopFactory.build({
+        locationType: LocationType.Stop,
+        routes: [{ id: route1.id, name: route1.name, type: 3 }],
+      }),
+    ]
+    mockFetch(200, {
+      data: [
+        {
+          id: station1.id,
+          name: station1.name,
+          location_type: "station",
+          lat: station1.lat,
+          lon: station1.lon,
+        },
+        {
+          id: stop1.id,
+          name: stop1.name,
+          location_type: "stop",
+          lat: stop1.lat,
+          lon: stop1.lon,
+          routes: [{ id: route1.id, name: route1.name, type: 3 }],
+        },
+      ],
+    })
+
+    fetchAllStops().then((stops) => {
+      expect(stops).toEqual([station1, stop1])
       done()
     })
   })

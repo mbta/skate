@@ -4,6 +4,7 @@ import {
   StopData,
   stopsFromData,
 } from "../../src/models/stopData"
+import stopDataFactory from "../factories/stopData"
 
 describe("stopsFromData", () => {
   test("transforms list of stopData to stops", () => {
@@ -31,6 +32,7 @@ describe("stopsFromData", () => {
         locationType: LocationType.Station,
         lat: 42.1,
         lon: -71.1,
+        routes: undefined,
       },
       {
         id: "stop-2",
@@ -38,6 +40,24 @@ describe("stopsFromData", () => {
         locationType: LocationType.Stop,
         lat: 42.2,
         lon: -71.2,
+        routes: undefined,
+      },
+    ])
+  })
+
+  test("when stopData includes routes, then includes routes", () => {
+    const stop = stopDataFactory.build({
+      routes: [{ id: "route_1", name: "Route 1", type: 3 }],
+    })
+
+    expect(stopsFromData([stop])).toEqual([
+      {
+        id: stop.id,
+        name: stop.name,
+        locationType: stop.location_type,
+        lat: stop.lat,
+        lon: stop.lon,
+        routes: stop.routes,
       },
     ])
   })

@@ -1,9 +1,17 @@
-import { Infer, number, type, string, enums } from "superstruct"
+import {
+  Infer,
+  number,
+  type,
+  string,
+  enums,
+  optional,
+  array,
+} from "superstruct"
 import { Stop } from "../schedule"
 
 export enum LocationType {
-  Stop,
-  Station,
+  Stop = "stop",
+  Station = "station",
 }
 
 export const StopData = type({
@@ -12,6 +20,15 @@ export const StopData = type({
   lat: number(),
   lon: number(),
   location_type: enums(["station", "stop"]),
+  routes: optional(
+    array(
+      type({
+        type: number(),
+        id: string(),
+        name: string(),
+      })
+    )
+  ),
 })
 export type StopData = Infer<typeof StopData>
 
@@ -25,4 +42,5 @@ export const stopsFromData = (stopsData: StopData[]): Stop[] =>
       stopData.location_type === "station"
         ? LocationType.Station
         : LocationType.Stop,
+    routes: stopData.routes,
   }))

@@ -170,6 +170,14 @@ export const fetchStations = (): Promise<Stop[]> =>
     defaultResult: [],
   })
 
+export const fetchAllStops = (): Promise<Stop[]> =>
+  checkedApiCall<StopData[], Stop[]>({
+    url: `/api/stops`,
+    parser: stopsFromData,
+    dataStruct: array(StopData),
+    defaultResult: [],
+  })
+
 export const fetchTimepointsForRoute = (
   routeId: RouteId
 ): Promise<Timepoint[]> =>
