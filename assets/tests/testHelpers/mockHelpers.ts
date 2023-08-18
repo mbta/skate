@@ -16,9 +16,7 @@ export const instantPromise = <T>(value: T): Promise<T> =>
 /**
  * A promise that never resolves.
  */
-export const neverPromise = (): Promise<any> =>
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  new Promise(() => {})
+export const neverPromise = (): Promise<any> => new Promise(() => {})
 
 /**
  * Injects a custom state into the next call to useState by replacing its initial value.

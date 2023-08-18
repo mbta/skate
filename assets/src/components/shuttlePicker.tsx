@@ -190,8 +190,7 @@ const RunIdButton = ({
     ? isSelected
       ? () => dispatch(deselectShuttleRun(runId))
       : () => dispatch(selectShuttleRun(runId))
-    : // eslint-disable-next-line @typescript-eslint/no-empty-function
-      () => {}
+    : () => {}
 
   return (
     <RunButton
