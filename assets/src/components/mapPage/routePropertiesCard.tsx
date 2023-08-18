@@ -124,11 +124,12 @@ const DirectionPicker = ({
       {directionIds.map((directionId) => (
         <div
           key={directionId}
-          className={`direction-button${
-            selectedRoutePattern.directionId === directionId
-              ? " direction-button--selected"
-              : ""
-          }`}
+          className={joinClasses([
+            "direction-button",
+            selectedRoutePattern.directionId === directionId &&
+              "direction-button--selected",
+            "position-relative",
+          ])}
         >
           <input
             type="radio"
@@ -147,7 +148,10 @@ const DirectionPicker = ({
               }
             }}
           />
-          <label htmlFor={`direction-radio-${directionId}`}>
+          <label
+            htmlFor={`direction-radio-${directionId}`}
+            className="stretched-link"
+          >
             {directionNames[directionId]}
           </label>
         </div>
