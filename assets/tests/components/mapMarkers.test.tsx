@@ -5,6 +5,7 @@ import {
   RouteShape,
   RouteStopMarkers,
   StationMarker,
+  StopMarkers,
   TrainVehicleMarker,
   VehicleMarker,
 } from "../../src/components/mapMarkers"
@@ -19,6 +20,10 @@ import { LocationType } from "../../src/models/stopData"
 import useDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import { StopMarkerWithInfo } from "../../src/components/map/markers/stopMarker"
+import {
+  getAllStationIcons,
+  getAllStopIcons,
+} from "../testHelpers/selectors/components/mapPage/map"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -116,6 +121,42 @@ describe("StationMarker", () => {
     await userEvent.click(container.querySelector(".c-station-icon")!)
     expect(screen.getByText(station.name)).toBeVisible()
     expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
+  })
+})
+
+describe("StopMarkers", () => {
+  test("When zoom = 14, renders no markers ", () => {
+    const { container } = renderInMap(
+      <StopMarkers stops={[stop, station]} zoomLevel={14} />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(0)
+    expect(getAllStopIcons(container)).toHaveLength(0)
+  })
+  test("When zoom = 15, renders station markers only", () => {
+    const { container } = renderInMap(
+      <StopMarkers stops={[stop, station]} zoomLevel={15} />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(0)
+  })
+
+  test("When zoom = 17, renders station and stop markers", () => {
+    const { container } = renderInMap(
+      <StopMarkers stops={[stop, station]} zoomLevel={17} />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(1)
+  })
+
+  test("Deduplicates list by stop id", () => {
+    const { container } = renderInMap(
+      <StopMarkers stops={[stop, stop]} zoomLevel={17} />
+    )
+
+    expect(getAllStopIcons(container)).toHaveLength(1)
   })
 })
 

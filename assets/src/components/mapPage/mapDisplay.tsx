@@ -1,11 +1,10 @@
 import Leaflet from "leaflet"
 import React, { useContext, useEffect, useState } from "react"
-import { Pane } from "react-leaflet"
+import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
 import useSocket from "../../hooks/useSocket"
-import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { isVehicle, filterVehicles } from "../../models/vehicle"
 import { Ghost, Vehicle, VehicleId } from "../../realtime"
@@ -14,6 +13,7 @@ import {
   RouteId,
   RoutePattern,
   RoutePatternId,
+  Stop,
 } from "../../schedule"
 import {
   RoutePatternIdentifier,
@@ -33,6 +33,7 @@ import {
   LocationMarker,
   RouteShape,
   RouteStopMarkers,
+  StopMarkers,
   VehicleMarker,
 } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
@@ -44,6 +45,7 @@ import { setTileType } from "../../state/mapLayersState"
 import { TileType } from "../../tilesetUrls"
 import { LayersControl } from "../map/controls/layersControl"
 import { LocationSearchResult } from "../../models/locationSearchResult"
+import { useAllStops } from "../../hooks/useAllStops"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -460,6 +462,31 @@ const SelectionDataLayers = ({
   }
 }
 
+const NearbyStops = ({ stops }: { stops: Stop[] }) => {
+  const [nearbyStops, setNearbyStops] = useState<Stop[]>([])
+  const map = useMap()
+  map.addEventListener("moveend", () => {
+    const bounds = map.getBounds()
+    setNearbyStops(stops?.filter((s) => bounds.contains([s.lat, s.lon])) || [])
+  })
+
+  return (
+    <>
+      <ZoomLevelWrapper>
+        {(zoomLevel) => {
+          return (
+            <StopMarkers
+              stops={nearbyStops}
+              zoomLevel={zoomLevel}
+              includeStopCard={true}
+            />
+          )
+        }}
+      </ZoomLevelWrapper>
+    </>
+  )
+}
+
 const MapDisplay = ({
   selectedEntity,
   setSelection,
@@ -471,7 +498,7 @@ const MapDisplay = ({
   streetViewInitiallyEnabled?: boolean
   fetchedSelectedLocation: LocationSearchResult | null
 }) => {
-  const stations = useStations()
+  const stops = useAllStops()
 
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
@@ -490,7 +517,6 @@ const MapDisplay = ({
       vehicles={[]}
       allowStreetView={true}
       includeStopCard={true}
-      stations={stations}
       shapes={[]}
       stateClasses={stateClasses}
       streetViewInitiallyEnabled={streetViewInitiallyEnabled}
@@ -502,6 +528,10 @@ const MapDisplay = ({
           paddingBottomRight: [50, 20],
         }}
       >
+        {
+          // TODO - should we remove the stops from the currently selected route pattern from this list? Right now there are duplicate exactly overlapping markers
+        }
+        <NearbyStops stops={stops || []} />
         <SelectionDataLayers
           selectedEntity={selectedEntity}
           setSelection={setSelection}

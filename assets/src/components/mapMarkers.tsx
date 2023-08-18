@@ -257,17 +257,24 @@ export const StationMarker = React.memo(
   }
 )
 
-export const RouteStopMarkers = ({
+export const StopMarkers = ({
   stops,
   zoomLevel,
   direction,
   includeStopCard,
+  zoomLevelConfig = {},
 }: {
   stops: Stop[]
   zoomLevel: number
   direction?: DirectionId
   includeStopCard?: boolean
+  zoomLevelConfig?: {
+    minStopZoom?: number
+    minStationZoom?: number
+  }
 }): JSX.Element => {
+  const { minStopZoom = 17, minStationZoom = 15 } = zoomLevelConfig
+
   const seenStopIds = new Set<StopId>()
   // Keep the first occurrence of each stop when there are duplicates
   const uniqueStops: Stop[] = stops.flatMap((stop) => {
@@ -282,44 +289,74 @@ export const RouteStopMarkers = ({
 
   return (
     <>
-      {uniqueStops.map((stop) =>
-        stop.locationType === LocationType.Station ? (
-          <StationMarker key={stop.id} station={stop} zoomLevel={zoomLevel} />
-        ) : (
-          <StopMarkerWithInfo
-            key={stop.id}
-            stop={stop}
-            direction={direction}
-            includeStopCard={includeStopCard && !streetViewActive}
-            zoomLevel={zoomLevel}
-            interactionStatesDisabled={streetViewActive}
-            eventHandlers={
-              streetViewActive
-                ? {
-                    click: () => {
-                      const url = streetViewUrl({
-                        latitude: stop.lat,
-                        longitude: stop.lon,
-                      })
-                      window.FS?.event(
-                        "User clicked map bus stop to open street view",
-                        {
-                          streetViewUrl_str: url,
-                          clickedMapAt: {
-                            latitude_real: stop.lat,
-                            longitude_real: stop.lon,
+      {uniqueStops.map((stop) => {
+        switch (stop.locationType) {
+          case LocationType.Station: {
+            return (
+              zoomLevel >= minStationZoom && (
+                <StationMarker
+                  key={stop.id}
+                  station={stop}
+                  zoomLevel={zoomLevel}
+                />
+              )
+            )
+          }
+          default: {
+            return (
+              // TODO: Also check the stop vehicle type! Child stops need have bus vehicle type in order to be shown on the map
+              zoomLevel >= minStopZoom && (
+                <StopMarkerWithInfo
+                  key={stop.id}
+                  stop={stop}
+                  direction={direction}
+                  includeStopCard={includeStopCard && !streetViewActive}
+                  zoomLevel={zoomLevel}
+                  interactionStatesDisabled={streetViewActive}
+                  eventHandlers={
+                    streetViewActive
+                      ? {
+                          click: () => {
+                            const url = streetViewUrl({
+                              latitude: stop.lat,
+                              longitude: stop.lon,
+                            })
+                            window.FS?.event(
+                              "User clicked map bus stop to open street view",
+                              {
+                                streetViewUrl_str: url,
+                                clickedMapAt: {
+                                  latitude_real: stop.lat,
+                                  longitude_real: stop.lon,
+                                },
+                              }
+                            )
+                            window.open(url, "_blank")
                           },
                         }
-                      )
-                      window.open(url, "_blank")
-                    },
+                      : {}
                   }
-                : {}
-            }
-          />
-        )
-      )}
+                />
+              )
+            )
+          }
+        }
+      })}
     </>
+  )
+}
+
+export const RouteStopMarkers = (props: {
+  stops: Stop[]
+  zoomLevel: number
+  direction?: DirectionId
+  includeStopCard?: boolean
+}): JSX.Element => {
+  return (
+    <StopMarkers
+      {...props}
+      zoomLevelConfig={{ minStopZoom: 0, minStationZoom: 0 }}
+    />
   )
 }
 

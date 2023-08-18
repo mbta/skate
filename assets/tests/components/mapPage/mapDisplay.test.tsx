@@ -9,7 +9,6 @@ import MapDisplay from "../../../src/components/mapPage/mapDisplay"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
 import { useRouteShapes } from "../../../src/hooks/useShapes"
-import { useStations } from "../../../src/hooks/useStations"
 import useVehicleForId from "../../../src/hooks/useVehicleForId"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { LocationType } from "../../../src/models/stopData"
@@ -44,6 +43,12 @@ import { stopIcon } from "../../testHelpers/selectors/components/map/markers/sto
 import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"
 import { vehiclePropertiesCard } from "../../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
 import locationSearchResultFactory from "../../factories/locationSearchResult"
+import { useAllStops } from "../../../src/hooks/useAllStops"
+import {
+  getAllStationIcons,
+  getAllStopIcons,
+} from "../../testHelpers/selectors/components/mapPage/map"
+import { defaultCenter } from "../../../src/components/map"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -69,9 +74,9 @@ jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../../src/hooks/useStations", () => ({
+jest.mock("../../../src/hooks/useAllStops", () => ({
   __esModule: true,
-  useStations: jest.fn(() => []),
+  useAllStops: jest.fn(() => []),
 }))
 
 jest.mock("../../../src/hooks/useShapes", () => ({
@@ -109,15 +114,34 @@ function mockUseVehiclesForRouteMap(map: {
   ).mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
 }
 
-function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
-  return container.querySelectorAll(".c-station-icon")
-}
-
 describe("<MapDisplay />", () => {
-  test("renders stations on zoom", async () => {
-    ;(useStations as jest.Mock).mockReturnValue(
-      stopFactory.params({ locationType: LocationType.Station }).buildList(3)
-    )
+  test("renders nearby stations only on zoom = 15", async () => {
+    setHtmlWidthHeightForLeafletMap()
+    ;(useAllStops as jest.Mock).mockReturnValue([
+      // 2 stations at map center should be visible
+      stopFactory.build({
+        locationType: LocationType.Station,
+        lat: defaultCenter.lat,
+        lon: defaultCenter.lng,
+      }),
+      stopFactory.build({
+        locationType: LocationType.Station,
+        lat: defaultCenter.lat,
+        lon: defaultCenter.lng,
+      }),
+      // 1 station not near center which should not be visible
+      stopFactory.build({
+        locationType: LocationType.Station,
+        lat: 42.0,
+        lon: -71.0,
+      }),
+      // 1 stop at center which should not be visible
+      stopFactory.build({
+        locationType: LocationType.Stop,
+        lat: defaultCenter.lat,
+        lon: defaultCenter.lng,
+      }),
+    ])
 
     const { container } = render(
       <MapDisplay
@@ -128,12 +152,69 @@ describe("<MapDisplay />", () => {
     )
 
     expect(getAllStationIcons(container)).toHaveLength(0)
+    expect(getAllStopIcons(container)).toHaveLength(0)
 
     const zoomIn = zoomInButton.get()
     await userEvent.click(zoomIn)
     await userEvent.click(zoomIn)
 
-    expect(getAllStationIcons(container)).toHaveLength(3)
+    expect(getAllStationIcons(container)).toHaveLength(2)
+    expect(getAllStopIcons(container)).toHaveLength(0)
+  })
+
+  test("renders all nearby stops and stations only on zoom = 17", async () => {
+    setHtmlWidthHeightForLeafletMap()
+    ;(useAllStops as jest.Mock).mockReturnValue([
+      // 2 stations at map center which should be visible
+      stopFactory.build({
+        locationType: LocationType.Station,
+        lat: defaultCenter.lat,
+        lon: defaultCenter.lng,
+      }),
+      stopFactory.build({
+        locationType: LocationType.Station,
+        lat: defaultCenter.lat,
+        lon: defaultCenter.lng,
+      }),
+      // 1 station not near center which should not be visible
+      stopFactory.build({
+        locationType: LocationType.Station,
+        lat: 42.0,
+        lon: -71.0,
+      }),
+      // 1 stop at center which should  be visible
+      stopFactory.build({
+        locationType: LocationType.Stop,
+        lat: defaultCenter.lat,
+        lon: defaultCenter.lng,
+      }),
+      // 1 stop not near center which should not be visible
+      stopFactory.build({
+        locationType: LocationType.Stop,
+        lat: 41.0,
+        lon: -72.0,
+      }),
+    ])
+
+    const { container } = render(
+      <MapDisplay
+        selectedEntity={null}
+        setSelection={jest.fn()}
+        fetchedSelectedLocation={null}
+      />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(0)
+    expect(getAllStopIcons(container)).toHaveLength(0)
+
+    const zoomIn = zoomInButton.get()
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+
+    expect(getAllStationIcons(container)).toHaveLength(2)
+    expect(getAllStopIcons(container)).toHaveLength(1)
   })
 
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
