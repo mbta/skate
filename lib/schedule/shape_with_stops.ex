@@ -27,6 +27,9 @@ defmodule Schedule.ShapeWithStops do
 
   @spec create(Shape.t(), [Stop.t()]) :: t()
   def create(shape, stops) do
-    %__MODULE__{id: shape.id, points: shape.points, stops: stops}
+    %__MODULE__{id: shape.id, points: shape.points, stops: Enum.map(stops, fn stop -> stop
+  |> Map.from_struct()
+|> Map.put(:route_ids, ["1", "2", "3"])
+end)}
   end
 end

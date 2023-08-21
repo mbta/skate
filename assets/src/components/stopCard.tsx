@@ -1,10 +1,11 @@
 import { PointExpression } from "leaflet"
 import React, { useContext, useId } from "react"
 import { Popup } from "react-leaflet"
-import { DirectionId, RouteId, Stop } from "../schedule"
+import { DirectionId, Route, RouteId, Stop } from "../schedule"
 import { MapSafeAreaContext } from "../contexts/mapSafeAreaContext"
 import { RoutePill } from "./routePill"
 import StreetViewButton from "./streetViewButton"
+import { useRoutes } from "../contexts/routesContext"
 
 export type LeafletPaddingOptions = {
   padding?: PointExpression | undefined
@@ -57,15 +58,45 @@ const sortRoutes = (
       }
     })
 
+const RoutesSection = ({
+  routes,
+}: {
+  routes: Pick<Route, "id" | "name" | "type">[]
+}): JSX.Element | null => {
+  const routesLabelId = "stop-card-routes-label-" + useId()
+
+  const sortedRoutes = sortRoutes(routes || [])
+
+  return sortedRoutes.length > 0 ? (
+    <div className="c-stop-card__routes">
+      <div className="c-stop-card__routes-label" id={routesLabelId}>
+        Routes
+      </div>
+      <ul className="c-stop-card__routes-pills" aria-labelledby={routesLabelId}>
+        {sortedRoutes.map((c) => (
+          <li key={c.id}>
+            <RoutePill routeName={c.name} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : null
+}
+
+const RoutesSectionFromIds = ({
+  routeIds,
+}: {
+  routeIds: RouteId[]
+}): JSX.Element | null => {
+  const routes = useRoutes(routeIds)
+  return <RoutesSection routes={routes} />
+}
+
 const StopCard = ({
   stop,
   direction,
   autoPanPadding,
 }: StopCardProps & AutoPanProps): JSX.Element => {
-  const routesLabelId = "stop-card-routes-label-" + useId()
-
-  const routes = sortRoutes(stop.routes || [])
-
   return (
     <Popup
       pane="popupPane"
@@ -84,23 +115,11 @@ const StopCard = ({
           </div>
         )}
       </div>
-      {routes.length > 0 ? (
-        <div className="c-stop-card__routes">
-          <div className="c-stop-card__routes-label" id={routesLabelId}>
-            Routes
-          </div>
-          <ul
-            className="c-stop-card__routes-pills"
-            aria-labelledby={routesLabelId}
-          >
-            {routes.map((c) => (
-              <li key={c.id}>
-                <RoutePill routeName={c.name} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {stop.routeIds !== undefined ? (
+        <RoutesSectionFromIds routeIds={stop.routeIds} />
+      ) : (
+        <RoutesSection routes={stop.routes || []} />
+      )}
       <StreetViewButton
         latitude={stop.lat}
         longitude={stop.lon}

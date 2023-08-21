@@ -15,6 +15,7 @@ export interface Stop {
   lat: number
   lon: number
   routes?: { type: number; id: RouteId; name: string }[]
+  routeIds?: RouteId[]
   locationType?: LocationType
 }
 
@@ -40,6 +41,7 @@ export interface Route {
     0: DirectionName
     1: DirectionName
   }
+  type: number
   name: string
   garages: GarageName[]
 }

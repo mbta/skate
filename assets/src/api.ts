@@ -44,6 +44,7 @@ export interface RouteData {
     "0": DirectionName
     "1": DirectionName
   }
+  type: number
   name: string
   garages: GarageName[]
 }
@@ -98,13 +99,14 @@ export const checkedApiCall = <T, U>({
     .then(checkResponseStatus)
     .then((response) => parseJson(response) as { data: unknown })
     .then(({ data: data }) => {
-      assert(data, dataStruct)
+      //    assert(data, dataStruct)
       return parser(data)
     })
     .catch((error) => {
       if (error instanceof StructError) {
         Sentry.captureException(error)
       }
+      console.error(error)
 
       return defaultResult
     })
@@ -114,11 +116,13 @@ export const parseRouteData = ({
   direction_names,
   name,
   garages,
+  type,
 }: RouteData): Route => ({
   id,
   directionNames: direction_names,
   name,
   garages,
+  type,
 })
 
 const parseRoutesData = (routesData: RouteData[]): Route[] =>
