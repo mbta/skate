@@ -468,7 +468,6 @@ describe("<MapFollowingPrimaryVehicles />", () => {
 describe("autoCenter", () => {
   beforeEach(() => {
     setHtmlDefaultWidthHeight(0, 0)
-    return
   })
   const L = jest.requireActual<typeof Leaflet>("leaflet")
   const pickerContainerIsVisible = false
