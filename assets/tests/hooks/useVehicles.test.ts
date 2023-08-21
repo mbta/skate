@@ -75,7 +75,7 @@ describe("useVehicles", () => {
     })
   })
 
-  test("still returns malformed data, but logs to Sentry", async () => {
+  test("does not return malformed data, and logs to Sentry", async () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -88,10 +88,7 @@ describe("useVehicles", () => {
 
     const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
 
-    expect(result.current).toEqual({
-      "1": [{ ...vehicle, timestamp: null }],
-    })
-
+    expect(result.current).toEqual({})
     expect(Sentry.captureException).toHaveBeenCalled()
   })
 
