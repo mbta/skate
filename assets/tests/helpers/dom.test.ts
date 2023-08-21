@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import { joinClasses } from "../../src/helpers/dom"
 
 describe("joinClasses", () => {

@@ -1,6 +1,7 @@
+import { describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import StreetViewButton from "../../src/components/streetViewButton"
 import { streetViewUrl } from "../../src/util/streetViewUrl"
 import userEvent from "@testing-library/user-event"

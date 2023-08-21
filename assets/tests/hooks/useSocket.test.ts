@@ -1,4 +1,6 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { act, renderHook } from "@testing-library/react"
+import { Socket } from "phoenix"
 import useSocket, {
   ConnectionStatus,
   readUserToken,
@@ -25,7 +27,9 @@ describe("useSocket", () => {
   test("connectionStatus is set to Connected when the socket connects", () => {
     const { result } = renderHook(() => useSocket())
     const mockSocket = result.current.socket
-    const [[onOpenHandler]] = (mockSocket!.onOpen as jest.Mock).mock.calls
+    const [[onOpenHandler]] = (
+      mockSocket!.onOpen as jest.Mock<Socket["onOpen"]>
+    ).mock.calls
     act(() => {
       onOpenHandler()
     })
@@ -35,9 +39,15 @@ describe("useSocket", () => {
   test("connectionStatus is set to Disconnected when the socket closes", () => {
     const { result } = renderHook(() => useSocket())
     const mockSocket = result.current.socket
-    const [[onCloseHandler]] = (mockSocket!.onClose as jest.Mock).mock.calls
+    const [[onCloseHandler]] = (
+      mockSocket!.onClose as jest.Mock<Socket["onClose"]>
+    ).mock.calls
     act(() => {
-      onCloseHandler()
+      onCloseHandler({
+        code: 500,
+        reason: "some reason",
+        wasClean: false,
+      } as CloseEvent)
     })
     expect(result.current.connectionStatus).toEqual(
       ConnectionStatus.Disconnected

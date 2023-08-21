@@ -1,4 +1,5 @@
-import { Socket } from "phoenix"
+import { jest } from "@jest/globals"
+import { Socket, PushStatus, Channel } from "phoenix"
 
 export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
   ({
@@ -6,18 +7,15 @@ export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
   } as Socket & { channel: jest.Mock })
 
 export const makeMockChannel = (
-  expectedReceiveMessage?:
-    | "ok"
-    | "error"
-    | "timeout"
-    | (() => "ok" | "error" | "timeout"),
+  expectedReceiveMessage?: PushStatus | (() => PushStatus),
   expectedReceiveData?: (() => any) | any
 ) => {
   const result = {
     join: jest.fn(),
     leave: jest.fn(),
-    on: jest.fn(),
-    receive: jest.fn(),
+    on: jest.fn<Channel["on"]>(),
+    receive:
+      jest.fn<(message: PushStatus, handler: (data?: any) => void) => void>(),
     push: jest.fn(),
   }
   result.join.mockImplementation(() => result)

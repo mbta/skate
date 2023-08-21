@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import CrowdingDiagram from "../../../src/components/propertiesPanel/crowdingDiagram"

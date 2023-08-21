@@ -1,3 +1,4 @@
+import { jest } from "@jest/globals"
 import React, { useReducer, useState } from "react"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { VehicleInScheduledService, Ghost } from "../../src/realtime"
@@ -80,7 +81,9 @@ export const mockFullStoryEvent = (): void => {
 }
 
 export const mockTileUrls = (): void => {
-  ;(tilesetUrlForType as jest.Mock).mockImplementation((type: TileType) => {
+  ;(
+    tilesetUrlForType as jest.Mock<typeof tilesetUrlForType>
+  ).mockImplementation((type: TileType) => {
     switch (type) {
       case "base":
         return "test_base_url/{z}/{x}/{y}"

@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import { useNotifications } from "../../src/hooks/useNotifications"
 import { NotificationData } from "../../src/models/notificationData"
@@ -95,6 +96,7 @@ describe("useNotifications", () => {
       handler({
         data: notification1Data,
       })
+      return 1
     })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     const { result } = renderHook(() => useNotifications(mockSocket))

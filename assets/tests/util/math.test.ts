@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import { clamp } from "../../src/util/math"
 
 describe("clamp", () => {

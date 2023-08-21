@@ -1,6 +1,7 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, fireEvent, within } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { BrowserRouter } from "react-router-dom"
 import LadderPage, {
   findRouteById,

@@ -1,12 +1,20 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeAll,
+  afterAll,
+} from "@jest/globals"
 import React from "react"
 import { VehicleInScheduledService } from "../../../src/realtime"
 import vehicleFactory from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
 import MiniMap from "../../../src/components/propertiesPanel/miniMap"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { MemoryRouter } from "react-router"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState } from "../../../src/state"

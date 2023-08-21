@@ -1,5 +1,6 @@
+import { describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { DivIcon, PointTuple } from "leaflet"
 import React from "react"
 import { MapContainer } from "react-leaflet"

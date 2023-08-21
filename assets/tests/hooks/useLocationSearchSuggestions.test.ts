@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"

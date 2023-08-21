@@ -1,6 +1,7 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 
 import MobilePortraitNav from "../../../src/components/nav/mobilePortraitNav"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"

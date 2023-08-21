@@ -1,6 +1,16 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeAll,
+  beforeEach,
+  afterAll,
+} from "@jest/globals"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { LatLng } from "leaflet"
+import * as Leaflet from "leaflet"
 import React, { MutableRefObject } from "react"
 import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
@@ -262,7 +272,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
       />
     )
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
-    expect(onClick).toHaveBeenCalledWith(expect.objectContaining(vehicle))
+    expect(onClick).toHaveBeenCalledWith(vehicle)
   })
 
   test("does not perform onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
@@ -313,7 +323,9 @@ describe("<MapFollowingPrimaryVehicles />", () => {
 
   test("can turn on street view and click on the map", async () => {
     mockFullStoryEvent()
-    const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementationOnce(jest.fn<typeof window.open>())
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
     render(
@@ -387,7 +399,9 @@ describe("<MapFollowingPrimaryVehicles />", () => {
   })
 
   test("clicking on the map with street view off doesn't open link", async () => {
-    const openSpy = jest.spyOn(window, "open").mockImplementationOnce(jest.fn())
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementationOnce(jest.fn<typeof window.open>())
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
@@ -452,20 +466,22 @@ describe("<MapFollowingPrimaryVehicles />", () => {
 })
 
 describe("autoCenter", () => {
-  beforeEach(() => setHtmlDefaultWidthHeight(0, 0))
-  const Leaflet = jest.requireActual("leaflet")
+  beforeEach(() => {
+    setHtmlDefaultWidthHeight(0, 0)
+  })
+  const L = jest.requireActual<typeof Leaflet>("leaflet")
   const pickerContainerIsVisible = false
 
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map")
+    const map = L.map("map")
     autoCenter(map, [[42, -71]], pickerContainerIsVisible)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
   test("fits around multiple vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map")
+    const map = L.map("map")
     autoCenter(
       map,
       [
@@ -479,7 +495,7 @@ describe("autoCenter", () => {
 
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map")
+    const map = L.map("map")
     autoCenter(map, [], pickerContainerIsVisible)
     expect(map.getCenter()).toEqual(defaultCenter)
   })

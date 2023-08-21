@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import StaleDataPropertiesPanel from "../../../src/components/propertiesPanel/staleDataPropertiesPanel"

@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import {
   currentRouteTab,
   instantiatePresetByUUID,
@@ -254,12 +255,9 @@ describe("instantiatePresetByUUID", () => {
   })
 
   test("raises an error when no matching preset is found", () => {
-    try {
-      instantiatePresetByUUID([], "uuid1")
-      fail("did not raise an error")
-    } catch (error) {
-      expect(error).toEqual(new Error("No preset found for UUID uuid1"))
-    }
+    expect(() => instantiatePresetByUUID([], "uuid1")).toThrow(
+      new Error("No preset found for UUID uuid1")
+    )
   })
 })
 
@@ -335,12 +333,9 @@ describe("closeTabByUUID", () => {
   })
 
   test("raises an error when no matching tab is found", () => {
-    try {
-      closeTabByUUID([], "uuid1")
-      fail("did not raise an error")
-    } catch (error) {
-      expect(error).toEqual(new Error("No preset found for UUID uuid1"))
-    }
+    expect(() => closeTabByUUID([], "uuid1")).toThrow(
+      new Error("No preset found for UUID uuid1")
+    )
   })
 })
 
@@ -439,12 +434,9 @@ describe("applyRouteTabEdit", () => {
   })
 
   test("raises an error when no matching tab is found", () => {
-    try {
+    expect(() =>
       applyRouteTabEdit([], "uuid1", (routeTab) => routeTab)
-      fail("did not raise an error")
-    } catch (error) {
-      expect(error).toEqual(new Error("No tab found for UUID uuid1"))
-    }
+    ).toThrow(new Error("No tab found for UUID uuid1"))
   })
 })
 
@@ -484,27 +476,19 @@ describe("saveEditedPreset", () => {
   })
 
   test("raises an error when no matching tab is found", () => {
-    try {
-      saveEditedPreset([], "uuid1")
-      fail("did not raise an error")
-    } catch (error) {
-      expect(error).toEqual(new Error("No tab found for UUID uuid1"))
-    }
+    expect(() => saveEditedPreset([], "uuid1")).toThrow(
+      new Error("No tab found for UUID uuid1")
+    )
   })
 
   test("raises an error when tab by given UUID is not edited", () => {
-    try {
-      const routeTab = routeTabFactory.build({
-        uuid: "uuid1",
-        saveChangesToTabUuid: undefined,
-      })
-      saveEditedPreset([routeTab], routeTab.uuid)
-      fail("did not raise an error")
-    } catch (error) {
-      expect(error).toEqual(
-        new Error("Cannot save tab UUID uuid1: no saveChangesToTabUuid")
-      )
-    }
+    const routeTab = routeTabFactory.build({
+      uuid: "uuid1",
+      saveChangesToTabUuid: undefined,
+    })
+    expect(() => saveEditedPreset([routeTab], routeTab.uuid)).toThrow(
+      new Error("Cannot save tab UUID uuid1: no saveChangesToTabUuid")
+    )
   })
 })
 

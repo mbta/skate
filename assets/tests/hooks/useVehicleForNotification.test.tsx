@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import React, { ReactElement } from "react"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -101,6 +102,8 @@ describe("useVehicleForNotification", () => {
           data: [vehicleData],
         })
       }
+
+      return 1
     })
 
     const { rerender } = renderHook(

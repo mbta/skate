@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import {
   NotificationReason,
   NotificationState,
@@ -549,7 +550,7 @@ describe("reducer", () => {
       selectedVehicleOrGhost: vehicle,
     }
 
-    expect(newState).toMatchObject(expectedState)
+    expect(newState).toEqual(expectedState)
   })
 
   test("selectVehicleFromNotification doesn't switch tabs is route is open in current tab", () => {
@@ -591,7 +592,7 @@ describe("reducer", () => {
       selectedVehicleOrGhost: vehicle,
     }
 
-    expect(newState).toMatchObject(expectedState)
+    expect(newState).toEqual(expectedState)
   })
 
   test("selectVehicleFromNotification does nothing to route tabs if route isn't open", () => {
@@ -618,7 +619,7 @@ describe("reducer", () => {
       selectedVehicleOrGhost: vehicle,
     }
 
-    expect(newState).toMatchObject(expectedState)
+    expect(newState).toEqual(expectedState)
   })
 
   test("createRouteTab", () => {
@@ -1023,7 +1024,7 @@ describe("reducer", () => {
         )
         return
       default:
-        fail("did not receive correct openInputModal type")
+        throw new Error("did not receive correct openInputModal type")
     }
   })
 
@@ -1048,7 +1049,7 @@ describe("reducer", () => {
         )
         return
       default:
-        fail("did not receive correct openInputModal type")
+        throw new Error("did not receive correct openInputModal type")
     }
   })
 
@@ -1083,7 +1084,7 @@ describe("reducer", () => {
         )
         return
       default:
-        fail("did not receive correct openInputModal type")
+        throw new Error("did not receive correct openInputModal type")
     }
   })
 
@@ -1108,7 +1109,7 @@ describe("reducer", () => {
         )
         return
       default:
-        fail("did not receive correct openInputModal type")
+        throw new Error("did not receive correct openInputModal type")
     }
   })
 

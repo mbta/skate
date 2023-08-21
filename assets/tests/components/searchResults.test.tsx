@@ -1,3 +1,4 @@
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
@@ -11,7 +12,7 @@ import { initialState, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
 import getTestGroups from "../../src/userTestGroups"
 import * as dateTime from "../../src/util/dateTime"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 
 import ghostFactory from "../factories/ghost"
 import vehicleFactory, { shuttleFactory } from "../factories/vehicle"

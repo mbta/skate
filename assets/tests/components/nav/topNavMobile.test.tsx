@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import TopNavMobile from "../../../src/components/nav/topNavMobile"
@@ -7,7 +8,7 @@ import {
 } from "../../../src/components/nav/topNavMobile"
 import userEvent from "@testing-library/user-event"
 import { BrowserRouter } from "react-router-dom"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 
 jest.mock("../../../src/helpers/googleTagManager", () => ({

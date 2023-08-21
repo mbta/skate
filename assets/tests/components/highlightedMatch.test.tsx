@@ -1,6 +1,7 @@
+import { describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import { HighlightedMatch } from "../../src/components/highlightedMatch"
 
 describe("HighlightedMatch", () => {

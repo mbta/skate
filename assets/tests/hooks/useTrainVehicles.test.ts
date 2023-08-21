@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import useTrainVehicles, {
   TrainVehicleData,
@@ -98,6 +99,7 @@ describe("useTrainVehicles", () => {
       if (event === "train_vehicles") {
         handler({ data: trainVehiclesData })
       }
+      return 1
     })
 
     const { result } = renderHook(() => useTrainVehicles(mockSocket, ["Red"]))

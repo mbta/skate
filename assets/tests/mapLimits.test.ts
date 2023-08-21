@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import { StructError } from "superstruct"
 import appData from "../src/appData"
 import getMapLimits from "../src/mapLimits"

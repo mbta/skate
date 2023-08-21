@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import { Swing } from "../../src/schedule"
 import { SwingData, swingsFromData } from "../../src/models/swingsData"
 

@@ -1,7 +1,15 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterEach,
+} from "@jest/globals"
 import { reload } from "../../src/models/browser"
 
 describe("reload", () => {
-  let reloadSpy: jest.SpyInstance
+  let reloadSpy: jest.Spied<() => void>
 
   beforeEach(() => {
     // Dirty: setting window.location as writable so we can spy on reload function.

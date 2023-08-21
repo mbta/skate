@@ -1,4 +1,5 @@
-import "@testing-library/jest-dom"
+import { jest, describe, test, expect } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"

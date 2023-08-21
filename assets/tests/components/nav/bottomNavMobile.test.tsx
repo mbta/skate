@@ -1,6 +1,7 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import BottomNavMobile from "../../../src/components/nav/bottomNavMobile"
 import userEvent from "@testing-library/user-event"
 import { initialState } from "../../../src/state"

@@ -1,5 +1,6 @@
+import { describe, test, expect } from "@jest/globals"
 import { render } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/jest-globals"
 import React, { ReactNode } from "react"
 import { MapContainer, ZoomControl } from "react-leaflet"
 import { CustomControl } from "../../../../src/components/map/controls/customControl"

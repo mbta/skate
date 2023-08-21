@@ -1,3 +1,5 @@
+import { jest, afterEach } from "@jest/globals"
+
 // #region Mock HTMLElement for Leaflet
 Object.defineProperties(HTMLElement.prototype, {
   clientWidth: {

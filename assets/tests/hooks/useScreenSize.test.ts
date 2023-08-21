@@ -1,6 +1,15 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeAll,
+  afterAll,
+} from "@jest/globals"
 import { renderHook } from "@testing-library/react"
+import * as UseScreenSize from "../../src/hooks/useScreenSize"
 
-const useScreenSize = jest.requireActual(
+const useScreenSize = jest.requireActual<typeof UseScreenSize>(
   "../../src/hooks/useScreenSize"
 ).default
 
