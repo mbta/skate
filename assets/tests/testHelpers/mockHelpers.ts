@@ -81,14 +81,14 @@ export const mockFullStoryEvent = (): void => {
 }
 
 export const mockTileUrls = (): void => {
-  ;(tilesetUrlForType as jest.Mock<(t: TileType) => string>).mockImplementation(
-    (type: TileType) => {
-      switch (type) {
-        case "base":
-          return "test_base_url/{z}/{x}/{y}"
-        case "satellite":
-          return "test_satellite_url/{z}/{x}/{y}"
-      }
+  ;(
+    tilesetUrlForType as jest.Mock<typeof tilesetUrlForType>
+  ).mockImplementation((type: TileType) => {
+    switch (type) {
+      case "base":
+        return "test_base_url/{z}/{x}/{y}"
+      case "satellite":
+        return "test_satellite_url/{z}/{x}/{y}"
     }
-  )
+  })
 }
