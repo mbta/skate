@@ -357,7 +357,7 @@ defmodule Schedule.Data do
   # Initialization
 
   @spec parse_files(all_files()) :: t()
-  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
+  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files} = all_files) do
     gtfs_data = parse_gtfs_files(gtfs_files)
     hastus_data = parse_hastus_files(hastus_files, gtfs_data.bus_only.trip_ids)
 
@@ -383,6 +383,8 @@ defmodule Schedule.Data do
         gtfs_data.all_modes.stop_times_by_trip_id
       )
 
+    version = :crypto.hash(:sha256, :erlang.term_to_binary(all_files))
+
     %__MODULE__{
       routes: bus_routes,
       route_patterns: gtfs_data.bus_only.route_patterns,
@@ -400,7 +402,7 @@ defmodule Schedule.Data do
       calendar: gtfs_data.all_modes.calendar,
       runs: runs,
       swings: swings,
-      version: gtfs_data.version
+      version: version
     }
   end
 
@@ -410,11 +412,11 @@ defmodule Schedule.Data do
   @spec parse_gtfs_files(gtfs_files()) :: %{
           bus_only: map(),
           all_modes: map(),
-          version: String.t()
         }
   defp parse_gtfs_files(gtfs_files) do
-    feed_info = FeedInfo.parse(gtfs_files["feed_info.txt"])
-    FeedInfo.log_gtfs_version(feed_info)
+    gtfs_files["feed_info.txt"]
+    |> FeedInfo.parse()
+    |> FeedInfo.log_gtfs_version()
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
 
@@ -443,7 +445,6 @@ defmodule Schedule.Data do
     bus_shapes = shapes_by_route_id(gtfs_files["shapes.txt"], bus_trips)
 
     %{
-      version: feed_info[:version],
       bus_only: %{
         routes: bus_routes,
         route_ids: bus_route_ids,
