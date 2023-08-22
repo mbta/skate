@@ -116,10 +116,15 @@ defmodule SkateWeb.StopControllerTest do
                  }
                ]
              } == json_response(conn, 200)
+
+      assert ["stale-while-revalidate"] == get_resp_header(conn, "cache-control")
+      assert ["latest_version"] == get_resp_header(conn, "etag")
     end
 
     @tag :authenticated
-    test "when sent if-none-match header that matches current version, returns :not_modified", %{conn: conn} do
+    test "when sent if-none-match header that matches current version, returns :not_modified", %{
+      conn: conn
+    } do
       conn =
         conn
         |> put_req_header("if-none-match", "latest_version")

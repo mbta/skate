@@ -411,7 +411,7 @@ defmodule Schedule.Data do
   # keys depending on how it needs to be used.
   @spec parse_gtfs_files(gtfs_files()) :: %{
           bus_only: map(),
-          all_modes: map(),
+          all_modes: map()
         }
   defp parse_gtfs_files(gtfs_files) do
     gtfs_files["feed_info.txt"]
