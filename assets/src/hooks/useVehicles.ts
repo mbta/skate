@@ -123,16 +123,16 @@ const subscribe = (
   const handleVehicles = ({ data: vehiclesAndGhostsData }: { data: any }) => {
     try {
       assert(vehiclesAndGhostsData, VehiclesOrGhostsData)
+
+      const vehiclesAndGhosts = vehiclesAndGhostsData.map(
+        vehicleInScheduledServiceOrGhostFromData
+      )
+      dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
     } catch (error) {
       if (error instanceof StructError) {
         Sentry.captureException({ error: error, route_id: routeId })
       }
     }
-
-    const vehiclesAndGhosts = vehiclesAndGhostsData.map(
-      vehicleInScheduledServiceOrGhostFromData
-    )
-    dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
   }
 
   const topic = `vehicles:route:${routeId}`
