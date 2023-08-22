@@ -23,7 +23,7 @@ defmodule SkateWeb.StopController do
     etag = String.replace(version_fn.(), ",", "-")
 
     if etag === none_match do
-      send_resp(conn, 304, "")
+      send_resp(conn, :not_modified, "")
     else
       stops_fn = Application.get_env(:skate_web, :stops_fn, &Schedule.all_stops/0)
       stops = stops_fn.()
