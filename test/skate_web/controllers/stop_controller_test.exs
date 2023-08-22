@@ -119,13 +119,13 @@ defmodule SkateWeb.StopControllerTest do
     end
 
     @tag :authenticated
-    test "when sent if-none-match header that matches current version, returns 304", %{conn: conn} do
+    test "when sent if-none-match header that matches current version, returns :not_modified", %{conn: conn} do
       conn =
         conn
         |> put_req_header("if-none-match", "latest_version")
         |> get(SkateWeb.Router.Helpers.stop_path(conn, :index))
 
-      assert "" == response(conn, 304)
+      assert "" == response(conn, :not_modified)
     end
 
     @tag :authenticated
