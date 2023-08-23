@@ -255,7 +255,7 @@ defmodule Schedule.Data do
   def stations(data) do
     data
     |> all_stops()
-    |> Enum.filter(&(&1.location_type == :station))
+    |> Enum.filter(&Stop.is_station?/1)
   end
 
   def all_stops(%__MODULE__{stops: stops}) do
