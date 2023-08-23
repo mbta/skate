@@ -225,7 +225,8 @@ defmodule Schedule.Fetcher do
           {:files,
            %{
              gtfs: gtfs_files,
-             hastus: hastus_files
+             hastus: hastus_files,
+             version: "#{gtfs_timestamp}_#{hastus_timestamp}"
            }, gtfs_timestamp, hastus_timestamp}
         else
           {:error, error} -> {:error, error}
@@ -275,7 +276,7 @@ defmodule Schedule.Fetcher do
 
   @spec files_from_mocked(Schedule.mocked_files()) :: Data.all_files()
   defp files_from_mocked(mocked_files) do
-    for key <- [:gtfs, :hastus], into: %{} do
+    for key <- [:gtfs, :hastus], into: %{version: "mocked_version"} do
       {key,
        case mocked_files[key] do
          nil ->

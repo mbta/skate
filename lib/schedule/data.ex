@@ -39,7 +39,8 @@ defmodule Schedule.Data do
           blocks: Block.by_id(),
           calendar: Calendar.t(),
           runs: Run.by_id(),
-          swings: Swing.by_schedule_id_and_route_id()
+          swings: Swing.by_schedule_id_and_route_id(),
+          version: String.t()
         }
 
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
@@ -60,13 +61,15 @@ defmodule Schedule.Data do
             blocks: %{},
             calendar: %{},
             runs: %{},
-            swings: %{}
+            swings: %{},
+            version: nil
 
   @type files :: %{String.t() => binary()}
 
   @type all_files :: %{
           gtfs: %{String.t() => binary()},
-          hastus: %{String.t() => binary()}
+          hastus: %{String.t() => binary()},
+          version: String.t()
         }
 
   @typep gtfs_files :: %{String.t() => binary()}
@@ -249,10 +252,14 @@ defmodule Schedule.Data do
   end
 
   @spec stations(t()) :: [Stop.t()]
-  def stations(%__MODULE__{stops: stops}) do
-    stops
-    |> Map.values()
+  def stations(data) do
+    data
+    |> all_stops()
     |> Enum.filter(&Stop.is_station?/1)
+  end
+
+  def all_stops(%__MODULE__{stops: stops}) do
+    Map.values(stops)
   end
 
   @spec stops_for_trip(t(), Schedule.Trip.id()) :: [Stop.t()]
@@ -339,10 +346,19 @@ defmodule Schedule.Data do
     end)
   end
 
+  @doc """
+  Get the version of the schedule data
+  """
+  @spec version(t()) :: String.t() | nil
+  def version(%__MODULE__{
+        version: version
+      }),
+      do: version
+
   # Initialization
 
   @spec parse_files(all_files()) :: t()
-  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
+  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files, version: version}) do
     gtfs_data = parse_gtfs_files(gtfs_files)
     hastus_data = parse_hastus_files(hastus_files, gtfs_data.bus_only.trip_ids)
 
@@ -384,14 +400,18 @@ defmodule Schedule.Data do
       blocks: blocks,
       calendar: gtfs_data.all_modes.calendar,
       runs: runs,
-      swings: swings
+      swings: swings,
+      version: version
     }
   end
 
   # Parse GTFS files. Returns files parsed without filtering under the key `all_modes`.
   # Data filtered to only include bus is under the key `bus_only`. Data may appear under one or both
   # keys depending on how it needs to be used.
-  @spec parse_gtfs_files(gtfs_files()) :: %{bus_only: map(), all_modes: map()}
+  @spec parse_gtfs_files(gtfs_files()) :: %{
+          bus_only: map(),
+          all_modes: map()
+        }
   defp parse_gtfs_files(gtfs_files) do
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
