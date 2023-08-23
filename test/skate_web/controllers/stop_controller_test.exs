@@ -42,6 +42,7 @@ defmodule SkateWeb.StopControllerTest do
                    "id" => "stop1",
                    "lat" => 42.01,
                    "location_type" => "station",
+                   "vehicle_type" => nil,
                    "lon" => -71.01,
                    "name" => "Stop 1"
                  },
@@ -50,6 +51,7 @@ defmodule SkateWeb.StopControllerTest do
                    "id" => "stop2",
                    "lat" => 42.01,
                    "location_type" => "station",
+                   "vehicle_type" => nil,
                    "lon" => -71.01,
                    "name" => "Stop 2"
                  }
@@ -66,7 +68,8 @@ defmodule SkateWeb.StopControllerTest do
           build(:gtfs_stop, %{
             id: "stop2",
             name: "Stop 2",
-            location_type: :stop
+            location_type: :stop,
+            vehicle_type: 3
           })
         ]
       end)
@@ -90,6 +93,7 @@ defmodule SkateWeb.StopControllerTest do
                    "id" => "stop1",
                    "lat" => 42.01,
                    "location_type" => "station",
+                   "vehicle_type" => nil,
                    "lon" => -71.01,
                    "name" => "Stop 1",
                    "routes" => [
@@ -109,6 +113,7 @@ defmodule SkateWeb.StopControllerTest do
                  %{
                    "id" => "stop2",
                    "lat" => 42.01,
+                   "vehicle_type" => 3,
                    "location_type" => "stop",
                    "lon" => -71.01,
                    "name" => "Stop 2",
@@ -148,6 +153,7 @@ defmodule SkateWeb.StopControllerTest do
                    "id" => "stop1",
                    "lat" => 42.01,
                    "location_type" => "station",
+                   "vehicle_type" => nil,
                    "lon" => -71.01,
                    "name" => "Stop 1",
                    "routes" => [
@@ -168,6 +174,7 @@ defmodule SkateWeb.StopControllerTest do
                    "id" => "stop2",
                    "lat" => 42.01,
                    "location_type" => "stop",
+                   "vehicle_type" => 3,
                    "lon" => -71.01,
                    "name" => "Stop 2",
                    "routes" => []

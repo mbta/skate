@@ -12,6 +12,7 @@ defmodule Schedule.Gtfs.Stop do
           parent_station_id: id() | nil,
           latitude: float() | nil,
           longitude: float() | nil,
+          vehicle_type: integer() | nil,
           routes: [Route.t()],
           location_type: location_type()
         }
@@ -28,6 +29,7 @@ defmodule Schedule.Gtfs.Stop do
     :parent_station_id,
     :latitude,
     :longitude,
+    :vehicle_type,
     routes: [],
     location_type: :stop
   ]
@@ -68,13 +70,19 @@ defmodule Schedule.Gtfs.Stop do
   def from_csv_row(row) do
     parent_station_id = if row["parent_station"] == "", do: nil, else: row["parent_station"]
 
+    vehicle_type =
+      if row["vehicle_type"] == "" || is_nil(row["vehicle_type"]),
+        do: nil,
+        else: String.to_integer(row["vehicle_type"])
+
     %__MODULE__{
       id: row["stop_id"],
       name: row["stop_name"],
       parent_station_id: parent_station_id,
       latitude: parse_lat_lon(row["stop_lat"]),
       longitude: parse_lat_lon(row["stop_lon"]),
-      location_type: Map.fetch!(@location_type_map, row["location_type"])
+      location_type: Map.fetch!(@location_type_map, row["location_type"]),
+      vehicle_type: vehicle_type
     }
   end
 
