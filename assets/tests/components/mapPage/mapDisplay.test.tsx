@@ -217,6 +217,100 @@ describe("<MapDisplay />", () => {
     expect(getAllStopIcons(container)).toHaveLength(1)
   })
 
+  test("when zoomed in to see nearby stop and a vehicle is selected, only renders stops on that vehicle's route pattern once", async () => {
+    setHtmlWidthHeightForLeafletMap()
+
+    const stop = stopFactory.build({
+      locationType: LocationType.Stop,
+      lat: defaultCenter.lat,
+      lon: defaultCenter.lng,
+    })
+
+    const route = routeFactory.build()
+
+    const routePattern = routePatternFactory.build({
+      routeId: route.id,
+      shape: shapeFactory.build({ stops: [stop] }),
+    })
+
+    const selectedVehicle = randomLocationVehicle.build({
+      routeId: route.id,
+      runId: runIdFactory.build(),
+      routePatternId: routePattern.id,
+    })
+
+    mockUseVehicleForId([selectedVehicle])
+    mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+    ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+      [routePattern.id]: routePattern,
+    })
+    ;(useAllStops as jest.Mock).mockReturnValue([stop])
+
+    const { container } = render(
+      <MapDisplay
+        selectedEntity={{
+          type: SelectedEntityType.Vehicle,
+          vehicleId: selectedVehicle.id,
+        }}
+        setSelection={jest.fn()}
+        fetchedSelectedLocation={null}
+      />
+    )
+
+    expect(getAllStopIcons(container)).toHaveLength(1)
+
+    const zoomIn = zoomInButton.get()
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+
+    expect(getAllStopIcons(container)).toHaveLength(1)
+  })
+
+  test("when zoomed in to see nearby stop and a route pattern is selected, only renders stops on that route pattern once", async () => {
+    setHtmlWidthHeightForLeafletMap()
+
+    const stop = stopFactory.build({
+      locationType: LocationType.Stop,
+      lat: defaultCenter.lat,
+      lon: defaultCenter.lng,
+    })
+
+    const route = routeFactory.build()
+    const routePattern = routePatternFactory.build({
+      routeId: route.id,
+      shape: shapeFactory.build({ stops: [stop] }),
+    })
+
+    ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+      [routePattern.id]: routePattern,
+    })
+    ;(useAllStops as jest.Mock).mockReturnValue([stop])
+
+    const { container } = render(
+      <MapDisplay
+        selectedEntity={{
+          type: SelectedEntityType.RoutePattern,
+          routeId: route.id,
+          routePatternId: routePattern.id,
+        }}
+        setSelection={jest.fn()}
+        fetchedSelectedLocation={null}
+      />
+    )
+
+    expect(getAllStopIcons(container)).toHaveLength(1)
+
+    const zoomIn = zoomInButton.get()
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+    await userEvent.click(zoomIn)
+
+    expect(getAllStopIcons(container)).toHaveLength(1)
+  })
+
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })

@@ -228,11 +228,13 @@ const SelectedVehicleDataLayers = ({
   routePatterns,
   selectVehicle,
   setStateClasses,
+  stops,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   setStateClasses: (classes: string | undefined) => void
+  stops: Stop[]
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -257,6 +259,10 @@ const SelectedVehicleDataLayers = ({
     selectedVehicleOrGhost &&
     isVehicle(selectedVehicleOrGhost) &&
     !selectedVehicleOrGhost.isShuttle
+
+  const routePatternStopIdSet = new Set(
+    (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
+  )
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
@@ -286,14 +292,23 @@ const SelectedVehicleDataLayers = ({
             </>
           )}
           {showShapeAndStops && routePatternForVehicle && (
-            <RoutePatternLayers
-              routePattern={routePatternForVehicle}
-              isSelected={false}
-            />
+            <>
+              <RoutePatternLayers
+                routePattern={routePatternForVehicle}
+                isSelected={false}
+              />
+            </>
           )}
         </>
       )}
-
+      <NearbyStops
+        stops={
+          // remove stops that are being rendered separately as part of the route shape
+          showShapeAndStops
+            ? stops.filter((s) => !routePatternStopIdSet.has(s.id))
+            : stops
+        }
+      />
       <InterruptibleFollower
         onUpdate={drawerOffsetAutoCenter}
         positions={position}
@@ -308,11 +323,13 @@ const SelectedRouteDataLayers = ({
   routePatterns,
   selectVehicle,
   setStateClasses,
+  stops,
 }: {
   routePatternIdentifier: RoutePatternIdentifier
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   setStateClasses: (classes: string | undefined) => void
+  stops: Stop[]
 }) => {
   const selectedRoutePattern: RoutePattern | undefined = routePatterns
     ? routePatterns[routePatternIdentifier.routePatternId]
@@ -323,6 +340,10 @@ const SelectedRouteDataLayers = ({
       ) || []
     : []
   const followerState = useInteractiveFollowerState()
+
+  const routePatternStopIdSet = new Set(
+    (selectedRoutePattern?.shape?.stops || []).map((s) => s.id)
+  )
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
@@ -344,6 +365,9 @@ const SelectedRouteDataLayers = ({
         onUpdate={drawerOffsetAutoCenter}
         positions={routeShapePositions}
         {...followerState}
+      />
+      <NearbyStops
+        stops={stops.filter((s) => !routePatternStopIdSet.has(s.id))}
       />
     </>
   )
@@ -374,7 +398,7 @@ const SelectedLocationDataLayer = ({
   )
 }
 
-const SelectionDataLayers = ({
+const DataLayers = ({
   selectedEntity,
   setSelection,
   setStateClasses,
@@ -389,6 +413,8 @@ const SelectionDataLayers = ({
     selectedEntity,
     fetchedSelectedLocation
   )
+
+  const stops = useAllStops() || []
 
   const routePatternIdentifier =
     routePatternIdentifierForSelection(liveSelectedEntity)
@@ -435,6 +461,7 @@ const SelectionDataLayers = ({
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
           setStateClasses={setStateClasses}
+          stops={stops}
         />
       )
     case SelectedEntityType.RoutePattern:
@@ -447,17 +474,26 @@ const SelectionDataLayers = ({
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
           setStateClasses={setStateClasses}
+          stops={stops}
         />
       )
     case SelectedEntityType.Location:
       return (
-        <SelectedLocationDataLayer
-          location={liveSelectedEntity.location}
-          setStateClasses={setStateClasses}
-        />
+        <>
+          <NearbyStops stops={stops} />
+          <SelectedLocationDataLayer
+            location={liveSelectedEntity.location}
+            setStateClasses={setStateClasses}
+          />
+        </>
       )
     default:
-      return <MapElementsNoSelection setStateClasses={setStateClasses} />
+      return (
+        <>
+          <NearbyStops stops={stops} />
+          <MapElementsNoSelection setStateClasses={setStateClasses} />
+        </>
+      )
   }
 }
 
@@ -497,8 +533,6 @@ const MapDisplay = ({
   streetViewInitiallyEnabled?: boolean
   fetchedSelectedLocation: LocationSearchResult | null
 }) => {
-  const stops = useAllStops()
-
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
   )
@@ -527,11 +561,7 @@ const MapDisplay = ({
           paddingBottomRight: [50, 20],
         }}
       >
-        {
-          // TODO - should we remove the stops from the currently selected route pattern from this list? Right now there are duplicate exactly overlapping markers
-        }
-        <NearbyStops stops={stops || []} />
-        <SelectionDataLayers
+        <DataLayers
           selectedEntity={selectedEntity}
           setSelection={setSelection}
           setStateClasses={setStateClasses}
