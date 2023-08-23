@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useId, useState } from "react"
 import { useMapEvents } from "react-leaflet"
 import { joinClasses } from "../../../helpers/dom"
 import { TileType } from "../../../tilesetUrls"
@@ -46,22 +46,52 @@ export const LayersControl = ({
         <MapLayersIcon />
       </button>
       {showLayersList && (
-        <TileLayerControl tileType={tileType} setTileType={setTileType} />
+        <LayersControlContent tileType={tileType} setTileType={setTileType} />
       )}
     </CustomControl>
+  )
+}
+
+const LayersControlContent = ({
+  tileType,
+  setTileType,
+}: {
+  tileType: TileType
+  setTileType: (tileType: TileType) => void
+}): JSX.Element => {
+  const tileLayerControlLabelId = "tile-layer-control-label-" + useId()
+
+  return (
+    <div className="c-layers-control__content">
+      <ul className="list-group">
+        <li
+          className="list-group-item"
+          aria-labelledby={tileLayerControlLabelId}
+        >
+          <TileLayerControl
+            tileType={tileType}
+            setTileType={setTileType}
+            labelId={tileLayerControlLabelId}
+          />
+        </li>
+      </ul>
+    </div>
   )
 }
 
 const TileLayerControl = ({
   tileType,
   setTileType,
+  labelId,
 }: {
   tileType: TileType
   setTileType: (tileType: TileType) => void
-}): JSX.Element => (
-  <div className="c-layers-control__layers_list">
-    <ul className="list-group">
-      <li className="list-group-item">
+  labelId?: string
+}): JSX.Element => {
+  return (
+    <div className="c-layers-control__tile_layer_control">
+      <h2 id={labelId}>Base Map</h2>
+      <div className="form-check">
         <input
           className="form-check-input"
           type="radio"
@@ -74,8 +104,8 @@ const TileLayerControl = ({
         <label className="form-check-label" htmlFor="base">
           Map (default)
         </label>
-      </li>
-      <li className="list-group-item">
+      </div>
+      <div className="form-check">
         <input
           className="form-check-input"
           type="radio"
@@ -88,9 +118,9 @@ const TileLayerControl = ({
         <label className="form-check-label" htmlFor="satellite">
           Satellite
         </label>
-      </li>
-    </ul>
-  </div>
-)
+      </div>
+    </div>
+  )
+}
 
 LayersControl.WithTileContext = LayersControlWithTileContext

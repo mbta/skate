@@ -21,19 +21,41 @@
   }
 }
 
-.c-layers-control__layers_list {
+.c-layers-control__content {
   position: fixed;
   right: 55px;
   border-radius: 8px;
-  .list-group {
-    margin: 0rem;
-    .list-group-item {
-      display: flex;
-      gap: 0.5rem;
-    }
-  }
+
+  background-color: $white;
+
   font-family: $font-family;
   font-size: var(--font-size-m);
 
-  background-color: $white;
+  .list-group {
+    margin: 0;
+
+    .list-group-item {
+      padding-top: 0;
+      padding-bottom: 0;
+
+      div {
+        * {
+          padding-top: 0.5rem;
+          padding-bottom: 0.5rem;
+        }
+
+        h2 {
+          margin: 0;
+          font-size: var(--font-size-m);
+          font-weight: var(--font-weight-bold);
+        }
+      }
+    }
+  }
 }
+
+// .c-layers-control__tile_layer_control {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 0.5rem;
+// }
