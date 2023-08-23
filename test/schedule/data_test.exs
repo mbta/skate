@@ -902,12 +902,17 @@ defmodule Schedule.DataTest do
   describe "parse_files/1" do
     test "includes certain hardcoded garage IDs as checkpoints" do
       hardcoded_garage_ids =
-        Data.parse_files(%{gtfs: %{}, hastus: %{}})
+        Data.parse_files(%{gtfs: %{}, hastus: %{}, version: "test_version"})
         |> Map.get(:timepoint_names_by_id)
         |> Map.keys()
         |> Enum.sort()
 
       assert hardcoded_garage_ids == ~w[albny arbor cabot charl fell lynn ncamb prwb soham somvl]
+    end
+
+    test "includes version" do
+      assert %{version: "test_version"} =
+               Data.parse_files(%{gtfs: %{}, hastus: %{}, version: "test_version"})
     end
   end
 

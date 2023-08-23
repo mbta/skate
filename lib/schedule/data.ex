@@ -68,7 +68,8 @@ defmodule Schedule.Data do
 
   @type all_files :: %{
           gtfs: %{String.t() => binary()},
-          hastus: %{String.t() => binary()}
+          hastus: %{String.t() => binary()},
+          version: String.t()
         }
 
   @typep gtfs_files :: %{String.t() => binary()}
@@ -357,7 +358,7 @@ defmodule Schedule.Data do
   # Initialization
 
   @spec parse_files(all_files()) :: t()
-  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files} = all_files) do
+  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files, version: version}) do
     gtfs_data = parse_gtfs_files(gtfs_files)
     hastus_data = parse_hastus_files(hastus_files, gtfs_data.bus_only.trip_ids)
 
@@ -382,8 +383,6 @@ defmodule Schedule.Data do
         gtfs_data.all_modes.route_patterns,
         gtfs_data.all_modes.stop_times_by_trip_id
       )
-
-    version = :crypto.hash(:sha256, :erlang.term_to_binary(all_files))
 
     %__MODULE__{
       routes: bus_routes,
