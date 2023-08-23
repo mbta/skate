@@ -208,7 +208,6 @@ const RoutePatternLayers = ({
                     <RouteStopMarkers
                       stops={routePattern.shape.stops || []}
                       includeStopCard={true}
-                      direction={routePattern.directionId}
                       zoomLevel={zoomLevel}
                     />
                   </Pane>

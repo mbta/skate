@@ -9,7 +9,7 @@ import { joinClasses } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
-import { DirectionId, Shape, Stop, StopId } from "../schedule"
+import { Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 
 import garages, { Garage } from "../data/garages"
@@ -260,13 +260,11 @@ export const StationMarker = React.memo(
 export const StopMarkers = ({
   stops,
   zoomLevel,
-  direction,
   includeStopCard,
   zoomLevelConfig = {},
 }: {
   stops: Stop[]
   zoomLevel: number
-  direction?: DirectionId
   includeStopCard?: boolean
   zoomLevelConfig?: {
     minStopZoom?: number
@@ -309,7 +307,6 @@ export const StopMarkers = ({
                 <StopMarkerWithInfo
                   key={stop.id}
                   stop={stop}
-                  direction={direction}
                   includeStopCard={includeStopCard && !streetViewActive}
                   zoomLevel={zoomLevel}
                   interactionStatesDisabled={streetViewActive}
@@ -349,7 +346,6 @@ export const StopMarkers = ({
 export const RouteStopMarkers = (props: {
   stops: Stop[]
   zoomLevel: number
-  direction?: DirectionId
   includeStopCard?: boolean
 }): JSX.Element => {
   return (

@@ -85,10 +85,9 @@ describe("StopMarkerWithInfo", () => {
     mockFullStoryEvent()
 
     const { container } = renderInMap(
-      <StopMarkerWithInfo stop={stop} direction={0} includeStopCard={true} />
+      <StopMarkerWithInfo stop={stop} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
-    expect(screen.getByText("Outbound")).toBeInTheDocument()
     expect(window.FS!.event).toHaveBeenCalledWith("Bus stop card opened")
   })
 })
