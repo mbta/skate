@@ -18,10 +18,16 @@ import {
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
-import { fireEvent, render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
+import userEvent from "@testing-library/user-event"
+import {
+  useMinischeduleBlock,
+  useMinischeduleRun,
+} from "../../../src/hooks/useMinischedule"
+import { useTripShape } from "../../../src/hooks/useShapes"
 
 jest
   .spyOn(dateTime, "now")
@@ -48,6 +54,17 @@ jest.mock("../../../src/hooks/useNearestIntersection", () => ({
 jest.mock("../../../src/hooks/useStations", () => ({
   __esModule: true,
   useStations: jest.fn(() => []),
+}))
+
+jest.mock("../../../src/hooks/useMinischedule", () => ({
+  __esModule: true,
+  useMinischeduleRun: jest.fn(),
+  useMinischeduleBlock: jest.fn(),
+}))
+
+jest.mock("../../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useTripShape: jest.fn(),
 }))
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build({
@@ -305,7 +322,11 @@ describe("VehiclePropertiesPanel", () => {
     { tab: "status", clickTarget: "Status", initialTab: "block" },
   ])(
     "when active tab changes to '$tab', fires fullstory event",
-    ({ tab, clickTarget, initialTab }) => {
+    async ({ tab, clickTarget, initialTab }) => {
+      ;(useTripShape as jest.Mock).mockReturnValue([])
+      ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
+      ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
+
       mockFullStoryEvent()
 
       render(
@@ -315,7 +336,7 @@ describe("VehiclePropertiesPanel", () => {
         />
       )
 
-      fireEvent.click(screen.getByRole("tab", { name: clickTarget }))
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
       expect(window.FS!.event).toHaveBeenCalledWith(
         "Switched tab in Vehicle Properties Panel",
@@ -330,7 +351,11 @@ describe("VehiclePropertiesPanel", () => {
     { clickTarget: "Status", initialTab: "status" },
   ])(
     "when active tab '$initialTab' is clicked, does not fire fullstory event",
-    ({ clickTarget, initialTab }) => {
+    async ({ clickTarget, initialTab }) => {
+      ;(useTripShape as jest.Mock).mockReturnValue([])
+      ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
+      ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
+
       mockFullStoryEvent()
 
       render(
@@ -340,7 +365,7 @@ describe("VehiclePropertiesPanel", () => {
         />
       )
 
-      fireEvent.click(screen.getByRole("tab", { name: clickTarget }))
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
       expect(window.FS!.event).not.toHaveBeenCalled()
     }
