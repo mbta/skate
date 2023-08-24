@@ -5,6 +5,7 @@ import { TileType } from "../../../tilesetUrls"
 import { MapLayersIcon } from "../../../helpers/icon"
 import { CustomControl } from "./customControl"
 import { TileTypeContext } from "../../../contexts/tileTypeContext"
+import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 
 const LayersControlWithTileContext = (props: {
   setTileType: (tileType: TileType) => void
@@ -60,6 +61,7 @@ const LayersControlContent = ({
   setTileType: (tileType: TileType) => void
 }): JSX.Element => {
   const tileLayerControlLabelId = "tile-layer-control-label-" + useId()
+  const vehicleLayersControlLabelId = "vehicle-layers-control-label-" + useId()
 
   return (
     <div className="c-layers-control__content">
@@ -71,9 +73,19 @@ const LayersControlContent = ({
           <TileLayerControl
             tileType={tileType}
             setTileType={setTileType}
-            labelId={tileLayerControlLabelId}
+            sectionLabelId={tileLayerControlLabelId}
           />
         </li>
+        {inTestGroup(TestGroups.PullBackMapLayer) && (
+          <li
+            className="list-group-item"
+            aria-labelledby={vehicleLayersControlLabelId}
+          >
+            <VehicleLayersControl
+              sectionLabelId={vehicleLayersControlLabelId}
+            />
+          </li>
+        )}
       </ul>
     </div>
   )
@@ -82,41 +94,64 @@ const LayersControlContent = ({
 const TileLayerControl = ({
   tileType,
   setTileType,
-  labelId,
+  sectionLabelId,
 }: {
   tileType: TileType
   setTileType: (tileType: TileType) => void
-  labelId?: string
+  sectionLabelId?: string
+}): JSX.Element => (
+  <div className="c-layers-control__tile_layer_control">
+    <h2 id={sectionLabelId}>Base Map</h2>
+    <div className="form-check">
+      <input
+        className="form-check-input"
+        type="radio"
+        name="tileType"
+        value=""
+        id="base"
+        checked={tileType === "base"}
+        onChange={() => setTileType("base")}
+      />
+      <label className="form-check-label" htmlFor="base">
+        Map (default)
+      </label>
+    </div>
+    <div className="form-check">
+      <input
+        className="form-check-input"
+        type="radio"
+        name="tileType"
+        value=""
+        id="satellite"
+        checked={tileType === "satellite"}
+        onChange={() => setTileType("satellite")}
+      />
+      <label className="form-check-label" htmlFor="satellite">
+        Satellite
+      </label>
+    </div>
+  </div>
+)
+
+const VehicleLayersControl = ({
+  sectionLabelId,
+}: {
+  sectionLabelId?: string
 }): JSX.Element => {
+  const inputId = "pull-back-layer-switch-" + useId()
+
   return (
-    <div className="c-layers-control__tile_layer_control">
-      <h2 id={labelId}>Base Map</h2>
-      <div className="form-check">
+    <div className="c-layers-control__vehicle_layers_control">
+      <h2 id={sectionLabelId}>Vehicles</h2>
+      <div className="form-check form-switch">
         <input
           className="form-check-input"
-          type="radio"
-          name="tileType"
-          value=""
-          id="base"
-          checked={tileType === "base"}
-          onChange={() => setTileType("base")}
+          type="checkbox"
+          role="switch"
+          id={inputId}
         />
-        <label className="form-check-label" htmlFor="base">
-          Map (default)
-        </label>
-      </div>
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="radio"
-          name="tileType"
-          value=""
-          id="satellite"
-          checked={tileType === "satellite"}
-          onChange={() => setTileType("satellite")}
-        />
-        <label className="form-check-label" htmlFor="satellite">
-          Satellite
+        <label className="form-check-label" htmlFor={inputId}>
+          Show pull-backs
         </label>
       </div>
     </div>

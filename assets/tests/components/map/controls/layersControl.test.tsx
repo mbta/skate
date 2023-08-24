@@ -6,6 +6,12 @@ import { MapContainer } from "react-leaflet"
 import { LayersControl } from "../../../../src/components/map/controls/layersControl"
 import userEvent from "@testing-library/user-event"
 import { layersControlButton } from "../../../testHelpers/selectors/components/map"
+import getTestGroups from "../../../../src/userTestGroups"
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
 
 const mapWrapper = ({ children }: { children: ReactNode }) => (
   <MapContainer center={[0, 0]} zoom={0}>
@@ -34,6 +40,7 @@ describe("LayersControl", () => {
 
     expect(setTileTypeMock).toHaveBeenCalledWith("satellite")
   })
+
   test("when the control button is clicked while the layer options are open, then the layer options are closed", async () => {
     const setTileTypeMock = jest.fn()
     render(<LayersControl tileType="base" setTileType={setTileTypeMock} />, {
@@ -46,6 +53,7 @@ describe("LayersControl", () => {
 
     expect(screen.queryByLabelText("Map (default)")).toBeNull()
   })
+
   test("when the map button is clicked while the layer options are opened, then the layer options are closed", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
@@ -62,5 +70,27 @@ describe("LayersControl", () => {
     await userEvent.click(container.querySelector(".leaflet-container")!)
 
     expect(screen.queryByLabelText("Map (default)")).toBeNull()
+  })
+
+  test("pull-back layer control not shown when user is not in test group", async () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue([])
+
+    render(<LayersControl tileType="base" setTileType={jest.fn()} />, {
+      wrapper: mapWrapper,
+    })
+    await userEvent.click(layersControlButton.get())
+
+    expect(screen.queryByLabelText("Show pull-backs")).not.toBeInTheDocument()
+  })
+
+  test("pull-back layer control is shown when user is in test group", async () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
+
+    render(<LayersControl tileType="base" setTileType={jest.fn()} />, {
+      wrapper: mapWrapper,
+    })
+    await userEvent.click(layersControlButton.get())
+
+    expect(screen.getByLabelText("Show pull-backs")).toBeInTheDocument()
   })
 })
