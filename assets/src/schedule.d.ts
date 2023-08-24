@@ -98,4 +98,3 @@ export type TimepointsByRouteId = ByRouteId<LoadableTimepoints>
 export type TripId = string
 
 export type ViaVariant = string
-export { RouteType }
