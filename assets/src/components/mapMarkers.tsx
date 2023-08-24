@@ -302,7 +302,6 @@ export const StopMarkers = ({
           }
           default: {
             return (
-              // TODO: Also check the stop vehicle type! Child stops need have bus vehicle type in order to be shown on the map
               zoomLevel >= minStopZoom && (
                 <StopMarkerWithInfo
                   key={stop.id}

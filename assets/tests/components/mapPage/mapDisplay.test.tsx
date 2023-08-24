@@ -11,7 +11,7 @@ import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
 import { useRouteShapes } from "../../../src/hooks/useShapes"
 import useVehicleForId from "../../../src/hooks/useVehicleForId"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
-import { LocationType } from "../../../src/models/stopData"
+import { LocationType, RouteType } from "../../../src/models/stopData"
 import {
   Ghost,
   VehicleId,
@@ -162,7 +162,7 @@ describe("<MapDisplay />", () => {
     expect(getAllStopIcons(container)).toHaveLength(0)
   })
 
-  test("renders all nearby stops and stations only on zoom = 17", async () => {
+  test("renders all nearby stations and bus stops only on zoom = 17", async () => {
     setHtmlWidthHeightForLeafletMap()
     ;(useAllStops as jest.Mock).mockReturnValue([
       // 2 stations at map center which should be visible
@@ -185,6 +185,13 @@ describe("<MapDisplay />", () => {
       // 1 stop at center which should  be visible
       stopFactory.build({
         locationType: LocationType.Stop,
+        lat: defaultCenter.lat,
+        lon: defaultCenter.lng,
+      }),
+      // 1 subway at center which should not be visible
+      stopFactory.build({
+        locationType: LocationType.Stop,
+        vehicleType: RouteType.Subway,
         lat: defaultCenter.lat,
         lon: defaultCenter.lng,
       }),

@@ -1,5 +1,5 @@
 import Leaflet from "leaflet"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useMemo, useState } from "react"
 import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
@@ -46,6 +46,7 @@ import { TileType } from "../../tilesetUrls"
 import { LayersControl } from "../map/controls/layersControl"
 import { LocationSearchResult } from "../../models/locationSearchResult"
 import { useAllStops } from "../../hooks/useAllStops"
+import { LocationType, RouteType } from "../../models/stopData"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -498,11 +499,23 @@ const DataLayers = ({
 }
 
 const NearbyStops = ({ stops }: { stops: Stop[] }) => {
+  const stationsAndBus = useMemo(
+    () =>
+      stops.filter(
+        (s) =>
+          s.locationType === LocationType.Station ||
+          s.vehicleType === RouteType.Bus
+      ),
+    [stops]
+  )
   const [nearbyStops, setNearbyStops] = useState<Stop[]>([])
   const map = useMap()
   map.addEventListener("moveend", () => {
     const bounds = map.getBounds()
-    setNearbyStops(stops?.filter((s) => bounds.contains([s.lat, s.lon])) || [])
+    // Only show nearby stations or bus stops
+    setNearbyStops(
+      stationsAndBus.filter((s) => bounds.contains([s.lat, s.lon]))
+    )
   })
 
   return (
