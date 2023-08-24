@@ -34,22 +34,23 @@ import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
 import { mockFullStoryEvent, mockTileUrls } from "../testHelpers/mockHelpers"
 import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPage/map"
 import { streetViewUrl } from "../../src/util/streetViewUrl"
+import shapeFactory from "../factories/shape"
 
-const shape = {
+const shape = shapeFactory.build({
   id: "shape",
   points: [
     { lat: 0, lon: 0 },
     { lat: 0, lon: 0 },
   ],
   stops: [
-    {
+    stopFactory.build({
       id: "stop",
       name: "stop",
       lat: 0,
       lon: 0,
-    },
+    }),
   ],
-}
+})
 
 const station = stopFactory.build({ locationType: LocationType.Station })
 

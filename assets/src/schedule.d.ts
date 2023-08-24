@@ -1,4 +1,4 @@
-import { LocationType } from "./models/stopData"
+import { LocationType, RouteType } from "./models/stopData"
 import { RunId } from "./realtime"
 
 export type BlockId = string
@@ -15,7 +15,8 @@ export interface Stop {
   lat: number
   lon: number
   routes?: { type: number; id: RouteId; name: string }[]
-  locationType?: LocationType
+  locationType: LocationType | null
+  vehicleType: RouteType | null
 }
 
 export type RouteId = string
@@ -97,3 +98,4 @@ export type TimepointsByRouteId = ByRouteId<LoadableTimepoints>
 export type TripId = string
 
 export type ViaVariant = string
+export { RouteType }
