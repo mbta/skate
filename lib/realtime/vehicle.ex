@@ -41,6 +41,7 @@ defmodule Realtime.Vehicle do
           is_overload: boolean(),
           is_off_course: boolean(),
           is_revenue: boolean(),
+          is_pullback: boolean(),
           layover_departure_time: Util.Time.timestamp() | nil,
           block_is_active: boolean(),
           sources: MapSet.t(String.t()),
@@ -123,7 +124,8 @@ defmodule Realtime.Vehicle do
     :end_of_trip_type,
     :crowding,
     block_waivers: [],
-    data_discrepancies: []
+    data_discrepancies: [],
+    is_pullback: false
   ]
 
   @spec from_vehicle_position(map()) :: t()
@@ -330,8 +332,8 @@ defmodule Realtime.Vehicle do
           Run.id() | nil,
           Stop.id() | nil
         ) :: end_of_trip_type()
-  def end_of_trip_type(block, trip, run_id, stop_id)
-      when block == nil or trip == nil or stop_id == nil or run_id == nil do
+  def end_of_trip_type(block, trip, run_id, _stop_id)
+      when block == nil or trip == nil or run_id == nil do
     :another_trip
   end
 

@@ -579,6 +579,14 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", "middle") == :pull_back
     end
 
+    test "when finished with the last trip of the block but still logged in, returns :pull_back",
+         %{
+           last_trip_of_block: last_trip_of_block,
+           block: block
+         } do
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :pull_back
+    end
+
     test "defaults to :another_trip if we're missing data", %{
       last_trip_of_block: last_trip_of_block,
       block: block
@@ -586,7 +594,6 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.end_of_trip_type(nil, last_trip_of_block, "run2", "middle") == :another_trip
       assert Vehicle.end_of_trip_type(block, nil, "run2", "middle") == :another_trip
       assert Vehicle.end_of_trip_type(block, last_trip_of_block, nil, "middle") == :another_trip
-      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :another_trip
     end
 
     test "doesn't consider it a swing off if the next trip's run is nil", %{
