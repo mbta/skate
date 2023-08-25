@@ -33,6 +33,7 @@ defmodule Realtime.Server do
   @type subscription_key ::
           {:route_id, Route.id()}
           | :all_shuttles
+          | :all_pull_backs
           | :logged_in_vehicles
           | {:search, search_params()}
           | {:limited_search, limited_search_params()}
@@ -147,6 +148,11 @@ defmodule Realtime.Server do
     subscribe(server, {:block_ids, block_ids})
   end
 
+  @spec subscribe_to_all_pull_backs(GenServer.server()) :: [VehicleOrGhost.t()]
+  def subscribe_to_all_pull_backs(server \\ default_name()) do
+    subscribe(server, :all_pull_backs)
+  end
+
   @spec subscribe_to_alerts(Route.id(), GenServer.server()) :: [String.t()]
   def subscribe_to_alerts(route_id, server \\ default_name()) do
     subscribe(server, {:alerts, route_id})
@@ -177,6 +183,7 @@ defmodule Realtime.Server do
   @spec subscribe(GenServer.server(), {:vehicle_with_logged_out, String.t()}) :: [
           VehicleOrGhost.t()
         ]
+  @spec subscribe(GenServer.server(), :all_pull_backs) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:run_ids, [Run.id()]}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:block_ids, [Block.id()]}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:alerts, Route.id()}) :: [String.t()]
@@ -223,6 +230,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), {:limited_search, search_params()}}) :: limited_search_result()
   @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:vehicle_with_logged_out, String.t()}}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), :all_pull_backs}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:run_ids, [Run.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:block_ids, [Block.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), {:alerts, Route.id()}}) :: [String.t()]
@@ -294,6 +302,17 @@ defmodule Realtime.Server do
     (logged_in_vehicles ++ logged_out_vehicles)
     |> Enum.find(&(&1.id == vehicle_or_ghost_id))
     |> List.wrap()
+  end
+
+  def lookup({table, :all_pull_backs}) do
+    {table, :logged_in_vehicles}
+    |> lookup()
+    |> Enum.filter(fn vehicle_or_ghost ->
+      case vehicle_or_ghost do
+        %Vehicle{end_of_trip_type: :pull_back} -> true
+        _ -> false
+      end
+    end)
   end
 
   def lookup({table, key}) do

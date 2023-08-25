@@ -14,12 +14,22 @@ defmodule Realtime.ServerTest do
              id: "v1",
              label: "v1-label",
              run_id: "123-9048",
-             block_id: "vehicle_block",
+             block_id: "vehicle1_block",
              operator_id: build(:operator_id),
              operator_first_name: build(:first_name),
              operator_last_name: @operator_last_name,
              operator_name: @operator_last_name
            )
+
+  @pull_back_vehicle build(:vehicle,
+                       route_id: "2",
+                       id: "v2",
+                       label: "v2-label",
+                       run_id: "125-9048",
+                       block_id: "vehicle2_block",
+                       end_of_trip_type: :pull_back,
+                       timestamp: 1
+                     )
 
   @logged_out_vehicle build(:vehicle,
                         route_id: "1",
@@ -54,7 +64,8 @@ defmodule Realtime.ServerTest do
            )
 
   @vehicles_by_route_id %{
-    "1" => [@vehicle, @ghost]
+    "1" => [@vehicle, @ghost],
+    "2" => [@pull_back_vehicle]
   }
 
   @alerts_by_route_id %{
@@ -238,6 +249,31 @@ defmodule Realtime.ServerTest do
       )
 
       assert Server.lookup(lookup_args) == []
+    end
+  end
+
+  describe "subscribe_to_all_pull_backs/1" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update_vehicles({%{"2" => [@pull_back_vehicle]}, [], []}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get all pull-backs upon subscribing", %{server_pid: pid} do
+      assert Server.subscribe_to_all_pull_backs(pid) == [@pull_back_vehicle]
+    end
+
+    test "clients get updated data pushed to them", %{server_pid: pid} do
+      Server.subscribe_to_all_pull_backs(pid)
+
+      updated_pull_back_vehicle = %{@pull_back_vehicle | timestamp: 2}
+
+      Server.update_vehicles({%{"2" => [updated_pull_back_vehicle]}, [], []}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+      assert Server.lookup(lookup_args) == [updated_pull_back_vehicle]
     end
   end
 
@@ -553,9 +589,10 @@ defmodule Realtime.ServerTest do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
       :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
+      :ets.insert(ets, {{:route_id, "2"}, [@pull_back_vehicle]})
       :ets.insert(ets, {{:trip_id, "t1"}, @vehicle})
       :ets.insert(ets, {{:trip_id, "t2"}, @ghost})
-      :ets.insert(ets, {:logged_in_vehicles, [@vehicle, @shuttle]})
+      :ets.insert(ets, {:logged_in_vehicles, [@vehicle, @shuttle, @pull_back_vehicle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
       :ets.insert(ets, {{:block_id, @vehicle.block_id}, @vehicle})
       :ets.insert(ets, {{:alert, "1"}, ["Some alert"]})
@@ -568,15 +605,19 @@ defmodule Realtime.ServerTest do
     end
 
     test "returns empty data when the route is not found", %{ets: ets} do
-      assert Server.lookup({ets, {:route_id, "2"}}) == []
+      assert Server.lookup({ets, {:route_id, "3"}}) == []
     end
 
     test "fetches all vehicles, on routes and shuttles", %{ets: ets} do
-      assert Server.lookup({ets, :logged_in_vehicles}) == [@vehicle, @shuttle]
+      assert Server.lookup({ets, :logged_in_vehicles}) == [@vehicle, @shuttle, @pull_back_vehicle]
     end
 
     test "fetches all shuttles from the ets table", %{ets: ets} do
       assert Server.lookup({ets, :all_shuttles}) == [@shuttle]
+    end
+
+    test "fetches all pull-backs from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, :all_pull_backs}) == [@pull_back_vehicle]
     end
 
     test "fetches a vehicle by trip ID from the ets table", %{ets: ets} do
