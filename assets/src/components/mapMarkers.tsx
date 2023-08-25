@@ -9,7 +9,7 @@ import { joinClasses } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
-import { Shape, Stop, StopId } from "../schedule"
+import { Shape, Stop } from "../schedule"
 import { UserSettings } from "../userSettings"
 
 import garages, { Garage } from "../data/garages"
@@ -257,6 +257,24 @@ export const StationMarker = React.memo(
   }
 )
 
+/**
+ * @returns a list of stops at unique locations. Where a platform stop is at the exact location of a station, the list will include the station.
+ */
+const uniqueStopsByLocation = (stops: Stop[]) => {
+  const locationToStop: Record<string, Stop> = {}
+  stops.forEach((stop) => {
+    const key = `${stop.lat}_${stop.lon}`
+    const existingStopAtLocation = locationToStop[key]
+    if (
+      existingStopAtLocation === undefined ||
+      stop.locationType === LocationType.Station
+    ) {
+      locationToStop[key] = stop
+    }
+  })
+  return Object.values(locationToStop)
+}
+
 export const StopMarkers = ({
   stops,
   zoomLevel,
@@ -273,16 +291,7 @@ export const StopMarkers = ({
 }): JSX.Element => {
   const { minStopZoom = 17, minStationZoom = 15 } = zoomLevelConfig
 
-  const seenStopIds = new Set<StopId>()
-  // Keep the first occurrence of each stop when there are duplicates
-  const uniqueStops: Stop[] = stops.flatMap((stop) => {
-    if (!seenStopIds.has(stop.id)) {
-      seenStopIds.add(stop.id)
-      return [stop]
-    }
-    return []
-  })
-
+  const uniqueStops: Stop[] = uniqueStopsByLocation(stops)
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
   return (

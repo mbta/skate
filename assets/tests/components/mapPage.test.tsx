@@ -82,7 +82,6 @@ import {
   getAllStationIcons,
   getAllStopIcons,
 } from "../testHelpers/selectors/components/mapPage/map"
-import { defaultCenter } from "../../src/components/map"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
@@ -302,13 +301,9 @@ describe("<MapPage />", () => {
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       // 1 station not near center which should not be visible
       stopFactory.build({
@@ -316,11 +311,9 @@ describe("<MapPage />", () => {
         lat: 42.0,
         lon: -71.0,
       }),
-      // 1 stop at center which should not be visible
+      // 1 stop near center which should not be visible
       stopFactory.build({
         locationType: LocationType.Stop,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
     ])
 
@@ -347,13 +340,9 @@ describe("<MapPage />", () => {
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       // 1 station not near center which should not be visible
       stopFactory.build({
@@ -361,11 +350,9 @@ describe("<MapPage />", () => {
         lat: 42.0,
         lon: -71.0,
       }),
-      // 1 stop at center which should  be visible
+      // 1 stop near center which should  be visible
       stopFactory.build({
         locationType: LocationType.Stop,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       // 1 stop not near center which should not be visible
       stopFactory.build({

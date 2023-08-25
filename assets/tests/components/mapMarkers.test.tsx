@@ -150,12 +150,23 @@ describe("StopMarkers", () => {
     expect(getAllStopIcons(container)).toHaveLength(1)
   })
 
-  test("Deduplicates list by stop id", () => {
+  test("When a stop has the same location as a station, renders the station", () => {
     const { container } = renderInMap(
-      <StopMarkers stops={[stop, stop]} zoomLevel={17} />
+      <StopMarkers
+        stops={[
+          stop,
+          stopFactory.build({
+            lat: stop.lat,
+            lon: stop.lon,
+            locationType: LocationType.Station,
+          }),
+        ]}
+        zoomLevel={17}
+      />
     )
 
-    expect(getAllStopIcons(container)).toHaveLength(1)
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(0)
   })
 })
 
@@ -169,12 +180,23 @@ describe("RouteStopMarkers", () => {
     expect(container.querySelectorAll(".c-vehicle-map__stop")).toHaveLength(1)
   })
 
-  test("Deduplicates list by stop id", () => {
+  test("When a stop has the same location as a station, renders the station", () => {
     const { container } = renderInMap(
-      <RouteStopMarkers stops={[stop, stop]} zoomLevel={13} />
+      <RouteStopMarkers
+        stops={[
+          stop,
+          stopFactory.build({
+            lat: stop.lat,
+            lon: stop.lon,
+            locationType: LocationType.Station,
+          }),
+        ]}
+        zoomLevel={13}
+      />
     )
 
-    expect(container.querySelectorAll(".c-vehicle-map__stop")).toHaveLength(1)
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(0)
   })
 })
 

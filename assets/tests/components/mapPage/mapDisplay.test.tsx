@@ -48,7 +48,6 @@ import {
   getAllStationIcons,
   getAllStopIcons,
 } from "../../testHelpers/selectors/components/mapPage/map"
-import { defaultCenter } from "../../../src/components/map"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -121,13 +120,9 @@ describe("<MapDisplay />", () => {
       // 2 stations at map center should be visible
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       // 1 station not near center which should not be visible
       stopFactory.build({
@@ -135,11 +130,9 @@ describe("<MapDisplay />", () => {
         lat: 42.0,
         lon: -71.0,
       }),
-      // 1 stop at center which should not be visible
+      // 1 stop near center which should not be visible
       stopFactory.build({
         locationType: LocationType.Stop,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
     ])
 
@@ -168,13 +161,9 @@ describe("<MapDisplay />", () => {
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       // 1 station not near center which should not be visible
       stopFactory.build({
@@ -182,18 +171,14 @@ describe("<MapDisplay />", () => {
         lat: 42.0,
         lon: -71.0,
       }),
-      // 1 stop at center which should  be visible
+      // 1 stop near center which should  be visible
       stopFactory.build({
         locationType: LocationType.Stop,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
-      // 1 subway at center which should not be visible
+      // 1 subway near center which should not be visible
       stopFactory.build({
         locationType: LocationType.Stop,
         vehicleType: RouteType.Subway,
-        lat: defaultCenter.lat,
-        lon: defaultCenter.lng,
       }),
       // 1 stop not near center which should not be visible
       stopFactory.build({
@@ -229,8 +214,6 @@ describe("<MapDisplay />", () => {
 
     const stop = stopFactory.build({
       locationType: LocationType.Stop,
-      lat: defaultCenter.lat,
-      lon: defaultCenter.lng,
     })
 
     const route = routeFactory.build()
@@ -280,8 +263,6 @@ describe("<MapDisplay />", () => {
 
     const stop = stopFactory.build({
       locationType: LocationType.Stop,
-      lat: defaultCenter.lat,
-      lon: defaultCenter.lng,
     })
 
     const route = routeFactory.build()
