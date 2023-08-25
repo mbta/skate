@@ -8,6 +8,7 @@ const stopsRed: Stop[] = [
     lat: 42.392811,
     lon: -71.077257,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-bbsta",
@@ -15,6 +16,7 @@ const stopsRed: Stop[] = [
     lat: 42.34735,
     lon: -71.075727,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-ccmnl",
@@ -22,6 +24,7 @@ const stopsRed: Stop[] = [
     lat: 42.373622,
     lon: -71.069533,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-chncl",
@@ -29,6 +32,7 @@ const stopsRed: Stop[] = [
     lat: 42.352547,
     lon: -71.062752,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-dwnxg",
@@ -36,6 +40,7 @@ const stopsRed: Stop[] = [
     lat: 42.355518,
     lon: -71.060225,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-forhl",
@@ -43,6 +48,7 @@ const stopsRed: Stop[] = [
     lat: 42.300523,
     lon: -71.113686,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-grnst",
@@ -50,6 +56,7 @@ const stopsRed: Stop[] = [
     lat: 42.310525,
     lon: -71.107414,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-haecl",
@@ -57,6 +64,7 @@ const stopsRed: Stop[] = [
     lat: 42.363021,
     lon: -71.05829,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-jaksn",
@@ -64,6 +72,7 @@ const stopsRed: Stop[] = [
     lat: 42.323132,
     lon: -71.099592,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-masta",
@@ -71,6 +80,7 @@ const stopsRed: Stop[] = [
     lat: 42.341512,
     lon: -71.083423,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-mlmnl",
@@ -78,6 +88,7 @@ const stopsRed: Stop[] = [
     lat: 42.426632,
     lon: -71.07411,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-north",
@@ -85,6 +96,7 @@ const stopsRed: Stop[] = [
     lat: 42.365577,
     lon: -71.06129,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-ogmnl",
@@ -92,6 +104,7 @@ const stopsRed: Stop[] = [
     lat: 42.43668,
     lon: -71.071097,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-rcmnl",
@@ -99,6 +112,7 @@ const stopsRed: Stop[] = [
     lat: 42.331397,
     lon: -71.095451,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-rugg",
@@ -106,6 +120,7 @@ const stopsRed: Stop[] = [
     lat: 42.336377,
     lon: -71.088961,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-sbmnl",
@@ -113,6 +128,7 @@ const stopsRed: Stop[] = [
     lat: 42.317062,
     lon: -71.104248,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-state",
@@ -120,6 +136,7 @@ const stopsRed: Stop[] = [
     lat: 42.358978,
     lon: -71.057598,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-sull",
@@ -127,6 +144,7 @@ const stopsRed: Stop[] = [
     lat: 42.383975,
     lon: -71.076994,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-tumnl",
@@ -134,6 +152,7 @@ const stopsRed: Stop[] = [
     lat: 42.349662,
     lon: -71.063917,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-welln",
@@ -141,6 +160,7 @@ const stopsRed: Stop[] = [
     lat: 42.40237,
     lon: -71.077082,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
 ]
 

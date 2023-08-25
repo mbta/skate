@@ -26,14 +26,14 @@ defmodule Schedule.Gtfs.StopTest do
       file =
         Enum.join(
           [
-            "stop_id,stop_name,stop_lat,stop_lon,parent_station,location_type",
-            "stop-1,No Location Type,1.0,1.5,,",
-            "stop-2,Stop,2.0,2.5,,0",
-            "stop-3,Platform,2.0,2.5,stop-4,0",
-            "stop-4,Station,2.0,2.5,,1",
-            "stop-5,Enterance,2.0,2.5,,2",
-            "stop-6,Generic Node,2.0,2.5,,3",
-            "stop-7,Boarding Area,2.0,2.5,,4"
+            "stop_id,stop_name,stop_lat,stop_lon,parent_station,location_type,vehicle_type",
+            "stop-1,No Location Type,1.0,1.5,,,3",
+            "stop-2,Stop,2.0,2.5,,0,3",
+            "stop-3,Platform,2.0,2.5,stop-4,0,3",
+            "stop-4,Station,2.0,2.5,,1,",
+            "stop-5,Enterance,2.0,2.5,,2,",
+            "stop-6,Generic Node,2.0,2.5,,3,",
+            "stop-7,Boarding Area,2.0,2.5,,4,"
           ],
           "\n"
         )
@@ -43,20 +43,23 @@ defmodule Schedule.Gtfs.StopTest do
                  id: "stop-1",
                  name: "No Location Type",
                  location_type: :stop,
-                 parent_station_id: nil
+                 parent_station_id: nil,
+                 vehicle_type: 3
                },
                %Stop{id: "stop-2", name: "Stop", location_type: :stop, parent_station_id: nil},
                %Stop{
                  id: "stop-3",
                  name: "Platform",
                  location_type: :stop,
-                 parent_station_id: "stop-4"
+                 parent_station_id: "stop-4",
+                 vehicle_type: 3
                },
                %Stop{
                  id: "stop-4",
                  name: "Station",
                  location_type: :station,
-                 parent_station_id: nil
+                 parent_station_id: nil,
+                 vehicle_type: nil
                }
              ] = Stop.parse(file)
     end

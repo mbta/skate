@@ -8,6 +8,7 @@ const stopsRed: Stop[] = [
     lat: 42.395428,
     lon: -71.142483,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-andrw",
@@ -15,6 +16,7 @@ const stopsRed: Stop[] = [
     lat: 42.330154,
     lon: -71.057655,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-asmnl",
@@ -22,6 +24,7 @@ const stopsRed: Stop[] = [
     lat: 42.284652,
     lon: -71.064489,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-brdwy",
@@ -29,6 +32,7 @@ const stopsRed: Stop[] = [
     lat: 42.342622,
     lon: -71.056967,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-brntn",
@@ -36,6 +40,7 @@ const stopsRed: Stop[] = [
     lat: 42.207854,
     lon: -71.001138,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-chmnl",
@@ -43,6 +48,7 @@ const stopsRed: Stop[] = [
     lat: 42.361166,
     lon: -71.070628,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-cntsq",
@@ -50,6 +56,7 @@ const stopsRed: Stop[] = [
     lat: 42.365486,
     lon: -71.103802,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-davis",
@@ -57,6 +64,7 @@ const stopsRed: Stop[] = [
     lat: 42.39674,
     lon: -71.121815,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-dwnxg",
@@ -64,6 +72,7 @@ const stopsRed: Stop[] = [
     lat: 42.355518,
     lon: -71.060225,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-fldcr",
@@ -71,6 +80,7 @@ const stopsRed: Stop[] = [
     lat: 42.300093,
     lon: -71.061667,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-harsq",
@@ -78,6 +88,7 @@ const stopsRed: Stop[] = [
     lat: 42.373362,
     lon: -71.118956,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-jfk",
@@ -85,6 +96,7 @@ const stopsRed: Stop[] = [
     lat: 42.320685,
     lon: -71.052391,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-knncl",
@@ -92,6 +104,7 @@ const stopsRed: Stop[] = [
     lat: 42.362491,
     lon: -71.086177,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-nqncy",
@@ -99,6 +112,7 @@ const stopsRed: Stop[] = [
     lat: 42.275275,
     lon: -71.029583,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-pktrm",
@@ -106,6 +120,7 @@ const stopsRed: Stop[] = [
     lat: 42.356395,
     lon: -71.062424,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-portr",
@@ -113,6 +128,7 @@ const stopsRed: Stop[] = [
     lat: 42.3884,
     lon: -71.119149,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-qamnl",
@@ -120,6 +136,7 @@ const stopsRed: Stop[] = [
     lat: 42.233391,
     lon: -71.007153,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-qnctr",
@@ -127,6 +144,7 @@ const stopsRed: Stop[] = [
     lat: 42.251809,
     lon: -71.005409,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-shmnl",
@@ -134,6 +152,7 @@ const stopsRed: Stop[] = [
     lat: 42.31129,
     lon: -71.053331,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-smmnl",
@@ -141,6 +160,7 @@ const stopsRed: Stop[] = [
     lat: 42.293126,
     lon: -71.065738,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-sstat",
@@ -148,6 +168,7 @@ const stopsRed: Stop[] = [
     lat: 42.352271,
     lon: -71.055242,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-wlsta",
@@ -155,6 +176,7 @@ const stopsRed: Stop[] = [
     lat: 42.266514,
     lon: -71.020337,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
 ]
 

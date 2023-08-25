@@ -26,13 +26,14 @@ import {
   fetchLocationSearchResults,
   fetchLocationSearchResultById,
   fetchLocationSearchSuggestions,
+  fetchAllStops,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, unknown } from "superstruct"
-import { LocationType } from "../src/models/stopData"
+import { LocationType, RouteType } from "../src/models/stopData"
 import * as Sentry from "@sentry/react"
 import locationSearchResultDataFactory from "./factories/locationSearchResultData"
 import locationSearchResultFactory from "./factories/locationSearchResult"
@@ -505,6 +506,7 @@ describe("fetchStations", () => {
   test("fetches a list stations", (done) => {
     const [station1, station2] = stopFactory.buildList(2, {
       locationType: LocationType.Station,
+      vehicleType: null,
     })
     mockFetch(200, {
       data: [
@@ -512,6 +514,7 @@ describe("fetchStations", () => {
           id: station1.id,
           name: station1.name,
           location_type: "station",
+          vehicle_type: null,
           lat: station1.lat,
           lon: station1.lon,
         },
@@ -519,6 +522,7 @@ describe("fetchStations", () => {
           id: station2.id,
           name: station2.name,
           location_type: "station",
+          vehicle_type: null,
           lat: station2.lat,
           lon: station2.lon,
         },
@@ -527,6 +531,66 @@ describe("fetchStations", () => {
 
     fetchStations().then((stations) => {
       expect(stations).toEqual([station1, station2])
+      done()
+    })
+  })
+
+  test("returns empty list on error", (done) => {
+    mockFetch(500, {
+      data: null,
+    })
+
+    fetchStations().then((stations) => {
+      expect(stations).toEqual([])
+      done()
+    })
+  })
+})
+
+describe("fetchAllStops", () => {
+  test("fetches a list of stops", (done) => {
+    const route1 = routeFactory.build()
+    const [station1, stop1] = [
+      stopFactory.build({
+        locationType: LocationType.Station,
+        vehicleType: null,
+      }),
+      stopFactory.build({
+        locationType: LocationType.Stop,
+        vehicleType: RouteType.Bus,
+        routes: [
+          {
+            id: route1.id,
+            name: route1.name,
+            type: 3,
+          },
+        ],
+      }),
+    ]
+    mockFetch(200, {
+      data: [
+        {
+          id: station1.id,
+          name: station1.name,
+          location_type: "station",
+          vehicle_type: null,
+          lat: station1.lat,
+          lon: station1.lon,
+        },
+        {
+          id: stop1.id,
+          name: stop1.name,
+          location_type: "stop",
+          vehicle_type: 3,
+          lat: stop1.lat,
+          lon: stop1.lon,
+          routes: [{ id: route1.id, name: route1.name, type: 3 }],
+        },
+      ],
+    })
+
+    fetchAllStops().then((stops) => {
+      expect(stops).toEqual([station1, stop1])
       done()
     })
   })

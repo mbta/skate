@@ -6,7 +6,8 @@ import {
 } from "../../src/models/shapeData"
 import shapeDataFactory from "../factories/shape_data"
 import shapeFactory from "../factories/shape"
-import stopFactory from "../factories/stop"
+import stopDataFactory from "../factories/stopData"
+import { stopsFromData } from "../../src/models/stopData"
 
 describe("shapeFromData", () => {
   test("handles data", () => {
@@ -17,7 +18,7 @@ describe("shapeFromData", () => {
 
     const expectedResult = shapeFactory.build({
       id: shapeId,
-      stops: data.stops,
+      stops: stopsFromData(data.stops!),
     })
 
     expect(shapeFromData(data)).toEqual(expectedResult)
@@ -28,7 +29,7 @@ describe("shapeFromData", () => {
     const data: ShapeData = shapeDataFactory.build({
       id: shapeId,
       stops: [
-        stopFactory.build({
+        stopDataFactory.build({
           id: "1",
           routes: [{ type: 3, id: "747", name: "CT2" }],
         }),
@@ -37,7 +38,7 @@ describe("shapeFromData", () => {
 
     const expectedResult = shapeFactory.build({
       id: shapeId,
-      stops: data.stops,
+      stops: stopsFromData(data.stops!),
     })
 
     expect(shapeFromData(data)).toEqual(expectedResult)
@@ -53,22 +54,22 @@ describe("shapesFromData", () => {
     const [shape1, shape2]: ShapeData[] = [
       shapeDataFactory.build({
         id: shapeId1,
-        stops: [stopFactory.build({ id: stopId1 })],
+        stops: [stopDataFactory.build({ id: stopId1 })],
       }),
       shapeDataFactory.build({
         id: shapeId2,
-        stops: [stopFactory.build({ id: stopId2 })],
+        stops: [stopDataFactory.build({ id: stopId2 })],
       }),
     ]
 
     const expectedResult = [
       shapeFactory.build({
         id: shapeId1,
-        stops: shape1.stops,
+        stops: stopsFromData(shape1.stops!),
       }),
       shapeFactory.build({
         id: shapeId2,
-        stops: shape2.stops,
+        stops: stopsFromData(shape2.stops!),
       }),
     ]
 

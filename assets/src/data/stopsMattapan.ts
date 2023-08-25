@@ -8,6 +8,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.284652,
     lon: -71.064489,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-butlr",
@@ -15,6 +16,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.272343,
     lon: -71.062584,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-capst",
@@ -22,6 +24,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.267712,
     lon: -71.087753,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-cedgr",
@@ -29,6 +32,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.279682,
     lon: -71.060432,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-cenav",
@@ -36,6 +40,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.270027,
     lon: -71.073334,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-matt",
@@ -43,6 +48,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.267762,
     lon: -71.092241,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-miltt",
@@ -50,6 +56,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.270306,
     lon: -71.067673,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
   {
     id: "place-valrd",
@@ -57,6 +64,7 @@ const stopsMattapan: Stop[] = [
     lat: 42.268322,
     lon: -71.081566,
     locationType: LocationType.Station,
+    vehicleType: null,
   },
 ]
 
