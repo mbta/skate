@@ -39,6 +39,11 @@ defmodule SkateWeb.VehiclesChannelTest do
                subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
     end
 
+    test "subscribes to all pull-backs", %{socket: socket} do
+      assert {:ok, %{data: []}, %Socket{}} =
+               subscribe_and_join(socket, VehiclesChannel, "vehicles:pull_backs:all")
+    end
+
     test "subscribes to vehicles for a run ID", %{socket: socket} do
       assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:run_ids:" <> @vehicle.run_id)
@@ -146,6 +151,25 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       vehicle = @vehicle
       assert_push("shuttles", %{data: [^vehicle]})
+    end
+
+    test "pushes new pull-back data onto the socket", %{
+      socket: socket,
+      ets: ets
+    } do
+      pull_back_vehicle = build(:vehicle, %{route_id: "1", end_of_trip_type: :pull_back})
+
+      assert Realtime.Server.update_vehicles({%{"1" => [pull_back_vehicle]}, [], []}) == :ok
+
+      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:pull_backs:all")
+
+      assert {:noreply, _socket} =
+               VehiclesChannel.handle_info(
+                 {:new_realtime_data, {ets, :all_pull_backs}},
+                 socket
+               )
+
+      assert_push("pull_backs", %{data: [^pull_back_vehicle]})
     end
 
     test "pushes new search results data onto the socket", %{
