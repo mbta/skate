@@ -86,9 +86,17 @@ describe("LayersControl", () => {
   test("pull-back layer control is shown when user is in test group", async () => {
     ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
 
-    render(<LayersControl tileType="base" setTileType={jest.fn()} />, {
-      wrapper: mapWrapper,
-    })
+    render(
+      <LayersControl
+        tileType="base"
+        setTileType={jest.fn()}
+        pullbackLayerEnabled={false}
+        togglePullbackLayerEnabled={jest.fn()}
+      />,
+      {
+        wrapper: mapWrapper,
+      }
+    )
     await userEvent.click(layersControlButton.get())
 
     expect(screen.getByLabelText("Show pull-backs")).toBeInTheDocument()

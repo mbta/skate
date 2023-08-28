@@ -9,6 +9,8 @@ import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 
 const LayersControlWithTileContext = (props: {
   setTileType: (tileType: TileType) => void
+  pullbackLayerEnabled?: boolean
+  togglePullbackLayerEnabled?: () => void
 }): JSX.Element | null => {
   const tileType = useContext(TileTypeContext)
   return <LayersControl tileType={tileType} {...props} />
@@ -17,9 +19,13 @@ const LayersControlWithTileContext = (props: {
 export const LayersControl = ({
   tileType,
   setTileType,
+  pullbackLayerEnabled,
+  togglePullbackLayerEnabled,
 }: {
   tileType: TileType
   setTileType: (tileType: TileType) => void
+  pullbackLayerEnabled?: boolean
+  togglePullbackLayerEnabled?: () => void
 }): JSX.Element | null => {
   const [showLayersList, setShowLayersList] = useState(false)
 
@@ -47,7 +53,12 @@ export const LayersControl = ({
         <MapLayersIcon />
       </button>
       {showLayersList && (
-        <LayersControlContent tileType={tileType} setTileType={setTileType} />
+        <LayersControlContent
+          tileType={tileType}
+          setTileType={setTileType}
+          pullbackLayerEnabled={pullbackLayerEnabled}
+          togglePullbackLayerEnabled={togglePullbackLayerEnabled}
+        />
       )}
     </CustomControl>
   )
@@ -56,9 +67,13 @@ export const LayersControl = ({
 const LayersControlContent = ({
   tileType,
   setTileType,
+  pullbackLayerEnabled,
+  togglePullbackLayerEnabled,
 }: {
   tileType: TileType
   setTileType: (tileType: TileType) => void
+  pullbackLayerEnabled?: boolean
+  togglePullbackLayerEnabled?: () => void
 }): JSX.Element => {
   const tileLayerControlLabelId = "tile-layer-control-label-" + useId()
   const vehicleLayersControlLabelId = "vehicle-layers-control-label-" + useId()
@@ -76,16 +91,20 @@ const LayersControlContent = ({
             sectionLabelId={tileLayerControlLabelId}
           />
         </li>
-        {inTestGroup(TestGroups.PullBackMapLayer) && (
-          <li
-            className="list-group-item"
-            aria-labelledby={vehicleLayersControlLabelId}
-          >
-            <VehicleLayersControl
-              sectionLabelId={vehicleLayersControlLabelId}
-            />
-          </li>
-        )}
+        {pullbackLayerEnabled !== undefined &&
+          togglePullbackLayerEnabled !== undefined &&
+          inTestGroup(TestGroups.PullBackMapLayer) && (
+            <li
+              className="list-group-item"
+              aria-labelledby={vehicleLayersControlLabelId}
+            >
+              <VehicleLayersControl
+                sectionLabelId={vehicleLayersControlLabelId}
+                pullbackLayerEnabled={pullbackLayerEnabled}
+                togglePullbackLayerEnabled={togglePullbackLayerEnabled}
+              />
+            </li>
+          )}
       </ul>
     </div>
   )
@@ -135,8 +154,12 @@ const TileLayerControl = ({
 
 const VehicleLayersControl = ({
   sectionLabelId,
+  pullbackLayerEnabled,
+  togglePullbackLayerEnabled,
 }: {
   sectionLabelId?: string
+  pullbackLayerEnabled: boolean
+  togglePullbackLayerEnabled?: () => void
 }): JSX.Element => {
   const inputId = "pull-back-layer-switch-" + useId()
 
@@ -149,6 +172,8 @@ const VehicleLayersControl = ({
           type="checkbox"
           role="switch"
           id={inputId}
+          checked={pullbackLayerEnabled}
+          onChange={togglePullbackLayerEnabled}
         />
         <label className="form-check-label" htmlFor={inputId}>
           Show pull-backs

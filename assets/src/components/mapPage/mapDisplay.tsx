@@ -41,7 +41,7 @@ import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../../util/streetViewUrl"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { setTileType } from "../../state/mapLayersState"
+import { setTileType, togglePullbackLayer } from "../../state/mapLayersState"
 import { TileType } from "../../tilesetUrls"
 import { LayersControl } from "../map/controls/layersControl"
 import { LocationSearchResult } from "../../models/locationSearchResult"
@@ -545,10 +545,14 @@ const MapDisplay = ({
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
   )
+
   const [
     {
       mapLayers: {
-        searchMap: { tileType: tileType },
+        searchMap: {
+          tileType: tileType,
+          pullbackLayerEnabled: pullbackLayerEnabled,
+        },
       },
     },
     dispatch,
@@ -579,6 +583,10 @@ const MapDisplay = ({
         <LayersControl.WithTileContext
           setTileType={(tileType: TileType) =>
             dispatch(setTileType("searchMap", tileType))
+          }
+          pullbackLayerEnabled={pullbackLayerEnabled}
+          togglePullbackLayerEnabled={() =>
+            dispatch(togglePullbackLayer("searchMap"))
           }
         />
       </MapSafeAreaContext.Provider>
