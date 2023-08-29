@@ -293,12 +293,10 @@ const SelectedVehicleDataLayers = ({
             </>
           )}
           {showShapeAndStops && routePatternForVehicle && (
-            <>
-              <RoutePatternLayers
-                routePattern={routePatternForVehicle}
-                isSelected={false}
-              />
-            </>
+            <RoutePatternLayers
+              routePattern={routePatternForVehicle}
+              isSelected={false}
+            />
           )}
         </>
       )}
@@ -519,19 +517,17 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
   })
 
   return (
-    <>
-      <ZoomLevelWrapper>
-        {(zoomLevel) => {
-          return (
-            <StopMarkers
-              stops={nearbyStops}
-              zoomLevel={zoomLevel}
-              includeStopCard={true}
-            />
-          )
-        }}
-      </ZoomLevelWrapper>
-    </>
+    <ZoomLevelWrapper>
+      {(zoomLevel) => {
+        return (
+          <StopMarkers
+            stops={nearbyStops}
+            zoomLevel={zoomLevel}
+            includeStopCard={true}
+          />
+        )
+      }}
+    </ZoomLevelWrapper>
   )
 }
 
