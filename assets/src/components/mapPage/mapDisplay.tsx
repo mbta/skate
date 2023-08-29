@@ -1,5 +1,13 @@
 import Leaflet from "leaflet"
-import React, { useContext, useEffect, useMemo, useState } from "react"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+} from "react"
 import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
@@ -47,6 +55,7 @@ import { LayersControl } from "../map/controls/layersControl"
 import { LocationSearchResult } from "../../models/locationSearchResult"
 import { useAllStops } from "../../hooks/useAllStops"
 import { LocationType, RouteType } from "../../models/stopData"
+import usePullbackVehicles from "../../hooks/usePullbackVehicles"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -397,14 +406,14 @@ const SelectedLocationDataLayer = ({
   )
 }
 
-const DataLayers = ({
+const SelectionLayers = ({
   selectedEntity,
-  setSelection,
+  selectVehicle,
   setStateClasses,
   fetchedSelectedLocation,
 }: {
   selectedEntity: SelectedEntity | null
-  setSelection: (selectedEntity: SelectedEntity | null) => void
+  selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   setStateClasses: (classes: string | undefined) => void
   fetchedSelectedLocation: LocationSearchResult | null
 }) => {
@@ -420,37 +429,6 @@ const DataLayers = ({
 
   const routePatterns: ByRoutePatternId<RoutePattern> | null =
     usePatternsByIdForRoute(routePatternIdentifier?.routeId || null)
-
-  const streetViewActive = useContext(StreetViewModeEnabledContext)
-
-  const selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void =
-    !streetViewActive
-      ? (vehicleOrGhost) => {
-          setSelection({
-            type: SelectedEntityType.Vehicle,
-            vehicleId: vehicleOrGhost.id,
-          })
-        }
-      : (vehicleOrGhost) => {
-          if (isVehicle(vehicleOrGhost)) {
-            const url = streetViewUrl({
-              latitude: vehicleOrGhost.latitude,
-              longitude: vehicleOrGhost.longitude,
-              bearing: vehicleOrGhost.bearing,
-            })
-
-            window.FS?.event("User clicked map vehicle to open street view", {
-              streetViewUrl_str: url,
-              clickedMapAt: {
-                latitude_real: vehicleOrGhost.latitude,
-                longitude_real: vehicleOrGhost.longitude,
-                bearing_real: vehicleOrGhost.bearing,
-              },
-            })
-
-            window.open(url, "_blank")
-          }
-        }
 
   switch (liveSelectedEntity?.type) {
     case SelectedEntityType.Vehicle:
@@ -531,6 +509,94 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
   )
 }
 
+const PullbackVehiclesLayer = ({
+  pullbackLayerEnabled,
+  selectVehicle,
+}: {
+  pullbackLayerEnabled: boolean
+  selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
+}): JSX.Element => {
+  const { socket } = useContext(SocketContext)
+
+  const pullbackVehicles = usePullbackVehicles(socket, pullbackLayerEnabled)
+
+  return (
+    <>
+      {(pullbackVehicles || []).map((vehicle) => (
+        <VehicleMarker
+          key={vehicle.id}
+          vehicle={vehicle}
+          isPrimary={false}
+          isSelected={false}
+          onSelect={selectVehicle}
+        />
+      ))}
+    </>
+  )
+}
+
+const DataLayers = ({
+  selectedEntity,
+  setSelection,
+  setStateClasses,
+  fetchedSelectedLocation,
+  pullbackLayerEnabled,
+}: {
+  selectedEntity: SelectedEntity | null
+  setSelection: (selectedEntity: SelectedEntity | null) => void
+  setStateClasses: Dispatch<SetStateAction<string | undefined>>
+  fetchedSelectedLocation: LocationSearchResult | null
+  pullbackLayerEnabled: boolean
+}): JSX.Element => {
+  const streetViewActive = useContext(StreetViewModeEnabledContext)
+
+  const selectVehicle = useCallback<(vehicleOrGhost: Vehicle | Ghost) => void>(
+    (vehicleOrGhost) => {
+      if (!streetViewActive) {
+        setSelection({
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicleOrGhost.id,
+        })
+      } else {
+        if (isVehicle(vehicleOrGhost)) {
+          const url = streetViewUrl({
+            latitude: vehicleOrGhost.latitude,
+            longitude: vehicleOrGhost.longitude,
+            bearing: vehicleOrGhost.bearing,
+          })
+
+          window.FS?.event("User clicked map vehicle to open street view", {
+            streetViewUrl_str: url,
+            clickedMapAt: {
+              latitude_real: vehicleOrGhost.latitude,
+              longitude_real: vehicleOrGhost.longitude,
+              bearing_real: vehicleOrGhost.bearing,
+            },
+          })
+
+          window.open(url, "_blank")
+        }
+      }
+    },
+    [setSelection, streetViewActive]
+  )
+
+  return (
+    <>
+      <SelectionLayers
+        selectedEntity={selectedEntity}
+        selectVehicle={selectVehicle}
+        setStateClasses={setStateClasses}
+        fetchedSelectedLocation={fetchedSelectedLocation}
+      />
+      <PullbackVehiclesLayer
+        pullbackLayerEnabled={pullbackLayerEnabled}
+        selectVehicle={selectVehicle}
+      />
+    </>
+  )
+}
+
 const MapDisplay = ({
   selectedEntity,
   setSelection,
@@ -575,10 +641,11 @@ const MapDisplay = ({
         }}
       >
         <DataLayers
-          selectedEntity={selectedEntity}
           setSelection={setSelection}
+          selectedEntity={selectedEntity}
           setStateClasses={setStateClasses}
           fetchedSelectedLocation={fetchedSelectedLocation}
+          pullbackLayerEnabled={pullbackLayerEnabled}
         />
         <LayersControl.WithTileContext
           setTileType={(tileType: TileType) =>
