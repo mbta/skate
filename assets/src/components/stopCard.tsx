@@ -1,7 +1,7 @@
 import { PointExpression } from "leaflet"
 import React, { useContext, useId } from "react"
 import { Popup } from "react-leaflet"
-import { DirectionId, RouteId, Stop } from "../schedule"
+import { RouteId, Stop } from "../schedule"
 import { MapSafeAreaContext } from "../contexts/mapSafeAreaContext"
 import { RoutePill } from "./routePill"
 import StreetViewButton from "./streetViewButton"
@@ -14,7 +14,6 @@ export type LeafletPaddingOptions = {
 
 type StopCardProps = {
   stop: Stop
-  direction?: DirectionId
 }
 
 type AutoPanProps = {
@@ -59,7 +58,6 @@ const sortRoutes = (
 
 const StopCard = ({
   stop,
-  direction,
   autoPanPadding,
 }: StopCardProps & AutoPanProps): JSX.Element => {
   const routesLabelId = "stop-card-routes-label-" + useId()
@@ -78,11 +76,6 @@ const StopCard = ({
     >
       <div className="c-stop-card__stop-info">
         <div className="c-stop-card__stop-name">{stop.name}</div>
-        {direction !== undefined && (
-          <div className="c-stop-card__direction">
-            {direction == 1 ? "Inbound" : "Outbound"}
-          </div>
-        )}
       </div>
       {routes.length > 0 ? (
         <div className="c-stop-card__routes">
