@@ -512,25 +512,37 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
 const PullbackVehiclesLayer = ({
   pullbackLayerEnabled,
   selectVehicle,
+  selectedEntity,
 }: {
   pullbackLayerEnabled: boolean
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
+  selectedEntity: SelectedEntity | null
 }): JSX.Element => {
   const { socket } = useContext(SocketContext)
 
   const pullbackVehicles = usePullbackVehicles(socket, pullbackLayerEnabled)
 
+  const selectedVehicleId =
+    selectedEntity?.type === SelectedEntityType.Vehicle
+      ? selectedEntity.vehicleId
+      : null
+
   return (
     <>
-      {(pullbackVehicles || []).map((vehicle) => (
-        <VehicleMarker
-          key={vehicle.id}
-          vehicle={vehicle}
-          isPrimary={false}
-          isSelected={false}
-          onSelect={selectVehicle}
-        />
-      ))}
+      {(pullbackVehicles || [])
+        .filter(
+          (vehicle) =>
+            selectedVehicleId === null || vehicle.id !== selectedVehicleId
+        )
+        .map((vehicle) => (
+          <VehicleMarker
+            key={vehicle.id}
+            vehicle={vehicle}
+            isPrimary={false}
+            isSelected={false}
+            onSelect={selectVehicle}
+          />
+        ))}
     </>
   )
 }
@@ -592,6 +604,7 @@ const DataLayers = ({
       <PullbackVehiclesLayer
         pullbackLayerEnabled={pullbackLayerEnabled}
         selectVehicle={selectVehicle}
+        selectedEntity={selectedEntity}
       />
     </>
   )

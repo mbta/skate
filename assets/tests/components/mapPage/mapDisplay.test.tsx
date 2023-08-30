@@ -662,6 +662,49 @@ describe("<MapDisplay />", () => {
         )
       })
 
+      test("if a pulling back vehicle is selected, doesn't render it again in pull-backs layer", async () => {
+        ;(getTestGroups as jest.Mock<typeof getTestGroups>).mockReturnValue([
+          "pull-back-map-layer",
+        ])
+        setHtmlWidthHeightForLeafletMap()
+
+        const [pullBackVehicle1, pullBackVehicle2] = vehicleFactory.buildList(
+          2,
+          {
+            endOfTripType: "pull_back",
+          }
+        )
+
+        mockUsePullbackVehicles([pullBackVehicle1, pullBackVehicle2])
+        mockUseVehicleForId([pullBackVehicle1])
+        mockUseVehiclesForRouteMap({
+          [pullBackVehicle1.routeId]: [pullBackVehicle1],
+        })
+        mockUsePatternsByIdForVehicles([pullBackVehicle1], {
+          stopCount: 8,
+        })
+
+        render(
+          <MapDisplay
+            selectedEntity={{
+              type: SelectedEntityType.Vehicle,
+              vehicleId: pullBackVehicle1.id,
+            }}
+            setSelection={jest.fn()}
+            fetchedSelectedLocation={null}
+          />
+        )
+
+        await userEvent.click(screen.getByRole("button", { name: "Layers" }))
+        await userEvent.click(
+          screen.getByRole("switch", { name: "Show pull-backs" })
+        )
+
+        expect(screen.getAllByRole("button", { name: "PULL-B" })).toHaveLength(
+          2
+        )
+      })
+
       test("can click to select a vehicle", async () => {
         const mockSetSelection = jest.fn()
 
