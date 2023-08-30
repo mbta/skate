@@ -101,4 +101,22 @@ describe("LayersControl", () => {
 
     expect(screen.getByLabelText("Show pull-backs")).toBeInTheDocument()
   })
+
+  test("when pull-back layer is enabled, shows pill", async () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
+
+    render(
+      <LayersControl
+        tileType="base"
+        setTileType={jest.fn()}
+        pullbackLayerEnabled={true}
+        togglePullbackLayerEnabled={jest.fn()}
+      />,
+      {
+        wrapper: mapWrapper,
+      }
+    )
+
+    expect(screen.getByText("1")).toBeInTheDocument()
+  })
 })

@@ -52,6 +52,12 @@ export const LayersControl = ({
       >
         <MapLayersIcon />
       </button>
+
+      {/* For now there's only one vehicle layer, in the future this might need to be an actual count */}
+      {pullbackLayerEnabled ? (
+        <div className="c-layers-control__pill">1</div>
+      ) : null}
+
       {showLayersList && (
         <LayersControlContent
           tileType={tileType}

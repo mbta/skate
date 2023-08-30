@@ -21,6 +21,24 @@
   }
 }
 
+.c-layers-control__pill {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 22px;
+  height: 13px;
+  border-radius: 16px;
+
+  background-color: $color-strawberry-500;
+
+  text-align: center;
+  color: $white;
+  font-size: 11px;
+  line-height: 11px;
+  font-weight: var(--font-weight-semi);
+  user-select: none;
+}
+
 .c-layers-control__content {
   position: fixed;
   right: 55px;
