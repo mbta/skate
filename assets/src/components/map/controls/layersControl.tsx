@@ -180,6 +180,11 @@ const VehicleLayersControl = ({
           id={inputId}
           checked={pullbackLayerEnabled}
           onChange={togglePullbackLayerEnabled}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && togglePullbackLayerEnabled) {
+              togglePullbackLayerEnabled()
+            }
+          }}
         />
         <label className="form-check-label" htmlFor={inputId}>
           Show pull-backs

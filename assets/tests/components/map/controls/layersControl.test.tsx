@@ -80,7 +80,9 @@ describe("LayersControl", () => {
     })
     await userEvent.click(layersControlButton.get())
 
-    expect(screen.queryByLabelText("Show pull-backs")).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole("switch", { name: "Show pull-backs" })
+    ).not.toBeInTheDocument()
   })
 
   test("pull-back layer control is shown when user is in test group", async () => {
@@ -99,7 +101,56 @@ describe("LayersControl", () => {
     )
     await userEvent.click(layersControlButton.get())
 
-    expect(screen.getByLabelText("Show pull-backs")).toBeInTheDocument()
+    expect(
+      screen.getByRole("switch", { name: "Show pull-backs" })
+    ).toBeInTheDocument()
+  })
+
+  test("clicking pull-back layer control toggles pull-back layer", async () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
+
+    const mockToggle = jest.fn()
+
+    render(
+      <LayersControl
+        tileType="base"
+        setTileType={jest.fn()}
+        pullbackLayerEnabled={false}
+        togglePullbackLayerEnabled={mockToggle}
+      />,
+      {
+        wrapper: mapWrapper,
+      }
+    )
+    await userEvent.click(layersControlButton.get())
+    await userEvent.click(
+      screen.getByRole("switch", { name: "Show pull-backs" })
+    )
+
+    expect(mockToggle).toHaveBeenCalledTimes(1)
+  })
+
+  test("enter key toggles pull-back layer", async () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
+
+    const mockToggle = jest.fn()
+
+    render(
+      <LayersControl
+        tileType="base"
+        setTileType={jest.fn()}
+        pullbackLayerEnabled={false}
+        togglePullbackLayerEnabled={mockToggle}
+      />,
+      {
+        wrapper: mapWrapper,
+      }
+    )
+    await userEvent.click(layersControlButton.get())
+    screen.getByRole("switch", { name: "Show pull-backs" }).focus()
+    await userEvent.keyboard("{Enter}")
+
+    expect(mockToggle).toHaveBeenCalledTimes(1)
   })
 
   test("when pull-back layer is enabled, shows pill", async () => {
