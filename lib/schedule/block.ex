@@ -145,6 +145,20 @@ defmodule Schedule.Block do
     end
   end
 
+  @spec pull_back_place_id(t() | nil) :: String.t() | nil
+  def pull_back_place_id(block) do
+    with true <- !is_nil(block),
+         last_piece <- List.last(block.pieces),
+         true <- !is_nil(last_piece),
+         piece_trips <- last_piece.trips,
+         last_piece_trip <- List.last(piece_trips),
+         true <- !is_nil(last_piece_trip) do
+      last_piece_trip.end_place
+    else
+      _ -> nil
+    end
+  end
+
   @spec overload?(id()) :: boolean
   def overload?(block_id), do: String.match?(block_id, overload_id_regex())
 

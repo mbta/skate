@@ -32,12 +32,12 @@ defmodule Concentrate.Consumer.VehiclePositions do
   def handle_events(events, _from, state) do
     groups = List.last(events)
 
+    timepoint_names_by_id = Schedule.timepoint_names_by_id()
+
     all_vehicles =
       groups
       |> vehicle_positions_from_groups()
-      |> Enum.map(&Vehicle.from_vehicle_position/1)
-
-    timepoint_names_by_id = Schedule.timepoint_names_by_id()
+      |> Enum.map(fn vp -> Vehicle.from_vehicle_position(vp, timepoint_names_by_id) end)
 
     by_route = Vehicles.group_by_route(all_vehicles, timepoint_names_by_id)
     shuttles = Enum.filter(all_vehicles, & &1.is_shuttle)
