@@ -6,24 +6,30 @@ defmodule Skate.MigrateTest do
   describe "start_link/1" do
     test "when all migrations run successfully, starts & exits successfully" do
       test_pid = self()
+      set_log_level(:info)
 
-      pid =
-        start_supervised!(
-          {Skate.Migrate,
-           sync_migrate_fn: fn _dir ->
-             send(test_pid, :sync_migrations_ran)
-             :ok
-           end,
-           async_migrate_fn: fn _dir ->
-             send(test_pid, :async_migrations_ran)
-             :ok
-           end}
-        )
+      {pid, log} =
+        with_log(fn ->
+          start_supervised!(
+            {Skate.Migrate,
+             sync_migrate_fn: fn _dir ->
+               send(test_pid, :sync_migrations_ran)
+               :ok
+             end,
+             async_migrate_fn: fn _dir ->
+               send(test_pid, :async_migrations_ran)
+               :ok
+             end}
+          )
+        end)
 
       assert :ok = await_stopped(pid)
 
       assert_receive :sync_migrations_ran
       assert_receive :async_migrations_ran
+
+      assert log =~ "synchronous migrations starting"
+      assert log =~ "synchronous migrations finished"
     end
 
     test "when sync migrations fail, raises an error and async migrations are not run" do
