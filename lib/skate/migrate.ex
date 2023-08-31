@@ -1,6 +1,9 @@
 defmodule Skate.Migrate do
   @moduledoc """
-  GenServer which runs on startup to run Ecto migrations. All migrations stored in the "migrations" directory are run during init. Migrations stored in the "async_migrations" directory will be run after the regular migrations complete and will only log a warning on failure.
+  GenServer which runs on startup to run Ecto migrations. All migrations
+  stored in the "migrations" directory are run during init. Migrations stored
+  in the "async_migrations" directory will be run after the regular migrations
+  complete and will only log a warning on failure.
   """
   use GenServer, restart: :transient
   require Logger
