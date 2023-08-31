@@ -15,7 +15,7 @@ defmodule Skate.Migrate do
   @impl GenServer
   def init(opts) do
     Logger.info("#{__MODULE__} synchronous migrations starting")
-    Keyword.get(opts, :run_sync_migrations, default_migrator_fn("migrations")).()
+    Keyword.get(opts, :sync_migrate_fn, &default_migrate_fn/1).("migrations")
 
     Logger.info("#{__MODULE__} synchronous migrations finished")
     {:ok, opts, {:continue, :async_migrations}}
@@ -28,9 +28,9 @@ defmodule Skate.Migrate do
     try do
       Keyword.get(
         opts,
-        :run_async_migrations,
-        default_migrator_fn("async_migrations")
-      ).()
+        :async_migrate_fn,
+        &default_migrate_fn/1
+      ).("async_migrations")
 
       Logger.info("#{__MODULE__} async migrations finished")
     rescue
@@ -42,8 +42,8 @@ defmodule Skate.Migrate do
     {:stop, :normal, opts}
   end
 
-  @spec default_migrator_fn(String.t()) :: function()
-  defp default_migrator_fn(migration_directory) do
+  @spec default_migrate_fn(String.t()) :: function()
+  defp default_migrate_fn(migration_directory) do
     fn ->
       Ecto.Migrator.run(
         Skate.Repo,

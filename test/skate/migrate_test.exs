@@ -10,11 +10,11 @@ defmodule Skate.MigrateTest do
       pid =
         start_supervised!(
           {Skate.Migrate,
-           run_sync_migrations: fn ->
+           sync_migrate_fn: fn _dir ->
              send(test_pid, :sync_migrations_ran)
              :ok
            end,
-           run_async_migrations: fn ->
+           async_migrate_fn: fn _dir ->
              send(test_pid, :async_migrations_ran)
              :ok
            end}
@@ -32,10 +32,10 @@ defmodule Skate.MigrateTest do
       assert_raise RuntimeError, ~r/migration error/, fn ->
         start_supervised!(
           {Skate.Migrate,
-           run_sync_migrations: fn ->
+           sync_migrate_fn: fn _dir ->
              raise RuntimeError, "migration error"
            end,
-           run_async_migrations: fn ->
+           async_migrate_fn: fn _dir ->
              send(test_pid, :async_migrations_ran)
              :ok
            end}
@@ -51,10 +51,10 @@ defmodule Skate.MigrateTest do
       pid =
         start_supervised!(
           {Skate.Migrate,
-           run_sync_migrations: fn ->
+           sync_migrate_fn: fn _dir ->
              send(test_pid, :sync_migrations_ran)
            end,
-           run_async_migrations: fn ->
+           async_migrate_fn: fn _dir ->
              raise RuntimeError, "migration error"
            end}
         )
@@ -73,7 +73,7 @@ defmodule Skate.MigrateTest do
       {result, log} =
         with_log(fn ->
           Skate.Migrate.handle_continue(:async_migrations,
-            run_async_migrations: fn -> :ok end
+            async_migrate_fn: fn _dir -> :ok end
           )
         end)
 
@@ -88,7 +88,7 @@ defmodule Skate.MigrateTest do
       {result, log} =
         with_log(fn ->
           Skate.Migrate.handle_continue(:async_migrations,
-            run_async_migrations: fn -> raise RuntimeError, "migration error" end
+            async_migrate_fn: fn _dir -> raise RuntimeError, "migration error" end
           )
         end)
 
