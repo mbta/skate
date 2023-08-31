@@ -5,7 +5,10 @@ import React, { ReactNode } from "react"
 import { MapContainer } from "react-leaflet"
 import { LayersControl } from "../../../../src/components/map/controls/layersControl"
 import userEvent from "@testing-library/user-event"
-import { layersControlButton } from "../../../testHelpers/selectors/components/map"
+import {
+  layersControlButton,
+  pullbacksSwitch,
+} from "../../../testHelpers/selectors/components/map"
 import getTestGroups from "../../../../src/userTestGroups"
 
 jest.mock("userTestGroups", () => ({
@@ -80,9 +83,7 @@ describe("LayersControl", () => {
     })
     await userEvent.click(layersControlButton.get())
 
-    expect(
-      screen.queryByRole("switch", { name: "Show pull-backs" })
-    ).not.toBeInTheDocument()
+    expect(pullbacksSwitch.query()).not.toBeInTheDocument()
   })
 
   test("pull-back layer control is shown when user is in test group", async () => {
@@ -101,9 +102,7 @@ describe("LayersControl", () => {
     )
     await userEvent.click(layersControlButton.get())
 
-    expect(
-      screen.getByRole("switch", { name: "Show pull-backs" })
-    ).toBeInTheDocument()
+    expect(pullbacksSwitch.get()).toBeInTheDocument()
   })
 
   test("clicking pull-back layer control toggles pull-back layer", async () => {
@@ -123,9 +122,7 @@ describe("LayersControl", () => {
       }
     )
     await userEvent.click(layersControlButton.get())
-    await userEvent.click(
-      screen.getByRole("switch", { name: "Show pull-backs" })
-    )
+    await userEvent.click(pullbacksSwitch.get())
 
     expect(mockToggle).toHaveBeenCalledTimes(1)
   })
@@ -147,7 +144,7 @@ describe("LayersControl", () => {
       }
     )
     await userEvent.click(layersControlButton.get())
-    screen.getByRole("switch", { name: "Show pull-backs" }).focus()
+    pullbacksSwitch.get().focus()
     await userEvent.keyboard("{Enter}")
 
     expect(mockToggle).toHaveBeenCalledTimes(1)
