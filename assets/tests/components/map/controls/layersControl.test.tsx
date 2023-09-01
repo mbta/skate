@@ -167,4 +167,22 @@ describe("LayersControl", () => {
 
     expect(screen.getByText("1")).toBeInTheDocument()
   })
+
+  test("when pull-back layer is disabled, doesn't show pill", async () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
+
+    render(
+      <LayersControl
+        tileType="base"
+        setTileType={jest.fn()}
+        pullbackLayerEnabled={false}
+        togglePullbackLayerEnabled={jest.fn()}
+      />,
+      {
+        wrapper: mapWrapper,
+      }
+    )
+
+    expect(screen.queryByText("1")).not.toBeInTheDocument()
+  })
 })
