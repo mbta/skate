@@ -37,7 +37,7 @@ import { createControlComponent } from "@react-leaflet/core"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { Shape, Stop } from "../schedule"
+import { DirectionId, Shape, Stop } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import {
@@ -72,6 +72,7 @@ export interface Props {
   allowStreetView?: boolean
   streetViewInitiallyEnabled?: boolean
   allowFullscreen?: boolean
+  stopCardDirection?: DirectionId
   includeStopCard?: boolean
   stations?: Stop[] | null
 }
@@ -470,6 +471,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
                     <RouteStopMarkers
                       stops={stops}
                       zoomLevel={zoomLevel}
+                      direction={props.stopCardDirection}
                       includeStopCard={
                         props.includeStopCard && inTestGroup(TestGroups.MapBeta)
                       }

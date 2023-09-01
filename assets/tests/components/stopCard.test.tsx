@@ -24,6 +24,32 @@ describe("StopCard", () => {
     ).not.toBeInTheDocument()
   })
 
+  test("doesn't render direction when none is present", () => {
+    const stop = stopFactory.build()
+
+    render(<StopCard stop={stop} />)
+
+    expect(screen.queryByText(/Inbound/)).not.toBeInTheDocument()
+
+    expect(screen.queryByText(/Outbound/)).not.toBeInTheDocument()
+  })
+
+  test("render inbound direction", () => {
+    const stop = stopFactory.build()
+
+    render(<StopCard stop={stop} direction={1} />)
+
+    expect(screen.getByText(/Inbound/)).toBeInTheDocument()
+  })
+
+  test("render outbound direction", () => {
+    const stop = stopFactory.build()
+
+    render(<StopCard stop={stop} direction={0} />)
+
+    expect(screen.getByText(/Outbound/)).toBeInTheDocument()
+  })
+
   test("when routes are present, renders the routes", () => {
     const stop = stopFactory.build({
       routes: [{ type: 1, name: "Red", id: "Red" }],

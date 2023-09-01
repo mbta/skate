@@ -9,7 +9,7 @@ import { joinClasses } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
-import { Shape, Stop } from "../schedule"
+import { DirectionId, Shape, Stop, StopId } from "../schedule"
 import { UserSettings } from "../userSettings"
 
 import garages, { Garage } from "../data/garages"
@@ -257,110 +257,69 @@ export const StationMarker = React.memo(
   }
 )
 
-/**
- * @returns a list of stops at unique locations. Where a platform stop is at the exact location of a station, the list will include the station.
- */
-const uniqueStopsByLocation = (stops: Stop[]) => {
-  const locationToStop: Record<string, Stop> = {}
-  stops.forEach((stop) => {
-    const key = `${stop.lat}_${stop.lon}`
-    const existingStopAtLocation = locationToStop[key]
-    if (
-      existingStopAtLocation === undefined ||
-      stop.locationType === LocationType.Station
-    ) {
-      locationToStop[key] = stop
-    }
-  })
-  return Object.values(locationToStop)
-}
-
-export const StopMarkers = ({
+export const RouteStopMarkers = ({
   stops,
   zoomLevel,
+  direction,
   includeStopCard,
-  zoomLevelConfig = {},
 }: {
   stops: Stop[]
   zoomLevel: number
+  direction?: DirectionId
   includeStopCard?: boolean
-  zoomLevelConfig?: {
-    minStopZoom?: number
-    minStationZoom?: number
-  }
 }): JSX.Element => {
-  const { minStopZoom = 17, minStationZoom = 15 } = zoomLevelConfig
+  const seenStopIds = new Set<StopId>()
+  // Keep the first occurrence of each stop when there are duplicates
+  const uniqueStops: Stop[] = stops.flatMap((stop) => {
+    if (!seenStopIds.has(stop.id)) {
+      seenStopIds.add(stop.id)
+      return [stop]
+    }
+    return []
+  })
 
-  const uniqueStops: Stop[] = uniqueStopsByLocation(stops)
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
   return (
     <>
-      {uniqueStops.map((stop) => {
-        switch (stop.locationType) {
-          case LocationType.Station: {
-            return (
-              zoomLevel >= minStationZoom && (
-                <StationMarker
-                  key={stop.id}
-                  station={stop}
-                  zoomLevel={zoomLevel}
-                />
-              )
-            )
-          }
-          default: {
-            return (
-              zoomLevel >= minStopZoom && (
-                <StopMarkerWithInfo
-                  key={stop.id}
-                  stop={stop}
-                  includeStopCard={includeStopCard && !streetViewActive}
-                  zoomLevel={zoomLevel}
-                  interactionStatesDisabled={streetViewActive}
-                  eventHandlers={
-                    streetViewActive
-                      ? {
-                          click: () => {
-                            const url = streetViewUrl({
-                              latitude: stop.lat,
-                              longitude: stop.lon,
-                            })
-                            window.FS?.event(
-                              "User clicked map bus stop to open street view",
-                              {
-                                streetViewUrl_str: url,
-                                clickedMapAt: {
-                                  latitude_real: stop.lat,
-                                  longitude_real: stop.lon,
-                                },
-                              }
-                            )
-                            window.open(url, "_blank")
+      {uniqueStops.map((stop) =>
+        stop.locationType === LocationType.Station ? (
+          <StationMarker key={stop.id} station={stop} zoomLevel={zoomLevel} />
+        ) : (
+          <StopMarkerWithInfo
+            key={stop.id}
+            stop={stop}
+            direction={direction}
+            includeStopCard={includeStopCard && !streetViewActive}
+            zoomLevel={zoomLevel}
+            interactionStatesDisabled={streetViewActive}
+            eventHandlers={
+              streetViewActive
+                ? {
+                    click: () => {
+                      const url = streetViewUrl({
+                        latitude: stop.lat,
+                        longitude: stop.lon,
+                      })
+                      window.FS?.event(
+                        "User clicked map bus stop to open street view",
+                        {
+                          streetViewUrl_str: url,
+                          clickedMapAt: {
+                            latitude_real: stop.lat,
+                            longitude_real: stop.lon,
                           },
                         }
-                      : {}
+                      )
+                      window.open(url, "_blank")
+                    },
                   }
-                />
-              )
-            )
-          }
-        }
-      })}
+                : {}
+            }
+          />
+        )
+      )}
     </>
-  )
-}
-
-export const RouteStopMarkers = (props: {
-  stops: Stop[]
-  zoomLevel: number
-  includeStopCard?: boolean
-}): JSX.Element => {
-  return (
-    <StopMarkers
-      {...props}
-      zoomLevelConfig={{ minStopZoom: 0, minStationZoom: 0 }}
-    />
   )
 }
 

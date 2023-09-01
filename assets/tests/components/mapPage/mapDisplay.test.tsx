@@ -9,9 +9,10 @@ import MapDisplay from "../../../src/components/mapPage/mapDisplay"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import usePatternsByIdForRoute from "../../../src/hooks/usePatternsByIdForRoute"
 import { useRouteShapes } from "../../../src/hooks/useShapes"
+import { useStations } from "../../../src/hooks/useStations"
 import useVehicleForId from "../../../src/hooks/useVehicleForId"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
-import { LocationType, RouteType } from "../../../src/models/stopData"
+import { LocationType } from "../../../src/models/stopData"
 import {
   Ghost,
   VehicleId,
@@ -43,11 +44,6 @@ import { stopIcon } from "../../testHelpers/selectors/components/map/markers/sto
 import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"
 import { vehiclePropertiesCard } from "../../testHelpers/selectors/components/mapPage/vehiclePropertiesCard"
 import locationSearchResultFactory from "../../factories/locationSearchResult"
-import { useAllStops } from "../../../src/hooks/useAllStops"
-import {
-  getAllStationIcons,
-  getAllStopIcons,
-} from "../../testHelpers/selectors/components/mapPage/map"
 
 jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
@@ -73,9 +69,9 @@ jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../../src/hooks/useAllStops", () => ({
+jest.mock("../../../src/hooks/useStations", () => ({
   __esModule: true,
-  useAllStops: jest.fn(() => []),
+  useStations: jest.fn(() => []),
 }))
 
 jest.mock("../../../src/hooks/useShapes", () => ({
@@ -113,28 +109,15 @@ function mockUseVehiclesForRouteMap(map: {
   ).mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
 }
 
+function getAllStationIcons(container: HTMLElement): NodeListOf<Element> {
+  return container.querySelectorAll(".c-station-icon")
+}
+
 describe("<MapDisplay />", () => {
-  test("renders nearby stations only on zoom = 15", async () => {
-    setHtmlWidthHeightForLeafletMap()
-    ;(useAllStops as jest.Mock).mockReturnValue([
-      // 2 stations at map center should be visible
-      stopFactory.build({
-        locationType: LocationType.Station,
-      }),
-      stopFactory.build({
-        locationType: LocationType.Station,
-      }),
-      // 1 station not near center which should not be visible
-      stopFactory.build({
-        locationType: LocationType.Station,
-        lat: 42.0,
-        lon: -71.0,
-      }),
-      // 1 stop near center which should not be visible
-      stopFactory.build({
-        locationType: LocationType.Stop,
-      }),
-    ])
+  test("renders stations on zoom", async () => {
+    ;(useStations as jest.Mock).mockReturnValue(
+      stopFactory.params({ locationType: LocationType.Station }).buildList(3)
+    )
 
     const { container } = render(
       <MapDisplay
@@ -145,158 +128,12 @@ describe("<MapDisplay />", () => {
     )
 
     expect(getAllStationIcons(container)).toHaveLength(0)
-    expect(getAllStopIcons(container)).toHaveLength(0)
 
     const zoomIn = zoomInButton.get()
     await userEvent.click(zoomIn)
     await userEvent.click(zoomIn)
 
-    expect(getAllStationIcons(container)).toHaveLength(2)
-    expect(getAllStopIcons(container)).toHaveLength(0)
-  })
-
-  test("renders all nearby stations and bus stops only on zoom = 17", async () => {
-    setHtmlWidthHeightForLeafletMap()
-    ;(useAllStops as jest.Mock).mockReturnValue([
-      // 2 stations at map center which should be visible
-      stopFactory.build({
-        locationType: LocationType.Station,
-      }),
-      stopFactory.build({
-        locationType: LocationType.Station,
-      }),
-      // 1 station not near center which should not be visible
-      stopFactory.build({
-        locationType: LocationType.Station,
-        lat: 42.0,
-        lon: -71.0,
-      }),
-      // 1 stop near center which should  be visible
-      stopFactory.build({
-        locationType: LocationType.Stop,
-      }),
-      // 1 subway near center which should not be visible
-      stopFactory.build({
-        locationType: LocationType.Stop,
-        vehicleType: RouteType.Subway,
-      }),
-      // 1 stop not near center which should not be visible
-      stopFactory.build({
-        locationType: LocationType.Stop,
-        lat: 41.0,
-        lon: -72.0,
-      }),
-    ])
-
-    const { container } = render(
-      <MapDisplay
-        selectedEntity={null}
-        setSelection={jest.fn()}
-        fetchedSelectedLocation={null}
-      />
-    )
-
-    expect(getAllStationIcons(container)).toHaveLength(0)
-    expect(getAllStopIcons(container)).toHaveLength(0)
-
-    const zoomIn = zoomInButton.get()
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-
-    expect(getAllStationIcons(container)).toHaveLength(2)
-    expect(getAllStopIcons(container)).toHaveLength(1)
-  })
-
-  test("when zoomed in to see nearby stop and a vehicle is selected, only renders stops on that vehicle's route pattern once", async () => {
-    setHtmlWidthHeightForLeafletMap()
-
-    const stop = stopFactory.build({
-      locationType: LocationType.Stop,
-    })
-
-    const route = routeFactory.build()
-
-    const routePattern = routePatternFactory.build({
-      routeId: route.id,
-      shape: shapeFactory.build({ stops: [stop] }),
-    })
-
-    const selectedVehicle = randomLocationVehicle.build({
-      routeId: route.id,
-      runId: runIdFactory.build(),
-      routePatternId: routePattern.id,
-    })
-
-    mockUseVehicleForId([selectedVehicle])
-    mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
-    ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
-      [routePattern.id]: routePattern,
-    })
-    ;(useAllStops as jest.Mock).mockReturnValue([stop])
-
-    const { container } = render(
-      <MapDisplay
-        selectedEntity={{
-          type: SelectedEntityType.Vehicle,
-          vehicleId: selectedVehicle.id,
-        }}
-        setSelection={jest.fn()}
-        fetchedSelectedLocation={null}
-      />
-    )
-
-    expect(getAllStopIcons(container)).toHaveLength(1)
-
-    const zoomIn = zoomInButton.get()
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-
-    expect(getAllStopIcons(container)).toHaveLength(1)
-  })
-
-  test("when zoomed in to see nearby stop and a route pattern is selected, only renders stops on that route pattern once", async () => {
-    setHtmlWidthHeightForLeafletMap()
-
-    const stop = stopFactory.build({
-      locationType: LocationType.Stop,
-    })
-
-    const route = routeFactory.build()
-    const routePattern = routePatternFactory.build({
-      routeId: route.id,
-      shape: shapeFactory.build({ stops: [stop] }),
-    })
-
-    ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
-      [routePattern.id]: routePattern,
-    })
-    ;(useAllStops as jest.Mock).mockReturnValue([stop])
-
-    const { container } = render(
-      <MapDisplay
-        selectedEntity={{
-          type: SelectedEntityType.RoutePattern,
-          routeId: route.id,
-          routePatternId: routePattern.id,
-        }}
-        setSelection={jest.fn()}
-        fetchedSelectedLocation={null}
-      />
-    )
-
-    expect(getAllStopIcons(container)).toHaveLength(1)
-
-    const zoomIn = zoomInButton.get()
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-    await userEvent.click(zoomIn)
-
-    expect(getAllStopIcons(container)).toHaveLength(1)
+    expect(getAllStationIcons(container)).toHaveLength(3)
   })
 
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
