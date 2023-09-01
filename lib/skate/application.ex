@@ -5,8 +5,6 @@ defmodule Skate.Application do
 
   use Application
 
-  alias Skate.Migrate
-
   @impl true
   def start(_type, _args) do
     load_runtime_config()
@@ -26,17 +24,11 @@ defmodule Skate.Application do
         end ++
         [
           {Phoenix.PubSub, name: Skate.PubSub},
-          SkateWeb.Endpoint
+          SkateWeb.Endpoint,
+          Skate.Migrate
         ]
 
-    case Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor) do
-      {:ok, _pid} = link ->
-        Migrate.up()
-        link
-
-      error ->
-        error
-    end
+    Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
   end
 
   # Tell Phoenix to update the endpoint configuration

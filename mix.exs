@@ -97,11 +97,14 @@ defmodule Skate.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup", "assets.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.migrate_all": [
+        "ecto.migrate --quiet --migrations-path=priv/repo/migrations --migrations-path=priv/repo/async_migrations"
+      ],
+      "ecto.setup": ["ecto.create", "ecto.migrate_all"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "assets.setup": ["cmd npm --prefix=assets install"],
       "assets.reset": ["cmd npm --prefix=assets ci"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate_all", "test"]
     ]
   end
 end
