@@ -5,7 +5,7 @@ import "leaflet.fullscreen"
 import { MarkerProps } from "react-leaflet"
 
 import { joinClasses } from "../../../helpers/dom"
-import { Stop } from "../../../schedule"
+import { DirectionId, Stop } from "../../../schedule"
 import { MobileFriendlyTooltip } from "../../mapMarkers"
 import StopCard from "../../stopCard"
 import { ReactMarker } from "../utilities/reactMarker"
@@ -203,7 +203,11 @@ export const StopMarker = ({
   )
 }
 
-export const StopMarkerWithStopCard = ({ ...props }: StopMarkerProps) => {
+export type StopCardProps = { direction?: DirectionId }
+export const StopMarkerWithStopCard = ({
+  direction,
+  ...props
+}: StopMarkerProps & StopCardProps) => {
   const [isSelected, setIsSelected] = useState(props.selected || false)
 
   const popupHandlers: LeafletEventHandlerFnMap = {
@@ -225,7 +229,7 @@ export const StopMarkerWithStopCard = ({ ...props }: StopMarkerProps) => {
       eventHandlers={{ ...props.eventHandlers, ...popupHandlers }}
       selected={isSelected}
     >
-      <StopCard.WithSafeArea stop={props.stop} />
+      <StopCard.WithSafeArea stop={props.stop} direction={direction} />
     </StopMarker>
   )
 }
@@ -250,7 +254,7 @@ export type InteractiveStopMarkerProps = {
 export const StopMarkerWithInfo = ({
   includeStopCard = false,
   ...props
-}: StopMarkerProps & InteractiveStopMarkerProps) =>
+}: StopMarkerProps & StopCardProps & InteractiveStopMarkerProps) =>
   includeStopCard ? (
     <StopMarkerWithStopCard {...props} />
   ) : (
