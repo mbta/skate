@@ -3,4 +3,3 @@
 /assets/node_modules
 /priv
 !/priv/repo/migrations
-!/priv/repo/async_migrations
