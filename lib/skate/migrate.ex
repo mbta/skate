@@ -42,15 +42,12 @@ defmodule Skate.Migrate do
     {:stop, :normal, opts}
   end
 
-  @spec default_migrate_fn(String.t()) :: function()
   defp default_migrate_fn(migration_directory) do
-    fn ->
-      Ecto.Migrator.run(
-        Skate.Repo,
-        Ecto.Migrator.migrations_path(Skate.Repo, migration_directory),
-        :up,
-        all: true
-      )
-    end
+    Ecto.Migrator.run(
+      Skate.Repo,
+      Ecto.Migrator.migrations_path(Skate.Repo, migration_directory),
+      :up,
+      all: true
+    )
   end
 end
