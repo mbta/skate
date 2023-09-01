@@ -37,6 +37,7 @@ describe("vehicleFromData", () => {
       label: vehicleData.label,
       latitude: vehicleData.latitude,
       layoverDepartureTime: vehicleData.layover_departure_time,
+      pullbackPlaceName: vehicleData.pull_back_place_name,
       longitude: vehicleData.longitude,
       operatorId: vehicleData.operator_id,
       operatorLogonTime: dateFromEpochSeconds(vehicleData.operator_logon_time!),

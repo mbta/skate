@@ -40,6 +40,7 @@ export const randomLocationVehicle = Factory.define<VehicleInScheduledService>(
     isOffCourse: false,
     isRevenue: true,
     layoverDepartureTime: null,
+    pullbackPlaceName: "Garage",
     dataDiscrepancies: [
       dataDiscrepancyFactory.build({
         attribute: "trip_id",
