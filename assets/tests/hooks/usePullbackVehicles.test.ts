@@ -33,7 +33,7 @@ describe("usePullbacks", () => {
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
   })
 
-  test("does not subscribe to the pull-backs channel when the subscribe argument is flase", () => {
+  test("does not subscribe to the pull-backs channel when the subscribe argument is false", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
