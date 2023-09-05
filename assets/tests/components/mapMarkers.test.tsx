@@ -5,6 +5,7 @@ import {
   RouteShape,
   RouteStopMarkers,
   StationMarker,
+  StopMarkers,
   TrainVehicleMarker,
   VehicleMarker,
 } from "../../src/components/mapMarkers"
@@ -19,6 +20,10 @@ import { LocationType } from "../../src/models/stopData"
 import useDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
 import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import { StopMarkerWithInfo } from "../../src/components/map/markers/stopMarker"
+import {
+  getAllStationIcons,
+  getAllStopIcons,
+} from "../testHelpers/selectors/components/mapPage/map"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -80,10 +85,9 @@ describe("StopMarkerWithInfo", () => {
     mockFullStoryEvent()
 
     const { container } = renderInMap(
-      <StopMarkerWithInfo stop={stop} direction={0} includeStopCard={true} />
+      <StopMarkerWithInfo stop={stop} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
-    expect(screen.getByText("Outbound")).toBeInTheDocument()
     expect(window.FS!.event).toHaveBeenCalledWith("Bus stop card opened")
   })
 })
@@ -119,6 +123,53 @@ describe("StationMarker", () => {
   })
 })
 
+describe("StopMarkers", () => {
+  test("When zoom = 14, renders no markers ", () => {
+    const { container } = renderInMap(
+      <StopMarkers stops={[stop, station]} zoomLevel={14} />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(0)
+    expect(getAllStopIcons(container)).toHaveLength(0)
+  })
+  test("When zoom = 15, renders station markers only", () => {
+    const { container } = renderInMap(
+      <StopMarkers stops={[stop, station]} zoomLevel={15} />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(0)
+  })
+
+  test("When zoom = 17, renders station and stop markers", () => {
+    const { container } = renderInMap(
+      <StopMarkers stops={[stop, station]} zoomLevel={17} />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(1)
+  })
+
+  test("When a stop has the same location as a station, renders the station", () => {
+    const { container } = renderInMap(
+      <StopMarkers
+        stops={[
+          stop,
+          stopFactory.build({
+            lat: stop.lat,
+            lon: stop.lon,
+            locationType: LocationType.Station,
+          }),
+        ]}
+        zoomLevel={17}
+      />
+    )
+
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(0)
+  })
+})
+
 describe("RouteStopMarkers", () => {
   test("Returns station and stop markers", () => {
     const { container } = renderInMap(
@@ -129,12 +180,23 @@ describe("RouteStopMarkers", () => {
     expect(container.querySelectorAll(".c-vehicle-map__stop")).toHaveLength(1)
   })
 
-  test("Deduplicates list by stop id", () => {
+  test("When a stop has the same location as a station, renders the station", () => {
     const { container } = renderInMap(
-      <RouteStopMarkers stops={[stop, stop]} zoomLevel={13} />
+      <RouteStopMarkers
+        stops={[
+          stop,
+          stopFactory.build({
+            lat: stop.lat,
+            lon: stop.lon,
+            locationType: LocationType.Station,
+          }),
+        ]}
+        zoomLevel={13}
+      />
     )
 
-    expect(container.querySelectorAll(".c-vehicle-map__stop")).toHaveLength(1)
+    expect(getAllStationIcons(container)).toHaveLength(1)
+    expect(getAllStopIcons(container)).toHaveLength(0)
   })
 })
 

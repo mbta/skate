@@ -1,11 +1,10 @@
 import Leaflet from "leaflet"
-import React, { useContext, useEffect, useState } from "react"
-import { Pane } from "react-leaflet"
+import React, { useContext, useEffect, useMemo, useState } from "react"
+import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
 import useSocket from "../../hooks/useSocket"
-import { useStations } from "../../hooks/useStations"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { isVehicle, filterVehicles } from "../../models/vehicle"
 import { Ghost, Vehicle, VehicleId } from "../../realtime"
@@ -14,6 +13,7 @@ import {
   RouteId,
   RoutePattern,
   RoutePatternId,
+  Stop,
 } from "../../schedule"
 import {
   RoutePatternIdentifier,
@@ -33,6 +33,7 @@ import {
   LocationMarker,
   RouteShape,
   RouteStopMarkers,
+  StopMarkers,
   VehicleMarker,
 } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
@@ -44,6 +45,8 @@ import { setTileType } from "../../state/mapLayersState"
 import { TileType } from "../../tilesetUrls"
 import { LayersControl } from "../map/controls/layersControl"
 import { LocationSearchResult } from "../../models/locationSearchResult"
+import { useAllStops } from "../../hooks/useAllStops"
+import { LocationType, RouteType } from "../../models/stopData"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -206,7 +209,6 @@ const RoutePatternLayers = ({
                     <RouteStopMarkers
                       stops={routePattern.shape.stops || []}
                       includeStopCard={true}
-                      direction={routePattern.directionId}
                       zoomLevel={zoomLevel}
                     />
                   </Pane>
@@ -227,11 +229,13 @@ const SelectedVehicleDataLayers = ({
   routePatterns,
   selectVehicle,
   setStateClasses,
+  stops,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   setStateClasses: (classes: string | undefined) => void
+  stops: Stop[]
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -256,6 +260,10 @@ const SelectedVehicleDataLayers = ({
     selectedVehicleOrGhost &&
     isVehicle(selectedVehicleOrGhost) &&
     !selectedVehicleOrGhost.isShuttle
+
+  const routePatternStopIdSet = new Set(
+    (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
+  )
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
@@ -292,7 +300,14 @@ const SelectedVehicleDataLayers = ({
           )}
         </>
       )}
-
+      <NearbyStops
+        stops={
+          // remove stops that are being rendered separately as part of the route shape
+          showShapeAndStops
+            ? stops.filter((s) => !routePatternStopIdSet.has(s.id))
+            : stops
+        }
+      />
       <InterruptibleFollower
         onUpdate={drawerOffsetAutoCenter}
         positions={position}
@@ -307,11 +322,13 @@ const SelectedRouteDataLayers = ({
   routePatterns,
   selectVehicle,
   setStateClasses,
+  stops,
 }: {
   routePatternIdentifier: RoutePatternIdentifier
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   setStateClasses: (classes: string | undefined) => void
+  stops: Stop[]
 }) => {
   const selectedRoutePattern: RoutePattern | undefined = routePatterns
     ? routePatterns[routePatternIdentifier.routePatternId]
@@ -322,6 +339,10 @@ const SelectedRouteDataLayers = ({
       ) || []
     : []
   const followerState = useInteractiveFollowerState()
+
+  const routePatternStopIdSet = new Set(
+    (selectedRoutePattern?.shape?.stops || []).map((s) => s.id)
+  )
 
   useEffect(() => {
     setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
@@ -343,6 +364,9 @@ const SelectedRouteDataLayers = ({
         onUpdate={drawerOffsetAutoCenter}
         positions={routeShapePositions}
         {...followerState}
+      />
+      <NearbyStops
+        stops={stops.filter((s) => !routePatternStopIdSet.has(s.id))}
       />
     </>
   )
@@ -373,7 +397,7 @@ const SelectedLocationDataLayer = ({
   )
 }
 
-const SelectionDataLayers = ({
+const DataLayers = ({
   selectedEntity,
   setSelection,
   setStateClasses,
@@ -388,6 +412,8 @@ const SelectionDataLayers = ({
     selectedEntity,
     fetchedSelectedLocation
   )
+
+  const stops = useAllStops() || []
 
   const routePatternIdentifier =
     routePatternIdentifierForSelection(liveSelectedEntity)
@@ -434,6 +460,7 @@ const SelectionDataLayers = ({
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
           setStateClasses={setStateClasses}
+          stops={stops}
         />
       )
     case SelectedEntityType.RoutePattern:
@@ -446,18 +473,62 @@ const SelectionDataLayers = ({
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
           setStateClasses={setStateClasses}
+          stops={stops}
         />
       )
     case SelectedEntityType.Location:
       return (
-        <SelectedLocationDataLayer
-          location={liveSelectedEntity.location}
-          setStateClasses={setStateClasses}
-        />
+        <>
+          <NearbyStops stops={stops} />
+          <SelectedLocationDataLayer
+            location={liveSelectedEntity.location}
+            setStateClasses={setStateClasses}
+          />
+        </>
       )
     default:
-      return <MapElementsNoSelection setStateClasses={setStateClasses} />
+      return (
+        <>
+          <NearbyStops stops={stops} />
+          <MapElementsNoSelection setStateClasses={setStateClasses} />
+        </>
+      )
   }
+}
+
+const NearbyStops = ({ stops }: { stops: Stop[] }) => {
+  const stationsAndBus = useMemo(
+    () =>
+      stops.filter(
+        (s) =>
+          s.locationType === LocationType.Station ||
+          s.vehicleType === RouteType.Bus
+      ),
+    [stops]
+  )
+  const [nearbyStops, setNearbyStops] = useState<Stop[]>([])
+  const map = useMap()
+  map.addEventListener("moveend", () => {
+    const bounds = map.getBounds()
+    // Only show nearby stations or bus stops
+    setNearbyStops(
+      stationsAndBus.filter((s) => bounds.contains([s.lat, s.lon]))
+    )
+  })
+
+  return (
+    <ZoomLevelWrapper>
+      {(zoomLevel) => {
+        return (
+          <StopMarkers
+            stops={nearbyStops}
+            zoomLevel={zoomLevel}
+            includeStopCard={true}
+          />
+        )
+      }}
+    </ZoomLevelWrapper>
+  )
 }
 
 const MapDisplay = ({
@@ -471,8 +542,6 @@ const MapDisplay = ({
   streetViewInitiallyEnabled?: boolean
   fetchedSelectedLocation: LocationSearchResult | null
 }) => {
-  const stations = useStations()
-
   const [stateClasses, setStateClasses] = useState<string | undefined>(
     undefined
   )
@@ -490,7 +559,6 @@ const MapDisplay = ({
       vehicles={[]}
       allowStreetView={true}
       includeStopCard={true}
-      stations={stations}
       shapes={[]}
       stateClasses={stateClasses}
       streetViewInitiallyEnabled={streetViewInitiallyEnabled}
@@ -502,7 +570,7 @@ const MapDisplay = ({
           paddingBottomRight: [50, 20],
         }}
       >
-        <SelectionDataLayers
+        <DataLayers
           selectedEntity={selectedEntity}
           setSelection={setSelection}
           setStateClasses={setStateClasses}
