@@ -605,7 +605,7 @@ defmodule Realtime.ServerTest do
     end
 
     test "returns empty data when the route is not found", %{ets: ets} do
-      assert Server.lookup({ets, {:route_id, "3"}}) == []
+      assert Server.lookup({ets, {:route_id, "non-existent-1 "}}) == []
     end
 
     test "fetches all vehicles, on routes and shuttles", %{ets: ets} do
