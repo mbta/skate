@@ -4,7 +4,12 @@ defmodule Report do
   """
   @type t :: module()
 
-  @report_modules [Report.UserSettings, Report.UserNamesAndUuids, Report.UserConfigurations]
+  @report_modules [
+    Report.UserSettings,
+    Report.UserNamesAndUuids,
+    Report.UserConfigurations,
+    Report.NotificationsCountEstimate
+  ]
 
   @callback run() :: {:ok, [map()]} | :error
   @callback short_name() :: String.t()
