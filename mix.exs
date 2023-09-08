@@ -71,6 +71,7 @@ defmodule Skate.MixProject do
       {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"},
       {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
       {:logster, "~> 1.0"},
+      {:oban, "~> 2.15"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.3", only: :dev},

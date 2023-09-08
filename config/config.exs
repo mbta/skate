@@ -119,6 +119,11 @@ config :skate, Skate.WarmUp,
   max_attempts: 20,
   seconds_between_attempts: 1
 
+config :skate, Oban,
+  repo: Skate.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
+
 config :laboratory,
   features: [
     {:late_view, "Late View", "Grants access to experimental Late View"}
