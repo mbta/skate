@@ -9,7 +9,12 @@ import { joinClasses } from "../helpers/dom"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
-import { directionName, isLoggedOut, isVehicle } from "../models/vehicle"
+import {
+  directionName,
+  isActivelyPullingBack,
+  isLoggedOut,
+  isVehicle,
+} from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { Ghost, Vehicle } from "../realtime"
 import { RouteVariantName } from "./routeVariantName"
@@ -50,8 +55,10 @@ export const VehicleStatusIcon = ({
 export const VehicleRouteDirection = ({
   vehicle,
   className,
+  includePullbackInformation,
   ...props
 }: VehicleOrGhostProp &
+  IncludePullbackInformationType &
   ComponentPropsWithoutRef<"output">): React.ReactElement => {
   const route = useRoute(vehicle.routeId)
   return (
@@ -62,6 +69,10 @@ export const VehicleRouteDirection = ({
     >
       {isVehicle(vehicle) && isLoggedOut(vehicle)
         ? "No direction available"
+        : includePullbackInformation &&
+          isVehicle(vehicle) &&
+          isActivelyPullingBack(vehicle)
+        ? "Pulling back"
         : directionName(vehicle, route)}
     </output>
   )
@@ -71,17 +82,24 @@ export type VehicleRouteSummaryEventProps = {
   onRouteVariantNameClicked?: MouseEventHandler<HTMLElement>
 }
 
+export type IncludePullbackInformationType = {
+  includePullbackInformation?: boolean
+}
+
 export type VehicleRouteSummaryProps = VehicleOrGhostProp &
-  VehicleRouteSummaryEventProps
+  VehicleRouteSummaryEventProps &
+  IncludePullbackInformationType
 
 export const VehicleRouteSummary = ({
   vehicle,
   onRouteVariantNameClicked,
+  includePullbackInformation,
 }: VehicleRouteSummaryProps): React.ReactElement => (
   <div className="c-vehicle-route-summary">
     <VehicleRouteDirection
       vehicle={vehicle}
       className="c-vehicle-route-summary__direction label font-xs-reg"
+      includePullbackInformation={includePullbackInformation}
     />
 
     {onRouteVariantNameClicked ? (
@@ -94,11 +112,15 @@ export const VehicleRouteSummary = ({
           "font-m-semi",
         ])}
       >
-        <RouteVariantName vehicle={vehicle} />
+        <RouteVariantName
+          vehicle={vehicle}
+          includePullbackInformation={includePullbackInformation}
+        />
       </button>
     ) : (
       <RouteVariantName
         vehicle={vehicle}
+        includePullbackInformation={includePullbackInformation}
         className="c-vehicle-route-summary__route-variant headsign font-m-semi"
       />
     )}

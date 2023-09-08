@@ -26,16 +26,18 @@ const ScheduleAdherenceStatusIcon = () => (
 
 const ScheduleAdherenceDescription = ({
   vehicle,
+  includePullbackInformation,
   className,
   ...props
 }: {
   vehicle: VehicleInScheduledService
+  includePullbackInformation?: boolean
 } & ComponentPropsWithoutRef<"output">) => (
   <output
     className={joinClasses(["c-schedule-adherence-status", className])}
     {...props}
   >
-    {humanReadableScheduleAdherence(vehicle)}
+    {humanReadableScheduleAdherence(vehicle, includePullbackInformation)}
   </output>
 )
 
@@ -66,12 +68,14 @@ export interface ScheduleAdherenceProps
   extends ComponentPropsWithoutRef<"output"> {
   vehicle: Vehicle | Ghost
   title?: string
+  includePullbackInformation?: boolean
 }
 
 export const ScheduleAdherence = ({
   vehicle,
   title,
   className,
+  includePullbackInformation,
 }: ScheduleAdherenceProps) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
 
@@ -88,6 +92,7 @@ export const ScheduleAdherence = ({
           <ScheduleAdherenceDescription
             vehicle={vehicle}
             className="label font-xs-semi title-case"
+            includePullbackInformation={includePullbackInformation}
           />
           &nbsp;
           <ScheduleAdherenceMetric

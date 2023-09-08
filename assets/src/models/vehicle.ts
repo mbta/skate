@@ -35,6 +35,9 @@ export const isRecentlyLoggedOn = (
   return timeDiffInMs <= thirtyMinutesInMs
 }
 
+export const isActivelyPullingBack = (vehicle: Vehicle): boolean =>
+  vehicle.endOfTripType === "pull_back" && vehicle.stopStatus.stopId === null
+
 export const directionName = (
   vehicle: Vehicle | Ghost,
   route: Route | null

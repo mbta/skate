@@ -115,6 +115,33 @@ describe("<VehicleRouteSummary />", () => {
       ).toBeVisible()
     })
 
+    test("a pulling back vehicle, should show pull back information when flag is set", () => {
+      const vehicle = vehicleFactory.build({
+        endOfTripType: "pull_back",
+        stopStatus: { stopId: null, stopName: null },
+        pullbackPlaceName: "Some Garage",
+      })
+
+      render(
+        <VehicleRouteSummary
+          vehicle={vehicle}
+          includePullbackInformation={true}
+        />
+      )
+
+      expect(
+        screen.getByRole("status", { name: /Route Variant Name/i })
+      ).toHaveTextContent(vehicle.pullbackPlaceName!)
+
+      expect(
+        screen.getByRole("status", { name: /Route Direction/i })
+      ).toHaveTextContent(/pulling back/i)
+
+      expect(
+        screen.getByRole("img", { name: /vehicle status icon/i })
+      ).toBeVisible()
+    })
+
     test("a ghost bus, should show direction and route variant name", () => {
       const route = routeFactory.build()
       const ghost = ghostFactory.build({ routeId: route.id })

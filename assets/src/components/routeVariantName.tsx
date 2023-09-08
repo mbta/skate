@@ -1,14 +1,22 @@
 import React, { ComponentPropsWithoutRef } from "react"
 import { useRoute } from "../contexts/routesContext"
 import { joinClasses } from "../helpers/dom"
-import { isLoggedOut, isVehicle } from "../models/vehicle"
+import {
+  isActivelyPullingBack,
+  isLoggedOut,
+  isVehicle,
+} from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 
 export const RouteVariantName = ({
   vehicle,
   className,
+  includePullbackInformation,
   ...props
-}: { vehicle: Vehicle | Ghost } & ComponentPropsWithoutRef<"output">) => {
+}: {
+  vehicle: Vehicle | Ghost
+  includePullbackInformation?: boolean
+} & ComponentPropsWithoutRef<"output">) => {
   const route = useRoute(vehicle.routeId)
 
   const { routeId, viaVariant, headsign } = vehicle
@@ -26,6 +34,10 @@ export const RouteVariantName = ({
         "Shuttle"
       ) : isVehicle(vehicle) && isLoggedOut(vehicle) ? (
         "Logged Off"
+      ) : includePullbackInformation &&
+        isVehicle(vehicle) &&
+        isActivelyPullingBack(vehicle) ? (
+        <>{vehicle.pullbackPlaceName}</>
       ) : (
         <>
           <output
