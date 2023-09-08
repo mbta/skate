@@ -67,6 +67,55 @@ defmodule Skate.Factory do
     }
   end
 
+  def gtfs_realtime_enhanced_trip_descriptor_factory do
+    %{
+      "direction_id" => 0,
+      "overload_offset" => -6,
+      "route_id" => "Green-E",
+      "schedule_relationship" => "SCHEDULED",
+      "start_date" => "20180815",
+      "start_time" => nil,
+      "tm_trip_id" => "37165437-X"
+    }
+  end
+
+  def gtfs_realtime_enhanced_vehicle_position_factory do
+    %{
+      "block_id" => "Q238-135",
+      "capacity" => 18,
+      "congestion_level" => nil,
+      "current_status" => "STOPPED_AT",
+      "current_stop_sequence" => 670,
+      "load" => 12,
+      "location_source" => "samsara",
+      "occupancy_percentage" => 0.67,
+      "occupancy_status" => "FEW_SEATS_AVAILABLE",
+      "operator" => %{
+        "id" => build(:operator_id),
+        "logon_time" => 1_534_340_301,
+        "first_name" => build(:first_name),
+        "last_name" => "EVANS"
+      },
+      "position" => %{
+        "bearing" => 135,
+        "latitude" => 42.32951,
+        "longitude" => -71.11109,
+        "odometer" => 5.1,
+        "speed" => 2.9796
+      },
+      "run_id" => "128-1007",
+      "stop_id" => "70257",
+      "timestamp" => 1_534_340_406,
+      "trip" => build(:gtfs_realtime_enhanced_trip_descriptor),
+      "vehicle" => %{
+        "id" => "G-10098",
+        "label" => "3823-3605",
+        "license_plate" => nil
+      },
+      "revenue" => false
+    }
+  end
+
   def piece_factory do
     %Schedule.Piece{
       schedule_id: "schedule",
