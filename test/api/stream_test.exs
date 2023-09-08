@@ -68,6 +68,8 @@ defmodule Api.StreamTest do
           "id" => "vehicle"
         }
 
+        Conn.chunk(conn, "event: ignores unexpected events\n\n")
+        Conn.chunk(conn, "ignored garbled data\n\n")
         Conn.chunk(conn, "event: reset\ndata: #{Jason.encode!([data])}\n\n")
         Conn.chunk(conn, "event: add\ndata: #{Jason.encode!(data)}\n\n")
         Conn.chunk(conn, "event: update\ndata: #{Jason.encode!(data)}\n\n")

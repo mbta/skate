@@ -91,24 +91,31 @@ defmodule Api.Stream do
   end
 
   def handle_events(events, _from, state) do
-    {:noreply, Enum.map(events, &parse_event/1), state}
+    {:noreply, events |> Enum.map(&parse_event/1) |> Enum.reject(&is_nil(&1)), state}
   end
 
   @spec api_key_header(String.t() | nil) :: [{String.t(), String.t()}]
   defp api_key_header(nil), do: []
   defp api_key_header(<<key::binary>>), do: [{"x-api-key", key}]
 
-  @spec parse_event(SSES.Event.t()) :: Event.t()
+  @spec parse_event(SSES.Event.t()) :: Event.t() | nil
   defp parse_event(%SSES.Event{data: data, event: event}) do
-    %Event{
-      data: JsonApi.parse(data),
-      event: event(event)
-    }
+    case event(event) do
+      nil ->
+        nil
+
+      event_atom ->
+        %Event{
+          data: JsonApi.parse(data),
+          event: event_atom
+        }
+    end
   end
 
-  @spec event(String.t()) :: Event.event()
+  @spec event(String.t()) :: Event.event() | nil
   defp event("reset"), do: :reset
   defp event("add"), do: :add
   defp event("update"), do: :update
   defp event("remove"), do: :remove
+  defp event(_), do: nil
 end
