@@ -27,10 +27,10 @@ defmodule Skate.Oban.CleanUpNotifications do
         from(notification_indexed in Notifications.Db.Notification,
           where:
             notification_indexed.id in subquery(
-              from(notification_limit in Notifications.Db.Notification,
-                where: notification_limit.inserted_at < ^oldest_date,
+              from(notification_limited in Notifications.Db.Notification,
+                where: notification_limited.inserted_at < ^oldest_date,
                 limit: ^limit,
-                select: notification_limit.id
+                select: notification_limited.id
               )
             )
         )
