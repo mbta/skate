@@ -21,19 +21,53 @@
   }
 }
 
-.c-layers-control__layers_list {
+.c-layers-control__pill {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 22px;
+  height: 13px;
+  border-radius: 16px;
+
+  background-color: $color-strawberry-500;
+
+  text-align: center;
+  color: $white;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: var(--font-weight-semi);
+  user-select: none;
+}
+
+.c-layers-control__content {
   position: fixed;
   right: 55px;
   border-radius: 8px;
-  .list-group {
-    margin: 0rem;
-    .list-group-item {
-      display: flex;
-      gap: 0.5rem;
-    }
-  }
+
+  background-color: $white;
+
   font-family: $font-family;
   font-size: var(--font-size-m);
 
-  background-color: $white;
+  .list-group {
+    margin: 0;
+
+    .list-group-item {
+      padding-top: 0;
+      padding-bottom: 0;
+
+      div {
+        * {
+          padding-top: 0.5rem;
+          padding-bottom: 0.5rem;
+        }
+
+        h2 {
+          margin: 0;
+          font-size: var(--font-size-m);
+          font-weight: var(--font-weight-bold);
+        }
+      }
+    }
+  }
 }

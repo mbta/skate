@@ -1,4 +1,5 @@
 defmodule Realtime.Vehicle do
+  alias Schedule.Gtfs.Timepoint
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, Stop}
@@ -43,6 +44,7 @@ defmodule Realtime.Vehicle do
           is_revenue: boolean(),
           layover_departure_time: Util.Time.timestamp() | nil,
           block_is_active: boolean(),
+          pull_back_place_name: String.t() | nil,
           sources: MapSet.t(String.t()),
           data_discrepancies: [DataDiscrepancy.t()],
           stop_status: stop_status(),
@@ -115,6 +117,7 @@ defmodule Realtime.Vehicle do
     :is_revenue,
     :layover_departure_time,
     :block_is_active,
+    :pull_back_place_name,
     :sources,
     :stop_status,
     :timepoint_status,
@@ -126,8 +129,8 @@ defmodule Realtime.Vehicle do
     data_discrepancies: []
   ]
 
-  @spec from_vehicle_position(map()) :: t()
-  def from_vehicle_position(vehicle_position) do
+  @spec from_vehicle_position(map(), Timepoint.timepoint_names_by_id()) :: t()
+  def from_vehicle_position(vehicle_position, timepoint_names_by_id) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Schedule.trip/1)
     block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
@@ -154,6 +157,11 @@ defmodule Realtime.Vehicle do
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
     stop_name = stop_name(vehicle_position, stop_id)
+
+    pull_back_place_name =
+      block
+      |> Block.pull_back_place_id()
+      |> (fn id -> Timepoint.pretty_name_for_id(timepoint_names_by_id, id) end).()
 
     timepoint_status =
       TimepointStatus.timepoint_status(
@@ -212,6 +220,7 @@ defmodule Realtime.Vehicle do
       is_revenue: VehiclePosition.revenue(vehicle_position),
       layover_departure_time: VehiclePosition.layover_departure_time(vehicle_position),
       block_is_active: active_block?(is_off_course, block, now_fn.()),
+      pull_back_place_name: pull_back_place_name,
       sources: VehiclePosition.sources(vehicle_position),
       data_discrepancies: data_discrepancies,
       stop_status: %{
@@ -330,8 +339,8 @@ defmodule Realtime.Vehicle do
           Run.id() | nil,
           Stop.id() | nil
         ) :: end_of_trip_type()
-  def end_of_trip_type(block, trip, run_id, stop_id)
-      when block == nil or trip == nil or stop_id == nil or run_id == nil do
+  def end_of_trip_type(block, trip, run_id, _stop_id)
+      when block == nil or trip == nil or run_id == nil do
     :another_trip
   end
 

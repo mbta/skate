@@ -12,6 +12,11 @@ defmodule SkateWeb.VehiclesChannel do
     {:ok, %{data: shuttles}, socket}
   end
 
+  def join_authenticated("vehicles:pull_backs:all", _message, socket) do
+    pull_backs = Duration.log_duration(Server, :subscribe_to_all_pull_backs, [])
+    {:ok, %{data: pull_backs}, socket}
+  end
+
   def join_authenticated("vehicles:route:" <> route_id, _message, socket) do
     vehicles_and_ghosts = Duration.log_duration(Server, :subscribe_to_route, [route_id])
     {:ok, %{data: vehicles_and_ghosts}, socket}
@@ -95,6 +100,7 @@ defmodule SkateWeb.VehiclesChannel do
 
   @spec event_name(Server.lookup_key()) :: String.t()
   defp event_name({_ets, :all_shuttles}), do: "shuttles"
+  defp event_name({_ets, :all_pull_backs}), do: "pull_backs"
   defp event_name({_ets, {:search, _}}), do: "search"
   defp event_name({_ets, _}), do: "vehicles"
 end

@@ -13,7 +13,8 @@ defmodule Schedule.BlockTest do
     schedule_id: "schedule",
     route_id: nil,
     start_time: 1,
-    end_time: 3
+    end_time: 3,
+    start_place: "garage"
   }
 
   @trip1 %Trip{
@@ -59,7 +60,8 @@ defmodule Schedule.BlockTest do
     schedule_id: "schedule",
     route_id: nil,
     start_time: 17,
-    end_time: 19
+    end_time: 19,
+    end_place: "garage"
   }
 
   @piece build(:piece,
@@ -183,6 +185,24 @@ defmodule Schedule.BlockTest do
 
     test "returns the last trip if pulling back" do
       assert %Trip{id: "t2"} = Block.trip_at_time(@block, 18)
+    end
+  end
+
+  describe "pull_back_place_id/1" do
+    test "handles nil" do
+      assert nil |> Block.pull_back_place_id() |> is_nil()
+    end
+
+    test "returns end place of last trip" do
+      assert Block.pull_back_place_id(@block) == "garage"
+    end
+
+    test "handles empty pieces list" do
+      assert %{@block | pieces: []} |> Block.pull_back_place_id() |> is_nil()
+    end
+
+    test "handles piece without trips" do
+      assert %{@block | pieces: [%{@piece | trips: []}]} |> Block.pull_back_place_id() |> is_nil()
     end
   end
 

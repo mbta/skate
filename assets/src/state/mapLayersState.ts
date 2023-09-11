@@ -5,6 +5,7 @@ import { TileType } from "../tilesetUrls"
 export interface MapLayersState {
   searchMap: {
     tileType: TileType
+    pullbackLayerEnabled: boolean
   }
   shuttleMap: {
     tileType: TileType
@@ -14,11 +15,12 @@ export interface MapLayersState {
   }
 }
 
-type MapKey = keyof MapLayersState
+export type MapKey = keyof MapLayersState
 
 export const initialMapLayersState: MapLayersState = {
   searchMap: {
     tileType: "base",
+    pullbackLayerEnabled: false,
   },
   shuttleMap: {
     tileType: "base",
@@ -39,11 +41,23 @@ export const setTileType = (
   tileType: TileType
 ): SetTileTypeAction => ({
   type: "SET_TILE_TYPE",
-  key: key,
+  key,
   payload: tileType,
 })
 
-export type MapLayersAction = SetTileTypeAction
+interface TogglePullbackLayerAction {
+  type: "TOGGLE_PULLBACK_LAYER"
+  key: MapKey
+}
+
+export const togglePullbackLayer = (
+  key: MapKey
+): TogglePullbackLayerAction => ({
+  type: "TOGGLE_PULLBACK_LAYER",
+  key,
+})
+
+export type MapLayersAction = SetTileTypeAction | TogglePullbackLayerAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -57,6 +71,16 @@ export const reducer = (
         ...state,
         [action.key]: { ...state[action.key], tileType: action.payload },
       }
+    case "TOGGLE_PULLBACK_LAYER":
+      return action.key === "searchMap"
+        ? {
+            ...state,
+            [action.key]: {
+              ...state[action.key],
+              pullbackLayerEnabled: !state[action.key].pullbackLayerEnabled,
+            },
+          }
+        : state
   }
 
   return state

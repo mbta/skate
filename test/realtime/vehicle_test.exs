@@ -68,7 +68,8 @@ defmodule Realtime.VehicleTest do
             build(:gtfs_stoptime, stop_id: "18513", time: 2, timepoint_id: "tp2")
           ],
           start_time: 0,
-          end_time: 2
+          end_time: 2,
+          end_place: "place"
         )
 
   describe "from_vehicle_position" do
@@ -121,7 +122,7 @@ defmodule Realtime.VehicleTest do
         operator_last_name: operator_last_name
       } = vehicle_position = @vehicle_position
 
-      result = Vehicle.from_vehicle_position(vehicle_position)
+      result = Vehicle.from_vehicle_position(vehicle_position, %{})
 
       assert %Vehicle{
                id: "y1261",
@@ -151,6 +152,7 @@ defmodule Realtime.VehicleTest do
                is_revenue: true,
                layover_departure_time: nil,
                block_is_active: true,
+               pull_back_place_name: "place",
                sources: %MapSet{},
                data_discrepancies: [
                  %DataDiscrepancy{
@@ -198,7 +200,7 @@ defmodule Realtime.VehicleTest do
 
     test "handles unknown trips" do
       reassign_env(:realtime, :trip_fn, fn _ -> nil end)
-      result = Vehicle.from_vehicle_position(@vehicle_position)
+      result = Vehicle.from_vehicle_position(@vehicle_position, %{})
       assert %Vehicle{} = result
     end
 
@@ -214,7 +216,7 @@ defmodule Realtime.VehicleTest do
       trip_id = @trip.id
 
       assert %Vehicle{id: ^vehicle_id, trip_id: ^trip_id, route_pattern_id: nil} =
-               Vehicle.from_vehicle_position(@vehicle_position)
+               Vehicle.from_vehicle_position(@vehicle_position, %{})
     end
   end
 
@@ -579,6 +581,14 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", "middle") == :pull_back
     end
 
+    test "when finished with the last trip of the block but still logged in, returns :pull_back",
+         %{
+           last_trip_of_block: last_trip_of_block,
+           block: block
+         } do
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :pull_back
+    end
+
     test "defaults to :another_trip if we're missing data", %{
       last_trip_of_block: last_trip_of_block,
       block: block
@@ -586,7 +596,6 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.end_of_trip_type(nil, last_trip_of_block, "run2", "middle") == :another_trip
       assert Vehicle.end_of_trip_type(block, nil, "run2", "middle") == :another_trip
       assert Vehicle.end_of_trip_type(block, last_trip_of_block, nil, "middle") == :another_trip
-      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :another_trip
     end
 
     test "doesn't consider it a swing off if the next trip's run is nil", %{
