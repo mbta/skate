@@ -80,7 +80,7 @@ describe("vehicleLabel", () => {
     ).toEqual("SW-OFF")
   })
 
-  test("displays 'PULL-B' for a pulling back vehicle, regardless of settings", () => {
+  test("displays 'Pull-B' for a pulling back vehicle, regardless of settings", () => {
     const pullingBackVehicle: VehicleInScheduledService = {
       ...vehicle,
       endOfTripType: "pull_back",
@@ -90,12 +90,12 @@ describe("vehicleLabel", () => {
       vehicleLabel(pullingBackVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       } as UserSettings)
-    ).toEqual("PULL-B")
+    ).toEqual("Pull-B")
     expect(
       vehicleLabel(pullingBackVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       } as UserSettings)
-    ).toEqual("PULL-B")
+    ).toEqual("Pull-B")
   })
 
   test("displays 'ADDED' for an overloaded vehicle given the run number setting", () => {

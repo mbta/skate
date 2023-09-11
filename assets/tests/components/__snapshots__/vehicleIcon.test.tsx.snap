@@ -220,7 +220,7 @@ exports[`renders extended labels 1`] = `
         x="0"
         y={31}
       >
-        PULL-B
+        Pull-B
       </text>
       <path
         className="c-vehicle-icon__triangle"
