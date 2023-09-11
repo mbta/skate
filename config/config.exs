@@ -121,8 +121,16 @@ config :skate, Skate.WarmUp,
 
 config :skate, Oban,
   repo: Skate.Repo,
-  plugins: [Oban.Plugins.Pruner],
-  queues: [default: 10]
+  queues: [default: 10],
+  plugins: [
+    Oban.Plugins.Pruner,
+    {
+      Oban.Plugins.Cron,
+      crontab: [
+        {"*/5 * * * *", Skate.Oban.CleanUpNotifications, args: %{"cutoff_days" => 10}}
+      ]
+    }
+  ]
 
 config :laboratory,
   features: [
