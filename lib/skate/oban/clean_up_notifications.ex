@@ -8,15 +8,28 @@ defmodule Skate.Oban.CleanUpNotifications do
   @seconds_per_day 24 * 60 * 60
 
   @impl Oban.Worker
-  def perform(%Oban.Job{}) do
-    oldest_date = DateTime.now!("Etc/UTC") |> DateTime.add(-100 * @seconds_per_day)
+  def perform(%Oban.Job{args: args}) do
+    cutoff_days = Map.get(args, "cutoff_days", 100)
+    limit = Map.get(args, "limit", 100)
 
-    from(n in Notifications.Db.Notification,
-      where: n.created_at < ^oldest_date,
-      limit: 100
-    )
-    |> Skate.Repo.delete_all()
+    oldest_date = DateTime.utc_now() |> DateTime.add(-cutoff_days * @seconds_per_day)
 
-    :ok
+    query =
+      from(notification_indexed in Notifications.Db.Notification,
+        where:
+          notification_indexed.id in subquery(
+            from(notification_limit in Notifications.Db.Notification,
+              where: notification_limit.inserted_at < ^oldest_date,
+              limit: ^limit,
+              select: notification_limit.id
+            )
+          )
+      )
+
+    {count, nil} =
+      query
+      |> Skate.Repo.delete_all()
+
+    {:ok, count}
   end
 end
