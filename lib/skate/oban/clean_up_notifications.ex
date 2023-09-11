@@ -3,6 +3,8 @@ defmodule Skate.Oban.CleanUpNotifications do
   Cleans up arg:`limit` records older than arg:`cutoff_days` days.
   """
 
+  require Logger
+
   use Oban.Worker,
     queue: :default,
     unique: [period: 300]
@@ -18,21 +20,26 @@ defmodule Skate.Oban.CleanUpNotifications do
 
     oldest_date = DateTime.utc_now() |> DateTime.add(-cutoff_days * @seconds_per_day)
 
-    query =
-      from(notification_indexed in Notifications.Db.Notification,
-        where:
-          notification_indexed.id in subquery(
-            from(notification_limit in Notifications.Db.Notification,
-              where: notification_limit.inserted_at < ^oldest_date,
-              limit: ^limit,
-              select: notification_limit.id
-            )
-          )
-      )
+    Logger.notice("#{__MODULE__} starting cleanup")
 
-    {count, nil} =
-      query
-      |> Skate.Repo.delete_all()
+    {time, {count, nil}} =
+      :timer.tc(fn ->
+        from(notification_indexed in Notifications.Db.Notification,
+          where:
+            notification_indexed.id in subquery(
+              from(notification_limit in Notifications.Db.Notification,
+                where: notification_limit.inserted_at < ^oldest_date,
+                limit: ^limit,
+                select: notification_limit.id
+              )
+            )
+        )
+        |> Skate.Repo.delete_all()
+      end)
+
+    Logger.notice(
+      "#{__MODULE__} finished cleanup deleted=#{count} time_in_ms=#{time / :timer.seconds(1)}"
+    )
 
     {:ok, count}
   end
