@@ -30,7 +30,7 @@ defmodule Skate.Oban.CleanUpNotificationsTest do
       assert log =~
                ~r/#{Skate.Oban.CleanUpNotifications} finished cleanup deleted=#{total} time_in_ms=\d+/
 
-      assert 0 == Skate.Repo.one(from(n in Notification, select: count(n.id)))
+      assert 0 == Skate.Repo.aggregate(from(n in Notification), :count, :id)
     end
 
     test "limits deletions to the limit parameter" do
@@ -43,7 +43,7 @@ defmodule Skate.Oban.CleanUpNotificationsTest do
                perform_job(CleanUpNotifications, %{"limit" => limit, "cutoff_days" => -1})
 
       # Table count is `total - limit = extra`
-      assert extra == Skate.Repo.one(from(n in Notification, select: count(n.id)))
+      assert extra == Skate.Repo.aggregate(from(n in Notification), :count, :id)
     end
 
     @seconds_per_day 24 * 60 * 60
@@ -62,7 +62,7 @@ defmodule Skate.Oban.CleanUpNotificationsTest do
       assert {:ok, limit} ==
                perform_job(CleanUpNotifications, %{"cutoff_days" => cutoff_days, "limit" => limit})
 
-      assert extra == Skate.Repo.one(from(n in Notification, select: count(n.id)))
+      assert extra == Skate.Repo.aggregate(from(n in Notification), :count, :id)
     end
   end
 end
