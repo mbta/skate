@@ -1,4 +1,8 @@
 defmodule Skate.Oban.CleanUpNotifications do
+  @moduledoc """
+  Cleans up arg:`limit` records older than arg:`cutoff_days` days.
+  """
+
   use Oban.Worker,
     queue: :default,
     unique: [period: 300]
