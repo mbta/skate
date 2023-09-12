@@ -119,6 +119,20 @@ config :skate, Skate.WarmUp,
   max_attempts: 20,
   seconds_between_attempts: 1
 
+config :skate, Oban,
+  repo: Skate.Repo,
+  peer: Oban.Peers.Postgres,
+  queues: [default: 10],
+  plugins: [
+    Oban.Plugins.Pruner,
+    {
+      Oban.Plugins.Cron,
+      crontab: [
+        {"*/5 * * * *", Skate.Oban.CleanUpNotifications, args: %{"cutoff_days" => 10}}
+      ]
+    }
+  ]
+
 config :laboratory,
   features: [
     {:late_view, "Late View", "Grants access to experimental Late View"}

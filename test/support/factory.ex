@@ -281,4 +281,10 @@ defmodule Skate.Factory do
       "PlaceId" => "test_id_#{sequence(:place_id, &to_string/1)}"
     }
   end
+
+  def db_notification_factory() do
+    %Notifications.Db.Notification{
+      created_at: DateTime.utc_now() |> DateTime.to_unix()
+    }
+  end
 end
