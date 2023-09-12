@@ -8,7 +8,8 @@ defmodule Report do
     Report.UserSettings,
     Report.UserNamesAndUuids,
     Report.UserConfigurations,
-    Report.NotificationsCountEstimate
+    Report.NotificationsCountEstimate,
+    Report.NotificationsUsersCountEstimate
   ]
 
   @callback run() :: {:ok, [map()]} | :error

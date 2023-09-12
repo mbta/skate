@@ -55,7 +55,8 @@ defmodule ReportTest do
                "user_configurations" => Report.UserConfigurations,
                "user_settings" => Report.UserSettings,
                "user_names_and_uuids" => Report.UserNamesAndUuids,
-               "notifications_count_estimate" => Report.NotificationsCountEstimate
+               "notifications_count_estimate" => Report.NotificationsCountEstimate,
+               "notifications_users_count_estimate" => Report.NotificationsUsersCountEstimate
              }
     end
   end
