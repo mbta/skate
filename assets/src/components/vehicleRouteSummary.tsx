@@ -102,7 +102,8 @@ export const VehicleRouteSummary = ({
       includePullbackInformation={includePullbackInformation}
     />
 
-    {onRouteVariantNameClicked ? (
+    {onRouteVariantNameClicked &&
+    !(isVehicle(vehicle) && isActivelyPullingBack(vehicle)) ? (
       <button
         onClick={onRouteVariantNameClicked}
         className={joinClasses([
