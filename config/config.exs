@@ -121,6 +121,7 @@ config :skate, Skate.WarmUp,
 
 config :skate, Oban,
   repo: Skate.Repo,
+  peer: Oban.Peers.Postgres,
   queues: [default: 10],
   plugins: [
     Oban.Plugins.Pruner,
