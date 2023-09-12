@@ -132,6 +132,7 @@ export interface Vehicle {
   isOffCourse: boolean
   isRevenue: boolean | null
   layoverDepartureTime: number | null
+  pullbackPlaceName: string | null
   dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null

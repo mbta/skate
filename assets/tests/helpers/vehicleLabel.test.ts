@@ -62,7 +62,7 @@ const vehicle: VehicleInScheduledService = vehicleFactory.build({
 })
 
 describe("vehicleLabel", () => {
-  test("displays 'SW-OFF' for a swinging off vehicle, regardless of settings", () => {
+  test("displays 'Sw-Off' for a swinging off vehicle, regardless of settings", () => {
     const swingingOffVehicle: VehicleInScheduledService = {
       ...vehicle,
       endOfTripType: "swing_off",
@@ -72,15 +72,15 @@ describe("vehicleLabel", () => {
       vehicleLabel(swingingOffVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       } as UserSettings)
-    ).toEqual("SW-OFF")
+    ).toEqual("Sw-Off")
     expect(
       vehicleLabel(swingingOffVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       } as UserSettings)
-    ).toEqual("SW-OFF")
+    ).toEqual("Sw-Off")
   })
 
-  test("displays 'PULL-B' for a pulling back vehicle, regardless of settings", () => {
+  test("displays 'Pull-B' for a pulling back vehicle, regardless of settings", () => {
     const pullingBackVehicle: VehicleInScheduledService = {
       ...vehicle,
       endOfTripType: "pull_back",
@@ -90,12 +90,12 @@ describe("vehicleLabel", () => {
       vehicleLabel(pullingBackVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       } as UserSettings)
-    ).toEqual("PULL-B")
+    ).toEqual("Pull-B")
     expect(
       vehicleLabel(pullingBackVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       } as UserSettings)
-    ).toEqual("PULL-B")
+    ).toEqual("Pull-B")
   })
 
   test("displays 'ADDED' for an overloaded vehicle given the run number setting", () => {

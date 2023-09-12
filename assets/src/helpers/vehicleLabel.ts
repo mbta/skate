@@ -32,13 +32,13 @@ const vehicleLabel = (
     isVehicleInScheduledService(vehicleOrGhost) &&
     vehicleOrGhost.endOfTripType === "swing_off"
   ) {
-    return "SW-OFF"
+    return "Sw-Off"
   }
   if (
     isVehicleInScheduledService(vehicleOrGhost) &&
     vehicleOrGhost.endOfTripType === "pull_back"
   ) {
-    return "PULL-B"
+    return "Pull-B"
   }
 
   return runOrBusNumberLabel(vehicleOrGhost, settings)

@@ -13,6 +13,7 @@ import {
   VehicleRouteSummaryEventProps,
 } from "../vehicleRouteSummary"
 import { ScheduleAdherence } from "../scheduleAdherence"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const maxAgeToShowInSeconds = 5 * 60
 
@@ -198,43 +199,49 @@ export type VehiclePropertiesCardProps = VehicleOrGhostProp &
 const VehiclePropertiesCard = ({
   vehicleOrGhost,
   onRouteVariantNameClicked,
-}: VehiclePropertiesCardProps): React.ReactElement => (
-  <div
-    className="c-vehicle-properties-card"
-    aria-label="Vehicle Properties Card"
-  >
-    <div className="c-vehicle-properties-card__title-bar">
-      <VehicleDataStaleTime vehicleOrGhost={vehicleOrGhost} />
-      <ScheduleAdherence
-        vehicle={vehicleOrGhost}
-        title="Vehicle Schedule Adherence"
-        className="label font-xs-reg"
-      />
-    </div>
+}: VehiclePropertiesCardProps): React.ReactElement => {
+  const includePullbackInformation = inTestGroup(TestGroups.PullBackMapLayer)
 
-    <div className="c-vehicle-properties-card__summary">
-      <VehicleRouteSummary
-        vehicle={vehicleOrGhost}
-        onRouteVariantNameClicked={onRouteVariantNameClicked}
-      />
-    </div>
-
-    <div className="c-vehicle-properties-card__body">
-      <div className="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section">
-        <VehicleWorkInfo vehicleOrGhost={vehicleOrGhost} />
+  return (
+    <div
+      className="c-vehicle-properties-card"
+      aria-label="Vehicle Properties Card"
+    >
+      <div className="c-vehicle-properties-card__title-bar">
+        <VehicleDataStaleTime vehicleOrGhost={vehicleOrGhost} />
+        <ScheduleAdherence
+          vehicle={vehicleOrGhost}
+          title="Vehicle Schedule Adherence"
+          className="label font-xs-reg"
+          includePullbackInformation={includePullbackInformation}
+        />
       </div>
 
-      <div
-        className="c-vehicle-properties-card__location-info c-vehicle-properties-card__info-section"
-        hidden={isGhost(vehicleOrGhost)}
-      >
-        <VehicleNearestIntersection vehicleOrGhost={vehicleOrGhost} />
-        {isVehicle(vehicleOrGhost) && (
-          <VehicleLocationStreetViewButton vehicle={vehicleOrGhost} />
-        )}
+      <div className="c-vehicle-properties-card__summary">
+        <VehicleRouteSummary
+          vehicle={vehicleOrGhost}
+          onRouteVariantNameClicked={onRouteVariantNameClicked}
+          includePullbackInformation={includePullbackInformation}
+        />
+      </div>
+
+      <div className="c-vehicle-properties-card__body">
+        <div className="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section">
+          <VehicleWorkInfo vehicleOrGhost={vehicleOrGhost} />
+        </div>
+
+        <div
+          className="c-vehicle-properties-card__location-info c-vehicle-properties-card__info-section"
+          hidden={isGhost(vehicleOrGhost)}
+        >
+          <VehicleNearestIntersection vehicleOrGhost={vehicleOrGhost} />
+          {isVehicle(vehicleOrGhost) && (
+            <VehicleLocationStreetViewButton vehicle={vehicleOrGhost} />
+          )}
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 export default VehiclePropertiesCard
 // #endregion

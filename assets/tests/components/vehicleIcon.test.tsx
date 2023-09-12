@@ -194,13 +194,13 @@ test("renders extended labels", () => {
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Up}
-          label="SW-OFF"
+          label="Sw-Off"
           userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Up}
-          label="PULL-B"
+          label="Pull-B"
           userSettings={defaultUserSettings}
         />
       </>

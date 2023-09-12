@@ -30,6 +30,7 @@ export default Factory.define<VehicleData>(({ sequence }) => ({
   is_off_course: false,
   is_revenue: true,
   layover_departure_time: null,
+  pull_back_place_name: "Garage",
   overload_offset: null,
   sources: [],
   data_discrepancies: [

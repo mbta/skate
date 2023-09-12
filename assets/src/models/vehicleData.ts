@@ -114,6 +114,7 @@ const baseVehicleData = {
   is_off_course: boolean(),
   is_revenue: nullable(boolean()),
   layover_departure_time: nullable(number()),
+  pull_back_place_name: nullable(string()),
   sources: array(string()),
   data_discrepancies: array(DataDiscrepancyData),
   stop_status: VehicleStopStatusData,
@@ -196,6 +197,7 @@ export function vehicleFromData(
     isOffCourse: vehicleData.is_off_course,
     isRevenue: vehicleData.is_revenue,
     layoverDepartureTime: vehicleData.layover_departure_time,
+    pullbackPlaceName: vehicleData.pull_back_place_name,
     dataDiscrepancies: dataDiscrepanciesFromData(
       vehicleData.data_discrepancies
     ),

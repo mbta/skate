@@ -1,5 +1,10 @@
 import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime.d"
-import { isGhost, isLoggedOut, isVehicle } from "./vehicle"
+import {
+  isActivelyPullingBack,
+  isGhost,
+  isLoggedOut,
+  isVehicle,
+} from "./vehicle"
 import { VehicleAdherenceColorsSetting } from "../userSettings"
 
 /** Where a vehicle is relative to its schedule.
@@ -56,9 +61,12 @@ export const drawnStatus = (vehicleOrGhost: Vehicle | Ghost): DrawnStatus => {
 }
 
 export const humanReadableScheduleAdherence = (
-  vehicle: VehicleInScheduledService
+  vehicle: VehicleInScheduledService,
+  includePullbackInformation?: boolean
 ): string =>
-  vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
+  includePullbackInformation && isActivelyPullingBack(vehicle)
+    ? "Logged In"
+    : vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
     ? "Invalid"
     : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))
 

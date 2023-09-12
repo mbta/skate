@@ -21,7 +21,8 @@ $map-component-z-index: (
   }
 
   &.primary {
-    @include font-emph;
+    font-size: var(--font-size-s);
+    font-weight: 500;
   }
 
   &.secondary {

@@ -1,4 +1,4 @@
-import { describe, test, expect } from "@jest/globals"
+import { describe, test, expect, jest } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import { render, screen } from "@testing-library/react"
 import React from "react"
@@ -109,6 +109,37 @@ describe("<VehicleRouteSummary />", () => {
       expect(
         screen.getByRole("status", { name: /Route Direction/i })
       ).toHaveTextContent(/outbound/i)
+
+      expect(
+        screen.getByRole("img", { name: /vehicle status icon/i })
+      ).toBeVisible()
+    })
+
+    test("a pulling back vehicle, should show pull back information when flag is set", () => {
+      const vehicle = vehicleFactory.build({
+        endOfTripType: "pull_back",
+        stopStatus: { stopId: null, stopName: null },
+        pullbackPlaceName: "Some Garage",
+      })
+
+      render(
+        <VehicleRouteSummary
+          vehicle={vehicle}
+          includePullbackInformation={true}
+          onRouteVariantNameClicked={jest.fn()}
+        />
+      )
+
+      expect(
+        screen.getByRole("status", { name: /Route Variant Name/i })
+      ).toHaveTextContent(vehicle.pullbackPlaceName!)
+
+      // pullback location shouldn't be clickable like a route variant is
+      expect(screen.queryByRole("button")).not.toBeInTheDocument()
+
+      expect(
+        screen.getByRole("status", { name: /Route Direction/i })
+      ).toHaveTextContent(/pulling back/i)
 
       expect(
         screen.getByRole("img", { name: /vehicle status icon/i })

@@ -11,12 +11,18 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import ghostFactory from "../../factories/ghost"
 import { runIdFactory } from "../../factories/run"
 import userEvent from "@testing-library/user-event"
+import getTestGroups from "../../../src/userTestGroups"
 
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => {
     return { is_loading: true }
   }),
+}))
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
 }))
 
 describe("<VehiclePropertiesCard/>", () => {
@@ -295,6 +301,28 @@ describe("<VehiclePropertiesCard/>", () => {
       expect(screen.getByRole("cell", { name: /operator/ })).toHaveTextContent(
         "No operator logged in"
       )
+    })
+
+    test("vehicle is pulling back and user is in test group, should render pull-back information", () => {
+      ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
+
+      const vehicle = vehicleFactory.build({
+        endOfTripType: "pull_back",
+        stopStatus: { stopId: null, stopName: null },
+        pullbackPlaceName: "Some Garage",
+      })
+
+      render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
+
+      expect(
+        screen.getByRole("status", { name: /Route Variant Name/i })
+      ).toHaveTextContent("Some Garage")
+      expect(
+        screen.getByRole("status", { name: /Route Direction/i })
+      ).toHaveTextContent("Pulling back")
+      expect(
+        screen.getByRole("status", { name: /Vehicle Schedule Adherence/i })
+      ).toHaveTextContent(/logged in/i)
     })
 
     // - Ghost Bus is not Displayable on map

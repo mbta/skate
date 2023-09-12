@@ -96,6 +96,15 @@ describe("humanReadableScheduleAdherence", () => {
     } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(late)).toEqual("late")
   })
+
+  test("returns status for a vehicle that is pulling back when flag is set", () => {
+    const vehicle = vehicleFactory.build({
+      endOfTripType: "pull_back",
+      stopStatus: { stopId: null, stopName: null },
+    })
+
+    expect(humanReadableScheduleAdherence(vehicle, true)).toEqual("Logged In")
+  })
 })
 
 describe("statusClasses", () => {

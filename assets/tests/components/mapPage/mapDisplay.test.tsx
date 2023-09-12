@@ -657,7 +657,7 @@ describe("<MapDisplay />", () => {
           screen.getByRole("switch", { name: "Show pull-backs" })
         )
 
-        expect(screen.getAllByRole("button", { name: "PULL-B" })).toHaveLength(
+        expect(screen.getAllByRole("button", { name: "Pull-B" })).toHaveLength(
           1
         )
       })
@@ -700,7 +700,7 @@ describe("<MapDisplay />", () => {
           screen.getByRole("switch", { name: "Show pull-backs" })
         )
 
-        expect(screen.getAllByRole("button", { name: "PULL-B" })).toHaveLength(
+        expect(screen.getAllByRole("button", { name: "Pull-B" })).toHaveLength(
           2
         )
       })
@@ -731,7 +731,7 @@ describe("<MapDisplay />", () => {
         await userEvent.click(
           screen.getByRole("switch", { name: "Show pull-backs" })
         )
-        await userEvent.click(screen.getByRole("button", { name: "PULL-B" }))
+        await userEvent.click(screen.getByRole("button", { name: "Pull-B" }))
 
         expect(mockSetSelection).toHaveBeenCalledWith({
           type: SelectedEntityType.Vehicle,
