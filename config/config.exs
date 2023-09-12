@@ -128,7 +128,8 @@ config :skate, Oban,
     {
       Oban.Plugins.Cron,
       crontab: [
-        {"*/5 * * * *", Skate.Oban.CleanUpNotifications, args: %{"cutoff_days" => 10}}
+        {"* * * * *", Skate.Oban.CleanUpNotifications,
+         args: %{"cutoff_days" => 10, "limit" => 1000}}
       ]
     }
   ]
