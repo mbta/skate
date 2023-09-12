@@ -13,6 +13,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "prettier",
+    "plugin:storybook/recommended"
   ],
   "settings": {
     "react": {
