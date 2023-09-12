@@ -7,7 +7,10 @@ defmodule Skate.Oban.CleanUpNotifications do
 
   use Oban.Worker,
     queue: :default,
-    unique: [period: 300]
+    unique: [
+      period: :infinity,
+      states: [:scheduled, :available, :executing, :retryable]
+    ]
 
   import Ecto.Query
 
