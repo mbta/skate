@@ -1,0 +1,8 @@
+# The Skate team is the default owner for the entire codebase.
+*       @mbta/skate-developers
+
+# Lock-files managed by Dependabot do not automatically add reviewers
+mix.exs
+mix.lock
+assets/package.json
+assets/package-lock.json
