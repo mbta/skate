@@ -12,7 +12,7 @@ import { TrainVehicle, Vehicle } from "../realtime"
 import { Shape, Stop } from "../schedule"
 import { UserSettings } from "../userSettings"
 
-import garages, { Garage } from "../data/garages"
+import garages, { Garage as GarageData } from "../data/garages"
 import useDeviceSupportsHover from "../hooks/useDeviceSupportsHover"
 import { LocationType } from "../models/stopData"
 
@@ -411,7 +411,7 @@ const Garage = ({
   garage,
   zoomLevel,
 }: {
-  garage: Garage
+  garage: GarageData
   zoomLevel: number
 }) => {
   const showLabel = zoomLevel >= 16
