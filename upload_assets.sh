@@ -12,7 +12,7 @@ STATIC_DIR=$TEMP_DIR/static
 pushd "$TEMP_DIR" > /dev/null
 
 CONTAINER_ID=$(docker create $BUILD_TAG)
-docker cp $CONTAINER_ID:/home/skate/priv/static - | tar -x
+docker cp $CONTAINER_ID:/home/skate/priv/static $TEMP_DIR
 docker rm -v $CONTAINER_ID
 
 popd> /dev/null
