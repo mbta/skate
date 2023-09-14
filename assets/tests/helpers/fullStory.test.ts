@@ -1,29 +1,23 @@
-import { jest, describe, test, expect, afterEach } from "@jest/globals"
+import { describe, test, expect } from "@jest/globals"
 import { fullStoryIdentify } from "../../src/helpers/fullStory"
-
-const originalFS = window.FS
-
-afterEach(() => {
-  window.FS = originalFS
-})
+import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 
 describe("fullStoryIdentify", () => {
   test("calls identify if username is given", () => {
-    const mockIdentify = jest.fn()
-    window.FS = { identify: mockIdentify, event: jest.fn() }
+    mockFullStoryEvent()
 
     fullStoryIdentify("username")
 
-    expect(mockIdentify).toHaveBeenCalledWith("username", {
+    expect(window.FS.identify).toHaveBeenCalledWith("username", {
       displayName: "username",
     })
   })
 
   test("does not call identify if username is undefined", () => {
-    const mockIdentify = jest.fn()
-    window.FS = { identify: mockIdentify, event: jest.fn() }
+    mockFullStoryEvent()
 
     fullStoryIdentify(undefined)
-    expect(mockIdentify).not.toHaveBeenCalled()
+
+    expect(window.FS.identify).not.toHaveBeenCalled()
   })
 })
