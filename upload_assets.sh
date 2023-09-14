@@ -7,10 +7,14 @@ CACHE_CONTROL="public,max-age=31536000"
 S3_DIR=s3://mbta-dotcom/$APP
 BUILD_TAG=${1}
 TEMP_DIR=$(mktemp -d)
-STATIC_DIR=$TEMP_DIR/priv/static
+STATIC_DIR=$TEMP_DIR/static
 
 pushd "$TEMP_DIR" > /dev/null
-sh -c "docker run --rm ${BUILD_TAG} tar -c /home/skate/priv/static" | tar -x --strip-components 2
+
+CONTAINER_ID=$(docker create $BUILD_TAG)
+docker cp $CONTAINER_ID:/home/skate/priv/static - | tar -x
+docker rm -v $CONTAINER_ID
+
 popd> /dev/null
 
 # sync the digested files with a cache control header
