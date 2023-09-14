@@ -8,7 +8,7 @@ describe("fullStoryIdentify", () => {
 
     fullStoryIdentify("username")
 
-    expect(window.FS.identify).toHaveBeenCalledWith("username", {
+    expect(window.FS!.identify).toHaveBeenCalledWith("username", {
       displayName: "username",
     })
   })
@@ -18,6 +18,6 @@ describe("fullStoryIdentify", () => {
 
     fullStoryIdentify(undefined)
 
-    expect(window.FS.identify).not.toHaveBeenCalled()
+    expect(window.FS!.identify).not.toHaveBeenCalled()
   })
 })
