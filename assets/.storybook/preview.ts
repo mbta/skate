@@ -8,7 +8,12 @@ const preview: Preview = {
     controls: {
       matchers: {
         color: /(background|color)$/i,
-        date: /Date$/,
+        date: /(timestamp|Date)$/,
+      },
+    },
+    docs: {
+      toc: {
+        title: "Table of Contents",
       },
     },
   },
