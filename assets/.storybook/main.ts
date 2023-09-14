@@ -4,7 +4,7 @@ const config: StorybookConfig = {
   stories: [
     {
       titlePrefix: "Skate",
-      directory: "../src/stories/skate-components",
+      directory: "../stories/skate-components",
     },
   ],
 
