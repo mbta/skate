@@ -1,132 +1,132 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import alertIconSvg from "../../static/images/icon-alert.svg"
+import alertIconSvg from "../../static/images/icon-alert.svg?raw"
 // @ts-ignore
-import bangIconSvg from "../../static/images/icon-bang.svg"
+import bangIconSvg from "../../static/images/icon-bang.svg?raw"
 // @ts-ignore
-import blueLineIconSvg from "../../static/images/icon-blue-line.svg"
+import blueLineIconSvg from "../../static/images/icon-blue-line.svg?raw"
 // @ts-ignore
-import busFrontIconSvg from "../../static/images/icon-bus-front.svg"
+import busFrontIconSvg from "../../static/images/icon-bus-front.svg?raw"
 // @ts-ignore
-import busRearIconSvg from "../../static/images/icon-bus-rear.svg"
+import busRearIconSvg from "../../static/images/icon-bus-rear.svg?raw"
 // @ts-ignore
-import chevronLeftIconSvg from "../../static/images/icon-chevron-left.svg"
+import chevronLeftIconSvg from "../../static/images/icon-chevron-left.svg?raw"
 // @ts-ignore
-import closeXIconSvg from "../../static/images/icon-close-x.svg"
+import closeXIconSvg from "../../static/images/icon-close-x.svg?raw"
 // @ts-ignore
-import collapseIconSvg from "../../static/images/icon-caret-left.svg"
+import collapseIconSvg from "../../static/images/icon-caret-left.svg?raw"
 // @ts-ignore
-import diamondTurnRightSvg from "../../static/images/icon-diamond-turn-right-solid.svg"
+import diamondTurnRightSvg from "../../static/images/icon-diamond-turn-right-solid.svg?raw"
 // @ts-ignore
-import doubleChevronLeftIconSvg from "../../static/images/icon-double-chevron-left.svg"
+import doubleChevronLeftIconSvg from "../../static/images/icon-double-chevron-left.svg?raw"
 // @ts-ignore
-import doubleChevronRightIconSvg from "../../static/images/icon-double-chevron-right.svg"
+import doubleChevronRightIconSvg from "../../static/images/icon-double-chevron-right.svg?raw"
 // @ts-ignore
-import expandIconSvg from "../../static/images/icon-caret-right.svg"
+import expandIconSvg from "../../static/images/icon-caret-right.svg?raw"
 // @ts-ignore
-import circleXIconSvg from "../../static/images/icon-circle-x.svg"
+import circleXIconSvg from "../../static/images/icon-circle-x.svg?raw"
 // @ts-ignore
-import circleCheckSvg from "../../static/images/icon-circle-check.svg"
+import circleCheckSvg from "../../static/images/icon-circle-check.svg?raw"
 // @ts-ignore
-import commuterRailIconSvg from "../../static/images/icon-commuter-rail.svg"
+import commuterRailIconSvg from "../../static/images/icon-commuter-rail.svg?raw"
 // @ts-ignore
-import crowdingIconSvg from "../../static/images/icon-crowding.svg"
+import crowdingIconSvg from "../../static/images/icon-crowding.svg?raw"
 // @ts-ignore
-import ellipsisIconSvg from "../../static/images/icon-ellipsis.svg"
+import ellipsisIconSvg from "../../static/images/icon-ellipsis.svg?raw"
 // @ts-ignore
-import filledCircleIconSvg from "../../static/images/icon-filled-circle.svg"
+import filledCircleIconSvg from "../../static/images/icon-filled-circle.svg?raw"
 // @ts-ignore
-import ghostIconSvg from "../../static/images/icon-ghost.svg"
+import ghostIconSvg from "../../static/images/icon-ghost.svg?raw"
 // @ts-ignore
-import ghostSwingIconSvg from "../../static/images/icon-ghost-swing.svg"
+import ghostSwingIconSvg from "../../static/images/icon-ghost-swing.svg?raw"
 // @ts-ignore
-import greenLineBIconSvg from "../../static/images/icon-green-line-b.svg"
+import greenLineBIconSvg from "../../static/images/icon-green-line-b.svg?raw"
 // @ts-ignore
-import greenLineCIconSvg from "../../static/images/icon-green-line-c.svg"
+import greenLineCIconSvg from "../../static/images/icon-green-line-c.svg?raw"
 // @ts-ignore
-import greenLineDIconSvg from "../../static/images/icon-green-line-d.svg"
+import greenLineDIconSvg from "../../static/images/icon-green-line-d.svg?raw"
 // @ts-ignore
-import greenLineEIconSvg from "../../static/images/icon-green-line-e.svg"
+import greenLineEIconSvg from "../../static/images/icon-green-line-e.svg?raw"
 // @ts-ignore
-import greenLineIconSvg from "../../static/images/icon-green-line.svg"
+import greenLineIconSvg from "../../static/images/icon-green-line.svg?raw"
 // @ts-ignore
-import hamburgerIconSvg from "../../static/images/icon-hamburger.svg"
+import hamburgerIconSvg from "../../static/images/icon-hamburger.svg?raw"
 // @ts-ignore
-import hiddenIconSvg from "../../static/images/icon-hidden.svg"
+import hiddenIconSvg from "../../static/images/icon-hidden.svg?raw"
 // @ts-ignore
-import ladderIconSvg from "../../static/images/icon-ladder.svg"
+import ladderIconSvg from "../../static/images/icon-ladder.svg?raw"
 // @ts-ignore
-import lateIconSvg from "../../static/images/icon-late.svg"
+import lateIconSvg from "../../static/images/icon-late.svg?raw"
 // @ts-ignore
-import lateViewGhostIconSvg from "../../static/images/icon-late-view-ghost.svg"
+import lateViewGhostIconSvg from "../../static/images/icon-late-view-ghost.svg?raw"
 // @ts-ignore
-import lateViewGhostWithWaiverIconSvg from "../../static/images/icon-late-view-ghost-with-waiver.svg"
+import lateViewGhostWithWaiverIconSvg from "../../static/images/icon-late-view-ghost-with-waiver.svg?raw"
 // @ts-ignore
-import loadingIconSvg from "../../static/images/icon-loading.svg"
+import loadingIconSvg from "../../static/images/icon-loading.svg?raw"
 // @ts-ignore
-import locationDotIconSvg from "../../static/images/icon-location-dot.svg"
+import locationDotIconSvg from "../../static/images/icon-location-dot.svg?raw"
 // @ts-ignore
-import logoIconSvg from "../../static/images/icon-logo.svg"
+import logoIconSvg from "../../static/images/icon-logo.svg?raw"
 // @ts-ignore
-import mapIconSvg from "../../static/images/icon-map.svg"
+import mapIconSvg from "../../static/images/icon-map.svg?raw"
 // @ts-ignore
-import mapLayersIconSvg from "../../static/images/icon-map-layers.svg"
+import mapLayersIconSvg from "../../static/images/icon-map-layers.svg?raw"
 // @ts-ignore
-import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
+import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg?raw"
 // @ts-ignore
-import minusIconSvg from "../../static/images/icon-minus.svg"
+import minusIconSvg from "../../static/images/icon-minus.svg?raw"
 // @ts-ignore
-import notificationBellIconSvg from "../../static/images/icon-notification-bell.svg"
+import notificationBellIconSvg from "../../static/images/icon-notification-bell.svg?raw"
 // @ts-ignore
-import oldCloseIconSvg from "../../static/images/icon-old-close-x.svg"
+import oldCloseIconSvg from "../../static/images/icon-old-close-x.svg?raw"
 // @ts-ignore
-import orangeLineIconSvg from "../../static/images/icon-orange-line.svg"
+import orangeLineIconSvg from "../../static/images/icon-orange-line.svg?raw"
 // @ts-ignore
-import plusIconSvg from "../../static/images/icon-plus.svg"
+import plusIconSvg from "../../static/images/icon-plus.svg?raw"
 // @ts-ignore
-import plusThinIconSvg from "../../static/images/icon-plus-thin.svg"
+import plusThinIconSvg from "../../static/images/icon-plus-thin.svg?raw"
 // @ts-ignore
-import questionMarkIconSvg from "../../static/images/icon-question-mark.svg"
+import questionMarkIconSvg from "../../static/images/icon-question-mark.svg?raw"
 // @ts-ignore
-import redLineIconSvg from "../../static/images/icon-red-line.svg"
+import redLineIconSvg from "../../static/images/icon-red-line.svg?raw"
 // @ts-ignore
-import refreshIconSvg from "../../static/images/icon-refresh.svg"
+import refreshIconSvg from "../../static/images/icon-refresh.svg?raw"
 // @ts-ignore
-import reverseIconSvg from "../../static/images/icon-reverse-normal.svg"
+import reverseIconSvg from "../../static/images/icon-reverse-normal.svg?raw"
 // @ts-ignore
-import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.svg"
+import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.svg?raw"
 // @ts-ignore
-import saveIconSvg from "../../static/images/icon-save.svg"
+import saveIconSvg from "../../static/images/icon-save.svg?raw"
 // @ts-ignore
-import searchIconSvg from "../../static/images/icon-search.svg"
+import searchIconSvg from "../../static/images/icon-search.svg?raw"
 // @ts-ignore
-import searchMapIconSvg from "../../static/images/icon-search-map.svg"
+import searchMapIconSvg from "../../static/images/icon-search-map.svg?raw"
 // @ts-ignore
-import settingsIconSvg from "../../static/images/icon-settings.svg"
+import settingsIconSvg from "../../static/images/icon-settings.svg?raw"
 // @ts-ignore
-import speechBubbleIconSvg from "../../static/images/icon-speech-bubble.svg"
+import speechBubbleIconSvg from "../../static/images/icon-speech-bubble.svg?raw"
 // @ts-ignore
-import swingIconSvg from "../../static/images/icon-swing.svg"
+import swingIconSvg from "../../static/images/icon-swing.svg?raw"
 // @ts-ignore
-import toggleOffIconSvg from "../../static/images/icon-toggle-off.svg"
+import toggleOffIconSvg from "../../static/images/icon-toggle-off.svg?raw"
 // @ts-ignore
-import toggleOnIconSvg from "../../static/images/icon-toggle-on.svg"
+import toggleOnIconSvg from "../../static/images/icon-toggle-on.svg?raw"
 // @ts-ignore
-import triangleDownIconSvg from "../../static/images/icon-triangle-down.svg"
+import triangleDownIconSvg from "../../static/images/icon-triangle-down.svg?raw"
 // @ts-ignore
-import triangleUpIconSvg from "../../static/images/icon-triangle-up.svg"
+import triangleUpIconSvg from "../../static/images/icon-triangle-up.svg?raw"
 // @ts-ignore
-import triangleUpLargeIconSvg from "../../static/images/icon-triangle-up-large.svg"
+import triangleUpLargeIconSvg from "../../static/images/icon-triangle-up-large.svg?raw"
 // @ts-ignore
-import unhiddenIconSvg from "../../static/images/icon-unhidden.svg"
+import unhiddenIconSvg from "../../static/images/icon-unhidden.svg?raw"
 // @ts-ignore
-import unreadIconSvg from "../../static/images/icon-unread.svg"
+import unreadIconSvg from "../../static/images/icon-unread.svg?raw"
 // @ts-ignore
-import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
+import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg?raw"
 // @ts-ignore
-import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
+import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg?raw"
 // @ts-ignore
-import walkingIconSvg from "../../static/images/icon-walking.svg"
+import walkingIconSvg from "../../static/images/icon-walking.svg?raw"
 
 /* eslint-enable @typescript-eslint/ban-ts-comment */
 import { svgIcon } from "./svgIcon"

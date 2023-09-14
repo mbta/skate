@@ -136,7 +136,7 @@
       "tsx"
     ],
     "moduleNameMapper": {
-      "\\.(svg)$": "<rootDir>/tests/testHelpers/svgStubber.js",
+      "\\.(svg)(\\?.*)?$": "<rootDir>/tests/testHelpers/svgStubber.js",
       "\\.(css|less)$": "identity-obj-proxy"
     },
     "setupFilesAfterEnv": [
