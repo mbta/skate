@@ -55,3 +55,4 @@ node_modules
 .envrc
 
 .DS_Store
+assets/build-storybook.log
