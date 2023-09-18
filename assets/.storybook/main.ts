@@ -26,9 +26,9 @@ const config: StorybookConfig = {
   webpackFinal(config, _) {
     config.module?.rules?.push({
       test: /\.svg$/,
-      type: "asset/source"
+      type: "asset/source",
     })
     return config
-  }
+  },
 }
 export default config
