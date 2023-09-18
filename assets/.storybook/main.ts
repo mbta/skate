@@ -23,5 +23,12 @@ const config: StorybookConfig = {
     autodocs: true,
     defaultName: "Documentation",
   },
+  webpackFinal(config, _) {
+    config.module?.rules?.push({
+      test: /\.svg$/,
+      type: "asset/source"
+    })
+    return config
+  }
 }
 export default config
