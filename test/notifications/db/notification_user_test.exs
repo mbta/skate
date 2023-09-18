@@ -1,9 +1,10 @@
 defmodule Notifications.Db.NotificationUserTest do
   use Skate.DataCase
 
+  import Skate.Factory
+
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.Db.User, as: DbUser
 
   describe "NotificationUser" do
     test "can be saved to the database" do
@@ -21,9 +22,7 @@ defmodule Notifications.Db.NotificationUserTest do
         })
         |> Skate.Repo.insert()
 
-      {:ok, user} =
-        DbUser.changeset(%DbUser{}, %{username: "charlie"})
-        |> Skate.Repo.insert()
+      user = insert(:user)
 
       Skate.Repo.insert!(%DbNotificationUser{
         notification_id: notification.id,

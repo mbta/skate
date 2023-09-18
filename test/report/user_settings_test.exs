@@ -1,20 +1,16 @@
 defmodule Report.UserSettingsTest do
   use Skate.DataCase
 
-  import Skate.Repo
+  import Skate.Factory, only: [insert: 2]
+  import Skate.Repo, only: [insert!: 2]
 
-  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
   describe "run/0" do
     test "returns database contents" do
       username = "username"
 
-      user =
-        insert!(
-          DbUser.changeset(%DbUser{}, %{username: username}),
-          returning: true
-        )
+      user = insert(:user, %{username: username})
 
       insert!(
         DbUserSettings.changeset(%DbUserSettings{}, %{

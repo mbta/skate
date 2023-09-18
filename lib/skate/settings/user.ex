@@ -35,7 +35,7 @@ defmodule Skate.Settings.User do
 
   @spec upsert(username :: String.t(), email :: String.t()) :: DbUser.t()
   @doc """
-  Update the user with the given email if one exists, otherwise insert a new one.
+  Update or create the user with the given email.
   """
   def upsert(username, email) when is_binary(email) and email != "" do
     email = String.downcase(email)
