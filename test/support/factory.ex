@@ -287,12 +287,4 @@ defmodule Skate.Factory do
       created_at: DateTime.utc_now() |> DateTime.to_unix()
     }
   end
-
-  def user_factory do
-    %Skate.Settings.Db.User{
-      uuid: Ecto.UUID.generate(),
-      email: sequence("test@mbta.com"),
-      username: sequence("test_user")
-    }
-  end
 end
