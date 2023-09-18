@@ -1,5 +1,5 @@
 {
-  "include": ["src", "tests"],
+  "include": ["src", "tests", "stories"],
   "exclude": ["node_modules", "cypress"],
   "files": [
     "src/skate.d.ts",

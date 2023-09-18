@@ -14,9 +14,9 @@ import { ReactMarker } from "../utilities/reactMarker"
  * Specific variants that the `StopIcon` can render
  */
 export enum StopIconType {
-  Small,
-  Medium,
-  Large,
+  Small = "Small",
+  Medium = "Medium",
+  Large = "Large",
 }
 
 /**
@@ -60,13 +60,18 @@ export const stopIconSizeFromStopIconType = (
   }
 }
 
-export const StopIcon = ({
-  type,
-  selected = false,
-}: {
+interface StopIconProps {
+  /**
+   * What icon variant should the icon be?
+   */
   type: StopIconType
+  /**
+   * Is this icon currently selected?
+   */
   selected?: boolean
-}) => {
+}
+
+export const StopIcon = ({ type, selected = false }: StopIconProps) => {
   const strokeWidthOffset = 3
 
   return (

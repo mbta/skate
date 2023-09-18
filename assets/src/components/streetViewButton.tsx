@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React, { ReactNode } from "react"
 import { joinClasses } from "../helpers/dom"
 import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl as streetViewUrlFrom } from "../util/streetViewUrl"
@@ -16,16 +16,16 @@ export interface StreetViewButtonProps extends GeographicCoordinateBearing {
   className?: string
   text?: string
   title?: string
-  children?: ReactElement
+  children?: ReactNode
 }
 
-const StreetViewButton = ({
+export const StreetViewButton = ({
   className,
   text,
   children,
   title,
   ...worldPosition
-}: StreetViewButtonProps): ReactElement<HTMLElement> => {
+}: StreetViewButtonProps) => {
   const streetViewUrl = streetViewUrlFrom(worldPosition)
   return (
     <a
