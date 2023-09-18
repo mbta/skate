@@ -37,7 +37,7 @@ defmodule Skate.Settings.User do
   @doc """
   Update or create the user with the given email.
   """
-  def upsert(username, email) when is_binary(email) do
+  def upsert(username, email) when is_binary(email) and email != "" do
     email = String.downcase(email)
 
     user =
