@@ -19,7 +19,6 @@ import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import MapPage from "../../src/components/mapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import useSearchResults from "../../src/hooks/useSearchResults"
 import { useLocationSearchResults } from "../../src/hooks/useLocationSearchResults"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -53,7 +52,12 @@ import { setHtmlWidthHeightForLeafletMap } from "../testHelpers/leafletMapWidth"
 import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
 import routeFactory from "../factories/route"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
-import { VehicleId, VehicleInScheduledService, Ghost } from "../../src/realtime"
+import {
+  VehicleId,
+  VehicleInScheduledService,
+  Ghost,
+  Vehicle,
+} from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
 import {
   mockTileUrls,
@@ -75,24 +79,23 @@ import {
   submitButton as searchFormSubmitButton,
 } from "../testHelpers/selectors/components/searchForm"
 import getTestGroups from "../../src/userTestGroups"
-import { TestGroups } from "../../src/userInTestGroup"
 import locationSearchResultFactory from "../factories/locationSearchResult"
 import { useLocationSearchResultById } from "../../src/hooks/useLocationSearchResultById"
 import {
   getAllStationIcons,
   getAllStopIcons,
 } from "../testHelpers/selectors/components/mapPage/map"
-
-jest.mock("../../src/hooks/useSearchResults", () => ({
-  __esModule: true,
-  default: jest.fn(() => null),
-  useLimitedSearchResults: jest.fn(() => null),
-}))
+import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCategory"
+import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   __esModule: true,
-  default: jest.fn(() => null),
   useLocationSearchResults: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useLocationSearchSuggestions", () => ({
+  __esModule: true,
+  useLocationSearchSuggestions: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useLocationSearchResultById", () => ({
@@ -140,6 +143,27 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
+jest.mock("../../src/hooks/useSearchResultsByCategory", () => ({
+  __esModule: true,
+  default: jest.fn(() => null),
+}))
+
+const mockVehicleSearchResultsCategory = (
+  vehicles: (Vehicle | Ghost)[] | null
+) => {
+  jest.mocked(useSearchResultsByCategory).mockReturnValue({
+    location: null,
+    vehicle: vehicles && {
+      ok: {
+        hasMoreMatches: false,
+        matches: vehicles,
+      },
+    },
+  })
+
+  jest.mocked(useLocationSearchSuggestions).mockReturnValue(null)
+}
+
 type VehicleIdToVehicle = {
   [vehicleId: VehicleId]: VehicleInScheduledService | Ghost
 }
@@ -182,7 +206,7 @@ afterEach(() => {
 describe("<MapPage />", () => {
   describe("Snapshot", () => {
     test("renders the null state", () => {
-      ;(useSearchResults as jest.Mock).mockReturnValue(null)
+      mockVehicleSearchResultsCategory(null)
       const { asFragment } = render(
         <StateDispatchProvider
           state={stateFactory.build()}
@@ -198,7 +222,7 @@ describe("<MapPage />", () => {
     })
 
     test("Has the layers control", () => {
-      ;(useSearchResults as jest.Mock).mockReturnValue([])
+      mockVehicleSearchResultsCategory([])
       render(
         <StateDispatchProvider
           state={stateFactory.build()}
@@ -213,7 +237,7 @@ describe("<MapPage />", () => {
     })
 
     test("renders the empty state", () => {
-      ;(useSearchResults as jest.Mock).mockReturnValue([])
+      mockVehicleSearchResultsCategory([])
       const { asFragment } = render(
         <StateDispatchProvider
           state={stateFactory.build()}
@@ -393,7 +417,7 @@ describe("<MapPage />", () => {
       ],
       [vehicle, nextVehicle] = vehicles,
       { runId } = nextVehicle
-    ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
+    mockVehicleSearchResultsCategory(vehicles)
 
     mockUsePatternsByIdForVehicles([vehicle, nextVehicle])
 
@@ -433,7 +457,7 @@ describe("<MapPage />", () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
     mockUsePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
 
@@ -460,7 +484,7 @@ describe("<MapPage />", () => {
 
     const runId = "clickMe"
     const vehicle = vehicleFactory.build({ runId })
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
     const activeSearch = searchPageStateFactory.build({
       query: { text: runId, property: "run" },
       isActive: true,
@@ -490,7 +514,7 @@ describe("<MapPage />", () => {
   test("when a search is submitted, should fire FS event for map page", async () => {
     mockFullStoryEvent()
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-    ;(useSearchResults as jest.Mock).mockReturnValue([])
+    mockVehicleSearchResultsCategory([])
     const mockDispatch = jest.fn()
 
     render(
@@ -528,7 +552,7 @@ describe("<MapPage />", () => {
       },
     })
 
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
     mockUsePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
     mockUseVehiclesForRouteMap({
@@ -574,10 +598,7 @@ describe("<MapPage />", () => {
       ],
     })
 
-    ;(useSearchResults as jest.Mock).mockReturnValue([
-      currentVehicle,
-      previousVehicle,
-    ])
+    mockVehicleSearchResultsCategory([currentVehicle, previousVehicle])
     mockUsePatternsByIdForVehicles([currentVehicle, previousVehicle])
 
     mockUseVehicleForId([currentVehicle, previousVehicle])
@@ -611,7 +632,7 @@ describe("<MapPage />", () => {
       },
     })
 
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
     mockUsePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
     mockUseVehiclesForRouteMap({
@@ -645,7 +666,7 @@ describe("<MapPage />", () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const runId = runIdFactory.build()
     const vehicle = vehicleFactory.build({ runId })
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
     mockUsePatternsByIdForVehicles([vehicle])
     mockUseVehicleForId([vehicle])
     mockUseVehiclesForRouteMap({
@@ -681,7 +702,7 @@ describe("<MapPage />", () => {
     const runId = runIdFactory.build()
     const vehicle = vehicleFactory.associations({ runId }).build()
 
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
     mockUseVehicleForId([vehicle])
     mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle] })
 
@@ -719,7 +740,7 @@ describe("<MapPage />", () => {
       .associations({ runId })
       .build({ routeId: route.id })
 
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
     mockUseVehicleForId([vehicle])
     // mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle] })
 
@@ -860,7 +881,7 @@ describe("<MapPage />", () => {
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
     const vehicle = routeVehicleFactory.build({ runId: runIdFactory.build() })
-    ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+    mockVehicleSearchResultsCategory([vehicle])
 
     mockUsePatternsByIdForVehicles([vehicle])
 
@@ -903,7 +924,7 @@ describe("<MapPage />", () => {
       test("after search result is selected", async () => {
         jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
         const vehicle = vehicleFactory.build({})
-        ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+        mockVehicleSearchResultsCategory([vehicle])
         mockUseVehicleForId([vehicle])
 
         render(
@@ -972,7 +993,7 @@ describe("<MapPage />", () => {
         const runId = "clickMe"
         const vehicle = vehicleFactory.build({ runId })
 
-        ;(useSearchResults as jest.Mock).mockReturnValue([vehicle])
+        mockVehicleSearchResultsCategory([vehicle])
         mockUseVehicleForId([vehicle])
 
         render(
@@ -1137,7 +1158,7 @@ describe("<MapPage />", () => {
           query: searchQueryRunFactory.searchFor(vehicle.runId!).build(),
         })
 
-        ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
+        mockVehicleSearchResultsCategory(vehicles)
         mockUsePatternsByIdForVehicles([vehicle])
 
         render(
@@ -1163,7 +1184,7 @@ describe("<MapPage />", () => {
         const vehicles = vehicleFactory.buildList(3, { runId: run.id }),
           [vehicle] = vehicles
 
-        ;(useSearchResults as jest.Mock).mockReturnValue(vehicles)
+        mockVehicleSearchResultsCategory(vehicles)
 
         mockUsePatternsByIdForVehicles([vehicle])
         mockUseVehicleForId([vehicle])
@@ -1438,8 +1459,7 @@ describe("<MapPage />", () => {
     })
   })
 
-  test("when in the location-search test group, can see search results grouped by property", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.LocationSearch])
+  test("can see search results grouped by property", () => {
     render(
       <StateDispatchProvider
         state={stateFactory.build({
