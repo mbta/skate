@@ -1,0 +1,18 @@
+.c-user-location-marker {
+  svg {
+    overflow: visible;
+
+    .c-user-location-marker__center-dot {
+      fill: $color-kiwi-400;
+      stroke: $white;
+      stroke-width: 2px;
+    }
+
+    .c-user-location-marker__accuracy-radius {
+      fill: $color-kiwi-400;
+      opacity: 0.3;
+      stroke: $color-kiwi-400;
+      stroke-width: 0.5px;
+    }
+  }
+}
