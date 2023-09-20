@@ -22,119 +22,231 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         class="c-map-page__input u-hideable"
       >
         <form
-          aria-label="Search Map"
-          class="c-old-search-form"
+          autocomplete="off"
+          class="c-search-form"
         >
           <div
-            class="c-old-search-form__row"
+            class="c-search-form__search-control"
+            data-autocomplete-visible="false"
+            role="presentation"
           >
             <div
-              class="c-old-search-form__text"
+              class="c-search-form__search-input-container"
             >
               <input
-                aria-label="Search Map Query"
-                class="c-old-search-form__input"
+                aria-controls=":r8:"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-owns=":r8:"
+                class="c-search-form__input"
                 placeholder="Search"
+                role="combobox"
                 type="text"
                 value=""
               />
+            </div>
+            <div
+              class="c-search-form__input-controls"
+              role="presentation"
+            >
               <button
-                class="c-old-search-form__clear"
+                class="c-search-form__clear c-circle-x-icon-container"
+                hidden=""
                 title="Clear Search"
-                type="reset"
+                type="button"
+              >
+                <svg
+                  class="c-circle-x-icon"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    class="c-circle-x-icon__focus-circle"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <circle
+                    class="c-circle-x-icon__white-fill"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <path
+                    class="c-circle-x-icon__path"
+                    d="m24 .05a24 24 0 1 0 24 23.95 24 24 0 0 0 -24-23.95zm13.19 32.54a3.33 3.33 0 1 1 -4.73 4.69l-8.46-8.57-8.57 8.48a3.33 3.33 0 1 1 -4.69-4.73l8.55-8.46-8.48-8.57a3.33 3.33 0 1 1 4.73-4.69l8.46 8.55 8.57-8.48a3.33 3.33 0 0 1 2.35-1 3.35 3.35 0 0 1 3.33 3.35 3.33 3.33 0 0 1 -1 2.35l-8.54 8.49z"
+                  />
+                </svg>
+              </button>
+              <button
+                class="c-search-form__submit"
+                disabled=""
+                title="Submit"
+                type="submit"
               >
                 <span>
                   <svg />
                 </span>
               </button>
             </div>
-            <button
-              class="c-old-search-form__submit button-submit"
-              disabled=""
-              title="Submit"
-              type="submit"
+            <div
+              class="c-search-form__autocomplete-container"
+              hidden=""
             >
-              <span>
-                <svg />
-              </span>
-            </button>
+              <div
+                class="c-autocomplete"
+              >
+                <h2
+                  aria-hidden="true"
+                  class="visually-hidden"
+                  id=":r9:"
+                  role="presentation"
+                >
+                  Search Suggestions
+                </h2>
+                <div
+                  aria-labelledby=":r9:"
+                  class="c-autocomplete__list"
+                  id=":r8:"
+                  role="listbox"
+                  tabindex="-1"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="c-autocomplete__group-heading"
+                    id=":ra:"
+                    role="presentation"
+                    style="user-select: none;"
+                  />
+                  <ul
+                    aria-labelledby=":ra:"
+                    class="c-autocomplete__group-list"
+                    role="group"
+                  >
+                    <li
+                      class="c-autocomplete__option"
+                      role="option"
+                      tabindex="-1"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
           <div
-            class="c-old-search-form__row"
+            aria-expanded="true"
+            class="c-filter-accordion"
           >
-            <ul
-              class="c-old-search-form__property-buttons"
+            <button
+              class="c-filter-accordion__toggle-button"
             >
-              <li
-                class="c-old-search-form__property-button"
+              <div
+                class="c-filter-accordion__header"
               >
-                <input
-                  checked=""
-                  class="c-old-search-form__property-input"
-                  id="property-all"
-                  name="property"
-                  type="radio"
-                  value="all"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-all"
-                >
-                  all
-                </label>
-              </li>
-              <li
-                class="c-old-search-form__property-button"
+                Filter results
+              </div>
+              <div
+                class="c-filter-accordion__show-hide-icon"
               >
-                <input
-                  class="c-old-search-form__property-input"
-                  id="property-run"
-                  name="property"
-                  type="radio"
-                  value="run"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-run"
-                >
-                  run
-                </label>
-              </li>
-              <li
-                class="c-old-search-form__property-button"
+                <span>
+                  <svg />
+                </span>
+              </div>
+            </button>
+            <div
+              class="c-filter-accordion__body"
+            >
+              <ul
+                class="c-filter-accordion__filters"
               >
-                <input
-                  class="c-old-search-form__property-input"
-                  id="property-vehicle"
-                  name="property"
-                  type="radio"
-                  value="vehicle"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-vehicle"
+                <li
+                  class="form-check position-relative lh-base"
                 >
-                  vehicle
-                </label>
-              </li>
-              <li
-                class="c-old-search-form__property-button"
-              >
-                <input
-                  class="c-old-search-form__property-input"
-                  id="property-operator"
-                  name="property"
-                  type="radio"
-                  value="operator"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-operator"
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    id="property-all"
+                    name="property"
+                    type="radio"
+                    value="all"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-all"
+                  >
+                    All
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
                 >
-                  operator
-                </label>
-              </li>
-            </ul>
+                  <input
+                    class="form-check-input"
+                    id="property-vehicle"
+                    name="property"
+                    type="radio"
+                    value="vehicle"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-vehicle"
+                  >
+                    Vehicles
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-operator"
+                    name="property"
+                    type="radio"
+                    value="operator"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-operator"
+                  >
+                    Operators
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-run"
+                    name="property"
+                    type="radio"
+                    value="run"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-run"
+                  >
+                    Runs
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-location"
+                    name="property"
+                    type="radio"
+                    value="location"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-location"
+                  >
+                    Locations
+                  </label>
+                </li>
+              </ul>
+            </div>
           </div>
         </form>
       </div>
@@ -345,7 +457,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r2:"
+              for="street-view-toggle-:rb:"
               role="presentation"
             >
               <span
@@ -356,7 +468,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:r2:"
+              for="street-view-toggle-:rb:"
             >
               Street View
             </label>
@@ -365,7 +477,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r2:"
+                id="street-view-toggle-:rb:"
                 role="switch"
                 type="checkbox"
               />
@@ -400,119 +512,231 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         class="c-map-page__input u-hideable"
       >
         <form
-          aria-label="Search Map"
-          class="c-old-search-form"
+          autocomplete="off"
+          class="c-search-form"
         >
           <div
-            class="c-old-search-form__row"
+            class="c-search-form__search-control"
+            data-autocomplete-visible="false"
+            role="presentation"
           >
             <div
-              class="c-old-search-form__text"
+              class="c-search-form__search-input-container"
             >
               <input
-                aria-label="Search Map Query"
-                class="c-old-search-form__input"
+                aria-controls=":r0:"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-owns=":r0:"
+                class="c-search-form__input"
                 placeholder="Search"
+                role="combobox"
                 type="text"
                 value=""
               />
+            </div>
+            <div
+              class="c-search-form__input-controls"
+              role="presentation"
+            >
               <button
-                class="c-old-search-form__clear"
+                class="c-search-form__clear c-circle-x-icon-container"
+                hidden=""
                 title="Clear Search"
-                type="reset"
+                type="button"
+              >
+                <svg
+                  class="c-circle-x-icon"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    class="c-circle-x-icon__focus-circle"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <circle
+                    class="c-circle-x-icon__white-fill"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <path
+                    class="c-circle-x-icon__path"
+                    d="m24 .05a24 24 0 1 0 24 23.95 24 24 0 0 0 -24-23.95zm13.19 32.54a3.33 3.33 0 1 1 -4.73 4.69l-8.46-8.57-8.57 8.48a3.33 3.33 0 1 1 -4.69-4.73l8.55-8.46-8.48-8.57a3.33 3.33 0 1 1 4.73-4.69l8.46 8.55 8.57-8.48a3.33 3.33 0 0 1 2.35-1 3.35 3.35 0 0 1 3.33 3.35 3.33 3.33 0 0 1 -1 2.35l-8.54 8.49z"
+                  />
+                </svg>
+              </button>
+              <button
+                class="c-search-form__submit"
+                disabled=""
+                title="Submit"
+                type="submit"
               >
                 <span>
                   <svg />
                 </span>
               </button>
             </div>
-            <button
-              class="c-old-search-form__submit button-submit"
-              disabled=""
-              title="Submit"
-              type="submit"
+            <div
+              class="c-search-form__autocomplete-container"
+              hidden=""
             >
-              <span>
-                <svg />
-              </span>
-            </button>
+              <div
+                class="c-autocomplete"
+              >
+                <h2
+                  aria-hidden="true"
+                  class="visually-hidden"
+                  id=":r1:"
+                  role="presentation"
+                >
+                  Search Suggestions
+                </h2>
+                <div
+                  aria-labelledby=":r1:"
+                  class="c-autocomplete__list"
+                  id=":r0:"
+                  role="listbox"
+                  tabindex="-1"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="c-autocomplete__group-heading"
+                    id=":r2:"
+                    role="presentation"
+                    style="user-select: none;"
+                  />
+                  <ul
+                    aria-labelledby=":r2:"
+                    class="c-autocomplete__group-list"
+                    role="group"
+                  >
+                    <li
+                      class="c-autocomplete__option"
+                      role="option"
+                      tabindex="-1"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
           <div
-            class="c-old-search-form__row"
+            aria-expanded="true"
+            class="c-filter-accordion"
           >
-            <ul
-              class="c-old-search-form__property-buttons"
+            <button
+              class="c-filter-accordion__toggle-button"
             >
-              <li
-                class="c-old-search-form__property-button"
+              <div
+                class="c-filter-accordion__header"
               >
-                <input
-                  checked=""
-                  class="c-old-search-form__property-input"
-                  id="property-all"
-                  name="property"
-                  type="radio"
-                  value="all"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-all"
-                >
-                  all
-                </label>
-              </li>
-              <li
-                class="c-old-search-form__property-button"
+                Filter results
+              </div>
+              <div
+                class="c-filter-accordion__show-hide-icon"
               >
-                <input
-                  class="c-old-search-form__property-input"
-                  id="property-run"
-                  name="property"
-                  type="radio"
-                  value="run"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-run"
-                >
-                  run
-                </label>
-              </li>
-              <li
-                class="c-old-search-form__property-button"
+                <span>
+                  <svg />
+                </span>
+              </div>
+            </button>
+            <div
+              class="c-filter-accordion__body"
+            >
+              <ul
+                class="c-filter-accordion__filters"
               >
-                <input
-                  class="c-old-search-form__property-input"
-                  id="property-vehicle"
-                  name="property"
-                  type="radio"
-                  value="vehicle"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-vehicle"
+                <li
+                  class="form-check position-relative lh-base"
                 >
-                  vehicle
-                </label>
-              </li>
-              <li
-                class="c-old-search-form__property-button"
-              >
-                <input
-                  class="c-old-search-form__property-input"
-                  id="property-operator"
-                  name="property"
-                  type="radio"
-                  value="operator"
-                />
-                <label
-                  class="c-old-search-form__property-label button-search-filter"
-                  for="property-operator"
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    id="property-all"
+                    name="property"
+                    type="radio"
+                    value="all"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-all"
+                  >
+                    All
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
                 >
-                  operator
-                </label>
-              </li>
-            </ul>
+                  <input
+                    class="form-check-input"
+                    id="property-vehicle"
+                    name="property"
+                    type="radio"
+                    value="vehicle"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-vehicle"
+                  >
+                    Vehicles
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-operator"
+                    name="property"
+                    type="radio"
+                    value="operator"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-operator"
+                  >
+                    Operators
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-run"
+                    name="property"
+                    type="radio"
+                    value="run"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-run"
+                  >
+                    Runs
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-location"
+                    name="property"
+                    type="radio"
+                    value="location"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-location"
+                  >
+                    Locations
+                  </label>
+                </li>
+              </ul>
+            </div>
           </div>
         </form>
       </div>
@@ -723,7 +947,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r0:"
+              for="street-view-toggle-:r3:"
               role="presentation"
             >
               <span
@@ -734,7 +958,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:r0:"
+              for="street-view-toggle-:r3:"
             >
               Street View
             </label>
@@ -743,7 +967,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r0:"
+                id="street-view-toggle-:r3:"
                 role="switch"
                 type="checkbox"
               />
@@ -943,13 +1167,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="run:r3:"
+                      id="run:rc:"
                       scope="row"
                     >
                       run
                     </th>
                     <td
-                      aria-labelledby="run:r3:"
+                      aria-labelledby="run:rc:"
                       class="kv-value font-s-reg"
                     >
                       run-1
@@ -958,13 +1182,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="vehicle:r4:"
+                      id="vehicle:rd:"
                       scope="row"
                     >
                       vehicle
                     </th>
                     <td
-                      aria-labelledby="vehicle:r4:"
+                      aria-labelledby="vehicle:rd:"
                       class="kv-value font-s-reg"
                     >
                       v1-label
@@ -973,13 +1197,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="operator:r5:"
+                      id="operator:re:"
                       scope="row"
                     >
                       operator
                     </th>
                     <td
-                      aria-labelledby="operator:r5:"
+                      aria-labelledby="operator:re:"
                       class="kv-value font-s-reg fs-mask"
                     >
                       WILL SMITH #op1
@@ -996,13 +1220,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               >
                 <label
                   class="c-current-location__label label font-xs-reg title-case"
-                  for="current-location-:r6:"
+                  for="current-location-:rf:"
                 >
                   Current Location
                 </label>
                 <output
                   class="c-current-location__value label font-s-semi"
-                  id="current-location-:r6:"
+                  id="current-location-:rf:"
                 >
                   loading...
                 </output>
@@ -1606,7 +1830,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:r7:"
+              for="street-view-toggle-:rg:"
               role="presentation"
             >
               <span
@@ -1617,7 +1841,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:r7:"
+              for="street-view-toggle-:rg:"
             >
               Street View
             </label>
@@ -1626,7 +1850,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:r7:"
+                id="street-view-toggle-:rg:"
                 role="switch"
                 type="checkbox"
               />

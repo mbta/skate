@@ -6,21 +6,18 @@ import React, {
   useState,
 } from "react"
 
-import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
 import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
 import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
 import useSocket from "../hooks/useSocket"
-import useSearchResults from "../hooks/useSearchResults"
 import { Ghost, Vehicle, VehicleId } from "../realtime"
 import { RoutePattern } from "../schedule"
 import { closeView, OpenView } from "../state"
 import {
   goBack,
   newSearchSession,
-  SearchPageState,
   SelectedEntity,
   SelectedEntityType,
   SelectedRoutePattern,
@@ -33,43 +30,11 @@ import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import RecentSearches from "./recentSearches"
 import SearchFormFromStateDispatchContext from "./searchForm"
-import SearchResults from "./searchResults"
 import { VisualSeparator } from "./visualSeparator"
-import OldSearchForm from "./oldSearchForm"
-import inTestGroup, { TestGroups } from "../userInTestGroup"
-import { Socket } from "phoenix"
 import SearchResultsByCategory from "./mapPage/searchResultsByCategory"
 import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
-
-const thereIsAnActiveSearch = (
-  vehicles: (Vehicle | Ghost)[] | null,
-  searchPageState: SearchPageState
-): boolean => vehicles !== null && searchPageState.isActive
-
-const OldSearchResultList = ({
-  selectSearchResult,
-}: {
-  selectSearchResult: (result: Vehicle | Ghost | null) => void
-}) => {
-  const [{ searchPageState }] = useContext(StateDispatchContext)
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const searchVehicles = useSearchResults(
-    socket,
-    searchPageState.isActive ? searchPageState.query : null
-  )
-  return searchVehicles !== null &&
-    thereIsAnActiveSearch(searchVehicles, searchPageState) ? (
-    <SearchResults
-      vehicles={searchVehicles}
-      selectedVehicleId={null}
-      onClick={selectSearchResult}
-    />
-  ) : (
-    <RecentSearches />
-  )
-}
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -78,17 +43,11 @@ const SearchMode = ({
   onSelectVehicleResult: (result: Vehicle | Ghost | null) => void
   onSelectLocationResult: (result: LocationSearchResult | null) => void
 }): React.ReactElement => {
-  const CurrentSearchForm = inTestGroup(TestGroups.LocationSearch)
-    ? SearchFormFromStateDispatchContext
-    : OldSearchForm
-
   const [{ searchPageState }] = useContext(StateDispatchContext)
   return (
     <>
       <div className="c-map-page__input u-hideable">
-        <CurrentSearchForm
-          formTitle="Search Map"
-          inputTitle="Search Map Query"
+        <SearchFormFromStateDispatchContext
           onSubmit={() => {
             window.FS?.event("Search submitted from map page")
           }}
@@ -99,14 +58,10 @@ const SearchMode = ({
 
       <div className="c-search-display u-hideable">
         {searchPageState.isActive ? (
-          inTestGroup(TestGroups.LocationSearch) ? (
-            <SearchResultsByCategory
-              onSelectVehicleResult={onSelectVehicleResult}
-              onSelectLocationResult={onSelectLocationResult}
-            />
-          ) : (
-            <OldSearchResultList selectSearchResult={onSelectVehicleResult} />
-          )
+          <SearchResultsByCategory
+            onSelectVehicleResult={onSelectVehicleResult}
+            onSelectLocationResult={onSelectLocationResult}
+          />
         ) : (
           <RecentSearches />
         )}
