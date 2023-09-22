@@ -3,11 +3,20 @@ import { useMap, useMapEvent } from "react-leaflet"
 import { ReactMarker } from "../utilities/reactMarker"
 
 interface UserLocationCircleProps {
+  /**
+   * Radius of accuracy area in pixels
+   */
   radius: number
+  /**
+   * Heading from GeolocationCoordinates, in degrees
+   */
   heading: number | null
 }
 
-const UserLocationCircle = ({ radius, heading }: UserLocationCircleProps) => (
+export const UserLocationCircle = ({
+  radius,
+  heading,
+}: UserLocationCircleProps) => (
   <svg viewBox="-10 -10 20 20">
     {heading !== null && (
       <defs>
