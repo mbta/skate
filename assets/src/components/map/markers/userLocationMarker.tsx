@@ -4,21 +4,38 @@ import { ReactMarker } from "../utilities/reactMarker"
 
 interface UserLocationCircleProps {
   radius: number
+  heading: number | null
 }
 
-const UserLocationCircle = ({ radius }: UserLocationCircleProps) => (
+const UserLocationCircle = ({ radius, heading }: UserLocationCircleProps) => (
   <svg viewBox="-10 -10 20 20">
-    <circle
-      cx={0}
-      cy={0}
-      r="10"
-      className="c-user-location-marker__center-dot"
-    />
+    {heading !== null && (
+      <defs>
+        <linearGradient id="headingGradient" gradientTransform="rotate(90)">
+          <stop offset="15%" stopColor="rgba(118, 203, 192, 0)" />
+          <stop offset="90%" stopColor="#76cbc0" />
+        </linearGradient>
+      </defs>
+    )}
     <circle
       cx={0}
       cy={0}
       r={`${radius || 0}px`}
       className="c-user-location-marker__accuracy-radius"
+    />
+    {heading !== null && (
+      <polygon
+        points="0,0 -15,-35 15,-35"
+        fill="url('#headingGradient')"
+        transform={`rotate(${heading}, 0, 0)`}
+        className="c-user-location-marker__heading"
+      />
+    )}
+    <circle
+      cx={0}
+      cy={0}
+      r="10"
+      className="c-user-location-marker__center-dot"
     />
   </svg>
 )
@@ -57,7 +74,7 @@ const UserLocationMarker = ({ location }: UserLocationMarkerProps) => {
         iconSize: [20, 20],
         className: "c-user-location-marker",
       }}
-      icon={<UserLocationCircle radius={radius} />}
+      icon={<UserLocationCircle radius={radius} heading={location.heading} />}
     />
   )
 }

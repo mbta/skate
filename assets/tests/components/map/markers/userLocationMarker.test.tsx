@@ -36,6 +36,25 @@ describe("UserLocationMarker", () => {
     // This size was also compared against map features to make sure it was roughly correct
     expect(accuracyRadius).toBeCloseTo(56.7, 1)
   })
+
+  test("renders 'wedge' shape for heading", () => {
+    setHtmlWidthHeightForLeafletMap()
+
+    const location = geolocationCoordinates.build({ heading: 90 })
+
+    const { container } = renderInMap(
+      <UserLocationMarker location={location} />,
+      [location.latitude, location.longitude]
+    )
+
+    const svgComponent = container.querySelector("svg")
+
+    expect(
+      svgComponent
+        ?.querySelector("polygon.c-user-location-marker__heading")
+        ?.getAttribute("transform")
+    ).toBe("rotate(90, 0, 0)")
+  })
 })
 
 const renderInMap = (component: JSX.Element, center: LatLngExpression) =>
