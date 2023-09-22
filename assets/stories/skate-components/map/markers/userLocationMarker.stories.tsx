@@ -4,6 +4,9 @@ import { UserLocationCircle } from "../../../../src/components/map/markers/userL
 
 const meta = {
   component: UserLocationCircle,
+  parameters: {
+    layout: "centered",
+  },
   decorators: [
     (Story) => (
       <div
@@ -14,13 +17,35 @@ const meta = {
       </div>
     ),
   ],
-  args: {
-    radius: 25,
-    heading: 45,
-  },
 } satisfies Meta<typeof UserLocationCircle>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
+export const AccuracyAndHeading: Story = {
+  args: {
+    radius: 25,
+    heading: 45,
+  },
+}
+
+export const AccuracyNoHeading: Story = {
+  args: {
+    radius: 25,
+    heading: null,
+  },
+}
+
+export const InvalidAccuracyWithHeading: Story = {
+  args: {
+    radius: NaN,
+    heading: 45,
+  },
+}
+
+export const InvalidAccuracyNoHeading: Story = {
+  args: {
+    radius: NaN,
+    heading: null,
+  },
+}
