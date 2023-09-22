@@ -30,13 +30,12 @@ import {
   SelectedLocation,
   SelectedRoutePattern,
 } from "../../state/searchPageState"
-import Map, {
-  vehicleToLeafletLatLng,
-  FollowerStatusClasses,
+import Map, { vehicleToLeafletLatLng, FollowerStatusClasses } from "../map"
+import {
   InterruptibleFollower,
   useInteractiveFollowerState,
   drawerOffsetAutoCenter,
-} from "../map"
+} from "../map/follower"
 import {
   LocationMarker,
   RouteShape,
