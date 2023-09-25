@@ -80,6 +80,13 @@ export const mockFullStoryEvent = (): void => {
   })
 }
 
+export const mockGeolocation = (): void => {
+  Object.defineProperty(navigator, "geolocation", {
+    writable: true,
+    value: { watchPosition: jest.fn(), clearWatch: jest.fn() },
+  })
+}
+
 export const mockTileUrls = (): void => {
   ;(
     tilesetUrlForType as jest.Mock<typeof tilesetUrlForType>
