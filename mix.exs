@@ -97,7 +97,7 @@ defmodule Skate.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "assets.setup"],
+      setup: ["deps.get", "ecto.setup", "assets.setup", "phx.gen.cert"],
       "ecto.migrate_all": [
         "ecto.migrate --quiet --migrations-path=priv/repo/migrations --migrations-path=priv/repo/async_migrations"
       ],
