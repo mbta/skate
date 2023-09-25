@@ -42,6 +42,9 @@ node_modules
 # variables.
 /config/*.secret.exs
 
+# Self signed certificates to access Skate over HTTPS when developing
+/priv/cert/selfsigned*.pem
+
 # dev and test cache files for faster loading
 *.terms
 
