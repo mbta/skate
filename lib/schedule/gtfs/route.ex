@@ -29,6 +29,8 @@ defmodule Schedule.Gtfs.Route do
 
   @bus_route_type 3
 
+  @subway_route_types [0, 1]
+
   defstruct [
     :id,
     :description,
@@ -92,4 +94,10 @@ defmodule Schedule.Gtfs.Route do
   @spec shuttle_route?(t) :: boolean
   def shuttle_route?(%__MODULE__{description: "Rail Replacement Bus"}), do: true
   def shuttle_route?(%__MODULE__{}), do: false
+
+  @spec subway_route?(t) :: boolean
+  def subway_route?(%__MODULE__{type: route_type}) when route_type in @subway_route_types,
+    do: true
+
+  def subway_route?(_), do: false
 end

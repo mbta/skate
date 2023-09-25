@@ -138,4 +138,18 @@ defmodule Schedule.Gtfs.RouteTest do
       refute Route.shuttle_route?(non_shuttle_route)
     end
   end
+
+  describe "subway_route?/1" do
+    test "true for heavy rail route" do
+      assert Route.subway_route?(build(:gtfs_route, %{id: "RL", type: 1}))
+    end
+
+    test "true for light rail route" do
+      assert Route.subway_route?(build(:gtfs_route, %{id: "GL", type: 0}))
+    end
+
+    test "false for bus route" do
+      refute Route.subway_route?(build(:gtfs_route, %{id: "1", type: 3}))
+    end
+  end
 end
