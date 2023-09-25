@@ -8,10 +8,10 @@ const meta = {
     layout: "centered",
   },
   decorators: [
-    (Story) => (
+    (Story, { args }) => (
       <div
         className="c-user-location-marker"
-        style={{ width: "10px", height: "10px", margin: "32px" }}
+        style={{ width: "10px", height: "10px", padding: args.radius / 2 }}
       >
         <Story />
       </div>
