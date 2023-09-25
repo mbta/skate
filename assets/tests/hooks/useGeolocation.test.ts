@@ -27,18 +27,16 @@ describe("useGeolocation", () => {
 
   test("returns geolocation result", () => {
     const coordinates = geolocationCoordinates.build({})
-    ;(
-      navigator.geolocation.watchPosition as jest.Mock<
-        Geolocation["watchPosition"]
-      >
-    ).mockImplementation((callback) => {
-      callback({
-        timestamp: 1234,
-        coords: coordinates,
-      })
+    jest
+      .mocked(navigator.geolocation.watchPosition)
+      .mockImplementation((callback) => {
+        callback({
+          timestamp: 1234,
+          coords: coordinates,
+        })
 
-      return 1
-    })
+        return 1
+      })
 
     const { result } = renderHook(() => useGeolocation())
 
