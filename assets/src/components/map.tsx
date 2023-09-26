@@ -39,7 +39,7 @@ import { TileTypeContext } from "../contexts/tileTypeContext"
 import getMapLimits from "../mapLimits"
 import {
   useInteractiveFollowerState,
-  InterruptibleFollower,
+  RecenterControlWithInterruptibleFollower,
   usePickerContainerFollowerFn,
 } from "./map/follower"
 
@@ -254,7 +254,7 @@ export const MapFollowingPrimaryVehicles = (props: Props) => {
   return (
     <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
       <>
-        <InterruptibleFollower
+        <RecenterControlWithInterruptibleFollower
           positions={positions}
           {...state}
           onUpdate={usePickerContainerFollowerFn()}
@@ -278,7 +278,7 @@ export const MapFollowingSelectionKey = (
   return (
     <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
       <>
-        <InterruptibleFollower
+        <RecenterControlWithInterruptibleFollower
           positions={positions}
           {...state}
           onUpdate={usePickerContainerFollowerFn()}

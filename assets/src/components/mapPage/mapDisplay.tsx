@@ -32,7 +32,7 @@ import {
 } from "../../state/searchPageState"
 import Map, { vehicleToLeafletLatLng, FollowerStatusClasses } from "../map"
 import {
-  InterruptibleFollower,
+  RecenterControlWithInterruptibleFollower,
   useInteractiveFollowerState,
   drawerOffsetAutoCenter,
 } from "../map/follower"
@@ -182,7 +182,7 @@ const MapElementsNoSelection = ({
   }, [followerState.shouldFollow, setStateClasses])
 
   return (
-    <InterruptibleFollower
+    <RecenterControlWithInterruptibleFollower
       onUpdate={drawerOffsetAutoCenter}
       positions={[]}
       {...followerState}
@@ -316,7 +316,7 @@ const SelectedVehicleDataLayers = ({
             : stops
         }
       />
-      <InterruptibleFollower
+      <RecenterControlWithInterruptibleFollower
         onUpdate={drawerOffsetAutoCenter}
         positions={position}
         {...followerState}
@@ -368,7 +368,7 @@ const SelectedRouteDataLayers = ({
         selectedVehicleId={null}
         onVehicleSelect={selectVehicle}
       />
-      <InterruptibleFollower
+      <RecenterControlWithInterruptibleFollower
         onUpdate={drawerOffsetAutoCenter}
         positions={routeShapePositions}
         {...followerState}
@@ -396,7 +396,7 @@ const SelectedLocationDataLayer = ({
   return (
     <>
       <LocationMarker location={location} selected={true} />
-      <InterruptibleFollower
+      <RecenterControlWithInterruptibleFollower
         onUpdate={drawerOffsetAutoCenter}
         positions={[Leaflet.latLng(location.latitude, location.longitude)]}
         {...followerState}

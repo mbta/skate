@@ -125,23 +125,24 @@ export const InterruptibleFollower = (props: InterruptibleFollowerProps) => {
     props.setShouldFollow
   )
 
-  return (
-    <>
-      <Follower {...props} />
-      <RecenterControl
-        position="topright"
-        recenter={() => props.setShouldFollow(true)}
-      />
-    </>
-  )
+  return <Follower {...props} />
 }
 
 export const StatefulInteractiveFollower = (props: FollowerProps) => {
-  return InterruptibleFollower({
-    ...props,
-    ...useInteractiveFollowerState(),
-  })
+  return <InterruptibleFollower {...props} {...useInteractiveFollowerState()} />
 }
+
+export const RecenterControlWithInterruptibleFollower = (
+  props: InterruptibleFollowerProps
+) => (
+  <>
+    <InterruptibleFollower {...props} />
+    <RecenterControl
+      position="topright"
+      recenter={() => props.setShouldFollow(true)}
+    />
+  </>
+)
 // #endregion Follower Variants
 
 // #region Follower Update Functions
