@@ -23,6 +23,9 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 skate-*.tar
 
+# Ignore Storybook Logs
+build-storybook.log
+
 # If NPM crashes, it generates a log, let's ignore it too.
 npm-debug.log
 
