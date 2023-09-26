@@ -29,8 +29,10 @@ import {
   zoomInButton,
   zoomOutButton,
 } from "../testHelpers/selectors/components/map"
-import { mockTileUrls } from "../testHelpers/mockHelpers"
+import { mockGeolocation, mockTileUrls } from "../testHelpers/mockHelpers"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
+import geolocationCoordinates from "../factories/geolocationCoordinates"
+import { byRole } from "testing-library-selector"
 
 jest
   .spyOn(dateTime, "now")
@@ -267,6 +269,41 @@ describe("Map controls", () => {
       container.querySelector("img[src^=test_satellite_url")
     ).not.toBeNull()
   })
+
+  test("on initial load, does not show user location", () => {
+    render(<ShuttleMapPage />)
+
+    expect(CurrentLocationMarker.query()).not.toBeInTheDocument()
+  })
+
+  test("after user location button is clicked, show's user location on map", async () => {
+    render(<ShuttleMapPage />)
+
+    mockGeolocation()
+
+    expect(CurrentLocationMarker.query()).not.toBeInTheDocument()
+
+    jest
+      .mocked(navigator.geolocation.watchPosition)
+      .mockImplementation((callback) => {
+        callback({
+          coords: geolocationCoordinates.build(),
+          timestamp: 1234,
+        })
+        return 1
+      })
+
+    await userEvent.click(CurrentLocationControl.get())
+
+    expect(CurrentLocationMarker.get()).toBeInTheDocument()
+  })
+})
+
+const CurrentLocationMarker = byRole("button", {
+  name: "Your current location",
+})
+const CurrentLocationControl = byRole("button", {
+  name: "Show your current location",
 })
 
 const animationFramePromise = (): Promise<null> => {

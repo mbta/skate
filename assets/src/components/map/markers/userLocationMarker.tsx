@@ -13,11 +13,20 @@ interface UserLocationCircleProps {
   heading: number | null
 }
 
+interface UserLocationProps {
+  /**
+   * Accessible SVG name
+   */
+  title?: string
+}
+
 export const UserLocationCircle = ({
   radius,
   heading,
-}: UserLocationCircleProps) => (
+  title = "Your current location",
+}: UserLocationCircleProps & UserLocationProps) => (
   <svg viewBox="-10 -10 20 20">
+    {title && <title>{title}</title>}
     {heading !== null && (
       <defs>
         <linearGradient id="headingGradient" gradientTransform="rotate(90)">
@@ -64,7 +73,10 @@ const pixelsPerMeterFromMap = (map: L.Map): number => {
   return mapWidth / map.distance(p1, p2)
 }
 
-const UserLocationMarker = ({ location }: UserLocationMarkerProps) => {
+const UserLocationMarker = ({
+  location,
+  title,
+}: UserLocationMarkerProps & UserLocationProps) => {
   const map = useMap()
   const [pixelsPerMeter, setPixelsPerMeter] = useState<number>(
     pixelsPerMeterFromMap(map)
@@ -83,7 +95,13 @@ const UserLocationMarker = ({ location }: UserLocationMarkerProps) => {
         iconSize: [20, 20],
         className: "c-user-location-marker",
       }}
-      icon={<UserLocationCircle radius={radius} heading={location.heading} />}
+      icon={
+        <UserLocationCircle
+          title={title}
+          radius={radius}
+          heading={location.heading}
+        />
+      }
     />
   )
 }

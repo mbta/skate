@@ -9,7 +9,7 @@ type UserButtonProps = {
 }
 
 export const UserLocationButton = (props: UserButtonProps) => (
-  <a className="c-user-location-button" {...props}>
+  <a className="c-user-location-button" role="button" {...props}>
     <LocationCrosshairsIcon className="c-user-location-button__svg" />
   </a>
 )
