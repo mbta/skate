@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { fetchShapeForRoute, fetchShapeForTrip } from "../api"
 import { flatten } from "../helpers/array"
-import { isASubwayRoute, subwayRouteShapes } from "../models/subwayRoute"
+import { isASubwayRoute, subwayRoutes } from "../models/subwayRoute"
 import { ByRouteId, RouteId, Shape, TripId } from "../schedule"
 
 // An undefined value indicates that the shapes need to be loaded
@@ -33,7 +33,13 @@ export const useRouteShapes = (selectedRouteIds: RouteId[]): Shape[] => {
         setLoadingShapesForRoute(routeId)
 
         if (isASubwayRoute(routeId)) {
-          setShapesForRoute(routeId, subwayRouteShapes(routeId))
+          Promise.all(
+            subwayRoutes[routeId].gtfsRouteIds.map((routeId) =>
+              fetchShapeForRoute(routeId)
+            )
+          ).then((shapesLists) => {
+            setShapesForRoute(routeId, flatten(shapesLists))
+          })
         } else {
           fetchShapeForRoute(routeId).then((shapes: Shape[]) =>
             setShapesForRoute(routeId, shapes)

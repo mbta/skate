@@ -1,7 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"
-import shapesRed from "../../src/data/shapesRed"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import { Shape } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
@@ -34,15 +33,15 @@ describe("useRouteShapes", () => {
     expect(result.current).toEqual([])
   })
 
-  test("loads a subway route shape from hardcoded data", () => {
-    const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
+  test("loads a subway route shape from API", () => {
+    const mockFetchShape = jest.mocked(Api.fetchShapeForRoute)
 
-    const { result } = renderHook(() => {
+    renderHook(() => {
       return useRouteShapes(["Red"])
     })
 
-    expect(mockFetchShape).toHaveBeenCalledTimes(0)
-    expect(result.current).toEqual(shapesRed)
+    expect(mockFetchShape).toHaveBeenCalledTimes(1)
+    expect(mockFetchShape).toHaveBeenCalledWith("Red")
   })
 
   test("returns the shape when the api call returns", () => {

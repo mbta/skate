@@ -256,7 +256,7 @@ const Routes = ({ shuttleRoutes }: { shuttleRoutes: Route[] | null }) => (
 
 const RouteButtons = ({ shuttleRoutes }: { shuttleRoutes: Route[] }) => (
   <>
-    {subwayRoutes.map((subwayRoute) => (
+    {Object.values(subwayRoutes).map((subwayRoute) => (
       <RouteButton route={subwayRoute} key={`route-button-${subwayRoute.id}`} />
     ))}
     {shuttleRoutes.map((shuttleRoute) => (
