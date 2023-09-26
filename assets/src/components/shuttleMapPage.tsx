@@ -158,9 +158,19 @@ export const ShuttleMap = ({
   )
 
   useEffect(() => {
-    if (followerController !== "user-location") {
+    if (followerController === false) {
       setShouldFollow("vehicle-location")
     }
+    // This effect is an "event", and not "reactive" to all it's dependencies.
+    // Because we _only_ want to run this when the run id's change, we need to
+    // suppress the exhaustive-deps lint until `useEffectEvent` is stabilized
+    //
+    // See the react docs:
+    // > ## Is it okay to suppress the dependency linter instead?
+    // > After `useEffectEvent` becomes a stable part of React,
+    // > we recommend never suppressing the linter.
+    // > -- https://react.dev/learn/separating-events-from-effects#is-it-okay-to-suppress-the-dependency-linter-instead
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedShuttleRunIds])
 
   const followerFn = usePickerContainerFollowerFn()
