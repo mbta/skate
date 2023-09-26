@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 
-import { UserLocationButton } from "../../../../src/components/map/controls/userLocationControl"
+import {
+  UserLocationButton,
+  UserLocationControl,
+} from "../../../../src/components/map/controls/userLocationControl"
+import Map from "../../../../src/components/map"
 
 const meta = {
   component: UserLocationButton,
@@ -28,4 +32,20 @@ export const Disabled: Story = {
   args: {
     disabled: true,
   },
+}
+
+export const InMap: Story = {
+  parameters: {
+    layout: "fullscreen",
+    stretch: true,
+  },
+  decorators: [
+    (Story) => (
+      <Map vehicles={[]}>
+        <Story />
+      </Map>
+    ),
+  ],
+
+  render: UserLocationControl,
 }
