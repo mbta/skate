@@ -132,7 +132,7 @@ export const ShuttleMap = ({
 
   type FollowerController = false | "user-location" | "vehicle-location"
   const [followerController, setFollowerController] =
-    useState<FollowerController>(false)
+    useState<FollowerController>("vehicle-location")
 
   const state = useInteractiveFollowerState(),
     { setShouldFollow: setFollowActive } = state
