@@ -1,10 +1,10 @@
 import { describe, test, expect } from "@jest/globals"
-import shapesRed from "../../src/data/shapesRed"
 import {
+  enhanceShapeForSubwayRoute,
   isASubwayRoute,
   subwayRoutes,
-  subwayRouteShapes,
 } from "../../src/models/subwayRoute"
+import shapeFactory from "../factories/shape"
 
 const subwayLineIds = ["Blue", "Green", "Orange", "Red", "Mattapan"]
 
@@ -23,8 +23,12 @@ describe("isASubwayRoute", () => {
   })
 })
 
-describe("subwayRouteShapes", () => {
-  test("returns an array of shapes for the requested subway route ID", () => {
-    expect(subwayRouteShapes("Red")).toEqual(shapesRed)
+describe("enhanceShapeForSubwayRoute", () => {
+  test("adds className", () => {
+    const shape = shapeFactory.build()
+
+    expect(enhanceShapeForSubwayRoute(shape, "Red").className).toBe(
+      "route-shape--rail route-shape--red"
+    )
   })
 })

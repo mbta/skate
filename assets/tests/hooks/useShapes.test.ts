@@ -1,9 +1,10 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { renderHook } from "@testing-library/react"
+import { renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import { Shape } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
+import shapeFactory from "../factories/shape"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
@@ -33,15 +34,25 @@ describe("useRouteShapes", () => {
     expect(result.current).toEqual([])
   })
 
-  test("loads a subway route shape from API", () => {
-    const mockFetchShape = jest.mocked(Api.fetchShapeForRoute)
+  test("loads a subway route shape from API", async () => {
+    const shape = shapeFactory.build({ className: undefined })
+    const mockFetchShape = jest
+      .mocked(Api.fetchShapeForRoute)
+      .mockReturnValueOnce(instantPromise([shape]))
 
-    renderHook(() => {
+    const { result } = renderHook(() => {
       return useRouteShapes(["Red"])
+    })
+    const initialValue = result.current
+    await waitFor(() => {
+      expect(result.current).not.toBe(initialValue)
     })
 
     expect(mockFetchShape).toHaveBeenCalledTimes(1)
     expect(mockFetchShape).toHaveBeenCalledWith("Red")
+    expect(result.current[0].className).toBe(
+      "route-shape--rail route-shape--red"
+    )
   })
 
   test("returns the shape when the api call returns", () => {
