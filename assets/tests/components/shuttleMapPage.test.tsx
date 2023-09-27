@@ -277,12 +277,7 @@ describe("Map controls", () => {
   })
 
   test("after user location button is clicked, show's user location on map", async () => {
-    render(<ShuttleMapPage />)
-
     mockGeolocation()
-
-    expect(CurrentLocationMarker.query()).not.toBeInTheDocument()
-
     jest
       .mocked(navigator.geolocation.watchPosition)
       .mockImplementation((callback) => {
@@ -292,6 +287,10 @@ describe("Map controls", () => {
         })
         return 1
       })
+
+    render(<ShuttleMapPage />)
+
+    expect(CurrentLocationMarker.query()).not.toBeInTheDocument()
 
     await userEvent.click(CurrentLocationControl.get())
 
