@@ -1,0 +1,32 @@
+.c-user-location-button {
+  @extend .inherit-box, .border-box;
+
+  color: $color-button-secondary;
+
+  &[disabled] {
+    color: $color-font-grey;
+    background-color: $color-button-disabled;
+  }
+
+  &,
+  &__svg {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__svg svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+}
+
+// Extend all styles in the context of a leaflet-bar to override leaflet CSS
+// until we can use CSS layers for specificity
+.leaflet-bar .c-user-location-button {
+  @extend .c-user-location-button;
+}
