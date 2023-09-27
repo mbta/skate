@@ -142,19 +142,20 @@ export const ShuttleMap = ({
     setFollowActive(controller !== false ? true : false)
   }
 
-  const [location, setLocation] = useState<null | GeolocationCoordinates>(null)
+  const [userLocation, setUserLocation] =
+    useState<null | GeolocationCoordinates>(null)
 
   const followPositions = useMemo(
     () =>
       followerController
         ? {
-            "user-location": location
-              ? [latLng(location.latitude, location.longitude)]
+            "user-location": userLocation
+              ? [latLng(userLocation.latitude, userLocation.longitude)]
               : [],
             "vehicle-location": positions,
           }[followerController]
         : [],
-    [followerController, location, positions]
+    [followerController, userLocation, positions]
   )
 
   useEffect(() => {
@@ -203,11 +204,11 @@ export const ShuttleMap = ({
         />
 
         <>
-          {(followerController === "user-location" || location) && (
-            <UserLocation onLocationUpdate={(l) => setLocation(l)} />
+          {(followerController === "user-location" || userLocation) && (
+            <UserLocation onLocationUpdate={(l) => setUserLocation(l)} />
           )}
         </>
-        <>{location && <UserLocationMarker location={location} />}</>
+        <>{userLocation && <UserLocationMarker location={userLocation} />}</>
 
         <InterruptibleFollower
           {...state}
