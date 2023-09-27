@@ -5,7 +5,7 @@ import {
   subwayRoutes,
 } from "../../src/models/subwayRoute"
 import shapeFactory from "../factories/shape"
-import stopsRed from "../../src/data/stopsOrange"
+import stopFactory from "../factories/stop"
 
 const subwayLineIds = ["Blue", "Green", "Orange", "Red", "Mattapan"]
 
@@ -27,11 +27,14 @@ describe("isASubwayRoute", () => {
 describe("enhanceShapeForSubwayRoute", () => {
   test("adds className", () => {
     const shape = shapeFactory.build()
+    const stop = stopFactory.build({
+      routes: [{ id: "Red", type: 1, name: "Red Line" }],
+    })
 
-    const enhancedShape = enhanceShapeForSubwayRoute(shape, "Red")
+    const enhancedShape = enhanceShapeForSubwayRoute(shape, "Red", [stop])
 
     expect(enhancedShape.className).toBe("route-shape--rail route-shape--red")
 
-    expect(enhancedShape.stops).toBe(stopsRed)
+    expect(enhancedShape.stops).toEqual([stop])
   })
 })
