@@ -205,7 +205,7 @@ export const ShuttleMap = ({
 
         <>
           {(followerController === "user-location" || userLocation) && (
-            <UserLocation onLocationUpdate={(l) => setUserLocation(l)} />
+            <UserLocation onLocationUpdate={setUserLocation} />
           )}
         </>
         <>{userLocation && <UserLocationMarker location={userLocation} />}</>
