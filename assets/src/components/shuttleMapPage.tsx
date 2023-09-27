@@ -128,7 +128,7 @@ export const ShuttleMap = ({
   tileType,
   setTileType,
 }: ShuttleMapProps) => {
-  const positions = selectedShuttles.map(vehicleToLeafletLatLng)
+  const vehiclePositions = selectedShuttles.map(vehicleToLeafletLatLng)
 
   type FollowerController = false | "user-location" | "vehicle-location"
   const [followerController, setFollowerController] =
@@ -152,10 +152,10 @@ export const ShuttleMap = ({
             "user-location": userLocation
               ? [latLng(userLocation.latitude, userLocation.longitude)]
               : [],
-            "vehicle-location": positions,
+            "vehicle-location": vehiclePositions,
           }[followerController]
         : [],
-    [followerController, userLocation, positions]
+    [followerController, userLocation, vehiclePositions]
   )
 
   useEffect(() => {
