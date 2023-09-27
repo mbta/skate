@@ -29,16 +29,20 @@ import {
   zoomInButton,
   zoomOutButton,
 } from "../testHelpers/selectors/components/map"
-import { mockGeolocation, mockTileUrls } from "../testHelpers/mockHelpers"
+import { mockTileUrls } from "../testHelpers/mockHelpers"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import geolocationCoordinates from "../factories/geolocationCoordinates"
 import { byRole } from "testing-library-selector"
+import useGeolocation from "../../src/hooks/useGeolocation"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+jest.mock("../../src/hooks/useGeolocation")
+
 jest.mock("../../src/hooks/useShuttleRoutes", () => ({
   __esModule: true,
   default: jest.fn(() => null),
@@ -277,16 +281,7 @@ describe("Map controls", () => {
   })
 
   test("after user location button is clicked, show's user location on map", async () => {
-    mockGeolocation()
-    jest
-      .mocked(navigator.geolocation.watchPosition)
-      .mockImplementation((callback) => {
-        callback({
-          coords: geolocationCoordinates.build(),
-          timestamp: 1234,
-        })
-        return 1
-      })
+    jest.mocked(useGeolocation).mockReturnValue(geolocationCoordinates.build())
 
     render(<ShuttleMapPage />)
 
