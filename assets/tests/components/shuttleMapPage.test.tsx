@@ -32,8 +32,9 @@ import {
 import { mockTileUrls } from "../testHelpers/mockHelpers"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
 import geolocationCoordinates from "../factories/geolocationCoordinates"
-import { byRole } from "testing-library-selector"
 import useGeolocation from "../../src/hooks/useGeolocation"
+import { currentLocationControl } from "../testHelpers/selectors/components/map/controls/currentLocationControl"
+import { currentLocationMarker } from "../testHelpers/selectors/components/map/markers/currentLocationMarker"
 
 jest
   .spyOn(dateTime, "now")
@@ -277,7 +278,7 @@ describe("Map controls", () => {
   test("on initial load, does not show user location", () => {
     render(<ShuttleMapPage />)
 
-    expect(CurrentLocationMarker.query()).not.toBeInTheDocument()
+    expect(currentLocationMarker.query()).not.toBeInTheDocument()
   })
 
   test("after user location button is clicked, show's user location on map", async () => {
@@ -285,19 +286,12 @@ describe("Map controls", () => {
 
     render(<ShuttleMapPage />)
 
-    expect(CurrentLocationMarker.query()).not.toBeInTheDocument()
+    expect(currentLocationMarker.query()).not.toBeInTheDocument()
 
-    await userEvent.click(CurrentLocationControl.get())
+    await userEvent.click(currentLocationControl.get())
 
-    expect(CurrentLocationMarker.get()).toBeInTheDocument()
+    expect(currentLocationMarker.get()).toBeInTheDocument()
   })
-})
-
-const CurrentLocationMarker = byRole("button", {
-  name: "Your current location",
-})
-const CurrentLocationControl = byRole("button", {
-  name: "Show your current location",
 })
 
 const animationFramePromise = (): Promise<null> => {
