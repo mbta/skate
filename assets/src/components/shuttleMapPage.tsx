@@ -2,6 +2,7 @@ import { Socket } from "phoenix"
 import React, {
   Dispatch,
   ReactElement,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -137,10 +138,13 @@ export const ShuttleMap = ({
   const state = useInteractiveFollowerState(),
     { setShouldFollow: setFollowActive } = state
 
-  const setShouldFollow = (controller: FollowerController) => {
-    setFollowerController(controller)
-    setFollowActive(controller !== false ? true : false)
-  }
+  const setShouldFollow = useCallback(
+    (controller: FollowerController) => {
+      setFollowerController(controller)
+      setFollowActive(controller !== false ? true : false)
+    },
+    [setFollowerController, setFollowActive]
+  )
 
   const [userLocation, setUserLocation] =
     useState<null | GeolocationCoordinates>(null)
@@ -158,21 +162,29 @@ export const ShuttleMap = ({
     [followerController, userLocation, vehiclePositions]
   )
 
+  // Enable follower when
+  // - we're not currently following the device location
+  // and
+  // - the `selectedShuttleRunIds` change referential equality
+  // CLEANUP: replace with `useEffectEvent` once stabilized
+  //    https://react.dev/reference/react/experimental_useEffectEvent
+  const [currentShuttleRunIds, setCurrentShuttleRunIds] = useState(
+    selectedShuttleRunIds
+  )
   useEffect(() => {
-    if (followerController === false) {
-      setShouldFollow("vehicle-location")
+    if (currentShuttleRunIds !== selectedShuttleRunIds) {
+      setCurrentShuttleRunIds(selectedShuttleRunIds)
+
+      if (followerController === false) {
+        setShouldFollow("vehicle-location")
+      }
     }
-    // This effect is an "event", and not "reactive" to all it's dependencies.
-    // Because we _only_ want to run this when the run id's change, we need to
-    // suppress the exhaustive-deps lint until `useEffectEvent` is stabilized
-    //
-    // See the react docs:
-    // > ## Is it okay to suppress the dependency linter instead?
-    // > After `useEffectEvent` becomes a stable part of React,
-    // > we recommend never suppressing the linter.
-    // > -- https://react.dev/learn/separating-events-from-effects#is-it-okay-to-suppress-the-dependency-linter-instead
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedShuttleRunIds])
+  }, [
+    selectedShuttleRunIds,
+    currentShuttleRunIds,
+    followerController,
+    setShouldFollow,
+  ])
 
   const followerFn = usePickerContainerFollowerFn()
 
