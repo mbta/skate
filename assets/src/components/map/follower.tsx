@@ -153,7 +153,7 @@ export const autoCenter = (
   pickerContainerIsVisible: boolean
 ): void => {
   if (latLngs.length === 0) {
-    map.setView(defaultCenter, 13)
+    map.setView(defaultCenter, 13, { animate: false })
   } else if (latLngs.length === 1) {
     map.setView(latLngs[0], 16)
   } else if (latLngs.length > 1) {
