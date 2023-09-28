@@ -228,9 +228,7 @@ export const ShuttleMap = ({
             shouldFollow === false && setShouldFollow(false)
           }}
           positions={followPositions}
-          onUpdate={(...args) => {
-            followerFn(...args)
-          }}
+          onUpdate={followerFn}
         />
       </Map>
     </div>
