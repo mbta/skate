@@ -636,7 +636,7 @@ defmodule Schedule.Data do
   end
 
   @spec route_ids_for_routes([Route.t()]) :: MapSet.t(Route.id())
-  defp route_ids_for_routes(bus_routes), do: MapSet.new(bus_routes, & &1.id)
+  defp route_ids_for_routes(routes), do: MapSet.new(routes, & &1.id)
 
   @spec filter_by_route_id([map_with_route_id()], MapSet.t(Route.id())) :: [map_with_route_id()]
   def filter_by_route_id(structs_with_route, valid_route_ids) do
