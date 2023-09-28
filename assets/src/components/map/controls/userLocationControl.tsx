@@ -8,8 +8,11 @@ type UserButtonProps = {
   title?: string
 }
 
-export const UserLocationButton = (props: UserButtonProps) => (
-  <a className="c-user-location-button" role="button" {...props}>
+export const UserLocationButton = ({
+  title = "Show your current location",
+  ...props
+}: UserButtonProps) => (
+  <a className="c-user-location-button" role="button" {...props} title={title}>
     <LocationCrosshairsIcon className="c-user-location-button__svg" />
   </a>
 )
