@@ -37,9 +37,15 @@ export const useRouteShapes = (
   useEffect(() => {
     selectedRouteIds.forEach((routeId: RouteId) => {
       if (!(routeId in shapesByRouteId)) {
-        setLoadingShapesForRoute(routeId)
+        if (!isASubwayRoute(routeId)) {
+          setLoadingShapesForRoute(routeId)
 
-        if (isASubwayRoute(routeId)) {
+          fetchShapeForRoute(routeId).then((shapes: Shape[]) =>
+            setShapesForRoute(routeId, shapes)
+          )
+        } else if (stations) {
+          setLoadingShapesForRoute(routeId)
+
           Promise.all(
             subwayRoutes[routeId].gtfsRouteIds.map((routeId) =>
               fetchShapeForRoute(routeId)
@@ -52,10 +58,6 @@ export const useRouteShapes = (
               )
             )
           })
-        } else {
-          fetchShapeForRoute(routeId).then((shapes: Shape[]) =>
-            setShapesForRoute(routeId, shapes)
-          )
         }
       }
     })

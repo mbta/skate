@@ -2,9 +2,10 @@ import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
-import { Shape } from "../../src/schedule.d"
+import { Shape, Stop } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 import shapeFactory from "../factories/shape"
+import stopFactory from "../factories/stop"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
@@ -40,9 +41,17 @@ describe("useRouteShapes", () => {
       .mocked(Api.fetchShapeForRoute)
       .mockReturnValueOnce(instantPromise([shape]))
 
-    const { result } = renderHook(() => {
-      return useRouteShapes(["Red"])
-    })
+    const { result, rerender } = renderHook(
+      (stops?: Stop[]) => useRouteShapes(["Red"], stops),
+      { initialProps: undefined }
+    )
+
+    rerender([
+      stopFactory.build({
+        routes: [{ id: "Red", type: 1, name: "Red Line" }],
+      }),
+    ])
+
     const initialValue = result.current
     await waitFor(() => {
       expect(result.current).not.toBe(initialValue)
@@ -53,6 +62,7 @@ describe("useRouteShapes", () => {
     expect(result.current[0].className).toBe(
       "route-shape--rail route-shape--red"
     )
+    expect(result.current[0].stops).toHaveLength(1)
   })
 
   test("returns the shape when the api call returns", () => {
