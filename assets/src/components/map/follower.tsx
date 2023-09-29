@@ -125,23 +125,24 @@ export const InterruptibleFollower = (props: InterruptibleFollowerProps) => {
     props.setShouldFollow
   )
 
-  return (
-    <>
-      <Follower {...props} />
-      <RecenterControl
-        position="topright"
-        recenter={() => props.setShouldFollow(true)}
-      />
-    </>
-  )
+  return <Follower {...props} />
 }
 
 export const StatefulInteractiveFollower = (props: FollowerProps) => {
-  return InterruptibleFollower({
-    ...props,
-    ...useInteractiveFollowerState(),
-  })
+  return <InterruptibleFollower {...props} {...useInteractiveFollowerState()} />
 }
+
+export const RecenterControlWithInterruptibleFollower = (
+  props: InterruptibleFollowerProps
+) => (
+  <>
+    <InterruptibleFollower {...props} />
+    <RecenterControl
+      position="topright"
+      recenter={() => props.setShouldFollow(true)}
+    />
+  </>
+)
 // #endregion Follower Variants
 
 // #region Follower Update Functions
@@ -152,7 +153,7 @@ export const autoCenter = (
   pickerContainerIsVisible: boolean
 ): void => {
   if (latLngs.length === 0) {
-    map.setView(defaultCenter, 13)
+    map.setView(defaultCenter, 13, { animate: false })
   } else if (latLngs.length === 1) {
     map.setView(latLngs[0], 16)
   } else if (latLngs.length > 1) {

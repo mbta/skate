@@ -31,12 +31,19 @@ import {
 } from "../testHelpers/selectors/components/map"
 import { mockTileUrls } from "../testHelpers/mockHelpers"
 import { RealDispatchWrapper } from "../testHelpers/wrappers"
+import geolocationCoordinates from "../factories/geolocationCoordinates"
+import useGeolocation from "../../src/hooks/useGeolocation"
+import { currentLocationControl } from "../testHelpers/selectors/components/map/controls/currentLocationControl"
+import { currentLocationMarker } from "../testHelpers/selectors/components/map/markers/currentLocationMarker"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+jest.mock("../../src/hooks/useGeolocation")
+
 jest.mock("../../src/hooks/useShuttleRoutes", () => ({
   __esModule: true,
   default: jest.fn(() => null),
@@ -266,6 +273,24 @@ describe("Map controls", () => {
     expect(
       container.querySelector("img[src^=test_satellite_url")
     ).not.toBeNull()
+  })
+
+  test("on initial load, does not show user location", () => {
+    render(<ShuttleMapPage />)
+
+    expect(currentLocationMarker.query()).not.toBeInTheDocument()
+  })
+
+  test("after user location button is clicked, show's user location on map", async () => {
+    jest.mocked(useGeolocation).mockReturnValue(geolocationCoordinates.build())
+
+    render(<ShuttleMapPage />)
+
+    expect(currentLocationMarker.query()).not.toBeInTheDocument()
+
+    await userEvent.click(currentLocationControl.get())
+
+    expect(currentLocationMarker.get()).toBeInTheDocument()
   })
 })
 

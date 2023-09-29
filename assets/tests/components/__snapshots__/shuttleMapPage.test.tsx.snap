@@ -651,6 +651,21 @@ exports[`Shuttle Map Page renders 1`] = `
 		
               </a>
             </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
+              </a>
+            </div>
           </div>
           <div
             class="leaflet-bottom leaflet-left"
@@ -1326,6 +1341,21 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 </svg>
                 
 		
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
               </a>
             </div>
           </div>
@@ -2005,6 +2035,21 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 		
               </a>
             </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
+              </a>
+            </div>
           </div>
           <div
             class="leaflet-bottom leaflet-left"
@@ -2234,6 +2279,21 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                 </svg>
                 
 		
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
               </a>
             </div>
           </div>
@@ -2940,6 +3000,21 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 </svg>
                 
 		
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
               </a>
             </div>
           </div>

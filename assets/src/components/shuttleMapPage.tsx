@@ -1,21 +1,39 @@
 import { Socket } from "phoenix"
-import React, { ReactElement, useContext } from "react"
+import React, {
+  Dispatch,
+  ReactElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten } from "../helpers/array"
 import { useRouteShapes } from "../hooks/useShapes"
 import useShuttleVehicles from "../hooks/useShuttleVehicles"
+import { useStations } from "../hooks/useStations"
 import useTrainVehicles from "../hooks/useTrainVehicles"
 import { isASubwayRoute } from "../models/subwayRoute"
-import { RunId, TrainVehicle, Vehicle } from "../realtime"
+import { Ghost, RunId, TrainVehicle, Vehicle, VehicleId } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
-import { MapFollowingSelectionKey } from "./map"
+import Map, { FollowerStatusClasses, vehicleToLeafletLatLng } from "./map"
 import ShuttlePicker from "./shuttlePicker"
 import { LayersControl } from "./map/controls/layersControl"
 import { setTileType } from "../state/mapLayersState"
 import { TileType } from "../tilesetUrls"
-import { useStations } from "../hooks/useStations"
+import { UserLocationControl } from "./map/controls/userLocationControl"
+import {
+  InterruptibleFollower,
+  useInteractiveFollowerState,
+  usePickerContainerFollowerFn,
+} from "./map/follower"
+import { RecenterControl } from "./map/controls/recenterControl"
+import UserLocationMarker from "./map/markers/userLocationMarker"
+import { latLng } from "leaflet"
+import useGeolocation from "../hooks/useGeolocation"
 
 const filterShuttles = (
   shuttles: Vehicle[],
@@ -62,39 +80,170 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
   )
   const trainVehicles: TrainVehicle[] = allTrainVehicles(trainVehiclesByRouteId)
 
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
+
   const selectedShuttles: Vehicle[] = filterShuttles(
     shuttles || [],
     selectedShuttleRunIds
   )
 
-  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
-
-  const followerResetKey =
-    selectedShuttleRunIds === "all" ? "all" : selectedShuttleRunIds.join(",")
-
   return (
     <div className={`c-shuttle-map ${mobileMenuClass}`}>
       <ShuttlePicker shuttles={shuttles} />
-
-      <div className="c-shuttle-map__map">
-        <MapFollowingSelectionKey
-          selectedVehicleId={selectedVehicleOrGhost?.id}
-          vehicles={selectedShuttles}
-          shapes={shapes}
-          trainVehicles={trainVehicles}
-          onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
-          selectionKey={followerResetKey}
-          tileType={tileType}
-        >
-          <LayersControl.WithTileContext
-            setTileType={(tileType: TileType) =>
-              dispatch(setTileType("shuttleMap", tileType))
-            }
-          />
-        </MapFollowingSelectionKey>
-      </div>
+      <ShuttleMap
+        selectedShuttles={selectedShuttles}
+        selectedShuttleRunIds={selectedShuttleRunIds}
+        selectedVehicleId={selectedVehicleOrGhost?.id}
+        selectedRouteShapes={shapes}
+        trainVehicles={trainVehicles}
+        tileType={tileType}
+        setTileType={(tileType) =>
+          dispatch(setTileType("shuttleMap", tileType))
+        }
+        selectVehicle={(vehicle) => dispatch(selectVehicle(vehicle))}
+      />
     </div>
   )
+}
+
+interface ShuttleMapProps {
+  // TODO: revisit this prop
+  selectedShuttleRunIds: RunId[] | "all"
+  //
+  selectedVehicleId?: VehicleId
+  selectedShuttles: Vehicle[]
+  selectedRouteShapes?: Shape[]
+  trainVehicles?: TrainVehicle[]
+  tileType?: TileType
+  setTileType: (tileType: TileType) => void
+  selectVehicle: (vehicle: Vehicle | Ghost) => void
+}
+
+export const ShuttleMap = ({
+  selectedShuttles,
+  selectedShuttleRunIds,
+  selectedVehicleId,
+  selectedRouteShapes,
+  trainVehicles,
+  selectVehicle,
+  tileType,
+  setTileType,
+}: ShuttleMapProps) => {
+  const vehiclePositions = selectedShuttles.map(vehicleToLeafletLatLng)
+
+  type FollowerController = false | "user-location" | "vehicle-location"
+  const [followerController, setFollowerController] =
+    useState<FollowerController>("vehicle-location")
+
+  const state = useInteractiveFollowerState(),
+    { setShouldFollow: setFollowActive } = state
+
+  const setShouldFollow = useCallback(
+    (controller: FollowerController) => {
+      setFollowerController(controller)
+      setFollowActive(controller !== false ? true : false)
+    },
+    [setFollowerController, setFollowActive]
+  )
+
+  const [userLocation, setUserLocation] =
+    useState<null | GeolocationCoordinates>(null)
+
+  const followPositions = useMemo(
+    () =>
+      followerController
+        ? {
+            "user-location": userLocation
+              ? [latLng(userLocation.latitude, userLocation.longitude)]
+              : [],
+            "vehicle-location": vehiclePositions,
+          }[followerController]
+        : [],
+    [followerController, userLocation, vehiclePositions]
+  )
+
+  // Enable follower when
+  // - we're not currently following the device location
+  // and
+  // - the `selectedShuttleRunIds` change referential equality
+  // CLEANUP: replace with `useEffectEvent` once stabilized
+  //    https://react.dev/reference/react/experimental_useEffectEvent
+  const [currentShuttleRunIds, setCurrentShuttleRunIds] = useState(
+    selectedShuttleRunIds
+  )
+  useEffect(() => {
+    if (currentShuttleRunIds !== selectedShuttleRunIds) {
+      setCurrentShuttleRunIds(selectedShuttleRunIds)
+
+      if (followerController === false) {
+        setShouldFollow("vehicle-location")
+      }
+    }
+  }, [
+    selectedShuttleRunIds,
+    currentShuttleRunIds,
+    followerController,
+    setShouldFollow,
+  ])
+
+  const followerFn = usePickerContainerFollowerFn()
+
+  return (
+    <div className="c-shuttle-map__map">
+      <Map
+        stateClasses={FollowerStatusClasses(
+          followerController == "vehicle-location"
+        )}
+        vehicles={selectedShuttles}
+        selectedVehicleId={selectedVehicleId}
+        shapes={selectedRouteShapes}
+        trainVehicles={trainVehicles}
+        onPrimaryVehicleSelect={selectVehicle}
+        tileType={tileType}
+      >
+        <LayersControl.WithTileContext setTileType={setTileType} />
+
+        <UserLocationControl
+          title="Show your current location"
+          onClick={() => {
+            setShouldFollow("user-location")
+          }}
+          disabled={followerController == "user-location"}
+        />
+        <RecenterControl
+          position="topright"
+          recenter={() => setShouldFollow("vehicle-location")}
+        />
+
+        <>
+          {(followerController === "user-location" || userLocation) && (
+            <UserLocation onLocationUpdate={setUserLocation} />
+          )}
+        </>
+        <>{userLocation && <UserLocationMarker location={userLocation} />}</>
+
+        <InterruptibleFollower
+          {...state}
+          setShouldFollow={(shouldFollow) => {
+            shouldFollow === false && setShouldFollow(false)
+          }}
+          positions={followPositions}
+          onUpdate={followerFn}
+        />
+      </Map>
+    </div>
+  )
+}
+
+interface UserLocationProps {
+  onLocationUpdate: Dispatch<GeolocationCoordinates | null>
+}
+const UserLocation = ({ onLocationUpdate }: UserLocationProps) => {
+  const location = useGeolocation()
+  useEffect(() => {
+    onLocationUpdate(location)
+  }, [onLocationUpdate, location])
+  return null
 }
 
 export default ShuttleMapPage
