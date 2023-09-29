@@ -5,6 +5,10 @@ defmodule SkateWeb.Endpoint do
     websocket: [check_origin: Application.get_env(:skate, :websocket_check_origin, false)],
     longpoll: false
 
+  if Application.get_env(:skate, :redirect_http?) do
+    plug(Plug.SSL, rewrite_on: [:x_forwarded_proto])
+  end
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest

@@ -4,9 +4,6 @@ defmodule SkateWeb.Router do
   use Sentry.Plug
 
   pipeline :redirect_prod_http do
-    if Application.get_env(:skate, :redirect_http?) do
-      plug(Plug.SSL, rewrite_on: [:x_forwarded_proto])
-    end
   end
 
   pipeline :auth do
