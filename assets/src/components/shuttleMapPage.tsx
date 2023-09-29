@@ -15,6 +15,7 @@ import ShuttlePicker from "./shuttlePicker"
 import { LayersControl } from "./map/controls/layersControl"
 import { setTileType } from "../state/mapLayersState"
 import { TileType } from "../tilesetUrls"
+import { useStations } from "../hooks/useStations"
 
 const filterShuttles = (
   shuttles: Vehicle[],
@@ -47,7 +48,11 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
   } = state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
-  const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
+  const stations = useStations()
+  const shapes: Shape[] = useRouteShapes(
+    selectedShuttleRouteIds,
+    stations || undefined
+  )
 
   const selectedSubwayRouteIds: RouteId[] =
     selectedShuttleRouteIds.filter(isASubwayRoute)

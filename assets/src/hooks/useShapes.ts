@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react"
 import { fetchShapeForRoute, fetchShapeForTrip } from "../api"
 import { flatten } from "../helpers/array"
-import { isASubwayRoute, subwayRouteShapes } from "../models/subwayRoute"
-import { ByRouteId, RouteId, Shape, TripId } from "../schedule"
+import {
+  enhanceShapeForSubwayRoute,
+  isASubwayRoute,
+  subwayRoutes,
+} from "../models/subwayRoute"
+import { ByRouteId, RouteId, Shape, Stop, TripId } from "../schedule"
 
 // An undefined value indicates that the shapes need to be loaded
 // A null value indicates that we are currently loading the shapes
 type LoadableShapes = Shape[] | null | undefined
 
-export const useRouteShapes = (selectedRouteIds: RouteId[]): Shape[] => {
+export const useRouteShapes = (
+  selectedRouteIds: RouteId[],
+  stations?: Stop[]
+): Shape[] => {
   const [shapesByRouteId, setShapesByRouteId] = useState<
     ByRouteId<LoadableShapes>
   >({})
@@ -30,18 +37,31 @@ export const useRouteShapes = (selectedRouteIds: RouteId[]): Shape[] => {
   useEffect(() => {
     selectedRouteIds.forEach((routeId: RouteId) => {
       if (!(routeId in shapesByRouteId)) {
-        setLoadingShapesForRoute(routeId)
+        if (!isASubwayRoute(routeId)) {
+          setLoadingShapesForRoute(routeId)
 
-        if (isASubwayRoute(routeId)) {
-          setShapesForRoute(routeId, subwayRouteShapes(routeId))
-        } else {
           fetchShapeForRoute(routeId).then((shapes: Shape[]) =>
             setShapesForRoute(routeId, shapes)
           )
+        } else if (stations) {
+          setLoadingShapesForRoute(routeId)
+
+          Promise.all(
+            subwayRoutes[routeId].gtfsRouteIds.map((routeId) =>
+              fetchShapeForRoute(routeId)
+            )
+          ).then((shapesLists) => {
+            setShapesForRoute(
+              routeId,
+              flatten(shapesLists).map((shape) =>
+                enhanceShapeForSubwayRoute(shape, routeId, stations || [])
+              )
+            )
+          })
         }
       }
     })
-  }, [selectedRouteIds, shapesByRouteId])
+  }, [selectedRouteIds, shapesByRouteId, stations])
 
   return loadedShapes(shapesByRouteId, selectedRouteIds)
 }

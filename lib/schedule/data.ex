@@ -394,7 +394,7 @@ defmodule Schedule.Data do
           gtfs_data.all_modes.timepoints_by_id
         ),
       timepoint_names_by_id: timepoint_names_by_id,
-      shapes: gtfs_data.bus_only.shapes,
+      shapes: gtfs_data.all_modes.shapes,
       stops: stops,
       trips: schedule_trips_by_id,
       blocks: blocks,
@@ -432,7 +432,7 @@ defmodule Schedule.Data do
     all_stop_times_by_trip_id = StopTime.parse(gtfs_files["stop_times.txt"])
 
     bus_routes = Enum.filter(all_routes, &Route.bus_route_mbta?/1)
-    bus_route_ids = bus_route_ids(bus_routes)
+    bus_route_ids = route_ids_for_routes(bus_routes)
     bus_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
     bus_trip_ids = MapSet.new(bus_trips, & &1.id)
 
@@ -443,12 +443,17 @@ defmodule Schedule.Data do
 
     bus_shapes = shapes_by_route_id(gtfs_files["shapes.txt"], bus_trips)
 
+    subway_routes = Enum.filter(all_routes, &Route.subway_route?/1)
+    subway_route_ids = route_ids_for_routes(subway_routes)
+    subway_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], subway_route_ids)
+
+    subway_shapes = shapes_by_route_id(gtfs_files["shapes.txt"], subway_trips)
+
     %{
       bus_only: %{
         routes: bus_routes,
         route_ids: bus_route_ids,
         route_patterns: filter_by_route_id(all_route_patterns, bus_route_ids),
-        shapes: bus_shapes,
         trips: bus_trips,
         trip_ids: bus_trip_ids,
         stop_times_by_trip_id: bus_stop_times_by_trip_id
@@ -458,6 +463,7 @@ defmodule Schedule.Data do
           Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
         routes: all_routes,
         route_patterns: all_route_patterns,
+        shapes: Map.merge(bus_shapes, subway_shapes),
         stops_by_id: all_stops_by_id(gtfs_files["stops.txt"]),
         stop_times_by_trip_id: all_stop_times_by_trip_id,
         timepoints_by_id: all_timepoints_by_id(gtfs_files["checkpoints.txt"])
@@ -629,8 +635,8 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec bus_route_ids([Route.t()]) :: MapSet.t(Route.id())
-  defp bus_route_ids(bus_routes), do: MapSet.new(bus_routes, & &1.id)
+  @spec route_ids_for_routes([Route.t()]) :: MapSet.t(Route.id())
+  defp route_ids_for_routes(routes), do: MapSet.new(routes, & &1.id)
 
   @spec filter_by_route_id([map_with_route_id()], MapSet.t(Route.id())) :: [map_with_route_id()]
   def filter_by_route_id(structs_with_route, valid_route_ids) do

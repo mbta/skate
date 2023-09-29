@@ -46,6 +46,10 @@ jest.mock("../../src/hooks/useShapes", () => ({
   useRouteShapes: jest.fn(() => []),
   useTripShape: jest.fn(() => []),
 }))
+jest.mock("../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
+}))
 jest.mock("../../src/hooks/useShuttleVehicles", () => ({
   __esModule: true,
   default: jest.fn(() => null),

@@ -1,10 +1,11 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { renderHook } from "@testing-library/react"
+import { renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
-import shapesRed from "../../src/data/shapesRed"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
-import { Shape } from "../../src/schedule.d"
+import { Shape, Stop } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
+import shapeFactory from "../factories/shape"
+import stopFactory from "../factories/stop"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
@@ -34,15 +35,34 @@ describe("useRouteShapes", () => {
     expect(result.current).toEqual([])
   })
 
-  test("loads a subway route shape from hardcoded data", () => {
-    const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
+  test("loads a subway route shape from API", async () => {
+    const shape = shapeFactory.build({ className: undefined })
+    const mockFetchShape = jest
+      .mocked(Api.fetchShapeForRoute)
+      .mockReturnValueOnce(instantPromise([shape]))
 
-    const { result } = renderHook(() => {
-      return useRouteShapes(["Red"])
+    const { result, rerender } = renderHook(
+      (stops?: Stop[]) => useRouteShapes(["Red"], stops),
+      { initialProps: undefined }
+    )
+
+    rerender([
+      stopFactory.build({
+        routes: [{ id: "Red", type: 1, name: "Red Line" }],
+      }),
+    ])
+
+    const initialValue = result.current
+    await waitFor(() => {
+      expect(result.current).not.toBe(initialValue)
     })
 
-    expect(mockFetchShape).toHaveBeenCalledTimes(0)
-    expect(result.current).toEqual(shapesRed)
+    expect(mockFetchShape).toHaveBeenCalledTimes(1)
+    expect(mockFetchShape).toHaveBeenCalledWith("Red")
+    expect(result.current[0].className).toBe(
+      "route-shape--rail route-shape--red"
+    )
+    expect(result.current[0].stops).toHaveLength(1)
   })
 
   test("returns the shape when the api call returns", () => {
