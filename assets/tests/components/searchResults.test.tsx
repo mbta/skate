@@ -56,10 +56,8 @@ describe("SearchResults", () => {
     ).toBeInTheDocument()
   })
 
-  test("renders no results with user in logged out vehicle test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([
-      "search-logged-out-vehicles",
-    ])
+  test("renders no results with user in map beta test group", () => {
+    ;(getTestGroups as jest.Mock).mockReturnValue(["map-beta"])
 
     render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
