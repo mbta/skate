@@ -11,7 +11,6 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import ghostFactory from "../../factories/ghost"
 import { runIdFactory } from "../../factories/run"
 import userEvent from "@testing-library/user-event"
-import getTestGroups from "../../../src/userTestGroups"
 
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
@@ -303,9 +302,7 @@ describe("<VehiclePropertiesCard/>", () => {
       )
     })
 
-    test("vehicle is pulling back and user is in test group, should render pull-back information", () => {
-      ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
-
+    test("vehicle is pulling back, should render pull-back information", () => {
       const vehicle = vehicleFactory.build({
         endOfTripType: "pull_back",
         stopStatus: { stopId: null, stopName: null },
