@@ -35,8 +35,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
       property: property,
       text: text,
       limit: limit,
-      include_logged_out_vehicles:
-        Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
+      include_logged_out_vehicles: Skate.Settings.User.is_in_test_group(user_id, "map-beta")
     }
 
     Logger.info(fn ->
@@ -74,8 +73,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
           property: property,
           text: text,
           limit: limit,
-          include_logged_out_vehicles:
-            Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
+          include_logged_out_vehicles: Skate.Settings.User.is_in_test_group(user_id, "map-beta")
         }
       ])
 

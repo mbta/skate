@@ -9,7 +9,6 @@ import {
   layersControlButton,
   pullbacksSwitch,
 } from "../../../testHelpers/selectors/components/map"
-import getTestGroups from "../../../../src/userTestGroups"
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
@@ -75,20 +74,7 @@ describe("LayersControl", () => {
     expect(screen.queryByLabelText("Map (default)")).toBeNull()
   })
 
-  test("pull-back layer control not shown when user is not in test group", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([])
-
-    render(<LayersControl tileType="base" setTileType={jest.fn()} />, {
-      wrapper: mapWrapper,
-    })
-    await userEvent.click(layersControlButton.get())
-
-    expect(pullbacksSwitch.query()).not.toBeInTheDocument()
-  })
-
-  test("pull-back layer control is shown when user is in test group", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
-
+  test("pull-back layer control is shown when props are provided", async () => {
     render(
       <LayersControl
         tileType="base"
@@ -106,8 +92,6 @@ describe("LayersControl", () => {
   })
 
   test("clicking pull-back layer control toggles pull-back layer", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
-
     const mockToggle = jest.fn()
 
     render(
@@ -128,8 +112,6 @@ describe("LayersControl", () => {
   })
 
   test("enter key toggles pull-back layer", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
-
     const mockToggle = jest.fn()
 
     render(
@@ -151,8 +133,6 @@ describe("LayersControl", () => {
   })
 
   test("when pull-back layer is enabled, shows pill", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
-
     render(
       <LayersControl
         tileType="base"
@@ -169,8 +149,6 @@ describe("LayersControl", () => {
   })
 
   test("when pull-back layer is disabled, doesn't show pill", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue(["pull-back-map-layer"])
-
     render(
       <LayersControl
         tileType="base"

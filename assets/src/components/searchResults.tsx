@@ -133,9 +133,7 @@ export const NoResults = () => {
     dispatch,
   ] = useContext(StateDispatchContext)
 
-  const inLoggedOutVehiclesTestGroup = inTestGroup(
-    TestGroups.SearchLoggedOutVehicles
-  )
+  const inMapBetaTestGroup = inTestGroup(TestGroups.MapBeta)
 
   return (
     <div className="c-search-results__none">
@@ -146,7 +144,7 @@ export const NoResults = () => {
         again using numbers or last names only.
       </p>
 
-      {inLoggedOutVehiclesTestGroup ? (
+      {inMapBetaTestGroup ? (
         <p>
           Please note that at this time run and operator search is limited to
           logged-in personnel.

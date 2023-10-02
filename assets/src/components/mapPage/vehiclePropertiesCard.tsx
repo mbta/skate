@@ -13,7 +13,6 @@ import {
   VehicleRouteSummaryEventProps,
 } from "../vehicleRouteSummary"
 import { ScheduleAdherence } from "../scheduleAdherence"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const maxAgeToShowInSeconds = 5 * 60
 
@@ -200,8 +199,6 @@ const VehiclePropertiesCard = ({
   vehicleOrGhost,
   onRouteVariantNameClicked,
 }: VehiclePropertiesCardProps): React.ReactElement => {
-  const includePullbackInformation = inTestGroup(TestGroups.PullBackMapLayer)
-
   return (
     <div
       className="c-vehicle-properties-card"
@@ -213,7 +210,7 @@ const VehiclePropertiesCard = ({
           vehicle={vehicleOrGhost}
           title="Vehicle Schedule Adherence"
           className="label font-xs-reg"
-          includePullbackInformation={includePullbackInformation}
+          includePullbackInformation={true}
         />
       </div>
 
@@ -221,7 +218,7 @@ const VehiclePropertiesCard = ({
         <VehicleRouteSummary
           vehicle={vehicleOrGhost}
           onRouteVariantNameClicked={onRouteVariantNameClicked}
-          includePullbackInformation={includePullbackInformation}
+          includePullbackInformation={true}
         />
       </div>
 

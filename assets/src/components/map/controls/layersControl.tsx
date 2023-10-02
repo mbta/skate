@@ -5,7 +5,6 @@ import { TileType } from "../../../tilesetUrls"
 import { MapLayersIcon } from "../../../helpers/icon"
 import { CustomControl } from "./customControl"
 import { TileTypeContext } from "../../../contexts/tileTypeContext"
-import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 
 const LayersControlWithTileContext = (props: {
   setTileType: (tileType: TileType) => void
@@ -98,8 +97,7 @@ const LayersControlContent = ({
           />
         </li>
         {pullbackLayerEnabled !== undefined &&
-          togglePullbackLayerEnabled !== undefined &&
-          inTestGroup(TestGroups.PullBackMapLayer) && (
+          togglePullbackLayerEnabled !== undefined && (
             <li
               className="list-group-item"
               aria-labelledby={vehicleLayersControlLabelId}

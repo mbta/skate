@@ -27,8 +27,7 @@ defmodule SkateWeb.VehicleChannel do
   def join_authenticated("vehicle:id:" <> vehicle_or_ghost_id, _message, socket) do
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
 
-    user_in_test_group? =
-      Skate.Settings.User.is_in_test_group(user_id, "search-logged-out-vehicles")
+    user_in_test_group? = Skate.Settings.User.is_in_test_group(user_id, "map-beta")
 
     vehicle_or_ghost =
       if user_in_test_group? do

@@ -196,7 +196,7 @@ defmodule SkateWeb.VehiclesChannelTest do
            socket: socket,
            user: user
          } do
-      test_group = Skate.Settings.TestGroup.create("search-logged-out-vehicles")
+      test_group = Skate.Settings.TestGroup.create("map-beta")
       Skate.Settings.TestGroup.update(%{test_group | users: [user]})
 
       logged_in_vehicle =

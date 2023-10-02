@@ -22,7 +22,6 @@ import {
 import { RouteId } from "../../../src/schedule"
 import { SelectedEntityType } from "../../../src/state/searchPageState"
 import { streetViewUrl } from "../../../src/util/streetViewUrl"
-import getTestGroups from "../../../src/userTestGroups"
 
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
@@ -633,9 +632,6 @@ describe("<MapDisplay />", () => {
 
     describe("pull-back data layer", () => {
       test("renders vehicles", async () => {
-        ;(getTestGroups as jest.Mock<typeof getTestGroups>).mockReturnValue([
-          "pull-back-map-layer",
-        ])
         setHtmlWidthHeightForLeafletMap()
 
         const pullBackVehicle = vehicleFactory.build({
@@ -663,9 +659,6 @@ describe("<MapDisplay />", () => {
       })
 
       test("if a pulling back vehicle is selected, doesn't render it again in pull-backs layer", async () => {
-        ;(getTestGroups as jest.Mock<typeof getTestGroups>).mockReturnValue([
-          "pull-back-map-layer",
-        ])
         setHtmlWidthHeightForLeafletMap()
 
         const [pullBackVehicle1, pullBackVehicle2] = vehicleFactory.buildList(
@@ -708,9 +701,6 @@ describe("<MapDisplay />", () => {
       test("can click to select a vehicle", async () => {
         const mockSetSelection = jest.fn()
 
-        ;(getTestGroups as jest.Mock<typeof getTestGroups>).mockReturnValue([
-          "pull-back-map-layer",
-        ])
         setHtmlWidthHeightForLeafletMap()
 
         const pullBackVehicle = vehicleFactory.build({
