@@ -1,7 +1,5 @@
 .c-layers-control {
-  display: flex;
-  border: none !important;
-  gap: 5px;
+  position: relative;
 }
 
 .c-layers-control__button {
@@ -40,8 +38,10 @@
 }
 
 .c-layers-control__content {
-  position: fixed;
-  right: 55px;
+  position: absolute;
+  top: 0;
+  right: calc(100% + 10px);
+  width: max-content;
   border-radius: 8px;
 
   background-color: $white;
