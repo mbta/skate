@@ -2,7 +2,9 @@ defmodule SkateWeb.AuthenticatedChannel do
   @moduledoc """
   A `use` macro and `@behaviour` which implements `c:Phoenix.Channel.join/3` and
   calls `c:SkateWeb.AuthenticatedChannel.join_authenticated/3` when socket is
-  authenticated.
+  authenticated. In addition, implements `c:Phoenix.Channel.handle_info/2` and
+  calls `c:SkateWeb.AuthenticatedChannel.handle_info/2` with the provided message
+  after checking the socket's current validity.
 
   This ensures that the token associated with the `socket` passed to
   `c:Phoenix.Channel.join/3` is valid before forwarding the call to
@@ -47,9 +49,20 @@ defmodule SkateWeb.AuthenticatedChannel do
               | {:error, reason :: map()}
 
   @doc """
-  Macro which imports the `SkateWeb.AuthenticatedChannel` behaviour and
-  implements `c:Phoenix.Channel.join/3` for
-  `c:SkateWeb.AuthenticatedChannel.join_authenticated/3`
+  Handles a process message once the current validity of the token has been
+  checked.
+
+  see: `c:Phoenix.Channel.handle_info/2` for relevant docs.
+  """
+  @callback handle_info_authenticated(msg :: term, socket :: Phoenix.Socket.t()) ::
+              {:noreply, Phoenix.Socket.t()}
+              | {:stop, reason :: term, Phoenix.Socket.t()}
+
+  @doc """
+  Macro which imports the `SkateWeb.AuthenticatedChannel` behaviour. Implements
+  `c:Phoenix.Channel.join/3` for `c:SkateWeb.AuthenticatedChannel.join_authenticated/3`
+  as well as `c:Phoenix.Channel.handle_info/2` for
+  `c:SkateWeb.AuthenticatedChannel.handle_info_authenticated/2`.
   """
   defmacro __using__(_) do
     quote do
@@ -61,6 +74,16 @@ defmodule SkateWeb.AuthenticatedChannel do
           join_authenticated(topic, payload, socket)
         else
           {:error, %{reason: :not_authenticated}}
+        end
+      end
+
+      @impl Phoenix.Channel
+      def handle_info(message, socket) do
+        if SkateWeb.ChannelAuth.valid_token?(socket) do
+          handle_info_authenticated(message, socket)
+        else
+          :ok = push(socket, "auth_expired", %{})
+          {:stop, :normal, socket}
         end
       end
     end

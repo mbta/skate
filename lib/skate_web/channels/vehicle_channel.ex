@@ -4,8 +4,8 @@ defmodule SkateWeb.VehicleChannel do
 
   alias Realtime.Server
 
-  @impl true
-  def handle_info({:new_realtime_data, lookup_params}, socket) do
+  @impl SkateWeb.AuthenticatedChannel
+  def handle_info_authenticated({:new_realtime_data, lookup_params}, socket) do
     vehicle_or_ghost = Realtime.Server.lookup(lookup_params)
     :ok = push(socket, "vehicle", %{data: List.first(vehicle_or_ghost)})
 
