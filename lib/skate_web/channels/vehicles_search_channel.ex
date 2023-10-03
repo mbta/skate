@@ -47,8 +47,8 @@ defmodule SkateWeb.VehiclesSearchChannel do
     {:ok, %{data: result}, socket}
   end
 
-  @impl Phoenix.Channel
-  def handle_in(
+  @impl SkateWeb.AuthenticatedChannel
+  def handle_in_authenticated(
         "update_search_query",
         %{"limit" => limit},
         socket
