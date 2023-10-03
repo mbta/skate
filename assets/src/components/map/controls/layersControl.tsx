@@ -125,7 +125,7 @@ const TileLayerControl = ({
 }): JSX.Element => (
   <div className="c-layers-control__tile_layer_control">
     <h2 id={sectionLabelId}>Base Map</h2>
-    <div className="form-check">
+    <div className="form-check position-relative">
       <input
         className="form-check-input"
         type="radio"
@@ -135,11 +135,11 @@ const TileLayerControl = ({
         checked={tileType === "base"}
         onChange={() => setTileType("base")}
       />
-      <label className="form-check-label" htmlFor="base">
+      <label className="form-check-label stretched-link" htmlFor="base">
         Map (default)
       </label>
     </div>
-    <div className="form-check">
+    <div className="form-check position-relative">
       <input
         className="form-check-input"
         type="radio"
@@ -149,7 +149,7 @@ const TileLayerControl = ({
         checked={tileType === "satellite"}
         onChange={() => setTileType("satellite")}
       />
-      <label className="form-check-label" htmlFor="satellite">
+      <label className="form-check-label stretched-link" htmlFor="satellite">
         Satellite
       </label>
     </div>
@@ -170,7 +170,7 @@ const VehicleLayersControl = ({
   return (
     <div className="c-layers-control__vehicle_layers_control">
       <h2 id={sectionLabelId}>Vehicles</h2>
-      <div className="form-check form-switch">
+      <div className="form-check form-switch position-relative">
         <input
           className="form-check-input"
           type="checkbox"
@@ -184,7 +184,7 @@ const VehicleLayersControl = ({
             }
           }}
         />
-        <label className="form-check-label" htmlFor={inputId}>
+        <label className="form-check-label stretched-link" htmlFor={inputId}>
           Show pull-backs
         </label>
       </div>
