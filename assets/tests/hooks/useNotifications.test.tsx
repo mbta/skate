@@ -92,10 +92,12 @@ describe("useNotifications", () => {
   test("parses initial notification message", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
-    mockChannel.on.mockImplementation((_event, handler) => {
-      handler({
-        data: notification1Data,
-      })
+    mockChannel.on.mockImplementation((event, handler) => {
+      if (event === "notification") {
+        handler({
+          data: notification1Data,
+        })
+      }
       return 1
     })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
