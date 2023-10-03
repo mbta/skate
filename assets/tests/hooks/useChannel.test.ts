@@ -283,6 +283,29 @@ describe("useChannel", () => {
     spyConsoleError.mockRestore()
   })
 
+  test("reloads on join error due to not being authenticated", async () => {
+    const reloadSpy = jest.spyOn(browser, "reload")
+    reloadSpy.mockImplementationOnce(() => ({}))
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("error", {
+      reason: "not_authenticated",
+    })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    renderHook(() =>
+      useChannel({
+        socket: mockSocket,
+        topic: "topic",
+        event: "event",
+        parser: jest.fn(),
+        loadingState: "loading",
+      })
+    )
+
+    expect(reloadSpy).toHaveBeenCalled()
+    reloadSpy.mockRestore()
+  })
+
   test("reloads the window on channel timeout", async () => {
     const reloadSpy = jest.spyOn(browser, "reload")
     reloadSpy.mockImplementationOnce(() => ({}))
@@ -664,6 +687,31 @@ describe("useCheckedChannel", () => {
 
     expect(spyConsoleError).toHaveBeenCalled()
     spyConsoleError.mockRestore()
+  })
+
+  test("reloads on join error due to not being authenticated", async () => {
+    const reloadSpy = jest.spyOn(browser, "reload")
+    reloadSpy.mockImplementationOnce(() => ({}))
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("error", {
+      reason: "not_authenticated",
+    })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    const dataStruct = unknown()
+
+    renderHook(() =>
+      useCheckedChannel({
+        socket: mockSocket,
+        topic: "topic",
+        event: "event",
+        dataStruct,
+        parser: jest.fn(),
+        loadingState: "loading",
+      })
+    )
+
+    expect(reloadSpy).toHaveBeenCalled()
+    reloadSpy.mockRestore()
   })
 
   test("reloads the window on channel timeout", async () => {

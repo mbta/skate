@@ -47,10 +47,15 @@ export const useChannel = <T>({
             channel = undefined
           }
         })
-        .receive("error", ({ reason }) =>
-          // eslint-disable-next-line no-console
-          console.error(`joining topic ${topic} failed`, reason)
-        )
+
+        .receive("error", ({ reason }) => {
+          if (reason === "not_authenticated") {
+            reload()
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(`joining topic ${topic} failed`, reason)
+          }
+        })
         .receive("timeout", reload)
     }
 
@@ -166,10 +171,14 @@ export const useCheckedTwoWayChannel = <T, U, V>({
             channel = undefined
           }
         })
-        .receive("error", ({ reason }) =>
-          // eslint-disable-next-line no-console
-          console.error(`joining topic ${topic} failed`, reason)
-        )
+        .receive("error", ({ reason }) => {
+          if (reason === "not_authenticated") {
+            reload()
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(`joining topic ${topic} failed`, reason)
+          }
+        })
         .receive("timeout", reload)
     }
 

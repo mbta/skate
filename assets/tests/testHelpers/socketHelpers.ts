@@ -30,17 +30,24 @@ export const makeMockChannel = (
       switch (message) {
         case "ok":
           if (expectedReceiveData !== undefined) {
-            if (typeof expectedReceiveData === "function") {
-              const expectedReceived = expectedReceiveData()
-              handler(expectedReceived)
-            } else {
-              handler(expectedReceiveData)
-            }
+            handler(
+              typeof expectedReceiveData === "function"
+                ? expectedReceiveData()
+                : expectedReceiveData
+            )
           }
           return result
 
         case "error":
-          handler({ reason: "ERROR_REASON" })
+          if (expectedReceiveData !== undefined) {
+            handler(
+              typeof expectedReceiveData === "function"
+                ? expectedReceiveData()
+                : expectedReceiveData
+            )
+          } else {
+            handler({ reason: "ERROR_REASON" })
+          }
           break
 
         case "timeout":
