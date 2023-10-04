@@ -3,7 +3,11 @@ import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import React, { ReactNode } from "react"
 import { MapContainer } from "react-leaflet"
-import { LayersControl } from "../../../../src/components/map/controls/layersControl"
+import {
+  LayersButtonProps,
+  LayersControlState,
+  LayersControl as LayersControlWithoutState,
+} from "../../../../src/components/map/controls/layersControl"
 import userEvent from "@testing-library/user-event"
 import {
   layersControlButton,
@@ -19,6 +23,26 @@ const mapWrapper = ({ children }: { children: ReactNode }) => (
   <MapContainer center={[0, 0]} zoom={0}>
     {children}
   </MapContainer>
+)
+
+const LayersControl = (
+  props: Omit<
+    LayersButtonProps,
+    "showLayersList" | "onChangeLayersListVisibility"
+  > &
+    Partial<
+      Pick<LayersButtonProps, "showLayersList" | "onChangeLayersListVisibility">
+    >
+) => (
+  <LayersControlState>
+    {(open, setOpen) => (
+      <LayersControlWithoutState
+        showLayersList={open}
+        onChangeLayersListVisibility={setOpen}
+        {...props}
+      />
+    )}
+  </LayersControlState>
 )
 
 describe("LayersControl", () => {

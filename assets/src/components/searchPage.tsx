@@ -13,7 +13,7 @@ import { MapFollowingPrimaryVehicles } from "./map"
 import RecentSearches from "./recentSearches"
 import OldSearchForm from "./oldSearchForm"
 import SearchResults from "./searchResults"
-import { LayersControl } from "./map/controls/layersControl"
+import { LayersControl, LayersControlState } from "./map/controls/layersControl"
 import { TileType } from "../tilesetUrls"
 import { setTileType } from "../state/mapLayersState"
 
@@ -121,11 +121,17 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           stations={stations}
           tileType={tileType}
         >
-          <LayersControl.WithTileContext
-            setTileType={(tileType: TileType) =>
-              dispatch(setTileType("legacySearchMap", tileType))
-            }
-          />
+          <LayersControlState>
+            {(open, setOpen) => (
+              <LayersControl.WithTileContext
+                showLayersList={open}
+                onChangeLayersListVisibility={setOpen}
+                setTileType={(tileType: TileType) =>
+                  dispatch(setTileType("legacySearchMap", tileType))
+                }
+              />
+            )}
+          </LayersControlState>
         </MapFollowingPrimaryVehicles>
       </div>
     </div>
