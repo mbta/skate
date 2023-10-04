@@ -2,6 +2,7 @@ import Leaflet, { ControlOptions, ControlPosition } from "leaflet"
 import { ReactNode, useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import { useMap } from "react-leaflet"
+import { joinClasses } from "../../../helpers/dom"
 
 const positionQuerySelector = (position: ControlPosition) => {
   switch (position) {
@@ -23,7 +24,7 @@ export const CustomControl = ({
   insertAfterSelector,
 }: ControlOptions & {
   children: ReactNode
-  className: string
+  className?: string
   insertAfterSelector?: string
 }): JSX.Element | null => {
   const map = useMap()
@@ -42,7 +43,7 @@ export const CustomControl = ({
     }
 
     if (portalParent && portalElement) {
-      portalElement.className = `leaflet-control ${className}`
+      portalElement.className = joinClasses(["leaflet-control", className])
 
       const elementToInsertAfter = insertAfterSelector
         ? portalParent.querySelector(insertAfterSelector)

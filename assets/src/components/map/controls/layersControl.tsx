@@ -30,7 +30,7 @@ export const LayersButton = ({
   pullbackLayerEnabled,
   togglePullbackLayerEnabled,
 }: LayersButtonProps) => (
-  <>
+  <div className="c-layers-control">
     <button
       title="Layers"
       className={joinClasses([
@@ -58,7 +58,7 @@ export const LayersButton = ({
         togglePullbackLayerEnabled={togglePullbackLayerEnabled}
       />
     )}
-  </>
+  </div>
 )
 
 const LayersPopoverMenu = ({
@@ -192,7 +192,6 @@ export const LayersControl = (props: LayersButtonProps) => {
 
   return (
     <CustomControl
-      className="c-layers-control"
       position="topright"
       insertAfterSelector={".leaflet-control-zoom"}
     >
