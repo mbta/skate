@@ -268,6 +268,73 @@ exports[`SearchPage renders the empty state 1`] = `
                     <svg />
                   </span>
                 </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r0:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r0:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -939,6 +1006,73 @@ exports[`SearchPage renders vehicle data 1`] = `
                     <svg />
                   </span>
                 </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r4:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r4:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
             <div

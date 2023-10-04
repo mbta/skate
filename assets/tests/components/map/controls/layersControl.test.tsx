@@ -79,11 +79,11 @@ describe("LayersControl", () => {
       }
     )
     await userEvent.click(layersControlButton.get())
-    expect(screen.getByLabelText("Map (default)")).toBeInTheDocument()
+    expect(screen.getByLabelText("Map (default)")).toBeVisible()
 
     await userEvent.click(layersControlButton.get())
 
-    expect(screen.queryByLabelText("Map (default)")).toBeNull()
+    expect(screen.queryByLabelText("Map (default)")).not.toBeVisible()
   })
 
   test("when the map button is clicked while the layer options are opened, then the layer options are closed", async () => {
@@ -97,11 +97,11 @@ describe("LayersControl", () => {
     )
 
     await userEvent.click(layersControlButton.get())
-    expect(screen.getByLabelText("Map (default)")).toBeInTheDocument()
+    expect(screen.getByLabelText("Map (default)")).toBeVisible()
 
     await userEvent.click(container.querySelector(".leaflet-container")!)
 
-    expect(screen.queryByLabelText("Map (default)")).toBeNull()
+    expect(screen.queryByLabelText("Map (default)")).not.toBeVisible()
   })
 
   test("pull-back layer control is shown when props are provided", async () => {
@@ -175,7 +175,7 @@ describe("LayersControl", () => {
       }
     )
 
-    expect(screen.getByText("1")).toBeInTheDocument()
+    expect(screen.getByText("1")).toBeVisible()
   })
 
   test("when pull-back layer is disabled, doesn't show pill", async () => {
@@ -191,6 +191,6 @@ describe("LayersControl", () => {
       }
     )
 
-    expect(screen.queryByText("1")).not.toBeInTheDocument()
+    expect(screen.queryByText("1")).not.toBeVisible()
   })
 })

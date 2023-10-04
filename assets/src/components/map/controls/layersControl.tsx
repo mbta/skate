@@ -45,19 +45,19 @@ export const LayersButton = ({
       <MapLayersIcon />
     </button>
 
-    {/* For now there's only one vehicle layer, in the future this might need to be an actual count */}
-    {pullbackLayerEnabled ? (
-      <div className="c-layers-control__pill">1</div>
-    ) : null}
+    <div className="c-layers-control__pill" hidden={!pullbackLayerEnabled}>
+      {/* For now there's only one vehicle layer, in the future this might need to be an actual count */}
+      1
+    </div>
 
-    {showLayersList && (
+    <div hidden={!showLayersList}>
       <LayersPopoverMenu
         tileType={tileType}
         onChangeTileType={onChangeTileType}
         pullbackLayerEnabled={pullbackLayerEnabled}
         onTogglePullbackLayer={onTogglePullbackLayer}
       />
-    )}
+    </div>
   </div>
 )
 
