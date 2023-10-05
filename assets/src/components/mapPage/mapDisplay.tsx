@@ -50,7 +50,10 @@ import { streetViewUrl } from "../../util/streetViewUrl"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { setTileType, togglePullbackLayer } from "../../state/mapLayersState"
 import { TileType } from "../../tilesetUrls"
-import { LayersControl } from "../map/controls/layersControl"
+import {
+  LayersControl,
+  LayersControlState,
+} from "../map/controls/layersControl"
 import { LocationSearchResult } from "../../models/locationSearchResult"
 import { useAllStops } from "../../hooks/useAllStops"
 import { LocationType, RouteType } from "../../models/stopData"
@@ -659,15 +662,21 @@ const MapDisplay = ({
           fetchedSelectedLocation={fetchedSelectedLocation}
           pullbackLayerEnabled={pullbackLayerEnabled}
         />
-        <LayersControl.WithTileContext
-          setTileType={(tileType: TileType) =>
-            dispatch(setTileType("searchMap", tileType))
-          }
-          pullbackLayerEnabled={pullbackLayerEnabled}
-          togglePullbackLayerEnabled={() =>
-            dispatch(togglePullbackLayer("searchMap"))
-          }
-        />
+        <LayersControlState>
+          {(open, setOpen) => (
+            <LayersControl.WithTileContext
+              showLayersList={open}
+              onChangeLayersListVisibility={setOpen}
+              onChangeTileType={(tileType: TileType) =>
+                dispatch(setTileType("searchMap", tileType))
+              }
+              pullbackLayerEnabled={pullbackLayerEnabled}
+              onTogglePullbackLayer={() =>
+                dispatch(togglePullbackLayer("searchMap"))
+              }
+            />
+          )}
+        </LayersControlState>
       </MapSafeAreaContext.Provider>
     </Map>
   )

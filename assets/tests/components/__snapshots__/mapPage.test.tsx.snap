@@ -34,10 +34,10 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               class="c-search-form__search-input-container"
             >
               <input
-                aria-controls=":r8:"
+                aria-controls=":re:"
                 aria-expanded="false"
                 aria-haspopup="listbox"
-                aria-owns=":r8:"
+                aria-owns=":re:"
                 class="c-search-form__input"
                 placeholder="Search"
                 role="combobox"
@@ -99,27 +99,27 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                 <h2
                   aria-hidden="true"
                   class="visually-hidden"
-                  id=":r9:"
+                  id=":rf:"
                   role="presentation"
                 >
                   Search Suggestions
                 </h2>
                 <div
-                  aria-labelledby=":r9:"
+                  aria-labelledby=":rf:"
                   class="c-autocomplete__list"
-                  id=":r8:"
+                  id=":re:"
                   role="listbox"
                   tabindex="-1"
                 >
                   <div
                     aria-hidden="true"
                     class="c-autocomplete__group-heading"
-                    id=":ra:"
+                    id=":rg:"
                     role="presentation"
                     style="user-select: none;"
                   />
                   <ul
-                    aria-labelledby=":ra:"
+                    aria-labelledby=":rg:"
                     class="c-autocomplete__group-list"
                     role="group"
                   >
@@ -377,16 +377,117 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:ri:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:ri:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        aria-labelledby="vehicle-layers-control-label-:rj:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__vehicle_layers_control"
+                        >
+                          <h2
+                            id="vehicle-layers-control-label-:rj:"
+                          >
+                            Vehicles
+                          </h2>
+                          <div
+                            class="form-check form-switch position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="pull-back-layer-switch-:rk:"
+                              role="switch"
+                              type="checkbox"
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="pull-back-layer-switch-:rk:"
+                            >
+                              Show pull-backs
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -457,7 +558,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:rb:"
+              for="street-view-toggle-:rh:"
               role="presentation"
             >
               <span
@@ -468,7 +569,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:rb:"
+              for="street-view-toggle-:rh:"
             >
               Street View
             </label>
@@ -477,7 +578,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:rb:"
+                id="street-view-toggle-:rh:"
                 role="switch"
                 type="checkbox"
               />
@@ -867,16 +968,117 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r4:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r4:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        aria-labelledby="vehicle-layers-control-label-:r5:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__vehicle_layers_control"
+                        >
+                          <h2
+                            id="vehicle-layers-control-label-:r5:"
+                          >
+                            Vehicles
+                          </h2>
+                          <div
+                            class="form-check form-switch position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="pull-back-layer-switch-:r6:"
+                              role="switch"
+                              type="checkbox"
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="pull-back-layer-switch-:r6:"
+                            >
+                              Show pull-backs
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -1167,13 +1369,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="run:rc:"
+                      id="run:rl:"
                       scope="row"
                     >
                       run
                     </th>
                     <td
-                      aria-labelledby="run:rc:"
+                      aria-labelledby="run:rl:"
                       class="kv-value font-s-reg"
                     >
                       run-1
@@ -1182,13 +1384,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="vehicle:rd:"
+                      id="vehicle:rm:"
                       scope="row"
                     >
                       vehicle
                     </th>
                     <td
-                      aria-labelledby="vehicle:rd:"
+                      aria-labelledby="vehicle:rm:"
                       class="kv-value font-s-reg"
                     >
                       v1-label
@@ -1197,13 +1399,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="operator:re:"
+                      id="operator:rn:"
                       scope="row"
                     >
                       operator
                     </th>
                     <td
-                      aria-labelledby="operator:re:"
+                      aria-labelledby="operator:rn:"
                       class="kv-value font-s-reg fs-mask"
                     >
                       WILL SMITH #op1
@@ -1220,13 +1422,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               >
                 <label
                   class="c-current-location__label label font-xs-reg title-case"
-                  for="current-location-:rf:"
+                  for="current-location-:ro:"
                 >
                   Current Location
                 </label>
                 <output
                   class="c-current-location__value label font-s-semi"
-                  id="current-location-:rf:"
+                  id="current-location-:ro:"
                 >
                   loading...
                 </output>
@@ -1750,16 +1952,117 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:rq:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:rq:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        aria-labelledby="vehicle-layers-control-label-:rr:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__vehicle_layers_control"
+                        >
+                          <h2
+                            id="vehicle-layers-control-label-:rr:"
+                          >
+                            Vehicles
+                          </h2>
+                          <div
+                            class="form-check form-switch position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="pull-back-layer-switch-:rs:"
+                              role="switch"
+                              type="checkbox"
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="pull-back-layer-switch-:rs:"
+                            >
+                              Show pull-backs
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -1830,7 +2133,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:rg:"
+              for="street-view-toggle-:rp:"
               role="presentation"
             >
               <span
@@ -1841,7 +2144,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:rg:"
+              for="street-view-toggle-:rp:"
             >
               Street View
             </label>
@@ -1850,7 +2153,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:rg:"
+                id="street-view-toggle-:rp:"
                 role="switch"
                 type="checkbox"
               />

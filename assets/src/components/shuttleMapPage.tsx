@@ -21,7 +21,7 @@ import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import Map, { FollowerStatusClasses, vehicleToLeafletLatLng } from "./map"
 import ShuttlePicker from "./shuttlePicker"
-import { LayersControl } from "./map/controls/layersControl"
+import { LayersControl, LayersControlState } from "./map/controls/layersControl"
 import { setTileType } from "../state/mapLayersState"
 import { TileType } from "../tilesetUrls"
 import { UserLocationControl } from "./map/controls/userLocationControl"
@@ -201,7 +201,15 @@ export const ShuttleMap = ({
         onPrimaryVehicleSelect={selectVehicle}
         tileType={tileType}
       >
-        <LayersControl.WithTileContext setTileType={setTileType} />
+        <LayersControlState>
+          {(open, setOpen) => (
+            <LayersControl.WithTileContext
+              showLayersList={open}
+              onChangeLayersListVisibility={setOpen}
+              onChangeTileType={setTileType}
+            />
+          )}
+        </LayersControlState>
 
         <UserLocationControl
           title="Show your current location"

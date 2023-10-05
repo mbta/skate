@@ -1,4 +1,10 @@
-import React, { useContext, useId, useState } from "react"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useId,
+  useState,
+} from "react"
 import { useMapEvents } from "react-leaflet"
 import { joinClasses } from "../../../helpers/dom"
 import { TileType } from "../../../tilesetUrls"
@@ -6,80 +12,61 @@ import { MapLayersIcon } from "../../../helpers/icon"
 import { CustomControl } from "./customControl"
 import { TileTypeContext } from "../../../contexts/tileTypeContext"
 
-const LayersControlWithTileContext = (props: {
-  setTileType: (tileType: TileType) => void
-  pullbackLayerEnabled?: boolean
-  togglePullbackLayerEnabled?: () => void
-}): JSX.Element | null => {
-  const tileType = useContext(TileTypeContext)
-  return <LayersControl tileType={tileType} {...props} />
+interface LayersButtonStateProps {
+  showLayersList: boolean
+  onChangeLayersListVisibility: (value: SetStateAction<boolean>) => void
 }
 
-export const LayersControl = ({
+export type LayersButtonProps = LayersButtonStateProps &
+  VehicleLayerOptionsProps &
+  TileLayerOptionsProps
+
+export const LayersButton = ({
+  showLayersList,
+  onChangeLayersListVisibility,
+
   tileType,
-  setTileType,
+  onChangeTileType,
   pullbackLayerEnabled,
-  togglePullbackLayerEnabled,
-}: {
-  tileType: TileType
-  setTileType: (tileType: TileType) => void
-  pullbackLayerEnabled?: boolean
-  togglePullbackLayerEnabled?: () => void
-}): JSX.Element | null => {
-  const [showLayersList, setShowLayersList] = useState(false)
-
-  useMapEvents({
-    click: () => {
-      setShowLayersList(false)
-    },
-  })
-
-  return (
-    <CustomControl
-      className="c-layers-control"
-      position="topright"
-      insertAfterSelector={".leaflet-control-zoom"}
+  onTogglePullbackLayer,
+}: LayersButtonProps) => (
+  <div className="c-layers-control">
+    <button
+      title="Layers"
+      className={joinClasses([
+        "c-layers-control__button",
+        showLayersList && "c-layers-control__button--selected",
+        "leaflet-bar",
+      ])}
+      onClick={() =>
+        onChangeLayersListVisibility((currentValue) => !currentValue)
+      }
     >
-      <button
-        title="Layers"
-        className={joinClasses([
-          "c-layers-control__button",
-          showLayersList && "c-layers-control__button--selected",
-          "leaflet-bar",
-        ])}
-        onClick={() => setShowLayersList((currentVal) => !currentVal)}
-      >
-        <MapLayersIcon />
-      </button>
+      <MapLayersIcon />
+    </button>
 
+    <div className="c-layers-control__pill" hidden={!pullbackLayerEnabled}>
       {/* For now there's only one vehicle layer, in the future this might need to be an actual count */}
-      {pullbackLayerEnabled ? (
-        <div className="c-layers-control__pill">1</div>
-      ) : null}
+      1
+    </div>
 
-      {showLayersList && (
-        <LayersControlContent
-          tileType={tileType}
-          setTileType={setTileType}
-          pullbackLayerEnabled={pullbackLayerEnabled}
-          togglePullbackLayerEnabled={togglePullbackLayerEnabled}
-        />
-      )}
-    </CustomControl>
-  )
-}
+    <div hidden={!showLayersList}>
+      <LayersPopoverMenu
+        tileType={tileType}
+        onChangeTileType={onChangeTileType}
+        pullbackLayerEnabled={pullbackLayerEnabled}
+        onTogglePullbackLayer={onTogglePullbackLayer}
+      />
+    </div>
+  </div>
+)
 
-const LayersControlContent = ({
+const LayersPopoverMenu = ({
   tileType,
-  setTileType,
+  onChangeTileType: setTileType,
   pullbackLayerEnabled,
-  togglePullbackLayerEnabled,
-}: {
-  tileType: TileType
-  setTileType: (tileType: TileType) => void
-  pullbackLayerEnabled?: boolean
-  togglePullbackLayerEnabled?: () => void
-}): JSX.Element => {
+  onTogglePullbackLayer: togglePullbackLayerEnabled,
+}: TileLayerOptionsProps & VehicleLayerOptionsProps) => {
   const tileLayerControlLabelId = "tile-layer-control-label-" + useId()
   const vehicleLayersControlLabelId = "vehicle-layers-control-label-" + useId()
 
@@ -90,9 +77,9 @@ const LayersControlContent = ({
           className="list-group-item"
           aria-labelledby={tileLayerControlLabelId}
         >
-          <TileLayerControl
+          <TileLayerOptions
             tileType={tileType}
-            setTileType={setTileType}
+            onChangeTileType={setTileType}
             sectionLabelId={tileLayerControlLabelId}
           />
         </li>
@@ -102,10 +89,10 @@ const LayersControlContent = ({
               className="list-group-item"
               aria-labelledby={vehicleLayersControlLabelId}
             >
-              <VehicleLayersControl
+              <VehicleLayerOptions
                 sectionLabelId={vehicleLayersControlLabelId}
                 pullbackLayerEnabled={pullbackLayerEnabled}
-                togglePullbackLayerEnabled={togglePullbackLayerEnabled}
+                onTogglePullbackLayer={togglePullbackLayerEnabled}
               />
             </li>
           )}
@@ -114,15 +101,17 @@ const LayersControlContent = ({
   )
 }
 
-const TileLayerControl = ({
-  tileType,
-  setTileType,
-  sectionLabelId,
-}: {
+interface TileLayerOptionsProps {
   tileType: TileType
-  setTileType: (tileType: TileType) => void
+  onChangeTileType: (tileType: TileType) => void
+}
+const TileLayerOptions = ({
+  tileType,
+  onChangeTileType,
+  sectionLabelId,
+}: TileLayerOptionsProps & {
   sectionLabelId?: string
-}): JSX.Element => (
+}) => (
   <div className="c-layers-control__tile_layer_control">
     <h2 id={sectionLabelId}>Base Map</h2>
     <div className="form-check position-relative">
@@ -133,7 +122,7 @@ const TileLayerControl = ({
         value=""
         id="base"
         checked={tileType === "base"}
-        onChange={() => setTileType("base")}
+        onChange={() => onChangeTileType("base")}
       />
       <label className="form-check-label stretched-link" htmlFor="base">
         Map (default)
@@ -147,7 +136,7 @@ const TileLayerControl = ({
         value=""
         id="satellite"
         checked={tileType === "satellite"}
-        onChange={() => setTileType("satellite")}
+        onChange={() => onChangeTileType("satellite")}
       />
       <label className="form-check-label stretched-link" htmlFor="satellite">
         Satellite
@@ -156,15 +145,17 @@ const TileLayerControl = ({
   </div>
 )
 
-const VehicleLayersControl = ({
+interface VehicleLayerOptionsProps {
+  pullbackLayerEnabled?: boolean
+  onTogglePullbackLayer?: () => void
+}
+const VehicleLayerOptions = ({
   sectionLabelId,
   pullbackLayerEnabled,
-  togglePullbackLayerEnabled,
+  onTogglePullbackLayer,
 }: {
   sectionLabelId?: string
-  pullbackLayerEnabled: boolean
-  togglePullbackLayerEnabled?: () => void
-}): JSX.Element => {
+} & VehicleLayerOptionsProps) => {
   const inputId = "pull-back-layer-switch-" + useId()
 
   return (
@@ -177,10 +168,10 @@ const VehicleLayersControl = ({
           role="switch"
           id={inputId}
           checked={pullbackLayerEnabled}
-          onChange={togglePullbackLayerEnabled}
+          onChange={onTogglePullbackLayer}
           onKeyDown={(event) => {
-            if (event.key === "Enter" && togglePullbackLayerEnabled) {
-              togglePullbackLayerEnabled()
+            if (event.key === "Enter") {
+              onTogglePullbackLayer?.()
             }
           }}
         />
@@ -192,4 +183,44 @@ const VehicleLayersControl = ({
   )
 }
 
+export const LayersControl = (props: LayersButtonProps) => {
+  useMapEvents({
+    click: () => {
+      props.onChangeLayersListVisibility(false)
+    },
+  })
+
+  return (
+    <CustomControl
+      position="topright"
+      insertAfterSelector={".leaflet-control-zoom"}
+    >
+      <LayersButton {...props} />
+    </CustomControl>
+  )
+}
+
+const LayersControlWithTileContext = (
+  props: Omit<LayersButtonProps, "tileType">
+) => {
+  const tileType = useContext(TileTypeContext)
+  return <LayersControl tileType={tileType} {...props} />
+}
+
 LayersControl.WithTileContext = LayersControlWithTileContext
+
+type LayersControlStateProps = {
+  open?: boolean
+  children: (
+    open: boolean,
+    setOpen: Dispatch<SetStateAction<boolean>>
+  ) => JSX.Element
+}
+
+export const LayersControlState = ({
+  open: startOpen = false,
+  children,
+}: LayersControlStateProps) => {
+  const [open, setOpen] = useState(startOpen)
+  return children(open, setOpen)
+}

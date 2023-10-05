@@ -597,16 +597,87 @@ exports[`Shuttle Map Page renders 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r0:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r0:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -1289,16 +1360,87 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r8:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r8:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -1981,16 +2123,87 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:ra:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:ra:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -2227,16 +2440,87 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r4:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r4:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
@@ -2948,16 +3232,87 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
               </a>
             </div>
             <div
-              class="leaflet-control c-layers-control"
+              class="leaflet-control"
             >
-              <button
-                class="c-layers-control__button leaflet-bar"
-                title="Layers"
+              <div
+                class="c-layers-control"
               >
-                <span>
-                  <svg />
-                </span>
-              </button>
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r6:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r6:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="base"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="form-check position-relative"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite"
+                              name="tileType"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="form-check-label stretched-link"
+                              for="satellite"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="leaflet-bar leaflet-control"
