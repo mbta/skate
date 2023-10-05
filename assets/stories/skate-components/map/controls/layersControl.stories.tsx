@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 
+import { argsUpdater } from "../../../../.storybook/argsUpdater"
 import { inMapDecorator } from "../../../../.storybook/inMapDecorator"
 
 import {
@@ -18,6 +19,20 @@ const meta = {
     pullbackLayerEnabled: false,
     tileType: "base",
   },
+  argTypes: {
+    onChangeTileType: { table: { disable: true } },
+    onChangeLayersListVisibility: { table: { disable: true } },
+    onTogglePullbackLayer: { table: { disable: true } },
+  },
+  decorators: [
+    argsUpdater("onChangeLayersListVisibility", ({ showLayersList }) => {
+      return { showLayersList: !showLayersList }
+    }),
+    argsUpdater("onChangeTileType", (_, tileType) => ({ tileType })),
+    argsUpdater("onTogglePullbackLayer", ({ pullbackLayerEnabled }) => ({
+      pullbackLayerEnabled: !pullbackLayerEnabled,
+    })),
+  ],
 } satisfies Meta<typeof LayersButton>
 export default meta
 
