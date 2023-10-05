@@ -97,13 +97,15 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
-    test "includes fullstory snippet when record_fullstory is true", %{conn: conn} do
+    test "includes fullstory organization ID when record_fullstory is true", %{conn: conn} do
       reassign_env(:skate, :record_fullstory, true)
+      reassign_env(:skate, :fullstory_org, "fake_org")
+
       conn = get(conn, "/")
 
       html = html_response(conn, 200)
 
-      assert html =~ "<script>\nwindow['_fs_host'] = 'fullstory.com';"
+      assert html =~ "organizationId: \"fake_org\""
     end
 
     @tag :authenticated
