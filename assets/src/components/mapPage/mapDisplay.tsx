@@ -667,11 +667,11 @@ const MapDisplay = ({
             <LayersControl.WithTileContext
               showLayersList={open}
               onChangeLayersListVisibility={setOpen}
-              setTileType={(tileType: TileType) =>
+              onChangeTileType={(tileType: TileType) =>
                 dispatch(setTileType("searchMap", tileType))
               }
               pullbackLayerEnabled={pullbackLayerEnabled}
-              togglePullbackLayerEnabled={() =>
+              onTogglePullbackLayer={() =>
                 dispatch(togglePullbackLayer("searchMap"))
               }
             />

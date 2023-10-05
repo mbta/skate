@@ -126,7 +126,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
               <LayersControl.WithTileContext
                 showLayersList={open}
                 onChangeLayersListVisibility={setOpen}
-                setTileType={(tileType: TileType) =>
+                onChangeTileType={(tileType: TileType) =>
                   dispatch(setTileType("legacySearchMap", tileType))
                 }
               />

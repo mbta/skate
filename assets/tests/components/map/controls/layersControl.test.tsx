@@ -47,7 +47,7 @@ const LayersControl = (
 
 describe("LayersControl", () => {
   test("when the control button is clicked, the list of layers is rendered with the selected layer marked as selected", async () => {
-    render(<LayersControl tileType="base" setTileType={jest.fn()} />, {
+    render(<LayersControl tileType="base" onChangeTileType={jest.fn()} />, {
       wrapper: mapWrapper,
     })
     await userEvent.click(layersControlButton.get())
@@ -58,9 +58,12 @@ describe("LayersControl", () => {
 
   test("when the a tile option is clicked, then setTileType is called", async () => {
     const setTileTypeMock = jest.fn()
-    render(<LayersControl tileType="base" setTileType={setTileTypeMock} />, {
-      wrapper: mapWrapper,
-    })
+    render(
+      <LayersControl tileType="base" onChangeTileType={setTileTypeMock} />,
+      {
+        wrapper: mapWrapper,
+      }
+    )
     await userEvent.click(layersControlButton.get())
     await userEvent.click(screen.getByLabelText("Satellite"))
 
@@ -69,9 +72,12 @@ describe("LayersControl", () => {
 
   test("when the control button is clicked while the layer options are open, then the layer options are closed", async () => {
     const setTileTypeMock = jest.fn()
-    render(<LayersControl tileType="base" setTileType={setTileTypeMock} />, {
-      wrapper: mapWrapper,
-    })
+    render(
+      <LayersControl tileType="base" onChangeTileType={setTileTypeMock} />,
+      {
+        wrapper: mapWrapper,
+      }
+    )
     await userEvent.click(layersControlButton.get())
     expect(screen.getByLabelText("Map (default)")).toBeInTheDocument()
 
@@ -84,7 +90,7 @@ describe("LayersControl", () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
     const { container } = render(
-      <LayersControl tileType="base" setTileType={jest.fn()} />,
+      <LayersControl tileType="base" onChangeTileType={jest.fn()} />,
       {
         wrapper: mapWrapper,
       }
@@ -102,9 +108,9 @@ describe("LayersControl", () => {
     render(
       <LayersControl
         tileType="base"
-        setTileType={jest.fn()}
+        onChangeTileType={jest.fn()}
         pullbackLayerEnabled={false}
-        togglePullbackLayerEnabled={jest.fn()}
+        onTogglePullbackLayer={jest.fn()}
       />,
       {
         wrapper: mapWrapper,
@@ -121,9 +127,9 @@ describe("LayersControl", () => {
     render(
       <LayersControl
         tileType="base"
-        setTileType={jest.fn()}
+        onChangeTileType={jest.fn()}
         pullbackLayerEnabled={false}
-        togglePullbackLayerEnabled={mockToggle}
+        onTogglePullbackLayer={mockToggle}
       />,
       {
         wrapper: mapWrapper,
@@ -141,9 +147,9 @@ describe("LayersControl", () => {
     render(
       <LayersControl
         tileType="base"
-        setTileType={jest.fn()}
+        onChangeTileType={jest.fn()}
         pullbackLayerEnabled={false}
-        togglePullbackLayerEnabled={mockToggle}
+        onTogglePullbackLayer={mockToggle}
       />,
       {
         wrapper: mapWrapper,
@@ -160,9 +166,9 @@ describe("LayersControl", () => {
     render(
       <LayersControl
         tileType="base"
-        setTileType={jest.fn()}
+        onChangeTileType={jest.fn()}
         pullbackLayerEnabled={true}
-        togglePullbackLayerEnabled={jest.fn()}
+        onTogglePullbackLayer={jest.fn()}
       />,
       {
         wrapper: mapWrapper,
@@ -176,9 +182,9 @@ describe("LayersControl", () => {
     render(
       <LayersControl
         tileType="base"
-        setTileType={jest.fn()}
+        onChangeTileType={jest.fn()}
         pullbackLayerEnabled={false}
-        togglePullbackLayerEnabled={jest.fn()}
+        onTogglePullbackLayer={jest.fn()}
       />,
       {
         wrapper: mapWrapper,

@@ -206,7 +206,7 @@ export const ShuttleMap = ({
             <LayersControl.WithTileContext
               showLayersList={open}
               onChangeLayersListVisibility={setOpen}
-              setTileType={setTileType}
+              onChangeTileType={setTileType}
             />
           )}
         </LayersControlState>

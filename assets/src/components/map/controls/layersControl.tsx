@@ -26,9 +26,9 @@ export const LayersButton = ({
   onChangeLayersListVisibility,
 
   tileType,
-  setTileType,
+  onChangeTileType,
   pullbackLayerEnabled,
-  togglePullbackLayerEnabled,
+  onTogglePullbackLayer,
 }: LayersButtonProps) => (
   <div className="c-layers-control">
     <button
@@ -53,9 +53,9 @@ export const LayersButton = ({
     {showLayersList && (
       <LayersPopoverMenu
         tileType={tileType}
-        setTileType={setTileType}
+        onChangeTileType={onChangeTileType}
         pullbackLayerEnabled={pullbackLayerEnabled}
-        togglePullbackLayerEnabled={togglePullbackLayerEnabled}
+        onTogglePullbackLayer={onTogglePullbackLayer}
       />
     )}
   </div>
@@ -63,9 +63,9 @@ export const LayersButton = ({
 
 const LayersPopoverMenu = ({
   tileType,
-  setTileType,
+  onChangeTileType: setTileType,
   pullbackLayerEnabled,
-  togglePullbackLayerEnabled,
+  onTogglePullbackLayer: togglePullbackLayerEnabled,
 }: TileLayerOptionsProps & VehicleLayerOptionsProps) => {
   const tileLayerControlLabelId = "tile-layer-control-label-" + useId()
   const vehicleLayersControlLabelId = "vehicle-layers-control-label-" + useId()
@@ -79,7 +79,7 @@ const LayersPopoverMenu = ({
         >
           <TileLayerOptions
             tileType={tileType}
-            setTileType={setTileType}
+            onChangeTileType={setTileType}
             sectionLabelId={tileLayerControlLabelId}
           />
         </li>
@@ -92,7 +92,7 @@ const LayersPopoverMenu = ({
               <VehicleLayerOptions
                 sectionLabelId={vehicleLayersControlLabelId}
                 pullbackLayerEnabled={pullbackLayerEnabled}
-                togglePullbackLayerEnabled={togglePullbackLayerEnabled}
+                onTogglePullbackLayer={togglePullbackLayerEnabled}
               />
             </li>
           )}
@@ -103,11 +103,11 @@ const LayersPopoverMenu = ({
 
 interface TileLayerOptionsProps {
   tileType: TileType
-  setTileType: (tileType: TileType) => void
+  onChangeTileType: (tileType: TileType) => void
 }
 const TileLayerOptions = ({
   tileType,
-  setTileType,
+  onChangeTileType,
   sectionLabelId,
 }: TileLayerOptionsProps & {
   sectionLabelId?: string
@@ -122,7 +122,7 @@ const TileLayerOptions = ({
         value=""
         id="base"
         checked={tileType === "base"}
-        onChange={() => setTileType("base")}
+        onChange={() => onChangeTileType("base")}
       />
       <label className="form-check-label stretched-link" htmlFor="base">
         Map (default)
@@ -136,7 +136,7 @@ const TileLayerOptions = ({
         value=""
         id="satellite"
         checked={tileType === "satellite"}
-        onChange={() => setTileType("satellite")}
+        onChange={() => onChangeTileType("satellite")}
       />
       <label className="form-check-label stretched-link" htmlFor="satellite">
         Satellite
@@ -147,12 +147,12 @@ const TileLayerOptions = ({
 
 interface VehicleLayerOptionsProps {
   pullbackLayerEnabled?: boolean
-  togglePullbackLayerEnabled?: () => void
+  onTogglePullbackLayer?: () => void
 }
 const VehicleLayerOptions = ({
   sectionLabelId,
   pullbackLayerEnabled,
-  togglePullbackLayerEnabled,
+  onTogglePullbackLayer,
 }: {
   sectionLabelId?: string
 } & VehicleLayerOptionsProps) => {
@@ -168,10 +168,10 @@ const VehicleLayerOptions = ({
           role="switch"
           id={inputId}
           checked={pullbackLayerEnabled}
-          onChange={togglePullbackLayerEnabled}
+          onChange={onTogglePullbackLayer}
           onKeyDown={(event) => {
-            if (event.key === "Enter" && togglePullbackLayerEnabled) {
-              togglePullbackLayerEnabled()
+            if (event.key === "Enter") {
+              onTogglePullbackLayer?.()
             }
           }}
         />
