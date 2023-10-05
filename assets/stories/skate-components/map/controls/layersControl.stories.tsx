@@ -32,6 +32,11 @@ const meta = {
     argsUpdater("onTogglePullbackLayer", ({ pullbackLayerEnabled }) => ({
       pullbackLayerEnabled: !pullbackLayerEnabled,
     })),
+    (StoryFn) => (
+      <div className="w-100 h-100" style={{ minHeight: "200px" }}>
+        <StoryFn />
+      </div>
+    ),
   ],
 } satisfies Meta<typeof LayersButton>
 export default meta
