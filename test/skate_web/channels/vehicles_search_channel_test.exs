@@ -139,5 +139,24 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
         data: %{matching_vehicles: [^new_match, ^match_1, ^match_2], has_more_matches: false}
       })
     end
+
+    test "handles updated search query with invalid token", %{
+      socket: socket
+    } do
+      {:ok, %{data: _data}, socket} =
+        subscribe_and_join(
+          socket,
+          VehiclesSearchChannel,
+          "vehicles_search:limited:vehicle:000"
+        )
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      Phoenix.ChannelTest.push(socket, "update_search_query", %{
+        "limit" => 3
+      })
+
+      assert_push "auth_expired", %{}
+    end
   end
 end

@@ -18,14 +18,9 @@ defmodule SkateWeb.TrainVehiclesChannel do
     {:ok, %{data: train_vehicles}, socket}
   end
 
-  @impl Phoenix.Channel
-  def handle_info({:new_train_vehicles, train_vehicles}, socket) do
-    if SkateWeb.ChannelAuth.valid_token?(socket) do
-      :ok = push(socket, "train_vehicles", %{data: train_vehicles})
-      {:noreply, socket}
-    else
-      :ok = push(socket, "auth_expired", %{})
-      {:stop, :normal, socket}
-    end
+  @impl SkateWeb.AuthenticatedChannel
+  def handle_info_authenticated({:new_train_vehicles, train_vehicles}, socket) do
+    :ok = push(socket, "train_vehicles", %{data: train_vehicles})
+    {:noreply, socket}
   end
 end

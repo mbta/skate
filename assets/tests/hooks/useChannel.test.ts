@@ -131,6 +131,33 @@ describe("useChannel", () => {
     expect(result.current).toEqual("parsed")
   })
 
+  test("reloads on auth_expired event", () => {
+    const reloadSpy = jest.spyOn(browser, "reload")
+    reloadSpy.mockImplementationOnce(() => ({}))
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockChannel.on.mockImplementation((event, handler) => {
+      if (event === "auth_expired") {
+        handler()
+      }
+      return 1
+    })
+
+    renderHook(() =>
+      useChannel({
+        socket: mockSocket,
+        topic: "topic",
+        event: "event",
+        parser: jest.fn(),
+        loadingState: "loading",
+      })
+    )
+
+    expect(reloadSpy).toHaveBeenCalled()
+    reloadSpy.mockRestore()
+  })
+
   test("leaves the channel on unmount", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
@@ -523,6 +550,35 @@ describe("useCheckedChannel", () => {
     )
 
     expect(Sentry.captureException).toHaveBeenCalled()
+  })
+
+  test("reloads on auth_expired event", () => {
+    const reloadSpy = jest.spyOn(browser, "reload")
+    reloadSpy.mockImplementationOnce(() => ({}))
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockChannel.on.mockImplementation((event, handler) => {
+      if (event === "auth_expired") {
+        handler()
+      }
+      return 1
+    })
+    const dataStruct = unknown()
+
+    renderHook(() =>
+      useCheckedChannel({
+        socket: mockSocket,
+        topic: "topic",
+        event: "event",
+        dataStruct,
+        parser: jest.fn(),
+        loadingState: "loading",
+      })
+    )
+
+    expect(reloadSpy).toHaveBeenCalled()
+    reloadSpy.mockRestore()
   })
 
   test("leaves the channel on unmount", () => {

@@ -36,6 +36,7 @@ export const useChannel = <T>({
       channel.on(event, ({ data: data }) => {
         setState(parser(data))
       })
+      channel.on("auth_expired", reload)
 
       channel
         .join()
@@ -159,6 +160,7 @@ export const useCheckedTwoWayChannel = <T, U, V>({
       channel.on(event, (data: { data: unknown }) => {
         onOk(data)
       })
+      channel.on("auth_expired", reload)
 
       channel
         .join()

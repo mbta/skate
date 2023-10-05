@@ -11,15 +11,10 @@ defmodule SkateWeb.AlertsChannel do
     {:ok, %{data: alerts}, socket}
   end
 
-  @impl Phoenix.Channel
-  def handle_info({:new_realtime_data, lookup_args}, socket) do
-    if SkateWeb.ChannelAuth.valid_token?(socket) do
-      data = Server.lookup(lookup_args)
-      :ok = push(socket, "alerts", %{data: data})
-      {:noreply, socket}
-    else
-      :ok = push(socket, "auth_expired", %{})
-      {:stop, :normal, socket}
-    end
+  @impl SkateWeb.AuthenticatedChannel
+  def handle_info_authenticated({:new_realtime_data, lookup_args}, socket) do
+    data = Server.lookup(lookup_args)
+    :ok = push(socket, "alerts", %{data: data})
+    {:noreply, socket}
   end
 end

@@ -242,10 +242,12 @@ describe("useNotificationsReducer", () => {
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    mockChannel.on.mockImplementation((_event, dataHandler) => {
-      dataHandler({
-        data: notification1Data,
-      })
+    mockChannel.on.mockImplementation((event, dataHandler) => {
+      if (event === "notification") {
+        dataHandler({
+          data: notification1Data,
+        })
+      }
       return 1
     })
 
