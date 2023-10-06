@@ -14,12 +14,14 @@ import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { BrowserRouter } from "react-router-dom"
 import { initialState, toggleShowGaragesFilter } from "../../src/state"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import * as FullStory from "@fullstory/browser"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
+
+jest.mock("@fullstory/browser")
 
 describe("useGarageFilter", () => {
   test("defaults to no garages selected", () => {
@@ -125,7 +127,7 @@ describe("GarageFilter", () => {
   })
 
   test("Garage filter renders when showGaragesFilter is true, and individual garages are clickable", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const user = userEvent.setup()
 
     const result = render(
@@ -144,7 +146,7 @@ describe("GarageFilter", () => {
     await user.click(result.getByTitle("Toggle Garage: Garage A"))
     expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("filtered_routes_by_garage")
-    expect(window.FS!.event).toHaveBeenCalledWith(
+    expect(mockedFS.event).toHaveBeenCalledWith(
       "User filtered Route Selector by Garage",
       { garageName_str: mockGarageFilter.allGarages[0] }
     )

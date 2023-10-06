@@ -11,6 +11,7 @@ import {
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { toggleShowGaragesFilter } from "../state"
+import * as FullStory from "@fullstory/browser"
 
 export interface GarageFilterData {
   filteredGarages: GarageName[]
@@ -89,7 +90,7 @@ export const GarageFilter = ({
                 onClick={() => {
                   if (!filteredGarages.includes(garage)) {
                     tagManagerEvent("filtered_routes_by_garage")
-                    window.FS?.event("User filtered Route Selector by Garage", {
+                    FullStory.event("User filtered Route Selector by Garage", {
                       garageName_str: garage,
                     })
                   }

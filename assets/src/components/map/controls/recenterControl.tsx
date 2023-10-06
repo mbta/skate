@@ -1,5 +1,6 @@
 import { Control, ControlOptions, DomUtil } from "leaflet"
 import { createControlComponent } from "@react-leaflet/core"
+import * as FullStory from "@fullstory/browser"
 
 interface RecenterControlProps extends ControlOptions {
   recenter: () => void
@@ -20,7 +21,7 @@ class LeafletRecenterControl extends Control {
       e.stopPropagation()
       e.preventDefault()
 
-      window.FS?.event("Recenter control clicked")
+      FullStory.event("Recenter control clicked", {})
 
       this.recenter()
     }

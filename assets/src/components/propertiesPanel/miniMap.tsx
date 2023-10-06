@@ -12,6 +12,7 @@ import {
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { mapModeForUser } from "../../util/mapMode"
 import { MapFollowingPrimaryVehicles } from "../map"
+import * as FullStory from "@fullstory/browser"
 
 const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
   const [, dispatch] = useContext(StateDispatchContext)
@@ -28,7 +29,7 @@ const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
       className="c-vehicle-properties-panel__map-open-link leaflet-bar"
       to={mapModeForUser().path}
       onClick={() => {
-        window.FS?.event("Map opened from VPP mini map")
+        FullStory.event("Map opened from VPP mini map", {})
         dispatch(
           newSearchSession({
             type: SelectedEntityType.Vehicle,

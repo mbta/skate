@@ -3,6 +3,7 @@ import InputModal from "../inputModal"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { Action, closeInputModal } from "../../state"
 import { findPresetByName } from "../../models/routeTab"
+import * as FullStory from "@fullstory/browser"
 
 const CreatePresetModal = ({
   createCallback,
@@ -24,12 +25,13 @@ const CreatePresetModal = ({
           event.preventDefault()
           const existingPreset = findPresetByName(routeTabs, presetName)
           if (existingPreset) {
-            window.FS?.event(
-              "User submitted name of existing preset when creating a new Saved Preset"
+            FullStory.event(
+              "User submitted name of existing preset when creating a new Saved Preset",
+              {}
             )
             confirmOverwriteCallback(presetName, existingPreset.uuid, dispatch)
           } else {
-            window.FS?.event("User saved a new Preset")
+            FullStory.event("User saved a new Preset", {})
             createCallback(presetName, dispatch)
             dispatch(closeInputModal())
           }
@@ -53,7 +55,7 @@ const CreatePresetModal = ({
             type="button"
             className="c-input-modal__button"
             onClick={() => {
-              window.FS?.event("User canceled Creating a new Preset")
+              FullStory.event("User canceled Creating a new Preset", {})
               dispatch(closeInputModal())
             }}
           >

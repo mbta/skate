@@ -6,6 +6,7 @@ import { joinClasses } from "../../../helpers/dom"
 import { WalkingIcon } from "../../../helpers/icon"
 import { streetViewUrl } from "../../../util/streetViewUrl"
 import { CutoutOverlay } from "../../cutoutOverlay"
+import * as FullStory from "@fullstory/browser"
 
 export interface StreetViewControlProps extends ControlOptions {
   streetViewEnabled: boolean
@@ -52,7 +53,7 @@ export const StreetViewControl = ({
               },
               url = streetViewUrl(source)
 
-            window.FS?.event("User clicked map to open street view", {
+            FullStory.event("User clicked map to open street view", {
               streetViewUrl_str: url,
               clickedMapAt: {
                 latitude_real: source.latitude,
@@ -98,7 +99,7 @@ export const StreetViewControl = ({
           checked={streetViewEnabled}
           onChange={() => {
             // since the value is being toggled, the new value will be the opposite of the current value
-            window.FS?.event("Dedicated street view toggled", {
+            FullStory.event("Dedicated street view toggled", {
               streetViewEnabled_bool: !streetViewEnabled,
             })
 

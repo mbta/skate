@@ -7,6 +7,7 @@ import {
   setSearchText,
   submitSearch,
 } from "../state/searchPageState"
+import * as FullStory from "@fullstory/browser"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
@@ -54,7 +55,7 @@ const OldSearchForm = ({
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
 
-    submitEvent && window.FS?.event(submitEvent)
+    submitEvent && FullStory.event(submitEvent, {})
 
     dispatch(submitSearch())
     if (onSubmit) {

@@ -9,6 +9,7 @@ import { Stop } from "../../../schedule"
 import { MobileFriendlyTooltip } from "../../mapMarkers"
 import StopCard from "../../stopCard"
 import { ReactMarker } from "../utilities/reactMarker"
+import * as FullStory from "@fullstory/browser"
 
 /**
  * Specific variants that the `StopIcon` can render
@@ -213,7 +214,7 @@ export const StopMarkerWithStopCard = ({ ...props }: StopMarkerProps) => {
 
   const popupHandlers: LeafletEventHandlerFnMap = {
     popupopen: (e) => {
-      window.FS?.event("Bus stop card opened")
+      FullStory.event("Bus stop card opened", {})
       setIsSelected(true)
       props.eventHandlers?.popupopen?.(e)
     },

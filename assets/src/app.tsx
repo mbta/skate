@@ -18,7 +18,7 @@ import { createRoot } from "react-dom/client"
 import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
 import { tagManagerIdentify } from "./helpers/googleTagManager"
-import { fullStoryIdentify } from "./helpers/fullStory"
+import { fullStoryInit } from "./helpers/fullStory"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
 
 document.documentElement.dataset.demoMode = inTestGroup(
@@ -31,7 +31,7 @@ const username = document
 
 sentryInit(window.sentry, username || undefined)
 
-fullStoryIdentify(username)
+fullStoryInit(window.fullStoryInitialization?.organizationId, username)
 
 const userUuid = document
   .querySelector("meta[name=user-uuid]")

@@ -14,17 +14,8 @@ declare global {
         }
       }
     }
-    FS?: {
-      // FullStory
-      // see https://help.fullstory.com/develop-js/137379 for documentation
-      identify(
-        uid: string,
-        opts: {
-          displayName?: string
-          email?: string
-        }
-      ): void
-      event(event: string, properties?: object): void
+    fullStoryInitialization?: {
+      organizationId?: string | null
     }
     sentry?: {
       dsn: string

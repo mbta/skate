@@ -26,6 +26,8 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
   tagManagerEvent: jest.fn(),
 }))
 
+jest.mock("@fullstory/browser")
+
 const notification1: Notification = {
   id: "0",
   createdAt: new Date(0),
