@@ -20,7 +20,6 @@ import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
-import { mockFullStoryEvent } from "../../testHelpers/mockHelpers"
 import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
 import userEvent from "@testing-library/user-event"
 import {
@@ -28,6 +27,7 @@ import {
   useMinischeduleRun,
 } from "../../../src/hooks/useMinischedule"
 import { useTripShape } from "../../../src/hooks/useShapes"
+import * as FullStory from "@fullstory/browser"
 
 jest
   .spyOn(dateTime, "now")
@@ -66,6 +66,8 @@ jest.mock("../../../src/hooks/useShapes", () => ({
   __esModule: true,
   useTripShape: jest.fn(),
 }))
+
+jest.mock("@fullstory/browser")
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
@@ -327,7 +329,7 @@ describe("VehiclePropertiesPanel", () => {
       ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
       ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
 
-      mockFullStoryEvent()
+      const mockedFS = jest.mocked(FullStory)
 
       render(
         <VehiclePropertiesPanel
@@ -338,7 +340,7 @@ describe("VehiclePropertiesPanel", () => {
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
-      expect(window.FS!.event).toHaveBeenCalledWith(
+      expect(mockedFS.event).toHaveBeenCalledWith(
         "Switched tab in Vehicle Properties Panel",
         { tab_str: tab }
       )
@@ -356,7 +358,7 @@ describe("VehiclePropertiesPanel", () => {
       ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
       ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
 
-      mockFullStoryEvent()
+      const mockedFS = jest.mocked(FullStory)
 
       render(
         <VehiclePropertiesPanel
@@ -367,7 +369,7 @@ describe("VehiclePropertiesPanel", () => {
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
-      expect(window.FS!.event).not.toHaveBeenCalled()
+      expect(mockedFS.event).not.toHaveBeenCalled()
     }
   )
 })

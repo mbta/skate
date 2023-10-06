@@ -64,7 +64,6 @@ import {
   mockUsePatternsByIdForVehicles,
 } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -87,6 +86,7 @@ import {
 } from "../testHelpers/selectors/components/mapPage/map"
 import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCategory"
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
+import * as FullStory from "@fullstory/browser"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   __esModule: true,
@@ -147,6 +147,8 @@ jest.mock("../../src/hooks/useSearchResultsByCategory", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }))
+
+jest.mock("@fullstory/browser")
 
 const mockVehicleSearchResultsCategory = (
   vehicles: (Vehicle | Ghost)[] | null
@@ -406,7 +408,7 @@ describe("<MapPage />", () => {
   })
 
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
@@ -450,7 +452,7 @@ describe("<MapPage />", () => {
     ).toBeInTheDocument()
 
     expect(container.querySelector(".selected")).toBeVisible()
-    expect(window.FS!.event).toHaveBeenCalledWith("VPC Opened")
+    expect(mockedFS.event).toHaveBeenCalledWith("VPC Opened", {})
   })
 
   test("clicking a vehicle from a search result displays the route shape", async () => {
@@ -512,7 +514,7 @@ describe("<MapPage />", () => {
   })
 
   test("when a search is submitted, should fire FS event for map page", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     mockVehicleSearchResultsCategory([])
     const mockDispatch = jest.fn()
@@ -535,8 +537,9 @@ describe("<MapPage />", () => {
 
     await userEvent.click(searchFormSubmitButton.get())
 
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "Search submitted from map page"
+    expect(mockedFS.event).toHaveBeenCalledWith(
+      "Search submitted from map page",
+      {}
     )
   })
 
@@ -876,7 +879,6 @@ describe("<MapPage />", () => {
   })
 
   test("when the search panel is collapsed, clicking a vehicle reopens it", async () => {
-    mockFullStoryEvent()
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
@@ -1022,8 +1024,6 @@ describe("<MapPage />", () => {
   describe("<RoutePropertiesCard />", () => {
     test("when VehiclePropertiesCard Route Button is clicked, should replace VPC with the associated route's RPC", async () => {
       jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-      mockFullStoryEvent()
-
       const route = routeFactory.build()
       const routePattern = routePatternFactory.build({ routeId: route.id })
       const vehicle = vehicleFactory.build({

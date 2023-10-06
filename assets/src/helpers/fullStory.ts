@@ -1,5 +1,14 @@
-export const fullStoryIdentify = (username: string | null | undefined) => {
-  if (window.FS && username) {
-    window.FS.identify(username, { displayName: username })
+import * as FullStory from "@fullstory/browser"
+
+export const fullStoryInit = (
+  orgId?: string | null,
+  username?: string | null
+) => {
+  if (orgId) {
+    FullStory.init({ orgId })
+
+    if (username) {
+      FullStory.identify(username, { displayName: username })
+    }
   }
 }

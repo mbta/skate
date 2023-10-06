@@ -58,6 +58,7 @@ import { LocationSearchResult } from "../../models/locationSearchResult"
 import { useAllStops } from "../../hooks/useAllStops"
 import { LocationType, RouteType } from "../../models/stopData"
 import usePullbackVehicles from "../../hooks/usePullbackVehicles"
+import * as FullStory from "@fullstory/browser"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -579,7 +580,7 @@ const DataLayers = ({
             bearing: vehicleOrGhost.bearing,
           })
 
-          window.FS?.event("User clicked map vehicle to open street view", {
+          FullStory.event("User clicked map vehicle to open street view", {
             streetViewUrl_str: url,
             clickedMapAt: {
               latitude_real: vehicleOrGhost.latitude,

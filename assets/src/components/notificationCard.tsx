@@ -5,6 +5,7 @@ import { isChelseaBridgeNotification } from "../util/notifications"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
 import { CardBody, CardProperties, CardReadable } from "./card"
+import * as FullStory from "@fullstory/browser"
 
 export const NotificationCard = ({
   notification,
@@ -36,7 +37,7 @@ export const NotificationCard = ({
         }
 
         if (isChelseaBridgeNotification(notification.reason)) {
-          window.FS?.event("User clicked Chelsea Bridge Notification")
+          FullStory.event("User clicked Chelsea Bridge Notification", {})
         }
       }}
       closeCallback={hideLatestNotification}

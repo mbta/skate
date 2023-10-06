@@ -3,6 +3,7 @@ import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Lea
 import "leaflet.fullscreen"
 import React, { useContext } from "react"
 import { Marker, Polyline, Popup, Tooltip } from "react-leaflet"
+import * as FullStory from "@fullstory/browser"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
@@ -234,7 +235,7 @@ export const StationMarker = React.memo(
     const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
 
     const fireEvent = () => {
-      window.FS?.event("Station tooltip shown")
+      FullStory.event("Station tooltip shown", {})
     }
 
     return (
@@ -326,7 +327,7 @@ export const StopMarkers = ({
                               latitude: stop.lat,
                               longitude: stop.lon,
                             })
-                            window.FS?.event(
+                            FullStory.event(
                               "User clicked map bus stop to open street view",
                               {
                                 streetViewUrl_str: url,

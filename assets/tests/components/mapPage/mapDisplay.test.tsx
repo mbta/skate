@@ -34,10 +34,7 @@ import vehicleFactory, {
 } from "../../factories/vehicle"
 
 import { setHtmlWidthHeightForLeafletMap } from "../../testHelpers/leafletMapWidth"
-import {
-  mockFullStoryEvent,
-  mockUsePatternsByIdForVehicles,
-} from "../../testHelpers/mockHelpers"
+import { mockUsePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
 
 import shapeFactory from "../../factories/shape"
 import { zoomInButton } from "../../testHelpers/selectors/components/map"
@@ -50,6 +47,7 @@ import {
   getAllStationIcons,
   getAllStopIcons,
 } from "../../testHelpers/selectors/components/mapPage/map"
+import * as FullStory from "@fullstory/browser"
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
@@ -94,6 +92,8 @@ jest.mock("../../../src/hooks/useShapes", () => ({
   __esModule: true,
   useRouteShapes: jest.fn(() => []),
 }))
+
+jest.mock("@fullstory/browser")
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -733,7 +733,7 @@ describe("<MapDisplay />", () => {
 
   describe("when street view is enabled", () => {
     test("when a vehicle is clicked, should open street view at vehicle location", async () => {
-      mockFullStoryEvent()
+      const mockedFS = jest.mocked(FullStory)
       const mockSetSelection = jest.fn()
       const openSpy = jest
         .spyOn(window, "open")
@@ -777,7 +777,7 @@ describe("<MapDisplay />", () => {
         longitude,
         bearing,
       })
-      expect(window.FS!.event).toHaveBeenCalledWith(
+      expect(mockedFS.event).toHaveBeenCalledWith(
         "User clicked map vehicle to open street view",
         {
           clickedMapAt: {
@@ -793,7 +793,7 @@ describe("<MapDisplay />", () => {
     })
 
     test("when a bus stop is clicked, should open street view at bus stop location", async () => {
-      mockFullStoryEvent()
+      const mockedFS = jest.mocked(FullStory)
       setHtmlWidthHeightForLeafletMap()
       mockUseVehicleForId([])
       mockUseVehiclesForRouteMap({})
@@ -846,7 +846,7 @@ describe("<MapDisplay />", () => {
         longitude,
       })
 
-      expect(window.FS!.event).toHaveBeenCalledWith(
+      expect(mockedFS.event).toHaveBeenCalledWith(
         "User clicked map bus stop to open street view",
         {
           clickedMapAt: {

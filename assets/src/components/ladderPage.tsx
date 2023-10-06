@@ -33,6 +33,7 @@ import { SaveIcon, PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import useAlerts from "../hooks/useAlerts"
 import { SocketContext } from "../contexts/socketContext"
+import * as FullStory from "@fullstory/browser"
 
 type DrawerContent = "route_picker" | "presets"
 
@@ -98,7 +99,7 @@ const LadderTab = ({
               e.stopPropagation()
 
               tagManagerEvent("preset_saved")
-              window.FS?.event('User clicked Route Tab "Save" Button')
+              FullStory.event('User clicked Route Tab "Save" Button', {})
 
               saveTab()
             }}
@@ -122,7 +123,7 @@ const AddTabButton = ({
       className="c-ladder-page__add-tab-button"
       title="Add Tab"
       onClick={() => {
-        window.FS?.event("User added a new Route Ladder Tab")
+        FullStory.event("User added a new Route Ladder Tab", {})
         tagManagerEvent("new_tab_added")
         addTab()
       }}

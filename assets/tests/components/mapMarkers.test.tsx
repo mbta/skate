@@ -18,16 +18,18 @@ import { MapContainer } from "react-leaflet"
 import userEvent from "@testing-library/user-event"
 import { LocationType } from "../../src/models/stopData"
 import useDeviceSupportsHover from "../../src/hooks/useDeviceSupportsHover"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import { StopMarkerWithInfo } from "../../src/components/map/markers/stopMarker"
 import {
   getAllStationIcons,
   getAllStopIcons,
 } from "../testHelpers/selectors/components/mapPage/map"
+import * as FullStory from "@fullstory/browser"
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
 jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
+jest.mock("@fullstory/browser")
 
 afterAll(() => {
   global.scrollTo = originalScrollTo
@@ -82,13 +84,13 @@ describe("StopMarkerWithInfo", () => {
   })
 
   test("Stop card displayed on click when includeStopCard is true", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
 
     const { container } = renderInMap(
       <StopMarkerWithInfo stop={stop} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
-    expect(window.FS!.event).toHaveBeenCalledWith("Bus stop card opened")
+    expect(mockedFS.event).toHaveBeenCalledWith("Bus stop card opened", {})
   })
 })
 
@@ -96,7 +98,7 @@ describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(true)
 
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
 
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />
@@ -106,11 +108,11 @@ describe("StationMarker", () => {
     await userEvent.hover(container.querySelector(".c-station-icon")!)
 
     expect(screen.getByText(station.name)).toBeVisible()
-    expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
+    expect(mockedFS.event).toHaveBeenCalledWith("Station tooltip shown", {})
   })
 
   test("Station icon with name on click when hover not supported", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     ;(useDeviceSupportsHover as jest.Mock).mockReturnValueOnce(false)
 
     const { container } = renderInMap(
@@ -119,7 +121,7 @@ describe("StationMarker", () => {
     expect(container.querySelector(".c-station-icon")).toBeInTheDocument()
     await userEvent.click(container.querySelector(".c-station-icon")!)
     expect(screen.getByText(station.name)).toBeVisible()
-    expect(window.FS!.event).toHaveBeenCalledWith("Station tooltip shown")
+    expect(mockedFS.event).toHaveBeenCalledWith("Station tooltip shown", {})
   })
 })
 

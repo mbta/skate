@@ -25,6 +25,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@fullstory/browser": "^1.7.1",
     "@react-hook/media-query": "^1.1.1",
     "@rehooks/component-size": "^1.0.3",
     "@sentry/react": "^7.15.0",

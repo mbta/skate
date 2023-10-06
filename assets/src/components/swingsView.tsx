@@ -28,6 +28,7 @@ import {
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import ViewHeader from "./viewHeader"
+import * as FullStory from "@fullstory/browser"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
   const [
@@ -282,7 +283,7 @@ const SwingRow = ({
             runId={swing.toRunId}
             onClick={() => {
               tagManagerEvent("clicked_swing_on")
-              window.FS?.event('User clicked "Swing On" run button')
+              FullStory.event('User clicked "Swing On" run button', {})
             }}
           />
         </div>
@@ -294,7 +295,7 @@ const SwingRow = ({
             runId={swing.fromRunId}
             onClick={() => {
               tagManagerEvent("clicked_swing_off")
-              window.FS?.event('User clicked "Swing Off" run button')
+              FullStory.event('User clicked "Swing Off" run button', {})
             }}
           />
           <div className="c-swings-view__route-pill">

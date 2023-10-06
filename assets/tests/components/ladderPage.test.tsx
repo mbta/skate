@@ -31,8 +31,8 @@ import routeTabFactory, { routeTabPresetFactory } from "../factories/routeTab"
 import vehicleFactory from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import stateFactory from "../factories/applicationState"
+import * as FullStory from "@fullstory/browser"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -54,6 +54,8 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
+
+jest.mock("@fullstory/browser")
 
 const mockDispatch = jest.fn()
 
@@ -201,7 +203,7 @@ describe("LadderPage", () => {
   })
 
   test("can save a route tab as a preset from the save icon", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -228,13 +230,14 @@ describe("LadderPage", () => {
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      'User clicked Route Tab "Save" Button'
+    expect(mockedFS.event).toHaveBeenCalledWith(
+      'User clicked Route Tab "Save" Button',
+      {}
     )
   })
 
   test("can save an edited preset from the save icon", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const mockState = stateFactory.build({
       routeTabs: [
         routeTabPresetFactory.build({
@@ -266,8 +269,9 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
     )
-    expect(window.FS!.event).toBeCalledWith(
-      'User clicked Route Tab "Save" Button'
+    expect(mockedFS.event).toBeCalledWith(
+      'User clicked Route Tab "Save" Button',
+      {}
     )
   })
 
@@ -298,7 +302,7 @@ describe("LadderPage", () => {
   })
 
   test("can add a new route tab", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const mockState = stateFactory.build({
       routeTabs: routeTabFactory.buildList(1, {
         ordering: 0,
@@ -320,7 +324,10 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
-    expect(window.FS!.event).toBeCalledWith("User added a new Route Ladder Tab")
+    expect(mockedFS.event).toBeCalledWith(
+      "User added a new Route Ladder Tab",
+      {}
+    )
   })
 
   test("can toggle to presets view in picker and back", async () => {

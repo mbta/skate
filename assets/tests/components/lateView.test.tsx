@@ -19,12 +19,14 @@ import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import userEvent from "@testing-library/user-event"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import * as FullStory from "@fullstory/browser"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
+
+jest.mock("@fullstory/browser")
 
 jest.spyOn(Date, "now").mockImplementation(() => {
   return 18000 * 1000
@@ -133,7 +135,7 @@ describe("LateView", () => {
   })
 
   test("clicking ghost run number opens ghost and sends tag manager event", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const ghost = ghostFactory.build({
       routeId: "route",
       runId: "12345",
@@ -158,13 +160,14 @@ describe("LateView", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number_ghost"
     )
-    expect(window.FS!.event).toHaveBeenCalledWith(
+    expect(mockedFS.event).toHaveBeenCalledWith(
       "User clicked Late View Run Number",
       { isGhost_bool: true }
     )
   })
 
   test("clicking vehicle run number opens vehicle and sends tag manager event", async () => {
+    const mockedFS = jest.mocked(FullStory)
     const vehicle = vehicleFactory.build({
       routeId: "route",
       runId: "12345",
@@ -187,7 +190,7 @@ describe("LateView", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number"
     )
-    expect(window.FS!.event).toHaveBeenCalledWith(
+    expect(mockedFS.event).toHaveBeenCalledWith(
       "User clicked Late View Run Number",
       { isGhost_bool: false }
     )
@@ -718,7 +721,7 @@ describe("LateView", () => {
   })
 
   test("eye toggle toggles visibility of non-permanently-hidden rows", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const lateVehicle1 = vehicleFactory.build({
       routeId: "route",
       runId: "run1",
@@ -794,8 +797,9 @@ describe("LateView", () => {
     expect(result.getAllByTestId(/row-checkbox/)).toHaveLength(2)
 
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_eye_toggle")
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      'User clicked the "hide" eye toggle'
+    expect(mockedFS.event).toHaveBeenCalledWith(
+      'User clicked the "hide" eye toggle',
+      {}
     )
   })
 

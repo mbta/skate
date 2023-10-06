@@ -1,23 +1,36 @@
-import { describe, test, expect } from "@jest/globals"
-import { fullStoryIdentify } from "../../src/helpers/fullStory"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import { describe, test, expect, jest } from "@jest/globals"
+import { fullStoryInit } from "../../src/helpers/fullStory"
+import * as FullStory from "@fullstory/browser"
 
-describe("fullStoryIdentify", () => {
-  test("calls identify if username is given", () => {
-    mockFullStoryEvent()
+jest.mock("@fullstory/browser")
 
-    fullStoryIdentify("username")
+describe("fullStoryInit", () => {
+  test("calls init and identify if organization ID and username are given", () => {
+    const mockedFS = jest.mocked(FullStory)
 
-    expect(window.FS!.identify).toHaveBeenCalledWith("username", {
+    fullStoryInit("org_id", "username")
+
+    expect(mockedFS.init).toHaveBeenCalledWith({ orgId: "org_id" })
+    expect(mockedFS.identify).toHaveBeenCalledWith("username", {
       displayName: "username",
     })
   })
 
-  test("does not call identify if username is undefined", () => {
-    mockFullStoryEvent()
+  test("doesn't calls init or identify if organization ID is not given", () => {
+    const mockedFS = jest.mocked(FullStory)
 
-    fullStoryIdentify(undefined)
+    fullStoryInit(null, "username")
 
-    expect(window.FS!.identify).not.toHaveBeenCalled()
+    expect(mockedFS.init).not.toHaveBeenCalled()
+    expect(mockedFS.identify).not.toHaveBeenCalled()
+  })
+
+  test("calls init but not identify if username is undefined", () => {
+    const mockedFS = jest.mocked(FullStory)
+
+    fullStoryInit("org_id", undefined)
+
+    expect(mockedFS.init).toHaveBeenCalledWith({ orgId: "org_id" })
+    expect(mockedFS.identify).not.toHaveBeenCalled()
   })
 })

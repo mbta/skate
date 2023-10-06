@@ -26,7 +26,7 @@ import * as dateTime from "../../src/util/dateTime"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import userEvent from "@testing-library/user-event"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
+import * as FullStory from "@fullstory/browser"
 
 jest.mock("../../src/hooks/useSwings", () => ({
   __esModule: true,
@@ -47,6 +47,8 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
+
+jest.mock("@fullstory/browser")
 
 jest.spyOn(dateTime, "now").mockImplementation(() => {
   return new Date(18000 * 1000)
@@ -255,7 +257,7 @@ describe("SwingsView", () => {
   })
 
   test("opens VPP when clicking an active swing-off and sends Fullstory event", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const swing = swingFactory.build({ time: 19000 })
     ;(useSwings as jest.Mock)
       .mockImplementationOnce((): Swing[] => [swing])
@@ -288,13 +290,14 @@ describe("SwingsView", () => {
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_off")
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      'User clicked "Swing Off" run button'
+    expect(mockedFS.event).toHaveBeenCalledWith(
+      'User clicked "Swing Off" run button',
+      {}
     )
   })
 
   test("opens VPP when clicking an active swing-on and sends Fullstory event", async () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     const swing = swingFactory.build({
       fromRunId: "123-789",
       toRunId: "123-456",
@@ -331,8 +334,9 @@ describe("SwingsView", () => {
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_on")
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      'User clicked "Swing On" run button'
+    expect(mockedFS.event).toHaveBeenCalledWith(
+      'User clicked "Swing On" run button',
+      {}
     )
   })
 

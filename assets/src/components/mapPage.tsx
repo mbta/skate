@@ -35,6 +35,7 @@ import SearchResultsByCategory from "./mapPage/searchResultsByCategory"
 import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
+import * as FullStory from "@fullstory/browser"
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -49,7 +50,7 @@ const SearchMode = ({
       <div className="c-map-page__input u-hideable">
         <SearchFormFromStateDispatchContext
           onSubmit={() => {
-            window.FS?.event("Search submitted from map page")
+            FullStory.event("Search submitted from map page", {})
           }}
         />
       </div>
@@ -238,10 +239,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     (selectedEntity: SelectedEntity | null) => {
       switch (selectedEntity?.type) {
         case SelectedEntityType.Vehicle:
-          window.FS?.event("VPC Opened")
+          FullStory.event("VPC Opened", {})
           break
         case SelectedEntityType.RoutePattern:
-          window.FS?.event("RPC Opened")
+          FullStory.event("RPC Opened", {})
       }
       if (selectedEntity) {
         setSearchOpen(true)

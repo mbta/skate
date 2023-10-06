@@ -13,8 +13,8 @@ import { initialState, selectVehicleFromNotification } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { useNotifications } from "../../src/hooks/useNotifications"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import notificationFactory from "../factories/notification"
+import * as FullStory from "@fullstory/browser"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -42,6 +42,8 @@ jest.mock("../../src/hooks/useNotifications", () => ({
   useNotifications: jest.fn(),
 }))
 
+jest.mock("@fullstory/browser")
+
 const notification: Notification = {
   id: "0",
   createdAt: new Date(0),
@@ -66,7 +68,7 @@ describe("NotificationsProvider", () => {
   })
 
   test("receives incoming notifications and logs a tag manager event", () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
@@ -88,13 +90,14 @@ describe("NotificationsProvider", () => {
 
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "User was Delivered a Notification"
+    expect(mockedFS.event).toHaveBeenCalledWith(
+      "User was Delivered a Notification",
+      {}
     )
   })
 
   test("when receiving a bridge notification, should trigger FS event", () => {
-    mockFullStoryEvent()
+    const mockedFS = jest.mocked(FullStory)
     ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
@@ -118,8 +121,9 @@ describe("NotificationsProvider", () => {
 
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
-    expect(window.FS!.event).toHaveBeenCalledWith(
-      "User was Delivered a Chelsea Bridge Notification"
+    expect(mockedFS.event).toHaveBeenCalledWith(
+      "User was Delivered a Chelsea Bridge Notification",
+      {}
     )
   })
 

@@ -23,6 +23,7 @@ import Header from "./header"
 import MiniMap from "./miniMap"
 import TabPanels, { TabMode } from "./tabPanels"
 import { DiamondTurnRightIcon } from "../../helpers/icon"
+import * as FullStory from "@fullstory/browser"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -212,7 +213,7 @@ const VehiclePropertiesPanel = ({
         tabMode={tabMode}
         setTabMode={(newTabMode) => {
           if (newTabMode !== tabMode) {
-            window.FS?.event("Switched tab in Vehicle Properties Panel", {
+            FullStory.event("Switched tab in Vehicle Properties Panel", {
               tab_str: newTabMode,
             })
           }
