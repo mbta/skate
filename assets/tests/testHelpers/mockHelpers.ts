@@ -73,13 +73,6 @@ export const mockUsePatternsByIdForVehicles = (
   )
 }
 
-export const mockFullStoryEvent = (): void => {
-  Object.defineProperty(window, "FS", {
-    writable: true,
-    value: { event: jest.fn(), identify: jest.fn() },
-  })
-}
-
 export const mockGeolocation = (): void => {
   Object.defineProperty(navigator, "geolocation", {
     writable: true,

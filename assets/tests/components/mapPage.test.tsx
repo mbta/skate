@@ -64,7 +64,6 @@ import {
   mockUsePatternsByIdForVehicles,
 } from "../testHelpers/mockHelpers"
 import { closeView, OpenView } from "../../src/state"
-import { mockFullStoryEvent } from "../testHelpers/mockHelpers"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -880,7 +879,6 @@ describe("<MapPage />", () => {
   })
 
   test("when the search panel is collapsed, clicking a vehicle reopens it", async () => {
-    mockFullStoryEvent()
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
@@ -1026,8 +1024,6 @@ describe("<MapPage />", () => {
   describe("<RoutePropertiesCard />", () => {
     test("when VehiclePropertiesCard Route Button is clicked, should replace VPC with the associated route's RPC", async () => {
       jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-      mockFullStoryEvent()
-
       const route = routeFactory.build()
       const routePattern = routePatternFactory.build({ routeId: route.id })
       const vehicle = vehicleFactory.build({
