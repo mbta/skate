@@ -17,11 +17,6 @@ jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2020-03-17T12:00:00.000Z"))
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => true),
-}))
-
 describe("isVehicle", () => {
   test("returns true for a Vehicle", () => {
     expect(isVehicleInScheduledService(vehicleFactory.build())).toBeTruthy()

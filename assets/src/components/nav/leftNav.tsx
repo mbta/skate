@@ -17,7 +17,7 @@ import {
   SettingsIcon,
   HamburgerIcon,
 } from "../../helpers/icon"
-import featureIsEnabled from "../../laboratoryFeatures"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import {
   openLateView,
   openSwingsView,
@@ -125,7 +125,7 @@ const LeftNav = ({
           <li>
             <hr />
           </li>
-          {featureIsEnabled("late_view") || dispatcherFlag ? (
+          {inTestGroup(TestGroups.LateView) || dispatcherFlag ? (
             <li>
               <ViewToggle
                 icon={

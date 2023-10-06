@@ -6,7 +6,6 @@ import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import featureIsEnabled from "../../src/laboratoryFeatures"
 import {
   initialState,
   setLadderVehicleLabelSetting,
@@ -19,11 +18,6 @@ import {
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
 import userEvent from "@testing-library/user-event"
-
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
@@ -146,10 +140,6 @@ describe("SettingsPage", () => {
   })
 
   test("selecting a vehicle adherence colors setting sets that value", async () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
-      (feature) => feature === "vehicle_adherence_colors_setting"
-    )
-
     const testDispatch = jest.fn()
     window.fetch = jest.fn<typeof window.fetch>()
 
@@ -169,8 +159,9 @@ describe("SettingsPage", () => {
       setVehicleAdherenceColorsSetting(VehicleAdherenceColorsSetting.EarlyBlue)
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/user_settings?field=vehicle_adherence_colors&value=early_blue"
+    expect(window.fetch).toHaveBeenCalledWith(
+      "/api/user_settings?field=vehicle_adherence_colors&value=early_blue",
+      expect.anything()
     )
   })
 })

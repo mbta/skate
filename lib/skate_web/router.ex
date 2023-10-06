@@ -137,19 +137,6 @@ defmodule SkateWeb.Router do
     get "/location_search/suggest", LocationSearchController, :suggest
   end
 
-  scope "/_flags" do
-    pipe_through [
-      :redirect_prod_http,
-      :accepts_html,
-      :browser,
-      :auth,
-      :ensure_auth,
-      :ensure_environment_access
-    ]
-
-    forward("/", Laboratory.Router)
-  end
-
   defp put_user_token(conn, _) do
     token = Guardian.Plug.current_token(conn)
     assign(conn, :user_token, token)

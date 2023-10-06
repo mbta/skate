@@ -14,7 +14,7 @@ defmodule Skate.MixProject do
       test_coverage: [tool: LcovEx],
       elixirc_options: [warnings_as_errors: true],
       dialyzer: [
-        plt_add_apps: [:mix, :laboratory]
+        plt_add_apps: [:mix]
       ]
     ]
   end
@@ -34,7 +34,6 @@ defmodule Skate.MixProject do
 
     [
       mod: {Skate.Application, []},
-      included_applications: [:laboratory],
       extra_applications: apps
     ]
   end
@@ -68,7 +67,6 @@ defmodule Skate.MixProject do
       {:guardian, "~> 2.0"},
       {:httpoison, "~> 2.1.0"},
       {:jason, "~> 1.0"},
-      {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"},
       {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
       {:logster, "~> 1.0"},
       {:oban, "~> 2.15"},
