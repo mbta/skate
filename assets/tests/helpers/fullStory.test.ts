@@ -8,9 +8,6 @@ describe("fullStoryInit", () => {
   test("calls init and identify if organization ID and username are given", () => {
     const mockedFS = jest.mocked(FullStory)
 
-    mockedFS.init.mockImplementationOnce(() => {})
-    mockedFS.identify.mockImplementationOnce(() => {})
-
     fullStoryInit("org_id", "username")
 
     expect(mockedFS.init).toHaveBeenCalledWith({ orgId: "org_id" })
@@ -22,9 +19,6 @@ describe("fullStoryInit", () => {
   test("doesn't calls init or identify if organization ID is not given", () => {
     const mockedFS = jest.mocked(FullStory)
 
-    mockedFS.init.mockImplementationOnce(() => {})
-    mockedFS.identify.mockImplementationOnce(() => {})
-
     fullStoryInit(null, "username")
 
     expect(mockedFS.init).not.toHaveBeenCalled()
@@ -33,9 +27,6 @@ describe("fullStoryInit", () => {
 
   test("calls init but not identify if username is undefined", () => {
     const mockedFS = jest.mocked(FullStory)
-
-    mockedFS.init.mockImplementationOnce(() => {})
-    mockedFS.identify.mockImplementationOnce(() => {})
 
     fullStoryInit("org_id", undefined)
 
