@@ -82,6 +82,7 @@ $list-group-border-color: $color-gray-300;
 @import "location_card";
 @import "map_page";
 @import "map/controls/layers_control";
+@import "map/controls/recenter_control";
 @import "map/controls/street_view_switch";
 @import "map/controls/user_location_control";
 @import "map/markers/location_dot_icon";

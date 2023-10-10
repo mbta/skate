@@ -237,22 +237,13 @@ export const vehicleToLeafletLatLng = ({
   longitude,
 }: Vehicle): Leaflet.LatLng => Leaflet.latLng(latitude, longitude)
 
-// TODO: replacing with react controlled component which self-contains
-// state and does not rely on setting a class on the map container
-export const FollowerStatusClasses = (
-  shouldFollow: boolean
-): string | undefined => {
-  return shouldFollow ? "c-vehicle-map-state--auto-centering" : undefined
-}
-
 export const MapFollowingPrimaryVehicles = (props: Props) => {
-  const state = useInteractiveFollowerState(),
-    { shouldFollow } = state
+  const state = useInteractiveFollowerState()
 
   const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
 
   return (
-    <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
+    <Map {...props}>
       <>
         <RecenterControlWithInterruptibleFollower
           positions={positions}
@@ -269,14 +260,14 @@ export const MapFollowingSelectionKey = (
   props: Props & { selectionKey?: string }
 ) => {
   const state = useInteractiveFollowerState(),
-    { shouldFollow, setShouldFollow } = state
+    { setShouldFollow } = state
 
   const positions: LatLng[] = props.vehicles.map(vehicleToLeafletLatLng)
 
   useEffect(() => setShouldFollow(true), [props.selectionKey, setShouldFollow])
 
   return (
-    <Map {...props} stateClasses={FollowerStatusClasses(shouldFollow)}>
+    <Map {...props}>
       <>
         <RecenterControlWithInterruptibleFollower
           positions={positions}

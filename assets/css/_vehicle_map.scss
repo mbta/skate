@@ -181,24 +181,6 @@ $map-component-z-index: (
   border-top-color: $color-tooltip-background;
 }
 
-.c-vehicle-map__recenter-button {
-  path {
-    fill: none;
-    stroke: $color-button-secondary;
-    stroke-width: 2;
-  }
-
-  .c-vehicle-map-state--auto-centering + .c-vehicle-map & a {
-    background-color: $color-button-disabled;
-    color: $color-font-grey;
-    cursor: default;
-
-    path {
-      stroke: $color-font-grey;
-    }
-  }
-}
-
 .c-garage-icon__label {
   paint-order: stroke;
   stroke: white;
