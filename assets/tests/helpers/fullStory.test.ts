@@ -1,5 +1,5 @@
 import { describe, test, expect, jest } from "@jest/globals"
-import { fullStoryInit } from "../../src/helpers/fullStory"
+import { fullStoryEvent, fullStoryInit } from "../../src/helpers/fullStory"
 import * as FullStory from "@fullstory/browser"
 
 jest.mock("@fullstory/browser")
@@ -32,5 +32,27 @@ describe("fullStoryInit", () => {
 
     expect(mockedFS.init).toHaveBeenCalledWith({ orgId: "org_id" })
     expect(mockedFS.identify).not.toHaveBeenCalled()
+  })
+})
+
+describe("fullStoryEvent", () => {
+  test("calls FullStory.event if initialized", () => {
+    const mockedFS = jest.mocked(FullStory)
+
+    mockedFS.isInitialized.mockReturnValueOnce(true)
+
+    fullStoryEvent("test_event", { foo: 1 })
+
+    expect(mockedFS.event).toHaveBeenCalledWith("test_event", { foo: 1 })
+  })
+
+  test("doesn't call FullStory.event if not initialized", () => {
+    const mockedFS = jest.mocked(FullStory)
+
+    mockedFS.isInitialized.mockReturnValueOnce(false)
+
+    fullStoryEvent("test_event", { foo: 1 })
+
+    expect(mockedFS.event).not.toHaveBeenCalled()
   })
 })
