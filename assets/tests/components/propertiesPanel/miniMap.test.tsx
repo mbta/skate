@@ -25,7 +25,7 @@ import {
 import userEvent from "@testing-library/user-event"
 import { mockTileUrls } from "../../testHelpers/mockHelpers"
 import { layersControlButton } from "../../testHelpers/selectors/components/map"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
@@ -44,7 +44,7 @@ jest.mock("../../../src/tilesetUrls", () => ({
   tilesetUrlForType: jest.fn(() => null),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -65,7 +65,7 @@ describe("MiniMap", () => {
     })
     test("Map includes link to open vehicle in search map page", async () => {
       const mockDispatch = jest.fn()
-      const mockedFS = jest.mocked(FullStory)
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
 
       render(
         <MemoryRouter initialEntries={["/"]}>
@@ -82,10 +82,7 @@ describe("MiniMap", () => {
           vehicleId: vehicle.id,
         })
       )
-      expect(mockedFS.event).toHaveBeenCalledWith(
-        "Map opened from VPP mini map",
-        {}
-      )
+      expect(mockedFSEvent).toHaveBeenCalledWith("Map opened from VPP mini map")
     })
 
     test("Map doesn't include fullscreen button", () => {

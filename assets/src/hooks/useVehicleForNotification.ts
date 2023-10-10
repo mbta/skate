@@ -3,7 +3,7 @@ import useVehiclesForRunIds from "./useVehiclesForRunIds"
 import { Notification, VehicleInScheduledService, Ghost } from "../realtime.d"
 import { useEffect, useState } from "react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 const useVehicleForNotification = (
   notification?: Notification,
@@ -24,15 +24,12 @@ const useVehicleForNotification = (
     if (!clickthroughLogged) {
       if (newVehicleOrGhost) {
         setClickthroughLogged(true)
-        FullStory.event("User clicked Notification and linked to VPP", {})
+        fullStoryEvent("User clicked Notification and linked to VPP")
         tagManagerEvent("notification_linked_to_vpp")
       } else if (notification && newVehicleOrGhost === null) {
         setClickthroughLogged(true)
         tagManagerEvent("notification_linked_to_inactive_modal")
-        FullStory.event(
-          "User clicked Notification and linked to Inactive Modal",
-          {}
-        )
+        fullStoryEvent("User clicked Notification and linked to Inactive Modal")
       }
     }
   }, [clickthroughLogged, notification, newVehicleOrGhost])

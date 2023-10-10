@@ -27,7 +27,7 @@ import {
   useMinischeduleRun,
 } from "../../../src/hooks/useMinischedule"
 import { useTripShape } from "../../../src/hooks/useShapes"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest
   .spyOn(dateTime, "now")
@@ -67,7 +67,7 @@ jest.mock("../../../src/hooks/useShapes", () => ({
   useTripShape: jest.fn(),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
@@ -329,7 +329,7 @@ describe("VehiclePropertiesPanel", () => {
       ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
       ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
 
-      const mockedFS = jest.mocked(FullStory)
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
 
       render(
         <VehiclePropertiesPanel
@@ -340,7 +340,7 @@ describe("VehiclePropertiesPanel", () => {
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
-      expect(mockedFS.event).toHaveBeenCalledWith(
+      expect(mockedFSEvent).toHaveBeenCalledWith(
         "Switched tab in Vehicle Properties Panel",
         { tab_str: tab }
       )
@@ -358,7 +358,7 @@ describe("VehiclePropertiesPanel", () => {
       ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
       ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
 
-      const mockedFS = jest.mocked(FullStory)
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
 
       render(
         <VehiclePropertiesPanel
@@ -369,7 +369,7 @@ describe("VehiclePropertiesPanel", () => {
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
 
-      expect(mockedFS.event).not.toHaveBeenCalled()
+      expect(mockedFSEvent).not.toHaveBeenCalled()
     }
   )
 })

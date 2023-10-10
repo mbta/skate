@@ -5,13 +5,13 @@ import userEvent from "@testing-library/user-event"
 import OverwritePresetModal from "../../../src/components/inputModals/overwritePresetModal"
 import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 describe("OverwritePresetModal", () => {
   test("can confirm", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
@@ -29,14 +29,11 @@ describe("OverwritePresetModal", () => {
 
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
-    expect(mockedFS.event).toHaveBeenCalledWith(
-      "User Overwrote a Saved Preset",
-      {}
-    )
+    expect(mockedFSEvent).toHaveBeenCalledWith("User Overwrote a Saved Preset")
   })
 
   test("can cancel", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
@@ -54,9 +51,8 @@ describe("OverwritePresetModal", () => {
 
     expect(mockCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
-    expect(mockedFS.event).toHaveBeenCalledWith(
-      "User canceled Overwriting a Saved Preset",
-      {}
+    expect(mockedFSEvent).toHaveBeenCalledWith(
+      "User canceled Overwriting a Saved Preset"
     )
   })
 })

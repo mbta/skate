@@ -9,7 +9,7 @@ import { BrowserRouter } from "react-router-dom"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest.mock("../../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -21,11 +21,11 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 describe("BottomNavMobile", () => {
   test("clicking swings view button toggles swing view", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const openSwingsView = jest.fn()
     const user = userEvent.setup()
     const result = render(
@@ -41,7 +41,7 @@ describe("BottomNavMobile", () => {
 
     expect(openSwingsView).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
-    expect(mockedFS.event).toHaveBeenCalledWith("User opened Swings View", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View")
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {

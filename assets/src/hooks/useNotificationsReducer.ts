@@ -17,7 +17,7 @@ import {
   ReceivedNotifications,
   useNotifications,
 } from "./useNotifications"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 export interface State {
   notifications: Notification[] | null
@@ -230,12 +230,9 @@ export const useNotificationsReducer = (
       if (latestMessage.type === "new") {
         tagManagerEvent("notification_delivered")
         if (isChelseaBridgeNotification(latestMessage.payload.reason)) {
-          FullStory.event(
-            "User was Delivered a Chelsea Bridge Notification",
-            {}
-          )
+          fullStoryEvent("User was Delivered a Chelsea Bridge Notification")
         } else {
-          FullStory.event("User was Delivered a Notification", {})
+          fullStoryEvent("User was Delivered a Notification")
         }
         dispatch(addNotification((latestMessage as NewNotification).payload))
       }

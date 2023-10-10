@@ -2,7 +2,7 @@ import React, { ReactNode } from "react"
 import { joinClasses } from "../helpers/dom"
 import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl as streetViewUrlFrom } from "../util/streetViewUrl"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 export interface GeographicCoordinate {
   latitude: number
@@ -39,7 +39,7 @@ export const StreetViewButton = ({
       target="_blank"
       rel="noreferrer"
       onClick={() => {
-        FullStory.event("Street view link followed", {
+        fullStoryEvent("Street view link followed", {
           streetViewUrl_str: streetViewUrl,
           source: {
             latitude_real: worldPosition.latitude,

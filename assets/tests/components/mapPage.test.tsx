@@ -86,7 +86,7 @@ import {
 } from "../testHelpers/selectors/components/mapPage/map"
 import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCategory"
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   __esModule: true,
@@ -148,7 +148,7 @@ jest.mock("../../src/hooks/useSearchResultsByCategory", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../src/helpers/fullStory")
 
 const mockVehicleSearchResultsCategory = (
   vehicles: (Vehicle | Ghost)[] | null
@@ -408,7 +408,7 @@ describe("<MapPage />", () => {
   })
 
   test("clicking a vehicle on the map, should set vehicle as new selection", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
@@ -452,7 +452,7 @@ describe("<MapPage />", () => {
     ).toBeInTheDocument()
 
     expect(container.querySelector(".selected")).toBeVisible()
-    expect(mockedFS.event).toHaveBeenCalledWith("VPC Opened", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("VPC Opened")
   })
 
   test("clicking a vehicle from a search result displays the route shape", async () => {
@@ -514,7 +514,7 @@ describe("<MapPage />", () => {
   })
 
   test("when a search is submitted, should fire FS event for map page", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     mockVehicleSearchResultsCategory([])
     const mockDispatch = jest.fn()
@@ -537,10 +537,7 @@ describe("<MapPage />", () => {
 
     await userEvent.click(searchFormSubmitButton.get())
 
-    expect(mockedFS.event).toHaveBeenCalledWith(
-      "Search submitted from map page",
-      {}
-    )
+    expect(mockedFSEvent).toHaveBeenCalledWith("Search submitted from map page")
   })
 
   test("when new search button is clicked, then the search query and map selection is cleared", async () => {

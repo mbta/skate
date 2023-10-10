@@ -9,7 +9,7 @@ import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
 import { PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import CloseButton from "./closeButton"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 const Presets = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
@@ -43,9 +43,8 @@ const Presets = () => {
         onClick={() => {
           if (currentTab) {
             tagManagerEvent("preset_saved_from_presets_panel")
-            FullStory.event(
-              'User clicked the Presets panel "Save as preset" button',
-              {}
+            fullStoryEvent(
+              'User clicked the Presets panel "Save as preset" button'
             )
             dispatch(promptToSaveOrCreatePreset(currentTab))
           }

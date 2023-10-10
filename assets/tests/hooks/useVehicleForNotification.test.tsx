@@ -19,14 +19,14 @@ import {
 import vehicleDataFactory from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../src/helpers/fullStory")
 
 const runId = "run_id"
 
@@ -77,7 +77,7 @@ describe("useVehicleForNotification", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel([ghostData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
 
     const { result } = renderHook(
       () => {
@@ -89,9 +89,8 @@ describe("useVehicleForNotification", () => {
     expect(result.current).toEqual(ghostFromData(ghostData))
 
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_linked_to_vpp")
-    expect(mockedFS.event).toBeCalledWith(
-      "User clicked Notification and linked to VPP",
-      {}
+    expect(mockedFSEvent).toBeCalledWith(
+      "User clicked Notification and linked to VPP"
     )
   })
 
@@ -125,7 +124,7 @@ describe("useVehicleForNotification", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
 
     const { result } = renderHook(
       () => {
@@ -143,9 +142,8 @@ describe("useVehicleForNotification", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "notification_linked_to_inactive_modal"
     )
-    expect(mockedFS.event).toBeCalledWith(
-      "User clicked Notification and linked to Inactive Modal",
-      {}
+    expect(mockedFSEvent).toBeCalledWith(
+      "User clicked Notification and linked to Inactive Modal"
     )
   })
 
@@ -153,7 +151,7 @@ describe("useVehicleForNotification", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockOneShotChannel([])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
 
     const { result } = renderHook(
       () => {
@@ -171,9 +169,8 @@ describe("useVehicleForNotification", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "notification_linked_to_inactive_modal"
     )
-    expect(mockedFS.event).toBeCalledWith(
-      "User clicked Notification and linked to Inactive Modal",
-      {}
+    expect(mockedFSEvent).toBeCalledWith(
+      "User clicked Notification and linked to Inactive Modal"
     )
   })
 })

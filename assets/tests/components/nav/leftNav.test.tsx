@@ -19,7 +19,7 @@ import {
 } from "../../../src/state"
 import { TestGroups } from "../../../src/userInTestGroup"
 import getTestGroups from "../../../src/userTestGroups"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -40,7 +40,7 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
@@ -114,7 +114,7 @@ describe("LeftNav", () => {
   })
 
   test("clicking 'Search Map' nav item triggers FullStory event", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
 
     render(
@@ -129,10 +129,7 @@ describe("LeftNav", () => {
 
     await userEvent.click(screen.getByRole("link", { name: "Search Map" }))
 
-    expect(mockedFS.event).toHaveBeenCalledWith(
-      "Search Map nav entry clicked",
-      {}
-    )
+    expect(mockedFSEvent).toHaveBeenCalledWith("Search Map nav entry clicked")
   })
 
   test("can toggle nav menu on tablet layout", async () => {
@@ -190,7 +187,7 @@ describe("LeftNav", () => {
   })
 
   test("clicking late view button toggles late view", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
@@ -209,7 +206,7 @@ describe("LeftNav", () => {
 
     expect(dispatch).toHaveBeenCalledWith(openLateView())
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
-    expect(mockedFS.event).toHaveBeenCalledWith("User opened Late View", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Late View")
   })
 
   test("clicking late view button closes picker container when flag is set", async () => {
@@ -237,7 +234,7 @@ describe("LeftNav", () => {
   })
 
   test("clicking swings view button toggles swing view", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
@@ -256,7 +253,7 @@ describe("LeftNav", () => {
 
     expect(dispatch).toHaveBeenCalledWith(openSwingsView())
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
-    expect(mockedFS.event).toHaveBeenCalledWith("User opened Swings View", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View")
   })
 
   test("clicking swings view button closes picker container when flag is set", async () => {

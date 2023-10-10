@@ -12,3 +12,12 @@ export const fullStoryInit = (
     }
   }
 }
+
+export const fullStoryEvent = (
+  eventName: string,
+  eventProperties?: { [key: string]: any }
+): void => {
+  FullStory.isInitialized() && FullStory.event(eventName, eventProperties || {})
+
+  return
+}

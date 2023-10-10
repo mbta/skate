@@ -3,7 +3,7 @@ import { LadderIcon, MapIcon, SwingIcon } from "../../helpers/icon"
 import { NavLink } from "react-router-dom"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import { mapModeForUser } from "../../util/mapMode"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../helpers/fullStory"
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -67,7 +67,7 @@ const BottomNavMobile: React.FC<Props> = ({
             className="c-bottom-nav-mobile__button"
             onClick={() => {
               tagManagerEvent("swings_view_toggled")
-              FullStory.event("User opened Swings View", {})
+              fullStoryEvent("User opened Swings View")
               openSwingsView()
             }}
             title="Swings View"

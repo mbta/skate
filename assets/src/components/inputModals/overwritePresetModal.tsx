@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import InputModal from "../inputModal"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { Action, closeInputModal } from "../../state"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../helpers/fullStory"
 
 const OverwritePresetModal = ({
   presetName,
@@ -27,7 +27,7 @@ const OverwritePresetModal = ({
         <button
           className="c-input-modal__button"
           onClick={() => {
-            FullStory.event("User canceled Overwriting a Saved Preset", {})
+            fullStoryEvent("User canceled Overwriting a Saved Preset")
             dispatch(closeInputModal())
           }}
         >
@@ -38,7 +38,7 @@ const OverwritePresetModal = ({
           autoFocus={true}
           className="c-input-modal__button--confirm"
           onClick={() => {
-            FullStory.event("User Overwrote a Saved Preset", {})
+            fullStoryEvent("User Overwrote a Saved Preset")
             confirmCallback(dispatch)
             dispatch(closeInputModal())
           }}
