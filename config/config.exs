@@ -135,16 +135,6 @@ config :skate, Oban,
     }
   ]
 
-config :laboratory,
-  features: [
-    {:late_view, "Late View", "Grants access to experimental Late View"}
-  ],
-  cookie: [
-    # one month,
-    max_age: 3600 * 24 * 30,
-    http_only: true
-  ]
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

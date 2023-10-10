@@ -23,11 +23,6 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => true),
-}))
-
 describe("rightPanel", () => {
   test("shows nothing if nothing is selected", () => {
     const tree = renderer

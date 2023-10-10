@@ -16,11 +16,6 @@ import { initialState } from "../../src/state"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: () => true,
-}))
-
 const baselineTime = new Date(123_456_789)
 
 const notification: Notification = {

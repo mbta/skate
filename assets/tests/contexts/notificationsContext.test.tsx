@@ -21,11 +21,6 @@ jest.mock("../../src/hooks/useCurrentTime", () => ({
   default: jest.fn(() => new Date(0)),
 }))
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: () => true,
-}))
-
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
