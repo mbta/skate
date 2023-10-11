@@ -47,7 +47,7 @@ import {
   getAllStationIcons,
   getAllStopIcons,
 } from "../../testHelpers/selectors/components/mapPage/map"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
@@ -93,7 +93,7 @@ jest.mock("../../../src/hooks/useShapes", () => ({
   useRouteShapes: jest.fn(() => []),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -733,7 +733,7 @@ describe("<MapDisplay />", () => {
 
   describe("when street view is enabled", () => {
     test("when a vehicle is clicked, should open street view at vehicle location", async () => {
-      const mockedFS = jest.mocked(FullStory)
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
       const mockSetSelection = jest.fn()
       const openSpy = jest
         .spyOn(window, "open")
@@ -777,7 +777,7 @@ describe("<MapDisplay />", () => {
         longitude,
         bearing,
       })
-      expect(mockedFS.event).toHaveBeenCalledWith(
+      expect(mockedFSEvent).toHaveBeenCalledWith(
         "User clicked map vehicle to open street view",
         {
           clickedMapAt: {
@@ -793,7 +793,7 @@ describe("<MapDisplay />", () => {
     })
 
     test("when a bus stop is clicked, should open street view at bus stop location", async () => {
-      const mockedFS = jest.mocked(FullStory)
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
       setHtmlWidthHeightForLeafletMap()
       mockUseVehicleForId([])
       mockUseVehiclesForRouteMap({})
@@ -846,7 +846,7 @@ describe("<MapDisplay />", () => {
         longitude,
       })
 
-      expect(mockedFS.event).toHaveBeenCalledWith(
+      expect(mockedFSEvent).toHaveBeenCalledWith(
         "User clicked map bus stop to open street view",
         {
           clickedMapAt: {

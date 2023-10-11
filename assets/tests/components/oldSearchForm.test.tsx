@@ -14,9 +14,9 @@ import {
   submitSearch,
 } from "../../src/state/searchPageState"
 import { searchPageStateFactory } from "../factories/searchPageState"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
 
-jest.mock("@fullstory/browser")
+jest.mock("../../src/helpers/fullStory")
 
 const mockDispatch = jest.fn()
 
@@ -121,7 +121,7 @@ describe("SearchForm", () => {
       ...initialState,
       searchPageState: validSearch,
     }
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
 
     render(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
@@ -131,7 +131,7 @@ describe("SearchForm", () => {
 
     await userEvent.click(screen.getByTitle("Submit"))
 
-    expect(mockedFS.event).toHaveBeenCalledWith("Test event", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("Test event", {})
   })
 
   test("entering text sets it as the search text", async () => {

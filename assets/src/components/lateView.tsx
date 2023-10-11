@@ -39,7 +39,7 @@ import { runIdToLabel } from "../helpers/vehicleLabel"
 import { routeNameOrId } from "../util/route"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import ViewHeader from "./viewHeader"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 // all these times are in seconds
 const unhidePopupVisibilityPeriod = 5
@@ -455,7 +455,7 @@ const LateGhostRow = ({
           className="c-late-view__run-link"
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number_ghost")
-            FullStory.event("User clicked Late View Run Number", {
+            fullStoryEvent("User clicked Late View Run Number", {
               isGhost_bool: true,
             })
 
@@ -518,7 +518,7 @@ const LateBusRow = ({
           className="c-late-view__run-link"
           onClick={() => {
             tagManagerEvent("selected_late_view_run_number")
-            FullStory.event("User clicked Late View Run Number", {
+            fullStoryEvent("User clicked Late View Run Number", {
               isGhost_bool: false,
             })
             dispatch(selectVehicle(vehicle))
@@ -663,7 +663,7 @@ const UnhideToggle = ({
     }`}
     onClick={() => {
       tagManagerEvent("clicked_eye_toggle")
-      FullStory.event('User clicked the "hide" eye toggle', {})
+      fullStoryEvent('User clicked the "hide" eye toggle', {})
       toggleViewHidden()
     }}
     title={viewHidden ? "Exclude Hidden" : "Include Hidden"}

@@ -14,7 +14,7 @@ import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { useNotifications } from "../../src/hooks/useNotifications"
 import notificationFactory from "../factories/notification"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -37,7 +37,7 @@ jest.mock("../../src/hooks/useNotifications", () => ({
   useNotifications: jest.fn(),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../src/helpers/fullStory")
 
 const notification: Notification = {
   id: "0",
@@ -63,7 +63,7 @@ describe("NotificationsProvider", () => {
   })
 
   test("receives incoming notifications and logs a tag manager event", () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
@@ -85,14 +85,14 @@ describe("NotificationsProvider", () => {
 
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
-    expect(mockedFS.event).toHaveBeenCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User was Delivered a Notification",
       {}
     )
   })
 
   test("when receiving a bridge notification, should trigger FS event", () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
@@ -116,7 +116,7 @@ describe("NotificationsProvider", () => {
 
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
-    expect(mockedFS.event).toHaveBeenCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User was Delivered a Chelsea Bridge Notification",
       {}
     )

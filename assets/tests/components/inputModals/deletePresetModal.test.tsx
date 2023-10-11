@@ -6,18 +6,18 @@ import DeletePresetModal from "../../../src/components/inputModals/deletePresetM
 import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest.mock("../../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 describe("DeletePresetModal", () => {
   test("can confirm deletion", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
@@ -36,7 +36,7 @@ describe("DeletePresetModal", () => {
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_deleted")
-    expect(mockedFS.event).toHaveBeenCalledWith("User deleted a preset", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("User deleted a preset", {})
   })
 
   test("can cancel", async () => {

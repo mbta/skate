@@ -35,7 +35,7 @@ import { mockTileUrls } from "../testHelpers/mockHelpers"
 import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPage/map"
 import { streetViewUrl } from "../../src/util/streetViewUrl"
 import shapeFactory from "../factories/shape"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
 
 const shape = shapeFactory.build({
   id: "shape",
@@ -64,7 +64,7 @@ jest.mock("tilesetUrls", () => ({
   tilesetUrlForType: jest.fn(() => null),
 }))
 
-jest.mock("@fullstory/browser")
+jest.mock("../../src/helpers/fullStory")
 
 const originalScrollTo = global.scrollTo
 // Clicking/moving map calls scrollTo under the hood
@@ -326,7 +326,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
   })
 
   test("can turn on street view and click on the map", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const openSpy = jest
       .spyOn(window, "open")
       .mockImplementationOnce(jest.fn<typeof window.open>())
@@ -341,7 +341,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
     )
 
     await userEvent.click(streetViewModeSwitch.get())
-    expect(mockedFS.event).toHaveBeenNthCalledWith(
+    expect(mockedFSEvent).toHaveBeenNthCalledWith(
       1,
       "Dedicated street view toggled",
       { streetViewEnabled_bool: true }
@@ -357,7 +357,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
     const longitude = -71.0588836669922
     const url = streetViewUrl({ latitude, longitude })
 
-    expect(mockedFS.event).toHaveBeenNthCalledWith(
+    expect(mockedFSEvent).toHaveBeenNthCalledWith(
       2,
       "User clicked map to open street view",
       {
@@ -376,7 +376,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
   })
 
   test("turning off street view also fires a FullStory event", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
 
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
 
@@ -392,7 +392,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
 
     await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
 
-    expect(mockedFS.event).toHaveBeenCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "Dedicated street view toggled",
       { streetViewEnabled_bool: false }
     )
@@ -654,7 +654,7 @@ describe("auto centering", () => {
   })
 
   test("recenter control turns on auto center", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
     const result = render(
       <MapFollowingPrimaryVehicles vehicles={[]} reactLeafletRef={mapRef} />
@@ -680,7 +680,7 @@ describe("auto centering", () => {
       "c-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
-    expect(mockedFS.event).toHaveBeenCalledWith("Recenter control clicked", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("Recenter control clicked", {})
   })
 
   describe("for MapFollowingSelectionKey", () => {

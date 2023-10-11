@@ -8,9 +8,9 @@ import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
 import { hideLatestNotification } from "../../src/hooks/useNotificationsReducer"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
 
-jest.mock("@fullstory/browser")
+jest.mock("../../src/helpers/fullStory")
 
 const notification = notificationFactory.build({
   routeIds: ["route1", "route2"],
@@ -224,7 +224,7 @@ describe("NotificationCard", () => {
   ])(
     "clicking bridge notification should trigger FS event: %s",
     async ({ reason, should_fire_fs_event }) => {
-      const mockedFS = jest.mocked(FullStory)
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
       const updatedNotification = notificationFactory.build({
         reason,
       })
@@ -250,12 +250,12 @@ describe("NotificationCard", () => {
       await user.click(result.getByText(/run1/))
 
       if (should_fire_fs_event) {
-        expect(mockedFS.event).toHaveBeenCalledWith(
+        expect(mockedFSEvent).toHaveBeenCalledWith(
           "User clicked Chelsea Bridge Notification",
           {}
         )
       } else {
-        expect(mockedFS.event).not.toHaveBeenCalledWith(
+        expect(mockedFSEvent).not.toHaveBeenCalledWith(
           "User clicked Chelsea Bridge Notification",
           {}
         )

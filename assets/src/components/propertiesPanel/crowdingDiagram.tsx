@@ -7,7 +7,7 @@ import {
   Crowding,
   statusDescriptionForStatus,
 } from "../../models/crowding"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../helpers/fullStory"
 
 const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
   const tooltipButtonId = `riders-onboard-${useId()}`
@@ -42,7 +42,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           trigger="click"
           className="c-crowding-diagram__crowding-tooltip"
           onShow={() => {
-            FullStory.event('User opened "Riders Onboard" tooltip', {})
+            fullStoryEvent('User opened "Riders Onboard" tooltip', {})
           }}
         >
           <button id={tooltipButtonId}>

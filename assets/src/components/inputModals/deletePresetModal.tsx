@@ -3,7 +3,7 @@ import InputModal from "../inputModal"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { Action, closeInputModal } from "../../state"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../helpers/fullStory"
 
 const DeletePresetModal = ({
   presetName,
@@ -32,7 +32,7 @@ const DeletePresetModal = ({
           className="c-input-modal__button--danger"
           onClick={() => {
             tagManagerEvent("preset_deleted")
-            FullStory.event("User deleted a preset", {})
+            fullStoryEvent("User deleted a preset", {})
 
             deleteCallback(dispatch)
             dispatch(closeInputModal())

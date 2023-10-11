@@ -6,13 +6,13 @@ import CreatePresetModal from "../../../src/components/inputModals/createPresetM
 import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import routeTabFactory from "../../factories/routeTab"
-import * as FullStory from "@fullstory/browser"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
-jest.mock("@fullstory/browser")
+jest.mock("../../../src/helpers/fullStory")
 
 describe("CreatePresetModal", () => {
   test("can enter a name and save", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const mockCreateCallback = jest.fn()
     const mockOverwriteCallback = jest.fn()
     const mockDispatch = jest.fn()
@@ -37,11 +37,11 @@ describe("CreatePresetModal", () => {
     expect(mockCreateCallback).toHaveBeenCalledWith("My Preset", mockDispatch)
     expect(mockOverwriteCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
-    expect(mockedFS.event).toHaveBeenCalledWith("User saved a new Preset", {})
+    expect(mockedFSEvent).toHaveBeenCalledWith("User saved a new Preset", {})
   })
 
   test("trying to save under an existing name invokes overwrite callback", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const mockCreateCallback = jest.fn()
     const mockOverwriteCallback = jest.fn()
     const mockDispatch = jest.fn()
@@ -76,14 +76,14 @@ describe("CreatePresetModal", () => {
       routeTab.uuid,
       mockDispatch
     )
-    expect(mockedFS.event).toHaveBeenCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User submitted name of existing preset when creating a new Saved Preset",
       {}
     )
   })
 
   test("can cancel", async () => {
-    const mockedFS = jest.mocked(FullStory)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const mockCreateCallback = jest.fn()
     const mockOverwriteCallback = jest.fn()
     const mockDispatch = jest.fn()
@@ -103,7 +103,7 @@ describe("CreatePresetModal", () => {
     expect(mockCreateCallback).not.toHaveBeenCalled()
     expect(mockOverwriteCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
-    expect(mockedFS.event).toHaveBeenCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User canceled Creating a new Preset",
       {}
     )
