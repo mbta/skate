@@ -1,4 +1,6 @@
 import * as Sentry from "@sentry/react"
+import * as FullStory from "@fullstory/browser"
+import SentryFullStory from "@sentry/fullstory"
 
 interface sentryOptions {
   dsn?: string
@@ -6,11 +8,17 @@ interface sentryOptions {
 }
 
 const sentryInit = (
-  opts: sentryOptions | undefined,
-  username: string | undefined
+  opts?: sentryOptions,
+  username?: string,
+  orgSlug?: string
 ) => {
   if (opts) {
-    Sentry.init(opts)
+    Sentry.init({
+      ...opts,
+      integrations: orgSlug
+        ? [new SentryFullStory(orgSlug, { client: FullStory })]
+        : undefined,
+    })
 
     if (username) {
       Sentry.setUser({ username: username })

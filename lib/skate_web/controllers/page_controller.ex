@@ -35,6 +35,7 @@ defmodule SkateWeb.PageController do
     })
     |> assign(:user_test_groups, user.test_groups |> Enum.map(& &1.name))
     |> assign(:map_limits, map_limits)
+    |> assign(:sentry_org_slug, Application.get_env(:skate, :sentry_org_slug))
     |> render("index.html")
   end
 end

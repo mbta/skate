@@ -133,12 +133,14 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
-    test "correct sentry environment set", %{conn: conn} do
+    test "correct sentry environment and org slug set", %{conn: conn} do
       reassign_env(:skate, :record_sentry, true)
       reassign_env(:skate, :sentry_environment, "test_env")
+      reassign_env(:skate, :sentry_org_slug, "fake_slug")
 
       conn = get(conn, "/")
       assert html_response(conn, 200) =~ "environment: \"test_env\""
+      assert html_response(conn, 200) =~ "orgSlug: \"fake_slug\""
     end
 
     @tag :authenticated

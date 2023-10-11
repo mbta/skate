@@ -17,6 +17,14 @@ declare global {
     fullStoryInitialization?: {
       organizationId?: string | null
     }
+    sentryInitialization?: {
+      initArgs: {
+        dsn: string
+        environment: string
+        release: string
+      }
+      orgSlug: string
+    }
     sentry?: {
       dsn: string
     }
