@@ -25,9 +25,6 @@ declare global {
       }
       orgSlug: string
     }
-    sentry?: {
-      dsn: string
-    }
   }
 }
 
