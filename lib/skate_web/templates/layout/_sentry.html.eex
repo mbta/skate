@@ -1,9 +1,4 @@
 <script>
-  window.sentry = {
-    dsn: "<%= Application.get_env(:skate, :sentry_frontend_dsn) %>",
-    environment: "<%= Application.get_env(:skate, :sentry_environment) %>",
-    release: "<%= Application.get_env(:sentry, :release) %>"
-  };
   window.sentryInitialization = {
     initArgs: {
       dsn: "<%= Application.get_env(:skate, :sentry_frontend_dsn) %>",
@@ -11,5 +6,5 @@
       release: "<%= Application.get_env(:sentry, :release) %>"
     },
     orgSlug: "<%= Application.get_env(:skate, :sentry_org_slug) %>"
-  };
+  }
 </script>
