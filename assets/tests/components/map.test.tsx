@@ -680,7 +680,7 @@ describe("auto centering", () => {
       "c-vehicle-map-state--auto-centering"
     )
     expect(getCenter(mapRef)).toEqual(defaultCenter)
-    expect(mockedFSEvent).toHaveBeenCalledWith("Recenter control clicked")
+    expect(mockedFSEvent).toHaveBeenCalledWith("Recenter control clicked", {})
   })
 
   describe("for MapFollowingSelectionKey", () => {

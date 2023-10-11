@@ -29,7 +29,7 @@ const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
       className="c-vehicle-properties-panel__map-open-link leaflet-bar"
       to={mapModeForUser().path}
       onClick={() => {
-        fullStoryEvent("Map opened from VPP mini map")
+        fullStoryEvent("Map opened from VPP mini map", {})
         dispatch(
           newSearchSession({
             type: SelectedEntityType.Vehicle,

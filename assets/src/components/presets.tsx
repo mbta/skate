@@ -44,7 +44,8 @@ const Presets = () => {
           if (currentTab) {
             tagManagerEvent("preset_saved_from_presets_panel")
             fullStoryEvent(
-              'User clicked the Presets panel "Save as preset" button'
+              'User clicked the Presets panel "Save as preset" button',
+              {}
             )
             dispatch(promptToSaveOrCreatePreset(currentTab))
           }

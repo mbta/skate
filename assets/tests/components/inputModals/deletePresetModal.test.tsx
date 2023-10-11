@@ -36,7 +36,7 @@ describe("DeletePresetModal", () => {
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_deleted")
-    expect(mockedFSEvent).toHaveBeenCalledWith("User deleted a preset")
+    expect(mockedFSEvent).toHaveBeenCalledWith("User deleted a preset", {})
   })
 
   test("can cancel", async () => {

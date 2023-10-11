@@ -291,7 +291,8 @@ describe("SwingsView", () => {
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_off")
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      'User clicked "Swing Off" run button'
+      'User clicked "Swing Off" run button',
+      {}
     )
   })
 
@@ -334,7 +335,8 @@ describe("SwingsView", () => {
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_on")
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      'User clicked "Swing On" run button'
+      'User clicked "Swing On" run button',
+      {}
     )
   })
 

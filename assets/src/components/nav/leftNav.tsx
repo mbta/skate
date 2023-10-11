@@ -114,7 +114,7 @@ const LeftNav = ({
               title={mapMode.title}
               to={mapMode.path}
               onClick={() => {
-                mapMode.navEventText && fullStoryEvent(mapMode.navEventText)
+                mapMode.navEventText && fullStoryEvent(mapMode.navEventText, {})
               }}
             >
               <mapMode.navIcon className="c-left-nav__icon" />
@@ -136,7 +136,7 @@ const LeftNav = ({
                   tagManagerEvent("late_view_toggled")
                   if (openView !== OpenView.Late) {
                     // only fire event when opening
-                    fullStoryEvent("User opened Late View")
+                    fullStoryEvent("User opened Late View", {})
                   }
                   dispatch(openLateView())
 
@@ -159,7 +159,7 @@ const LeftNav = ({
               toggleView={() => {
                 if (openView !== OpenView.Swings) {
                   // only fire event when opening
-                  fullStoryEvent("User opened Swings View")
+                  fullStoryEvent("User opened Swings View", {})
                 }
 
                 tagManagerEvent("swings_view_toggled")

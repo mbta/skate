@@ -231,7 +231,8 @@ describe("LadderPage", () => {
     )
     expect(tagManagerEvent).toHaveBeenCalledWith("preset_saved")
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      'User clicked Route Tab "Save" Button'
+      'User clicked Route Tab "Save" Button',
+      {}
     )
   })
 
@@ -268,7 +269,10 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
     )
-    expect(mockedFSEvent).toBeCalledWith('User clicked Route Tab "Save" Button')
+    expect(mockedFSEvent).toBeCalledWith(
+      'User clicked Route Tab "Save" Button',
+      {}
+    )
   })
 
   test("omits save icon for unedited preset", () => {
@@ -320,7 +324,10 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
-    expect(mockedFSEvent).toBeCalledWith("User added a new Route Ladder Tab")
+    expect(mockedFSEvent).toBeCalledWith(
+      "User added a new Route Ladder Tab",
+      {}
+    )
   })
 
   test("can toggle to presets view in picker and back", async () => {

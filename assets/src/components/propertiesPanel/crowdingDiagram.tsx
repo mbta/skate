@@ -42,7 +42,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           trigger="click"
           className="c-crowding-diagram__crowding-tooltip"
           onShow={() => {
-            fullStoryEvent('User opened "Riders Onboard" tooltip')
+            fullStoryEvent('User opened "Riders Onboard" tooltip', {})
           }}
         >
           <button id={tooltipButtonId}>

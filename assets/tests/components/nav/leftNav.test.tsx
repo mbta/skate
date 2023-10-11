@@ -129,7 +129,10 @@ describe("LeftNav", () => {
 
     await userEvent.click(screen.getByRole("link", { name: "Search Map" }))
 
-    expect(mockedFSEvent).toHaveBeenCalledWith("Search Map nav entry clicked")
+    expect(mockedFSEvent).toHaveBeenCalledWith(
+      "Search Map nav entry clicked",
+      {}
+    )
   })
 
   test("can toggle nav menu on tablet layout", async () => {
@@ -206,7 +209,7 @@ describe("LeftNav", () => {
 
     expect(dispatch).toHaveBeenCalledWith(openLateView())
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
-    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Late View")
+    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Late View", {})
   })
 
   test("clicking late view button closes picker container when flag is set", async () => {
@@ -253,7 +256,7 @@ describe("LeftNav", () => {
 
     expect(dispatch).toHaveBeenCalledWith(openSwingsView())
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
-    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View")
+    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View", {})
   })
 
   test("clicking swings view button closes picker container when flag is set", async () => {

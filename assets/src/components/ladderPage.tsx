@@ -99,7 +99,7 @@ const LadderTab = ({
               e.stopPropagation()
 
               tagManagerEvent("preset_saved")
-              fullStoryEvent('User clicked Route Tab "Save" Button')
+              fullStoryEvent('User clicked Route Tab "Save" Button', {})
 
               saveTab()
             }}
@@ -123,7 +123,7 @@ const AddTabButton = ({
       className="c-ladder-page__add-tab-button"
       title="Add Tab"
       onClick={() => {
-        fullStoryEvent("User added a new Route Ladder Tab")
+        fullStoryEvent("User added a new Route Ladder Tab", {})
         tagManagerEvent("new_tab_added")
         addTab()
       }}

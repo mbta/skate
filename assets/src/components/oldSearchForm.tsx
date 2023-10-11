@@ -55,7 +55,7 @@ const OldSearchForm = ({
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
 
-    submitEvent && fullStoryEvent(submitEvent)
+    submitEvent && fullStoryEvent(submitEvent, {})
 
     dispatch(submitSearch())
     if (onSubmit) {

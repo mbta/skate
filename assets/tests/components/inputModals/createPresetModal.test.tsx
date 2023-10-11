@@ -37,7 +37,7 @@ describe("CreatePresetModal", () => {
     expect(mockCreateCallback).toHaveBeenCalledWith("My Preset", mockDispatch)
     expect(mockOverwriteCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
-    expect(mockedFSEvent).toHaveBeenCalledWith("User saved a new Preset")
+    expect(mockedFSEvent).toHaveBeenCalledWith("User saved a new Preset", {})
   })
 
   test("trying to save under an existing name invokes overwrite callback", async () => {
@@ -77,7 +77,8 @@ describe("CreatePresetModal", () => {
       mockDispatch
     )
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      "User submitted name of existing preset when creating a new Saved Preset"
+      "User submitted name of existing preset when creating a new Saved Preset",
+      {}
     )
   })
 
@@ -103,7 +104,8 @@ describe("CreatePresetModal", () => {
     expect(mockOverwriteCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      "User canceled Creating a new Preset"
+      "User canceled Creating a new Preset",
+      {}
     )
   })
 })

@@ -663,7 +663,7 @@ const UnhideToggle = ({
     }`}
     onClick={() => {
       tagManagerEvent("clicked_eye_toggle")
-      fullStoryEvent('User clicked the "hide" eye toggle')
+      fullStoryEvent('User clicked the "hide" eye toggle', {})
       toggleViewHidden()
     }}
     title={viewHidden ? "Exclude Hidden" : "Include Hidden"}

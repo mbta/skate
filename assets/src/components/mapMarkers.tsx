@@ -235,7 +235,7 @@ export const StationMarker = React.memo(
     const iconSizeLength = iconSize === StationIconSize.small ? 12 : 16
 
     const fireEvent = () => {
-      fullStoryEvent("Station tooltip shown")
+      fullStoryEvent("Station tooltip shown", {})
     }
 
     return (

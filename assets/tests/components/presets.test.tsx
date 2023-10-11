@@ -90,7 +90,8 @@ describe("Presets", () => {
       "preset_saved_from_presets_panel"
     )
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      'User clicked the Presets panel "Save as preset" button'
+      'User clicked the Presets panel "Save as preset" button',
+      {}
     )
   })
 

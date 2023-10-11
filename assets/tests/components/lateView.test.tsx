@@ -798,7 +798,8 @@ describe("LateView", () => {
 
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_eye_toggle")
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      'User clicked the "hide" eye toggle'
+      'User clicked the "hide" eye toggle',
+      {}
     )
   })
 

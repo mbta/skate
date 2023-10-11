@@ -91,7 +91,8 @@ describe("NotificationsProvider", () => {
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      "User was Delivered a Notification"
+      "User was Delivered a Notification",
+      {}
     )
   })
 
@@ -121,7 +122,8 @@ describe("NotificationsProvider", () => {
     expect(result.current.notifications).toHaveLength(1)
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
     expect(mockedFSEvent).toHaveBeenCalledWith(
-      "User was Delivered a Chelsea Bridge Notification"
+      "User was Delivered a Chelsea Bridge Notification",
+      {}
     )
   })
 

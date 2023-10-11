@@ -283,7 +283,7 @@ const SwingRow = ({
             runId={swing.toRunId}
             onClick={() => {
               tagManagerEvent("clicked_swing_on")
-              fullStoryEvent('User clicked "Swing On" run button')
+              fullStoryEvent('User clicked "Swing On" run button', {})
             }}
           />
         </div>
@@ -295,7 +295,7 @@ const SwingRow = ({
             runId={swing.fromRunId}
             onClick={() => {
               tagManagerEvent("clicked_swing_off")
-              fullStoryEvent('User clicked "Swing Off" run button')
+              fullStoryEvent('User clicked "Swing Off" run button', {})
             }}
           />
           <div className="c-swings-view__route-pill">

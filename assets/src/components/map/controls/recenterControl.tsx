@@ -21,7 +21,7 @@ class LeafletRecenterControl extends Control {
       e.stopPropagation()
       e.preventDefault()
 
-      fullStoryEvent("Recenter control clicked")
+      fullStoryEvent("Recenter control clicked", {})
 
       this.recenter()
     }

@@ -24,12 +24,15 @@ const useVehicleForNotification = (
     if (!clickthroughLogged) {
       if (newVehicleOrGhost) {
         setClickthroughLogged(true)
-        fullStoryEvent("User clicked Notification and linked to VPP")
+        fullStoryEvent("User clicked Notification and linked to VPP", {})
         tagManagerEvent("notification_linked_to_vpp")
       } else if (notification && newVehicleOrGhost === null) {
         setClickthroughLogged(true)
         tagManagerEvent("notification_linked_to_inactive_modal")
-        fullStoryEvent("User clicked Notification and linked to Inactive Modal")
+        fullStoryEvent(
+          "User clicked Notification and linked to Inactive Modal",
+          {}
+        )
       }
     }
   }, [clickthroughLogged, notification, newVehicleOrGhost])

@@ -37,7 +37,7 @@ export const NotificationCard = ({
         }
 
         if (isChelseaBridgeNotification(notification.reason)) {
-          fullStoryEvent("User clicked Chelsea Bridge Notification")
+          fullStoryEvent("User clicked Chelsea Bridge Notification", {})
         }
       }}
       closeCallback={hideLatestNotification}

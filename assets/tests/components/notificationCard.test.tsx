@@ -251,11 +251,13 @@ describe("NotificationCard", () => {
 
       if (should_fire_fs_event) {
         expect(mockedFSEvent).toHaveBeenCalledWith(
-          "User clicked Chelsea Bridge Notification"
+          "User clicked Chelsea Bridge Notification",
+          {}
         )
       } else {
         expect(mockedFSEvent).not.toHaveBeenCalledWith(
-          "User clicked Chelsea Bridge Notification"
+          "User clicked Chelsea Bridge Notification",
+          {}
         )
       }
     }

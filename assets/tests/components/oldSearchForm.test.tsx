@@ -131,7 +131,7 @@ describe("SearchForm", () => {
 
     await userEvent.click(screen.getByTitle("Submit"))
 
-    expect(mockedFSEvent).toHaveBeenCalledWith("Test event")
+    expect(mockedFSEvent).toHaveBeenCalledWith("Test event", {})
   })
 
   test("entering text sets it as the search text", async () => {

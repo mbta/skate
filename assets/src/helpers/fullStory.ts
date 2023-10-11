@@ -14,10 +14,7 @@ export const fullStoryInit = (
 }
 
 export const fullStoryEvent = (
-  eventName: string,
-  eventProperties?: { [key: string]: any }
+  ...args: Parameters<typeof FullStory.event>
 ): void => {
-  FullStory.isInitialized() && FullStory.event(eventName, eventProperties || {})
-
-  return
+  FullStory.isInitialized() && FullStory.event(...args)
 }

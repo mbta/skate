@@ -82,7 +82,10 @@ describe("MiniMap", () => {
           vehicleId: vehicle.id,
         })
       )
-      expect(mockedFSEvent).toHaveBeenCalledWith("Map opened from VPP mini map")
+      expect(mockedFSEvent).toHaveBeenCalledWith(
+        "Map opened from VPP mini map",
+        {}
+      )
     })
 
     test("Map doesn't include fullscreen button", () => {

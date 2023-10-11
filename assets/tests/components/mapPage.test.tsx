@@ -452,7 +452,7 @@ describe("<MapPage />", () => {
     ).toBeInTheDocument()
 
     expect(container.querySelector(".selected")).toBeVisible()
-    expect(mockedFSEvent).toHaveBeenCalledWith("VPC Opened")
+    expect(mockedFSEvent).toHaveBeenCalledWith("VPC Opened", {})
   })
 
   test("clicking a vehicle from a search result displays the route shape", async () => {
@@ -537,7 +537,10 @@ describe("<MapPage />", () => {
 
     await userEvent.click(searchFormSubmitButton.get())
 
-    expect(mockedFSEvent).toHaveBeenCalledWith("Search submitted from map page")
+    expect(mockedFSEvent).toHaveBeenCalledWith(
+      "Search submitted from map page",
+      {}
+    )
   })
 
   test("when new search button is clicked, then the search query and map selection is cleared", async () => {

@@ -214,7 +214,7 @@ export const StopMarkerWithStopCard = ({ ...props }: StopMarkerProps) => {
 
   const popupHandlers: LeafletEventHandlerFnMap = {
     popupopen: (e) => {
-      fullStoryEvent("Bus stop card opened")
+      fullStoryEvent("Bus stop card opened", {})
       setIsSelected(true)
       props.eventHandlers?.popupopen?.(e)
     },

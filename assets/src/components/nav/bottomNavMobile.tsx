@@ -67,7 +67,7 @@ const BottomNavMobile: React.FC<Props> = ({
             className="c-bottom-nav-mobile__button"
             onClick={() => {
               tagManagerEvent("swings_view_toggled")
-              fullStoryEvent("User opened Swings View")
+              fullStoryEvent("User opened Swings View", {})
               openSwingsView()
             }}
             title="Swings View"

@@ -90,7 +90,7 @@ describe("StopMarkerWithInfo", () => {
       <StopMarkerWithInfo stop={stop} includeStopCard={true} />
     )
     await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
-    expect(mockedFSEvent).toHaveBeenCalledWith("Bus stop card opened")
+    expect(mockedFSEvent).toHaveBeenCalledWith("Bus stop card opened", {})
   })
 })
 
@@ -108,7 +108,7 @@ describe("StationMarker", () => {
     await userEvent.hover(container.querySelector(".c-station-icon")!)
 
     expect(screen.getByText(station.name)).toBeVisible()
-    expect(mockedFSEvent).toHaveBeenCalledWith("Station tooltip shown")
+    expect(mockedFSEvent).toHaveBeenCalledWith("Station tooltip shown", {})
   })
 
   test("Station icon with name on click when hover not supported", async () => {
@@ -121,7 +121,7 @@ describe("StationMarker", () => {
     expect(container.querySelector(".c-station-icon")).toBeInTheDocument()
     await userEvent.click(container.querySelector(".c-station-icon")!)
     expect(screen.getByText(station.name)).toBeVisible()
-    expect(mockedFSEvent).toHaveBeenCalledWith("Station tooltip shown")
+    expect(mockedFSEvent).toHaveBeenCalledWith("Station tooltip shown", {})
   })
 })
 

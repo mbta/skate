@@ -50,7 +50,7 @@ const SearchMode = ({
       <div className="c-map-page__input u-hideable">
         <SearchFormFromStateDispatchContext
           onSubmit={() => {
-            fullStoryEvent("Search submitted from map page")
+            fullStoryEvent("Search submitted from map page", {})
           }}
         />
       </div>
@@ -239,10 +239,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     (selectedEntity: SelectedEntity | null) => {
       switch (selectedEntity?.type) {
         case SelectedEntityType.Vehicle:
-          fullStoryEvent("VPC Opened")
+          fullStoryEvent("VPC Opened", {})
           break
         case SelectedEntityType.RoutePattern:
-          fullStoryEvent("RPC Opened")
+          fullStoryEvent("RPC Opened", {})
       }
       if (selectedEntity) {
         setSearchOpen(true)

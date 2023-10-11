@@ -29,6 +29,7 @@ test("when info icon is clicked, should show tooltip", async () => {
     "Riders are estimated using Automated Passenger Counters (APCs)."
   )
   expect(mockedFSEvent).toHaveBeenCalledWith(
-    'User opened "Riders Onboard" tooltip'
+    'User opened "Riders Onboard" tooltip',
+    {}
   )
 })

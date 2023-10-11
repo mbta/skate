@@ -230,9 +230,9 @@ export const useNotificationsReducer = (
       if (latestMessage.type === "new") {
         tagManagerEvent("notification_delivered")
         if (isChelseaBridgeNotification(latestMessage.payload.reason)) {
-          fullStoryEvent("User was Delivered a Chelsea Bridge Notification")
+          fullStoryEvent("User was Delivered a Chelsea Bridge Notification", {})
         } else {
-          fullStoryEvent("User was Delivered a Notification")
+          fullStoryEvent("User was Delivered a Notification", {})
         }
         dispatch(addNotification((latestMessage as NewNotification).payload))
       }

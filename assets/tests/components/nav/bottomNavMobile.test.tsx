@@ -41,7 +41,7 @@ describe("BottomNavMobile", () => {
 
     expect(openSwingsView).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
-    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View")
+    expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View", {})
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {
