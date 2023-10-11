@@ -5,6 +5,8 @@ import React, {
   useEffect,
   useState,
   useMemo,
+  createContext,
+  SetStateAction,
 } from "react"
 import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
@@ -33,6 +35,8 @@ import {
   RecenterControlWithInterruptibleFollower,
   useInteractiveFollowerState,
   drawerOffsetAutoCenter,
+  drawerOffsetAutoCenter2,
+  InterruptibleFollower,
 } from "../map/follower"
 import {
   LocationMarker,
@@ -57,6 +61,7 @@ import { useAllStops } from "../../hooks/useAllStops"
 import { LocationType, RouteType } from "../../models/stopData"
 import usePullbackVehicles from "../../hooks/usePullbackVehicles"
 import { fullStoryEvent } from "../../helpers/fullStory"
+import { RecenterControl } from "../map/controls/recenterControl"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -265,6 +270,11 @@ const SelectedVehicleDataLayers = ({
     (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
   )
 
+  const setSelectionState = useContext(SetSelectionStateContext)
+  const selectionState = useContext(SelectionStateContext)
+  const onUpdate = drawerOffsetAutoCenter2(
+    selectionState === "init-follower-on"
+  )
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -304,10 +314,22 @@ const SelectedVehicleDataLayers = ({
             : stops
         }
       />
-      <RecenterControlWithInterruptibleFollower
-        onUpdate={drawerOffsetAutoCenter}
+      <RecenterControl
+        position="topright"
+        active={followerState.shouldFollow}
+        onActivate={() => {
+          followerState.setShouldFollow(true)
+        }}
+      />
+      <InterruptibleFollower
+        // Do nothing if we don't have a vehicle position yet
+        onUpdate={position.length === 0 ? () => {} : onUpdate}
         positions={position}
         {...followerState}
+        setShouldFollow={(...args) => {
+          setSelectionState?.("stop-zoom-control")
+          followerState.setShouldFollow(...args)
+        }}
       />
     </>
   )
@@ -332,7 +354,11 @@ const SelectedRouteDataLayers = ({
         Leaflet.latLng(p.lat, p.lon)
       ) || []
     : []
-  const followerState = useInteractiveFollowerState()
+
+  const selectionState = useContext(SelectionStateContext)
+  const followerState = useInteractiveFollowerState(
+    selectionState === "init-follower-on"
+  )
 
   const routePatternStopIdSet = new Set(
     (selectedRoutePattern?.shape?.stops || []).map((s) => s.id)
@@ -590,6 +616,17 @@ const DataLayers = ({
     </>
   )
 }
+
+export type SelectionState =
+  | "init-follower-on"
+  | "stop-zoom-control"
+  | "selection-changed"
+
+export const SelectionStateContext =
+  createContext<SelectionState>("init-follower-on")
+export const SetSelectionStateContext = createContext<
+  React.Dispatch<SetStateAction<SelectionState>> | undefined
+>(undefined)
 
 const MapDisplay = ({
   selectedEntity,
