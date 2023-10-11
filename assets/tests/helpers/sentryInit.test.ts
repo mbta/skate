@@ -35,9 +35,11 @@ describe("sentryInit", () => {
 
     sentryInit(opts, username, orgSlug)
 
-    const integrations = mockedSentry.init.mock.calls[0][0].integrations
-    if (integrations !== undefined && typeof integrations !== "function") {
-      expect(integrations[0]).toBeInstanceOf(SentryFullStory)
-    }
+    expect(mockedSentry.init).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        integrations: expect.arrayContaining([expect.any(SentryFullStory)]),
+      })
+    )
   })
 })
