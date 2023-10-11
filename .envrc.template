@@ -69,6 +69,7 @@ export ERL_FLAGS="+MIscs 2048"
 ## Endpoints for logging errors to Sentry (only used in production)
 # export SENTRY_BACKEND_DSN
 # export SENTRY_FRONTEND_DSN
+# export SENTRY_ORG_SLUG
 
 ## URL of the API for retrieving drawbridge status
 # export BRIDGE_URL

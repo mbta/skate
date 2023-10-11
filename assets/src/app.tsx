@@ -29,9 +29,13 @@ const username = document
   .querySelector("meta[name=username]")
   ?.getAttribute("content")
 
-sentryInit(window.sentry, username || undefined)
-
 fullStoryInit(window.fullStoryInitialization?.organizationId, username)
+
+sentryInit(
+  window.sentryInitialization?.initArgs,
+  username || undefined,
+  window.sentryInitialization?.orgSlug
+)
 
 const userUuid = document
   .querySelector("meta[name=user-uuid]")

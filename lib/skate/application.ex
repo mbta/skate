@@ -68,6 +68,7 @@ defmodule Skate.Application do
       :bridge_api_password,
       :sentry_frontend_dsn,
       :sentry_environment,
+      :sentry_org_slug,
       :fullstory_org,
       SkateWeb.Endpoint,
       Skate.Repo
