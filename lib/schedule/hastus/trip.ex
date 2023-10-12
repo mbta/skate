@@ -3,6 +3,8 @@ defmodule Schedule.Hastus.Trip do
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Hastus.{Place, Run, Schedule}
 
+  @through_routed_suffix_regex ~r/_(\d+)$/
+
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
           run_id: Run.id(),
@@ -98,19 +100,28 @@ defmodule Schedule.Hastus.Trip do
 
   @spec expand_through_routed_trips([t()], MapSet.t()) :: [t()]
   def expand_through_routed_trips(trips, gtfs_trip_ids) do
-    through_routed_suffix_regex = ~r/_\d+$/
-
     original_id_to_through_routed_trip_ids =
       gtfs_trip_ids
-      |> Enum.filter(&Regex.match?(through_routed_suffix_regex, &1))
-      |> Enum.group_by(&String.replace(&1, through_routed_suffix_regex, ""))
+      |> Enum.filter(&Regex.match?(@through_routed_suffix_regex, &1))
+      |> Enum.group_by(&String.replace(&1, @through_routed_suffix_regex, ""))
 
     trips
     |> Enum.flat_map(fn trip ->
       through_routed_trip_ids = Map.get(original_id_to_through_routed_trip_ids, trip.trip_id)
 
       if through_routed_trip_ids do
-        Enum.map(through_routed_trip_ids, &%__MODULE__{trip | trip_id: &1})
+        through_routed_trip_ids
+        |> Enum.sort_by(fn trip_id ->
+          try do
+            [[suffix]] =
+              Regex.scan(@through_routed_suffix_regex, trip_id, capture: :all_but_first)
+
+            String.to_integer(suffix)
+          rescue
+            _ -> 0
+          end
+        end)
+        |> Enum.map(&%__MODULE__{trip | trip_id: &1})
       else
         [trip]
       end
