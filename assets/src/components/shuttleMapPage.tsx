@@ -19,7 +19,7 @@ import { isASubwayRoute } from "../models/subwayRoute"
 import { Ghost, RunId, TrainVehicle, Vehicle, VehicleId } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import { selectVehicle } from "../state"
-import Map, { FollowerStatusClasses, vehicleToLeafletLatLng } from "./map"
+import Map, { vehicleToLeafletLatLng } from "./map"
 import ShuttlePicker from "./shuttlePicker"
 import { LayersControl, LayersControlState } from "./map/controls/layersControl"
 import { setTileType } from "../state/mapLayersState"
@@ -191,9 +191,6 @@ export const ShuttleMap = ({
   return (
     <div className="c-shuttle-map__map">
       <Map
-        stateClasses={FollowerStatusClasses(
-          followerController == "vehicle-location"
-        )}
         vehicles={selectedShuttles}
         selectedVehicleId={selectedVehicleId}
         shapes={selectedRouteShapes}
@@ -220,7 +217,8 @@ export const ShuttleMap = ({
         />
         <RecenterControl
           position="topright"
-          recenter={() => setShouldFollow("vehicle-location")}
+          active={followerController == "vehicle-location"}
+          onActivate={() => setShouldFollow("vehicle-location")}
         />
 
         <>

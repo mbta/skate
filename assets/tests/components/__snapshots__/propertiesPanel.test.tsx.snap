@@ -691,7 +691,7 @@ exports[`PropertiesPanel renders a vehicle 1`] = `
             className="c-vehicle-properties-panel__map"
           >
             <div
-              className="c-vehicle-map-state c-vehicle-map-state--auto-centering"
+              className="c-vehicle-map-state"
             />
             <div
               className="c-vehicle-map"

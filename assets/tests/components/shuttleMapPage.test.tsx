@@ -35,6 +35,7 @@ import geolocationCoordinates from "../factories/geolocationCoordinates"
 import useGeolocation from "../../src/hooks/useGeolocation"
 import { currentLocationControl } from "../testHelpers/selectors/components/map/controls/currentLocationControl"
 import { currentLocationMarker } from "../testHelpers/selectors/components/map/markers/currentLocationMarker"
+import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
 
 jest
   .spyOn(dateTime, "now")
@@ -211,11 +212,7 @@ describe("Shuttle Map Page", () => {
       </StateDispatchProvider>
     )
 
-    expect(
-      result.container.getElementsByClassName(
-        "c-vehicle-map-state--auto-centering"
-      ).length
-    ).toBe(1)
+    expect(recenterControl.get().dataset.isActive).toBe("true")
   })
 
   test("clicking a shuttle on the map dispatches select event", async () => {

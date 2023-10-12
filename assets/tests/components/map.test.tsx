@@ -36,6 +36,7 @@ import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPag
 import { streetViewUrl } from "../../src/util/streetViewUrl"
 import shapeFactory from "../factories/shape"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
 
 const shape = shapeFactory.build({
   id: "shape",
@@ -569,16 +570,14 @@ describe("auto centering", () => {
   test("manual moves disable auto centering", async () => {
     const vehicle = vehicleFactory.build({})
     const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
-    const { rerender, container } = render(
+    const { rerender } = render(
       <MapFollowingPrimaryVehicles
         vehicles={[vehicle]}
         reactLeafletRef={mapRef}
       />
     )
     await animationFramePromise()
-    expect(container.firstChild).toHaveClass(
-      "c-vehicle-map-state--auto-centering"
-    )
+    expect(recenterControl.get().dataset.isActive).toBe("true")
     const manualLatLng = { lat: 42.25, lng: -70.9 }
 
     act(() => {
@@ -601,9 +600,7 @@ describe("auto centering", () => {
     )
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(manualLatLng)
-    expect(container.firstChild).not.toHaveClass(
-      "c-vehicle-map-state--auto-centering"
-    )
+    expect(recenterControl.get().dataset.isActive).toBe("false")
   })
 
   test("auto recentering does not disable auto centering", async () => {
@@ -668,17 +665,13 @@ describe("auto centering", () => {
       mapRef.current!.panTo(manualLatLng)
     })
     await animationFramePromise()
-    expect(result.container.firstChild).not.toHaveClass(
-      "c-vehicle-map-state--auto-centering"
-    )
+    expect(recenterControl.get().dataset.isActive).toBe("false")
     expect(getCenter(mapRef)).toEqual(manualLatLng)
 
     // Click the recenter button
     await userEvent.click(result.getByTitle("Recenter Map"))
     await animationFramePromise()
-    expect(result.container.firstChild).toHaveClass(
-      "c-vehicle-map-state--auto-centering"
-    )
+    expect(recenterControl.get().dataset.isActive).toBe("true")
     expect(getCenter(mapRef)).toEqual(defaultCenter)
     expect(mockedFSEvent).toHaveBeenCalledWith("Recenter control clicked", {})
   })
@@ -712,9 +705,7 @@ describe("auto centering", () => {
         />
       )
       await animationFramePromise()
-      expect(result.container.firstChild).toHaveClass(
-        "c-vehicle-map-state--auto-centering"
-      )
+      expect(recenterControl.get().dataset.isActive).toBe("true")
       expect(getCenter(mapRef)).toEqual(defaultCenter)
     })
   })

@@ -1,7 +1,5 @@
 import Leaflet from "leaflet"
 import React, {
-  Dispatch,
-  SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -30,7 +28,7 @@ import {
   SelectedLocation,
   SelectedRoutePattern,
 } from "../../state/searchPageState"
-import Map, { vehicleToLeafletLatLng, FollowerStatusClasses } from "../map"
+import Map, { vehicleToLeafletLatLng } from "../map"
 import {
   RecenterControlWithInterruptibleFollower,
   useInteractiveFollowerState,
@@ -174,16 +172,8 @@ const useLiveSelectedEntity = (
   }
 }
 
-const MapElementsNoSelection = ({
-  setStateClasses,
-}: {
-  setStateClasses: (classes: string | undefined) => void
-}) => {
+const MapElementsNoSelection = () => {
   const followerState = useFollowingStateWithSelectionLogic(null, null)
-
-  useEffect(() => {
-    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-  }, [followerState.shouldFollow, setStateClasses])
 
   return (
     <RecenterControlWithInterruptibleFollower
@@ -240,13 +230,11 @@ const SelectedVehicleDataLayers = ({
   vehicleOrGhost: selectedVehicleOrGhost,
   routePatterns,
   selectVehicle,
-  setStateClasses,
   stops,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
-  setStateClasses: (classes: string | undefined) => void
   stops: Stop[]
 }) => {
   const position =
@@ -276,10 +264,6 @@ const SelectedVehicleDataLayers = ({
   const routePatternStopIdSet = new Set(
     (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
   )
-
-  useEffect(() => {
-    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-  }, [followerState.shouldFollow, setStateClasses])
 
   return (
     <>
@@ -333,13 +317,11 @@ const SelectedRouteDataLayers = ({
   routePatternIdentifier,
   routePatterns,
   selectVehicle,
-  setStateClasses,
   stops,
 }: {
   routePatternIdentifier: RoutePatternIdentifier
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
-  setStateClasses: (classes: string | undefined) => void
   stops: Stop[]
 }) => {
   const selectedRoutePattern: RoutePattern | undefined = routePatterns
@@ -356,9 +338,6 @@ const SelectedRouteDataLayers = ({
     (selectedRoutePattern?.shape?.stops || []).map((s) => s.id)
   )
 
-  useEffect(() => {
-    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-  }, [followerState.shouldFollow, setStateClasses])
   return (
     <>
       {selectedRoutePattern && (
@@ -386,16 +365,10 @@ const SelectedRouteDataLayers = ({
 
 const SelectedLocationDataLayer = ({
   location,
-  setStateClasses,
 }: {
   location: LocationSearchResult
-  setStateClasses: (classes: string | undefined) => void
 }) => {
   const followerState = useInteractiveFollowerState()
-
-  useEffect(() => {
-    setStateClasses(FollowerStatusClasses(followerState.shouldFollow))
-  }, [followerState.shouldFollow, setStateClasses])
 
   return (
     <>
@@ -412,12 +385,10 @@ const SelectedLocationDataLayer = ({
 const SelectionLayers = ({
   selectedEntity,
   selectVehicle,
-  setStateClasses,
   fetchedSelectedLocation,
 }: {
   selectedEntity: SelectedEntity | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
-  setStateClasses: (classes: string | undefined) => void
   fetchedSelectedLocation: LocationSearchResult | null
 }) => {
   const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
@@ -440,7 +411,6 @@ const SelectionLayers = ({
           vehicleOrGhost={liveSelectedEntity.vehicleOrGhost}
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
-          setStateClasses={setStateClasses}
           stops={stops}
         />
       )
@@ -453,7 +423,6 @@ const SelectionLayers = ({
           }}
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
-          setStateClasses={setStateClasses}
           stops={stops}
         />
       )
@@ -461,17 +430,14 @@ const SelectionLayers = ({
       return (
         <>
           <NearbyStops stops={stops} />
-          <SelectedLocationDataLayer
-            location={liveSelectedEntity.location}
-            setStateClasses={setStateClasses}
-          />
+          <SelectedLocationDataLayer location={liveSelectedEntity.location} />
         </>
       )
     default:
       return (
         <>
           <NearbyStops stops={stops} />
-          <MapElementsNoSelection setStateClasses={setStateClasses} />
+          <MapElementsNoSelection />
         </>
       )
   }
@@ -553,13 +519,11 @@ const PullbackVehiclesLayer = ({
 const DataLayers = ({
   selectedEntity,
   setSelection,
-  setStateClasses,
   fetchedSelectedLocation,
   pullbackLayerEnabled,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
-  setStateClasses: Dispatch<SetStateAction<string | undefined>>
   fetchedSelectedLocation: LocationSearchResult | null
   pullbackLayerEnabled: boolean
 }): JSX.Element => {
@@ -601,7 +565,6 @@ const DataLayers = ({
       <SelectionLayers
         selectedEntity={selectedEntity}
         selectVehicle={selectVehicle}
-        setStateClasses={setStateClasses}
         fetchedSelectedLocation={fetchedSelectedLocation}
       />
       <PullbackVehiclesLayer
@@ -624,10 +587,6 @@ const MapDisplay = ({
   streetViewInitiallyEnabled?: boolean
   fetchedSelectedLocation: LocationSearchResult | null
 }) => {
-  const [stateClasses, setStateClasses] = useState<string | undefined>(
-    undefined
-  )
-
   const [
     {
       mapLayers: {
@@ -646,7 +605,6 @@ const MapDisplay = ({
       allowStreetView={true}
       includeStopCard={true}
       shapes={[]}
-      stateClasses={stateClasses}
       streetViewInitiallyEnabled={streetViewInitiallyEnabled}
       tileType={tileType}
     >
@@ -659,7 +617,6 @@ const MapDisplay = ({
         <DataLayers
           setSelection={setSelection}
           selectedEntity={selectedEntity}
-          setStateClasses={setStateClasses}
           fetchedSelectedLocation={fetchedSelectedLocation}
           pullbackLayerEnabled={pullbackLayerEnabled}
         />

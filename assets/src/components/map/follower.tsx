@@ -139,7 +139,8 @@ export const RecenterControlWithInterruptibleFollower = (
     <InterruptibleFollower {...props} />
     <RecenterControl
       position="topright"
-      recenter={() => props.setShouldFollow(true)}
+      active={props.shouldFollow}
+      onActivate={() => props.setShouldFollow(true)}
     />
   </>
 )

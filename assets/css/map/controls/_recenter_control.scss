@@ -1,0 +1,17 @@
+.c-recenter-control {
+  path {
+    fill: none;
+    stroke: $color-button-secondary;
+    stroke-width: 2;
+  }
+
+  &[data-is-active="true"] {
+    background-color: $color-button-disabled;
+    color: $color-font-grey;
+    cursor: default;
+
+    path {
+      stroke: $color-font-grey;
+    }
+  }
+}
