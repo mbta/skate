@@ -99,7 +99,7 @@ defmodule Schedule.Hastus.TripTest do
     test "replaces a single consolidated through_routed trip with multiple differentiated trips" do
       hastus_trip1 = build(:hastus_trip, trip_id: "nonthrough_routed")
       hastus_trip2 = build(:hastus_trip, trip_id: "through_routed")
-      gtfs_trip_ids = ["nonthrough_routed", "through_routed_1", "through_routed_2"]
+      gtfs_trip_ids = ["nonthrough_routed", "through_routed_2", "through_routed_1"]
 
       result =
         [hastus_trip1, hastus_trip2]
