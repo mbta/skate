@@ -142,3 +142,8 @@ jobs:
         run: pushd assets && npm run check && popd
       - name: Run tests
         run: pushd assets && npm test && popd
+
+  storybook:
+    needs: [setup, build_typescript]
+    uses: ./.github/workflows/chromatic.yml
+    secrets: inherit
