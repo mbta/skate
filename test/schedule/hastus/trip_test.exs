@@ -107,8 +107,13 @@ defmodule Schedule.Hastus.TripTest do
 
       assert result == [
                hastus_trip1,
-               %Trip{hastus_trip2 | trip_id: "through_routed_1"},
-               %Trip{hastus_trip2 | trip_id: "through_routed_2"}
+               %Trip{
+                 hastus_trip2
+                 | trip_id: "through_routed_1",
+                   start_place: nil,
+                   end_place: nil
+               },
+               %Trip{hastus_trip2 | trip_id: "through_routed_2", start_place: nil, end_place: nil}
              ]
     end
   end
