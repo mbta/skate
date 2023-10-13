@@ -11,8 +11,8 @@ defmodule Schedule.Hastus.Trip do
           block_id: Block.id(),
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
-          start_place: Place.id(),
-          end_place: Place.id(),
+          start_place: Place.id() | nil,
+          end_place: Place.id() | nil,
           # nil means nonrevenue
           route_id: Route.id() | nil,
           trip_id: Trip.id()
@@ -121,7 +121,10 @@ defmodule Schedule.Hastus.Trip do
             _ -> 0
           end
         end)
-        |> Enum.map(&%__MODULE__{trip | trip_id: &1})
+        # Since these trips are split up in GTFS, start and end place from HASTUS are not
+        # necessarily accurate. Origin and destination should be derived from stop times
+        # instead. See Schedule.Trip.merge/3
+        |> Enum.map(&%__MODULE__{trip | trip_id: &1, start_place: nil, end_place: nil})
       else
         [trip]
       end
