@@ -455,13 +455,28 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
   )
   const [nearbyStops, setNearbyStops] = useState<Stop[]>([])
   const map = useMap()
-  map.addEventListener("moveend", () => {
+
+  const filterStopsToBounds = useCallback(() => {
     const bounds = map.getBounds()
     // Only show nearby stations or bus stops
     setNearbyStops(
       stationsAndBus.filter((s) => bounds.contains([s.lat, s.lon]))
     )
-  })
+  }, [map, stationsAndBus, setNearbyStops])
+
+  // Filter stops whenever function, and it's inputs, change
+  useEffect(() => {
+    filterStopsToBounds()
+  }, [filterStopsToBounds])
+
+  // Re-Filter stops when finished moving the map
+  useEffect(() => {
+    const mapEvent = "moveend"
+    map.addEventListener(mapEvent, filterStopsToBounds)
+    return () => {
+      map.removeEventListener(mapEvent, filterStopsToBounds)
+    }
+  }, [map, filterStopsToBounds])
 
   return (
     <ZoomLevelWrapper>
