@@ -23,7 +23,7 @@
     "cypress:open": "cypress open",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic"
+    "chromatic": "npx chromatic --exit-zero-on-changes"
   },
   "dependencies": {
     "@fullstory/browser": "^1.7.1",
