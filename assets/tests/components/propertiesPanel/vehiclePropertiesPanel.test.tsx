@@ -127,7 +127,13 @@ const vehicle: VehicleInScheduledService = vehicleFactory.build({
 describe("VehiclePropertiesPanel", () => {
   test("renders a vehicle properties panel", () => {
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicle}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -141,7 +147,11 @@ describe("VehiclePropertiesPanel", () => {
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>
-          <VehiclePropertiesPanel selectedVehicle={vehicle} />
+          <VehiclePropertiesPanel
+            selectedVehicle={vehicle}
+            tabMode="status"
+            setTabMode={jest.fn()}
+          />
         </RoutesProvider>
       )
       .toJSON()
@@ -155,7 +165,13 @@ describe("VehiclePropertiesPanel", () => {
       scheduleAdherenceSecs: -61,
     }
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={earlyVehicle}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -163,7 +179,11 @@ describe("VehiclePropertiesPanel", () => {
 
   test("Includes invalid bus banner when vehicle is off course", () => {
     render(
-      <VehiclePropertiesPanel selectedVehicle={invalidVehicleFactory.build()} />
+      <VehiclePropertiesPanel
+        selectedVehicle={invalidVehicleFactory.build()}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
     )
     expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
   })
@@ -174,7 +194,13 @@ describe("VehiclePropertiesPanel", () => {
       scheduleAdherenceSecs: 361,
     }
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={earlyVehicle}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -187,7 +213,13 @@ describe("VehiclePropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={offCourseVehicle}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -202,7 +234,13 @@ describe("VehiclePropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={shuttleVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={shuttleVehicle}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -223,7 +261,11 @@ describe("VehiclePropertiesPanel", () => {
 
     const tree = renderer
       .create(
-        <VehiclePropertiesPanel selectedVehicle={vehicleWithBlockWaivers} />
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleWithBlockWaivers}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
       )
       .toJSON()
 
@@ -234,7 +276,13 @@ describe("VehiclePropertiesPanel", () => {
     ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
       ok: "Atlantic Ave & Summer St",
     })
-    const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    const result = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
+    )
     expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
   })
 
@@ -243,7 +291,13 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => "1")
 
-    const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    const result = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
+    )
 
     expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(2)
   })
@@ -253,7 +307,13 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => null)
 
-    const result = render(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    const result = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
+    )
 
     expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(0)
   })
@@ -267,7 +327,11 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclesByRouteIdProvider
         vehiclesByRouteId={{ "39": [thisVehicle, otherVehicle, ghost] }}
       >
-        <VehiclePropertiesPanel selectedVehicle={thisVehicle} />
+        <VehiclePropertiesPanel
+          selectedVehicle={thisVehicle}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
       </VehiclesByRouteIdProvider>
     )
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
@@ -289,7 +353,13 @@ describe("VehiclePropertiesPanel", () => {
       otherVehicle,
       ghost,
     ])
-    renderer.create(<VehiclePropertiesPanel selectedVehicle={thisVehicle} />)
+    renderer.create(
+      <VehiclePropertiesPanel
+        selectedVehicle={thisVehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
+    )
     expect(useVehiclesForRoute).toHaveBeenCalled()
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
     const mapArgs: map.Props = (
@@ -312,7 +382,11 @@ describe("VehiclePropertiesPanel", () => {
     ])
 
     const { container } = render(
-      <VehiclePropertiesPanel selectedVehicle={vehicle} />
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
     )
 
     expect(container.innerHTML).toContain("c-station-icon")
@@ -334,7 +408,8 @@ describe("VehiclePropertiesPanel", () => {
       render(
         <VehiclePropertiesPanel
           selectedVehicle={vehicleFactory.build()}
-          initialTab={initialTab}
+          tabMode={initialTab || "status"}
+          setTabMode={jest.fn()}
         />
       )
 
@@ -347,7 +422,7 @@ describe("VehiclePropertiesPanel", () => {
     }
   )
 
-  test.each<{ clickTarget: string; initialTab?: TabMode }>([
+  test.each<{ clickTarget: string; initialTab: TabMode }>([
     { clickTarget: "Run", initialTab: "run" },
     { clickTarget: "Block", initialTab: "block" },
     { clickTarget: "Status", initialTab: "status" },
@@ -363,7 +438,8 @@ describe("VehiclePropertiesPanel", () => {
       render(
         <VehiclePropertiesPanel
           selectedVehicle={vehicleFactory.build()}
-          initialTab={initialTab}
+          tabMode={initialTab}
+          setTabMode={jest.fn()}
         />
       )
 

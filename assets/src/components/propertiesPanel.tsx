@@ -8,9 +8,11 @@ import { closeView } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
+import { TabMode } from "./propertiesPanel/tabPanels"
 
 interface Props {
   selectedVehicleOrGhost: Vehicle | Ghost
+  initialTab?: TabMode
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -22,7 +24,10 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   }
 }
 
-const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
+const PropertiesPanel = ({
+  selectedVehicleOrGhost,
+  initialTab = "status",
+}: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
@@ -30,6 +35,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
     liveVehicle || selectedVehicleOrGhost
   )
   const [dataIsStale, setDataIsStale] = useState<boolean>(false)
+  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
 
   useEffect(() => {
     if (liveVehicle) {
@@ -52,7 +58,11 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
         (dataIsStale || isLoggedOut(vehicleToDisplay)) ? (
           <StaleDataPropertiesPanel selectedVehicle={vehicleToDisplay} />
         ) : isVehicle(vehicleToDisplay) ? (
-          <VehiclePropertiesPanel selectedVehicle={vehicleToDisplay} />
+          <VehiclePropertiesPanel
+            selectedVehicle={vehicleToDisplay}
+            tabMode={tabMode}
+            setTabMode={setTabMode}
+          />
         ) : (
           <GhostPropertiesPanel selectedGhost={vehicleToDisplay} />
         )}

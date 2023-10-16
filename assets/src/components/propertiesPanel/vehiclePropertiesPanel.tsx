@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
@@ -27,7 +27,8 @@ import { fullStoryEvent } from "../../helpers/fullStory"
 
 interface Props {
   selectedVehicle: Vehicle
-  initialTab?: TabMode
+  tabMode: TabMode
+  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
 }
 
 const InvalidBanner = () => (
@@ -202,10 +203,9 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
 
 const VehiclePropertiesPanel = ({
   selectedVehicle,
-  initialTab = "status",
+  tabMode,
+  setTabMode,
 }: Props) => {
-  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
-
   return (
     <div className="c-vehicle-properties-panel">
       <Header

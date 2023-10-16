@@ -286,61 +286,60 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   }
 
   return (
-    <div
-      className="c-map-page inherit-box border-box"
-      aria-label="Search Map Page"
-    >
+    <>
       <div
-        className={joinClasses([
-          "c-map-page__input-and-results",
-          searchOpen
-            ? "c-map-page__input-and-results--visible"
-            : "c-map-page__input-and-results--hidden",
-        ])}
-        aria-label="Map Search Panel"
+        className="c-map-page inherit-box border-box"
+        aria-label="Search Map Page"
       >
-        <DrawerTab
-          isVisible={searchOpen}
-          toggleVisibility={toggleSearchDrawer}
-        />
-        {selectedEntity ? (
-          <Selection
+        <div
+          className={joinClasses([
+            "c-map-page__input-and-results",
+            searchOpen
+              ? "c-map-page__input-and-results--visible"
+              : "c-map-page__input-and-results--hidden",
+          ])}
+          aria-label="Map Search Panel"
+        >
+          <DrawerTab
+            isVisible={searchOpen}
+            toggleVisibility={toggleSearchDrawer}
+          />
+          {selectedEntity ? (
+            <Selection
+              selectedEntity={selectedEntity}
+              setSelection={setVehicleSelection}
+              fetchedSelectedLocation={fetchedSelectedLocation}
+            />
+          ) : (
+            <SearchMode
+              onSelectVehicleResult={(...args) => {
+                setFollowerShouldSetZoomLevel(true)
+                selectVehicleResult(...args)
+              }}
+              onSelectLocationResult={selectLocationResult}
+            />
+          )}
+        </div>
+        <div className="c-map-page__map">
+          <MapDisplay
             selectedEntity={selectedEntity}
             setSelection={(...args) => {
               setFollowerShouldSetZoomLevel(false)
               setVehicleSelection(...args)
             }}
             fetchedSelectedLocation={fetchedSelectedLocation}
+            initializeRouteFollowerEnabled={followerShouldSetZoomLevel === true}
+            vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
+            onInterruptVehicleFollower={
+              (followerShouldSetZoomLevel === false || undefined) &&
+              (() => {
+                setFollowerShouldSetZoomLevel(false)
+              })
+            }
           />
-        ) : (
-          <SearchMode
-            onSelectVehicleResult={(...args) => {
-              setFollowerShouldSetZoomLevel(true)
-              selectVehicleResult(...args)
-            }}
-            onSelectLocationResult={selectLocationResult}
-          />
-        )}
+        </div>
       </div>
-      <div className="c-map-page__map">
-        <MapDisplay
-          selectedEntity={selectedEntity}
-          setSelection={(...args) => {
-            setFollowerShouldSetZoomLevel(false)
-            setVehicleSelection(...args)
-          }}
-          fetchedSelectedLocation={fetchedSelectedLocation}
-          initializeRouteFollowerEnabled={followerShouldSetZoomLevel === true}
-          vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
-          onInterruptVehicleFollower={
-            (followerShouldSetZoomLevel === false || undefined) &&
-            (() => {
-              setFollowerShouldSetZoomLevel(false)
-            })
-          }
-        />
-      </div>
-    </div>
+    </>
   )
 }
 
