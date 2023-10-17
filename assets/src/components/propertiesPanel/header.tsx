@@ -17,7 +17,7 @@ import {
   statusClasses,
 } from "../../models/vehicleStatus"
 import { Ghost, Vehicle, VehicleInScheduledService } from "../../realtime"
-import { closeView, returnToPreviousView } from "../../state"
+import { returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
 import TabList from "./tabList"
@@ -29,6 +29,7 @@ interface Props {
   vehicle: Vehicle | Ghost
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
+  closePanel: () => void
 }
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -91,13 +92,11 @@ const ScheduleAdherence = ({
   )
 }
 
-const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
+const Header = ({ vehicle, tabMode, setTabMode, closePanel }: Props) => {
   const [{ routeTabs, userSettings, previousView }, dispatch] =
     useContext(StateDispatchContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
-
-  const hideMe = () => dispatch(closeView())
 
   const vehicleIsShuttle = isVehicle(vehicle) && vehicle.isShuttle
 
@@ -110,7 +109,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
     <div className="c-properties-panel__header-wrapper">
       <ViewHeader
         title="Vehicles"
-        closeView={hideMe}
+        closeView={closePanel}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />

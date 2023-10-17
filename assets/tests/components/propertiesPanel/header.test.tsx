@@ -17,7 +17,7 @@ import {
   VehicleInScheduledService,
 } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
-import { closeView, initialState } from "../../../src/state"
+import { initialState } from "../../../src/state"
 import vehicleFactory from "../../factories/vehicle"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
@@ -87,7 +87,12 @@ describe("Header", () => {
   test("renders a header", () => {
     const tree = renderer
       .create(
-        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
+        <Header
+          vehicle={vehicle}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+          closePanel={jest.fn()}
+        />
       )
       .toJSON()
 
@@ -106,6 +111,7 @@ describe("Header", () => {
             vehicle={vehicle}
             tabMode={"status"}
             setTabMode={setTabMode}
+            closePanel={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -125,6 +131,7 @@ describe("Header", () => {
           vehicle={earlyVehicle}
           tabMode={"status"}
           setTabMode={setTabMode}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -143,6 +150,7 @@ describe("Header", () => {
           vehicle={earlyVehicle}
           tabMode={"status"}
           setTabMode={setTabMode}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -162,6 +170,7 @@ describe("Header", () => {
           vehicle={offCourseVehicle}
           tabMode={"status"}
           setTabMode={setTabMode}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -181,6 +190,7 @@ describe("Header", () => {
           vehicle={shuttleVehicle}
           tabMode={"status"}
           setTabMode={setTabMode}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -210,7 +220,12 @@ describe("Header", () => {
 
     const tree = renderer
       .create(
-        <Header vehicle={ghost} tabMode={"status"} setTabMode={setTabMode} />
+        <Header
+          vehicle={ghost}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+          closePanel={jest.fn()}
+        />
       )
       .toJSON()
 
@@ -223,6 +238,7 @@ describe("Header", () => {
         vehicle={{ ...vehicle, directionId: 0, routeStatus: "laying_over" }}
         tabMode={"status"}
         setTabMode={setTabMode}
+        closePanel={jest.fn()}
       />
     )
     expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
@@ -237,6 +253,7 @@ describe("Header", () => {
         vehicle={{ ...vehicle, directionId: 1, routeStatus: "laying_over" }}
         tabMode={"status"}
         setTabMode={setTabMode}
+        closePanel={jest.fn()}
       />
     )
 
@@ -262,7 +279,12 @@ describe("Header", () => {
         }}
         dispatch={jest.fn()}
       >
-        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
+        <Header
+          vehicle={vehicle}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+          closePanel={jest.fn()}
+        />
       </StateDispatchProvider>
     )
 
@@ -284,6 +306,7 @@ describe("Header", () => {
         vehicle={shuttleVehicle}
         tabMode={"status"}
         setTabMode={setTabMode}
+        closePanel={jest.fn()}
       />
     )
 
@@ -294,17 +317,20 @@ describe("Header", () => {
   })
 
   test("clicking the X close button deselects the vehicle", async () => {
-    const mockDispatch = jest.fn()
+    const mockClosePanel = jest.fn()
 
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
-      </StateDispatchProvider>
+      <Header
+        vehicle={vehicle}
+        tabMode={"status"}
+        setTabMode={setTabMode}
+        closePanel={mockClosePanel}
+      />
     )
 
     await user.click(result.getByRole("button", { name: /close/i }))
 
-    expect(mockDispatch).toHaveBeenCalledWith(closeView())
+    expect(mockClosePanel).toHaveBeenCalled()
   })
 })

@@ -132,6 +132,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicle}
           tabMode="status"
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -151,6 +152,7 @@ describe("VehiclePropertiesPanel", () => {
             selectedVehicle={vehicle}
             tabMode="status"
             setTabMode={jest.fn()}
+            closePanel={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -170,6 +172,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={earlyVehicle}
           tabMode="status"
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -183,6 +186,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={invalidVehicleFactory.build()}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
     expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
@@ -199,6 +203,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={earlyVehicle}
           tabMode="status"
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -218,6 +223,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={offCourseVehicle}
           tabMode="status"
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -239,6 +245,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={shuttleVehicle}
           tabMode="status"
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -265,6 +272,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicleWithBlockWaivers}
           tabMode="status"
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -281,6 +289,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
     expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
@@ -296,6 +305,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
 
@@ -312,6 +322,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
 
@@ -331,6 +342,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={thisVehicle}
           tabMode="status"
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       </VehiclesByRouteIdProvider>
     )
@@ -358,6 +370,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={thisVehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
     expect(useVehiclesForRoute).toHaveBeenCalled()
@@ -386,6 +399,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
 
@@ -410,6 +424,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab || "status"}
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
 
@@ -440,6 +455,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab}
           setTabMode={jest.fn()}
+          closePanel={jest.fn()}
         />
       )
 

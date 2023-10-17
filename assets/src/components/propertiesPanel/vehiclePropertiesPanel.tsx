@@ -29,6 +29,7 @@ interface Props {
   selectedVehicle: Vehicle
   tabMode: TabMode
   setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
+  closePanel: () => void
 }
 
 const InvalidBanner = () => (
@@ -205,6 +206,7 @@ const VehiclePropertiesPanel = ({
   selectedVehicle,
   tabMode,
   setTabMode,
+  closePanel,
 }: Props) => {
   return (
     <div className="c-vehicle-properties-panel">
@@ -219,6 +221,7 @@ const VehiclePropertiesPanel = ({
           }
           setTabMode(newTabMode)
         }}
+        closePanel={closePanel}
       />
 
       {isVehicleInScheduledService(selectedVehicle) ? (

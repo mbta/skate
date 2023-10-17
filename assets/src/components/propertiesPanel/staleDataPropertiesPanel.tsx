@@ -6,7 +6,7 @@ import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { closeView, returnToPreviousView } from "../../state"
+import { returnToPreviousView } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
@@ -16,12 +16,14 @@ interface Props {
   selectedVehicle: Vehicle
   tabMode: TabMode
   setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
+  closePanel: () => void
 }
 
 const StaleDataPropertiesPanel: React.FC<Props> = ({
   selectedVehicle,
   tabMode,
   setTabMode,
+  closePanel,
 }) => {
   return (
     <div className="c-stale-data-properties-panel">
@@ -29,6 +31,7 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({
         vehicle={selectedVehicle}
         tabMode={tabMode}
         setTabMode={setTabMode}
+        closePanel={closePanel}
       />
       {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
@@ -47,17 +50,16 @@ const StaleDataHeader: React.FC<{
   vehicle: Vehicle
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
-}> = ({ vehicle, tabMode, setTabMode }) => {
+  closePanel: () => void
+}> = ({ vehicle, tabMode, setTabMode, closePanel }) => {
   const [{ userSettings, previousView }, dispatch] =
     useContext(StateDispatchContext)
-
-  const hideMe = () => dispatch(closeView())
 
   return (
     <div className="c-properties-panel__header-wrapper">
       <ViewHeader
         title="Vehicles"
-        closeView={hideMe}
+        closeView={closePanel}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />

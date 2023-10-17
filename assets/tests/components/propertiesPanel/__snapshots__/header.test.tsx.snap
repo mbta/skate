@@ -15,7 +15,7 @@ exports[`Header renders a header 1`] = `
     <button
       aria-label="Close"
       className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <span
         aria-hidden={true}
@@ -262,7 +262,7 @@ exports[`Header renders for a ghost 1`] = `
     <button
       aria-label="Close"
       className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <span
         aria-hidden={true}
@@ -483,7 +483,7 @@ exports[`Header renders for a late vehicle 1`] = `
     <button
       aria-label="Close"
       className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <span
         aria-hidden={true}
@@ -730,7 +730,7 @@ exports[`Header renders for a shuttle 1`] = `
     <button
       aria-label="Close"
       className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <span
         aria-hidden={true}
@@ -843,7 +843,7 @@ exports[`Header renders for an early vehicle 1`] = `
     <button
       aria-label="Close"
       className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <span
         aria-hidden={true}
@@ -1090,7 +1090,7 @@ exports[`Header renders for an off-course vehicle 1`] = `
     <button
       aria-label="Close"
       className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <span
         aria-hidden={true}
@@ -1335,7 +1335,7 @@ exports[`Header renders with route data 1`] = `
     <button
       aria-label="Close"
       className="c-close-button c-close-button--x-large c-close-button--light"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <span
         aria-hidden={true}

@@ -109,7 +109,10 @@ const PropertiesPanelWrapper: React.FC<{
 
   return (
     <RoutesProvider routes={routes}>
-      <PropertiesPanel selectedVehicleOrGhost={vehicleOrGhost} />
+      <PropertiesPanel
+        selectedVehicleOrGhost={vehicleOrGhost}
+        closePanel={jest.fn()}
+      />
     </RoutesProvider>
   )
 }

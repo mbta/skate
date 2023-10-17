@@ -14,6 +14,7 @@ describe("StaleDataPropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
 
@@ -31,6 +32,7 @@ describe("StaleDataPropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
 
@@ -45,6 +47,7 @@ describe("StaleDataPropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         setTabMode={jest.fn()}
+        closePanel={jest.fn()}
       />
     )
 

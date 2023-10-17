@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import React, { useEffect, useState } from "react"
 import useSocket from "../hooks/useSocket"
 import useVehicleForId from "../hooks/useVehicleForId"
 import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime.d"
-import { closeView } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
@@ -13,6 +11,7 @@ import { TabMode } from "./propertiesPanel/tabPanels"
 interface Props {
   selectedVehicleOrGhost: Vehicle | Ghost
   initialTab?: TabMode
+  closePanel: () => void
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -27,8 +26,8 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
 const PropertiesPanel = ({
   selectedVehicleOrGhost,
   initialTab = "status",
+  closePanel,
 }: Props) => {
-  const [, dispatch] = useContext(StateDispatchContext)
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
   const [vehicleToDisplay, setVehicleToDisplay] = useState<Vehicle | Ghost>(
@@ -49,8 +48,6 @@ const PropertiesPanel = ({
     }
   }, [liveVehicle])
 
-  const hideMe = () => dispatch(closeView())
-
   return (
     <>
       <div id="c-properties-panel" className="c-properties-panel">
@@ -60,18 +57,21 @@ const PropertiesPanel = ({
             selectedVehicle={vehicleToDisplay}
             tabMode={tabMode}
             setTabMode={setTabMode}
+            closePanel={closePanel}
           />
         ) : isVehicle(vehicleToDisplay) ? (
           <VehiclePropertiesPanel
             selectedVehicle={vehicleToDisplay}
             tabMode={tabMode}
             setTabMode={setTabMode}
+            closePanel={closePanel}
           />
         ) : (
           <GhostPropertiesPanel
             selectedGhost={vehicleToDisplay}
             tabMode={tabMode}
             setTabMode={setTabMode}
+            closePanel={closePanel}
           />
         )}
       </div>
@@ -79,7 +79,7 @@ const PropertiesPanel = ({
         className="c-properties-panel-backdrop"
         onClick={
           /* istanbul ignore next */
-          () => hideMeIfNoCrowdingTooltip(hideMe)
+          () => hideMeIfNoCrowdingTooltip(closePanel)
         }
         aria-hidden={true}
       />

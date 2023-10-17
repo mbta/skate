@@ -11,6 +11,7 @@ interface Props {
   selectedGhost: Ghost
   tabMode: TabMode
   setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
+  closePanel: () => void
 }
 
 const StatusContent = ({ ghost }: { ghost: Ghost }) => (
@@ -30,6 +31,7 @@ const GhostPropertiesPanel = ({
   selectedGhost,
   tabMode,
   setTabMode,
+  closePanel,
 }: Props) => {
   return (
     <div className="c-ghost-properties-panel">
@@ -37,6 +39,7 @@ const GhostPropertiesPanel = ({
         vehicle={selectedGhost}
         tabMode={tabMode}
         setTabMode={setTabMode}
+        closePanel={closePanel}
       />
 
       <TabPanels
