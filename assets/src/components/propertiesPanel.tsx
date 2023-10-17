@@ -30,45 +30,38 @@ const PropertiesPanel = ({
 }: Props) => {
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
-  const [vehicleToDisplay, setVehicleToDisplay] = useState<Vehicle | Ghost>(
+  const [mostRecentVehicle, setMostRecentVehicle] = useState<Vehicle | Ghost>(
     liveVehicle || selectedVehicleOrGhost
   )
-  const [dataIsStale, setDataIsStale] = useState<boolean>(false)
   const [tabMode, setTabMode] = useState<TabMode>(initialTab)
 
   useEffect(() => {
     if (liveVehicle) {
-      setVehicleToDisplay(liveVehicle)
-    }
-
-    if (liveVehicle === null) {
-      setDataIsStale(true)
-    } else {
-      setDataIsStale(false)
+      setMostRecentVehicle(liveVehicle)
     }
   }, [liveVehicle])
 
   return (
     <>
       <div id="c-properties-panel" className="c-properties-panel">
-        {isVehicle(vehicleToDisplay) &&
-        (dataIsStale || isLoggedOut(vehicleToDisplay)) ? (
+        {isVehicle(mostRecentVehicle) &&
+        (liveVehicle === null || isLoggedOut(mostRecentVehicle)) ? (
           <StaleDataPropertiesPanel
-            selectedVehicle={vehicleToDisplay}
+            selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
             setTabMode={setTabMode}
             closePanel={closePanel}
           />
-        ) : isVehicle(vehicleToDisplay) ? (
+        ) : isVehicle(mostRecentVehicle) ? (
           <VehiclePropertiesPanel
-            selectedVehicle={vehicleToDisplay}
+            selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
             setTabMode={setTabMode}
             closePanel={closePanel}
           />
         ) : (
           <GhostPropertiesPanel
-            selectedGhost={vehicleToDisplay}
+            selectedGhost={mostRecentVehicle}
             tabMode={tabMode}
             setTabMode={setTabMode}
             closePanel={closePanel}
