@@ -64,7 +64,11 @@ const PropertiesPanel = ({
             setTabMode={setTabMode}
           />
         ) : (
-          <GhostPropertiesPanel selectedGhost={vehicleToDisplay} />
+          <GhostPropertiesPanel
+            selectedGhost={vehicleToDisplay}
+            tabMode={tabMode}
+            setTabMode={setTabMode}
+          />
         )}
       </div>
       <div

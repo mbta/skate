@@ -42,7 +42,11 @@ describe("GhostPropertiesPanel", () => {
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>
-          <GhostPropertiesPanel selectedGhost={ghost} />
+          <GhostPropertiesPanel
+            selectedGhost={ghost}
+            tabMode="status"
+            setTabMode={jest.fn()}
+          />
         </RoutesProvider>
       )
       .toJSON()
@@ -55,7 +59,11 @@ describe("GhostPropertiesPanel", () => {
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>
-          <GhostPropertiesPanel selectedGhost={ghostWithoutRun} />
+          <GhostPropertiesPanel
+            selectedGhost={ghostWithoutRun}
+            tabMode="status"
+            setTabMode={jest.fn()}
+          />
         </RoutesProvider>
       )
       .toJSON()
@@ -77,7 +85,13 @@ describe("GhostPropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(<GhostPropertiesPanel selectedGhost={ghostWithBlockWaivers} />)
+      .create(
+        <GhostPropertiesPanel
+          selectedGhost={ghostWithBlockWaivers}
+          tabMode="status"
+          setTabMode={jest.fn()}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()

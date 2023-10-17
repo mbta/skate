@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
 import PropertiesList, { ghostProperties } from "../propertiesList"
@@ -9,6 +9,8 @@ import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
   selectedGhost: Ghost
+  tabMode: TabMode
+  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
 }
 
 const StatusContent = ({ ghost }: { ghost: Ghost }) => (
@@ -24,9 +26,11 @@ const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   </>
 )
 
-const GhostPropertiesPanel = ({ selectedGhost }: Props) => {
-  const [tabMode, setTabMode] = useState<TabMode>("status")
-
+const GhostPropertiesPanel = ({
+  selectedGhost,
+  tabMode,
+  setTabMode,
+}: Props) => {
   return (
     <div className="c-ghost-properties-panel">
       <Header
