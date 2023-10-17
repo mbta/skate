@@ -1,9 +1,17 @@
 import { describe, test, expect, jest } from "@jest/globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import StaleDataPropertiesPanel from "../../../src/components/propertiesPanel/staleDataPropertiesPanel"
 import vehicleFactory from "../../factories/vehicle"
 import blockWaiverFactory from "../../factories/blockWaiver"
+import {
+  useMinischeduleBlock,
+  useMinischeduleRun,
+} from "../../../src/hooks/useMinischedule"
+import userEvent from "@testing-library/user-event"
+import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
+
+jest.mock("../../../src/hooks/useMinischedule")
 
 describe("StaleDataPropertiesPanel", () => {
   test("renders a stale non-shuttle vehicle", () => {
@@ -54,4 +62,31 @@ describe("StaleDataPropertiesPanel", () => {
     expect(result.queryByText(/Status data is not available/)).not.toBeNull()
     expect(result.queryByText(/Run/)).toBeNull()
   })
+
+  test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
+    { tab: "run", clickTarget: "Run" },
+    { tab: "block", clickTarget: "Block" },
+    { tab: "status", clickTarget: "Status", initialTab: "block" },
+  ])(
+    "when active tab changes to '$tab', calls tab change callback",
+    async ({ tab, clickTarget, initialTab }) => {
+      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
+      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+
+      const mockSetTabMode = jest.fn()
+
+      render(
+        <StaleDataPropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab || "status"}
+          setTabMode={mockSetTabMode}
+          closePanel={jest.fn()}
+        />
+      )
+
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(mockSetTabMode).toHaveBeenCalledWith(tab)
+    }
+  )
 })

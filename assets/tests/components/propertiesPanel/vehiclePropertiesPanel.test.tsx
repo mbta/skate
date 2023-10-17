@@ -411,6 +411,34 @@ describe("VehiclePropertiesPanel", () => {
     { tab: "block", clickTarget: "Block" },
     { tab: "status", clickTarget: "Status", initialTab: "block" },
   ])(
+    "when active tab changes to '$tab', calls tab change callback",
+    async ({ tab, clickTarget, initialTab }) => {
+      jest.mocked(useTripShape).mockReturnValue([])
+      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
+      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+
+      const mockSetTabMode = jest.fn()
+
+      render(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab || "status"}
+          setTabMode={mockSetTabMode}
+          closePanel={jest.fn()}
+        />
+      )
+
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(mockSetTabMode).toHaveBeenCalledWith(tab)
+    }
+  )
+
+  test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
+    { tab: "run", clickTarget: "Run" },
+    { tab: "block", clickTarget: "Block" },
+    { tab: "status", clickTarget: "Status", initialTab: "block" },
+  ])(
     "when active tab changes to '$tab', fires fullstory event",
     async ({ tab, clickTarget, initialTab }) => {
       ;(useTripShape as jest.Mock).mockReturnValue([])

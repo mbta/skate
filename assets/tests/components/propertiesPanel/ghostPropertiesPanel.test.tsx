@@ -9,9 +9,19 @@ import * as dateTime from "../../../src/util/dateTime"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
 
+import {
+  useMinischeduleBlock,
+  useMinischeduleRun,
+} from "../../../src/hooks/useMinischedule"
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
+
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("1970-01-01T22:42:00.000Z"))
+
+jest.mock("../../../src/hooks/useMinischedule")
 
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
@@ -99,4 +109,31 @@ describe("GhostPropertiesPanel", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
+    { tab: "run", clickTarget: "Run" },
+    { tab: "block", clickTarget: "Block" },
+    { tab: "status", clickTarget: "Status", initialTab: "block" },
+  ])(
+    "when active tab changes to '$tab', calls tab change callback",
+    async ({ tab, clickTarget, initialTab }) => {
+      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
+      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+
+      const mockSetTabMode = jest.fn()
+
+      render(
+        <GhostPropertiesPanel
+          selectedGhost={ghostFactory.build()}
+          tabMode={initialTab || "status"}
+          setTabMode={mockSetTabMode}
+          closePanel={jest.fn()}
+        />
+      )
+
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(mockSetTabMode).toHaveBeenCalledWith(tab)
+    }
+  )
 })
