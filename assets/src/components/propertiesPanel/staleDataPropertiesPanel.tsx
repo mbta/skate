@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext, useState } from "react"
+import React, { Dispatch, SetStateAction, useContext } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Vehicle } from "../../realtime"
 import BlockWaiverList from "./blockWaiverList"
@@ -14,11 +14,15 @@ import { isVehicleInScheduledService } from "../../models/vehicle"
 
 interface Props {
   selectedVehicle: Vehicle
+  tabMode: TabMode
+  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
 }
 
-const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
-  const [tabMode, setTabMode] = useState<TabMode>("status")
-
+const StaleDataPropertiesPanel: React.FC<Props> = ({
+  selectedVehicle,
+  tabMode,
+  setTabMode,
+}) => {
   return (
     <div className="c-stale-data-properties-panel">
       <StaleDataHeader

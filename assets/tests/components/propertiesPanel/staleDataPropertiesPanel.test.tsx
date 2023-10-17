@@ -1,4 +1,4 @@
-import { describe, test, expect } from "@jest/globals"
+import { describe, test, expect, jest } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import StaleDataPropertiesPanel from "../../../src/components/propertiesPanel/staleDataPropertiesPanel"
@@ -10,7 +10,11 @@ describe("StaleDataPropertiesPanel", () => {
     const vehicle = vehicleFactory.build()
 
     const result = render(
-      <StaleDataPropertiesPanel selectedVehicle={vehicle} />
+      <StaleDataPropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
     )
 
     expect(result.queryByText(/Status data is not available/)).not.toBeNull()
@@ -23,7 +27,11 @@ describe("StaleDataPropertiesPanel", () => {
     })
 
     const result = render(
-      <StaleDataPropertiesPanel selectedVehicle={vehicle} />
+      <StaleDataPropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
     )
 
     expect(result.queryByText(/problem/)).not.toBeNull()
@@ -33,7 +41,11 @@ describe("StaleDataPropertiesPanel", () => {
     const vehicle = vehicleFactory.build({ isShuttle: true })
 
     const result = render(
-      <StaleDataPropertiesPanel selectedVehicle={vehicle} />
+      <StaleDataPropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+      />
     )
 
     expect(result.queryByText(/Status data is not available/)).not.toBeNull()

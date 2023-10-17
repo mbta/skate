@@ -56,7 +56,11 @@ const PropertiesPanel = ({
       <div id="c-properties-panel" className="c-properties-panel">
         {isVehicle(vehicleToDisplay) &&
         (dataIsStale || isLoggedOut(vehicleToDisplay)) ? (
-          <StaleDataPropertiesPanel selectedVehicle={vehicleToDisplay} />
+          <StaleDataPropertiesPanel
+            selectedVehicle={vehicleToDisplay}
+            tabMode={tabMode}
+            setTabMode={setTabMode}
+          />
         ) : isVehicle(vehicleToDisplay) ? (
           <VehiclePropertiesPanel
             selectedVehicle={vehicleToDisplay}
