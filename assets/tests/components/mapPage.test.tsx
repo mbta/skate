@@ -1,11 +1,4 @@
-import {
-  jest,
-  describe,
-  test,
-  expect,
-  beforeAll,
-  afterEach,
-} from "@jest/globals"
+import { jest, describe, test, expect, beforeAll } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import {
   fireEvent,
@@ -77,7 +70,6 @@ import {
   searchInput as searchFormSearchInput,
   submitButton as searchFormSubmitButton,
 } from "../testHelpers/selectors/components/searchForm"
-import getTestGroups from "../../src/userTestGroups"
 import locationSearchResultFactory from "../factories/locationSearchResult"
 import { useLocationSearchResultById } from "../../src/hooks/useLocationSearchResultById"
 import {
@@ -88,6 +80,10 @@ import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCatego
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
+import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
+import userInTestGroup, { TestGroups } from "../../src/userInTestGroup"
+import { useMinischeduleRun } from "../../src/hooks/useMinischedule"
+import pieceFactory from "../factories/piece"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   __esModule: true,
@@ -134,14 +130,20 @@ jest.mock("../../src/hooks/useAllStops", () => ({
   useAllStops: jest.fn(() => []),
 }))
 
+jest.mock("../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
+}))
+
+jest.mock("../../src/hooks/useMinischedule", () => ({
+  __esModule: true,
+  useMinischeduleRun: jest.fn(),
+  useMinischeduleBlock: jest.fn(),
+}))
+
 jest.mock("../../src/tilesetUrls", () => ({
   __esModule: true,
   tilesetUrlForType: jest.fn(() => null),
-}))
-
-jest.mock("userTestGroups", () => ({
-  __esModule: true,
-  default: jest.fn(() => []),
 }))
 
 jest.mock("../../src/hooks/useSearchResultsByCategory", () => ({
@@ -150,6 +152,8 @@ jest.mock("../../src/hooks/useSearchResultsByCategory", () => ({
 }))
 
 jest.mock("../../src/helpers/fullStory")
+
+jest.mock("../../src/userInTestGroup")
 
 const mockVehicleSearchResultsCategory = (
   vehicles: (Vehicle | Ghost)[] | null
@@ -203,9 +207,6 @@ beforeAll(() => {
   mockTileUrls()
 })
 
-afterEach(() => {
-  ;(getTestGroups as jest.Mock).mockReturnValue([])
-})
 describe("<MapPage />", () => {
   describe("Snapshot", () => {
     test("renders the null state", () => {
@@ -919,6 +920,59 @@ describe("<MapPage />", () => {
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
       "c-map-page__input-and-results--visible"
+    )
+  })
+
+  test("clicking a run from a selected vehicle opens properties panel with run", async () => {
+    jest
+      .mocked(userInTestGroup)
+      .mockImplementationOnce((key) => key === TestGroups.SearchMapsOnMobile)
+
+    const route = routeFactory.build()
+    const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
+    const runId = "test-run"
+    const vehicle = routeVehicleFactory.build({ runId })
+
+    jest
+      .mocked(useMinischeduleRun)
+      .mockReturnValue(
+        RunFactory.build({ id: runId, activities: [pieceFactory.build()] })
+      )
+
+    mockVehicleSearchResultsCategory([vehicle])
+
+    mockUsePatternsByIdForVehicles([vehicle])
+
+    mockUseVehicleForId([vehicle])
+    mockUseVehiclesForRouteMap({ [route.id]: [vehicle] })
+
+    const mockDispatch = jest.fn()
+    const state = stateFactory.build({
+      searchPageState: searchPageStateFactory.build({
+        selectedEntity: {
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicle.id,
+        },
+      }),
+    })
+
+    render(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <RoutesProvider routes={[route]}>
+          <BrowserRouter>
+            <MapPage />
+          </BrowserRouter>
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: runId }))
+
+    expect(vehiclePropertiesPanelHeader.get()).toBeInTheDocument()
+
+    expect(screen.getByRole("tab", { name: "Run" })).toHaveAttribute(
+      "aria-selected",
+      "true"
     )
   })
 

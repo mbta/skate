@@ -1,7 +1,8 @@
 import { jest, describe, test, expect, afterEach } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
 import PropertiesPanel, {
   hideMeIfNoCrowdingTooltip,
 } from "../../src/components/propertiesPanel"
@@ -13,6 +14,9 @@ import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
+import { TabMode } from "../../src/components/propertiesPanel/tabPanels"
+import userEvent from "@testing-library/user-event"
+import { closeButton } from "../testHelpers/selectors/components/closeButton"
 
 jest
   .spyOn(dateTime, "now")
@@ -23,6 +27,36 @@ jest.spyOn(Date, "now").mockImplementation(() => 234000)
 jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
   default: jest.fn(),
+}))
+
+jest.mock("../../src/hooks/useVehiclesForRoute", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+jest.mock("../../src/hooks/useNearestIntersection", () => ({
+  __esModule: true,
+  useNearestIntersection: jest.fn(() => {
+    return {
+      is_loading: true,
+    }
+  }),
+}))
+
+jest.mock("../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
+}))
+
+jest.mock("../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useTripShape: jest.fn(),
+}))
+
+jest.mock("../../src/hooks/useMinischedule", () => ({
+  __esModule: true,
+  useMinischeduleRun: jest.fn(),
+  useMinischeduleBlock: jest.fn(),
 }))
 
 const route: Route = routeFactory.build({
@@ -104,14 +138,17 @@ const ghost: Ghost = ghostFactory.build({
 
 const PropertiesPanelWrapper: React.FC<{
   vehicleOrGhost: Vehicle | Ghost
-}> = ({ vehicleOrGhost }) => {
+  initialTab?: TabMode
+  closePanel?: () => void
+}> = ({ vehicleOrGhost, initialTab, closePanel }) => {
   const routes = [route]
 
   return (
     <RoutesProvider routes={routes}>
       <PropertiesPanel
         selectedVehicleOrGhost={vehicleOrGhost}
-        closePanel={jest.fn()}
+        closePanel={closePanel || jest.fn()}
+        initialTab={initialTab}
       />
     </RoutesProvider>
   )
@@ -169,6 +206,32 @@ describe("PropertiesPanel", () => {
     )
 
     expect(result.queryByText(/Status data is not available/)).not.toBeNull()
+  })
+
+  test("respects initialTab prop", () => {
+    render(<PropertiesPanelWrapper vehicleOrGhost={vehicle} initialTab="run" />)
+
+    expect(screen.getByRole("tab", { name: "Run" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    )
+  })
+
+  test("supplied closePanel prop is used", async () => {
+    const mockClosePanel = jest.fn()
+
+    jest.mocked(useVehicleForId).mockReturnValue(vehicle)
+
+    render(
+      <PropertiesPanelWrapper
+        vehicleOrGhost={vehicle}
+        closePanel={mockClosePanel}
+      />
+    )
+
+    await userEvent.click(closeButton.get())
+
+    expect(mockClosePanel).toHaveBeenCalled()
   })
 })
 

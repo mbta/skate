@@ -36,6 +36,8 @@ import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
+import PropertiesPanel from "./propertiesPanel"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -74,9 +76,11 @@ const SearchMode = ({
 const SelectedVehicle = ({
   vehicleId,
   setSelection,
+  onRunClicked,
 }: {
   vehicleId: VehicleId
   setSelection: (selectedEntity: SelectedEntity | null) => void
+  onRunClicked?: (vehicleOrGhost: Vehicle | Ghost) => void
 }) => {
   // TODO: When using socket from context, this doesn't work as-is
   // Presumably because the useMostRecentVehicleById hook is being used twice, but
@@ -106,6 +110,7 @@ const SelectedVehicle = ({
       vehicleOrGhost={selectedVehicleOrGhost}
       key={selectedVehicleOrGhost.id}
       onRouteVariantNameClicked={onRouteClicked || undefined}
+      onRunClicked={onRunClicked}
     />
   )
 }
@@ -134,10 +139,12 @@ const Selection = ({
   selectedEntity,
   setSelection,
   fetchedSelectedLocation,
+  onVehicleRunClicked,
 }: {
   selectedEntity: SelectedEntity
   setSelection: (selectedEntity: SelectedEntity | null) => void
   fetchedSelectedLocation: LocationSearchResult | null
+  onVehicleRunClicked?: (vehicleOrGhost: Vehicle | Ghost) => void
 }): ReactElement => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
   const selectRoutePattern = (routePattern: RoutePattern) => {
@@ -186,6 +193,7 @@ const Selection = ({
         <SelectedVehicle
           vehicleId={selectedEntity.vehicleId}
           setSelection={setSelection}
+          onRunClicked={onVehicleRunClicked}
         />
       ) : selectedEntity.type === SelectedEntityType.RoutePattern ? (
         <SelectedRoute
@@ -211,6 +219,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, openView }, dispatch] =
       useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
+  const [selectedVehicleOrGhost, setSelectedVehicleOrGhost] = useState<
+    Vehicle | Ghost | null
+  >(null)
 
   useEffect(() => {
     // don't dispatch closeView if the VPP is open
@@ -307,8 +318,17 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           {selectedEntity ? (
             <Selection
               selectedEntity={selectedEntity}
-              setSelection={setVehicleSelection}
+              setSelection={(...args) => {
+                setFollowerShouldSetZoomLevel(false)
+                setVehicleSelection(...args)
+              }}
               fetchedSelectedLocation={fetchedSelectedLocation}
+              onVehicleRunClicked={
+                inTestGroup(TestGroups.SearchMapsOnMobile)
+                  ? (vehicleOrGhost: Vehicle | Ghost) =>
+                      setSelectedVehicleOrGhost(vehicleOrGhost)
+                  : undefined
+              }
             />
           ) : (
             <SearchMode
@@ -339,6 +359,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
       </div>
+      {selectedVehicleOrGhost && (
+        <PropertiesPanel
+          selectedVehicleOrGhost={selectedVehicleOrGhost}
+          closePanel={() => setSelectedVehicleOrGhost(null)}
+          initialTab="run"
+        />
+      )}
     </>
   )
 }

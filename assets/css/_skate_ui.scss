@@ -94,6 +94,16 @@ $font-weights: (
   color: var(--font-color-on-light-700);
 }
 
+.kv-value--clickable {
+  color: var(--font-color-text-clickable);
+  font-weight: var(--font-weight-semi);
+  text-decoration: underline;
+
+  &:hover {
+    color: $color-eggplant-500;
+  }
+}
+
 .headsign {
   font-weight: var(--font-weight-semi);
   font-size: var(--font-size-m);
