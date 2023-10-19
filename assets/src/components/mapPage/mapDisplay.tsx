@@ -464,7 +464,7 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
     )
   }, [map, stationsAndBus, setNearbyStops])
 
-  // Filter stops whenever function, and it's inputs, change
+  // Filter stops whenever function, and its inputs, change
   useEffect(() => {
     filterStopsToBounds()
   }, [filterStopsToBounds])
