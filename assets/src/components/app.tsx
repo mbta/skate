@@ -26,6 +26,8 @@ import Nav from "./nav"
 import RightPanel from "./rightPanel"
 import { mapModeForUser } from "../util/mapMode"
 import { Ghost, VehicleInScheduledService } from "../realtime"
+import MapPage from "./mapPage"
+import SearchPage from "./searchPage"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -47,6 +49,8 @@ export const AppRoutes = () => {
     )
 
   const mapMode = mapModeForUser()
+
+  const mapElement = mapMode.path === "/map" ? <MapPage /> : <SearchPage />
 
   return (
     <div className="l-app">
@@ -79,12 +83,12 @@ export const AppRoutes = () => {
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
                 {mapMode.supportsRightPanel ? (
-                  <BrowserRoute path={mapMode.path} element={mapMode.element} />
+                  <BrowserRoute path={mapMode.path} element={mapElement} />
                 ) : null}
               </Route>
               <Route>
                 {!mapMode.supportsRightPanel ? (
-                  <BrowserRoute path={mapMode.path} element={mapMode.element} />
+                  <BrowserRoute path={mapMode.path} element={mapElement} />
                 ) : null}
               </Route>
             </Routes>

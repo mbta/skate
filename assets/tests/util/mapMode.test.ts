@@ -1,7 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React from "react"
-import MapPage from "../../src/components/mapPage"
-import SearchPage from "../../src/components/searchPage"
+import { mapModeForUser } from "../../src/util/mapMode"
 import { SearchIcon, SearchMapIcon } from "../../src/helpers/icon"
 import { TestGroups } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
@@ -18,7 +16,6 @@ describe("mapModeForUser", () => {
     expect(mapModeForUser()).toEqual({
       path: "/map",
       title: "Search Map",
-      element: <MapPage />,
       navIcon: SearchMapIcon,
       supportsRightPanel: false,
       navEventText: "Search Map nav entry clicked",
@@ -31,7 +28,6 @@ describe("mapModeForUser", () => {
     expect(mapModeForUser()).toEqual({
       path: "/search",
       title: "Search",
-      element: <SearchPage />,
       navIcon: SearchIcon,
       supportsRightPanel: true,
     })
