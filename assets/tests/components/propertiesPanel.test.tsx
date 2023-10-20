@@ -211,10 +211,9 @@ describe("PropertiesPanel", () => {
   test("respects initialTab prop", () => {
     render(<PropertiesPanelWrapper vehicleOrGhost={vehicle} initialTab="run" />)
 
-    expect(screen.getByRole("tab", { name: "Run" })).toHaveAttribute(
-      "aria-selected",
-      "true"
-    )
+    expect(
+      screen.getByRole("tab", { name: "Run", selected: true })
+    ).toBeVisible()
   })
 
   test("supplied closePanel prop is used", async () => {

@@ -970,10 +970,9 @@ describe("<MapPage />", () => {
 
     expect(vehiclePropertiesPanelHeader.get()).toBeInTheDocument()
 
-    expect(screen.getByRole("tab", { name: "Run" })).toHaveAttribute(
-      "aria-selected",
-      "true"
-    )
+    expect(
+      screen.getByRole("tab", { name: "Run", selected: true })
+    ).toBeVisible()
   })
 
   describe("<VehiclePropertiesCard />", () => {
