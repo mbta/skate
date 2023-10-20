@@ -219,9 +219,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, openView }, dispatch] =
       useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
-  const [selectedVehicleOrGhost, setSelectedVehicleOrGhost] = useState<
-    Vehicle | Ghost | null
-  >(null)
+  const [
+    selectedRightPanelVehicleOrGhost,
+    setSelectedRightPanelVehicleOrGhost,
+  ] = useState<Vehicle | Ghost | null>(null)
 
   useEffect(() => {
     // don't dispatch closeView if the VPP is open
@@ -326,7 +327,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
               onVehicleRunClicked={
                 inTestGroup(TestGroups.SearchMapsOnMobile)
                   ? (vehicleOrGhost: Vehicle | Ghost) =>
-                      setSelectedVehicleOrGhost(vehicleOrGhost)
+                      setSelectedRightPanelVehicleOrGhost(vehicleOrGhost)
                   : undefined
               }
             />
@@ -359,10 +360,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
       </div>
-      {selectedVehicleOrGhost && (
+      {selectedRightPanelVehicleOrGhost && (
         <PropertiesPanel
-          selectedVehicleOrGhost={selectedVehicleOrGhost}
-          closePanel={() => setSelectedVehicleOrGhost(null)}
+          selectedVehicleOrGhost={selectedRightPanelVehicleOrGhost}
+          closePanel={() => setSelectedRightPanelVehicleOrGhost(null)}
           initialTab="run"
         />
       )}
