@@ -73,7 +73,7 @@ interface TrNameValueProps {
   children: ReactNode
   idPrefix?: string
   sensitivity?: HideSensitiveInfo
-  onValueClicked?: () => void
+  onValueClick?: () => void
 }
 
 const maskClass = "fs-mask"
@@ -85,7 +85,7 @@ const TrNameValue = ({
   children: value,
   idPrefix,
   sensitivity: sensitive = HideSensitiveInfo.None,
-  onValueClicked,
+  onValueClick,
 }: TrNameValueProps): React.ReactElement => {
   const id = (idPrefix ?? name) + useId()
   return (
@@ -104,8 +104,8 @@ const TrNameValue = ({
         ])}
         aria-labelledby={id}
       >
-        {onValueClicked ? (
-          <button className="kv-value--clickable" onClick={onValueClicked}>
+        {onValueClick ? (
+          <button className="kv-value--clickable" onClick={onValueClick}>
             {value}
           </button>
         ) : (
@@ -117,14 +117,14 @@ const TrNameValue = ({
 }
 
 type VehicleWorkInfoEventProps = {
-  onRunClicked?: (vehicleOrGhost: Vehicle | Ghost) => void
+  onRunClick?: (vehicleOrGhost: Vehicle | Ghost) => void
 }
 
 type VehicleWorkInfoProps = VehicleOrGhostProp & VehicleWorkInfoEventProps
 
 const VehicleWorkInfo = ({
   vehicleOrGhost,
-  onRunClicked,
+  onRunClick,
 }: VehicleWorkInfoProps): React.ReactElement => {
   const isLoggedOutVehicle =
     isVehicle(vehicleOrGhost) && isLoggedOut(vehicleOrGhost)
@@ -137,9 +137,7 @@ const VehicleWorkInfo = ({
         <tbody className="c-vehicle-work-info__items">
           <TrNameValue
             name="run"
-            onValueClicked={
-              onRunClicked && (() => onRunClicked(vehicleOrGhost))
-            }
+            onValueClick={onRunClick && (() => onRunClick(vehicleOrGhost))}
           >
             {vehicleOrGhost.runId || noRunText}
           </TrNameValue>
@@ -219,7 +217,7 @@ export type VehiclePropertiesCardProps = VehicleOrGhostProp &
 const VehiclePropertiesCard = ({
   vehicleOrGhost,
   onRouteVariantNameClicked,
-  onRunClicked,
+  onRunClick,
 }: VehiclePropertiesCardProps): React.ReactElement => {
   return (
     <div
@@ -248,7 +246,7 @@ const VehiclePropertiesCard = ({
         <div className="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section">
           <VehicleWorkInfo
             vehicleOrGhost={vehicleOrGhost}
-            onRunClicked={onRunClicked}
+            onRunClick={onRunClick}
           />
         </div>
 

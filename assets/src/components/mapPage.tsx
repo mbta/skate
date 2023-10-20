@@ -110,7 +110,7 @@ const SelectedVehicle = ({
       vehicleOrGhost={selectedVehicleOrGhost}
       key={selectedVehicleOrGhost.id}
       onRouteVariantNameClicked={onRouteClicked || undefined}
-      onRunClicked={onRunClicked}
+      onRunClick={onRunClicked}
     />
   )
 }
