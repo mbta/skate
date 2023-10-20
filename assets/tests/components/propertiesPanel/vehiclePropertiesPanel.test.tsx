@@ -28,6 +28,7 @@ import {
 } from "../../../src/hooks/useMinischedule"
 import { useTripShape } from "../../../src/hooks/useShapes"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
+import { closeButton } from "../../testHelpers/selectors/components/closeButton"
 
 jest
   .spyOn(dateTime, "now")
@@ -404,6 +405,23 @@ describe("VehiclePropertiesPanel", () => {
     )
 
     expect(container.innerHTML).toContain("c-station-icon")
+  })
+
+  test("calls closePanel callback on close", async () => {
+    const mockClosePanel = jest.fn()
+
+    render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+        closePanel={mockClosePanel}
+      />
+    )
+
+    await userEvent.click(closeButton.get())
+
+    expect(mockClosePanel).toHaveBeenCalled()
   })
 
   test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([

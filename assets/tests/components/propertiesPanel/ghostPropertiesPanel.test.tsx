@@ -16,6 +16,7 @@ import {
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
+import { closeButton } from "../../testHelpers/selectors/components/closeButton"
 
 jest
   .spyOn(dateTime, "now")
@@ -108,6 +109,23 @@ describe("GhostPropertiesPanel", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("calls closePanel callback on close", async () => {
+    const mockClosePanel = jest.fn()
+
+    render(
+      <GhostPropertiesPanel
+        selectedGhost={ghost}
+        tabMode="status"
+        setTabMode={jest.fn()}
+        closePanel={mockClosePanel}
+      />
+    )
+
+    await userEvent.click(closeButton.get())
+
+    expect(mockClosePanel).toHaveBeenCalled()
   })
 
   test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([

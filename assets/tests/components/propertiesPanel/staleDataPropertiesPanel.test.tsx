@@ -10,6 +10,7 @@ import {
 } from "../../../src/hooks/useMinischedule"
 import userEvent from "@testing-library/user-event"
 import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
+import { closeButton } from "../../testHelpers/selectors/components/closeButton"
 
 jest.mock("../../../src/hooks/useMinischedule")
 
@@ -61,6 +62,24 @@ describe("StaleDataPropertiesPanel", () => {
 
     expect(result.queryByText(/Status data is not available/)).not.toBeNull()
     expect(result.queryByText(/Run/)).toBeNull()
+  })
+
+  test("calls closePanel callback on close", async () => {
+    const vehicle = vehicleFactory.build()
+    const mockClosePanel = jest.fn()
+
+    render(
+      <StaleDataPropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        setTabMode={jest.fn()}
+        closePanel={mockClosePanel}
+      />
+    )
+
+    await userEvent.click(closeButton.get())
+
+    expect(mockClosePanel).toHaveBeenCalled()
   })
 
   test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
