@@ -234,7 +234,6 @@ export const drawerOffsetAutoCenter =
     }
   }
 
-export const fixedZoomDrawerOffsetAutoCenterFixed =
-  drawerOffsetAutoCenter(false)
+export const fixedZoomDrawerOffsetAutoCenter = drawerOffsetAutoCenter(false)
 
 // #endregion Follower Update Functions
