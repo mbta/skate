@@ -205,8 +205,8 @@ const Selection = ({
 }
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
-  const [followerInitializeState, setFollowerInitializeState] =
-    useState<boolean>(false)
+  const [followerShouldSetZoomLevel, setFollowerShouldSetZoomLevel] =
+    useState<boolean>(true)
 
   const [{ searchPageState, openView }, dispatch] =
       useContext(StateDispatchContext),
@@ -307,7 +307,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           <Selection
             selectedEntity={selectedEntity}
             setSelection={(...args) => {
-              setFollowerInitializeState(true)
+              setFollowerShouldSetZoomLevel(false)
               setVehicleSelection(...args)
             }}
             fetchedSelectedLocation={fetchedSelectedLocation}
@@ -315,7 +315,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         ) : (
           <SearchMode
             onSelectVehicleResult={(...args) => {
-              setFollowerInitializeState(false)
+              setFollowerShouldSetZoomLevel(true)
               selectVehicleResult(...args)
             }}
             onSelectLocationResult={selectLocationResult}
@@ -326,16 +326,16 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         <MapDisplay
           selectedEntity={selectedEntity}
           setSelection={(...args) => {
-            setFollowerInitializeState(true)
+            setFollowerShouldSetZoomLevel(false)
             setVehicleSelection(...args)
           }}
           fetchedSelectedLocation={fetchedSelectedLocation}
-          initializeRouteFollowerEnabled={followerInitializeState === false}
-          vehicleUseCurrentZoom={followerInitializeState === true}
+          initializeRouteFollowerEnabled={followerShouldSetZoomLevel === true}
+          vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
           onInterruptVehicleFollower={
-            (followerInitializeState === false || undefined) &&
+            (followerShouldSetZoomLevel === false || undefined) &&
             (() => {
-              setFollowerInitializeState(true)
+              setFollowerShouldSetZoomLevel(false)
             })
           }
         />
