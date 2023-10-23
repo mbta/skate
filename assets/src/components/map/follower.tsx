@@ -25,7 +25,7 @@ export type UpdateMapFromPointsFn = (map: LeafletMap, points: LatLng[]) => void
 
 export interface FollowerProps {
   positions: LatLng[]
-  onUpdate: UpdateMapFromPointsFn
+  onUpdate?: UpdateMapFromPointsFn
 }
 
 export const Follower = ({
@@ -48,7 +48,7 @@ export const Follower = ({
       if (isAnimatingFollowUpdate !== undefined) {
         isAnimatingFollowUpdate.current = true
       }
-      onUpdate(map, currentLatLngs)
+      onUpdate?.(map, currentLatLngs)
     }
   }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
 

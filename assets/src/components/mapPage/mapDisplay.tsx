@@ -321,7 +321,7 @@ const SelectedVehicleDataLayers = ({
       />
       <InterruptibleFollower
         // Do nothing if we don't have a vehicle position yet
-        onUpdate={position.length === 0 ? () => {} : onUpdate}
+        onUpdate={position.length > 0 ? onUpdate : undefined}
         positions={position}
         {...followerState}
         setShouldFollow={(...args) => {
