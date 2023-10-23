@@ -20,7 +20,7 @@ type Props = {
 const StaleDataPropertiesPanel: React.FC<Props> = ({
   selectedVehicle,
   tabMode,
-  setTabMode,
+  onChangeTabMode,
   closePanel,
 }) => {
   return (
@@ -28,7 +28,7 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({
       <StaleDataHeader
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={setTabMode}
+        setTabMode={onChangeTabMode}
         closePanel={closePanel}
       />
       {isVehicleInScheduledService(selectedVehicle) ? (

@@ -203,7 +203,7 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
 const VehiclePropertiesPanel = ({
   selectedVehicle,
   tabMode,
-  setTabMode,
+  onChangeTabMode,
   closePanel,
 }: Props) => {
   return (
@@ -217,7 +217,7 @@ const VehiclePropertiesPanel = ({
               tab_str: newTabMode,
             })
           }
-          setTabMode(newTabMode)
+          onChangeTabMode(newTabMode)
         }}
         closePanel={closePanel}
       />

@@ -22,7 +22,7 @@ describe("StaleDataPropertiesPanel", () => {
       <StaleDataPropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -40,7 +40,7 @@ describe("StaleDataPropertiesPanel", () => {
       <StaleDataPropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -55,7 +55,7 @@ describe("StaleDataPropertiesPanel", () => {
       <StaleDataPropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -72,7 +72,7 @@ describe("StaleDataPropertiesPanel", () => {
       <StaleDataPropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={mockClosePanel}
       />
     )
@@ -98,7 +98,7 @@ describe("StaleDataPropertiesPanel", () => {
         <StaleDataPropertiesPanel
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab || "status"}
-          setTabMode={mockSetTabMode}
+          onChangeTabMode={mockSetTabMode}
           closePanel={jest.fn()}
         />
       )

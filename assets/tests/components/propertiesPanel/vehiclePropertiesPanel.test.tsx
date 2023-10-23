@@ -132,7 +132,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={vehicle}
           tabMode="status"
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )
@@ -152,7 +152,7 @@ describe("VehiclePropertiesPanel", () => {
           <VehiclePropertiesPanel
             selectedVehicle={vehicle}
             tabMode="status"
-            setTabMode={jest.fn()}
+            onChangeTabMode={jest.fn()}
             closePanel={jest.fn()}
           />
         </RoutesProvider>
@@ -172,7 +172,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={earlyVehicle}
           tabMode="status"
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )
@@ -186,7 +186,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel
         selectedVehicle={invalidVehicleFactory.build()}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -203,7 +203,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={earlyVehicle}
           tabMode="status"
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )
@@ -223,7 +223,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={offCourseVehicle}
           tabMode="status"
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )
@@ -245,7 +245,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={shuttleVehicle}
           tabMode="status"
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )
@@ -272,7 +272,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={vehicleWithBlockWaivers}
           tabMode="status"
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )
@@ -289,7 +289,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -305,7 +305,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -322,7 +322,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -342,7 +342,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={thisVehicle}
           tabMode="status"
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       </VehiclesByRouteIdProvider>
@@ -370,7 +370,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel
         selectedVehicle={thisVehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -399,7 +399,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={jest.fn()}
       />
     )
@@ -414,7 +414,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclePropertiesPanel
         selectedVehicle={vehicle}
         tabMode="status"
-        setTabMode={jest.fn()}
+        onChangeTabMode={jest.fn()}
         closePanel={mockClosePanel}
       />
     )
@@ -441,7 +441,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab || "status"}
-          setTabMode={mockSetTabMode}
+          onChangeTabMode={mockSetTabMode}
           closePanel={jest.fn()}
         />
       )
@@ -469,7 +469,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab || "status"}
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )
@@ -500,7 +500,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab}
-          setTabMode={jest.fn()}
+          onChangeTabMode={jest.fn()}
           closePanel={jest.fn()}
         />
       )

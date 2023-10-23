@@ -28,7 +28,7 @@ const StatusContent = ({ ghost }: { ghost: Ghost }) => (
 const GhostPropertiesPanel = ({
   selectedGhost,
   tabMode,
-  setTabMode,
+  onChangeTabMode,
   closePanel,
 }: Props) => {
   return (
@@ -36,7 +36,7 @@ const GhostPropertiesPanel = ({
       <Header
         vehicle={selectedGhost}
         tabMode={tabMode}
-        setTabMode={setTabMode}
+        setTabMode={onChangeTabMode}
         closePanel={closePanel}
       />
 

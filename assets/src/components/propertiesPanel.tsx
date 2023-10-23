@@ -16,7 +16,7 @@ interface Props {
 
 export type IndividualPropertiesPanelProps = {
   tabMode: TabMode
-  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
+  onChangeTabMode: React.Dispatch<React.SetStateAction<TabMode>>
   closePanel: () => void
 }
 
@@ -55,21 +55,21 @@ const PropertiesPanel = ({
           <StaleDataPropertiesPanel
             selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
-            setTabMode={setTabMode}
+            onChangeTabMode={setTabMode}
             closePanel={closePanel}
           />
         ) : isVehicle(mostRecentVehicle) ? (
           <VehiclePropertiesPanel
             selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
-            setTabMode={setTabMode}
+            onChangeTabMode={setTabMode}
             closePanel={closePanel}
           />
         ) : (
           <GhostPropertiesPanel
             selectedGhost={mostRecentVehicle}
             tabMode={tabMode}
-            setTabMode={setTabMode}
+            onChangeTabMode={setTabMode}
             closePanel={closePanel}
           />
         )}
