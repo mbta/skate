@@ -48,6 +48,7 @@ import {
   getAllStopIcons,
 } from "../../testHelpers/selectors/components/mapPage/map"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
+import { recenterControl } from "../../testHelpers/selectors/components/map/controls/recenterControl"
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
@@ -859,5 +860,25 @@ describe("<MapDisplay />", () => {
       expect(openSpy).toHaveBeenCalledWith(expectedStreetViewUrl, "_blank")
       expect(mockSetSelection).not.toHaveBeenCalled()
     })
+  })
+
+  test.each([
+    { enabled: true, expected: "true"},
+    { enabled: false, expected: "false"}
+  ])("when initializeRouteFollowerEnabled is $enabled and route is selected, follower should be $expected", ({ enabled, expected }) => {
+    setHtmlWidthHeightForLeafletMap()
+
+    render(<MapDisplay
+      selectedEntity={{
+        type: SelectedEntityType.RoutePattern,
+        routeId: "",
+        routePatternId: ""
+      }}
+      fetchedSelectedLocation={null}
+      setSelection={jest.fn()}
+      initializeRouteFollowerEnabled={enabled}
+    />)
+
+    expect(recenterControl.get().dataset.isActive).toBe(expected)
   })
 })

@@ -27,8 +27,6 @@ import DrawerTab from "./drawerTab"
 import Loading from "./loading"
 import MapDisplay, {
   SelectionState,
-  SelectionStateContext,
-  SetSelectionStateContext,
 } from "./mapPage/mapDisplay"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
@@ -243,7 +241,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const setVehicleSelection = useCallback(
     (selectedEntity: SelectedEntity | null) => {
-      setSelectionState?.("selection-changed")
       switch (selectedEntity?.type) {
         case SelectedEntityType.Vehicle:
           fullStoryEvent("VPC Opened", {})
@@ -290,48 +287,53 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   }
 
   return (
-    <SetSelectionStateContext.Provider value={setSelectionState}>
-      <SelectionStateContext.Provider value={selectionState}>
-        <div
-          className="c-map-page inherit-box border-box"
-          aria-label="Search Map Page"
-        >
-          <div
-            className={joinClasses([
-              "c-map-page__input-and-results",
-              searchOpen
-                ? "c-map-page__input-and-results--visible"
-                : "c-map-page__input-and-results--hidden",
-            ])}
-            aria-label="Map Search Panel"
-          >
-            <DrawerTab
-              isVisible={searchOpen}
-              toggleVisibility={toggleSearchDrawer}
-            />
-            {selectedEntity ? (
-              <Selection
-                selectedEntity={selectedEntity}
-                setSelection={setVehicleSelection}
-                fetchedSelectedLocation={fetchedSelectedLocation}
-              />
-            ) : (
-              <SearchMode
-                onSelectVehicleResult={selectVehicleResult}
-                onSelectLocationResult={selectLocationResult}
-              />
-            )}
-          </div>
-          <div className="c-map-page__map">
-            <MapDisplay
-              selectedEntity={selectedEntity}
-              setSelection={setVehicleSelection}
-              fetchedSelectedLocation={fetchedSelectedLocation}
-            />
-          </div>
-        </div>
-      </SelectionStateContext.Provider>
-    </SetSelectionStateContext.Provider>
+    <div
+      className="c-map-page inherit-box border-box"
+      aria-label="Search Map Page"
+    >
+      <div
+        className={joinClasses([
+          "c-map-page__input-and-results",
+          searchOpen
+            ? "c-map-page__input-and-results--visible"
+            : "c-map-page__input-and-results--hidden",
+        ])}
+        aria-label="Map Search Panel"
+      >
+        <DrawerTab
+          isVisible={searchOpen}
+          toggleVisibility={toggleSearchDrawer}
+        />
+        {selectedEntity ? (
+          <Selection
+            selectedEntity={selectedEntity}
+            setSelection={(...args) => {
+              setSelectionState("selection-changed")
+              setVehicleSelection(...args)
+            }}
+            fetchedSelectedLocation={fetchedSelectedLocation}
+          />
+        ) : (
+          <SearchMode
+            onSelectVehicleResult={selectVehicleResult}
+            onSelectLocationResult={selectLocationResult}
+          />
+        )}
+      </div>
+      <div className="c-map-page__map">
+        <MapDisplay
+          selectedEntity={selectedEntity}
+          setSelection={(...args) => {
+            setSelectionState("selection-changed")
+            setVehicleSelection(...args)
+          }}
+          fetchedSelectedLocation={fetchedSelectedLocation}
+          initializeRouteFollowerEnabled={selectionState === "init-follower-on"}
+          useVehicleTargetZoom={selectionState === "init-follower-on"}
+          onInterruptVehicleFollower={() => setSelectionState("stop-zoom-control")}
+        />
+      </div>
+    </div>
   )
 }
 
