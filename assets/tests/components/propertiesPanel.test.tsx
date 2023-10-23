@@ -35,7 +35,6 @@ jest.mock("../../src/hooks/useVehiclesForRoute", () => ({
 }))
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
-  __esModule: true,
   useNearestIntersection: jest.fn(() => {
     return {
       is_loading: true,
@@ -44,20 +43,14 @@ jest.mock("../../src/hooks/useNearestIntersection", () => ({
 }))
 
 jest.mock("../../src/hooks/useStations", () => ({
-  __esModule: true,
   useStations: jest.fn(() => []),
 }))
 
 jest.mock("../../src/hooks/useShapes", () => ({
-  __esModule: true,
   useTripShape: jest.fn(),
 }))
 
-jest.mock("../../src/hooks/useMinischedule", () => ({
-  __esModule: true,
-  useMinischeduleRun: jest.fn(),
-  useMinischeduleBlock: jest.fn(),
-}))
+jest.mock("../../src/hooks/useMinischedule")
 
 const route: Route = routeFactory.build({
   id: "39",
