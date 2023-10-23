@@ -179,7 +179,7 @@ export const usePickerContainerFollowerFn = () => {
   return onUpdate
 }
 
-export const drawerOffsetAutoCenter2 =
+export const drawerOffsetAutoCenter =
   (useTargetZoom: boolean): UpdateMapFromPointsFn =>
   (map, points) => {
     if (points.length === 0) {
@@ -237,6 +237,6 @@ export const drawerOffsetAutoCenter2 =
     }
   }
 
-export const drawerOffsetAutoCenter = drawerOffsetAutoCenter2(true)
+export const fixedZoomDrawerOffsetAutoCenterFixed = drawerOffsetAutoCenter(true)
 
 // #endregion Follower Update Functions

@@ -32,8 +32,8 @@ import Map, { vehicleToLeafletLatLng } from "../map"
 import {
   RecenterControlWithInterruptibleFollower,
   useInteractiveFollowerState,
+  fixedZoomDrawerOffsetAutoCenterFixed,
   drawerOffsetAutoCenter,
-  drawerOffsetAutoCenter2,
   InterruptibleFollower,
 } from "../map/follower"
 import {
@@ -180,7 +180,7 @@ const MapElementsNoSelection = () => {
 
   return (
     <RecenterControlWithInterruptibleFollower
-      onUpdate={drawerOffsetAutoCenter}
+      onUpdate={fixedZoomDrawerOffsetAutoCenterFixed}
       positions={[]}
       {...followerState}
     />
@@ -272,7 +272,7 @@ const SelectedVehicleDataLayers = ({
     (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
   )
 
-  const onUpdate = drawerOffsetAutoCenter2(useTargetZoom)
+  const onUpdate = drawerOffsetAutoCenter(useTargetZoom)
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -375,7 +375,7 @@ const SelectedRouteDataLayers = ({
         onVehicleSelect={selectVehicle}
       />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={drawerOffsetAutoCenter}
+        onUpdate={fixedZoomDrawerOffsetAutoCenterFixed}
         positions={routeShapePositions}
         {...followerState}
       />
@@ -397,7 +397,7 @@ const SelectedLocationDataLayer = ({
     <>
       <LocationMarker location={location} selected={true} />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={drawerOffsetAutoCenter}
+        onUpdate={fixedZoomDrawerOffsetAutoCenterFixed}
         positions={[Leaflet.latLng(location.latitude, location.longitude)]}
         {...followerState}
       />
