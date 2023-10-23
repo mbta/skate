@@ -25,7 +25,7 @@ import {
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import Loading from "./loading"
-import MapDisplay, { SelectionState } from "./mapPage/mapDisplay"
+import MapDisplay from "./mapPage/mapDisplay"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import RecentSearches from "./recentSearches"
@@ -205,8 +205,9 @@ const Selection = ({
 }
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
-  const [selectionState, setSelectionState] =
-    useState<SelectionState>("init-follower-on")
+  const [followerInitializeState, setFollowerInitializeState] =
+    useState<boolean>(false)
+
   const [{ searchPageState, openView }, dispatch] =
       useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
@@ -306,7 +307,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           <Selection
             selectedEntity={selectedEntity}
             setSelection={(...args) => {
-              setSelectionState("selection-changed")
+              setFollowerInitializeState(true)
               setVehicleSelection(...args)
             }}
             fetchedSelectedLocation={fetchedSelectedLocation}
@@ -322,14 +323,17 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         <MapDisplay
           selectedEntity={selectedEntity}
           setSelection={(...args) => {
-            setSelectionState("selection-changed")
+            setFollowerInitializeState(true)
             setVehicleSelection(...args)
           }}
           fetchedSelectedLocation={fetchedSelectedLocation}
-          initializeRouteFollowerEnabled={selectionState === "init-follower-on"}
-          useVehicleTargetZoom={selectionState === "init-follower-on"}
-          onInterruptVehicleFollower={() =>
-            setSelectionState("stop-zoom-control")
+          initializeRouteFollowerEnabled={!followerInitializeState}
+          useVehicleTargetZoom={!followerInitializeState}
+          onInterruptVehicleFollower={
+            (followerInitializeState === false || undefined) &&
+            (() => {
+              setFollowerInitializeState(true)
+            })
           }
         />
       </div>

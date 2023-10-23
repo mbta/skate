@@ -632,11 +632,6 @@ const DataLayers = ({
   )
 }
 
-export type SelectionState =
-  | "init-follower-on"
-  | "stop-zoom-control"
-  | "selection-changed"
-
 const MapDisplay = ({
   selectedEntity,
   setSelection,
