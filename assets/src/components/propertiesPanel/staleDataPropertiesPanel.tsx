@@ -21,7 +21,7 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({
   selectedVehicle,
   tabMode,
   onChangeTabMode,
-  closePanel,
+  onClosePanel,
 }) => {
   return (
     <div className="c-stale-data-properties-panel">
@@ -29,7 +29,7 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({
         vehicle={selectedVehicle}
         tabMode={tabMode}
         setTabMode={onChangeTabMode}
-        closePanel={closePanel}
+        closePanel={onClosePanel}
       />
       {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels

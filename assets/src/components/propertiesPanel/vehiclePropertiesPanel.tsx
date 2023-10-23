@@ -204,7 +204,7 @@ const VehiclePropertiesPanel = ({
   selectedVehicle,
   tabMode,
   onChangeTabMode,
-  closePanel,
+  onClosePanel,
 }: Props) => {
   return (
     <div className="c-vehicle-properties-panel">
@@ -219,7 +219,7 @@ const VehiclePropertiesPanel = ({
           }
           onChangeTabMode(newTabMode)
         }}
-        closePanel={closePanel}
+        closePanel={onClosePanel}
       />
 
       {isVehicleInScheduledService(selectedVehicle) ? (

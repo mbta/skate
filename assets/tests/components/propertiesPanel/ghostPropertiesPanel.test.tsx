@@ -57,7 +57,7 @@ describe("GhostPropertiesPanel", () => {
             selectedGhost={ghost}
             tabMode="status"
             onChangeTabMode={jest.fn()}
-            closePanel={jest.fn()}
+            onClosePanel={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -75,7 +75,7 @@ describe("GhostPropertiesPanel", () => {
             selectedGhost={ghostWithoutRun}
             tabMode="status"
             onChangeTabMode={jest.fn()}
-            closePanel={jest.fn()}
+            onClosePanel={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -103,7 +103,7 @@ describe("GhostPropertiesPanel", () => {
           selectedGhost={ghostWithBlockWaivers}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -119,7 +119,7 @@ describe("GhostPropertiesPanel", () => {
         selectedGhost={ghost}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={mockClosePanel}
+        onClosePanel={mockClosePanel}
       />
     )
 
@@ -145,7 +145,7 @@ describe("GhostPropertiesPanel", () => {
           selectedGhost={ghostFactory.build()}
           tabMode={initialTab || "status"}
           onChangeTabMode={mockSetTabMode}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
 

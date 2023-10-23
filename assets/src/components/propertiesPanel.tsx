@@ -11,13 +11,13 @@ import { TabMode } from "./propertiesPanel/tabPanels"
 interface Props {
   selectedVehicleOrGhost: Vehicle | Ghost
   initialTab?: TabMode
-  closePanel: () => void
+  onClosePanel: () => void
 }
 
 export type IndividualPropertiesPanelProps = {
   tabMode: TabMode
   onChangeTabMode: React.Dispatch<React.SetStateAction<TabMode>>
-  closePanel: () => void
+  onClosePanel: () => void
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -32,7 +32,7 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
 const PropertiesPanel = ({
   selectedVehicleOrGhost,
   initialTab = "status",
-  closePanel,
+  onClosePanel,
 }: Props) => {
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
@@ -56,21 +56,21 @@ const PropertiesPanel = ({
             selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
             onChangeTabMode={setTabMode}
-            closePanel={closePanel}
+            onClosePanel={onClosePanel}
           />
         ) : isVehicle(mostRecentVehicle) ? (
           <VehiclePropertiesPanel
             selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
             onChangeTabMode={setTabMode}
-            closePanel={closePanel}
+            onClosePanel={onClosePanel}
           />
         ) : (
           <GhostPropertiesPanel
             selectedGhost={mostRecentVehicle}
             tabMode={tabMode}
             onChangeTabMode={setTabMode}
-            closePanel={closePanel}
+            onClosePanel={onClosePanel}
           />
         )}
       </div>
@@ -78,7 +78,7 @@ const PropertiesPanel = ({
         className="c-properties-panel-backdrop"
         onClick={
           /* istanbul ignore next */
-          () => hideMeIfNoCrowdingTooltip(closePanel)
+          () => hideMeIfNoCrowdingTooltip(onClosePanel)
         }
         aria-hidden={true}
       />

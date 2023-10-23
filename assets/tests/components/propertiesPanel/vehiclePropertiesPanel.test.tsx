@@ -133,7 +133,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicle}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -153,7 +153,7 @@ describe("VehiclePropertiesPanel", () => {
             selectedVehicle={vehicle}
             tabMode="status"
             onChangeTabMode={jest.fn()}
-            closePanel={jest.fn()}
+            onClosePanel={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -173,7 +173,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={earlyVehicle}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -187,7 +187,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={invalidVehicleFactory.build()}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={jest.fn()}
+        onClosePanel={jest.fn()}
       />
     )
     expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
@@ -204,7 +204,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={earlyVehicle}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -224,7 +224,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={offCourseVehicle}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -246,7 +246,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={shuttleVehicle}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -273,7 +273,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicleWithBlockWaivers}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -290,7 +290,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={jest.fn()}
+        onClosePanel={jest.fn()}
       />
     )
     expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
@@ -306,7 +306,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={jest.fn()}
+        onClosePanel={jest.fn()}
       />
     )
 
@@ -323,7 +323,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={jest.fn()}
+        onClosePanel={jest.fn()}
       />
     )
 
@@ -343,7 +343,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={thisVehicle}
           tabMode="status"
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       </VehiclesByRouteIdProvider>
     )
@@ -371,7 +371,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={thisVehicle}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={jest.fn()}
+        onClosePanel={jest.fn()}
       />
     )
     expect(useVehiclesForRoute).toHaveBeenCalled()
@@ -400,7 +400,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={jest.fn()}
+        onClosePanel={jest.fn()}
       />
     )
 
@@ -415,7 +415,7 @@ describe("VehiclePropertiesPanel", () => {
         selectedVehicle={vehicle}
         tabMode="status"
         onChangeTabMode={jest.fn()}
-        closePanel={mockClosePanel}
+        onClosePanel={mockClosePanel}
       />
     )
 
@@ -442,7 +442,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab || "status"}
           onChangeTabMode={mockSetTabMode}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
 
@@ -470,7 +470,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab || "status"}
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
 
@@ -501,7 +501,7 @@ describe("VehiclePropertiesPanel", () => {
           selectedVehicle={vehicleFactory.build()}
           tabMode={initialTab}
           onChangeTabMode={jest.fn()}
-          closePanel={jest.fn()}
+          onClosePanel={jest.fn()}
         />
       )
 

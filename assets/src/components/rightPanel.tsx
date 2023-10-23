@@ -17,7 +17,7 @@ const RightPanel = ({
     return (
       <PropertiesPanel
         selectedVehicleOrGhost={selectedVehicleOrGhost}
-        closePanel={() => dispatch(closeView())}
+        onClosePanel={() => dispatch(closeView())}
       />
     )
   } else if (state.openView === OpenView.Swings) {

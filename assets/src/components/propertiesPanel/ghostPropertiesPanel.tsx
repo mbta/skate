@@ -29,7 +29,7 @@ const GhostPropertiesPanel = ({
   selectedGhost,
   tabMode,
   onChangeTabMode,
-  closePanel,
+  onClosePanel,
 }: Props) => {
   return (
     <div className="c-ghost-properties-panel">
@@ -37,7 +37,7 @@ const GhostPropertiesPanel = ({
         vehicle={selectedGhost}
         tabMode={tabMode}
         setTabMode={onChangeTabMode}
-        closePanel={closePanel}
+        closePanel={onClosePanel}
       />
 
       <TabPanels

@@ -363,7 +363,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       {selectedRightPanelVehicleOrGhost && (
         <PropertiesPanel
           selectedVehicleOrGhost={selectedRightPanelVehicleOrGhost}
-          closePanel={() => setSelectedRightPanelVehicleOrGhost(null)}
+          onClosePanel={() => setSelectedRightPanelVehicleOrGhost(null)}
           initialTab="run"
         />
       )}

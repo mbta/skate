@@ -140,7 +140,7 @@ const PropertiesPanelWrapper: React.FC<{
     <RoutesProvider routes={routes}>
       <PropertiesPanel
         selectedVehicleOrGhost={vehicleOrGhost}
-        closePanel={closePanel || jest.fn()}
+        onClosePanel={closePanel || jest.fn()}
         initialTab={initialTab}
       />
     </RoutesProvider>
