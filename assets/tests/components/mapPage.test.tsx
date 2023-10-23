@@ -86,17 +86,14 @@ import { useMinischeduleRun } from "../../src/hooks/useMinischedule"
 import pieceFactory from "../factories/piece"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
-  __esModule: true,
   useLocationSearchResults: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useLocationSearchSuggestions", () => ({
-  __esModule: true,
   useLocationSearchSuggestions: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useLocationSearchResultById", () => ({
-  __esModule: true,
   default: jest.fn(() => null),
   useLocationSearchResultById: jest.fn(() => null),
 }))
@@ -107,7 +104,6 @@ jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
 }))
 
 jest.mock("../../src/hooks/useNearestIntersection", () => ({
-  __esModule: true,
   useNearestIntersection: jest.fn(() => {
     return {
       is_loading: true,
@@ -126,23 +122,16 @@ jest.mock("../../src/hooks/useVehiclesForRoute", () => ({
 }))
 
 jest.mock("../../src/hooks/useAllStops", () => ({
-  __esModule: true,
   useAllStops: jest.fn(() => []),
 }))
 
 jest.mock("../../src/hooks/useStations", () => ({
-  __esModule: true,
   useStations: jest.fn(() => []),
 }))
 
-jest.mock("../../src/hooks/useMinischedule", () => ({
-  __esModule: true,
-  useMinischeduleRun: jest.fn(),
-  useMinischeduleBlock: jest.fn(),
-}))
+jest.mock("../../src/hooks/useMinischedule")
 
 jest.mock("../../src/tilesetUrls", () => ({
-  __esModule: true,
   tilesetUrlForType: jest.fn(() => null),
 }))
 
