@@ -866,7 +866,7 @@ describe("<MapDisplay />", () => {
     { enabled: true, expected: "true" },
     { enabled: false, expected: "false" },
   ])(
-    "when initializeRouteFollowerEnabled is $enabled and route is selected, follower should be $expected",
+    "when initializeRouteFollowerEnabled is $enabled and route is selected, follower enabled state should be $expected",
     ({ enabled, expected }) => {
       setHtmlWidthHeightForLeafletMap()
 
