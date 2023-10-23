@@ -5,9 +5,7 @@ on:
         required: true
         type: string
     secrets:
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
+      AWS_ROLE_ARN:
         required: true
       DOCKER_REPO:
         required: true
@@ -24,12 +22,19 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     environment: ${{ inputs.env }}
     env:
       ECS_CLUSTER: skate
       ECS_SERVICE: skate-${{ inputs.env }}
-      AWS_DEFAULT_REGION: us-east-1
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
       - uses: actions/checkout@v3
       - name: Get version ids
         id: version-ids
@@ -44,26 +49,21 @@ jobs:
           environment: ${{ inputs.env }}
           version: ${{steps.version-ids.outputs.sentry-release}}
           ignore_missing: true
-      - uses: mbta/actions/build-push-ecr@v1
+      - uses: mbta/actions/build-push-ecr@v2
         id: build-push
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           docker-repo: ${{ secrets.DOCKER_REPO }}
           docker-additional-args: --build-arg SENTRY_RELEASE=${{steps.version-ids.outputs.sentry-release}}
       - name: Upload static assets to S3
         run: bash upload_assets.sh ${{ steps.build-push.outputs.docker-tag }} ${{steps.version-ids.outputs.sentry-release}}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      - uses: mbta/actions/deploy-ecs@v1
+      - uses: mbta/actions/deploy-ecs@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           ecs-cluster: ${{ env.ECS_CLUSTER }}
           ecs-service: ${{ env.ECS_SERVICE }}
           docker-tag: ${{ steps.build-push.outputs.docker-tag }}
