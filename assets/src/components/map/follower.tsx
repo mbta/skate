@@ -180,7 +180,7 @@ export const usePickerContainerFollowerFn = () => {
 }
 
 export const drawerOffsetAutoCenter =
-  (useTargetZoom: boolean): UpdateMapFromPointsFn =>
+  (useCurrentZoom: boolean): UpdateMapFromPointsFn =>
   (map, points) => {
     if (points.length === 0) {
       // If there are no points, blink to default center
@@ -203,11 +203,8 @@ export const drawerOffsetAutoCenter =
     const topLeft = new Point(445, 0)
 
     if (points.length === 1) {
-      const targetZoom = useTargetZoom
-        ? 16
-        : map.getZoom() < 13
-        ? 16
-        : map.getZoom()
+      const currentZoom = map.getZoom()
+      const targetZoom = useCurrentZoom && currentZoom >= 13 ? currentZoom : 16
       const innerBounds = new Bounds(
         topLeft,
         mapContainerBounds.getBottomRight()
@@ -237,6 +234,7 @@ export const drawerOffsetAutoCenter =
     }
   }
 
-export const fixedZoomDrawerOffsetAutoCenterFixed = drawerOffsetAutoCenter(true)
+export const fixedZoomDrawerOffsetAutoCenterFixed =
+  drawerOffsetAutoCenter(false)
 
 // #endregion Follower Update Functions

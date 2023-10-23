@@ -314,7 +314,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           />
         ) : (
           <SearchMode
-            onSelectVehicleResult={selectVehicleResult}
+            onSelectVehicleResult={(...args) => {
+              setFollowerInitializeState(false)
+              selectVehicleResult(...args)
+            }}
             onSelectLocationResult={selectLocationResult}
           />
         )}
@@ -327,8 +330,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
             setVehicleSelection(...args)
           }}
           fetchedSelectedLocation={fetchedSelectedLocation}
-          initializeRouteFollowerEnabled={!followerInitializeState}
-          useVehicleTargetZoom={!followerInitializeState}
+          initializeRouteFollowerEnabled={followerInitializeState === false}
+          vehicleUseCurrentZoom={followerInitializeState === true}
           onInterruptVehicleFollower={
             (followerInitializeState === false || undefined) &&
             (() => {
