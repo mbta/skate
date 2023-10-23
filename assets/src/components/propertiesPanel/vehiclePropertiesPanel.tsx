@@ -21,16 +21,14 @@ import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import MiniMap from "./miniMap"
-import TabPanels, { TabMode } from "./tabPanels"
+import TabPanels from "./tabPanels"
 import { DiamondTurnRightIcon } from "../../helpers/icon"
 import { fullStoryEvent } from "../../helpers/fullStory"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+type Props = {
   selectedVehicle: Vehicle
-  tabMode: TabMode
-  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
-  closePanel: () => void
-}
+} & IndividualPropertiesPanelProps
 
 const InvalidBanner = () => (
   <Card

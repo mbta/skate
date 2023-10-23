@@ -5,14 +5,12 @@ import PropertiesList, { ghostProperties } from "../propertiesList"
 import { NoWaiverBanner } from "./blockWaiverBanner"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
-import TabPanels, { TabMode } from "./tabPanels"
+import TabPanels from "./tabPanels"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+type Props = {
   selectedGhost: Ghost
-  tabMode: TabMode
-  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
-  closePanel: () => void
-}
+} & IndividualPropertiesPanelProps
 
 const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   <>

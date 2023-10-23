@@ -14,6 +14,12 @@ interface Props {
   closePanel: () => void
 }
 
+export type IndividualPropertiesPanelProps = {
+  tabMode: TabMode
+  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
+  closePanel: () => void
+}
+
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   const noTooltipOpen =
     document.getElementsByClassName("c-crowding-diagram__crowding-tooltip")

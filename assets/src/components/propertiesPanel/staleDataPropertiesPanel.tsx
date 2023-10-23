@@ -11,13 +11,11 @@ import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
 import { isVehicleInScheduledService } from "../../models/vehicle"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+type Props = {
   selectedVehicle: Vehicle
-  tabMode: TabMode
-  setTabMode: React.Dispatch<React.SetStateAction<TabMode>>
-  closePanel: () => void
-}
+} & IndividualPropertiesPanelProps
 
 const StaleDataPropertiesPanel: React.FC<Props> = ({
   selectedVehicle,
