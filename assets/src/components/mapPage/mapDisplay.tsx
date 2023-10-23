@@ -5,8 +5,6 @@ import React, {
   useEffect,
   useState,
   useMemo,
-  createContext,
-  SetStateAction,
 } from "react"
 import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
@@ -237,7 +235,7 @@ const SelectedVehicleDataLayers = ({
   selectVehicle,
   stops,
   useTargetZoom,
-  onInterruptFollower
+  onInterruptFollower,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
@@ -413,7 +411,7 @@ const SelectionLayers = ({
   fetchedSelectedLocation,
   initializeRouteFollowerEnabled,
   vehicleUseTargetZoom,
-  onInterruptVehicleFollower
+  onInterruptVehicleFollower,
 }: {
   selectedEntity: SelectedEntity | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
@@ -572,7 +570,7 @@ const DataLayers = ({
   pullbackLayerEnabled,
   initializeRouteFollowerEnabled,
   vehicleUseTargetZoom,
-  onInterruptVehicleFollower
+  onInterruptVehicleFollower,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -638,12 +636,6 @@ export type SelectionState =
   | "init-follower-on"
   | "stop-zoom-control"
   | "selection-changed"
-
-export const SelectionStateContext =
-  createContext<SelectionState>("init-follower-on")
-export const SetSelectionStateContext = createContext<
-  React.Dispatch<SetStateAction<SelectionState>> | undefined
->(undefined)
 
 const MapDisplay = ({
   selectedEntity,

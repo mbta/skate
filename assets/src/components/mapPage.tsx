@@ -25,9 +25,7 @@ import {
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import Loading from "./loading"
-import MapDisplay, {
-  SelectionState,
-} from "./mapPage/mapDisplay"
+import MapDisplay, { SelectionState } from "./mapPage/mapDisplay"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import RecentSearches from "./recentSearches"
@@ -330,7 +328,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           fetchedSelectedLocation={fetchedSelectedLocation}
           initializeRouteFollowerEnabled={selectionState === "init-follower-on"}
           useVehicleTargetZoom={selectionState === "init-follower-on"}
-          onInterruptVehicleFollower={() => setSelectionState("stop-zoom-control")}
+          onInterruptVehicleFollower={() =>
+            setSelectionState("stop-zoom-control")
+          }
         />
       </div>
     </div>

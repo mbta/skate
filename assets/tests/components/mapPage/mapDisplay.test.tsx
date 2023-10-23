@@ -863,22 +863,27 @@ describe("<MapDisplay />", () => {
   })
 
   test.each([
-    { enabled: true, expected: "true"},
-    { enabled: false, expected: "false"}
-  ])("when initializeRouteFollowerEnabled is $enabled and route is selected, follower should be $expected", ({ enabled, expected }) => {
-    setHtmlWidthHeightForLeafletMap()
+    { enabled: true, expected: "true" },
+    { enabled: false, expected: "false" },
+  ])(
+    "when initializeRouteFollowerEnabled is $enabled and route is selected, follower should be $expected",
+    ({ enabled, expected }) => {
+      setHtmlWidthHeightForLeafletMap()
 
-    render(<MapDisplay
-      selectedEntity={{
-        type: SelectedEntityType.RoutePattern,
-        routeId: "",
-        routePatternId: ""
-      }}
-      fetchedSelectedLocation={null}
-      setSelection={jest.fn()}
-      initializeRouteFollowerEnabled={enabled}
-    />)
+      render(
+        <MapDisplay
+          selectedEntity={{
+            type: SelectedEntityType.RoutePattern,
+            routeId: "",
+            routePatternId: "",
+          }}
+          fetchedSelectedLocation={null}
+          setSelection={jest.fn()}
+          initializeRouteFollowerEnabled={enabled}
+        />
+      )
 
-    expect(recenterControl.get().dataset.isActive).toBe(expected)
-  })
+      expect(recenterControl.get().dataset.isActive).toBe(expected)
+    }
+  )
 })
