@@ -36,8 +36,8 @@ const GhostPropertiesPanel = ({
       <Header
         vehicle={selectedGhost}
         tabMode={tabMode}
-        setTabMode={onChangeTabMode}
-        closePanel={onClosePanel}
+        onChangeTabMode={onChangeTabMode}
+        onClosePanel={onClosePanel}
       />
 
       <TabPanels

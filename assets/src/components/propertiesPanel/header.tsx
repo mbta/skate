@@ -28,8 +28,8 @@ import ViewHeader from "../viewHeader"
 interface Props {
   vehicle: Vehicle | Ghost
   tabMode: TabMode
-  setTabMode: Dispatch<SetStateAction<TabMode>>
-  closePanel: () => void
+  onChangeTabMode: Dispatch<SetStateAction<TabMode>>
+  onClosePanel: () => void
 }
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -92,7 +92,7 @@ const ScheduleAdherence = ({
   )
 }
 
-const Header = ({ vehicle, tabMode, setTabMode, closePanel }: Props) => {
+const Header = ({ vehicle, tabMode, onChangeTabMode, onClosePanel }: Props) => {
   const [{ routeTabs, userSettings, previousView }, dispatch] =
     useContext(StateDispatchContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
@@ -109,7 +109,7 @@ const Header = ({ vehicle, tabMode, setTabMode, closePanel }: Props) => {
     <div className="c-properties-panel__header-wrapper">
       <ViewHeader
         title="Vehicles"
-        closeView={closePanel}
+        closeView={onClosePanel}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />
@@ -144,7 +144,7 @@ const Header = ({ vehicle, tabMode, setTabMode, closePanel }: Props) => {
         </div>
       </div>
       {vehicleIsShuttle || (
-        <TabList activeTab={tabMode} setActiveTab={setTabMode} />
+        <TabList activeTab={tabMode} setActiveTab={onChangeTabMode} />
       )}
     </div>
   )

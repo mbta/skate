@@ -211,7 +211,7 @@ const VehiclePropertiesPanel = ({
       <Header
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={(newTabMode) => {
+        onChangeTabMode={(newTabMode) => {
           if (newTabMode !== tabMode) {
             fullStoryEvent("Switched tab in Vehicle Properties Panel", {
               tab_str: newTabMode,
@@ -219,7 +219,7 @@ const VehiclePropertiesPanel = ({
           }
           onChangeTabMode(newTabMode)
         }}
-        closePanel={onClosePanel}
+        onClosePanel={onClosePanel}
       />
 
       {isVehicleInScheduledService(selectedVehicle) ? (

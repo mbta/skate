@@ -90,8 +90,8 @@ describe("Header", () => {
         <Header
           vehicle={vehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
-          closePanel={jest.fn()}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -110,8 +110,8 @@ describe("Header", () => {
           <Header
             vehicle={vehicle}
             tabMode={"status"}
-            setTabMode={setTabMode}
-            closePanel={jest.fn()}
+            onChangeTabMode={setTabMode}
+            onClosePanel={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -130,8 +130,8 @@ describe("Header", () => {
         <Header
           vehicle={earlyVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
-          closePanel={jest.fn()}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -149,8 +149,8 @@ describe("Header", () => {
         <Header
           vehicle={earlyVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
-          closePanel={jest.fn()}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -169,8 +169,8 @@ describe("Header", () => {
         <Header
           vehicle={offCourseVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
-          closePanel={jest.fn()}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -189,8 +189,8 @@ describe("Header", () => {
         <Header
           vehicle={shuttleVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
-          closePanel={jest.fn()}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -223,8 +223,8 @@ describe("Header", () => {
         <Header
           vehicle={ghost}
           tabMode={"status"}
-          setTabMode={setTabMode}
-          closePanel={jest.fn()}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -237,8 +237,8 @@ describe("Header", () => {
       <Header
         vehicle={{ ...vehicle, directionId: 0, routeStatus: "laying_over" }}
         tabMode={"status"}
-        setTabMode={setTabMode}
-        closePanel={jest.fn()}
+        onChangeTabMode={setTabMode}
+        onClosePanel={jest.fn()}
       />
     )
     expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
@@ -252,8 +252,8 @@ describe("Header", () => {
       <Header
         vehicle={{ ...vehicle, directionId: 1, routeStatus: "laying_over" }}
         tabMode={"status"}
-        setTabMode={setTabMode}
-        closePanel={jest.fn()}
+        onChangeTabMode={setTabMode}
+        onClosePanel={jest.fn()}
       />
     )
 
@@ -282,8 +282,8 @@ describe("Header", () => {
         <Header
           vehicle={vehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
-          closePanel={jest.fn()}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       </StateDispatchProvider>
     )
@@ -305,8 +305,8 @@ describe("Header", () => {
       <Header
         vehicle={shuttleVehicle}
         tabMode={"status"}
-        setTabMode={setTabMode}
-        closePanel={jest.fn()}
+        onChangeTabMode={setTabMode}
+        onClosePanel={jest.fn()}
       />
     )
 
@@ -324,8 +324,8 @@ describe("Header", () => {
       <Header
         vehicle={vehicle}
         tabMode={"status"}
-        setTabMode={setTabMode}
-        closePanel={mockClosePanel}
+        onChangeTabMode={setTabMode}
+        onClosePanel={mockClosePanel}
       />
     )
 
