@@ -87,6 +87,7 @@ import {
 import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCategory"
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   __esModule: true,
@@ -1067,6 +1068,51 @@ describe("<MapPage />", () => {
       )
       await waitFor(() => expect(routePropertiesCard.get()).toBeVisible())
       expect(vehiclePropertiesCard.query()).not.toBeInTheDocument()
+    })
+
+    test("when VehiclePropertiesCard Route Button is clicked, follower should be initially disabled", async () => {
+      const route = routeFactory.build()
+      const routePattern = routePatternFactory.build({ routeId: route.id })
+      const vehicle = vehicleFactory.build({
+        routeId: routePattern.routeId,
+        routePatternId: routePattern.id,
+      })
+
+      mockUseVehicleForId([vehicle])
+      mockUseVehiclesForRouteMap({
+        [vehicle.routeId]: [vehicle],
+      })
+      jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+        [routePattern.id]: routePattern,
+      })
+
+      render(
+        <RealDispatchWrapper
+          initialState={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: vehicle.id,
+              },
+            },
+            userSettings: {
+              ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+            },
+          })}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </RealDispatchWrapper>
+      )
+
+      await userEvent.click(
+        getByRole(vehiclePropertiesCard.get(), "button", {
+          name: "Route Variant Name",
+        })
+      )
+
+      expect(recenterControl.get().dataset.isActive).toBe("false")
     })
 
     test("clicking vehicle when RPC is open closes RPC and opens VPC", async () => {

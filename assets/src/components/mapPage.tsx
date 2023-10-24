@@ -205,6 +205,9 @@ const Selection = ({
 }
 
 const MapPage = (): ReactElement<HTMLDivElement> => {
+  const [followerShouldSetZoomLevel, setFollowerShouldSetZoomLevel] =
+    useState<boolean>(true)
+
   const [{ searchPageState, openView }, dispatch] =
       useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
@@ -303,12 +306,18 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         {selectedEntity ? (
           <Selection
             selectedEntity={selectedEntity}
-            setSelection={setVehicleSelection}
+            setSelection={(...args) => {
+              setFollowerShouldSetZoomLevel(false)
+              setVehicleSelection(...args)
+            }}
             fetchedSelectedLocation={fetchedSelectedLocation}
           />
         ) : (
           <SearchMode
-            onSelectVehicleResult={selectVehicleResult}
+            onSelectVehicleResult={(...args) => {
+              setFollowerShouldSetZoomLevel(true)
+              selectVehicleResult(...args)
+            }}
             onSelectLocationResult={selectLocationResult}
           />
         )}
@@ -316,8 +325,19 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
       <div className="c-map-page__map">
         <MapDisplay
           selectedEntity={selectedEntity}
-          setSelection={setVehicleSelection}
+          setSelection={(...args) => {
+            setFollowerShouldSetZoomLevel(false)
+            setVehicleSelection(...args)
+          }}
           fetchedSelectedLocation={fetchedSelectedLocation}
+          initializeRouteFollowerEnabled={followerShouldSetZoomLevel === true}
+          vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
+          onInterruptVehicleFollower={
+            (followerShouldSetZoomLevel === false || undefined) &&
+            (() => {
+              setFollowerShouldSetZoomLevel(false)
+            })
+          }
         />
       </div>
     </div>

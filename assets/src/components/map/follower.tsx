@@ -25,7 +25,7 @@ export type UpdateMapFromPointsFn = (map: LeafletMap, points: LatLng[]) => void
 
 export interface FollowerProps {
   positions: LatLng[]
-  onUpdate: UpdateMapFromPointsFn
+  onUpdate?: UpdateMapFromPointsFn
 }
 
 export const Follower = ({
@@ -48,7 +48,7 @@ export const Follower = ({
       if (isAnimatingFollowUpdate !== undefined) {
         isAnimatingFollowUpdate.current = true
       }
-      onUpdate(map, currentLatLngs)
+      onUpdate?.(map, currentLatLngs)
     }
   }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
 
@@ -64,8 +64,10 @@ export interface InteractiveFollowState {
 // Gathers all state needed for the Follower to be able to display it's state
 // as well as support turning off when interrupted
 
-export const useInteractiveFollowerState = (): InteractiveFollowState => {
-  const [shouldFollow, setShouldFollow] = useState<boolean>(true)
+export const useInteractiveFollowerState = (
+  initEnabled = true
+): InteractiveFollowState => {
+  const [shouldFollow, setShouldFollow] = useState<boolean>(initEnabled)
   const isAnimatingFollowUpdate: MutableRefObject<boolean> = useRef(false)
 
   return {
@@ -177,53 +179,61 @@ export const usePickerContainerFollowerFn = () => {
   return onUpdate
 }
 
-export const drawerOffsetAutoCenter: UpdateMapFromPointsFn = (map, points) => {
-  if (points.length === 0) {
-    // If there are no points, blink to default center
-    map.setView(defaultCenter, 13, { animate: false })
-    return
+export const drawerOffsetAutoCenter =
+  (useCurrentZoom: boolean): UpdateMapFromPointsFn =>
+  (map, points) => {
+    if (points.length === 0) {
+      // If there are no points, blink to default center
+      map.setView(defaultCenter, 13, { animate: false })
+      return
+    }
+
+    const { width, height } = map.getContainer().getBoundingClientRect()
+    const mapContainerBounds = new Bounds([0, 0], [width, height])
+
+    // ```
+    // vpcElement.getBoundingClientRect().right - mapElement.getBoundingClientRect().left
+    //  -> 445
+    // ```
+    // Create a new inner bounds from the map bounds + "padding" to shrink the
+    // inner bounds
+    // In this case, we get the top left of the inner bounds by padding the left
+    // with the distance from the right side of the VPC to the left side of the
+    // map container
+    const topLeft = new Point(445, 0)
+
+    if (points.length === 1) {
+      const currentZoom = map.getZoom()
+      const targetZoom = useCurrentZoom && currentZoom >= 13 ? currentZoom : 16
+      const innerBounds = new Bounds(
+        topLeft,
+        mapContainerBounds.getBottomRight()
+      )
+      // The "new center" is the offset between the two bounding boxes centers
+      const offset = innerBounds
+        .getCenter()
+        .subtract(mapContainerBounds.getCenter())
+
+      const targetPoint = map
+          // Project the target point into screenspace for the target zoom
+          .project(points[0], targetZoom)
+          // Offset the target point in screenspace to move the center of the map
+          // to apply the padding to the center
+          .subtract(offset),
+        // convert the target point to worldspace from screenspace
+        targetLatLng = map.unproject(targetPoint, targetZoom)
+
+      // Zoom/Pan center of map to offset location in worldspace
+      map.setView(targetLatLng, targetZoom)
+    } else {
+      const pointsBounds = Leaflet.latLngBounds(points)
+      map.fitBounds(pointsBounds, {
+        paddingBottomRight: [50, 20],
+        paddingTopLeft: topLeft,
+      })
+    }
   }
 
-  const { width, height } = map.getContainer().getBoundingClientRect()
-  const mapContainerBounds = new Bounds([0, 0], [width, height])
-
-  // ```
-  // vpcElement.getBoundingClientRect().right - mapElement.getBoundingClientRect().left
-  //  -> 445
-  // ```
-  // Create a new inner bounds from the map bounds + "padding" to shrink the
-  // inner bounds
-  // In this case, we get the top left of the inner bounds by padding the left
-  // with the distance from the right side of the VPC to the left side of the
-  // map container
-  const topLeft = new Point(445, 0)
-
-  if (points.length === 1) {
-    const targetZoom = 16
-    const innerBounds = new Bounds(topLeft, mapContainerBounds.getBottomRight())
-    // The "new center" is the offset between the two bounding boxes centers
-    const offset = innerBounds
-      .getCenter()
-      .subtract(mapContainerBounds.getCenter())
-
-    const targetPoint = map
-        // Project the target point into screenspace for the target zoom
-        .project(points[0], targetZoom)
-        // Offset the target point in screenspace to move the center of the map
-        // to apply the padding to the center
-        .subtract(offset),
-      // convert the target point to worldspace from screenspace
-      targetLatLng = map.unproject(targetPoint, targetZoom)
-
-    // Zoom/Pan center of map to offset location in worldspace
-    map.setView(targetLatLng, targetZoom)
-  } else {
-    const pointsBounds = Leaflet.latLngBounds(points)
-    map.fitBounds(pointsBounds, {
-      paddingBottomRight: [50, 20],
-      paddingTopLeft: topLeft,
-    })
-  }
-}
+export const fixedZoomDrawerOffsetAutoCenter = drawerOffsetAutoCenter(false)
 
 // #endregion Follower Update Functions

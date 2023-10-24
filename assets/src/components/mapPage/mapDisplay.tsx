@@ -32,7 +32,9 @@ import Map, { vehicleToLeafletLatLng } from "../map"
 import {
   RecenterControlWithInterruptibleFollower,
   useInteractiveFollowerState,
+  fixedZoomDrawerOffsetAutoCenter,
   drawerOffsetAutoCenter,
+  InterruptibleFollower,
 } from "../map/follower"
 import {
   LocationMarker,
@@ -57,6 +59,7 @@ import { useAllStops } from "../../hooks/useAllStops"
 import { LocationType, RouteType } from "../../models/stopData"
 import usePullbackVehicles from "../../hooks/usePullbackVehicles"
 import { fullStoryEvent } from "../../helpers/fullStory"
+import { RecenterControl } from "../map/controls/recenterControl"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -177,7 +180,7 @@ const MapElementsNoSelection = () => {
 
   return (
     <RecenterControlWithInterruptibleFollower
-      onUpdate={drawerOffsetAutoCenter}
+      onUpdate={fixedZoomDrawerOffsetAutoCenter}
       positions={[]}
       {...followerState}
     />
@@ -231,11 +234,15 @@ const SelectedVehicleDataLayers = ({
   routePatterns,
   selectVehicle,
   stops,
+  useCurrentZoom,
+  onInterruptFollower,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   stops: Stop[]
+  useCurrentZoom: boolean
+  onInterruptFollower?: () => void
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -265,6 +272,7 @@ const SelectedVehicleDataLayers = ({
     (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
   )
 
+  const onUpdate = drawerOffsetAutoCenter(useCurrentZoom)
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -304,10 +312,22 @@ const SelectedVehicleDataLayers = ({
             : stops
         }
       />
-      <RecenterControlWithInterruptibleFollower
-        onUpdate={drawerOffsetAutoCenter}
+      <RecenterControl
+        position="topright"
+        active={followerState.shouldFollow}
+        onActivate={() => {
+          followerState.setShouldFollow(true)
+        }}
+      />
+      <InterruptibleFollower
+        // Do nothing if we don't have a vehicle position yet
+        onUpdate={position.length > 0 ? onUpdate : undefined}
         positions={position}
         {...followerState}
+        setShouldFollow={(...args) => {
+          onInterruptFollower?.()
+          followerState.setShouldFollow(...args)
+        }}
       />
     </>
   )
@@ -318,11 +338,13 @@ const SelectedRouteDataLayers = ({
   routePatterns,
   selectVehicle,
   stops,
+  initializeFollowerEnabled,
 }: {
   routePatternIdentifier: RoutePatternIdentifier
   routePatterns: ByRoutePatternId<RoutePattern> | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   stops: Stop[]
+  initializeFollowerEnabled: boolean
 }) => {
   const selectedRoutePattern: RoutePattern | undefined = routePatterns
     ? routePatterns[routePatternIdentifier.routePatternId]
@@ -332,7 +354,8 @@ const SelectedRouteDataLayers = ({
         Leaflet.latLng(p.lat, p.lon)
       ) || []
     : []
-  const followerState = useInteractiveFollowerState()
+
+  const followerState = useInteractiveFollowerState(initializeFollowerEnabled)
 
   const routePatternStopIdSet = new Set(
     (selectedRoutePattern?.shape?.stops || []).map((s) => s.id)
@@ -352,7 +375,7 @@ const SelectedRouteDataLayers = ({
         onVehicleSelect={selectVehicle}
       />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={drawerOffsetAutoCenter}
+        onUpdate={fixedZoomDrawerOffsetAutoCenter}
         positions={routeShapePositions}
         {...followerState}
       />
@@ -374,7 +397,7 @@ const SelectedLocationDataLayer = ({
     <>
       <LocationMarker location={location} selected={true} />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={drawerOffsetAutoCenter}
+        onUpdate={fixedZoomDrawerOffsetAutoCenter}
         positions={[Leaflet.latLng(location.latitude, location.longitude)]}
         {...followerState}
       />
@@ -386,10 +409,16 @@ const SelectionLayers = ({
   selectedEntity,
   selectVehicle,
   fetchedSelectedLocation,
+  initializeRouteFollowerEnabled,
+  vehicleUseCurrentZoom,
+  onInterruptVehicleFollower,
 }: {
   selectedEntity: SelectedEntity | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
   fetchedSelectedLocation: LocationSearchResult | null
+  initializeRouteFollowerEnabled: boolean
+  vehicleUseCurrentZoom: boolean
+  onInterruptVehicleFollower?: () => void
 }) => {
   const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
     selectedEntity,
@@ -412,6 +441,8 @@ const SelectionLayers = ({
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
           stops={stops}
+          useCurrentZoom={vehicleUseCurrentZoom}
+          onInterruptFollower={onInterruptVehicleFollower}
         />
       )
     case SelectedEntityType.RoutePattern:
@@ -424,6 +455,7 @@ const SelectionLayers = ({
           routePatterns={routePatterns}
           selectVehicle={selectVehicle}
           stops={stops}
+          initializeFollowerEnabled={initializeRouteFollowerEnabled}
         />
       )
     case SelectedEntityType.Location:
@@ -536,11 +568,17 @@ const DataLayers = ({
   setSelection,
   fetchedSelectedLocation,
   pullbackLayerEnabled,
+  initializeRouteFollowerEnabled,
+  vehicleUseCurrentZoom,
+  onInterruptVehicleFollower,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
   fetchedSelectedLocation: LocationSearchResult | null
   pullbackLayerEnabled: boolean
+  initializeRouteFollowerEnabled: boolean
+  vehicleUseCurrentZoom: boolean
+  onInterruptVehicleFollower?: () => void
 }): JSX.Element => {
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
@@ -581,6 +619,9 @@ const DataLayers = ({
         selectedEntity={selectedEntity}
         selectVehicle={selectVehicle}
         fetchedSelectedLocation={fetchedSelectedLocation}
+        initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
+        vehicleUseCurrentZoom={vehicleUseCurrentZoom}
+        onInterruptVehicleFollower={onInterruptVehicleFollower}
       />
       <PullbackVehiclesLayer
         pullbackLayerEnabled={pullbackLayerEnabled}
@@ -594,13 +635,19 @@ const DataLayers = ({
 const MapDisplay = ({
   selectedEntity,
   setSelection,
-  streetViewInitiallyEnabled = false,
   fetchedSelectedLocation,
+  onInterruptVehicleFollower,
+  streetViewInitiallyEnabled = false,
+  initializeRouteFollowerEnabled = true,
+  vehicleUseCurrentZoom = true,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
-  streetViewInitiallyEnabled?: boolean
   fetchedSelectedLocation: LocationSearchResult | null
+  streetViewInitiallyEnabled?: boolean
+  initializeRouteFollowerEnabled?: boolean
+  vehicleUseCurrentZoom?: boolean
+  onInterruptVehicleFollower?: () => void
 }) => {
   const [
     {
@@ -634,6 +681,9 @@ const MapDisplay = ({
           selectedEntity={selectedEntity}
           fetchedSelectedLocation={fetchedSelectedLocation}
           pullbackLayerEnabled={pullbackLayerEnabled}
+          initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
+          vehicleUseCurrentZoom={vehicleUseCurrentZoom}
+          onInterruptVehicleFollower={onInterruptVehicleFollower}
         />
         <LayersControlState>
           {(open, setOpen) => (
