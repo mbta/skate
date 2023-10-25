@@ -93,8 +93,7 @@ defmodule SkateWeb.VehiclesSearchChannelTest do
 
       assert {:noreply, _socket} =
                VehiclesSearchChannel.handle_info(
-                 {:new_realtime_data,
-                  {ets, {:limited_search, %{property: :vehicle, text: "000", limit: 2}}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 

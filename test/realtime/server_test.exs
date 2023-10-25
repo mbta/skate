@@ -111,26 +111,28 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get vehicles when subscribing", %{server_pid: server_pid} do
-      vehicles_and_ghosts = Server.subscribe_to_route("1", server_pid)
+      {lookup_key, vehicles_and_ghosts} = Server.subscribe_to_route("1", server_pid)
+
       assert vehicles_and_ghosts == [@vehicle, @ghost]
+      assert lookup_key == {:route_id, "1"}
     end
 
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
-      Server.subscribe_to_route("1", server_pid)
+      {lookup_key, _} = Server.subscribe_to_route("1", server_pid)
 
       Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, lookup_args},
+        {:new_realtime_data, ets},
         200,
         "Client didn't receive vehicle positions"
       )
 
-      assert Server.lookup(lookup_args) == [@vehicle, @ghost]
+      assert Server.lookup({ets, lookup_key}) == [@vehicle, @ghost]
     end
 
     test "clients subscribed to a route get repeated messages", %{server_pid: server_pid} do
-      Server.subscribe_to_route("1", server_pid)
+      {lookup_key, _} = Server.subscribe_to_route("1", server_pid)
 
       Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
 
@@ -143,40 +145,40 @@ defmodule Realtime.ServerTest do
       Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, lookup_args},
+        {:new_realtime_data, ets},
         200,
         "Client didn't receive vehicle positions the second time"
       )
 
-      assert Server.lookup(lookup_args) == [@vehicle, @ghost]
+      assert Server.lookup({ets, lookup_key}) == [@vehicle, @ghost]
     end
 
     test "inactive routes have all their vehicle data removed", %{server_pid: server_pid} do
-      Server.subscribe_to_route("1", server_pid)
+      {lookup_key, _} = Server.subscribe_to_route("1", server_pid)
 
       Server.update_vehicles({%{}, [], []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, lookup_args},
+        {:new_realtime_data, ets},
         200,
         "Client received vehicle positions"
       )
 
-      assert Server.lookup(lookup_args) == []
+      assert Server.lookup({ets, lookup_key}) == []
     end
 
     test "vehicles on inactive blocks are removed", %{server_pid: server_pid} do
-      Server.subscribe_to_route("1", server_pid)
+      {lookup_key, _} = Server.subscribe_to_route("1", server_pid)
 
       Server.update_vehicles({%{"1" => [@vehicle_on_inactive_block]}, [], []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, lookup_args},
+        {:new_realtime_data, ets},
         200,
         "Client received vehicle positions"
       )
 
-      assert Server.lookup(lookup_args) == []
+      assert Server.lookup({ets, lookup_key}) == []
     end
   end
 
@@ -190,33 +192,36 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get vehicles when subscribing", %{server_pid: server_pid} do
-      vehicles_and_ghosts = Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+      {lookup_key, vehicles_and_ghosts} =
+        Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+
       assert vehicles_and_ghosts == [@vehicle]
+      assert lookup_key == {:block_ids, [@vehicle.block_id]}
     end
 
     test "can subscribe to multiple block IDs", %{server_pid: server_pid} do
-      vehicles_and_ghosts =
+      {_, vehicles_and_ghosts} =
         Server.subscribe_to_block_ids([@vehicle.block_id, @ghost.block_id], server_pid)
 
       assert vehicles_and_ghosts == [@vehicle, @ghost]
     end
 
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
-      Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+      {lookup_key, _} = Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
 
       Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, lookup_args},
+        {:new_realtime_data, ets},
         200,
         "Client didn't receive vehicle positions"
       )
 
-      assert Server.lookup(lookup_args) == [@vehicle]
+      assert Server.lookup({ets, lookup_key}) == [@vehicle]
     end
 
     test "clients subscribed to block IDs get repeated messages", %{server_pid: server_pid} do
-      Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+      {lookup_key, _} = Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
 
       Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
 
@@ -229,26 +234,26 @@ defmodule Realtime.ServerTest do
       Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, lookup_args},
+        {:new_realtime_data, ets},
         200,
         "Client didn't receive vehicle positions the second time"
       )
 
-      assert Server.lookup(lookup_args) == [@vehicle]
+      assert Server.lookup({ets, lookup_key}) == [@vehicle]
     end
 
     test "inactive blocks have all their vehicle data removed", %{server_pid: server_pid} do
-      Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+      {lookup_key, _} = Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
 
       Server.update_vehicles({%{}, [], []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, lookup_args},
+        {:new_realtime_data, ets},
         200,
         "Client received vehicle positions"
       )
 
-      assert Server.lookup(lookup_args) == []
+      assert Server.lookup({ets, lookup_key}) == []
     end
   end
 
@@ -262,18 +267,20 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get all pull-backs upon subscribing", %{server_pid: pid} do
-      assert Server.subscribe_to_all_pull_backs(pid) == [@pull_back_vehicle]
+      {lookup_key, pull_back_vehicles} = Server.subscribe_to_all_pull_backs(pid)
+      assert pull_back_vehicles == [@pull_back_vehicle]
+      assert lookup_key == :all_pull_backs
     end
 
     test "clients get updated data pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_all_pull_backs(pid)
+      {lookup_key, _} = Server.subscribe_to_all_pull_backs(pid)
 
       updated_pull_back_vehicle = %{@pull_back_vehicle | timestamp: 2}
 
       Server.update_vehicles({%{"2" => [updated_pull_back_vehicle]}, [], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [updated_pull_back_vehicle]
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == [updated_pull_back_vehicle]
     end
   end
 
@@ -287,16 +294,18 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get all shuttles upon subscribing", %{server_pid: pid} do
-      assert Server.subscribe_to_all_shuttles(pid) == [@shuttle]
+      {lookup_key, shuttles} = Server.subscribe_to_all_shuttles(pid)
+      assert shuttles == [@shuttle]
+      assert lookup_key == :all_shuttles
     end
 
     test "clients get updated data pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_all_shuttles(pid)
+      {lookup_key, _} = Server.subscribe_to_all_shuttles(pid)
 
       Server.update_vehicles({%{}, [@shuttle, @shuttle], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == [@shuttle, @shuttle]
     end
   end
 
@@ -310,16 +319,18 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get vehicle by ID upon subscribing", %{server_pid: pid} do
-      assert Server.subscribe_to_vehicle(@vehicle.id, pid) == [@vehicle]
+      {lookup_key, vehicle} = Server.subscribe_to_vehicle(@vehicle.id, pid)
+      assert vehicle == [@vehicle]
+      assert lookup_key == {:vehicle, @vehicle.id}
     end
 
     test "clients get updated data pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_vehicle(@vehicle.id, pid)
+      {lookup_key, _} = Server.subscribe_to_vehicle(@vehicle.id, pid)
 
       Server.update_vehicles({@vehicles_by_route_id, [], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [@vehicle]
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == [@vehicle]
     end
   end
 
@@ -333,18 +344,23 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get vehicle by ID upon subscribing", %{server_pid: pid} do
-      assert Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid) == [
+      {lookup_key, logged_out_vehicles} =
+        Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid)
+
+      assert logged_out_vehicles == [
                @logged_out_vehicle
              ]
+
+      assert lookup_key == {:vehicle_with_logged_out, @logged_out_vehicle.id}
     end
 
     test "clients get updated data pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid)
+      {lookup_key, _} = Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid)
 
       Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [@logged_out_vehicle]
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == [@logged_out_vehicle]
     end
   end
 
@@ -358,47 +374,49 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get search results upon subscribing", %{server_pid: pid} do
-      results = Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
+      {lookup_key, results} = Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
 
       assert Enum.member?(results, @vehicle)
       assert Enum.member?(results, @ghost)
       assert Enum.member?(results, @shuttle)
+      assert lookup_key == {:search, %{property: :all, text: "90"}}
     end
 
     test "clients get updated search results pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
+      {lookup_key, _} = Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
 
       Server.update_vehicles({%{}, [@shuttle], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [@shuttle]
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == [@shuttle]
     end
 
     test "does not receive duplicate vehicles", %{server_pid: pid} do
-      Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
+      {lookup_key, _} = Server.subscribe_to_search(%{property: :all, text: "90"}, pid)
 
       Server.update_vehicles({%{}, [@shuttle, @shuttle], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [@shuttle]
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == [@shuttle]
     end
 
     test "vehicles on inactive blocks are included", %{server_pid: pid} do
-      Server.subscribe_to_search(%{property: :vehicle, text: "v2-label"}, pid)
+      {lookup_key, _} = Server.subscribe_to_search(%{property: :vehicle, text: "v2-label"}, pid)
 
       Server.update_vehicles({%{"1" => [@vehicle_on_inactive_block]}, [], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
+      assert_receive {:new_realtime_data, ets}
 
-      assert Server.lookup(lookup_args) == [@vehicle_on_inactive_block]
+      assert Server.lookup({ets, lookup_key}) == [@vehicle_on_inactive_block]
     end
 
     test "logged out vehicles are returned when include_logged_out_vehicles is true",
          %{server_pid: pid} do
-      Server.subscribe_to_search(
-        %{property: :vehicle, text: "123", include_logged_out_vehicles: true},
-        pid
-      )
+      {lookup_key, _} =
+        Server.subscribe_to_search(
+          %{property: :vehicle, text: "123", include_logged_out_vehicles: true},
+          pid
+        )
 
       logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
@@ -412,13 +430,13 @@ defmodule Realtime.ServerTest do
         pid
       )
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [logged_in_vehicle, logged_out_vehicle]
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == [logged_in_vehicle, logged_out_vehicle]
     end
 
     test "logged out vehicles are not returned when include_logged_out_vehicles is not set",
          %{server_pid: pid} do
-      Server.subscribe_to_search(%{property: :vehicle, text: "123"}, pid)
+      {lookup_key, _} = Server.subscribe_to_search(%{property: :vehicle, text: "123"}, pid)
 
       logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
@@ -427,9 +445,9 @@ defmodule Realtime.ServerTest do
 
       Server.update_vehicles({%{"1" => [logged_in_vehicle]}, [], [logged_out_vehicle]}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
+      assert_receive {:new_realtime_data, ets}
 
-      assert Server.lookup(lookup_args) == [logged_in_vehicle]
+      assert Server.lookup({ets, lookup_key}) == [logged_in_vehicle]
     end
   end
 
@@ -443,49 +461,56 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get limited search results upon subscribing", %{server_pid: pid} do
-      assert %{matching_vehicles: [@ghost], has_more_matches: true} ==
-               Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 1}, pid)
+      {lookup_key, results} =
+        Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 1}, pid)
+
+      assert results == %{matching_vehicles: [@ghost], has_more_matches: true}
+      assert lookup_key == {:limited_search, %{property: :all, text: "90", limit: 1}}
     end
 
     test "clients get updated limited search results pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 5}, pid)
+      {lookup_key, _} =
+        Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 5}, pid)
 
       Server.update_vehicles({%{}, [@shuttle], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
+      assert_receive {:new_realtime_data, ets}
 
       assert %{matching_vehicles: [@shuttle], has_more_matches: false} ==
-               Server.lookup(lookup_args)
+               Server.lookup({ets, lookup_key})
     end
 
     test "does not receive duplicate vehicles", %{server_pid: pid} do
-      Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 5}, pid)
+      {lookup_key, _} =
+        Server.subscribe_to_limited_search(%{property: :all, text: "90", limit: 5}, pid)
 
       Server.update_vehicles({%{}, [@shuttle, @shuttle], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
+      assert_receive {:new_realtime_data, ets}
 
       assert %{matching_vehicles: [@shuttle], has_more_matches: false} =
-               Server.lookup(lookup_args)
+               Server.lookup({ets, lookup_key})
     end
 
     test "vehicles on inactive blocks are included", %{server_pid: pid} do
-      Server.subscribe_to_limited_search(%{property: :vehicle, text: "v2-label", limit: 2}, pid)
+      {lookup_key, _} =
+        Server.subscribe_to_limited_search(%{property: :vehicle, text: "v2-label", limit: 2}, pid)
 
       Server.update_vehicles({%{"1" => [@vehicle_on_inactive_block]}, [], []}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
+      assert_receive {:new_realtime_data, ets}
 
       assert %{matching_vehicles: [@vehicle_on_inactive_block], has_more_matches: false} =
-               Server.lookup(lookup_args)
+               Server.lookup({ets, lookup_key})
     end
 
     test "logged out vehicles are returned when include_logged_out_vehicles is true",
          %{server_pid: pid} do
-      Server.subscribe_to_limited_search(
-        %{property: :vehicle, text: "123", include_logged_out_vehicles: true, limit: 4},
-        pid
-      )
+      {lookup_key, _} =
+        Server.subscribe_to_limited_search(
+          %{property: :vehicle, text: "123", include_logged_out_vehicles: true, limit: 4},
+          pid
+        )
 
       logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
@@ -499,17 +524,18 @@ defmodule Realtime.ServerTest do
         pid
       )
 
-      assert_receive {:new_realtime_data, lookup_args}
+      assert_receive {:new_realtime_data, ets}
 
       assert %{
                matching_vehicles: [logged_in_vehicle, logged_out_vehicle],
                has_more_matches: false
-             } == Server.lookup(lookup_args)
+             } == Server.lookup({ets, lookup_key})
     end
 
     test "logged out vehicles are not returned when include_logged_out_vehicles is not set",
          %{server_pid: pid} do
-      Server.subscribe_to_limited_search(%{property: :vehicle, text: "123", limit: 5}, pid)
+      {lookup_key, _} =
+        Server.subscribe_to_limited_search(%{property: :vehicle, text: "123", limit: 5}, pid)
 
       logged_in_vehicle =
         build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
@@ -518,10 +544,10 @@ defmodule Realtime.ServerTest do
 
       Server.update_vehicles({%{"1" => [logged_in_vehicle]}, [], [logged_out_vehicle]}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
+      assert_receive {:new_realtime_data, ets}
 
       assert %{matching_vehicles: [logged_in_vehicle], has_more_matches: false} ==
-               Server.lookup(lookup_args)
+               Server.lookup({ets, lookup_key})
     end
   end
 
@@ -539,15 +565,21 @@ defmodule Realtime.ServerTest do
       first_search_params = %{property: :all, text: "90", limit: 5}
       second_search_params = %{property: :all, text: "asdf", limit: 5}
 
-      Server.subscribe_to_limited_search(first_search_params, pid)
+      {first_lookup_key, _} = Server.subscribe_to_limited_search(first_search_params, pid)
+      assert first_lookup_key == {:limited_search, first_search_params}
+
       Server.update_vehicles({%{}, [@shuttle], []}, pid)
 
-      assert_receive {:new_realtime_data, {_ets_tid, {:limited_search, ^first_search_params}}}
+      assert_receive {:new_realtime_data, _ets_tid}
 
-      Server.update_limited_search_subscription(second_search_params, pid)
+      {second_lookup_key, _} =
+        Server.update_limited_search_subscription(second_search_params, pid)
+
+      assert second_lookup_key == {:limited_search, second_search_params}
+
       Server.update_vehicles({%{}, [@shuttle], []}, pid)
-      assert_receive {:new_realtime_data, {_ets_tid, {:limited_search, ^second_search_params}}}
-      refute_receive {:new_realtime_data, {_ets_tid, {:limited_search, ^first_search_params}}}
+
+      assert_receive {:new_realtime_data, _ets_tid}
     end
   end
 
@@ -561,16 +593,18 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get all shuttles upon subscribing", %{server_pid: pid} do
-      assert Server.subscribe_to_alerts("1", pid) == @alerts_by_route_id["1"]
+      {lookup_key, alerts} = Server.subscribe_to_alerts("1", pid)
+      assert alerts == @alerts_by_route_id["1"]
+      assert lookup_key == {:alerts, "1"}
     end
 
     test "clients get updated data pushed to them", %{server_pid: pid} do
-      Server.subscribe_to_alerts("1", pid)
+      {lookup_key, _} = Server.subscribe_to_alerts("1", pid)
 
       Server.update_alerts(%{"15" => ["Totally different alert"]}, pid)
 
-      assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == []
+      assert_receive {:new_realtime_data, ets}
+      assert Server.lookup({ets, lookup_key}) == []
     end
 
     test "clients subscribed to vehicles don't get updated data pushed to them", %{
@@ -580,7 +614,7 @@ defmodule Realtime.ServerTest do
 
       Server.update_alerts(%{"1" => ["Totally different alert"]}, pid)
 
-      refute_receive {:new_realtime_data, _lookup_args}
+      refute_receive {:new_realtime_data, _ets}
     end
   end
 

@@ -93,69 +93,92 @@ defmodule Realtime.Server do
   ```
   Those `lookup_args` can be passed into `RealTime.Server.lookup(lookup_args)/1` to get the data.
   """
-  @spec subscribe_to_route(Route.id(), GenServer.server()) :: [VehicleOrGhost.t()]
+  @spec subscribe_to_route(Route.id(), GenServer.server()) ::
+          {subscription_key(), [VehicleOrGhost.t()]}
   def subscribe_to_route(route_id, server \\ default_name()) do
-    subscribe(server, {:route_id, route_id})
+    subscription_key = {:route_id, route_id}
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
-  @spec subscribe_to_all_shuttles(GenServer.server()) :: [Vehicle.t()]
+  @spec subscribe_to_all_shuttles(GenServer.server()) :: {subscription_key(), [Vehicle.t()]}
   def subscribe_to_all_shuttles(server \\ default_name()) do
-    subscribe(server, :all_shuttles)
+    subscription_key = :all_shuttles
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
-  @spec subscribe_to_search(search_params(), GenServer.server()) :: [VehicleOrGhost.t()]
+  @spec subscribe_to_search(search_params(), GenServer.server()) ::
+          {subscription_key(), [VehicleOrGhost.t()]}
   def subscribe_to_search(search_params, server \\ default_name()) do
-    subscribe(server, {:search, search_params})
+    subscription_key = {:search, search_params}
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
   @spec subscribe_to_limited_search(search_params(), GenServer.server()) ::
-          limited_search_result()
+          {subscription_key(), limited_search_result()}
   def subscribe_to_limited_search(search_params, server \\ default_name()) do
-    subscribe(server, {:limited_search, search_params})
+    subscription_key = {:limited_search, search_params}
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
   @spec update_limited_search_subscription(search_params(), GenServer.server()) ::
-          limited_search_result()
+          {subscription_key(), limited_search_result()}
   def update_limited_search_subscription(search_params, server \\ default_name()) do
-    update_subscription(server, {:limited_search, search_params})
+    subscription_key = {:limited_search, search_params}
+    {subscription_key, update_subscription(server, subscription_key)}
   end
 
-  @spec subscribe_to_vehicle(String.t(), GenServer.server()) :: [VehicleOrGhost.t()]
+  @spec subscribe_to_vehicle(String.t(), GenServer.server()) ::
+          {subscription_key(), [VehicleOrGhost.t()]}
   def subscribe_to_vehicle(vehicle_id, server \\ default_name()) do
-    subscribe(
-      server,
-      {:vehicle, vehicle_id}
-    )
+    subscription_key = {:vehicle, vehicle_id}
+
+    {subscription_key,
+     subscribe(
+       server,
+       subscription_key
+     )}
   end
 
-  @spec subscribe_to_vehicle_with_logged_out(String.t(), GenServer.server()) :: [
-          VehicleOrGhost.t()
-        ]
+  @spec subscribe_to_vehicle_with_logged_out(String.t(), GenServer.server()) ::
+          {subscription_key(),
+           [
+             VehicleOrGhost.t()
+           ]}
   def subscribe_to_vehicle_with_logged_out(vehicle_id, server \\ default_name()) do
-    subscribe(
-      server,
-      {:vehicle_with_logged_out, vehicle_id}
-    )
+    subscription_key = {:vehicle_with_logged_out, vehicle_id}
+
+    {subscription_key,
+     subscribe(
+       server,
+       subscription_key
+     )}
   end
 
-  @spec subscribe_to_run_ids([Run.id()], GenServer.server()) :: [VehicleOrGhost.t()]
+  @spec subscribe_to_run_ids([Run.id()], GenServer.server()) ::
+          {subscription_key(), [VehicleOrGhost.t()]}
   def subscribe_to_run_ids(run_ids, server \\ default_name()) do
-    subscribe(server, {:run_ids, run_ids})
+    subscription_key = {:run_ids, run_ids}
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
-  @spec subscribe_to_block_ids([Block.id()], GenServer.server()) :: [VehicleOrGhost.t()]
+  @spec subscribe_to_block_ids([Block.id()], GenServer.server()) ::
+          {subscription_key(), [VehicleOrGhost.t()]}
   def subscribe_to_block_ids(block_ids, server \\ default_name()) do
-    subscribe(server, {:block_ids, block_ids})
+    subscription_key = {:block_ids, block_ids}
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
-  @spec subscribe_to_all_pull_backs(GenServer.server()) :: [VehicleOrGhost.t()]
+  @spec subscribe_to_all_pull_backs(GenServer.server()) ::
+          {subscription_key(), [VehicleOrGhost.t()]}
   def subscribe_to_all_pull_backs(server \\ default_name()) do
-    subscribe(server, :all_pull_backs)
+    subscription_key = :all_pull_backs
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
-  @spec subscribe_to_alerts(Route.id(), GenServer.server()) :: [String.t()]
+  @spec subscribe_to_alerts(Route.id(), GenServer.server()) :: {subscription_key(), [String.t()]}
   def subscribe_to_alerts(route_id, server \\ default_name()) do
-    subscribe(server, {:alerts, route_id})
+    subscription_key = {:alerts, route_id}
+    {subscription_key, subscribe(server, subscription_key)}
   end
 
   def peek_at_vehicles_by_run_ids(run_ids, server \\ default_name()) do
@@ -524,15 +547,15 @@ defmodule Realtime.Server do
       Enum.each(entries, fn {pid, subscripition_key} ->
         if (data_type == :alerts and match?({:alerts, _}, subscripition_key)) or
              (data_type == :vehicles and !match?({:alerts, _}, subscripition_key)) do
-          send_data({pid, subscripition_key}, state)
+          send_data(pid, state)
         end
       end)
     end)
   end
 
-  @spec send_data({pid, subscription_key}, t) :: broadcast_message
-  defp send_data({pid, subscription_key}, state) do
-    send(pid, {:new_realtime_data, {state.ets, subscription_key}})
+  @spec send_data(pid, t) :: broadcast_message
+  defp send_data(pid, state) do
+    send(pid, {:new_realtime_data, state.ets})
   end
 
   @spec block_is_active?(VehicleOrGhost.t()) :: boolean

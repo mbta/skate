@@ -78,6 +78,39 @@ defmodule SkateWeb.VehicleChannelTest do
                subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
     end
 
+    test "handles case where vehicle for given run IDs does not exist", %{
+      socket: socket
+    } do
+      assert Realtime.Server.update_vehicles({%{}, [], []}) == :ok
+
+      expected_payload = %{data: nil}
+
+      assert {:ok, ^expected_payload, %Socket{} = _socket} =
+               subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
+    end
+
+    test "subscribes to the vehicle for given ID when user is not in the test group", %{
+      socket: socket
+    } do
+      Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, [], []})
+
+      expected_payload = %{data: @vehicle}
+
+      assert {:ok, ^expected_payload, %Socket{} = _socket} =
+               subscribe_and_join(socket, VehicleChannel, "vehicle:id:#{@vehicle.id}")
+    end
+
+    test "handles case where the vehicle for given ID does not exist", %{
+      socket: socket
+    } do
+      Realtime.Server.update_vehicles({%{}, [], []})
+
+      expected_payload = %{data: nil}
+
+      assert {:ok, ^expected_payload, %Socket{} = _socket} =
+               subscribe_and_join(socket, VehicleChannel, "vehicle:id:#{@vehicle.id}")
+    end
+
     test "subscribes to the logged out vehicle for given ID when user is in the test group", %{
       socket: socket,
       user: user
@@ -121,7 +154,7 @@ defmodule SkateWeb.VehicleChannelTest do
 
       assert {:noreply, _socket} =
                VehicleChannel.handle_info(
-                 {:new_realtime_data, {ets, {:route_id, "1"}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 

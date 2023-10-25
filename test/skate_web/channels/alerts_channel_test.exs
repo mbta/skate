@@ -54,7 +54,7 @@ defmodule SkateWeb.AlertsChannelTest do
 
       assert {:noreply, _socket} =
                AlertsChannel.handle_info(
-                 {:new_realtime_data, {ets, {:alerts, "1"}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
