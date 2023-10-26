@@ -9,7 +9,7 @@ defmodule SkateWeb.AlertsChannelTest do
 
     socket = socket(UserSocket)
 
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
+    start_supervised({Phoenix.PubSub, name: Realtime.Server.pubsub_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
     {:ok, socket: socket}

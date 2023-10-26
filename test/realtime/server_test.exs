@@ -73,7 +73,7 @@ defmodule Realtime.ServerTest do
   }
 
   setup do
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
+    start_supervised({Phoenix.PubSub, name: Realtime.Server.pubsub_name()})
     :ok
   end
 

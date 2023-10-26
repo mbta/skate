@@ -20,7 +20,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       |> socket("", %{})
       |> Guardian.Phoenix.Socket.put_current_resource(%{id: user.id})
 
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
+    start_supervised({Phoenix.PubSub, name: Realtime.Server.pubsub_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
     {:ok, socket: socket, user: user}
