@@ -73,6 +73,7 @@ interface TrNameValueProps {
   children: ReactNode
   idPrefix?: string
   sensitivity?: HideSensitiveInfo
+  onValueClick?: () => void
 }
 
 const maskClass = "fs-mask"
@@ -84,6 +85,7 @@ const TrNameValue = ({
   children: value,
   idPrefix,
   sensitivity: sensitive = HideSensitiveInfo.None,
+  onValueClick,
 }: TrNameValueProps): React.ReactElement => {
   const id = (idPrefix ?? name) + useId()
   return (
@@ -102,15 +104,28 @@ const TrNameValue = ({
         ])}
         aria-labelledby={id}
       >
-        {value}
+        {onValueClick ? (
+          <button className="kv-value--clickable" onClick={onValueClick}>
+            {value}
+          </button>
+        ) : (
+          <>{value}</>
+        )}
       </td>
     </tr>
   )
 }
 
+type VehicleWorkInfoEventProps = {
+  onRunClick?: (vehicleOrGhost: Vehicle | Ghost) => void
+}
+
+type VehicleWorkInfoProps = VehicleOrGhostProp & VehicleWorkInfoEventProps
+
 const VehicleWorkInfo = ({
   vehicleOrGhost,
-}: VehicleOrGhostProp): React.ReactElement => {
+  onRunClick,
+}: VehicleWorkInfoProps): React.ReactElement => {
   const isLoggedOutVehicle =
     isVehicle(vehicleOrGhost) && isLoggedOut(vehicleOrGhost)
   const noRunText = isLoggedOutVehicle ? "No run logged in" : "N/A"
@@ -120,7 +135,10 @@ const VehicleWorkInfo = ({
     <>
       <table className="c-vehicle-work-info">
         <tbody className="c-vehicle-work-info__items">
-          <TrNameValue name="run">
+          <TrNameValue
+            name="run"
+            onValueClick={onRunClick && (() => onRunClick(vehicleOrGhost))}
+          >
             {vehicleOrGhost.runId || noRunText}
           </TrNameValue>
           <TrNameValue name="vehicle">
@@ -193,11 +211,13 @@ const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
 
 // #region Vehicle Properties Card
 export type VehiclePropertiesCardProps = VehicleOrGhostProp &
-  VehicleRouteSummaryEventProps
+  VehicleRouteSummaryEventProps &
+  VehicleWorkInfoEventProps
 
 const VehiclePropertiesCard = ({
   vehicleOrGhost,
   onRouteVariantNameClicked,
+  onRunClick,
 }: VehiclePropertiesCardProps): React.ReactElement => {
   return (
     <div
@@ -224,7 +244,10 @@ const VehiclePropertiesCard = ({
 
       <div className="c-vehicle-properties-card__body">
         <div className="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section">
-          <VehicleWorkInfo vehicleOrGhost={vehicleOrGhost} />
+          <VehicleWorkInfo
+            vehicleOrGhost={vehicleOrGhost}
+            onRunClick={onRunClick}
+          />
         </div>
 
         <div

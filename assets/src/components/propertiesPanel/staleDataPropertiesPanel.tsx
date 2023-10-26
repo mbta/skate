@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext, useState } from "react"
+import React, { Dispatch, SetStateAction, useContext } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Vehicle } from "../../realtime"
 import BlockWaiverList from "./blockWaiverList"
@@ -6,25 +6,30 @@ import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { closeView, returnToPreviousView } from "../../state"
+import { returnToPreviousView } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
 import { isVehicleInScheduledService } from "../../models/vehicle"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+type Props = {
   selectedVehicle: Vehicle
-}
+} & IndividualPropertiesPanelProps
 
-const StaleDataPropertiesPanel: React.FC<Props> = ({ selectedVehicle }) => {
-  const [tabMode, setTabMode] = useState<TabMode>("status")
-
+const StaleDataPropertiesPanel: React.FC<Props> = ({
+  selectedVehicle,
+  tabMode,
+  onChangeTabMode,
+  onClosePanel,
+}) => {
   return (
     <div className="c-stale-data-properties-panel">
       <StaleDataHeader
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={setTabMode}
+        setTabMode={onChangeTabMode}
+        closePanel={onClosePanel}
       />
       {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
@@ -43,17 +48,16 @@ const StaleDataHeader: React.FC<{
   vehicle: Vehicle
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
-}> = ({ vehicle, tabMode, setTabMode }) => {
+  closePanel: () => void
+}> = ({ vehicle, tabMode, setTabMode, closePanel }) => {
   const [{ userSettings, previousView }, dispatch] =
     useContext(StateDispatchContext)
-
-  const hideMe = () => dispatch(closeView())
 
   return (
     <div className="c-properties-panel__header-wrapper">
       <ViewHeader
         title="Vehicles"
-        closeView={hideMe}
+        closeView={closePanel}
         backlinkToView={previousView}
         followBacklink={() => dispatch(returnToPreviousView())}
       />

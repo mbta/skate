@@ -1,7 +1,3 @@
-import React from "react"
-import { ReactElement } from "react"
-import MapPage from "../components/mapPage"
-import SearchPage from "../components/searchPage"
 import { SearchIcon, SearchMapIcon } from "../helpers/icon"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 
@@ -10,7 +6,6 @@ type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 export interface NavMode {
   path: string
   title: string
-  element: ReactElement
   navIcon: React.JSXElementConstructor<HTMLElementProps>
   supportsRightPanel: boolean
   navEventText?: string
@@ -19,7 +14,6 @@ export interface NavMode {
 const legacyMapConfig = {
   path: "/search",
   title: "Search",
-  element: <SearchPage />,
   navIcon: SearchIcon,
   supportsRightPanel: true,
 }
@@ -27,7 +21,6 @@ const legacyMapConfig = {
 export const searchMapConfig = {
   path: "/map",
   title: "Search Map",
-  element: <MapPage />,
   navIcon: SearchMapIcon,
   supportsRightPanel: false,
   navEventText: "Search Map nav entry clicked",

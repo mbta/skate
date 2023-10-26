@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useNearestIntersection } from "../../hooks/useNearestIntersection"
@@ -21,14 +21,14 @@ import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import MiniMap from "./miniMap"
-import TabPanels, { TabMode } from "./tabPanels"
+import TabPanels from "./tabPanels"
 import { DiamondTurnRightIcon } from "../../helpers/icon"
 import { fullStoryEvent } from "../../helpers/fullStory"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+type Props = {
   selectedVehicle: Vehicle
-  initialTab?: TabMode
-}
+} & IndividualPropertiesPanelProps
 
 const InvalidBanner = () => (
   <Card
@@ -202,23 +202,24 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
 
 const VehiclePropertiesPanel = ({
   selectedVehicle,
-  initialTab = "status",
+  tabMode,
+  onChangeTabMode,
+  onClosePanel,
 }: Props) => {
-  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
-
   return (
     <div className="c-vehicle-properties-panel">
       <Header
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={(newTabMode) => {
+        onChangeTabMode={(newTabMode) => {
           if (newTabMode !== tabMode) {
             fullStoryEvent("Switched tab in Vehicle Properties Panel", {
               tab_str: newTabMode,
             })
           }
-          setTabMode(newTabMode)
+          onChangeTabMode(newTabMode)
         }}
+        onClosePanel={onClosePanel}
       />
 
       {isVehicleInScheduledService(selectedVehicle) ? (

@@ -1,15 +1,16 @@
-import React, { useState } from "react"
+import React from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
 import PropertiesList, { ghostProperties } from "../propertiesList"
 import { NoWaiverBanner } from "./blockWaiverBanner"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
-import TabPanels, { TabMode } from "./tabPanels"
+import TabPanels from "./tabPanels"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+type Props = {
   selectedGhost: Ghost
-}
+} & IndividualPropertiesPanelProps
 
 const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   <>
@@ -24,15 +25,19 @@ const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   </>
 )
 
-const GhostPropertiesPanel = ({ selectedGhost }: Props) => {
-  const [tabMode, setTabMode] = useState<TabMode>("status")
-
+const GhostPropertiesPanel = ({
+  selectedGhost,
+  tabMode,
+  onChangeTabMode,
+  onClosePanel,
+}: Props) => {
   return (
     <div className="c-ghost-properties-panel">
       <Header
         vehicle={selectedGhost}
         tabMode={tabMode}
-        setTabMode={setTabMode}
+        onChangeTabMode={onChangeTabMode}
+        onClosePanel={onClosePanel}
       />
 
       <TabPanels

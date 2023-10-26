@@ -1,16 +1,23 @@
-import React, { useContext, useEffect, useState } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import React, { useEffect, useState } from "react"
 import useSocket from "../hooks/useSocket"
 import useVehicleForId from "../hooks/useVehicleForId"
 import { isLoggedOut, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime.d"
-import { closeView } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
+import { TabMode } from "./propertiesPanel/tabPanels"
 
 interface Props {
   selectedVehicleOrGhost: Vehicle | Ghost
+  initialTab?: TabMode
+  onClosePanel: () => void
+}
+
+export type IndividualPropertiesPanelProps = {
+  tabMode: TabMode
+  onChangeTabMode: React.Dispatch<React.SetStateAction<TabMode>>
+  onClosePanel: () => void
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -22,46 +29,56 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   }
 }
 
-const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+const PropertiesPanel = ({
+  selectedVehicleOrGhost,
+  initialTab = "status",
+  onClosePanel,
+}: Props) => {
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
-  const [vehicleToDisplay, setVehicleToDisplay] = useState<Vehicle | Ghost>(
+  const [mostRecentVehicle, setMostRecentVehicle] = useState<Vehicle | Ghost>(
     liveVehicle || selectedVehicleOrGhost
   )
-  const [dataIsStale, setDataIsStale] = useState<boolean>(false)
+  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
 
   useEffect(() => {
     if (liveVehicle) {
-      setVehicleToDisplay(liveVehicle)
-    }
-
-    if (liveVehicle === null) {
-      setDataIsStale(true)
-    } else {
-      setDataIsStale(false)
+      setMostRecentVehicle(liveVehicle)
     }
   }, [liveVehicle])
-
-  const hideMe = () => dispatch(closeView())
 
   return (
     <>
       <div id="c-properties-panel" className="c-properties-panel">
-        {isVehicle(vehicleToDisplay) &&
-        (dataIsStale || isLoggedOut(vehicleToDisplay)) ? (
-          <StaleDataPropertiesPanel selectedVehicle={vehicleToDisplay} />
-        ) : isVehicle(vehicleToDisplay) ? (
-          <VehiclePropertiesPanel selectedVehicle={vehicleToDisplay} />
+        {isVehicle(mostRecentVehicle) &&
+        (liveVehicle === null || isLoggedOut(mostRecentVehicle)) ? (
+          <StaleDataPropertiesPanel
+            selectedVehicle={mostRecentVehicle}
+            tabMode={tabMode}
+            onChangeTabMode={setTabMode}
+            onClosePanel={onClosePanel}
+          />
+        ) : isVehicle(mostRecentVehicle) ? (
+          <VehiclePropertiesPanel
+            selectedVehicle={mostRecentVehicle}
+            tabMode={tabMode}
+            onChangeTabMode={setTabMode}
+            onClosePanel={onClosePanel}
+          />
         ) : (
-          <GhostPropertiesPanel selectedGhost={vehicleToDisplay} />
+          <GhostPropertiesPanel
+            selectedGhost={mostRecentVehicle}
+            tabMode={tabMode}
+            onChangeTabMode={setTabMode}
+            onClosePanel={onClosePanel}
+          />
         )}
       </div>
       <div
         className="c-properties-panel-backdrop"
         onClick={
           /* istanbul ignore next */
-          () => hideMeIfNoCrowdingTooltip(hideMe)
+          () => hideMeIfNoCrowdingTooltip(onClosePanel)
         }
         aria-hidden={true}
       />

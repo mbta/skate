@@ -36,6 +36,8 @@ import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
+import PropertiesPanel from "./propertiesPanel"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -74,9 +76,11 @@ const SearchMode = ({
 const SelectedVehicle = ({
   vehicleId,
   setSelection,
+  onRunClicked,
 }: {
   vehicleId: VehicleId
   setSelection: (selectedEntity: SelectedEntity | null) => void
+  onRunClicked?: (vehicleOrGhost: Vehicle | Ghost) => void
 }) => {
   // TODO: When using socket from context, this doesn't work as-is
   // Presumably because the useMostRecentVehicleById hook is being used twice, but
@@ -106,6 +110,7 @@ const SelectedVehicle = ({
       vehicleOrGhost={selectedVehicleOrGhost}
       key={selectedVehicleOrGhost.id}
       onRouteVariantNameClicked={onRouteClicked || undefined}
+      onRunClick={onRunClicked}
     />
   )
 }
@@ -134,10 +139,12 @@ const Selection = ({
   selectedEntity,
   setSelection,
   fetchedSelectedLocation,
+  onVehicleRunClicked,
 }: {
   selectedEntity: SelectedEntity
   setSelection: (selectedEntity: SelectedEntity | null) => void
   fetchedSelectedLocation: LocationSearchResult | null
+  onVehicleRunClicked?: (vehicleOrGhost: Vehicle | Ghost) => void
 }): ReactElement => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
   const selectRoutePattern = (routePattern: RoutePattern) => {
@@ -186,6 +193,7 @@ const Selection = ({
         <SelectedVehicle
           vehicleId={selectedEntity.vehicleId}
           setSelection={setSelection}
+          onRunClicked={onVehicleRunClicked}
         />
       ) : selectedEntity.type === SelectedEntityType.RoutePattern ? (
         <SelectedRoute
@@ -211,6 +219,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, openView }, dispatch] =
       useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
+  const [
+    selectedRightPanelVehicleOrGhost,
+    setSelectedRightPanelVehicleOrGhost,
+  ] = useState<Vehicle | Ghost | null>(null)
 
   useEffect(() => {
     // don't dispatch closeView if the VPP is open
@@ -286,61 +298,76 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   }
 
   return (
-    <div
-      className="c-map-page inherit-box border-box"
-      aria-label="Search Map Page"
-    >
+    <>
       <div
-        className={joinClasses([
-          "c-map-page__input-and-results",
-          searchOpen
-            ? "c-map-page__input-and-results--visible"
-            : "c-map-page__input-and-results--hidden",
-        ])}
-        aria-label="Map Search Panel"
+        className="c-map-page inherit-box border-box"
+        aria-label="Search Map Page"
       >
-        <DrawerTab
-          isVisible={searchOpen}
-          toggleVisibility={toggleSearchDrawer}
-        />
-        {selectedEntity ? (
-          <Selection
+        <div
+          className={joinClasses([
+            "c-map-page__input-and-results",
+            searchOpen
+              ? "c-map-page__input-and-results--visible"
+              : "c-map-page__input-and-results--hidden",
+          ])}
+          aria-label="Map Search Panel"
+        >
+          <DrawerTab
+            isVisible={searchOpen}
+            toggleVisibility={toggleSearchDrawer}
+          />
+          {selectedEntity ? (
+            <Selection
+              selectedEntity={selectedEntity}
+              setSelection={(...args) => {
+                setFollowerShouldSetZoomLevel(false)
+                setVehicleSelection(...args)
+              }}
+              fetchedSelectedLocation={fetchedSelectedLocation}
+              onVehicleRunClicked={
+                inTestGroup(TestGroups.SearchMapsOnMobile)
+                  ? (vehicleOrGhost: Vehicle | Ghost) =>
+                      setSelectedRightPanelVehicleOrGhost(vehicleOrGhost)
+                  : undefined
+              }
+            />
+          ) : (
+            <SearchMode
+              onSelectVehicleResult={(...args) => {
+                setFollowerShouldSetZoomLevel(true)
+                selectVehicleResult(...args)
+              }}
+              onSelectLocationResult={selectLocationResult}
+            />
+          )}
+        </div>
+        <div className="c-map-page__map">
+          <MapDisplay
             selectedEntity={selectedEntity}
             setSelection={(...args) => {
               setFollowerShouldSetZoomLevel(false)
               setVehicleSelection(...args)
             }}
             fetchedSelectedLocation={fetchedSelectedLocation}
+            initializeRouteFollowerEnabled={followerShouldSetZoomLevel === true}
+            vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
+            onInterruptVehicleFollower={
+              (followerShouldSetZoomLevel === false || undefined) &&
+              (() => {
+                setFollowerShouldSetZoomLevel(false)
+              })
+            }
           />
-        ) : (
-          <SearchMode
-            onSelectVehicleResult={(...args) => {
-              setFollowerShouldSetZoomLevel(true)
-              selectVehicleResult(...args)
-            }}
-            onSelectLocationResult={selectLocationResult}
-          />
-        )}
+        </div>
       </div>
-      <div className="c-map-page__map">
-        <MapDisplay
-          selectedEntity={selectedEntity}
-          setSelection={(...args) => {
-            setFollowerShouldSetZoomLevel(false)
-            setVehicleSelection(...args)
-          }}
-          fetchedSelectedLocation={fetchedSelectedLocation}
-          initializeRouteFollowerEnabled={followerShouldSetZoomLevel === true}
-          vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
-          onInterruptVehicleFollower={
-            (followerShouldSetZoomLevel === false || undefined) &&
-            (() => {
-              setFollowerShouldSetZoomLevel(false)
-            })
-          }
+      {selectedRightPanelVehicleOrGhost && (
+        <PropertiesPanel
+          selectedVehicleOrGhost={selectedRightPanelVehicleOrGhost}
+          onClosePanel={() => setSelectedRightPanelVehicleOrGhost(null)}
+          initialTab="run"
         />
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 

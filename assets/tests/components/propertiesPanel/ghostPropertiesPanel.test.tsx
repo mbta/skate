@@ -9,9 +9,20 @@ import * as dateTime from "../../../src/util/dateTime"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
 
+import {
+  useMinischeduleBlock,
+  useMinischeduleRun,
+} from "../../../src/hooks/useMinischedule"
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
+import { closeButton } from "../../testHelpers/selectors/components/closeButton"
+
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("1970-01-01T22:42:00.000Z"))
+
+jest.mock("../../../src/hooks/useMinischedule")
 
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
@@ -42,7 +53,12 @@ describe("GhostPropertiesPanel", () => {
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>
-          <GhostPropertiesPanel selectedGhost={ghost} />
+          <GhostPropertiesPanel
+            selectedGhost={ghost}
+            tabMode="status"
+            onChangeTabMode={jest.fn()}
+            onClosePanel={jest.fn()}
+          />
         </RoutesProvider>
       )
       .toJSON()
@@ -55,7 +71,12 @@ describe("GhostPropertiesPanel", () => {
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>
-          <GhostPropertiesPanel selectedGhost={ghostWithoutRun} />
+          <GhostPropertiesPanel
+            selectedGhost={ghostWithoutRun}
+            tabMode="status"
+            onChangeTabMode={jest.fn()}
+            onClosePanel={jest.fn()}
+          />
         </RoutesProvider>
       )
       .toJSON()
@@ -77,9 +98,60 @@ describe("GhostPropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(<GhostPropertiesPanel selectedGhost={ghostWithBlockWaivers} />)
+      .create(
+        <GhostPropertiesPanel
+          selectedGhost={ghostWithBlockWaivers}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("calls closePanel callback on close", async () => {
+    const mockClosePanel = jest.fn()
+
+    render(
+      <GhostPropertiesPanel
+        selectedGhost={ghost}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={mockClosePanel}
+      />
+    )
+
+    await userEvent.click(closeButton.get())
+
+    expect(mockClosePanel).toHaveBeenCalled()
+  })
+
+  test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
+    { tab: "run", clickTarget: "Run" },
+    { tab: "block", clickTarget: "Block" },
+    { tab: "status", clickTarget: "Status", initialTab: "block" },
+  ])(
+    "when active tab changes to '$tab', calls tab change callback",
+    async ({ tab, clickTarget, initialTab }) => {
+      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
+      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+
+      const mockSetTabMode = jest.fn()
+
+      render(
+        <GhostPropertiesPanel
+          selectedGhost={ghostFactory.build()}
+          tabMode={initialTab || "status"}
+          onChangeTabMode={mockSetTabMode}
+          onClosePanel={jest.fn()}
+        />
+      )
+
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(mockSetTabMode).toHaveBeenCalledWith(tab)
+    }
+  )
 })
