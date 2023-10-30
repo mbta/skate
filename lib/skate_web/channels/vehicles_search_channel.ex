@@ -45,8 +45,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
     {lookup_key, result} =
       Duration.log_duration(Server, :subscribe_to_limited_search, [subscribe_args])
 
-    {:ok, %{data: result},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: result}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   @impl SkateWeb.AuthenticatedChannel
@@ -83,8 +82,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
       "#{__MODULE__} limited_search User=#{username} updated limit for property=#{property}limit=#{limit}"
     end)
 
-    {:reply, {:ok, %{data: result}},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:reply, {:ok, %{data: result}}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   defp search_params_from_subtopic(subtopic) do

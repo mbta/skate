@@ -9,8 +9,7 @@ defmodule SkateWeb.AlertsChannel do
   def join_authenticated("alerts:route:" <> route_id, _message, socket) do
     {lookup_key, alerts} = Duration.log_duration(Server, :subscribe_to_alerts, [route_id])
 
-    {:ok, %{data: alerts},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: alerts}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   @impl SkateWeb.AuthenticatedChannel

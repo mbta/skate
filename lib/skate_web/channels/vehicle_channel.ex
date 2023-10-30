@@ -25,7 +25,7 @@ defmodule SkateWeb.VehicleChannel do
       if vehicle_or_ghost do
         {lookup_key, _vehicle_or_ghost} = Server.subscribe_to_vehicle(vehicle_or_ghost.id)
 
-        Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))
+        Phoenix.Socket.assign(socket, lookup_key: lookup_key)
       else
         socket
       end
@@ -60,7 +60,7 @@ defmodule SkateWeb.VehicleChannel do
       if is_nil(lookup_key) do
         socket
       else
-        Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))
+        Phoenix.Socket.assign(socket, lookup_key: lookup_key)
       end
 
     {:ok, %{data: vehicle_or_ghost}, socket}

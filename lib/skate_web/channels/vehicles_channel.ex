@@ -10,23 +10,20 @@ defmodule SkateWeb.VehiclesChannel do
   def join_authenticated("vehicles:shuttle:all", _message, socket) do
     {lookup_key, shuttles} = Duration.log_duration(Server, :subscribe_to_all_shuttles, [])
 
-    {:ok, %{data: shuttles},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: shuttles}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   def join_authenticated("vehicles:pull_backs:all", _message, socket) do
     {lookup_key, pull_backs} = Duration.log_duration(Server, :subscribe_to_all_pull_backs, [])
 
-    {:ok, %{data: pull_backs},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: pull_backs}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   def join_authenticated("vehicles:route:" <> route_id, _message, socket) do
     {lookup_key, vehicles_and_ghosts} =
       Duration.log_duration(Server, :subscribe_to_route, [route_id])
 
-    {:ok, %{data: vehicles_and_ghosts},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: vehicles_and_ghosts}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   def join_authenticated("vehicles:run_ids:" <> run_ids, _message, socket) do
@@ -35,8 +32,7 @@ defmodule SkateWeb.VehiclesChannel do
     {lookup_key, vehicles_and_ghosts} =
       Duration.log_duration(Server, :subscribe_to_run_ids, [run_ids])
 
-    {:ok, %{data: vehicles_and_ghosts},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: vehicles_and_ghosts}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   def join_authenticated("vehicles:block_ids:" <> block_ids, _message, socket) do
@@ -45,8 +41,7 @@ defmodule SkateWeb.VehiclesChannel do
     {lookup_key, vehicles_and_ghosts} =
       Duration.log_duration(Server, :subscribe_to_block_ids, [block_ids])
 
-    {:ok, %{data: vehicles_and_ghosts},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: vehicles_and_ghosts}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   def join_authenticated(
@@ -93,8 +88,7 @@ defmodule SkateWeb.VehiclesChannel do
 
     {lookup_key, vehicles} = Duration.log_duration(Server, :subscribe_to_search, [subscribe_args])
 
-    {:ok, %{data: vehicles},
-     Phoenix.Socket.assign(socket, Map.merge(socket.assigns, %{lookup_key: lookup_key}))}
+    {:ok, %{data: vehicles}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   def join_authenticated(topic, _message, _socket) do
