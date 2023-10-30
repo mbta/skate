@@ -20,7 +20,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       |> socket("", %{})
       |> Guardian.Phoenix.Socket.put_current_resource(%{id: user.id})
 
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
+    start_supervised({Phoenix.PubSub, name: Realtime.Server.pubsub_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
     {:ok, socket: socket, user: user}
@@ -127,7 +127,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, {:route_id, "1"}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
@@ -145,7 +145,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, :all_shuttles}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
@@ -165,7 +165,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, :all_pull_backs}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
@@ -183,7 +183,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, {:search, %{text: @vehicle.label, property: :all}}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
@@ -240,7 +240,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       {:stop, :normal, _socket} =
         VehiclesChannel.handle_info(
-          {:new_realtime_data, {ets, {:route_id, "1"}}},
+          {:new_realtime_data, ets},
           socket
         )
 

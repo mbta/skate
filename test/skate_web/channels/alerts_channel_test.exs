@@ -9,7 +9,7 @@ defmodule SkateWeb.AlertsChannelTest do
 
     socket = socket(UserSocket)
 
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
+    start_supervised({Phoenix.PubSub, name: Realtime.Server.pubsub_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
     {:ok, socket: socket}
@@ -54,7 +54,7 @@ defmodule SkateWeb.AlertsChannelTest do
 
       assert {:noreply, _socket} =
                AlertsChannel.handle_info(
-                 {:new_realtime_data, {ets, {:alerts, "1"}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 

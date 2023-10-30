@@ -42,9 +42,10 @@ defmodule SkateWeb.VehiclesSearchChannel do
       "#{__MODULE__} limited_search User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text}"
     end)
 
-    result = Duration.log_duration(Server, :subscribe_to_limited_search, [subscribe_args])
+    {lookup_key, result} =
+      Duration.log_duration(Server, :subscribe_to_limited_search, [subscribe_args])
 
-    {:ok, %{data: result}, socket}
+    {:ok, %{data: result}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   @impl SkateWeb.AuthenticatedChannel
@@ -67,7 +68,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
 
     %{property: property, text: text} = search_params_from_subtopic(subtopic)
 
-    result =
+    {lookup_key, result} =
       Duration.log_duration(Server, :update_limited_search_subscription, [
         %{
           property: property,
@@ -81,7 +82,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
       "#{__MODULE__} limited_search User=#{username} updated limit for property=#{property}limit=#{limit}"
     end)
 
-    {:reply, {:ok, %{data: result}}, socket}
+    {:reply, {:ok, %{data: result}}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
   defp search_params_from_subtopic(subtopic) do
@@ -90,13 +91,16 @@ defmodule SkateWeb.VehiclesSearchChannel do
   end
 
   @impl SkateWeb.AuthenticatedChannel
-  def handle_info_authenticated({:new_realtime_data, lookup_args}, socket) do
-    event_name = event_name(lookup_args)
-    data = Server.lookup(lookup_args)
+  def handle_info_authenticated({:new_realtime_data, ets}, socket) do
+    lookup_key = socket.assigns[:lookup_key]
+
+    event_name = event_name(lookup_key)
+    data = Server.lookup({ets, lookup_key})
+
     :ok = push(socket, event_name, %{data: data})
     {:noreply, socket}
   end
 
-  @spec event_name(Server.lookup_key()) :: String.t()
-  defp event_name({_ets, {:limited_search, _}}), do: "limited_search"
+  @spec event_name(Server.subscription_key()) :: String.t()
+  defp event_name({:limited_search, _}), do: "limited_search"
 end
