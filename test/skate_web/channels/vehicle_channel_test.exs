@@ -92,12 +92,14 @@ defmodule SkateWeb.VehicleChannelTest do
     test "subscribes to the vehicle for given ID when user is not in the test group", %{
       socket: socket
     } do
-      Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, [], []})
+      vehicle = build(:vehicle)
 
-      expected_payload = %{data: @vehicle}
+      Realtime.Server.update_vehicles({%{vehicle.route_id => [vehicle]}, [], []})
+
+      expected_payload = %{data: vehicle}
 
       assert {:ok, ^expected_payload, %Socket{} = _socket} =
-               subscribe_and_join(socket, VehicleChannel, "vehicle:id:#{@vehicle.id}")
+               subscribe_and_join(socket, VehicleChannel, "vehicle:id:#{vehicle.id}")
     end
 
     test "handles case where the vehicle for given ID does not exist", %{
