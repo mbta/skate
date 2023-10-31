@@ -119,7 +119,8 @@ config :skate, Skate.Repo,
 config :skate, Skate.WarmUp,
   minimum_percent_queries_to_succeed: 0.6,
   max_attempts: 20,
-  seconds_between_attempts: 1
+  seconds_between_attempts: 5,
+  backoff_min: 5_000
 
 config :skate, Oban,
   repo: Skate.Repo,
