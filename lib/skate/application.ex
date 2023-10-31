@@ -29,7 +29,7 @@ defmodule Skate.Application do
           {Oban, Application.fetch_env!(:skate, Oban)}
         ]
 
-    Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
+    Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
   end
 
   # Tell Phoenix to update the endpoint configuration
