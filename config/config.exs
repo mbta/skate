@@ -114,12 +114,13 @@ config :skate, Skate.Repo,
   password: System.get_env("POSTGRES_PASSWORD", ""),
   hostname: System.get_env("POSTGRES_HOSTNAME", "localhost"),
   port: System.get_env("POSTGRES_PORT", "5432") |> String.to_integer(),
-  show_sensitive_data_on_connection_error: true
+  show_sensitive_data_on_connection_error: true,
+  backoff_min: 5_000
 
 config :skate, Skate.WarmUp,
   minimum_percent_queries_to_succeed: 0.6,
   max_attempts: 20,
-  seconds_between_attempts: 1
+  seconds_between_attempts: 5
 
 config :skate, Oban,
   repo: Skate.Repo,

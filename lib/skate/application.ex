@@ -9,12 +9,21 @@ defmodule Skate.Application do
   def start(_type, _args) do
     load_runtime_config()
 
+    start_data_processes? = Application.get_env(:skate, :start_data_processes)
+
     # List all child processes to be supervised
     children =
-      [{Skate.Repo, []}, Skate.WarmUp] ++
-        if Application.get_env(:skate, :start_data_processes) do
+      [{Skate.Repo, []}] ++
+        if start_data_processes? do
           [
-            Schedule.Supervisor,
+            Schedule.Supervisor
+          ]
+        else
+          []
+        end ++
+        [Skate.WarmUp] ++
+        if start_data_processes? do
+          [
             TrainVehicles.Supervisor,
             Notifications.Supervisor,
             Realtime.Supervisor
@@ -29,7 +38,7 @@ defmodule Skate.Application do
           {Oban, Application.fetch_env!(:skate, Oban)}
         ]
 
-    Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
+    Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
   end
 
   # Tell Phoenix to update the endpoint configuration
