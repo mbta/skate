@@ -4,9 +4,12 @@ defmodule Skate.Application do
   @moduledoc false
 
   use Application
+  require Logger
 
   @impl true
   def start(_type, _args) do
+    Logger.info("Skate application starting")
+
     load_runtime_config()
 
     start_data_processes? = Application.get_env(:skate, :start_data_processes)
