@@ -59,11 +59,7 @@ export const AppRoutes = () => {
       </div>
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
         <div className="l-app__main">
-          <Nav
-            allowViews={
-              location.pathname !== mapMode.path || mapMode.supportsRightPanel
-            }
-          >
+          <Nav allowViews>
             <Routes>
               <Route
                 element={
@@ -82,14 +78,7 @@ export const AppRoutes = () => {
                   element={<ShuttleMapPage />}
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
-                {mapMode.supportsRightPanel ? (
-                  <BrowserRoute path={mapMode.path} element={mapElement} />
-                ) : null}
-              </Route>
-              <Route>
-                {!mapMode.supportsRightPanel ? (
-                  <BrowserRoute path={mapMode.path} element={mapElement} />
-                ) : null}
+                <BrowserRoute path={mapMode.path} element={mapElement} />
               </Route>
             </Routes>
           </Nav>
