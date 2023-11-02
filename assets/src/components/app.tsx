@@ -1,5 +1,4 @@
 import React, { ReactElement, useContext, useEffect } from "react"
-import { Socket } from "phoenix"
 import {
   BrowserRouter,
   Routes,
@@ -27,24 +26,30 @@ import { mapModeForUser } from "../util/mapMode"
 import { Ghost, VehicleInScheduledService } from "../realtime"
 import MapPage from "./mapPage"
 import SearchPage from "./searchPage"
-import { OpenView } from "../state/pagePanelState"
+import { OpenView, isPagePath } from "../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 export const AppRoutes = () => {
   useAppcues()
+  const location = useLocation()
 
   const [{ routeTabs }] = useContext(StateDispatchContext)
 
   const {
+    setPath,
     currentView: { openView, selectedVehicleOrGhost },
   } = usePanelStateFromStateDispatchContext()
 
-  const location = useLocation()
+  // Keep panel in sync with current path
+  const { pathname: path } = location
+  useEffect(() => {
+    isPagePath(path) && setPath(path)
+  }, [path, setPath])
 
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehiclesByRouteIdNeeded =
     openView === OpenView.Late || location.pathname === "/"
 
+  const { socket } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
     useVehicles(
       socket,
