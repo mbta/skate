@@ -9,7 +9,8 @@ defmodule Report do
     Report.UserNamesAndUuids,
     Report.UserConfigurations,
     Report.NotificationsCountEstimate,
-    Report.NotificationsUsersCountEstimate
+    Report.NotificationsUsersCountEstimate,
+    Report.MaxConnections
   ]
 
   @callback run() :: {:ok, [map()]} | :error
