@@ -18,6 +18,12 @@ defmodule Skate.Repo do
         %{}
       )
 
+    if is_nil(token) do
+      Logger.info("#{__MODULE__} add_prod_credentials token_is_nil")
+    else
+      Logger.info("#{__MODULE__} add_prod_credentials token_length=#{byte_size(token)}")
+    end
+
     Keyword.merge(config,
       hostname: hostname,
       username: username,
