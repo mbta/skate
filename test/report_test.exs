@@ -57,7 +57,8 @@ defmodule ReportTest do
                "user_names_and_uuids" => Report.UserNamesAndUuids,
                "notifications_count_estimate" => Report.NotificationsCountEstimate,
                "notifications_users_count_estimate" => Report.NotificationsUsersCountEstimate,
-               "max_connections" => Report.MaxConnections
+               "max_connections" => Report.MaxConnections,
+               "authentication_timeout" => Report.AuthenticationTimeout
              }
     end
   end
