@@ -1,8 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import {
-  TriangleUpIcon,
-} from "../helpers/icon"
+import { TriangleUpIcon } from "../helpers/icon"
 import {
   setLadderVehicleLabelSetting,
   setShuttleVehicleLabelSetting,
@@ -30,7 +28,11 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
         <div className="c-page__section">
           <h2 className="c-settings-page__section-header">Vehicle Settings</h2>
           <ToggleSetting
-	    label={<div>Vehicle labels on <strong>regular</strong> buses</div>}
+            label={
+              <div>
+                Vehicle labels on <strong>regular</strong> buses
+              </div>
+            }
             settingName="shuttle-vehicle-label"
             value={userSettings.shuttleVehicleLabel}
             onChange={(value) => {
@@ -52,7 +54,11 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             ]}
           />
           <ToggleSetting
-	    label={<div>Vehicle labels on <strong>shuttle</strong> buses</div>}
+            label={
+              <div>
+                Vehicle labels on <strong>shuttle</strong> buses
+              </div>
+            }
             settingName="ladder-vehicle-label"
             value={userSettings.ladderVehicleLabel}
             onChange={(value) => {
@@ -141,7 +147,7 @@ const ToggleSetting = ({
   onChange,
   options,
 }: {
-  label: ReactElement  
+  label: ReactElement
   settingName: string
   value: string | number
   onChange: (value: string) => void

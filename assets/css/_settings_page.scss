@@ -50,6 +50,7 @@
 
 .c-settings-page__option-label-unselected {
   @include toggle-unselected;
+  color: $color-gray-600;
 }
 
 .c-settings-page__vehicle-adherence-setting-row {
