@@ -25,6 +25,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
     <div className={`l-page c-settings-page ${mobileMenuClass}`}>
       <Notifications />
       <div className="c-page__container">
+        <h1 className="c-page__title">Settings</h1>
         <div className="c-page__section">
           <h2 className="c-settings-page__section-header">Vehicle Settings</h2>
           <ToggleSetting
