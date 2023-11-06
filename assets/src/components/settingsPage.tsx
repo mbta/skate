@@ -29,9 +29,9 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           <h2 className="c-settings-page__section-header">Vehicle Settings</h2>
           <ToggleSetting
             label={
-              <div>
+              <>
                 Vehicle labels on <strong>regular</strong> buses
-              </div>
+              </>
             }
             settingName="shuttle-vehicle-label"
             value={userSettings.shuttleVehicleLabel}
@@ -55,9 +55,9 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           />
           <ToggleSetting
             label={
-              <div>
+              <>
                 Vehicle labels on <strong>shuttle</strong> buses
-              </div>
+              </>
             }
             settingName="ladder-vehicle-label"
             value={userSettings.ladderVehicleLabel}
@@ -80,7 +80,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             ]}
           />
           <ToggleSetting
-            label={<div>Adherence colors</div>}
+            label={<>Adherence colors</>}
             settingName="vehicle-adherence-colors"
             value={userSettings.vehicleAdherenceColors}
             onChange={(value) => {
