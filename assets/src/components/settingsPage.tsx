@@ -1,10 +1,7 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
-  LadderIcon,
-  MapIcon,
   TriangleUpIcon,
-  TriangleUpLargeIcon,
 } from "../helpers/icon"
 import {
   setLadderVehicleLabelSetting,
@@ -30,13 +27,10 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
     <div className={`l-page c-settings-page ${mobileMenuClass}`}>
       <Notifications />
       <div className="c-page__container">
-        <h1 className="c-page__title">Settings</h1>
-
         <div className="c-page__section">
           <h2 className="c-settings-page__section-header">Vehicle Settings</h2>
           <ToggleSetting
-            icon={<MapIcon />}
-            label="Vehicle labels on map"
+	    label={<div>Vehicle labels on <strong>regular</strong> buses</div>}
             settingName="shuttle-vehicle-label"
             value={userSettings.shuttleVehicleLabel}
             onChange={(value) => {
@@ -58,8 +52,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             ]}
           />
           <ToggleSetting
-            icon={<LadderIcon />}
-            label="Vehicle labels on route ladder"
+	    label={<div>Vehicle labels on <strong>shuttle</strong> buses</div>}
             settingName="ladder-vehicle-label"
             value={userSettings.ladderVehicleLabel}
             onChange={(value) => {
@@ -81,8 +74,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             ]}
           />
           <ToggleSetting
-            icon={<TriangleUpLargeIcon />}
-            label="Adherence colors"
+            label={<div>Adherence colors</div>}
             settingName="vehicle-adherence-colors"
             value={userSettings.vehicleAdherenceColors}
             onChange={(value) => {
@@ -143,15 +135,13 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
 }
 
 const ToggleSetting = ({
-  icon,
   label,
   settingName,
   value,
   onChange,
   options,
 }: {
-  icon: ReactElement
-  label: string
+  label: ReactElement  
   settingName: string
   value: string | number
   onChange: (value: string) => void
@@ -163,9 +153,6 @@ const ToggleSetting = ({
 }) => (
   <div className="c-settings-page__setting">
     <div className="c-settings-page__setting_header">
-      <div className="c-settings-page__icon">
-        {React.cloneElement(icon, { className: "c-settings-page__icon-path" })}
-      </div>
       <div className="c-settings-page__setting-label">{label}</div>
     </div>
     <div className="c-settings-page__options-container">
