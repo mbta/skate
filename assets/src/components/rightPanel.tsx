@@ -22,7 +22,7 @@ const RightPanel = ({
 
   if (selectedVehicleOrGhost) {
     return (
-      <PropertiesPanel
+      <PropertiesPanel.WithTabState
         selectedVehicleOrGhost={selectedVehicleOrGhost}
         onClosePanel={closeView}
         initialTab={initialTab}

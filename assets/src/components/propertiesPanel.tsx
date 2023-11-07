@@ -8,15 +8,13 @@ import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 import { TabMode } from "./propertiesPanel/tabPanels"
 
-interface Props {
+interface Props extends IndividualPropertiesPanelProps {
   selectedVehicleOrGhost: Vehicle | Ghost
-  initialTab?: TabMode
-  onClosePanel: () => void
 }
 
 export type IndividualPropertiesPanelProps = {
   tabMode: TabMode
-  onChangeTabMode: React.Dispatch<React.SetStateAction<TabMode>>
+  onChangeTabMode: (tabMode: TabMode) => void
   onClosePanel: () => void
 }
 
@@ -31,7 +29,8 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
 
 const PropertiesPanel = ({
   selectedVehicleOrGhost,
-  initialTab = "status",
+  tabMode,
+  onChangeTabMode,
   onClosePanel,
 }: Props) => {
   const { socket } = useSocket()
@@ -39,7 +38,6 @@ const PropertiesPanel = ({
   const [mostRecentVehicle, setMostRecentVehicle] = useState<Vehicle | Ghost>(
     liveVehicle || selectedVehicleOrGhost
   )
-  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
 
   useEffect(() => {
     if (liveVehicle) {
@@ -55,21 +53,21 @@ const PropertiesPanel = ({
           <StaleDataPropertiesPanel
             selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
-            onChangeTabMode={setTabMode}
+            onChangeTabMode={onChangeTabMode}
             onClosePanel={onClosePanel}
           />
         ) : isVehicle(mostRecentVehicle) ? (
           <VehiclePropertiesPanel
             selectedVehicle={mostRecentVehicle}
             tabMode={tabMode}
-            onChangeTabMode={setTabMode}
+            onChangeTabMode={onChangeTabMode}
             onClosePanel={onClosePanel}
           />
         ) : (
           <GhostPropertiesPanel
             selectedGhost={mostRecentVehicle}
             tabMode={tabMode}
-            onChangeTabMode={setTabMode}
+            onChangeTabMode={onChangeTabMode}
             onClosePanel={onClosePanel}
           />
         )}
@@ -85,5 +83,26 @@ const PropertiesPanel = ({
     </>
   )
 }
+
+interface PropertiesPanelWithTabsStateProps extends Props {
+  initialTab?: TabMode
+}
+
+const PropertiesPanelWithTabState = ({
+  initialTab = "status",
+  ...props
+}: Omit<PropertiesPanelWithTabsStateProps, "tabMode" | "onChangeTabMode">) => {
+  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
+
+  return (
+    <PropertiesPanel
+      {...props}
+      tabMode={tabMode}
+      onChangeTabMode={setTabMode}
+    />
+  )
+}
+
+PropertiesPanel.WithTabState = PropertiesPanelWithTabState
 
 export default PropertiesPanel
