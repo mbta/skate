@@ -41,16 +41,6 @@
   margin-bottom: 0.25rem;
 }
 
-.c-vehicle-properties-panel__directions {
-  @include button-primary;
-  @include button-icon(1rem);
-  margin-bottom: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  text-decoration: none;
-}
-
 .c-vehicle-properties-panel__not-available {
   color: $color-font-warning;
 }
