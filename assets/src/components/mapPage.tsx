@@ -29,7 +29,6 @@ import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
-import PropertiesPanel from "./propertiesPanel"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 const SearchMode = ({
@@ -211,11 +210,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
-  const [
-    selectedRightPanelVehicleOrGhost,
-    setSelectedRightPanelVehicleOrGhost,
-  ] = useState<Vehicle | Ghost | null>(null)
-
 
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(true)
@@ -346,13 +340,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
       </div>
-      {selectedRightPanelVehicleOrGhost && (
-        <PropertiesPanel
-          selectedVehicleOrGhost={selectedRightPanelVehicleOrGhost}
-          onClosePanel={() => setSelectedRightPanelVehicleOrGhost(null)}
-          initialTab="run"
-        />
-      )}
     </>
   )
 }
