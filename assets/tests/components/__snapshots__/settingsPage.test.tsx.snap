@@ -30,21 +30,13 @@ exports[`SettingsPage renders 1`] = `
           className="c-settings-page__setting_header"
         >
           <div
-            className="c-settings-page__icon"
-          >
-            <span
-              className="c-settings-page__icon-path"
-              dangerouslySetInnerHTML={
-                {
-                  "__html": "<svg/>",
-                }
-              }
-            />
-          </div>
-          <div
             className="c-settings-page__setting-label"
           >
-            Vehicle labels on map
+            Vehicle labels on 
+            <strong>
+              regular
+            </strong>
+             buses
           </div>
         </div>
         <div
@@ -87,21 +79,13 @@ exports[`SettingsPage renders 1`] = `
           className="c-settings-page__setting_header"
         >
           <div
-            className="c-settings-page__icon"
-          >
-            <span
-              className="c-settings-page__icon-path"
-              dangerouslySetInnerHTML={
-                {
-                  "__html": "<svg/>",
-                }
-              }
-            />
-          </div>
-          <div
             className="c-settings-page__setting-label"
           >
-            Vehicle labels on route ladder
+            Vehicle labels on 
+            <strong>
+              shuttle
+            </strong>
+             buses
           </div>
         </div>
         <div
@@ -143,18 +127,6 @@ exports[`SettingsPage renders 1`] = `
         <div
           className="c-settings-page__setting_header"
         >
-          <div
-            className="c-settings-page__icon"
-          >
-            <span
-              className="c-settings-page__icon-path"
-              dangerouslySetInnerHTML={
-                {
-                  "__html": "<svg/>",
-                }
-              }
-            />
-          </div>
           <div
             className="c-settings-page__setting-label"
           >
