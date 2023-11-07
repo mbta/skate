@@ -6,6 +6,7 @@ import SwingsView from "./swingsView"
 import { OpenView } from "../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import { TabMode } from "./propertiesPanel/tabPanels"
+import LateView from "./lateView"
 
 const RightPanel = ({
   selectedVehicleOrGhost,
@@ -29,6 +30,8 @@ const RightPanel = ({
     )
   } else if (openView === OpenView.Swings) {
     return <SwingsView />
+  } else if (openView === OpenView.Late) {
+    return <LateView />
   } else if (openView === OpenView.NotificationDrawer) {
     return <NotificationDrawer />
   } else {

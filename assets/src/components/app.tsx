@@ -18,7 +18,6 @@ import LadderPage from "./ladderPage"
 import Modal from "./modal"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
-import LateView from "./lateView"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
@@ -77,7 +76,6 @@ export const AppRoutes = () => {
                       selectedVehicleOrGhost={selectedVehicleOrGhost}
                       initialTab={vppTabMode}
                     />
-                    {openView === OpenView.Late ? <LateView /> : null}
                   </>
                 }
               >
