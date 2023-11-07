@@ -56,7 +56,6 @@ import {
   mockTileUrls,
   mockUsePatternsByIdForVehicles,
 } from "../testHelpers/mockHelpers"
-import { closeView, OpenView } from "../../src/state"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -279,37 +278,6 @@ describe("<MapPage />", () => {
 
       expect(asFragment()).toMatchSnapshot()
     })
-  })
-
-  test("closes any open views on page render", () => {
-    const dispatch = jest.fn()
-
-    render(
-      <StateDispatchProvider
-        state={stateFactory.build({ openView: OpenView.Swings })}
-        dispatch={dispatch}
-      >
-        <MapPage />
-      </StateDispatchProvider>
-    )
-
-    expect(dispatch).toHaveBeenCalledWith(closeView())
-  })
-
-  test("doesn't close VPP if open", () => {
-    const selectedVehicle = vehicleFactory.build()
-    const dispatch = jest.fn()
-
-    render(
-      <StateDispatchProvider
-        state={stateFactory.build({ selectedVehicleOrGhost: selectedVehicle })}
-        dispatch={dispatch}
-      >
-        <MapPage />
-      </StateDispatchProvider>
-    )
-
-    expect(dispatch).not.toHaveBeenCalledWith(closeView())
   })
 
   test("renders nearby stations on zoom = 15", async () => {

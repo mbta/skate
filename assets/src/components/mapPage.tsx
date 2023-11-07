@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import React, { ReactElement, useCallback, useContext, useState } from "react"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
@@ -14,7 +8,6 @@ import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
 import useSocket from "../hooks/useSocket"
 import { Ghost, Vehicle, VehicleId } from "../realtime"
 import { RoutePattern } from "../schedule"
-import { closeView, OpenView } from "../state"
 import {
   goBack,
   newSearchSession,
@@ -216,20 +209,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [followerShouldSetZoomLevel, setFollowerShouldSetZoomLevel] =
     useState<boolean>(true)
 
-  const [{ searchPageState, openView }, dispatch] =
-      useContext(StateDispatchContext),
+  const [{ searchPageState }, dispatch] = useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
   const [
     selectedRightPanelVehicleOrGhost,
     setSelectedRightPanelVehicleOrGhost,
   ] = useState<Vehicle | Ghost | null>(null)
 
-  useEffect(() => {
-    // don't dispatch closeView if the VPP is open
-    if (openView !== OpenView.None) {
-      dispatch(closeView())
-    }
-  }, [dispatch, openView])
 
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(true)
