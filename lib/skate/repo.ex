@@ -21,7 +21,9 @@ defmodule Skate.Repo do
     if is_nil(token) do
       Logger.info("#{__MODULE__} add_prod_credentials token_is_nil")
     else
-      Logger.info("#{__MODULE__} add_prod_credentials token_length=#{byte_size(token)}")
+      hash_string = :crypto.hash(:sha3_256, token) |> Base.encode16()
+
+      Logger.info("#{__MODULE__} add_prod_credentials token_hash=#{hash_string}")
     end
 
     Keyword.merge(config,
