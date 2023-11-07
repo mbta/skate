@@ -1,10 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import {
-  NotificationReason,
-  NotificationState,
-  VehicleInScheduledService,
-  VehicleId,
-} from "../src/realtime.d"
+import { NotificationReason, NotificationState } from "../src/realtime.d"
 import * as State from "../src/state"
 import {
   VehicleLabelSetting,
@@ -14,7 +9,14 @@ import { RouteTab } from "../src/models/routeTab"
 
 import vehicleFactory from "./factories/vehicle"
 import routeTabFactory from "./factories/routeTab"
+import stateFactory from "./factories/applicationState"
+import {
+  OpenView,
+  selectVehicleFromNotification,
+} from "../src/state/pagePanelState"
 import notificationFactory from "./factories/notification"
+import { usePanelStateForViewState } from "../src/hooks/usePanelState"
+import { viewFactory } from "./factories/pagePanelStateFactory"
 
 const initialState = State.initialState
 const reducer = State.reducer
@@ -124,64 +126,6 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("selectVehicle", () => {
-    const vehicle: VehicleInScheduledService = vehicleFactory.build()
-
-    const state = initialState
-    const expectedState = {
-      ...state,
-      selectedVehicleOrGhost: vehicle,
-    }
-
-    const newState = reducer(state, State.selectVehicle(vehicle))
-
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("selectVehicle deselects other view", () => {
-    const vehicle: VehicleInScheduledService = vehicleFactory.build()
-
-    const state = {
-      ...initialState,
-      openView: State.OpenView.Swings,
-    }
-
-    const newState = reducer(state, State.selectVehicle(vehicle))
-
-    expect(newState.openView).toEqual(State.OpenView.None)
-  })
-
-  test("selectVehicle closes notification drawer", () => {
-    const vehicle: VehicleInScheduledService = vehicleFactory.build()
-
-    const state = {
-      ...initialState,
-      openView: State.OpenView.NotificationDrawer,
-    }
-
-    const newState = reducer(state, State.selectVehicle(vehicle))
-
-    expect(newState.openView).toBe(State.OpenView.None)
-  })
-
-  test("closeView deselects the vehicle", () => {
-    const initialVehicleId: VehicleId = "v1"
-    const state = {
-      ...initialState,
-      selectedVehicleId: initialVehicleId,
-      previousView: State.OpenView.Swings,
-    }
-    const expectedState = {
-      ...state,
-      selectedVehicleId: undefined,
-      previousView: State.OpenView.None,
-    }
-
-    const newState = reducer(state, State.closeView())
-
-    expect(newState).toEqual(expectedState)
-  })
-
   test("togglePickerContainer", () => {
     const expectedState: State.State = {
       ...initialState,
@@ -213,56 +157,6 @@ describe("reducer", () => {
     const newState = reducer(initialState, State.toggleShowGaragesFilter())
 
     expect(newState).toEqual(expectedState)
-  })
-
-  describe("notification drawer", () => {
-    test("openNotificationDrawer opens the drawer", () => {
-      const state = {
-        ...initialState,
-        openView: State.OpenView.None,
-      }
-      const expectedState = {
-        ...initialState,
-        openView: State.OpenView.NotificationDrawer,
-      }
-      expect(reducer(state, State.openNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("openNotificationDrawer deselects current notification", () => {
-      const state: State.State = {
-        ...initialState,
-        selectedNotification: notificationFactory.build(),
-      }
-
-      const newState = reducer(state, State.openNotificationDrawer())
-
-      expect(newState.selectedNotification).toBeUndefined()
-    })
-
-    test("openNotificationDrawer closes swings view", () => {
-      const state = {
-        ...initialState,
-        openView: State.OpenView.Swings,
-      }
-      const expectedState = {
-        ...initialState,
-        openView: State.OpenView.NotificationDrawer,
-        previousView: State.OpenView.Swings,
-      }
-      expect(reducer(state, State.openNotificationDrawer())).toEqual(
-        expectedState
-      )
-    })
-
-    test("openNotificationDrawer does nothing if the drawer is already open", () => {
-      const state = {
-        ...initialState,
-        openView: State.OpenView.NotificationDrawer,
-      }
-      expect(reducer(state, State.openNotificationDrawer())).toEqual(state)
-    })
   })
 
   test("setLadderVehicleLabelSetting", () => {
@@ -348,160 +242,103 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("openSwingsView enables swings view when other views are closed", () => {
-    const expectedState: State.State = {
-      ...initialState,
-      openView: State.OpenView.Swings,
-    }
-
-    const newState = reducer(initialState, State.openSwingsView())
-
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("openSwingsView deselects current notification", () => {
-    const state: State.State = {
-      ...initialState,
-      selectedNotification: notificationFactory.build(),
-    }
-
-    const newState = reducer(state, State.openSwingsView())
-
-    expect(newState.selectedNotification).toBeUndefined()
-  })
-
-  test("openSwingsView enables swings view when late view is open", () => {
-    const expectedState: State.State = {
-      ...initialState,
-      openView: State.OpenView.Swings,
-      previousView: State.OpenView.Late,
-    }
-
-    const newState = reducer(
-      { ...initialState, openView: State.OpenView.Late },
-      State.openSwingsView()
-    )
-
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("openLateView enables late view when other views are closed", () => {
-    const expectedState: State.State = {
-      ...initialState,
-      openView: State.OpenView.Late,
-    }
-
-    const newState = reducer(initialState, State.openLateView())
-
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("openLateView deselects current notification", () => {
-    const state: State.State = {
-      ...initialState,
-      selectedNotification: notificationFactory.build(),
-    }
-
-    const newState = reducer(state, State.openLateView())
-
-    expect(newState.selectedNotification).toBeUndefined()
-  })
-
-  test("openLateView enables late view when swings views is open", () => {
-    const expectedState: State.State = {
-      ...initialState,
-      openView: State.OpenView.Late,
-      previousView: State.OpenView.Swings,
-    }
-
-    const newState = reducer(
-      { ...initialState, openView: State.OpenView.Swings },
-      State.openLateView()
-    )
-
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("returnToPreviousView returns to the previous view, deselects vehicle and notification", () => {
-    const state = {
-      ...initialState,
-      openView: State.OpenView.Swings,
-      previousView: State.OpenView.Late,
-      selectedVehicleOrGhost: vehicleFactory.build(),
-      selectedNotification: notificationFactory.build(),
-    }
-
-    const expectedState = {
-      ...initialState,
-      openView: State.OpenView.Late,
-      previousView: State.OpenView.None,
-      selectedVehicleOrGhost: undefined,
-      selectedNotification: undefined,
-    }
-
-    const newState = reducer(state, State.returnToPreviousView())
-
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("closeView disables the current view", () => {
-    const newState = reducer(
-      { ...initialState, openView: State.OpenView.Swings },
-      State.closeView()
-    )
-
-    expect(newState).toEqual({
-      ...initialState,
-      openView: State.OpenView.None,
-      previousView: State.OpenView.None,
-    })
-  })
-
-  test("closeView resets swings scroll position", () => {
-    const newState = reducer(
-      {
-        ...initialState,
-        openView: State.OpenView.Swings,
+  describe("Page Panel State", () => {
+    test("closeView resets swings scroll position", () => {
+      const state = stateFactory.build({
         swingsViewScrollPosition: 10,
-      },
-      State.closeView()
-    )
+      })
 
-    expect(newState).toEqual({
-      ...initialState,
-      swingsViewScrollPosition: 0,
+      const { closeView } = usePanelStateForViewState(state.view, (action) => {
+        const newState = reducer(state, action)
+        expect(newState.swingsViewScrollPosition).toEqual(0)
+      })
+
+      closeView()
     })
-  })
 
-  test("closeView hides past swings", () => {
-    const newState = reducer(
-      {
-        ...initialState,
-        openView: State.OpenView.Swings,
+    test("closeView hides past swings", () => {
+      const state = stateFactory.build({
         showPastSwings: true,
-      },
-      State.closeView()
-    )
+      })
 
-    expect(newState).toEqual({
-      ...initialState,
-      showPastSwings: false,
+      const { closeView } = usePanelStateForViewState(state.view, (action) => {
+        const newState = reducer(state, action)
+        expect(newState.showPastSwings).toEqual(false)
+      })
+
+      closeView()
     })
-  })
 
-  test("closeView resets notifications scroll position", () => {
-    const newState = reducer(
-      {
-        ...initialState,
-        openView: State.OpenView.NotificationDrawer,
+    test("closeView resets notifications scroll position", () => {
+      const state = stateFactory.build({
         notificationDrawerScrollPosition: 10,
-      },
-      State.closeView()
-    )
+      })
 
-    expect(newState).toEqual({
-      ...initialState,
-      notificationDrawerScrollPosition: 0,
+      const { closeView } = usePanelStateForViewState(state.view, (action) => {
+        const newState = reducer(state, action)
+        expect(newState.notificationDrawerScrollPosition).toBe(0)
+      })
+
+      closeView()
+    })
+
+    test("openLateView deselects current notification", () => {
+      const state = stateFactory.build({
+        selectedNotification: notificationFactory.build(),
+      })
+
+      const { openLateView } = usePanelStateForViewState(
+        state.view,
+        (action) => {
+          const { selectedNotification } = reducer(state, action)
+          expect(selectedNotification).toBeUndefined()
+        }
+      )
+
+      openLateView()
+    })
+
+    test("openSwingsView deselects current notification", () => {
+      const state = stateFactory.build({
+        selectedNotification: notificationFactory.build(),
+      })
+
+      const { openSwingsView: openSwingsView } = usePanelStateForViewState(
+        state.view,
+        (action) => {
+          const { selectedNotification } = reducer(state, action)
+          expect(selectedNotification).toBeUndefined()
+        }
+      )
+
+      openSwingsView()
+    })
+
+    test("openPreviousView returns to the previous view, deselects notification", () => {
+      const previousView = OpenView.Late
+
+      const state = stateFactory.build({
+        selectedNotification: notificationFactory.build(),
+        view: viewFactory
+          .withVehicle()
+          .currentState({
+            openView: OpenView.Swings,
+            previousView,
+          })
+          .build(),
+      })
+
+      const { openPreviousView } = usePanelStateForViewState(
+        state.view,
+        (action) => {
+          const statePrime = reducer(state, action)
+          const { selectedNotification, view } = statePrime
+          expect(selectedNotification).toBeUndefined()
+          expect(view.state[view.currentPath].openView).toBe(previousView)
+        }
+      )
+
+      openPreviousView()
     })
   })
 
@@ -530,11 +367,10 @@ describe("reducer", () => {
     const vehicle = vehicleFactory.build({ routeId: "88" })
 
     const newState = reducer(
-      {
-        ...initialState,
+      stateFactory.build({
         routeTabs: originalRouteTabs,
-      },
-      State.selectVehicleFromNotification(vehicle)
+      }),
+      selectVehicleFromNotification(vehicle)
     )
 
     const expectedNewTabs = [
@@ -543,12 +379,15 @@ describe("reducer", () => {
       { ...originalRouteTab3, isCurrentTab: false },
     ]
 
-    const expectedState: State.State = {
-      ...initialState,
+    const expectedState = stateFactory.build({
       routeTabs: expectedNewTabs,
       routeTabsToPush: expectedNewTabs,
-      selectedVehicleOrGhost: vehicle,
-    }
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: vehicle,
+        })
+        .build(),
+    })
 
     expect(newState).toEqual(expectedState)
   })
@@ -578,19 +417,21 @@ describe("reducer", () => {
     const vehicle = vehicleFactory.build({ routeId: "88" })
 
     const newState = reducer(
-      {
-        ...initialState,
+      stateFactory.build({
         routeTabs: originalRouteTabs,
-      },
-      State.selectVehicleFromNotification(vehicle)
+      }),
+      selectVehicleFromNotification(vehicle)
     )
 
-    const expectedState: State.State = {
-      ...initialState,
+    const expectedState: State.State = stateFactory.build({
       routeTabs: originalRouteTabs,
       routeTabsToPush: null,
-      selectedVehicleOrGhost: vehicle,
-    }
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: vehicle,
+        })
+        .build(),
+    })
 
     expect(newState).toEqual(expectedState)
   })
@@ -605,19 +446,21 @@ describe("reducer", () => {
     const vehicle = vehicleFactory.build({ routeId: "89" })
 
     const newState = reducer(
-      {
-        ...initialState,
+      stateFactory.build({
         routeTabs: [routeTab],
-      },
-      State.selectVehicleFromNotification(vehicle)
+      }),
+      selectVehicleFromNotification(vehicle)
     )
 
-    const expectedState: State.State = {
-      ...initialState,
+    const expectedState: State.State = stateFactory.build({
       routeTabs: [routeTab],
       routeTabsToPush: null,
-      selectedVehicleOrGhost: vehicle,
-    }
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: vehicle,
+        })
+        .build(),
+    })
 
     expect(newState).toEqual(expectedState)
   })

@@ -3,8 +3,8 @@ import React from "react"
 import { render } from "@testing-library/react"
 import ViewHeader from "../../src/components/viewHeader"
 import userEvent from "@testing-library/user-event"
-import { OpenView } from "../../src/state"
 import useScreenSize from "../../src/hooks/useScreenSize"
+import { OpenView } from "../../src/state/pagePanelState"
 
 jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,

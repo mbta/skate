@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement, useContext, useEffect } from "react"
 import { Socket } from "phoenix"
 import {
   BrowserRouter,
@@ -20,7 +20,6 @@ import Modal from "./modal"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
 import LateView from "./lateView"
-import { OpenView } from "../state"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
@@ -28,17 +27,21 @@ import { mapModeForUser } from "../util/mapMode"
 import { Ghost, VehicleInScheduledService } from "../realtime"
 import MapPage from "./mapPage"
 import SearchPage from "./searchPage"
+import { OpenView } from "../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 export const AppRoutes = () => {
   useAppcues()
 
-  const [{ openView, routeTabs, selectedVehicleOrGhost }] =
-    useContext(StateDispatchContext)
+  const [{ routeTabs }] = useContext(StateDispatchContext)
 
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
+  const {
+    currentView: { openView, selectedVehicleOrGhost },
+  } = usePanelStateFromStateDispatchContext()
 
   const location = useLocation()
 
+  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehiclesByRouteIdNeeded =
     openView === OpenView.Late || location.pathname === "/"
 

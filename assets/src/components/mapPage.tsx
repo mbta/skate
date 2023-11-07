@@ -30,6 +30,7 @@ import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -211,6 +212,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
 
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
+
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(true)
   const toggleSearchDrawer = useCallback(
@@ -307,7 +310,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
               onVehicleRunClicked={
                 inTestGroup(TestGroups.SearchMapsOnMobile)
                   ? (vehicleOrGhost: Vehicle | Ghost) =>
-                      setSelectedRightPanelVehicleOrGhost(vehicleOrGhost)
+                      openVehiclePropertiesPanel(vehicleOrGhost, "run")
                   : undefined
               }
             />

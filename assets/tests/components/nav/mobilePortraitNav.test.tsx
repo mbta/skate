@@ -5,9 +5,12 @@ import "@testing-library/jest-dom/jest-globals"
 
 import MobilePortraitNav from "../../../src/components/nav/mobilePortraitNav"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { initialState, OpenView } from "../../../src/state"
+import { initialState } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import vehicleFactory from "../../factories/vehicle"
+import stateFactory from "../../factories/applicationState"
+import { OpenView } from "../../../src/state/pagePanelState"
+import { viewFactory } from "../../factories/pagePanelStateFactory"
 
 describe("MobilePortraitNav", () => {
   test("renders top / bottom nav", () => {
@@ -28,7 +31,9 @@ describe("MobilePortraitNav", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, openView: OpenView.Swings }}
+        state={stateFactory.build({
+          view: viewFactory.currentState({ openView: OpenView.Swings }).build(),
+        })}
         dispatch={dispatch}
       >
         <BrowserRouter>
@@ -45,10 +50,13 @@ describe("MobilePortraitNav", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider
-        state={{
-          ...initialState,
-          selectedVehicleOrGhost: vehicleFactory.build(),
-        }}
+        state={stateFactory.build({
+          view: viewFactory
+            .currentState({
+              selectedVehicleOrGhost: vehicleFactory.build(),
+            })
+            .build(),
+        })}
         dispatch={dispatch}
       >
         <BrowserRouter>
@@ -65,10 +73,13 @@ describe("MobilePortraitNav", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider
-        state={{
-          ...initialState,
-          openView: OpenView.NotificationDrawer,
-        }}
+        state={stateFactory.build({
+          view: viewFactory
+            .currentState({
+              openView: OpenView.NotificationDrawer,
+            })
+            .build(),
+        })}
         dispatch={dispatch}
       >
         <BrowserRouter>

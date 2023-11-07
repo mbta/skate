@@ -11,10 +11,10 @@ import {
 import { isVehicleInScheduledService } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleInScheduledService, VehicleId, Ghost } from "../realtime.d"
-import { selectVehicle } from "../state"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
 import VehicleIcon, { Orientation, Size, VehicleTooltip } from "./vehicleIcon"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const IncomingBoxVehicle = ({
   displayCrowding,
@@ -27,7 +27,10 @@ const IncomingBoxVehicle = ({
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => {
-  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings }] = useContext(StateDispatchContext)
+
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
+
   const selectedClass =
     vehicleOrGhost.id === selectedVehicleId
       ? " c-incoming-box__vehicle--selected"
@@ -54,7 +57,7 @@ const IncomingBoxVehicle = ({
     <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
       <button
         className={`c-incoming-box__vehicle${selectedClass}`}
-        onClick={() => dispatch(selectVehicle(vehicleOrGhost))}
+        onClick={() => openVehiclePropertiesPanel(vehicleOrGhost)}
       >
         <div className="c-incoming-box__vehicle-icon">
           {displayCrowding ? (

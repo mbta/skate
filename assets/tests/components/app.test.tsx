@@ -14,7 +14,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { SocketProvider } from "../../src/contexts/socketContext"
 import useDataStatus from "../../src/hooks/useDataStatus"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
-import { initialState, OpenView } from "../../src/state"
+import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import vehicleFactory from "../factories/vehicle"
@@ -22,6 +22,9 @@ import { TestGroups } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
 import { MemoryRouter } from "react-router-dom"
 import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
+import stateFactory from "../factories/applicationState"
+import { OpenView } from "../../src/state/pagePanelState"
+import { viewFactory } from "../factories/pagePanelStateFactory"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -108,10 +111,13 @@ describe("App", () => {
       test("VPP ", () => {
         render(
           <StateDispatchProvider
-            state={{
-              ...initialState,
-              selectedVehicleOrGhost: vehicle,
-            }}
+            state={stateFactory.build({
+              view: viewFactory
+                .currentState({
+                  selectedVehicleOrGhost: vehicle,
+                })
+                .build(),
+            })}
             dispatch={mockDispatch}
           >
             <MemoryRouter initialEntries={[path]}>
@@ -128,7 +134,13 @@ describe("App", () => {
       ])("%s", (expectedPanelTitle, openView) => {
         render(
           <StateDispatchProvider
-            state={{ ...initialState, openView: openView }}
+            state={stateFactory.build({
+              view: viewFactory
+                .currentState({
+                  openView,
+                })
+                .build(),
+            })}
             dispatch={mockDispatch}
           >
             <App />

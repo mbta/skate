@@ -1,8 +1,8 @@
 import React from "react"
 import { ChevronLeftIcon } from "../helpers/icon"
 import useScreenSize from "../hooks/useScreenSize"
-import { OpenView } from "../state"
 import CloseButton from "./closeButton"
+import { OpenView } from "../state/pagePanelState"
 
 interface CommonProps {
   title: string

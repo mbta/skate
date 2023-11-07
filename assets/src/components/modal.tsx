@@ -11,12 +11,15 @@ import CreatePresetModal from "./inputModals/createPresetModal"
 import SavePresetModal from "./inputModals/savePresetModal"
 import DeletePresetModal from "./inputModals/deletePresetModal"
 import OverwritePresetModal from "./inputModals/overwritePresetModal"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const Modal = (): ReactElement | null => {
   const { connectionStatus } = useContext(SocketContext)
   const [state] = useContext(StateDispatchContext)
-  const { selectedNotification, selectedVehicleOrGhost, openInputModal } = state
-
+  const { selectedNotification, openInputModal } = state
+  const {
+    currentView: { selectedVehicleOrGhost },
+  } = usePanelStateFromStateDispatchContext()
   if (connectionStatus === ConnectionStatus.Disconnected) {
     return <DisconnectedModal />
   }

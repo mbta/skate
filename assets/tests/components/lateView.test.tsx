@@ -7,19 +7,17 @@ import App from "../../src/components/app"
 import LateView from "../../src/components/lateView"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
-import {
-  initialState,
-  OpenView,
-  State,
-  selectVehicle,
-  closeView,
-} from "../../src/state"
+import { State } from "../../src/state"
 import blockWaiverFactory from "../factories/blockWaiver"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import userEvent from "@testing-library/user-event"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import stateFactory from "../factories/applicationState"
+import { OpenView } from "../../src/state/pagePanelState"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+import { viewFactory } from "../factories/pagePanelStateFactory"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -28,11 +26,19 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
 
 jest.mock("../../src/helpers/fullStory")
 
+jest.mock("../../src/hooks/usePanelState")
+
 jest.spyOn(Date, "now").mockImplementation(() => {
   return 18000 * 1000
 })
 
-const state: State = { ...initialState, openView: OpenView.Late }
+const state: State = stateFactory.build({
+  view: viewFactory
+    .currentState({
+      openView: OpenView.Late,
+    })
+    .build(),
+})
 const lateMasterCheckboxTestId = "late-buses-master-checkbox"
 const missingMasterCheckboxId = "missing-logons-master-checkbox"
 
@@ -55,6 +61,9 @@ describe("LateView", () => {
   })
 
   test("renders missing logons and late buses", () => {
+    mockUsePanelState({
+      closeView: () => {},
+    })
     const vehiclesByRouteId = {
       route: [
         vehicleFactory.build({
@@ -118,11 +127,13 @@ describe("LateView", () => {
   })
 
   test("clicking close button closes late view", async () => {
-    const mockDispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState({
+      currentView: state.view.state[state.view.currentPath],
+    })
 
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{}}>
           <App />
         </VehiclesByRouteIdProvider>
@@ -131,7 +142,7 @@ describe("LateView", () => {
 
     await user.click(result.getByRole("button", { name: /close/i }))
 
-    expect(mockDispatch).toHaveBeenCalledWith(closeView())
+    expect(mockedUsePanelState().closeView).toHaveBeenCalled()
   })
 
   test("clicking ghost run number opens ghost and sends tag manager event", async () => {
@@ -144,9 +155,9 @@ describe("LateView", () => {
       currentPieceStartPlace: "garage",
     })
 
-    const mockDispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
     const result = render(
-      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{ route: [ghost] }}>
           <LateView />
         </VehiclesByRouteIdProvider>
@@ -155,7 +166,9 @@ describe("LateView", () => {
 
     await userEvent.click(result.getByRole("button", { name: /12345/ }))
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(ghost))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(ghost)
 
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number_ghost"
@@ -174,9 +187,9 @@ describe("LateView", () => {
       scheduleAdherenceSecs: 901,
     })
 
-    const mockDispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
     const result = render(
-      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{ route: [vehicle] }}>
           <LateView />
         </VehiclesByRouteIdProvider>
@@ -185,7 +198,9 @@ describe("LateView", () => {
 
     await userEvent.click(result.getByRole("button", { name: /12345/ }))
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
 
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "selected_late_view_run_number"

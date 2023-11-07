@@ -34,6 +34,7 @@ import { tagManagerEvent } from "../helpers/googleTagManager"
 import useAlerts from "../hooks/useAlerts"
 import { SocketContext } from "../contexts/socketContext"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 type DrawerContent = "route_picker" | "presets"
 
@@ -134,13 +135,12 @@ const AddTabButton = ({
 }
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
-  const [state, dispatch] = useContext(StateDispatchContext)
+  const [{ routeTabs, pickerContainerIsVisible, mobileMenuIsOpen }, dispatch] =
+    useContext(StateDispatchContext)
+
   const {
-    routeTabs,
-    selectedVehicleOrGhost,
-    pickerContainerIsVisible,
-    mobileMenuIsOpen,
-  } = state
+    currentView: { selectedVehicleOrGhost },
+  } = usePanelStateFromStateDispatchContext()
 
   useEffect(() => {
     if (routeTabs.filter(isOpenTab).length === 0) {

@@ -6,13 +6,15 @@ import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { initialState, State, OpenView } from "../../src/state"
+import { State } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
 import stateFactory from "../factories/applicationState"
 import { RunFactory } from "../factories/run"
+import { OpenView } from "../../src/state/pagePanelState"
+import { viewFactory } from "../factories/pagePanelStateFactory"
 
 const ghost = ghostFactory.build({ runId: "ghostrun-1" })
 const vehicle = vehicleFactory.build()
@@ -38,7 +40,11 @@ describe("rightPanel", () => {
   test("shows a selected vehicle", () => {
     const { id: runId } = RunFactory.build()
     const vehicle = vehicleFactory.build({ runId })
-    const state = stateFactory.build({ selectedVehicleOrGhost: vehicle })
+    const state = stateFactory.build({
+      view: viewFactory
+        .currentState({ selectedVehicleOrGhost: vehicle })
+        .build(),
+    })
 
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
@@ -52,7 +58,13 @@ describe("rightPanel", () => {
   })
 
   test("shows a selected ghost", () => {
-    const state: State = { ...initialState, selectedVehicleOrGhost: ghost }
+    const state: State = stateFactory.build({
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: ghost,
+        })
+        .build(),
+    })
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
@@ -64,10 +76,13 @@ describe("rightPanel", () => {
   })
 
   test("shows notification drawer", () => {
-    const state: State = {
-      ...initialState,
-      openView: OpenView.NotificationDrawer,
-    }
+    const state: State = stateFactory.build({
+      view: viewFactory
+        .currentState({
+          openView: OpenView.NotificationDrawer,
+        })
+        .build(),
+    })
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
@@ -79,11 +94,14 @@ describe("rightPanel", () => {
   })
 
   test("prefers VPP to notification drawer", () => {
-    const state: State = {
-      ...initialState,
-      selectedVehicleOrGhost: vehicle,
-      openView: OpenView.NotificationDrawer,
-    }
+    const state: State = stateFactory.build({
+      view: viewFactory
+        .withVehicle()
+        .currentState({
+          openView: OpenView.NotificationDrawer,
+        })
+        .build(),
+    })
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
@@ -96,7 +114,13 @@ describe("rightPanel", () => {
   })
 
   test("shows swings view", () => {
-    const state: State = { ...initialState, openView: OpenView.Swings }
+    const state: State = stateFactory.build({
+      view: viewFactory
+        .currentState({
+          openView: OpenView.Swings,
+        })
+        .build(),
+    })
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
@@ -108,11 +132,14 @@ describe("rightPanel", () => {
   })
 
   test("prefers VPP to swings view", () => {
-    const state: State = {
-      ...initialState,
-      selectedVehicleOrGhost: vehicle,
-      openView: OpenView.Swings,
-    }
+    const state: State = stateFactory.build({
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: vehicle,
+          openView: OpenView.Swings,
+        })
+        .build(),
+    })
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <BrowserRouter>
