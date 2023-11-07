@@ -83,9 +83,10 @@ export const openViewReducer = (
 }
 
 const openViewPanelReducer = (
-  { openView, previousView, selectedVehicleOrGhost }: PageViewState,
+  state: PageViewState,
   action: Action
 ): PageViewState => {
+  const { openView, previousView, selectedVehicleOrGhost } = state
   switch (action.type) {
     case "SET_CURRENT_PATH": {
       return {
@@ -96,7 +97,7 @@ const openViewPanelReducer = (
     }
     case "OPEN_NOTIFICATION_DRAWER":
       return openView === OpenView.NotificationDrawer
-        ? { openView, previousView, selectedVehicleOrGhost }
+        ? state
         : {
             openView: OpenView.NotificationDrawer,
             previousView: openView,
@@ -104,11 +105,7 @@ const openViewPanelReducer = (
           }
     case "OPEN_SWINGS_VIEW":
       return openView === OpenView.Swings
-        ? {
-            openView,
-            previousView,
-            selectedVehicleOrGhost,
-          }
+        ? state
         : {
             openView: OpenView.Swings,
             previousView: openView,
@@ -116,7 +113,7 @@ const openViewPanelReducer = (
           }
     case "OPEN_LATE_VIEW":
       return openView === OpenView.Late
-        ? { openView, previousView, selectedVehicleOrGhost }
+        ? state
         : {
             openView: OpenView.Late,
             previousView: openView,
@@ -129,7 +126,7 @@ const openViewPanelReducer = (
             previousView: OpenView.None,
             selectedVehicleOrGhost: undefined,
           }
-        : { openView, previousView, selectedVehicleOrGhost }
+        : state
     case "SELECT_VEHICLE":
     case "SELECT_VEHICLE_FROM_NOTIFICATION":
       return {
@@ -150,13 +147,9 @@ const openViewPanelReducer = (
             previousView: OpenView.None,
             selectedVehicleOrGhost: undefined,
           }
-        : {
-            openView,
-            previousView,
-            selectedVehicleOrGhost,
-          }
+        : state
     default:
-      return { openView, previousView, selectedVehicleOrGhost }
+      return state
   }
 }
 //#endregion Reducers
