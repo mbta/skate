@@ -1,41 +1,41 @@
 import { Dispatch as ReactDispatch } from "react"
 import { toggleLadderCrowdingForRoute } from "./models/ladderCrowdingToggle"
 import { flipLadderDirectionForRoute } from "./models/ladderDirection"
-import { Vehicle, Ghost, Notification, RunId } from "./realtime.d"
-import { RouteId } from "./schedule.d"
-import {
-  Action as SearchAction,
-  initialSearchPageState,
-  reducer as searchReducer,
-  SearchPageState,
-} from "./state/searchPageState"
-import {
-  defaultUserSettings,
-  UserSettings,
-  VehicleLabelSetting,
-  VehicleAdherenceColorsSetting,
-} from "./userSettings"
 import {
   RouteTab,
+  applyRouteTabEdit,
+  closeTabByUUID,
   currentRouteTab,
-  newRouteTab,
+  deletePresetByUUID,
+  findFirstOpenTabWith,
   highestExistingOrdering,
   instantiatePresetByUUID,
-  closeTabByUUID,
-  applyRouteTabEdit,
-  saveEditedPreset,
-  deletePresetByUUID,
   isEditedPreset,
   isPreset,
-  findFirstOpenTabWith,
+  newRouteTab,
+  saveEditedPreset,
   selectTabByUUID,
 } from "./models/routeTab"
+import { Ghost, Notification, RunId, Vehicle } from "./realtime.d"
+import { RouteId } from "./schedule.d"
 import {
   MapLayersAction,
   MapLayersState,
   initialMapLayersState,
   reducer as mapLayersReducer,
 } from "./state/mapLayersState"
+import {
+  Action as SearchAction,
+  SearchPageState,
+  initialSearchPageState,
+  reducer as searchReducer,
+} from "./state/searchPageState"
+import {
+  UserSettings,
+  VehicleAdherenceColorsSetting,
+  VehicleLabelSetting,
+  defaultUserSettings,
+} from "./userSettings"
 
 export enum OpenView {
   None = 1,
