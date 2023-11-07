@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from "react"
+import React, { useContext } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { joinClasses } from "../../helpers/dom"
@@ -20,16 +20,13 @@ import { Ghost, Vehicle, VehicleInScheduledService } from "../../realtime"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
 import TabList from "./tabList"
-import { TabMode } from "./tabPanels"
 import { currentRouteTab } from "../../models/routeTab"
 import ViewHeader from "../viewHeader"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+interface Props extends IndividualPropertiesPanelProps {
   vehicle: Vehicle | Ghost
-  tabMode: TabMode
-  onChangeTabMode: Dispatch<SetStateAction<TabMode>>
-  onClosePanel: () => void
 }
 
 const ScheduleAdherenceStatusIcon = () => (

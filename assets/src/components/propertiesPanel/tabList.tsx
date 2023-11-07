@@ -1,10 +1,10 @@
-import React, { Dispatch, SetStateAction } from "react"
+import React from "react"
 
 import { TabMode } from "./tabPanels"
 
 interface Props {
   activeTab: TabMode
-  setActiveTab: Dispatch<SetStateAction<TabMode>>
+  setActiveTab: (tabMode: TabMode) => void
 }
 
 const TabStatusIcon = () => (
@@ -31,7 +31,7 @@ const Tab = ({
 }: {
   tabName: TabMode
   activeTab: TabMode
-  setActiveTab: Dispatch<SetStateAction<TabMode>>
+  setActiveTab: (tabMode: TabMode) => void
 }) => {
   const classes =
     tabName === activeTab ? "c-tabs__tab c-tabs__tab--selected" : "c-tabs__tab"

@@ -1,8 +1,8 @@
-import React, { Dispatch, SetStateAction, useContext } from "react"
+import React, { useContext } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Vehicle } from "../../realtime"
 import BlockWaiverList from "./blockWaiverList"
-import TabPanels, { TabMode } from "./tabPanels"
+import TabPanels from "./tabPanels"
 import { Card, CardBody } from "../card"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
@@ -28,8 +28,8 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({
       <StaleDataHeader
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={onChangeTabMode}
-        closePanel={onClosePanel}
+        onChangeTabMode={onChangeTabMode}
+        onClosePanel={onClosePanel}
       />
       {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
@@ -44,12 +44,11 @@ const StaleDataPropertiesPanel: React.FC<Props> = ({
   )
 }
 
-const StaleDataHeader: React.FC<{
-  vehicle: Vehicle
-  tabMode: TabMode
-  setTabMode: Dispatch<SetStateAction<TabMode>>
-  closePanel: () => void
-}> = ({ vehicle, tabMode, setTabMode, closePanel }) => {
+const StaleDataHeader: React.FC<
+  {
+    vehicle: Vehicle
+  } & IndividualPropertiesPanelProps
+> = ({ vehicle, tabMode, onChangeTabMode, onClosePanel }) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
   const {
     currentView: { previousView },
@@ -60,7 +59,7 @@ const StaleDataHeader: React.FC<{
     <div className="c-properties-panel__header-wrapper">
       <ViewHeader
         title="Vehicles"
-        closeView={closePanel}
+        closeView={onClosePanel}
         backlinkToView={previousView}
         followBacklink={openPreviousView}
       />
@@ -81,7 +80,7 @@ const StaleDataHeader: React.FC<{
         </div>
       </div>
       {vehicle.isShuttle || (
-        <TabList activeTab={tabMode} setActiveTab={setTabMode} />
+        <TabList activeTab={tabMode} setActiveTab={onChangeTabMode} />
       )}
     </div>
   )
