@@ -1418,20 +1418,15 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </output>
               </div>
               <a
-                class="c-street-view-button button-small"
-                href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.360718%2C-71.05891&heading=33&pitch=0&fov=80"
+                class="c-directions-button button-small"
+                href="https://www.google.com/maps/dir/?api=1&destination=42.360718,-71.05891&travelmode=driving"
                 rel="noreferrer"
                 target="_blank"
               >
-                <span
-                  aria-hidden="true"
-                  aria-label=""
-                  class="c-street-view-button__icon"
-                  role="img"
-                >
+                <span>
                   <svg />
                 </span>
-                Street View
+                Get directions to bus
               </a>
             </div>
           </div>

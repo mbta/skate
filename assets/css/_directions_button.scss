@@ -1,7 +1,6 @@
 .c-directions-button {
   @include button-primary;
   @include button-icon(1rem);
-  margin-bottom: 1rem;
   display: inline-flex;
   align-items: center;
   gap: 4px;
