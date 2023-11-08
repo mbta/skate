@@ -71,7 +71,7 @@ export const AppRoutes = () => {
       </div>
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
         <div className="l-app__main">
-          <Nav allowViews>
+          <Nav>
             <Routes>
               <Route
                 element={

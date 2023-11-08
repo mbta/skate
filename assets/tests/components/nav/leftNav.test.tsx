@@ -50,11 +50,7 @@ describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
     const result = render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={false}
-          dispatcherFlag={true}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={false} dispatcherFlag={true} />
       </BrowserRouter>
     )
 
@@ -72,11 +68,7 @@ describe("LeftNav", () => {
   test("renders collapsed state", () => {
     const result = render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={true}
-          dispatcherFlag={true}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
       </BrowserRouter>
     )
 
@@ -105,11 +97,7 @@ describe("LeftNav", () => {
 
     render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={true}
-          dispatcherFlag={true}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
       </BrowserRouter>
     )
 
@@ -123,11 +111,7 @@ describe("LeftNav", () => {
 
     render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={true}
-          dispatcherFlag={true}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
       </BrowserRouter>
     )
 
@@ -148,7 +132,6 @@ describe("LeftNav", () => {
           toggleMobileMenu={toggleMobileMenu}
           defaultToCollapsed={false}
           dispatcherFlag={false}
-          allowViews={true}
         />
       </BrowserRouter>
     )
@@ -162,11 +145,7 @@ describe("LeftNav", () => {
     const user = userEvent.setup()
     const result = render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={false}
-          dispatcherFlag={false}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
       </BrowserRouter>
     )
 
@@ -182,11 +161,7 @@ describe("LeftNav", () => {
   test("does not render late view option when dispatcher flag is false", () => {
     const result = render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={false}
-          dispatcherFlag={false}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
       </BrowserRouter>
     )
 
@@ -200,11 +175,7 @@ describe("LeftNav", () => {
     const result = render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={false}
-            dispatcherFlag={true}
-            allowViews={true}
-          />
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={true} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -229,7 +200,6 @@ describe("LeftNav", () => {
             defaultToCollapsed={true}
             dispatcherFlag={true}
             closePickerOnViewOpen={true}
-            allowViews={true}
           />
         </BrowserRouter>
       </StateDispatchProvider>
@@ -247,11 +217,7 @@ describe("LeftNav", () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={false}
-            dispatcherFlag={false}
-            allowViews={true}
-          />
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -276,7 +242,6 @@ describe("LeftNav", () => {
             defaultToCollapsed={true}
             dispatcherFlag={true}
             closePickerOnViewOpen={true}
-            allowViews={true}
           />
         </BrowserRouter>
       </StateDispatchProvider>
@@ -296,11 +261,7 @@ describe("LeftNav", () => {
     const result = render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={false}
-            dispatcherFlag={true}
-            allowViews={true}
-          />
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={true} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -314,11 +275,7 @@ describe("LeftNav", () => {
     const user = userEvent.setup()
     const result = render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={false}
-          dispatcherFlag={false}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
       </BrowserRouter>
     )
 
@@ -331,11 +288,7 @@ describe("LeftNav", () => {
     const user = userEvent.setup()
     const result = render(
       <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={false}
-          dispatcherFlag={false}
-          allowViews={true}
-        />
+        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
       </BrowserRouter>
     )
 
@@ -350,11 +303,7 @@ describe("LeftNav", () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={false}
-            dispatcherFlag={false}
-            allowViews={true}
-          />
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -378,7 +327,6 @@ describe("LeftNav", () => {
             defaultToCollapsed={true}
             dispatcherFlag={true}
             closePickerOnViewOpen={true}
-            allowViews={true}
           />
         </BrowserRouter>
       </StateDispatchProvider>
@@ -401,11 +349,7 @@ describe("LeftNav", () => {
         dispatch={jest.fn()}
       >
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={false}
-            dispatcherFlag={false}
-            allowViews={true}
-          />
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -427,11 +371,7 @@ describe("LeftNav", () => {
         dispatch={jest.fn()}
       >
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={false}
-            dispatcherFlag={false}
-            allowViews={true}
-          />
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -439,29 +379,5 @@ describe("LeftNav", () => {
     expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
       "c-left-nav__icon--notifications-view--active"
     )
-  })
-
-  test("views are disabled when allowViews prop is set to false", () => {
-    render(
-      <BrowserRouter>
-        <LeftNav
-          defaultToCollapsed={true}
-          dispatcherFlag={true}
-          allowViews={false}
-        />
-      </BrowserRouter>
-    )
-
-    expect(screen.getByRole("button", { name: "Late View" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    )
-    expect(screen.getByRole("button", { name: "Swings View" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    )
-    expect(
-      screen.getByRole("button", { name: "Notifications" })
-    ).toHaveAttribute("aria-disabled", "true")
   })
 })
