@@ -25,15 +25,29 @@ import React from "react"
 import stateFactory from "../factories/applicationState"
 
 describe("usePanelStateForViewState", () => {
-  test("openVehiclePropertiesPanel", () => {
-    const mock = jest.fn()
-    const vehicle = vehicleFactory.build()
+  describe("openVehiclePropertiesPanel", () => {
+    test("sends vehicle", () => {
+      const mock = jest.fn()
+      const vehicle = vehicleFactory.build()
 
-    const cb = usePanelStateForViewState(viewFactory.build(), mock)
+      const cb = usePanelStateForViewState(viewFactory.build(), mock)
 
-    cb.openVehiclePropertiesPanel(vehicle)
+      cb.openVehiclePropertiesPanel(vehicle)
 
-    expect(mock).toHaveBeenCalledWith(selectVehicle(vehicle))
+      expect(mock).toHaveBeenCalledWith(selectVehicle(vehicle, "status"))
+    })
+
+    test("sends TabMode", () => {
+      const mock = jest.fn()
+      const vehicle = vehicleFactory.build()
+
+      const cb = usePanelStateForViewState(viewFactory.build(), mock)
+
+      const tabMode = "block"
+      cb.openVehiclePropertiesPanel(vehicle, tabMode)
+
+      expect(mock).toHaveBeenCalledWith(selectVehicle(vehicle, tabMode))
+    })
   })
 
   test("setPath", () => {

@@ -125,6 +125,7 @@ describe("App", () => {
         mockUsePanelState({
           currentView: {
             selectedVehicleOrGhost: vehicle,
+            vppTabMode: "status",
             openView: OpenView.None,
             previousView: OpenView.None,
           },
@@ -155,6 +156,7 @@ describe("App", () => {
         mockUsePanelState({
           currentView: {
             selectedVehicleOrGhost: undefined,
+            vppTabMode: undefined,
             openView,
             previousView: OpenView.None,
           },

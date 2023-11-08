@@ -1,3 +1,4 @@
+import { TabMode } from "../components/propertiesPanel/tabPanels"
 import { Vehicle, Ghost } from "../realtime"
 import { Action } from "../state"
 
@@ -41,12 +42,14 @@ export type PageViewState = {
   openView: OpenView
   previousView: OpenView
   selectedVehicleOrGhost: VehicleType
+  vppTabMode: TabMode | undefined
 }
 
 export const initialPageState = {
   openView: OpenView.None,
   previousView: OpenView.None,
   selectedVehicleOrGhost: undefined,
+  vppTabMode: undefined,
 }
 
 export const initialPageViewState: ViewState = {
@@ -88,13 +91,14 @@ const openViewPanelReducer = (
   state: PageViewState,
   action: Action
 ): PageViewState => {
-  const { openView, previousView, selectedVehicleOrGhost } = state
+  const { openView, previousView, selectedVehicleOrGhost, vppTabMode } = state
   switch (action.type) {
     case "SET_CURRENT_PATH": {
       return {
         openView: OpenView.None,
         previousView: OpenView.None,
         selectedVehicleOrGhost,
+        vppTabMode,
       }
     }
     case "OPEN_NOTIFICATION_DRAWER":
@@ -104,6 +108,7 @@ const openViewPanelReducer = (
             openView: OpenView.NotificationDrawer,
             previousView: openView,
             selectedVehicleOrGhost: undefined,
+            vppTabMode: undefined,
           }
     case "OPEN_SWINGS_VIEW":
       return openView === OpenView.Swings
@@ -112,6 +117,7 @@ const openViewPanelReducer = (
             openView: OpenView.Swings,
             previousView: openView,
             selectedVehicleOrGhost: undefined,
+            vppTabMode: undefined,
           }
     case "OPEN_LATE_VIEW":
       return openView === OpenView.Late
@@ -120,6 +126,7 @@ const openViewPanelReducer = (
             openView: OpenView.Late,
             previousView: openView,
             selectedVehicleOrGhost: undefined,
+            vppTabMode: undefined,
           }
     case "CLOSE_VIEW":
       return openView !== null
@@ -127,6 +134,7 @@ const openViewPanelReducer = (
             openView: OpenView.None,
             previousView: OpenView.None,
             selectedVehicleOrGhost: undefined,
+            vppTabMode: undefined,
           }
         : state
     case "SELECT_VEHICLE":
@@ -135,12 +143,15 @@ const openViewPanelReducer = (
         openView: OpenView.None,
         previousView: openView === OpenView.None ? previousView : openView,
         selectedVehicleOrGhost: action.payload.vehicle,
+        vppTabMode:
+          action.type === "SELECT_VEHICLE" ? action.payload.tabMode : undefined,
       }
     case "SET_NOTIFICATION":
       return {
         openView,
         previousView: previousView,
         selectedVehicleOrGhost: undefined,
+        vppTabMode: undefined,
       }
     case "RETURN_TO_PREVIOUS_VIEW":
       return previousView !== OpenView.None
@@ -148,6 +159,7 @@ const openViewPanelReducer = (
             openView: previousView,
             previousView: OpenView.None,
             selectedVehicleOrGhost: undefined,
+            vppTabMode: undefined,
           }
         : state
     default:
@@ -157,10 +169,10 @@ const openViewPanelReducer = (
 //#endregion Reducers
 
 //#region Action Constructors
-export const selectVehicle = (vehicle: VehicleType): SelectVehicleAction => {
+export const selectVehicle = (vehicle: VehicleType, tabMode: TabMode): SelectVehicleAction => {
   return {
     type: "SELECT_VEHICLE",
-    payload: { vehicle },
+    payload: { vehicle, tabMode },
   }
 }
 
@@ -232,6 +244,7 @@ interface SelectVehicleAction {
   type: "SELECT_VEHICLE"
   payload: {
     vehicle: VehicleType
+    tabMode: TabMode
   }
 }
 

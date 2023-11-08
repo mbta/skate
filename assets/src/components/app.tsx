@@ -37,7 +37,7 @@ export const AppRoutes = () => {
 
   const {
     setPath,
-    currentView: { openView, selectedVehicleOrGhost },
+    currentView: { openView, selectedVehicleOrGhost, vppTabMode },
   } = usePanelStateFromStateDispatchContext()
 
   // Keep panel in sync with current path
@@ -75,6 +75,7 @@ export const AppRoutes = () => {
                     <Outlet />
                     <RightPanel
                       selectedVehicleOrGhost={selectedVehicleOrGhost}
+                      initialTab={vppTabMode}
                     />
                     {openView === OpenView.Late ? <LateView /> : null}
                   </>

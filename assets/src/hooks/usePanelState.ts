@@ -45,8 +45,8 @@ export const usePanelStateForViewState = (
     },
     openVehiclePropertiesPanel: (
       vehicle: VehicleType,
-      _initialView?: TabMode
-    ) => dispatch(selectVehicle(vehicle)),
+      initialView?: TabMode
+    ) => dispatch(selectVehicle(vehicle, initialView ?? "status")),
     openLateView: () => dispatch(openLateView()),
     openSwingsView: () => dispatch(openSwingsView()),
     openNotificationDrawer: () => dispatch(openNotificaitonDrawer()),
