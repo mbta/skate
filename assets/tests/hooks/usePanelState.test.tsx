@@ -14,6 +14,7 @@ import {
   openSwingsView,
   selectVehicle,
   setPath,
+  setTabMode,
 } from "../../src/state/pagePanelState"
 import {
   pageViewFactory,
@@ -39,14 +40,13 @@ describe("usePanelStateForViewState", () => {
 
     test("sends TabMode", () => {
       const mock = jest.fn()
-      const vehicle = vehicleFactory.build()
+      const tabMode = "block"
 
       const cb = usePanelStateForViewState(viewFactory.build(), mock)
 
-      const tabMode = "block"
-      cb.openVehiclePropertiesPanel(vehicle, tabMode)
+      cb.setTabMode(tabMode)
 
-      expect(mock).toHaveBeenCalledWith(selectVehicle(vehicle, tabMode))
+      expect(mock).toHaveBeenCalledWith(setTabMode(tabMode))
     })
   })
 

@@ -14,6 +14,7 @@ export function mockUsePanelState(
     openNotificationDrawer: jest.fn(),
     openLateView: jest.fn(),
     openSwingsView: jest.fn(),
+    setTabMode: jest.fn(),
 
     ...(values || {}),
   })

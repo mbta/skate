@@ -101,6 +101,14 @@ const openViewPanelReducer = (
         vppTabMode,
       }
     }
+    case "SET_TAB_MODE": {
+      return state.selectedVehicleOrGhost
+        ? {
+            ...state,
+            vppTabMode: action.payload.tabMode,
+          }
+        : state
+    }
     case "OPEN_NOTIFICATION_DRAWER":
       return openView === OpenView.NotificationDrawer
         ? state
@@ -176,6 +184,13 @@ export const selectVehicle = (vehicle: VehicleType, tabMode: TabMode): SelectVeh
   }
 }
 
+export const setTabMode = (tabMode: TabMode): SetVppTabMode => {
+  return {
+    type: "SET_TAB_MODE",
+    payload: { tabMode },
+  }
+}
+
 export const setPath = (path: PagePath): SetCurrentPath => {
   return {
     type: "SET_CURRENT_PATH",
@@ -228,6 +243,7 @@ export type PanelViewAction =
   // Vehicles
   | SelectVehicleAction
   | SelectVehicleFromNotificationAction
+  | SetVppTabMode
   // Views
   | OpenNotificationDrawerAction
   | OpenSwingsViewAction
@@ -238,6 +254,11 @@ export type PanelViewAction =
 interface SetCurrentPath {
   type: "SET_CURRENT_PATH"
   payload: { path: PagePath }
+}
+
+interface SetVppTabMode {
+  type: "SET_TAB_MODE"
+  payload: { tabMode: TabMode }
 }
 
 interface SelectVehicleAction {

@@ -27,6 +27,8 @@ import MapPage from "./mapPage"
 import SearchPage from "./searchPage"
 import { OpenView, isPagePath } from "../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import PropertiesPanel from "./propertiesPanel"
+import { isGhost, isVehicle } from "../models/vehicle"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -36,6 +38,8 @@ export const AppRoutes = () => {
 
   const {
     setPath,
+    setTabMode,
+    closeView,
     currentView: { openView, selectedVehicleOrGhost, vppTabMode },
   } = usePanelStateFromStateDispatchContext()
 
@@ -73,8 +77,19 @@ export const AppRoutes = () => {
                   <>
                     <Outlet />
                     <RightPanel
-                      selectedVehicleOrGhost={selectedVehicleOrGhost}
-                      initialTab={vppTabMode}
+                      openView={openView}
+                      propertiesPanel={
+                        selectedVehicleOrGhost &&
+                        (isVehicle(selectedVehicleOrGhost) ||
+                          isGhost(selectedVehicleOrGhost)) ? (
+                          <PropertiesPanel
+                            selectedVehicleOrGhost={selectedVehicleOrGhost}
+                            tabMode={vppTabMode ?? "status"}
+                            onChangeTabMode={setTabMode}
+                            onClosePanel={closeView}
+                          />
+                        ) : undefined
+                      }
                     />
                   </>
                 }

@@ -11,6 +11,7 @@ import {
   openViewReducer,
   selectVehicle,
   setPath,
+  setTabMode,
 } from "../../src/state/pagePanelState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
 import { TabMode } from "../../src/components/propertiesPanel/tabPanels"
@@ -53,24 +54,35 @@ describe("openVehiclePropertiesPanel", () => {
     expect(state.state[state.currentPath].selectedVehicleOrGhost).toBe(vehicle)
   })
 
-
-  test.each<{ tab: TabMode }>([
+  describe.each<{ tab: TabMode }>([
     { tab: "status" },
     { tab: "block" },
     { tab: "run" },
-  ])("when vehicle is selected, can select a specific tab: $tab", ({ tab }) => {
-    const vehicle = vehicleFactory.build()
-
-    const state = openViewReducer(
-      viewFactory
+  ])("can select tab: $tab", ({ tab }) => {
+    test("when vehicle is selected", () => {
+      const vehicle = vehicleFactory.build()
+      const state = openViewReducer(
+        viewFactory
         .currentState({
-          selectedVehicleOrGhost: undefined,
+          selectedVehicleOrGhost: undefined
         })
-        .build(),
-      selectVehicle(vehicle, tab)
-    )
+          .build(),
+        selectVehicle(vehicle, tab)
+      )
 
-    expect(state.state[state.currentPath].vppTabMode).toBe(tab)
+      expect(state.state[state.currentPath].vppTabMode).toBe(tab)
+    })
+
+    test("after vehicle is selected", () => {
+      const state = openViewReducer(
+        viewFactory
+          .withVehicle()
+          .build(),
+        setTabMode(tab)
+      )
+
+      expect(state.state[state.currentPath].vppTabMode).toBe(tab)
+    })
   })
 })
 
