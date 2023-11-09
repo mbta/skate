@@ -199,7 +199,7 @@ const VehicleNearestIntersection = ({
   )
 }
 
-const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
+const VehicleLocationDirectionsButton = ({ vehicle }: { vehicle: Vehicle }) => (
   <DirectionsButton latitude={vehicle.latitude} longitude={vehicle.longitude} />
 )
 // #endregion
@@ -251,7 +251,7 @@ const VehiclePropertiesCard = ({
         >
           <VehicleNearestIntersection vehicleOrGhost={vehicleOrGhost} />
           {isVehicle(vehicleOrGhost) && (
-            <VehicleLocationStreetViewButton vehicle={vehicleOrGhost} />
+            <VehicleLocationDirectionsButton vehicle={vehicleOrGhost} />
           )}
         </div>
       </div>
