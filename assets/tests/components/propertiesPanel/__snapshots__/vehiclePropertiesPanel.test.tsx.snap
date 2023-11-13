@@ -332,7 +332,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           Current Location
         </div>
         <a
-          className="c-vehicle-properties-panel__directions button-small"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -709,7 +709,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           Current Location
         </div>
         <a
-          className="c-vehicle-properties-panel__directions button-small"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -949,7 +949,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         Current Location
       </div>
       <a
-        className="c-vehicle-properties-panel__directions button-small"
+        className="c-directions-button button-small"
         href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
         rel="noreferrer"
         target="_blank"
@@ -1426,7 +1426,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           Current Location
         </div>
         <a
-          className="c-vehicle-properties-panel__directions button-small"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -1803,7 +1803,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           Current Location
         </div>
         <a
-          className="c-vehicle-properties-panel__directions button-small"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -2213,7 +2213,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           Current Location
         </div>
         <a
-          className="c-vehicle-properties-panel__directions button-small"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"
@@ -2596,7 +2596,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           Current Location
         </div>
         <a
-          className="c-vehicle-properties-panel__directions button-small"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
           rel="noreferrer"
           target="_blank"

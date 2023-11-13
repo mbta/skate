@@ -159,7 +159,9 @@ describe("<VehiclePropertiesCard/>", () => {
         expect(
           screen.getByRole("status", { name: "Current Location" })
         ).toHaveTextContent(intersection)
-        expect(screen.getByRole("link", { name: /street view/i })).toBeVisible()
+        expect(
+          screen.getByRole("link", { name: /directions to bus/i })
+        ).toBeVisible()
       })
 
       test("renders last updated differently when more than 5 minutes in the past", () => {

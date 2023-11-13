@@ -7,12 +7,12 @@ import { Ghost, Vehicle } from "../../realtime"
 import { formattedDate, formattedTime } from "../../util/dateTime"
 import { isLoading, isOk } from "../../util/fetchResult"
 import Loading from "../loading"
-import StreetViewButton from "../streetViewButton"
 import {
   VehicleRouteSummary,
   VehicleRouteSummaryEventProps,
 } from "../vehicleRouteSummary"
 import { ScheduleAdherence } from "../scheduleAdherence"
+import { DirectionsButton } from "../directionsButton"
 
 const maxAgeToShowInSeconds = 5 * 60
 
@@ -199,13 +199,8 @@ const VehicleNearestIntersection = ({
   )
 }
 
-const VehicleLocationStreetViewButton = ({ vehicle }: { vehicle: Vehicle }) => (
-  <StreetViewButton
-    aria-label="Go to Street View"
-    latitude={vehicle.latitude}
-    longitude={vehicle.longitude}
-    bearing={vehicle.bearing}
-  />
+const VehicleLocationDirectionsButton = ({ vehicle }: { vehicle: Vehicle }) => (
+  <DirectionsButton latitude={vehicle.latitude} longitude={vehicle.longitude} />
 )
 // #endregion
 
@@ -256,7 +251,7 @@ const VehiclePropertiesCard = ({
         >
           <VehicleNearestIntersection vehicleOrGhost={vehicleOrGhost} />
           {isVehicle(vehicleOrGhost) && (
-            <VehicleLocationStreetViewButton vehicle={vehicleOrGhost} />
+            <VehicleLocationDirectionsButton vehicle={vehicleOrGhost} />
           )}
         </div>
       </div>

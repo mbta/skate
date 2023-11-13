@@ -22,9 +22,9 @@ import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import MiniMap from "./miniMap"
 import TabPanels from "./tabPanels"
-import { DiamondTurnRightIcon } from "../../helpers/icon"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { IndividualPropertiesPanelProps } from "../propertiesPanel"
+import { DirectionsButton } from "../directionsButton"
 
 type Props = {
   selectedVehicle: Vehicle
@@ -49,13 +49,6 @@ const NotAvailable = () => (
     Not available
   </span>
 )
-
-const directionsUrl = (
-  latitude: number,
-  longitude: number
-) => `https://www.google.com/maps/dir/?api=1\
-&destination=${latitude.toString()},${longitude.toString()}\
-&travelmode=driving`
 
 const useRouteVehicles = (
   routeId: RouteId | null,
@@ -103,15 +96,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
             {nearestIntersection}
           </div>
         ) : null}
-        <a
-          className="c-vehicle-properties-panel__directions button-small"
-          href={directionsUrl(latitude, longitude)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <DiamondTurnRightIcon />
-          Get directions to bus
-        </a>
+        <DirectionsButton latitude={latitude} longitude={longitude} />
       </div>
       <div className="c-vehicle-properties-panel__next-stop">
         <div className="c-vehicle-properties-panel__label">Next Stop</div>

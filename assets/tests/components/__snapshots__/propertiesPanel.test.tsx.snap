@@ -658,7 +658,7 @@ exports[`PropertiesPanel renders a vehicle 1`] = `
               Current Location
             </div>
             <a
-              className="c-vehicle-properties-panel__directions button-small"
+              className="c-directions-button button-small"
               href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
               rel="noreferrer"
               target="_blank"
