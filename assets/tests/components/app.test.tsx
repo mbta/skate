@@ -5,6 +5,7 @@ import {
   expect,
   beforeAll,
   afterAll,
+  beforeEach,
 } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
@@ -23,21 +24,31 @@ import getTestGroups from "../../src/userTestGroups"
 import { MemoryRouter } from "react-router-dom"
 import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
 import stateFactory from "../factories/applicationState"
-import { OpenView } from "../../src/state/pagePanelState"
+import { OpenView, PagePath } from "../../src/state/pagePanelState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
+import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
   default: jest.fn(() => "good"),
 }))
+
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
+
 jest.mock("userTestGroups", () => ({
   __esModule: true,
   default: jest.fn(() => []),
 }))
+
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 describe("App", () => {
   test("renders", () => {
@@ -86,9 +97,11 @@ describe("App", () => {
       </StateDispatchProvider>
     )
 
-    const routeIds = (useVehicles as jest.Mock).mock.calls[0][1]
-
-    expect(routeIds).toEqual(["1", "15", "22"])
+    expect(jest.mocked(useVehicles)).toHaveBeenCalledWith(undefined, [
+      "1",
+      "15",
+      "22",
+    ])
   })
 
   describe("renders all views on the expected pages", () => {
@@ -109,6 +122,13 @@ describe("App", () => {
       })
 
       test("VPP ", () => {
+        mockUsePanelState({
+          currentView: {
+            selectedVehicleOrGhost: vehicle,
+            openView: OpenView.None,
+            previousView: OpenView.None,
+          },
+        })
         render(
           <StateDispatchProvider
             state={stateFactory.build({
@@ -132,6 +152,13 @@ describe("App", () => {
         ["Swings", OpenView.Swings],
         ["Notifications", OpenView.NotificationDrawer],
       ])("%s", (expectedPanelTitle, openView) => {
+        mockUsePanelState({
+          currentView: {
+            selectedVehicleOrGhost: undefined,
+            openView,
+            previousView: OpenView.None,
+          },
+        })
         render(
           <StateDispatchProvider
             state={stateFactory.build({
@@ -177,5 +204,24 @@ describe("App", () => {
     expect(
       screen.getByRole("generic", { name: /search map page/i })
     ).toBeInTheDocument()
+  })
+
+  test("updates panel state when page changes", async () => {
+    const mockedUsePanelState = mockUsePanelState()
+    const path = PagePath.Shuttles
+
+    render(
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
+        <MemoryRouter initialEntries={["/"]}>
+          <AppRoutes />
+        </MemoryRouter>
+      </StateDispatchProvider>
+      // <App></App>
+    )
+
+    await userEvent.click(screen.getByRole("link", { name: "Shuttle Map" }))
+
+    expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(1, "/")
+    expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(2, path)
   })
 })
