@@ -9,6 +9,7 @@ export enum PagePath {
   Shuttles = "/shuttle-map",
   Search = "/search",
   SearchMaps = "/map",
+  Settings = "/settings",
 }
 
 export function isPagePath(path: string): path is PagePath {
@@ -55,6 +56,7 @@ export const initialPageViewState: ViewState = {
     [PagePath.Shuttles]: initialPageState,
     [PagePath.Search]: initialPageState,
     [PagePath.SearchMaps]: initialPageState,
+    [PagePath.Settings]: initialPageState,
   },
 }
 
