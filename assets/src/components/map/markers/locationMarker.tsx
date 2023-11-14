@@ -4,6 +4,14 @@ import { LocationSearchResult } from "../../../models/locationSearchResult"
 import { LocationDotIcon } from "../../../helpers/icon"
 import Leaflet from "leaflet"
 
+export const LocationMarkerIcon = ({ selected }: { selected?: boolean }) => (
+  <LocationDotIcon
+    className={
+      "c-location-dot-icon" + (selected ? " c-location-dot-icon--selected" : "")
+    }
+  />
+)
+
 export const LocationMarker = ({
   location,
   selected,
@@ -16,10 +24,8 @@ export const LocationMarker = ({
     divIconSettings={{
       iconAnchor: new Leaflet.Point(9, 24),
       iconSize: [24, 18],
-      className:
-        "c-location-dot-icon" +
-        (selected ? " c-location-dot-icon--selected" : ""),
+      className: "",
     }}
-    icon={<LocationDotIcon />}
+    icon={<LocationMarkerIcon selected={selected} />}
   />
 )
