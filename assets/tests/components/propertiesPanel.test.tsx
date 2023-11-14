@@ -142,6 +142,7 @@ const PropertiesPanelWrapper: React.FC<{
         selectedVehicleOrGhost={vehicleOrGhost}
         onClosePanel={closePanel || jest.fn()}
         initialTab={initialTab}
+        openMapEnabled={true}
       />
     </RoutesProvider>
   )
