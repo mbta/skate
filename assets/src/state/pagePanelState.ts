@@ -177,7 +177,10 @@ const openViewPanelReducer = (
 //#endregion Reducers
 
 //#region Action Constructors
-export const selectVehicle = (vehicle: VehicleType, tabMode: TabMode): SelectVehicleAction => {
+export const selectVehicle = (
+  vehicle: VehicleType,
+  tabMode: TabMode
+): SelectVehicleAction => {
   return {
     type: "SELECT_VEHICLE",
     payload: { vehicle, tabMode },

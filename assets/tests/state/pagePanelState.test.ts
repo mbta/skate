@@ -63,9 +63,9 @@ describe("openVehiclePropertiesPanel", () => {
       const vehicle = vehicleFactory.build()
       const state = openViewReducer(
         viewFactory
-        .currentState({
-          selectedVehicleOrGhost: undefined
-        })
+          .currentState({
+            selectedVehicleOrGhost: undefined,
+          })
           .build(),
         selectVehicle(vehicle, tab)
       )
@@ -75,9 +75,7 @@ describe("openVehiclePropertiesPanel", () => {
 
     test("after vehicle is selected", () => {
       const state = openViewReducer(
-        viewFactory
-          .withVehicle()
-          .build(),
+        viewFactory.withVehicle().build(),
         setTabMode(tab)
       )
 
