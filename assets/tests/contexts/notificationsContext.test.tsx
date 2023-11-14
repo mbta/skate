@@ -9,12 +9,13 @@ import {
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { Notification, NotificationState } from "../../src/realtime.d"
-import { initialState, selectVehicleFromNotification } from "../../src/state"
+import { initialState } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { useNotifications } from "../../src/hooks/useNotifications"
 import notificationFactory from "../factories/notification"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { selectVehicleFromNotification } from "../../src/state/pagePanelState"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,

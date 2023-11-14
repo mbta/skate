@@ -1,28 +1,31 @@
-import React, { ReactElement, useContext } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import React, { ReactElement } from "react"
 import { Ghost, Vehicle } from "../realtime.d"
-import { OpenView, closeView } from "../state"
 import NotificationDrawer from "./notificationDrawer"
 import PropertiesPanel from "./propertiesPanel"
 import SwingsView from "./swingsView"
+import { OpenView } from "../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const RightPanel = ({
   selectedVehicleOrGhost,
 }: {
   selectedVehicleOrGhost?: Vehicle | Ghost | null
 }): ReactElement<HTMLElement> | null => {
-  const [state, dispatch] = useContext(StateDispatchContext)
+  const {
+    currentView: { openView },
+    closeView,
+  } = usePanelStateFromStateDispatchContext()
 
   if (selectedVehicleOrGhost) {
     return (
       <PropertiesPanel
         selectedVehicleOrGhost={selectedVehicleOrGhost}
-        onClosePanel={() => dispatch(closeView())}
+        onClosePanel={closeView}
       />
     )
-  } else if (state.openView === OpenView.Swings) {
+  } else if (openView === OpenView.Swings) {
     return <SwingsView />
-  } else if (state.openView === OpenView.NotificationDrawer) {
+  } else if (openView === OpenView.NotificationDrawer) {
     return <NotificationDrawer />
   } else {
     return null

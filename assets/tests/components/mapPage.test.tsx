@@ -56,7 +56,6 @@ import {
   mockTileUrls,
   mockUsePatternsByIdForVehicles,
 } from "../testHelpers/mockHelpers"
-import { closeView, OpenView } from "../../src/state"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -80,10 +79,10 @@ import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCatego
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
-import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
 import userInTestGroup, { TestGroups } from "../../src/userInTestGroup"
 import { useMinischeduleRun } from "../../src/hooks/useMinischedule"
 import pieceFactory from "../factories/piece"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   useLocationSearchResults: jest.fn(() => null),
@@ -144,6 +143,8 @@ jest.mock("../../src/helpers/fullStory")
 
 jest.mock("../../src/userInTestGroup")
 
+jest.mock("../../src/hooks/usePanelState")
+
 const mockVehicleSearchResultsCategory = (
   vehicles: (Vehicle | Ghost)[] | null
 ) => {
@@ -193,6 +194,7 @@ function getMapSearchPanel() {
 }
 
 beforeAll(() => {
+  mockUsePanelState()
   mockTileUrls()
 })
 
@@ -279,37 +281,6 @@ describe("<MapPage />", () => {
 
       expect(asFragment()).toMatchSnapshot()
     })
-  })
-
-  test("closes any open views on page render", () => {
-    const dispatch = jest.fn()
-
-    render(
-      <StateDispatchProvider
-        state={stateFactory.build({ openView: OpenView.Swings })}
-        dispatch={dispatch}
-      >
-        <MapPage />
-      </StateDispatchProvider>
-    )
-
-    expect(dispatch).toHaveBeenCalledWith(closeView())
-  })
-
-  test("doesn't close VPP if open", () => {
-    const selectedVehicle = vehicleFactory.build()
-    const dispatch = jest.fn()
-
-    render(
-      <StateDispatchProvider
-        state={stateFactory.build({ selectedVehicleOrGhost: selectedVehicle })}
-        dispatch={dispatch}
-      >
-        <MapPage />
-      </StateDispatchProvider>
-    )
-
-    expect(dispatch).not.toHaveBeenCalledWith(closeView())
   })
 
   test("renders nearby stations on zoom = 15", async () => {
@@ -917,6 +888,8 @@ describe("<MapPage />", () => {
       .mocked(userInTestGroup)
       .mockImplementationOnce((key) => key === TestGroups.SearchMapsOnMobile)
 
+    const mockedUsePanelState = mockUsePanelState()
+
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
     const runId = "test-run"
@@ -957,11 +930,9 @@ describe("<MapPage />", () => {
 
     await userEvent.click(screen.getByRole("button", { name: runId }))
 
-    expect(vehiclePropertiesPanelHeader.get()).toBeInTheDocument()
-
     expect(
-      screen.getByRole("tab", { name: "Run", selected: true })
-    ).toBeVisible()
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle, "run")
   })
 
   describe("<VehiclePropertiesCard />", () => {

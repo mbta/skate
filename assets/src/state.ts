@@ -1,48 +1,47 @@
 import { Dispatch as ReactDispatch } from "react"
 import { toggleLadderCrowdingForRoute } from "./models/ladderCrowdingToggle"
 import { flipLadderDirectionForRoute } from "./models/ladderDirection"
-import { Vehicle, Ghost, Notification, RunId } from "./realtime.d"
-import { RouteId } from "./schedule.d"
-import {
-  Action as SearchAction,
-  initialSearchPageState,
-  reducer as searchReducer,
-  SearchPageState,
-} from "./state/searchPageState"
-import {
-  defaultUserSettings,
-  UserSettings,
-  VehicleLabelSetting,
-  VehicleAdherenceColorsSetting,
-} from "./userSettings"
 import {
   RouteTab,
+  applyRouteTabEdit,
+  closeTabByUUID,
   currentRouteTab,
-  newRouteTab,
+  deletePresetByUUID,
+  findFirstOpenTabWith,
   highestExistingOrdering,
   instantiatePresetByUUID,
-  closeTabByUUID,
-  applyRouteTabEdit,
-  saveEditedPreset,
-  deletePresetByUUID,
   isEditedPreset,
   isPreset,
-  findFirstOpenTabWith,
+  newRouteTab,
+  saveEditedPreset,
   selectTabByUUID,
 } from "./models/routeTab"
+import { Notification, RunId } from "./realtime.d"
+import { RouteId } from "./schedule.d"
 import {
   MapLayersAction,
   MapLayersState,
   initialMapLayersState,
   reducer as mapLayersReducer,
 } from "./state/mapLayersState"
-
-export enum OpenView {
-  None = 1,
-  Swings,
-  Late,
-  NotificationDrawer,
-}
+import {
+  PanelViewAction,
+  ViewState,
+  initialPageViewState,
+  openViewReducer,
+} from "./state/pagePanelState"
+import {
+  Action as SearchAction,
+  SearchPageState,
+  initialSearchPageState,
+  reducer as searchReducer,
+} from "./state/searchPageState"
+import {
+  UserSettings,
+  VehicleAdherenceColorsSetting,
+  VehicleLabelSetting,
+  defaultUserSettings,
+} from "./userSettings"
 
 interface CreatePresetModal {
   type: "CREATE_PRESET"
@@ -87,11 +86,8 @@ export interface State {
   routeTabsPushInProgress: boolean
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
-  selectedVehicleOrGhost?: Vehicle | Ghost | null
   userSettings: UserSettings
   selectedNotification?: Notification
-  openView: OpenView
-  previousView: OpenView
   swingsViewScrollPosition: number
   showPastSwings: boolean
   notificationDrawerScrollPosition: number
@@ -99,6 +95,7 @@ export interface State {
   mobileMenuIsOpen: boolean
   showGaragesFilter: boolean
   mapLayers: MapLayersState
+  view: ViewState
 }
 
 export const initialState: State = {
@@ -110,11 +107,8 @@ export const initialState: State = {
   routeTabsPushInProgress: false,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
-  selectedVehicleOrGhost: undefined,
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
-  openView: OpenView.None,
-  previousView: OpenView.None,
   swingsViewScrollPosition: 0,
   showPastSwings: false,
   notificationDrawerScrollPosition: 0,
@@ -122,6 +116,7 @@ export const initialState: State = {
   mobileMenuIsOpen: false,
   showGaragesFilter: false,
   mapLayers: initialMapLayersState,
+  view: initialPageViewState,
 }
 
 interface CreateRouteTabAction {
@@ -312,34 +307,12 @@ export const deselectShuttleRoute = (
   },
 })
 
-export interface SelectVehicleAction {
-  type: "SELECT_VEHICLE"
-  payload: {
-    vehicle: Vehicle | Ghost | null | undefined
-  }
-}
-
-export const selectVehicle = (
-  vehicle: Vehicle | Ghost | null | undefined
-): SelectVehicleAction => ({
-  type: "SELECT_VEHICLE",
-  payload: { vehicle },
-})
-
 interface TogglePickerContainerAction {
   type: "TOGGLE_PICKER_CONTAINER"
 }
 
 export const togglePickerContainer = (): TogglePickerContainerAction => ({
   type: "TOGGLE_PICKER_CONTAINER",
-})
-
-interface OpenNotificationDrawerAction {
-  type: "OPEN_NOTIFICATION_DRAWER"
-}
-
-export const openNotificationDrawer = (): OpenNotificationDrawerAction => ({
-  type: "OPEN_NOTIFICATION_DRAWER",
 })
 
 interface SetLadderVehicleLabelSettingAction {
@@ -404,50 +377,6 @@ export const setNotification = (
   payload: {
     selectedNotification,
   },
-})
-
-interface OpenSwingsViewAction {
-  type: "OPEN_SWINGS_VIEW"
-}
-
-export const openSwingsView = (): OpenSwingsViewAction => ({
-  type: "OPEN_SWINGS_VIEW",
-})
-
-interface OpenLateViewAction {
-  type: "OPEN_LATE_VIEW"
-}
-
-export const openLateView = (): OpenLateViewAction => ({
-  type: "OPEN_LATE_VIEW",
-})
-
-interface ReturnToPreviousViewAction {
-  type: "RETURN_TO_PREVIOUS_VIEW"
-}
-
-export const returnToPreviousView = (): ReturnToPreviousViewAction => ({
-  type: "RETURN_TO_PREVIOUS_VIEW",
-})
-
-interface CloseViewAction {
-  type: "CLOSE_VIEW"
-}
-
-export const closeView = (): CloseViewAction => ({
-  type: "CLOSE_VIEW",
-})
-
-interface SelectVehicleFromNotificationAction {
-  type: "SELECT_VEHICLE_FROM_NOTIFICATION"
-  payload: { vehicle: Vehicle | Ghost | null | undefined }
-}
-
-export const selectVehicleFromNotification = (
-  vehicle: Vehicle | Ghost | null | undefined
-): SelectVehicleFromNotificationAction => ({
-  type: "SELECT_VEHICLE_FROM_NOTIFICATION",
-  payload: { vehicle },
 })
 
 interface CreatePresetAction {
@@ -618,7 +547,6 @@ export type Action =
   | SelectShuttleRouteAction
   | DeselectShuttleRouteAction
   // Vehicle selection
-  | SelectVehicleAction
   // Opening / closing picker drawer
   | TogglePickerContainerAction
   // Settings
@@ -629,13 +557,6 @@ export type Action =
   | SearchAction
   // Notification selection
   | SetNotificationAction
-  | SelectVehicleFromNotificationAction
-  // Views
-  | OpenNotificationDrawerAction
-  | OpenSwingsViewAction
-  | OpenLateViewAction
-  | CloseViewAction
-  | ReturnToPreviousViewAction
   | RememberSwingsScrollPositionAction
   | ToggleShowHidePastSwingsAction
   | RememberNotificationDrawerScrollPositionAction
@@ -656,6 +577,7 @@ export type Action =
   | ToggleShowGaragesFilterAction
   // MapLayerAction
   | MapLayersAction
+  | PanelViewAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -941,83 +863,6 @@ const selectedShuttleRunIdsReducer = (
   }
 }
 
-const openViewPanelReducer = (
-  openView: OpenView,
-  previousView: OpenView,
-  selectedVehicleOrGhost: Vehicle | Ghost | null | undefined,
-  action: Action
-): {
-  openView: OpenView
-  previousView: OpenView
-  selectedVehicleOrGhost: Vehicle | Ghost | null | undefined
-} => {
-  switch (action.type) {
-    case "OPEN_NOTIFICATION_DRAWER":
-      return openView === OpenView.NotificationDrawer
-        ? { openView, previousView, selectedVehicleOrGhost }
-        : {
-            openView: OpenView.NotificationDrawer,
-            previousView: openView,
-            selectedVehicleOrGhost: undefined,
-          }
-    case "OPEN_SWINGS_VIEW":
-      return openView === OpenView.Swings
-        ? {
-            openView,
-            previousView,
-            selectedVehicleOrGhost,
-          }
-        : {
-            openView: OpenView.Swings,
-            previousView: openView,
-            selectedVehicleOrGhost: undefined,
-          }
-    case "OPEN_LATE_VIEW":
-      return openView === OpenView.Late
-        ? { openView, previousView, selectedVehicleOrGhost }
-        : {
-            openView: OpenView.Late,
-            previousView: openView,
-            selectedVehicleOrGhost: undefined,
-          }
-    case "CLOSE_VIEW":
-      return openView !== null
-        ? {
-            openView: OpenView.None,
-            previousView: OpenView.None,
-            selectedVehicleOrGhost: undefined,
-          }
-        : { openView, previousView, selectedVehicleOrGhost }
-    case "SELECT_VEHICLE":
-    case "SELECT_VEHICLE_FROM_NOTIFICATION":
-      return {
-        openView: OpenView.None,
-        previousView: openView === OpenView.None ? previousView : openView,
-        selectedVehicleOrGhost: action.payload.vehicle,
-      }
-    case "SET_NOTIFICATION":
-      return {
-        openView,
-        previousView: previousView,
-        selectedVehicleOrGhost: undefined,
-      }
-    case "RETURN_TO_PREVIOUS_VIEW":
-      return previousView !== OpenView.None
-        ? {
-            openView: previousView,
-            previousView: OpenView.None,
-            selectedVehicleOrGhost: undefined,
-          }
-        : {
-            openView,
-            previousView,
-            selectedVehicleOrGhost,
-          }
-    default:
-      return { openView, previousView, selectedVehicleOrGhost }
-  }
-}
-
 const mobileMenuReducer = (state: boolean, action: Action): boolean => {
   switch (action.type) {
     case "TOGGLE_MOBILE_MENU":
@@ -1196,14 +1041,6 @@ export const reducer = (state: State, action: Action): State => {
     routeTabsPushInProgress,
   } = routeTabsAndPushReducer(state, action)
 
-  const { openView, previousView, selectedVehicleOrGhost } =
-    openViewPanelReducer(
-      state.openView,
-      state.previousView,
-      state.selectedVehicleOrGhost,
-      action
-    )
-
   return {
     pickerContainerIsVisible: pickerContainerIsVisibleReducer(
       state.pickerContainerIsVisible,
@@ -1225,14 +1062,11 @@ export const reducer = (state: State, action: Action): State => {
       state.selectedShuttleRunIds,
       action
     ),
-    selectedVehicleOrGhost: selectedVehicleOrGhost,
     userSettings: userSettingsReducer(state.userSettings, action),
     selectedNotification: selectedNotificationReducer(
       state.selectedNotification,
       action
     ),
-    openView,
-    previousView,
     swingsViewScrollPosition: swingsViewScrollPositionReducer(
       state.swingsViewScrollPosition,
       action
@@ -1246,5 +1080,6 @@ export const reducer = (state: State, action: Action): State => {
     mobileMenuIsOpen: mobileMenuReducer(state.mobileMenuIsOpen, action),
     showGaragesFilter: garageFilterReducer(state.showGaragesFilter, action),
     mapLayers: mapLayersReducer(state.mapLayers, action),
+    view: openViewReducer(state.view, action),
   }
 }

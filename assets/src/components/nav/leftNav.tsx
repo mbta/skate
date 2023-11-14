@@ -18,17 +18,13 @@ import {
   HamburgerIcon,
 } from "../../helpers/icon"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
-import {
-  openLateView,
-  openSwingsView,
-  OpenView,
-  openNotificationDrawer,
-  togglePickerContainer,
-} from "../../state"
+import { togglePickerContainer } from "../../state"
 import NavMenu from "./navMenu"
 import { mapModeForUser } from "../../util/mapMode"
 import Tippy from "@tippyjs/react"
 import { fullStoryEvent } from "../../helpers/fullStory"
+import { OpenView } from "../../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 
 interface Props {
   toggleMobileMenu?: () => void
@@ -45,8 +41,15 @@ const LeftNav = ({
   allowViews,
   closePickerOnViewOpen,
 }: Props): JSX.Element => {
-  const [{ openView, mobileMenuIsOpen, pickerContainerIsVisible }, dispatch] =
+  const [{ mobileMenuIsOpen, pickerContainerIsVisible }, dispatch] =
     useContext(StateDispatchContext)
+  const {
+    currentView: { openView },
+    openLateView,
+    openSwingsView,
+    openNotificationDrawer,
+  } = usePanelStateFromStateDispatchContext()
+
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
   const mapMode = mapModeForUser()
@@ -138,7 +141,7 @@ const LeftNav = ({
                     // only fire event when opening
                     fullStoryEvent("User opened Late View", {})
                   }
-                  dispatch(openLateView())
+                  openLateView()
 
                   if (closePickerOnViewOpen && pickerContainerIsVisible) {
                     dispatch(togglePickerContainer())
@@ -163,7 +166,7 @@ const LeftNav = ({
                 }
 
                 tagManagerEvent("swings_view_toggled")
-                dispatch(openSwingsView())
+                openSwingsView()
 
                 if (closePickerOnViewOpen && pickerContainerIsVisible) {
                   dispatch(togglePickerContainer())
@@ -178,7 +181,7 @@ const LeftNav = ({
               icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
               viewIsOpen={openView === OpenView.NotificationDrawer}
               toggleView={() => {
-                dispatch(openNotificationDrawer())
+                openNotificationDrawer()
 
                 tagManagerEvent("notifications_opened")
 

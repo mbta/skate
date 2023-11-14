@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import Ladder from "../../src/components/ladder"
@@ -11,17 +11,24 @@ import {
   VehicleInScheduledService,
 } from "../../src/realtime.d"
 import { Timepoint } from "../../src/schedule.d"
-import { initialState, selectVehicle } from "../../src/state"
+import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: () => ({}),
 }))
+
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 describe("ladder", () => {
   test("renders a ladder", () => {
@@ -506,7 +513,7 @@ describe("ladder", () => {
   })
 
   test("clicking a vehicle selects that vehicle", async () => {
-    const mockDispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
@@ -557,7 +564,7 @@ describe("ladder", () => {
     const ladderDirection = LadderDirection.ZeroToOne
 
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <Ladder
           timepoints={timepoints}
           vehiclesByPosition={{
@@ -571,11 +578,13 @@ describe("ladder", () => {
     )
     await userEvent.click(result.getByText("1"))
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
   })
 
   test("clicking an incoming ghost selects the associated vehicle", async () => {
-    const mockDispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
@@ -590,7 +599,7 @@ describe("ladder", () => {
     const ladderDirection = LadderDirection.ZeroToOne
 
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <Ladder
           timepoints={timepoints}
           vehiclesByPosition={{
@@ -607,11 +616,13 @@ describe("ladder", () => {
       result.getByText("N/A", { selector: ".c-vehicle-icon__label" })
     )
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(incomingGhost))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(incomingGhost)
   })
 
   test("clicking a crowding icon selects the associated vehicle", async () => {
-    const mockDispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
@@ -667,7 +678,7 @@ describe("ladder", () => {
     const ladderDirection = LadderDirection.ZeroToOne
 
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <Ladder
           timepoints={timepoints}
           vehiclesByPosition={{
@@ -682,7 +693,9 @@ describe("ladder", () => {
     )
 
     await userEvent.click(result.getByText("0/18"))
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
   })
 
   test("renders a ladder with no timepoints", () => {

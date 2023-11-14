@@ -5,6 +5,7 @@ import {
   expect,
   beforeAll,
   afterAll,
+  beforeEach,
 } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
@@ -14,34 +15,40 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { SocketProvider } from "../../src/contexts/socketContext"
 import useDataStatus from "../../src/hooks/useDataStatus"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
-import { initialState, OpenView, State } from "../../src/state"
+import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import vehicleFactory from "../factories/vehicle"
 import { TestGroups } from "../../src/userInTestGroup"
 import getTestGroups from "../../src/userTestGroups"
 import { MemoryRouter } from "react-router-dom"
-import appData from "../../src/appData"
 import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
+import stateFactory from "../factories/applicationState"
+import { OpenView, PagePath } from "../../src/state/pagePanelState"
+import { viewFactory } from "../factories/pagePanelStateFactory"
+import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
   default: jest.fn(() => "good"),
 }))
+
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
+
 jest.mock("userTestGroups", () => ({
   __esModule: true,
   default: jest.fn(() => []),
 }))
-jest.mock("../../src/appData", () => ({
-  __esModule: true,
-  default: jest.fn(() => ({
-    userSettings: JSON.stringify({}),
-  })),
-}))
+
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 describe("App", () => {
   test("renders", () => {
@@ -90,9 +97,11 @@ describe("App", () => {
       </StateDispatchProvider>
     )
 
-    const routeIds = (useVehicles as jest.Mock).mock.calls[0][1]
-
-    expect(routeIds).toEqual(["1", "15", "22"])
+    expect(jest.mocked(useVehicles)).toHaveBeenCalledWith(undefined, [
+      "1",
+      "15",
+      "22",
+    ])
   })
 
   describe("renders all views on the expected pages", () => {
@@ -113,12 +122,22 @@ describe("App", () => {
       })
 
       test("VPP ", () => {
+        mockUsePanelState({
+          currentView: {
+            selectedVehicleOrGhost: vehicle,
+            openView: OpenView.None,
+            previousView: OpenView.None,
+          },
+        })
         render(
           <StateDispatchProvider
-            state={{
-              ...initialState,
-              selectedVehicleOrGhost: vehicle,
-            }}
+            state={stateFactory.build({
+              view: viewFactory
+                .currentState({
+                  selectedVehicleOrGhost: vehicle,
+                })
+                .build(),
+            })}
             dispatch={mockDispatch}
           >
             <MemoryRouter initialEntries={[path]}>
@@ -133,9 +152,22 @@ describe("App", () => {
         ["Swings", OpenView.Swings],
         ["Notifications", OpenView.NotificationDrawer],
       ])("%s", (expectedPanelTitle, openView) => {
+        mockUsePanelState({
+          currentView: {
+            selectedVehicleOrGhost: undefined,
+            openView,
+            previousView: OpenView.None,
+          },
+        })
         render(
           <StateDispatchProvider
-            state={{ ...initialState, openView: openView }}
+            state={stateFactory.build({
+              view: viewFactory
+                .currentState({
+                  openView,
+                })
+                .build(),
+            })}
             dispatch={mockDispatch}
           >
             <App />
@@ -146,82 +178,6 @@ describe("App", () => {
         ).toBeInTheDocument()
       })
     })
-  })
-
-  describe("does not render views over search map page", () => {
-    const mockDispatch = jest.fn()
-
-    beforeAll(() => {
-      ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
-    })
-
-    afterAll(() => {
-      ;(getTestGroups as jest.Mock).mockReturnValue([])
-    })
-
-    test("does not display VPP over map page", () => {
-      const mockState: State = {
-        ...initialState,
-        selectedVehicleOrGhost: vehicleFactory.build(),
-      }
-      ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
-
-      render(
-        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <MemoryRouter initialEntries={["/map"]}>
-            <AppRoutes />
-          </MemoryRouter>
-        </StateDispatchProvider>
-      )
-      expect(vehiclePropertiesPanelHeader.query()).not.toBeInTheDocument()
-    })
-
-    test.each([
-      ["Late View", OpenView.Late],
-      ["Swings", OpenView.Swings],
-      ["Notifications", OpenView.NotificationDrawer],
-    ])("%s", (expectedPanelTitle, openView) => {
-      render(
-        <StateDispatchProvider
-          state={{ ...initialState, openView: openView }}
-          dispatch={mockDispatch}
-        >
-          <MemoryRouter initialEntries={["/map"]}>
-            <AppRoutes />
-          </MemoryRouter>
-        </StateDispatchProvider>
-      )
-      expect(
-        screen.queryByRole("heading", { name: expectedPanelTitle })
-      ).not.toBeInTheDocument()
-    })
-  })
-
-  test("disables view nav entries on search map page", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
-    ;(appData as jest.Mock).mockImplementationOnce(() => {
-      return {
-        dispatcherFlag: "true",
-      }
-    })
-
-    render(
-      <MemoryRouter initialEntries={["/map"]}>
-        <AppRoutes />
-      </MemoryRouter>
-    )
-
-    expect(screen.getByRole("button", { name: "Late View" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    )
-    expect(screen.getByRole("button", { name: "Swings View" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    )
-    expect(
-      screen.getByRole("button", { name: "Notifications" })
-    ).toHaveAttribute("aria-disabled", "true")
   })
 
   test("renders old search page for users not in map test group", () => {
@@ -248,5 +204,24 @@ describe("App", () => {
     expect(
       screen.getByRole("generic", { name: /search map page/i })
     ).toBeInTheDocument()
+  })
+
+  test("updates panel state when page changes", async () => {
+    const mockedUsePanelState = mockUsePanelState()
+    const path = PagePath.Shuttles
+
+    render(
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
+        <MemoryRouter initialEntries={["/"]}>
+          <AppRoutes />
+        </MemoryRouter>
+      </StateDispatchProvider>
+      // <App></App>
+    )
+
+    await userEvent.click(screen.getByRole("link", { name: "Shuttle Map" }))
+
+    expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(1, "/")
+    expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(2, path)
   })
 })

@@ -1,16 +1,18 @@
 import React, { useContext } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
 import { NotificationBellIcon as NotificationBellIconSvg } from "../helpers/icon"
-import { OpenView } from "../state"
+import { OpenView } from "../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const NotificationBellIcon = ({
   extraClasses,
 }: {
   extraClasses?: string[]
 }) => {
-  const [{ openView }] = useContext(StateDispatchContext)
+  const {
+    currentView: { openView },
+  } = usePanelStateFromStateDispatchContext()
   const { notifications } = useContext(NotificationsContext)
   const unreadNotifications = (notifications || []).filter(
     (notification) => notification.state === "unread"

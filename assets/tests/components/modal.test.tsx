@@ -11,6 +11,8 @@ import {
   NotificationState,
 } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
+import stateFactory from "../factories/applicationState"
+import { viewFactory } from "../factories/pagePanelStateFactory"
 
 jest.mock("../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -35,11 +37,14 @@ describe("Modal", () => {
       state: "unread" as NotificationState,
     }
 
-    const state: State = {
-      ...initialState,
+    const state: State = stateFactory.build({
       selectedNotification: notification,
-      selectedVehicleOrGhost: null,
-    }
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: null,
+        })
+        .build(),
+    })
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
@@ -64,11 +69,14 @@ describe("Modal", () => {
       state: "unread" as NotificationState,
     }
 
-    const state: State = {
-      ...initialState,
+    const state: State = stateFactory.build({
       selectedNotification: notification,
-      selectedVehicleOrGhost: undefined,
-    }
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: undefined,
+        })
+        .build(),
+    })
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
@@ -174,11 +182,14 @@ describe("Modal", () => {
       state: "unread" as NotificationState,
     }
 
-    const state: State = {
-      ...initialState,
+    const state: State = stateFactory.build({
       selectedNotification: notification,
-      selectedVehicleOrGhost: undefined,
-    }
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: undefined,
+        })
+        .build(),
+    })
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
@@ -203,11 +214,14 @@ describe("Modal", () => {
       state: "unread" as NotificationState,
     }
 
-    const state: State = {
-      ...initialState,
+    const state: State = stateFactory.build({
       selectedNotification: notification,
-      selectedVehicleOrGhost: undefined,
-    }
+      view: viewFactory
+        .currentState({
+          selectedVehicleOrGhost: undefined,
+        })
+        .build(),
+    })
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />

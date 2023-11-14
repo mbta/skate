@@ -18,7 +18,6 @@ import useTrainVehicles from "../hooks/useTrainVehicles"
 import { isASubwayRoute } from "../models/subwayRoute"
 import { Ghost, RunId, TrainVehicle, Vehicle, VehicleId } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
-import { selectVehicle } from "../state"
 import Map, { vehicleToLeafletLatLng } from "./map"
 import ShuttlePicker from "./shuttlePicker"
 import { LayersControl, LayersControlState } from "./map/controls/layersControl"
@@ -34,6 +33,7 @@ import { RecenterControl } from "./map/controls/recenterControl"
 import UserLocationMarker from "./map/markers/userLocationMarker"
 import { latLng } from "leaflet"
 import useGeolocation from "../hooks/useGeolocation"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const filterShuttles = (
   shuttles: Vehicle[],
@@ -56,7 +56,6 @@ export const allTrainVehicles = (
 const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const {
-    selectedVehicleOrGhost,
     selectedShuttleRouteIds,
     selectedShuttleRunIds,
     mobileMenuIsOpen,
@@ -64,6 +63,10 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
       shuttleMap: { tileType: tileType },
     },
   } = state
+  const {
+    currentView: { selectedVehicleOrGhost },
+    openVehiclePropertiesPanel,
+  } = usePanelStateFromStateDispatchContext()
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
   const stations = useStations()
@@ -100,7 +103,7 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
         setTileType={(tileType) =>
           dispatch(setTileType("shuttleMap", tileType))
         }
-        selectVehicle={(vehicle) => dispatch(selectVehicle(vehicle))}
+        selectVehicle={openVehiclePropertiesPanel}
       />
     </div>
   )

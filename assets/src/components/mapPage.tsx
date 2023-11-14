@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import React, { ReactElement, useCallback, useContext, useState } from "react"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
@@ -14,7 +8,6 @@ import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
 import useSocket from "../hooks/useSocket"
 import { Ghost, Vehicle, VehicleId } from "../realtime"
 import { RoutePattern } from "../schedule"
-import { closeView, OpenView } from "../state"
 import {
   goBack,
   newSearchSession,
@@ -36,8 +29,8 @@ import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
-import PropertiesPanel from "./propertiesPanel"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -216,20 +209,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [followerShouldSetZoomLevel, setFollowerShouldSetZoomLevel] =
     useState<boolean>(true)
 
-  const [{ searchPageState, openView }, dispatch] =
-      useContext(StateDispatchContext),
+  const [{ searchPageState }, dispatch] = useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
-  const [
-    selectedRightPanelVehicleOrGhost,
-    setSelectedRightPanelVehicleOrGhost,
-  ] = useState<Vehicle | Ghost | null>(null)
 
-  useEffect(() => {
-    // don't dispatch closeView if the VPP is open
-    if (openView !== OpenView.None) {
-      dispatch(closeView())
-    }
-  }, [dispatch, openView])
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
 
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(true)
@@ -327,7 +310,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
               onVehicleRunClicked={
                 inTestGroup(TestGroups.SearchMapsOnMobile)
                   ? (vehicleOrGhost: Vehicle | Ghost) =>
-                      setSelectedRightPanelVehicleOrGhost(vehicleOrGhost)
+                      openVehiclePropertiesPanel(vehicleOrGhost, "run")
                   : undefined
               }
             />
@@ -360,13 +343,6 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
       </div>
-      {selectedRightPanelVehicleOrGhost && (
-        <PropertiesPanel
-          selectedVehicleOrGhost={selectedRightPanelVehicleOrGhost}
-          onClosePanel={() => setSelectedRightPanelVehicleOrGhost(null)}
-          initialTab="run"
-        />
-      )}
     </>
   )
 }

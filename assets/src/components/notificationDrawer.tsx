@@ -4,21 +4,22 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
 import { markAllAsRead } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
-import {
-  closeView,
-  rememberNotificationDrawerScrollPosition,
-  returnToPreviousView,
-} from "../state"
+import { rememberNotificationDrawerScrollPosition } from "../state"
 import { openVPPForNotification } from "./notifications"
 import { NotificationCard } from "./notificationCard"
 import ViewHeader from "./viewHeader"
 import Loading from "./loading"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
-  const [{ previousView, notificationDrawerScrollPosition }, dispatch] =
+  const [{ notificationDrawerScrollPosition }, dispatch] =
     useContext(StateDispatchContext)
-
+  const {
+    currentView: { previousView },
+    closeView,
+    openPreviousView,
+  } = usePanelStateFromStateDispatchContext()
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
   useLayoutEffect(() => {
@@ -47,10 +48,10 @@ const NotificationDrawer = () => {
             elementRef.current.scrollTop = 0
           }
 
-          dispatch(closeView())
+          closeView()
         }}
         backlinkToView={previousView}
-        followBacklink={() => dispatch(returnToPreviousView())}
+        followBacklink={openPreviousView}
       />
       <div className="c-notification-drawer__content">
         <Content />

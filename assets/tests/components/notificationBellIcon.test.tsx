@@ -8,7 +8,10 @@ import {
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Notification } from "../../src/realtime"
-import { initialState, OpenView } from "../../src/state"
+import { initialState } from "../../src/state"
+import { OpenView } from "../../src/state/pagePanelState"
+import stateFactory from "../factories/applicationState"
+import { viewFactory } from "../factories/pagePanelStateFactory"
 
 const unreadNotification: Notification = {
   id: "1",
@@ -56,7 +59,13 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when the drawer is open and there are new notifications", () => {
-    const state = { ...initialState, openView: OpenView.NotificationDrawer }
+    const state = stateFactory.build({
+      view: viewFactory
+        .currentState({
+          openView: OpenView.NotificationDrawer,
+        })
+        .build(),
+    })
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
@@ -84,7 +93,11 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when the drawer is open and there are not new notifications", () => {
-    const state = { ...initialState, openView: OpenView.NotificationDrawer }
+    const state = stateFactory.build({
+      view: viewFactory
+        .currentState({ openView: OpenView.NotificationDrawer })
+        .build(),
+    })
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>

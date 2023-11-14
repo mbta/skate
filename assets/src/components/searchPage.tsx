@@ -7,7 +7,6 @@ import { useStations } from "../hooks/useStations"
 import { filterVehicles } from "../models/vehicle"
 import { Ghost, Vehicle } from "../realtime"
 import { Stop } from "../schedule"
-import { selectVehicle } from "../state"
 import { SearchPageState } from "../state/searchPageState"
 import { MapFollowingPrimaryVehicles } from "./map"
 import RecentSearches from "./recentSearches"
@@ -16,6 +15,7 @@ import SearchResults from "./searchResults"
 import { LayersControl, LayersControlState } from "./map/controls/layersControl"
 import { TileType } from "../tilesetUrls"
 import { setTileType } from "../state/mapLayersState"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 enum MobileDisplay {
   List = 1,
@@ -51,13 +51,17 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     {
       searchPageState,
       mobileMenuIsOpen,
-      selectedVehicleOrGhost,
       mapLayers: {
         legacySearchMap: { tileType: tileType },
       },
     },
     dispatch,
   ] = useContext(StateDispatchContext)
+
+  const {
+    currentView: { selectedVehicleOrGhost },
+    openVehiclePropertiesPanel,
+  } = usePanelStateFromStateDispatchContext()
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const stations: Stop[] | null = useStations()
@@ -102,9 +106,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
           thereIsAnActiveSearch(vehicles, searchPageState) ? (
             <SearchResults
               vehicles={vehicles}
-              onClick={(vehicleOrGhost) => {
-                dispatch(selectVehicle(vehicleOrGhost))
-              }}
+              onClick={openVehiclePropertiesPanel}
               selectedVehicleId={selectedVehicleOrGhost?.id || null}
             />
           ) : (
@@ -117,7 +119,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
         <MapFollowingPrimaryVehicles
           selectedVehicleId={selectedVehicleOrGhost?.id}
           vehicles={onlyVehicles}
-          onPrimaryVehicleSelect={(vehicle) => dispatch(selectVehicle(vehicle))}
+          onPrimaryVehicleSelect={openVehiclePropertiesPanel}
           stations={stations}
           tileType={tileType}
         >

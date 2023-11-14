@@ -1,19 +1,20 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import {
-  openNotificationDrawer,
-  openSwingsView,
-  OpenView,
-  toggleMobileMenu,
-} from "../../state"
+import { toggleMobileMenu } from "../../state"
 import BottomNavMobile from "./bottomNavMobile"
 import TopNavMobile from "./topNavMobile"
+import { OpenView } from "../../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 
 const MobilePortraitNav = (): JSX.Element => {
   const [state, dispatch] = useContext(StateDispatchContext)
 
-  const { mobileMenuIsOpen, routeTabs, openView, selectedVehicleOrGhost } =
-    state
+  const { mobileMenuIsOpen, routeTabs } = state
+  const {
+    currentView: { openView, selectedVehicleOrGhost },
+    openNotificationDrawer,
+    openSwingsView,
+  } = usePanelStateFromStateDispatchContext()
 
   const isViewOpen = openView !== OpenView.None || selectedVehicleOrGhost
 
@@ -27,7 +28,7 @@ const MobilePortraitNav = (): JSX.Element => {
       >
         <TopNavMobile
           toggleMobileMenu={() => dispatch(toggleMobileMenu())}
-          openNotificationDrawer={() => dispatch(openNotificationDrawer())}
+          openNotificationDrawer={openNotificationDrawer}
           routeTabs={routeTabs}
           mobileMenuIsOpen={mobileMenuIsOpen}
         />
@@ -39,7 +40,7 @@ const MobilePortraitNav = (): JSX.Element => {
       >
         <BottomNavMobile
           mobileMenuIsOpen={mobileMenuIsOpen}
-          openSwingsView={() => dispatch(openSwingsView())}
+          openSwingsView={openSwingsView}
         />
       </div>
     </>

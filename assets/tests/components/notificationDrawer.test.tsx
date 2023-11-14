@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
@@ -14,13 +14,19 @@ import {
 import { Notification, NotificationState } from "../../src/realtime.d"
 import { Route } from "../../src/schedule"
 import {
-  closeView,
   initialState,
   rememberNotificationDrawerScrollPosition,
   setNotification,
 } from "../../src/state"
 import { now } from "../../src/util/dateTime"
 import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 const notification: Notification = {
   id: "0",
@@ -89,11 +95,11 @@ describe("NotificationDrawer", () => {
   })
 
   test("close button closes the drawer", async () => {
-    const dispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
 
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <NotificationDrawer />
         </RoutesProvider>
@@ -101,7 +107,8 @@ describe("NotificationDrawer", () => {
     )
 
     await user.click(result.getByRole("button", { name: /close/i }))
-    expect(dispatch).toHaveBeenCalledWith(closeView())
+
+    expect(mockedUsePanelState().closeView).toHaveBeenCalledTimes(1)
   })
 
   test("renders notifications", () => {

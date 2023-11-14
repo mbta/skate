@@ -17,13 +17,13 @@ import {
   statusClasses,
 } from "../../models/vehicleStatus"
 import { Ghost, Vehicle, VehicleInScheduledService } from "../../realtime"
-import { returnToPreviousView } from "../../state"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
 import TabList from "./tabList"
 import { TabMode } from "./tabPanels"
 import { currentRouteTab } from "../../models/routeTab"
 import ViewHeader from "../viewHeader"
+import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 
 interface Props {
   vehicle: Vehicle | Ghost
@@ -93,8 +93,13 @@ const ScheduleAdherence = ({
 }
 
 const Header = ({ vehicle, tabMode, onChangeTabMode, onClosePanel }: Props) => {
-  const [{ routeTabs, userSettings, previousView }, dispatch] =
-    useContext(StateDispatchContext)
+  const [{ routeTabs, userSettings }] = useContext(StateDispatchContext)
+
+  const {
+    currentView: { previousView },
+    openPreviousView,
+  } = usePanelStateFromStateDispatchContext()
+
   const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
 
@@ -111,7 +116,7 @@ const Header = ({ vehicle, tabMode, onChangeTabMode, onClosePanel }: Props) => {
         title="Vehicles"
         closeView={onClosePanel}
         backlinkToView={previousView}
-        followBacklink={() => dispatch(returnToPreviousView())}
+        followBacklink={openPreviousView}
       />
       <div className="c-properties-panel__header">
         <div className="c-properties-panel__label">

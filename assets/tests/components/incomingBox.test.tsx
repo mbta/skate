@@ -1,16 +1,23 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import IncomingBox from "../../src/components/incomingBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { Ghost, VehicleInScheduledService } from "../../src/realtime"
-import { initialState, selectVehicle } from "../../src/state"
+import { initialState } from "../../src/state"
 
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 describe("IncomingBox", () => {
   test("renders empty state", () => {
@@ -293,12 +300,12 @@ describe("IncomingBox", () => {
   })
 
   test("clicking an incoming crowding icon selects the associated vehicle", async () => {
-    const mockDispatch = jest.fn()
+    const mockPanel = mockUsePanelState()
 
     const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <IncomingBox
           vehiclesAndGhosts={[vehicle]}
           ladderDirection={LadderDirection.ZeroToOne}
@@ -309,6 +316,6 @@ describe("IncomingBox", () => {
     )
 
     await userEvent.click(result.getByRole("button"))
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(mockPanel().openVehiclePropertiesPanel).toHaveBeenCalledWith(vehicle)
   })
 })

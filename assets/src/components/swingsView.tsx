@@ -20,21 +20,22 @@ import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
 import { ByRunId, VehicleInScheduledService, Ghost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
 import {
-  closeView,
   rememberSwingsViewScrollPosition,
-  selectVehicle,
   toggleShowHidePastSwings,
 } from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import ViewHeader from "./viewHeader"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
   const [
     { mobileMenuIsOpen, swingsViewScrollPosition, showPastSwings },
     dispatch,
   ] = useContext(StateDispatchContext)
+
+  const { closeView } = usePanelStateFromStateDispatchContext()
   const currentTime = useCurrentTime()
   const swings = useSwings()
   const elementRef = useRef<HTMLDivElement | null>(null)
@@ -92,7 +93,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
       elementRef.current.scrollTop = 0
     }
 
-    dispatch(closeView())
+    closeView()
   }
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
@@ -326,7 +327,7 @@ const SwingCellContent = ({
   runId: string
   onClick?: () => void
 }): ReactElement<HTMLElement> => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
 
   return (
     <>
@@ -340,8 +341,8 @@ const SwingCellContent = ({
 
           <button
             onClick={() => {
-              onClick && onClick()
-              dispatch(selectVehicle(vehicleOrGhost))
+              onClick?.()
+              openVehiclePropertiesPanel(vehicleOrGhost)
             }}
           >
             {runIdToLabel(runId)}

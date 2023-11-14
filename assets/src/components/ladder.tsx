@@ -30,7 +30,6 @@ import {
   VehicleTimepointStatus,
 } from "../realtime.d"
 import { Timepoint } from "../schedule.d"
-import { selectVehicle } from "../state"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
 import {
   Orientation,
@@ -38,6 +37,7 @@ import {
   VehicleIconSvgNode,
   VehicleTooltip,
 } from "./vehicleIcon"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 export interface Props {
   timepoints: Timepoint[]
@@ -194,7 +194,8 @@ const VehicleSvg = ({
   displayCrowding =
     !!displayCrowding && isVehicleInScheduledService(ladderVehicle.vehicle)
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
-  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings }] = useContext(StateDispatchContext)
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
   const crowding = isVehicleInScheduledService(vehicle)
@@ -212,7 +213,7 @@ const VehicleSvg = ({
           vehicle.id === selectedVehicleId && "c-ladder__vehicle--selected",
         ])}
         transform={`translate(${x},${y})`}
-        onClick={() => dispatch(selectVehicle(vehicle))}
+        onClick={() => openVehiclePropertiesPanel(vehicle)}
       >
         {displayCrowding ? (
           <CrowdingIconSvgNode

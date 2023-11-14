@@ -1,5 +1,4 @@
-import React, { ReactElement, useContext } from "react"
-import { Socket } from "phoenix"
+import React, { ReactElement, useContext, useEffect } from "react"
 import {
   BrowserRouter,
   Routes,
@@ -20,7 +19,6 @@ import Modal from "./modal"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
 import LateView from "./lateView"
-import { OpenView } from "../state"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
@@ -28,20 +26,30 @@ import { mapModeForUser } from "../util/mapMode"
 import { Ghost, VehicleInScheduledService } from "../realtime"
 import MapPage from "./mapPage"
 import SearchPage from "./searchPage"
+import { OpenView, isPagePath } from "../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 export const AppRoutes = () => {
   useAppcues()
-
-  const [{ openView, routeTabs, selectedVehicleOrGhost }] =
-    useContext(StateDispatchContext)
-
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-
   const location = useLocation()
+
+  const [{ routeTabs }] = useContext(StateDispatchContext)
+
+  const {
+    setPath,
+    currentView: { openView, selectedVehicleOrGhost },
+  } = usePanelStateFromStateDispatchContext()
+
+  // Keep panel in sync with current path
+  const { pathname: path } = location
+  useEffect(() => {
+    isPagePath(path) && setPath(path)
+  }, [path, setPath])
 
   const vehiclesByRouteIdNeeded =
     openView === OpenView.Late || location.pathname === "/"
 
+  const { socket } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
     useVehicles(
       socket,
@@ -59,11 +67,7 @@ export const AppRoutes = () => {
       </div>
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
         <div className="l-app__main">
-          <Nav
-            allowViews={
-              location.pathname !== mapMode.path || mapMode.supportsRightPanel
-            }
-          >
+          <Nav allowViews>
             <Routes>
               <Route
                 element={
@@ -82,14 +86,7 @@ export const AppRoutes = () => {
                   element={<ShuttleMapPage />}
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
-                {mapMode.supportsRightPanel ? (
-                  <BrowserRoute path={mapMode.path} element={mapElement} />
-                ) : null}
-              </Route>
-              <Route>
-                {!mapMode.supportsRightPanel ? (
-                  <BrowserRoute path={mapMode.path} element={mapElement} />
-                ) : null}
+                <BrowserRoute path={mapMode.path} element={mapElement} />
               </Route>
             </Routes>
           </Nav>

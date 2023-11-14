@@ -6,12 +6,12 @@ import TabPanels, { TabMode } from "./tabPanels"
 import { Card, CardBody } from "../card"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { returnToPreviousView } from "../../state"
 import { runOrBusNumberLabel } from "../../helpers/vehicleLabel"
 import TabList from "./tabList"
 import ViewHeader from "../viewHeader"
 import { isVehicleInScheduledService } from "../../models/vehicle"
 import { IndividualPropertiesPanelProps } from "../propertiesPanel"
+import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 
 type Props = {
   selectedVehicle: Vehicle
@@ -50,8 +50,11 @@ const StaleDataHeader: React.FC<{
   setTabMode: Dispatch<SetStateAction<TabMode>>
   closePanel: () => void
 }> = ({ vehicle, tabMode, setTabMode, closePanel }) => {
-  const [{ userSettings, previousView }, dispatch] =
-    useContext(StateDispatchContext)
+  const [{ userSettings }] = useContext(StateDispatchContext)
+  const {
+    currentView: { previousView },
+    openPreviousView,
+  } = usePanelStateFromStateDispatchContext()
 
   return (
     <div className="c-properties-panel__header-wrapper">
@@ -59,7 +62,7 @@ const StaleDataHeader: React.FC<{
         title="Vehicles"
         closeView={closePanel}
         backlinkToView={previousView}
-        followBacklink={() => dispatch(returnToPreviousView())}
+        followBacklink={openPreviousView}
       />
       <div className="c-properties-panel__header">
         <div className="c-properties-panel__label">

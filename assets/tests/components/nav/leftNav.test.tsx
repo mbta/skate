@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -9,17 +9,14 @@ import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContex
 import { displayHelp } from "../../../src/helpers/appCue"
 import { openDrift } from "../../../src/helpers/drift"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
-import {
-  initialState,
-  openLateView,
-  openNotificationDrawer,
-  openSwingsView,
-  OpenView,
-  togglePickerContainer,
-} from "../../../src/state"
+import { initialState, togglePickerContainer } from "../../../src/state"
 import { TestGroups } from "../../../src/userInTestGroup"
 import getTestGroups from "../../../src/userTestGroups"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
+import stateFactory from "../../factories/applicationState"
+import { OpenView } from "../../../src/state/pagePanelState"
+import { mockUsePanelState } from "../../testHelpers/usePanelStateMocks"
+import { pageViewFactory } from "../../factories/pagePanelStateFactory"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -41,6 +38,13 @@ jest.mock("userTestGroups", () => ({
 }))
 
 jest.mock("../../../src/helpers/fullStory")
+
+jest.mock("../../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+  jest.mocked(getTestGroups).mockReturnValue([])
+})
 
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
@@ -190,11 +194,11 @@ describe("LeftNav", () => {
   })
 
   test("clicking late view button toggles late view", async () => {
+    const mockedUsePanelState = mockUsePanelState()
     const mockedFSEvent = jest.mocked(fullStoryEvent)
-    const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <LeftNav
             defaultToCollapsed={false}
@@ -207,7 +211,7 @@ describe("LeftNav", () => {
 
     await user.click(result.getByTitle("Late View"))
 
-    expect(dispatch).toHaveBeenCalledWith(openLateView())
+    expect(mockedUsePanelState().openLateView).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("late_view_toggled")
     expect(mockedFSEvent).toHaveBeenCalledWith("User opened Late View", {})
   })
@@ -238,10 +242,10 @@ describe("LeftNav", () => {
 
   test("clicking swings view button toggles swing view", async () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
-    const dispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
           <LeftNav
             defaultToCollapsed={false}
@@ -254,7 +258,7 @@ describe("LeftNav", () => {
 
     await user.click(result.getByTitle("Swings View"))
 
-    expect(dispatch).toHaveBeenCalledWith(openSwingsView())
+    expect(mockedUsePanelState().openSwingsView).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
     expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View", {})
   })
@@ -284,12 +288,13 @@ describe("LeftNav", () => {
   })
 
   test("view button displays selected state when that view is enabled", async () => {
-    const dispatch = jest.fn()
+    mockUsePanelState({
+      currentView: pageViewFactory.build({
+        openView: OpenView.Late,
+      }),
+    })
     const result = render(
-      <StateDispatchProvider
-        state={{ ...initialState, openView: OpenView.Late }}
-        dispatch={dispatch}
-      >
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
           <LeftNav
             defaultToCollapsed={false}
@@ -340,10 +345,10 @@ describe("LeftNav", () => {
   })
 
   test("clicking notifications icon toggles notifications drawer and logs a tag manager event", async () => {
-    const dispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
           <LeftNav
             defaultToCollapsed={false}
@@ -356,7 +361,7 @@ describe("LeftNav", () => {
 
     await user.click(result.getByTitle("Notifications"))
 
-    expect(dispatch).toHaveBeenCalledWith(openNotificationDrawer())
+    expect(mockedUsePanelState().openNotificationDrawer).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("notifications_opened")
   })
 
@@ -385,11 +390,15 @@ describe("LeftNav", () => {
   })
 
   test("notifications icon gets active class when notifications drawer is open", () => {
-    const dispatch = jest.fn()
+    mockUsePanelState({
+      currentView: pageViewFactory.build({
+        openView: OpenView.NotificationDrawer,
+      }),
+    })
     const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, openView: OpenView.NotificationDrawer }}
-        dispatch={dispatch}
+        state={stateFactory.build({})}
+        dispatch={jest.fn()}
       >
         <BrowserRouter>
           <LeftNav
@@ -401,17 +410,21 @@ describe("LeftNav", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.getByTitle("Notifications").children[0]).toHaveClass(
-      "c-left-nav__icon--notifications-view--active"
-    )
+    expect(
+      result.getByRole("button", { name: "Notifications" }).firstChild
+    ).toHaveClass("c-left-nav__icon--notifications-view--active")
   })
 
   test("notifications icon doesn't get active class when notifications drawer is closed", () => {
-    const dispatch = jest.fn()
+    mockUsePanelState({
+      currentView: pageViewFactory.build({
+        openView: OpenView.None,
+      }),
+    })
     const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, openView: OpenView.None }}
-        dispatch={dispatch}
+        state={stateFactory.build({})}
+        dispatch={jest.fn()}
       >
         <BrowserRouter>
           <LeftNav

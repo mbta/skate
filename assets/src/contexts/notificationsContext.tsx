@@ -17,7 +17,7 @@ import useNotificationsReducer, {
 import useSocket from "../hooks/useSocket"
 import useVehicleForNotification from "../hooks/useVehicleForNotification"
 import { NotificationId, NotificationState } from "../realtime.d"
-import { selectVehicleFromNotification } from "../state"
+import { selectVehicleFromNotification } from "../state/pagePanelState"
 import { StateDispatchContext } from "./stateDispatchContext"
 
 export const otherNotificationReadState = (state: NotificationState) => {

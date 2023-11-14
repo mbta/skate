@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
@@ -15,10 +15,8 @@ import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
 import { Route, Swing } from "../../src/schedule"
 import {
-  closeView,
   initialState,
   rememberSwingsViewScrollPosition,
-  selectVehicle,
   toggleShowHidePastSwings,
 } from "../../src/state"
 import { VehicleInScheduledService, Ghost } from "../../src/realtime"
@@ -27,6 +25,9 @@ import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import userEvent from "@testing-library/user-event"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+
+jest.mock("../../src/hooks/usePanelState")
 
 jest.mock("../../src/hooks/useSwings", () => ({
   __esModule: true,
@@ -52,6 +53,10 @@ jest.mock("../../src/helpers/fullStory")
 
 jest.spyOn(dateTime, "now").mockImplementation(() => {
   return new Date(18000 * 1000)
+})
+
+beforeEach(() => {
+  mockUsePanelState()
 })
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build({
@@ -257,30 +262,25 @@ describe("SwingsView", () => {
   })
 
   test("opens VPP when clicking an active swing-off and sends Fullstory event", async () => {
+    const mockedUsePanelState = mockUsePanelState()
     const mockedFSEvent = jest.mocked(fullStoryEvent)
     const swing = swingFactory.build({ time: 19000 })
-    ;(useSwings as jest.Mock)
-      .mockImplementationOnce((): Swing[] => [swing])
-      .mockImplementationOnce((): Swing[] => [swing])
-    ;(useVehiclesForRunIds as jest.Mock)
-      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
-        vehicle,
-      ])
-      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
-        vehicle,
-      ])
-    ;(useVehiclesForBlockIds as jest.Mock)
-      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
-        vehicle,
-      ])
-      .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
-        vehicle,
-      ])
+    jest
+      .mocked(useSwings)
+      .mockReturnValueOnce([swing])
+      .mockReturnValueOnce([swing])
+    jest
+      .mocked(useVehiclesForRunIds)
+      .mockReturnValueOnce([vehicle])
+      .mockReturnValueOnce([vehicle])
+    jest
+      .mocked(useVehiclesForBlockIds)
+      .mockReturnValueOnce([vehicle])
+      .mockReturnValueOnce([vehicle])
 
-    const dispatch = jest.fn()
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <SwingsView />
         </RoutesProvider>
@@ -288,7 +288,10 @@ describe("SwingsView", () => {
     )
 
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
-    expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_off")
     expect(mockedFSEvent).toHaveBeenCalledWith(
       'User clicked "Swing Off" run button',
@@ -321,10 +324,10 @@ describe("SwingsView", () => {
         vehicle,
       ])
 
-    const dispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <SwingsView />
         </RoutesProvider>
@@ -332,7 +335,10 @@ describe("SwingsView", () => {
     )
 
     await user.click(result.getByText(runIdToLabel(vehicle.runId)))
-    expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
     expect(tagManagerEvent).toHaveBeenCalledWith("clicked_swing_on")
     expect(mockedFSEvent).toHaveBeenCalledWith(
       'User clicked "Swing On" run button',
@@ -374,11 +380,11 @@ describe("SwingsView", () => {
       (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
 
-    const dispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
 
     const user = userEvent.setup()
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <SwingsView />
         </RoutesProvider>
@@ -386,7 +392,7 @@ describe("SwingsView", () => {
     )
 
     await user.click(result.getByRole("button", { name: /close/i }))
-    expect(dispatch).toHaveBeenCalledWith(closeView())
+    expect(mockedUsePanelState().closeView).toHaveBeenCalled()
   })
 
   test("remembers scroll position when unmounting", async () => {

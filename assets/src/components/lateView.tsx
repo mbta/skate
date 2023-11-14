@@ -23,13 +23,7 @@ import useInterval from "../hooks/useInterval"
 import { flatten, uniqBy } from "../helpers/array"
 import { saveState, loadState } from "../localStorage"
 import { isVehicleInScheduledService, isGhost } from "../models/vehicle"
-import { VehicleInScheduledService, Ghost, RunId } from "../realtime"
-import {
-  Action,
-  closeView,
-  returnToPreviousView,
-  selectVehicle,
-} from "../state"
+import { VehicleInScheduledService, Ghost, RunId, Vehicle } from "../realtime"
 import {
   secondsToMinutes,
   formattedTime,
@@ -40,6 +34,7 @@ import { routeNameOrId } from "../util/route"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import ViewHeader from "./viewHeader"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 // all these times are in seconds
 const unhidePopupVisibilityPeriod = 5
@@ -113,8 +108,15 @@ const saveTimestampsToLocalStorage = (timestamps: {
 }): void => saveState(storedStateKey, timestamps)
 
 const LateView = (): ReactElement<HTMLElement> => {
-  const [{ mobileMenuIsOpen, previousView }, dispatch] =
-    useContext(StateDispatchContext)
+  const [{ mobileMenuIsOpen }] = useContext(StateDispatchContext)
+
+  const {
+    currentView: { previousView },
+    closeView,
+    openPreviousView,
+    openVehiclePropertiesPanel,
+  } = usePanelStateFromStateDispatchContext()
+
   const currentTimeSeconds = useCurrentTimeSeconds()
   const currentTimeMillis = currentTimeSeconds * 1000
 
@@ -293,9 +295,9 @@ const LateView = (): ReactElement<HTMLElement> => {
       <div className="c-late-view__content-wrapper">
         <ViewHeader
           title="Late View"
-          closeView={() => dispatch(closeView())}
+          closeView={closeView}
           backlinkToView={previousView}
-          followBacklink={() => dispatch(returnToPreviousView())}
+          followBacklink={openPreviousView}
         />
         <div className="c-late-view__panels">
           <div className="c-late-view__panel c-late-view__missing-logons">
@@ -380,7 +382,7 @@ const LateView = (): ReactElement<HTMLElement> => {
                     selectedIds={selectedIds}
                     hidingTimestamps={hidingTimestamps}
                     toggleCheckedState={toggleCheckedState}
-                    dispatch={dispatch}
+                    selectVehicle={openVehiclePropertiesPanel}
                   />
                 ))}
                 {lateBuses.map((lateBus) => (
@@ -390,7 +392,7 @@ const LateView = (): ReactElement<HTMLElement> => {
                     selectedIds={selectedIds}
                     hidingTimestamps={hidingTimestamps}
                     toggleCheckedState={toggleCheckedState}
-                    dispatch={dispatch}
+                    selectVehicle={openVehiclePropertiesPanel}
                   />
                 ))}
               </tbody>
@@ -417,13 +419,13 @@ const LateView = (): ReactElement<HTMLElement> => {
 
 const LateGhostRow = ({
   ghost,
-  dispatch,
+  selectVehicle,
   selectedIds,
   hidingTimestamps,
   toggleCheckedState,
 }: {
   ghost: Ghost
-  dispatch: Dispatch<Action>
+  selectVehicle: (vehicle: Vehicle | Ghost) => void
   hidingTimestamps: HidingTimestamps
   selectedIds: RunId[]
   toggleCheckedState: (runId: RunId) => void
@@ -459,7 +461,7 @@ const LateGhostRow = ({
               isGhost_bool: true,
             })
 
-            dispatch(selectVehicle(ghost))
+            selectVehicle(ghost)
           }}
         >
           {ghost.blockWaivers.length > 0 ? (
@@ -477,13 +479,13 @@ const LateGhostRow = ({
 
 const LateBusRow = ({
   vehicle,
-  dispatch,
   selectedIds,
   hidingTimestamps,
   toggleCheckedState,
+  selectVehicle,
 }: {
   vehicle: VehicleInScheduledService
-  dispatch: Dispatch<Action>
+  selectVehicle: (vehicle: Vehicle | Ghost) => void
   selectedIds: RunId[]
   hidingTimestamps: HidingTimestamps
   toggleCheckedState: (runId: RunId) => void
@@ -521,7 +523,7 @@ const LateBusRow = ({
             fullStoryEvent("User clicked Late View Run Number", {
               isGhost_bool: false,
             })
-            dispatch(selectVehicle(vehicle))
+            selectVehicle(vehicle)
           }}
         >
           {vehicle.blockWaivers.length > 0 ? (

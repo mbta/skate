@@ -17,7 +17,7 @@ import {
   VehicleInScheduledService,
 } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
-import { initialState, selectVehicle } from "../../src/state"
+import { initialState } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
@@ -25,11 +25,18 @@ import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+
+jest.mock("../../src/hooks/usePanelState")
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
   tagManagerEvent: jest.fn(),
 }))
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 const vehicles: VehicleInScheduledService[] = [
   vehicleFactory.build({
@@ -670,7 +677,7 @@ describe("routeLadder", () => {
   })
 
   test("clicking an incoming vehicle selects that vehicle", async () => {
-    const mockDispatch = jest.fn()
+    const mockedUsePanelState = mockUsePanelState()
 
     const route: Route = routeFactory.build({
       id: "28",
@@ -723,7 +730,7 @@ describe("routeLadder", () => {
     })
 
     const result = render(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RouteLadder
           route={route}
           timepoints={timepoints}
@@ -740,6 +747,8 @@ describe("routeLadder", () => {
     )
     await userEvent.click(result.getByText("run1"))
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
   })
 })
