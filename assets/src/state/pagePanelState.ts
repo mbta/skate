@@ -67,7 +67,7 @@ export const openViewReducer = (
 ): ViewState => {
   let currentPath = currentState.currentPath
   if (action.type === "SET_CURRENT_PATH") {
-    currentPath = action.path
+    currentPath = action.payload.path
   }
 
   return {
@@ -155,7 +155,50 @@ const openViewPanelReducer = (
 //#endregion Reducers
 
 //#region Action Constructors
-// Keeping this around because this is used by other reducers in `state.ts`.
+export const selectVehicle = (vehicle: VehicleType): SelectVehicleAction => {
+  return {
+    type: "SELECT_VEHICLE",
+    payload: { vehicle },
+  }
+}
+
+export const setPath = (path: PagePath): SetCurrentPath => {
+  return {
+    type: "SET_CURRENT_PATH",
+    payload: { path },
+  }
+}
+
+export const openPreviousView = (): ReturnToPreviousViewAction => {
+  return {
+    type: "RETURN_TO_PREVIOUS_VIEW",
+  }
+}
+
+export const closeView = (): CloseViewAction => {
+  return {
+    type: "CLOSE_VIEW",
+  }
+}
+
+export const openNotificaitonDrawer = (): OpenNotificationDrawerAction => {
+  return {
+    type: "OPEN_NOTIFICATION_DRAWER",
+  }
+}
+
+export const openSwingsView = (): OpenSwingsViewAction => {
+  return {
+    type: "OPEN_SWINGS_VIEW",
+  }
+}
+
+export const openLateView = (): OpenLateViewAction => {
+  return {
+    type: "OPEN_LATE_VIEW",
+  }
+}
+
 export const selectVehicleFromNotification = (
   vehicle: VehicleType
 ): SelectVehicleFromNotificationAction => ({
@@ -180,7 +223,7 @@ export type PanelViewAction =
 
 interface SetCurrentPath {
   type: "SET_CURRENT_PATH"
-  path: PagePath
+  payload: { path: PagePath }
 }
 
 interface SelectVehicleAction {

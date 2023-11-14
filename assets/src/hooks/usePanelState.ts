@@ -1,4 +1,4 @@
-import { useContext, useReducer } from "react"
+import { useContext } from "react"
 import { TabMode } from "../components/propertiesPanel/tabPanels"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { Dispatch } from "../state"
@@ -6,8 +6,13 @@ import {
   PagePath,
   VehicleType,
   ViewState,
-  initialPageViewState,
-  openViewReducer,
+  closeView,
+  openLateView,
+  openNotificaitonDrawer,
+  openPreviousView,
+  openSwingsView,
+  selectVehicle,
+  setPath,
 } from "../state/pagePanelState"
 
 /**
@@ -18,18 +23,6 @@ export const usePanelStateFromStateDispatchContext = () => {
   const [{ view }, dispatch] = useContext(StateDispatchContext)
 
   return usePanelStateForViewState(view, dispatch)
-}
-
-/**
- * A {@link usePanelStateFromStateDispatchContext} which does not depend on {@link StateDispatchContext}.
- */
-export const usePanelStateWithReducer = (initialState?: ViewState) => {
-  const [viewState, viewDispatch] = useReducer(
-    openViewReducer,
-    initialState ?? initialPageViewState
-  )
-
-  return usePanelStateForViewState(viewState, viewDispatch)
 }
 
 /**
@@ -47,39 +40,17 @@ export const usePanelStateForViewState = (
     currentView: view.state[view.currentPath],
     setPath: (path: PagePath) => {
       if (path !== view.currentPath) {
-        dispatch({
-          type: "SET_CURRENT_PATH",
-          path,
-        })
+        dispatch(setPath(path))
       }
     },
     openVehiclePropertiesPanel: (
       vehicle: VehicleType,
       _initialView?: TabMode
-    ) =>
-      dispatch({
-        type: "SELECT_VEHICLE",
-        payload: { vehicle },
-      }),
-    openLateView: () =>
-      dispatch({
-        type: "OPEN_LATE_VIEW",
-      }),
-    openSwingsView: () =>
-      dispatch({
-        type: "OPEN_SWINGS_VIEW",
-      }),
-    openNotificationDrawer: () =>
-      dispatch({
-        type: "OPEN_NOTIFICATION_DRAWER",
-      }),
-    closeView: () =>
-      dispatch({
-        type: "CLOSE_VIEW",
-      }),
-    openPreviousView: () =>
-      dispatch({
-        type: "RETURN_TO_PREVIOUS_VIEW",
-      }),
+    ) => dispatch(selectVehicle(vehicle)),
+    openLateView: () => dispatch(openLateView()),
+    openSwingsView: () => dispatch(openSwingsView()),
+    openNotificationDrawer: () => dispatch(openNotificaitonDrawer()),
+    closeView: () => dispatch(closeView()),
+    openPreviousView: () => dispatch(openPreviousView()),
   }
 }
