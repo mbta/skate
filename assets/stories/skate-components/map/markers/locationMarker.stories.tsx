@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import React from "react"
-import { LocationMarker } from "../../../../src/components/map/markers/locationMarker"
-import { LocationDotIcon } from "../../../../src/helpers/icon"
+import {
+  LocationMarkerIcon,
+  LocationMarker,
+} from "../../../../src/components/map/markers/locationMarker"
 import { inMapDecorator } from "../../../../.storybook/inMapDecorator"
 import locationSearchResultFactory from "../../../../tests/factories/locationSearchResult"
 
@@ -15,16 +16,7 @@ const meta = {
   argTypes: {
     location: { table: { disable: true } },
   },
-  render: ({ selected }) => {
-    return (
-      <LocationDotIcon
-        className={
-          "c-location-dot-icon" +
-          (selected ? " c-location-dot-icon--selected" : "")
-        }
-      />
-    )
-  },
+  render: LocationMarkerIcon,
   component: LocationMarker,
   parameters: {
     layout: "centered",
