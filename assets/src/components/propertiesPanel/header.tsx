@@ -23,9 +23,9 @@ import TabList from "./tabList"
 import { currentRouteTab } from "../../models/routeTab"
 import ViewHeader from "../viewHeader"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
-import { IndividualPropertiesPanelProps } from "../propertiesPanel"
+import { ClosePanelProps, TabModeProps } from "../propertiesPanel"
 
-interface Props extends IndividualPropertiesPanelProps {
+interface Props extends TabModeProps, ClosePanelProps {
   vehicle: Vehicle | Ghost
 }
 

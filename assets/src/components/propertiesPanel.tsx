@@ -12,11 +12,17 @@ interface Props extends IndividualPropertiesPanelProps {
   selectedVehicleOrGhost: Vehicle | Ghost
 }
 
-export type IndividualPropertiesPanelProps = {
+export type TabModeProps = {
   tabMode: TabMode
   onChangeTabMode: (tabMode: TabMode) => void
   onClosePanel: () => void
 }
+
+export type ClosePanelProps = {
+  onClosePanel: () => void
+}
+
+export type IndividualPropertiesPanelProps = TabModeProps & ClosePanelProps
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   const noTooltipOpen =
