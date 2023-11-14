@@ -37,13 +37,13 @@ import {
   InterruptibleFollower,
 } from "../map/follower"
 import {
-  LocationMarker,
   RouteShape,
   RouteStopMarkers,
   StopMarkers,
   VehicleMarker,
 } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
+import { LocationMarker } from "../map/markers/locationMarker"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../../util/streetViewUrl"

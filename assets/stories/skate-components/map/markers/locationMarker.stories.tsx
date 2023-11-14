@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
-import { LocationMarker } from "../../../../src/components/mapMarkers"
+import { LocationMarker } from "../../../../src/components/map/markers/locationMarker"
 import { LocationDotIcon } from "../../../../src/helpers/icon"
 import { inMapDecorator } from "../../../../.storybook/inMapDecorator"
 import locationSearchResultFactory from "../../../../tests/factories/locationSearchResult"
