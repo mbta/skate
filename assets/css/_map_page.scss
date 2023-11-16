@@ -45,7 +45,12 @@ $z-map-page-context: (
   flex: 0 0 auto;
   flex-direction: column;
   gap: 1rem;
-  width: $map-page-search-panel-width;
+  width: Min(
+    $map-page-search-panel-width,
+    /* Panel + Drawer(2rem) should have 100% viewport width - 10px to match leaflet margin */
+    calc((100vw - 2rem) - 10px)
+  );
+
   height: 100%;
   box-sizing: border-box;
   position: absolute;
@@ -77,6 +82,7 @@ $z-map-page-context: (
   }
 
   &--hidden {
+    width: $map-page-search-panel-width;
     left: calc(-1 * #{$map-page-search-panel-width} + 1rem);
 
     .c-search-display {
