@@ -256,7 +256,6 @@ exports[`renders 1`] = `
                 </li>
                 <li>
                   <button
-                    aria-disabled="false"
                     class="c-left-nav__link c-left-nav__view"
                     title="Swings View"
                   >
@@ -270,7 +269,6 @@ exports[`renders 1`] = `
                 </li>
                 <li>
                   <button
-                    aria-disabled="false"
                     class="c-left-nav__link c-left-nav__view"
                     title="Notifications"
                   >

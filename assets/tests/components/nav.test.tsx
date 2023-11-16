@@ -29,7 +29,7 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav allowViews={true}>Hello, world!</Nav>
+        <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -44,7 +44,7 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav allowViews={true}>Hello, world!</Nav>
+        <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -57,7 +57,7 @@ describe("Nav", () => {
 
     const result = render(
       <BrowserRouter>
-        <Nav allowViews={true}>Hello, world!</Nav>
+        <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -70,7 +70,7 @@ describe("Nav", () => {
 
     render(
       <BrowserRouter>
-        <Nav allowViews={true}>Hello, world!</Nav>
+        <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 
@@ -81,7 +81,7 @@ describe("Nav", () => {
   test("renders desktop nav content", () => {
     const result = render(
       <BrowserRouter>
-        <Nav allowViews={true}>Hello, world!</Nav>
+        <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 

@@ -9,10 +9,9 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 
 interface Props {
   children?: React.ReactNode
-  allowViews: boolean
 }
 
-const Nav: React.FC<Props> = ({ children, allowViews }) => {
+const Nav: React.FC<Props> = ({ children }) => {
   const [, dispatch] = useContext(StateDispatchContext)
   const deviceType = useScreenSize()
 
@@ -34,7 +33,6 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
               defaultToCollapsed={true}
               dispatcherFlag={readDispatcherFlag()}
               closePickerOnViewOpen={true}
-              allowViews={allowViews}
             />
           </div>
         </div>
@@ -48,7 +46,6 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
               toggleMobileMenu={() => dispatch(toggleMobileMenu())}
               defaultToCollapsed={true}
               dispatcherFlag={readDispatcherFlag()}
-              allowViews={allowViews}
             />
           </div>
         </div>
@@ -64,7 +61,6 @@ const Nav: React.FC<Props> = ({ children, allowViews }) => {
             <LeftNav
               defaultToCollapsed={false}
               dispatcherFlag={readDispatcherFlag()}
-              allowViews={allowViews}
             />
           </div>
         </div>
