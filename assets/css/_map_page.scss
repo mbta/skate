@@ -19,6 +19,12 @@ $z-map-page-context: (
   flex: 1 1 auto;
   position: relative;
   z-index: map-get($z-map-page-context, "map");
+
+  .c-map-page__input-and-results--visible ~ & {
+  @media screen and (max-width: $mobile-portrait-max-width) {
+      filter: blur(3.25px);
+    }
+  }
 }
 
 .c-map-page__input {
