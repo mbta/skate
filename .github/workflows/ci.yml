@@ -92,6 +92,8 @@ jobs:
         run: mix excellent_migrations.check_safety
       - name: Credo
         run: mix credo
+      - name: Sobelow
+        run: mix sobelow --skip
       - name: Run tests
         run: mix test --cover
         env:

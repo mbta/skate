@@ -29,6 +29,7 @@ defmodule SkateWeb.Router do
 
   pipeline :accepts_html do
     plug :accepts, ["html"]
+    plug :put_secure_browser_headers, %{"content-security-policy" => "default-src 'self'"}
   end
 
   pipeline :accepts_json do
@@ -39,7 +40,6 @@ defmodule SkateWeb.Router do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
   end
 
   scope "/docs", SkateWeb do

@@ -80,6 +80,7 @@ defmodule Skate.MixProject do
       {:postgrex, "~> 0.15"},
       {:sentry, "~> 10.0"},
       {:server_sent_event_stage, "~> 1.1.0"},
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:ssl_verify_fun, "~> 1.1"},
       {:stream_data, "~> 0.6.0", only: :test},
       {:timex, "~> 3.7.5"},
