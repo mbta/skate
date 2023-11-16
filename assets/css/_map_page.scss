@@ -21,7 +21,7 @@ $z-map-page-context: (
   z-index: map-get($z-map-page-context, "map");
 
   .c-map-page__input-and-results--visible ~ & {
-  @media screen and (max-width: $mobile-portrait-max-width) {
+    @media screen and (max-width: $mobile-portrait-max-width) {
       filter: blur(3.25px);
     }
   }
@@ -48,7 +48,7 @@ $z-map-page-context: (
   width: Min(
     $map-page-search-panel-width,
     /* Panel + Drawer(2rem) should have 100% viewport width - 10px to match leaflet margin */
-    calc((100vw - 2rem) - 10px)
+      calc((100vw - 2rem) - 10px)
   );
 
   height: 100%;
@@ -93,6 +93,26 @@ $z-map-page-context: (
         width: 0;
         height: 0;
       }
+    }
+  }
+}
+
+.c-map-page__panel-backdrop-button {
+  display: none;
+
+  .c-map-page__input-and-results--visible ~ & {
+    @media screen and (max-width: $mobile-portrait-max-width) {
+      // Make button clickable
+      display: block;
+      // Force Flex + Posistion to fill area
+      width: 100%;
+
+      // Ignore flex layout and fill screen
+      position: absolute;
+      inset: 0;
+
+      // Inbetween panel and map
+      z-index: 150;
     }
   }
 }
