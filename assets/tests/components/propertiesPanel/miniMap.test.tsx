@@ -70,7 +70,12 @@ describe("MiniMap", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
           <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-            <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
+            <MiniMap
+              vehicle={vehicle}
+              routeVehicles={[]}
+              shapes={[]}
+              openMapEnabled={true}
+            />
           </StateDispatchProvider>
         </MemoryRouter>
       )
@@ -88,10 +93,35 @@ describe("MiniMap", () => {
       )
     })
 
+    test("Map does not include link to open vehicle in search map page when disabled by prop", async () => {
+      const mockDispatch = jest.fn()
+
+      render(
+        <MemoryRouter initialEntries={["/"]}>
+          <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+            <MiniMap
+              vehicle={vehicle}
+              routeVehicles={[]}
+              shapes={[]}
+              openMapEnabled={false}
+            />
+          </StateDispatchProvider>
+        </MemoryRouter>
+      )
+      expect(
+        screen.queryByRole("link", { name: "Open Map" })
+      ).not.toBeInTheDocument()
+    })
+
     test("Map doesn't include fullscreen button", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
+          <MiniMap
+            vehicle={vehicle}
+            routeVehicles={[]}
+            shapes={[]}
+            openMapEnabled={true}
+          />
         </MemoryRouter>
       )
       expect(
@@ -107,7 +137,12 @@ describe("MiniMap", () => {
     test("Map does not include link to open vehicle in search map page", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
+          <MiniMap
+            vehicle={vehicle}
+            routeVehicles={[]}
+            shapes={[]}
+            openMapEnabled={true}
+          />
         </MemoryRouter>
       )
       expect(
@@ -118,7 +153,12 @@ describe("MiniMap", () => {
     test("Map does include fullscreen button", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
+          <MiniMap
+            vehicle={vehicle}
+            routeVehicles={[]}
+            shapes={[]}
+            openMapEnabled={true}
+          />
         </MemoryRouter>
       )
       expect(
@@ -129,7 +169,12 @@ describe("MiniMap", () => {
     test("Doesn't have layers control", () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <MiniMap vehicle={vehicle} routeVehicles={[]} shapes={[]} />
+          <MiniMap
+            vehicle={vehicle}
+            routeVehicles={[]}
+            shapes={[]}
+            openMapEnabled={true}
+          />
         </MemoryRouter>
       )
       expect(layersControlButton.query()).toBeNull()

@@ -47,10 +47,12 @@ const MiniMap = ({
   vehicle,
   shapes,
   routeVehicles,
+  openMapEnabled,
 }: {
   vehicle: Vehicle
   shapes: Shape[]
   routeVehicles: VehicleInScheduledService[]
+  openMapEnabled: boolean
 }) => {
   const stations: Stop[] | null = useStations()
 
@@ -65,7 +67,11 @@ const MiniMap = ({
       stations={stations}
       allowFullscreen={!inMapBetaGroup}
     >
-      <>{inMapBetaGroup && <SearchMapLink vehicleId={vehicle.id} />}</>
+      <>
+        {inMapBetaGroup && openMapEnabled && (
+          <SearchMapLink vehicleId={vehicle.id} />
+        )}
+      </>
     </MapFollowingPrimaryVehicles>
   )
 }

@@ -28,6 +28,7 @@ import { DirectionsButton } from "../directionsButton"
 
 type Props = {
   selectedVehicle: Vehicle
+  openMapEnabled: boolean
 } & IndividualPropertiesPanelProps
 
 const InvalidBanner = () => (
@@ -72,7 +73,13 @@ const useRouteVehicles = (
     .filter((v) => v.id !== primaryVehicleId)
 }
 
-const Location = ({ vehicle }: { vehicle: Vehicle }) => {
+const Location = ({
+  vehicle,
+  openMapEnabled,
+}: {
+  vehicle: Vehicle
+  openMapEnabled: boolean
+}) => {
   const routeVehicles: VehicleInScheduledService[] = useRouteVehicles(
     vehicle.routeId,
     vehicle.id
@@ -113,6 +120,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           vehicle={vehicle}
           routeVehicles={routeVehicles}
           shapes={shapes}
+          openMapEnabled={openMapEnabled}
         />
       </div>
     </div>
@@ -163,7 +171,13 @@ const inDebugMode = (): boolean =>
 const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0
 
-const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
+const StatusContent = ({
+  selectedVehicle,
+  openMapEnabled,
+}: {
+  selectedVehicle: Vehicle
+  openMapEnabled: boolean
+}) => (
   <>
     <div className="c-vehicle-properties-panel__notes">
       {selectedVehicle.isOffCourse && <InvalidBanner />}
@@ -177,7 +191,7 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
 
     <CrowdingDiagram crowding={selectedVehicle.crowding} />
 
-    <Location vehicle={selectedVehicle} />
+    <Location vehicle={selectedVehicle} openMapEnabled={openMapEnabled} />
 
     {shouldShowDataDiscrepancies(selectedVehicle) && (
       <DataDiscrepancies vehicle={selectedVehicle} />
@@ -190,6 +204,7 @@ const VehiclePropertiesPanel = ({
   tabMode,
   onChangeTabMode,
   onClosePanel,
+  openMapEnabled,
 }: Props) => {
   return (
     <div className="c-vehicle-properties-panel">
@@ -210,11 +225,19 @@ const VehiclePropertiesPanel = ({
       {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
           vehicleOrGhost={selectedVehicle}
-          statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
+          statusContent={
+            <StatusContent
+              selectedVehicle={selectedVehicle}
+              openMapEnabled={openMapEnabled}
+            />
+          }
           mode={tabMode}
         />
       ) : (
-        <StatusContent selectedVehicle={selectedVehicle} />
+        <StatusContent
+          selectedVehicle={selectedVehicle}
+          openMapEnabled={openMapEnabled}
+        />
       )}
     </div>
   )

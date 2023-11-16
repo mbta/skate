@@ -10,6 +10,7 @@ import { TabMode } from "./propertiesPanel/tabPanels"
 
 interface Props extends IndividualPropertiesPanelProps {
   selectedVehicleOrGhost: Vehicle | Ghost
+  openMapEnabled: boolean
 }
 
 export type TabModeProps = {
@@ -38,6 +39,7 @@ const PropertiesPanel = ({
   tabMode,
   onChangeTabMode,
   onClosePanel,
+  openMapEnabled,
 }: Props) => {
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
@@ -68,6 +70,7 @@ const PropertiesPanel = ({
             tabMode={tabMode}
             onChangeTabMode={onChangeTabMode}
             onClosePanel={onClosePanel}
+            openMapEnabled={openMapEnabled}
           />
         ) : (
           <GhostPropertiesPanel

@@ -22,13 +22,14 @@ import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
 import { mapModeForUser } from "../util/mapMode"
-import { Ghost, VehicleInScheduledService } from "../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
 import MapPage from "./mapPage"
 import SearchPage from "./searchPage"
 import { OpenView, isPagePath } from "../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import PropertiesPanel from "./propertiesPanel"
 import { isGhost, isVehicle } from "../models/vehicle"
+import { TabMode } from "./propertiesPanel/tabPanels"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -74,24 +75,14 @@ export const AppRoutes = () => {
             <Routes>
               <Route
                 element={
-                  <>
-                    <Outlet />
-                    <RightPanel
-                      openView={openView}
-                      propertiesPanel={
-                        selectedVehicleOrGhost &&
-                        (isVehicle(selectedVehicleOrGhost) ||
-                          isGhost(selectedVehicleOrGhost)) ? (
-                          <PropertiesPanel
-                            selectedVehicleOrGhost={selectedVehicleOrGhost}
-                            tabMode={vppTabMode ?? "status"}
-                            onChangeTabMode={setTabMode}
-                            onClosePanel={closeView}
-                          />
-                        ) : undefined
-                      }
-                    />
-                  </>
+                  <RouteElement
+                    selectedVehicleOrGhost={selectedVehicleOrGhost}
+                    openView={openView}
+                    openMapEnabled={true}
+                    vppTabMode={vppTabMode}
+                    setTabMode={setTabMode}
+                    closeView={closeView}
+                  />
                 }
               >
                 <BrowserRoute path="/" element={<LadderPage />} />
@@ -100,6 +91,19 @@ export const AppRoutes = () => {
                   element={<ShuttleMapPage />}
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
+              </Route>
+              <Route
+                element={
+                  <RouteElement
+                    selectedVehicleOrGhost={selectedVehicleOrGhost}
+                    openView={openView}
+                    openMapEnabled={false}
+                    vppTabMode={vppTabMode}
+                    setTabMode={setTabMode}
+                    closeView={closeView}
+                  />
+                }
+              >
                 <BrowserRoute path={mapMode.path} element={mapElement} />
               </Route>
             </Routes>
@@ -110,6 +114,42 @@ export const AppRoutes = () => {
     </div>
   )
 }
+
+const RouteElement = ({
+  openMapEnabled,
+  selectedVehicleOrGhost,
+  openView,
+  vppTabMode,
+  setTabMode,
+  closeView,
+}: {
+  openMapEnabled: boolean
+  selectedVehicleOrGhost?: Vehicle | Ghost | null
+  openView: OpenView
+  vppTabMode?: TabMode
+  setTabMode: (mode: TabMode) => void
+  closeView: () => void
+}) => (
+  <>
+    <Outlet />
+    <RightPanel
+      openView={openView}
+      propertiesPanel={
+        selectedVehicleOrGhost &&
+        (isVehicle(selectedVehicleOrGhost) ||
+          isGhost(selectedVehicleOrGhost)) ? (
+          <PropertiesPanel
+            selectedVehicleOrGhost={selectedVehicleOrGhost}
+            tabMode={vppTabMode ?? "status"}
+            onChangeTabMode={setTabMode}
+            onClosePanel={closeView}
+            openMapEnabled={openMapEnabled}
+          />
+        ) : undefined
+      }
+    />
+  </>
+)
 
 const App = (): ReactElement<HTMLDivElement> => {
   return (
