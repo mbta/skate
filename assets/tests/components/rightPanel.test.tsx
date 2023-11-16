@@ -5,19 +5,14 @@ import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { State } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
-import stateFactory from "../factories/applicationState"
 import { RunFactory } from "../factories/run"
 import { OpenView } from "../../src/state/pagePanelState"
-import { viewFactory } from "../factories/pagePanelStateFactory"
 
 const ghost = ghostFactory.build({ runId: "ghostrun-1" })
-const vehicle = vehicleFactory.build()
 
 jest
   .spyOn(dateTime, "now")
@@ -30,7 +25,7 @@ describe("rightPanel", () => {
     const tree = renderer
       .create(
         <BrowserRouter>
-          <RightPanel />
+          <RightPanel openView={OpenView.None} />
         </BrowserRouter>
       )
       .toJSON()
@@ -40,112 +35,48 @@ describe("rightPanel", () => {
   test("shows a selected vehicle", () => {
     const { id: runId } = RunFactory.build()
     const vehicle = vehicleFactory.build({ runId })
-    const state = stateFactory.build({
-      view: viewFactory
-        .currentState({ selectedVehicleOrGhost: vehicle })
-        .build(),
-    })
 
     const result = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RightPanel selectedVehicleOrGhost={vehicle} />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <RightPanel
+        openView={OpenView.None}
+        propertiesPanel={<button>{vehicle.runId!}</button>}
+      />
     )
 
     expect(result.queryByRole("button", { name: vehicle.runId! })).toBeVisible()
   })
 
   test("shows a selected ghost", () => {
-    const state: State = stateFactory.build({
-      view: viewFactory
-        .currentState({
-          selectedVehicleOrGhost: ghost,
-        })
-        .build(),
-    })
     const result = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RightPanel selectedVehicleOrGhost={ghost} />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <RightPanel openView={OpenView.None} propertiesPanel={ghost.runId!} />
     )
     expect(result.queryByText(ghost.runId!)).toBeVisible()
   })
 
   test("shows notification drawer", () => {
-    const state: State = stateFactory.build({
-      view: viewFactory
-        .currentState({
-          openView: OpenView.NotificationDrawer,
-        })
-        .build(),
-    })
-    const result = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RightPanel />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
+    const result = render(<RightPanel openView={OpenView.NotificationDrawer} />)
     expect(result.getByText("Notifications")).toBeVisible()
   })
 
   test("prefers VPP to notification drawer", () => {
-    const state: State = stateFactory.build({
-      view: viewFactory
-        .withVehicle()
-        .currentState({
-          openView: OpenView.NotificationDrawer,
-        })
-        .build(),
-    })
     const result = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RightPanel selectedVehicleOrGhost={vehicle} />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <RightPanel
+        openView={OpenView.NotificationDrawer}
+        propertiesPanel="Vehicles"
+      />
     )
     expect(result.queryByText("Vehicles")).toBeVisible()
     expect(result.queryByText("Notifications")).toBeNull()
   })
 
   test("shows swings view", () => {
-    const state: State = stateFactory.build({
-      view: viewFactory
-        .currentState({
-          openView: OpenView.Swings,
-        })
-        .build(),
-    })
-    const result = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RightPanel />
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
+    const result = render(<RightPanel openView={OpenView.Swings} />)
     expect(result.queryByText("Swings")).toBeVisible()
   })
 
   test("prefers VPP to swings view", () => {
-    const state: State = stateFactory.build({
-      view: viewFactory
-        .currentState({
-          selectedVehicleOrGhost: vehicle,
-          openView: OpenView.Swings,
-        })
-        .build(),
-    })
     const result = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RightPanel selectedVehicleOrGhost={vehicle} />
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <RightPanel openView={OpenView.Swings} propertiesPanel="Vehicles" />
     )
     expect(result.queryByText("Vehicles")).toBeVisible()
     expect(result.queryByText("Swings")).toBeNull()

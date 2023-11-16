@@ -1,35 +1,29 @@
-import React, { ReactElement } from "react"
-import { Ghost, Vehicle } from "../realtime.d"
+import React, { ReactElement, ReactNode } from "react"
 import NotificationDrawer from "./notificationDrawer"
-import PropertiesPanel from "./propertiesPanel"
 import SwingsView from "./swingsView"
 import { OpenView } from "../state/pagePanelState"
-import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import LateView from "./lateView"
+
+type RightPanelProps = {
+  openView: OpenView
+  propertiesPanel?: ReactNode
+}
 
 const RightPanel = ({
-  selectedVehicleOrGhost,
-}: {
-  selectedVehicleOrGhost?: Vehicle | Ghost | null
-}): ReactElement<HTMLElement> | null => {
-  const {
-    currentView: { openView },
-    closeView,
-  } = usePanelStateFromStateDispatchContext()
-
-  if (selectedVehicleOrGhost) {
-    return (
-      <PropertiesPanel
-        selectedVehicleOrGhost={selectedVehicleOrGhost}
-        onClosePanel={closeView}
-      />
-    )
+  openView,
+  propertiesPanel,
+}: RightPanelProps): ReactElement | null => {
+  if (propertiesPanel !== undefined) {
+    return <>{propertiesPanel}</>
   } else if (openView === OpenView.Swings) {
     return <SwingsView />
+  } else if (openView === OpenView.Late) {
+    return <LateView />
   } else if (openView === OpenView.NotificationDrawer) {
     return <NotificationDrawer />
-  } else {
-    return null
   }
+
+  return null
 }
 
 export default RightPanel

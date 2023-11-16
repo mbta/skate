@@ -13,6 +13,7 @@ import {
   openSwingsView,
   selectVehicle,
   setPath,
+  setTabMode,
 } from "../state/pagePanelState"
 
 /**
@@ -43,10 +44,9 @@ export const usePanelStateForViewState = (
         dispatch(setPath(path))
       }
     },
-    openVehiclePropertiesPanel: (
-      vehicle: VehicleType,
-      _initialView?: TabMode
-    ) => dispatch(selectVehicle(vehicle)),
+    setTabMode: (tabMode: TabMode) => dispatch(setTabMode(tabMode)),
+    openVehiclePropertiesPanel: (vehicle: VehicleType, initialView?: TabMode) =>
+      dispatch(selectVehicle(vehicle, initialView ?? "status")),
     openLateView: () => dispatch(openLateView()),
     openSwingsView: () => dispatch(openSwingsView()),
     openNotificationDrawer: () => dispatch(openNotificaitonDrawer()),

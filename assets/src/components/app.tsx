@@ -18,7 +18,6 @@ import LadderPage from "./ladderPage"
 import Modal from "./modal"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
-import LateView from "./lateView"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
@@ -28,6 +27,8 @@ import MapPage from "./mapPage"
 import SearchPage from "./searchPage"
 import { OpenView, isPagePath } from "../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import PropertiesPanel from "./propertiesPanel"
+import { isGhost, isVehicle } from "../models/vehicle"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -37,7 +38,9 @@ export const AppRoutes = () => {
 
   const {
     setPath,
-    currentView: { openView, selectedVehicleOrGhost },
+    setTabMode,
+    closeView,
+    currentView: { openView, selectedVehicleOrGhost, vppTabMode },
   } = usePanelStateFromStateDispatchContext()
 
   // Keep panel in sync with current path
@@ -74,9 +77,20 @@ export const AppRoutes = () => {
                   <>
                     <Outlet />
                     <RightPanel
-                      selectedVehicleOrGhost={selectedVehicleOrGhost}
+                      openView={openView}
+                      propertiesPanel={
+                        selectedVehicleOrGhost &&
+                        (isVehicle(selectedVehicleOrGhost) ||
+                          isGhost(selectedVehicleOrGhost)) ? (
+                          <PropertiesPanel
+                            selectedVehicleOrGhost={selectedVehicleOrGhost}
+                            tabMode={vppTabMode ?? "status"}
+                            onChangeTabMode={setTabMode}
+                            onClosePanel={closeView}
+                          />
+                        ) : undefined
+                      }
                     />
-                    {openView === OpenView.Late ? <LateView /> : null}
                   </>
                 }
               >
