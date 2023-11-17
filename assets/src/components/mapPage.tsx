@@ -6,6 +6,7 @@ import { joinClasses } from "../helpers/dom"
 import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
 import useMostRecentVehicleById from "../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../hooks/usePatternsByIdForRoute"
+import useScreenSize from "../hooks/useScreenSize"
 import useSocket from "../hooks/useSocket"
 import { Ghost, Vehicle, VehicleId } from "../realtime"
 import { RoutePattern } from "../schedule"
@@ -213,10 +214,15 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState }, dispatch] = useContext(StateDispatchContext),
     { selectedEntity = null } = searchPageState
 
+  const deviceType = useScreenSize()
+  const isMobile =
+    deviceType === "mobile" || deviceType === "mobile_landscape_tablet_portrait"
+  const defaultSearchOpen = !selectedEntity || !isMobile
+
   const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
 
   // #region Search Drawer Logic
-  const [searchOpen, setSearchOpen] = useState<boolean>(true)
+  const [searchOpen, setSearchOpen] = useState<boolean>(defaultSearchOpen)
   const toggleSearchDrawer = useCallback(
     () => setSearchOpen((open) => !open),
     [setSearchOpen]
@@ -244,12 +250,12 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           fullStoryEvent("RPC Opened", {})
       }
       if (selectedEntity) {
-        setSearchOpen(true)
+        setSearchOpen(!isMobile)
       }
 
       dispatch(setSelectedEntity(selectedEntity))
     },
-    [dispatch]
+    [dispatch, isMobile]
   )
 
   const selectVehicleResult = useCallback(
