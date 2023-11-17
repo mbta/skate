@@ -2,6 +2,7 @@ $map-page-search-panel-width: 24rem;
 
 $z-map-page-context: (
   "map": 100,
+  "search-drawer-backdrop": 199,
   "search-drawer": 200,
 );
 
@@ -112,7 +113,7 @@ $z-map-page-context: (
       inset: 0;
 
       // Inbetween panel and map
-      z-index: 150;
+      z-index: map-get($z-map-page-context, "search-drawer-backdrop");
     }
   }
 }
