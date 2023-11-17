@@ -28,26 +28,7 @@ $z-properties-panel-context: (
 // imports are more specific and do not require extra work to override styles
 // imported externally
 
-// #region Bootstrap
-// See https://getbootstrap.com/docs/5.2/customize/sass/#importing - import only
-// the parts of Bootstrap that we need
-@import "../node_modules/bootstrap/scss/functions";
-
-// Bootstrap variable customization
-$component-active-bg: $color-eggplant-700;
-$list-group-border-color: $color-gray-300;
-
-@import "../node_modules/bootstrap/scss/variables";
-@import "../node_modules/bootstrap/scss/maps";
-@import "../node_modules/bootstrap/scss/mixins";
-@import "../node_modules/bootstrap/scss/root";
-@import "../node_modules/bootstrap/scss/forms";
-@import "../node_modules/bootstrap/scss/list-group";
-
-// #region Bootstrap Utility API
-@import "../node_modules/bootstrap/scss/bootstrap-utilities";
-// #endregion
-// #endregion
+@import "./bootstrap.scss";
 
 // #region Leaflet
 @import "../node_modules/leaflet/dist/leaflet.css";
