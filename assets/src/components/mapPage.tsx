@@ -344,6 +344,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
                 setFollowerShouldSetZoomLevel(false)
               })
             }
+            shouldOffset={searchOpen}
           />
         </div>
       </div>

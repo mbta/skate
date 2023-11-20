@@ -236,6 +236,7 @@ const SelectedVehicleDataLayers = ({
   stops,
   useCurrentZoom,
   onInterruptFollower,
+  shouldOffset,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
@@ -243,6 +244,7 @@ const SelectedVehicleDataLayers = ({
   stops: Stop[]
   useCurrentZoom: boolean
   onInterruptFollower?: () => void
+  shouldOffset: boolean
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -328,6 +330,7 @@ const SelectedVehicleDataLayers = ({
           onInterruptFollower?.()
           followerState.setShouldFollow(...args)
         }}
+        shouldOffset={shouldOffset}
       />
     </>
   )
@@ -412,6 +415,7 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
+  shouldOffset,
 }: {
   selectedEntity: SelectedEntity | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
@@ -419,6 +423,7 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
+  shouldOffset: boolean
 }) => {
   const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
     selectedEntity,
@@ -443,6 +448,7 @@ const SelectionLayers = ({
           stops={stops}
           useCurrentZoom={vehicleUseCurrentZoom}
           onInterruptFollower={onInterruptVehicleFollower}
+          shouldOffset={shouldOffset}
         />
       )
     case SelectedEntityType.RoutePattern:
@@ -571,6 +577,7 @@ const DataLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
+  shouldOffset,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -579,6 +586,7 @@ const DataLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
+  shouldOffset: boolean
 }): JSX.Element => {
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
@@ -622,6 +630,7 @@ const DataLayers = ({
         initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
         vehicleUseCurrentZoom={vehicleUseCurrentZoom}
         onInterruptVehicleFollower={onInterruptVehicleFollower}
+        shouldOffset={shouldOffset}
       />
       <PullbackVehiclesLayer
         pullbackLayerEnabled={pullbackLayerEnabled}
@@ -640,6 +649,7 @@ const MapDisplay = ({
   streetViewInitiallyEnabled = false,
   initializeRouteFollowerEnabled = true,
   vehicleUseCurrentZoom = true,
+  shouldOffset = true,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -648,6 +658,7 @@ const MapDisplay = ({
   initializeRouteFollowerEnabled?: boolean
   vehicleUseCurrentZoom?: boolean
   onInterruptVehicleFollower?: () => void
+  shouldOffset?: boolean
 }) => {
   const [
     {
@@ -684,6 +695,7 @@ const MapDisplay = ({
           initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
           vehicleUseCurrentZoom={vehicleUseCurrentZoom}
           onInterruptVehicleFollower={onInterruptVehicleFollower}
+          shouldOffset={shouldOffset}
         />
         <LayersControlState>
           {(open, setOpen) => (

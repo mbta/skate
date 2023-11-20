@@ -21,11 +21,16 @@ import { equalByElements } from "../../helpers/array"
 import { RecenterControl } from "./controls/recenterControl"
 import { defaultCenter } from "../map"
 
-export type UpdateMapFromPointsFn = (map: LeafletMap, points: LatLng[]) => void
+export type UpdateMapFromPointsFn = (
+  map: LeafletMap,
+  points: LatLng[],
+  shouldOffset: boolean
+) => void
 
 export interface FollowerProps {
   positions: LatLng[]
   onUpdate?: UpdateMapFromPointsFn
+  shouldOffset?: boolean
 }
 
 export const Follower = ({
@@ -33,6 +38,7 @@ export const Follower = ({
   onUpdate,
   isAnimatingFollowUpdate,
   shouldFollow = true,
+  shouldOffset = true,
 }: FollowerProps & InteractiveFollowState) => {
   const map = useMap()
   const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(positions)
@@ -48,9 +54,16 @@ export const Follower = ({
       if (isAnimatingFollowUpdate !== undefined) {
         isAnimatingFollowUpdate.current = true
       }
-      onUpdate?.(map, currentLatLngs)
+      onUpdate?.(map, currentLatLngs, shouldOffset)
     }
-  }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
+  }, [
+    map,
+    shouldFollow,
+    shouldOffset,
+    isAnimatingFollowUpdate,
+    currentLatLngs,
+    onUpdate,
+  ])
 
   return null
 }
@@ -61,7 +74,7 @@ export interface InteractiveFollowState {
   shouldFollow: boolean
   setShouldFollow: Dispatch<SetStateAction<boolean>>
 }
-// Gathers all state needed for the Follower to be able to display it's state
+// Gathers all state needed for the Follower to be able to display its state
 // as well as support turning off when interrupted
 
 export const useInteractiveFollowerState = (
@@ -181,7 +194,7 @@ export const usePickerContainerFollowerFn = () => {
 
 export const drawerOffsetAutoCenter =
   (useCurrentZoom: boolean): UpdateMapFromPointsFn =>
-  (map, points) => {
+  (map, points, shouldOffset) => {
     if (points.length === 0) {
       // If there are no points, blink to default center
       map.setView(defaultCenter, 13, { animate: false })
@@ -200,7 +213,7 @@ export const drawerOffsetAutoCenter =
     // In this case, we get the top left of the inner bounds by padding the left
     // with the distance from the right side of the VPC to the left side of the
     // map container
-    const topLeft = new Point(445, 0)
+    const topLeft = new Point(shouldOffset ? 445 : 0, 0)
 
     if (points.length === 1) {
       const currentZoom = map.getZoom()
