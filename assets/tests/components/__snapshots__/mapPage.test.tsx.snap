@@ -270,6 +270,9 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
         </div>
       </div>
     </div>
+    <button
+      class="c-map-page__panel-backdrop-button"
+    />
     <div
       class="c-map-page__map"
     >
@@ -853,6 +856,9 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
         </div>
       </div>
     </div>
+    <button
+      class="c-map-page__panel-backdrop-button"
+    />
     <div
       class="c-map-page__map"
     >
@@ -1433,6 +1439,9 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
         </div>
       </div>
     </div>
+    <button
+      class="c-map-page__panel-backdrop-button"
+    />
     <div
       class="c-map-page__map"
     >

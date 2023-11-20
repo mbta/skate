@@ -324,6 +324,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
             />
           )}
         </div>
+        <button
+          onClick={toggleSearchDrawer}
+          className="c-map-page__panel-backdrop-button"
+        />
         <div className="c-map-page__map">
           <MapDisplay
             selectedEntity={selectedEntity}
