@@ -21,16 +21,11 @@ import { equalByElements } from "../../helpers/array"
 import { RecenterControl } from "./controls/recenterControl"
 import { defaultCenter } from "../map"
 
-export type UpdateMapFromPointsFn = (
-  map: LeafletMap,
-  points: LatLng[],
-  shouldOffset: boolean
-) => void
+export type UpdateMapFromPointsFn = (map: LeafletMap, points: LatLng[]) => void
 
 export interface FollowerProps {
   positions: LatLng[]
   onUpdate?: UpdateMapFromPointsFn
-  shouldOffset?: boolean
 }
 
 export const Follower = ({
@@ -38,7 +33,6 @@ export const Follower = ({
   onUpdate,
   isAnimatingFollowUpdate,
   shouldFollow = true,
-  shouldOffset = true,
 }: FollowerProps & InteractiveFollowState) => {
   const map = useMap()
   const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(positions)
@@ -54,16 +48,9 @@ export const Follower = ({
       if (isAnimatingFollowUpdate !== undefined) {
         isAnimatingFollowUpdate.current = true
       }
-      onUpdate?.(map, currentLatLngs, shouldOffset)
+      onUpdate?.(map, currentLatLngs)
     }
-  }, [
-    map,
-    shouldFollow,
-    shouldOffset,
-    isAnimatingFollowUpdate,
-    currentLatLngs,
-    onUpdate,
-  ])
+  }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
 
   return null
 }
@@ -193,8 +180,8 @@ export const usePickerContainerFollowerFn = () => {
 }
 
 export const drawerOffsetAutoCenter =
-  (useCurrentZoom: boolean): UpdateMapFromPointsFn =>
-  (map, points, shouldOffset) => {
+  (useCurrentZoom: boolean, shouldOffset: boolean): UpdateMapFromPointsFn =>
+  (map, points) => {
     if (points.length === 0) {
       // If there are no points, blink to default center
       map.setView(defaultCenter, 13, { animate: false })
@@ -247,6 +234,9 @@ export const drawerOffsetAutoCenter =
     }
   }
 
-export const fixedZoomDrawerOffsetAutoCenter = drawerOffsetAutoCenter(false)
+export const fixedZoomDrawerOffsetAutoCenter = drawerOffsetAutoCenter(
+  false,
+  true
+)
 
 // #endregion Follower Update Functions

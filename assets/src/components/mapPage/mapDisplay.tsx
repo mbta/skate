@@ -274,7 +274,7 @@ const SelectedVehicleDataLayers = ({
     (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
   )
 
-  const onUpdate = drawerOffsetAutoCenter(useCurrentZoom)
+  const onUpdate = drawerOffsetAutoCenter(useCurrentZoom, shouldOffset)
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -330,7 +330,6 @@ const SelectedVehicleDataLayers = ({
           onInterruptFollower?.()
           followerState.setShouldFollow(...args)
         }}
-        shouldOffset={shouldOffset}
       />
     </>
   )
