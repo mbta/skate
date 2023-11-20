@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import {
-  LocationMarkerIcon,
-  LocationMarker,
-} from "../../../../src/components/map/markers/locationMarker"
+  LocationSearchMarkerIcon,
+  LocationSearchMarker,
+} from "../../../../src/components/map/markers/locationSearchMarker"
 import { inMapDecorator } from "../../../../.storybook/inMapDecorator"
 import locationSearchResultFactory from "../../../../tests/factories/locationSearchResult"
 
@@ -16,13 +16,13 @@ const meta = {
   argTypes: {
     location: { table: { disable: true } },
   },
-  render: LocationMarkerIcon,
-  component: LocationMarker,
+  render: LocationSearchMarkerIcon,
+  component: LocationSearchMarker,
   parameters: {
     layout: "centered",
     stretch: false,
   },
-} satisfies Meta<typeof LocationMarker>
+} satisfies Meta<typeof LocationSearchMarker>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -41,7 +41,7 @@ export const Selected: Story = {
 
 const InMap: Story = {
   decorators: [inMapDecorator],
-  render: LocationMarker,
+  render: LocationSearchMarker,
   parameters: {
     layout: "fullscreen",
     stretch: true,

@@ -43,7 +43,7 @@ import {
   VehicleMarker,
 } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
-import { LocationMarker } from "../map/markers/locationMarker"
+import { LocationSearchMarker } from "../map/markers/locationSearchMarker"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../../util/streetViewUrl"
@@ -395,7 +395,7 @@ const SelectedLocationDataLayer = ({
 
   return (
     <>
-      <LocationMarker location={location} selected={true} />
+      <LocationSearchMarker location={location} selected={true} />
       <RecenterControlWithInterruptibleFollower
         onUpdate={fixedZoomDrawerOffsetAutoCenter}
         positions={[Leaflet.latLng(location.latitude, location.longitude)]}
