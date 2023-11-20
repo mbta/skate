@@ -73,6 +73,13 @@ const StopCard = ({
       autoPanPadding={autoPanPadding?.padding || [20, 20]}
       autoPanPaddingTopLeft={autoPanPadding?.paddingTopLeft}
       autoPanPaddingBottomRight={autoPanPadding?.paddingBottomRight}
+      // Leaflet implements Popup as a singleton, which means that the
+      // autoPanPadding setting won't be updated because it is only
+      // applied when the `<Popup/>` is created.  Setting a key that
+      // has a stringified version of the autoPanPadding settings will
+      // cause the Popup to get re-created if that key changes, which
+      // means that changing autoPanPadding will be reflected.
+      key={JSON.stringify(autoPanPadding)}
     >
       <div className="c-stop-card__stop-info">
         <div className="c-stop-card__stop-name">{stop.name}</div>

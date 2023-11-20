@@ -236,7 +236,6 @@ const SelectedVehicleDataLayers = ({
   stops,
   useCurrentZoom,
   onInterruptFollower,
-  shouldOffset,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
@@ -244,7 +243,6 @@ const SelectedVehicleDataLayers = ({
   stops: Stop[]
   useCurrentZoom: boolean
   onInterruptFollower?: () => void
-  shouldOffset: boolean
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -274,7 +272,11 @@ const SelectedVehicleDataLayers = ({
     (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
   )
 
-  const onUpdate = drawerOffsetAutoCenter(useCurrentZoom, shouldOffset)
+  const { paddingTopLeft } = useContext(MapSafeAreaContext)
+  const onUpdate = drawerOffsetAutoCenter(
+    useCurrentZoom,
+    paddingTopLeft || [0, 0]
+  )
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -414,7 +416,6 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
-  shouldOffset,
 }: {
   selectedEntity: SelectedEntity | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
@@ -422,7 +423,6 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
-  shouldOffset: boolean
 }) => {
   const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
     selectedEntity,
@@ -447,7 +447,6 @@ const SelectionLayers = ({
           stops={stops}
           useCurrentZoom={vehicleUseCurrentZoom}
           onInterruptFollower={onInterruptVehicleFollower}
-          shouldOffset={shouldOffset}
         />
       )
     case SelectedEntityType.RoutePattern:
@@ -576,7 +575,6 @@ const DataLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
-  shouldOffset,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -585,7 +583,6 @@ const DataLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
-  shouldOffset: boolean
 }): JSX.Element => {
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
@@ -629,7 +626,6 @@ const DataLayers = ({
         initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
         vehicleUseCurrentZoom={vehicleUseCurrentZoom}
         onInterruptVehicleFollower={onInterruptVehicleFollower}
-        shouldOffset={shouldOffset}
       />
       <PullbackVehiclesLayer
         pullbackLayerEnabled={pullbackLayerEnabled}
@@ -682,7 +678,7 @@ const MapDisplay = ({
     >
       <MapSafeAreaContext.Provider
         value={{
-          paddingTopLeft: [445, 54],
+          paddingTopLeft: [shouldOffset ? 445 : 54, 54],
           paddingBottomRight: [50, 20],
         }}
       >
@@ -694,7 +690,6 @@ const MapDisplay = ({
           initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
           vehicleUseCurrentZoom={vehicleUseCurrentZoom}
           onInterruptVehicleFollower={onInterruptVehicleFollower}
-          shouldOffset={shouldOffset}
         />
         <LayersControlState>
           {(open, setOpen) => (
