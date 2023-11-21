@@ -84,3 +84,6 @@ export ERL_FLAGS="+MIscs 2048"
 ## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret (only required in production)
 # export SECRET_KEY_BASE
 
+## Used for locally building (and eventually testing) Storybook and Snapshot tests
+## The project token can be found in Chromatic, (Manage > Configure > Project > Project Token)
+# export CHROMATIC_PROJECT_TOKEN=

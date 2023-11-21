@@ -26,6 +26,9 @@ skate-*.tar
 # Ignore Storybook Logs
 build-storybook.log
 
+# Ignore Chromatic Logs
+chromatic.log
+
 # If NPM crashes, it generates a log, let's ignore it too.
 npm-debug.log
 
@@ -55,3 +58,4 @@ node_modules
 .envrc
 
 .DS_Store
+assets/build-storybook.log
