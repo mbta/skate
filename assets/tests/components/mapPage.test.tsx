@@ -53,6 +53,7 @@ import {
 } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
 import {
+  mockScreenSize,
   mockTileUrls,
   mockUsePatternsByIdForVehicles,
 } from "../testHelpers/mockHelpers"
@@ -696,7 +697,43 @@ describe("<MapPage />", () => {
     expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
   })
 
+  test("When a vehicle is selected from the list of search results on mobile, then search panel should close", async () => {
+    mockScreenSize("mobile")
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+    const runId = runIdFactory.build()
+    const vehicle = vehicleFactory.associations({ runId }).build()
+
+    mockVehicleSearchResultsCategory([vehicle])
+    mockUseVehicleForId([vehicle])
+    mockUseVehiclesForRouteMap({ [vehicle.routeId!]: [vehicle] })
+
+    render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({
+          searchPageState: activeSearchPageStateFactory.build({
+            query: { text: vehicle.runId! },
+          }),
+        })}
+      >
+        <MapPage />
+      </RealDispatchWrapper>
+    )
+
+    const mapSearchPanel = getMapSearchPanel()
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--visible")
+
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: new RegExp(runId),
+      })
+    )
+
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--hidden")
+  })
+
   test("When a route is selected, then search panel should stay open and RPC visible", async () => {
+    mockScreenSize("desktop")
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
     const route = routeFactory.build()
@@ -743,6 +780,7 @@ describe("<MapPage />", () => {
   })
 
   test("When a location is selected from the list of search results, location card should be visible", async () => {
+    mockScreenSize("desktop")
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
     const location = locationSearchResultFactory.build()
@@ -841,6 +879,7 @@ describe("<MapPage />", () => {
   })
 
   test("when the search panel is collapsed, clicking a vehicle reopens it", async () => {
+    mockScreenSize("desktop")
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
     const route = routeFactory.build()
     const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
