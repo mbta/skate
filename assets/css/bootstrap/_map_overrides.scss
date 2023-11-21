@@ -1,0 +1,11 @@
+@use "../colors.module" as colors;
+
+$theme-colors: (
+  "primary": colors.$primary,
+  "secondary": colors.$secondary,
+  "info": colors.$info,
+  "ui-alert": colors.$ui-alert,
+  "service-alert": colors.$service-alert,
+  "light": colors.$light,
+  "dark": colors.$dark,
+);

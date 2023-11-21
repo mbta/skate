@@ -1,7 +1,7 @@
 @use "./colors.module" as colors;
 
 :root {
-  @include colors.theme-colors;
+  // @include colors.theme-colors; // Provided by bootstrap
   @include colors.service-colors;
   @include colors.mbta-colors;
 }
