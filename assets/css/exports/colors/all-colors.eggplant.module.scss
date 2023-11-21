@@ -1,0 +1,5 @@
+@use "../../colors.module" as colors;
+
+:export {
+  @include colors.eggplant-colors;
+}
