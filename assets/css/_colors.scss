@@ -1,0 +1,20 @@
+@use "./colors.module" as colors;
+
+:root {
+  @include colors.theme-colors;
+  @include colors.service-colors;
+  @include colors.mbta-colors;
+}
+
+:root,
+.early-red,
+.late-blue {
+  --color-early: #{colors.$persimmon};
+  --color-late: #{colors.$sky};
+}
+
+.early-blue,
+.late-red {
+  --color-early: #{colors.$sky};
+  --color-late: #{colors.$persimmon};
+}

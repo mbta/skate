@@ -1,0 +1,260 @@
+// colors
+
+// #region All Colors
+/*
+ * All Bootstrap colors are available as Sass variables and a Sass map in
+ * `scss/_variables.scss` file. To avoid increased file sizes, we don’t create
+ * text or background color classes for each of these variables.
+ * Instead, we choose a subset of these colors for a theme palette.
+ *
+ * All of the values in the theme palette are at the 500 level.
+ */
+
+// #region Swatches
+$eggplant-900: #1a083f;
+$eggplant-800: #260f54;
+$eggplant-700: #451b83;
+$eggplant-600: #6229a3;
+$eggplant-500: #7c47ae;
+$eggplant-400: #b58de2;
+$eggplant-300: #d0b1f2;
+$eggplant-200: #ede1f7;
+$eggplant-100: #f3ecf9;
+$eggplant-50: #f8f5f9;
+
+$kiwi-900: #022d40;
+$kiwi-800: #103f4a;
+$kiwi-700: #0a5961;
+$kiwi-600: #1b7979;
+$kiwi-500: #269c95;
+$kiwi-400: #76cbc0;
+$kiwi-300: #b7e6de;
+$kiwi-200: #daf1ea;
+$kiwi-100: #edf8f4;
+$kiwi-50: #f4faf8;
+
+$strawberry-900: #4b0828;
+$strawberry-800: #6d0937;
+$strawberry-700: #9c074d;
+$strawberry-600: #d73367;
+$strawberry-500: #ea5382;
+$strawberry-400: #f698ae;
+$strawberry-300: #f5bcc8;
+$strawberry-200: #f8d8dc;
+$strawberry-100: #fbeaea;
+$strawberry-50: #fcf3f3;
+
+$lemon-900: #372815;
+$lemon-800: #6b541f;
+$lemon-700: #98800b;
+$lemon-600: #c3c022;
+$lemon-500: #dddf5d;
+$lemon-400: #e8ee77;
+$lemon-300: #eef6b1;
+$lemon-200: #f4facc;
+$lemon-100: #fafde8;
+$lemon-50: #fbfdf1;
+
+$gray-900: #141524;
+$gray-800: #222534;
+$gray-700: #3c3f4c;
+$gray-600: #525560;
+$gray-500: #6f7380;
+$gray-400: #b3b5bd;
+$gray-300: #d8dde1;
+$gray-200: #ecedee;
+$gray-100: #f4f4f5;
+$gray-50: #fafafa;
+
+// #endregion Swatches
+
+$persimmon: #e45d32;
+$sky: #46a5e7;
+$lime: #8bcf00;
+
+$white: #fff;
+$black: #000;
+
+$mbta-bus: #ffc72c;
+$mbta-silver: #7c878e;
+
+$mbta-green: #00843d;
+$mbta-red: #da291c;
+$mbta-orange: #ed8b00;
+$mbta-blue: #003da5;
+
+$mbta-cr: #80276c;
+
+$mbta-ferry: #008eaa;
+
+$highlighter: #e7ff36;
+
+// #region Mixins
+@mixin system-state-colors {
+  --color-persimmon: #{$persimmon};
+  --color-sky: #{$sky};
+  --color-lime: #{$lime};
+
+  --color-white: #{$white};
+  --color-black: #{$black};
+
+  --color-highlighter: #{$highlighter};
+}
+
+@mixin eggplant-colors {
+  --color-eggplant-900: #{$eggplant-900};
+  --color-eggplant-800: #{$eggplant-800};
+  --color-eggplant-700: #{$eggplant-700};
+  --color-eggplant-600: #{$eggplant-600};
+  --color-eggplant-500: #{$eggplant-500};
+  --color-eggplant-400: #{$eggplant-400};
+  --color-eggplant-300: #{$eggplant-300};
+  --color-eggplant-200: #{$eggplant-200};
+  --color-eggplant-100: #{$eggplant-100};
+  --color-eggplant-50: #{$eggplant-50};
+}
+
+@mixin kiwi-colors {
+  --color-kiwi-900: #{$kiwi-900};
+  --color-kiwi-800: #{$kiwi-800};
+  --color-kiwi-700: #{$kiwi-700};
+  --color-kiwi-600: #{$kiwi-600};
+  --color-kiwi-500: #{$kiwi-500};
+  --color-kiwi-400: #{$kiwi-400};
+  --color-kiwi-300: #{$kiwi-300};
+  --color-kiwi-200: #{$kiwi-200};
+  --color-kiwi-100: #{$kiwi-100};
+  --color-kiwi-50: #{$kiwi-50};
+}
+
+@mixin strawberry-colors {
+  --color-strawberry-900: #{$strawberry-900};
+  --color-strawberry-800: #{$strawberry-800};
+  --color-strawberry-700: #{$strawberry-700};
+  --color-strawberry-600: #{$strawberry-600};
+  --color-strawberry-500: #{$strawberry-500};
+  --color-strawberry-400: #{$strawberry-400};
+  --color-strawberry-300: #{$strawberry-300};
+  --color-strawberry-200: #{$strawberry-200};
+  --color-strawberry-100: #{$strawberry-100};
+  --color-strawberry-50: #{$strawberry-50};
+}
+
+@mixin lemon-colors {
+  --color-lemon-900: #{$lemon-900};
+  --color-lemon-800: #{$lemon-800};
+  --color-lemon-700: #{$lemon-700};
+  --color-lemon-600: #{$lemon-600};
+  --color-lemon-500: #{$lemon-500};
+  --color-lemon-400: #{$lemon-400};
+  --color-lemon-300: #{$lemon-300};
+  --color-lemon-200: #{$lemon-200};
+  --color-lemon-100: #{$lemon-100};
+  --color-lemon-50: #{$lemon-50};
+}
+
+@mixin gray-colors {
+  --color-gray-900: #{$gray-900};
+  --color-gray-800: #{$gray-800};
+  --color-gray-700: #{$gray-700};
+  --color-gray-600: #{$gray-600};
+  --color-gray-500: #{$gray-500};
+  --color-gray-400: #{$gray-400};
+  --color-gray-300: #{$gray-300};
+  --color-gray-200: #{$gray-200};
+  --color-gray-100: #{$gray-100};
+  --color-gray-50: #{$gray-50};
+}
+// #endregion Mixins
+// #endregion All Colors
+
+// #region Semantic Colors
+/*
+ * Essentially a patch-panel which maps actual colors to semantic colors
+ */
+
+// #region Theme Colors
+/*
+ * We use a subset of all colors to create a smaller color palette for
+ * generating color schemes, also available as Sass variables and a Sass map in
+ * Bootstrap’s `scss/_variables.scss` file.
+ *
+ */
+
+$primary: $eggplant-500;
+$secondary: $gray-500;
+$info: $kiwi-500;
+$ui-alert: $strawberry-500;
+$service-alert: $lemon-500;
+$light: $gray-100;
+$dark: $gray-900;
+// #endregion Theme Colors
+
+// #region Service Colors
+/*
+ * Skate uses service colors to show users information about service, including
+ * adherence and transit type. With exceptions for black, white, and grays,
+ * these colors should not be used anywhere else in the UI.
+*/
+
+$early: var(--color-early);
+$late: var(--color-late);
+$on-time: $lime;
+
+$ghost: $white;
+$unknown-ghost: $highlighter;
+$invalid: $black;
+$logged-off: $gray-300;
+
+$bus: $mbta-bus;
+$red-line: $mbta-red;
+$blue-line: $mbta-blue;
+$green-line: $mbta-green;
+$orange-line: $mbta-orange;
+$silver-line: $mbta-silver;
+$commuter-rail: $mbta-cr;
+$ferry: $mbta-ferry;
+// #endregion Service Colors
+// #endregion Semantic Colors
+
+// #region Mixins
+@mixin theme-colors {
+  --color-primary: #{$primary};
+  --color-secondary: #{$secondary};
+  --color-info: #{$info};
+  --color-ui-alert: #{$ui-alert};
+  --color-service-alert: #{$service-alert};
+  --color-light: #{$light};
+  --color-dark: #{$dark};
+}
+
+@mixin service-colors {
+  --color-early: #{$early};
+  --color-late: #{$late};
+  --color-on-time: #{$on-time};
+
+  --color-ghost: #{$ghost};
+  --color-unknown-ghost: #{$unknown-ghost};
+  --color-invalid: #{$invalid};
+  --color-logged-off: #{$logged-off};
+}
+
+@mixin mbta-colors {
+  --color-bus: #{$bus};
+  --color-red-line: #{$red-line};
+  --color-blue-line: #{$blue-line};
+  --color-green-line: #{$green-line};
+  --color-orange-line: #{$orange-line};
+  --color-silver-line: #{$silver-line};
+  --color-commuter-rail: #{$commuter-rail};
+  --color-ferry: #{$ferry};
+}
+
+@mixin all-colors {
+  @include eggplant-colors;
+  @include kiwi-colors;
+  @include strawberry-colors;
+  @include lemon-colors;
+  @include gray-colors;
+}
+// #endregion Mixins
