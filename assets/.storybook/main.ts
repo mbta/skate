@@ -6,6 +6,10 @@ const config: StorybookConfig = {
       titlePrefix: "Skate",
       directory: "../stories/skate-components",
     },
+    {
+      titlePrefix: "Design System",
+      directory: "../stories/skate-design",
+    },
   ],
 
   addons: [
