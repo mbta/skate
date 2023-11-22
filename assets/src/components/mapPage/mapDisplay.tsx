@@ -175,13 +175,17 @@ const useLiveSelectedEntity = (
   }
 }
 
+const useFixedZoomDrawerFollowingFn = () => {
+  const { paddingTopLeft } = useContext(MapSafeAreaContext)
+  return fixedZoomDrawerOffsetAutoCenter(paddingTopLeft)
+}
+
 const MapElementsNoSelection = () => {
   const followerState = useFollowingStateWithSelectionLogic(null, null)
 
-  const { paddingTopLeft } = useContext(MapSafeAreaContext)
   return (
     <RecenterControlWithInterruptibleFollower
-      onUpdate={fixedZoomDrawerOffsetAutoCenter(paddingTopLeft)}
+      onUpdate={useFixedZoomDrawerFollowingFn()}
       positions={[]}
       {...followerState}
     />
@@ -366,7 +370,6 @@ const SelectedRouteDataLayers = ({
     (selectedRoutePattern?.shape?.stops || []).map((s) => s.id)
   )
 
-  const { paddingTopLeft } = useContext(MapSafeAreaContext)
   return (
     <>
       {selectedRoutePattern && (
@@ -381,7 +384,7 @@ const SelectedRouteDataLayers = ({
         onVehicleSelect={selectVehicle}
       />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={fixedZoomDrawerOffsetAutoCenter(paddingTopLeft)}
+        onUpdate={useFixedZoomDrawerFollowingFn()}
         positions={routeShapePositions}
         {...followerState}
       />
@@ -399,12 +402,11 @@ const SelectedLocationDataLayer = ({
 }) => {
   const followerState = useInteractiveFollowerState()
 
-  const { paddingTopLeft } = useContext(MapSafeAreaContext)
   return (
     <>
       <LocationSearchMarker location={location} selected={true} />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={fixedZoomDrawerOffsetAutoCenter(paddingTopLeft)}
+        onUpdate={useFixedZoomDrawerFollowingFn()}
         positions={[Leaflet.latLng(location.latitude, location.longitude)]}
         {...followerState}
       />
