@@ -1,5 +1,6 @@
 import React, { ReactElement, useCallback, useContext, useState } from "react"
 
+import { MapSafeAreaContext } from "../contexts/mapSafeAreaContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
 import { ChevronLeftIcon, SearchIcon } from "../helpers/icon"
@@ -329,23 +330,31 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           className="c-map-page__panel-backdrop-button"
         />
         <div className="c-map-page__map">
-          <MapDisplay
-            selectedEntity={selectedEntity}
-            setSelection={(...args) => {
-              setFollowerShouldSetZoomLevel(false)
-              setVehicleSelection(...args)
+          <MapSafeAreaContext.Provider
+            value={{
+              paddingTopLeft: [searchOpen ? 445 : 54, 54],
+              paddingBottomRight: [50, 20],
             }}
-            fetchedSelectedLocation={fetchedSelectedLocation}
-            initializeRouteFollowerEnabled={followerShouldSetZoomLevel === true}
-            vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
-            onInterruptVehicleFollower={
-              (followerShouldSetZoomLevel === false || undefined) &&
-              (() => {
+          >
+            <MapDisplay
+              selectedEntity={selectedEntity}
+              setSelection={(...args) => {
                 setFollowerShouldSetZoomLevel(false)
-              })
-            }
-            shouldOffset={searchOpen}
-          />
+                setVehicleSelection(...args)
+              }}
+              fetchedSelectedLocation={fetchedSelectedLocation}
+              initializeRouteFollowerEnabled={
+                followerShouldSetZoomLevel === true
+              }
+              vehicleUseCurrentZoom={followerShouldSetZoomLevel === false}
+              onInterruptVehicleFollower={
+                (followerShouldSetZoomLevel === false || undefined) &&
+                (() => {
+                  setFollowerShouldSetZoomLevel(false)
+                })
+              }
+            />
+          </MapSafeAreaContext.Provider>
         </div>
       </div>
     </>

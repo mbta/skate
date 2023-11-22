@@ -649,7 +649,6 @@ const MapDisplay = ({
   streetViewInitiallyEnabled = false,
   initializeRouteFollowerEnabled = true,
   vehicleUseCurrentZoom = true,
-  shouldOffset = true,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -658,7 +657,6 @@ const MapDisplay = ({
   initializeRouteFollowerEnabled?: boolean
   vehicleUseCurrentZoom?: boolean
   onInterruptVehicleFollower?: () => void
-  shouldOffset?: boolean
 }) => {
   const [
     {
@@ -681,37 +679,30 @@ const MapDisplay = ({
       streetViewInitiallyEnabled={streetViewInitiallyEnabled}
       tileType={tileType}
     >
-      <MapSafeAreaContext.Provider
-        value={{
-          paddingTopLeft: [shouldOffset ? 445 : 54, 54],
-          paddingBottomRight: [50, 20],
-        }}
-      >
-        <DataLayers
-          setSelection={setSelection}
-          selectedEntity={selectedEntity}
-          fetchedSelectedLocation={fetchedSelectedLocation}
-          pullbackLayerEnabled={pullbackLayerEnabled}
-          initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
-          vehicleUseCurrentZoom={vehicleUseCurrentZoom}
-          onInterruptVehicleFollower={onInterruptVehicleFollower}
-        />
-        <LayersControlState>
-          {(open, setOpen) => (
-            <LayersControl.WithTileContext
-              showLayersList={open}
-              onChangeLayersListVisibility={setOpen}
-              onChangeTileType={(tileType: TileType) =>
-                dispatch(setTileType("searchMap", tileType))
-              }
-              pullbackLayerEnabled={pullbackLayerEnabled}
-              onTogglePullbackLayer={() =>
-                dispatch(togglePullbackLayer("searchMap"))
-              }
-            />
-          )}
-        </LayersControlState>
-      </MapSafeAreaContext.Provider>
+      <DataLayers
+        setSelection={setSelection}
+        selectedEntity={selectedEntity}
+        fetchedSelectedLocation={fetchedSelectedLocation}
+        pullbackLayerEnabled={pullbackLayerEnabled}
+        initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
+        vehicleUseCurrentZoom={vehicleUseCurrentZoom}
+        onInterruptVehicleFollower={onInterruptVehicleFollower}
+      />
+      <LayersControlState>
+        {(open, setOpen) => (
+          <LayersControl.WithTileContext
+            showLayersList={open}
+            onChangeLayersListVisibility={setOpen}
+            onChangeTileType={(tileType: TileType) =>
+              dispatch(setTileType("searchMap", tileType))
+            }
+            pullbackLayerEnabled={pullbackLayerEnabled}
+            onTogglePullbackLayer={() =>
+              dispatch(togglePullbackLayer("searchMap"))
+            }
+          />
+        )}
+      </LayersControlState>
     </Map>
   )
 }
