@@ -96,5 +96,5 @@ export const mockTileUrls = (): void => {
 }
 
 export const mockScreenSize = (screenSize: DeviceType): void => {
-  ;(useScreenSize as jest.Mock).mockImplementation(() => screenSize)
+  jest.mocked(useScreenSize).mockReturnValue(screenSize)
 }
