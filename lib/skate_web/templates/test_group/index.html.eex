@@ -4,9 +4,14 @@
         <li><%= link test_group.name, to: Routes.test_group_path(@conn, :show, test_group.id) %></li>
     <% end %>
 </ul>
-<%= form_for @conn, Routes.test_group_path(@conn, :post), fn f -> %>
-    <%= label do %>
-        Name: <%= text_input f, :name %>
-    <% end %>
-    <%= submit "Create" %>
+<%= form_for @changeset, Routes.test_group_path(@conn, :post), fn f -> %>
+    <div>
+        <%= label do %>
+            Name: <%= text_input f, :name %>
+        <% end %>
+        <%= submit "Create" %>
+    </div>
+    <div>
+        <%= error_tag f, :name %>
+    </div>
 <% end %>

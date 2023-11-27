@@ -117,7 +117,7 @@ defmodule SkateWeb.VehicleChannelTest do
       socket: socket,
       user: user
     } do
-      test_group = Skate.Settings.TestGroup.create("map-beta")
+      {:ok, test_group} = Skate.Settings.TestGroup.create("map-beta")
       Skate.Settings.TestGroup.update(%{test_group | users: [user]})
 
       logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)

@@ -14,7 +14,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "returns page with test groups listed", %{conn: conn, user: user} do
-      test_group = TestGroup.create("test group name")
+      {:ok, test_group} = TestGroup.create("test group name")
 
       TestGroup.update(%{test_group | users: [user]})
 
@@ -36,12 +36,49 @@ defmodule SkateWeb.TestGroupControllerTest do
     test "creates test group on submit", %{conn: conn} do
       conn =
         post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :post), %{
-          "name" => "group to create"
+          "test_group" => %{
+            "name" => "group to create"
+          }
         })
 
       assert redirected_to(conn) == SkateWeb.Router.Helpers.test_group_path(conn, :index)
 
       assert [%TestGroup{name: "group to create"}] = TestGroup.get_all()
+    end
+
+    @tag :authenticated_admin
+    test "gives a reasonable error message when trying to create a group with no name", %{
+      conn: conn
+    } do
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :post), %{
+          "test_group" => %{
+            "name" => ""
+          }
+        })
+
+      html_response(conn, 400) =~ "Test group name is required"
+
+      assert Enum.empty?(TestGroup.get_all())
+    end
+
+    @tag :authenticated_admin
+    test "gives a reasonable error message when trying to create a group with a duplicate name",
+         %{
+           conn: conn
+         } do
+      TestGroup.create("duplicate group")
+
+      conn =
+        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :post), %{
+          "test_group" => %{
+            "name" => "duplicate group"
+          }
+        })
+
+      html_response(conn, 400) =~ "Test group name has been taken"
+
+      assert Enum.count(TestGroup.get_all()) == 1
     end
   end
 
@@ -55,7 +92,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "renders a test group", %{conn: conn, user: user} do
-      test_group = TestGroup.create("group to show")
+      {:ok, test_group} = TestGroup.create("group to show")
       test_group_with_user = TestGroup.update(%TestGroup{test_group | users: [user]})
 
       html =
@@ -90,7 +127,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       user1 = User.upsert("user1", "user1@test.com")
       user2 = User.upsert("user2", "user2@test.com")
 
-      test_group = TestGroup.create("group to add users to")
+      {:ok, test_group} = TestGroup.create("group to add users to")
       test_group_with_user = TestGroup.update(%TestGroup{test_group | users: [user1]})
 
       html =
@@ -124,7 +161,7 @@ defmodule SkateWeb.TestGroupControllerTest do
     test "adds user to test group", %{conn: conn} do
       user = User.upsert("user", "user@test.com")
 
-      test_group = TestGroup.create("group to add user to")
+      {:ok, test_group} = TestGroup.create("group to add user to")
 
       conn =
         post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, test_group.id), %{
@@ -151,7 +188,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "handles case where no user is found", %{conn: conn} do
-      test_group = TestGroup.create("group to add user to")
+      {:ok, test_group} = TestGroup.create("group to add user to")
 
       conn =
         post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, test_group.id), %{
@@ -175,7 +212,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       user1 = User.upsert("user1", "user1@test.com")
       user2 = User.upsert("user2", "user2@test.com")
 
-      test_group = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test group")
       test_group_with_users = TestGroup.update(%TestGroup{test_group | users: [user1, user2]})
 
       conn =
@@ -194,7 +231,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       user1 = User.upsert("user1", "user1@test.com")
       user2 = User.upsert("user2", "user2@test.com")
 
-      test_group = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test group")
       TestGroup.update(%TestGroup{test_group | users: [user1]})
 
       conn =

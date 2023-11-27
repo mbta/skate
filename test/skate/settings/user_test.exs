@@ -123,8 +123,8 @@ defmodule Skate.Settings.UserTest do
     test "returns true only if given is in test group" do
       user_1 = User.upsert(@username, @email)
       user_2 = User.upsert("otheruser", "otheruser@test.com")
-      target_test_group = TestGroup.create("target_test_group")
-      other_test_group = TestGroup.create("other_test_group")
+      {:ok, target_test_group} = TestGroup.create("target_test_group")
+      {:ok, other_test_group} = TestGroup.create("other_test_group")
 
       target_test_group = TestGroup.update(%{target_test_group | users: [user_1, user_2]})
       other_test_group = TestGroup.update(%{other_test_group | users: [user_2]})

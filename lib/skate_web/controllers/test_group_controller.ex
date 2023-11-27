@@ -11,19 +11,31 @@ defmodule SkateWeb.TestGroupController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    test_groups = TestGroup.get_all() |> Enum.sort_by(& &1.name)
+    test_groups = Enum.sort_by(TestGroup.get_all(), & &1.name)
 
     conn
     |> assign(:test_groups, test_groups)
+    |> assign(:changeset, Skate.Settings.Db.TestGroup.changeset(%Skate.Settings.Db.TestGroup{}))
     |> put_layout()
     |> render("index.html")
   end
 
   @spec post(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def post(conn, params) do
-    TestGroup.create(params["name"])
+    case TestGroup.create(params["test_group"]["name"]) do
+      {:ok, _} ->
+        redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :index))
 
-    redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :index))
+      {:error, changeset} ->
+        test_groups = Enum.sort_by(TestGroup.get_all(), & &1.name)
+
+        conn
+        |> assign(:test_groups, test_groups)
+        |> assign(:changeset, changeset)
+        |> put_layout()
+        |> put_status(:bad_request)
+        |> render("index.html")
+    end
   end
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
