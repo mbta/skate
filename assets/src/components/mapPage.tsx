@@ -223,6 +223,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
 
   // #region Search Drawer Logic
   const [searchOpen, setSearchOpen] = useState<boolean>(defaultSearchOpen)
+
   const toggleSearchDrawer = useCallback(
     () => setSearchOpen((open) => !open),
     [setSearchOpen]
@@ -249,13 +250,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         case SelectedEntityType.RoutePattern:
           fullStoryEvent("RPC Opened", {})
       }
-      if (selectedEntity) {
-        setSearchOpen(!isMobile)
-      }
 
       dispatch(setSelectedEntity(selectedEntity))
     },
-    [dispatch, isMobile]
+    [dispatch]
   )
 
   const selectVehicleResult = useCallback(
@@ -265,11 +263,12 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           type: SelectedEntityType.Vehicle,
           vehicleId: vehicleOrGhost.id,
         })
+        setSearchOpen(!isMobile)
       } else {
         setVehicleSelection(null)
       }
     },
-    [setVehicleSelection]
+    [setVehicleSelection, isMobile]
   )
 
   const selectLocationResult = (
@@ -282,6 +281,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
           location,
         })
       )
+      setSearchOpen(!isMobile)
     } else {
       dispatch(setSelectedEntity(null))
     }
@@ -347,6 +347,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
               setSelection={(...args) => {
                 setFollowerShouldSetZoomLevel(false)
                 setVehicleSelection(...args)
+                setSearchOpen(true)
               }}
               fetchedSelectedLocation={fetchedSelectedLocation}
               initializeRouteFollowerEnabled={
