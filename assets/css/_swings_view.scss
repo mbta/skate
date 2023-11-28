@@ -27,7 +27,7 @@
       }
     }
   }
-  @media screen and (max-width: $mobile-portrait-max-width) {
+  @media screen and (max-width: map-get($old-breakpoints, "mobile-portrait-max-width")) {
     position: fixed;
     bottom: 0;
     width: 100vw;
@@ -215,7 +215,7 @@
   }
 }
 
-@media screen and (max-width: $mobile-max-width) {
+@media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
   .c-swings-view__header {
     padding-left: 1.75rem;
   }

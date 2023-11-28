@@ -441,7 +441,7 @@ $font-family-route-pill: "Helvetica Neue", Helvetica, Arial, sans-serif;
   filter: blur(5px);
 }
 
-@media screen and (max-width: $mobile-max-width) {
+@media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
   .blurred-mobile {
     @include blur;
   }
