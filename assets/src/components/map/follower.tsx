@@ -3,7 +3,7 @@ import Leaflet, {
   LatLng,
   LatLngExpression,
   Map as LeafletMap,
-  Point,
+  PointExpression,
 } from "leaflet"
 import React, {
   Dispatch,
@@ -61,7 +61,7 @@ export interface InteractiveFollowState {
   shouldFollow: boolean
   setShouldFollow: Dispatch<SetStateAction<boolean>>
 }
-// Gathers all state needed for the Follower to be able to display it's state
+// Gathers all state needed for the Follower to be able to display its state
 // as well as support turning off when interrupted
 
 export const useInteractiveFollowerState = (
@@ -180,7 +180,7 @@ export const usePickerContainerFollowerFn = () => {
 }
 
 export const drawerOffsetAutoCenter =
-  (useCurrentZoom: boolean): UpdateMapFromPointsFn =>
+  (useCurrentZoom: boolean, topLeft: PointExpression): UpdateMapFromPointsFn =>
   (map, points) => {
     if (points.length === 0) {
       // If there are no points, blink to default center
@@ -190,17 +190,6 @@ export const drawerOffsetAutoCenter =
 
     const { width, height } = map.getContainer().getBoundingClientRect()
     const mapContainerBounds = new Bounds([0, 0], [width, height])
-
-    // ```
-    // vpcElement.getBoundingClientRect().right - mapElement.getBoundingClientRect().left
-    //  -> 445
-    // ```
-    // Create a new inner bounds from the map bounds + "padding" to shrink the
-    // inner bounds
-    // In this case, we get the top left of the inner bounds by padding the left
-    // with the distance from the right side of the VPC to the left side of the
-    // map container
-    const topLeft = new Point(445, 0)
 
     if (points.length === 1) {
       const currentZoom = map.getZoom()
@@ -234,6 +223,8 @@ export const drawerOffsetAutoCenter =
     }
   }
 
-export const fixedZoomDrawerOffsetAutoCenter = drawerOffsetAutoCenter(false)
+export const fixedZoomDrawerOffsetAutoCenter = (
+  topLeft: PointExpression | undefined
+) => drawerOffsetAutoCenter(false, topLeft || [0, 0])
 
 // #endregion Follower Update Functions

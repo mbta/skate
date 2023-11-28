@@ -175,12 +175,17 @@ const useLiveSelectedEntity = (
   }
 }
 
+const useFixedZoomDrawerFollowingFn = () => {
+  const { paddingTopLeft } = useContext(MapSafeAreaContext)
+  return fixedZoomDrawerOffsetAutoCenter(paddingTopLeft)
+}
+
 const MapElementsNoSelection = () => {
   const followerState = useFollowingStateWithSelectionLogic(null, null)
 
   return (
     <RecenterControlWithInterruptibleFollower
-      onUpdate={fixedZoomDrawerOffsetAutoCenter}
+      onUpdate={useFixedZoomDrawerFollowingFn()}
       positions={[]}
       {...followerState}
     />
@@ -272,7 +277,11 @@ const SelectedVehicleDataLayers = ({
     (routePatternForVehicle?.shape?.stops || []).map((s) => s.id)
   )
 
-  const onUpdate = drawerOffsetAutoCenter(useCurrentZoom)
+  const { paddingTopLeft } = useContext(MapSafeAreaContext)
+  const onUpdate = drawerOffsetAutoCenter(
+    useCurrentZoom,
+    paddingTopLeft || [0, 0]
+  )
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -375,7 +384,7 @@ const SelectedRouteDataLayers = ({
         onVehicleSelect={selectVehicle}
       />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={fixedZoomDrawerOffsetAutoCenter}
+        onUpdate={useFixedZoomDrawerFollowingFn()}
         positions={routeShapePositions}
         {...followerState}
       />
@@ -397,7 +406,7 @@ const SelectedLocationDataLayer = ({
     <>
       <LocationSearchMarker location={location} selected={true} />
       <RecenterControlWithInterruptibleFollower
-        onUpdate={fixedZoomDrawerOffsetAutoCenter}
+        onUpdate={useFixedZoomDrawerFollowingFn()}
         positions={[Leaflet.latLng(location.latitude, location.longitude)]}
         {...followerState}
       />
@@ -670,37 +679,30 @@ const MapDisplay = ({
       streetViewInitiallyEnabled={streetViewInitiallyEnabled}
       tileType={tileType}
     >
-      <MapSafeAreaContext.Provider
-        value={{
-          paddingTopLeft: [445, 54],
-          paddingBottomRight: [50, 20],
-        }}
-      >
-        <DataLayers
-          setSelection={setSelection}
-          selectedEntity={selectedEntity}
-          fetchedSelectedLocation={fetchedSelectedLocation}
-          pullbackLayerEnabled={pullbackLayerEnabled}
-          initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
-          vehicleUseCurrentZoom={vehicleUseCurrentZoom}
-          onInterruptVehicleFollower={onInterruptVehicleFollower}
-        />
-        <LayersControlState>
-          {(open, setOpen) => (
-            <LayersControl.WithTileContext
-              showLayersList={open}
-              onChangeLayersListVisibility={setOpen}
-              onChangeTileType={(tileType: TileType) =>
-                dispatch(setTileType("searchMap", tileType))
-              }
-              pullbackLayerEnabled={pullbackLayerEnabled}
-              onTogglePullbackLayer={() =>
-                dispatch(togglePullbackLayer("searchMap"))
-              }
-            />
-          )}
-        </LayersControlState>
-      </MapSafeAreaContext.Provider>
+      <DataLayers
+        setSelection={setSelection}
+        selectedEntity={selectedEntity}
+        fetchedSelectedLocation={fetchedSelectedLocation}
+        pullbackLayerEnabled={pullbackLayerEnabled}
+        initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
+        vehicleUseCurrentZoom={vehicleUseCurrentZoom}
+        onInterruptVehicleFollower={onInterruptVehicleFollower}
+      />
+      <LayersControlState>
+        {(open, setOpen) => (
+          <LayersControl.WithTileContext
+            showLayersList={open}
+            onChangeLayersListVisibility={setOpen}
+            onChangeTileType={(tileType: TileType) =>
+              dispatch(setTileType("searchMap", tileType))
+            }
+            pullbackLayerEnabled={pullbackLayerEnabled}
+            onTogglePullbackLayer={() =>
+              dispatch(togglePullbackLayer("searchMap"))
+            }
+          />
+        )}
+      </LayersControlState>
     </Map>
   )
 }
