@@ -140,6 +140,53 @@ describe("usePanelStateForViewState", () => {
       expect(currentView).not.toEqual(otherState)
     })
   })
+
+  describe("isViewOpen", () => {
+    test("returns false when no view open", () => {
+      const path = PagePath.Ladders
+      const pageViewState = pageViewFactory.build({
+        openView: OpenView.None,
+        selectedVehicleOrGhost: null,
+      })
+
+      const { isViewOpen } = usePanelStateForViewState(
+        viewFactory.build({ state: { [path]: pageViewState } }),
+        jest.fn()
+      )
+
+      expect(isViewOpen).toBeFalsy()
+    })
+
+    test("returns true when a view is open", () => {
+      const path = PagePath.Ladders
+      const pageViewState = pageViewFactory.build({
+        openView: OpenView.Swings,
+        selectedVehicleOrGhost: null,
+      })
+
+      const { isViewOpen } = usePanelStateForViewState(
+        viewFactory.build({ state: { [path]: pageViewState } }),
+        jest.fn()
+      )
+
+      expect(isViewOpen).toBeTruthy()
+    })
+
+    test("returns true when a view is open", () => {
+      const path = PagePath.Ladders
+      const pageViewState = pageViewFactory.build({
+        openView: OpenView.None,
+        selectedVehicleOrGhost: vehicleFactory.build(),
+      })
+
+      const { isViewOpen } = usePanelStateForViewState(
+        viewFactory.build({ state: { [path]: pageViewState } }),
+        jest.fn()
+      )
+
+      expect(isViewOpen).toBeTruthy()
+    })
+  })
 })
 
 describe("usePanelStateFromStateDispatchContext", () => {

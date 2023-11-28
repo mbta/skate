@@ -8,11 +8,7 @@ import Nav from "../../src/components/nav"
 import useScreenSize from "../../src/hooks/useScreenSize"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import stateFactory from "../factories/applicationState"
-import { viewFactory } from "../factories/pagePanelStateFactory"
-import { OpenView } from "../../src/state/pagePanelState"
-import vehicleFactory from "../factories/vehicle"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
 jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,
@@ -24,13 +20,16 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
+jest.mock("../../src/hooks/usePanelState")
+
 beforeEach(() => {
+  mockUsePanelState({ isViewOpen: false })
   ;(getTestGroups as jest.Mock).mockReturnValue([])
 })
 
 describe("Nav", () => {
   test("renders mobile nav content", () => {
-    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
+    jest.mocked(useScreenSize).mockReturnValueOnce("mobile")
 
     const result = render(
       <BrowserRouter>
@@ -43,9 +42,9 @@ describe("Nav", () => {
   })
 
   test("renders mobile landscape / tablet portrait nav content", () => {
-    ;(useScreenSize as jest.Mock).mockImplementationOnce(
-      () => "mobile_landscape_tablet_portrait"
-    )
+    jest
+      .mocked(useScreenSize)
+      .mockReturnValueOnce("mobile_landscape_tablet_portrait")
 
     const result = render(
       <BrowserRouter>
@@ -58,53 +57,22 @@ describe("Nav", () => {
   })
 
   test("renders mobile landscape / tablet portrait nav content with nav elements hidden when a view is open", () => {
+    mockUsePanelState({ isViewOpen: true })
     jest
       .mocked(useScreenSize)
       .mockReturnValueOnce("mobile_landscape_tablet_portrait")
-    const dispatch = jest.fn()
 
     const result = render(
-      <StateDispatchProvider
-        state={stateFactory.build({
-          view: viewFactory.currentState({ openView: OpenView.Swings }).build(),
-        })}
-        dispatch={dispatch}
-      >
-        <BrowserRouter>
-          <Nav>Hello, world!</Nav>
-        </BrowserRouter>
-      </StateDispatchProvider>
-    )
-
-    expect(result.getByTitle("Route Ladders")).not.toBeVisible()
-  })
-
-  test("renders mobile landscape / tablet portrait nav content with nav elements hidden when a vehicle is selected", () => {
-    jest
-      .mocked(useScreenSize)
-      .mockReturnValueOnce("mobile_landscape_tablet_portrait")
-    const dispatch = jest.fn()
-
-    const result = render(
-      <StateDispatchProvider
-        state={stateFactory.build({
-          view: viewFactory
-            .currentState({ selectedVehicleOrGhost: vehicleFactory.build() })
-            .build(),
-        })}
-        dispatch={dispatch}
-      >
-        <BrowserRouter>
-          <Nav>Hello, world!</Nav>
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <BrowserRouter>
+        <Nav>Hello, world!</Nav>
+      </BrowserRouter>
     )
 
     expect(result.getByTitle("Route Ladders")).not.toBeVisible()
   })
 
   test("renders tablet nav content", () => {
-    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "tablet")
+    jest.mocked(useScreenSize).mockReturnValueOnce("tablet")
 
     const result = render(
       <BrowserRouter>
@@ -117,7 +85,7 @@ describe("Nav", () => {
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>
@@ -130,6 +98,8 @@ describe("Nav", () => {
   })
 
   test("renders desktop nav content", () => {
+    jest.mocked(useScreenSize).mockReturnValueOnce("desktop")
+
     const result = render(
       <BrowserRouter>
         <Nav>Hello, world!</Nav>

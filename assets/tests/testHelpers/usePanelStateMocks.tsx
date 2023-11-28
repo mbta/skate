@@ -15,7 +15,7 @@ export function mockUsePanelState(
     openLateView: jest.fn(),
     openSwingsView: jest.fn(),
     setTabMode: jest.fn(),
-
+    isViewOpen: false,
     ...(values || {}),
   })
 }

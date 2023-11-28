@@ -7,7 +7,6 @@ import TopNav from "./nav/topNav"
 import MobilePortraitNav from "./nav/mobilePortraitNav"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
-import { OpenView } from "../state/pagePanelState"
 
 interface Props {
   children?: React.ReactNode
@@ -17,11 +16,7 @@ const Nav: React.FC<Props> = ({ children }) => {
   const [, dispatch] = useContext(StateDispatchContext)
   const deviceType = useScreenSize()
 
-  const {
-    currentView: { openView, selectedVehicleOrGhost },
-  } = usePanelStateFromStateDispatchContext()
-  const isViewOpen =
-    openView !== OpenView.None || (selectedVehicleOrGhost && true) || false
+  const { isViewOpen } = usePanelStateFromStateDispatchContext()
 
   const navVisibilityStyle = isViewOpen ? "hidden" : "visible"
 
