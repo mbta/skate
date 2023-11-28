@@ -11,14 +11,10 @@
   width: 23.5rem;
   z-index: map-get($z-page-layout-context, "properties-panel");
 
-  @media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
+  @media screen and (max-width: map-get($breakpoints, "max-mobile-landscape-tablet-portrait-width")) {
     width: 100vw;
-
-    .l-nav__app-content & {
-      width: 100%;
-    }
   }
-  @media screen and (max-width: map-get($old-breakpoints, "mobile-portrait-max-width")) {
+  @media screen and (max-width: map-get($breakpoints, "max-mobile-width")) {
     position: fixed;
     bottom: 0;
   }
