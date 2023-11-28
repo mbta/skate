@@ -18,19 +18,18 @@
   }
 
   // Full width on mobile portrait, to be updated with more responsive designs
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: map-get($breakpoints, "max-mobile-landscape-tablet-portrait-width")) {
     .l-nav__app-content & {
-      width: 100%;
+      width: 100vw;
 
       .c-swings-view__table {
         width: 100%;
       }
     }
   }
-  @media screen and (max-width: map-get($old-breakpoints, "mobile-portrait-max-width")) {
+  @media screen and (max-width: map-get($breakpoints, "max-mobile-width")) {
     position: fixed;
     bottom: 0;
-    width: 100vw;
   }
 }
 
