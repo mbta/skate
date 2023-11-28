@@ -172,7 +172,7 @@ describe("usePanelStateForViewState", () => {
       expect(isViewOpen).toBeTruthy()
     })
 
-    test("returns true when a view is open", () => {
+    test("returns true when a vehicle is selected", () => {
       const path = PagePath.Ladders
       const pageViewState = pageViewFactory.build({
         openView: OpenView.None,
