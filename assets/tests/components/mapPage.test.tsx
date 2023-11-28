@@ -835,6 +835,35 @@ describe("<MapPage />", () => {
     expect(screen.getByTitle("Recenter Map")).toBeVisible()
   })
 
+  test("When a location is selected from the list of search results on mobile, the drawer is not visible", async () => {
+    mockScreenSize("mobile")
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+
+    const location = locationSearchResultFactory.build()
+
+    ;(useLocationSearchResults as jest.Mock).mockReturnValue([location])
+
+    render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          searchPageState: activeSearchPageStateFactory.build({
+            query: { text: location.name! },
+            selectedEntity: {
+              type: SelectedEntityType.Location,
+              location: location,
+            },
+          }),
+        })}
+        dispatch={jest.fn()}
+      >
+        <MapPage />
+      </StateDispatchProvider>
+    )
+
+    const mapSearchPanel = getMapSearchPanel()
+    expect(mapSearchPanel).toHaveClass("c-map-page__input-and-results--hidden")
+  })
+
   test("Locations selected by ID result in the location card being visible", async () => {
     jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 
@@ -918,6 +947,48 @@ describe("<MapPage />", () => {
     )
 
     await userEvent.click(screen.getByRole("button", { name: "Collapse" }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "c-map-page__input-and-results--hidden"
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: vehicle.runId! }))
+
+    expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
+      "c-map-page__input-and-results--visible"
+    )
+  })
+
+  test("when the search panel is collapsed on mobile, clicking a vehicle reopens it", async () => {
+    mockScreenSize("mobile")
+    jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+    const route = routeFactory.build()
+    const routeVehicleFactory = vehicleFactory.params({ routeId: route.id })
+    const vehicle = routeVehicleFactory.build({ runId: runIdFactory.build() })
+    mockVehicleSearchResultsCategory([vehicle])
+
+    mockUsePatternsByIdForVehicles([vehicle])
+
+    mockUseVehicleForId([vehicle])
+    mockUseVehiclesForRouteMap({ [route.id]: [vehicle] })
+
+    const mockDispatch = jest.fn()
+    const state = stateFactory.build({
+      searchPageState: searchPageStateFactory.build({
+        selectedEntity: {
+          type: SelectedEntityType.Vehicle,
+          vehicleId: vehicle.id,
+        },
+      }),
+    })
+
+    render(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <MapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
       "c-map-page__input-and-results--hidden"
