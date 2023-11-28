@@ -8,6 +8,11 @@ import Nav from "../../src/components/nav"
 import useScreenSize from "../../src/hooks/useScreenSize"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import stateFactory from "../factories/applicationState"
+import { viewFactory } from "../factories/pagePanelStateFactory"
+import { OpenView } from "../../src/state/pagePanelState"
+import vehicleFactory from "../factories/vehicle"
 
 jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,
@@ -50,6 +55,52 @@ describe("Nav", () => {
 
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()
     expect(result.queryByText("Route Ladders")).toBeNull()
+  })
+
+  test("renders mobile landscape / tablet portrait nav content with nav elements hidden when a view is open", () => {
+    jest
+      .mocked(useScreenSize)
+      .mockReturnValueOnce("mobile_landscape_tablet_portrait")
+    const dispatch = jest.fn()
+
+    const result = render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          view: viewFactory.currentState({ openView: OpenView.Swings }).build(),
+        })}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <Nav>Hello, world!</Nav>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByTitle("Route Ladders")).not.toBeVisible()
+  })
+
+  test("renders mobile landscape / tablet portrait nav content with nav elements hidden when a vehicle is selected", () => {
+    jest
+      .mocked(useScreenSize)
+      .mockReturnValueOnce("mobile_landscape_tablet_portrait")
+    const dispatch = jest.fn()
+
+    const result = render(
+      <StateDispatchProvider
+        state={stateFactory.build({
+          view: viewFactory
+            .currentState({ selectedVehicleOrGhost: vehicleFactory.build() })
+            .build(),
+        })}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <Nav>Hello, world!</Nav>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByTitle("Route Ladders")).not.toBeVisible()
   })
 
   test("renders tablet nav content", () => {
