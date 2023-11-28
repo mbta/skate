@@ -31,11 +31,14 @@ const ViewHeader: ViewHeaderType = ({
 }): JSX.Element => {
   const deviceType = useScreenSize()
 
+  const screenSizeAllowsBackButton =
+    deviceType === "mobile" || deviceType === "mobile_landscape_tablet_portrait"
+
   return (
     <div className="c-view-header">
       {backlinkToView &&
       backlinkToView !== OpenView.None &&
-      deviceType === "mobile" ? (
+      screenSizeAllowsBackButton ? (
         <button
           className="c-view-header__backlink"
           onClick={followBacklink}

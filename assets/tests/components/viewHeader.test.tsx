@@ -1,10 +1,12 @@
 import { jest, describe, test, expect } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import ViewHeader from "../../src/components/viewHeader"
 import userEvent from "@testing-library/user-event"
 import useScreenSize from "../../src/hooks/useScreenSize"
 import { OpenView } from "../../src/state/pagePanelState"
+import { DeviceType } from "../../src/skate"
 
 jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,
@@ -23,24 +25,50 @@ describe("ViewHeader", () => {
     expect(close).toHaveBeenCalled()
   })
 
-  test("backlink doesn't render on non-mobile breakpoints", () => {
-    const close = jest.fn()
-    const followBacklink = jest.fn()
+  test.each<DeviceType>(["mobile", "mobile_landscape_tablet_portrait"])(
+    "backlink renders on %s breakpoint",
+    (breakpoint) => {
+      jest.mocked(useScreenSize).mockReturnValueOnce(breakpoint)
 
-    const result = render(
-      <ViewHeader
-        title="My View"
-        closeView={close}
-        backlinkToView={OpenView.Swings}
-        followBacklink={followBacklink}
-      />
-    )
+      const close = jest.fn()
+      const followBacklink = jest.fn()
 
-    expect(result.queryByTitle("Swings")).toBeNull()
-  })
+      const result = render(
+        <ViewHeader
+          title="My View"
+          closeView={close}
+          backlinkToView={OpenView.Swings}
+          followBacklink={followBacklink}
+        />
+      )
+
+      expect(result.getByTitle("Swings")).toBeInTheDocument()
+    }
+  )
+
+  test.each<DeviceType>(["tablet", "desktop"])(
+    "backlink doesn't render on %s breakpoint",
+    (breakpoint) => {
+      jest.mocked(useScreenSize).mockReturnValueOnce(breakpoint)
+
+      const close = jest.fn()
+      const followBacklink = jest.fn()
+
+      const result = render(
+        <ViewHeader
+          title="My View"
+          closeView={close}
+          backlinkToView={OpenView.Swings}
+          followBacklink={followBacklink}
+        />
+      )
+
+      expect(result.queryByTitle("Swings")).toBeNull()
+    }
+  )
 
   test("backlink doesn't render when there's no view to return to", () => {
-    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
+    jest.mocked(useScreenSize).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()
@@ -58,7 +86,7 @@ describe("ViewHeader", () => {
   })
 
   test("backlink button invokes callback", async () => {
-    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
+    jest.mocked(useScreenSize).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()
@@ -79,7 +107,7 @@ describe("ViewHeader", () => {
   })
 
   test("backlink button renders for Late View", async () => {
-    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
+    jest.mocked(useScreenSize).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()
@@ -97,7 +125,7 @@ describe("ViewHeader", () => {
   })
 
   test("backlink button render for notifications drawer", async () => {
-    ;(useScreenSize as jest.Mock).mockImplementationOnce(() => "mobile")
+    jest.mocked(useScreenSize).mockImplementationOnce(() => "mobile")
 
     const close = jest.fn()
     const followBacklink = jest.fn()
