@@ -1,7 +1,8 @@
-@use "../../colors" as colors;
+@use "../../color/definitions" as colors;
+@use "../../color/variables" as vars;
 
 :export {
   @include colors.service-colors;
-  --color-late: #{colors.$late};
-  --color-early: #{colors.$early};
+  --color-late: #{vars.$late};
+  --color-early: #{vars.$early};
 }

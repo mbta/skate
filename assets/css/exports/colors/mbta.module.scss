@@ -1,4 +1,4 @@
-@use "../../colors" as colors;
+@use "../../color/definitions" as colors;
 
 :export {
   @include colors.mbta-colors;

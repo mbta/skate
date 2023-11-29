@@ -1,5 +1,0 @@
-@use "../../colors" as colors;
-
-:export {
-  @include colors.all-colors;
-}

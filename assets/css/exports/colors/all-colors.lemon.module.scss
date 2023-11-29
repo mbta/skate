@@ -1,4 +1,4 @@
-@use "../../colors" as colors;
+@use "../../color/tokens" as colors;
 
 :export {
   @include colors.lemon-colors;
