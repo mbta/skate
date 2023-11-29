@@ -81,4 +81,12 @@ defmodule Skate.Settings.TestGroup do
       users: db_test_group.users
     }
   end
+
+  @doc """
+  Deletes a test group with the given ID
+  """
+  @spec delete(integer()) :: nil
+  def delete(id) do
+    Skate.Repo.delete(%DbTestGroup{id: id})
+  end
 end

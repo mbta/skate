@@ -84,4 +84,14 @@ defmodule Skate.Settings.TestGroupTest do
       assert user3 in users_update_2
     end
   end
+
+  describe "delete/1" do
+    test "deletes a test group" do
+      {:ok, test_group} = TestGroup.create("group to delete")
+
+      TestGroup.delete(test_group.id)
+
+      assert Enum.empty?(TestGroup.get_all())
+    end
+  end
 end

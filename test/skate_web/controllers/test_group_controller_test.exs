@@ -252,4 +252,29 @@ defmodule SkateWeb.TestGroupControllerTest do
       assert response(conn, 404) =~ "no test group found"
     end
   end
+
+  describe "delete/2" do
+    @tag :authenticated
+    test "when not an admin, redirects to unauthorized page", %{conn: conn} do
+      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :index))
+
+      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+    end
+
+    @tag :authenticated_admin
+    test "redirects to test groups index page", %{conn: conn} do
+      {:ok, test_group} = TestGroup.create("test group")
+      conn = delete(conn, SkateWeb.Router.Helpers.test_group_path(conn, :delete, test_group.id))
+
+      assert redirected_to(conn) == SkateWeb.Router.Helpers.test_group_path(conn, :index)
+    end
+
+    @tag :authenticated_admin
+    test "deletes the test group", %{conn: conn} do
+      {:ok, test_group} = TestGroup.create("test group")
+      delete(conn, SkateWeb.Router.Helpers.test_group_path(conn, :delete, test_group.id))
+
+      assert Enum.empty?(TestGroup.get_all())
+    end
+  end
 end

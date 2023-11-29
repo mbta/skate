@@ -128,6 +128,13 @@ defmodule SkateWeb.TestGroupController do
     end
   end
 
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete(conn, %{"id" => id}) do
+    {id, _} = Integer.parse(id)
+    TestGroup.delete(id)
+    redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :index))
+  end
+
   defp put_layout(conn) do
     conn
     |> put_layout({SkateWeb.LayoutView, "barebones.html"})
