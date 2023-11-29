@@ -1,5 +1,7 @@
-@use "../../colors.module" as colors;
+@use "../../colors" as colors;
 
 :export {
   @include colors.service-colors;
+  --color-late: #{colors.$late};
+  --color-early: #{colors.$early};
 }

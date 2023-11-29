@@ -1,4 +1,4 @@
-@use "../../colors.module" as colors;
+@use "../../colors" as colors;
 
 :export {
   @include colors.theme-colors;

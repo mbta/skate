@@ -1,5 +1,5 @@
 // colors
-@use "./colors.module" as colors;
+@use "./colors" as colors;
 
 $white: colors.$white;
 $black: colors.$black;

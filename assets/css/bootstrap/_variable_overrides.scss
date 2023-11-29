@@ -1,4 +1,4 @@
-@use "../colors.module" as colors;
+@use "../colors" as colors;
 
 $component-active-bg: colors.$eggplant-700;
 $list-group-border-color: colors.$gray-300;
