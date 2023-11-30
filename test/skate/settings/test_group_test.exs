@@ -25,6 +25,20 @@ defmodule Skate.Settings.TestGroupTest do
       assert %{errors: [name: {"has already been taken", _}]} = changeset
       assert Enum.count(TestGroup.get_all()) == 1
     end
+
+    test "strips leading and trailing spaces" do
+      assert {:ok, %TestGroup{name: "lost in space"}} = TestGroup.create("  lost in space   ")
+
+      assert [%TestGroup{name: "lost in space"}] = TestGroup.get_all()
+    end
+
+    test "treats names as duplicates if they differ by leading and trailing spaces" do
+      TestGroup.create("lost in space   ")
+      assert {:error, changeset} = TestGroup.create("     lost in space")
+
+      assert %{errors: [name: {"has already been taken", _}]} = changeset
+      assert Enum.count(TestGroup.get_all()) == 1
+    end
   end
 
   describe "get/1" do

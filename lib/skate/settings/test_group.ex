@@ -15,7 +15,7 @@ defmodule Skate.Settings.TestGroup do
   @spec create(String.t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create(name) do
     %DbTestGroup{}
-    |> DbTestGroup.changeset(%{name: name})
+    |> DbTestGroup.changeset(%{name: String.trim(name)})
     |> Skate.Repo.insert()
     |> case do
       {:ok, new_test_group} ->
