@@ -6,13 +6,44 @@ defmodule Skate.Settings.TestGroupTest do
 
   describe "create/1" do
     test "creates the test group" do
-      assert %TestGroup{name: "group name"} = TestGroup.create("group name")
+      assert {:ok, %TestGroup{name: "group name"}} = TestGroup.create("group name")
+
+      assert [%TestGroup{name: "group name"}] = TestGroup.get_all()
+    end
+
+    test "disallows blank group names" do
+      assert {:error, changeset} = TestGroup.create("")
+
+      assert %{errors: [name: {"can't be blank", _}]} = changeset
+      assert Enum.empty?(TestGroup.get_all())
+    end
+
+    test "returns an error if the test group has a duplicate name" do
+      TestGroup.create("duplicate name")
+      assert {:error, changeset} = TestGroup.create("duplicate name")
+
+      assert %{errors: [name: {"has already been taken", _}]} = changeset
+      assert Enum.count(TestGroup.get_all()) == 1
+    end
+
+    test "strips leading and trailing spaces" do
+      assert {:ok, %TestGroup{name: "lost in space"}} = TestGroup.create("  lost in space   ")
+
+      assert [%TestGroup{name: "lost in space"}] = TestGroup.get_all()
+    end
+
+    test "treats names as duplicates if they differ by leading and trailing spaces" do
+      TestGroup.create("lost in space   ")
+      assert {:error, changeset} = TestGroup.create("     lost in space")
+
+      assert %{errors: [name: {"has already been taken", _}]} = changeset
+      assert Enum.count(TestGroup.get_all()) == 1
     end
   end
 
   describe "get/1" do
     test "retrieves the test group" do
-      test_group = TestGroup.create("group name")
+      {:ok, test_group} = TestGroup.create("group name")
       assert %TestGroup{name: "group name"} = TestGroup.get(test_group.id)
     end
 
@@ -23,8 +54,8 @@ defmodule Skate.Settings.TestGroupTest do
 
   describe "get_all/1" do
     test "gets all test groups" do
-      group1 = TestGroup.create("group 1")
-      group2 = TestGroup.create("group 2")
+      {:ok, group1} = TestGroup.create("group 1")
+      {:ok, group2} = TestGroup.create("group 2")
 
       all_groups = TestGroup.get_all()
 
@@ -37,7 +68,7 @@ defmodule Skate.Settings.TestGroupTest do
 
   describe "update/1" do
     test "updates name" do
-      test_group = TestGroup.create("name 1")
+      {:ok, test_group} = TestGroup.create("name 1")
 
       new_test_group = TestGroup.update(%{test_group | name: "name 2"})
 
@@ -45,7 +76,7 @@ defmodule Skate.Settings.TestGroupTest do
     end
 
     test "updates users" do
-      test_group = TestGroup.create("name")
+      {:ok, test_group} = TestGroup.create("name")
       user1 = User.upsert("user1", "user1@test.com")
       user2 = User.upsert("user2", "user2@test.com")
       user3 = User.upsert("user3", "user3@test.com")
@@ -65,6 +96,16 @@ defmodule Skate.Settings.TestGroupTest do
       assert Enum.count(users_update_2) == 2
       assert user2 in users_update_2
       assert user3 in users_update_2
+    end
+  end
+
+  describe "delete/1" do
+    test "deletes a test group" do
+      {:ok, test_group} = TestGroup.create("group to delete")
+
+      TestGroup.delete(test_group.id)
+
+      assert Enum.empty?(TestGroup.get_all())
     end
   end
 end

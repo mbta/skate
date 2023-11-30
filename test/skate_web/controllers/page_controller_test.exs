@@ -74,8 +74,10 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes user test groups in HTML", %{conn: conn, user: user} do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("html-test-group")
+
       Skate.Settings.TestGroup.update(%{
-        Skate.Settings.TestGroup.create("html-test-group")
+        test_group
         | users: [user]
       })
 

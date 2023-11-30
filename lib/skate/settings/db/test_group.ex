@@ -19,5 +19,6 @@ defmodule Skate.Settings.Db.TestGroup do
     |> cast(attrs, [:name])
     |> cast_assoc(:test_group_users)
     |> validate_required([:name])
+    |> unique_constraint(:name, name: :test_groups_unique_index)
   end
 end

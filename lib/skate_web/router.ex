@@ -109,6 +109,7 @@ defmodule SkateWeb.Router do
     get "/test_groups", TestGroupController, :index
     post "/test_groups/create", TestGroupController, :post
     get "/test_groups/:id", TestGroupController, :show
+    delete "/test_groups/:id", TestGroupController, :delete
     get "/test_groups/:id/add_user", TestGroupController, :add_user_form
     post "/test_groups/:id/add_user", TestGroupController, :add_user
     post "/test_groups/:id/remove_user", TestGroupController, :remove_user

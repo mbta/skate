@@ -12,12 +12,21 @@ defmodule Skate.Settings.TestGroup do
 
   defstruct [:id, :name, users: []]
 
-  @spec create(String.t()) :: __MODULE__.t()
+  @spec create(String.t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create(name) do
-    %DbTestGroup{name: name}
-    |> Skate.Repo.insert!()
-    |> Skate.Repo.preload(:users)
-    |> convert_from_db_test_group()
+    %DbTestGroup{}
+    |> DbTestGroup.changeset(%{name: String.trim(name)})
+    |> Skate.Repo.insert()
+    |> case do
+      {:ok, new_test_group} ->
+        {:ok,
+         new_test_group
+         |> Skate.Repo.preload(:users)
+         |> convert_from_db_test_group()}
+
+      {:error, errored_changeset} ->
+        {:error, errored_changeset}
+    end
   end
 
   @spec get(integer()) :: t() | nil
@@ -71,5 +80,13 @@ defmodule Skate.Settings.TestGroup do
       name: db_test_group.name,
       users: db_test_group.users
     }
+  end
+
+  @doc """
+  Deletes a test group with the given ID
+  """
+  @spec delete(integer()) :: nil
+  def delete(id) do
+    Skate.Repo.delete(%DbTestGroup{id: id})
   end
 end

@@ -12,3 +12,6 @@
 </ul>
 <%= link "Add user", to: Routes.test_group_path(@conn, :add_user_form, @test_group_id) %>
 <%= link "Back to all test groups", to: Routes.test_group_path(@conn, :index) %>
+<%= form_for @conn, Routes.test_group_path(@conn, :delete, @test_group_id), [method: "DELETE"], fn _f -> %>
+    <%= submit "Delete group", [onclick: "return confirm('Are you sure? This cannot be undone.')"] %>
+<% end %>
