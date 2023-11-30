@@ -304,11 +304,11 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
     {[parsed], machine}
   rescue
     error ->
-      log_parse_error(error, machine, System.stacktrace())
+      log_parse_error(error, machine, __STACKTRACE__)
       {[], machine}
   catch
     error ->
-      log_parse_error(error, machine, System.stacktrace())
+      log_parse_error(error, machine, __STACKTRACE__)
       {[], machine}
   end
 
