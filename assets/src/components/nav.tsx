@@ -18,8 +18,6 @@ const Nav: React.FC<Props> = ({ children }) => {
 
   const { isViewOpen } = usePanelStateFromStateDispatchContext()
 
-  const navVisibilityStyle = isViewOpen ? "hidden" : "visible"
-
   switch (deviceType) {
     case "mobile":
       return (
@@ -34,7 +32,7 @@ const Nav: React.FC<Props> = ({ children }) => {
           <div className="l-nav__app-content">{children}</div>
           <div
             className="l-nav__nav-bar l-nav__nav-bar--left"
-            style={{ visibility: navVisibilityStyle }}
+            hidden={isViewOpen}
           >
             <LeftNav
               toggleMobileMenu={() => dispatch(toggleMobileMenu())}
