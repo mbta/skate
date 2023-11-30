@@ -52,7 +52,7 @@ defmodule Skate.MixProject do
       {:configparser_ex, "~> 4.0", only: :dev},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:csv, "~> 2.4.1"},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:diskusage_logger, "~> 0.2.0"},
       {:ecto_sql, "~> 3.4"},
       {:ehmon, github: "mbta/ehmon", only: :prod},
