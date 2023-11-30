@@ -43,13 +43,13 @@ exports[`SettingsPage renders 1`] = `
           className="c-settings-page__options-container"
         >
           <label
-            className="c-settings-page__option-label-unselected"
+            className="c-settings-page__option-label-selected"
           >
             <input
-              checked={false}
+              checked={true}
               className="c-settings-page__input"
-              data-testid="shuttle-vehicle-label-run-number"
-              name="shuttle-vehicle-label"
+              data-testid="ladder-vehicle-label-run-number"
+              name="ladder-vehicle-label"
               onChange={[Function]}
               type="radio"
               value={1}
@@ -57,13 +57,13 @@ exports[`SettingsPage renders 1`] = `
             Run number
           </label>
           <label
-            className="c-settings-page__option-label-selected"
+            className="c-settings-page__option-label-unselected"
           >
             <input
-              checked={true}
+              checked={false}
               className="c-settings-page__input"
-              data-testid="shuttle-vehicle-label-vehicle-number"
-              name="shuttle-vehicle-label"
+              data-testid="ladder-vehicle-label-vehicle-number"
+              name="ladder-vehicle-label"
               onChange={[Function]}
               type="radio"
               value={2}
@@ -92,13 +92,13 @@ exports[`SettingsPage renders 1`] = `
           className="c-settings-page__options-container"
         >
           <label
-            className="c-settings-page__option-label-selected"
+            className="c-settings-page__option-label-unselected"
           >
             <input
-              checked={true}
+              checked={false}
               className="c-settings-page__input"
-              data-testid="ladder-vehicle-label-run-number"
-              name="ladder-vehicle-label"
+              data-testid="shuttle-vehicle-label-run-number"
+              name="shuttle-vehicle-label"
               onChange={[Function]}
               type="radio"
               value={1}
@@ -106,13 +106,13 @@ exports[`SettingsPage renders 1`] = `
             Run number
           </label>
           <label
-            className="c-settings-page__option-label-unselected"
+            className="c-settings-page__option-label-selected"
           >
             <input
-              checked={false}
+              checked={true}
               className="c-settings-page__input"
-              data-testid="ladder-vehicle-label-vehicle-number"
-              name="ladder-vehicle-label"
+              data-testid="shuttle-vehicle-label-vehicle-number"
+              name="shuttle-vehicle-label"
               onChange={[Function]}
               type="radio"
               value={2}
