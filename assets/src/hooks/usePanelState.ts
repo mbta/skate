@@ -3,6 +3,7 @@ import { TabMode } from "../components/propertiesPanel/tabPanels"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { Dispatch } from "../state"
 import {
+  OpenView,
   PagePath,
   VehicleType,
   ViewState,
@@ -37,8 +38,9 @@ export const usePanelStateForViewState = (
   view: ViewState,
   dispatch: Dispatch
 ) => {
+  const currentView = view.state[view.currentPath]
   return {
-    currentView: view.state[view.currentPath],
+    currentView,
     setPath: (path: PagePath) => {
       if (path !== view.currentPath) {
         dispatch(setPath(path))
@@ -52,5 +54,9 @@ export const usePanelStateForViewState = (
     openNotificationDrawer: () => dispatch(openNotificaitonDrawer()),
     closeView: () => dispatch(closeView()),
     openPreviousView: () => dispatch(openPreviousView()),
+    isViewOpen:
+      currentView.openView !== OpenView.None ||
+      (currentView.selectedVehicleOrGhost && true) ||
+      false,
   }
 }

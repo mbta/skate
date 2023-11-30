@@ -17,13 +17,13 @@ $color-route-tabs-separator: #9fa2ac;
   padding-left: $route-picker-width;
 }
 
-@media screen and (max-width: $mobile-max-width) {
+@media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
   .c-ladder-page--picker-container-visible {
     padding-left: $mobile-route-picker-width;
   }
 }
 
-@media screen and (max-width: $mobile-max-width) {
+@media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
   .c-ladder-page--picker-container-visible {
     .c-ladder-page__tab-bar-and-ladders {
       @include blur;

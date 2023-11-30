@@ -6,6 +6,7 @@ import LeftNav from "./nav/leftNav"
 import TopNav from "./nav/topNav"
 import MobilePortraitNav from "./nav/mobilePortraitNav"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 interface Props {
   children?: React.ReactNode
@@ -15,19 +16,24 @@ const Nav: React.FC<Props> = ({ children }) => {
   const [, dispatch] = useContext(StateDispatchContext)
   const deviceType = useScreenSize()
 
+  const { isViewOpen } = usePanelStateFromStateDispatchContext()
+
   switch (deviceType) {
     case "mobile":
       return (
         <div className="l-nav--narrow">
           <div className="l-nav__app-content">{children}</div>
-          <MobilePortraitNav />
+          <MobilePortraitNav isViewOpen={isViewOpen} />
         </div>
       )
     case "mobile_landscape_tablet_portrait":
       return (
         <div className="l-nav--medium">
           <div className="l-nav__app-content">{children}</div>
-          <div className="l-nav__nav-bar l-nav__nav-bar--left">
+          <div
+            className="l-nav__nav-bar l-nav__nav-bar--left"
+            hidden={isViewOpen}
+          >
             <LeftNav
               toggleMobileMenu={() => dispatch(toggleMobileMenu())}
               defaultToCollapsed={true}

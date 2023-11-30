@@ -35,7 +35,7 @@
   display: none;
 }
 
-@media screen and (max-width: $mobile-max-width) {
+@media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
   .c-picker-container {
     --picker-container-width: min(
       #{$mobile-route-picker-width},

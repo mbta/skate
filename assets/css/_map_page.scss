@@ -22,7 +22,7 @@ $z-map-page-context: (
   z-index: map-get($z-map-page-context, "map");
 
   .c-map-page__input-and-results--visible ~ & {
-    @media screen and (max-width: $mobile-portrait-max-width) {
+    @media screen and (max-width: map-get($old-breakpoints, "mobile-portrait-max-width")) {
       filter: blur(3.25px);
     }
   }
@@ -102,7 +102,7 @@ $z-map-page-context: (
   display: none;
 
   .c-map-page__input-and-results--visible ~ & {
-    @media screen and (max-width: $mobile-portrait-max-width) {
+    @media screen and (max-width: map-get($old-breakpoints, "mobile-portrait-max-width")) {
       // Make button clickable
       display: block;
       // Force Flex + Posistion to fill area
