@@ -175,7 +175,7 @@ defmodule Notifications.Notification do
     notification
   end
 
-  @spec unexpired_notifications_for_user(DbUser.id(), (() -> Util.Time.timestamp())) :: [t()]
+  @spec unexpired_notifications_for_user(DbUser.id(), (-> Util.Time.timestamp())) :: [t()]
   def unexpired_notifications_for_user(user_id, now_fn \\ &Util.Time.now/0) do
     cutoff_time = now_fn.() - @notification_expiration_threshold
 

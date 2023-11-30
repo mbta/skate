@@ -56,8 +56,9 @@ defmodule Skate.RepoTest do
         ssl_opts: [
           cacertfile: "priv/aws-cert-bundle.pem",
           verify: :verify_peer,
-          server_name_indication: 'db_server_hostname',
-          verify_fun: {&:ssl_verify_hostname.verify_fun/3, [check_hostname: 'db_server_hostname']}
+          server_name_indication: ~c"db_server_hostname",
+          verify_fun:
+            {&:ssl_verify_hostname.verify_fun/3, [check_hostname: ~c"db_server_hostname"]}
         ]
       ]
 

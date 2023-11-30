@@ -99,8 +99,8 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # Mismatch in number of columns per line to trigger CSV parse error
-      {:ok, {'file.zip', zip_binary}} =
-        :zip.zip('file.zip', [{'calendar.txt', "column_1,column_2\n1,2,3"}], [:memory])
+      {:ok, {~c"file.zip", zip_binary}} =
+        :zip.zip(~c"file.zip", [{~c"calendar.txt", "column_1,column_2\n1,2,3"}], [:memory])
 
       Bypass.expect(bypass, fn conn ->
         conn
