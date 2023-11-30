@@ -682,7 +682,7 @@ defmodule Realtime.VehicleTest do
       assert encoded_string =~ "\"route_id\":\"28\""
 
       assert encoded_string =~
-               "\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}]"
+               "\"data_discrepancies\":[{\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}],\"attribute\":\"trip_id\"},{\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}],\"attribute\":\"route_id\"}]"
     end
   end
 end

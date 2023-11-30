@@ -173,7 +173,7 @@ defmodule SkateWeb.PageControllerTest do
       conn = get(conn, "/")
 
       assert html_response(conn, 200) =~
-               "data-map-limits=\"{&quot;east&quot;:3,&quot;north&quot;:1,&quot;south&quot;:2,&quot;west&quot;:4}\""
+               "data-map-limits=\"{&quot;north&quot;:1,&quot;south&quot;:2,&quot;east&quot;:3,&quot;west&quot;:4}\""
     end
 
     @tag :authenticated
