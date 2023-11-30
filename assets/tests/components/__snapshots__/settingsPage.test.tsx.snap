@@ -34,7 +34,7 @@ exports[`SettingsPage renders 1`] = `
           >
             Vehicle labels on 
             <strong>
-              regular
+              shuttle
             </strong>
              buses
           </div>
@@ -83,7 +83,7 @@ exports[`SettingsPage renders 1`] = `
           >
             Vehicle labels on 
             <strong>
-              shuttle
+              regular
             </strong>
              buses
           </div>

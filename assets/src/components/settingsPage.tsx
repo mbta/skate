@@ -31,7 +31,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           <ToggleSetting
             label={
               <>
-                Vehicle labels on <strong>regular</strong> buses
+                Vehicle labels on <strong>shuttle</strong> buses
               </>
             }
             settingName="shuttle-vehicle-label"
@@ -57,7 +57,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           <ToggleSetting
             label={
               <>
-                Vehicle labels on <strong>shuttle</strong> buses
+                Vehicle labels on <strong>regular</strong> buses
               </>
             }
             settingName="ladder-vehicle-label"
