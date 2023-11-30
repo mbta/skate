@@ -31,32 +31,6 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           <ToggleSetting
             label={
               <>
-                Vehicle labels on <strong>shuttle</strong> buses
-              </>
-            }
-            settingName="shuttle-vehicle-label"
-            value={userSettings.shuttleVehicleLabel}
-            onChange={(value) => {
-              const newSetting: VehicleLabelSetting = parseInt(value, 10)
-              dispatch(setShuttleVehicleLabelSetting(newSetting))
-              putShuttleVehicleLabel(newSetting)
-            }}
-            options={[
-              {
-                label: "Run number",
-                value: VehicleLabelSetting.RunNumber,
-                optionId: "shuttle-vehicle-label-run-number",
-              },
-              {
-                label: "Vehicle number",
-                value: VehicleLabelSetting.VehicleNumber,
-                optionId: "shuttle-vehicle-label-vehicle-number",
-              },
-            ]}
-          />
-          <ToggleSetting
-            label={
-              <>
                 Vehicle labels on <strong>regular</strong> buses
               </>
             }
@@ -77,6 +51,32 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
                 label: "Vehicle number",
                 value: VehicleLabelSetting.VehicleNumber,
                 optionId: "ladder-vehicle-label-vehicle-number",
+              },
+            ]}
+          />
+          <ToggleSetting
+            label={
+              <>
+                Vehicle labels on <strong>shuttle</strong> buses
+              </>
+            }
+            settingName="shuttle-vehicle-label"
+            value={userSettings.shuttleVehicleLabel}
+            onChange={(value) => {
+              const newSetting: VehicleLabelSetting = parseInt(value, 10)
+              dispatch(setShuttleVehicleLabelSetting(newSetting))
+              putShuttleVehicleLabel(newSetting)
+            }}
+            options={[
+              {
+                label: "Run number",
+                value: VehicleLabelSetting.RunNumber,
+                optionId: "shuttle-vehicle-label-run-number",
+              },
+              {
+                label: "Vehicle number",
+                value: VehicleLabelSetting.VehicleNumber,
+                optionId: "shuttle-vehicle-label-vehicle-number",
               },
             ]}
           />

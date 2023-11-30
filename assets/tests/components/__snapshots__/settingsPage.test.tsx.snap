@@ -34,55 +34,6 @@ exports[`SettingsPage renders 1`] = `
           >
             Vehicle labels on 
             <strong>
-              shuttle
-            </strong>
-             buses
-          </div>
-        </div>
-        <div
-          className="c-settings-page__options-container"
-        >
-          <label
-            className="c-settings-page__option-label-unselected"
-          >
-            <input
-              checked={false}
-              className="c-settings-page__input"
-              data-testid="shuttle-vehicle-label-run-number"
-              name="shuttle-vehicle-label"
-              onChange={[Function]}
-              type="radio"
-              value={1}
-            />
-            Run number
-          </label>
-          <label
-            className="c-settings-page__option-label-selected"
-          >
-            <input
-              checked={true}
-              className="c-settings-page__input"
-              data-testid="shuttle-vehicle-label-vehicle-number"
-              name="shuttle-vehicle-label"
-              onChange={[Function]}
-              type="radio"
-              value={2}
-            />
-            Vehicle number
-          </label>
-        </div>
-      </div>
-      <div
-        className="c-settings-page__setting"
-      >
-        <div
-          className="c-settings-page__setting_header"
-        >
-          <div
-            className="c-settings-page__setting-label"
-          >
-            Vehicle labels on 
-            <strong>
               regular
             </strong>
              buses
@@ -113,6 +64,55 @@ exports[`SettingsPage renders 1`] = `
               className="c-settings-page__input"
               data-testid="ladder-vehicle-label-vehicle-number"
               name="ladder-vehicle-label"
+              onChange={[Function]}
+              type="radio"
+              value={2}
+            />
+            Vehicle number
+          </label>
+        </div>
+      </div>
+      <div
+        className="c-settings-page__setting"
+      >
+        <div
+          className="c-settings-page__setting_header"
+        >
+          <div
+            className="c-settings-page__setting-label"
+          >
+            Vehicle labels on 
+            <strong>
+              shuttle
+            </strong>
+             buses
+          </div>
+        </div>
+        <div
+          className="c-settings-page__options-container"
+        >
+          <label
+            className="c-settings-page__option-label-unselected"
+          >
+            <input
+              checked={false}
+              className="c-settings-page__input"
+              data-testid="shuttle-vehicle-label-run-number"
+              name="shuttle-vehicle-label"
+              onChange={[Function]}
+              type="radio"
+              value={1}
+            />
+            Run number
+          </label>
+          <label
+            className="c-settings-page__option-label-selected"
+          >
+            <input
+              checked={true}
+              className="c-settings-page__input"
+              data-testid="shuttle-vehicle-label-vehicle-number"
+              name="shuttle-vehicle-label"
               onChange={[Function]}
               type="radio"
               value={2}
