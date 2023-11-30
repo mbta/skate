@@ -35,7 +35,7 @@ defmodule Skate.Migrate do
       Logger.info("#{__MODULE__} async migrations finished")
     rescue
       e ->
-        Logger.warn("#{__MODULE__} async migrations failed. error=#{inspect(e)}")
+        Logger.warning("#{__MODULE__} async migrations failed. error=#{inspect(e)}")
         :ok
     end
 

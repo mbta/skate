@@ -154,7 +154,7 @@ defmodule Realtime.AlertsFetcherTest do
       end)
 
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           assert {:noreply, _state} = AlertsFetcher.handle_info(:query_api, state)
         end)
 
@@ -175,7 +175,7 @@ defmodule Realtime.AlertsFetcherTest do
       end)
 
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           assert {:noreply, _state} = AlertsFetcher.handle_info(:query_api, state)
         end)
 

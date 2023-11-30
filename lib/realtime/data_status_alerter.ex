@@ -31,7 +31,7 @@ defmodule Realtime.DataStatusAlerter do
   @impl GenServer
   def handle_info({:new_data_status, data_status}, state) do
     if data_status == :outage do
-      Logger.warn("Data outage detected data_outage_detected")
+      Logger.warning("Data outage detected data_outage_detected")
     end
 
     {:noreply, state}

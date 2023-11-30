@@ -47,7 +47,7 @@ defmodule Skate.WarmUp do
         {:ok, result}
 
       {:error, error} ->
-        Logger.warn(
+        Logger.warning(
           "#{__MODULE__} warmup query failed. attempt=#{attempt} query_number=#{index} reason=#{inspect(error)}"
         )
 
@@ -93,7 +93,7 @@ defmodule Skate.WarmUp do
       if max_attempts == attempt do
         result
       else
-        Logger.warn(format_result_message(result))
+        Logger.warning(format_result_message(result))
         :timer.sleep(:timer.seconds(seconds_between_attempts))
         check_connections_warmed_up(%{config | attempt: attempt + 1})
       end

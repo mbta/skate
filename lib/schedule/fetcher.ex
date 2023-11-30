@@ -268,7 +268,7 @@ defmodule Schedule.Fetcher do
         {:ok, nil, last_modified}
 
       response ->
-        Logger.warn(fn ->
+        Logger.warning(fn ->
           "#{__MODULE__}: Unexpected response from #{url} : #{inspect(response)}"
         end)
 
