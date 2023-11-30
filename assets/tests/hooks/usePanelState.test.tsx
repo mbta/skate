@@ -150,7 +150,7 @@ describe("usePanelStateForViewState", () => {
       })
 
       const { isViewOpen } = usePanelStateForViewState(
-        viewFactory.build({ state: { [path]: pageViewState } }),
+        viewFactory.currentState(pageViewState).build(),
         jest.fn()
       )
 
