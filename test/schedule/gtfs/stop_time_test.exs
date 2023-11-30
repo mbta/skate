@@ -107,15 +107,15 @@ defmodule Schedule.Gtfs.StopTimeTest do
     test "builds a trip stops map from a list of stop time csv rows" do
       assert StopTime.trip_stop_times_from_csv(@csv_rows) == %{
                "39770780" => [
-                 %StopTime{stop_id: "64", time: 19140, timepoint_id: "dudly"},
-                 %StopTime{stop_id: "3", time: 19200, timepoint_id: "melwa"},
-                 %StopTime{stop_id: "4", time: 19200, timepoint_id: "tenner"}
+                 %StopTime{stop_id: "64", time: 19_140, timepoint_id: "dudly"},
+                 %StopTime{stop_id: "3", time: 19_200, timepoint_id: "melwa"},
+                 %StopTime{stop_id: "4", time: 19_200, timepoint_id: "tenner"}
                ],
                "39770783" => [
-                 %StopTime{stop_id: "23391", time: 36900, timepoint_id: "bbsta"},
+                 %StopTime{stop_id: "23391", time: 36_900, timepoint_id: "bbsta"},
                  # Does not allow empty strings for timepoint_id
-                 %StopTime{stop_id: "173", time: 37020, timepoint_id: nil},
-                 %StopTime{stop_id: "11388", time: 37200, timepoint_id: "hunbv"}
+                 %StopTime{stop_id: "173", time: 37_020, timepoint_id: nil},
+                 %StopTime{stop_id: "11388", time: 37_200, timepoint_id: "hunbv"}
                ]
              }
     end
@@ -162,9 +162,9 @@ defmodule Schedule.Gtfs.StopTimeTest do
 
       assert %{
                "trip" => [
-                 %StopTime{time: 18001},
-                 %StopTime{time: 18002},
-                 %StopTime{time: 18003}
+                 %StopTime{time: 18_001},
+                 %StopTime{time: 18_002},
+                 %StopTime{time: 18_003}
                ]
              } = StopTime.trip_stop_times_from_csv(csv_rows)
     end

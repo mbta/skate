@@ -513,8 +513,8 @@ defmodule ScheduleTest do
                id: "b",
                service_id: "service",
                schedule_id: "schedule",
-               start_time: 15600,
-               end_time: 18900,
+               start_time: 15_600,
+               end_time: 18_900,
                pieces: [
                  %Piece{
                    schedule_id: "schedule",

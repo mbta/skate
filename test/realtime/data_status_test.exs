@@ -5,7 +5,7 @@ defmodule Realtime.DataStatusTest do
 
   alias Realtime.DataStatus
 
-  @now 10000
+  @now 10_000
   @fresh @now - 15
   @stale @now - 3600
 

@@ -16,8 +16,8 @@ defmodule Schedule.Hastus.ActivityTest do
                %Activity{
                  schedule_id: "aba20021",
                  run_id: "123-1501",
-                 start_time: 14700,
-                 end_time: 15300,
+                 start_time: 14_700,
+                 end_time: 15_300,
                  start_place: "albny",
                  end_place: "albny",
                  activity_type: "Sign-on",
@@ -38,8 +38,8 @@ defmodule Schedule.Hastus.ActivityTest do
                %Activity{
                  schedule_id: "abc11011",
                  run_id: "123-1023",
-                 start_time: 41820,
-                 end_time: 41880,
+                 start_time: 41_820,
+                 end_time: 41_880,
                  start_place: "nubn",
                  end_place: "nubn",
                  activity_type: "Sign-on",
@@ -60,8 +60,8 @@ defmodule Schedule.Hastus.ActivityTest do
                %Activity{
                  schedule_id: "aba20021",
                  run_id: "123-1501",
-                 start_time: 15300,
-                 end_time: 34140,
+                 start_time: 15_300,
+                 end_time: 34_140,
                  start_place: "albny",
                  end_place: "albny",
                  activity_type: "Operator",

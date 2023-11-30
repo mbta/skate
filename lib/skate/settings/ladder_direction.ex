@@ -16,7 +16,7 @@ defmodule Skate.Settings.LadderDirection do
   def dump(direction), do: allow_valid_direction(direction)
 
   defp allow_valid_direction(direction) do
-    if(direction == 0 || direction == 1) do
+    if direction == 0 || direction == 1 do
       {:ok, direction}
     else
       :error

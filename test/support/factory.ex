@@ -2,7 +2,7 @@ defmodule Skate.Factory do
   use ExMachina.Ecto, repo: Skate.Repo
 
   def operator_id_factory(_) do
-    sequence(:operator_id, &to_string/1, start_at: 10000)
+    sequence(:operator_id, &to_string/1, start_at: 10_000)
   end
 
   def first_name_factory(_) do

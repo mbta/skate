@@ -1626,8 +1626,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "aba20l31",
           run_id: "123-1502",
-          start_time: 15600,
-          end_time: 16200,
+          start_time: 15_600,
+          end_time: 16_200,
           start_place: "alban",
           end_place: "alban",
           activity_type: "Sign-on"
@@ -1635,8 +1635,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "aba20l31",
           run_id: "123-1502",
-          start_time: 16200,
-          end_time: 44400,
+          start_time: 16_200,
+          end_time: 44_400,
           start_place: "alban",
           end_place: "alban",
           activity_type: "wad"
@@ -1649,15 +1649,15 @@ defmodule Schedule.DataTest do
                activities: [
                  %Piece{
                    block_id: nil,
-                   start_time: 15600,
+                   start_time: 15_600,
                    trips: [
                      %AsDirected{
                        kind: :wad,
-                       start_time: 16200,
-                       end_time: 44400
+                       start_time: 16_200,
+                       end_time: 44_400
                      }
                    ],
-                   end_time: 44400
+                   end_time: 44_400
                  }
                ]
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
@@ -1670,8 +1670,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "abc20011",
           run_id: "123-9073",
-          start_time: 21000,
-          end_time: 21600,
+          start_time: 21_000,
+          end_time: 21_600,
           start_place: "cabot",
           end_place: "cabot",
           activity_type: "Sign-on"
@@ -1679,8 +1679,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "abc20011",
           run_id: "123-9073",
-          start_time: 21600,
-          end_time: 32400,
+          start_time: 21_600,
+          end_time: 32_400,
           start_place: "cabot",
           end_place: "cabot",
           activity_type: "Operator",
@@ -1693,8 +1693,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc20011",
           run_id: "123-9073",
           block_id: "Crad-340",
-          start_time: 21600,
-          end_time: 21600,
+          start_time: 21_600,
+          end_time: 21_600,
           start_place: "cabot",
           end_place: "cabot",
           route_id: nil,
@@ -1704,8 +1704,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc20011",
           run_id: "123-9073",
           block_id: "Crad-340",
-          start_time: 21600,
-          end_time: 32400,
+          start_time: 21_600,
+          end_time: 32_400,
           start_place: "cabot",
           end_place: "cabot",
           route_id: "rad",
@@ -1715,8 +1715,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc20011",
           run_id: "123-9073",
           block_id: "Crad-340",
-          start_time: 32400,
-          end_time: 32400,
+          start_time: 32_400,
+          end_time: 32_400,
           start_place: "cabot",
           end_place: "cabot",
           route_id: nil,
@@ -1728,15 +1728,15 @@ defmodule Schedule.DataTest do
                activities: [
                  %Piece{
                    block_id: "Crad-340",
-                   start_time: 21000,
+                   start_time: 21_000,
                    trips: [
                      %AsDirected{
                        kind: :rad,
-                       start_time: 21600,
-                       end_time: 32400
+                       start_time: 21_600,
+                       end_time: 32_400
                      }
                    ],
-                   end_time: 32400
+                   end_time: 32_400
                  }
                ]
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})

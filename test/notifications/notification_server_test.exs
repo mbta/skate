@@ -243,7 +243,7 @@ defmodule Notifications.NotificationServerTest do
         },
         %BlockWaiver{
           start_time: @midnight,
-          end_time: @midnight + 86400,
+          end_time: @midnight + 86_400,
           cause_id: 999,
           cause_description: "W - Whatever",
           remark: "Ignored due to unrecognized cause_description"
