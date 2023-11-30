@@ -89,7 +89,7 @@ jobs:
       - name: Check formatting
         run: mix format --check-formatted
       - name: Credo
-        run: mix credo --ignore readability
+        run: mix credo
       - name: Run tests
         run: mix test --cover
         env:
