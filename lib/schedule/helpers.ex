@@ -1,4 +1,6 @@
 defmodule Schedule.Helpers do
+  @moduledoc false
+
   @doc """
   Returns a single list that attempts to keep items in order
 

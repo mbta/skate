@@ -1,4 +1,6 @@
 defmodule Concentrate.Pipeline.StopTimeUpdatesPipeline do
+  @moduledoc false
+
   @behaviour Concentrate.Pipeline
   alias Concentrate.Pipeline
 

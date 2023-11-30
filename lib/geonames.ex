@@ -1,4 +1,6 @@
 defmodule Geonames do
+  @moduledoc false
+
   require Logger
 
   @spec nearest_intersection(String.t(), String.t()) :: String.t() | nil

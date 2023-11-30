@@ -1,4 +1,6 @@
 defmodule TrainVehicles.Supervisor do
+  @moduledoc false
+
   use Supervisor
 
   @api_params [

@@ -1,4 +1,6 @@
 defmodule Schedule.Fetcher do
+  @moduledoc false
+
   use GenServer, restart: :transient
   require Logger
 

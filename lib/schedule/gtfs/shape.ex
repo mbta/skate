@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Shape do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.Gtfs.Shape.Point
 
@@ -44,6 +46,8 @@ defmodule Schedule.Gtfs.Shape do
 end
 
 defmodule Schedule.Gtfs.Shape.Point do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.Gtfs.Shape
 

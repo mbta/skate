@@ -1,4 +1,6 @@
 defmodule Notifications.Notification do
+  @moduledoc false
+
   import Skate.Repo
 
   import Ecto.Query

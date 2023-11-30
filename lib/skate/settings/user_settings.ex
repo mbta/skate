@@ -1,4 +1,6 @@
 defmodule Skate.Settings.UserSettings do
+  @moduledoc false
+
   import Skate.Repo
   import Ecto.Query
 

@@ -1,4 +1,6 @@
 defmodule SkateWeb.ChannelAuth do
+  @moduledoc false
+
   alias SkateWeb.AuthManager
 
   @doc """

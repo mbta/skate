@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Route do
+  @moduledoc false
+
   alias Schedule.{Csv, Data, Garage}
 
   @type id :: Schedule.Route.id()

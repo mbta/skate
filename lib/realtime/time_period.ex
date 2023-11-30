@@ -1,4 +1,6 @@
 defmodule Realtime.TimePeriod do
+  @moduledoc false
+
   @type t :: %__MODULE__{
           time_period_id: String.t(),
           day_type_id: day_type(),

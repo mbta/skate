@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Timepoint do
+  @moduledoc false
+
   alias Schedule.Csv
 
   @garage_names_by_id %{

@@ -1,4 +1,6 @@
 defmodule Schedule.Hastus.Trip do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Hastus.{Place, Run, Schedule}

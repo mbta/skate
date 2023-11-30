@@ -1,4 +1,6 @@
 defmodule Skate.Settings.LadderDirection do
+  @moduledoc false
+
   use Ecto.Type
 
   @type t :: 0 | 1

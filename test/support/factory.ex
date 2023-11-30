@@ -1,4 +1,6 @@
 defmodule Skate.Factory do
+  @moduledoc false
+
   use ExMachina.Ecto, repo: Skate.Repo
 
   def operator_id_factory(_) do

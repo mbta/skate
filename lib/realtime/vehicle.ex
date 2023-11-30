@@ -1,4 +1,6 @@
 defmodule Realtime.Vehicle do
+  @moduledoc false
+
   alias Schedule.Gtfs.Timepoint
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Schedule.{Block, Route, Trip}

@@ -1,4 +1,6 @@
 defmodule SkateWeb.AuthManager do
+  @moduledoc false
+
   use Guardian, otp_app: :skate
   alias Skate.Settings.User
   require Logger

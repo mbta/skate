@@ -1,4 +1,6 @@
 defmodule Skate.Settings.User do
+  @moduledoc false
+
   alias Skate.Settings.Db.User, as: DbUser
 
   import Ecto.Query

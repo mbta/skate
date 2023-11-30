@@ -1,4 +1,6 @@
 defmodule Skate.LocationSearch.Place do
+  @moduledoc false
+
   @type id :: String.t()
 
   @type t :: %__MODULE__{

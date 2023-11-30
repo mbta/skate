@@ -1,4 +1,6 @@
 defmodule Schedule.Garage do
+  @moduledoc false
+
   alias Schedule.Gtfs.Route
   alias Schedule.Trip
   require Logger

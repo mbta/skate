@@ -1,4 +1,6 @@
 defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
+  @moduledoc false
+
   @behaviour Concentrate.Pipeline
   alias Concentrate.Pipeline
 

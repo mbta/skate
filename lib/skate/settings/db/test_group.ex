@@ -1,4 +1,6 @@
 defmodule Skate.Settings.Db.TestGroup do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

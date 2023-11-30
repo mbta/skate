@@ -1,4 +1,6 @@
 defmodule Schedule.Run do
+  @moduledoc false
+
   alias Schedule.Gtfs.Service
   alias Schedule.Break
   alias Schedule.Piece

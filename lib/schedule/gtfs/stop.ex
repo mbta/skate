@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Stop do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.Gtfs.{Route, RoutePattern, StopTime}
 

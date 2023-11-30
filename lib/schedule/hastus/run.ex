@@ -1,4 +1,6 @@
 defmodule Schedule.Hastus.Run do
+  @moduledoc false
+
   alias Schedule.Hastus.Schedule
 
   @type id :: String.t()

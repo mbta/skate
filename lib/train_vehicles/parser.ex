@@ -1,4 +1,6 @@
 defmodule TrainVehicles.Parser do
+  @moduledoc false
+
   alias TrainVehicles.TrainVehicle
 
   @spec parse(JsonApi.Item.t()) :: TrainVehicle.t()

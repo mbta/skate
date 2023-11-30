@@ -1,4 +1,6 @@
 defmodule Report do
+  @moduledoc false
+
   @doc """
   Exectutes a report against a given repo, returning the results or an error
   """

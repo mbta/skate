@@ -1,4 +1,6 @@
 defmodule Schedule.Piece do
+  @moduledoc false
+
   alias Schedule.Block
   alias Schedule.Hastus
   alias Schedule.Hastus.Place

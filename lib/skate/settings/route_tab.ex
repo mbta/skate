@@ -1,4 +1,6 @@
 defmodule Skate.Settings.RouteTab do
+  @moduledoc false
+
   import Ecto.Query
 
   alias Skate.Repo

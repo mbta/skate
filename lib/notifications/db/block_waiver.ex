@@ -1,4 +1,6 @@
 defmodule Notifications.Db.BlockWaiver do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias Notifications.NotificationReason

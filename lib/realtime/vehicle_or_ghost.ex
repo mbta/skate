@@ -1,4 +1,6 @@
 defmodule Realtime.VehicleOrGhost do
+  @moduledoc false
+
   alias Realtime.{Ghost, Server, Vehicle}
 
   @type t :: Vehicle.t() | Ghost.t()

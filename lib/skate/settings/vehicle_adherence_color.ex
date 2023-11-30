@@ -1,4 +1,6 @@
 defmodule Skate.Settings.VehicleAdherenceColor do
+  @moduledoc false
+
   use Ecto.Type
 
   @type t :: :early_red | :early_blue

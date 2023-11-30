@@ -1,4 +1,6 @@
 defmodule Skate.Ueberauth.Strategy.Fake do
+  @moduledoc false
+
   use Ueberauth.Strategy, ignores_csrf_attack: true
 
   @impl Ueberauth.Strategy

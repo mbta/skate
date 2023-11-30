@@ -1,4 +1,6 @@
 defmodule Notifications.Db.BridgeMovement do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

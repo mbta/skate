@@ -1,4 +1,6 @@
 defmodule Realtime.AlertsFetcher do
+  @moduledoc false
+
   use GenServer
   require Logger
   alias Schedule.Route
