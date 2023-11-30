@@ -143,7 +143,6 @@ describe("usePanelStateForViewState", () => {
 
   describe("isViewOpen", () => {
     test("returns false when no view open", () => {
-      const path = PagePath.Ladders
       const pageViewState = pageViewFactory.build({
         openView: OpenView.None,
         selectedVehicleOrGhost: null,
@@ -158,14 +157,13 @@ describe("usePanelStateForViewState", () => {
     })
 
     test("returns true when a view is open", () => {
-      const path = PagePath.Ladders
       const pageViewState = pageViewFactory.build({
         openView: OpenView.Swings,
         selectedVehicleOrGhost: null,
       })
 
       const { isViewOpen } = usePanelStateForViewState(
-        viewFactory.build({ state: { [path]: pageViewState } }),
+        viewFactory.currentState(pageViewState).build(),
         jest.fn()
       )
 
@@ -173,14 +171,13 @@ describe("usePanelStateForViewState", () => {
     })
 
     test("returns true when a vehicle is selected", () => {
-      const path = PagePath.Ladders
       const pageViewState = pageViewFactory.build({
         openView: OpenView.None,
         selectedVehicleOrGhost: vehicleFactory.build(),
       })
 
       const { isViewOpen } = usePanelStateForViewState(
-        viewFactory.build({ state: { [path]: pageViewState } }),
+        viewFactory.currentState(pageViewState).build(),
         jest.fn()
       )
 
