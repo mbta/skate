@@ -2,7 +2,7 @@ defmodule SkateWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :skate
 
   socket "/socket", SkateWeb.UserSocket,
-    websocket: [check_origin: Application.get_env(:skate, :websocket_check_origin, false)],
+    websocket: [check_origin: Application.compile_env(:skate, :websocket_check_origin, false)],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.

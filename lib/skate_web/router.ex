@@ -8,7 +8,7 @@ defmodule SkateWeb.Router do
   # A note: this does not affect anything before the `Skate.Router` plug in `endpoint.ex`
   # e.g., static assets will not get redirected to HTTPS.
   pipeline :redirect_prod_http do
-    if Application.get_env(:skate, :redirect_http?) do
+    if Application.compile_env(:skate, :redirect_http?) do
       plug(Plug.SSL, rewrite_on: [:x_forwarded_proto])
     end
   end
