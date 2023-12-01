@@ -23,7 +23,7 @@ defmodule SkateWeb.ReportControllerTest do
 
   describe "run/2" do
     @tag :authenticated
-    test "when not an admin, redirects to unauthorized page", %{onn} do
+    test "when not an admin, redirects to unauthorized page", %{conn: conn} do
       conn = get(conn, SkateWeb.Router.Helpers.report_path(conn, :run, "user_settings"))
 
       assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
