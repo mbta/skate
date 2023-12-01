@@ -1,12 +1,5 @@
 defmodule SkateWeb.Router do
   use SkateWeb, :router
-  use Plug.ErrorHandler
-  use Sentry.Plug
-  # Dialyzer expects any module with `use Plug.ErrorHandler` to
-  # implement a `handle_errors` function. `Sentry.Plug` implements
-  # that function, but Dialyzer isn't aware of that. Because of that,
-  # we suppress the warning here.
-  @dialyzer {:nowarn_function, handle_errors: 2}
 
   # We prefer to redirect at the load balancer level, but for security through
   # redundancy, we're keeping this plug just in case.
