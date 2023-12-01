@@ -1,4 +1,6 @@
 defmodule Skate.WarmUp do
+  @moduledoc false
+
   use GenServer
   require Logger
 

@@ -1,4 +1,6 @@
 defmodule SkateWeb.EnsureAdminGroup do
+  @moduledoc false
+
   import Plug.Conn
 
   def init(options), do: options

@@ -1,4 +1,6 @@
 defmodule Notifications.NotificationServer do
+  @moduledoc false
+
   use GenServer
 
   alias Notifications.Bridge

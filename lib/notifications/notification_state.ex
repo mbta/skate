@@ -1,4 +1,6 @@
 defmodule Notifications.NotificationState do
+  @moduledoc false
+
   use Ecto.Type
 
   @type t ::

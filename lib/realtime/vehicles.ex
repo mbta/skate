@@ -1,4 +1,6 @@
 defmodule Realtime.Vehicles do
+  @moduledoc false
+
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, Timepoint}

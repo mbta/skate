@@ -1,4 +1,6 @@
 defmodule Schedule.Trip do
+  @moduledoc false
+
   alias Schedule.AsDirected
   alias Schedule.Block
   alias Schedule.Gtfs

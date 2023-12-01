@@ -50,7 +50,7 @@ defmodule Notifications.NotificationTest do
       RouteTab.update_all_for_user!(user3.id, [route_tab3])
 
       notification_values = %{
-        created_at: 12345,
+        created_at: 12_345,
         block_id: "Z1-1",
         service_id: "FallWeekday",
         reason: :other,
@@ -110,7 +110,7 @@ defmodule Notifications.NotificationTest do
           start_time: 0,
           created_at: baseline_time - eight_hours + 10,
           route_ids: ["1"],
-          end_time: 10000
+          end_time: 10_000
         })
 
       _route_1_expired =

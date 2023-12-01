@@ -1,4 +1,6 @@
 defmodule Concentrate.DataDiscrepancy do
+  @moduledoc false
+
   @type t :: %__MODULE__{
           attribute: String.t(),
           sources: [source()]

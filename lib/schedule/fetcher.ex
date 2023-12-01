@@ -1,4 +1,6 @@
 defmodule Schedule.Fetcher do
+  @moduledoc false
+
   use GenServer, restart: :transient
   require Logger
 
@@ -62,41 +64,41 @@ defmodule Schedule.Fetcher do
 
     Logger.info("#{__MODULE__}: Polling for new schedule data")
 
-    with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
-           fetch_gtfs(
-             state[:files_source],
-             state[:latest_gtfs_timestamp],
-             state[:latest_hastus_timestamp]
-           ) do
-      schedule_state = {:loaded, data}
+    case fetch_gtfs(
+           state[:files_source],
+           state[:latest_gtfs_timestamp],
+           state[:latest_hastus_timestamp]
+         ) do
+      {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} ->
+        schedule_state = {:loaded, data}
 
-      update_start_time = Time.utc_now()
-      :ok = state[:updater_function].(schedule_state)
+        update_start_time = Time.utc_now()
+        :ok = state[:updater_function].(schedule_state)
 
-      Logger.info(
-        "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{Time.diff(Time.utc_now(), update_start_time, :millisecond)}"
-      )
+        Logger.info(
+          "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{Time.diff(Time.utc_now(), update_start_time, :millisecond)}"
+        )
 
-      Logger.info(
-        "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-      )
+        Logger.info(
+          "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
+        )
 
-      if notify_health_server? && state[:health_server] do
-        Health.Server.loaded(state[:health_server])
-      end
+        if notify_health_server? && state[:health_server] do
+          Health.Server.loaded(state[:health_server])
+        end
 
-      if continue_polling? do
-        Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
+        if continue_polling? do
+          Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
 
-        {:noreply,
-         Map.merge(state, %{
-           latest_gtfs_timestamp: gtfs_timestamp,
-           latest_hastus_timestamp: hastus_timestamp
-         }), :hibernate}
-      else
-        {:stop, :normal, state}
-      end
-    else
+          {:noreply,
+           Map.merge(state, %{
+             latest_gtfs_timestamp: gtfs_timestamp,
+             latest_hastus_timestamp: hastus_timestamp
+           }), :hibernate}
+        else
+          {:stop, :normal, state}
+        end
+
       :no_update ->
         Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
 
@@ -130,16 +132,16 @@ defmodule Schedule.Fetcher do
     if CacheFile.should_use_file?() do
       Logger.info("#{__MODULE__}: Loading schedule data from cached file")
 
-      with {:ok, data} <- CacheFile.load_gtfs() do
-        {:ok, data, nil, nil, false}
-      else
-        _ ->
-          with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
-                 gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
-            CacheFile.save_gtfs(data)
+      case CacheFile.load_gtfs() do
+        {:ok, data} ->
+          {:ok, data, nil, nil, false}
 
-            {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?}
-          else
+        _ ->
+          case gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
+            {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} ->
+              CacheFile.save_gtfs(data)
+              {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?}
+
             :no_update ->
               :no_update
 
@@ -159,17 +161,17 @@ defmodule Schedule.Fetcher do
   defp gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
     Logger.info("#{__MODULE__}: Querying schedule data remote files")
 
-    with {:files, files, gtfs_timestamp, hastus_timestamp} <-
-           fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
-      Logger.info("#{__MODULE__}: Updated schedule data found, parsing")
+    case fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
+      {:files, files, gtfs_timestamp, hastus_timestamp} ->
+        Logger.info("#{__MODULE__}: Updated schedule data found, parsing")
 
-      try do
-        data = Data.parse_files(files)
-        {:ok, data, gtfs_timestamp, hastus_timestamp, true}
-      rescue
-        error -> {:error, error}
-      end
-    else
+        try do
+          data = Data.parse_files(files)
+          {:ok, data, gtfs_timestamp, hastus_timestamp, true}
+        rescue
+          error -> {:error, error}
+        end
+
       :no_update ->
         :no_update
 

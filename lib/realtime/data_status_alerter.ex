@@ -1,4 +1,6 @@
 defmodule Realtime.DataStatusAlerter do
+  @moduledoc false
+
   use GenServer
   require Logger
 

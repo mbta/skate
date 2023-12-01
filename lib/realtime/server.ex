@@ -369,7 +369,7 @@ defmodule Realtime.Server do
   def handle_info({reference, _}, %__MODULE__{} = state) when is_reference(reference),
     do: {:noreply, state}
 
-  def handle_info(:check_data_status, %__MODULE{ets: ets} = state) do
+  def handle_info(:check_data_status, %__MODULE__{ets: ets} = state) do
     all_vehicles =
       {ets, :logged_in_vehicles}
       |> lookup()

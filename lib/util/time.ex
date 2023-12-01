@@ -1,4 +1,6 @@
 defmodule Util.Time do
+  @moduledoc false
+
   @typedoc """
   Seconds after midnight.
   This is used as a date-agnostic way to talk about time of day.

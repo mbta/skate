@@ -1,4 +1,6 @@
 defmodule Skate.LocationSearch.AwsLocationRequest do
+  @moduledoc false
+
   alias Skate.LocationSearch.Place
   alias Skate.LocationSearch.Suggestion
 

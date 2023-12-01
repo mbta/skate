@@ -1,4 +1,6 @@
 defmodule Skate.Settings.TestGroup do
+  @moduledoc false
+
   alias Skate.Settings.Db.TestGroup, as: DbTestGroup
   alias Skate.Settings.Db.User, as: DbUser
 

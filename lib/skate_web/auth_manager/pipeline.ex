@@ -1,4 +1,6 @@
 defmodule SkateWeb.AuthManager.Pipeline do
+  @moduledoc false
+
   use Guardian.Plug.Pipeline,
     otp_app: :skate,
     error_handler: SkateWeb.AuthManager.ErrorHandler,

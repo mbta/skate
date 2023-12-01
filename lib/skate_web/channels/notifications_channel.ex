@@ -1,4 +1,6 @@
 defmodule SkateWeb.NotificationsChannel do
+  @moduledoc false
+
   use SkateWeb, :channel
   use SkateWeb.AuthenticatedChannel
 

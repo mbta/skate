@@ -1,4 +1,6 @@
 defmodule Schedule.Break do
+  @moduledoc false
+
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Place
 

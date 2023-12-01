@@ -1,4 +1,6 @@
 defmodule Schedule.TimepointOrder do
+  @moduledoc false
+
   alias Schedule.Gtfs.Direction
   alias Schedule.Gtfs.Route
   alias Schedule.Gtfs.RoutePattern

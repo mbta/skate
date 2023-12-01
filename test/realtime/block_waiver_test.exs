@@ -39,7 +39,7 @@ defmodule Realtime.BlockWaiverTest do
            pieces: [build(:piece, trips: [@trip1, @trip2])]
          )
 
-  @trip1stop1Update %StopTimeUpdate{
+  @trip1_stop1_update %StopTimeUpdate{
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
@@ -55,7 +55,7 @@ defmodule Realtime.BlockWaiverTest do
     uncertainty: nil
   }
 
-  @trip1stop2Update %StopTimeUpdate{
+  @trip1_stop2_update %StopTimeUpdate{
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
@@ -71,7 +71,7 @@ defmodule Realtime.BlockWaiverTest do
     uncertainty: nil
   }
 
-  @trip2stop1Update %StopTimeUpdate{
+  @trip2_stop1_update %StopTimeUpdate{
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
@@ -88,8 +88,8 @@ defmodule Realtime.BlockWaiverTest do
   }
 
   @stop_time_updates_by_trip %{
-    @trip1.id => [@trip1stop1Update, @trip1stop2Update],
-    @trip2.id => [@trip2stop1Update]
+    @trip1.id => [@trip1_stop1_update, @trip1_stop2_update],
+    @trip2.id => [@trip2_stop1_update]
   }
 
   describe "block_waivers_for_block/1" do
@@ -118,8 +118,8 @@ defmodule Realtime.BlockWaiverTest do
   describe "trip_stop_time_waivers/1" do
     test "breaks out trip_stop_time_waivers for each stop on the trip" do
       expected = [
-        {1, @trip1stop1Update},
-        {2, @trip1stop2Update},
+        {1, @trip1_stop1_update},
+        {2, @trip1_stop2_update},
         {3, nil}
       ]
 
@@ -127,15 +127,15 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "does not include stop time updates without block waiver causes" do
-      trip1stop1UpdateNilCause = %{
-        @trip1stop1Update
+      trip1_stop1_update_nil_cause = %{
+        @trip1_stop1_update
         | cause_id: nil,
           cause_description: nil,
           remark: nil
       }
 
-      trip1stop2UpdateEmptyCause = %{
-        @trip1stop2Update
+      trip1_stop2_update_empty_cause = %{
+        @trip1_stop2_update
         | cause_id: nil,
           cause_description: "",
           remark: ""
@@ -143,7 +143,7 @@ defmodule Realtime.BlockWaiverTest do
 
       stop_time_updates_by_trip = %{
         @stop_time_updates_by_trip
-        | @trip1.id => [trip1stop1UpdateNilCause, trip1stop2UpdateEmptyCause]
+        | @trip1.id => [trip1_stop1_update_nil_cause, trip1_stop2_update_empty_cause]
       }
 
       expected = [
@@ -156,15 +156,15 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "does not include stop time updates for bad transitmaster units" do
-      trip1stop1UpdateBadTm = %{
-        @trip1stop1Update
+      trip1_stop1_update_bad_tm = %{
+        @trip1_stop1_update
         | cause_id: 33,
           cause_description: "T - Inactive TM",
           remark: "T - Inactive TM:"
       }
 
       stop_time_updates_by_trip = %{
-        @trip1.id => [trip1stop1UpdateBadTm]
+        @trip1.id => [trip1_stop1_update_bad_tm]
       }
 
       expected = [
@@ -177,24 +177,24 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "includes stop time updates with causes but no remark" do
-      trip1stop1UpdateNilRemark = %{
-        @trip1stop1Update
+      trip1_stop1_update_nil_remark = %{
+        @trip1_stop1_update
         | remark: nil
       }
 
-      trip1stop2UpdateEmptyRemark = %{
-        @trip1stop2Update
+      trip1_stop2_update_empty_remark = %{
+        @trip1_stop2_update
         | remark: ""
       }
 
       stop_time_updates_by_trip = %{
         @stop_time_updates_by_trip
-        | @trip1.id => [trip1stop1UpdateNilRemark, trip1stop2UpdateEmptyRemark]
+        | @trip1.id => [trip1_stop1_update_nil_remark, trip1_stop2_update_empty_remark]
       }
 
       expected = [
-        {1, trip1stop1UpdateNilRemark},
-        {2, trip1stop2UpdateEmptyRemark},
+        {1, trip1_stop1_update_nil_remark},
+        {2, trip1_stop2_update_empty_remark},
         {3, nil}
       ]
 
@@ -248,8 +248,8 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "includes trip_stop_time_waivers with a waiver" do
-      trip_stop_time_waiver1 = {1, @trip1stop1Update}
-      trip_stop_time_waiver2 = {2, @trip1stop2Update}
+      trip_stop_time_waiver1 = {1, @trip1_stop1_update}
+      trip_stop_time_waiver2 = {2, @trip1_stop2_update}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
@@ -266,9 +266,9 @@ defmodule Realtime.BlockWaiverTest do
 
     test "extends groups across trips" do
       trip_stop_time_waivers = [
-        {1, @trip1stop1Update},
-        {1, @trip1stop2Update},
-        {1, @trip2stop1Update}
+        {1, @trip1_stop1_update},
+        {1, @trip1_stop2_update},
+        {1, @trip2_stop1_update}
       ]
 
       expected = [trip_stop_time_waivers]
@@ -277,8 +277,8 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "breaks apart groups at a stop without a waiver" do
-      trip_stop_time_waiver1 = {1, @trip1stop1Update}
-      trip_stop_time_waiver2 = {1, @trip1stop2Update}
+      trip_stop_time_waiver1 = {1, @trip1_stop1_update}
+      trip_stop_time_waiver2 = {1, @trip1_stop2_update}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
@@ -295,9 +295,9 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "breaks apart groups at a new waiver remark or cause" do
-      trip_stop_time_waiver1 = {1, @trip1stop1Update}
+      trip_stop_time_waiver1 = {1, @trip1_stop1_update}
 
-      trip_stop_time_waiver2 = {1, %StopTimeUpdate{@trip1stop2Update | remark: "new remark"}}
+      trip_stop_time_waiver2 = {1, %StopTimeUpdate{@trip1_stop2_update | remark: "new remark"}}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
@@ -313,8 +313,8 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "breaks apart groups if the time gap is > 60 minutes" do
-      trip_stop_time_waiver1 = {0, @trip1stop1Update}
-      trip_stop_time_waiver2 = {3601, @trip1stop2Update}
+      trip_stop_time_waiver1 = {0, @trip1_stop1_update}
+      trip_stop_time_waiver2 = {3601, @trip1_stop2_update}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
@@ -333,8 +333,8 @@ defmodule Realtime.BlockWaiverTest do
   describe "from_trip_stop_time_waivers" do
     test "builds a BlockWaiver from a list of trip_stop_time_waivers, converting times of day to timestamps" do
       trip_stop_time_waivers = [
-        {1, @trip1stop1Update},
-        {2, @trip1stop2Update}
+        {1, @trip1_stop1_update},
+        {2, @trip1_stop2_update}
       ]
 
       assert %BlockWaiver{

@@ -1,4 +1,6 @@
 defmodule SkateWeb.VehiclesSearchChannel do
+  @moduledoc false
+
   use SkateWeb, :channel
   use SkateWeb.AuthenticatedChannel
   require Logger

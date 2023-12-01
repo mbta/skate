@@ -1,4 +1,6 @@
 defmodule Realtime.TimepointStatus do
+  @moduledoc false
+
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, Stop, StopTime}
   alias Schedule.Hastus.Run

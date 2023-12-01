@@ -1,4 +1,6 @@
 defmodule Realtime.DataStatus do
+  @moduledoc false
+
   alias Realtime.Vehicle
   require Logger
 

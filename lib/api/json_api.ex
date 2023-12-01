@@ -1,4 +1,6 @@
 defmodule JsonApi.Item do
+  @moduledoc false
+
   defstruct [:type, :id, :attributes, :relationships]
 
   @type t :: %JsonApi.Item{
@@ -10,6 +12,8 @@ defmodule JsonApi.Item do
 end
 
 defmodule JsonApi.Error do
+  @moduledoc false
+
   defstruct [:code, :source, :detail, :meta]
 
   @type t :: %__MODULE__{
@@ -21,6 +25,8 @@ defmodule JsonApi.Error do
 end
 
 defmodule JsonApi do
+  @moduledoc false
+
   defstruct data: []
   @type t :: %JsonApi{data: list(JsonApi.Item.t())}
 

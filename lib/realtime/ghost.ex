@@ -1,4 +1,6 @@
 defmodule Realtime.Ghost do
+  @moduledoc false
+
   alias Schedule.{AsDirected, Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
   alias Schedule.Piece

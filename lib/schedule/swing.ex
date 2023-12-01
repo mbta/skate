@@ -1,4 +1,6 @@
 defmodule Schedule.Swing do
+  @moduledoc false
+
   alias Schedule.Block
   alias Schedule.Hastus
   alias Schedule.Gtfs.Service

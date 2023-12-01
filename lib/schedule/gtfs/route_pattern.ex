@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.RoutePattern do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.Gtfs.Direction
   alias Schedule.Gtfs.Route

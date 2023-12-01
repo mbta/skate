@@ -1,4 +1,6 @@
 defmodule SkateWeb.VehicleChannel do
+  @moduledoc false
+
   use SkateWeb, :channel
   use SkateWeb.AuthenticatedChannel
 

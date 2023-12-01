@@ -84,7 +84,7 @@ defmodule Realtime.BlockWaiverStore do
     # waivers will appear to be new, and we end up possibly sending
     # notifications for waivers to users who have already seen them.
     #
-    if(!state.never_set) do
+    if !state.never_set do
       new_block_waivers =
         waiver_diff(state.block_waivers_by_block_key, new_block_waivers_by_block_key)
 

@@ -1,4 +1,6 @@
 defmodule Schedule.Block do
+  @moduledoc false
+
   alias Schedule.AsDirected
   alias Schedule.Gtfs.Service
   alias Schedule.Hastus

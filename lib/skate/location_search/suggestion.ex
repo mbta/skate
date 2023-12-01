@@ -1,4 +1,6 @@
 defmodule Skate.LocationSearch.Suggestion do
+  @moduledoc false
+
   @type t :: %__MODULE__{
           text: String.t(),
           place_id: String.t() | nil
