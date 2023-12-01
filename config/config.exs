@@ -159,12 +159,6 @@ config :ueberauth, Ueberauth,
     cognito: nil
   ]
 
-# Sentry for error tracking
-config :sentry,
-  dsn: {:system, "SENTRY_BACKEND_DSN"},
-  included_environments: [:prod],
-  environment_name: Mix.env()
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

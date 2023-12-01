@@ -23,3 +23,13 @@ pool_size =
   end
 
 config :skate, Skate.Repo, pool_size: pool_size
+
+if config_env() == :prod do
+  # If this var is non-existent, we'll disable sentry by not setting `dsn`
+  if System.get_env("SENTRY_BACKEND_DSN") do
+    config :sentry,
+      dsn: System.fetch_env!("SENTRY_BACKEND_DSN"),
+      environment_name: System.fetch_env!("SENTRY_ENV")
+  end
+
+end
