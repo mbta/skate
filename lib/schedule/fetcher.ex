@@ -136,7 +136,7 @@ defmodule Schedule.Fetcher do
         {:ok, data} ->
           {:ok, data, nil, nil, false}
 
-        {:error, _} ->
+        _ ->
           case gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
             {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} ->
               CacheFile.save_gtfs(data)
