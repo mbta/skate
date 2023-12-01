@@ -61,8 +61,8 @@ defmodule Skate.RepoTest do
         ]
       ]
 
-      assert expected_output |> Enum.sort() ==
-               Skate.Repo.add_prod_credentials(input_config, mock_auth_token_fn) |> Enum.sort()
+      assert Enum.sort(expected_output) ==
+               Enum.sort(Skate.Repo.add_prod_credentials(input_config, mock_auth_token_fn))
     end
   end
 end

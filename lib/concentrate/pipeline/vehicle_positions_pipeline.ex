@@ -51,9 +51,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
         nil
       end
 
-    children =
-      [realtime_enhanced_child, swiftly_child]
-      |> Enum.reject(&is_nil/1)
+    children = Enum.reject([realtime_enhanced_child, swiftly_child], &is_nil/1)
 
     {child_ids(children), children}
   end

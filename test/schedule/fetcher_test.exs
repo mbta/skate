@@ -26,9 +26,7 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -190,9 +188,7 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -239,9 +235,7 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -304,9 +298,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -325,9 +317,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         request_url = Plug.Conn.request_url(conn)
@@ -356,9 +346,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         request_url = Plug.Conn.request_url(conn)
@@ -417,9 +405,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         request_url = Plug.Conn.request_url(conn)
@@ -452,8 +438,9 @@ defmodule Schedule.FetcherTest do
       url = "http://localhost:#{bypass.port}/test.zip"
 
       zip_binary =
-        "UEsDBAoAAAAAAHJrSU+DFtyMAQAAAAEAAAABABwAZlVUCQADhxieXasYnl11eAsAAQT1AQAABBQAAAB4UEsBAh4DCgAAAAAAcmtJT4MW3IwBAAAAAQAAAAEAGAAAAAAAAQAAAKSBAAAAAGZVVAUAA4cYnl11eAsAAQT1AQAABBQAAABQSwUGAAAAAAEAAQBHAAAAPAAAAAAA"
-        |> Base.decode64!()
+        Base.decode64!(
+          "UEsDBAoAAAAAAHJrSU+DFtyMAQAAAAEAAAABABwAZlVUCQADhxieXasYnl11eAsAAQT1AQAABBQAAAB4UEsBAh4DCgAAAAAAcmtJT4MW3IwBAAAAAQAAAAEAGAAAAAAAAQAAAKSBAAAAAGZVVAUAA4cYnl11eAsAAQT1AQAABBQAAABQSwUGAAAAAAEAAQBHAAAAPAAAAAAA"
+        )
 
       Bypass.expect(bypass, fn conn ->
         conn

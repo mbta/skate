@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Cache.CleanTest do
   alias Schedule.CacheFile
   alias Mix.Tasks.Cache
 
-  @test_cache_filepath CacheFile.cache_filename() |> CacheFile.generate_filepath()
+  @test_cache_filepath CacheFile.generate_filepath(CacheFile.cache_filename())
 
   test "deletes the gtfs cache file" do
     File.touch(@test_cache_filepath)

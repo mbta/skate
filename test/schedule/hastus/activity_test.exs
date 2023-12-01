@@ -6,11 +6,13 @@ defmodule Schedule.Hastus.ActivityTest do
   describe "parse" do
     test "parses data" do
       binary =
-        [
-          "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
-          "aba20021;123;    1501;04:05;04:15;albny;albny;Sign-on;Sign-on"
-        ]
-        |> Enum.join("\n")
+        Enum.join(
+          [
+            "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
+            "aba20021;123;    1501;04:05;04:15;albny;albny;Sign-on;Sign-on"
+          ],
+          "\n"
+        )
 
       assert Activity.parse(binary) == [
                %Activity{
@@ -28,11 +30,13 @@ defmodule Schedule.Hastus.ActivityTest do
 
     test "applies mapping to places" do
       binary =
-        [
-          "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
-          "abc11011;123;    1023;11:37;11:38;dudly;dudly;Sign-on;Sign-on"
-        ]
-        |> Enum.join("\n")
+        Enum.join(
+          [
+            "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
+            "abc11011;123;    1023;11:37;11:38;dudly;dudly;Sign-on;Sign-on"
+          ],
+          "\n"
+        )
 
       assert Activity.parse(binary) == [
                %Activity{
@@ -50,11 +54,13 @@ defmodule Schedule.Hastus.ActivityTest do
 
     test "fills block id for Operator activities, without extra whitespace" do
       binary =
-        [
-          "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
-          "aba20021;123;    1501;04:15;09:29;albny;albny; 57 - 11;Operator"
-        ]
-        |> Enum.join("\n")
+        Enum.join(
+          [
+            "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
+            "aba20021;123;    1501;04:15;09:29;albny;albny; 57 - 11;Operator"
+          ],
+          "\n"
+        )
 
       assert Activity.parse(binary) == [
                %Activity{

@@ -12,8 +12,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
     @tag :authenticated
     test "can set ladder_page_vehicle_label", %{conn: conn, user: user} do
       conn =
-        conn
-        |> put("/api/user_settings", %{
+        put(conn, "/api/user_settings", %{
           "field" => "ladder_page_vehicle_label",
           "value" => "vehicle_id"
         })
@@ -26,8 +25,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
     @tag :authenticated
     test "can set shuttle_page_vehicle_label", %{conn: conn, user: user} do
       conn =
-        conn
-        |> put("/api/user_settings", %{
+        put(conn, "/api/user_settings", %{
           "field" => "shuttle_page_vehicle_label",
           "value" => "run_id"
         })
@@ -40,8 +38,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
     @tag :authenticated
     test "can set vehicle_adherence_colors", %{conn: conn, user: user} do
       conn =
-        conn
-        |> put("/api/user_settings", %{
+        put(conn, "/api/user_settings", %{
           "field" => "vehicle_adherence_colors",
           "value" => "early_blue"
         })
@@ -54,8 +51,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
     @tag :authenticated
     test "gives 400 for invalid field", %{conn: conn} do
       conn =
-        conn
-        |> put("/api/user_settings", %{
+        put(conn, "/api/user_settings", %{
           "field" => "invalid_field",
           "value" => "run_id"
         })
@@ -66,8 +62,7 @@ defmodule SkateWeb.UserSettingsControllerTest do
     @tag :authenticated
     test "gives 400 for invalid value", %{conn: conn} do
       conn =
-        conn
-        |> put("/api/user_settings", %{
+        put(conn, "/api/user_settings", %{
           "field" => "ladder_page_vehicle_label",
           "value" => "invalid_value"
         })

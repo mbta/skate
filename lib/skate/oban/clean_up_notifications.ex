@@ -21,23 +21,24 @@ defmodule Skate.Oban.CleanUpNotifications do
     cutoff_days = Map.get(args, "cutoff_days", 100)
     limit = Map.get(args, "limit", 100)
 
-    oldest_date = DateTime.utc_now() |> DateTime.add(-cutoff_days * @seconds_per_day)
+    oldest_date = DateTime.add(DateTime.utc_now(), -cutoff_days * @seconds_per_day)
 
     Logger.notice("#{__MODULE__} starting cleanup")
 
     {time, {count, nil}} =
       :timer.tc(fn ->
-        from(notification_indexed in Notifications.Db.Notification,
-          where:
-            notification_indexed.id in subquery(
-              from(notification_limited in Notifications.Db.Notification,
-                where: notification_limited.inserted_at < ^oldest_date,
-                limit: ^limit,
-                select: notification_limited.id
+        Skate.Repo.delete_all(
+          from(notification_indexed in Notifications.Db.Notification,
+            where:
+              notification_indexed.id in subquery(
+                from(notification_limited in Notifications.Db.Notification,
+                  where: notification_limited.inserted_at < ^oldest_date,
+                  limit: ^limit,
+                  select: notification_limited.id
+                )
               )
-            )
+          )
         )
-        |> Skate.Repo.delete_all()
       end)
 
     Logger.notice(

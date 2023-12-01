@@ -21,7 +21,7 @@ defmodule SkateWeb.VehicleChannel do
   def join_authenticated("vehicle:run_ids:" <> run_ids, _message, socket) do
     run_ids = String.split(run_ids, ",")
 
-    vehicle_or_ghost = Realtime.Server.peek_at_vehicles_by_run_ids(run_ids) |> List.first()
+    vehicle_or_ghost = run_ids |> Realtime.Server.peek_at_vehicles_by_run_ids() |> List.first()
 
     socket =
       if vehicle_or_ghost do
@@ -42,9 +42,11 @@ defmodule SkateWeb.VehicleChannel do
 
     vehicle_or_ghost =
       if user_in_test_group? do
-        Realtime.Server.peek_at_vehicle_by_id_with_logged_out(vehicle_or_ghost_id) |> List.first()
+        vehicle_or_ghost_id
+        |> Realtime.Server.peek_at_vehicle_by_id_with_logged_out()
+        |> List.first()
       else
-        Realtime.Server.peek_at_vehicle_by_id(vehicle_or_ghost_id) |> List.first()
+        vehicle_or_ghost_id |> Realtime.Server.peek_at_vehicle_by_id() |> List.first()
       end
 
     {lookup_key, _vehicle_or_ghost} =

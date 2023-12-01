@@ -56,8 +56,8 @@ defmodule Schedule.Gtfs.Stop do
   """
   @spec parse(binary() | nil) :: [t()]
   def parse(file_binary) do
-    file_binary
-    |> Csv.parse(
+    Csv.parse(
+      file_binary,
       parse: &from_csv_row/1,
       filter: fn row -> Map.has_key?(@location_type_map, row["location_type"]) end
     )
@@ -104,8 +104,7 @@ defmodule Schedule.Gtfs.Stop do
     routes_by_id = routes |> Enum.reject(&Route.shuttle_route?(&1)) |> Map.new(&{&1.id, &1})
 
     routes_by_parent_or_stop_id =
-      route_patterns
-      |> Enum.reduce(%{}, fn route_pattern, acc_stop_id_to_routes ->
+      Enum.reduce(route_patterns, %{}, fn route_pattern, acc_stop_id_to_routes ->
         route_pattern
         |> parent_or_stop_id_to_routes_for_pattern(
           routes_by_id,

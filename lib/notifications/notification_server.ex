@@ -107,7 +107,7 @@ defmodule Notifications.NotificationServer do
       created_at = Util.Time.now()
       route_ids = trips |> Enum.map(& &1.route_id) |> Enum.uniq()
       run_ids = trips |> Enum.map(& &1.run_id) |> Enum.uniq()
-      trip_ids = trips |> Enum.map(& &1.id)
+      trip_ids = Enum.map(trips, & &1.id)
 
       peek_at_vehicles_by_run_ids_fn =
         Application.get_env(

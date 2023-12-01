@@ -70,7 +70,7 @@ defmodule Notifications.NotificationTest do
 
       assert(
         notification_users |> Enum.map(& &1.user_id) |> Enum.sort() ==
-          [user1.id, user2.id] |> Enum.sort()
+          Enum.sort([user1.id, user2.id])
       )
     end
   end
@@ -297,10 +297,10 @@ defmodule Notifications.NotificationTest do
       assert Skate.Repo.aggregate(DbNotification, :count) == 14
 
       user1_notifications =
-        Notification.unexpired_notifications_for_user(user1.id, now_fn) |> Enum.sort_by(& &1.id)
+        user1.id |> Notification.unexpired_notifications_for_user(now_fn) |> Enum.sort_by(& &1.id)
 
       user2_notifications =
-        Notification.unexpired_notifications_for_user(user2.id, now_fn) |> Enum.sort_by(& &1.id)
+        user2.id |> Notification.unexpired_notifications_for_user(now_fn) |> Enum.sort_by(& &1.id)
 
       assert user1_notifications ==
                [

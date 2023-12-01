@@ -12,7 +12,7 @@ defmodule Schedule.Health.Checkers.RoutesChecker do
   def healthy?(%{min_length: min_length}) do
     routes_fn = Application.get_env(:skate_web, :routes_fn, &Schedule.all_routes/0)
 
-    length = routes_fn.() |> length()
+    length = length(routes_fn.())
     pass? = length >= min_length
 
     if !pass? do

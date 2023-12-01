@@ -22,13 +22,12 @@ defmodule Util.Time do
 
   @spec today() :: Date.t()
   def today() do
-    now()
-    |> date_of_timestamp()
+    date_of_timestamp(now())
   end
 
   @spec naive_now() :: NaiveDateTime.t()
   def naive_now do
-    NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+    NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
   end
 
   @doc """

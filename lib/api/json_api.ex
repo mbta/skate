@@ -112,8 +112,7 @@ defmodule JsonApi do
   end
 
   defp load_relationships(%{} = relationships, included) do
-    relationships
-    |> Helpers.map_values(&load_single_relationship(&1, included))
+    Helpers.map_values(relationships, &load_single_relationship(&1, included))
   end
 
   @spec load_single_relationship(any, map()) :: list()
@@ -129,7 +128,7 @@ defmodule JsonApi do
   end
 
   defp load_single_relationship(%{"data" => %{} = data}, included) do
-    case data |> match_included(included) do
+    case match_included(data, included) do
       nil -> []
       item -> [parse_data_item(item, included)]
     end

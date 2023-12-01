@@ -153,8 +153,10 @@ defmodule Notifications.NotificationServerTest do
 
     log =
       capture_log([level: :info], fn ->
-        waiver_map(cause_id, cause_description)
-        |> NotificationServer.new_block_waivers(server)
+        NotificationServer.new_block_waivers(
+          waiver_map(cause_id, cause_description),
+          server
+        )
 
         operator_name = Keyword.get(opts, :operator_name)
         operator_id = Keyword.get(opts, :operator_id)
@@ -375,8 +377,10 @@ defmodule Notifications.NotificationServerTest do
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         log =
           capture_log([level: :info], fn ->
-            waiver_map(cause_id, cause_description)
-            |> NotificationServer.new_block_waivers(server)
+            NotificationServer.new_block_waivers(
+              waiver_map(cause_id, cause_description),
+              server
+            )
 
             refute_receive(_, 500)
           end)
@@ -459,7 +463,7 @@ defmodule Notifications.NotificationServerTest do
         RouteTab.update_all_for_user!(user_id, [route_tab1])
       end
 
-      start_time = DateTime.utc_now() |> DateTime.to_unix()
+      start_time = DateTime.to_unix(DateTime.utc_now())
 
       log =
         capture_log([level: :info], fn ->
@@ -502,7 +506,7 @@ defmodule Notifications.NotificationServerTest do
 
       NotificationServer.subscribe(user_0.id, server)
 
-      start_time = DateTime.utc_now() |> DateTime.to_unix()
+      start_time = DateTime.to_unix(DateTime.utc_now())
 
       log =
         capture_log([level: :info], fn ->
@@ -547,7 +551,7 @@ defmodule Notifications.NotificationServerTest do
 
       set_log_level(:info)
 
-      start_time = DateTime.utc_now() |> DateTime.to_unix()
+      start_time = DateTime.to_unix(DateTime.utc_now())
 
       log =
         capture_log([level: :info], fn ->

@@ -8,16 +8,14 @@ defmodule SkateWeb.ReportControllerTest do
   describe "index/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = conn |> get(SkateWeb.Router.Helpers.report_path(conn, :index))
+      conn = get(conn, SkateWeb.Router.Helpers.report_path(conn, :index))
 
       assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
     end
 
     @tag :authenticated_admin
     test "returns page with reports listed", %{conn: conn} do
-      conn =
-        conn
-        |> get(SkateWeb.Router.Helpers.report_path(conn, :index))
+      conn = get(conn, SkateWeb.Router.Helpers.report_path(conn, :index))
 
       assert html_response(conn, 200) =~ "User settings"
     end
@@ -25,8 +23,8 @@ defmodule SkateWeb.ReportControllerTest do
 
   describe "run/2" do
     @tag :authenticated
-    test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = conn |> get(SkateWeb.Router.Helpers.report_path(conn, :run, "user_settings"))
+    test "when not an admin, redirects to unauthorized page", %{onn} do
+      conn = get(conn, SkateWeb.Router.Helpers.report_path(conn, :run, "user_settings"))
 
       assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
     end

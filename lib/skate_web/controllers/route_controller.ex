@@ -7,9 +7,7 @@ defmodule SkateWeb.RouteController do
   def index(conn, _params) do
     routes_fn = Application.get_env(:skate_web, :routes_fn, &Schedule.all_routes/0)
 
-    routes =
-      routes_fn.()
-      |> Enum.reject(&Route.shuttle_route?/1)
+    routes = Enum.reject(routes_fn.(), &Route.shuttle_route?/1)
 
     json(conn, %{data: routes})
   end

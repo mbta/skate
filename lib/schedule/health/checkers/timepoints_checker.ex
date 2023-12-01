@@ -19,7 +19,7 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
     timepoints_on_route_fn =
       Application.get_env(:skate_web, :timepoints_on_route_fn, &Schedule.timepoints_on_route/1)
 
-    length = timepoints_on_route_fn.(route_id) |> length()
+    length = route_id |> timepoints_on_route_fn.() |> length()
     pass? = length >= min_length
 
     if !pass? do
