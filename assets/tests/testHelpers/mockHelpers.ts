@@ -1,6 +1,8 @@
 import { jest } from "@jest/globals"
 import React, { useReducer, useState } from "react"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
+import useScreenSize from "../../src/hooks/useScreenSize"
+import { DeviceType } from "../../src/skate"
 import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { routePatternFactory } from "../factories/routePattern"
 import stopFactory from "../factories/stop"
@@ -91,4 +93,8 @@ export const mockTileUrls = (): void => {
         return "test_satellite_url/{z}/{x}/{y}"
     }
   })
+}
+
+export const mockScreenSize = (screenSize: DeviceType): void => {
+  jest.mocked(useScreenSize).mockReturnValue(screenSize)
 }
