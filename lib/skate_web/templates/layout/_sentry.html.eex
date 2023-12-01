@@ -2,7 +2,7 @@
   window.sentryInitialization = {
     initArgs: {
       dsn: "<%= Application.get_env(:skate, :sentry_frontend_dsn) %>",
-      environment: "<%= Application.get_env(:skate, :sentry_environment) %>",
+      environment: "<%= Application.get_env(:sentry, :environment_name) %>",
       release: "<%= Application.get_env(:sentry, :release) %>"
     },
     orgSlug: "<%= Application.get_env(:skate, :sentry_org_slug) %>"
