@@ -77,7 +77,7 @@ defmodule Skate.MixProject do
       {:phoenix, "~> 1.6.0"},
       {:plug_cowboy, "~> 2.1"},
       {:postgrex, "~> 0.15"},
-      {:sentry, "~> 9.0"},
+      {:sentry, "~> 10.0"},
       {:server_sent_event_stage, "~> 1.1.0"},
       {:ssl_verify_fun, "~> 1.1"},
       {:stream_data, "~> 0.6.0", only: :test},
