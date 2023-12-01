@@ -60,7 +60,20 @@ defmodule Realtime.AlertsFetcherTest do
     ]
   }
 
+  setup tags do
+    if tags[:mock_api] do
+      bypass = Bypass.open()
+      api_url = "http://localhost:#{bypass.port}/"
+      reassign_env(:skate, :api_url, api_url)
+
+      %{bypass: bypass}
+    else
+      :ok
+    end
+  end
+
   describe "start_link/1" do
+    @tag :mock_api
     test "starts GenServer" do
       assert {:ok, _pid} = AlertsFetcher.start_link(update_fn: fn _ -> :ok end)
     end
@@ -88,10 +101,8 @@ defmodule Realtime.AlertsFetcherTest do
   end
 
   describe "handle_continue/2" do
-    test "fetches alerts" do
-      bypass = Bypass.open()
-      api_url = "http://localhost:#{bypass.port}/"
-      reassign_env(:skate, :api_url, api_url)
+    @tag :mock_api
+    test "fetches alerts", %{bypass: bypass} do
       test_pid = self()
 
       update_fn = fn alerts ->
@@ -112,11 +123,9 @@ defmodule Realtime.AlertsFetcherTest do
   end
 
   describe "handle_info/2" do
-    test "fetches alerts and logs on success" do
+    @tag :mock_api
+    test "fetches alerts and logs on success", %{bypass: bypass} do
       set_log_level(:info)
-      bypass = Bypass.open()
-      api_url = "http://localhost:#{bypass.port}/"
-      reassign_env(:skate, :api_url, api_url)
       test_pid = self()
 
       update_fn = fn alerts ->
@@ -140,11 +149,8 @@ defmodule Realtime.AlertsFetcherTest do
       assert log =~ "updated_alerts"
     end
 
-    test "handles unsuccessful HTTP request" do
-      bypass = Bypass.open()
-      api_url = "http://localhost:#{bypass.port}/"
-      reassign_env(:skate, :api_url, api_url)
-
+    @tag :mock_api
+    test "handles unsuccessful HTTP request", %{bypass: bypass} do
       update_fn = fn _ -> :ok end
 
       {:ok, state, _} = AlertsFetcher.init(update_fn: update_fn)
@@ -161,11 +167,8 @@ defmodule Realtime.AlertsFetcherTest do
       assert log =~ "unexpected_response"
     end
 
-    test "handles malformed response" do
-      bypass = Bypass.open()
-      api_url = "http://localhost:#{bypass.port}/"
-      reassign_env(:skate, :api_url, api_url)
-
+    @tag :mock_api
+    test "handles malformed response", %{bypass: bypass} do
       update_fn = fn _ -> :ok end
 
       {:ok, state, _} = AlertsFetcher.init(update_fn: update_fn)
@@ -182,11 +185,11 @@ defmodule Realtime.AlertsFetcherTest do
       assert log =~ "unable_to_parse_alerts"
     end
 
-    test "handles multiple alerts per route, multiple routes per alert, and non-detour alerts" do
+    @tag :mock_api
+    test "handles multiple alerts per route, multiple routes per alert, and non-detour alerts", %{
+      bypass: bypass
+    } do
       set_log_level(:info)
-      bypass = Bypass.open()
-      api_url = "http://localhost:#{bypass.port}/"
-      reassign_env(:skate, :api_url, api_url)
       test_pid = self()
 
       update_fn = fn alerts ->
