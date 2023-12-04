@@ -103,8 +103,8 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
 
       read_notification_user_ids =
         from(nu in DbNotificationUser,
-            select: {nu.notification_id, nu.user_id},
-            where: nu.state == ^read_state
+          select: {nu.notification_id, nu.user_id},
+          where: nu.state == ^read_state
         )
         |> Skate.Repo.all()
         |> Enum.sort()
