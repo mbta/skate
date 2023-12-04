@@ -1,40 +1,36 @@
-import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+import { Meta, ColorPalette, ColorItem } from "@storybook/blocks"
 import "../../css/color/_root.scss"
-import {serviceColors, mbtaColors, themeColors, allColors} from "./colors";
+import { serviceColors, mbtaColors, themeColors, allColors } from "./colors"
 
 <Meta title="Colors" />
 
 ### Semantic Colors
-We use a subset of [all colors](#all-colors) to create a smaller color palette
-for generating color schemes.
 
 <ColorPalette>
-  <ColorItem
-    title="Theme Colors"
-    colors={themeColors}
-  />
-</ColorPalette>
+  <ColorItem title="Theme Colors" colors={themeColors}
+   subtitle={<>
 
-### Service Colors
-Skate uses service colors to show users information about service, including
-adherence and transit type. With exceptions for black, white, and grays,
-these colors should not be used anywhere else in the UI.
+    We use a subset of <a href="#all-colors">all colors</a> to create a smaller color palette
+    for generating color schemes.
 
-<ColorPalette>
-  <ColorItem
-    title="Service Colors"
-    colors={serviceColors}
-  />
-  <ColorItem
-    title="MBTA Colors"
-    colors={mbtaColors}
-  />
+  </>}/>
+
+
+
+  <ColorItem title="Service Colors" colors={serviceColors} subtitle={<>
+
+    Skate uses service colors to show users information about service, including
+    adherence and transit type. With exceptions for black, white, and grays, these
+    colors should not be used anywhere else in the UI.
+  </>}/>
+  <ColorItem title="MBTA Colors" colors={mbtaColors} />
 </ColorPalette>
 
 ### All Colors
-To avoid increased file sizes, we don’t create
-text or background color classes for each of these variables.
-Instead, we choose a subset of these colors for a theme palette.
+
+To avoid increased file sizes, we don’t create text or background color classes
+for each of these variables. Instead, we choose a subset of these colors for a
+theme palette.
 
 All of the values in the theme palette are at the 500 level.
 
@@ -60,8 +56,9 @@ All of the values in the theme palette are at the 500 level.
     colors={allColors.gray}
   />
 
-  #### Misc Colors
-  <ColorItem
+#### Misc Colors
+
+<ColorItem
     title='System'
     colors={allColors.systemState}
   />
