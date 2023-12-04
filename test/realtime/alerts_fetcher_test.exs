@@ -74,7 +74,11 @@ defmodule Realtime.AlertsFetcherTest do
 
   describe "start_link/1" do
     @tag :mock_api
-    test "starts GenServer" do
+    test "starts GenServer", %{bypass: bypass} do
+      Bypass.stub(bypass, "GET", "/alerts", fn _ ->
+        Bypass.pass(bypass)
+      end)
+
       assert {:ok, _pid} = AlertsFetcher.start_link(update_fn: fn _ -> :ok end)
     end
   end
