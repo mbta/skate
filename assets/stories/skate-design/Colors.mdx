@@ -1,0 +1,70 @@
+import { Meta, ColorPalette, ColorItem } from "@storybook/blocks"
+import "../../css/color/_root.scss"
+import { serviceColors, mbtaColors, themeColors, allColors } from "./colors"
+
+<Meta title="Colors" />
+
+### Semantic Colors
+
+<ColorPalette>
+  <ColorItem title="Theme Colors" colors={themeColors}
+   subtitle={<>
+
+    We use a subset of <a href="#all-colors">all colors</a> to create Skate's theme palette.
+    These colors are used in the interface to convey meaning and maintain consistency.
+
+  </>}/>
+
+  <ColorItem title="Service Colors" colors={serviceColors} subtitle={<>
+
+    These colors show users information about service, including adherence.
+    With exceptions for black, white, and grays, these colors should not
+    be used anywhere else in the UI.
+
+  </>}/>
+
+  <ColorItem title="MBTA Colors" colors={mbtaColors} subtitle={<>
+
+    These are the official MBTA system colors used to represent
+    different lines and modes of transportation.
+
+  </>}/>
+</ColorPalette>
+
+### All Colors
+
+To avoid increased file sizes, we don’t create text or background color classes
+for each of these variables. Instead, we choose a subset of these colors for a
+theme palette.
+
+All of the values in the theme palette are at the 500 level.
+
+<ColorPalette>
+  <ColorItem
+    title='Eggplant'
+    colors={allColors.eggplant}
+  />
+  <ColorItem
+    title='Kiwi'
+    colors={allColors.kiwi}
+  />
+  <ColorItem
+    title='Strawberry'
+    colors={allColors.strawberry}
+  />
+  <ColorItem
+    title='Lemon'
+    colors={allColors.lemon}
+  />
+  <ColorItem
+    title='Gray'
+    colors={allColors.gray}
+  />
+
+#### Misc Colors
+
+<ColorItem
+    title='System'
+    colors={allColors.systemState}
+  />
+</ColorPalette>

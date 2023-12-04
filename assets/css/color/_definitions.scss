@@ -1,0 +1,84 @@
+@use "./tokens" as tokens;
+// #region Semantic Colors
+/*
+ * A patch-panel which maps semantic colors to actual colors.
+ *
+ * Use this when interacting with systems that need
+ * raw color values (i.e., bootstrap)
+ */
+
+// #region Theme Colors
+/*
+ * We use a subset of all colors to create a smaller color palette for
+ * generating color schemes, also available as Sass variables and a Sass map in
+ * Bootstrap’s `scss/_variables.scss` file.
+ */
+
+$primary: tokens.$eggplant-500;
+$secondary: tokens.$gray-500;
+$info: tokens.$kiwi-500;
+$ui-alert: tokens.$strawberry-500;
+$service-alert: tokens.$lemon-500;
+$light: tokens.$gray-100;
+$dark: tokens.$gray-900;
+
+@mixin theme-colors {
+  --color-primary: #{$primary};
+  --color-secondary: #{$secondary};
+  --color-info: #{$info};
+  --color-ui-alert: #{$ui-alert};
+  --color-service-alert: #{$service-alert};
+  --color-light: #{$light};
+  --color-dark: #{$dark};
+}
+// #endregion Theme Colors
+
+// #region Service Colors
+/*
+  * Skate uses service colors to show users information about service, including
+  * adherence and transit type. With exceptions for black, white, and grays,
+  * these colors should not be used anywhere else in the UI.
+ */
+
+$early: tokens.$persimmon;
+$late: tokens.$sky;
+$on-time: tokens.$lime;
+
+$ghost: tokens.$white;
+$unknown-ghost: tokens.$highlighter;
+$invalid: tokens.$black;
+$logged-off: tokens.$gray-300;
+
+@mixin service-colors {
+  // Default color definitions for early and late
+  --color-early: #{$early};
+  --color-late: #{$late};
+  --color-on-time: #{$on-time};
+
+  --color-ghost: #{$ghost};
+  --color-unknown-ghost: #{$unknown-ghost};
+  --color-invalid: #{$invalid};
+  --color-logged-off: #{$logged-off};
+}
+
+$bus: tokens.$mbta-bus;
+$red-line: tokens.$mbta-red;
+$blue-line: tokens.$mbta-blue;
+$green-line: tokens.$mbta-green;
+$orange-line: tokens.$mbta-orange;
+$silver-line: tokens.$mbta-silver;
+$commuter-rail: tokens.$mbta-cr;
+$ferry: tokens.$mbta-ferry;
+
+@mixin mbta-colors {
+  --color-bus: #{$bus};
+  --color-red-line: #{$red-line};
+  --color-blue-line: #{$blue-line};
+  --color-green-line: #{$green-line};
+  --color-orange-line: #{$orange-line};
+  --color-silver-line: #{$silver-line};
+  --color-commuter-rail: #{$commuter-rail};
+  --color-ferry: #{$ferry};
+}
+// #endregion Service Colors
+// #endregion Semantic Colors

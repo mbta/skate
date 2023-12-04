@@ -1,0 +1,11 @@
+@use "../color/definitions" as semantic;
+
+$theme-colors: (
+  "primary": semantic.$primary,
+  "secondary": semantic.$secondary,
+  "info": semantic.$info,
+  "ui-alert": semantic.$ui-alert,
+  "service-alert": semantic.$service-alert,
+  "light": semantic.$light,
+  "dark": semantic.$dark,
+);

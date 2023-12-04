@@ -1,0 +1,5 @@
+@use "../../color/tokens" as colors;
+
+:export {
+  @include colors.system-state-colors;
+}
