@@ -27,4 +27,4 @@ config :ueberauth, Ueberauth,
     cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-nav-beta"]]}
   ]
 
-config :logger, level: :warn
+config :logger, level: :warning

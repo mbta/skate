@@ -43,7 +43,7 @@ defmodule Geonames do
         Jason.decode!(body, strings: :copy)
 
       response ->
-        Logger.warn(
+        Logger.warning(
           "#{__MODULE__} unexpected_response url=#{sanitized_url} response=#{inspect(response)} time=#{time_in_ms} retry=#{retry?}"
         )
 

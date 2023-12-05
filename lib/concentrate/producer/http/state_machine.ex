@@ -304,11 +304,11 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
     {[parsed], machine}
   rescue
     error ->
-      log_parse_error(error, machine, System.stacktrace())
+      log_parse_error(error, machine, __STACKTRACE__)
       {[], machine}
   catch
     error ->
-      log_parse_error(error, machine, System.stacktrace())
+      log_parse_error(error, machine, __STACKTRACE__)
       {[], machine}
   end
 
@@ -326,7 +326,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
     if time_since_last_success >= machine.content_warning_timeout do
       _ =
-        Logger.warn(fn ->
+        Logger.warning(fn ->
           delay = div(time_since_last_success, 1000)
           "#{__MODULE__}: feed has not been updated url=#{inspect(machine.url)} delay=#{delay}"
         end)
@@ -379,11 +379,11 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
     [{message, delay} | fallback_messages]
   end
 
-  defp error_log_level(:closed), do: :warn
-  defp error_log_level({:closed, _}), do: :warn
-  defp error_log_level({:ssl_closed, _}), do: :warn
-  defp error_log_level(:timeout), do: :warn
-  defp error_log_level({:unexpected_code, _}), do: :warn
+  defp error_log_level(:closed), do: :warning
+  defp error_log_level({:closed, _}), do: :warning
+  defp error_log_level({:ssl_closed, _}), do: :warning
+  defp error_log_level(:timeout), do: :warning
+  defp error_log_level({:unexpected_code, _}), do: :warning
   defp error_log_level(_), do: :error
 
   defp now do

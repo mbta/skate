@@ -109,7 +109,7 @@ defmodule Concentrate.Merge do
 
   def handle_info(msg, state) do
     _ =
-      Logger.warn(fn ->
+      Logger.warning(fn ->
         "unknown message to #{__MODULE__} #{inspect(self())}: #{inspect(msg)}"
       end)
 

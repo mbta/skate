@@ -146,7 +146,7 @@ defmodule Schedule.Hastus.Activity do
       end)
 
     if trips_in_piece == [] do
-      Logger.warn(fn ->
+      Logger.warning(fn ->
         "Operator activity with no trips: #{activity.schedule_id} #{activity.run_id} start_time:#{activity.start_time}"
       end)
     end

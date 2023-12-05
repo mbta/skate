@@ -33,7 +33,7 @@ defmodule Notifications.Bridge do
   def init(_opts) do
     case Application.get_env(:skate, :bridge_url) do
       nil ->
-        Logger.warn("not starting Bridge: no url configured")
+        Logger.warning("not starting Bridge: no url configured")
         :ignore
 
       _ ->
@@ -65,7 +65,7 @@ defmodule Notifications.Bridge do
   end
 
   def handle_info(msg, state) do
-    Logger.warn("#{__MODULE__} unknown message: #{inspect(msg)}")
+    Logger.warning("#{__MODULE__} unknown message: #{inspect(msg)}")
     {:noreply, state}
   end
 
@@ -90,18 +90,18 @@ defmodule Notifications.Bridge do
         do_parse_response(response)
 
       _ ->
-        Logger.warn("bridge_api_failure: could not parse json response")
+        Logger.warning("bridge_api_failure: could not parse json response")
         nil
     end
   end
 
   def parse_response({:ok, %HTTPoison.Response{status_code: status}}) do
-    Logger.warn("bridge_api_failure: status code #{inspect(status)}")
+    Logger.warning("bridge_api_failure: status code #{inspect(status)}")
     nil
   end
 
   def parse_response({:error, %HTTPoison.Error{reason: reason}}) do
-    Logger.warn("bridge_api_failure: #{inspect(reason)}")
+    Logger.warning("bridge_api_failure: #{inspect(reason)}")
     nil
   end
 

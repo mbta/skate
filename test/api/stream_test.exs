@@ -58,6 +58,9 @@ defmodule Api.StreamTest do
                |> Enum.take(1)
     end
 
+    # We're seeing occasional failures in this test due to an underlying issue
+    # with the `Bypass` library. There is an
+    # [open issue on Bypass's github](https://github.com/PSPDFKit-labs/bypass/issues/120).
     test "handles api events", %{bypass: bypass} do
       Bypass.expect(bypass, fn conn ->
         conn = Conn.send_chunked(conn, 200)
@@ -68,12 +71,12 @@ defmodule Api.StreamTest do
           "id" => "vehicle"
         }
 
-        Conn.chunk(conn, "event: ignores unexpected events\n\n")
-        Conn.chunk(conn, "ignored garbled data\n\n")
-        Conn.chunk(conn, "event: reset\ndata: #{Jason.encode!([data])}\n\n")
-        Conn.chunk(conn, "event: add\ndata: #{Jason.encode!(data)}\n\n")
-        Conn.chunk(conn, "event: update\ndata: #{Jason.encode!(data)}\n\n")
-        Conn.chunk(conn, "event: remove\ndata: #{Jason.encode!(data)}\n\n")
+        {:ok, conn} = Conn.chunk(conn, "event: ignores unexpected events\n\n")
+        {:ok, conn} = Conn.chunk(conn, "ignored garbled data\n\n")
+        {:ok, conn} = Conn.chunk(conn, "event: reset\ndata: #{Jason.encode!([data])}\n\n")
+        {:ok, conn} = Conn.chunk(conn, "event: add\ndata: #{Jason.encode!(data)}\n\n")
+        {:ok, conn} = Conn.chunk(conn, "event: update\ndata: #{Jason.encode!(data)}\n\n")
+        {:ok, conn} = Conn.chunk(conn, "event: remove\ndata: #{Jason.encode!(data)}\n\n")
         conn
       end)
 

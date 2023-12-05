@@ -675,14 +675,47 @@ defmodule Realtime.VehicleTest do
         end_of_trip_type: :another_trip
       }
 
-      encoded_string = Jason.encode!(vehicle)
+      decoded_vehicle =
+        vehicle
+        |> Jason.encode!()
+        |> Jason.decode!(keys: :atoms!)
 
-      assert encoded_string =~ "\"id\":\"y1261\""
+      assert decoded_vehicle.id == "y1261"
+      assert decoded_vehicle.route_id == "28"
 
-      assert encoded_string =~ "\"route_id\":\"28\""
-
-      assert encoded_string =~
-               "\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}]"
+      assert decoded_vehicle.data_discrepancies ==
+               Jason.decode!(~s(
+                  [
+                    {
+                      "attribute": "trip_id",
+                      "sources": [
+                        {
+                          "id": "swiftly",
+                          "value": "swiftly-trip-id"
+                        },
+                        {
+                          "id": "busloc",
+                          "value": "busloc-trip-id"
+                        }
+                      ]
+                    },
+                    {
+                      "attribute": "route_id",
+                      "sources": [
+                        {
+                          "id": "swiftly",
+                          "value": null
+                        },
+                        {
+                          "id": "busloc",
+                          "value": "busloc-route-id"
+                        }
+                      ]
+                    }
+                  ]
+                ),
+                 keys: :atoms!
+               )
     end
   end
 end

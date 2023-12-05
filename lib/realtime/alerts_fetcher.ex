@@ -72,13 +72,13 @@ defmodule Realtime.AlertsFetcher do
             Logger.info("#{__MODULE__}: updated_alerts url=#{inspect(url)}")
 
           {:error, error} ->
-            Logger.warn(
+            Logger.warning(
               "#{__MODULE__}: unable_to_parse_alerts url=#{inspect(url)} error=#{inspect(error)}"
             )
         end
 
       response ->
-        Logger.warn(
+        Logger.warning(
           "#{__MODULE__}: unexpected_response url=#{inspect(url)} response=#{inspect(response)}"
         )
     end
