@@ -32,4 +32,9 @@ if config_env() == :prod do
       environment_name: System.fetch_env!("SENTRY_ENV")
   end
 
+  if System.get_env("SENTRY_FRONTEND_DSN") do
+    config :skate,
+      sentry_frontend_dsn: System.fetch_env!("SENTRY_FRONTEND_DSN"),
+      sentry_org_slug: System.fetch_env!("SENTRY_ORG_SLUG")
+  end
 end
