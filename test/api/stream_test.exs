@@ -58,6 +58,9 @@ defmodule Api.StreamTest do
                |> Enum.take(1)
     end
 
+    # We're seeing occasional failures in this test due to an underlying issue
+    # with the `Bypass` library. There is an
+    # [open issue on Bypass's github](https://github.com/PSPDFKit-labs/bypass/issues/120).
     test "handles api events", %{bypass: bypass} do
       Bypass.expect(bypass, fn conn ->
         conn = Conn.send_chunked(conn, 200)
