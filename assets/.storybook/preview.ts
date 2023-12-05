@@ -1,7 +1,7 @@
 import { Preview } from "@storybook/react"
 
 import "../css/app.scss"
-import "../css/StorybookApp.scss"
+import "../css/storybook_app.scss"
 import { stretchParameterDecorator } from "./stretchParameterDecorator"
 
 const preview: Preview = {
