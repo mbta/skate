@@ -14,8 +14,7 @@ defmodule TrainVehicles.Supervisor do
 
   @impl true
   def init(:ok) do
-    children()
-    |> Supervisor.init(strategy: :one_for_all)
+    Supervisor.init(children(), strategy: :one_for_all)
   end
 
   defp children() do

@@ -65,8 +65,7 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
              ) == 4
 
       conn =
-        conn
-        |> put("/api/notification_read_state", %{
+        put(conn, "/api/notification_read_state", %{
           "new_state" => "read",
           "notification_ids" => "#{user_notification1.id}"
         })
@@ -88,8 +87,7 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
              ) == {user_notification1.id, user.id}
 
       conn =
-        conn
-        |> put("/api/notification_read_state", %{
+        put(conn, "/api/notification_read_state", %{
           "new_state" => "read",
           "notification_ids" => "#{user_notification2.id}"
         })
@@ -104,24 +102,21 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
              ) == 2
 
       read_notification_user_ids =
-        Skate.Repo.all(
-          from(nu in DbNotificationUser,
-            select: {nu.notification_id, nu.user_id},
-            where: nu.state == ^read_state
-          )
+        from(nu in DbNotificationUser,
+          select: {nu.notification_id, nu.user_id},
+          where: nu.state == ^read_state
         )
+        |> Skate.Repo.all()
         |> Enum.sort()
 
       assert read_notification_user_ids ==
-               [
+               Enum.sort([
                  {user_notification1.id, user.id},
                  {user_notification2.id, user.id}
-               ]
-               |> Enum.sort()
+               ])
 
       conn =
-        conn
-        |> put("/api/notification_read_state", %{
+        put(conn, "/api/notification_read_state", %{
           "new_state" => "unread",
           "notification_ids" => "#{user_notification1.id},#{user_notification2.id}"
         })

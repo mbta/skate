@@ -122,9 +122,7 @@ defmodule Schedule.Data do
       |> (fn time -> time - 6 * 60 * 60 end).()
       |> Util.Time.date_of_timestamp()
 
-    last_possible_service_date =
-      end_time
-      |> Util.Time.date_of_timestamp()
+    last_possible_service_date = Util.Time.date_of_timestamp(end_time)
 
     date_range = Date.range(first_possible_service_date, last_possible_service_date)
     Enum.to_list(date_range)

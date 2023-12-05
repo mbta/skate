@@ -7,7 +7,7 @@ defmodule Skate.Repo do
 
   def add_prod_credentials(config, auth_token_fn \\ &ExAws.RDS.generate_db_auth_token/4) do
     hostname = System.get_env("POSTGRES_HOSTNAME")
-    port = System.get_env("POSTGRES_PORT", "5432") |> String.to_integer()
+    port = String.to_integer(System.get_env("POSTGRES_PORT", "5432"))
     username = System.get_env("POSTGRES_USERNAME")
 
     token =
@@ -21,7 +21,7 @@ defmodule Skate.Repo do
     if is_nil(token) do
       Logger.info("#{__MODULE__} add_prod_credentials token_is_nil")
     else
-      hash_string = :crypto.hash(:sha3_256, token) |> Base.encode16()
+      hash_string = Base.encode16(:crypto.hash(:sha3_256, token))
 
       Logger.info("#{__MODULE__} add_prod_credentials token_hash=#{hash_string}")
     end

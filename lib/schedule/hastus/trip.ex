@@ -107,8 +107,7 @@ defmodule Schedule.Hastus.Trip do
       |> Enum.filter(&Regex.match?(@through_routed_suffix_regex, &1))
       |> Enum.group_by(&String.replace(&1, @through_routed_suffix_regex, ""))
 
-    trips
-    |> Enum.flat_map(fn trip ->
+    Enum.flat_map(trips, fn trip ->
       through_routed_trip_ids = Map.get(original_id_to_through_routed_trip_ids, trip.trip_id)
 
       if through_routed_trip_ids do

@@ -95,24 +95,28 @@ defmodule Realtime.DataStatusTest do
     test "considers vehicles bad if either source is stale or missing" do
       goods = List.duplicate(@good, 16)
 
-      [
-        {[@swiftly_missing, @swiftly_missing, @swiftly_missing, @swiftly_missing | goods], 20,
-         16},
-        {[@swiftly_stale, @swiftly_stale, @swiftly_stale, @swiftly_stale | goods], 20, 16},
-        {[@busloc_missing, @busloc_missing, @busloc_missing, @busloc_missing | goods], 16, 20},
-        {[@busloc_stale, @busloc_stale, @busloc_stale, @busloc_stale | goods], 16, 20}
-      ]
-      |> Enum.each(fn {vehicles, busloc_good, swiftly_good} ->
-        log =
-          capture_log([level: :info], fn -> assert DataStatus.data_status(vehicles) == :outage end)
+      Enum.each(
+        [
+          {[@swiftly_missing, @swiftly_missing, @swiftly_missing, @swiftly_missing | goods], 20,
+           16},
+          {[@swiftly_stale, @swiftly_stale, @swiftly_stale, @swiftly_stale | goods], 20, 16},
+          {[@busloc_missing, @busloc_missing, @busloc_missing, @busloc_missing | goods], 16, 20},
+          {[@busloc_stale, @busloc_stale, @busloc_stale, @busloc_stale | goods], 16, 20}
+        ],
+        fn {vehicles, busloc_good, swiftly_good} ->
+          log =
+            capture_log([level: :info], fn ->
+              assert DataStatus.data_status(vehicles) == :outage
+            end)
 
-        assert log =~ "total_vehicles=20"
-        assert log =~ "considered_vehicles=20"
-        assert log =~ "good_vehicles=16"
-        assert log =~ "good_busloc_vehicles=#{busloc_good}"
-        assert log =~ "good_swiftly_vehicles=#{swiftly_good}"
-        assert log =~ "bad_vehicles=4"
-      end)
+          assert log =~ "total_vehicles=20"
+          assert log =~ "considered_vehicles=20"
+          assert log =~ "good_vehicles=16"
+          assert log =~ "good_busloc_vehicles=#{busloc_good}"
+          assert log =~ "good_swiftly_vehicles=#{swiftly_good}"
+          assert log =~ "bad_vehicles=4"
+        end
+      )
     end
 
     test "when there are no vehicles overnight, that's okay" do

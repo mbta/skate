@@ -8,9 +8,7 @@ defmodule Mix.Tasks.Cache.Clean do
   @shortdoc "Delete the gtfs cache file"
   @spec run([binary]) :: any
   def run(_) do
-    filepath =
-      CacheFile.cache_filename()
-      |> CacheFile.generate_filepath()
+    filepath = CacheFile.generate_filepath(CacheFile.cache_filename())
 
     IO.puts("Deleting cache file #{filepath}")
     File.rm(filepath)

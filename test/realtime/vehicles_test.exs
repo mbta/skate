@@ -637,8 +637,8 @@ defmodule Realtime.VehiclesTest do
                %Vehicle{id: "pulling_out"},
                %Vehicle{id: "on_nil_route"}
              ] =
-               Vehicles.group_by_route_with_blocks(
-                 ungrouped_vehicles,
+               ungrouped_vehicles
+               |> Vehicles.group_by_route_with_blocks(
                  [trip_1, trip_2, trip_3],
                  %{~D[2019-12-20] => [run_1, run_2, run_3]},
                  %{~D[2019-12-20] => [block_1, block_2, block_3]},

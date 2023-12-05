@@ -40,8 +40,7 @@ defmodule Geonames do
           "#{__MODULE__} got_intersection_response url=#{sanitized_url} time=#{time_in_ms}"
         )
 
-        body
-        |> Jason.decode!(strings: :copy)
+        Jason.decode!(body, strings: :copy)
 
       response ->
         Logger.warn(

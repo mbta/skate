@@ -12,14 +12,15 @@ defmodule Report.UserNamesAndUuids do
   @impl Report
   def run() do
     {:ok,
-     from(u in DbUser,
-       select: %{
-         "username" => u.username,
-         "uuid" => u.uuid,
-         "email" => u.email
-       }
-     )
-     |> Skate.Repo.all()}
+     Skate.Repo.all(
+       from(u in DbUser,
+         select: %{
+           "username" => u.username,
+           "uuid" => u.uuid,
+           "email" => u.email
+         }
+       )
+     )}
   end
 
   @impl Report

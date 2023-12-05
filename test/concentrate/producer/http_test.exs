@@ -231,8 +231,7 @@ defmodule Concentrate.Producer.HTTPTest do
     test "an error in parsing isn't fatal", %{bypass: bypass} do
       {:ok, agent} = response_agent()
 
-      agent
-      |> add_response(fn conn ->
+      add_response(agent, fn conn ->
         send_resp(conn, 200, "failure")
       end)
 
@@ -255,8 +254,7 @@ defmodule Concentrate.Producer.HTTPTest do
     test "a FunctionClauseError error in parsing isn't fatal", %{bypass: bypass} do
       {:ok, agent} = response_agent()
 
-      agent
-      |> add_response(fn conn ->
+      add_response(agent, fn conn ->
         send_resp(conn, 200, "failure")
       end)
 

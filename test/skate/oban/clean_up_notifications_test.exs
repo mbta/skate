@@ -51,7 +51,7 @@ defmodule Skate.Oban.CleanUpNotificationsTest do
     test "only deletes records older than the cutoff_days date" do
       # Insert elements older than `cutoff_days`
       cutoff_days = 100
-      insert_date = DateTime.utc_now() |> DateTime.add(-(cutoff_days + 1) * @seconds_per_day)
+      insert_date = DateTime.add(DateTime.utc_now(), -(cutoff_days + 1) * @seconds_per_day)
       limit = 250
       Factory.insert_list(limit, :db_notification, inserted_at: insert_date)
 

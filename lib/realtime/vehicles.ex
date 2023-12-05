@@ -108,8 +108,7 @@ defmodule Realtime.Vehicles do
         interlining_vehicles_and_ghosts,
         fn vehicle_or_ghost ->
           incoming_trip =
-            incoming_trips
-            |> Enum.find(fn trip ->
+            Enum.find(incoming_trips, fn trip ->
               trip.block_id == vehicle_or_ghost.block_id && trip.route_id == route_id
             end)
 

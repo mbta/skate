@@ -10,8 +10,9 @@ defmodule Report.NotificationsUsersCountEstimate do
   @impl Report
   def run() do
     [count] =
-      from(p in "pg_class", where: p.relname == "notifications_users", select: p.reltuples)
-      |> Skate.Repo.all()
+      Skate.Repo.all(
+        from(p in "pg_class", where: p.relname == "notifications_users", select: p.reltuples)
+      )
 
     {:ok, [%{count: count}]}
   end

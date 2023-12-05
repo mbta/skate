@@ -87,7 +87,8 @@ defmodule Schedule.Swing do
     |> Map.values()
     |> Enum.map(&{&1.pieces, &1.id})
     |> Enum.flat_map(fn {pieces_for_block, block_id} ->
-      Enum.chunk_every(pieces_for_block, 2, 1, :discard)
+      pieces_for_block
+      |> Enum.chunk_every(2, 1, :discard)
       |> Enum.map(fn [piece1, piece2] -> {piece1, piece2, block_id} end)
     end)
     |> Enum.map(fn {piece1, piece2, block_id} ->
@@ -124,7 +125,7 @@ defmodule Schedule.Swing do
   defp first_trip_from_piece(piece, trips_by_id) do
     case piece.start_mid_route? do
       %{trip: mid_route_trip} ->
-        with %{} = first_trip <- mid_route_trip |> trip_or_trip_id_to_trip(trips_by_id) do
+        with %{} = first_trip <- trip_or_trip_id_to_trip(mid_route_trip, trips_by_id) do
           %{first_trip | run_id: piece.run_id}
         end
 

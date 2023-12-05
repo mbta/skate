@@ -9,18 +9,19 @@ defmodule Notifications.Db.NotificationUserTest do
   describe "NotificationUser" do
     test "can be saved to the database" do
       {:ok, notification} =
-        DbNotification.block_waiver_changeset(%DbNotification{}, %{
-          created_at: 1,
-          block_id: "blk",
-          service_id: "srv",
-          reason: :other,
-          route_ids: [],
-          run_ids: [],
-          trip_ids: [],
-          start_time: 123,
-          end_time: 456
-        })
-        |> Skate.Repo.insert()
+        Skate.Repo.insert(
+          DbNotification.block_waiver_changeset(%DbNotification{}, %{
+            created_at: 1,
+            block_id: "blk",
+            service_id: "srv",
+            reason: :other,
+            route_ids: [],
+            run_ids: [],
+            trip_ids: [],
+            start_time: 123,
+            end_time: 456
+          })
+        )
 
       user = insert(:user)
 

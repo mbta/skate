@@ -286,7 +286,7 @@ defmodule Skate.Factory do
 
   def db_notification_factory() do
     %Notifications.Db.Notification{
-      created_at: DateTime.utc_now() |> DateTime.to_unix()
+      created_at: DateTime.to_unix(DateTime.utc_now())
     }
   end
 

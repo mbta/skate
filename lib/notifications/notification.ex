@@ -115,7 +115,7 @@ defmodule Notifications.Notification do
   end
 
   def get_or_create_from_bridge_movement(bridge_movement_values) do
-    created_at = DateTime.utc_now() |> DateTime.to_unix()
+    created_at = DateTime.to_unix(DateTime.utc_now())
 
     {:ok, {source, db_record}} =
       Skate.Repo.transaction(fn ->
@@ -125,7 +125,7 @@ defmodule Notifications.Notification do
         # so we assume that, if we see two bridge movements within a blackout
         # period, they are actually the same movement and what's happening is
         # that we have multiple servers trying to insert a movement at once.
-        cutoff_time = NaiveDateTime.utc_now() |> NaiveDateTime.add(-@bridge_lowering_blackout)
+        cutoff_time = NaiveDateTime.add(NaiveDateTime.utc_now(), -@bridge_lowering_blackout)
 
         existing_record =
           Skate.Repo.one(
@@ -256,7 +256,7 @@ defmodule Notifications.Notification do
     detail_fields =
       cond do
         block_waiver ->
-          Map.from_struct(block_waiver) |> Map.delete(:id)
+          Map.delete(Map.from_struct(block_waiver), :id)
 
         bridge_movement ->
           {reason, end_time} =

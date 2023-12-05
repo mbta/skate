@@ -9,8 +9,9 @@ defmodule SkateWeb.ReportController do
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
     reports =
-      Report.all_reports()
-      |> Enum.map(fn {short_name, report} -> {report.description(), short_name} end)
+      Enum.map(Report.all_reports(), fn {short_name, report} ->
+        {report.description(), short_name}
+      end)
 
     conn
     |> assign(:reports, reports)
@@ -30,8 +31,10 @@ defmodule SkateWeb.ReportController do
       {:ok, results} = Report.to_csv(report)
 
       {:ok, dt} =
-        Util.Time.now()
-        |> FastLocalDatetime.unix_to_datetime(Application.get_env(:skate, :timezone))
+        FastLocalDatetime.unix_to_datetime(
+          Util.Time.now(),
+          Application.get_env(:skate, :timezone)
+        )
 
       timestamp = DateTime.to_iso8601(dt, :basic)
 
