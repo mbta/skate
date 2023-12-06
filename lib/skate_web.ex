@@ -49,7 +49,6 @@ defmodule SkateWeb do
       use Phoenix.Component
 
       use Phoenix.HTML
-      # unquote(verified_routes())
     end
   end
 

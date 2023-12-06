@@ -5,7 +5,6 @@ defmodule SkateWeb.TestGroupController do
   """
 
   use SkateWeb, :controller
-  # use Phoenix.Controller, layouts: [html: {SkateWeb.LayoutView, :barebones}]
 
   alias Skate.Settings.TestGroup
   alias Skate.Settings.User

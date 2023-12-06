@@ -9,7 +9,6 @@ defmodule SkateWeb.AdminController do
   def index(conn, _params) do
     render(conn, "index.html",
       layout: {SkateWeb.LayoutView, "barebones.html"},
-      # layout: [html: {SkateWeb.LayoutView, :barebones}],
       title: "Skate Admin"
     )
   end
