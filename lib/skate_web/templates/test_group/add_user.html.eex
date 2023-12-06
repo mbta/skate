@@ -1,5 +1,5 @@
 <h1>Adding user to test group <%= @test_group_name %></h1>
-<%= form_for @conn, Routes.test_group_path(@conn, :add_user, @test_group_id), fn f -> %>
+<%= form_for @conn, ~p"/test_groups/#{@test_group_id}/add_user", fn f -> %>
     <%= label do %>
         User: <%= select f, :user_id, Enum.map(@users, &{&1.email, &1.id}) %>
     <% end %>

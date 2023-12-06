@@ -17,14 +17,14 @@ defmodule SkateWeb.StopControllerTest do
     end
 
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.stop_path(conn, :stations))
+      conn = get(conn, ~p"/api/stops/stations")
 
       assert redirected_to(conn) == "/auth/cognito"
     end
 
     @tag :authenticated
     test "when logged in, returns all stations", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.stop_path(conn, :stations))
+      conn = get(conn, ~p"/api/stops/stations")
 
       assert %{
                "data" => [
@@ -78,14 +78,14 @@ defmodule SkateWeb.StopControllerTest do
     end
 
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.stop_path(conn, :index))
+      conn = get(conn, ~p"/api/stops")
 
       assert redirected_to(conn) == "/auth/cognito"
     end
 
     @tag :authenticated
     test "when logged in, returns all stops", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.stop_path(conn, :index))
+      conn = get(conn, ~p"/api/stops")
 
       assert %{
                "data" => [
@@ -133,7 +133,7 @@ defmodule SkateWeb.StopControllerTest do
       conn =
         conn
         |> put_req_header("if-none-match", "latest_version")
-        |> get(SkateWeb.Router.Helpers.stop_path(conn, :index))
+        |> get(~p"/api/stops")
 
       assert "" == response(conn, :not_modified)
     end
@@ -145,7 +145,7 @@ defmodule SkateWeb.StopControllerTest do
       conn =
         conn
         |> put_req_header("if-none-match", "old_version")
-        |> get(SkateWeb.Router.Helpers.stop_path(conn, :index))
+        |> get(~p"/api/stops")
 
       assert %{
                "data" => [

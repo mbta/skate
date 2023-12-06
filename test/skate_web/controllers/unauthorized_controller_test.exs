@@ -4,7 +4,7 @@ defmodule SkateWeb.UnauthorizedControllerTest do
   describe "index/2" do
     @tag :authenticated
     test "renders response", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.unauthorized_path(conn, :index))
+      conn = get(conn, ~p"/unauthorized")
 
       assert html_response(conn, 403) =~ "not authorized"
     end
@@ -13,7 +13,7 @@ defmodule SkateWeb.UnauthorizedControllerTest do
   describe "restricted_environment/2" do
     @tag :authenticated
     test "renders test environment message", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.unauthorized_path(conn, :restricted_environment))
+      conn = get(conn, ~p"/restricted")
 
       assert html_response(conn, 403) =~
                "The URL you followed is actually for Skate's test environment"

@@ -1,7 +1,6 @@
 defmodule Api.StreamTest do
   use ExUnit.Case, async: false
   import Test.Support.Helpers
-  alias Plug.Conn
   alias ServerSentEventStage, as: SSES
 
   describe "build_options" do
@@ -59,13 +58,12 @@ defmodule Api.StreamTest do
 
       assert {:ok, pid} = Api.Stream.start_link(name: __MODULE__, subscribe_to: sses)
 
-      stream =
-        assert [
-                 %Api.Stream.Event{event: :reset},
-                 %Api.Stream.Event{event: :add},
-                 %Api.Stream.Event{event: :update},
-                 %Api.Stream.Event{event: :remove}
-               ] = [pid] |> GenStage.stream() |> Enum.take(4)
+      assert [
+               %Api.Stream.Event{event: :reset},
+               %Api.Stream.Event{event: :add},
+               %Api.Stream.Event{event: :update},
+               %Api.Stream.Event{event: :remove}
+             ] = [pid] |> GenStage.stream() |> Enum.take(4)
     end
   end
 end

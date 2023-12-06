@@ -7,9 +7,9 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "index/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :index))
+      conn = get(conn, ~p"/test_groups")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+      assert redirected_to(conn) == ~p"/unauthorized"
     end
 
     @tag :authenticated_admin
@@ -18,7 +18,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
       TestGroup.update(%{test_group | users: [user]})
 
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :index))
+      conn = get(conn, ~p"/test_groups")
 
       assert html_response(conn, 200) =~ "test group name"
     end
@@ -27,21 +27,21 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "post/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :post))
+      conn = post(conn, ~p"/test_groups/create")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+      assert redirected_to(conn) == ~p"/unauthorized"
     end
 
     @tag :authenticated_admin
     test "creates test group on submit", %{conn: conn} do
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :post), %{
+        post(conn, ~p"/test_groups/create", %{
           "test_group" => %{
             "name" => "group to create"
           }
         })
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.test_group_path(conn, :index)
+      assert redirected_to(conn) == ~p"/test_groups"
 
       assert [%TestGroup{name: "group to create"}] = TestGroup.get_all()
     end
@@ -51,7 +51,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       conn: conn
     } do
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :post), %{
+        post(conn, ~p"/test_groups/create", %{
           "test_group" => %{
             "name" => ""
           }
@@ -70,7 +70,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       TestGroup.create("duplicate group")
 
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :post), %{
+        post(conn, ~p"/test_groups/create", %{
           "test_group" => %{
             "name" => "duplicate group"
           }
@@ -85,9 +85,9 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "show/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :show, "1"))
+      conn = get(conn, ~p"/test_groups/1")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+      assert redirected_to(conn) == ~p"/unauthorized"
     end
 
     @tag :authenticated_admin
@@ -97,7 +97,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
       html =
         conn
-        |> get(SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group_with_user.id))
+        |> get(~p"/test_groups/#{test_group_with_user.id}")
         |> html_response(200)
 
       assert html =~ "group to show"
@@ -106,7 +106,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "returns 404 when no test group found", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :show, 123))
+      conn = get(conn, ~p"/test_groups/123")
 
       assert response(conn, 404) =~ "no test group found"
     end
@@ -115,9 +115,9 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "add_user_form/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user_form, "1"))
+      conn = get(conn, ~p"/test_groups/1/add_user")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+      assert redirected_to(conn) == ~p"/unauthorized"
     end
 
     @tag :authenticated_admin
@@ -132,9 +132,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
       html =
         conn
-        |> get(
-          SkateWeb.Router.Helpers.test_group_path(conn, :add_user_form, test_group_with_user.id)
-        )
+        |> get(~p"/test_groups/#{test_group_with_user.id}/add_user")
         |> html_response(200)
 
       refute html =~ user1.email
@@ -143,7 +141,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "returns 404 when no test group found", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user_form, 123))
+      conn = get(conn, ~p"/test_groups/123/add_user")
 
       assert response(conn, 404) =~ "no test group found"
     end
@@ -152,9 +150,9 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "add_user/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, "1"))
+      conn = get(conn, ~p"/test_groups/1/add_user")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+      assert redirected_to(conn) == ~p"/unauthorized"
     end
 
     @tag :authenticated_admin
@@ -164,12 +162,11 @@ defmodule SkateWeb.TestGroupControllerTest do
       {:ok, test_group} = TestGroup.create("group to add user to")
 
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, test_group.id), %{
+        post(conn, ~p"/test_groups/#{test_group.id}/add_user", %{
           "user_id" => user.id
         })
 
-      assert redirected_to(conn) ==
-               SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group.id)
+      assert redirected_to(conn) == ~p"/test_groups/#{test_group.id}"
 
       updated_test_group = TestGroup.get(test_group.id)
 
@@ -179,7 +176,7 @@ defmodule SkateWeb.TestGroupControllerTest do
     @tag :authenticated_admin
     test "handles case where no test group is found", %{conn: conn} do
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, 123), %{
+        post(conn, ~p"/test_groups/123/add_user", %{
           "user_id" => "456"
         })
 
@@ -191,7 +188,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       {:ok, test_group} = TestGroup.create("group to add user to")
 
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :add_user, test_group.id), %{
+        post(conn, ~p"/test_groups/#{test_group.id}/add_user", %{
           "user_id" => 123
         })
 
@@ -202,9 +199,9 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "remove_user/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, "1"))
+      conn = post(conn, ~p"/test_groups/1/remove_user")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+      assert redirected_to(conn) == ~p"/unauthorized"
     end
 
     @tag :authenticated_admin
@@ -216,14 +213,14 @@ defmodule SkateWeb.TestGroupControllerTest do
       test_group_with_users = TestGroup.update(%TestGroup{test_group | users: [user1, user2]})
 
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, test_group.id), %{
+        post(conn, ~p"/test_groups/#{test_group.id}/remove_user", %{
           "user_id" => Integer.to_string(user2.id)
         })
 
       assert %TestGroup{users: [^user1]} = TestGroup.get(test_group_with_users.id)
 
       assert redirected_to(conn) ==
-               SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group_with_users.id)
+               ~p"/test_groups/#{test_group_with_users.id}"
     end
 
     @tag :authenticated_admin
@@ -235,7 +232,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       TestGroup.update(%TestGroup{test_group | users: [user1]})
 
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, test_group.id), %{
+        post(conn, ~p"/test_groups/#{test_group.id}/remove_user", %{
           "user_id" => Integer.to_string(user2.id)
         })
 
@@ -245,7 +242,7 @@ defmodule SkateWeb.TestGroupControllerTest do
     @tag :authenticated_admin
     test "handles case where test group is not found", %{conn: conn} do
       conn =
-        post(conn, SkateWeb.Router.Helpers.test_group_path(conn, :remove_user, 123), %{
+        post(conn, ~p"/test_groups/123/remove_user", %{
           "user_id" => "456"
         })
 
@@ -256,23 +253,23 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "delete/2" do
     @tag :authenticated
     test "when not an admin, redirects to unauthorized page", %{conn: conn} do
-      conn = get(conn, SkateWeb.Router.Helpers.test_group_path(conn, :index))
+      conn = get(conn, ~p"/test_groups")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.unauthorized_path(conn, :index)
+      assert redirected_to(conn) == ~p"/unauthorized"
     end
 
     @tag :authenticated_admin
     test "redirects to test groups index page", %{conn: conn} do
       {:ok, test_group} = TestGroup.create("test group")
-      conn = delete(conn, SkateWeb.Router.Helpers.test_group_path(conn, :delete, test_group.id))
+      conn = delete(conn, ~p"/test_groups/#{test_group.id}")
 
-      assert redirected_to(conn) == SkateWeb.Router.Helpers.test_group_path(conn, :index)
+      assert redirected_to(conn) == ~p"/test_groups"
     end
 
     @tag :authenticated_admin
     test "deletes the test group", %{conn: conn} do
       {:ok, test_group} = TestGroup.create("test group")
-      delete(conn, SkateWeb.Router.Helpers.test_group_path(conn, :delete, test_group.id))
+      delete(conn, ~p"/test_groups/#{test_group.id}")
 
       assert Enum.empty?(TestGroup.get_all())
     end

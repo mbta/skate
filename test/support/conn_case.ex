@@ -26,6 +26,8 @@ defmodule SkateWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint SkateWeb.Endpoint
+
+      use SkateWeb, :verified_routes
     end
   end
 

@@ -3,15 +3,15 @@
     <%= for {user_id, user_email} <- @test_group_users do %>
         <li>
             <%= user_email %>
-            <%= form_for @conn, Routes.test_group_path(@conn, :remove_user, @test_group_id), fn f -> %>
+            <%= form_for @conn, ~p"/test_groups/#{@test_group_id}/remove_user", fn f -> %>
                 <%= hidden_input f, :user_id, value: user_id %>
                 <%= submit "Remove" %>
             <% end %>
         </li>
     <% end %>
 </ul>
-<%= link "Add user", to: Routes.test_group_path(@conn, :add_user_form, @test_group_id) %>
-<%= link "Back to all test groups", to: Routes.test_group_path(@conn, :index) %>
-<%= form_for @conn, Routes.test_group_path(@conn, :delete, @test_group_id), [method: "DELETE"], fn _f -> %>
+<%= link "Add user", to: ~p"/test_groups/#{@test_group_id}/add_user" %>
+<%= link "Back to all test groups", to: ~p"/test_groups" %>
+<%= form_for @conn, ~p"/test_groups/#{@test_group_id}", [method: "DELETE"], fn _f -> %>
     <%= submit "Delete group", [onclick: "return confirm('Are you sure? This cannot be undone.')"] %>
 <% end %>

@@ -24,7 +24,7 @@ defmodule SkateWeb.TestGroupController do
   def post(conn, params) do
     case TestGroup.create(params["test_group"]["name"]) do
       {:ok, _} ->
-        redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :index))
+        redirect(conn, to: ~p"/test_groups")
 
       {:error, changeset} ->
         test_groups = Enum.sort_by(TestGroup.get_all(), & &1.name)
@@ -98,7 +98,7 @@ defmodule SkateWeb.TestGroupController do
 
       true ->
         TestGroup.update(%TestGroup{test_group | users: [user | test_group.users]})
-        redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group.id))
+        redirect(conn, to: ~p"/test_groups/#{test_group.id}")
     end
   end
 
@@ -119,7 +119,7 @@ defmodule SkateWeb.TestGroupController do
       if user_found? do
         TestGroup.update(%TestGroup{test_group | users: new_users})
 
-        redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :show, test_group.id))
+        redirect(conn, to: ~p"/test_groups/#{test_group.id}")
       else
         send_resp(conn, :bad_request, "user not found in test group")
       end
@@ -132,7 +132,7 @@ defmodule SkateWeb.TestGroupController do
   def delete(conn, %{"id" => id}) do
     {id, _} = Integer.parse(id)
     TestGroup.delete(id)
-    redirect(conn, to: SkateWeb.Router.Helpers.test_group_path(conn, :index))
+    redirect(conn, to: ~p"/test_groups")
   end
 
   defp put_layout(conn) do
