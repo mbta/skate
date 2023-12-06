@@ -44,6 +44,15 @@ defmodule SkateWeb do
     end
   end
 
+  def html do
+    quote do
+      use Phoenix.Component
+
+      use Phoenix.HTML
+      # unquote(verified_routes())
+    end
+  end
+
   def router do
     quote do
       use Phoenix.Router
