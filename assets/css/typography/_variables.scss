@@ -1,6 +1,9 @@
+@use "../color/tokens" as tokens;
+
 $font-family-sans-serif: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $body-color: $dark;
 
 $headings-font-weight: 600;
 
+$mark-bg: tokens.$kiwi-200;
 $mark-padding: 0.2rem;
