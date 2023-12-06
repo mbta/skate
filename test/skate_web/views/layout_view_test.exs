@@ -45,20 +45,14 @@ defmodule SkateWeb.LayoutViewTest do
   end
 
   describe "record_sentry?/0" do
-    test "returns true if the :record_sentry env is true" do
-      reassign_env(:skate, :record_sentry, true)
+    test "returns true if the :sentry_frontend_dsn env is not nil" do
+      reassign_env(:skate, :sentry_frontend_dsn, "true")
 
       assert LayoutView.record_sentry?()
     end
 
-    test "returns false if the :record_sentry env is false" do
-      reassign_env(:skate, :record_sentry, false)
-
-      refute LayoutView.record_sentry?()
-    end
-
-    test "returns false if the :record_sentry env is missing" do
-      reassign_env(:skate, :record_sentry, nil)
+    test "returns false if the :sentry_frontend_dsn env is missing or nil" do
+      reassign_env(:skate, :sentry_frontend_dsn, nil)
 
       refute LayoutView.record_sentry?()
     end

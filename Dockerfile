@@ -46,7 +46,7 @@ COPY --from=assets-builder /root/priv/static ./priv/static
 ARG SENTRY_RELEASE
 ENV SENTRY_RELEASE=${SENTRY_RELEASE}
 
-RUN mix do compile --force, phx.digest, release
+RUN mix do compile --force, phx.digest, sentry.package_source_code, release
 
 FROM alpine:3.17.5
 

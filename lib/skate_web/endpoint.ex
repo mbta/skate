@@ -1,4 +1,5 @@
 defmodule SkateWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :skate
 
   socket "/socket", SkateWeb.UserSocket,
@@ -32,6 +33,7 @@ defmodule SkateWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
+  plug Sentry.PlugContext
   plug Plug.MethodOverride
   plug Plug.Head
 

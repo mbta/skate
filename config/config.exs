@@ -29,11 +29,7 @@ config :skate,
   start_data_processes: true,
   record_appcues: false,
   record_fullstory: false,
-  record_sentry: false,
   fullstory_org: {:system, "FULLSTORY_ORG"},
-  sentry_frontend_dsn: {:system, "SENTRY_FRONTEND_DSN"},
-  sentry_environment: {:system, "SENTRY_ENV"},
-  sentry_org_slug: {:system, "SENTRY_ORG_SLUG"},
   log_duration_timing: true,
   map_limits: %{
     north: 42.65,
@@ -158,12 +154,6 @@ config :ueberauth, Ueberauth,
   providers: [
     cognito: nil
   ]
-
-# Sentry for error tracking
-config :sentry,
-  dsn: {:system, "SENTRY_BACKEND_DSN"},
-  included_environments: [:prod],
-  environment_name: Mix.env()
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
