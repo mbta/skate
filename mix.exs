@@ -80,7 +80,7 @@ defmodule Skate.MixProject do
       {:sentry, "~> 7.0"},
       {:server_sent_event_stage, "~> 1.1.0"},
       {:ssl_verify_fun, "~> 1.1"},
-      {:stream_data, "~> 0.5.0", only: :test},
+      {:stream_data, "~> 0.6.0", only: :test},
       {:timex, "~> 3.7.5"},
       {:ueberauth_cognito, "~> 0.4.0"},
       {:ueberauth, "~> 0.10.5"}
