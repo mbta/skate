@@ -26,6 +26,17 @@ defmodule SkateWeb do
     end
   end
 
+  def admin_controller do
+    quote do
+      use Phoenix.Controller,
+        namespace: SkateWeb,
+        layouts: [html: {SkateWeb.LayoutView, :barebones}]
+
+      import Plug.Conn
+      alias SkateWeb.Router.Helpers, as: Routes
+    end
+  end
+
   def view do
     quote do
       use Phoenix.View,
