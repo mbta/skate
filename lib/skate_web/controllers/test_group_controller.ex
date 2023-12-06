@@ -4,7 +4,7 @@ defmodule SkateWeb.TestGroupController do
   and remove users from test groups.
   """
 
-  use SkateWeb, :admin_controller
+  use SkateWeb, :controller
   # use Phoenix.Controller, layouts: [html: {SkateWeb.LayoutView, :barebones}]
 
   alias Skate.Settings.TestGroup
