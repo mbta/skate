@@ -1,0 +1,41 @@
+name: "Chromatic"
+
+on: push
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 👈 Required to retrieve git history
+      - name: ASDF cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.asdf
+          key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
+        id: asdf-cache
+      - name: Setup ASDF environment
+        run: |
+          ASDF_DIR=$HOME/.asdf
+          echo "ASDF_DIR=$ASDF_DIR" >> $GITHUB_ENV
+          echo "ASDF_DATA_DIR=$ASDF_DIR" >> $GITHUB_ENV
+          echo "$ASDF_DIR/bin" >> $GITHUB_PATH
+          echo "$ASDF_DIR/shims" >> $GITHUB_PATH
+          $ASDF_DIR/bin/asdf reshim
+      - name: Restore dependencies cache
+        id: deps-cache
+        uses: actions/cache@v3
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+      - name: Install dependencies
+        run: pushd assets && npm i && popd
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: assets/
+          exitZeroOnChanges: true
