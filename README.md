@@ -159,7 +159,7 @@ This will prompt you to enter the annotation from the previous step via your edi
 git push origin --tags
 ```
 4. In Github, "Draft new release" and add the tag you just made. It will automatically populate the rest and you can click "Publish Release."
-5. Initiate the deploy to prod through GitHub Actions.
+5. Deploy the created tag to `production` using the ["Deploy to Prod (ECS)" GitHub Action](https://github.com/mbta/skate/actions/workflows/deploy-prod-ecs.yml).
 6. Move the Asana ticket to "Done" and mark it complete.
 
 Find the new changes live at [skate.mbta.com](https://skate.mbta.com)
