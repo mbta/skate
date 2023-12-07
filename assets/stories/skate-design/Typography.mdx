@@ -1,4 +1,4 @@
-import { Meta, Unstyled } from "@storybook/blocks"
+import { Meta, Source, Unstyled } from "@storybook/blocks"
 import "../../css/storybook_reboot.scss"
 
 <Meta title="Typography" />
@@ -71,6 +71,28 @@ You can use the <strong>strong tag</strong> for bold text.
 You can use the <em>emphasis tag</em> for italicized text.
 
 </Unstyled>
+
+## HTML for Above Examples
+
+This part of the document is <em>is</em> rendered with Storybook's built-in styling.
+
+<Source language="html" code={`
+You can use the <mark>mark tag</mark> to highlight text.
+
+You can use the <del>deleted tag</del> for deleted text.
+
+You can use the <s>strikethrough tag</s> for text that is no longer relevant or accurate.
+
+You can use the <ins>inserted tag</ins> for text that has been added to the document.
+
+You can use the <u>underline tag</u> for underlined text.
+
+You can use the <small>small tag</small> for text that is to be treated as fine print.
+
+You can use the <strong>strong tag</strong> for bold text.
+
+You can use the <em>emphasis tag</em> for italicized text.
+`}/>
 
 # Lists
 
