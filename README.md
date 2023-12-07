@@ -158,8 +158,11 @@ This will prompt you to enter the annotation from the previous step via your edi
 ```
 git push origin --tags
 ```
-4. In Github, "Draft new release" and add the tag you just made. It will automatically populate the rest and you can click "Publish Release."
-5. Initiate the deploy to prod through GitHub Actions.
-6. Move the Asana ticket to "Done" and mark it complete.
-
-Find the new changes live at [skate.mbta.com](https://skate.mbta.com)
+4. In [Skate's GitHub Releases Page](https://github.com/mbta/skate/releases)
+   1. Click the "[`Draft new release`](https://github.com/mbta/skate/releases/new)" button.
+   2. Select the tag you just made.
+   3. Click "`Generate release notes`" to auto-generate a description of the release.
+   4. Click "`Publish Release`."
+5. Deploy the created tag to `production` using the ["Deploy to Prod (ECS)" GitHub Action](https://github.com/mbta/skate/actions/workflows/deploy-prod-ecs.yml).
+6. Mark the Asana Tickets related to the released PR's as completed.
+7. Find the new changes live at [skate.mbta.com](https://skate.mbta.com)
