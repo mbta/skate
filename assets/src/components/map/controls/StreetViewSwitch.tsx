@@ -22,7 +22,6 @@ export const StreetViewControl = ({
     .getContainer()
     .querySelector(".leaflet-control-container")
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
-  const id = "street-view-toggle-" + useId()
 
   useEffect(() => {
     if (!portalParent || !portalElement) {
@@ -73,7 +72,28 @@ export const StreetViewControl = ({
       : {}
   )
 
-  const control = (
+  return (
+    <>
+      {portalElement &&
+        ReactDOM.createPortal(
+          <StreetViewSwitch
+            streetViewEnabled={streetViewEnabled}
+            setStreetViewEnabled={setStreetViewEnabled}
+          />,
+          portalElement
+        )}
+      {streetViewEnabled && <CutoutOverlay.FollowMapMouseMove />}
+    </>
+  )
+}
+
+export const StreetViewSwitch = ({
+  streetViewEnabled,
+  setStreetViewEnabled,
+}: StreetViewControlProps) => {
+  const id = "street-view-toggle-" + useId()
+
+  return (
     <>
       <label
         htmlFor={id}
@@ -107,13 +127,6 @@ export const StreetViewControl = ({
           }}
         />
       </div>
-    </>
-  )
-
-  return (
-    <>
-      {portalElement && ReactDOM.createPortal(control, portalElement)}
-      {streetViewEnabled && <CutoutOverlay.FollowMapMouseMove />}
     </>
   )
 }
