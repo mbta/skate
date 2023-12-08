@@ -33,7 +33,7 @@ const meta = {
     ),
     inControlDivDecorator,
     (StoryFn) => (
-      <div className="w-100 h-100" style={{ minHeight: "200px" }}>
+      <div style={{ minHeight: "100px" }}>
         <StoryFn />
       </div>
     ),
