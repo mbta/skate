@@ -17,12 +17,16 @@ defmodule SkateWeb do
   and import those modules here.
   """
 
+  def static_paths, do: ~w(css fonts images js favicon.ico robots.txt)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: SkateWeb, layouts: [html: {SkateWeb.LayoutView, :app}]
 
       import Plug.Conn
       alias SkateWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
@@ -41,6 +45,8 @@ defmodule SkateWeb do
 
       import SkateWeb.ErrorHelpers
       alias SkateWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
@@ -49,6 +55,8 @@ defmodule SkateWeb do
       use Phoenix.Component
 
       use Phoenix.HTML
+
+      unquote(verified_routes())
     end
   end
 
@@ -63,6 +71,22 @@ defmodule SkateWeb do
   def channel do
     quote do
       use Phoenix.Channel
+    end
+  end
+
+  def plug do
+    quote do
+      import Plug.Conn
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: SkateWeb.Endpoint,
+        router: SkateWeb.Router,
+        statics: SkateWeb.static_paths()
     end
   end
 

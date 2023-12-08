@@ -1,7 +1,7 @@
 defmodule SkateWeb.AuthManager.ErrorHandler do
   @moduledoc false
 
-  import Plug.Conn
+  use SkateWeb, :plug
 
   @behaviour Guardian.Plug.ErrorHandler
 
@@ -12,9 +12,7 @@ defmodule SkateWeb.AuthManager.ErrorHandler do
     if auth_retries > 0 do
       conn
       |> put_session(:auth_retries, auth_retries - 1)
-      |> Phoenix.Controller.redirect(
-        to: SkateWeb.Router.Helpers.auth_path(conn, :request, "cognito")
-      )
+      |> Phoenix.Controller.redirect(to: ~p"/auth/cognito")
     else
       conn
       |> delete_session(:auth_retries)

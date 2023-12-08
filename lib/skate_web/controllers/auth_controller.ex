@@ -5,7 +5,6 @@ defmodule SkateWeb.AuthController do
   import Plug.Conn
   alias Skate.Settings.User
   alias SkateWeb.AuthManager
-  alias SkateWeb.Router.Helpers
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     username = auth.uid
@@ -25,7 +24,7 @@ defmodule SkateWeb.AuthController do
       %{groups: credentials.other[:groups]},
       ttl: {expiration - current_time, :seconds}
     )
-    |> redirect(to: Helpers.page_path(conn, :index))
+    |> redirect(to: ~p"/")
   end
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
@@ -36,6 +35,6 @@ defmodule SkateWeb.AuthController do
     # logic in SkateWeb.AuthManager.ErrorHandler. -- LEM 2023-04-27
     conn
     |> Guardian.Plug.sign_out(AuthManager, [])
-    |> redirect(to: Helpers.page_path(conn, :index))
+    |> redirect(to: ~p"/")
   end
 end
