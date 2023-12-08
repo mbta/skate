@@ -104,7 +104,8 @@ defmodule Skate.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "assets.setup": ["cmd npm --prefix=assets install"],
       "assets.reset": ["cmd npm --prefix=assets ci"],
-      test: ["ecto.create --quiet", "ecto.migrate_all", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate_all", "test"],
+      fmt: ["format", "cmd npm --prefix=assets run format"]
     ]
   end
 end
