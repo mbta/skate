@@ -12,7 +12,7 @@ The MBTA Customer Technology Department supports a shared Slack channel that tra
 
 ### Prerequisites
 
-Doing development on Skate requires Elixir, Erlang, and node, as described in [.tool-versions](https://github.com/mbta/skate/blob/master/.tool-versions). Most developers use [asdf](https://asdf-vm.com/) to help manage the required versions, but that isn't required.
+Doing development on Skate requires Elixir, Erlang, and node, as described in [.tool-versions](https://github.com/mbta/skate/blob/main/.tool-versions). Most developers use [asdf](https://asdf-vm.com/) to help manage the required versions, but that isn't required.
 
 Skate also requires Postgres. If you don't already have Postgres installed, and you're on a Mac, [Postgres.app](https://postgresapp.com/downloads.html) is an easy way to get started. However, any Postgres instance to which you can connect and in which you have sufficient privileges should work.
 
