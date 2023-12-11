@@ -1,3 +1,5 @@
 defmodule SkateWeb.ReportView do
-  use SkateWeb, :view
+  use SkateWeb, :html
+
+  embed_templates "../templates/report/*"
 end

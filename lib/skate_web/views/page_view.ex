@@ -1,3 +1,5 @@
 defmodule SkateWeb.PageView do
-  use SkateWeb, :view
+  use SkateWeb, :html
+
+  embed_templates "../templates/page/*"
 end
