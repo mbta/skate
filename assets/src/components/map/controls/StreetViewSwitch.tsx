@@ -7,6 +7,7 @@ import { WalkingIcon } from "../../../helpers/icon"
 import { streetViewUrl } from "../../../util/streetViewUrl"
 import { CutoutOverlay } from "../../cutoutOverlay"
 import { fullStoryEvent } from "../../../helpers/fullStory"
+import { Form } from "react-bootstrap"
 
 export interface StreetViewControlProps extends ControlOptions {
   streetViewEnabled: boolean
@@ -110,23 +111,21 @@ export const StreetViewSwitch = ({
       >
         Street View
       </label>
-      <div className="form-check form-switch c-street-view-switch__input">
-        <input
-          id={id}
-          className="form-check-input"
-          type="checkbox"
-          role="switch"
-          checked={streetViewEnabled}
-          onChange={() => {
-            // since the value is being toggled, the new value will be the opposite of the current value
-            fullStoryEvent("Dedicated street view toggled", {
-              streetViewEnabled_bool: !streetViewEnabled,
-            })
+      <Form.Check
+        type="switch"
+        id={id}
+        className="c-street-view-switch__input"
+        role="switch"
+        checked={streetViewEnabled}
+        onChange={() => {
+          // since the value is being toggled, the new value will be the opposite of the current value
+          fullStoryEvent("Dedicated street view toggled", {
+            streetViewEnabled_bool: !streetViewEnabled,
+          })
 
-            setStreetViewEnabled((enabled) => !enabled)
-          }}
-        />
-      </div>
+          setStreetViewEnabled((enabled) => !enabled)
+        }}
+      />
     </>
   )
 }

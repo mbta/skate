@@ -3,6 +3,7 @@ import { joinClasses } from "../helpers/dom"
 import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl as streetViewUrlFrom } from "../util/streetViewUrl"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { Button } from "react-bootstrap"
 
 export interface GeographicCoordinate {
   latitude: number
@@ -29,7 +30,8 @@ export const StreetViewButton = ({
 }: StreetViewButtonProps) => {
   const streetViewUrl = streetViewUrlFrom(worldPosition)
   return (
-    <a
+    <Button
+      role="link"
       className={joinClasses([
         "c-street-view-button",
         "button-small",
@@ -56,7 +58,7 @@ export const StreetViewButton = ({
         aria-hidden={true}
       />
       {children ?? text ?? "Street View"}
-    </a>
+    </Button>
   )
 }
 

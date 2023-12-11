@@ -569,7 +569,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               Street View
             </label>
             <div
-              class="form-check form-switch c-street-view-switch__input"
+              class="c-street-view-switch__input form-switch"
             >
               <input
                 class="form-check-input"
@@ -1155,7 +1155,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
               Street View
             </label>
             <div
-              class="form-check form-switch c-street-view-switch__input"
+              class="c-street-view-switch__input form-switch"
             >
               <input
                 class="form-check-input"
@@ -2129,7 +2129,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               Street View
             </label>
             <div
-              class="form-check form-switch c-street-view-switch__input"
+              class="c-street-view-switch__input form-switch"
             >
               <input
                 class="form-check-input"
