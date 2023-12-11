@@ -1,0 +1,7 @@
+<h1>Adding user to test group <%= @test_group_name %></h1>
+<.form :let={f} for={@conn} action={~p"/test_groups/#{@test_group_id}/add_user"}>
+  <%= label do %>
+    User: <%= select(f, :user_id, Enum.map(@users, &{&1.email, &1.id})) %>
+  <% end %>
+  <%= submit("Add") %>
+</.form>
