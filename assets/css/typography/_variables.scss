@@ -1,0 +1,21 @@
+@use "../color/tokens" as tokens;
+
+$font-family-sans-serif: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$body-color: $dark;
+
+$headings-font-weight: 600;
+
+$mark-bg: tokens.$kiwi-200;
+$mark-padding: 0.2rem;
+
+// Design specifies these in terms of rem, and with the way our SCSS
+// is structured at the moment we don't have access to $font-size-base
+// from here. Another option would be to explicitly define
+// $font-size-base in this file even though we're just using the
+// default.
+$h1-font-size: 1.75rem;
+$h2-font-size: 1.5rem;
+$h3-font-size: 1.25rem;
+$h4-font-size: 1.125rem;
+$h5-font-size: 1rem;
+$h6-font-size: 0.875rem;

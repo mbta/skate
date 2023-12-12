@@ -1,0 +1,118 @@
+import { Meta, Source, Unstyled } from "@storybook/blocks"
+import "../../css/storybook_reboot.scss"
+
+<Meta title="Typography" />
+
+### Global Settings / Style
+
+Examples of typography styles found in Skate, based on defaults from
+Reboot with some modifications. This roughly follows the outline of
+the <a href="https://getbootstrap.com/docs/5.3/content/typography/">
+Bootstrap typography documentation</a> adapted specifically for Skate.
+The sections that follow below are all rendered with Skate, as opposed
+to Storybook, styling.
+
+<Unstyled>
+  The default font is Inter. Body text is 1rem, 400 weight,
+  [$gray-900(#141524)](?path=/docs/design-system-colors--documentation#color-gray).
+  <p>
+    {"Paragraph text. When body text is"}
+    <br />
+    {"in paragraphs, we use 150% line height."}
+  </p>
+  <p>Between paragraphs, there is 1rem of spacing.</p>
+  <p>
+    <span>
+      <a href="#">Link text</a> is also 1rem, 400 weight, using the primary
+      color
+      ([$eggplant-500](?path=/docs/design-system-colors--documentation#color-eggplant)).
+    </span>
+  </p>
+</Unstyled>
+
+### Headings
+
+<Unstyled>
+  <h1>h1 Heading</h1>
+  <h2>h2 Heading</h2>
+  <h3>h3 Heading</h3>
+  <h4>h4 Heading</h4>
+  <h5>h5 Heading</h5>
+  <h6>h6 Heading</h6>
+</Unstyled>
+
+### Lead Paragraph
+
+<Unstyled>
+  <p class="lead">
+    <span>
+      This is a lead paragraph. Lead paragraphs stand out from regular
+      paragraphs with 300 weight, 1.25rem font size, and 1.5 line height.
+    </span>
+  </p>
+</Unstyled>
+
+### Inline Text Elements
+
+<Unstyled>
+You can use the <mark>mark tag</mark> to highlight text.
+
+You can use the <del>deleted tag</del> for deleted text.
+
+You can use the <s>strikethrough tag</s> for text that is no longer relevant or accurate.
+
+You can use the <ins>inserted tag</ins> for text that has been added to the document.
+
+You can use the <u>underline tag</u> for underlined text.
+
+You can use the <small>small tag</small> for text that is to be treated as fine print.
+
+You can use the <strong>strong tag</strong> for bold text.
+
+You can use the <em>emphasis tag</em> for italicized text.
+
+</Unstyled>
+
+#### HTML for Above Examples
+
+This part of the document is <em>is</em> rendered with Storybook's built-in styling.
+
+<Source language="html" code={`
+You can use the <mark>mark tag</mark> to highlight text.
+
+You can use the <del>deleted tag</del> for deleted text.
+
+You can use the <s>strikethrough tag</s> for text that is no longer relevant or accurate.
+
+You can use the <ins>inserted tag</ins> for text that has been added to the document.
+
+You can use the <u>underline tag</u> for underlined text.
+
+You can use the <small>small tag</small> for text that is to be treated as fine print.
+
+You can use the <strong>strong tag</strong> for bold text.
+
+You can use the <em>emphasis tag</em> for italicized text.
+`}/>
+
+### Lists
+
+<Unstyled>
+  <ul class="list-unstyled">
+    <li>
+      <span>This is a list with the `list-unstyled` style applied.</span>
+    </li>
+    <li>It appears completely unstyled but is still structurally a list.</li>
+    <li>However, it only applies to its immediate children.</li>
+    <li>
+      <span>
+        A nested list will get normal formatting unless the class is added to
+        it. Note that for now, `_base.scss` interferes with this example.
+      </span>
+      <ul>
+        <li>Like this.</li>
+        <li>For example.</li>
+      </ul>
+    </li>
+  </ul>
+</Unstyled>
