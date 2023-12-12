@@ -5,7 +5,7 @@ defmodule SkateWeb.UnauthorizedViewTest do
   import Phoenix.Template
 
   test "renders index.html" do
-    assert render_to_string(SkateWeb.UnauthorizedView, "index", "html", []) ==
+    assert render_to_string(SkateWeb.UnauthorizedHTML, "index", "html", []) ==
              "You are not authorized to access this functionality.\n"
   end
 end

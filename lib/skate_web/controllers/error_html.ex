@@ -1,4 +1,4 @@
-defmodule SkateWeb.ErrorView do
+defmodule SkateWeb.ErrorHTML do
   use SkateWeb, :html
 
   # If you want to customize a particular status code

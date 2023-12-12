@@ -1,4 +1,8 @@
-defmodule SkateWeb.LayoutView do
+defmodule SkateWeb.Layouts do
+  @moduledoc """
+  Components representing the layouts that we use for pages in Skate 
+  """
+
   use SkateWeb, :html
 
   @spec record_fullstory?() :: boolean

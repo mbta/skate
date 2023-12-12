@@ -97,7 +97,7 @@ config :skate, Schedule.CacheFile, cache_filename: nil
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: SkateWeb.ErrorHTML, accepts: ~w(html json)],
   pubsub_server: Skate.PubSub
 
 config :skate, SkateWeb.AuthManager,

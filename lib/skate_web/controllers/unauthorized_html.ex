@@ -1,4 +1,4 @@
-defmodule SkateWeb.UnauthorizedView do
+defmodule SkateWeb.UnauthorizedHTML do
   use SkateWeb, :html
 
   embed_templates "../templates/unauthorized/*"
