@@ -1,3 +1,5 @@
 defmodule SkateWeb.AdminView do
-  use SkateWeb, :view
+  use SkateWeb, :html
+
+  embed_templates "../templates/admin/*"
 end

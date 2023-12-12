@@ -6,7 +6,7 @@ defmodule SkateWeb.UnauthorizedControllerTest do
     test "renders response", %{conn: conn} do
       conn = get(conn, ~p"/unauthorized")
 
-      assert html_response(conn, 403) =~ "not authorized"
+      assert html_response(conn, 403) =~ "You are not authorized to access this functionality."
     end
   end
 

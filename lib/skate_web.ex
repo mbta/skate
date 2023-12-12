@@ -30,31 +30,17 @@ defmodule SkateWeb do
     end
   end
 
-  def view do
-    quote do
-      use Phoenix.View,
-        root: "lib/skate_web/templates",
-        namespace: SkateWeb
-
-      # Import convenience functions from controllers
-      import Phoenix.Controller,
-        only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
-
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      import SkateWeb.ErrorHelpers
-      alias SkateWeb.Router.Helpers, as: Routes
-
-      unquote(verified_routes())
-    end
-  end
-
   def html do
     quote do
       use Phoenix.Component
 
       use Phoenix.HTML
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      import SkateWeb.ErrorHelpers
 
       unquote(verified_routes())
     end

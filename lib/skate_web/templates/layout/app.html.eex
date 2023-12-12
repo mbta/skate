@@ -21,7 +21,7 @@
     <% end %>
 
     <%= if @google_tag_manager_id do %>
-      <%= render "_google_tag_manager.html", assigns %>
+      <%= _google_tag_manager(assigns) %>
     <% end %>
 
     <title>Skate</title>
@@ -34,24 +34,24 @@
 
 
     <%= if record_fullstory?() do %>
-      <%= render "_fullstory.html", assigns %>
+      <%= _fullstory(assigns) %>
     <% end %>
     <%= if record_appcues?() do %>
-      <%= render "_appcues.html", assigns %>
+      <%= _appcues(assigns) %>
     <% end %>
     <%= if record_sentry?() do %>
-      <%= render "_sentry.html", assigns %>
+      <%= _sentry(assigns) %>
     <% end %>
   </head>
 
   <body>
     <%= if @google_tag_manager_id do %>
-      <%= render "_google_tag_manager_noscript.html", assigns %>
+      <%= _google_tag_manager_noscript(assigns) %>
     <% end %>
     <main role="main" class="container">
       <%= @inner_content %>
     </main>
     <script type="text/javascript" src="<%= static_href.(@conn, "/js/app.js") %>"></script>
-    <%= render "_drift.html" %>
+    <%= _drift(assigns) %>
   </body>
 </html>
