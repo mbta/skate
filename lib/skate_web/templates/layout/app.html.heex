@@ -27,23 +27,23 @@
 
     <link
       rel="apple-touch-icon"
-      href={cdn_route(@conn, "/images/mbta-logo-t-180.png")}
+      href={static_content_route(@conn, "/images/mbta-logo-t-180.png")}
       type="image/png"
     />
     <link
       rel="icon"
-      href={cdn_route(@conn, "/images/mbta-logo-t-favicon.png")}
+      href={static_content_route(@conn, "/images/mbta-logo-t-favicon.png")}
       sizes="32x32"
       type="image/png"
     />
     <link
       rel="icon"
-      href={cdn_route(@conn, "/favicon.ico")}
+      href={static_content_route(@conn, "/favicon.ico")}
       sizes="16x16"
       type="image/vnd.microsoft.icon"
     />
 
-    <link rel="stylesheet" href={cdn_route(@conn, "/css/app.css")} />
+    <link rel="stylesheet" href={static_content_route(@conn, "/css/app.css")} />
 
     <%= if record_fullstory?() do %>
       <%= _fullstory(assigns) %>
@@ -63,7 +63,7 @@
     <main role="main" class="container">
       <%= @inner_content %>
     </main>
-    <script type="text/javascript" src={cdn_route(@conn, "/js/app.js")}>
+    <script type="text/javascript" src={static_content_route(@conn, "/js/app.js")}>
     </script>
     <._drift />
   </body>
