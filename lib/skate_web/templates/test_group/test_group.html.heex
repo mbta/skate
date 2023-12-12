@@ -1,0 +1,17 @@
+<h1><%= @test_group_name %></h1>
+<ul>
+  <%= for {user_id, user_email} <- @test_group_users do %>
+    <li>
+      <%= user_email %>
+      <.form :let={f} for={@conn} action={~p"/test_groups/#{@test_group_id}/remove_user"}>
+        <%= hidden_input(f, :user_id, value: user_id) %>
+        <%= submit("Remove") %>
+      </.form>
+    </li>
+  <% end %>
+</ul>
+<.link href={~p"/test_groups/#{@test_group_id}/add_user"}>Add user</.link>
+<.link href={~p"/test_groups"}>Back to all test groups</.link>
+<.form for={@conn} action={~p"/test_groups/#{@test_group_id}"} method="DELETE">
+  <%= submit("Delete group", onclick: "return confirm('Are you sure? This cannot be undone.')") %>
+</.form>

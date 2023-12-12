@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1, initial-scale=1, viewport-fit=cover"
+    />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <%= if @username do %>
+      <meta name="username" content={@username} />
+    <% end %>
+
+    <%= if @user_uuid do %>
+      <meta name="user-uuid" content={@user_uuid} />
+    <% end %>
+
+    <%= if @google_tag_manager_id do %>
+      <%= _google_tag_manager(assigns) %>
+    <% end %>
+
+    <title>Skate</title>
+
+    <link
+      rel="apple-touch-icon"
+      href={static_content_route(@conn, "/images/mbta-logo-t-180.png")}
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href={static_content_route(@conn, "/images/mbta-logo-t-favicon.png")}
+      sizes="32x32"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href={static_content_route(@conn, "/favicon.ico")}
+      sizes="16x16"
+      type="image/vnd.microsoft.icon"
+    />
+
+    <link rel="stylesheet" href={static_content_route(@conn, "/css/app.css")} />
+
+    <%= if record_fullstory?() do %>
+      <%= _fullstory(assigns) %>
+    <% end %>
+    <%= if record_appcues?() do %>
+      <%= _appcues(assigns) %>
+    <% end %>
+    <%= if record_sentry?() do %>
+      <%= _sentry(assigns) %>
+    <% end %>
+  </head>
+
+  <body>
+    <%= if @google_tag_manager_id do %>
+      <%= _google_tag_manager_noscript(assigns) %>
+    <% end %>
+    <main role="main" class="container">
+      <%= @inner_content %>
+    </main>
+    <script type="text/javascript" src={static_content_route(@conn, "/js/app.js")}>
+    </script>
+    <._drift />
+  </body>
+</html>
