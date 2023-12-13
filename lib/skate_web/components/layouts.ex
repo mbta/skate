@@ -14,5 +14,5 @@ defmodule SkateWeb.Layouts do
   @spec record_sentry?() :: boolean
   def record_sentry?, do: !is_nil(Application.get_env(:skate, :sentry_frontend_dsn))
 
-  embed_templates("../templates/layout/*")
+  embed_templates("layouts/*")
 end
