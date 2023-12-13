@@ -24,8 +24,4 @@ defmodule SkateWeb.CoreComponents do
         nil
     end
   end
-
-  # def error_tag(_form, _field) do
-  #   nil
-  # end
 end
