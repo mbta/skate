@@ -1,5 +1,5 @@
 defmodule SkateWeb.PageHTML do
   use SkateWeb, :html
 
-  embed_templates "../templates/page/*"
+  embed_templates "page_html/*"
 end
