@@ -45,9 +45,9 @@
 
     <link rel="stylesheet" href={static_content_route(@conn, "/css/app.css")} />
 
-    <._fullstory :if={record_fullstory?()}/>
-    <._appcues :if={record_appcues?()}/>
-    <._sentry :if={record_sentry?()}/>
+    <._fullstory :if={record_fullstory?()} />
+    <._appcues :if={record_appcues?()} />
+    <._sentry :if={record_sentry?()} />
   </head>
 
   <body>
