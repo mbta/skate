@@ -200,35 +200,33 @@ const RoutePatternLayers = ({
   isSelected: boolean
 }): JSX.Element => {
   return routePattern.shape ? (
-    <>
-      <ZoomLevelWrapper>
-        {(zoomLevel) => {
-          return (
-            <>
-              {routePattern.shape && (
-                <>
-                  <RouteShape
-                    shape={routePattern.shape}
-                    isSelected={isSelected}
+    <ZoomLevelWrapper>
+      {(zoomLevel) => {
+        return (
+          <>
+            {routePattern.shape && (
+              <>
+                <RouteShape
+                  shape={routePattern.shape}
+                  isSelected={isSelected}
+                />
+                <Pane
+                  name="selectedRoutePatternStops"
+                  pane="markerPane"
+                  style={{ zIndex: 450 }} // should be above other non-interactive elements
+                >
+                  <RouteStopMarkers
+                    stops={routePattern.shape.stops || []}
+                    includeStopCard={true}
+                    zoomLevel={zoomLevel}
                   />
-                  <Pane
-                    name="selectedRoutePatternStops"
-                    pane="markerPane"
-                    style={{ zIndex: 450 }} // should be above other non-interactive elements
-                  >
-                    <RouteStopMarkers
-                      stops={routePattern.shape.stops || []}
-                      includeStopCard={true}
-                      zoomLevel={zoomLevel}
-                    />
-                  </Pane>
-                </>
-              )}
-            </>
-          )
-        }}
-      </ZoomLevelWrapper>
-    </>
+                </Pane>
+              </>
+            )}
+          </>
+        )
+      }}
+    </ZoomLevelWrapper>
   ) : (
     <></>
   )
