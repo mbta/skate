@@ -11,13 +11,9 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <%= if @username do %>
-      <meta name="username" content={@username} />
-    <% end %>
+    <meta :if={assigns[:username]} name="username" content={@username} />
 
-    <%= if @user_uuid do %>
-      <meta name="user-uuid" content={@user_uuid} />
-    <% end %>
+    <meta :if={assigns[:user_uuid]} name="user-uuid" content={@user_uuid} />
 
     <._google_tag_manager
       :if={assigns[:google_tag_manager_id]}
