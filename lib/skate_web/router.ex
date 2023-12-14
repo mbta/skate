@@ -86,6 +86,7 @@ defmodule SkateWeb.Router do
     get "/search", PageController, :index
     get "/map", PageController, :index
     get "/settings", PageController, :index
+    get "/detours", PageController, :index
     get "/unauthorized", UnauthorizedController, :index
   end
 
