@@ -13,3 +13,6 @@ updates:
     time: "10:00"
   open-pull-requests-limit: 10
   versioning-strategy: increase
+  ignore:
+    - dependency-name: "phoenix"
+    - dependency-name: "phoenix_html"
