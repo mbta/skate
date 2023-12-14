@@ -47,7 +47,7 @@ const DraggableRouteShape = ({ shape }: { shape: Shape }) => {
                 map
               )
               setStartPoint(position)
-              setDetourPositions([position])
+              position && setDetourPositions([position])
             } else {
               const position = closestPosition(
                 routeShapePositions,
@@ -55,7 +55,8 @@ const DraggableRouteShape = ({ shape }: { shape: Shape }) => {
                 map
               )
               setEndPoint(position)
-              setDetourPositions((positions) => [...positions, position])
+              position &&
+                setDetourPositions((positions) => [...positions, position])
             }
           },
         }}
