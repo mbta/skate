@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { RoutePattern, Shape } from "../../schedule"
 import { LatLngExpression } from "leaflet"
-import { Marker, Polyline, useMap } from "react-leaflet"
+import { Marker, Polyline, useMap, useMapEvent } from "react-leaflet"
 import { Map as LeafletMap } from "leaflet"
 import Map from "../map"
 
@@ -17,27 +17,52 @@ export const DetourMap = ({ routePattern }: { routePattern: RoutePattern }) => {
 
 const DraggableRouteShape = ({ shape }: { shape: Shape }) => {
   const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
-
-  const positions: LatLngExpression[] = shape.points.map((point) => [
+  const [endPoint, setEndPoint] = useState<LatLngExpression | null>(null)
+  const routeShapePositions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
   ])
+  const [detourPositions, setDetourPositions] = useState<LatLngExpression[]>([])
 
   const map = useMap()
+
+  useMapEvent("click", (e) => {
+    if (startPoint !== null && endPoint === null) {
+      setDetourPositions((oldDetourPositions) =>
+        oldDetourPositions.concat(e.latlng)
+      )
+    }
+  })
 
   return (
     <>
       <Polyline
-        positions={positions}
+        positions={routeShapePositions}
         eventHandlers={{
           click: (e) => {
             if (startPoint === null) {
-              setStartPoint(closestPosition(positions, e.latlng, map))
+              const position = closestPosition(
+                routeShapePositions,
+                e.latlng,
+                map
+              )
+              setStartPoint(position)
+              setDetourPositions([position])
+            } else {
+              const position = closestPosition(
+                routeShapePositions,
+                e.latlng,
+                map
+              )
+              setEndPoint(position)
+              setDetourPositions((positions) => [...positions, position])
             }
           },
         }}
       />
       {startPoint && <Marker position={startPoint} />}
+      {endPoint && <Marker position={endPoint} />}
+      <Polyline positions={detourPositions} />
     </>
   )
 }
