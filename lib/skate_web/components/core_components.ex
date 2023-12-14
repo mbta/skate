@@ -4,6 +4,7 @@ defmodule SkateWeb.CoreComponents do
   """
 
   use Phoenix.HTML
+  use Phoenix.Component
 
   def static_content_route(conn, path) do
     {static_href_module, static_href_fn} = Application.get_env(:skate, :static_href)
@@ -15,13 +16,15 @@ defmodule SkateWeb.CoreComponents do
   @doc """
   Generates a tag for inlined form input errors.
   """
-  def error_tag(form, field) do
-    case form.errors[field] do
-      {error, _} ->
-        content_tag(:span, error, class: "error-tag")
-
-      _ ->
-        nil
-    end
+  def form_error(assigns) do
+    ~H"""
+    <%= case assigns[:field].errors do %>
+      <% list = [_head | _tail] -> %>
+        <%= for {error, _} <- list do %>
+          <span class="error-tag"><%= error %></span>
+        <% end %>
+      <% [] -> %>
+    <% end %>
+    """
   end
 end
