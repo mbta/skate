@@ -1,27 +1,29 @@
 defmodule SkateWeb do
   @moduledoc """
-  The entrypoint for defining your web interface, such
-  as controllers, views, channels and so on.
+  The entrypoint for defining your web interface, such as controllers,
+  components, channels and so on.
 
   This can be used in your application as:
 
-      use SkateWeb, :controller
-      use SkateWeb, :view
+      use SkateWeb, :controller use SkateWeb, :html
 
-  The definitions below will be executed for every view,
-  controller, etc, so keep them short and clean, focused
-  on imports, uses and aliases.
+  The definitions below will be executed for every component,
+  controller, etc, so keep them short and clean, focused on imports,
+  uses and aliases.
 
   Do NOT define functions inside the quoted expressions
-  below. Instead, define any helper function in modules
-  and import those modules here.
+  below. Instead, define any helper function in modules and import
+  those modules here.
   """
 
   def static_paths, do: ~w(css fonts images js favicon.ico robots.txt)
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: SkateWeb, layouts: [html: {SkateWeb.LayoutView, :app}]
+      use Phoenix.Controller,
+        namespace: SkateWeb,
+        formats: [:html],
+        layouts: [html: {SkateWeb.Layouts, :app}]
 
       import Plug.Conn
       alias SkateWeb.Router.Helpers, as: Routes
@@ -41,7 +43,6 @@ defmodule SkateWeb do
         only: [get_csrf_token: 0, view_module: 1, view_template: 1]
 
       import SkateWeb.CoreComponents
-      import SkateWeb.ErrorHelpers
 
       unquote(verified_routes())
     end

@@ -137,7 +137,7 @@ defmodule SkateWeb.TestGroupController do
 
   defp put_layout(conn) do
     conn
-    |> put_layout(html: {SkateWeb.LayoutView, :barebones})
+    |> put_layout(html: {SkateWeb.Layouts, :barebones})
     |> assign(:title, "Skate Test Groups")
   end
 end

@@ -16,7 +16,7 @@ defmodule SkateWeb.ReportController do
     conn
     |> assign(:reports, reports)
     |> render("index.html",
-      layout: {SkateWeb.LayoutView, "barebones.html"},
+      layout: {SkateWeb.Layouts, "barebones.html"},
       title: "Skate Reports"
     )
   end

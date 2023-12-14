@@ -1,4 +1,8 @@
-defmodule SkateWeb.LayoutView do
+defmodule SkateWeb.Layouts do
+  @moduledoc """
+  Components representing the layouts that we use for pages in Skate 
+  """
+
   use SkateWeb, :html
 
   @spec record_fullstory?() :: boolean
@@ -10,5 +14,5 @@ defmodule SkateWeb.LayoutView do
   @spec record_sentry?() :: boolean
   def record_sentry?, do: !is_nil(Application.get_env(:skate, :sentry_frontend_dsn))
 
-  embed_templates("../templates/layout/*")
+  embed_templates("layouts/*")
 end
