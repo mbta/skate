@@ -20,7 +20,7 @@ defmodule SkateWeb.CoreComponents do
     ~H"""
     <%= case assigns[:field].errors do %>
       <% list = [_head | _tail] -> %>
-        <%= for {error, _} <- list |> dbg() do %>
+        <%= for {error, _} <- list do %>
           <span class="error-tag"><%= error %></span>
         <% end %>
       <% [] -> %>
