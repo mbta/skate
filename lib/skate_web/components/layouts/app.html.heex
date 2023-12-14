@@ -19,9 +19,10 @@
       <meta name="user-uuid" content={@user_uuid} />
     <% end %>
 
-    <%= if @google_tag_manager_id do %>
-      <%= _google_tag_manager(assigns) %>
-    <% end %>
+    <._google_tag_manager
+      :if={assigns[:google_tag_manager_id]}
+      google_tag_manager_id={@google_tag_manager_id}
+    />
 
     <title>Skate</title>
 
@@ -51,9 +52,10 @@
   </head>
 
   <body>
-    <%= if @google_tag_manager_id do %>
-      <%= _google_tag_manager_noscript(assigns) %>
-    <% end %>
+    <._google_tag_manager_noscript
+      :if={assigns[:google_tag_manager_id]}
+      google_tag_manager_id={@google_tag_manager_id}
+    />
     <main role="main" class="container">
       <%= @inner_content %>
     </main>
