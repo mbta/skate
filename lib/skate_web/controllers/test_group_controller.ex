@@ -17,7 +17,7 @@ defmodule SkateWeb.TestGroupController do
     |> assign(:test_groups, test_groups)
     |> assign(:changeset, Skate.Settings.Db.TestGroup.changeset(%Skate.Settings.Db.TestGroup{}))
     |> put_layout()
-    |> render("index.html")
+    |> render(:index)
   end
 
   @spec post(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -34,7 +34,7 @@ defmodule SkateWeb.TestGroupController do
         |> assign(:changeset, changeset)
         |> put_layout()
         |> put_status(:bad_request)
-        |> render("index.html")
+        |> render(:index)
     end
   end
 
@@ -54,7 +54,7 @@ defmodule SkateWeb.TestGroupController do
       |> assign(:test_group_id, test_group.id)
       |> assign(:test_group_users, test_group_users)
       |> put_layout()
-      |> render("test_group.html")
+      |> render(:test_group)
     else
       send_resp(conn, :not_found, "no test group found")
     end
@@ -78,7 +78,7 @@ defmodule SkateWeb.TestGroupController do
       |> assign(:test_group_id, test_group.id)
       |> assign(:users, users)
       |> put_layout()
-      |> render("add_user.html")
+      |> render(:add_user)
     else
       send_resp(conn, :not_found, "no test group found")
     end
