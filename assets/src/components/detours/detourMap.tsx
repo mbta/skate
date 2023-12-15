@@ -74,7 +74,7 @@ const RouteShapeWithDetour = ({
               )
               onSetStartPoint(position)
               position && onAddDetourPosition(position)
-            } else {
+            } else if (endPoint === null) {
               const position = closestPosition(
                 routeShapePositions,
                 e.latlng,
