@@ -6,31 +6,57 @@ import { Map as LeafletMap } from "leaflet"
 import Map from "../map"
 
 export const DetourMap = ({ routePattern }: { routePattern: RoutePattern }) => {
+  const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
+  const [endPoint, setEndPoint] = useState<LatLngExpression | null>(null)
+  const [detourPositions, setDetourPositions] = useState<LatLngExpression[]>([])
+
+  const onAddDetourPosition = (p: LatLngExpression) =>
+    setDetourPositions((positions) => [...positions, p])
+
   return routePattern.shape ? (
     <Map vehicles={[]}>
-      <DraggableRouteShape shape={routePattern.shape} />
+      <RouteShapeWithDetour
+        shape={routePattern.shape}
+        startPoint={startPoint}
+        onSetStartPoint={setStartPoint}
+        endPoint={endPoint}
+        onSetEndPoint={setEndPoint}
+        detourPositions={detourPositions}
+        onAddDetourPosition={onAddDetourPosition}
+      />
     </Map>
   ) : (
     <></>
   )
 }
 
-const DraggableRouteShape = ({ shape }: { shape: Shape }) => {
-  const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
-  const [endPoint, setEndPoint] = useState<LatLngExpression | null>(null)
+const RouteShapeWithDetour = ({
+  shape,
+  startPoint,
+  onSetStartPoint,
+  endPoint,
+  onSetEndPoint,
+  detourPositions,
+  onAddDetourPosition,
+}: {
+  shape: Shape
+  startPoint: LatLngExpression | null
+  onSetStartPoint: (p: LatLngExpression | null) => void
+  endPoint: LatLngExpression | null
+  onSetEndPoint: (p: LatLngExpression | null) => void
+  detourPositions: LatLngExpression[]
+  onAddDetourPosition: (p: LatLngExpression) => void
+}) => {
   const routeShapePositions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
   ])
-  const [detourPositions, setDetourPositions] = useState<LatLngExpression[]>([])
 
   const map = useMap()
 
   useMapEvent("click", (e) => {
     if (startPoint !== null && endPoint === null) {
-      setDetourPositions((oldDetourPositions) =>
-        oldDetourPositions.concat(e.latlng)
-      )
+      onAddDetourPosition(e.latlng)
     }
   })
 
@@ -46,17 +72,16 @@ const DraggableRouteShape = ({ shape }: { shape: Shape }) => {
                 e.latlng,
                 map
               )
-              setStartPoint(position)
-              position && setDetourPositions([position])
+              onSetStartPoint(position)
+              position && onAddDetourPosition(position)
             } else {
               const position = closestPosition(
                 routeShapePositions,
                 e.latlng,
                 map
               )
-              setEndPoint(position)
-              position &&
-                setDetourPositions((positions) => [...positions, position])
+              onSetEndPoint(position)
+              position && onAddDetourPosition(position)
             }
           },
         }}
