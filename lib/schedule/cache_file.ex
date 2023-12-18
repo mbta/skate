@@ -104,6 +104,7 @@ defmodule Schedule.CacheFile do
   end
 
   @spec binary_to_term(binary()) :: {:ok, term()} | {:error, atom}
+  # sobelow_skip ["Misc.BinToTerm"]
   defp binary_to_term(bin) do
     try do
       {:ok, :erlang.binary_to_term(bin)}
