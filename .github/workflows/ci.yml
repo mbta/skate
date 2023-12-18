@@ -88,6 +88,8 @@ jobs:
         run: mix compile --force --warnings-as-errors
       - name: Check formatting
         run: mix format --check-formatted
+      - name: Check migration safety
+        run: mix excellent_migrations.check_safety
       - name: Credo
         run: mix credo
       - name: Run tests

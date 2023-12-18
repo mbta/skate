@@ -60,6 +60,7 @@ defmodule Skate.MixProject do
       {:ex_aws, "~> 2.1"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:ex_machina, "~> 2.7.0", only: :test},
+      {:excellent_migrations, "~> 0.1", only: [:dev, :test], runtime: false},
       {:fast_local_datetime, "~> 1.0"},
       {:gen_stage, "~> 1.2.1"},
       {:guardian_phoenix, "~> 2.0"},
