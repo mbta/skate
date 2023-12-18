@@ -70,3 +70,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Don't report issues with migrations from before we introduced excellent_migrations
+config :excellent_migrations, start_after: "20230908133314"

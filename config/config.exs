@@ -155,9 +155,6 @@ config :ueberauth, Ueberauth,
     cognito: nil
   ]
 
-# Don't report issues with migrations from before we introduced excellent_migrations
-config :excellent_migrations, start_after: "20230908133314"
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
