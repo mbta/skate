@@ -1,0 +1,17 @@
+.c_detour_map--original-route-shape {
+  stroke: $color-kiwi-500;
+}
+
+.c_detour_map--detour-route-shape {
+  stroke: $color-lemon-500;
+}
+
+.c_detour_map-circle-marker--start {
+  stroke: $color-kiwi-400;
+  fill: $color-kiwi-400;
+}
+
+.c_detour_map-circle-marker--end {
+  stroke: $color-strawberry-400;
+  fill: $color-strawberry-400;
+}
