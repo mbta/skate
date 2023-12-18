@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import { RoutePattern, Shape } from "../../schedule"
 import { LatLngExpression } from "leaflet"
-import { Marker, Polyline, useMap, useMapEvent } from "react-leaflet"
-import { Map as LeafletMap } from "leaflet"
+import { Polyline, useMap, useMapEvent } from "react-leaflet"
+import Leaflet, { Map as LeafletMap } from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
 import { Button } from "react-bootstrap"
+import { ReactMarker } from "../map/utilities/reactMarker"
 
 export const DetourMap = ({ routePattern }: { routePattern: RoutePattern }) => {
   const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
@@ -83,6 +84,7 @@ const RouteShapeWithDetour = ({
     <>
       <Polyline
         positions={routeShapePositions}
+        className="c_detour_map--original-route-shape"
         eventHandlers={{
           click: (e) => {
             if (startPoint === null) {
@@ -105,12 +107,46 @@ const RouteShapeWithDetour = ({
           },
         }}
       />
-      {startPoint && <Marker position={startPoint} />}
-      {endPoint && <Marker position={endPoint} />}
-      <Polyline positions={detourPositions} />
+      {startPoint && <StartMarker position={startPoint} />}
+      {endPoint && <EndMarker position={endPoint} />}
+      <Polyline
+        positions={detourPositions}
+        className="c_detour_map--detour-route-shape"
+      />
     </>
   )
 }
+
+const StartMarker = ({ position }: { position: LatLngExpression }) => (
+  <StartOrEndMarker classSuffix="start" position={position} />
+)
+
+const EndMarker = ({ position }: { position: LatLngExpression }) => (
+  <StartOrEndMarker classSuffix="end" position={position} />
+)
+
+const StartOrEndMarker = ({
+  classSuffix,
+  position,
+}: {
+  classSuffix: string
+  position: LatLngExpression
+}) => (
+  <ReactMarker
+    interactive={false}
+    position={position}
+    divIconSettings={{
+      iconSize: [20, 20],
+      iconAnchor: new Leaflet.Point(10, 10),
+      className: "c_detour_map-circle-marker--" + classSuffix,
+    }}
+    icon={
+      <svg height="20" width="20">
+        <circle cx={10} cy={10} r={10} />
+      </svg>
+    }
+  />
+)
 
 const closestPosition = (
   positions: LatLngExpression[],
