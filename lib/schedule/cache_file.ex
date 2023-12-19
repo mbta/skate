@@ -47,6 +47,7 @@ defmodule Schedule.CacheFile do
   end
 
   @spec load_gtfs(String.t()) :: {:ok, Data.t()} | {:error, atom}
+  # sobelow_skip ["Traversal.FileModule"]
   def load_gtfs(filepath) when is_binary(filepath) do
     Logger.info(fn -> "Loading gtfs cache from file #{filepath}" end)
 
@@ -78,6 +79,7 @@ defmodule Schedule.CacheFile do
   end
 
   @spec save_gtfs(Data.t(), String.t()) :: :ok | {:error, any}
+  # sobelow_skip ["Traversal.FileModule"]
   def save_gtfs(data, filepath) when is_map(data) and is_binary(filepath) do
     bin = :erlang.term_to_binary(data)
     File.write(filepath, bin)
