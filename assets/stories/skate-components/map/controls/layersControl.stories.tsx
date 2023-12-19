@@ -68,6 +68,7 @@ export const WithoutPullbackControls: Story = {
     onTogglePullbackLayer: { table: { disable: true } },
   },
   args: {
+    pullbackLayerEnabled: undefined,
     onTogglePullbackLayer: undefined,
   },
 }
