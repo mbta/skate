@@ -80,6 +80,14 @@ const RouteShapeWithDetour = ({
     }
   })
 
+  // points on the detour not already represented by the start and end
+  const uniqueDetourPositions =
+    detourPositions.length === 0
+      ? []
+      : endPoint === null
+      ? detourPositions.slice(1)
+      : detourPositions.slice(1, -2)
+
   return (
     <>
       <Polyline
@@ -113,6 +121,9 @@ const RouteShapeWithDetour = ({
         positions={detourPositions}
         className="c_detour_map--detour-route-shape"
       />
+      {uniqueDetourPositions.map((position) => (
+        <DetourPointMarker key={position.toString()} position={position} />
+      ))}
     </>
   )
 }
@@ -143,6 +154,23 @@ const StartOrEndMarker = ({
     icon={
       <svg height="20" width="20">
         <circle cx={10} cy={10} r={10} />
+      </svg>
+    }
+  />
+)
+
+const DetourPointMarker = ({ position }: { position: LatLngExpression }) => (
+  <ReactMarker
+    interactive={false}
+    position={position}
+    divIconSettings={{
+      iconSize: [10, 10],
+      iconAnchor: new Leaflet.Point(5, 5),
+      className: "c_detour_map-circle-marker--detour-point",
+    }}
+    icon={
+      <svg height="10" width="10">
+        <circle cx={5} cy={5} r={5} />
       </svg>
     }
   />
