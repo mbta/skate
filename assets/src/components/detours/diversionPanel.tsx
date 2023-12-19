@@ -27,10 +27,13 @@ export const DiversionPanel = ({
       <section className="py-3 border-bottom">
         <h3 className="h4">Affected route</h3>
 
-        <div className="d-flex gap-2">
-          <RoutePill routeName={routeName} />
+        <div>
+          <RoutePill
+            className="d-inline-block me-2 align-top"
+            routeName={routeName}
+          />
 
-          <div>
+          <div className="d-inline-block">
             <p className="my-0">{routeDescription}</p>
             <p className="my-0">{routeOrigin}</p>
             <p className="my-0">{routeDirection}</p>

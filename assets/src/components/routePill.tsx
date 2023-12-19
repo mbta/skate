@@ -3,10 +3,12 @@ import { joinClasses } from "../helpers/dom"
 
 export const RoutePill = ({
   routeName,
+  className,
 }: {
   routeName: string
+  className?: string
 }): JSX.Element => {
-  const classes = joinClasses(["c-route-pill", modeClass(routeName)])
+  const classes = joinClasses(["c-route-pill", modeClass(routeName), className])
 
   return <div className={classes}>{routeNameTransform(routeName)}</div>
 }
