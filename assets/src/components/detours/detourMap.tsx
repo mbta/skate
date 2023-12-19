@@ -92,7 +92,7 @@ const RouteShapeWithDetour = ({
     <>
       <Polyline
         positions={routeShapePositions}
-        className="c_detour_map--original-route-shape"
+        className="c-detour_map--original-route-shape"
         eventHandlers={{
           click: (e) => {
             if (startPoint === null) {
@@ -119,7 +119,7 @@ const RouteShapeWithDetour = ({
       {endPoint && <EndMarker position={endPoint} />}
       <Polyline
         positions={detourPositions}
-        className="c_detour_map--detour-route-shape"
+        className="c-detour_map--detour-route-shape"
       />
       {uniqueDetourPositions.map((position) => (
         <DetourPointMarker key={position.toString()} position={position} />
