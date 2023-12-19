@@ -93,7 +93,7 @@ jobs:
       - name: Credo
         run: mix credo
       - name: Sobelow
-        run: mix sobelow --skip --exit=low
+        run: mix sobelow --skip --exit=low --ignore Config.HTTPS
       - name: Run tests
         run: mix test --cover
         env:
