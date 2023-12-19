@@ -155,7 +155,7 @@ const StartOrEndMarker = ({
     divIconSettings={{
       iconSize: [20, 20],
       iconAnchor: new Leaflet.Point(10, 10),
-      className: "c_detour_map-circle-marker--" + classSuffix,
+      className: "c-detour_map-circle-marker--" + classSuffix,
     }}
     title={title}
     icon={
@@ -173,7 +173,7 @@ const DetourPointMarker = ({ position }: { position: LatLngExpression }) => (
     divIconSettings={{
       iconSize: [10, 10],
       iconAnchor: new Leaflet.Point(5, 5),
-      className: "c_detour_map-circle-marker--detour-point",
+      className: "c-detour_map-circle-marker--detour-point",
     }}
     icon={
       <svg height="10" width="10">
