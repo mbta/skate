@@ -129,18 +129,24 @@ const RouteShapeWithDetour = ({
 }
 
 const StartMarker = ({ position }: { position: LatLngExpression }) => (
-  <StartOrEndMarker classSuffix="start" position={position} />
+  <StartOrEndMarker
+    classSuffix="start"
+    title="Detour Start"
+    position={position}
+  />
 )
 
 const EndMarker = ({ position }: { position: LatLngExpression }) => (
-  <StartOrEndMarker classSuffix="end" position={position} />
+  <StartOrEndMarker classSuffix="end" title="Detour End" position={position} />
 )
 
 const StartOrEndMarker = ({
   classSuffix,
+  title,
   position,
 }: {
   classSuffix: string
+  title: string
   position: LatLngExpression
 }) => (
   <ReactMarker
@@ -151,6 +157,7 @@ const StartOrEndMarker = ({
       iconAnchor: new Leaflet.Point(10, 10),
       className: "c_detour_map-circle-marker--" + classSuffix,
     }}
+    title={title}
     icon={
       <svg height="20" width="20">
         <circle cx={10} cy={10} r={10} />
