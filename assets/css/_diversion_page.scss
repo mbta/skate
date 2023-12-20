@@ -1,0 +1,56 @@
+.l-diversion-page {
+  display: grid;
+  // Default layout is linear
+  grid-template:
+    "heading" min-content
+    "panel" auto
+    "map" 80vh
+    / 1fr;
+
+  &__header {
+    grid-area: heading;
+  }
+
+  &__panel {
+    grid-area: panel;
+  }
+
+  &__map {
+    grid-area: map;
+  }
+
+  @include media-breakpoint-up(md) {
+    // For larger breakpoints, layout into grid
+    grid-template:
+      "heading heading" min-content
+      "panel map" auto
+      / fit-content(28ch) auto;
+
+    // Overlay the panel and make the panel header match
+    // the size of the page header if subgrid is supported
+    @supports (grid-template-rows: subgrid) {
+      grid-template:
+        [panel-start] "heading heading" min-content
+        "panel map" auto
+        / fit-content(28ch) auto;
+
+      .c-diversion-panel,
+      .l-diversion-page__panel {
+        display: grid;
+
+        grid-template-rows: subgrid;
+        grid-template-columns: 1fr;
+
+        grid-area: panel;
+
+        .c-diversion-panel__header {
+          grid-row: heading;
+        }
+
+        .c-diversion-panel__body {
+          grid-row: 2/-1;
+        }
+      }
+    }
+  }
+}
