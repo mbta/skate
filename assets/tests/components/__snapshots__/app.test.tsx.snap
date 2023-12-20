@@ -218,18 +218,6 @@ exports[`App renders 1`] = `
                     </span>
                      Search
                   </a>
-                  <a
-                    class="c-left-nav__link"
-                    href="/detours"
-                    title="Dummy Detour Page"
-                  >
-                    <span
-                      class="c-left-nav__icon"
-                    >
-                      <svg />
-                    </span>
-                    Detours
-                  </a>
                 </li>
                 <li>
                   <hr />
