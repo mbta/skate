@@ -87,3 +87,7 @@ export ERL_FLAGS="+MIscs 2048"
 ## Used for locally building (and eventually testing) Storybook and Snapshot tests
 ## The project token can be found in Chromatic, (Manage > Configure > Project > Project Token)
 # export CHROMATIC_PROJECT_TOKEN=
+
+## Open Route Service
+## API key for accessing the ORS API.
+# export ORS_API_KEY=

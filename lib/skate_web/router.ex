@@ -137,6 +137,7 @@ defmodule SkateWeb.Router do
     get "/location_search/place/:id", LocationSearchController, :get
     get "/location_search/search", LocationSearchController, :search
     get "/location_search/suggest", LocationSearchController, :suggest
+    post "/routing/directions/", DetourRouteController, :directions
   end
 
   defp put_user_token(conn, _) do
