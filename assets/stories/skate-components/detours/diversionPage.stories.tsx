@@ -4,6 +4,7 @@ import DiversionPanelMeta, {
   WithDirections as DiversionPanelWithDirections,
   WithStops as DiversionPanelWithStops,
 } from "./diversionPanel.stories"
+import { route39shape } from "../__story-data__/shape"
 
 const meta = {
   component: DiversionPage,
@@ -14,6 +15,7 @@ const meta = {
   args: {
     // Provide default route settings
     ...DiversionPanelMeta.args,
+    shape: route39shape,
   },
   argTypes: {
     ...DiversionPanelMeta.argTypes,
