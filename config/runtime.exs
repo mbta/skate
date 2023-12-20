@@ -11,6 +11,10 @@ config :skate,
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
   aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
+config :skate, Skate.DetourRoutes,
+  api_base_url: "https://api.openrouteservice.org/",
+  api_key: System.get_env("ORS_API_KEY")
+
 config :ueberauth, Ueberauth.Strategy.Cognito,
   client_secret: System.get_env("COGNITO_CLIENT_SECRET")
 
