@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { RoutePattern, Shape } from "../../schedule"
+import { Shape } from "../../schedule"
 import { LatLngExpression } from "leaflet"
 import { Polyline, useMap, useMapEvent } from "react-leaflet"
 import Leaflet, { Map as LeafletMap } from "leaflet"
@@ -8,7 +8,7 @@ import { CustomControl } from "../map/controls/customControl"
 import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
 
-export const DetourMap = ({ routePattern }: { routePattern: RoutePattern }) => {
+export const DetourMap = ({ shape }: { shape: Shape }) => {
   const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
   const [endPoint, setEndPoint] = useState<LatLngExpression | null>(null)
   const [detourPositions, setDetourPositions] = useState<LatLngExpression[]>([])
@@ -16,7 +16,7 @@ export const DetourMap = ({ routePattern }: { routePattern: RoutePattern }) => {
   const onAddDetourPosition = (p: LatLngExpression) =>
     setDetourPositions((positions) => [...positions, p])
 
-  return routePattern.shape ? (
+  return (
     <Map vehicles={[]}>
       <CustomControl position="topleft" className="leaflet-bar">
         <Button
@@ -36,7 +36,7 @@ export const DetourMap = ({ routePattern }: { routePattern: RoutePattern }) => {
         </Button>
       </CustomControl>
       <RouteShapeWithDetour
-        shape={routePattern.shape}
+        shape={shape}
         startPoint={startPoint}
         onSetStartPoint={setStartPoint}
         endPoint={endPoint}
@@ -45,8 +45,6 @@ export const DetourMap = ({ routePattern }: { routePattern: RoutePattern }) => {
         onAddDetourPosition={onAddDetourPosition}
       />
     </Map>
-  ) : (
-    <></>
   )
 }
 
