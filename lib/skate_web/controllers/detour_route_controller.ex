@@ -1,4 +1,7 @@
 defmodule SkateWeb.DetourRouteController do
+  @moduledoc """
+  Detour API
+  """
   use SkateWeb, :controller
 
   def directions(conn, params) do

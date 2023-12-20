@@ -4,6 +4,9 @@ defmodule Skate.DetourRoutes do
   """
 
   defmodule Skate.DetourRoutes.DirectionsRequest do
+    @moduledoc """
+    The `Skate.DetourRoutes.directions/1` API struct
+    """
     @derive Jason.Encoder
     defstruct coordinates: []
   end
@@ -15,15 +18,14 @@ defmodule Skate.DetourRoutes do
   end
 
   def directions(%Skate.DetourRoutes.DirectionsRequest{} = request) do
-    with {:ok, %HTTPoison.Response{body: body}} = _ <-
+    with {:ok, %HTTPoison.Response{body: body}} <-
            HTTPoison.post(
              directions_api(),
              Jason.encode!(request),
              Authorization: api_key(),
              "Content-Type": "application/json"
-           ),
-         {:ok, data} <- Jason.decode(body) do
-      {:ok, data}
+           ) do
+      Jason.decode(body)
     end
   end
 
