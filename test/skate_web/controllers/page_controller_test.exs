@@ -81,16 +81,53 @@ defmodule SkateWeb.PageControllerTest do
         | users: [user]
       })
 
-      user_struct =
-        user.id |> Skate.Settings.User.get_by_id!() |> Skate.Repo.preload(:test_groups)
+      conn = get(conn, "/")
+
+      html = html_response(conn, 200)
+
+      json =
+        ["html-test-group"]
+        |> Jason.encode!()
+        |> Phoenix.HTML.html_escape()
+        |> Phoenix.HTML.safe_to_string()
+
+      assert html =~ "data-user-test-groups=\"#{json}\""
+    end
+
+    @tag :authenticated
+    test "does not include test groups in HTML of which the user is not a member", %{
+      conn: conn
+    } do
+      Skate.Settings.TestGroup.create("non-member-test-group")
 
       conn = get(conn, "/")
 
       html = html_response(conn, 200)
 
       json =
-        user_struct.test_groups
-        |> Enum.map(& &1.name)
+        []
+        |> Jason.encode!()
+        |> Phoenix.HTML.html_escape()
+        |> Phoenix.HTML.safe_to_string()
+
+      assert html =~ "data-user-test-groups=\"#{json}\""
+    end
+
+    @tag :authenticated
+    test "includes test groups that have the :enabled override in HTML", %{conn: conn} do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("overridden-test-group")
+
+      Skate.Settings.TestGroup.update(%{
+        test_group
+        | override: :enabled
+      })
+
+      conn = get(conn, "/")
+
+      html = html_response(conn, 200)
+
+      json =
+        ["overridden-test-group"]
         |> Jason.encode!()
         |> Phoenix.HTML.html_escape()
         |> Phoenix.HTML.safe_to_string()

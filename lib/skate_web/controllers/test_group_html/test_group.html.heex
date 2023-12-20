@@ -1,4 +1,24 @@
 <h1><%= @test_group_name %></h1>
+<.form
+  :if={@test_group_override != :enabled}
+  for={@conn}
+  action={~p"/test_groups/#{@test_group_id}/enable_override"}
+>
+  <%= submit("Enable for all users") %>
+</.form>
+
+<div :if={@test_group_override != :none}>
+  <em>
+    There is currently an override in place, which means that all
+    users are treated as though they are members of <%= @test_group_name %>.  You can still add and remove users
+    below, but that will only have an effect if you remove the
+    override.
+  </em>
+  <.form for={@conn} action={~p"/test_groups/#{@test_group_id}/remove_override"}>
+    <%= submit("Remove override") %>
+  </.form>
+</div>
+
 <ul>
   <%= for {user_id, user_email} <- @test_group_users do %>
     <li>
@@ -12,6 +32,7 @@
 </ul>
 <.link href={~p"/test_groups/#{@test_group_id}/add_user"}>Add user</.link>
 <.link href={~p"/test_groups"}>Back to all test groups</.link>
+
 <.form for={@conn} action={~p"/test_groups/#{@test_group_id}"} method="DELETE">
   <%= submit("Delete group", onclick: "return confirm('Are you sure? This cannot be undone.')") %>
 </.form>

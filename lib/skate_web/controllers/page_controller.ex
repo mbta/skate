@@ -9,11 +9,7 @@ defmodule SkateWeb.PageController do
   def index(conn, _params) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
-    %{username: username} =
-      user =
-      user_id
-      |> User.get_by_id!()
-      |> Skate.Repo.preload(:test_groups)
+    %{username: username} = user = User.get_by_id!(user_id)
 
     _ = Logger.info("uid=#{username}")
 
@@ -38,7 +34,7 @@ defmodule SkateWeb.PageController do
       base: Application.get_env(:skate, :base_tileset_url),
       satellite: Application.get_env(:skate, :satellite_tileset_url)
     })
-    |> assign(:user_test_groups, Enum.map(user.test_groups, & &1.name))
+    |> assign(:user_test_groups, User.all_test_group_names(user))
     |> assign(:map_limits, map_limits)
     |> assign(:sentry_org_slug, Application.get_env(:skate, :sentry_org_slug))
     |> render("index.html")

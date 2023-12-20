@@ -53,6 +53,7 @@ defmodule SkateWeb.TestGroupController do
       |> assign(:test_group_name, test_group.name)
       |> assign(:test_group_id, test_group.id)
       |> assign(:test_group_users, test_group_users)
+      |> assign(:test_group_override, test_group.override)
       |> put_layout()
       |> render(:test_group)
     else
@@ -133,6 +134,20 @@ defmodule SkateWeb.TestGroupController do
     {id, _} = Integer.parse(id)
     TestGroup.delete(id)
     redirect(conn, to: ~p"/test_groups")
+  end
+
+  @spec enable_override(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def enable_override(conn, %{"id" => id}) do
+    test_group = TestGroup.get(id)
+    TestGroup.update(%{test_group | override: :enabled})
+    redirect(conn, to: ~p"/test_groups/#{id}")
+  end
+
+  @spec remove_override(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def remove_override(conn, %{"id" => id}) do
+    test_group = TestGroup.get(id)
+    TestGroup.update(%{test_group | override: :none})
+    redirect(conn, to: ~p"/test_groups/#{id}")
   end
 
   defp put_layout(conn) do
