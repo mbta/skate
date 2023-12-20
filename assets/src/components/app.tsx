@@ -30,7 +30,6 @@ import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import PropertiesPanel from "./propertiesPanel"
 import { isGhost, isVehicle } from "../models/vehicle"
 import { TabMode } from "./propertiesPanel/tabPanels"
-import { DummyDetourPage } from "./dummyDetourPage"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -92,7 +91,6 @@ export const AppRoutes = () => {
                   element={<ShuttleMapPage />}
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
-                <BrowserRoute path="/detours" element={<DummyDetourPage />} />
               </Route>
               <Route
                 element={
