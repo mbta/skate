@@ -121,17 +121,6 @@ const LeftNav = ({
               <mapMode.navIcon className="c-left-nav__icon" />
               {collapsed ? null : mapMode.title}
             </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
-              title={"Dummy Detour Page"}
-              to={"/detours"}
-            >
-              <MapIcon className="c-left-nav__icon" />
-              {collapsed ? null : "Detours"}
-            </NavLink>
           </li>
           <li>
             <hr />
