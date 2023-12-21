@@ -22,7 +22,7 @@ defmodule SkateWeb do
     quote do
       use Phoenix.Controller,
         namespace: SkateWeb,
-        formats: [:html],
+        formats: [:html, :json],
         layouts: [html: {SkateWeb.Layouts, :app}]
 
       import Plug.Conn
