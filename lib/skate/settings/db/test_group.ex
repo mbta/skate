@@ -5,11 +5,13 @@ defmodule Skate.Settings.Db.TestGroup do
   import Ecto.Changeset
 
   alias Skate.Settings.Db.TestGroupUser, as: DbTestGroupUser
+  alias Skate.Settings.TestGroupOverride
 
   @type t() :: %__MODULE__{}
 
   schema "test_groups" do
     field(:name, :string)
+    field(:override, TestGroupOverride)
     timestamps()
 
     has_many(:test_group_users, DbTestGroupUser, on_replace: :delete_if_exists)

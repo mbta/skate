@@ -97,6 +97,14 @@ defmodule Skate.Settings.TestGroupTest do
       assert user2 in users_update_2
       assert user3 in users_update_2
     end
+
+    test "updates default_enabled" do
+      {:ok, test_group} = TestGroup.create("name 1")
+
+      new_test_group = TestGroup.update(%{test_group | override: :enabled})
+
+      assert new_test_group.override == :enabled
+    end
   end
 
   describe "delete/1" do
