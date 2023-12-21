@@ -98,12 +98,35 @@ defmodule Skate.Settings.TestGroupTest do
       assert user3 in users_update_2
     end
 
-    test "updates default_enabled" do
-      {:ok, test_group} = TestGroup.create("name 1")
+    test "can set override to enabled" do
+      {:ok, test_group} = TestGroup.create("group name")
 
       new_test_group = TestGroup.update(%{test_group | override: :enabled})
 
       assert new_test_group.override == :enabled
+    end
+
+    test "override defaults to :none" do
+      {:ok, test_group} = TestGroup.create("group name")
+
+      assert test_group.override == :none
+    end
+
+    test "override shows as :none if it is nil in the database" do
+      {:ok, test_group} = TestGroup.create("group name")
+
+      new_test_group = TestGroup.update(%{test_group | override: nil})
+
+      assert new_test_group.override == :none
+    end
+
+    @tag :skip
+    test "cannot update override to an invalid value" do
+      {:ok, test_group} = TestGroup.create("group name")
+
+      new_test_group = TestGroup.update(%{test_group | override: :wrong})
+
+      assert new_test_group.override == :none
     end
   end
 

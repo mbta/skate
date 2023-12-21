@@ -10,9 +10,9 @@ defmodule Skate.Settings.TestGroup do
           users: [DbUser.t()]
         }
 
-  @enforce_keys [:id, :name, :users]
+  @enforce_keys [:id, :name, :users, :override]
 
-  defstruct [:id, :name, users: []]
+  defstruct [:id, :name, users: [], override: :none]
 
   @spec create(String.t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create(name) do
@@ -80,7 +80,8 @@ defmodule Skate.Settings.TestGroup do
     %__MODULE__{
       id: db_test_group.id,
       name: db_test_group.name,
-      users: db_test_group.users
+      users: db_test_group.users,
+      override: db_test_group.override || :none
     }
   end
 

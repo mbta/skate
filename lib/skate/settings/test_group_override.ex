@@ -1,19 +1,22 @@
 defmodule Skate.Settings.TestGroupOverride do
+  @moduledoc false
+
   use Ecto.Type
 
   def type, do: :string
 
-  # @valid_states [:enabled, :disabled, :none]
+  @valid_states [:enabled, :disabled, :none]
 
   # @impl
-  def cast(_term) do
-  end
+  def cast(term) when term in @valid_states, do: {:ok, term}
+  def cast(_), do: :error
 
   # @impl
-  def dump(_term) do
-  end
+  def dump(term) when term in @valid_states, do: {:ok, Atom.to_string(term)}
+  def dump(_), do: :error
 
   # @impl
-  def load(_term) do
+  def load(term) do
+    term |> String.to_existing_atom() |> cast()
   end
 end
