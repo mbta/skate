@@ -13,7 +13,7 @@ defmodule Notifications.BridgeStatus do
   @impl true
   def cast(state) do
     if state in @valid_states do
-      {:ok, :raised}
+      {:ok, state}
     else
       :error
     end
