@@ -68,6 +68,7 @@ defmodule Concentrate.StructHelpers do
     define_field_update(field)
   end
 
+  # sobelow_skip ["DOS.BinToAtom"]
   def define_field_update(field) do
     name = :"update_#{field}"
 
