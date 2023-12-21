@@ -105,10 +105,19 @@ defmodule Skate.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "assets.setup": ["cmd npm --prefix=assets install"],
       "assets.reset": ["cmd npm --prefix=assets ci"],
+      "assets.test": ["cmd npm --prefix=assets run check", "cmd npm --prefix=assets test"],
       test: ["ecto.create --quiet", "ecto.migrate_all", "test"],
       fmt: ["format", "cmd npm --prefix=assets run format"],
       sobelow:
-        "sobelow --skip --exit=low --ignore Config.HTTPS,Config.CSWH,Config.Headers,Config.CSP"
+        "sobelow --skip --exit=low --ignore Config.HTTPS,Config.CSWH,Config.Headers,Config.CSP",
+      check: [
+        "compile --force --all-warnings --warnings-as-errors",
+        "format --check-formatted",
+        "credo",
+        "sobelow",
+        "dialyzer --quiet",
+        "excellent_migrations.check_safety"
+      ]
     ]
   end
 end
