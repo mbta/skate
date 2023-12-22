@@ -3,7 +3,7 @@ defmodule Skate.Repo.Migrations.AddBridgeMovementIdToNotifications do
 
   def change do
     alter table(:notifications) do
-      add(:bridge_movement_id, :bigint) 
+      add(:bridge_movement_id, :bigint)
     end
   end
 end
