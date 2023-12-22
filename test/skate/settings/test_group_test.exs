@@ -133,6 +133,15 @@ defmodule Skate.Settings.TestGroupTest do
 
       assert test_group.override == :none
     end
+
+    @tag :skip
+    test "cannot update override to an invalid value" do
+      {:ok, test_group} = TestGroup.create("group name")
+
+      new_test_group = TestGroup.update(%{test_group | override: :wrong})
+
+      assert new_test_group.override == :none
+    end
   end
 
   describe "delete/1" do
