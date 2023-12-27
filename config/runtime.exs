@@ -11,7 +11,7 @@ config :skate,
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
   aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
-config :skate, Skate.DetourRoutes,
+config :skate, Skate.OpenRouteServiceAPI,
   api_base_url: "https://api.openrouteservice.org/",
   api_key: System.get_env("ORS_API_KEY")
 
