@@ -26,6 +26,37 @@ import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 
+type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
+
+interface LinkData {
+  title: string
+  path: string
+  navIcon: React.JSXElementConstructor<HTMLElementProps>
+  onClick?: () => void
+}
+
+interface LeftNavLinkProps {
+  linkData: LinkData
+  collapsed: boolean
+}
+
+const LeftNavLink = ({
+  linkData,
+  collapsed,
+}: LeftNavLinkProps): JSX.Element => (
+  <NavLink
+    className={({ isActive }) =>
+      "c-left-nav__link" + (isActive ? " c-left-nav__link--active" : "")
+    }
+    title={linkData.title}
+    to={linkData.path}
+    onClick={linkData.onClick}
+  >
+    <linkData.navIcon className="c-left-nav__icon" />{" "}
+    {collapsed ? null : linkData.title}
+  </NavLink>
+)
+
 interface Props {
   toggleMobileMenu?: () => void
   defaultToCollapsed: boolean
@@ -61,6 +92,29 @@ const LeftNav = ({
         ]
       : ["c-left-nav__icon", "c-left-nav__icon--notifications-view"]
 
+  const routeLaddersLinkData: LinkData = {
+    title: "Route Ladders",
+    path: "/",
+    navIcon: LadderIcon,
+  }
+
+  const shuttleMapLinkData: LinkData = {
+    title: "Shuttle Map",
+    path: "/shuttle-map",
+    navIcon: MapIcon,
+  }
+
+  const searchMapLinkData = {
+    title: mapMode.title,
+    path: mapMode.path,
+    navIcon: mapMode.navIcon,
+    onClick: () => {
+      mapMode.navEventText && fullStoryEvent(mapMode.navEventText, {})
+    },
+  }
+
+  const links = [routeLaddersLinkData, shuttleMapLinkData, searchMapLinkData]
+
   return (
     <div className={"c-left-nav" + (collapsed ? " c-left-nav--collapsed" : "")}>
       {toggleMobileMenu ? (
@@ -80,48 +134,11 @@ const LeftNav = ({
       ) : null}
       <div className="c-left-nav__modes-and-views">
         <ul className="c-left-nav__links">
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
-              title="Route Ladders"
-              to="/"
-            >
-              <LadderIcon className="c-left-nav__icon" />
-              {collapsed ? null : "Route Ladders"}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
-              title="Shuttle Map"
-              to="/shuttle-map"
-            >
-              <MapIcon className="c-left-nav__icon" />
-              {collapsed ? null : "Shuttle Map"}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
-              title={mapMode.title}
-              to={mapMode.path}
-              onClick={() => {
-                mapMode.navEventText && fullStoryEvent(mapMode.navEventText, {})
-              }}
-            >
-              <mapMode.navIcon className="c-left-nav__icon" />
-              {collapsed ? null : mapMode.title}
-            </NavLink>
-          </li>
+          {links.map((linkData) => (
+            <li key={linkData.title}>
+              <LeftNavLink linkData={linkData} collapsed={collapsed} />
+            </li>
+          ))}
           <li>
             <hr />
           </li>

@@ -188,7 +188,7 @@ exports[`App renders 1`] = `
                     >
                       <svg />
                     </span>
-                    Route Ladders
+                     Route Ladders
                   </a>
                 </li>
                 <li>
@@ -202,7 +202,7 @@ exports[`App renders 1`] = `
                     >
                       <svg />
                     </span>
-                    Shuttle Map
+                     Shuttle Map
                   </a>
                 </li>
                 <li>
@@ -216,7 +216,7 @@ exports[`App renders 1`] = `
                     >
                       <svg />
                     </span>
-                    Search
+                     Search
                   </a>
                 </li>
                 <li>
