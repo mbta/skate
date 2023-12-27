@@ -1,6 +1,6 @@
 defmodule Skate.OpenRouteServiceAPI do
   @moduledoc """
-  The DetourRoutes context.
+  The OpenRouteServiceAPI context.
   """
 
   defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do

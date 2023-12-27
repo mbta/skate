@@ -22,11 +22,10 @@ defmodule SkateWeb.DetourRouteControllerTest do
       Bypass.expect(bypass, fn conn ->
         assert %Plug.Conn{
                  request_path: "/v2/directions/driving-hgv/geojson",
-                 method: "POST",
-                #  req_headers: [{"authorization", "nil"}, {"content-type", "application/json"}]
+                 method: "POST"
+                 #  req_headers: [{"authorization", "nil"}, {"content-type", "application/json"}]
                } =
                  conn |> dbg
-
 
         Plug.Conn.resp(conn, 200, Jason.encode!(%{success: true}))
       end)
