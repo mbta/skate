@@ -6,8 +6,6 @@ import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
 import {
-  LadderIcon,
-  MapIcon,
   LateIcon,
   SwingIcon,
   DoubleChevronRightIcon,
@@ -20,20 +18,11 @@ import {
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { togglePickerContainer } from "../../state"
 import NavMenu from "./navMenu"
-import { mapModeForUser } from "../../util/mapMode"
 import Tippy from "@tippyjs/react"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
-
-type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
-
-interface LinkData {
-  title: string
-  path: string
-  navIcon: React.JSXElementConstructor<HTMLElementProps>
-  onClick?: () => void
-}
+import { LinkData, getNavLinkData } from "../../navLinkData"
 
 interface LeftNavLinkProps {
   linkData: LinkData
@@ -81,7 +70,6 @@ const LeftNav = ({
 
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
-  const mapMode = mapModeForUser()
 
   const bellIconClasses =
     openView == OpenView.NotificationDrawer
@@ -92,28 +80,7 @@ const LeftNav = ({
         ]
       : ["c-left-nav__icon", "c-left-nav__icon--notifications-view"]
 
-  const routeLaddersLinkData: LinkData = {
-    title: "Route Ladders",
-    path: "/",
-    navIcon: LadderIcon,
-  }
-
-  const shuttleMapLinkData: LinkData = {
-    title: "Shuttle Map",
-    path: "/shuttle-map",
-    navIcon: MapIcon,
-  }
-
-  const searchMapLinkData = {
-    title: mapMode.title,
-    path: mapMode.path,
-    navIcon: mapMode.navIcon,
-    onClick: () => {
-      mapMode.navEventText && fullStoryEvent(mapMode.navEventText, {})
-    },
-  }
-
-  const links = [routeLaddersLinkData, shuttleMapLinkData, searchMapLinkData]
+  const navLinkData = getNavLinkData()
 
   return (
     <div className={"c-left-nav" + (collapsed ? " c-left-nav--collapsed" : "")}>
@@ -134,7 +101,7 @@ const LeftNav = ({
       ) : null}
       <div className="c-left-nav__modes-and-views">
         <ul className="c-left-nav__links">
-          {links.map((linkData) => (
+          {navLinkData.map((linkData) => (
             <li key={linkData.title}>
               <LeftNavLink linkData={linkData} collapsed={collapsed} />
             </li>
