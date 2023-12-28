@@ -41,11 +41,13 @@ const BottomNavMobile: React.FC<Props> = ({
       }
     >
       <ul className="c-bottom-nav-mobile__links">
-        {navLinkData.map((linkData) => (
-          <li key={linkData.title}>
-            <BottomNavLink linkData={linkData} />
-          </li>
-        ))}
+        {navLinkData
+          .filter((linkData) => !linkData.hideOnMobile)
+          .map((linkData) => (
+            <li key={linkData.title}>
+              <BottomNavLink linkData={linkData} />
+            </li>
+          ))}
 
         <li>
           <button
