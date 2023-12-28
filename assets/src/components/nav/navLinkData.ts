@@ -11,6 +11,7 @@ export interface LinkData {
   path: string
   navIcon: React.JSXElementConstructor<HTMLElementProps>
   onClick?: () => void
+  hideOnMobile?: boolean
 }
 
 export const useNavLinkData: () => LinkData[] = () => {
@@ -22,6 +23,7 @@ export const useNavLinkData: () => LinkData[] = () => {
           title: "Detours",
           path: "/detours",
           navIcon: DiamondTurnRightIcon,
+          hideOnMobile: true,
         },
       ]
     : []
