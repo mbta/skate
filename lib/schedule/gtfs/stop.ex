@@ -91,8 +91,8 @@ defmodule Schedule.Gtfs.Stop do
   @doc """
   Returns true when the stop is a station.
   """
-  @spec is_station?(t()) :: boolean()
-  def is_station?(stop), do: stop.location_type == :station
+  @spec station?(t()) :: boolean()
+  def station?(stop), do: stop.location_type == :station
 
   @doc """
   Add routes to a map of stops by id based on the given route, pattern, and stop time data.

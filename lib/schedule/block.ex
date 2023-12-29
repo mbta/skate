@@ -68,7 +68,7 @@ defmodule Schedule.Block do
     first_revenue_trip =
       pieces
       |> Enum.flat_map(& &1.trips)
-      |> Enum.find(&Trip.is_revenue_trip?/1)
+      |> Enum.find(&Trip.revenue_trip?/1)
 
     service_id =
       case first_revenue_trip do
@@ -90,7 +90,7 @@ defmodule Schedule.Block do
   def revenue_trips(%__MODULE__{pieces: pieces}) do
     pieces
     |> Enum.flat_map(& &1.trips)
-    |> Enum.filter(&Trip.is_revenue_trip?/1)
+    |> Enum.filter(&Trip.revenue_trip?/1)
   end
 
   @spec get(by_id(), Hastus.Schedule.id(), id()) :: t() | nil
@@ -101,8 +101,8 @@ defmodule Schedule.Block do
   @doc """
   Whether the block is active at any time during the time_of_day range.
   """
-  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
-  def is_active(block, start_time_of_day, end_time_of_day) do
+  @spec active?(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
+  def active?(block, start_time_of_day, end_time_of_day) do
     end_time_of_day > block.start_time and
       start_time_of_day < block.end_time
   end

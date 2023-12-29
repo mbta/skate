@@ -121,13 +121,13 @@ defmodule Schedule.Gtfs.StopTest do
     end
   end
 
-  describe "is_station?/1" do
+  describe "station?/1" do
     test "true when location_type is :station" do
-      assert Stop.is_station?(%Stop{id: "stop-1", name: "Station", location_type: :station})
+      assert Stop.station?(%Stop{id: "stop-1", name: "Station", location_type: :station})
     end
 
     test "false when location_type is :stop" do
-      refute Stop.is_station?(%Stop{id: "stop-1", name: "Stop", location_type: :stop})
+      refute Stop.station?(%Stop{id: "stop-1", name: "Stop", location_type: :stop})
     end
   end
 

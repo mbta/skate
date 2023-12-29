@@ -135,33 +135,33 @@ defmodule Schedule.BlockTest do
     end
   end
 
-  describe "is_active" do
+  describe "active?" do
     test "a block that starts before the range and ends after is active" do
-      assert Block.is_active(@block, 2, 18)
+      assert Block.active?(@block, 2, 18)
     end
 
     test "a block that starts before the range and ends during is active" do
-      assert Block.is_active(@block, 2, 20)
+      assert Block.active?(@block, 2, 20)
     end
 
     test "a block that starts during the range and ends after is active" do
-      assert Block.is_active(@block, 0, 18)
+      assert Block.active?(@block, 0, 18)
     end
 
     test "a block that's laying over is active" do
-      assert Block.is_active(@block, 8, 12)
+      assert Block.active?(@block, 8, 12)
     end
 
     test "a block is active if the start and end times are the same" do
-      assert Block.is_active(@block, 6, 6)
+      assert Block.active?(@block, 6, 6)
     end
 
     test "a block totally before the range is inactive" do
-      refute Block.is_active(@block, 20, 21)
+      refute Block.active?(@block, 20, 21)
     end
 
     test "a block totally after the range is inactive" do
-      refute Block.is_active(@block, 0, 0)
+      refute Block.active?(@block, 0, 0)
     end
   end
 

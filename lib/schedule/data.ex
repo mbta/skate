@@ -181,7 +181,7 @@ defmodule Schedule.Data do
 
       active_blocks_on_date =
         Enum.filter(blocks_on_date, fn block ->
-          Block.is_active(block, start_time_of_day, end_time_of_day)
+          Block.active?(block, start_time_of_day, end_time_of_day)
         end)
 
       {date, active_blocks_on_date}
@@ -216,7 +216,7 @@ defmodule Schedule.Data do
 
       active_runs_on_date =
         Enum.filter(runs_on_date, fn run ->
-          Run.is_active?(run, start_time_of_day, end_time_of_day)
+          Run.active?(run, start_time_of_day, end_time_of_day)
         end)
 
       {date, active_runs_on_date}
@@ -253,7 +253,7 @@ defmodule Schedule.Data do
   def stations(data) do
     data
     |> all_stops()
-    |> Enum.filter(&Stop.is_station?/1)
+    |> Enum.filter(&Stop.station?/1)
   end
 
   def all_stops(%__MODULE__{stops: stops}) do

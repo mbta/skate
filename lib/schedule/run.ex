@@ -42,9 +42,9 @@ defmodule Schedule.Run do
     Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
   end
 
-  @spec is_active?(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) ::
+  @spec active?(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) ::
           boolean()
-  def is_active?(run, start_time_of_day, end_time_of_day) do
+  def active?(run, start_time_of_day, end_time_of_day) do
     run
     |> pieces()
     |> Enum.map(fn piece ->

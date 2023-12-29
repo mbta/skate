@@ -36,7 +36,7 @@ defmodule Realtime.TimepointStatus do
     # future_stop_times starts with the stop that has stop_id
     {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
-    case Enum.find(future_stop_times, &StopTime.is_timepoint?(&1)) do
+    case Enum.find(future_stop_times, &StopTime.timepoint?(&1)) do
       %StopTime{timepoint_id: next_timepoint_id} ->
         stops_until_timepoint = count_to_timepoint(future_stop_times)
 
@@ -162,7 +162,7 @@ defmodule Realtime.TimepointStatus do
         nil
 
       _ ->
-        timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
+        timepoints = Enum.filter(trip.stop_times, &StopTime.timepoint?/1)
 
         case timepoints do
           [] ->
@@ -222,7 +222,7 @@ defmodule Realtime.TimepointStatus do
 
   @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()
   defp count_to_timepoint(stop_times) do
-    count = Enum.find_index(stop_times, &StopTime.is_timepoint?(&1))
+    count = Enum.find_index(stop_times, &StopTime.timepoint?(&1))
 
     if is_number(count), do: count, else: length(stop_times)
   end
