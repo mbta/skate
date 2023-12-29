@@ -108,7 +108,6 @@ const RouteShapeWithDetour = ({
                 map
               )
               onSetEndPoint(position)
-              position && onAddDetourPosition(position)
             }
           },
         }}
