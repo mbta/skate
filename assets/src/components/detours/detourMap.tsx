@@ -1,6 +1,6 @@
-import React, { useState } from "react"
-import { Shape } from "../../schedule"
-import { LatLngExpression } from "leaflet"
+import React, { useEffect, useState } from "react"
+import { Shape, ShapePoint } from "../../schedule"
+import { LatLngLiteral } from "leaflet"
 import { Polyline, useMapEvent } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
@@ -8,14 +8,37 @@ import { CustomControl } from "../map/controls/customControl"
 import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
+import { fetchDetourDirections } from "../../api"
 
 export const DetourMap = ({ shape }: { shape: Shape }) => {
-  const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
-  const [endPoint, setEndPoint] = useState<LatLngExpression | null>(null)
-  const [detourPositions, setDetourPositions] = useState<LatLngExpression[]>([])
+  const [startPoint, setStartPoint] = useState<LatLngLiteral | null>(null)
+  const [endPoint, setEndPoint] = useState<LatLngLiteral | null>(null)
+  const [detourPositions, setDetourPositions] = useState<LatLngLiteral[]>([])
+  const [orsPositions, setOrsPositions] = useState<LatLngLiteral[]>([])
 
-  const onAddDetourPosition = (p: LatLngExpression) =>
+  const onAddDetourPosition = (p: LatLngLiteral) => {
     setDetourPositions((positions) => [...positions, p])
+  }
+
+  useEffect(() => {
+    const shapePoints: ShapePoint[] = detourPositions.map(
+      (waypoint: LatLngLiteral) => {
+        const { lat, lng } = waypoint
+        return { lat, lon: lng }
+      }
+    )
+
+    fetchDetourDirections(shapePoints).then((detourShape) => {
+      if (detourShape) {
+        setOrsPositions(
+          detourShape.coordinates.map((position: ShapePoint) => {
+            const { lat, lon } = position
+            return { lat, lng: lon }
+          })
+        )
+      }
+    })
+  }, [detourPositions])
 
   return (
     <Map vehicles={[]}>
@@ -44,6 +67,7 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         onSetEndPoint={setEndPoint}
         detourPositions={detourPositions}
         onAddDetourPosition={onAddDetourPosition}
+        orsPositions={orsPositions}
       />
     </Map>
   )
@@ -57,17 +81,22 @@ const RouteShapeWithDetour = ({
   onSetEndPoint,
   detourPositions,
   onAddDetourPosition,
+  orsPositions,
 }: {
   originalShape: Shape
-  startPoint: LatLngExpression | null
-  onSetStartPoint: (p: LatLngExpression | null) => void
-  endPoint: LatLngExpression | null
-  onSetEndPoint: (p: LatLngExpression | null) => void
-  detourPositions: LatLngExpression[]
-  onAddDetourPosition: (p: LatLngExpression) => void
+  startPoint: LatLngLiteral | null
+  onSetStartPoint: (p: LatLngLiteral | null) => void
+  endPoint: LatLngLiteral | null
+  onSetEndPoint: (p: LatLngLiteral | null) => void
+  detourPositions: LatLngLiteral[]
+  onAddDetourPosition: (p: LatLngLiteral) => void
+  orsPositions: LatLngLiteral[]
 }) => {
-  const routeShapePositions: LatLngExpression[] = originalShape.points.map(
-    (point) => [point.lat, point.lon]
+  const routeShapePositions: LatLngLiteral[] = originalShape.points.map(
+    (point) => ({
+      lat: point.lat,
+      lng: point.lon,
+    })
   )
 
   useMapEvent("click", (e) => {
@@ -111,7 +140,7 @@ const RouteShapeWithDetour = ({
       {startPoint && <StartMarker position={startPoint} />}
       {endPoint && <EndMarker position={endPoint} />}
       <Polyline
-        positions={detourPositions}
+        positions={orsPositions}
         className="c-detour_map--detour-route-shape"
       />
       {uniqueDetourPositions.map((position) => (
@@ -121,7 +150,7 @@ const RouteShapeWithDetour = ({
   )
 }
 
-const StartMarker = ({ position }: { position: LatLngExpression }) => (
+const StartMarker = ({ position }: { position: LatLngLiteral }) => (
   <StartOrEndMarker
     classSuffix="start"
     title="Detour Start"
@@ -129,7 +158,7 @@ const StartMarker = ({ position }: { position: LatLngExpression }) => (
   />
 )
 
-const EndMarker = ({ position }: { position: LatLngExpression }) => (
+const EndMarker = ({ position }: { position: LatLngLiteral }) => (
   <StartOrEndMarker classSuffix="end" title="Detour End" position={position} />
 )
 
@@ -140,7 +169,7 @@ const StartOrEndMarker = ({
 }: {
   classSuffix: string
   title: string
-  position: LatLngExpression
+  position: LatLngLiteral
 }) => (
   <ReactMarker
     interactive={false}
@@ -159,7 +188,7 @@ const StartOrEndMarker = ({
   />
 )
 
-const DetourPointMarker = ({ position }: { position: LatLngExpression }) => (
+const DetourPointMarker = ({ position }: { position: LatLngLiteral }) => (
   <ReactMarker
     interactive={false}
     position={position}

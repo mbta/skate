@@ -1,4 +1,4 @@
-import { LatLng, LatLngExpression } from "leaflet"
+import { LatLng, LatLngLiteral } from "leaflet"
 
 /**
  * A helper function to help clarify code when clamping a value between a range.
@@ -11,7 +11,7 @@ export const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(min, value), max)
 
 interface ClosestPosition {
-  position: LatLngExpression
+  position: LatLngLiteral
   index: number
   distance: number
 }
@@ -29,7 +29,7 @@ interface ClosestPosition {
  * - {@link ClosestPosition.distance}: the distance to {@link point}
  */
 export const closestPosition = (
-  positions: LatLngExpression[],
+  positions: LatLngLiteral[],
   point: LatLng
 ): ClosestPosition | undefined => {
   const positionsByDistance = positions

@@ -4,8 +4,12 @@ defmodule SkateWeb.DetourRouteController do
   """
   use SkateWeb, :controller
 
+  def directions(conn, %{"coordinates" => [_]}) do
+    render(conn, :result, data: %Skate.OpenRouteServiceAPI.DirectionsResponse{})
+  end
+
   def directions(conn, %{"coordinates" => coordinates}) when is_list(coordinates) do
-    case Skate.OpenRouteServiceAPI.directions([]) do
+    case Skate.OpenRouteServiceAPI.directions(coordinates) do
       {:ok, result} ->
         render(conn, :result, data: result)
 

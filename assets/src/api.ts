@@ -12,6 +12,7 @@ import {
   RouteId,
   RoutePattern,
   Shape,
+  ShapePoint,
   Stop,
   Swing,
   Timepoint,
@@ -37,6 +38,8 @@ import {
   locationSearchSuggestionsFromData,
 } from "./models/locationSearchSuggestionData"
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
+import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
+import { DetourShape } from "./detour"
 
 export interface RouteData {
   id: string
@@ -145,6 +148,24 @@ export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
     parser: shapesFromData,
     dataStruct: array(ShapeData),
     defaultResult: [],
+  })
+
+export const fetchDetourDirections = (
+  coordinates: ShapePoint[]
+): Promise<DetourShape | null> =>
+  checkedApiCall({
+    url: "/api/detours/directions",
+    parser: detourShapeFromData,
+    dataStruct: DetourShapeData,
+    defaultResult: null,
+    fetchArgs: {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
+      body: JSON.stringify({ coordinates }),
+    },
   })
 
 export const fetchShapeForTrip = (tripId: TripId): Promise<Shape | null> =>

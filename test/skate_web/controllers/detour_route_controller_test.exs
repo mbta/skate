@@ -25,7 +25,7 @@ defmodule SkateWeb.DetourRouteControllerTest do
                  method: "POST"
                  #  req_headers: [{"authorization", "nil"}, {"content-type", "application/json"}]
                } =
-                 conn |> dbg
+                 dbg(conn)
 
         Plug.Conn.resp(conn, 200, Jason.encode!(%{success: true}))
       end)

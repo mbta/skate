@@ -3,31 +3,27 @@ defmodule Skate.OpenRouteServiceAPI do
   The OpenRouteServiceAPI context.
   """
 
-  defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
-    @moduledoc """
-    The `Skate.DetourRoutes.directions/1` API struct
-    """
-    @derive Jason.Encoder
-    defstruct coordinates: []
-  end
-
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
+  alias Skate.OpenRouteServiceAPI.DirectionsResponse
 
   def directions(coordinates) when is_list(coordinates) do
     directions(%DirectionsRequest{
-      coordinates: coordinates
+      coordinates: Enum.map(coordinates, fn %{"lat" => lat, "lon" => lon} -> [lon, lat] end)
     })
   end
 
   def directions(%DirectionsRequest{} = request) do
-    case HTTPoison.post(
-           directions_api(),
-           Jason.encode!(request),
-           Authorization: api_key(),
-           "Content-Type": "application/json"
-         ) do
+    response =
+      HTTPoison.post(
+        directions_api(),
+        Jason.encode!(request),
+        Authorization: api_key(),
+        "Content-Type": "application/json"
+      )
+
+    case response do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
-        Jason.decode(body, strings: :copy)
+        parse_directions(Jason.decode(body, strings: :copy))
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
         {:error, Jason.decode!(body)["error"]}
@@ -35,6 +31,15 @@ defmodule Skate.OpenRouteServiceAPI do
       {:error, %HTTPoison.Error{}} ->
         nil
     end
+  end
+
+  defp parse_directions({:ok, payload}) do
+    %{"features" => [%{"geometry" => %{"coordinates" => coordinates}}]} = payload
+
+    {:ok,
+     %DirectionsResponse{
+       coordinates: Enum.map(coordinates, fn [lon, lat] -> %{"lat" => lat, "lon" => lon} end)
+     }}
   end
 
   defp directions_api do
