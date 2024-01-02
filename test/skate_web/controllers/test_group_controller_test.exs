@@ -105,6 +105,35 @@ defmodule SkateWeb.TestGroupControllerTest do
     end
 
     @tag :authenticated_admin
+    test "includes a button for setting the enabled override", %{conn: conn} do
+      {:ok, test_group} = TestGroup.create("group to show")
+
+      html =
+        conn
+        |> get(~p"/test_groups/#{test_group.id}")
+        |> html_response(200)
+
+      assert html =~ "Enable for all users"
+      refute html =~ "Remove override"
+    end
+
+    @tag :authenticated_admin
+    test "includes a button for removing the override when the override is already there", %{
+      conn: conn
+    } do
+      {:ok, test_group} = TestGroup.create("group to show")
+      test_group = TestGroup.update(%{test_group | override: :enabled})
+
+      html =
+        conn
+        |> get(~p"/test_groups/#{test_group.id}")
+        |> html_response(200)
+
+      refute html =~ "Enable for all users"
+      assert html =~ "Remove override"
+    end
+
+    @tag :authenticated_admin
     test "returns 404 when no test group found", %{conn: conn} do
       conn = get(conn, ~p"/test_groups/123")
 
@@ -272,6 +301,46 @@ defmodule SkateWeb.TestGroupControllerTest do
       delete(conn, ~p"/test_groups/#{test_group.id}")
 
       assert Enum.empty?(TestGroup.get_all())
+    end
+  end
+
+  describe "enable_override/2" do
+    @tag :authenticated_admin
+    test "redirects to the test group page", %{conn: conn} do
+      {:ok, test_group} = TestGroup.create("test group")
+      conn = post(conn, ~p"/test_groups/#{test_group.id}/enable_override")
+
+      assert redirected_to(conn) == ~p"/test_groups/#{test_group.id}"
+    end
+
+    @tag :authenticated_admin
+    test "sets the override to enabled", %{conn: conn} do
+      {:ok, test_group} = TestGroup.create("test group")
+      post(conn, ~p"/test_groups/#{test_group.id}/enable_override")
+
+      test_group = TestGroup.get(test_group.id)
+      assert test_group.override == :enabled
+    end
+  end
+
+  describe "remove_override/2" do
+    @tag :authenticated_admin
+    test "redirects to the test group page", %{conn: conn} do
+      {:ok, test_group} = TestGroup.create("test group")
+      test_group = TestGroup.update(%{test_group | override: :enabled})
+      conn = post(conn, ~p"/test_groups/#{test_group.id}/remove_override")
+
+      assert redirected_to(conn) == ~p"/test_groups/#{test_group.id}"
+    end
+
+    @tag :authenticated_admin
+    test "sets the override to :none", %{conn: conn} do
+      {:ok, test_group} = TestGroup.create("test group")
+      test_group = TestGroup.update(%{test_group | override: :enabled})
+      post(conn, ~p"/test_groups/#{test_group.id}/remove_override")
+
+      test_group = TestGroup.get(test_group.id)
+      assert test_group.override == :none
     end
   end
 end

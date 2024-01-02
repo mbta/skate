@@ -2,6 +2,7 @@ defmodule Skate.Settings.User do
   @moduledoc false
 
   alias Skate.Settings.Db.User, as: DbUser
+  alias Skate.Settings.TestGroup
 
   import Ecto.Query
   require Logger
@@ -75,12 +76,20 @@ defmodule Skate.Settings.User do
   end
 
   def is_in_test_group(user_id, test_group_name) do
-    %{test_groups: user_test_groups} =
-      DbUser
-      |> Skate.Repo.get(user_id)
-      |> Skate.Repo.preload(:test_groups)
+    user_id
+    |> get_by_id!()
+    |> all_test_group_names()
+    |> Enum.member?(test_group_name)
+  end
 
-    Enum.any?(user_test_groups, &(&1.name == test_group_name))
+  def all_test_group_names(user) do
+    user = Skate.Repo.preload(user, :test_groups)
+
+    enabled_test_groups = TestGroup.get_override_enabled()
+
+    (enabled_test_groups ++ user.test_groups)
+    |> Enum.map(& &1.name)
+    |> Enum.dedup()
   end
 
   defp users_for_route_ids_query(route_ids) do

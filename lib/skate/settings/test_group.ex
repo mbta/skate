@@ -4,15 +4,17 @@ defmodule Skate.Settings.TestGroup do
   alias Skate.Settings.Db.TestGroup, as: DbTestGroup
   alias Skate.Settings.Db.User, as: DbUser
 
+  import Ecto.Query, only: [from: 2]
+
   @type t() :: %__MODULE__{
           id: integer(),
           name: String.t(),
           users: [DbUser.t()]
         }
 
-  @enforce_keys [:id, :name, :users]
+  @enforce_keys [:id, :name, :users, :override]
 
-  defstruct [:id, :name, users: []]
+  defstruct [:id, :name, users: [], override: :none]
 
   @spec create(String.t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create(name) do
@@ -50,6 +52,13 @@ defmodule Skate.Settings.TestGroup do
     |> Enum.map(&convert_from_db_test_group(&1))
   end
 
+  @spec get_override_enabled() :: [t()]
+  def get_override_enabled() do
+    from(tg in DbTestGroup, where: tg.override == :enabled)
+    |> Skate.Repo.all()
+    |> Enum.map(&convert_from_db_test_group(&1))
+  end
+
   @spec update(t()) :: t()
   def update(test_group) do
     existing_test_group =
@@ -80,7 +89,8 @@ defmodule Skate.Settings.TestGroup do
     %__MODULE__{
       id: db_test_group.id,
       name: db_test_group.name,
-      users: db_test_group.users
+      users: db_test_group.users,
+      override: db_test_group.override
     }
   end
 

@@ -131,5 +131,57 @@ defmodule Skate.Settings.UserTest do
       assert User.is_in_test_group(user_1.id, target_test_group.name)
       refute User.is_in_test_group(user_1.id, other_test_group.name)
     end
+
+    test "returns true if the test group has an override enabled" do
+      user_1 = User.upsert(@username, @email)
+      user_2 = User.upsert("otheruser", "otheruser@test.com")
+      {:ok, overridden_test_group} = TestGroup.create("overridden_test_group")
+
+      overridden_test_group = TestGroup.update(%{overridden_test_group | override: :enabled})
+      assert User.is_in_test_group(user_1.id, overridden_test_group.name)
+      assert User.is_in_test_group(user_2.id, overridden_test_group.name)
+    end
+  end
+
+  describe "all_test_group_names/1" do
+    test "returns an empty array if there are no test groups" do
+      user = User.upsert("user", "user@test.com")
+
+      assert User.all_test_group_names(User.get_by_id(user.id)) == []
+    end
+
+    test "returns a test group if the user is a member of it" do
+      {:ok, test_group} = TestGroup.create("test-group")
+      user = User.upsert("user", "user@test.com")
+
+      TestGroup.update(%{test_group | users: [user]})
+
+      assert User.all_test_group_names(User.get_by_id(user.id)) == ["test-group"]
+    end
+
+    test "does not include test groups that the user is not a member of" do
+      TestGroup.create("test-group")
+      user = User.upsert("user", "user@test.com")
+
+      assert User.all_test_group_names(User.get_by_id(user.id)) == []
+    end
+
+    test "includes test groups that have an :enabled override" do
+      {:ok, test_group} = TestGroup.create("test-group")
+      user = User.upsert("user", "user@test.com")
+
+      TestGroup.update(%{test_group | override: :enabled})
+
+      assert User.all_test_group_names(User.get_by_id(user.id)) == ["test-group"]
+    end
+
+    test "does not include duplicate test group records" do
+      {:ok, test_group} = TestGroup.create("test-group")
+      user = User.upsert("user", "user@test.com")
+
+      TestGroup.update(%{test_group | override: :enabled, users: [user]})
+
+      assert User.all_test_group_names(User.get_by_id(user.id)) == ["test-group"]
+    end
   end
 end

@@ -52,7 +52,7 @@ defmodule Skate.Settings.TestGroupTest do
     end
   end
 
-  describe "get_all/1" do
+  describe "get_all/0" do
     test "gets all test groups" do
       {:ok, group1} = TestGroup.create("group 1")
       {:ok, group2} = TestGroup.create("group 2")
@@ -63,6 +63,28 @@ defmodule Skate.Settings.TestGroupTest do
 
       refute all_groups |> Enum.find(fn group -> group == group1 end) |> is_nil()
       refute all_groups |> Enum.find(fn group -> group == group2 end) |> is_nil()
+    end
+  end
+
+  describe "get_override_enabled/0" do
+    test "only retrieves test groups with the :enabled override" do
+      {:ok, group1} = TestGroup.create("group 1")
+      {:ok, _group2} = TestGroup.create("group 2")
+      {:ok, _group3} = TestGroup.create("group 3")
+      {:ok, group4} = TestGroup.create("group 4")
+
+      TestGroup.update(%{group1 | override: :enabled})
+      TestGroup.update(%{group4 | override: :enabled})
+
+      groups = TestGroup.get_override_enabled()
+
+      assert Enum.count(groups) == 2
+
+      refute groups |> Enum.find(fn group -> group.name == "group 1" end) |> is_nil()
+      refute groups |> Enum.find(fn group -> group.name == "group 4" end) |> is_nil()
+
+      assert groups |> Enum.find(fn group -> group.name == "group 2" end) |> is_nil()
+      assert groups |> Enum.find(fn group -> group.name == "group 3" end) |> is_nil()
     end
   end
 
@@ -96,6 +118,20 @@ defmodule Skate.Settings.TestGroupTest do
       assert Enum.count(users_update_2) == 2
       assert user2 in users_update_2
       assert user3 in users_update_2
+    end
+
+    test "can set override to enabled" do
+      {:ok, test_group} = TestGroup.create("group name")
+
+      new_test_group = TestGroup.update(%{test_group | override: :enabled})
+
+      assert new_test_group.override == :enabled
+    end
+
+    test "override defaults to :none" do
+      {:ok, test_group} = TestGroup.create("group name")
+
+      assert test_group.override == :none
     end
   end
 
