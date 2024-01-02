@@ -15,6 +15,7 @@ const meta = {
   args: {
     // Provide default route settings
     ...DiversionPanelMeta.args,
+    routeName: "39",
     shape: route39shape,
   },
   argTypes: {
