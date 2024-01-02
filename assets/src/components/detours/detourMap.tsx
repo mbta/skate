@@ -36,7 +36,7 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         </Button>
       </CustomControl>
       <RouteShapeWithDetour
-        shape={shape}
+        originalShape={shape}
         startPoint={startPoint}
         onSetStartPoint={setStartPoint}
         endPoint={endPoint}
@@ -49,7 +49,7 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
 }
 
 const RouteShapeWithDetour = ({
-  shape,
+  originalShape,
   startPoint,
   onSetStartPoint,
   endPoint,
@@ -57,7 +57,7 @@ const RouteShapeWithDetour = ({
   detourPositions,
   onAddDetourPosition,
 }: {
-  shape: Shape
+  originalShape: Shape
   startPoint: LatLngExpression | null
   onSetStartPoint: (p: LatLngExpression | null) => void
   endPoint: LatLngExpression | null
@@ -65,10 +65,9 @@ const RouteShapeWithDetour = ({
   detourPositions: LatLngExpression[]
   onAddDetourPosition: (p: LatLngExpression) => void
 }) => {
-  const routeShapePositions: LatLngExpression[] = shape.points.map((point) => [
-    point.lat,
-    point.lon,
-  ])
+  const routeShapePositions: LatLngExpression[] = originalShape.points.map(
+    (point) => [point.lat, point.lon]
+  )
 
   const map = useMap()
 
