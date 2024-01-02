@@ -58,7 +58,7 @@ describe("LeftNav", () => {
     expect(result.queryByText("Late View")).not.toBeNull()
     expect(result.queryByText("Swings View")).not.toBeNull()
     expect(result.queryByText("Shuttle Map")).not.toBeNull()
-    expect(result.queryByText("Search")).not.toBeNull()
+    expect(result.queryByText("Search Map")).not.toBeNull()
     expect(result.queryByText("Support")).not.toBeNull()
     expect(result.queryByText("About Skate")).not.toBeNull()
     expect(result.queryByText("Settings")).not.toBeNull()
@@ -80,8 +80,8 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Swings View")).not.toBeNull()
     expect(result.queryByText("Shuttle Map")).toBeNull()
     expect(result.queryByTitle("Shuttle Map")).not.toBeNull()
-    expect(result.queryByText("Search")).toBeNull()
-    expect(result.queryByTitle("Search")).not.toBeNull()
+    expect(result.queryByText("Search Map")).toBeNull()
+    expect(result.queryByTitle("Search Map")).not.toBeNull()
     expect(result.queryByText("Support")).toBeNull()
     expect(result.queryByTitle("Support")).not.toBeNull()
     expect(result.queryByText("About Skate")).toBeNull()
@@ -92,22 +92,8 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Expand")).not.toBeNull()
   })
 
-  test("renders nav item with title 'Search Map' if in map test group", () => {
-    jest.mocked(getTestGroups).mockReturnValueOnce([TestGroups.MapBeta])
-
-    render(
-      <BrowserRouter>
-        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
-      </BrowserRouter>
-    )
-
-    expect(screen.queryByTitle("Search")).toBeNull()
-    expect(screen.getByTitle("Search Map")).toBeInTheDocument()
-  })
-
   test("clicking 'Search Map' nav item triggers FullStory event", async () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
-    jest.mocked(getTestGroups).mockReturnValueOnce([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>

@@ -5,7 +5,6 @@ import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"
 import NavMenu from "./navMenu"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
-import { searchMapConfig } from "../../util/mapMode"
 
 export const toTitleCase = (str: string): string => {
   return str.replace(
@@ -20,7 +19,7 @@ export const pageOrTabName = (
   routeTabs: RouteTab[]
 ): string => {
   if (pathname === "/") return currentTabName(routeTabs)
-  if (pathname === searchMapConfig.path) return searchMapConfig.title
+  if (pathname === "/map") return "Search Map"
   else return toTitleCase(pathname.replace("/", "").replace("-", " "))
 }
 

@@ -1,7 +1,11 @@
 import React from "react"
-import { mapModeForUser } from "./util/mapMode"
 import { fullStoryEvent } from "./helpers/fullStory"
-import { DiamondTurnRightIcon, LadderIcon, MapIcon } from "./helpers/icon"
+import {
+  DiamondTurnRightIcon,
+  LadderIcon,
+  MapIcon,
+  SearchMapIcon,
+} from "./helpers/icon"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
@@ -15,8 +19,6 @@ export interface LinkData {
 }
 
 export const getNavLinkData: () => LinkData[] = () => {
-  const mapMode = mapModeForUser()
-
   const maybeDetours = inTestGroup(TestGroups.DummyDetourPage)
     ? [
         {
@@ -40,12 +42,10 @@ export const getNavLinkData: () => LinkData[] = () => {
       navIcon: MapIcon,
     },
     {
-      title: mapMode.title,
-      path: mapMode.path,
-      navIcon: mapMode.navIcon,
-      onClick: () => {
-        mapMode.navEventText && fullStoryEvent(mapMode.navEventText, {})
-      },
+      title: "Search Map",
+      path: "/map",
+      navIcon: SearchMapIcon,
+      onClick: () => fullStoryEvent("Search Map nav entry clicked", {}),
     },
   ].concat(maybeDetours)
 }

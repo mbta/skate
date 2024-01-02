@@ -7,7 +7,6 @@ import "@testing-library/jest-dom/jest-globals"
 import Nav from "../../src/components/nav"
 import useScreenSize from "../../src/hooks/useScreenSize"
 import getTestGroups from "../../src/userTestGroups"
-import { TestGroups } from "../../src/userInTestGroup"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
 jest.mock("../../src/hooks/useScreenSize", () => ({
@@ -84,16 +83,13 @@ describe("Nav", () => {
     expect(result.queryByText("Route Ladders")).toBeNull()
   })
 
-  test("renders nav item with title 'Search Map' if in map test group", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.MapBeta])
-
+  test("renders nav item with title 'Search Map'", () => {
     render(
       <BrowserRouter>
         <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 
-    expect(screen.queryByTitle("Search")).toBeNull()
     expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
   })
 

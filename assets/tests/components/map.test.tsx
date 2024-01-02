@@ -28,7 +28,6 @@ import userEvent from "@testing-library/user-event"
 import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 
 import getTestGroups from "../../src/userTestGroups"
-import { TestGroups } from "../../src/userInTestGroup"
 import { LocationType } from "../../src/models/stopData"
 import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
 import { mockTileUrls } from "../testHelpers/mockHelpers"
@@ -294,9 +293,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
-  test("renders street view link from stop if in maps test group", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
-
+  test("renders street view link from stop", async () => {
     const { container } = render(
       <MapFollowingPrimaryVehicles
         vehicles={[]}

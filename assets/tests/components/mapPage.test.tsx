@@ -87,7 +87,6 @@ import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCatego
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
-import userInTestGroup, { TestGroups } from "../../src/userInTestGroup"
 import { useMinischeduleRun } from "../../src/hooks/useMinischedule"
 import pieceFactory from "../factories/piece"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
@@ -1002,10 +1001,6 @@ describe("<MapPage />", () => {
   })
 
   test("clicking a run from a selected vehicle opens properties panel with run", async () => {
-    jest
-      .mocked(userInTestGroup)
-      .mockImplementationOnce((key) => key === TestGroups.SearchMapsOnMobile)
-
     const mockedUsePanelState = mockUsePanelState()
 
     const route = routeFactory.build()

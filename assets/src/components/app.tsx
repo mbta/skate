@@ -21,10 +21,8 @@ import ShuttleMapPage from "./shuttleMapPage"
 import { allOpenRouteIds } from "../models/routeTab"
 import Nav from "./nav"
 import RightPanel from "./rightPanel"
-import { mapModeForUser } from "../util/mapMode"
 import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
 import MapPage from "./mapPage"
-import SearchPage from "./searchPage"
 import { OpenView, isPagePath } from "../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import PropertiesPanel from "./propertiesPanel"
@@ -60,10 +58,6 @@ export const AppRoutes = () => {
       socket,
       vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
     )
-
-  const mapMode = mapModeForUser()
-
-  const mapElement = mapMode.path === "/map" ? <MapPage /> : <SearchPage />
 
   return (
     <div className="l-app">
@@ -106,7 +100,7 @@ export const AppRoutes = () => {
                   />
                 }
               >
-                <BrowserRoute path={mapMode.path} element={mapElement} />
+                <BrowserRoute path="/map" element={<MapPage />} />
               </Route>
             </Routes>
           </Nav>

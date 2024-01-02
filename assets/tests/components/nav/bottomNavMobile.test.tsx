@@ -44,9 +44,7 @@ describe("BottomNavMobile", () => {
     expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View", {})
   })
 
-  test("renders nav item with title 'Search Map' if in map test group", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.MapBeta])
-
+  test("renders nav item with title 'Search Map'", () => {
     render(
       <BrowserRouter>
         <BottomNavMobile
@@ -56,7 +54,6 @@ describe("BottomNavMobile", () => {
       </BrowserRouter>
     )
 
-    expect(screen.queryByTitle("Search")).toBeNull()
     expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
   })
 
