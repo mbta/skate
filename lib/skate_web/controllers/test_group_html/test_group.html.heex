@@ -7,7 +7,7 @@
   <%= submit("Enable for all users") %>
 </.form>
 
-<div :if={@test_group_override != :none}>
+<div :if={@test_group_override == :enabled}>
   <em>
     There is currently an override in place, which means that all
     users are treated as though they are members of <%= @test_group_name %>.  You can still add and remove users
