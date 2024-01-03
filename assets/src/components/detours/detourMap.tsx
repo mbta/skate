@@ -83,7 +83,7 @@ const RouteShapeWithDetour = ({
       ? []
       : endPoint === null
       ? detourPositions.slice(1)
-      : detourPositions.slice(1, -2)
+      : detourPositions.slice(1, -1)
 
   return (
     <>
