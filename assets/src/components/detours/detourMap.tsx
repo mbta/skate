@@ -111,6 +111,7 @@ const RouteShapeWithDetour = ({
             }
           },
         }}
+        bubblingMouseEvents={false}
       />
       {startPoint && <StartMarker position={startPoint} />}
       {endPoint && <EndMarker position={endPoint} />}
