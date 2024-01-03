@@ -138,8 +138,8 @@ defmodule Skate.Settings.UserTest do
       {:ok, overridden_test_group} = TestGroup.create("overridden_test_group")
 
       overridden_test_group = TestGroup.update(%{overridden_test_group | override: :enabled})
-      assert User.is_in_test_group(user_1.id, overridden_test_group.name)
-      assert User.is_in_test_group(user_2.id, overridden_test_group.name)
+      assert User.in_test_group?(user_1.id, overridden_test_group.name)
+      assert User.in_test_group?(user_2.id, overridden_test_group.name)
     end
   end
 
