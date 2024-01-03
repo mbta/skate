@@ -52,24 +52,6 @@ describe("SearchResults", () => {
     )
 
     expect(
-      screen.queryByText(/at this time search is limited/)
-    ).toBeInTheDocument()
-  })
-
-  test("renders no results with user in map beta test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue(["map-beta"])
-
-    render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <SearchResults
-          vehicles={[]}
-          onClick={jest.fn()}
-          selectedVehicleId={null}
-        />
-      </StateDispatchProvider>
-    )
-
-    expect(
       screen.queryByText(/at this time run and operator search is limited/)
     ).toBeInTheDocument()
   })

@@ -240,15 +240,15 @@ exports[`renders 1`] = `
                 <li>
                   <a
                     class="c-left-nav__link"
-                    href="/search"
-                    title="Search"
+                    href="/map"
+                    title="Search Map"
                   >
                     <span
                       class="c-left-nav__icon"
                     >
                       <svg />
                     </span>
-                    Search
+                    Search Map
                   </a>
                 </li>
                 <li>
