@@ -6,8 +6,6 @@ import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
 import {
-  LadderIcon,
-  MapIcon,
   LateIcon,
   SwingIcon,
   DoubleChevronRightIcon,
@@ -20,11 +18,33 @@ import {
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { togglePickerContainer } from "../../state"
 import NavMenu from "./navMenu"
-import { mapModeForUser } from "../../util/mapMode"
 import Tippy from "@tippyjs/react"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
+import { LinkData, getNavLinkData } from "../../navLinkData"
+
+interface LeftNavLinkProps {
+  linkData: LinkData
+  collapsed: boolean
+}
+
+const LeftNavLink = ({
+  linkData,
+  collapsed,
+}: LeftNavLinkProps): JSX.Element => (
+  <NavLink
+    className={({ isActive }) =>
+      "c-left-nav__link" + (isActive ? " c-left-nav__link--active" : "")
+    }
+    title={linkData.title}
+    to={linkData.path}
+    onClick={linkData.onClick}
+  >
+    <linkData.navIcon className="c-left-nav__icon" />
+    {collapsed ? null : linkData.title}
+  </NavLink>
+)
 
 interface Props {
   toggleMobileMenu?: () => void
@@ -50,7 +70,6 @@ const LeftNav = ({
 
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
   const location = useLocation()
-  const mapMode = mapModeForUser()
 
   const bellIconClasses =
     openView == OpenView.NotificationDrawer
@@ -60,6 +79,8 @@ const LeftNav = ({
           "c-left-nav__icon--notifications-view--active",
         ]
       : ["c-left-nav__icon", "c-left-nav__icon--notifications-view"]
+
+  const navLinkData = getNavLinkData()
 
   return (
     <div className={"c-left-nav" + (collapsed ? " c-left-nav--collapsed" : "")}>
@@ -80,48 +101,11 @@ const LeftNav = ({
       ) : null}
       <div className="c-left-nav__modes-and-views">
         <ul className="c-left-nav__links">
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
-              title="Route Ladders"
-              to="/"
-            >
-              <LadderIcon className="c-left-nav__icon" />
-              {collapsed ? null : "Route Ladders"}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
-              title="Shuttle Map"
-              to="/shuttle-map"
-            >
-              <MapIcon className="c-left-nav__icon" />
-              {collapsed ? null : "Shuttle Map"}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
-              title={mapMode.title}
-              to={mapMode.path}
-              onClick={() => {
-                mapMode.navEventText && fullStoryEvent(mapMode.navEventText, {})
-              }}
-            >
-              <mapMode.navIcon className="c-left-nav__icon" />
-              {collapsed ? null : mapMode.title}
-            </NavLink>
-          </li>
+          {navLinkData.map((linkData) => (
+            <li key={linkData.title}>
+              <LeftNavLink linkData={linkData} collapsed={collapsed} />
+            </li>
+          ))}
           <li>
             <hr />
           </li>
