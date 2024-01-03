@@ -1,6 +1,7 @@
 import React from "react"
 import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
-import MapDisplay from "../mapPage/mapDisplay"
+import { DetourMap } from "./detourMap"
+import { Shape } from "../../schedule"
 
 export const DiversionPage = ({
   directions,
@@ -9,7 +10,8 @@ export const DiversionPage = ({
   routeDescription,
   routeDirection,
   routeOrigin,
-}: DiversionPanelProps) => (
+  shape,
+}: DiversionPanelProps & { shape: Shape }) => (
   <article className="l-diversion-page h-100 border-box">
     <header className="l-diversion-page__header text-bg-light border-bottom">
       <h1 className="h3 text-center">Create Detour</h1>
@@ -25,11 +27,7 @@ export const DiversionPage = ({
       />
     </div>
     <div className="l-diversion-page__map">
-      <MapDisplay
-        selectedEntity={null}
-        setSelection={() => {}}
-        fetchedSelectedLocation={null}
-      />
+      <DetourMap shape={shape} />
     </div>
   </article>
 )
