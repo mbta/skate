@@ -106,7 +106,7 @@ describe("App", () => {
     const vehicle = vehicleFactory.build()
     const mockDispatch = jest.fn()
 
-    const pagesWithRightPanel = ["/", "/search", "/shuttle-map", "/settings"]
+    const pagesWithRightPanel = ["/", "/map", "/shuttle-map", "/settings"]
 
     describe.each(pagesWithRightPanel)("All views render on %s", (path) => {
       beforeAll(() => {
