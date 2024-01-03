@@ -951,7 +951,11 @@ describe("<MapPage />", () => {
       "c-map-page__input-and-results--hidden"
     )
 
-    await userEvent.click(screen.getByRole("button", { name: vehicle.runId! }))
+    await userEvent.click(
+      within(document.getElementById("id-vehicle-map")!).getByRole("button", {
+        name: vehicle.runId!,
+      })
+    )
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
       "c-map-page__input-and-results--visible"
@@ -993,7 +997,11 @@ describe("<MapPage />", () => {
       "c-map-page__input-and-results--hidden"
     )
 
-    await userEvent.click(screen.getByRole("button", { name: vehicle.runId! }))
+    await userEvent.click(
+      within(document.getElementById("id-vehicle-map")!).getByRole("button", {
+        name: vehicle.runId!,
+      })
+    )
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
       "c-map-page__input-and-results--visible"
@@ -1402,9 +1410,10 @@ describe("<MapPage />", () => {
         expect(
           mapContainer.querySelector(".c-vehicle-map__route-shape")
         ).toBeInTheDocument()
+        // there is one additional button to select the run ID from the VPP
         expect(
           screen.getAllByRole("button", { name: runIdToLabel(vehicle.runId!) })
-        ).toHaveLength(vehicles.length)
+        ).toHaveLength(vehicles.length + 1)
 
         expect(vehiclePropertiesCard.get()).toBeVisible()
         expect(
@@ -1455,9 +1464,10 @@ describe("<MapPage />", () => {
             </StateDispatchProvider>
           )
 
+          // there is one additional button to select the run ID from the VPP
           expect(
             screen.getAllByRole("button", { name: selectedVehicle.runId! })
-          ).toHaveLength(selectedRouteVehicles.length)
+          ).toHaveLength(selectedRouteVehicles.length + 1)
         })
 
         describe("and vehicle is a regular bus", () => {
@@ -1490,9 +1500,10 @@ describe("<MapPage />", () => {
               </StateDispatchProvider>
             )
 
+            // there is one additional button to select the run ID from the VPP
             expect(
               screen.getAllByRole("button", { name: selectedVehicle.runId! })
-            ).toHaveLength(selectedRouteVehicles.length)
+            ).toHaveLength(selectedRouteVehicles.length + 1)
 
             expect(
               container.querySelectorAll(".c-vehicle-map__stop")
