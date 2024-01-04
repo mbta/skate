@@ -50,6 +50,24 @@ describe("DetourMap", () => {
     ).toHaveLength(1)
   })
 
+  test("detour points are correctly rendered when detour is complete", async () => {
+    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
+
+    await userEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(container.querySelector(".c-vehicle-map")!)
+
+    await userEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    expect(
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(1)
+  })
+
   test("clicking on 'Clear Last Waypoint' removes last point from detour", async () => {
     const { container } = render(<DetourMap shape={shapeFactory.build()} />)
 
