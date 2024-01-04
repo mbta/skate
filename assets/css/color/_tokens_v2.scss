@@ -105,16 +105,16 @@ $lemon-50: #fbfdf1;
   --color-lemon-50: #{$lemon-50};
 }
 
-$gray-900: #141524;
-$gray-800: #222534;
-$gray-700: #3c3f4c;
-$gray-600: #525560;
-$gray-500: #6f7380;
-$gray-400: #b3b5bd;
-$gray-300: #d8dde1;
-$gray-200: #ecedee;
-$gray-100: #f4f4f5;
-$gray-50: #fafafa;
+$gray-900: #252627;
+$gray-800: #494b4e;
+$gray-700: #6e7175;
+$gray-600: #92969c;
+$gray-500: #b7bcc3;
+$gray-400: #c5c9cf;
+$gray-300: #d4d7db;
+$gray-200: #e2e4e7;
+$gray-100: #f1f2f3;
+$gray-50: #f8f8f9;
 
 @mixin gray-colors {
   --color-gray-900: #{$gray-900};
