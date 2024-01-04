@@ -93,7 +93,7 @@ describe("LeftNav", () => {
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
+    jest.mocked(getTestGroups).mockReturnValueOnce([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>
@@ -107,7 +107,7 @@ describe("LeftNav", () => {
 
   test("clicking 'Search Map' nav item triggers FullStory event", async () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
+    jest.mocked(getTestGroups).mockReturnValueOnce([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>
