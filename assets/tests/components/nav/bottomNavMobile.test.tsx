@@ -61,7 +61,7 @@ describe("BottomNavMobile", () => {
   })
 
   test("does not render nav item with title 'Detours' even if in test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.DetourPanel])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetourPanel])
 
     render(
       <BrowserRouter>
