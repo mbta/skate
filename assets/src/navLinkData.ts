@@ -1,7 +1,8 @@
 import React from "react"
 import { mapModeForUser } from "./util/mapMode"
 import { fullStoryEvent } from "./helpers/fullStory"
-import { LadderIcon, MapIcon } from "./helpers/icon"
+import { DiamondTurnRightIcon, LadderIcon, MapIcon } from "./helpers/icon"
+import inTestGroup, { TestGroups } from "./userInTestGroup"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 
@@ -10,10 +11,22 @@ export interface LinkData {
   path: string
   navIcon: React.JSXElementConstructor<HTMLElementProps>
   onClick?: () => void
+  hideOnMobile?: boolean
 }
 
 export const getNavLinkData: () => LinkData[] = () => {
   const mapMode = mapModeForUser()
+
+  const maybeDetours = inTestGroup(TestGroups.DummyDetourPage)
+    ? [
+        {
+          title: "Detours",
+          path: "/detours",
+          navIcon: DiamondTurnRightIcon,
+          hideOnMobile: true,
+        },
+      ]
+    : []
 
   return [
     {
@@ -34,5 +47,5 @@ export const getNavLinkData: () => LinkData[] = () => {
         mapMode.navEventText && fullStoryEvent(mapMode.navEventText, {})
       },
     },
-  ]
+  ].concat(maybeDetours)
 }

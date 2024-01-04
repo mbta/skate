@@ -123,6 +123,30 @@ describe("LeftNav", () => {
     )
   })
 
+  test("renders nav item with title 'Detours' if in detours test group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DummyDetourPage])
+
+    render(
+      <BrowserRouter>
+        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+      </BrowserRouter>
+    )
+
+    expect(screen.queryByTitle("Detours")).toBeInTheDocument()
+  })
+
+  test("does not render nav item with title 'Detours' if not in the test group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    render(
+      <BrowserRouter>
+        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+      </BrowserRouter>
+    )
+
+    expect(screen.queryByTitle("Detours")).toBeNull()
+  })
+
   test("can toggle nav menu on tablet layout", async () => {
     const toggleMobileMenu = jest.fn()
     const user = userEvent.setup()
