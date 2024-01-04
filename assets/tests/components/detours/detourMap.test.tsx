@@ -36,7 +36,7 @@ describe("DetourMap", () => {
     expect(screen.getByTitle("Detour End")).not.toBeNull()
   })
 
-  test("clicking on map while drawing a detour adds a shape", async () => {
+  test("clicking on map while drawing a detour adds a point", async () => {
     const { container } = render(<DetourMap shape={shapeFactory.build()} />)
 
     await userEvent.click(
@@ -44,6 +44,24 @@ describe("DetourMap", () => {
     )
 
     await userEvent.click(container.querySelector(".c-vehicle-map")!)
+
+    expect(
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(1)
+  })
+
+  test("detour points are correctly rendered when detour is complete", async () => {
+    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
+
+    await userEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(container.querySelector(".c-vehicle-map")!)
+
+    await userEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
 
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
