@@ -4,10 +4,7 @@ import {
   SearchPropertyQuery,
 } from "../models/searchQuery"
 import { Loading, Ok } from "../util/fetchResult"
-import {
-  LimitedSearchResults,
-  useLimitedSearchResults,
-} from "./useSearchResults"
+import { LimitedSearchResults, useSearchResults } from "./useSearchResults"
 import { useLocationSearchResults } from "./useLocationSearchResults"
 import { LocationSearchResult } from "../models/locationSearchResult"
 import { Vehicle, Ghost } from "../realtime"
@@ -50,7 +47,7 @@ const useSearchResultsByCategory = (
         },
       }) || { is_loading: true }
   return {
-    vehicle: useLimitedSearchResults(
+    vehicle: useSearchResults(
       socket,
       (shouldSearchVehicles && {
         property: queryType,

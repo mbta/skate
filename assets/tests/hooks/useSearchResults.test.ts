@@ -1,20 +1,20 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import { act, renderHook } from "@testing-library/react"
-import { useLimitedSearchResults } from "../../src/hooks/useSearchResults"
+import { useSearchResults } from "../../src/hooks/useSearchResults"
 import { VehiclePropertyQuery } from "../../src/models/searchQuery"
 import { VehicleData, vehicleFromData } from "../../src/models/vehicleData"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 import vehicleDataFactory from "../factories/vehicle_data"
 
-describe("useLimitedSearchResults", () => {
+describe("useSearchResults", () => {
   test("when query given and loading, returns loading", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { result } = renderHook(() =>
-      useLimitedSearchResults(mockSocket, {
+      useSearchResults(mockSocket, {
         property: "vehicle",
         text: "1234",
         limit: 5,
@@ -25,9 +25,7 @@ describe("useLimitedSearchResults", () => {
   test("when no query given, returns null", () => {
     const mockSocket = makeMockSocket()
 
-    const { result } = renderHook(() =>
-      useLimitedSearchResults(mockSocket, null)
-    )
+    const { result } = renderHook(() => useSearchResults(mockSocket, null))
     expect(result.current).toEqual(null)
   })
 
@@ -35,7 +33,7 @@ describe("useLimitedSearchResults", () => {
     const mockSocket = makeMockSocket()
 
     const { result } = renderHook(() =>
-      useLimitedSearchResults(mockSocket, {
+      useSearchResults(mockSocket, {
         text: "",
         property: "run",
         limit: 5,
@@ -50,7 +48,7 @@ describe("useLimitedSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     renderHook(() =>
-      useLimitedSearchResults(mockSocket, {
+      useSearchResults(mockSocket, {
         text: "123",
         property: "run",
         limit: 5,
@@ -74,7 +72,7 @@ describe("useLimitedSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { result } = renderHook(() =>
-      useLimitedSearchResults(mockSocket, {
+      useSearchResults(mockSocket, {
         property: "run",
         text: "123",
         limit: 5,
@@ -123,7 +121,7 @@ describe("useLimitedSearchResults", () => {
     }
 
     const { rerender, result } = renderHook(
-      (query) => useLimitedSearchResults(mockSocket, query),
+      (query) => useSearchResults(mockSocket, query),
       {
         initialProps: initialQuery,
       }

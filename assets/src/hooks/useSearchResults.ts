@@ -38,7 +38,7 @@ const parseLimitedSearchResults = (
 
 const loadingState: Loading = { is_loading: true }
 
-export const useLimitedSearchResults = (
+export const useSearchResults = (
   socket: Socket | undefined,
   query: { property: VehiclePropertyQuery; text: string; limit: number } | null
 ): Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading | null => {

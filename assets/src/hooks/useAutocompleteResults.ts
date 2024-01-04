@@ -6,7 +6,7 @@ import {
   VehiclePropertyQuery,
 } from "../models/searchQuery"
 import { Ghost, Vehicle } from "../realtime"
-import { useLimitedSearchResults } from "./useSearchResults"
+import { useSearchResults } from "./useSearchResults"
 import { isLoading } from "../util/fetchResult"
 
 type AutocompleteResults = Record<
@@ -28,17 +28,14 @@ export const useAutocompleteResults = (
   searchFilters: SearchProperties<boolean>,
   maxResults = 5
 ): AutocompleteResults => {
-  const operator = useLimitedSearchResultsForProperty(
+  const operator = useSearchResultsForProperty(
     searchFilters.operator,
     "operator"
   )
 
-  const vehicle = useLimitedSearchResultsForProperty(
-    searchFilters.vehicle,
-    "vehicle"
-  )
+  const vehicle = useSearchResultsForProperty(searchFilters.vehicle, "vehicle")
 
-  const run = useLimitedSearchResultsForProperty(searchFilters.run, "run")
+  const run = useSearchResultsForProperty(searchFilters.run, "run")
 
   return {
     vehicle,
@@ -46,13 +43,13 @@ export const useAutocompleteResults = (
     operator,
   }
 
-  function useLimitedSearchResultsForProperty(
+  function useSearchResultsForProperty(
     enableSearch: boolean,
     property: VehiclePropertyQuery
   ): (Vehicle | Ghost)[] {
     // Search for the property we need to return, but if it's filtered,
     // set `query` parameter to `null`
-    const res = useLimitedSearchResults(
+    const res = useSearchResults(
       socket,
       (enableSearch || null) && {
         property,
