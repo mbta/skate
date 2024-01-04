@@ -36,7 +36,7 @@ describe("DetourMap", () => {
     expect(screen.getByTitle("Detour End")).not.toBeNull()
   })
 
-  test("clicking on map while drawing a detour adds a shape", async () => {
+  test("clicking on map while drawing a detour adds a point", async () => {
     const { container } = render(<DetourMap shape={shapeFactory.build()} />)
 
     await userEvent.click(
