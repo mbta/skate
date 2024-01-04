@@ -45,7 +45,7 @@ describe("BottomNavMobile", () => {
   })
 
   test("renders nav item with title 'Search Map' if in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([TestGroups.MapBeta])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.MapBeta])
 
     render(
       <BrowserRouter>
