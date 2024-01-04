@@ -113,13 +113,9 @@ defmodule SkateWeb.VehicleChannelTest do
                subscribe_and_join(socket, VehicleChannel, "vehicle:id:#{@vehicle.id}")
     end
 
-    test "subscribes to the logged out vehicle for given ID when user is in the test group", %{
-      socket: socket,
-      user: user
+    test "subscribes to logged out vehicle for given ID", %{
+      socket: socket
     } do
-      {:ok, test_group} = Skate.Settings.TestGroup.create("map-beta")
-      Skate.Settings.TestGroup.update(%{test_group | users: [user]})
-
       logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
 
       Realtime.Server.update_vehicles({%{}, [], [logged_out_vehicle]})
