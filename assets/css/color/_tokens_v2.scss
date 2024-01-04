@@ -9,16 +9,16 @@
 
 // #region All Colors
 // #region Swatches
-$eggplant-900: #1a083f;
-$eggplant-800: #260f54;
-$eggplant-700: #451b83;
-$eggplant-600: #6229a3;
-$eggplant-500: #7c47ae;
-$eggplant-400: #b58de2;
-$eggplant-300: #d0b1f2;
-$eggplant-200: #ede1f7;
-$eggplant-100: #f3ecf9;
-$eggplant-50: #f8f5f9;
+$eggplant-900: #160b22;
+$eggplant-800: #2c1745;
+$eggplant-700: #412267;
+$eggplant-600: #572e8a;
+$eggplant-500: #6d39ac;
+$eggplant-400: #8a61bd;
+$eggplant-300: #a788cd;
+$eggplant-200: #c5b0de;
+$eggplant-100: #e2d7ee;
+$eggplant-50: #f0ebf7;
 
 @mixin eggplant-colors {
   --color-eggplant-900: #{$eggplant-900};
