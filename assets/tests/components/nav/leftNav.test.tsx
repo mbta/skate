@@ -124,7 +124,7 @@ describe("LeftNav", () => {
   })
 
   test("renders nav item with title 'Detours' if in detours test group", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetourPanel])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DummyDetourPage])
 
     render(
       <BrowserRouter>

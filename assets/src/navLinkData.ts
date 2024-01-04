@@ -17,7 +17,7 @@ export interface LinkData {
 export const getNavLinkData: () => LinkData[] = () => {
   const mapMode = mapModeForUser()
 
-  const maybeDetours = inTestGroup(TestGroups.DetourPanel)
+  const maybeDetours = inTestGroup(TestGroups.DummyDetourPage)
     ? [
         {
           title: "Detours",
