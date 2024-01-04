@@ -46,53 +46,6 @@ defmodule SkateWeb.VehiclesChannel do
     {:ok, %{data: vehicles_and_ghosts}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
   end
 
-  def join_authenticated(
-        "vehicles:search:" <> search_params,
-        _message,
-        socket
-      ) do
-    username_from_socket! =
-      Application.get_env(
-        :skate,
-        :username_from_socket!,
-        &SkateWeb.AuthManager.username_from_socket!/1
-      )
-
-    username = username_from_socket!.(socket)
-
-    subscribe_args =
-      case search_params do
-        "all:" <> text ->
-          %{text: text, property: :all}
-
-        "run:" <> text ->
-          %{text: text, property: :run}
-
-        "vehicle:" <> text ->
-          %{text: text, property: :vehicle}
-
-        "operator:" <> text ->
-          %{text: text, property: :operator}
-      end
-
-    %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
-
-    subscribe_args =
-      Map.put(
-        subscribe_args,
-        :include_logged_out_vehicles,
-        Skate.Settings.User.is_in_test_group(user_id, "map-beta")
-      )
-
-    Logger.info(fn ->
-      "User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text}"
-    end)
-
-    {lookup_key, vehicles} = Duration.log_duration(Server, :subscribe_to_search, [subscribe_args])
-
-    {:ok, %{data: vehicles}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}
-  end
-
   def join_authenticated(topic, _message, _socket) do
     {:error, %{message: "no such topic \"#{topic}\""}}
   end
