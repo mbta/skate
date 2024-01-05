@@ -278,7 +278,7 @@ export const VehicleIconSvgNode = React.memo(
           <Label size={size} orientation={orientation} label={label} />
         ) : null}
         {status === "ghost" ? (
-          <Ghost size={size} variant={variant} />
+          <GhostIcon size={size} variant={variant} />
         ) : (
           <Triangle size={size} orientation={orientation} />
         )}
@@ -320,7 +320,7 @@ const Triangle = React.memo(
   }
 )
 
-const Ghost = React.memo(
+const GhostIcon = React.memo(
   ({ size, variant }: { size: Size; variant?: string }) => {
     // No orientation argument, because the ghost icon is always right side up.
     const scale = scaleForSize(size)
