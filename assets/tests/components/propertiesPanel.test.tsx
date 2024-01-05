@@ -17,6 +17,7 @@ import useVehicleForId from "../../src/hooks/useVehicleForId"
 import { TabMode } from "../../src/components/propertiesPanel/tabPanels"
 import userEvent from "@testing-library/user-event"
 import { closeButton } from "../testHelpers/selectors/components/closeButton"
+import { MemoryRouter } from "react-router-dom"
 
 jest
   .spyOn(dateTime, "now")
@@ -160,7 +161,11 @@ describe("PropertiesPanel", () => {
   test("renders a vehicle with updated live information", () => {
     ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
 
-    const result = render(<PropertiesPanelWrapper vehicleOrGhost={vehicle} />)
+    const result = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <PropertiesPanelWrapper vehicleOrGhost={vehicle} />
+      </MemoryRouter>
+    )
 
     expect(result.queryByText(/PATTI/)).not.toBeNull()
   })
@@ -216,10 +221,12 @@ describe("PropertiesPanel", () => {
     jest.mocked(useVehicleForId).mockReturnValue(vehicle)
 
     render(
-      <PropertiesPanelWrapper
-        vehicleOrGhost={vehicle}
-        closePanel={mockClosePanel}
-      />
+      <MemoryRouter initialEntries={["/"]}>
+        <PropertiesPanelWrapper
+          vehicleOrGhost={vehicle}
+          closePanel={mockClosePanel}
+        />
+      </MemoryRouter>
     )
 
     await userEvent.click(closeButton.get())

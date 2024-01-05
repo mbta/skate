@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React from "react"
+import React, { ReactNode } from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../../factories/route"
 import * as map from "../../../src/components/map"
@@ -29,6 +29,7 @@ import {
 import { useTripShape } from "../../../src/hooks/useShapes"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
 import { closeButton } from "../../testHelpers/selectors/components/closeButton"
+import { MemoryRouter } from "react-router-dom"
 
 jest
   .spyOn(dateTime, "now")
@@ -125,6 +126,10 @@ const vehicle: VehicleInScheduledService = vehicleFactory.build({
   crowding: null,
 })
 
+const MemoryRouterWrapper = ({ children }: { children: ReactNode }) => (
+  <MemoryRouter initialEntries={["/"]}>{children}</MemoryRouter>
+)
+
 describe("VehiclePropertiesPanel", () => {
   test("renders a vehicle properties panel", () => {
     const tree = renderer
@@ -192,7 +197,8 @@ describe("VehiclePropertiesPanel", () => {
         onChangeTabMode={jest.fn()}
         onClosePanel={jest.fn()}
         openMapEnabled={true}
-      />
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
     expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
   })
@@ -300,7 +306,8 @@ describe("VehiclePropertiesPanel", () => {
         onChangeTabMode={jest.fn()}
         onClosePanel={jest.fn()}
         openMapEnabled={true}
-      />
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
     expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
   })
@@ -317,7 +324,8 @@ describe("VehiclePropertiesPanel", () => {
         onChangeTabMode={jest.fn()}
         onClosePanel={jest.fn()}
         openMapEnabled={true}
-      />
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(2)
@@ -335,7 +343,8 @@ describe("VehiclePropertiesPanel", () => {
         onChangeTabMode={jest.fn()}
         onClosePanel={jest.fn()}
         openMapEnabled={true}
-      />
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(0)
@@ -397,7 +406,7 @@ describe("VehiclePropertiesPanel", () => {
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
-  test("map includes station icons when in map beta test group", () => {
+  test("map includes station icons", () => {
     ;(useStations as jest.Mock).mockReturnValue([
       {
         id: "station-id",
@@ -415,7 +424,8 @@ describe("VehiclePropertiesPanel", () => {
         onChangeTabMode={jest.fn()}
         onClosePanel={jest.fn()}
         openMapEnabled={true}
-      />
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     expect(container.innerHTML).toContain("c-station-icon")
@@ -431,7 +441,8 @@ describe("VehiclePropertiesPanel", () => {
         onChangeTabMode={jest.fn()}
         onClosePanel={mockClosePanel}
         openMapEnabled={true}
-      />
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     await userEvent.click(closeButton.get())
@@ -459,7 +470,8 @@ describe("VehiclePropertiesPanel", () => {
           onChangeTabMode={mockSetTabMode}
           onClosePanel={jest.fn()}
           openMapEnabled={true}
-        />
+        />,
+        { wrapper: MemoryRouterWrapper }
       )
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
@@ -488,7 +500,8 @@ describe("VehiclePropertiesPanel", () => {
           onChangeTabMode={jest.fn()}
           onClosePanel={jest.fn()}
           openMapEnabled={true}
-        />
+        />,
+        { wrapper: MemoryRouterWrapper }
       )
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
@@ -520,7 +533,8 @@ describe("VehiclePropertiesPanel", () => {
           onChangeTabMode={jest.fn()}
           onClosePanel={jest.fn()}
           openMapEnabled={true}
-        />
+        />,
+        { wrapper: MemoryRouterWrapper }
       )
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))

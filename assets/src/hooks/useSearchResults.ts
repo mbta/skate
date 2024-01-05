@@ -1,13 +1,13 @@
 import { Socket } from "phoenix"
 import { Infer, array, boolean, type, union } from "superstruct"
-import { SearchQuery, VehiclePropertyQuery } from "../models/searchQuery"
+import { VehiclePropertyQuery } from "../models/searchQuery"
 import {
   GhostData,
   VehicleData,
   vehicleOrGhostFromData,
 } from "../models/vehicleData"
 import { Ghost, Vehicle } from "../realtime"
-import { useCheckedChannel, useCheckedTwoWayChannel } from "./useChannel"
+import { useCheckedTwoWayChannel } from "./useChannel"
 import { useEffect } from "react"
 import { Loading, Ok } from "../util/fetchResult"
 
@@ -15,25 +15,6 @@ const parser = (data: (VehicleData | GhostData)[]): (Vehicle | Ghost)[] =>
   data.map(vehicleOrGhostFromData)
 
 const dataStruct = array(union([VehicleData, GhostData]))
-
-const useSearchResults = (
-  socket: Socket | undefined,
-  searchQuery: SearchQuery | null
-): (Vehicle | Ghost)[] | null => {
-  const topic: string | null =
-    searchQuery && `vehicles:search:${searchQuery.property}:${searchQuery.text}`
-  return useCheckedChannel<
-    (VehicleData | GhostData)[],
-    (Vehicle | Ghost)[] | null
-  >({
-    socket,
-    topic,
-    event: "search",
-    dataStruct,
-    parser,
-    loadingState: null,
-  })
-}
 
 const limitedVehicleSearchResultsData = type({
   matching_vehicles: dataStruct,
@@ -57,7 +38,7 @@ const parseLimitedSearchResults = (
 
 const loadingState: Loading = { is_loading: true }
 
-export const useLimitedSearchResults = (
+export const useSearchResults = (
   socket: Socket | undefined,
   query: { property: VehiclePropertyQuery; text: string; limit: number } | null
 ): Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading | null => {
@@ -89,5 +70,3 @@ export const useLimitedSearchResults = (
 
   return topic ? state : null
 }
-
-export default useSearchResults

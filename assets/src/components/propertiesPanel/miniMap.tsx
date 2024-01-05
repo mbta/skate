@@ -9,8 +9,6 @@ import {
   SelectedEntityType,
   newSearchSession,
 } from "../../state/searchPageState"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
-import { mapModeForUser } from "../../util/mapMode"
 import { MapFollowingPrimaryVehicles } from "../map"
 import { fullStoryEvent } from "../../helpers/fullStory"
 
@@ -27,7 +25,7 @@ const SearchMapLink = ({ vehicleId }: { vehicleId: VehicleId }) => {
     <Link
       ref={openMapLinkRef}
       className="c-vehicle-properties-panel__map-open-link leaflet-bar"
-      to={mapModeForUser().path}
+      to="/map"
       onClick={() => {
         fullStoryEvent("Map opened from VPP mini map", {})
         dispatch(
@@ -56,8 +54,6 @@ const MiniMap = ({
 }) => {
   const stations: Stop[] | null = useStations()
 
-  const inMapBetaGroup = inTestGroup(TestGroups.MapBeta)
-
   return (
     <MapFollowingPrimaryVehicles
       selectedVehicleId={vehicle.id}
@@ -65,13 +61,9 @@ const MiniMap = ({
       shapes={shapes}
       secondaryVehicles={routeVehicles}
       stations={stations}
-      allowFullscreen={!inMapBetaGroup}
+      allowFullscreen={false}
     >
-      <>
-        {inMapBetaGroup && openMapEnabled && (
-          <SearchMapLink vehicleId={vehicle.id} />
-        )}
-      </>
+      <>{openMapEnabled && <SearchMapLink vehicleId={vehicle.id} />}</>
     </MapFollowingPrimaryVehicles>
   )
 }

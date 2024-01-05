@@ -2,7 +2,6 @@ defmodule SkateWeb.VehiclesChannelTest do
   use SkateWeb.ChannelCase
   import Test.Support.Helpers
   import Skate.Factory
-  import ExUnit.CaptureLog, only: [capture_log: 1]
 
   alias Phoenix.Socket
   alias SkateWeb.{UserSocket, VehiclesChannel}
@@ -58,34 +57,6 @@ defmodule SkateWeb.VehiclesChannelTest do
                )
     end
 
-    test "subscribes to a vehicle search", %{socket: socket} do
-      assert {:ok, %{data: []}, %Socket{}} =
-               subscribe_and_join(
-                 socket,
-                 VehiclesChannel,
-                 "vehicles:search:run:" <> String.slice(@vehicle.run_id, 0, 3)
-               )
-    end
-
-    test "logs that a user subscribed to a vehicle search", %{socket: socket} do
-      old_level = Logger.level()
-
-      on_exit(fn ->
-        Logger.configure(level: old_level)
-      end)
-
-      Logger.configure(level: :info)
-
-      run_search_term = String.slice(@vehicle.run_id, 0, 3)
-
-      log =
-        capture_log(fn ->
-          subscribe_and_join(socket, VehiclesChannel, "vehicles:search:run:" <> run_search_term)
-        end)
-
-      assert log =~ "User=test_uid searched for property=run, text=" <> run_search_term
-    end
-
     test "returns an error when joining a non-existant topic", %{socket: socket} do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, VehiclesChannel, "rooms:1")
@@ -99,7 +70,6 @@ defmodule SkateWeb.VehiclesChannelTest do
             "vehicles:route:",
             "vehicles:run_ids:",
             "vehicles:block_ids:",
-            "vehicles:search:",
             "random:topic:"
           ],
           do:
@@ -170,63 +140,6 @@ defmodule SkateWeb.VehiclesChannelTest do
                )
 
       assert_push("pull_backs", %{data: [^pull_back_vehicle]})
-    end
-
-    test "pushes new search results data onto the socket", %{
-      socket: socket,
-      ets: ets
-    } do
-      assert Realtime.Server.update_vehicles({%{}, [@vehicle], []}) == :ok
-
-      {:ok, _, socket} =
-        subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:" <> @vehicle.label)
-
-      assert {:noreply, _socket} =
-               VehiclesChannel.handle_info(
-                 {:new_realtime_data, ets},
-                 socket
-               )
-
-      vehicle = @vehicle
-      assert_push("search", %{data: [^vehicle]})
-    end
-
-    test "when user is in test group to enable searching logged out vehicles, then logged out vehicles are included in their search results",
-         %{
-           socket: socket,
-           user: user
-         } do
-      {:ok, test_group} = Skate.Settings.TestGroup.create("map-beta")
-      Skate.Settings.TestGroup.update(%{test_group | users: [user]})
-
-      logged_in_vehicle =
-        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
-
-      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
-
-      {:ok, _reply, _socket} =
-        subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:123")
-
-      Realtime.Server.update_vehicles({%{"1" => [logged_in_vehicle]}, [], [logged_out_vehicle]})
-
-      assert_push("search", %{data: [^logged_in_vehicle, ^logged_out_vehicle]})
-    end
-
-    test "when user is not in a test group to enable searching logged out vehicles, then logged out vehicles are included in their search results",
-         %{
-           socket: socket
-         } do
-      logged_in_vehicle =
-        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
-
-      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
-
-      {:ok, _reply, _socket} =
-        subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:123")
-
-      Realtime.Server.update_vehicles({%{"1" => [logged_in_vehicle]}, [], [logged_out_vehicle]})
-
-      assert_push("search", %{data: [^logged_in_vehicle]})
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{

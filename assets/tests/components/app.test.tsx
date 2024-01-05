@@ -19,8 +19,6 @@ import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import vehicleFactory from "../factories/vehicle"
-import { TestGroups } from "../../src/userInTestGroup"
-import getTestGroups from "../../src/userTestGroups"
 import { MemoryRouter } from "react-router-dom"
 import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
 import stateFactory from "../factories/applicationState"
@@ -108,7 +106,7 @@ describe("App", () => {
     const vehicle = vehicleFactory.build()
     const mockDispatch = jest.fn()
 
-    const pagesWithRightPanel = ["/", "/search", "/shuttle-map", "/settings"]
+    const pagesWithRightPanel = ["/", "/map", "/shuttle-map", "/settings"]
 
     describe.each(pagesWithRightPanel)("All views render on %s", (path) => {
       beforeAll(() => {
@@ -182,21 +180,7 @@ describe("App", () => {
     })
   })
 
-  test("renders old search page for users not in map test group", () => {
-    render(
-      <MemoryRouter initialEntries={["/search"]}>
-        <AppRoutes />
-      </MemoryRouter>
-    )
-
-    expect(
-      screen.queryByRole("generic", { name: /search map page/i })
-    ).not.toBeInTheDocument()
-  })
-
-  test("renders new map page for users in map test group", () => {
-    ;(getTestGroups as jest.Mock).mockReturnValueOnce([TestGroups.MapBeta])
-
+  test("renders search map page", () => {
     render(
       <MemoryRouter initialEntries={["/map"]}>
         <AppRoutes />

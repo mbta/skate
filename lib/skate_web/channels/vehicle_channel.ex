@@ -36,26 +36,14 @@ defmodule SkateWeb.VehicleChannel do
   end
 
   def join_authenticated("vehicle:id:" <> vehicle_or_ghost_id, _message, socket) do
-    %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
-
-    user_in_test_group? = Skate.Settings.User.is_in_test_group(user_id, "map-beta")
-
     vehicle_or_ghost =
-      if user_in_test_group? do
-        vehicle_or_ghost_id
-        |> Realtime.Server.peek_at_vehicle_by_id_with_logged_out()
-        |> List.first()
-      else
-        vehicle_or_ghost_id |> Realtime.Server.peek_at_vehicle_by_id() |> List.first()
-      end
+      vehicle_or_ghost_id
+      |> Realtime.Server.peek_at_vehicle_by_id()
+      |> List.first()
 
     {lookup_key, _vehicle_or_ghost} =
       if vehicle_or_ghost do
-        if user_in_test_group? do
-          Server.subscribe_to_vehicle_with_logged_out(vehicle_or_ghost.id)
-        else
-          Server.subscribe_to_vehicle(vehicle_or_ghost.id)
-        end
+        Server.subscribe_to_vehicle(vehicle_or_ghost.id)
       else
         {nil, nil}
       end

@@ -1368,7 +1368,11 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                       aria-labelledby="run:rl:"
                       class="kv-value font-s-reg"
                     >
-                      run-1
+                      <button
+                        class="kv-value--clickable"
+                      >
+                        run-1
+                      </button>
                     </td>
                   </tr>
                   <tr>

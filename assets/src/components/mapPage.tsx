@@ -31,7 +31,6 @@ import { LocationSearchResult } from "../models/locationSearchResult"
 import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
-import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const SearchMode = ({
@@ -314,11 +313,8 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
                 setVehicleSelection(...args)
               }}
               fetchedSelectedLocation={fetchedSelectedLocation}
-              onVehicleRunClicked={
-                inTestGroup(TestGroups.SearchMapsOnMobile)
-                  ? (vehicleOrGhost: Vehicle | Ghost) =>
-                      openVehiclePropertiesPanel(vehicleOrGhost, "run")
-                  : undefined
+              onVehicleRunClicked={(vehicleOrGhost: Vehicle | Ghost) =>
+                openVehiclePropertiesPanel(vehicleOrGhost, "run")
               }
             />
           ) : (

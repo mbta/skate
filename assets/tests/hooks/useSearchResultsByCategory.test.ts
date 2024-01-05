@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, afterEach } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
-import { useLimitedSearchResults } from "../../src/hooks/useSearchResults"
+import { useSearchResults } from "../../src/hooks/useSearchResults"
 import { makeMockSocket } from "../testHelpers/socketHelpers"
 import vehicleFactory from "../factories/vehicle"
 import useSearchResultsByCategory, {
@@ -12,7 +12,7 @@ import { LocationSearchResult } from "../../src/models/locationSearchResult"
 
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
-  useLimitedSearchResults: jest.fn(() => null),
+  useSearchResults: jest.fn(() => null),
 }))
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
@@ -32,22 +32,22 @@ const mockSearchResults = (rawResults: {
   run?: VehicleResultType
   location?: LocationSearchResult[] | null
 }) => {
-  ;(
-    useLimitedSearchResults as jest.Mock<typeof useLimitedSearchResults>
-  ).mockImplementation((_socket, query) => {
-    switch (query?.property) {
-      case "vehicle":
-        return rawResults.vehicle || null
-      case "run":
-        return rawResults.run || null
-      case "operator":
-        return rawResults.operator || null
-      case "all":
-        return rawResults.all || null
-      default:
-        return null
+  ;(useSearchResults as jest.Mock<typeof useSearchResults>).mockImplementation(
+    (_socket, query) => {
+      switch (query?.property) {
+        case "vehicle":
+          return rawResults.vehicle || null
+        case "run":
+          return rawResults.run || null
+        case "operator":
+          return rawResults.operator || null
+        case "all":
+          return rawResults.all || null
+        default:
+          return null
+      }
     }
-  })
+  )
   ;(useLocationSearchResults as jest.Mock).mockReturnValue(rawResults.location)
 }
 

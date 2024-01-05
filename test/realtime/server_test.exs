@@ -33,7 +33,7 @@ defmodule Realtime.ServerTest do
 
   @logged_out_vehicle build(:vehicle,
                         route_id: "1",
-                        id: "v1",
+                        id: "v3",
                         label: "v1-label",
                         run_id: nil,
                         block_id: nil,
@@ -47,7 +47,7 @@ defmodule Realtime.ServerTest do
                                route_id: "1",
                                block_is_active: false,
                                block_id: "inactive_block",
-                               id: "v2",
+                               id: "v4",
                                label: "v2-label",
                                run_id: "456-7890"
                              )
@@ -313,18 +313,29 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update_vehicles({@vehicles_by_route_id, [], []}, server_pid)
+      :ok = Server.update_vehicles({@vehicles_by_route_id, [], [@logged_out_vehicle]}, server_pid)
 
       %{server_pid: server_pid}
     end
 
-    test "clients get vehicle by ID upon subscribing", %{server_pid: pid} do
+    test "clients get vehicle by ID upon subscribing, logged in vehicle", %{server_pid: pid} do
       {lookup_key, vehicle} = Server.subscribe_to_vehicle(@vehicle.id, pid)
       assert vehicle == [@vehicle]
       assert lookup_key == {:vehicle, @vehicle.id}
     end
 
-    test "clients get updated data pushed to them", %{server_pid: pid} do
+    test "clients get vehicle by ID upon subscribing, logged out vehicle", %{server_pid: pid} do
+      {lookup_key, logged_out_vehicles} =
+        Server.subscribe_to_vehicle(@logged_out_vehicle.id, pid)
+
+      assert logged_out_vehicles == [
+               @logged_out_vehicle
+             ]
+
+      assert lookup_key == {:vehicle, @logged_out_vehicle.id}
+    end
+
+    test "clients get updated data pushed to them, logged in vehicle", %{server_pid: pid} do
       {lookup_key, _} = Server.subscribe_to_vehicle(@vehicle.id, pid)
 
       Server.update_vehicles({@vehicles_by_route_id, [], []}, pid)
@@ -332,30 +343,9 @@ defmodule Realtime.ServerTest do
       assert_receive {:new_realtime_data, ets}
       assert Server.lookup({ets, lookup_key}) == [@vehicle]
     end
-  end
 
-  describe "subscribe_to_vehicle_with_logged_out/2" do
-    setup do
-      {:ok, server_pid} = Server.start_link([])
-
-      :ok = Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, server_pid)
-
-      %{server_pid: server_pid}
-    end
-
-    test "clients get vehicle by ID upon subscribing", %{server_pid: pid} do
-      {lookup_key, logged_out_vehicles} =
-        Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid)
-
-      assert logged_out_vehicles == [
-               @logged_out_vehicle
-             ]
-
-      assert lookup_key == {:vehicle_with_logged_out, @logged_out_vehicle.id}
-    end
-
-    test "clients get updated data pushed to them", %{server_pid: pid} do
-      {lookup_key, _} = Server.subscribe_to_vehicle_with_logged_out(@logged_out_vehicle.id, pid)
+    test "clients get updated data pushed to them, logged out vehicle", %{server_pid: pid} do
+      {lookup_key, _} = Server.subscribe_to_vehicle(@logged_out_vehicle.id, pid)
 
       Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, pid)
 
@@ -410,11 +400,11 @@ defmodule Realtime.ServerTest do
       assert Server.lookup({ets, lookup_key}) == [@vehicle_on_inactive_block]
     end
 
-    test "logged out vehicles are returned when include_logged_out_vehicles is true",
+    test "logged out vehicles are returned",
          %{server_pid: pid} do
       {lookup_key, _} =
         Server.subscribe_to_search(
-          %{property: :vehicle, text: "123", include_logged_out_vehicles: true},
+          %{property: :vehicle, text: "123"},
           pid
         )
 
@@ -432,22 +422,6 @@ defmodule Realtime.ServerTest do
 
       assert_receive {:new_realtime_data, ets}
       assert Server.lookup({ets, lookup_key}) == [logged_in_vehicle, logged_out_vehicle]
-    end
-
-    test "logged out vehicles are not returned when include_logged_out_vehicles is not set",
-         %{server_pid: pid} do
-      {lookup_key, _} = Server.subscribe_to_search(%{property: :vehicle, text: "123"}, pid)
-
-      logged_in_vehicle =
-        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
-
-      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
-
-      Server.update_vehicles({%{"1" => [logged_in_vehicle]}, [], [logged_out_vehicle]}, pid)
-
-      assert_receive {:new_realtime_data, ets}
-
-      assert Server.lookup({ets, lookup_key}) == [logged_in_vehicle]
     end
   end
 
@@ -504,11 +478,11 @@ defmodule Realtime.ServerTest do
                Server.lookup({ets, lookup_key})
     end
 
-    test "logged out vehicles are returned when include_logged_out_vehicles is true",
+    test "logged out vehicles are returned",
          %{server_pid: pid} do
       {lookup_key, _} =
         Server.subscribe_to_limited_search(
-          %{property: :vehicle, text: "123", include_logged_out_vehicles: true, limit: 4},
+          %{property: :vehicle, text: "123", limit: 4},
           pid
         )
 
@@ -530,24 +504,6 @@ defmodule Realtime.ServerTest do
                matching_vehicles: [logged_in_vehicle, logged_out_vehicle],
                has_more_matches: false
              } == Server.lookup({ets, lookup_key})
-    end
-
-    test "logged out vehicles are not returned when include_logged_out_vehicles is not set",
-         %{server_pid: pid} do
-      {lookup_key, _} =
-        Server.subscribe_to_limited_search(%{property: :vehicle, text: "123", limit: 5}, pid)
-
-      logged_in_vehicle =
-        build(:vehicle, id: "y1235", label: "1235", route_id: "1", run_id: "run_id")
-
-      logged_out_vehicle = build(:vehicle, id: "y1234", label: "1234", route_id: nil, run_id: nil)
-
-      Server.update_vehicles({%{"1" => [logged_in_vehicle]}, [], [logged_out_vehicle]}, pid)
-
-      assert_receive {:new_realtime_data, ets}
-
-      assert %{matching_vehicles: [logged_in_vehicle], has_more_matches: false} ==
-               Server.lookup({ets, lookup_key})
     end
   end
 
@@ -870,22 +826,17 @@ defmodule Realtime.ServerTest do
   describe "peek_at_vehicles_by_id/2" do
     test "looks up the vehicle or ghost with given ID" do
       {:ok, server_pid} = Server.start_link([])
-      Server.update_vehicles({@vehicles_by_route_id, [@shuttle], []}, server_pid)
+
+      Server.update_vehicles(
+        {@vehicles_by_route_id, [@shuttle], [@logged_out_vehicle]},
+        server_pid
+      )
 
       assert Server.peek_at_vehicle_by_id("no_such_vehicle", server_pid) == []
       assert Server.peek_at_vehicle_by_id("v1", server_pid) == [@vehicle]
       assert Server.peek_at_vehicle_by_id("g1", server_pid) == [@ghost]
-    end
-  end
 
-  describe "peek_at_vehicles_by_id_with_logged_out/2" do
-    test "looks up the vehicle or ghost with given ID" do
-      {:ok, server_pid} = Server.start_link([])
-      Server.update_vehicles({%{}, [], [@logged_out_vehicle]}, server_pid)
-
-      assert Server.peek_at_vehicle_by_id_with_logged_out("no_such_vehicle", server_pid) == []
-
-      assert Server.peek_at_vehicle_by_id_with_logged_out(@logged_out_vehicle.id, server_pid) == [
+      assert Server.peek_at_vehicle_by_id(@logged_out_vehicle.id, server_pid) == [
                @logged_out_vehicle
              ]
     end

@@ -22,7 +22,6 @@ import { createControlComponent } from "@react-leaflet/core"
 import { joinClasses } from "../helpers/dom"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape, Stop } from "../schedule"
-import inTestGroup, { TestGroups } from "../userInTestGroup"
 import {
   GarageMarkers,
   RouteShape,
@@ -198,9 +197,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
                     <RouteStopMarkers
                       stops={stops}
                       zoomLevel={zoomLevel}
-                      includeStopCard={
-                        props.includeStopCard && inTestGroup(TestGroups.MapBeta)
-                      }
+                      includeStopCard={props.includeStopCard}
                     />
                   </Pane>
                 )}

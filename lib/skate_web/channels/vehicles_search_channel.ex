@@ -22,7 +22,6 @@ defmodule SkateWeb.VehiclesSearchChannel do
       )
 
     username = username_from_socket!.(socket)
-    %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
 
     %{property: property, text: text} = search_params_from_subtopic(subtopic)
 
@@ -36,8 +35,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
     subscribe_args = %{
       property: property,
       text: text,
-      limit: limit,
-      include_logged_out_vehicles: Skate.Settings.User.is_in_test_group(user_id, "map-beta")
+      limit: limit
     }
 
     Logger.info(fn ->
@@ -65,7 +63,6 @@ defmodule SkateWeb.VehiclesSearchChannel do
         &SkateWeb.AuthManager.username_from_socket!/1
       )
 
-    %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
     username = username_from_socket!.(socket)
 
     %{property: property, text: text} = search_params_from_subtopic(subtopic)
@@ -75,8 +72,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
         %{
           property: property,
           text: text,
-          limit: limit,
-          include_logged_out_vehicles: Skate.Settings.User.is_in_test_group(user_id, "map-beta")
+          limit: limit
         }
       ])
 

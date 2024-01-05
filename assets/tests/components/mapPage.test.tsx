@@ -87,7 +87,6 @@ import useSearchResultsByCategory from "../../src/hooks/useSearchResultsByCatego
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
-import userInTestGroup, { TestGroups } from "../../src/userInTestGroup"
 import { useMinischeduleRun } from "../../src/hooks/useMinischedule"
 import pieceFactory from "../factories/piece"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
@@ -952,7 +951,11 @@ describe("<MapPage />", () => {
       "c-map-page__input-and-results--hidden"
     )
 
-    await userEvent.click(screen.getByRole("button", { name: vehicle.runId! }))
+    await userEvent.click(
+      within(document.getElementById("id-vehicle-map")!).getByRole("button", {
+        name: vehicle.runId!,
+      })
+    )
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
       "c-map-page__input-and-results--visible"
@@ -994,7 +997,11 @@ describe("<MapPage />", () => {
       "c-map-page__input-and-results--hidden"
     )
 
-    await userEvent.click(screen.getByRole("button", { name: vehicle.runId! }))
+    await userEvent.click(
+      within(document.getElementById("id-vehicle-map")!).getByRole("button", {
+        name: vehicle.runId!,
+      })
+    )
 
     expect(screen.getByRole("generic", { name: /search panel/i })).toHaveClass(
       "c-map-page__input-and-results--visible"
@@ -1002,10 +1009,6 @@ describe("<MapPage />", () => {
   })
 
   test("clicking a run from a selected vehicle opens properties panel with run", async () => {
-    jest
-      .mocked(userInTestGroup)
-      .mockImplementationOnce((key) => key === TestGroups.SearchMapsOnMobile)
-
     const mockedUsePanelState = mockUsePanelState()
 
     const route = routeFactory.build()
@@ -1408,7 +1411,10 @@ describe("<MapPage />", () => {
           mapContainer.querySelector(".c-vehicle-map__route-shape")
         ).toBeInTheDocument()
         expect(
-          screen.getAllByRole("button", { name: runIdToLabel(vehicle.runId!) })
+          within(document.getElementById("id-vehicle-map")!).getAllByRole(
+            "button",
+            { name: runIdToLabel(vehicle.runId!) }
+          )
         ).toHaveLength(vehicles.length)
 
         expect(vehiclePropertiesCard.get()).toBeVisible()
@@ -1461,7 +1467,10 @@ describe("<MapPage />", () => {
           )
 
           expect(
-            screen.getAllByRole("button", { name: selectedVehicle.runId! })
+            within(document.getElementById("id-vehicle-map")!).getAllByRole(
+              "button",
+              { name: selectedVehicle.runId! }
+            )
           ).toHaveLength(selectedRouteVehicles.length)
         })
 
@@ -1496,7 +1505,10 @@ describe("<MapPage />", () => {
             )
 
             expect(
-              screen.getAllByRole("button", { name: selectedVehicle.runId! })
+              within(document.getElementById("id-vehicle-map")!).getAllByRole(
+                "button",
+                { name: selectedVehicle.runId! }
+              )
             ).toHaveLength(selectedRouteVehicles.length)
 
             expect(
