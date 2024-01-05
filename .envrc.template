@@ -89,5 +89,5 @@ export ERL_FLAGS="+MIscs 2048"
 # export CHROMATIC_PROJECT_TOKEN=
 
 ## Open Route Service
-## API key for accessing the ORS API.
-# export ORS_API_KEY=
+export OPEN_ROUTE_SERVICE_API_URL=https://api.openrouteservice.org/
+# export OPEN_ROUTE_SERVICE_API_KEY=

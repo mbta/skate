@@ -12,8 +12,8 @@ config :skate,
   aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
 config :skate, Skate.OpenRouteServiceAPI,
-  api_base_url: "https://api.openrouteservice.org/",
-  api_key: System.get_env("ORS_API_KEY")
+  api_base_url: System.get_env("OPEN_ROUTE_SERVICES_API_URL")
+  api_key: System.get_env("OPEN_ROUTE_SERVICES_API_KEY")
 
 config :ueberauth, Ueberauth.Strategy.Cognito,
   client_secret: System.get_env("COGNITO_CLIENT_SECRET")
