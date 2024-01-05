@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React from "react"
+import React, { ReactNode } from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../../factories/route"
 import * as map from "../../../src/components/map"
@@ -126,6 +126,10 @@ const vehicle: VehicleInScheduledService = vehicleFactory.build({
   crowding: null,
 })
 
+const MemoryRouterWrapper = ({ children }: { children: ReactNode }) => (
+  <MemoryRouter initialEntries={["/"]}>{children}</MemoryRouter>
+)
+
 describe("VehiclePropertiesPanel", () => {
   test("renders a vehicle properties panel", () => {
     const tree = renderer
@@ -187,15 +191,14 @@ describe("VehiclePropertiesPanel", () => {
 
   test("Includes invalid bus banner when vehicle is off course", () => {
     render(
-      <MemoryRouter initialEntries={["/"]}>
-        <VehiclePropertiesPanel
-          selectedVehicle={invalidVehicleFactory.build()}
-          tabMode="status"
-          onChangeTabMode={jest.fn()}
-          onClosePanel={jest.fn()}
-          openMapEnabled={true}
-        />
-      </MemoryRouter>
+      <VehiclePropertiesPanel
+        selectedVehicle={invalidVehicleFactory.build()}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
     expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
   })
@@ -297,15 +300,14 @@ describe("VehiclePropertiesPanel", () => {
       ok: "Atlantic Ave & Summer St",
     })
     const result = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicle}
-          tabMode="status"
-          onChangeTabMode={jest.fn()}
-          onClosePanel={jest.fn()}
-          openMapEnabled={true}
-        />
-      </MemoryRouter>
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
     expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
   })
@@ -316,15 +318,14 @@ describe("VehiclePropertiesPanel", () => {
       .mockImplementation((_key) => "1")
 
     const result = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicle}
-          tabMode="status"
-          onChangeTabMode={jest.fn()}
-          onClosePanel={jest.fn()}
-          openMapEnabled={true}
-        />
-      </MemoryRouter>
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(2)
@@ -336,15 +337,14 @@ describe("VehiclePropertiesPanel", () => {
       .mockImplementation((_key) => null)
 
     const result = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicle}
-          tabMode="status"
-          onChangeTabMode={jest.fn()}
-          onClosePanel={jest.fn()}
-          openMapEnabled={true}
-        />
-      </MemoryRouter>
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(0)
@@ -418,15 +418,14 @@ describe("VehiclePropertiesPanel", () => {
     ])
 
     const { container } = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicle}
-          tabMode="status"
-          onChangeTabMode={jest.fn()}
-          onClosePanel={jest.fn()}
-          openMapEnabled={true}
-        />
-      </MemoryRouter>
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     expect(container.innerHTML).toContain("c-station-icon")
@@ -436,15 +435,14 @@ describe("VehiclePropertiesPanel", () => {
     const mockClosePanel = jest.fn()
 
     render(
-      <MemoryRouter initialEntries={["/"]}>
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicle}
-          tabMode="status"
-          onChangeTabMode={jest.fn()}
-          onClosePanel={mockClosePanel}
-          openMapEnabled={true}
-        />
-      </MemoryRouter>
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={mockClosePanel}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
 
     await userEvent.click(closeButton.get())
@@ -466,15 +464,14 @@ describe("VehiclePropertiesPanel", () => {
       const mockSetTabMode = jest.fn()
 
       render(
-        <MemoryRouter initialEntries={["/"]}>
-          <VehiclePropertiesPanel
-            selectedVehicle={vehicleFactory.build()}
-            tabMode={initialTab || "status"}
-            onChangeTabMode={mockSetTabMode}
-            onClosePanel={jest.fn()}
-            openMapEnabled={true}
-          />
-        </MemoryRouter>
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab || "status"}
+          onChangeTabMode={mockSetTabMode}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />,
+        { wrapper: MemoryRouterWrapper }
       )
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
@@ -497,15 +494,14 @@ describe("VehiclePropertiesPanel", () => {
       const mockedFSEvent = jest.mocked(fullStoryEvent)
 
       render(
-        <MemoryRouter initialEntries={["/"]}>
-          <VehiclePropertiesPanel
-            selectedVehicle={vehicleFactory.build()}
-            tabMode={initialTab || "status"}
-            onChangeTabMode={jest.fn()}
-            onClosePanel={jest.fn()}
-            openMapEnabled={true}
-          />
-        </MemoryRouter>
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab || "status"}
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />,
+        { wrapper: MemoryRouterWrapper }
       )
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
@@ -531,15 +527,14 @@ describe("VehiclePropertiesPanel", () => {
       const mockedFSEvent = jest.mocked(fullStoryEvent)
 
       render(
-        <MemoryRouter initialEntries={["/"]}>
-          <VehiclePropertiesPanel
-            selectedVehicle={vehicleFactory.build()}
-            tabMode={initialTab}
-            onChangeTabMode={jest.fn()}
-            onClosePanel={jest.fn()}
-            openMapEnabled={true}
-          />
-        </MemoryRouter>
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab}
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />,
+        { wrapper: MemoryRouterWrapper }
       )
 
       await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
