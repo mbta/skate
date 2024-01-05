@@ -1410,10 +1410,12 @@ describe("<MapPage />", () => {
         expect(
           mapContainer.querySelector(".c-vehicle-map__route-shape")
         ).toBeInTheDocument()
-        // there is one additional button to select the run ID from the VPP
         expect(
-          screen.getAllByRole("button", { name: runIdToLabel(vehicle.runId!) })
-        ).toHaveLength(vehicles.length + 1)
+          within(document.getElementById("id-vehicle-map")!).getAllByRole(
+            "button",
+            { name: runIdToLabel(vehicle.runId!) }
+          )
+        ).toHaveLength(vehicles.length)
 
         expect(vehiclePropertiesCard.get()).toBeVisible()
         expect(
@@ -1464,10 +1466,12 @@ describe("<MapPage />", () => {
             </StateDispatchProvider>
           )
 
-          // there is one additional button to select the run ID from the VPP
           expect(
-            screen.getAllByRole("button", { name: selectedVehicle.runId! })
-          ).toHaveLength(selectedRouteVehicles.length + 1)
+            within(document.getElementById("id-vehicle-map")!).getAllByRole(
+              "button",
+              { name: selectedVehicle.runId! }
+            )
+          ).toHaveLength(selectedRouteVehicles.length)
         })
 
         describe("and vehicle is a regular bus", () => {
@@ -1500,10 +1504,12 @@ describe("<MapPage />", () => {
               </StateDispatchProvider>
             )
 
-            // there is one additional button to select the run ID from the VPP
             expect(
-              screen.getAllByRole("button", { name: selectedVehicle.runId! })
-            ).toHaveLength(selectedRouteVehicles.length + 1)
+              within(document.getElementById("id-vehicle-map")!).getAllByRole(
+                "button",
+                { name: selectedVehicle.runId! }
+              )
+            ).toHaveLength(selectedRouteVehicles.length)
 
             expect(
               container.querySelectorAll(".c-vehicle-map__stop")
