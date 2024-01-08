@@ -5,6 +5,7 @@ defmodule Skate.OpenRouteServiceAPI do
 
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
   alias Skate.OpenRouteServiceAPI.DirectionsResponse
+  alias Skate.OpenRouteServiceAPI.Client
 
   def directions(coordinates) when is_list(coordinates) do
     directions(%DirectionsRequest{
@@ -13,23 +14,14 @@ defmodule Skate.OpenRouteServiceAPI do
   end
 
   def directions(%DirectionsRequest{} = request) do
-    response =
-      HTTPoison.post(
-        directions_api(),
-        Jason.encode!(request),
-        Authorization: api_key(),
-        "Content-Type": "application/json"
-      )
+    response = Client.get_directions(request)
 
     case response do
-      {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
-        parse_directions(Jason.decode(body, strings: :copy))
+      {:ok, payload} ->
+        parse_directions(payload)
 
-      {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
-        {:error, Jason.decode!(body)["error"]}
-
-      {:error, %HTTPoison.Error{}} ->
-        nil
+      error ->
+        error
     end
   end
 
@@ -41,14 +33,4 @@ defmodule Skate.OpenRouteServiceAPI do
        coordinates: Enum.map(coordinates, fn [lon, lat] -> %{"lat" => lat, "lon" => lon} end)
      }}
   end
-
-  defp directions_api do
-    api_url()
-    |> URI.merge("/v2/directions/driving-hgv/geojson")
-    |> URI.to_string()
-  end
-
-  defp api_url, do: Application.get_env(:skate, __MODULE__)[:api_base_url]
-
-  defp api_key, do: Application.get_env(:skate, __MODULE__)[:api_key]
 end
