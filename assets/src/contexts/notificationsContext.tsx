@@ -1,7 +1,7 @@
 import React, {
   createContext,
   Dispatch,
-  ReactElement,
+  ReactNode,
   SetStateAction,
   useContext,
   useEffect,
@@ -53,7 +53,7 @@ export const NotificationsContext = createContext<State>({
 export const NotificationsProvider = ({
   children,
 }: {
-  children: ReactElement<HTMLElement>
+  children: ReactNode
 }) => {
   const [{ selectedNotification }, stateDispatch] =
     useContext(StateDispatchContext)

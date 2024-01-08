@@ -2,7 +2,7 @@ import { Factory } from "fishery"
 import { Route } from "../../src/schedule"
 
 const routeFactory = Factory.define<Route>(({ sequence }) => ({
-  id: `route${sequence}`,
+  id: sequence.toString(),
   directionNames: {
     0: "Outbound",
     1: "Inbound",
