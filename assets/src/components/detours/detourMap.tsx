@@ -13,15 +13,17 @@ import { fetchDetourDirections } from "../../api"
 export const DetourMap = ({ shape }: { shape: Shape }) => {
   const [startPoint, setStartPoint] = useState<LatLngLiteral | null>(null)
   const [endPoint, setEndPoint] = useState<LatLngLiteral | null>(null)
-  const [detourPositions, setDetourPositions] = useState<LatLngLiteral[]>([])
-  const [orsPositions, setOrsPositions] = useState<LatLngLiteral[]>([])
+  const [waypoints, setWaypoints] = useState<LatLngLiteral[]>([])
+  const [detourShapePositions, setDetourShapePositions] = useState<
+    LatLngLiteral[]
+  >([])
 
   const onAddDetourPosition = (p: LatLngLiteral) => {
-    setDetourPositions((positions) => [...positions, p])
+    setWaypoints((positions) => [...positions, p])
   }
 
   useEffect(() => {
-    const shapePoints: ShapePoint[] = detourPositions.map(
+    const shapePoints: ShapePoint[] = waypoints.map(
       (waypoint: LatLngLiteral) => {
         const { lat, lng } = waypoint
         return { lat, lon: lng }
@@ -30,7 +32,7 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
 
     fetchDetourDirections(shapePoints).then((detourShape) => {
       if (detourShape) {
-        setOrsPositions(
+        setDetourShapePositions(
           detourShape.coordinates.map((position: ShapePoint) => {
             const { lat, lon } = position
             return { lat, lng: lon }
@@ -38,7 +40,7 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         )
       }
     })
-  }, [detourPositions])
+  }, [waypoints])
 
   return (
     <Map vehicles={[]}>
@@ -46,12 +48,10 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         <Button
           variant="primary"
           disabled={
-            startPoint === null ||
-            endPoint !== null ||
-            detourPositions.length === 1
+            startPoint === null || endPoint !== null || waypoints.length === 1
           }
           onClick={() =>
-            setDetourPositions((positions) =>
+            setWaypoints((positions) =>
               positions.slice(0, positions.length - 1)
             )
           }
@@ -65,9 +65,9 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         onSetStartPoint={setStartPoint}
         endPoint={endPoint}
         onSetEndPoint={setEndPoint}
-        detourPositions={detourPositions}
+        waypoints={waypoints}
         onAddDetourPosition={onAddDetourPosition}
-        orsPositions={orsPositions}
+        detourShapePositions={detourShapePositions}
       />
     </Map>
   )
@@ -79,18 +79,18 @@ const RouteShapeWithDetour = ({
   onSetStartPoint,
   endPoint,
   onSetEndPoint,
-  detourPositions,
+  waypoints,
   onAddDetourPosition,
-  orsPositions,
+  detourShapePositions,
 }: {
   originalShape: Shape
   startPoint: LatLngLiteral | null
   onSetStartPoint: (p: LatLngLiteral | null) => void
   endPoint: LatLngLiteral | null
   onSetEndPoint: (p: LatLngLiteral | null) => void
-  detourPositions: LatLngLiteral[]
+  waypoints: LatLngLiteral[]
   onAddDetourPosition: (p: LatLngLiteral) => void
-  orsPositions: LatLngLiteral[]
+  detourShapePositions: LatLngLiteral[]
 }) => {
   const routeShapePositions: LatLngLiteral[] = originalShape.points.map(
     (point) => ({
@@ -106,12 +106,12 @@ const RouteShapeWithDetour = ({
   })
 
   // points on the detour not already represented by the start and end
-  const uniqueDetourPositions =
-    detourPositions.length === 0
+  const uniqueWaypoints =
+    waypoints.length === 0
       ? []
       : endPoint === null
-      ? detourPositions.slice(1)
-      : detourPositions.slice(1, -1)
+      ? waypoints.slice(1)
+      : waypoints.slice(1, -1)
 
   return (
     <>
@@ -140,10 +140,10 @@ const RouteShapeWithDetour = ({
       {startPoint && <StartMarker position={startPoint} />}
       {endPoint && <EndMarker position={endPoint} />}
       <Polyline
-        positions={orsPositions}
+        positions={detourShapePositions}
         className="c-detour_map--detour-route-shape"
       />
-      {uniqueDetourPositions.map((position) => (
+      {uniqueWaypoints.map((position) => (
         <DetourPointMarker key={position.toString()} position={position} />
       ))}
     </>
