@@ -3,6 +3,7 @@ import React from "react"
 import { MemoryRouter } from "react-router-dom"
 
 import { AppRoutes } from "../../../src/components/app"
+import { AppStateProvider } from "../../../src/components/appStateWrapper"
 
 const meta = {
   component: AppRoutes,
@@ -15,6 +16,11 @@ const meta = {
       <MemoryRouter initialEntries={["/"]}>
         <StoryFn />
       </MemoryRouter>
+    ),
+    (StoryFn) => (
+      <AppStateProvider>
+        <StoryFn />
+      </AppStateProvider>
     ),
   ],
 } satisfies Meta<typeof AppRoutes>
