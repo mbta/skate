@@ -121,7 +121,7 @@ export const Minischedule = ({
         <div>
           {activities.map((activity, index) =>
             isPiece(activity) ? (
-              <Piece
+              <PieceSchedule
                 piece={activity}
                 view={view}
                 vehicleOrGhost={vehicleOrGhost}
@@ -310,7 +310,7 @@ const Layover = ({
   )
 }
 
-const Piece = ({
+const PieceSchedule = ({
   piece,
   view,
   vehicleOrGhost,
@@ -398,7 +398,7 @@ const Piece = ({
             : getSequence(tripIndex, piece.trips.length)
 
           return (
-            <Trip
+            <TripSchedule
               trip={trip}
               sequence={sequence}
               previousEndTime={
@@ -494,7 +494,7 @@ const sequenceToNonRevenueStatus = (sequence: Sequence): NonRevenueStatus => {
   }
 }
 
-const Trip = ({
+const TripSchedule = ({
   trip,
   previousEndTime,
   sequence,
@@ -562,7 +562,7 @@ const Trip = ({
           />
         )
       ) : (
-        <AsDirected
+        <AsDirectedRow
           asDirected={trip}
           timeBasedStyle={onRouteTimeBasedStyle}
           overloadOffset={overloadOffset}
@@ -700,7 +700,7 @@ const RevenueTrip = ({
   )
 }
 
-const AsDirected = ({
+const AsDirectedRow = ({
   asDirected,
   timeBasedStyle,
   overloadOffset,
