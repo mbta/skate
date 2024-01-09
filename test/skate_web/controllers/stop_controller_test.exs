@@ -19,7 +19,7 @@ defmodule SkateWeb.StopControllerTest do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn = get(conn, ~p"/api/stops/stations")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == "/auth/keycloak"
     end
 
     @tag :authenticated
@@ -80,7 +80,7 @@ defmodule SkateWeb.StopControllerTest do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn = get(conn, ~p"/api/stops")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == "/auth/keycloak"
     end
 
     @tag :authenticated

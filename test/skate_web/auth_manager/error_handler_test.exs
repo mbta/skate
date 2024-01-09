@@ -8,7 +8,7 @@ defmodule SkateWeb.AuthManager.ErrorHandlerTest do
         |> init_test_session(%{username: "test_without_refresh_token@mbta.com"})
         |> SkateWeb.AuthManager.ErrorHandler.auth_error({:some_type, :reason}, [])
 
-      assert html_response(conn, 302) =~ "\"/auth/cognito\""
+      assert html_response(conn, 302) =~ "\"/auth/keycloak\""
       assert get_session(conn, :auth_retries) == 2
     end
 
@@ -19,7 +19,7 @@ defmodule SkateWeb.AuthManager.ErrorHandlerTest do
         |> put_session(:auth_retries, 2)
         |> SkateWeb.AuthManager.ErrorHandler.auth_error({:some_type, :reason}, [])
 
-      assert html_response(conn, 302) =~ "\"/auth/cognito\""
+      assert html_response(conn, 302) =~ "\"/auth/keycloak\""
       assert get_session(conn, :auth_retries) == 1
     end
 

@@ -4,9 +4,9 @@ defmodule SkateWeb.AuthControllerTest do
 
   describe "GET /auth/:provider" do
     test "redirects to the callback", %{conn: conn} do
-      conn = get(conn, "/auth/cognito")
+      conn = get(conn, "/auth/keycloak")
 
-      assert redirected_to(conn) == "/auth/cognito/callback"
+      assert redirected_to(conn) == "/auth/keycloak/callback"
     end
   end
 
@@ -25,7 +25,7 @@ defmodule SkateWeb.AuthControllerTest do
       conn =
         conn
         |> assign(:ueberauth_auth, mock_auth)
-        |> get("/auth/cognito/callback")
+        |> get("/auth/keycloak/callback")
 
       assert redirected_to(conn) == "/"
       assert Guardian.Plug.current_claims(conn)["groups"] == ["test1"]
@@ -44,7 +44,7 @@ defmodule SkateWeb.AuthControllerTest do
 
       conn
       |> assign(:ueberauth_auth, mock_auth)
-      |> get("/auth/cognito/callback")
+      |> get("/auth/keycloak/callback")
 
       assert %{username: "test_username", email: "test@mbta.com"} =
                User.get_by_email("test@mbta.com")
@@ -66,7 +66,7 @@ defmodule SkateWeb.AuthControllerTest do
         |> init_test_session(%{})
         |> put_session(:auth_retries, 2)
         |> assign(:ueberauth_auth, mock_auth)
-        |> get("/auth/cognito/callback")
+        |> get("/auth/keycloak/callback")
 
       assert is_nil(get_session(conn, :auth_retries))
     end
@@ -76,7 +76,7 @@ defmodule SkateWeb.AuthControllerTest do
         conn
         |> init_test_session(%{username: "test_username"})
         |> assign(:ueberauth_failure, "failed")
-        |> get("/auth/cognito/callback")
+        |> get("/auth/keycloak/callback")
 
       assert redirected_to(conn) == "/"
     end

@@ -6,7 +6,7 @@ defmodule Skate.Ueberauth.Strategy.FakeTest do
 
   @tag :authenticated
   test "credentials returns a credentials struct with groups specified in config", %{conn: conn} do
-    assert conn |> get("/auth/cognito") |> Fake.credentials() == %Credentials{
+    assert conn |> get("/auth/keycloak") |> Fake.credentials() == %Credentials{
              token: "fake_access_token",
              refresh_token: "fake_refresh_token",
              expires: true,

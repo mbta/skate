@@ -119,7 +119,7 @@ defmodule SkateWeb.ShapeControllerTest do
         |> api_headers()
         |> get("/api/shapes/route/1")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == "/auth/keycloak"
     end
 
     @tag :authenticated

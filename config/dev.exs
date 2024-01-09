@@ -44,7 +44,7 @@ config :ex_aws,
 
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]}
+    keycloak: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]}
   ]
 
 config :logger, level: :notice

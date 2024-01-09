@@ -40,7 +40,7 @@ defmodule SkateWeb.SwingsControllerTest do
         |> api_headers()
         |> get("/api/swings")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == "/auth/keycloak"
     end
 
     @tag :authenticated

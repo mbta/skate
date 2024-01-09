@@ -11,7 +11,7 @@ defmodule SkateWeb.ShuttleControllerTest do
         |> api_headers()
         |> get("/api/shuttles")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == "/auth/keycloak"
     end
 
     @tag :authenticated

@@ -30,7 +30,7 @@ defmodule SkateWeb.RouteControllerTest do
         |> api_headers()
         |> get("/api/routes")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == "/auth/keycloak"
     end
 
     @tag :authenticated
@@ -59,7 +59,7 @@ defmodule SkateWeb.RouteControllerTest do
         |> api_headers()
         |> get("/api/routes/1")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == "/auth/keycloak"
     end
 
     @tag :authenticated

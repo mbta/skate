@@ -12,7 +12,7 @@ defmodule SkateWeb.AuthManager.ErrorHandler do
     if auth_retries > 0 do
       conn
       |> put_session(:auth_retries, auth_retries - 1)
-      |> Phoenix.Controller.redirect(to: ~p"/auth/cognito")
+      |> Phoenix.Controller.redirect(to: ~p"/auth/keycloak")
     else
       conn
       |> delete_session(:auth_retries)

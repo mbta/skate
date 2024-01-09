@@ -6,7 +6,7 @@ defmodule Skate.Ueberauth.Strategy.Fake do
   @impl Ueberauth.Strategy
   def handle_request!(conn) do
     conn
-    |> redirect!("/auth/cognito/callback")
+    |> redirect!("/auth/keycloak/callback")
     |> halt()
   end
 
