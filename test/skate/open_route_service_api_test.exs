@@ -4,8 +4,6 @@ defmodule Skate.OpenRouteServiceAPITest do
 
   import Mox
 
-  # setup :verify_on_exit!
-
   setup do
     DirectionsRequest
 
