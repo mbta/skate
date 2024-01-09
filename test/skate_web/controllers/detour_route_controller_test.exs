@@ -74,6 +74,19 @@ defmodule SkateWeb.DetourRouteControllerTest do
     end
 
     @tag :authenticated
+    test "returns an empty list when the input has no waypoints", %{conn: conn} do
+      conn =
+        post(conn, ~p"/api/detours/directions", coordinates: [])
+
+      assert %{
+               "data" => %{
+                 "coordinates" => []
+               }
+             } =
+               json_response(conn, 200)
+    end
+
+    @tag :authenticated
     test "returns an empty list when the input only has one waypoint", %{conn: conn} do
       conn =
         post(conn, ~p"/api/detours/directions", coordinates: [%{"lat" => 1, "lon" => 100}])
