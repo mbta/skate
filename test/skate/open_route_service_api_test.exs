@@ -5,8 +5,6 @@ defmodule Skate.OpenRouteServiceAPITest do
   import Mox
 
   setup do
-    DirectionsRequest
-
     expect(
       Skate.OpenRouteServiceAPI.MockClient,
       :get_directions,
@@ -21,7 +19,11 @@ defmodule Skate.OpenRouteServiceAPITest do
            "features" => [
              %{
                "geometry" => %{
-                 "coordinates" => [[0, 0], [0.1, 0.5], [0, 1]]
+                 "coordinates" => [
+                   [0, 0],
+                   [0.1, 0.5],
+                   [0, 1]
+                 ]
                }
              }
            ]
