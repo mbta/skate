@@ -6,9 +6,38 @@ defmodule Skate.OpenRouteServiceAPI do
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
   alias Skate.OpenRouteServiceAPI.DirectionsResponse
 
-  def directions([_]) do
-    {:ok, %DirectionsResponse{}}
-  end
+  @doc """
+  Returns a response from OpenRouteService containing coordinates of a route shape.
+
+  The coordinates in both the input and the output for `directions/1` are formatted
+  as maps with keys `lat` and `lon`.
+
+  ## Example (with some fake API data)
+      iex> Skate.OpenRouteServiceAPI.directions([%{"lat" => 0, "lon" => 0}, %{"lat" => 0, "lon" => 1}])
+      {
+        :ok,
+        %Skate.OpenRouteServiceAPI.DirectionsResponse{
+          coordinates: [
+            %{"lat" => 0, "lon" => 0},
+            %{"lat" => 0.5, "lon" => 0.1},
+            %{"lat" => 1, "lon" => 0}
+          ]
+        }
+      }
+
+  If no coordinates are given, or only one is, then `directions/1` will bypass the actual
+  API call and just return a response with an empty route shape.
+
+  ## Examples
+      iex> Skate.OpenRouteServiceAPI.directions([])
+      {:ok, %Skate.OpenRouteServiceAPI.DirectionsResponse{coordinates: []}}
+
+      iex> Skate.OpenRouteServiceAPI.directions([%{"lat" => 0, "lon" => 0}])
+      {:ok, %Skate.OpenRouteServiceAPI.DirectionsResponse{coordinates: []}}
+  """
+  @spec directions(list()) :: {:ok, DirectionsResponse.t()} | {:error, any()}
+  def directions([]), do: {:ok, %DirectionsResponse{}}
+  def directions([_]), do: {:ok, %DirectionsResponse{}}
 
   def directions(coordinates) when is_list(coordinates) do
     request = %DirectionsRequest{
