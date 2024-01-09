@@ -5,27 +5,29 @@ defmodule Skate.OpenRouteServiceAPI do
 
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
   alias Skate.OpenRouteServiceAPI.DirectionsResponse
-  alias Skate.OpenRouteServiceAPI.Client
 
-  def directions(coordinates) when is_list(coordinates) do
-    directions(%DirectionsRequest{
-      coordinates: Enum.map(coordinates, fn %{"lat" => lat, "lon" => lon} -> [lon, lat] end)
-    })
+  def directions([_]) do
+    {:ok, %DirectionsResponse{}}
   end
 
-  def directions(%DirectionsRequest{} = request) do
-    response = Client.get_directions(request)
+  def directions(coordinates) when is_list(coordinates) do
+    request = %DirectionsRequest{
+      coordinates:
+        Enum.map(coordinates, fn
+          %{"lat" => lat, "lon" => lon} -> [lon, lat]
+        end)
+    }
 
-    case response do
+    case client().get_directions(request) do
       {:ok, payload} ->
         parse_directions(payload)
 
-      error ->
-        error
+        #     error ->
+        #       error
     end
   end
 
-  defp parse_directions({:ok, payload}) do
+  defp parse_directions(payload) do
     %{"features" => [%{"geometry" => %{"coordinates" => coordinates}}]} = payload
 
     {:ok,
@@ -33,4 +35,6 @@ defmodule Skate.OpenRouteServiceAPI do
        coordinates: Enum.map(coordinates, fn [lon, lat] -> %{"lat" => lat, "lon" => lon} end)
      }}
   end
+
+  defp client(), do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:client]
 end

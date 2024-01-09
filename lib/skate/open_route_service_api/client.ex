@@ -3,6 +3,11 @@ defmodule Skate.OpenRouteServiceAPI.Client do
   An HTTP Client that reaches out to Open Route Service
   """
 
+  alias Skate.OpenRouteServiceAPI.DirectionsRequest
+
+  @callback get_directions(DirectionsRequest.t()) :: {:ok, map()} | {:error, any()}
+
+  @spec get_directions(DirectionsRequest.t()) :: {:ok, map()} | {:error, any()}
   def get_directions(request) do
     response =
       HTTPoison.post(
@@ -14,7 +19,7 @@ defmodule Skate.OpenRouteServiceAPI.Client do
 
     case response do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
-        {:ok, Jason.decode(body, strings: :copy)}
+        Jason.decode(body, strings: :copy)
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
         {:error, Jason.decode!(body)["error"]}
