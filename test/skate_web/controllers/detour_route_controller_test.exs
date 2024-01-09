@@ -99,9 +99,18 @@ defmodule SkateWeb.DetourRouteControllerTest do
                json_response(conn, 200)
     end
 
-    # Forwards other errors
-    # test "400 The request is incorrect and therefore can not be processed."
-    # test "500 An unexpected error was encountered and a more detailed error code is provided."
-    # test "503 The server is currently unavailable due to overload or maintenance."
+    @tag :authenticated
+    test "returns a 500-level response if there is an error", %{conn: conn} do
+      expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
+        {:error, "nope"}
+      end)
+
+      conn =
+        post(conn, ~p"/api/detours/directions",
+          coordinates: [%{"lat" => 1, "lon" => 100}, %{"lat" => 2, "lon" => 101}]
+        )
+
+      assert json_response(conn, 500)
+    end
   end
 end

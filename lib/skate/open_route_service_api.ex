@@ -34,6 +34,12 @@ defmodule Skate.OpenRouteServiceAPI do
 
       iex> Skate.OpenRouteServiceAPI.directions([%{"lat" => 0, "lon" => 0}])
       {:ok, %Skate.OpenRouteServiceAPI.DirectionsResponse{coordinates: []}}
+
+  If anything goes wrong, then this returns an error instead.
+
+  ## Examples
+      iex> Skate.OpenRouteServiceAPI.directions([%{"lat" => 0, "lon" => 10}, %{"lat" => 1, "lon" => 10}])
+      {:error, %{"message" => "Invalid API Key"}}
   """
   @spec directions(list()) :: {:ok, DirectionsResponse.t()} | {:error, any()}
   def directions([]), do: {:ok, %DirectionsResponse{}}
@@ -51,8 +57,8 @@ defmodule Skate.OpenRouteServiceAPI do
       {:ok, payload} ->
         parse_directions(payload)
 
-        #     error ->
-        #       error
+      error ->
+        error
     end
   end
 

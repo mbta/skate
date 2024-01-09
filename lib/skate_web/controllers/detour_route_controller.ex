@@ -9,10 +9,12 @@ defmodule SkateWeb.DetourRouteController do
       {:ok, result} ->
         render(conn, :result, data: result)
 
-        #   {:error, error} ->
-        #     conn
-        #     |> put_status(:bad_request)
-        #     |> render(:error, error: error)
+      {:error, error} ->
+        Sentry.capture_message("OpenRouteServiceAPI error", extra: %{error: error})
+
+        conn
+        |> put_status(:internal_server_error)
+        |> render(:error, error: error)
     end
   end
 end
