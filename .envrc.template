@@ -88,6 +88,6 @@ export ERL_FLAGS="+MIscs 2048"
 ## The project token can be found in Chromatic, (Manage > Configure > Project > Project Token)
 # export CHROMATIC_PROJECT_TOKEN=
 
-## Open Route Service
-export OPEN_ROUTE_SERVICE_API_URL=https://api.openrouteservice.org/
+## Open Route Service (API URL will usually be https://api.openrouteservice.org/; you can your API Key from the ORS console once you create an account)
+# export OPEN_ROUTE_SERVICE_API_URL=
 # export OPEN_ROUTE_SERVICE_API_KEY=
