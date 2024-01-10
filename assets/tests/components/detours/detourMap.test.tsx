@@ -11,10 +11,7 @@ beforeEach(() => {
 })
 
 jest.mock("../../../src/api", () => ({
-  fetchDetourDirections: jest.fn(() => {
-    console.log("HELLO")
-    return Promise.resolve(null)
-  }),
+  fetchDetourDirections: jest.fn(() => Promise.resolve(null)),
 }))
 
 describe("DetourMap", () => {
