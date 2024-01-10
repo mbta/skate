@@ -202,12 +202,12 @@ defmodule Realtime.BlockWaiverTest do
     end
   end
 
-  describe "is_current?/1" do
+  describe "current?/1" do
     test "true when current time is between start and end times" do
       current_time = 5
       reassign_env(:skate, :now_fn, fn -> current_time end)
 
-      assert BlockWaiver.is_current?(%BlockWaiver{
+      assert BlockWaiver.current?(%BlockWaiver{
                start_time: current_time - 1,
                end_time: current_time + 10,
                cause_id: 26,
@@ -219,7 +219,7 @@ defmodule Realtime.BlockWaiverTest do
       current_time = 5
       reassign_env(:skate, :now_fn, fn -> current_time end)
 
-      refute BlockWaiver.is_current?(%BlockWaiver{
+      refute BlockWaiver.current?(%BlockWaiver{
                start_time: current_time - 4,
                end_time: current_time - 1,
                cause_id: 26,
@@ -231,7 +231,7 @@ defmodule Realtime.BlockWaiverTest do
       current_time = 5
       reassign_env(:skate, :now_fn, fn -> current_time end)
 
-      refute BlockWaiver.is_current?(%BlockWaiver{
+      refute BlockWaiver.current?(%BlockWaiver{
                start_time: current_time + 1,
                end_time: current_time + 4,
                cause_id: 26,

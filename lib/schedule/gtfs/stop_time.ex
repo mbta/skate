@@ -70,8 +70,8 @@ defmodule Schedule.Gtfs.StopTime do
   @spec stop_sequence_integer(Csv.row()) :: integer()
   def stop_sequence_integer(stop_time_row), do: String.to_integer(stop_time_row["stop_sequence"])
 
-  @spec is_timepoint?(t()) :: boolean
-  def is_timepoint?(%__MODULE__{timepoint_id: timepoint_id}) do
+  @spec timepoint?(t()) :: boolean
+  def timepoint?(%__MODULE__{timepoint_id: timepoint_id}) do
     timepoint_id != nil
   end
 end

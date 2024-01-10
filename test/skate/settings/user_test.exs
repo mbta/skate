@@ -119,7 +119,7 @@ defmodule Skate.Settings.UserTest do
     end
   end
 
-  describe "is_in_test_group/2" do
+  describe "in_test_group?/2" do
     test "returns true only if given is in test group" do
       user_1 = User.upsert(@username, @email)
       user_2 = User.upsert("otheruser", "otheruser@test.com")
@@ -128,8 +128,8 @@ defmodule Skate.Settings.UserTest do
 
       target_test_group = TestGroup.update(%{target_test_group | users: [user_1, user_2]})
       other_test_group = TestGroup.update(%{other_test_group | users: [user_2]})
-      assert User.is_in_test_group(user_1.id, target_test_group.name)
-      refute User.is_in_test_group(user_1.id, other_test_group.name)
+      assert User.in_test_group?(user_1.id, target_test_group.name)
+      refute User.in_test_group?(user_1.id, other_test_group.name)
     end
 
     test "returns true if the test group has an override enabled" do
@@ -138,8 +138,8 @@ defmodule Skate.Settings.UserTest do
       {:ok, overridden_test_group} = TestGroup.create("overridden_test_group")
 
       overridden_test_group = TestGroup.update(%{overridden_test_group | override: :enabled})
-      assert User.is_in_test_group(user_1.id, overridden_test_group.name)
-      assert User.is_in_test_group(user_2.id, overridden_test_group.name)
+      assert User.in_test_group?(user_1.id, overridden_test_group.name)
+      assert User.in_test_group?(user_2.id, overridden_test_group.name)
     end
   end
 

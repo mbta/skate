@@ -349,7 +349,7 @@ defmodule Realtime.Server do
       |> Enum.reduce({0, 0}, fn ghost, {explained_count, unexplained_count} ->
         alias Realtime.BlockWaiver
 
-        if Enum.any?(ghost.block_waivers, &BlockWaiver.is_current?(&1)) do
+        if Enum.any?(ghost.block_waivers, &BlockWaiver.current?(&1)) do
           {explained_count + 1, unexplained_count}
         else
           {explained_count, unexplained_count + 1}
