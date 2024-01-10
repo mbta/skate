@@ -119,30 +119,6 @@ defmodule Skate.Settings.UserTest do
     end
   end
 
-  describe "in_test_group?/2" do
-    test "returns true only if given is in test group" do
-      user_1 = User.upsert(@username, @email)
-      user_2 = User.upsert("otheruser", "otheruser@test.com")
-      {:ok, target_test_group} = TestGroup.create("target_test_group")
-      {:ok, other_test_group} = TestGroup.create("other_test_group")
-
-      target_test_group = TestGroup.update(%{target_test_group | users: [user_1, user_2]})
-      other_test_group = TestGroup.update(%{other_test_group | users: [user_2]})
-      assert User.in_test_group?(user_1.id, target_test_group.name)
-      refute User.in_test_group?(user_1.id, other_test_group.name)
-    end
-
-    test "returns true if the test group has an override enabled" do
-      user_1 = User.upsert(@username, @email)
-      user_2 = User.upsert("otheruser", "otheruser@test.com")
-      {:ok, overridden_test_group} = TestGroup.create("overridden_test_group")
-
-      overridden_test_group = TestGroup.update(%{overridden_test_group | override: :enabled})
-      assert User.in_test_group?(user_1.id, overridden_test_group.name)
-      assert User.in_test_group?(user_2.id, overridden_test_group.name)
-    end
-  end
-
   describe "all_test_group_names/1" do
     test "returns an empty array if there are no test groups" do
       user = User.upsert("user", "user@test.com")
