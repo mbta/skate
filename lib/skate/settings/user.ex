@@ -75,13 +75,6 @@ defmodule Skate.Settings.User do
     Skate.Repo.all(from(u in users_for_route_ids_query(route_ids), select: u.id))
   end
 
-  def in_test_group?(user_id, test_group_name) do
-    user_id
-    |> get_by_id!()
-    |> all_test_group_names()
-    |> Enum.member?(test_group_name)
-  end
-
   def all_test_group_names(user) do
     user = Skate.Repo.preload(user, :test_groups)
 
