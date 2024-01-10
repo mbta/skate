@@ -63,13 +63,50 @@ defmodule Skate.OpenRouteServiceAPI do
   end
 
   defp parse_directions(payload) do
-    %{"features" => [%{"geometry" => %{"coordinates" => coordinates}}]} = payload
+    %{
+      "features" => [
+        %{
+          "geometry" => %{"coordinates" => coordinates},
+          "properties" => %{"segments" => segments}
+        }
+      ]
+    } = payload
 
     {:ok,
      %DirectionsResponse{
-       coordinates: Enum.map(coordinates, fn [lon, lat] -> %{"lat" => lat, "lon" => lon} end)
+       coordinates: Enum.map(coordinates, fn [lon, lat] -> %{"lat" => lat, "lon" => lon} end),
+       directions:
+         segments
+         |> Enum.flat_map(& &1["steps"])
+         |> Enum.map(
+           &%{
+             instruction: &1["instruction"],
+             name: &1["name"],
+             type: map_type(&1["type"])
+           }
+         )
      }}
   end
 
   defp client(), do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:client]
+
+  defp map_type(type_id) do
+    case type_id do
+      0 -> :left
+      1 -> :right
+      2 -> :sharp_left
+      3 -> :sharp_right
+      4 -> :slight_left
+      5 -> :slight_right
+      6 -> :straight
+      7 -> :enter_roundabout
+      8 -> :exit_roundabout
+      9 -> :u_turn
+      10 -> :goal
+      11 -> :depart
+      12 -> :keep_left
+      13 -> :keep_right
+      _ -> :error
+    end
+  end
 end
