@@ -128,15 +128,6 @@ defmodule Schedule.Trip do
   end
 
   @doc """
-  Whether the trip is active at any time during the time_of_day range.
-  """
-  @spec active?(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
-  def active?(trip, start_time_of_day, end_time_of_day) do
-    end_time_of_day > trip.start_time and
-      start_time_of_day < trip.end_time
-  end
-
-  @doc """
   Whether the trip starts within the given time_of_day range, exclusive
   """
   @spec starts_in_range(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
