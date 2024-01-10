@@ -10,8 +10,7 @@ defmodule Skate.Ueberauth.Strategy.FakeTest do
              token: "fake_access_token",
              refresh_token: "fake_refresh_token",
              expires: true,
-             expires_at: System.system_time(:second) + 9 * 60 * 60,
-             other: %{groups: ["skate-dispatcher", "skate-nav-beta"]}
+             expires_at: System.system_time(:second) + 9 * 60 * 60
            }
   end
 
@@ -19,7 +18,17 @@ defmodule Skate.Ueberauth.Strategy.FakeTest do
     assert Fake.info(%{}) == %Info{email: "fake@email.com"}
   end
 
-  test "extra returns an Extra struct with empty raw_info" do
-    assert Fake.extra(%{}) == %Extra{raw_info: %{}}
+  test "extra returns an Extra struct with group membership information", %{conn: conn} do
+    assert conn |> get("/auth/keycloak") |> Fake.extra() == %Extra{
+             raw_info: %UeberauthOidcc.RawInfo{
+               userinfo: %{
+                 "resource_access" => %{
+                   "dev-client" => %{
+                     "roles" => ["skate-dispatcher", "skate-nav-beta"]
+                   }
+                 }
+               }
+             }
+           }
   end
 end
