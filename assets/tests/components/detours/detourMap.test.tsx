@@ -10,6 +10,13 @@ beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
+jest.mock("../../../src/api", () => ({
+  fetchDetourDirections: jest.fn(() => {
+    console.log("HELLO")
+    return Promise.resolve(null)
+  }),
+}))
+
 describe("DetourMap", () => {
   test("can click on route shape to start detour", async () => {
     const { container } = render(<DetourMap shape={shapeFactory.build()} />)
