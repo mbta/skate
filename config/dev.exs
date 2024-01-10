@@ -47,6 +47,15 @@ config :ueberauth, Ueberauth,
     keycloak: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]}
   ]
 
+config :ueberauth_oidcc,
+  providers: [
+    keycloak: [
+      issuer: :keycloak_issuer,
+      client_id: "dev-client",
+      client_secret: "fake-secret"
+    ]
+  ]
+
 config :logger, level: :notice
 
 # Watch static and templates for browser reloading.

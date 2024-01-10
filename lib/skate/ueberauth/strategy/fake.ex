@@ -21,7 +21,7 @@ defmodule Skate.Ueberauth.Strategy.Fake do
   end
 
   @impl Ueberauth.Strategy
-  def credentials(conn) do
+  def credentials(_conn) do
     nine_hours_in_seconds = 9 * 60 * 60
     expiration_time = System.system_time(:second) + nine_hours_in_seconds
 
@@ -29,8 +29,7 @@ defmodule Skate.Ueberauth.Strategy.Fake do
       token: "fake_access_token",
       refresh_token: "fake_refresh_token",
       expires: true,
-      expires_at: expiration_time,
-      other: %{groups: Ueberauth.Strategy.Helpers.options(conn)[:groups]}
+      expires_at: expiration_time
     }
   end
 
@@ -40,8 +39,16 @@ defmodule Skate.Ueberauth.Strategy.Fake do
   end
 
   @impl Ueberauth.Strategy
-  def extra(_conn) do
-    %Ueberauth.Auth.Extra{raw_info: %{}}
+  def extra(conn) do
+    %Ueberauth.Auth.Extra{
+      raw_info: %UeberauthOidcc.RawInfo{
+        userinfo: %{
+          "resource_access" => %{
+            "dev-client" => %{"roles" => Ueberauth.Strategy.Helpers.options(conn)[:groups]}
+          }
+        }
+      }
+    }
   end
 
   @impl Ueberauth.Strategy
