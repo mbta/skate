@@ -91,7 +91,7 @@ defmodule Realtime.Ghost do
     current_piece_trips =
       run
       |> Run.pieces()
-      |> Enum.find(&Piece.for_now?(&1, now_time_of_day))
+      |> Enum.find(&Piece.current?(&1, now_time_of_day))
       |> case do
         %Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
           [trip | trips]
@@ -132,7 +132,7 @@ defmodule Realtime.Ghost do
             current_piece =
               with pieces <- Run.pieces(run),
                    [current_piece] <-
-                     Enum.filter(pieces, &Piece.for_now?(&1, now_time_of_day)) do
+                     Enum.filter(pieces, &Piece.current?(&1, now_time_of_day)) do
                 current_piece
               else
                 _ -> nil
