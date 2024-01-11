@@ -5,7 +5,6 @@ import { Shape } from "../../schedule"
 import { useDetour } from "../../hooks/useDetour"
 
 export const DiversionPage = ({
-  directions,
   missedStops,
   routeName,
   routeDescription,
@@ -22,6 +21,7 @@ export const DiversionPage = ({
     waypoints,
 
     detourShape,
+    directions,
 
     canUndo,
     undoLastWaypoint,
@@ -34,7 +34,15 @@ export const DiversionPage = ({
       </header>
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
-          directions={directions}
+          directions={
+            <>
+              <ListGroup as="ol">
+                {directions?.map((d) => (
+                  <ListGroup.Item as="li">{d.instruction}</ListGroup.Item>
+                ))}
+              </ListGroup>
+            </>
+          }
           missedStops={missedStops}
           routeName={routeName}
           routeDescription={routeDescription}
