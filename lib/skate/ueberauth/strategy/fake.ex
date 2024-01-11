@@ -3,10 +3,12 @@ defmodule Skate.Ueberauth.Strategy.Fake do
 
   use Ueberauth.Strategy, ignores_csrf_attack: true
 
+  use SkateWeb, :verified_routes
+
   @impl Ueberauth.Strategy
   def handle_request!(conn) do
     conn
-    |> redirect!("/auth/keycloak/callback")
+    |> redirect!(~p"/auth/keycloak/callback")
     |> halt()
   end
 
