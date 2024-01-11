@@ -1,4 +1,4 @@
-import { describe, test, expect, it } from "@jest/globals"
+import { describe, test, expect } from "@jest/globals"
 import { clamp, closestPosition } from "../../src/util/math"
 import { LatLngExpression, latLng } from "leaflet"
 
@@ -17,11 +17,11 @@ describe("clamp", () => {
 })
 
 describe("closestPosition", () => {
-  it("returns `undefined` if provided a empty list", () => {
+  test("returns `undefined` if provided a empty list", () => {
     expect(closestPosition([], latLng(0, 0))).toBeUndefined()
   })
 
-  it("returns the closest point from the provided list", () => {
+  test("returns the closest point from the provided list", () => {
     const point = latLng(0, 0)
 
     const closestPoint: LatLngExpression = {
