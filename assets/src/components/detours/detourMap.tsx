@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 import { Shape } from "../../schedule"
 import { LatLngExpression } from "leaflet"
-import { Polyline, useMap, useMapEvent } from "react-leaflet"
-import Leaflet, { Map as LeafletMap } from "leaflet"
+import { Polyline, useMapEvent } from "react-leaflet"
+import Leaflet from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
 import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
+import { closestPosition } from "../../util/math"
 
 export const DetourMap = ({ shape }: { shape: Shape }) => {
   const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
@@ -69,8 +70,6 @@ const RouteShapeWithDetour = ({
     (point) => [point.lat, point.lon]
   )
 
-  const map = useMap()
-
   useMapEvent("click", (e) => {
     if (startPoint !== null && endPoint === null) {
       onAddDetourPosition(e.latlng)
@@ -93,20 +92,16 @@ const RouteShapeWithDetour = ({
         eventHandlers={{
           click: (e) => {
             if (startPoint === null) {
-              const position = closestPosition(
-                routeShapePositions,
-                e.latlng,
-                map
-              )
-              onSetStartPoint(position)
+              const { position } =
+                closestPosition(routeShapePositions, e.latlng) ?? {}
+
+              position && onSetStartPoint(position)
               position && onAddDetourPosition(position)
             } else if (endPoint === null) {
-              const position = closestPosition(
-                routeShapePositions,
-                e.latlng,
-                map
-              )
-              onSetEndPoint(position)
+              const { position } =
+                closestPosition(routeShapePositions, e.latlng) ?? {}
+
+              position && onSetEndPoint(position)
               position && onAddDetourPosition(position)
             }
           },
@@ -180,25 +175,3 @@ const DetourPointMarker = ({ position }: { position: LatLngExpression }) => (
     }
   />
 )
-
-const closestPosition = (
-  positions: LatLngExpression[],
-  position: LatLngExpression,
-  map: LeafletMap
-): LatLngExpression | null => {
-  const [closestPosition] = positions.reduce<
-    [LatLngExpression | null, number | null]
-  >(
-    ([closestPosition, closestDistance], currentPosition) => {
-      const distance = map.distance(position, currentPosition)
-      if (closestDistance === null || distance < closestDistance) {
-        return [position, distance]
-      } else {
-        return [closestPosition, closestDistance]
-      }
-    },
-    [null, null]
-  )
-
-  return closestPosition
-}
