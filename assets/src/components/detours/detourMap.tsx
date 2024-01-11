@@ -92,18 +92,14 @@ const RouteShapeWithDetour = ({
         eventHandlers={{
           click: (e) => {
             if (startPoint === null) {
-              const { position } = closestPosition(
-                routeShapePositions,
-                e.latlng
-              ) ?? {}
+              const { position } =
+                closestPosition(routeShapePositions, e.latlng) ?? {}
 
               position && onSetStartPoint(position)
               position && onAddDetourPosition(position)
             } else if (endPoint === null) {
-              const { position } = closestPosition(
-                routeShapePositions,
-                e.latlng
-              ) ?? {}
+              const { position } =
+                closestPosition(routeShapePositions, e.latlng) ?? {}
 
               position && onSetEndPoint(position)
               position && onAddDetourPosition(position)
