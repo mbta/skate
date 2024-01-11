@@ -60,37 +60,14 @@ defmodule SkateWeb.AuthControllerTest do
                User.get_by_email("test@mbta.com")
     end
 
-    test "resets auth retries count on a successful auth", %{conn: conn} do
-      mock_auth = %Ueberauth.Auth{
-        uid: "test_username",
-        credentials: %Ueberauth.Auth.Credentials{
-          expires_at: System.system_time(:second) + 1_000,
-          refresh_token: "test_refresh_token"
-        },
-        info: %{email: "test@mbta.com"},
-        extra: %Ueberauth.Auth.Extra{
-          raw_info: %UeberauthOidcc.RawInfo{}
-        }
-      }
-
-      conn =
-        conn
-        |> init_test_session(%{})
-        |> put_session(:auth_retries, 2)
-        |> assign(:ueberauth_auth, mock_auth)
-        |> get(~p"/auth/keycloak/callback")
-
-      assert is_nil(get_session(conn, :auth_retries))
-    end
-
-    test "redirects home for an ueberauth failure", %{conn: conn} do
+    test "sends unauthenticated response on ueberauth failure", %{conn: conn} do
       conn =
         conn
         |> init_test_session(%{username: "test_username"})
         |> assign(:ueberauth_failure, "failed")
         |> get(~p"/auth/keycloak/callback")
 
-      assert redirected_to(conn) == ~p"/"
+      assert response(conn, :unauthorized) == "unauthenticated"
     end
   end
 end
