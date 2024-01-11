@@ -5,14 +5,18 @@ import { DetourMap } from "../../../src/components/detours/detourMap"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import shapeFactory from "../../factories/shape"
+import { fetchDetourDirections } from "../../../src/api"
+import getMapLimits from "../../../src/mapLimits"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
-jest.mock("../../../src/api", () => ({
-  fetchDetourDirections: jest.fn(() => Promise.resolve(null)),
-}))
+jest.mock("../../../src/api")
+
+beforeEach(() => {
+  jest.mocked(fetchDetourDirections).mockResolvedValue(null)
+})
 
 describe("DetourMap", () => {
   test("can click on route shape to start detour", async () => {
