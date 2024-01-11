@@ -6,7 +6,6 @@ import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import shapeFactory from "../../factories/shape"
 import { fetchDetourDirections } from "../../../src/api"
-import getMapLimits from "../../../src/mapLimits"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
