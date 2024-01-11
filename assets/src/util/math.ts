@@ -10,9 +10,8 @@ import { LatLng, LatLngExpression } from "leaflet"
 export const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(min, value), max)
 
-
 interface ClosestPosition {
-  position: LatLngExpression,
+  position: LatLngExpression
   index: number
   distance: number
 }
