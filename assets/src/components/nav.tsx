@@ -46,7 +46,6 @@ const Nav: React.FC<Props> = ({ children }) => {
     case "tablet":
       return (
         <div className="l-nav--medium">
-          <div className="l-nav__app-content">{children}</div>
           <div className="l-nav__nav-bar l-nav__nav-bar--left">
             <LeftNav
               toggleMobileMenu={() => dispatch(toggleMobileMenu())}
@@ -54,6 +53,7 @@ const Nav: React.FC<Props> = ({ children }) => {
               dispatcherFlag={readDispatcherFlag()}
             />
           </div>
+          <div className="l-nav__app-content">{children}</div>
         </div>
       )
     default:
