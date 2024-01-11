@@ -25,9 +25,9 @@ interface ClosestPosition {
  * if {@link positions} is empty, returns `undefined`
  *
  * Otherwise, returns a {@link ClosestPosition} object containing
- * - the closest element in {@link positions} to {@link point}
- * - the index of the element in {@link positions}
- * - the distance to {@link point}
+ * - {@link ClosestPosition.position}: the closest element in {@link positions} to {@link point}
+ * - {@link ClosestPosition.index}: the index of the element in {@link positions}
+ * - {@link ClosestPosition.distance}: the distance to {@link point}
  */
 export const closestPosition = (
   positions: LatLngExpression[],
