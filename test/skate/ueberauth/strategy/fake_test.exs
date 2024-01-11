@@ -6,7 +6,7 @@ defmodule Skate.Ueberauth.Strategy.FakeTest do
 
   @tag :authenticated
   test "credentials returns a credentials struct with groups specified in config", %{conn: conn} do
-    assert conn |> get("/auth/keycloak") |> Fake.credentials() == %Credentials{
+    assert conn |> get(~p"/auth/keycloak") |> Fake.credentials() == %Credentials{
              token: "fake_access_token",
              refresh_token: "fake_refresh_token",
              expires: true,
@@ -19,7 +19,7 @@ defmodule Skate.Ueberauth.Strategy.FakeTest do
   end
 
   test "extra returns an Extra struct with group membership information", %{conn: conn} do
-    assert conn |> get("/auth/keycloak") |> Fake.extra() == %Extra{
+    assert conn |> get(~p"/auth/keycloak") |> Fake.extra() == %Extra{
              raw_info: %UeberauthOidcc.RawInfo{
                userinfo: %{
                  "resource_access" => %{

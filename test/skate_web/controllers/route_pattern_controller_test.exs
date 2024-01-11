@@ -123,7 +123,7 @@ defmodule SkateWeb.RoutePatternControllerTest do
         |> api_headers()
         |> get("/api/route_patterns/route/r1")
 
-      assert redirected_to(conn) == "/auth/keycloak"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated
