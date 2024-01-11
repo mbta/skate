@@ -85,6 +85,7 @@ defmodule Skate.OpenRouteServiceAPI do
              type: map_type(&1["type"])
            }
          )
+         |> Enum.filter(fn %{type: type} -> !Enum.member?([:goal, :error], type) end)
      }}
   end
 
