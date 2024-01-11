@@ -42,5 +42,13 @@ export const closestPosition = (
 
   return positionsByDistance[0] ?? undefined
 
-  // Interpolate here
+  /**
+   * In the future, we may want to be able to snap to the line _line_ formed
+   * by {@link positions}.
+   * (in the case of, e.g., a low resolution line formed by {@link positions}).
+   *
+   * Now that we have the sorted {@link positionsByDistance}, we can interpolate
+   * the two closest points with respect to {@link point} to find the closest
+   * point on the line.
+   */
 }
