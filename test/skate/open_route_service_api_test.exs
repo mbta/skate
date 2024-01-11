@@ -25,6 +25,33 @@ defmodule Skate.OpenRouteServiceAPITest do
                      [0.1, 0.5],
                      [0, 1]
                    ]
+                 },
+                 "properties" => %{
+                   "segments" => [
+                     %{
+                       "steps" => [
+                         %{
+                           "instruction" => "Turn right onto 1st Avenue",
+                           "name" => "1st Avenue",
+                           "type" => 1
+                         }
+                       ]
+                     },
+                     %{
+                       "steps" => [
+                         %{
+                           "instruction" => "Turn left onto 2nd Place",
+                           "name" => "2nd Place",
+                           "type" => 0
+                         },
+                         %{
+                           "instruction" => "Arrive",
+                           "name" => "-",
+                           "type" => 10
+                         }
+                       ]
+                     }
+                   ]
                  }
                }
              ]

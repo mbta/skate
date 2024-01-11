@@ -21,6 +21,18 @@ defmodule Skate.OpenRouteServiceAPI do
             %{"lat" => 0, "lon" => 0},
             %{"lat" => 0.5, "lon" => 0.1},
             %{"lat" => 1, "lon" => 0}
+          ],
+          directions: [
+            %{
+              name: "1st Avenue",
+              type: :right,
+              instruction: "Turn right onto 1st Avenue"
+            },
+            %{
+              name: "2nd Place",
+              type: :left,
+              instruction: "Turn left onto 2nd Place"
+            }
           ]
         }
       }
@@ -30,10 +42,10 @@ defmodule Skate.OpenRouteServiceAPI do
 
   ## Examples
       iex> Skate.OpenRouteServiceAPI.directions([])
-      {:ok, %Skate.OpenRouteServiceAPI.DirectionsResponse{coordinates: []}}
+      {:ok, %Skate.OpenRouteServiceAPI.DirectionsResponse{coordinates: [], directions: []}}
 
       iex> Skate.OpenRouteServiceAPI.directions([%{"lat" => 0, "lon" => 0}])
-      {:ok, %Skate.OpenRouteServiceAPI.DirectionsResponse{coordinates: []}}
+      {:ok, %Skate.OpenRouteServiceAPI.DirectionsResponse{coordinates: [], directions: []}}
 
   If anything goes wrong, then this returns an error instead.
 
