@@ -17,7 +17,7 @@ export const DummyDetourPage = () => {
   const route = useRoute(routePattern?.routeId)
 
   return (
-    <div className="l-page">
+    <>
       {routePattern && routePattern.shape && (
         <DiversionPage
           shape={routePattern.shape}
@@ -29,6 +29,6 @@ export const DummyDetourPage = () => {
           }
         />
       )}
-    </div>
+    </>
   )
 }
