@@ -95,15 +95,17 @@ const RouteShapeWithDetour = ({
               const { position } = closestPosition(
                 routeShapePositions,
                 e.latlng
-              )
-              onSetStartPoint(position)
+              ) ?? {}
+
+              position && onSetStartPoint(position)
               position && onAddDetourPosition(position)
             } else if (endPoint === null) {
               const { position } = closestPosition(
                 routeShapePositions,
                 e.latlng
-              )
-              onSetEndPoint(position)
+              ) ?? {}
+
+              position && onSetEndPoint(position)
               position && onAddDetourPosition(position)
             }
           },
