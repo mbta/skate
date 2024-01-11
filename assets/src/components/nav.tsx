@@ -59,7 +59,6 @@ const Nav: React.FC<Props> = ({ children }) => {
     default:
       return (
         <div className="l-nav--wide">
-          <div className="l-nav__app-content">{children}</div>
           <div className="l-nav__nav-bar l-nav__nav-bar--top">
             <TopNav />
           </div>
@@ -69,6 +68,7 @@ const Nav: React.FC<Props> = ({ children }) => {
               dispatcherFlag={readDispatcherFlag()}
             />
           </div>
+          <div className="l-nav__app-content">{children}</div>
         </div>
       )
   }
