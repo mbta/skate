@@ -30,7 +30,7 @@ describe("closestPosition", () => {
     }
     const index = 3
 
-    // Generate range and offset so all are farther than `position`
+    // Generate range and offset so all are farther than `closestPoint`
     const positions: LatLngExpression[] = Array(5).map((_, idx) => [
       point.lat + closestPoint.lat + idx,
       0,
