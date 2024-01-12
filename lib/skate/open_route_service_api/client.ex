@@ -1,4 +1,5 @@
 defmodule Skate.OpenRouteServiceAPI.Client do
+  @behaviour Skate.OpenRouteServiceAPI.Client
   @moduledoc """
   An HTTP Client that reaches out to Open Route Service
   """
