@@ -12,7 +12,40 @@ defmodule SkateWeb.DetourRouteControllerTest do
 
   describe "directions" do
     defp directions_json(coordinates: coordinates) do
-      %{"features" => [%{"geometry" => %{"coordinates" => coordinates}}]}
+      %{
+        "features" => [
+          %{
+            "geometry" => %{"coordinates" => coordinates},
+            "properties" => %{
+              "segments" => [
+                %{
+                  "steps" => [
+                    %{
+                      "instruction" => "Turn right onto 1st Avenue",
+                      "name" => "1st Avenue",
+                      "type" => 1
+                    }
+                  ]
+                },
+                %{
+                  "steps" => [
+                    %{
+                      "instruction" => "Turn left onto 2nd Place",
+                      "name" => "2nd Place",
+                      "type" => 0
+                    },
+                    %{
+                      "instruction" => "Arrive",
+                      "name" => "-",
+                      "type" => 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
     end
 
     @tag :authenticated
