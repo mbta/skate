@@ -17,31 +17,24 @@ defmodule SkateWeb.DetourRouteControllerTest do
           %{
             "geometry" => %{"coordinates" => coordinates},
             "properties" => %{
-              "segments" => [
-                %{
-                  "steps" => [
-                    %{
-                      "instruction" => "Turn right onto 1st Avenue",
-                      "name" => "1st Avenue",
-                      "type" => 1
-                    }
-                  ]
-                },
-                %{
-                  "steps" => [
-                    %{
-                      "instruction" => "Turn left onto 2nd Place",
-                      "name" => "2nd Place",
-                      "type" => 0
-                    },
-                    %{
-                      "instruction" => "Arrive",
-                      "name" => "-",
-                      "type" => 10
-                    }
-                  ]
-                }
-              ]
+              "segments" =>
+                case length(coordinates) do
+                  0..1 ->
+                    []
+
+                  len ->
+                    Enum.map(1..(len - 1), fn index ->
+                      %{
+                        "steps" => [
+                          %{
+                            "instruction" => "Turn right onto #{index}",
+                            "name" => to_string(index),
+                            "type" => 1
+                          }
+                        ]
+                      }
+                    end)
+                end
             }
           }
         ]
@@ -65,6 +58,29 @@ defmodule SkateWeb.DetourRouteControllerTest do
                    %{"lat" => 0, "lon" => 0},
                    %{"lat" => 0.5, "lon" => 0.5},
                    %{"lat" => 1, "lon" => 1}
+                 ]
+               }
+             } =
+               json_response(conn, 200)
+    end
+
+    @tag :authenticated
+    test "returns directions as a flat list", %{conn: conn} do
+      expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
+        {:ok, directions_json(coordinates: [[0, 0], [0.25, 0.25], [0.75, 0.75], [1, 1]])}
+      end)
+
+      conn =
+        post(conn, ~p"/api/detours/directions",
+          coordinates: [%{"lat" => 0, "lon" => 0}, %{"lat" => 1, "lon" => 1}]
+        )
+
+      assert %{
+               "data" => %{
+                 "directions" => [
+                   %{"name" => "1", "type" => "right"},
+                   %{"name" => "2", "type" => "right"},
+                   %{"name" => "3", "type" => "right"}
                  ]
                }
              } =
@@ -113,7 +129,8 @@ defmodule SkateWeb.DetourRouteControllerTest do
 
       assert %{
                "data" => %{
-                 "coordinates" => []
+                 "coordinates" => [],
+                 "directions" => []
                }
              } =
                json_response(conn, 200)
@@ -126,7 +143,8 @@ defmodule SkateWeb.DetourRouteControllerTest do
 
       assert %{
                "data" => %{
-                 "coordinates" => []
+                 "coordinates" => [],
+                 "directions" => []
                }
              } =
                json_response(conn, 200)
