@@ -23,6 +23,8 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
   }
 
   useEffect(() => {
+    let shouldUpdate = true
+
     const shapePoints: ShapePoint[] = waypoints.map(
       (waypoint: LatLngLiteral) => {
         const { lat, lng } = waypoint
@@ -31,7 +33,7 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
     )
 
     fetchDetourDirections(shapePoints).then((detourShape) => {
-      if (detourShape) {
+      if (detourShape && shouldUpdate) {
         setDetourShapePositions(
           detourShape.coordinates.map((position: ShapePoint) => {
             const { lat, lon } = position
@@ -40,6 +42,10 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         )
       }
     })
+
+    return () => {
+      shouldUpdate = false
+    }
   }, [waypoints])
 
   return (
