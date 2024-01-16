@@ -22,14 +22,13 @@ const Nav: React.FC<Props> = ({ children }) => {
     case "mobile":
       return (
         <div className="l-nav--narrow">
-          <div className="l-nav__app-content">{children}</div>
           <MobilePortraitNav isViewOpen={isViewOpen} />
+          <div className="l-nav__app-content">{children}</div>
         </div>
       )
     case "mobile_landscape_tablet_portrait":
       return (
         <div className="l-nav--medium">
-          <div className="l-nav__app-content">{children}</div>
           <div
             className="l-nav__nav-bar l-nav__nav-bar--left"
             hidden={isViewOpen}
@@ -41,6 +40,7 @@ const Nav: React.FC<Props> = ({ children }) => {
               closePickerOnViewOpen={true}
             />
           </div>
+          <div className="l-nav__app-content">{children}</div>
         </div>
       )
     case "tablet":
