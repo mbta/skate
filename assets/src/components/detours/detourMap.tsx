@@ -14,7 +14,7 @@ import {
   shapePointToLatLngLiteral,
 } from "../../util/pointLiterals"
 
-export const DetourMap = ({ shape }: { shape: Shape }) => {
+const useDetour = () => {
   const [startPoint, setStartPoint] = useState<LatLngLiteral | null>(null)
   const [endPoint, setEndPoint] = useState<LatLngLiteral | null>(null)
   const [waypoints, setWaypoints] = useState<LatLngLiteral[]>([])
@@ -44,6 +44,29 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
     }
   }, [waypoints])
 
+  return {
+    startPoint,
+    setStartPoint,
+    endPoint,
+    setEndPoint,
+    waypoints,
+    detourShapePositions,
+    onAddDetourPosition,
+    setWaypoints,
+  }
+}
+
+export const DetourMap = ({ shape }: { shape: Shape }) => {
+  const {
+    startPoint,
+    setStartPoint,
+    endPoint,
+    setEndPoint,
+    waypoints,
+    setWaypoints,
+    onAddDetourPosition,
+    detourShapePositions,
+  } = useDetour()
   return (
     <Map vehicles={[]}>
       <CustomControl position="topleft" className="leaflet-bar">
