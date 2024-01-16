@@ -9,6 +9,10 @@ import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
 import { fetchDetourDirections } from "../../api"
+import {
+  latLngLiteralToShapePoint,
+  shapePointToLatLngLiteral,
+} from "../../util/pointLiterals"
 
 export const DetourMap = ({ shape }: { shape: Shape }) => {
   const [startPoint, setStartPoint] = useState<LatLngLiteral | null>(null)
@@ -25,20 +29,12 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
   useEffect(() => {
     let shouldUpdate = true
 
-    const shapePoints: ShapePoint[] = waypoints.map(
-      (waypoint: LatLngLiteral) => {
-        const { lat, lng } = waypoint
-        return { lat, lon: lng }
-      }
-    )
+    const shapePoints: ShapePoint[] = waypoints.map(latLngLiteralToShapePoint)
 
     fetchDetourDirections(shapePoints).then((detourShape) => {
       if (detourShape && shouldUpdate) {
         setDetourShapePositions(
-          detourShape.coordinates.map((position: ShapePoint) => {
-            const { lat, lon } = position
-            return { lat, lng: lon }
-          })
+          detourShape.coordinates.map(shapePointToLatLngLiteral)
         )
       }
     })
@@ -99,10 +95,7 @@ const RouteShapeWithDetour = ({
   detourShapePositions: LatLngLiteral[]
 }) => {
   const routeShapePositions: LatLngLiteral[] = originalShape.points.map(
-    (point) => ({
-      lat: point.lat,
-      lng: point.lon,
-    })
+    shapePointToLatLngLiteral
   )
 
   useMapEvent("click", (e) => {
