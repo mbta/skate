@@ -44,6 +44,14 @@ const useDetour = () => {
     }
   }, [waypoints])
 
+  const canUndo =
+    startPoint !== null && endPoint === null && waypoints.length > 0
+
+  const undoLastWaypoint = () => {
+    canUndo &&
+      setWaypoints((positions) => positions.slice(0, positions.length - 1))
+  }
+
   return {
     startPoint,
     setStartPoint,
@@ -52,7 +60,8 @@ const useDetour = () => {
     waypoints,
     detourShapePositions,
     onAddDetourPosition,
-    setWaypoints,
+    canUndo,
+    undoLastWaypoint,
   }
 }
 
@@ -63,23 +72,18 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
     endPoint,
     setEndPoint,
     waypoints,
-    setWaypoints,
     onAddDetourPosition,
     detourShapePositions,
+    canUndo,
+    undoLastWaypoint,
   } = useDetour()
   return (
     <Map vehicles={[]}>
       <CustomControl position="topleft" className="leaflet-bar">
         <Button
           variant="primary"
-          disabled={
-            startPoint === null || endPoint !== null || waypoints.length === 1
-          }
-          onClick={() =>
-            setWaypoints((positions) =>
-              positions.slice(0, positions.length - 1)
-            )
-          }
+          disabled={canUndo === false}
+          onClick={undoLastWaypoint}
         >
           Clear Last Waypoint
         </Button>
