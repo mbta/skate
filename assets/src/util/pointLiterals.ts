@@ -2,15 +2,9 @@ import { LatLngLiteral } from "leaflet"
 import { ShapePoint } from "../schedule"
 
 export const latLngLiteralToShapePoint = (
-  latLngLiteral: LatLngLiteral
-): ShapePoint => {
-  const { lat, lng } = latLngLiteral
-  return { lat, lon: lng }
-}
+  {lat, lng}: LatLngLiteral
+): ShapePoint => ({ lat, lon: lng })
 
 export const shapePointToLatLngLiteral = (
-  shapePoint: ShapePoint
-): LatLngLiteral => {
-  const { lat, lon } = shapePoint
-  return { lat, lng: lon }
-}
+  {lat, lon}: ShapePoint
+): LatLngLiteral => ({ lat, lng: lon })
