@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react"
-import { Shape, ShapePoint } from "../../schedule"
+import React from "react"
 import { LatLngLiteral } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
@@ -8,165 +7,110 @@ import { CustomControl } from "../map/controls/customControl"
 import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
-import { fetchDetourDirections } from "../../api"
-import {
-  latLngLiteralToShapePoint,
-  shapePointToLatLngLiteral,
-} from "../../util/pointLiterals"
 
-const useDetourDirections = (shapePoints: ShapePoint[]) => {
-  const [detourShape, setDetourShape] = useState<LatLngLiteral[]>([])
+interface DetourMapProps {
+  /**
+   * Coordinates to display as the original route.
+   */
+  originalShape: LatLngLiteral[]
+  /**
+   * Coordinates to display as the detour line.
+   */
+  detourShape: LatLngLiteral[]
 
-  useEffect(() => {
-    let shouldUpdate = true
-    fetchDetourDirections(shapePoints).then((detourShape) => {
-      if (detourShape && shouldUpdate) {
-        setDetourShape(detourShape.coordinates.map(shapePointToLatLngLiteral))
-      }
-    })
+  /**
+   * Coordinate to display as the beginning connection point.
+   */
+  startPoint?: LatLngLiteral
 
-    return () => {
-      shouldUpdate = false
-    }
-  }, [shapePoints])
+  /**
+   * Coordinate to display as the ending connection point.
+   */
+  endPoint?: LatLngLiteral
 
-  return detourShape
+  /**
+   * Coordinates to display as the waypoints.
+   */
+  waypoints: LatLngLiteral[]
+
+  /**
+   * Callback fired when the {@link originalShape} is clicked.
+   */
+  onClickOriginalShape: (point: LatLngLiteral) => void
+
+  /**
+   * Callback fired when the map is clicked.
+   * @param point
+   */
+  onClickMap: (point: LatLngLiteral) => void
+
+  /**
+   * User signal to describe the state of the undo button.
+   */
+  undoDisabled: boolean
+  /**
+   * Callback fired when the undo button is clicked.
+   */
+  onUndoLastWaypoint: () => void
 }
 
-const useDetour = () => {
-  const [startPoint, setStartPoint] = useState<LatLngLiteral | null>(null)
-  const [endPoint, setEndPoint] = useState<LatLngLiteral | null>(null)
-  const [waypoints, setWaypoints] = useState<LatLngLiteral[]>([])
+export const DetourMap = ({
+  originalShape,
+  detourShape,
 
-  const detourShape = useDetourDirections(
-    [startPoint, ...waypoints, endPoint]
-      .filter((v): v is LatLngLiteral => !!v)
-      .map(latLngLiteralToShapePoint)
-  )
+  startPoint,
+  endPoint,
+  waypoints,
 
-  const canAddWaypoint = () => startPoint !== null && endPoint === null
-  const onAddWaypoint = (p: LatLngLiteral) => {
-    canAddWaypoint() && setWaypoints((positions) => [...positions, p])
-  }
+  onClickOriginalShape: onAddConnectionPoint,
+  onClickMap: onAddWaypoint,
 
-  const onAddConnectionPoint = (point: LatLngLiteral) => {
-    if (startPoint === null) {
-      setStartPoint(point)
-    } else if (endPoint === null) {
-      setEndPoint(point)
-    }
-  }
+  undoDisabled,
+  onUndoLastWaypoint: undoLastWaypoint,
+}: DetourMapProps) => (
+  <Map vehicles={[]}>
+    <CustomControl position="topleft" className="leaflet-bar">
+      <Button
+        variant="primary"
+        disabled={undoDisabled}
+        onClick={undoLastWaypoint}
+      >
+        Clear Last Waypoint
+      </Button>
+    </CustomControl>
 
-  const canUndo =
-    startPoint !== null && endPoint === null && waypoints.length > 0
+    <MapEvents
+      click={(e) => {
+        onAddWaypoint(e.latlng)
+      }}
+    />
 
-  const undoLastWaypoint = () => {
-    canUndo &&
-      setWaypoints((positions) => positions.slice(0, positions.length - 1))
-  }
+    {startPoint && <StartMarker position={startPoint} />}
 
-  return {
-    /**
-     * Creates a new waypoint if all of the following criteria is met:
-     * - {@link startPoint} is set
-     * - {@link endPoint} is not set.
-     */
-    onAddWaypoint,
-    /**
-     * Sets {@link startPoint} if unset.
-     * Otherwise sets {@link endPoint} if unset.
-     */
-    onAddConnectionPoint,
+    {waypoints.map((position) => (
+      <DetourPointMarker key={JSON.stringify(position)} position={position} />
+    ))}
 
-    /**
-     * The starting connection point of the detour.
-     */
-    startPoint,
-    /**
-     * The ending connection point of the detour.
-     */
-    endPoint,
-    /**
-     * The waypoints that connect {@link startPoint} and {@link endPoint}.
-     */
-    waypoints,
+    {endPoint && <EndMarker position={endPoint} />}
 
-    /**
-     * The routing API generated detour shape.
-     */
-    detourShape,
+    <Polyline
+      positions={detourShape}
+      className="c-detour_map--detour-route-shape"
+    />
 
-    /**
-     * Reports if {@link undoLastWaypoint} will do anything.
-     */
-    canUndo,
-    /**
-     * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
-     */
-    undoLastWaypoint,
-  }
-}
-
-export const DetourMap = ({ shape }: { shape: Shape }) => {
-  const originalShape = shape.points.map(shapePointToLatLngLiteral)
-  const {
-    startPoint,
-    endPoint,
-    waypoints,
-
-    onAddConnectionPoint,
-    onAddWaypoint,
-
-    canUndo,
-    undoLastWaypoint,
-
-    detourShape,
-  } = useDetour()
-  return (
-    <Map vehicles={[]}>
-      <CustomControl position="topleft" className="leaflet-bar">
-        <Button
-          variant="primary"
-          disabled={canUndo === false}
-          onClick={undoLastWaypoint}
-        >
-          Clear Last Waypoint
-        </Button>
-      </CustomControl>
-
-      <MapEvents
-        click={(e) => {
-          onAddWaypoint(e.latlng)
-        }}
-      />
-
-      {startPoint && <StartMarker position={startPoint} />}
-
-      {waypoints.map((position) => (
-        <DetourPointMarker key={position.toString()} position={position} />
-      ))}
-
-      {endPoint && <EndMarker position={endPoint} />}
-
-      <Polyline
-        positions={detourShape}
-        className="c-detour_map--detour-route-shape"
-      />
-
-      <Polyline
-        positions={originalShape}
-        className="c-detour_map--original-route-shape"
-        bubblingMouseEvents={false}
-        eventHandlers={{
-          click: (e) => {
-            const { position } = closestPosition(originalShape, e.latlng) ?? {}
-            position && onAddConnectionPoint(position)
-          },
-        }}
-      />
-    </Map>
-  )
-}
+    <Polyline
+      positions={originalShape}
+      className="c-detour_map--original-route-shape"
+      bubblingMouseEvents={false}
+      eventHandlers={{
+        click: (e) => {
+          const { position } = closestPosition(originalShape, e.latlng) ?? {}
+          position && onAddConnectionPoint(position)
+        },
+      }}
+    />
+  </Map>
+)
 
 const MapEvents = (props: Leaflet.LeafletEventHandlerFnMap) => {
   useMapEvents(props)

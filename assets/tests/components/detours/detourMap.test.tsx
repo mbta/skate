@@ -1,131 +1,128 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import { render, screen } from "@testing-library/react"
-import React from "react"
+import React, { ComponentProps } from "react"
 import { DetourMap } from "../../../src/components/detours/detourMap"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
-import shapeFactory from "../../factories/shape"
-import { fetchDetourDirections } from "../../../src/api"
+import { defaultCenter } from "../../../src/components/map"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
-jest.mock("../../../src/api")
-
-beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(null)
-})
+const DetourMapWithDefaults = (
+  props: Partial<ComponentProps<typeof DetourMap>>
+) => (
+  <DetourMap
+    originalShape={[]}
+    detourShape={[]}
+    startPoint={undefined}
+    endPoint={undefined}
+    waypoints={[]}
+    undoDisabled={false}
+    onClickMap={() => {}}
+    onClickOriginalShape={() => {}}
+    onUndoLastWaypoint={() => {}}
+    {...props}
+  />
+)
 
 describe("DetourMap", () => {
-  test("can click on route shape to start detour", async () => {
-    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
+  test("when `originalShape` is clicked, fires `onClickOriginalShape`", async () => {
+    const onClickOriginalShape = jest.fn()
+    const shapePoint = { lat: 0, lng: 0 }
+    const { container } = render(
+      <DetourMapWithDefaults
+        originalShape={[shapePoint]}
+        onClickOriginalShape={onClickOriginalShape}
+      />
+    )
 
     await userEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    expect(screen.getByTitle("Detour Start")).not.toBeNull()
-    expect(screen.queryByTitle("Detour End")).toBeNull()
+    expect(onClickOriginalShape).toHaveBeenNthCalledWith(1, shapePoint)
   })
 
-  test("can click on route shape again to end detour", async () => {
-    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
-
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    expect(screen.getByTitle("Detour End")).not.toBeNull()
-  })
-
-  test("clicking on map while drawing a detour adds a point", async () => {
-    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
-
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
+  test("when map is clicked, fires `onClickMap`", async () => {
+    const onClickMap = jest.fn()
+    const { container } = render(
+      <DetourMapWithDefaults onClickMap={onClickMap} />
     )
 
     await userEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(1)
+    expect(onClickMap).toHaveBeenNthCalledWith(1, {
+      lat: expect.closeTo(defaultCenter.lat),
+      lng: expect.closeTo(defaultCenter.lng),
+    })
   })
 
-  test("detour points are correctly rendered when detour is complete", async () => {
-    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
-
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    await userEvent.click(container.querySelector(".c-vehicle-map")!)
-
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(1)
-  })
-
-  test("clicking on 'Clear Last Waypoint' removes last point from detour", async () => {
-    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
-
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    await userEvent.click(container.querySelector(".c-vehicle-map")!)
+  test("clicking undo button fires `onUndoLastWaypoint`", async () => {
+    const onUndoLastWaypoint = jest.fn()
+    render(<DetourMapWithDefaults onUndoLastWaypoint={onUndoLastWaypoint} />)
 
     await userEvent.click(
       screen.getByRole("button", { name: "Clear Last Waypoint" })
     )
+
+    expect(onUndoLastWaypoint).toHaveBeenCalledTimes(1)
+  })
+
+  test("displays `startPoint` when provided", async () => {
+    const { rerender } = render(<DetourMapWithDefaults />)
+
+    expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
+
+    rerender(<DetourMapWithDefaults startPoint={{ lat: 0, lng: 0 }} />)
+
+    expect(screen.getByTitle("Detour Start")).toBeVisible()
+  })
+
+  test("displays `endPoint` when provided", async () => {
+    const { rerender } = render(<DetourMapWithDefaults />)
+
+    expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+
+    rerender(<DetourMapWithDefaults endPoint={{ lat: 0, lng: 0 }} />)
+
+    expect(screen.getByTitle("Detour End")).toBeVisible()
+  })
+
+  test("displays `waypoints` when provided", async () => {
+    const { container, rerender } = render(<DetourMapWithDefaults />)
 
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
     ).toHaveLength(0)
-  })
 
-  test("'Clear Last Waypoint' is disabled before detour drawing is started", () => {
-    render(<DetourMap shape={shapeFactory.build()} />)
-
-    expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
-  })
-
-  test("'Clear Last Waypoint' is disabled when detour drawing has started but no waypoints are present", async () => {
-    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
-
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
+    rerender(
+      <DetourMapWithDefaults
+        waypoints={[
+          { lat: 0, lng: 0 },
+          { lat: 1, lng: 1 },
+          { lat: 2, lng: 2 },
+        ]}
+      />
     )
 
     expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(3)
   })
 
-  test("'Clear Last Waypoint' is disabled when detour drawing has finished", async () => {
-    const { container } = render(<DetourMap shape={shapeFactory.build()} />)
+  test("when `undoDisabled` is true, undo button should be disabled", () => {
+    const { rerender } = render(<DetourMapWithDefaults />)
 
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
+    const undoButton = screen.getByRole("button", {
+      name: "Clear Last Waypoint",
+    })
 
-    await userEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
+    expect(undoButton).not.toBeDisabled()
 
-    expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
+    rerender(<DetourMapWithDefaults undoDisabled />)
+
+    expect(undoButton).toBeDisabled()
   })
 })
