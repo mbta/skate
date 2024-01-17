@@ -1,6 +1,6 @@
 import React from "react"
 import { LatLngLiteral } from "leaflet"
-import { Polyline, useMapEvents } from "react-leaflet"
+import { Polyline, Tooltip, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
@@ -122,7 +122,18 @@ export const DetourMap = ({
           position && onClickOriginalShape(latLngLiteralToShapePoint(position))
         },
       }}
-    />
+    >
+      {!startPoint && (
+        <Tooltip
+          className="c-detour_map--tooltip"
+          direction="top"
+          offset={[0, -15]}
+          sticky
+        >
+          Click to start detour
+        </Tooltip>
+      )}
+    </Polyline>
   </Map>
 )
 
