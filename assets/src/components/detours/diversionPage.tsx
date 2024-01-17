@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { Shape, ShapePoint } from "../../schedule"
@@ -126,6 +126,11 @@ export const DiversionPage = ({
     undoLastWaypoint,
   } = useDetour()
 
+  const originalShape = useMemo(
+    () => shape.points.map(shapePointToLatLngLiteral),
+    [shape.points]
+  )
+
   return (
     <article className="l-diversion-page h-100 border-box">
       <header className="l-diversion-page__header text-bg-light border-bottom">
@@ -143,7 +148,7 @@ export const DiversionPage = ({
       </div>
       <div className="l-diversion-page__map">
         <DetourMap
-          originalShape={shape.points.map(shapePointToLatLngLiteral)}
+          originalShape={originalShape}
           detourShape={detourShape}
           startPoint={startPoint ?? undefined}
           endPoint={endPoint ?? undefined}
