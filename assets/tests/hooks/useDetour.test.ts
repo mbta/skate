@@ -80,6 +80,7 @@ describe("useDetour", () => {
 
     expect(result.current.startPoint).toBe(start)
 
+    expect(jest.mocked(fetchDetourDirections)).toHaveBeenCalledTimes(1)
     expect(jest.mocked(fetchDetourDirections)).toHaveBeenNthCalledWith(1, [
       start,
       end,
