@@ -38,7 +38,9 @@ export const DiversionPage = ({
           directions={
             <ListGroup as="ol">
               {directions?.map((d) => (
-                <ListGroup.Item as="li">{d.instruction}</ListGroup.Item>
+                <ListGroup.Item key={d.instruction} as="li">
+                  {d.instruction}
+                </ListGroup.Item>
               ))}
             </ListGroup>
           }
