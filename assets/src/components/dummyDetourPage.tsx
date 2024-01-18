@@ -17,9 +17,9 @@ export const DummyDetourPage = () => {
       {routeShape && (
         <DiversionPage
           shape={routeShape}
-          routeName="66"
-          routeDescription="Harvard via Allston"
-          routeOrigin="from Andrew Station"
+          routeName="39"
+          routeDescription="Forest Hills"
+          routeOrigin="from Back Bay"
           routeDirection="Outbound"
         />
       )}
