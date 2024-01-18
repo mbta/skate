@@ -62,18 +62,18 @@ export const DetourMap = ({
   endPoint,
   waypoints,
 
-  onClickOriginalShape: onAddConnectionPoint,
-  onClickMap: onAddWaypoint,
+  onClickOriginalShape,
+  onClickMap,
 
   undoDisabled,
-  onUndoLastWaypoint: undoLastWaypoint,
+  onUndoLastWaypoint,
 }: DetourMapProps) => (
   <Map vehicles={[]}>
     <CustomControl position="topleft" className="leaflet-bar">
       <Button
         variant="primary"
         disabled={undoDisabled}
-        onClick={undoLastWaypoint}
+        onClick={onUndoLastWaypoint}
       >
         Clear Last Waypoint
       </Button>
@@ -81,7 +81,7 @@ export const DetourMap = ({
 
     <MapEvents
       click={(e) => {
-        onAddWaypoint(e.latlng)
+        onClickMap(e.latlng)
       }}
     />
 
@@ -105,7 +105,7 @@ export const DetourMap = ({
       eventHandlers={{
         click: (e) => {
           const { position } = closestPosition(originalShape, e.latlng) ?? {}
-          position && onAddConnectionPoint(position)
+          position && onClickOriginalShape(position)
         },
       }}
     />

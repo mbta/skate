@@ -67,12 +67,12 @@ const useDetour = () => {
      * - {@link startPoint} is set
      * - {@link endPoint} is not set.
      */
-    addWaypoint: addWaypoint,
+    addWaypoint,
     /**
      * Sets {@link startPoint} if unset.
      * Otherwise sets {@link endPoint} if unset.
      */
-    addConnectionPoint: addConnectionPoint,
+    addConnectionPoint,
 
     /**
      * The starting connection point of the detour.
