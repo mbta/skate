@@ -70,7 +70,7 @@ describe("useDetour", () => {
 
     jest.mocked(fetchDetourDirections).mockImplementation((coordinates) => {
       expect(coordinates).toStrictEqual([start, end])
-      return Promise.resolve({ coordinates: apiResult })
+      return Promise.resolve({ coordinates: apiResult, directions: [] })
     })
 
     const { result } = renderHook(useDetour)
