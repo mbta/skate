@@ -1,6 +1,6 @@
-import React, { useState } from "react"
-import { Shape } from "../../schedule"
-import { LatLngExpression } from "leaflet"
+import React, { useEffect, useState } from "react"
+import { Shape, ShapePoint } from "../../schedule"
+import { LatLngLiteral } from "leaflet"
 import { Polyline, useMapEvent } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
@@ -8,14 +8,41 @@ import { CustomControl } from "../map/controls/customControl"
 import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
+import { fetchDetourDirections } from "../../api"
+import {
+  latLngLiteralToShapePoint,
+  shapePointToLatLngLiteral,
+} from "../../util/pointLiterals"
 
 export const DetourMap = ({ shape }: { shape: Shape }) => {
-  const [startPoint, setStartPoint] = useState<LatLngExpression | null>(null)
-  const [endPoint, setEndPoint] = useState<LatLngExpression | null>(null)
-  const [detourPositions, setDetourPositions] = useState<LatLngExpression[]>([])
+  const [startPoint, setStartPoint] = useState<LatLngLiteral | null>(null)
+  const [endPoint, setEndPoint] = useState<LatLngLiteral | null>(null)
+  const [waypoints, setWaypoints] = useState<LatLngLiteral[]>([])
+  const [detourShapePositions, setDetourShapePositions] = useState<
+    LatLngLiteral[]
+  >([])
 
-  const onAddDetourPosition = (p: LatLngExpression) =>
-    setDetourPositions((positions) => [...positions, p])
+  const onAddDetourPosition = (p: LatLngLiteral) => {
+    setWaypoints((positions) => [...positions, p])
+  }
+
+  useEffect(() => {
+    let shouldUpdate = true
+
+    const shapePoints: ShapePoint[] = waypoints.map(latLngLiteralToShapePoint)
+
+    fetchDetourDirections(shapePoints).then((detourShape) => {
+      if (detourShape && shouldUpdate) {
+        setDetourShapePositions(
+          detourShape.coordinates.map(shapePointToLatLngLiteral)
+        )
+      }
+    })
+
+    return () => {
+      shouldUpdate = false
+    }
+  }, [waypoints])
 
   return (
     <Map vehicles={[]}>
@@ -23,12 +50,10 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         <Button
           variant="primary"
           disabled={
-            startPoint === null ||
-            endPoint !== null ||
-            detourPositions.length === 1
+            startPoint === null || endPoint !== null || waypoints.length === 1
           }
           onClick={() =>
-            setDetourPositions((positions) =>
+            setWaypoints((positions) =>
               positions.slice(0, positions.length - 1)
             )
           }
@@ -42,8 +67,9 @@ export const DetourMap = ({ shape }: { shape: Shape }) => {
         onSetStartPoint={setStartPoint}
         endPoint={endPoint}
         onSetEndPoint={setEndPoint}
-        detourPositions={detourPositions}
+        waypoints={waypoints}
         onAddDetourPosition={onAddDetourPosition}
+        detourShapePositions={detourShapePositions}
       />
     </Map>
   )
@@ -55,19 +81,21 @@ const RouteShapeWithDetour = ({
   onSetStartPoint,
   endPoint,
   onSetEndPoint,
-  detourPositions,
+  waypoints,
   onAddDetourPosition,
+  detourShapePositions,
 }: {
   originalShape: Shape
-  startPoint: LatLngExpression | null
-  onSetStartPoint: (p: LatLngExpression | null) => void
-  endPoint: LatLngExpression | null
-  onSetEndPoint: (p: LatLngExpression | null) => void
-  detourPositions: LatLngExpression[]
-  onAddDetourPosition: (p: LatLngExpression) => void
+  startPoint: LatLngLiteral | null
+  onSetStartPoint: (p: LatLngLiteral | null) => void
+  endPoint: LatLngLiteral | null
+  onSetEndPoint: (p: LatLngLiteral | null) => void
+  waypoints: LatLngLiteral[]
+  onAddDetourPosition: (p: LatLngLiteral) => void
+  detourShapePositions: LatLngLiteral[]
 }) => {
-  const routeShapePositions: LatLngExpression[] = originalShape.points.map(
-    (point) => [point.lat, point.lon]
+  const routeShapePositions: LatLngLiteral[] = originalShape.points.map(
+    shapePointToLatLngLiteral
   )
 
   useMapEvent("click", (e) => {
@@ -77,12 +105,12 @@ const RouteShapeWithDetour = ({
   })
 
   // points on the detour not already represented by the start and end
-  const uniqueDetourPositions =
-    detourPositions.length === 0
+  const uniqueWaypoints =
+    waypoints.length === 0
       ? []
       : endPoint === null
-      ? detourPositions.slice(1)
-      : detourPositions.slice(1, -1)
+      ? waypoints.slice(1)
+      : waypoints.slice(1, -1)
 
   return (
     <>
@@ -111,17 +139,17 @@ const RouteShapeWithDetour = ({
       {startPoint && <StartMarker position={startPoint} />}
       {endPoint && <EndMarker position={endPoint} />}
       <Polyline
-        positions={detourPositions}
+        positions={detourShapePositions}
         className="c-detour_map--detour-route-shape"
       />
-      {uniqueDetourPositions.map((position) => (
+      {uniqueWaypoints.map((position) => (
         <DetourPointMarker key={position.toString()} position={position} />
       ))}
     </>
   )
 }
 
-const StartMarker = ({ position }: { position: LatLngExpression }) => (
+const StartMarker = ({ position }: { position: LatLngLiteral }) => (
   <StartOrEndMarker
     classSuffix="start"
     title="Detour Start"
@@ -129,7 +157,7 @@ const StartMarker = ({ position }: { position: LatLngExpression }) => (
   />
 )
 
-const EndMarker = ({ position }: { position: LatLngExpression }) => (
+const EndMarker = ({ position }: { position: LatLngLiteral }) => (
   <StartOrEndMarker classSuffix="end" title="Detour End" position={position} />
 )
 
@@ -140,7 +168,7 @@ const StartOrEndMarker = ({
 }: {
   classSuffix: string
   title: string
-  position: LatLngExpression
+  position: LatLngLiteral
 }) => (
   <ReactMarker
     interactive={false}
@@ -159,7 +187,7 @@ const StartOrEndMarker = ({
   />
 )
 
-const DetourPointMarker = ({ position }: { position: LatLngExpression }) => (
+const DetourPointMarker = ({ position }: { position: LatLngLiteral }) => (
   <ReactMarker
     interactive={false}
     position={position}

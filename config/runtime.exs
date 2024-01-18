@@ -11,6 +11,11 @@ config :skate,
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
   aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
+config :skate, Skate.OpenRouteServiceAPI,
+  api_base_url: System.get_env("OPEN_ROUTE_SERVICE_API_URL"),
+  api_key: System.get_env("OPEN_ROUTE_SERVICE_API_KEY"),
+  client: Skate.OpenRouteServiceAPI.Client
+
 config :ueberauth, Ueberauth.Strategy.Cognito,
   client_secret: System.get_env("COGNITO_CLIENT_SECRET")
 

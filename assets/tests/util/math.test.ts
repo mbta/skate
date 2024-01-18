@@ -1,6 +1,6 @@
 import { describe, test, expect } from "@jest/globals"
 import { clamp, closestPosition } from "../../src/util/math"
-import { LatLngExpression, latLng } from "leaflet"
+import { LatLngLiteral, latLng } from "leaflet"
 
 describe("clamp", () => {
   test("when value is below minimum, returns minimum value", () => {
@@ -24,17 +24,17 @@ describe("closestPosition", () => {
   test("returns the closest point from the provided list", () => {
     const point = latLng(0, 0)
 
-    const closestPoint: LatLngExpression = {
+    const closestPoint: LatLngLiteral = {
       lat: point.lat + 1,
       lng: 0,
     }
     const index = 3
 
     // Generate range and offset so all are farther than `closestPoint`
-    const positions: LatLngExpression[] = Array(5).map((_, idx) => [
-      point.lat + closestPoint.lat + idx,
-      0,
-    ])
+    const positions: LatLngLiteral[] = Array(5).map((_, idx) => ({
+      lat: point.lat + closestPoint.lat + idx,
+      lng: 0,
+    }))
 
     positions[index] = closestPoint
 
