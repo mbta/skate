@@ -35,9 +35,13 @@ const useDetour = () => {
   const [waypoints, setWaypoints] = useState<LatLngLiteral[]>([])
 
   const detourShape = useDetourDirections(
-    [startPoint, ...waypoints, endPoint]
-      .filter((v): v is LatLngLiteral => !!v)
-      .map(latLngLiteralToShapePoint)
+    useMemo(
+      () =>
+        [startPoint, ...waypoints, endPoint]
+          .filter((v): v is LatLngLiteral => !!v)
+          .map(latLngLiteralToShapePoint),
+      [startPoint, waypoints, endPoint]
+    )
   )
 
   const canAddWaypoint = () => startPoint !== null && endPoint === null
