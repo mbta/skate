@@ -60,7 +60,7 @@ describe("useDetour", () => {
     expect(result.current.waypoints).toEqual([])
   })
 
-  test("when `addWaypoint` is called, `detourShape` is updated", async () => {
+  test("when `addWaypoint` is called, should update `detourShape` and `directions`", async () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
     const apiResult = [
@@ -86,9 +86,13 @@ describe("useDetour", () => {
       end,
     ])
 
-    await waitFor(() =>
-      expect(result.current.detourShape).toStrictEqual(apiResult)
-    )
+    await waitFor(() => {
+      expect(result.current.detourShape).toStrictEqual([start, end])
+      expect(result.current.directions).toStrictEqual([
+        { instruction: "0", name: "0", type: "left" },
+        { instruction: "1", name: "1", type: "left" },
+      ])
+    })
   })
 
   test("when `undoLastWaypoint` is called, removes the last `waypoint`", async () => {

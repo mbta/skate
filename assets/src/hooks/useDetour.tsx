@@ -46,7 +46,7 @@ export const useDetour = () => {
           (v): v is ShapePoint => !!v
         ),
       [startPoint, waypoints, endPoint]
-    )
+    ) ?? []
   )
 
   const canAddWaypoint = () => startPoint !== null && endPoint === null
