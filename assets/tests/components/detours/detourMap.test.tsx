@@ -30,7 +30,7 @@ const DetourMapWithDefaults = (
 describe("DetourMap", () => {
   test("when `originalShape` is clicked, fires `onClickOriginalShape`", async () => {
     const onClickOriginalShape = jest.fn()
-    const shapePoint = { lat: 0, lng: 0 }
+    const shapePoint = { lat: 0, lon: 0 }
     const { container } = render(
       <DetourMapWithDefaults
         originalShape={[shapePoint]}
@@ -55,7 +55,7 @@ describe("DetourMap", () => {
 
     expect(onClickMap).toHaveBeenNthCalledWith(1, {
       lat: expect.closeTo(defaultCenter.lat),
-      lng: expect.closeTo(defaultCenter.lng),
+      lon: expect.closeTo(defaultCenter.lng),
     })
   })
 
@@ -75,7 +75,7 @@ describe("DetourMap", () => {
 
     expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
 
-    rerender(<DetourMapWithDefaults startPoint={{ lat: 0, lng: 0 }} />)
+    rerender(<DetourMapWithDefaults startPoint={{ lat: 0, lon: 0 }} />)
 
     expect(screen.getByTitle("Detour Start")).toBeVisible()
   })
@@ -85,7 +85,7 @@ describe("DetourMap", () => {
 
     expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
 
-    rerender(<DetourMapWithDefaults endPoint={{ lat: 0, lng: 0 }} />)
+    rerender(<DetourMapWithDefaults endPoint={{ lat: 0, lon: 0 }} />)
 
     expect(screen.getByTitle("Detour End")).toBeVisible()
   })
@@ -100,9 +100,9 @@ describe("DetourMap", () => {
     rerender(
       <DetourMapWithDefaults
         waypoints={[
-          { lat: 0, lng: 0 },
-          { lat: 1, lng: 1 },
-          { lat: 2, lng: 2 },
+          { lat: 0, lon: 0 },
+          { lat: 1, lon: 1 },
+          { lat: 2, lon: 2 },
         ]}
       />
     )

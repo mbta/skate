@@ -7,42 +7,47 @@ import { CustomControl } from "../map/controls/customControl"
 import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
+import { ShapePoint } from "../../schedule"
+import {
+  latLngLiteralToShapePoint,
+  shapePointToLatLngLiteral,
+} from "../../util/pointLiterals"
 
 interface DetourMapProps {
   /**
    * Coordinates to display as the original route.
    */
-  originalShape: LatLngLiteral[]
+  originalShape: ShapePoint[]
   /**
    * Coordinates to display as the detour line.
    */
-  detourShape: LatLngLiteral[]
+  detourShape: ShapePoint[]
 
   /**
    * Coordinate to display as the beginning connection point.
    */
-  startPoint?: LatLngLiteral
+  startPoint?: ShapePoint
 
   /**
    * Coordinate to display as the ending connection point.
    */
-  endPoint?: LatLngLiteral
+  endPoint?: ShapePoint
 
   /**
    * Coordinates to display as the waypoints.
    */
-  waypoints: LatLngLiteral[]
+  waypoints: ShapePoint[]
 
   /**
    * Callback fired when the {@link originalShape} is clicked.
    */
-  onClickOriginalShape: (point: LatLngLiteral) => void
+  onClickOriginalShape: (point: ShapePoint) => void
 
   /**
    * Callback fired when the map is clicked.
    * @param point
    */
-  onClickMap: (point: LatLngLiteral) => void
+  onClickMap: (point: ShapePoint) => void
 
   /**
    * User signal to describe the state of the undo button.
@@ -81,31 +86,40 @@ export const DetourMap = ({
 
     <MapEvents
       click={(e) => {
-        onClickMap(e.latlng)
+        onClickMap(latLngLiteralToShapePoint(e.latlng))
       }}
     />
 
-    {startPoint && <StartMarker position={startPoint} />}
+    {startPoint && (
+      <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
+    )}
 
     {waypoints.map((position) => (
-      <DetourPointMarker key={JSON.stringify(position)} position={position} />
+      <DetourPointMarker
+        key={JSON.stringify(position)}
+        position={shapePointToLatLngLiteral(position)}
+      />
     ))}
 
-    {endPoint && <EndMarker position={endPoint} />}
+    {endPoint && <EndMarker position={shapePointToLatLngLiteral(endPoint)} />}
 
     <Polyline
-      positions={detourShape}
+      positions={detourShape.map(shapePointToLatLngLiteral)}
       className="c-detour_map--detour-route-shape"
     />
 
     <Polyline
-      positions={originalShape}
+      positions={originalShape.map(shapePointToLatLngLiteral)}
       className="c-detour_map--original-route-shape"
       bubblingMouseEvents={false}
       eventHandlers={{
         click: (e) => {
-          const { position } = closestPosition(originalShape, e.latlng) ?? {}
-          position && onClickOriginalShape(position)
+          const { position } =
+            closestPosition(
+              originalShape.map(shapePointToLatLngLiteral),
+              e.latlng
+            ) ?? {}
+          position && onClickOriginalShape(latLngLiteralToShapePoint(position))
         },
       }}
     />

@@ -2,22 +2,17 @@ import React, { useEffect, useMemo, useState } from "react"
 import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { Shape, ShapePoint } from "../../schedule"
-import { LatLngLiteral } from "leaflet"
 import { fetchDetourDirections } from "../../api"
-import {
-  latLngLiteralToShapePoint,
-  shapePointToLatLngLiteral,
-} from "../../util/pointLiterals"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
-  const [detourShape, setDetourShape] = useState<LatLngLiteral[]>([])
+  const [detourShape, setDetourShape] = useState<ShapePoint[]>([])
 
   useEffect(() => {
     let shouldUpdate = true
 
     fetchDetourDirections(shapePoints).then((detourShape) => {
       if (detourShape && shouldUpdate) {
-        setDetourShape(detourShape.coordinates.map(shapePointToLatLngLiteral))
+        setDetourShape(detourShape.coordinates)
       }
     })
 
@@ -29,27 +24,27 @@ const useDetourDirections = (shapePoints: ShapePoint[]) => {
   return detourShape
 }
 
-const useDetour = () => {
-  const [startPoint, setStartPoint] = useState<LatLngLiteral | null>(null)
-  const [endPoint, setEndPoint] = useState<LatLngLiteral | null>(null)
-  const [waypoints, setWaypoints] = useState<LatLngLiteral[]>([])
+export const useDetour = () => {
+  const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
+  const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
+  const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
 
   const detourShape = useDetourDirections(
     useMemo(
       () =>
-        [startPoint, ...waypoints, endPoint]
-          .filter((v): v is LatLngLiteral => !!v)
-          .map(latLngLiteralToShapePoint),
+        [startPoint, ...waypoints, endPoint].filter(
+          (v): v is ShapePoint => !!v
+        ),
       [startPoint, waypoints, endPoint]
     )
   )
 
   const canAddWaypoint = () => startPoint !== null && endPoint === null
-  const addWaypoint = (p: LatLngLiteral) => {
+  const addWaypoint = (p: ShapePoint) => {
     canAddWaypoint() && setWaypoints((positions) => [...positions, p])
   }
 
-  const addConnectionPoint = (point: LatLngLiteral) => {
+  const addConnectionPoint = (point: ShapePoint) => {
     if (startPoint === null) {
       setStartPoint(point)
     } else if (endPoint === null) {
@@ -130,11 +125,6 @@ export const DiversionPage = ({
     undoLastWaypoint,
   } = useDetour()
 
-  const originalShape = useMemo(
-    () => shape.points.map(shapePointToLatLngLiteral),
-    [shape.points]
-  )
-
   return (
     <article className="l-diversion-page h-100 border-box">
       <header className="l-diversion-page__header text-bg-light border-bottom">
@@ -152,7 +142,7 @@ export const DiversionPage = ({
       </div>
       <div className="l-diversion-page__map">
         <DetourMap
-          originalShape={originalShape}
+          originalShape={shape.points}
           detourShape={detourShape}
           startPoint={startPoint ?? undefined}
           endPoint={endPoint ?? undefined}
