@@ -1,10 +1,21 @@
 name: "Chromatic"
 
-on: push
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+    - synchronize
+    - labeled
+  push:
+    branches:
+      - main
+
 
 jobs:
   chromatic:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'chromatic') }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
