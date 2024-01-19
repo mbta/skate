@@ -1,8 +1,7 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import React, { ComponentProps } from "react"
 import { DetourMap } from "../../../src/components/detours/detourMap"
-import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import { defaultCenter } from "../../../src/components/map"
 
@@ -38,7 +37,7 @@ describe("DetourMap", () => {
       />
     )
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -51,7 +50,7 @@ describe("DetourMap", () => {
       <DetourMapWithDefaults onClickMap={onClickMap} />
     )
 
-    await userEvent.click(container.querySelector(".c-vehicle-map")!)
+    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
     expect(onClickMap).toHaveBeenNthCalledWith(1, {
       lat: expect.closeTo(defaultCenter.lat),
@@ -63,7 +62,7 @@ describe("DetourMap", () => {
     const onUndoLastWaypoint = jest.fn()
     render(<DetourMapWithDefaults onUndoLastWaypoint={onUndoLastWaypoint} />)
 
-    await userEvent.click(
+    await fireEvent.click(
       screen.getByRole("button", { name: "Clear Last Waypoint" })
     )
 
