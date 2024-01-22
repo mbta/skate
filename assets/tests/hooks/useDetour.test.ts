@@ -103,6 +103,25 @@ describe("useDetour", () => {
     expect(result.current.waypoints).toStrictEqual([])
   })
 
+  test("when `undoLastWaypoint` is called, should call API with updated waypoints", async () => {
+    const start = { lat: 0, lon: 0 }
+    const mid = { lat: 0.5, lon: 0.5 }
+    const end = { lat: 1, lon: 1 }
+
+    const { result } = renderHook(useDetour)
+
+    act(() => result.current.addConnectionPoint(start))
+    act(() => result.current.addWaypoint(mid))
+    act(() => result.current.addWaypoint(end))
+    act(() => result.current.undoLastWaypoint())
+
+    expect(jest.mocked(fetchDetourDirections)).toHaveBeenCalledTimes(3)
+    expect(jest.mocked(fetchDetourDirections)).toHaveBeenNthCalledWith(3, [
+      start,
+      mid,
+    ])
+  })
+
   test("when `waypoints` is empty, `canUndo` is `false`", async () => {
     const { result } = renderHook(useDetour)
 
