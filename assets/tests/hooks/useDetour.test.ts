@@ -63,12 +63,15 @@ describe("useDetour", () => {
   test("when `addWaypoint` is called, `detourShape` is updated", async () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
+    const apiResult = [
+      { lat: -1, lon: -1 },
+      { lat: -2, lon: -2 },
+    ]
 
-    jest
-      .mocked(fetchDetourDirections)
-      .mockImplementation((coordinates) =>
-        Promise.resolve({ coordinates: coordinates })
-      )
+    jest.mocked(fetchDetourDirections).mockImplementation((coordinates) => {
+      expect(coordinates).toStrictEqual([start, end])
+      return Promise.resolve({ coordinates: apiResult })
+    })
 
     const { result } = renderHook(useDetour)
 
@@ -83,7 +86,7 @@ describe("useDetour", () => {
     ])
 
     await waitFor(() =>
-      expect(result.current.detourShape).toStrictEqual([start, end])
+      expect(result.current.detourShape).toStrictEqual(apiResult)
     )
   })
 
