@@ -199,6 +199,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             <li>
               <button
                 class="c-route-picker__route-list-button"
+                tabindex="-1"
               >
                 28
               </button>
@@ -210,6 +211,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 1
                 <span
@@ -440,6 +442,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 28
                 <span
@@ -452,6 +455,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 1
                 <span
@@ -697,6 +701,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 28
                 <span
@@ -709,6 +714,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 1
                 <span

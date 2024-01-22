@@ -56,6 +56,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         <button
           className="c-route-picker__route-list-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           71
         </button>
@@ -64,6 +65,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         <button
           className="c-route-picker__route-list-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           73
         </button>
@@ -72,6 +74,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         <button
           className="c-route-picker__route-list-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           111
         </button>
@@ -80,6 +83,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         <button
           className="c-route-picker__route-list-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           SL1
         </button>
@@ -92,6 +96,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         <button
           className="c-route-picker__selected-routes-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           28
           <span
@@ -108,6 +113,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         <button
           className="c-route-picker__selected-routes-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           39
           <span
