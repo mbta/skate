@@ -292,9 +292,10 @@ exports[`renders 1`] = `
                 role="tablist"
               >
                 <div
+                  aria-selected="true"
                   class="c-ladder-page__tab c-ladder-page__tab-current"
                   role="tab"
-                  tabindex="0"
+                  tabindex="-1"
                 >
                   <div
                     class="c-ladder-page__tab-contents"

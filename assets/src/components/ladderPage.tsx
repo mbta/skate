@@ -79,7 +79,8 @@ const LadderTab = ({
         }
       }}
       role="tab"
-      tabIndex={tab.isCurrentTab ? 0 : -1}
+      tabIndex={tab.isCurrentTab ? -1 : 0}
+      aria-selected={tab.isCurrentTab}
     >
       <div className="c-ladder-page__tab-contents">
         <div
