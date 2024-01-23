@@ -41,23 +41,20 @@ describe("useDetour", () => {
 
     act(() => result.current.addWaypoint({ lat: 0, lon: 0 }))
 
-    expect(result.current.waypoints).toEqual([])
+    expect(result.current.waypoints).toHaveLength(0)
   })
 
   test("when `endPoint` is set, `addWaypoint` does nothing", () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
-
     const { result } = renderHook(useDetour)
 
     expect(result.current.startPoint).toBeNull()
 
-    act(() => result.current.addConnectionPoint(start))
-    act(() => result.current.addConnectionPoint(end))
+    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint({ lat: 1, lon: 1 }))
 
     act(() => result.current.addWaypoint({ lat: 0, lon: 0 }))
 
-    expect(result.current.waypoints).toEqual([])
+    expect(result.current.waypoints).toHaveLength(0)
   })
 
   test("when `addWaypoint` is called, should update `detourShape` and `directions`", async () => {
@@ -108,7 +105,7 @@ describe("useDetour", () => {
 
     act(() => result.current.undoLastWaypoint())
 
-    expect(result.current.waypoints).toStrictEqual([])
+    expect(result.current.waypoints).toHaveLength(0)
   })
 
   test("when `undoLastWaypoint` is called, should call API with updated waypoints", async () => {
@@ -135,7 +132,7 @@ describe("useDetour", () => {
 
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
 
-    expect(result.current.waypoints).toStrictEqual([])
+    expect(result.current.waypoints).toHaveLength(0)
     expect(result.current.canUndo).toBe(false)
   })
 
@@ -145,6 +142,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
     act(() => result.current.addWaypoint({ lat: 1, lon: 1 }))
 
+    expect(result.current.waypoints).not.toHaveLength(0)
     expect(result.current.canUndo).toBe(true)
   })
 
@@ -154,6 +152,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
 
+    expect(result.current.endPoint).not.toBeNull()
     expect(result.current.canUndo).toBe(false)
   })
 })
