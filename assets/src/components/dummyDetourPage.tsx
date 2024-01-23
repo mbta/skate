@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { fetchShapeForRoute } from "../api"
-import { DetourMap } from "./detours/detourMap"
 import { Shape } from "../schedule"
+import { DiversionPage } from "./detours/diversionPage"
 
 export const DummyDetourPage = () => {
   const [routeShape, setRouteShape] = useState<Shape | null>(null)
@@ -14,7 +14,15 @@ export const DummyDetourPage = () => {
 
   return (
     <div className="l-page">
-      {routeShape && <DetourMap shape={routeShape} />}
+      {routeShape && (
+        <DiversionPage
+          shape={routeShape}
+          routeName="39"
+          routeDescription="Forest Hills"
+          routeOrigin="from Back Bay"
+          routeDirection="Outbound"
+        />
+      )}
     </div>
   )
 }

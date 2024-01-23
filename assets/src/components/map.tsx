@@ -4,6 +4,7 @@ import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Lea
 import "leaflet.fullscreen"
 import React, {
   MutableRefObject,
+  PropsWithChildren,
   ReactElement,
   useEffect,
   useRef,
@@ -42,9 +43,8 @@ import {
   usePickerContainerFollowerFn,
 } from "./map/follower"
 
-export interface Props {
+export interface Props extends PropsWithChildren {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
-  children?: ReactElement | ReactElement[]
   tileType?: TileType
   stateClasses?: string
 
