@@ -39,9 +39,6 @@ export const CustomControl = ({
     )
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
 
-  console.debug(portalParent)
-  console.debug(position)
-
   useEffect(() => {
     if (!portalElement) {
       setPortalElement(document.createElement("div"))
