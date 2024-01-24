@@ -62,6 +62,7 @@ describe("CustomControls", () => {
       container.querySelector(".leaflet-control-container")
     ).toMatchSnapshot()
   })
+
   test("when insertAfterSelector is specified and there is not a node matching that selector, then the control is added at the end of the leaflet-container", () => {
     const { container } = render(
       <>
@@ -84,5 +85,27 @@ describe("CustomControls", () => {
     expect(
       container.querySelector(".leaflet-control-container")
     ).toMatchSnapshot()
+  })
+
+  test("when insertFirst is specified, then the control is added at the beginning of the leaflet-container", () => {
+    const { container } = render(
+      <>
+        <ZoomControl position="topright" />
+
+        <FullscreenControl position="topright" />
+        <CustomControl className="test-control" position="topright" insertFirst>
+          {customControlContents()}
+        </CustomControl>
+      </>,
+      {
+        wrapper: mapWrapper,
+      }
+    )
+
+    expect(
+      container.querySelector(
+        ".leaflet-control-container .test-control:first-child"
+      )
+    ).toBeInTheDocument()
   })
 })

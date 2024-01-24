@@ -56,6 +56,7 @@ export const StreetViewControl = ({
           "c-street-view-switch",
           "position-absolute",
         ])}
+        insertFirst
       >
         <StreetViewSwitch
           streetViewEnabled={streetViewEnabled}
