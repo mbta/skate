@@ -334,6 +334,5 @@ defmodule Skate.Factory do
         }
       ]
     }
-    |> evaluate_lazy_attributes()
   end
 end
