@@ -1,13 +1,13 @@
-import Leaflet, { ControlOptions } from "leaflet"
-import React, { useEffect, useId, useState } from "react"
-import ReactDOM from "react-dom"
-import { useMap, useMapEvents } from "react-leaflet"
-import { joinClasses } from "../../../helpers/dom"
+import { ControlOptions } from "leaflet"
+import React, { useId } from "react"
+import { useMapEvents } from "react-leaflet"
 import { WalkingIcon } from "../../../helpers/icon"
 import { streetViewUrl } from "../../../util/streetViewUrl"
 import { CutoutOverlay } from "../../cutoutOverlay"
 import { fullStoryEvent } from "../../../helpers/fullStory"
 import { Form } from "react-bootstrap"
+import { CustomControl } from "./customControl"
+import { joinClasses } from "../../../helpers/dom"
 
 export interface StreetViewControlProps extends ControlOptions {
   streetViewEnabled: boolean
@@ -18,31 +18,6 @@ export const StreetViewControl = ({
   streetViewEnabled,
   setStreetViewEnabled,
 }: StreetViewControlProps): JSX.Element | null => {
-  const map = useMap()
-  const portalParent = map
-    .getContainer()
-    .querySelector(".leaflet-control-container")
-  const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
-
-  useEffect(() => {
-    if (!portalParent || !portalElement) {
-      setPortalElement(document.createElement("div"))
-    }
-
-    if (portalParent && portalElement) {
-      portalElement.className = joinClasses([
-        "leaflet-control",
-        "leaflet-bar",
-        "c-street-view-switch",
-        "position-absolute",
-      ])
-      portalParent.append(portalElement)
-      Leaflet.DomEvent.disableClickPropagation(portalElement)
-    }
-
-    return () => portalElement?.remove()
-  }, [portalElement, portalParent, setStreetViewEnabled])
-
   useMapEvents(
     streetViewEnabled
       ? {
@@ -75,14 +50,18 @@ export const StreetViewControl = ({
 
   return (
     <>
-      {portalElement &&
-        ReactDOM.createPortal(
-          <StreetViewSwitch
-            streetViewEnabled={streetViewEnabled}
-            setStreetViewEnabled={setStreetViewEnabled}
-          />,
-          portalElement
-        )}
+      <CustomControl
+        className={joinClasses([
+          "leaflet-bar",
+          "c-street-view-switch",
+          "position-absolute",
+        ])}
+      >
+        <StreetViewSwitch
+          streetViewEnabled={streetViewEnabled}
+          setStreetViewEnabled={setStreetViewEnabled}
+        />
+      </CustomControl>
       {streetViewEnabled && <CutoutOverlay.FollowMapMouseMove />}
     </>
   )
