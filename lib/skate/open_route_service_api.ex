@@ -89,7 +89,7 @@ defmodule Skate.OpenRouteServiceAPI do
          |> Enum.filter(fn %{"type" => type} -> map_type(type) not in [:goal, :error] end)
          |> Enum.map(
            &%{
-             instruction: &1["instruction"],
+             instruction: &1["instruction"]
            }
          )
      }}

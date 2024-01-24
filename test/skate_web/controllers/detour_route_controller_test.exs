@@ -73,9 +73,9 @@ defmodule SkateWeb.DetourRouteControllerTest do
       assert %{
                "data" => %{
                  "directions" => [
-                   %{ "instruction" => "1"},
-                   %{ "instruction" => "2"},
-                   %{ "instruction" => "3"}
+                   %{"instruction" => "1"},
+                   %{"instruction" => "2"},
+                   %{"instruction" => "3"}
                  ]
                }
              } =
