@@ -24,13 +24,9 @@ defmodule Skate.OpenRouteServiceAPI do
           ],
           directions: [
             %{
-              name: "1st Avenue",
-              type: :right,
               instruction: "Turn right onto 1st Avenue"
             },
             %{
-              name: "2nd Place",
-              type: :left,
               instruction: "Turn left onto 2nd Place"
             }
           ]
@@ -90,14 +86,12 @@ defmodule Skate.OpenRouteServiceAPI do
        directions:
          segments
          |> Enum.flat_map(& &1["steps"])
+         |> Enum.filter(fn %{"type" => type} -> map_type(type) not in [:goal, :error] end)
          |> Enum.map(
            &%{
              instruction: &1["instruction"],
-             name: &1["name"],
-             type: map_type(&1["type"])
            }
          )
-         |> Enum.filter(fn %{type: type} -> !Enum.member?([:goal, :error], type) end)
      }}
   end
 
