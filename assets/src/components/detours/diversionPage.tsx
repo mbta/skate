@@ -3,9 +3,9 @@ import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { Shape } from "../../schedule"
 import { useDetour } from "../../hooks/useDetour"
+import { ListGroup } from "react-bootstrap"
 
 export const DiversionPage = ({
-  directions,
   missedStops,
   routeName,
   routeDescription,
@@ -22,6 +22,7 @@ export const DiversionPage = ({
     waypoints,
 
     detourShape,
+    directions,
 
     canUndo,
     undoLastWaypoint,
@@ -34,7 +35,15 @@ export const DiversionPage = ({
       </header>
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
-          directions={directions}
+          directions={
+            <ListGroup as="ol">
+              {directions?.map((d) => (
+                <ListGroup.Item key={d.instruction} as="li">
+                  {d.instruction}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          }
           missedStops={missedStops}
           routeName={routeName}
           routeDescription={routeDescription}

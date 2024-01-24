@@ -1,4 +1,4 @@
-import { array, Infer, number, type } from "superstruct"
+import { array, Infer, number, string, type } from "superstruct"
 import { DetourShape } from "../detour"
 
 export const DetourShapeData = type({
@@ -6,6 +6,11 @@ export const DetourShapeData = type({
     type({
       lat: number(),
       lon: number(),
+    })
+  ),
+  directions: array(
+    type({
+      instruction: string(),
     })
   ),
 })
