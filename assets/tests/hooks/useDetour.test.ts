@@ -3,6 +3,8 @@ import { fetchDetourDirections } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
+import { detourShapeFactory } from "../factories/detourShapeFactory"
+import { ShapePoint } from "../../src/schedule"
 
 jest.mock("../../src/api")
 
@@ -58,16 +60,24 @@ describe("useDetour", () => {
   })
 
   test("when `addWaypoint` is called, should update `detourShape` and `directions`", async () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
-    const apiResult = [
-      { lat: -1, lon: -1 },
-      { lat: -2, lon: -2 },
-    ]
+    const start: ShapePoint = { lat: -2, lon: -2 }
+    const end: ShapePoint = { lat: -1, lon: -1 }
+
+    const detourShape = detourShapeFactory.build({
+      coordinates: [
+        { lat: 0, lon: 0 },
+        { lat: 1, lon: 1 },
+        { lat: 2, lon: 2 },
+      ],
+      directions: [
+        { instruction: "Turn Left onto Main St" },
+        { instruction: "Turn Right onto High St" },
+      ],
+    })
 
     jest.mocked(fetchDetourDirections).mockImplementation((coordinates) => {
       expect(coordinates).toStrictEqual([start, end])
-      return Promise.resolve({ coordinates: apiResult, directions: [] })
+      return Promise.resolve(detourShape)
     })
 
     const { result } = renderHook(useDetour)
@@ -84,11 +94,8 @@ describe("useDetour", () => {
     ])
 
     await waitFor(() => {
-      expect(result.current.detourShape).toStrictEqual([start, end])
-      expect(result.current.directions).toStrictEqual([
-        { instruction: "0", name: "0", type: "left" },
-        { instruction: "1", name: "1", type: "left" },
-      ])
+      expect(result.current.detourShape).toStrictEqual(detourShape.coordinates)
+      expect(result.current.directions).toStrictEqual(detourShape.directions)
     })
   })
 
