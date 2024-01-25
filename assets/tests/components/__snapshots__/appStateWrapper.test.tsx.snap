@@ -15,153 +15,6 @@ exports[`renders 1`] = `
         class="l-nav--wide"
       >
         <div
-          class="l-nav__app-content"
-        >
-          <div
-            class="c-ladder-page c-ladder-page--picker-container-visible "
-          >
-            <div
-              class="c-notifications"
-            />
-            <div
-              class="c-picker-container c-picker-container--visible"
-              data-testid="picker-container"
-            >
-              <button
-                class="c-drawer-tab c-drawer-tab__tab-button"
-                title="Collapse"
-              >
-                <span>
-                  <svg />
-                </span>
-              </button>
-              <div
-                class="c-ladder-page__routes-presets-toggle u-hideable"
-              >
-                <button
-                  class="c-ladder-page__routes_picker_button--selected"
-                  id="c-ladder-page__routes_picker_button"
-                >
-                  Routes
-                </button>
-                <button
-                  class="c-ladder-page__routes_picker_button--unselected"
-                  id="c-ladder-page__presets_picker_button"
-                >
-                  Presets
-                </button>
-              </div>
-              <div
-                class="c-route-picker u-hideable"
-              >
-                <div
-                  class="c-route-filter"
-                >
-                  <div
-                    class="c-route-filter__text"
-                  >
-                    <input
-                      class="c-route-filter__input"
-                      placeholder="Search routes"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  class="c-garage-filter"
-                >
-                  <button
-                    class="c-garage-filter__show-hide-button"
-                    title="Toggle Garage Filter"
-                  >
-                    <div
-                      class="c-garage-filter__header"
-                    >
-                      Filter garages
-                    </div>
-                    <div
-                      class="c-garage-filter__show-hide-icon"
-                    >
-                      <span>
-                        <svg />
-                      </span>
-                    </div>
-                  </button>
-                </div>
-                <div
-                  class="c-route-picker__routes-container"
-                >
-                  loading...
-                  <p>
-                    Selected routes will show up here…
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div
-              aria-hidden="true"
-              class="c-picker-container-backdrop"
-              data-testid="picker-container-backdrop"
-            />
-            <div
-              class="c-ladder-page__tab-bar-and-ladders"
-            >
-              <div
-                class="c-ladder-page__route-tab-bar"
-                role="tablist"
-              >
-                <div
-                  class="c-ladder-page__tab c-ladder-page__tab-current"
-                  role="tab"
-                  tabindex="0"
-                >
-                  <div
-                    class="c-ladder-page__tab-contents"
-                  >
-                    <div
-                      class="c-ladder-page__tab-title"
-                    >
-                      Untitled
-                    </div>
-                    <button
-                      class="c-ladder-page__tab-save-button"
-                      title="Save"
-                    >
-                      <span>
-                        <svg />
-                      </span>
-                    </button>
-                    <button
-                      class="c-old-close-button"
-                      data-testid="close-button"
-                      title="Close"
-                    >
-                      <span>
-                        <svg />
-                      </span>
-                    </button>
-                  </div>
-                </div>
-                <button
-                  class="c-ladder-page__add-tab-button"
-                  title="Add Tab"
-                >
-                  <span
-                    class="c-ladder-page__add-tab-icon"
-                  >
-                    <svg />
-                  </span>
-                </button>
-              </div>
-              <div
-                class="c-route-ladders"
-                data-testid="route-ladders-div"
-              />
-            </div>
-          </div>
-        </div>
-        <div
           class="l-nav__nav-bar l-nav__nav-bar--top"
         >
           <div
@@ -338,6 +191,154 @@ exports[`renders 1`] = `
                   </button>
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="l-nav__app-content"
+        >
+          <div
+            class="c-ladder-page c-ladder-page--picker-container-visible "
+          >
+            <div
+              class="c-notifications"
+            />
+            <div
+              class="c-picker-container c-picker-container--visible"
+              data-testid="picker-container"
+            >
+              <button
+                class="c-drawer-tab c-drawer-tab__tab-button"
+                title="Collapse"
+              >
+                <span>
+                  <svg />
+                </span>
+              </button>
+              <div
+                class="c-ladder-page__routes-presets-toggle u-hideable"
+              >
+                <button
+                  class="c-ladder-page__routes_picker_button--selected"
+                  id="c-ladder-page__routes_picker_button"
+                >
+                  Routes
+                </button>
+                <button
+                  class="c-ladder-page__routes_picker_button--unselected"
+                  id="c-ladder-page__presets_picker_button"
+                >
+                  Presets
+                </button>
+              </div>
+              <div
+                class="c-route-picker u-hideable"
+              >
+                <div
+                  class="c-route-filter"
+                >
+                  <div
+                    class="c-route-filter__text"
+                  >
+                    <input
+                      class="c-route-filter__input"
+                      placeholder="Search routes"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="c-garage-filter"
+                >
+                  <button
+                    class="c-garage-filter__show-hide-button"
+                    title="Toggle Garage Filter"
+                  >
+                    <div
+                      class="c-garage-filter__header"
+                    >
+                      Filter garages
+                    </div>
+                    <div
+                      class="c-garage-filter__show-hide-icon"
+                    >
+                      <span>
+                        <svg />
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  class="c-route-picker__routes-container"
+                >
+                  loading...
+                  <p>
+                    Selected routes will show up here…
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="c-picker-container-backdrop"
+              data-testid="picker-container-backdrop"
+            />
+            <div
+              class="c-ladder-page__tab-bar-and-ladders"
+            >
+              <div
+                class="c-ladder-page__route-tab-bar"
+                role="tablist"
+              >
+                <div
+                  aria-selected="true"
+                  class="c-ladder-page__tab c-ladder-page__tab-current"
+                  role="tab"
+                  tabindex="-1"
+                >
+                  <div
+                    class="c-ladder-page__tab-contents"
+                  >
+                    <div
+                      class="c-ladder-page__tab-title"
+                    >
+                      Untitled
+                    </div>
+                    <button
+                      class="c-ladder-page__tab-save-button"
+                      title="Save"
+                    >
+                      <span>
+                        <svg />
+                      </span>
+                    </button>
+                    <button
+                      class="c-old-close-button"
+                      data-testid="close-button"
+                      title="Close"
+                    >
+                      <span>
+                        <svg />
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  class="c-ladder-page__add-tab-button"
+                  title="Add Tab"
+                >
+                  <span
+                    class="c-ladder-page__add-tab-icon"
+                  >
+                    <svg />
+                  </span>
+                </button>
+              </div>
+              <div
+                class="c-route-ladders"
+                data-testid="route-ladders-div"
+              />
             </div>
           </div>
         </div>

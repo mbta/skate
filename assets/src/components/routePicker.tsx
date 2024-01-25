@@ -105,6 +105,7 @@ const SelectedRouteButton = ({
       <button
         className="c-route-picker__selected-routes-button"
         onClick={() => deselectRoute(routeId)}
+        tabIndex={-1}
       >
         {routeNameOrId(routeId, routes)}
         <OldCloseIcon className="c-route-picker__selected-routes-button-icon" />
@@ -141,6 +142,7 @@ const RouteListButton = ({
     <button
       className="c-route-picker__route-list-button"
       onClick={() => selectRoute(route.id)}
+      tabIndex={-1}
     >
       {route.name}
     </button>

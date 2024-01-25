@@ -22,14 +22,13 @@ const Nav: React.FC<Props> = ({ children }) => {
     case "mobile":
       return (
         <div className="l-nav--narrow">
-          <div className="l-nav__app-content">{children}</div>
           <MobilePortraitNav isViewOpen={isViewOpen} />
+          <div className="l-nav__app-content">{children}</div>
         </div>
       )
     case "mobile_landscape_tablet_portrait":
       return (
         <div className="l-nav--medium">
-          <div className="l-nav__app-content">{children}</div>
           <div
             className="l-nav__nav-bar l-nav__nav-bar--left"
             hidden={isViewOpen}
@@ -41,12 +40,12 @@ const Nav: React.FC<Props> = ({ children }) => {
               closePickerOnViewOpen={true}
             />
           </div>
+          <div className="l-nav__app-content">{children}</div>
         </div>
       )
     case "tablet":
       return (
         <div className="l-nav--medium">
-          <div className="l-nav__app-content">{children}</div>
           <div className="l-nav__nav-bar l-nav__nav-bar--left">
             <LeftNav
               toggleMobileMenu={() => dispatch(toggleMobileMenu())}
@@ -54,21 +53,24 @@ const Nav: React.FC<Props> = ({ children }) => {
               dispatcherFlag={readDispatcherFlag()}
             />
           </div>
+          <div className="l-nav__app-content">{children}</div>
         </div>
       )
     default:
       return (
         <div className="l-nav--wide">
+          <>
+            <div className="l-nav__nav-bar l-nav__nav-bar--top">
+              <TopNav />
+            </div>
+            <div className="l-nav__nav-bar l-nav__nav-bar--left">
+              <LeftNav
+                defaultToCollapsed={false}
+                dispatcherFlag={readDispatcherFlag()}
+              />
+            </div>
+          </>
           <div className="l-nav__app-content">{children}</div>
-          <div className="l-nav__nav-bar l-nav__nav-bar--top">
-            <TopNav />
-          </div>
-          <div className="l-nav__nav-bar l-nav__nav-bar--left">
-            <LeftNav
-              defaultToCollapsed={false}
-              dispatcherFlag={readDispatcherFlag()}
-            />
-          </div>
         </div>
       )
   }

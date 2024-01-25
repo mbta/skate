@@ -73,7 +73,7 @@ export const DetourMap = ({
   undoDisabled,
   onUndoLastWaypoint,
 }: DetourMapProps) => (
-  <Map vehicles={[]}>
+  <Map vehicles={[]} allowStreetView>
     <CustomControl position="topleft" className="leaflet-bar">
       <Button
         variant="primary"

@@ -22,10 +22,12 @@ export const CustomControl = ({
   children,
   className,
   insertAfterSelector,
+  insertFirst,
 }: ControlOptions & {
   children: ReactNode
   className?: string
   insertAfterSelector?: string
+  insertFirst?: boolean
 }): JSX.Element | null => {
   const map = useMap()
   const portalParent = map
@@ -50,6 +52,8 @@ export const CustomControl = ({
         : null
       if (elementToInsertAfter) {
         elementToInsertAfter.after(portalElement)
+      } else if (insertFirst) {
+        portalParent.prepend(portalElement)
       } else {
         portalParent.append(portalElement)
       }
@@ -57,7 +61,7 @@ export const CustomControl = ({
     }
 
     return () => portalElement?.remove()
-  }, [portalElement, portalParent, className, insertAfterSelector])
+  }, [portalElement, portalParent, className, insertAfterSelector, insertFirst])
 
   return portalElement ? ReactDOM.createPortal(children, portalElement) : null
 }

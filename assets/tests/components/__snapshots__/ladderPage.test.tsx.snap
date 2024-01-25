@@ -199,6 +199,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             <li>
               <button
                 class="c-route-picker__route-list-button"
+                tabindex="-1"
               >
                 28
               </button>
@@ -210,6 +211,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 1
                 <span
@@ -236,9 +238,10 @@ exports[`LadderPage renders with route tabs 1`] = `
         role="tablist"
       >
         <div
+          aria-selected="true"
           class="c-ladder-page__tab c-ladder-page__tab-current"
           role="tab"
-          tabindex="0"
+          tabindex="-1"
         >
           <div
             class="c-ladder-page__tab-contents"
@@ -268,9 +271,10 @@ exports[`LadderPage renders with route tabs 1`] = `
           </div>
         </div>
         <div
+          aria-selected="false"
           class="c-ladder-page__tab"
           role="tab"
-          tabindex="-1"
+          tabindex="0"
         >
           <div
             class="c-ladder-page__tab-contents"
@@ -438,6 +442,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 28
                 <span
@@ -450,6 +455,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 1
                 <span
@@ -476,9 +482,10 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         role="tablist"
       >
         <div
+          aria-selected="true"
           class="c-ladder-page__tab c-ladder-page__tab-current"
           role="tab"
-          tabindex="0"
+          tabindex="-1"
         >
           <div
             class="c-ladder-page__tab-contents"
@@ -694,6 +701,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 28
                 <span
@@ -706,6 +714,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             <li>
               <button
                 class="c-route-picker__selected-routes-button"
+                tabindex="-1"
               >
                 1
                 <span
@@ -732,9 +741,10 @@ exports[`LadderPage renders with timepoints 1`] = `
         role="tablist"
       >
         <div
+          aria-selected="true"
           class="c-ladder-page__tab c-ladder-page__tab-current"
           role="tab"
-          tabindex="0"
+          tabindex="-1"
         >
           <div
             class="c-ladder-page__tab-contents"
