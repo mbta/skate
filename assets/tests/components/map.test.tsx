@@ -293,6 +293,41 @@ describe("<MapFollowingPrimaryVehicles />", () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
+  test("starts out with no dropdown menu", async () => {
+    const vehicle = vehicleFactory.build({})
+    const onClick = jest.fn()
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        onPrimaryVehicleSelect={onClick}
+      />
+    )
+
+    expect(
+      container.querySelector(".c-dropdown-popup-wrapper")
+    ).not.toBeInTheDocument()
+  })
+
+  test("brings up a dropdown menu on right-click", async () => {
+    const vehicle = vehicleFactory.build({})
+    const onClick = jest.fn()
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        onPrimaryVehicleSelect={onClick}
+      />
+    )
+
+    await userEvent.pointer({
+      keys: "[MouseRight>]",
+      target: screen.getByText(runIdToLabel(vehicle.runId!)),
+    })
+
+    expect(
+      container.querySelector(".c-dropdown-popup-wrapper")
+    ).toBeInTheDocument()
+  })
+
   test("renders street view link from stop", async () => {
     const { container } = render(
       <MapFollowingPrimaryVehicles

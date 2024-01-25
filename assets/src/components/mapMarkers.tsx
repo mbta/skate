@@ -1,7 +1,7 @@
-import Leaflet, { LatLngExpression } from "leaflet"
+import Leaflet, { LatLngExpression, PointTuple } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
-import React, { useContext } from "react"
+import React, { useContext, useRef } from "react"
 import { Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -28,6 +28,7 @@ import { streetViewUrl } from "../util/streetViewUrl"
 import { TileTypeContext } from "../contexts/tileTypeContext"
 import { ReactMarker } from "./map/utilities/reactMarker"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { Dropdown } from "react-bootstrap"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -108,7 +109,21 @@ export const VehicleMarker = ({
   onSelect?: (vehicle: Vehicle) => void
 }) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
-  const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}
+  const markerRef = useRef<Leaflet.Marker<any>>(null)
+
+  const suppressPopup = () => {
+    markerRef.current?.closePopup()
+  }
+
+  const eventHandlers = {
+    click: () => {
+      onSelect && onSelect(vehicle)
+      suppressPopup()
+    },
+    contextmenu: () => {
+      markerRef.current?.openPopup()
+    },
+  }
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
   const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
     vehicle,
@@ -128,6 +143,14 @@ export const VehicleMarker = ({
   // > [...] if you want to put the marker on top of all others,
   // > [specify] a high value like 1000 [...]
   const zIndexOffset = isSelected ? 1000 : 0
+
+  // This offset is here because, due to a limitation of Leaflet
+  // popups, we weren't able to render the popup at the bottom-right
+  // corner of the marker, where it's supposed to go. This effectively
+  // renders it centered and above the marker, and then uses the
+  // offset to reposition it to the bottom-right corner.
+  const dropdownOffset: PointTuple = [140, 97]
+
   return (
     <>
       <Marker
@@ -135,7 +158,17 @@ export const VehicleMarker = ({
         icon={vehicleIcon}
         eventHandlers={eventHandlers}
         zIndexOffset={zIndexOffset}
-      />
+        ref={markerRef}
+      >
+        <Popup className="c-dropdown-popup-wrapper" offset={dropdownOffset}>
+          <Dropdown.Menu className="c-dropdown-popup-menu" show>
+            <Dropdown.Item>
+              Start a detour on route {vehicle.routeId}
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Popup>
+      </Marker>
+
       <Marker
         position={position}
         icon={labelIcon}
