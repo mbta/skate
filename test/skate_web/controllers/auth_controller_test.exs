@@ -23,7 +23,7 @@ defmodule SkateWeb.AuthControllerTest do
           raw_info: %UeberauthOidcc.RawInfo{
             userinfo: %{
               "resource_access" => %{
-                "test-client" => %{"roles" => ["test1"]}
+                "test-client" => %{"roles" => ["test1", "skate-readonly"]}
               }
             }
           }
@@ -36,10 +36,39 @@ defmodule SkateWeb.AuthControllerTest do
         |> get(~p"/auth/keycloak/callback")
 
       assert redirected_to(conn) == "/"
-      assert Guardian.Plug.current_claims(conn)["groups"] == ["test1"]
+      assert Guardian.Plug.current_claims(conn)["groups"] == ["test1", "skate-readonly"]
     end
 
     test "creates user record if it doesn't already exist", %{conn: conn} do
+      mock_auth = %Ueberauth.Auth{
+        uid: "test_username",
+        credentials: %Ueberauth.Auth.Credentials{
+          expires_at: System.system_time(:second) + 1_000,
+          refresh_token: "test_refresh_token"
+        },
+        info: %{email: "test@mbta.com"},
+        extra: %Ueberauth.Auth.Extra{
+          raw_info: %UeberauthOidcc.RawInfo{
+            userinfo: %{
+              "resource_access" => %{
+                "test-client" => %{"roles" => ["skate-readonly"]}
+              }
+            }
+          }
+        }
+      }
+
+      conn
+      |> assign(:ueberauth_auth, mock_auth)
+      |> get(~p"/auth/keycloak/callback")
+
+      assert %{username: "test_username", email: "test@mbta.com"} =
+               User.get_by_email("test@mbta.com")
+    end
+
+    test "sends forbidden response if the user is authenticated but not in the readonly role", %{
+      conn: conn
+    } do
       mock_auth = %Ueberauth.Auth{
         uid: "test_username",
         credentials: %Ueberauth.Auth.Credentials{
@@ -52,12 +81,12 @@ defmodule SkateWeb.AuthControllerTest do
         }
       }
 
-      conn
-      |> assign(:ueberauth_auth, mock_auth)
-      |> get(~p"/auth/keycloak/callback")
+      conn =
+        conn
+        |> assign(:ueberauth_auth, mock_auth)
+        |> get(~p"/auth/keycloak/callback")
 
-      assert %{username: "test_username", email: "test@mbta.com"} =
-               User.get_by_email("test@mbta.com")
+      assert response(conn, :forbidden) == "forbidden"
     end
 
     test "sends unauthenticated response on ueberauth failure", %{conn: conn} do

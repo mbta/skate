@@ -44,7 +44,9 @@ config :ex_aws,
 
 config :ueberauth, Ueberauth,
   providers: [
-    keycloak: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]}
+    keycloak:
+      {Skate.Ueberauth.Strategy.Fake,
+       [groups: ["skate-readonly", "skate-dispatcher", "skate-admin"]]}
   ]
 
 config :ueberauth_oidcc,

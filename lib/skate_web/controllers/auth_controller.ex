@@ -18,18 +18,22 @@ defmodule SkateWeb.AuthController do
     groups =
       get_in(auth.extra.raw_info.userinfo, ["resource_access", keycloak_client_id, "roles"]) || []
 
-    current_time = System.system_time(:second)
+    if "skate-readonly" in groups do
+      current_time = System.system_time(:second)
 
-    %{id: user_id} = User.upsert(username, email)
+      %{id: user_id} = User.upsert(username, email)
 
-    conn
-    |> Guardian.Plug.sign_in(
-      AuthManager,
-      %{id: user_id},
-      %{groups: groups},
-      ttl: {expiration - current_time, :seconds}
-    )
-    |> redirect(to: ~p"/")
+      conn
+      |> Guardian.Plug.sign_in(
+        AuthManager,
+        %{id: user_id},
+        %{groups: groups},
+        ttl: {expiration - current_time, :seconds}
+      )
+      |> redirect(to: ~p"/")
+    else
+      send_resp(conn, :forbidden, "forbidden")
+    end
   end
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
