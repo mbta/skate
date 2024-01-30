@@ -2,6 +2,7 @@ import getTestGroups from "./userTestGroups"
 
 export enum TestGroups {
   DemoMode = "demo-mode",
+  DetoursPilot = "detours-pilot",
   DummyDetourPage = "dummy-detour-page",
   LateView = "late-view",
 }

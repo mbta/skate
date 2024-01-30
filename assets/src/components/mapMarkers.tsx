@@ -29,6 +29,7 @@ import { TileTypeContext } from "../contexts/tileTypeContext"
 import { ReactMarker } from "./map/utilities/reactMarker"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { DropdownItem, DropdownMenu } from "./map/dropdown"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -160,13 +161,15 @@ export const VehicleMarker = ({
         zIndexOffset={zIndexOffset}
         ref={markerRef}
       >
-        <Popup className="c-dropdown-popup-wrapper" offset={dropdownOffset}>
-          <DropdownMenu>
-            <DropdownItem>
-              Start a detour on route {vehicle.routeId}
-            </DropdownItem>
-          </DropdownMenu>
-        </Popup>
+        {inTestGroup(TestGroups.DetoursPilot) && (
+          <Popup className="c-dropdown-popup-wrapper" offset={dropdownOffset}>
+            <DropdownMenu>
+              <DropdownItem>
+                Start a detour on route {vehicle.routeId}
+              </DropdownItem>
+            </DropdownMenu>
+          </Popup>
+        )}
       </Marker>
 
       <Marker
