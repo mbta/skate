@@ -65,6 +65,7 @@ defmodule Skate.MixProject do
       {:gen_stage, "~> 1.2.1"},
       {:guardian_phoenix, "~> 2.0"},
       {:guardian, "~> 2.0"},
+      {:haversine, "~> 0.1.0"},
       {:httpoison, "~> 2.2.1"},
       {:jason, "~> 1.0"},
       {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
