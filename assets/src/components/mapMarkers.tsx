@@ -28,7 +28,7 @@ import { streetViewUrl } from "../util/streetViewUrl"
 import { TileTypeContext } from "../contexts/tileTypeContext"
 import { ReactMarker } from "./map/utilities/reactMarker"
 import { fullStoryEvent } from "../helpers/fullStory"
-import { Dropdown } from "react-bootstrap"
+import { DropdownItem, DropdownMenu } from "./map/dropdown"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -161,11 +161,11 @@ export const VehicleMarker = ({
         ref={markerRef}
       >
         <Popup className="c-dropdown-popup-wrapper" offset={dropdownOffset}>
-          <Dropdown.Menu className="c-dropdown-popup-menu" show>
-            <Dropdown.Item>
+          <DropdownMenu>
+            <DropdownItem>
               Start a detour on route {vehicle.routeId}
-            </Dropdown.Item>
-          </Dropdown.Menu>
+            </DropdownItem>
+          </DropdownMenu>
         </Popup>
       </Marker>
 
