@@ -12,6 +12,7 @@ import {
   latLngLiteralToShapePoint,
   shapePointToLatLngLiteral,
 } from "../../util/pointLiterals"
+import { MapTooltip } from "../map/tooltip"
 
 interface DetourMapProps {
   /**
@@ -122,7 +123,9 @@ export const DetourMap = ({
           position && onClickOriginalShape(latLngLiteralToShapePoint(position))
         },
       }}
-    />
+    >
+      {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
+    </Polyline>
   </Map>
 )
 

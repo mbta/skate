@@ -66,6 +66,7 @@ $z-properties-panel-context: (
 @import "loading_spinner";
 @import "location_card";
 @import "map_page";
+@import "map/tooltip";
 @import "map/controls/layers_control";
 @import "map/controls/recenter_control";
 @import "map/controls/street_view_switch";

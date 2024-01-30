@@ -1,7 +1,6 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import React, { ComponentProps } from "react"
-import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import { fetchDetourDirections } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
@@ -34,7 +33,7 @@ describe("DetourMap", () => {
   test("can click on route shape to start detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -45,11 +44,11 @@ describe("DetourMap", () => {
   test("can click on route shape again to end detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -59,11 +58,11 @@ describe("DetourMap", () => {
   test("clicking on map while drawing a detour adds a point", async () => {
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await userEvent.click(container.querySelector(".c-vehicle-map")!)
+    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
@@ -73,13 +72,13 @@ describe("DetourMap", () => {
   test("detour points are correctly rendered when detour is complete", async () => {
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await userEvent.click(container.querySelector(".c-vehicle-map")!)
+    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -91,13 +90,13 @@ describe("DetourMap", () => {
   test("clicking on 'Clear Last Waypoint' removes last point from detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await userEvent.click(container.querySelector(".c-vehicle-map")!)
+    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    await userEvent.click(
+    await fireEvent.click(
       screen.getByRole("button", { name: "Clear Last Waypoint" })
     )
 
@@ -117,7 +116,7 @@ describe("DetourMap", () => {
   test("'Clear Last Waypoint' is disabled when detour drawing has started but no waypoints are present", async () => {
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -129,11 +128,11 @@ describe("DetourMap", () => {
   test("'Clear Last Waypoint' is disabled when detour drawing has finished", async () => {
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await userEvent.click(
+    await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
