@@ -13,6 +13,10 @@ const useDetourDirections = (shapePoints: ShapePoint[]) => {
     let shouldUpdate = true
 
     if (shapePoints.length < 2) {
+      // We expect not to have any directions or shape if we don't have at
+      // least two points to route between
+      setDetourShape([])
+      setDirections(undefined)
       return
     }
 
