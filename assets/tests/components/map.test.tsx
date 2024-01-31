@@ -30,7 +30,7 @@ import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import getTestGroups from "../../src/userTestGroups"
 import { LocationType } from "../../src/models/stopData"
 import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
-import { mockTileUrls } from "../testHelpers/mockHelpers"
+import { mockScreenSize, mockTileUrls } from "../testHelpers/mockHelpers"
 import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPage/map"
 import { streetViewUrl } from "../../src/util/streetViewUrl"
 import shapeFactory from "../factories/shape"
@@ -77,6 +77,10 @@ beforeAll(() => {
 
 beforeEach(() => {
   ;(getTestGroups as jest.Mock).mockReturnValue([])
+})
+
+beforeEach(() => {
+  mockScreenSize("desktop")
 })
 
 afterAll(() => {
@@ -335,6 +339,29 @@ describe("<MapFollowingPrimaryVehicles />", () => {
 
   test("does not bring up a dropdown menu on right-click if the user is not in the right test group", async () => {
     jest.mocked(getTestGroups).mockReturnValue([])
+
+    const vehicle = vehicleFactory.build({})
+    const onClick = jest.fn()
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        onPrimaryVehicleSelect={onClick}
+      />
+    )
+
+    await userEvent.pointer({
+      keys: "[MouseRight>]",
+      target: screen.getByText(runIdToLabel(vehicle.runId!)),
+    })
+
+    expect(
+      container.querySelector(".c-dropdown-popup-wrapper")
+    ).not.toBeInTheDocument()
+  })
+
+  test("does not bring up a dropdown menu on right-click on mobile", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+    mockScreenSize("mobile")
 
     const vehicle = vehicleFactory.build({})
     const onClick = jest.fn()

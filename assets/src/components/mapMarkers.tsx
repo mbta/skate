@@ -30,6 +30,7 @@ import { ReactMarker } from "./map/utilities/reactMarker"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { DropdownItem, DropdownMenu } from "./map/dropdown"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
+import useScreenSize from "../hooks/useScreenSize"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -111,6 +112,7 @@ export const VehicleMarker = ({
 }) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
   const markerRef = useRef<Leaflet.Marker<any>>(null)
+  const screenSize = useScreenSize()
 
   const suppressPopup = () => {
     markerRef.current?.closePopup()
@@ -152,6 +154,10 @@ export const VehicleMarker = ({
   // offset to reposition it to the bottom-right corner.
   const dropdownOffset: PointTuple = [140, 97]
 
+  const dropdownEnabled =
+    inTestGroup(TestGroups.DetoursPilot) &&
+    ["desktop", "tablet"].includes(screenSize)
+
   return (
     <>
       <Marker
@@ -161,7 +167,7 @@ export const VehicleMarker = ({
         zIndexOffset={zIndexOffset}
         ref={markerRef}
       >
-        {inTestGroup(TestGroups.DetoursPilot) && (
+        {dropdownEnabled && (
           <Popup className="c-dropdown-popup-wrapper" offset={dropdownOffset}>
             <DropdownMenu>
               <DropdownItem>
