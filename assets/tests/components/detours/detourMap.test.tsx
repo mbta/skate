@@ -44,6 +44,41 @@ describe("DetourMap", () => {
     expect(onClickOriginalShape).toHaveBeenNthCalledWith(1, shapePoint)
   })
 
+  test("`originalShape` has unstarted class before being clicked", async () => {
+    const onClickOriginalShape = jest.fn()
+    const shapePoint = { lat: 0, lon: 0 }
+    const { container } = render(
+      <DetourMapWithDefaults
+        originalShape={[shapePoint]}
+        onClickOriginalShape={onClickOriginalShape}
+      />
+    )
+
+    expect(
+      container.querySelector(
+        ".c-detour_map--original-route-shape.c-detour_map--original-route-shape__unstarted"
+      )!
+    ).toBeInTheDocument()
+  })
+
+  test("`originalShape` no longer has unstarted class after detour is started", async () => {
+    const onClickOriginalShape = jest.fn()
+    const shapePoint = { lat: 0, lon: 0 }
+    const { container } = render(
+      <DetourMapWithDefaults
+        originalShape={[shapePoint]}
+        startPoint={shapePoint}
+        onClickOriginalShape={onClickOriginalShape}
+      />
+    )
+
+    expect(
+      container.querySelector(
+        ".c-detour_map--original-route-shape.c-detour_map--original-route-shape__unstarted"
+      )
+    ).toBeNull()
+  })
+
   test("when map is clicked, fires `onClickMap`", async () => {
     const onClickMap = jest.fn()
     const { container } = render(

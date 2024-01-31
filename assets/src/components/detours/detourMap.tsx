@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useId } from "react"
 import { LatLngLiteral } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
@@ -13,6 +13,7 @@ import {
   shapePointToLatLngLiteral,
 } from "../../util/pointLiterals"
 import { MapTooltip } from "../map/tooltip"
+import { joinClasses } from "../../helpers/dom"
 
 interface DetourMapProps {
   /**
@@ -111,7 +112,14 @@ export const DetourMap = ({
 
     <Polyline
       positions={originalShape.map(shapePointToLatLngLiteral)}
-      className="c-detour_map--original-route-shape"
+      className={joinClasses([
+        "c-detour_map--original-route-shape",
+        startPoint === undefined &&
+          "c-detour_map--original-route-shape__unstarted",
+      ])}
+      key={`detour-map-original-route-shape-${useId()}-${
+        startPoint === undefined
+      }`}
       bubblingMouseEvents={false}
       eventHandlers={{
         click: (e) => {
