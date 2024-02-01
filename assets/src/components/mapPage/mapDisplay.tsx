@@ -319,7 +319,11 @@ const SelectedVehicleDataLayers = ({
                     offset={dropdownOffset}
                   >
                     <DropdownMenu>
-                      <DropdownItem>
+                      <DropdownItem
+                        onClick={() => {
+                          setShouldShowPopup(false)
+                        }}
+                      >
                         Start a detour on route {selectedVehicleOrGhost.routeId}
                       </DropdownItem>
                     </DropdownMenu>
