@@ -1,7 +1,13 @@
 import Leaflet, { LatLngExpression } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
-import React, { PropsWithChildren, useContext, useRef } from "react"
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -101,6 +107,8 @@ interface VehicleMarkerProps extends PropsWithChildren {
   isPrimary: boolean
   isSelected?: boolean
   onSelect?: (vehicle: Vehicle) => void
+  shouldShowPopup?: boolean
+  onShouldShowPopupChange?: (newValue: boolean) => void
 }
 
 export const VehicleMarker = ({
@@ -109,21 +117,38 @@ export const VehicleMarker = ({
   isPrimary,
   onSelect,
   isSelected = false,
+  shouldShowPopup = false,
+  onShouldShowPopupChange = () => {},
 }: VehicleMarkerProps) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
   const markerRef = useRef<Leaflet.Marker<any>>(null)
 
-  const suppressPopup = () => {
-    markerRef.current?.closePopup()
-  }
+  const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (shouldShowPopup && !isPopupVisible) {
+      markerRef.current?.openPopup()
+    }
+
+    if (!shouldShowPopup && isPopupVisible) {
+      markerRef.current?.closePopup()
+    }
+  }, [shouldShowPopup, isPopupVisible])
 
   const eventHandlers = {
     click: () => {
       onSelect && onSelect(vehicle)
-      suppressPopup()
+      onShouldShowPopupChange(false)
     },
     contextmenu: () => {
-      markerRef.current?.openPopup()
+      onShouldShowPopupChange(true)
+    },
+    popupopen: () => {
+      setIsPopupVisible(true)
+    },
+    popupclose: () => {
+      setIsPopupVisible(false)
+      onShouldShowPopupChange(false)
     },
   }
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]

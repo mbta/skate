@@ -296,6 +296,8 @@ const SelectedVehicleDataLayers = ({
     inTestGroup(TestGroups.DetoursPilot) &&
     ["desktop", "tablet"].includes(screenSize)
 
+  const [shouldShowPopup, setShouldShowPopup] = useState<boolean>(false)
+
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -308,6 +310,8 @@ const SelectedVehicleDataLayers = ({
                 isPrimary={true}
                 isSelected={true}
                 onSelect={selectVehicle}
+                shouldShowPopup={shouldShowPopup}
+                onShouldShowPopupChange={setShouldShowPopup}
               >
                 {dropdownEnabled && (
                   <Popup
