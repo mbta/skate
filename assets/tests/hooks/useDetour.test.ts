@@ -5,6 +5,7 @@ import { useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
+import { shapePointFactory } from "../factories/shapePointFactory"
 
 jest.mock("../../src/api")
 
@@ -132,6 +133,30 @@ describe("useDetour", () => {
       start,
       mid,
     ])
+  })
+
+  test("when `undoLastWaypoint` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
+    jest
+      .mocked(fetchDetourDirections)
+      .mockResolvedValue(detourShapeFactory.build())
+
+    const { result } = renderHook(useDetour)
+
+    act(() => result.current.addConnectionPoint(shapePointFactory.build()))
+    act(() => result.current.addWaypoint(shapePointFactory.build()))
+    act(() => result.current.addWaypoint(shapePointFactory.build()))
+
+    await waitFor(() => {
+      expect(result.current.directions).not.toBeUndefined()
+      expect(result.current.detourShape).not.toHaveLength(0)
+    })
+
+    act(() => result.current.undoLastWaypoint())
+    act(() => result.current.undoLastWaypoint())
+
+    expect(result.current.waypoints).toHaveLength(0)
+    expect(result.current.directions).toBeUndefined()
+    expect(result.current.detourShape).toHaveLength(0)
   })
 
   test("when `waypoints` is empty, `canUndo` is `false`", async () => {
