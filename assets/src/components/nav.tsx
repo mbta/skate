@@ -1,11 +1,9 @@
-import React, { useContext } from "react"
-import { toggleMobileMenu } from "../state"
+import React from "react"
 import appData from "../appData"
 import useScreenSize from "../hooks/useScreenSize"
 import LeftNav from "./nav/leftNav"
 import TopNav from "./nav/topNav"
 import MobilePortraitNav from "./nav/mobilePortraitNav"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 interface Props {
@@ -13,7 +11,6 @@ interface Props {
 }
 
 const Nav: React.FC<Props> = ({ children }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
   const deviceType = useScreenSize()
 
   const { isViewOpen } = usePanelStateFromStateDispatchContext()
@@ -26,36 +23,6 @@ const Nav: React.FC<Props> = ({ children }) => {
           <div className="l-nav__app-content">{children}</div>
         </div>
       )
-    case "mobile_landscape_tablet_portrait":
-      return (
-        <div className="l-nav--medium">
-          <div
-            className="l-nav__nav-bar l-nav__nav-bar--left"
-            hidden={isViewOpen}
-          >
-            <LeftNav
-              toggleMobileMenu={() => dispatch(toggleMobileMenu())}
-              defaultToCollapsed={true}
-              dispatcherFlag={readDispatcherFlag()}
-              closePickerOnViewOpen={true}
-            />
-          </div>
-          <div className="l-nav__app-content">{children}</div>
-        </div>
-      )
-    case "tablet":
-      return (
-        <div className="l-nav--medium">
-          <div className="l-nav__nav-bar l-nav__nav-bar--left">
-            <LeftNav
-              toggleMobileMenu={() => dispatch(toggleMobileMenu())}
-              defaultToCollapsed={true}
-              dispatcherFlag={readDispatcherFlag()}
-            />
-          </div>
-          <div className="l-nav__app-content">{children}</div>
-        </div>
-      )
     default:
       return (
         <div className="l-nav--wide">
@@ -63,9 +30,18 @@ const Nav: React.FC<Props> = ({ children }) => {
             <div className="l-nav__nav-bar l-nav__nav-bar--top">
               <TopNav />
             </div>
-            <div className="l-nav__nav-bar l-nav__nav-bar--left">
+            <div
+              className="l-nav__nav-bar l-nav__nav-bar--left"
+              hidden={
+                isViewOpen && deviceType === "mobile_landscape_tablet_portrait"
+              }
+            >
               <LeftNav
-                defaultToCollapsed={false}
+                defaultToCollapsed={
+                  deviceType === "mobile_landscape_tablet_portrait" ||
+                  deviceType === "tablet"
+                }
+                key={deviceType}
                 dispatcherFlag={readDispatcherFlag()}
               />
             </div>
