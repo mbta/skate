@@ -19,6 +19,7 @@ import {
   RouteId,
   RoutePattern,
   RoutePatternId,
+  Shape,
   Stop,
 } from "../../schedule"
 import {
@@ -63,6 +64,15 @@ import { RecenterControl } from "../map/controls/recenterControl"
 import { DropdownItem, DropdownMenu } from "../map/dropdown"
 import useScreenSize from "../../hooks/useScreenSize"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import { useRoute } from "../../contexts/routesContext"
+
+export interface StartDetourProps {
+  routeName: string
+  routeDescription: string
+  routeOrigin: string
+  routeDirection: string
+  shape: Shape
+}
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -242,6 +252,7 @@ const SelectedVehicleDataLayers = ({
   stops,
   useCurrentZoom,
   onInterruptFollower,
+  onStartDetour,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
@@ -249,6 +260,7 @@ const SelectedVehicleDataLayers = ({
   stops: Stop[]
   useCurrentZoom: boolean
   onInterruptFollower?: () => void
+  onStartDetour?: (props: StartDetourProps) => void
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -297,6 +309,8 @@ const SelectedVehicleDataLayers = ({
     ["desktop", "tablet"].includes(screenSize)
 
   const [shouldShowPopup, setShouldShowPopup] = useState<boolean>(false)
+  const routeId = routePatternForVehicle?.routeId
+  const route = useRoute(routeId)
 
   return (
     <>
@@ -322,6 +336,26 @@ const SelectedVehicleDataLayers = ({
                       <DropdownItem
                         onClick={() => {
                           setShouldShowPopup(false)
+
+                          const directionName =
+                            routePatternForVehicle?.directionId &&
+                            route?.directionNames[
+                              routePatternForVehicle?.directionId
+                            ]
+
+                          onStartDetour &&
+                            routeId &&
+                            routePatternForVehicle?.shape &&
+                            routePatternForVehicle.headsign &&
+                            routePatternForVehicle.name &&
+                            directionName &&
+                            onStartDetour({
+                              routeName: routeId,
+                              routeDescription: routePatternForVehicle.headsign,
+                              routeOrigin: routePatternForVehicle.name,
+                              routeDirection: directionName,
+                              shape: routePatternForVehicle.shape,
+                            })
                         }}
                       >
                         Start a detour on route {selectedVehicleOrGhost.routeId}
@@ -456,6 +490,7 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
+  onStartDetour,
 }: {
   selectedEntity: SelectedEntity | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
@@ -463,6 +498,7 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
+  onStartDetour?: (props: StartDetourProps) => void
 }) => {
   const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
     selectedEntity,
@@ -487,6 +523,7 @@ const SelectionLayers = ({
           stops={stops}
           useCurrentZoom={vehicleUseCurrentZoom}
           onInterruptFollower={onInterruptVehicleFollower}
+          onStartDetour={onStartDetour}
         />
       )
     case SelectedEntityType.RoutePattern:
@@ -615,6 +652,7 @@ const DataLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
+  onStartDetour,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -623,6 +661,7 @@ const DataLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
+  onStartDetour?: (props: StartDetourProps) => void
 }): JSX.Element => {
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
@@ -666,6 +705,7 @@ const DataLayers = ({
         initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
         vehicleUseCurrentZoom={vehicleUseCurrentZoom}
         onInterruptVehicleFollower={onInterruptVehicleFollower}
+        onStartDetour={onStartDetour}
       />
       <PullbackVehiclesLayer
         pullbackLayerEnabled={pullbackLayerEnabled}
@@ -684,6 +724,7 @@ const MapDisplay = ({
   streetViewInitiallyEnabled = false,
   initializeRouteFollowerEnabled = true,
   vehicleUseCurrentZoom = true,
+  onStartDetour,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -692,6 +733,7 @@ const MapDisplay = ({
   initializeRouteFollowerEnabled?: boolean
   vehicleUseCurrentZoom?: boolean
   onInterruptVehicleFollower?: () => void
+  onStartDetour?: (props: StartDetourProps) => void
 }) => {
   const [
     {
@@ -722,6 +764,7 @@ const MapDisplay = ({
         initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
         vehicleUseCurrentZoom={vehicleUseCurrentZoom}
         onInterruptVehicleFollower={onInterruptVehicleFollower}
+        onStartDetour={onStartDetour}
       />
       <LayersControlState>
         {(open, setOpen) => (
