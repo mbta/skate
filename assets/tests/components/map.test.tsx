@@ -36,7 +36,6 @@ import { streetViewUrl } from "../../src/util/streetViewUrl"
 import shapeFactory from "../factories/shape"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
-import { TestGroups } from "../../src/userInTestGroup"
 
 const shape = shapeFactory.build({
   id: "shape",
@@ -296,90 +295,6 @@ describe("<MapFollowingPrimaryVehicles />", () => {
     )
     await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
     expect(onClick).not.toHaveBeenCalled()
-  })
-
-  test("starts out with no dropdown menu", async () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
-
-    const vehicle = vehicleFactory.build({})
-    const onClick = jest.fn()
-    const { container } = render(
-      <MapFollowingPrimaryVehicles
-        vehicles={[vehicle]}
-        onPrimaryVehicleSelect={onClick}
-      />
-    )
-
-    expect(
-      container.querySelector(".c-dropdown-popup-wrapper")
-    ).not.toBeInTheDocument()
-  })
-
-  test("brings up a dropdown menu on right-click", async () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
-
-    const vehicle = vehicleFactory.build({})
-    const onClick = jest.fn()
-    const { container } = render(
-      <MapFollowingPrimaryVehicles
-        vehicles={[vehicle]}
-        onPrimaryVehicleSelect={onClick}
-      />
-    )
-
-    await userEvent.pointer({
-      keys: "[MouseRight>]",
-      target: screen.getByText(runIdToLabel(vehicle.runId!)),
-    })
-
-    expect(
-      container.querySelector(".c-dropdown-popup-wrapper")
-    ).toBeInTheDocument()
-  })
-
-  test("does not bring up a dropdown menu on right-click if the user is not in the right test group", async () => {
-    jest.mocked(getTestGroups).mockReturnValue([])
-
-    const vehicle = vehicleFactory.build({})
-    const onClick = jest.fn()
-    const { container } = render(
-      <MapFollowingPrimaryVehicles
-        vehicles={[vehicle]}
-        onPrimaryVehicleSelect={onClick}
-      />
-    )
-
-    await userEvent.pointer({
-      keys: "[MouseRight>]",
-      target: screen.getByText(runIdToLabel(vehicle.runId!)),
-    })
-
-    expect(
-      container.querySelector(".c-dropdown-popup-wrapper")
-    ).not.toBeInTheDocument()
-  })
-
-  test("does not bring up a dropdown menu on right-click on mobile", async () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
-    mockScreenSize("mobile")
-
-    const vehicle = vehicleFactory.build({})
-    const onClick = jest.fn()
-    const { container } = render(
-      <MapFollowingPrimaryVehicles
-        vehicles={[vehicle]}
-        onPrimaryVehicleSelect={onClick}
-      />
-    )
-
-    await userEvent.pointer({
-      keys: "[MouseRight>]",
-      target: screen.getByText(runIdToLabel(vehicle.runId!)),
-    })
-
-    expect(
-      container.querySelector(".c-dropdown-popup-wrapper")
-    ).not.toBeInTheDocument()
   })
 
   test("renders street view link from stop", async () => {

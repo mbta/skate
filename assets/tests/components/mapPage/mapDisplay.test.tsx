@@ -34,7 +34,10 @@ import vehicleFactory, {
 } from "../../factories/vehicle"
 
 import { setHtmlWidthHeightForLeafletMap } from "../../testHelpers/leafletMapWidth"
-import { mockUsePatternsByIdForVehicles } from "../../testHelpers/mockHelpers"
+import {
+  mockScreenSize,
+  mockUsePatternsByIdForVehicles,
+} from "../../testHelpers/mockHelpers"
 
 import shapeFactory from "../../factories/shape"
 import { zoomInButton } from "../../testHelpers/selectors/components/map"
@@ -49,6 +52,8 @@ import {
 } from "../../testHelpers/selectors/components/mapPage/map"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
 import { recenterControl } from "../../testHelpers/selectors/components/map/controls/recenterControl"
+import getTestGroups from "../../../src/userTestGroups"
+import { TestGroups } from "../../../src/userInTestGroup"
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
@@ -98,6 +103,7 @@ jest.mock("../../../src/helpers/fullStory")
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+  mockScreenSize("desktop")
 })
 
 type VehicleIdToVehicle = {
@@ -462,6 +468,128 @@ describe("<MapDisplay />", () => {
             expect(
               container.querySelector(".c-vehicle-map__route-shape")
             ).toBeInTheDocument()
+          })
+
+          test("right-clicking brings up the detour dropdown menu", async () => {
+            jest
+              .mocked(getTestGroups)
+              .mockReturnValue([TestGroups.DetoursPilot])
+
+            const route = routeFactory.build()
+            const runId = runIdFactory.build()
+
+            const selectedVehicle = randomLocationVehicle.build({
+              routeId: route.id,
+              runId: runId,
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([selectedVehicle])
+            mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+            mockUsePatternsByIdForVehicles([selectedVehicle], {
+              stopCount: 8,
+            })
+
+            const { container } = render(
+              <MapDisplay
+                selectedEntity={{
+                  type: SelectedEntityType.Vehicle,
+                  vehicleId: selectedVehicle.id,
+                }}
+                setSelection={jest.fn()}
+                fetchedSelectedLocation={null}
+              />
+            )
+
+            await userEvent.pointer({
+              keys: "[MouseRight>]",
+              target: screen.getByText(runId),
+            })
+
+            expect(
+              container.querySelector(".c-dropdown-popup-wrapper")
+            ).toBeInTheDocument()
+          })
+
+          test("right-clicking does not bring up the detour dropdown if the user isn't a member of the test group", async () => {
+            jest.mocked(getTestGroups).mockReturnValue([])
+
+            const route = routeFactory.build()
+            const runId = runIdFactory.build()
+
+            const selectedVehicle = randomLocationVehicle.build({
+              routeId: route.id,
+              runId: runId,
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([selectedVehicle])
+            mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+            mockUsePatternsByIdForVehicles([selectedVehicle], {
+              stopCount: 8,
+            })
+
+            const { container } = render(
+              <MapDisplay
+                selectedEntity={{
+                  type: SelectedEntityType.Vehicle,
+                  vehicleId: selectedVehicle.id,
+                }}
+                setSelection={jest.fn()}
+                fetchedSelectedLocation={null}
+              />
+            )
+
+            await userEvent.pointer({
+              keys: "[MouseRight>]",
+              target: screen.getByText(runId),
+            })
+
+            expect(
+              container.querySelector(".c-dropdown-popup-wrapper")
+            ).not.toBeInTheDocument()
+          })
+
+          test("right-clicking does not bring up the detour dropdown on mobile", async () => {
+            jest
+              .mocked(getTestGroups)
+              .mockReturnValue([TestGroups.DetoursPilot])
+            mockScreenSize("mobile")
+
+            const route = routeFactory.build()
+            const runId = runIdFactory.build()
+
+            const selectedVehicle = randomLocationVehicle.build({
+              routeId: route.id,
+              runId: runId,
+            })
+
+            setHtmlWidthHeightForLeafletMap()
+            mockUseVehicleForId([selectedVehicle])
+            mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+            mockUsePatternsByIdForVehicles([selectedVehicle], {
+              stopCount: 8,
+            })
+
+            const { container } = render(
+              <MapDisplay
+                selectedEntity={{
+                  type: SelectedEntityType.Vehicle,
+                  vehicleId: selectedVehicle.id,
+                }}
+                setSelection={jest.fn()}
+                fetchedSelectedLocation={null}
+              />
+            )
+
+            await userEvent.pointer({
+              keys: "[MouseRight>]",
+              target: screen.getByText(runId),
+            })
+
+            expect(
+              container.querySelector(".c-dropdown-popup-wrapper")
+            ).not.toBeInTheDocument()
           })
         })
 
