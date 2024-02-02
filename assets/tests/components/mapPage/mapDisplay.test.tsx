@@ -490,7 +490,7 @@ describe("<MapDisplay />", () => {
               stopCount: 8,
             })
 
-            const { container } = render(
+            render(
               <MapDisplay
                 selectedEntity={{
                   type: SelectedEntityType.Vehicle,
@@ -507,8 +507,10 @@ describe("<MapDisplay />", () => {
             })
 
             expect(
-              container.querySelector(".c-dropdown-popup-wrapper")
-            ).toBeInTheDocument()
+              screen.getByRole("button", {
+                name: `Start a detour on route ${route.id}`,
+              })
+            ).toBeVisible()
           })
 
           test("right-clicking does not bring up the detour dropdown if the user isn't a member of the test group", async () => {
@@ -529,7 +531,7 @@ describe("<MapDisplay />", () => {
               stopCount: 8,
             })
 
-            const { container } = render(
+            render(
               <MapDisplay
                 selectedEntity={{
                   type: SelectedEntityType.Vehicle,
@@ -546,7 +548,9 @@ describe("<MapDisplay />", () => {
             })
 
             expect(
-              container.querySelector(".c-dropdown-popup-wrapper")
+              screen.queryByRole("button", {
+                name: `Start a detour on route ${route.id}`,
+              })
             ).not.toBeInTheDocument()
           })
 
@@ -571,7 +575,7 @@ describe("<MapDisplay />", () => {
               stopCount: 8,
             })
 
-            const { container } = render(
+            render(
               <MapDisplay
                 selectedEntity={{
                   type: SelectedEntityType.Vehicle,
@@ -588,7 +592,9 @@ describe("<MapDisplay />", () => {
             })
 
             expect(
-              container.querySelector(".c-dropdown-popup-wrapper")
+              screen.queryByRole("button", {
+                name: `Start a detour on route ${route.id}`,
+              })
             ).not.toBeInTheDocument()
           })
         })
