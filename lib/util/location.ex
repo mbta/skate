@@ -87,4 +87,7 @@ defprotocol Util.Location.From do
   @spec as_location(self :: __MODULE__.t()) :: {:ok, Util.Location.t()} | {:error, any()}
   def as_location(self)
 end
+
+defimpl Util.Location.From, for: Util.Location do
+  def as_location(%Util.Location{} = location), do: {:ok, location}
 end
