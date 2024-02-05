@@ -81,5 +81,19 @@ defmodule Skate.Detours.MissedStopsTest do
       assert Enum.slice(param.stops, 1..3) ==
                Skate.Detours.MissedStops.missed_stops(param)
     end
+
+    test "can handle real shapes and stops" do
+      stops = Skate.StopShapeTestData.route_71_stops()
+      shape = Skate.StopShapeTestData.route_71_shape_points()
+
+      param = %Skate.Detours.MissedStops{
+        shape: shape,
+        stops: stops,
+        connection_start: Enum.at(stops, 4),
+        connection_end: Enum.at(stops, 10)
+      }
+
+      assert Enum.slice(stops, 4..9) == Skate.Detours.MissedStops.missed_stops(param)
+    end
   end
 end
