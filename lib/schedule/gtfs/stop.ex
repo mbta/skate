@@ -178,4 +178,19 @@ defmodule Schedule.Gtfs.Stop do
   @spec parse_lat_lon(String.t()) :: float() | nil
   defp parse_lat_lon(""), do: nil
   defp parse_lat_lon(s), do: String.to_float(s)
+
+  defimpl Util.Location.From, for: __MODULE__ do
+    @spec as_location(stop :: Schedule.Gtfs.Stop.t()) ::
+            {:ok, Util.Location.t()} | {:error, :nil_coordinate}
+    def as_location(%Schedule.Gtfs.Stop{latitude: lat, longitude: long})
+        when not (is_nil(lat) or is_nil(long)),
+        do:
+          {:ok,
+           %Util.Location{
+             latitude: lat,
+             longitude: long
+           }}
+
+    def as_location(_), do: {:error, :nil_coordinate}
+  end
 end
