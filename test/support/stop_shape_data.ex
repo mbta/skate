@@ -386,7 +386,7 @@ defmodule Skate.StopShapeTestData do
   ]
 
   def route_71_shape_points(),
-    do: Enum.map(@route_71_shape_data, fn {long, lat} -> Util.Location.new(lat, long) end)
+    do: Enum.map(@route_71_shape_data, &Util.Location.from_long_lat_pair/1)
 
   def route_71_stops(), do: @route_71_stops_data
 end

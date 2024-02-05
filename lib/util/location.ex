@@ -25,6 +25,19 @@ defmodule Util.Location do
   def new(latitude, longitude), do: %Util.Location{latitude: latitude, longitude: longitude}
 
   @doc """
+  Constructs a `Util.Location` struct from a `longitude` `latitude` tuple.
+
+  ## Examples
+        iex> Util.Location.from_long_lat_pair({-2, 2})
+        %Util.Location{
+          latitude: 2,
+          longitude: -2
+        }
+  """
+  @spec from_long_lat_pair({longitude :: float(), latitude :: float()}) :: __MODULE__.t()
+  def from_long_lat_pair({long, lat}), do: Util.Location.new(lat, long)
+
+  @doc """
   Formats a `Util.Location` into a `{longitude, latitude}` tuple
 
   ## Examples
