@@ -1,4 +1,4 @@
-import Leaflet, { PointTuple } from "leaflet"
+import Leaflet from "leaflet"
 import React, {
   useCallback,
   useContext,
@@ -6,7 +6,7 @@ import React, {
   useState,
   useMemo,
 } from "react"
-import { Pane, Popup, useMap } from "react-leaflet"
+import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -60,11 +60,10 @@ import { LocationType, RouteType } from "../../models/stopData"
 import usePullbackVehicles from "../../hooks/usePullbackVehicles"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { RecenterControl } from "../map/controls/recenterControl"
-import { DropdownMenu } from "../map/dropdown"
 import useScreenSize from "../../hooks/useScreenSize"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { useRoute } from "../../contexts/routesContext"
-import { DetourDropdownItem, StartDetourProps } from "../detours/detourDropdown"
+import { DetourDropdown, StartDetourProps } from "../detours/detourDropdown"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -289,13 +288,6 @@ const SelectedVehicleDataLayers = ({
   )
   const screenSize = useScreenSize()
 
-  // This offset is here because, due to a limitation of Leaflet
-  // popups, we weren't able to render the popup at the bottom-right
-  // corner of the marker, where it's supposed to go. This effectively
-  // renders it centered and above the marker, and then uses the
-  // offset to reposition it to the bottom-right corner.
-  const dropdownOffset: PointTuple = [140, 97]
-
   const dropdownEnabled =
     inTestGroup(TestGroups.DetoursPilot) &&
     ["desktop", "tablet"].includes(screenSize)
@@ -320,21 +312,16 @@ const SelectedVehicleDataLayers = ({
                 onShouldShowPopupChange={setShouldShowPopup}
               >
                 {dropdownEnabled && (
-                  <Popup
-                    className="c-dropdown-popup-wrapper"
-                    offset={dropdownOffset}
-                  >
-                    <DropdownMenu>
-                      <DetourDropdownItem
-                        selectedVehicleOrGhost={selectedVehicleOrGhost}
-                        setShouldShowPopup={setShouldShowPopup}
-                        routePatternForVehicle={routePatternForVehicle}
-                        routeId={routeId}
-                        route={route}
-                        onStartDetour={onStartDetour}
-                      />
-                    </DropdownMenu>
-                  </Popup>
+                  <DetourDropdown
+                    setShouldShowPopup={setShouldShowPopup}
+                    routePatternForVehicle={routePatternForVehicle}
+                    route={route}
+                    onStartDetour={onStartDetour}
+                    onClick={(detourInfo) => {
+                      setShouldShowPopup(false)
+                      onStartDetour && onStartDetour(detourInfo)
+                    }}
+                  />
                 )}
               </VehicleMarker>
 

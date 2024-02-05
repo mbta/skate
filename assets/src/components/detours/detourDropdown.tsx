@@ -1,7 +1,8 @@
 import React from "react"
-import { DropdownItem } from "../map/dropdown"
-import { Route, RouteId, RoutePattern, Shape } from "../../schedule"
-import { Vehicle } from "../../realtime"
+import { DropdownItem, DropdownMenu } from "../map/dropdown"
+import { Route, RoutePattern, Shape } from "../../schedule"
+import { Popup } from "react-leaflet"
+import { PointTuple } from "leaflet"
 
 export interface StartDetourProps {
   routeName: string
@@ -11,48 +12,62 @@ export interface StartDetourProps {
   shape: Shape
 }
 
-export interface DetourDropdownItemProps {
+export interface DetourDropdownProps {
   setShouldShowPopup: (newValue: boolean) => void
   routePatternForVehicle: RoutePattern | null
-  routeId: RouteId | undefined
   route: Route | null
   onStartDetour?: (props: StartDetourProps) => void
-  selectedVehicleOrGhost: Vehicle
+  onClick: (props: StartDetourProps) => void
 }
 
-export const DetourDropdownItem = ({
-  setShouldShowPopup,
+export const DetourDropdown = ({
   routePatternForVehicle,
-  routeId,
   route,
-  onStartDetour,
-  selectedVehicleOrGhost,
-}: DetourDropdownItemProps) => {
+  onClick,
+}: DetourDropdownProps) => {
+  // This offset is here because, due to a limitation of Leaflet
+  // popups, we weren't able to render the popup at the bottom-right
+  // corner of the marker, where it's supposed to go. This effectively
+  // renders it centered and above the marker, and then uses the
+  // offset to reposition it to the bottom-right corner.
+  const dropdownOffset: PointTuple = [140, 97]
+
+  if (!routePatternForVehicle || !route) {
+    return <></>
+  }
+
+  const routeId = routePatternForVehicle.routeId
+
+  const routeDescription = routePatternForVehicle.headsign
+
+  const routeOrigin = routePatternForVehicle.name
+
+  const routeDirection =
+    route.directionNames[routePatternForVehicle.directionId]
+
+  const shape = routePatternForVehicle.shape
+
+  if (!routeDescription || !shape) {
+    return <></>
+  }
+
   return (
-    <DropdownItem
-      onClick={() => {
-        setShouldShowPopup(false)
-
-        const directionName =
-          routePatternForVehicle?.directionId != undefined &&
-          route?.directionNames[routePatternForVehicle?.directionId]
-
-        onStartDetour &&
-          routeId &&
-          routePatternForVehicle?.shape &&
-          routePatternForVehicle.headsign &&
-          routePatternForVehicle.name &&
-          directionName &&
-          onStartDetour({
-            routeName: routeId,
-            routeDescription: routePatternForVehicle.headsign,
-            routeOrigin: routePatternForVehicle.name,
-            routeDirection: directionName,
-            shape: routePatternForVehicle.shape,
-          })
-      }}
-    >
-      Start a detour on route {selectedVehicleOrGhost.routeId}
-    </DropdownItem>
+    <Popup className="c-dropdown-popup-wrapper" offset={dropdownOffset}>
+      <DropdownMenu>
+        <DropdownItem
+          onClick={() => {
+            onClick({
+              routeName: routeId,
+              routeDescription,
+              routeOrigin,
+              routeDirection,
+              shape,
+            })
+          }}
+        >
+          Start a detour on route {routeId}
+        </DropdownItem>
+      </DropdownMenu>
+    </Popup>
   )
 }
