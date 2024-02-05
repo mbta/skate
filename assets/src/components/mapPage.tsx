@@ -20,7 +20,7 @@ import {
 } from "../state/searchPageState"
 import DrawerTab from "./drawerTab"
 import Loading from "./loading"
-import MapDisplay, { StartDetourProps } from "./mapPage/mapDisplay"
+import MapDisplay from "./mapPage/mapDisplay"
 import RoutePropertiesCard from "./mapPage/routePropertiesCard"
 import VehiclePropertiesCard from "./mapPage/vehiclePropertiesCard"
 import RecentSearches from "./recentSearches"
@@ -34,6 +34,7 @@ import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import { Modal } from "react-bootstrap"
 import { DiversionPage } from "./detours/diversionPage"
+import { StartDetourProps } from "./detours/detourDropdown"
 
 const SearchMode = ({
   onSelectVehicleResult,

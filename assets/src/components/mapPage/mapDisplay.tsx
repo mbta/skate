@@ -19,7 +19,6 @@ import {
   RouteId,
   RoutePattern,
   RoutePatternId,
-  Shape,
   Stop,
 } from "../../schedule"
 import {
@@ -61,18 +60,11 @@ import { LocationType, RouteType } from "../../models/stopData"
 import usePullbackVehicles from "../../hooks/usePullbackVehicles"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { RecenterControl } from "../map/controls/recenterControl"
-import { DropdownItem, DropdownMenu } from "../map/dropdown"
+import { DropdownMenu } from "../map/dropdown"
 import useScreenSize from "../../hooks/useScreenSize"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { useRoute } from "../../contexts/routesContext"
-
-export interface StartDetourProps {
-  routeName: string
-  routeDescription: string
-  routeOrigin: string
-  routeDirection: string
-  shape: Shape
-}
+import { DetourDropdownItem, StartDetourProps } from "../detours/detourDropdown"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -333,33 +325,14 @@ const SelectedVehicleDataLayers = ({
                     offset={dropdownOffset}
                   >
                     <DropdownMenu>
-                      <DropdownItem
-                        onClick={() => {
-                          setShouldShowPopup(false)
-
-                          const directionName =
-                            routePatternForVehicle?.directionId &&
-                            route?.directionNames[
-                              routePatternForVehicle?.directionId
-                            ]
-
-                          onStartDetour &&
-                            routeId &&
-                            routePatternForVehicle?.shape &&
-                            routePatternForVehicle.headsign &&
-                            routePatternForVehicle.name &&
-                            directionName &&
-                            onStartDetour({
-                              routeName: routeId,
-                              routeDescription: routePatternForVehicle.headsign,
-                              routeOrigin: routePatternForVehicle.name,
-                              routeDirection: directionName,
-                              shape: routePatternForVehicle.shape,
-                            })
-                        }}
-                      >
-                        Start a detour on route {selectedVehicleOrGhost.routeId}
-                      </DropdownItem>
+                      <DetourDropdownItem
+                        selectedVehicleOrGhost={selectedVehicleOrGhost}
+                        setShouldShowPopup={setShouldShowPopup}
+                        routePatternForVehicle={routePatternForVehicle}
+                        routeId={routeId}
+                        route={route}
+                        onStartDetour={onStartDetour}
+                      />
                     </DropdownMenu>
                   </Popup>
                 )}
