@@ -83,17 +83,22 @@ defmodule Skate.Detours.MissedStopsTest do
     end
 
     test "can handle real shapes and stops" do
-      stops = Skate.StopShapeTestData.route_71_stops()
-      shape = Skate.StopShapeTestData.route_71_shape_points()
+      stops = Skate.StopShapeTestData.route_217_stops()
+      shape = Skate.StopShapeTestData.route_217_shape_points()
+      # Just after North Quincy's first visit
+      connection_start_index = 49
+      # North Quincy
+      connection_end_index = 53
 
       param = %Skate.Detours.MissedStops{
         shape: shape,
         stops: stops,
-        connection_start: Enum.at(stops, 4),
-        connection_end: Enum.at(stops, 10)
+        connection_start: Enum.at(stops, connection_start_index),
+        connection_end: Enum.at(stops, connection_end_index)
       }
 
-      assert Enum.slice(stops, 4..9) == Skate.Detours.MissedStops.missed_stops(param)
+      assert Enum.slice(stops, connection_start_index..(connection_end_index - 1)) ==
+               Skate.Detours.MissedStops.missed_stops(param)
     end
   end
 end
