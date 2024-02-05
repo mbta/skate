@@ -79,4 +79,12 @@ defmodule Util.Location do
   def distance(%__MODULE__{} = lhs, %__MODULE__{} = rhs) do
     distance([lhs, rhs])
   end
+
+defprotocol Util.Location.From do
+  @doc """
+  Converts `self` into a `Util.Location`.
+  """
+  @spec as_location(self :: __MODULE__.t()) :: {:ok, Util.Location.t()} | {:error, any()}
+  def as_location(self)
+end
 end
