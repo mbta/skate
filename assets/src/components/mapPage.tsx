@@ -32,9 +32,8 @@ import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
-import { Modal } from "react-bootstrap"
-import { DiversionPage } from "./detours/diversionPage"
 import { StartDetourProps } from "./detours/detourDropdown"
+import { DetourModal } from "./detours/detourModal"
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -369,20 +368,7 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
             />
           </MapSafeAreaContext.Provider>
         </div>
-        {detourInfo && (
-          <Modal show fullscreen className="c-modal-fullscreen">
-            <Modal.Header closeButton>Create Detour</Modal.Header>
-            <Modal.Body>
-              <DiversionPage
-                routeName={detourInfo.routeName}
-                routeDescription={detourInfo.routeDescription}
-                routeOrigin={detourInfo.routeOrigin}
-                routeDirection={detourInfo.routeDirection}
-                shape={detourInfo.shape}
-              />
-            </Modal.Body>
-          </Modal>
-        )}
+        {detourInfo && <DetourModal detourInfo={detourInfo} />}
       </div>
     </>
   )
