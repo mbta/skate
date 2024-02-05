@@ -80,6 +80,19 @@ defmodule Util.Location do
     distance([lhs, rhs])
   end
 
+  @doc """
+  Coerces an object into a `%Util.Location{}` struct.
+
+  Requires that `self` implements the `Util.Location.From` protocol.
+  Will error if the conversion fails.
+  """
+  @spec as_location!(self :: Util.Location.From.t()) :: t()
+  def as_location!(self) do
+    {:ok, location} = Util.Location.From.as_location(self)
+    location
+  end
+end
+
 defprotocol Util.Location.From do
   @doc """
   Converts `self` into a `Util.Location`.
