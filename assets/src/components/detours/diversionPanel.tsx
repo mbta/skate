@@ -19,36 +19,42 @@ export const DiversionPanel = ({
   routeDirection,
 }: DiversionPanelProps) => (
   <article className="c-diversion-panel h-100 bg-light border-end">
-    <header className="c-diversion-panel__header align-items-center border-bottom d-flex justify-content-around px-3">
-      <h2 className="h6 m-0">Detour Details</h2>
+    <header className="c-diversion-panel__header border-bottom d-flex px-3">
+      <h1 className="h2">Create Detour</h1>
     </header>
 
     <div className="c-diversion-panel__body overflow-auto px-3">
       <section className="py-3 border-bottom">
-        <h3 className="h4">Affected route</h3>
+        <h2 className="h3">Affected route</h2>
 
-        <div>
+        <div className="d-flex">
           <RoutePill
             className="d-inline-block me-2 align-top"
             routeName={routeName}
           />
 
           <div className="d-inline-block">
-            <p className="my-0">{routeDescription}</p>
-            <p className="my-0">{routeOrigin}</p>
-            <p className="my-0">{routeDirection}</p>
+            <p className="my-0 c-diversion-panel__description">
+              {routeDescription}
+            </p>
+            <p className="my-0 text-muted c-diversion-panel__origin py-1">
+              {routeOrigin}
+            </p>
+            <p className="my-0 small c-diversion-panel__direction py-1">
+              {routeDirection}
+            </p>
           </div>
         </div>
       </section>
 
       <section className="py-3">
-        <h3 className="h4">Detour Directions</h3>
-        {directions || <DirectionsHelpText />}
+        <h2 className="h3">Detour Directions</h2>
+        {directions ?? <DirectionsHelpText />}
       </section>
 
       {missedStops && (
         <section className="py-3">
-          <h3 className="h4">Missed Stops</h3>
+          <h2 className="h3">Missed Stops</h2>
           {missedStops}
         </section>
       )}

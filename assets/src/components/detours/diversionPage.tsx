@@ -30,9 +30,7 @@ export const DiversionPage = ({
 
   return (
     <article className="l-diversion-page h-100 border-box">
-      <header className="l-diversion-page__header text-bg-light border-bottom">
-        <h1 className="h3 text-center">Create Detour</h1>
-      </header>
+      <header className="l-diversion-page__header text-bg-light border-bottom" />
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
           directions={

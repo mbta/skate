@@ -10,8 +10,7 @@ export const DetourModal = ({
 }) => {
   return (
     <Modal show fullscreen className="c-modal-fullscreen">
-      <Modal.Header closeButton>Create Detour</Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="c-modal-fullscreen-body">
         <DiversionPage
           routeName={detourInfo.routeName}
           routeDescription={detourInfo.routeDescription}
