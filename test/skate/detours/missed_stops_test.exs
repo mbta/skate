@@ -78,7 +78,11 @@ defmodule Skate.Detours.MissedStopsTest do
         ]
       }
 
-      assert Enum.slice(param.stops, 1..3) ==
+      assert [
+               duplicate_stop,
+               Location.new(1, 1),
+               duplicate_stop
+             ] ==
                Skate.Detours.MissedStops.missed_stops(param)
     end
 
