@@ -1,7 +1,13 @@
 import Leaflet, { LatLngExpression } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
-import React, { useContext } from "react"
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -96,19 +102,55 @@ const makeLabelIcon = (
   })
 }
 
-export const VehicleMarker = ({
-  vehicle,
-  isPrimary,
-  onSelect,
-  isSelected = false,
-}: {
+interface VehicleMarkerProps extends PropsWithChildren {
   vehicle: Vehicle
   isPrimary: boolean
   isSelected?: boolean
   onSelect?: (vehicle: Vehicle) => void
-}) => {
+  shouldShowPopup?: boolean
+  onShouldShowPopupChange?: (newValue: boolean) => void
+}
+
+export const VehicleMarker = ({
+  children,
+  vehicle,
+  isPrimary,
+  onSelect,
+  isSelected = false,
+  shouldShowPopup = false,
+  onShouldShowPopupChange = () => {},
+}: VehicleMarkerProps) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
-  const eventHandlers = onSelect ? { click: () => onSelect(vehicle) } : {}
+  const markerRef = useRef<Leaflet.Marker<any>>(null)
+
+  const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (shouldShowPopup && !isPopupVisible) {
+      markerRef.current?.openPopup()
+    }
+
+    if (!shouldShowPopup && isPopupVisible) {
+      markerRef.current?.closePopup()
+    }
+  }, [shouldShowPopup, isPopupVisible])
+
+  const eventHandlers = {
+    click: () => {
+      onSelect && onSelect(vehicle)
+      onShouldShowPopupChange(false)
+    },
+    contextmenu: () => {
+      onShouldShowPopupChange(true)
+    },
+    popupopen: () => {
+      setIsPopupVisible(true)
+    },
+    popupclose: () => {
+      setIsPopupVisible(false)
+      onShouldShowPopupChange(false)
+    },
+  }
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
   const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
     vehicle,
@@ -128,6 +170,7 @@ export const VehicleMarker = ({
   // > [...] if you want to put the marker on top of all others,
   // > [specify] a high value like 1000 [...]
   const zIndexOffset = isSelected ? 1000 : 0
+
   return (
     <>
       <Marker
@@ -135,7 +178,11 @@ export const VehicleMarker = ({
         icon={vehicleIcon}
         eventHandlers={eventHandlers}
         zIndexOffset={zIndexOffset}
-      />
+        ref={markerRef}
+      >
+        {children}
+      </Marker>
+
       <Marker
         position={position}
         icon={labelIcon}

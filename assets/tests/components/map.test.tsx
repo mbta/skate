@@ -30,7 +30,7 @@ import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import getTestGroups from "../../src/userTestGroups"
 import { LocationType } from "../../src/models/stopData"
 import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
-import { mockTileUrls } from "../testHelpers/mockHelpers"
+import { mockScreenSize, mockTileUrls } from "../testHelpers/mockHelpers"
 import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPage/map"
 import { streetViewUrl } from "../../src/util/streetViewUrl"
 import shapeFactory from "../factories/shape"
@@ -76,6 +76,10 @@ beforeAll(() => {
 
 beforeEach(() => {
   ;(getTestGroups as jest.Mock).mockReturnValue([])
+})
+
+beforeEach(() => {
+  mockScreenSize("desktop")
 })
 
 afterAll(() => {
