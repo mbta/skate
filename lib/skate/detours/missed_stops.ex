@@ -19,13 +19,15 @@ defmodule Skate.Detours.MissedStops do
   @doc """
   Returns the contiguous list of stops, from the input parameter `cfg.stops`.
   """
-  @spec missed_stops(cfg :: Skate.Detours.MissedStops.t()) :: [Util.Location.From.t()]
-  def missed_stops(%__MODULE__{
-        stops: stops,
-        shape: shape,
-        connection_start: connection_start,
-        connection_end: connection_end
-      }) do
+  @spec missed_stops(cfg :: __MODULE__.t()) :: [Util.Location.From.t()]
+  def(
+    missed_stops(%__MODULE__{
+      stops: stops,
+      shape: shape,
+      connection_start: connection_start,
+      connection_end: connection_end
+    })
+  ) do
     segmented_shape = segment_shape_by_stops(shape, stops)
 
     {connection_start, connection_end}
@@ -33,6 +35,10 @@ defmodule Skate.Detours.MissedStops do
     |> Enum.flat_map(& &1.stops)
   end
 
+  @spec missed_segments(
+          {connection_start :: Util.Location.From.t(), connection_end :: Util.Location.From.t()},
+          segmented_shape :: [Skate.Detours.ShapeSegment.t()]
+        ) :: [Skate.Detours.ShapeSegment.t()]
   defp missed_segments({connection_start, connection_end}, segmented_shape) do
     %{index: start_index} = get_index_by_min_dist(segmented_shape, connection_start)
     %{index: end_index} = get_index_by_min_dist(segmented_shape, connection_end)
@@ -53,6 +59,10 @@ defmodule Skate.Detours.MissedStops do
     end
   end
 
+  @spec segment_shape_by_stops(
+          shape :: [Util.Location.From.t()],
+          stops :: [Util.Location.From.t()]
+        ) :: [Skate.Detours.ShapeSegment.t()]
   defp segment_shape_by_stops([] = _shape, [] = _stops),
     do: []
 
@@ -85,6 +95,16 @@ defmodule Skate.Detours.MissedStops do
     left_segments ++ [anchor_segment] ++ segment_shape_by_stops(right_shape, right_stops)
   end
 
+  @spec sort_stops_by_dist_to_shape(
+          shape :: [Util.Location.From.t()],
+          stops :: [Util.Location.From.t()]
+        ) :: [
+          %{
+            stop: Util.Location.From.t(),
+            index: non_neg_integer(),
+            shape_dist: [point_dist_index()]
+          }
+        ]
   defp sort_stops_by_dist_to_shape(shape, stops) do
     stops
     |> Enum.with_index(fn stop, index ->
@@ -97,6 +117,15 @@ defmodule Skate.Detours.MissedStops do
     |> Enum.sort_by(fn %{shape_dist: [%{dist: dist} | _]} -> dist end)
   end
 
+  @spec get_index_by_min_dist(
+          shape_segments :: [Skate.Detours.ShapeSegment.t()],
+          reference :: Util.Location.From.t()
+        ) ::
+          %{
+            segment: Skate.Detours.ShapeSegment.t(),
+            sorted_points: [Util.Location.From.t()],
+            index: non_neg_integer()
+          }
   defp get_index_by_min_dist(shape_segments, reference) do
     shape_segments
     |> Enum.with_index(fn %Skate.Detours.ShapeSegment{points: points} = segment, idx ->
@@ -109,6 +138,17 @@ defmodule Skate.Detours.MissedStops do
     |> Enum.min_by(fn %{sorted_points: [%{dist: dist} | _]} -> dist end)
   end
 
+  @type point_dist_index :: %{
+          point: Util.Location.From.t(),
+          dist: float(),
+          index: non_neg_integer()
+        }
+  @spec sort_by_distance(
+          coordinates :: [Util.Location.From.t()],
+          reference :: Util.Location.From.t()
+        ) :: [
+          point_dist_index()
+        ]
   defp sort_by_distance(coordinates, reference) do
     reference = Util.Location.as_location!(reference)
 
