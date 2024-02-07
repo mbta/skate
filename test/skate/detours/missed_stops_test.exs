@@ -5,6 +5,18 @@ defmodule Skate.Detours.MissedStopsTest do
 
   describe "missed_stops" do
     test "given a straight line, should return missed stops" do
+      ##                                                 (Missed Stop)
+      ##        Stops: v(0.001, 0)                        v(0.001, 5)   v(0.001, 5)
+      ##               o                                  o             o
+      ##
+      ##               o------o------o------o------o------o------o------o
+      ## Shape Points: ^(0,0) ^(0,1) ^(0,2) ^(0,3) ^(0,4) ^(0,5) ^(0,6) ^(0,7)
+      ##
+      ## Connection Points :  o                                  o
+      ##                      ^(-0.001, 1)                       ^(-0.00, 6)
+      ##                   (connection_start)                  (connection_end)
+      #
+      # https://excalidraw.com/#json=OrMM928mw4CR3Qy8sc6oL,sXiFCU1s-K1ugEQvgSvh3g
       param = %Skate.Detours.MissedStops{
         connection_start: Location.new(-0.001, 1),
         connection_end: Location.new(-0.001, 6),
