@@ -6,8 +6,8 @@ defmodule Skate.Detours.ShapeSegment do
 
   @type t :: %__MODULE__{
           points: [Util.Location.From.t()],
-          stops: [Util.Location.From.t()]
+          stop: Util.Location.From.t() | :none
         }
 
-  defstruct stops: [], points: []
+  defstruct stop: :none, points: []
 end

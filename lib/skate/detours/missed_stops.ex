@@ -32,7 +32,7 @@ defmodule Skate.Detours.MissedStops do
 
     {connection_start, connection_end}
     |> missed_segments(segmented_shape)
-    |> Enum.flat_map(& &1.stops)
+    |> Enum.map(& &1.stop)
   end
 
   @spec missed_segments(
@@ -53,16 +53,16 @@ defmodule Skate.Detours.MissedStops do
         # we'll assume that we won't miss any stops
         # because we're rejoining the same segment
         %Skate.Detours.ShapeSegment{
-          stops: [_]
+          stop: :none
         } ->
           []
 
         # If there's more than one stop in this segment,
         # Then return all the stops
         %Skate.Detours.ShapeSegment{
-          stops: stops
+          stop: stop
         } ->
-          stops
+          [stop]
       end
 
       []
@@ -80,7 +80,7 @@ defmodule Skate.Detours.MissedStops do
 
   defp segment_shape_by_stops(shape, [] = _stops),
     # If there are no stops, return the shape
-    do: [%Skate.Detours.ShapeSegment{points: shape, stops: []}]
+    do: [%Skate.Detours.ShapeSegment{points: shape, stop: :none}]
 
   defp segment_shape_by_stops(shape, stops) do
     # Find the stop closest to the shape
@@ -100,8 +100,8 @@ defmodule Skate.Detours.MissedStops do
     # Take last segment, which should not have a stop,
     # and reconnect it with the anchor stop
     anchor_segment = %Skate.Detours.ShapeSegment{
-      (%Skate.Detours.ShapeSegment{stops: []} = anchor_segment)
-      | stops: [anchor]
+      (%Skate.Detours.ShapeSegment{stop: :none} = anchor_segment)
+      | stop: anchor
     }
 
     left_segments ++ [anchor_segment] ++ segment_shape_by_stops(right_shape, right_stops)
