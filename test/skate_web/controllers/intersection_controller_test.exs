@@ -9,7 +9,7 @@ defmodule SkateWeb.IntersectionControllerTest do
         |> api_headers()
         |> get("/api/intersection/?latitude=40&longitude=-70")
 
-      assert redirected_to(conn) == ~p"/auth/keycloak"
+      assert redirected_to(conn) == ~p"/auth/cognito"
     end
 
     @tag :authenticated

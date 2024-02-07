@@ -12,7 +12,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
         |> api_headers()
         |> get("/api/location_search/place/place_id")
 
-      assert redirected_to(conn) == ~p"/auth/keycloak"
+      assert redirected_to(conn) == ~p"/auth/cognito"
     end
 
     @tag :authenticated
@@ -48,7 +48,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
         |> api_headers()
         |> get("/api/location_search/search?query=test")
 
-      assert redirected_to(conn) == ~p"/auth/keycloak"
+      assert redirected_to(conn) == ~p"/auth/cognito"
     end
 
     @tag :authenticated
@@ -85,7 +85,7 @@ defmodule SkateWeb.LocationSearchControllerTest do
         |> api_headers()
         |> get("/api/location_search/suggest?query=test")
 
-      assert redirected_to(conn) == ~p"/auth/keycloak"
+      assert redirected_to(conn) == ~p"/auth/cognito"
     end
 
     @tag :authenticated

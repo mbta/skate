@@ -16,6 +16,9 @@ config :skate, Skate.OpenRouteServiceAPI,
   api_key: System.get_env("OPEN_ROUTE_SERVICE_API_KEY"),
   client: Skate.OpenRouteServiceAPI.Client
 
+config :ueberauth, Ueberauth.Strategy.Cognito,
+  client_secret: System.get_env("COGNITO_CLIENT_SECRET")
+
 config :skate, SkateWeb.AuthManager, secret_key: System.get_env("GUARDIAN_SECRET_KEY")
 
 pool_size =

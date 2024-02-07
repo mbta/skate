@@ -51,9 +51,10 @@ config :logger, :console,
   format: "$time $metadata[$level] node=$node $message\n",
   metadata: [:request_id]
 
-# Configure Ueberauth to use Keycloak
+# Configure Ueberauth to use Cognito / Keycloak
 config :ueberauth, Ueberauth,
   providers: [
+    cognito: {Ueberauth.Strategy.Cognito, []},
     keycloak:
       {Ueberauth.Strategy.Oidcc, userinfo: true, uid_field: "email", scopes: ~w(openid email)}
   ]

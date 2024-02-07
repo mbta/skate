@@ -7,7 +7,7 @@ defmodule SkateWeb.PageControllerTest do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn = get(conn, "/")
 
-      assert redirected_to(conn) == ~p"/auth/keycloak"
+      assert redirected_to(conn) == ~p"/auth/cognito"
     end
 
     @tag :authenticated
