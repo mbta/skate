@@ -41,21 +41,33 @@ defmodule Skate.Detours.MissedStops do
         ) :: [Skate.Detours.ShapeSegment.t()]
   defp missed_segments({connection_start, connection_end}, segmented_shape) do
     %{index: start_index} = get_index_by_min_dist(segmented_shape, connection_start)
-    %{index: end_index} = get_index_by_min_dist(segmented_shape, connection_end)
 
-    if start_index == end_index do
-      %Skate.Detours.ShapeSegment{
+    remaining_segments = Enum.drop(segmented_shape, start_index)
+
+    %{index: end_count} =
+      get_index_by_min_dist(remaining_segments, connection_end)
+
+    if end_count == 0 do
+      case Enum.at(segmented_shape, start_index) do
         # As long as there's only one stop in the segment,
-        # we can assume that we won't miss any stops
+        # we'll assume that we won't miss any stops
         # because we're rejoining the same segment
-        stops: [_]
-      } = Enum.at(segmented_shape, start_index)
+        %Skate.Detours.ShapeSegment{
+          stops: [_]
+        } ->
+          []
+
+        # If there's more than one stop in this segment,
+        # Then return all the stops
+        %Skate.Detours.ShapeSegment{
+          stops: stops
+        } ->
+          stops
+      end
 
       []
     else
-      # We don't want the stop associated with the segment that the detour rejoins.
-      # So subtract one from the end index to ignore that segment
-      Enum.slice(segmented_shape, start_index..(end_index - 1))
+      Enum.take(remaining_segments, end_count)
     end
   end
 
