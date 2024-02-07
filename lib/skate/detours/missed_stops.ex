@@ -84,8 +84,8 @@ defmodule Skate.Detours.MissedStops do
 
   defp segment_shape_by_stops(shape, stops) do
     # Find the stop closest to the shape
-    [%{index: anchor_stop_index, shape_dist: [%{index: shape_point_anchor_index} | _]} | _] =
-      sort_stops_by_dist_to_shape(shape, stops)
+    %{index: anchor_stop_index, shape_dist: %{index: shape_point_anchor_index}} =
+      find_stop_closest_to_shape(shape, stops)
 
     # Split the shape and stops at the anchor point
     # Add one to the Shape Point Anchor Index so that the point ends up in `left_shape`
@@ -107,26 +107,26 @@ defmodule Skate.Detours.MissedStops do
     left_segments ++ [anchor_segment] ++ segment_shape_by_stops(right_shape, right_stops)
   end
 
-  @spec sort_stops_by_dist_to_shape(
+  @spec find_stop_closest_to_shape(
           shape :: [Util.Location.From.t()],
           stops :: [Util.Location.From.t()]
-        ) :: [
+        ) ::
           %{
             stop: Util.Location.From.t(),
             index: non_neg_integer(),
-            shape_dist: [point_dist_index()]
+            shape_dist: point_dist_index()
           }
-        ]
-  defp sort_stops_by_dist_to_shape(shape, stops) do
+
+  defp find_stop_closest_to_shape(shape, stops) do
     stops
     |> Enum.with_index(fn stop, index ->
       %{
         stop: stop,
         index: index,
-        shape_dist: sort_by_distance(shape, stop)
+        shape_dist: closest_point(shape, stop)
       }
     end)
-    |> Enum.sort_by(fn %{shape_dist: [%{dist: dist} | _]} -> dist end)
+    |> Enum.min_by(fn %{shape_dist: %{dist: dist}} -> dist end)
   end
 
   @spec get_index_by_min_dist(
@@ -141,13 +141,13 @@ defmodule Skate.Detours.MissedStops do
   defp get_index_by_min_dist(shape_segments, reference) do
     shape_segments
     |> Enum.with_index(fn %Skate.Detours.ShapeSegment{points: points} = segment, idx ->
-      points = sort_by_distance(points, reference)
+      points = closest_point(points, reference)
       # Pick closest points within fuzzy_dist=(0)
       # Discard adjacent points
       # Pick highest rank or return :indeterminate
       %{segment: segment, sorted_points: points, index: idx}
     end)
-    |> Enum.min_by(fn %{sorted_points: [%{dist: dist} | _]} -> dist end)
+    |> Enum.min_by(fn %{sorted_points: %{dist: dist}} -> dist end)
   end
 
   @type point_dist_index :: %{
@@ -155,13 +155,13 @@ defmodule Skate.Detours.MissedStops do
           dist: float(),
           index: non_neg_integer()
         }
-  @spec sort_by_distance(
+  @spec closest_point(
           coordinates :: [Util.Location.From.t()],
           reference :: Util.Location.From.t()
-        ) :: [
+        ) ::
           point_dist_index()
-        ]
-  defp sort_by_distance(coordinates, reference) do
+
+  defp closest_point(coordinates, reference) do
     reference = Util.Location.as_location!(reference)
 
     dist_from_reference = fn point ->
@@ -172,9 +172,6 @@ defmodule Skate.Detours.MissedStops do
     |> Enum.with_index(fn point, idx ->
       %{elem: point, dist: dist_from_reference.(point), index: idx}
     end)
-    |> Enum.sort_by(
-      & &1.dist,
-      :asc
-    )
+    |> Enum.min_by(& &1.dist)
   end
 end
