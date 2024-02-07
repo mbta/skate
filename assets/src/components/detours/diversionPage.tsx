@@ -3,7 +3,7 @@ import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { Shape } from "../../schedule"
 import { useDetour } from "../../hooks/useDetour"
-import { ListGroup } from "react-bootstrap"
+import { CloseButton, ListGroup } from "react-bootstrap"
 
 export const DiversionPage = ({
   missedStops,
@@ -30,7 +30,9 @@ export const DiversionPage = ({
 
   return (
     <article className="l-diversion-page h-100 border-box">
-      <header className="l-diversion-page__header text-bg-light border-bottom" />
+      <header className="l-diversion-page__header text-bg-light border-bottom">
+        <CloseButton className="l-diversion-page__close-button" />
+      </header>
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
           directions={

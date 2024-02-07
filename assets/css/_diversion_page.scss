@@ -63,3 +63,10 @@
 .c-diversion-panel__description {
   font-weight: 600;
 }
+
+.l-diversion-page__header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px;
+}
