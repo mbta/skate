@@ -151,7 +151,7 @@ defmodule Skate.Detours.MissedStops do
   end
 
   @type point_dist_index :: %{
-          point: Util.Location.From.t(),
+          elem: Util.Location.From.t(),
           dist: float(),
           index: non_neg_integer()
         }
@@ -170,7 +170,7 @@ defmodule Skate.Detours.MissedStops do
 
     coordinates
     |> Enum.with_index(fn point, idx ->
-      %{point: point, dist: dist_from_reference.(point), index: idx}
+      %{elem: point, dist: dist_from_reference.(point), index: idx}
     end)
     |> Enum.sort_by(
       & &1.dist,
