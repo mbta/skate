@@ -4,6 +4,7 @@ import { DetourMap } from "./detourMap"
 import { Shape } from "../../schedule"
 import { useDetour } from "../../hooks/useDetour"
 import { CloseButton, ListGroup } from "react-bootstrap"
+import { LatLngLiteral } from "leaflet"
 
 export const DiversionPage = ({
   missedStops,
@@ -13,7 +14,14 @@ export const DiversionPage = ({
   routeOrigin,
   shape,
   onClose,
-}: DiversionPanelProps & { shape: Shape; onClose?: () => void }) => {
+  center,
+  zoom,
+}: DiversionPanelProps & {
+  shape: Shape
+  onClose?: () => void
+  center: LatLngLiteral
+  zoom: number
+}) => {
   const {
     addConnectionPoint,
     addWaypoint,
@@ -66,6 +74,8 @@ export const DiversionPage = ({
           onClickOriginalShape={addConnectionPoint}
           undoDisabled={canUndo === false}
           onUndoLastWaypoint={undoLastWaypoint}
+          center={center}
+          zoom={zoom}
         />
       </div>
     </article>

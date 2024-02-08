@@ -5,6 +5,7 @@ import "@testing-library/jest-dom/jest-globals"
 import { fetchDetourDirections } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
+import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
@@ -15,6 +16,8 @@ const DiversionPage = (
     routeOrigin="from Andrew Station"
     routeDirection="Outbound"
     shape={shapeFactory.build()}
+    center={latLngLiteralFactory.build()}
+    zoom={16}
     {...props}
   />
 )

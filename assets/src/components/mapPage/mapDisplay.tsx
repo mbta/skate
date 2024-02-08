@@ -296,6 +296,8 @@ const SelectedVehicleDataLayers = ({
   const routeId = routePatternForVehicle?.routeId
   const route = useRoute(routeId)
 
+  const map = useMap()
+
   return (
     <>
       {selectedVehicleOrGhost && (
@@ -317,6 +319,8 @@ const SelectedVehicleDataLayers = ({
                     routePatternForVehicle={routePatternForVehicle}
                     route={route}
                     onStartDetour={onStartDetour}
+                    center={map.getCenter()}
+                    zoom={map.getZoom()}
                     onClick={(detourInfo) => {
                       setShouldShowPopup(false)
                       onStartDetour && onStartDetour(detourInfo)

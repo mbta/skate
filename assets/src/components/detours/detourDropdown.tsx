@@ -3,6 +3,7 @@ import { DropdownItem, DropdownMenu } from "../map/dropdown"
 import { Route, RoutePattern, Shape } from "../../schedule"
 import { Popup } from "react-leaflet"
 import { PointTuple } from "leaflet"
+import { LatLngLiteral } from "leaflet"
 
 export interface StartDetourProps {
   routeName: string
@@ -10,6 +11,8 @@ export interface StartDetourProps {
   routeOrigin: string
   routeDirection: string
   shape: Shape
+  center: LatLngLiteral
+  zoom: number
 }
 
 export interface DetourDropdownProps {
@@ -18,12 +21,16 @@ export interface DetourDropdownProps {
   route: Route | null
   onStartDetour?: (props: StartDetourProps) => void
   onClick: (props: StartDetourProps) => void
+  center: LatLngLiteral
+  zoom: number
 }
 
 export const DetourDropdown = ({
   routePatternForVehicle,
   route,
   onClick,
+  center,
+  zoom,
 }: DetourDropdownProps) => {
   // This offset is here because, due to a limitation of Leaflet
   // popups, we weren't able to render the popup at the bottom-right
@@ -62,6 +69,8 @@ export const DetourDropdown = ({
               routeOrigin,
               routeDirection,
               shape,
+              center,
+              zoom,
             })
           }}
         >

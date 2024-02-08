@@ -27,6 +27,8 @@ export const DummyDetourPage = () => {
           routeDirection={
             route?.directionNames[routePattern.directionId] || "?"
           }
+          center={{ lat: 42.36, lng: -71.13 }}
+          zoom={16}
         />
       )}
     </>

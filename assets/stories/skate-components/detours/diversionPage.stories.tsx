@@ -17,6 +17,8 @@ const meta = {
     ...DiversionPanelMeta.args,
     routeName: "39",
     shape: route39shape,
+    zoom: 14,
+    center: { lat: 42.33, lng: -71.11 },
   },
   argTypes: {
     ...DiversionPanelMeta.argTypes,

@@ -20,6 +20,8 @@ export const DetourModal = ({
           routeOrigin={detourInfo.routeOrigin}
           routeDirection={detourInfo.routeDirection}
           shape={detourInfo.shape}
+          center={detourInfo.center}
+          zoom={detourInfo.zoom}
         />
       </Modal.Body>
     </Modal>

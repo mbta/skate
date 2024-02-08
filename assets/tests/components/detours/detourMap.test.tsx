@@ -4,6 +4,7 @@ import React, { ComponentProps } from "react"
 import { DetourMap } from "../../../src/components/detours/detourMap"
 import "@testing-library/jest-dom/jest-globals"
 import { defaultCenter } from "../../../src/components/map"
+import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -22,6 +23,8 @@ const DetourMapWithDefaults = (
     onClickMap={() => {}}
     onClickOriginalShape={() => {}}
     onUndoLastWaypoint={() => {}}
+    center={latLngLiteralFactory.build()}
+    zoom={16}
     {...props}
   />
 )

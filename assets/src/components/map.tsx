@@ -61,6 +61,9 @@ export interface Props extends PropsWithChildren {
   allowFullscreen?: boolean
   includeStopCard?: boolean
   stations?: Stop[] | null
+
+  zoom?: number
+  center?: LatLngLiteral
 }
 
 export const defaultCenter: LatLngLiteral = {
@@ -118,8 +121,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             : undefined
         }
         zoomControl={false}
-        center={defaultCenter}
-        zoom={defaultZoom}
+        center={props.center ?? defaultCenter}
+        zoom={props.zoom ?? defaultZoom}
         ref={mapRef}
         attributionControl={false}
       >
