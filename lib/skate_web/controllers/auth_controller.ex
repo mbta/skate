@@ -91,7 +91,7 @@ defmodule SkateWeb.AuthController do
         |> session_cleanup()
         |> redirect(external: sign_out_url)
 
-      # The router makes sure we can't call `/auth/:provider/keycloak`
+      # The router makes sure we can't call `/auth/:provider/callback`
       # unless we have a session.
       # So the potential `nil` from `current_claims` and the potential map with
       # `sign_out_url=nil` can be handled the same
