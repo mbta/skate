@@ -83,4 +83,9 @@ defmodule Schedule.Gtfs.Shape.Point do
       sequence: String.to_integer(row["shape_pt_sequence"])
     }
   end
+
+  defimpl Util.Location.From, for: __MODULE__ do
+    def as_location(%Schedule.Gtfs.Shape.Point{lat: lat, lon: long}),
+      do: {:ok, %Util.Location{latitude: lat, longitude: long}}
+  end
 end
