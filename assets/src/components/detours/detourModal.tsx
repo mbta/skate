@@ -1,5 +1,4 @@
 import React from "react"
-import { Modal } from "react-bootstrap"
 import { DiversionPage } from "./diversionPage"
 import { StartDetourProps } from "./detourDropdown"
 
@@ -11,19 +10,17 @@ export const DetourModal = ({
   onClose: () => void
 }) => {
   return (
-    <Modal show fullscreen className="c-modal-fullscreen">
-      <Modal.Body className="c-modal-fullscreen-body">
-        <DiversionPage
-          onClose={onClose}
-          routeName={detourInfo.routeName}
-          routeDescription={detourInfo.routeDescription}
-          routeOrigin={detourInfo.routeOrigin}
-          routeDirection={detourInfo.routeDirection}
-          shape={detourInfo.shape}
-          center={detourInfo.center}
-          zoom={detourInfo.zoom}
-        />
-      </Modal.Body>
-    </Modal>
+    <div className="c-detour-modal">
+      <DiversionPage
+        onClose={onClose}
+        routeName={detourInfo.routeName}
+        routeDescription={detourInfo.routeDescription}
+        routeOrigin={detourInfo.routeOrigin}
+        routeDirection={detourInfo.routeDirection}
+        shape={detourInfo.shape}
+        center={detourInfo.center}
+        zoom={detourInfo.zoom}
+      />
+    </div>
   )
 }
