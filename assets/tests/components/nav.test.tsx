@@ -68,6 +68,7 @@ describe("Nav", () => {
     )
 
     expect(result.getByTitle("Route Ladders")).not.toBeVisible()
+    expect(result.getByTitle("Skate")).not.toBeVisible()
   })
 
   test("renders tablet nav content", () => {

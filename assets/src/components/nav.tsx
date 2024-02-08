@@ -27,7 +27,12 @@ const Nav: React.FC<Props> = ({ children }) => {
       return (
         <div className="l-nav--wide">
           <>
-            <div className="l-nav__nav-bar l-nav__nav-bar--top">
+            <div
+              className="l-nav__nav-bar l-nav__nav-bar--top"
+              hidden={
+                isViewOpen && deviceType === "mobile_landscape_tablet_portrait"
+              }
+            >
               <TopNav />
             </div>
             <div
