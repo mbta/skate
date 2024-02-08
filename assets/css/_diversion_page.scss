@@ -68,7 +68,6 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 16px;
 }
 
 .c-diversion-panel__h2 {
@@ -79,4 +78,8 @@
 .c-diversion-panel__h3 {
   font-size: 20px;
   font-weight: 600;
+}
+
+.c-diversion-panel__help-text {
+  line-height: 24px;
 }

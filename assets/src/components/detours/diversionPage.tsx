@@ -40,10 +40,7 @@ export const DiversionPage = ({
   return (
     <article className="l-diversion-page h-100 border-box">
       <header className="l-diversion-page__header text-bg-light border-bottom">
-        <CloseButton
-          className="l-diversion-page__close-button"
-          onClick={onClose}
-        />
+        <CloseButton className="p-4" onClick={onClose} />
       </header>
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
