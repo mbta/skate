@@ -53,6 +53,12 @@ defmodule SkateWeb.Router do
     get("/:provider/callback", AuthController, :callback)
   end
 
+  scope "/auth", SkateWeb do
+    pipe_through([:redirect_prod_http, :accepts_html, :browser, :auth])
+
+    get("/:provider/logout", AuthController, :logout)
+  end
+
   scope "/", SkateWeb do
     get "/_health", HealthController, :index
   end
