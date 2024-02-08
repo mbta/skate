@@ -47,28 +47,7 @@ defmodule Skate.Detours.MissedStops do
     %{index: end_count} =
       get_index_by_min_dist(remaining_segments, connection_end)
 
-    if end_count == 0 do
-      case Enum.at(segmented_shape, start_index) do
-        # As long as there's only one stop in the segment,
-        # we'll assume that we won't miss any stops
-        # because we're rejoining the same segment
-        %Skate.Detours.ShapeSegment{
-          stop: :none
-        } ->
-          []
-
-        # If there's more than one stop in this segment,
-        # Then return all the stops
-        %Skate.Detours.ShapeSegment{
-          stop: stop
-        } ->
-          [stop]
-      end
-
-      []
-    else
-      Enum.take(remaining_segments, end_count)
-    end
+    Enum.take(remaining_segments, end_count)
   end
 
   @spec segment_shape_by_stops(
