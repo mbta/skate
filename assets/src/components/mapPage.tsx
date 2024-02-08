@@ -368,7 +368,14 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
             />
           </MapSafeAreaContext.Provider>
         </div>
-        {detourInfo && <DetourModal detourInfo={detourInfo} />}
+        {detourInfo && (
+          <DetourModal
+            detourInfo={detourInfo}
+            onClose={() => {
+              setDetourInfo(null)
+            }}
+          />
+        )}
       </div>
     </>
   )

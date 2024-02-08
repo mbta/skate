@@ -12,7 +12,8 @@ export const DiversionPage = ({
   routeDirection,
   routeOrigin,
   shape,
-}: DiversionPanelProps & { shape: Shape }) => {
+  onClose,
+}: DiversionPanelProps & { shape: Shape; onClose?: () => void }) => {
   const {
     addConnectionPoint,
     addWaypoint,
@@ -31,7 +32,10 @@ export const DiversionPage = ({
   return (
     <article className="l-diversion-page h-100 border-box">
       <header className="l-diversion-page__header text-bg-light border-bottom">
-        <CloseButton className="l-diversion-page__close-button" />
+        <CloseButton
+          className="l-diversion-page__close-button"
+          onClick={onClose}
+        />
       </header>
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
