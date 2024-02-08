@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { DiversionPage } from "../../../src/components/detours/diversionPage"
-import DiversionPanelMeta, {
-  WithDirections as DiversionPanelWithDirections,
-  WithStops as DiversionPanelWithStops,
-} from "./diversionPanel.stories"
+import DiversionPanelMeta from "./diversionPanel.stories"
 import { route39shape } from "../__story-data__/shape"
 
 const meta = {
@@ -28,16 +25,4 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const WithoutDirections: Story = {}
-
-export const WithDirections: Story = {
-  args: {
-    ...DiversionPanelWithDirections.args,
-  },
-}
-
-export const WithStops: Story = {
-  args: {
-    ...DiversionPanelWithStops.args,
-  },
-}
+export const Default: Story = {}
