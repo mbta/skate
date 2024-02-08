@@ -82,4 +82,29 @@ defmodule SkateWeb.AuthController do
         nil
     end
   end
+
+  @spec logout(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def logout(conn, %{"provider" => "keycloak"}) do
+    case Guardian.Plug.current_claims(conn) do
+      %{"sign_out_url" => sign_out_url} when not is_nil(sign_out_url) ->
+        conn
+        |> session_cleanup()
+        |> redirect(external: sign_out_url)
+
+      # The router makes sure we can't call `/auth/:provider/keycloak`
+      # unless we have a session.
+      # So the potential `nil` from `current_claims` and the potential map with
+      # `sign_out_url=nil` can be handled the same
+      _ ->
+        conn
+        |> session_cleanup()
+        |> redirect(to: "/")
+    end
+  end
+
+  defp session_cleanup(conn) do
+    conn
+    |> SkateWeb.AuthManager.Plug.sign_out()
+    |> configure_session(drop: true)
+  end
 end
