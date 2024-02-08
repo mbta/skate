@@ -27,7 +27,7 @@ defmodule SkateWeb.AuthController do
       |> Guardian.Plug.sign_in(
         AuthManager,
         %{id: user_id},
-        %{groups: groups},
+        %{groups: groups, sign_out_url: sign_out_url(auth)},
         ttl: {expiration - current_time, :seconds}
       )
       |> redirect(to: ~p"/")
@@ -70,5 +70,16 @@ defmodule SkateWeb.AuthController do
 
   def callback(%{assigns: %{ueberauth_failure: %{provider: :keycloak}}} = conn, _params) do
     send_resp(conn, :unauthorized, "unauthenticated")
+  end
+
+  # https://github.com/mbta/arrow/blob/372c279e04866509f1e287e07844d61cc243850b/lib/arrow_web/controllers/auth_controller.ex#L57-L66
+  defp sign_out_url(auth) do
+    case UeberauthOidcc.initiate_logout_url(auth) do
+      {:ok, url} ->
+        url
+
+      _ ->
+        nil
+    end
   end
 end
