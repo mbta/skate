@@ -44,7 +44,19 @@ config :ex_aws,
 
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]}
+    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]},
+    keycloak:
+      {Skate.Ueberauth.Strategy.Fake,
+       [groups: ["skate-readonly", "skate-dispatcher", "skate-admin"]]}
+  ]
+
+config :ueberauth_oidcc,
+  providers: [
+    keycloak: [
+      issuer: :keycloak_issuer,
+      client_id: "dev-client",
+      client_secret: "fake-secret"
+    ]
   ]
 
 config :logger, level: :notice

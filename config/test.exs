@@ -24,7 +24,17 @@ config :skate, Oban, testing: :inline
 
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-nav-beta"]]}
+    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-nav-beta"]]},
+    keycloak: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-nav-beta"]]}
+  ]
+
+config :ueberauth_oidcc,
+  providers: [
+    keycloak: [
+      issuer: :keycloak_issuer,
+      client_id: "test-client",
+      client_secret: "fake-secret"
+    ]
   ]
 
 config :logger, level: :warning

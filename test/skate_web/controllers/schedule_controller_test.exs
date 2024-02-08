@@ -25,7 +25,7 @@ defmodule SkateWeb.ScheduleControllerTest do
         |> api_headers()
         |> get("/api/schedule/run?trip_id=trip&run_id=run")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/cognito"
     end
 
     @tag :authenticated
@@ -88,7 +88,7 @@ defmodule SkateWeb.ScheduleControllerTest do
         |> api_headers()
         |> get("/api/schedule/block?trip_id=trip")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/cognito"
     end
 
     @tag :authenticated

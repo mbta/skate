@@ -152,7 +152,8 @@ config :phoenix, :json_library, Jason
 # Fake Cognito authentication
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: nil
+    cognito: nil,
+    keycloak: nil
   ]
 
 # Import environment specific config. This must remain at the bottom

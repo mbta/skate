@@ -86,6 +86,7 @@ defmodule Skate.MixProject do
       {:stream_data, "~> 0.6.0", only: :test},
       {:timex, "~> 3.7.5"},
       {:ueberauth_cognito, "~> 0.4.0"},
+      {:ueberauth_oidcc, "~> 0.3.1"},
       {:ueberauth, "~> 0.10.5"}
     ]
   end

@@ -42,4 +42,21 @@ if config_env() == :prod do
       sentry_frontend_dsn: System.fetch_env!("SENTRY_FRONTEND_DSN"),
       sentry_org_slug: System.fetch_env!("SENTRY_ORG_SLUG")
   end
+
+  keycloak_opts = [
+    issuer: :keycloak_issuer,
+    client_id: System.fetch_env!("KEYCLOAK_CLIENT_ID"),
+    client_secret: System.fetch_env!("KEYCLOAK_CLIENT_SECRET")
+  ]
+
+  config :ueberauth_oidcc,
+    issuers: [
+      %{
+        name: :keycloak_issuer,
+        issuer: System.fetch_env!("KEYCLOAK_ISSUER")
+      }
+    ],
+    providers: [
+      keycloak: keycloak_opts
+    ]
 end
