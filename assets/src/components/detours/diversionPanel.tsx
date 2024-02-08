@@ -1,8 +1,10 @@
 import React, { ReactNode } from "react"
 import { RoutePill } from "../routePill"
+import { DetourShape } from "../../detour"
+import { ListGroup } from "react-bootstrap"
 
 export interface DiversionPanelProps {
-  directions?: ReactNode
+  directions?: DetourShape["directions"]
   missedStops?: ReactNode
   routeName: string
   routeDescription: string
@@ -49,7 +51,17 @@ export const DiversionPanel = ({
 
       <section className="py-3">
         <h2 className="h3">Detour Directions</h2>
-        {directions ?? <DirectionsHelpText />}
+        {directions ? (
+          <ListGroup as="ol">
+            {directions.map((d) => (
+              <ListGroup.Item key={d.instruction} as="li">
+                {d.instruction}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        ) : (
+          <DirectionsHelpText />
+        )}
       </section>
 
       {missedStops && (

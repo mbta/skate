@@ -30,19 +30,13 @@ export const WithoutDirections: Story = {}
 
 export const WithDirections: Story = {
   args: {
-    directions: (
-      <>
-        <ListGroup variant="flush" as="ol">
-          <ListGroup.Item as="li">Start at Centre St & John St</ListGroup.Item>
-          <ListGroup.Item as="li">Right on John St</ListGroup.Item>
-          <ListGroup.Item as="li">Left on Abbotsford Rd</ListGroup.Item>
-          <ListGroup.Item as="li">Right on Boston St</ListGroup.Item>
-          <ListGroup.Item as="li">
-            <strong>Regular Route</strong>
-          </ListGroup.Item>
-        </ListGroup>
-      </>
-    ),
+    directions: [
+      { instruction: "Start at Centre St & John St" },
+      { instruction: "Right on John St" },
+      { instruction: "Left on Abbotsford Rd" },
+      { instruction: "Right on Boston St" },
+      { instruction: "Regular Route" },
+    ],
   },
 }
 

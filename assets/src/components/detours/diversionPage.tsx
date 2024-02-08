@@ -3,7 +3,7 @@ import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { Shape } from "../../schedule"
 import { useDetour } from "../../hooks/useDetour"
-import { CloseButton, ListGroup } from "react-bootstrap"
+import { CloseButton } from "react-bootstrap"
 import { LatLngLiteral } from "leaflet"
 
 export const DiversionPage = ({
@@ -47,15 +47,7 @@ export const DiversionPage = ({
       </header>
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
-          directions={
-            <ListGroup as="ol">
-              {directions?.map((d) => (
-                <ListGroup.Item key={d.instruction} as="li">
-                  {d.instruction}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          }
+          directions={directions}
           missedStops={missedStops}
           routeName={routeName}
           routeDescription={routeDescription}
