@@ -43,7 +43,7 @@ export const DetourDropdown = ({
     return <></>
   }
 
-  const routeId = routePatternForVehicle.routeId
+  const routeName = route.name
 
   const routeDescription = routePatternForVehicle.headsign
 
@@ -64,7 +64,7 @@ export const DetourDropdown = ({
         <DropdownItem
           onClick={() => {
             onClick({
-              routeName: routeId,
+              routeName,
               routeDescription,
               routeOrigin,
               routeDirection,
@@ -74,7 +74,7 @@ export const DetourDropdown = ({
             })
           }}
         >
-          Start a detour on route {routeId}
+          Start a detour on route {routeName}
         </DropdownItem>
       </DropdownMenu>
     </Popup>
