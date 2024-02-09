@@ -9,7 +9,7 @@ defmodule SkateWeb.PageController do
   def index(conn, _params) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
-    %{username: username} = user = User.get_by_id!(user_id)
+    %{username: username, email: email} = user = User.get_by_id!(user_id)
 
     _ = Logger.info("uid=#{username}")
 
@@ -23,6 +23,7 @@ defmodule SkateWeb.PageController do
 
     conn
     |> assign(:username, username)
+    |> assign(:email, email)
     |> assign(:user_uuid, user.uuid)
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
     |> assign(:user_settings, user_settings)

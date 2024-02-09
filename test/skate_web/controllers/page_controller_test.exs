@@ -228,6 +228,14 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "correct email address set", %{conn: conn} do
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~
+               "data-email-address=\"test_user@test.com\""
+    end
+
+    @tag :authenticated
     test "includes UUID in HTML", %{conn: conn, user: user} do
       user_struct = Skate.Settings.User.get_by_id!(user.id)
 
