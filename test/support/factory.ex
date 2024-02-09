@@ -335,4 +335,25 @@ defmodule Skate.Factory do
       ]
     }
   end
+
+  def ueberauth_auth_factory do
+    %Ueberauth.Auth{
+      provider: :keycloak,
+      uid: "test_username",
+      credentials: %Ueberauth.Auth.Credentials{
+        expires_at: System.system_time(:second) + 1_000,
+        refresh_token: "test_refresh_token"
+      },
+      info: %{email: "test@mbta.com"},
+      extra: %Ueberauth.Auth.Extra{
+        raw_info: %UeberauthOidcc.RawInfo{
+          userinfo: %{
+            "resource_access" => %{
+              "test-client" => %{"roles" => ["test1", "skate-readonly"]}
+            }
+          }
+        }
+      }
+    }
+  end
 end

@@ -74,7 +74,7 @@ defmodule SkateWeb.AuthController do
 
   # https://github.com/mbta/arrow/blob/372c279e04866509f1e287e07844d61cc243850b/lib/arrow_web/controllers/auth_controller.ex#L57-L66
   defp sign_out_url(auth) do
-    case UeberauthOidcc.initiate_logout_url(auth) do
+    case initiate_logout_url(auth) do
       {:ok, url} ->
         url
 
@@ -82,6 +82,9 @@ defmodule SkateWeb.AuthController do
         nil
     end
   end
+
+  defp initiate_logout_url(auth),
+    do: Application.get_env(:skate, :logout_url_fn, &UeberauthOidcc.initiate_logout_url/1).(auth)
 
   @spec logout(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def logout(conn, %{"provider" => "keycloak"}) do
