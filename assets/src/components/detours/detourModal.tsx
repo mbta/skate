@@ -5,12 +5,14 @@ import { StartDetourProps } from "./detourDropdown"
 export const DetourModal = ({
   detourInfo,
   onClose,
+  show,
 }: {
   detourInfo: StartDetourProps
   onClose: () => void
+  show: boolean
 }) => {
   return (
-    <div className="c-detour-modal">
+    <div className={`c-detour-modal${show ? "" : " c-detour-modal__hidden"}`}>
       <DiversionPage
         onClose={onClose}
         routeName={detourInfo.routeName}

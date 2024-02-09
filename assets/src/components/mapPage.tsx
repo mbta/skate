@@ -289,9 +289,11 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
   }
 
   const [detourInfo, setDetourInfo] = useState<StartDetourProps | null>(null)
+  const [showDetourModal, setShowDetourModal] = useState<boolean>(false)
 
   const onStartDetour = (props: StartDetourProps) => {
     setDetourInfo(props)
+    setShowDetourModal(true)
   }
 
   return (
@@ -371,8 +373,9 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
         {detourInfo && (
           <DetourModal
             detourInfo={detourInfo}
+            show={showDetourModal}
             onClose={() => {
-              setDetourInfo(null)
+              setShowDetourModal(false)
             }}
           />
         )}
