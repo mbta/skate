@@ -103,6 +103,27 @@ defmodule SkateWeb.AuthControllerTest do
     end
   end
 
+  describe "GET /auth/keycloak/logout" do
+    @tag :authenticated
+    test "clears guardian session", %{conn: conn} do
+      assert Guardian.Plug.authenticated?(conn)
+
+      conn = get(conn, ~p"/auth/keycloak/logout")
+
+      refute Guardian.Plug.authenticated?(conn)
+    end
+
+    @tag :authenticated
+    test "clears phoenix session", %{conn: conn} do
+      refute %{} == Plug.Conn.get_session(conn)
+
+      conn =
+        get(conn, ~p"/auth/keycloak/logout")
+
+      assert %{} == Plug.Conn.get_session(conn)
+    end
+  end
+
   describe "GET /auth/cognito/callback" do
     test "redirects to the index page for an ueberauth auth", %{conn: conn} do
       mock_auth = %Ueberauth.Auth{
