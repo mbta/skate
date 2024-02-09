@@ -9,7 +9,7 @@
 }
 
 .c-detour-modal__hidden {
-  transform: scale(90%);
+  transform: scale(1.02) translate(0px, -50px);
   opacity: 0;
   z-index: -1;
 }
