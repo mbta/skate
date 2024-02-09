@@ -54,7 +54,7 @@ defmodule SkateWeb.Router do
   end
 
   scope "/auth", SkateWeb do
-    pipe_through([:redirect_prod_http, :accepts_html, :browser, :auth])
+    pipe_through([:redirect_prod_http, :accepts_html, :browser, :auth, :ensure_auth])
 
     get("/:provider/logout", AuthController, :logout)
   end
