@@ -1,11 +1,8 @@
 .c-detour-modal {
-  z-index: 2001;
-  top: 0;
-  left: 0;
+  inset: 0;
   position: fixed;
-  height: 100%;
-  width: 100%;
   transition: all 0.3s;
+  z-index: 2001;
 }
 
 .c-detour-modal__hidden {
