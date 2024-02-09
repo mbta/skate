@@ -1,0 +1,14 @@
+.c-user-avatar {
+  .c-user-avatar__circle {
+    fill: $color-eggplant-500;
+  }
+
+  text {
+    fill: $white;
+    font-size: var(--font-size-l);
+    font-weight: var(--font-weight-semi);
+    text-anchor: middle;
+
+    user-select: none;
+  }
+}
