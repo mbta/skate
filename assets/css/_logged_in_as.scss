@@ -1,0 +1,32 @@
+.c-logged-in-as__container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.c-logged-in-as__icon {
+  background-color: #6d39ac;
+  color: #f8f8f9;
+  font-size: 20px;
+  font-weight: 600;
+  height: 32px;
+  width: 32px;
+  border-radius: 16px;
+  text-align: center;
+  line-height: 32px;
+}
+
+.c-logged-in-as__text {
+  font-weight: 400;
+  font-size: 14px;
+  color: #6e7175;
+
+  p {
+    line-height: 21px;
+    margin: 0px;
+  }
+}
+
+.c-logged-in-as__email {
+  font-weight: 600;
+}
