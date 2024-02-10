@@ -12,6 +12,7 @@ import {
 } from "../../helpers/icon"
 import { reload } from "../../models/browser"
 import { LoggedInAs } from "../loggedInAs"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
+  const showLoggedInUser = inTestGroup(TestGroups.KeycloakSso)
   return (
     <>
       <div
@@ -46,10 +48,14 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             <OldCloseIcon className="c-nav-menu__close-icon" />
           </button>
         </div>
-        <div className="c-nav-menu__logged-in-as">
-          <LoggedInAs email="username@mbta.com" />
-        </div>
-        <div className="c-nav-menu__divider" />
+        {showLoggedInUser && (
+          <>
+            <div className="c-nav-menu__logged-in-as">
+              <LoggedInAs email="username@mbta.com" />
+            </div>
+            <div className="c-nav-menu__divider" />
+          </>
+        )}
         <ul className="c-nav-menu__links">
           <li>
             <button

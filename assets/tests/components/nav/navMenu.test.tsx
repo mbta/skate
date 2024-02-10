@@ -8,6 +8,8 @@ import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
 import NavMenu from "../../../src/components/nav/navMenu"
 import { BrowserRouter } from "react-router-dom"
+import getTestGroups from "../../../src/userTestGroups"
+import { TestGroups } from "../../../src/userInTestGroup"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -17,6 +19,11 @@ jest.mock("../../../src/helpers/drift", () => ({
 jest.mock("../../../src/helpers/appCue", () => ({
   __esModule: true,
   displayHelp: jest.fn(),
+}))
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
 }))
 
 describe("NavMenu", () => {
@@ -72,6 +79,7 @@ describe("NavMenu", () => {
   })
 
   test("shows who is logged in", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
     const toggleMobileMenu = jest.fn()
 
     const result = render(
@@ -81,6 +89,19 @@ describe("NavMenu", () => {
     )
 
     expect(await result.findByText("Logged in as")).toBeInTheDocument()
+  })
+
+  test("does not show who is logged in if the user isn't in the Keycloak test group", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+    const toggleMobileMenu = jest.fn()
+
+    const result = render(
+      <BrowserRouter>
+        <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
+      </BrowserRouter>
+    )
+
+    expect(await result.queryByText("Logged in as")).toBeNull()
   })
 
   test("refresh button reloads the page", async () => {
