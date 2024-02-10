@@ -71,6 +71,18 @@ describe("NavMenu", () => {
     expect(result.getByTestId("nav-menu")).not.toHaveClass("c-nav-menu--open")
   })
 
+  test("shows who is logged in", async () => {
+    const toggleMobileMenu = jest.fn()
+
+    const result = render(
+      <BrowserRouter>
+        <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
+      </BrowserRouter>
+    )
+
+    expect(await result.findByText("Logged in as")).toBeInTheDocument()
+  })
+
   test("refresh button reloads the page", async () => {
     const reloadSpy = jest
       .spyOn(browser, "reload")

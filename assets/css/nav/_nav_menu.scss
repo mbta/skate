@@ -88,6 +88,19 @@
   }
 }
 
+.c-nav-menu__logged-in-as {
+  padding-left: 32px;
+  margin-top: 16px;
+}
+
+.c-nav-menu__divider {
+  border-bottom: 1px solid #25262740;
+  width: auto;
+
+  margin: 16px;
+  height: 0px;
+}
+
 .c-nav-menu__button,
 .c-nav-menu__link {
   color: $color-gray-600;

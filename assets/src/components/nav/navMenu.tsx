@@ -11,6 +11,7 @@ import {
   SpeechBubbleIcon,
 } from "../../helpers/icon"
 import { reload } from "../../models/browser"
+import { LoggedInAs } from "../loggedInAs"
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -45,6 +46,10 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             <OldCloseIcon className="c-nav-menu__close-icon" />
           </button>
         </div>
+        <div className="c-nav-menu__logged-in-as">
+          <LoggedInAs email="username@mbta.com" />
+        </div>
+        <div className="c-nav-menu__divider" />
         <ul className="c-nav-menu__links">
           <li>
             <button
