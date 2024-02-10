@@ -1,7 +1,7 @@
 import appData from "./appData"
 
-const getEmailAddress = () => {
-  return appData()?.emailAddress
+const getEmailAddress = (): string => {
+  return appData()?.emailAddress ?? ""
 }
 
 export default getEmailAddress

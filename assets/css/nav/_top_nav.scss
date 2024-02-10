@@ -30,6 +30,7 @@
 
 .c-top-nav__right-items {
   display: flex;
+  align-items: center;
 
   :not(:last-child) {
     padding-right: 1.5rem;
@@ -51,4 +52,8 @@
   &.c-top-nav__right-item--active {
     color: $color-eggplant-800;
   }
+}
+
+.c-top-nav__popover {
+  z-index: map-get($z-page-layout-context, "user-info-popover");
 }
