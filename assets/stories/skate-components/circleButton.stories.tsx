@@ -20,7 +20,7 @@ export const Active: Story = {
 }
 
 export const WithAvatar: Story = {
-  args: { isActive: false },
+  args: { isActive: false, title: "fake@test.com" },
   render: (args) => (
     <CircleButton {...args}>
       <UserAvatar userName="fake@test.com" />
@@ -29,7 +29,7 @@ export const WithAvatar: Story = {
 }
 
 export const WithAvatarActive: Story = {
-  args: { isActive: true },
+  args: { isActive: true, title: "fake@test.com" },
   render: (args) => (
     <CircleButton {...args}>
       <UserAvatar userName="fake@test.com" />
