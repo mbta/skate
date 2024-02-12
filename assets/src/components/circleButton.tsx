@@ -19,6 +19,7 @@ export const CircleButton = ({
     ])}
     onClick={onClick}
     title={title}
+    aria-pressed={isActive}
   >
     <div className="c-circle-button__content">{children}</div>
   </button>
