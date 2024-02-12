@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event"
 import React from "react"
 import { CircleButton } from "../../src/components/circleButton"
 
-describe("CircleIcon", () => {
+describe("CircleButton", () => {
   test("calls onClick callback when clicked", async () => {
     const onClick = jest.fn()
 
