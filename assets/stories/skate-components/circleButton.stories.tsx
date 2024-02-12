@@ -9,8 +9,30 @@ const meta = {
 } satisfies Meta<typeof CircleButton>
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof CircleButton>
 
 export const Default: Story = {
-  args: { children: <UserAvatar userName="foo" />, isActive: false },
+  args: { isActive: false },
+}
+
+export const Active: Story = {
+  args: { isActive: true },
+}
+
+export const WithAvatar: Story = {
+  args: { isActive: false },
+  render: (args) => (
+    <CircleButton {...args}>
+      <UserAvatar userName="fake@test.com" />
+    </CircleButton>
+  ),
+}
+
+export const WithAvatarActive: Story = {
+  args: { isActive: true },
+  render: (args) => (
+    <CircleButton {...args}>
+      <UserAvatar userName="fake@test.com" />
+    </CircleButton>
+  ),
 }

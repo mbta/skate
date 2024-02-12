@@ -5,10 +5,12 @@ export const CircleButton = ({
   children,
   onClick,
   isActive,
+  title,
 }: {
-  children: ReactNode
-  onClick: () => void
+  children?: ReactNode
+  onClick?: () => void
   isActive: boolean
+  title?: string
 }) => (
   <button
     className={joinClasses([
@@ -16,6 +18,7 @@ export const CircleButton = ({
       isActive && "c-circle-button--active",
     ])}
     onClick={onClick}
+    title={title}
   >
     <div className="c-circle-button__content">{children}</div>
   </button>
