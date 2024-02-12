@@ -27,7 +27,7 @@ defmodule SkateWeb.AuthController do
       |> Guardian.Plug.sign_in(
         AuthManager,
         %{id: user_id},
-        %{groups: groups},
+        %{groups: groups, sign_out_url: sign_out_url(auth)},
         ttl: {expiration - current_time, :seconds}
       )
       |> redirect(to: ~p"/")
@@ -70,5 +70,44 @@ defmodule SkateWeb.AuthController do
 
   def callback(%{assigns: %{ueberauth_failure: %{provider: :keycloak}}} = conn, _params) do
     send_resp(conn, :unauthorized, "unauthenticated")
+  end
+
+  # https://github.com/mbta/arrow/blob/372c279e04866509f1e287e07844d61cc243850b/lib/arrow_web/controllers/auth_controller.ex#L57-L66
+  defp sign_out_url(auth) do
+    case initiate_logout_url(auth) do
+      {:ok, url} ->
+        url
+
+      _ ->
+        nil
+    end
+  end
+
+  defp initiate_logout_url(auth),
+    do: Application.get_env(:skate, :logout_url_fn, &UeberauthOidcc.initiate_logout_url/1).(auth)
+
+  @spec logout(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def logout(conn, %{"provider" => "keycloak"}) do
+    case Guardian.Plug.current_claims(conn) do
+      %{"sign_out_url" => sign_out_url} when not is_nil(sign_out_url) ->
+        conn
+        |> session_cleanup()
+        |> redirect(external: sign_out_url)
+
+      # The router makes sure we can't call `/auth/:provider/callback`
+      # unless we have a session.
+      # So the potential `nil` from `current_claims` and the potential map with
+      # `sign_out_url=nil` can be handled the same
+      _ ->
+        conn
+        |> session_cleanup()
+        |> redirect(to: "/")
+    end
+  end
+
+  defp session_cleanup(conn) do
+    conn
+    |> SkateWeb.AuthManager.Plug.sign_out()
+    |> configure_session(drop: true)
   end
 end

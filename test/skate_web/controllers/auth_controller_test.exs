@@ -1,5 +1,8 @@
 defmodule SkateWeb.AuthControllerTest do
   use SkateWeb.ConnCase
+
+  import Test.Support.Helpers
+
   alias Skate.Settings.User
 
   describe "GET /auth/:provider" do
@@ -100,6 +103,49 @@ defmodule SkateWeb.AuthControllerTest do
         |> get(~p"/auth/keycloak/callback")
 
       assert response(conn, :unauthorized) == "unauthenticated"
+    end
+  end
+
+  describe "GET /auth/keycloak/logout" do
+    test "redirects to `sign_out_url`", %{conn: conn} do
+      redirect_url = "redirect.url.localhost"
+
+      reassign_env(:skate, :logout_url_fn, fn _ ->
+        {:ok, redirect_url}
+      end)
+
+      conn =
+        conn
+        |> init_test_session(%{})
+        |> assign(:ueberauth_auth, Skate.Factory.build(:ueberauth_auth))
+        |> get(~p"/auth/keycloak/callback")
+
+      assert Guardian.Plug.authenticated?(conn)
+
+      conn = get(conn, ~p"/auth/keycloak/logout")
+
+      refute Guardian.Plug.authenticated?(conn)
+
+      assert redirected_to(conn) == redirect_url
+    end
+
+    @tag :authenticated
+    test "clears guardian session", %{conn: conn} do
+      assert Guardian.Plug.authenticated?(conn)
+
+      conn = get(conn, ~p"/auth/keycloak/logout")
+
+      refute Guardian.Plug.authenticated?(conn)
+    end
+
+    @tag :authenticated
+    test "clears phoenix session", %{conn: conn} do
+      refute %{} == Plug.Conn.get_session(conn)
+
+      conn =
+        get(conn, ~p"/auth/keycloak/logout")
+
+      assert %{} == Plug.Conn.get_session(conn)
     end
   end
 
