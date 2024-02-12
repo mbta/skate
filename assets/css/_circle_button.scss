@@ -4,6 +4,22 @@
 
   background-color: $color-gray-50;
   border-radius: 50%;
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+
+  &:focus-within {
+    border: 0.0625rem solid $color-eggplant-500;
+
+    .c-circle-button__content {
+      margin: calc(0.25rem - 0.0625rem);
+    }
+  }
+
+  &--active {
+    background-color: $color-gray-200;
+  }
 }
 
 .c-circle-button__content {
