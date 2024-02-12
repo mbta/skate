@@ -8,6 +8,13 @@ import { initialState } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom/jest-globals"
 import * as browser from "../../../src/models/browser"
+import getTestGroups from "../../../src/userTestGroups"
+import { TestGroups } from "../../../src/userInTestGroup"
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
 
 describe("TopNav", () => {
   test("refresh button reloads the page", async () => {
@@ -31,7 +38,26 @@ describe("TopNav", () => {
   })
 
   describe("User info", () => {
+    test("does not have a 'User Info' button if the user isn't in the right test group", () => {
+      jest.mocked(getTestGroups).mockReturnValue([])
+
+      const dispatch = jest.fn()
+      const result = render(
+        <StateDispatchProvider state={initialState} dispatch={dispatch}>
+          <BrowserRouter>
+            <TopNav />
+          </BrowserRouter>
+        </StateDispatchProvider>
+      )
+
+      expect(
+        result.queryByRole("button", { name: "User Info" })
+      ).not.toBeInTheDocument()
+    })
+
     test("has a 'User Info' button", () => {
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
+
       const dispatch = jest.fn()
       const result = render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
@@ -47,6 +73,8 @@ describe("TopNav", () => {
     })
 
     test("brings up an element with 'logged in as' text when clicked", async () => {
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
+
       const dispatch = jest.fn()
       const user = userEvent.setup()
       const result = render(
@@ -65,6 +93,8 @@ describe("TopNav", () => {
     })
 
     test("clicking the 'User Info' button again makes the 'Logged in as' popover disappear", async () => {
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
+
       const dispatch = jest.fn()
       const user = userEvent.setup()
       const result = render(

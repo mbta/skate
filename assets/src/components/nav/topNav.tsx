@@ -7,11 +7,13 @@ import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
 import { CircleButton } from "../circleButton"
 import { UserAvatar } from "../userAvatar"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const TopNav = (): JSX.Element => {
   const email = getEmailAddress()
   const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
   const userButtonRef = useRef(null)
+  const showLoggedInUser = inTestGroup(TestGroups.KeycloakSso)
 
   return (
     <div className="c-top-nav">
@@ -28,30 +30,32 @@ const TopNav = (): JSX.Element => {
             <RefreshIcon className="c-top-nav__icon" />
           </button>
         </li>
-        <li>
-          <div ref={userButtonRef}>
-            <CircleButton
-              isActive={showUserPopover}
-              onClick={() => {
-                setShowUserPopover(!showUserPopover)
-              }}
-              title="User Info"
+        {showLoggedInUser && (
+          <li>
+            <div ref={userButtonRef}>
+              <CircleButton
+                isActive={showUserPopover}
+                onClick={() => {
+                  setShowUserPopover(!showUserPopover)
+                }}
+                title="User Info"
+              >
+                <UserAvatar userName={email} />
+              </CircleButton>
+            </div>
+            <Overlay
+              target={userButtonRef.current}
+              show={showUserPopover}
+              placement="bottom"
             >
-              <UserAvatar userName={email} />
-            </CircleButton>
-          </div>
-          <Overlay
-            target={userButtonRef.current}
-            show={showUserPopover}
-            placement="bottom"
-          >
-            <Popover className="c-top-nav__popover">
-              <Popover.Body>
-                <LoggedInAs email={email} />
-              </Popover.Body>
-            </Popover>
-          </Overlay>
-        </li>
+              <Popover className="c-top-nav__popover">
+                <Popover.Body>
+                  <LoggedInAs email={email} />
+                </Popover.Body>
+              </Popover>
+            </Overlay>
+          </li>
+        )}
       </ul>
     </div>
   )
