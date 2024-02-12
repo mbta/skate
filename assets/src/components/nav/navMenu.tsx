@@ -13,6 +13,7 @@ import {
 import { reload } from "../../models/browser"
 import { LoggedInAs } from "../loggedInAs"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import getEmailAddress from "../../userEmailAddress"
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -21,6 +22,7 @@ interface Props {
 
 const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
   const showLoggedInUser = inTestGroup(TestGroups.KeycloakSso)
+  const email = getEmailAddress()
   return (
     <>
       <div
@@ -51,7 +53,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
         {showLoggedInUser && (
           <>
             <div className="c-nav-menu__logged-in-as">
-              <LoggedInAs email="username@mbta.com" />
+              <LoggedInAs email={email} />
             </div>
             <div className="c-nav-menu__divider" />
           </>
