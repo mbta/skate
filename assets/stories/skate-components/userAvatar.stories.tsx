@@ -15,6 +15,6 @@ const meta = {
 } satisfies Meta<typeof UserAvatar>
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof UserAvatar>
 
 export const Default: Story = { args: { userName: "fake@test.com" } }
