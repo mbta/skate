@@ -3,14 +3,8 @@ import { Link } from "react-router-dom"
 import { Nav } from "react-bootstrap"
 import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
-import {
-  OldCloseIcon,
-  LogoIcon,
-  QuestionMarkIcon,
-  RefreshIcon,
-  SettingsIcon,
-  SpeechBubbleIcon,
-} from "../../helpers/icon"
+import { OldCloseIcon, LogoIcon } from "../../helpers/icon"
+import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
 
@@ -53,7 +47,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
           <Nav className="flex-column" as="ul">
             <Nav.Item>
               <Nav.Link as={"button"} onClick={reload} className="icon-link">
-                <RefreshIcon className="bi" /> Refresh
+                <BsIcon.ArrowClockwise /> Refresh
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
@@ -65,7 +59,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                   toggleMobileMenu()
                 }}
               >
-                <SpeechBubbleIcon className="bi" /> Support
+                <BsIcon.ChatFill /> Support
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
@@ -77,7 +71,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                   toggleMobileMenu()
                 }}
               >
-                <QuestionMarkIcon className="bi" /> About Skate
+                <BsIcon.QuestionFill /> About Skate
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
@@ -88,7 +82,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                 to="/settings"
                 className="nav-link icon-link"
               >
-                <SettingsIcon className="bi" /> Settings
+                <BsIcon.GearFill /> Settings
               </Nav.Link>
             </Nav.Item>
           </Nav>
