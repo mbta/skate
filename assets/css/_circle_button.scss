@@ -9,7 +9,7 @@
     background-color: $color-gray-100;
   }
 
-  &:focus-within {
+  &:focus-visible {
     border: 0.0625rem solid $color-eggplant-500;
 
     .c-circle-button__content {
