@@ -11,6 +11,7 @@ import {
   SettingsIcon,
   SpeechBubbleIcon,
 } from "../../helpers/icon"
+import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
 
 interface Props {
@@ -23,10 +24,12 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
     <>
       <div
         data-testid="nav-menu"
-        className={
-          "c-nav-menu" +
-          (mobileMenuIsOpen ? " c-nav-menu--open" : " c-nav-menu--closed")
-        }
+        className={joinClasses([
+          "c-nav-menu",
+          mobileMenuIsOpen ? " c-nav-menu--open" : " c-nav-menu--closed",
+          "inherit-box",
+          "border-box",
+        ])}
       >
         <div className="c-nav-menu__header">
           <Link
