@@ -96,8 +96,8 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                 <Nav.Item>
                   <Nav.Link
                     className="icon-link"
-                    as={Link}
-                    to="/auth/keycloak/logout"
+                    as="a"
+                    href="/auth/keycloak/logout"
                   >
                     <BsIcon.BoxArrowRight /> Logout
                   </Nav.Link>
