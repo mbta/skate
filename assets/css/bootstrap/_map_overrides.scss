@@ -1,5 +1,5 @@
 @use "../color/definitions" as semantic;
-@use "../color/tokens_v2" as new_tokens;
+@use "../color/tokens_new_v2" as new_tokens;
 
 $theme-colors: (
   "primary": new_tokens.$eggplant-500,
