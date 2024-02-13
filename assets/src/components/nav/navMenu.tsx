@@ -80,7 +80,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                 onClick={toggleMobileMenu}
                 title="Settings"
                 to="/settings"
-                className="nav-link icon-link"
+                className="icon-link"
               >
                 <BsIcon.GearFill /> Settings
               </Nav.Link>
