@@ -19,7 +19,7 @@
     }
   }
 
-  &--active {
+  &.c-circle-button--active {
     background-color: tokens.$gray-200;
   }
 }
