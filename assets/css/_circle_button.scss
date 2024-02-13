@@ -1,16 +1,18 @@
+@use "./color/tokens_2024" as tokens;
+
 .c-circle-button {
   width: 2rem;
   height: 2rem;
 
-  background-color: $color-gray-50;
+  background-color: tokens.$gray-50;
   border-radius: 50%;
 
   &:hover {
-    background-color: $color-gray-100;
+    background-color: tokens.$gray-100;
   }
 
   &:focus-visible {
-    border: 0.0625rem solid $color-eggplant-500;
+    border: 0.0625rem solid var(--bs-primary);
 
     .c-circle-button__content {
       margin: calc(0.25rem - 0.0625rem);
@@ -18,7 +20,7 @@
   }
 
   &--active {
-    background-color: $color-gray-200;
+    background-color: tokens.$gray-200;
   }
 }
 
