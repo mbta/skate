@@ -1,7 +1,16 @@
-@use "../color/tokens" as tokens;
+@use "../color/definitions" as semantic;
+@use "../color/tokens_2021" as tokens;
+@use "../color/tokens_2024" as new_tokens;
 
 $component-active-bg: tokens.$eggplant-700;
 $list-group-border-color: tokens.$gray-300;
 
-// Old Border color from before 5.3
-$border-color: rgba(0, 0, 0, 0.25);
+$border-color: new_tokens.$gray-400;
+
+$primary: new_tokens.$eggplant-500;
+$secondary: new_tokens.$gray-500;
+$info: semantic.$info;
+$ui-alert: semantic.$ui-alert;
+$service-alert: semantic.$service-alert;
+$light: new_tokens.$gray-50;
+$dark: new_tokens.$gray-900;

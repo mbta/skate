@@ -1,0 +1,175 @@
+/**
+ * Contains _definitions_ of color design tokens.
+ * Exports mixins which define those tokens in the shape of CSS
+ * custom properties (e.g., For export to typescript & storybook).
+ *
+ * Use this to access design tokens directly. Not recommended unless overriding
+ * something to a specific design token.
+ */
+
+// #region All Colors
+// #region Swatches
+$eggplant-900: #160b22;
+$eggplant-800: #2c1745;
+$eggplant-700: #412267;
+$eggplant-600: #572e8a;
+$eggplant-500: #6d39ac;
+$eggplant-400: #8a61bd;
+$eggplant-300: #a788cd;
+$eggplant-200: #c5b0de;
+$eggplant-100: #e2d7ee;
+$eggplant-50: #f0ebf7;
+
+@mixin eggplant-colors {
+  --color-eggplant-900: #{$eggplant-900};
+  --color-eggplant-800: #{$eggplant-800};
+  --color-eggplant-700: #{$eggplant-700};
+  --color-eggplant-600: #{$eggplant-600};
+  --color-eggplant-500: #{$eggplant-500};
+  --color-eggplant-400: #{$eggplant-400};
+  --color-eggplant-300: #{$eggplant-300};
+  --color-eggplant-200: #{$eggplant-200};
+  --color-eggplant-100: #{$eggplant-100};
+  --color-eggplant-50: #{$eggplant-50};
+}
+
+$kiwi-900: #022d40;
+$kiwi-800: #103f4a;
+$kiwi-700: #0a5961;
+$kiwi-600: #1b7979;
+$kiwi-500: #269c95;
+$kiwi-400: #76cbc0;
+$kiwi-300: #b7e6de;
+$kiwi-200: #daf1ea;
+$kiwi-100: #edf8f4;
+$kiwi-50: #f4faf8;
+
+@mixin kiwi-colors {
+  --color-kiwi-900: #{$kiwi-900};
+  --color-kiwi-800: #{$kiwi-800};
+  --color-kiwi-700: #{$kiwi-700};
+  --color-kiwi-600: #{$kiwi-600};
+  --color-kiwi-500: #{$kiwi-500};
+  --color-kiwi-400: #{$kiwi-400};
+  --color-kiwi-300: #{$kiwi-300};
+  --color-kiwi-200: #{$kiwi-200};
+  --color-kiwi-100: #{$kiwi-100};
+  --color-kiwi-50: #{$kiwi-50};
+}
+
+$strawberry-900: #4b0828;
+$strawberry-800: #6d0937;
+$strawberry-700: #9c074d;
+$strawberry-600: #d73367;
+$strawberry-500: #ea5382;
+$strawberry-400: #f698ae;
+$strawberry-300: #f5bcc8;
+$strawberry-200: #f8d8dc;
+$strawberry-100: #fbeaea;
+$strawberry-50: #fcf3f3;
+
+@mixin strawberry-colors {
+  --color-strawberry-900: #{$strawberry-900};
+  --color-strawberry-800: #{$strawberry-800};
+  --color-strawberry-700: #{$strawberry-700};
+  --color-strawberry-600: #{$strawberry-600};
+  --color-strawberry-500: #{$strawberry-500};
+  --color-strawberry-400: #{$strawberry-400};
+  --color-strawberry-300: #{$strawberry-300};
+  --color-strawberry-200: #{$strawberry-200};
+  --color-strawberry-100: #{$strawberry-100};
+  --color-strawberry-50: #{$strawberry-50};
+}
+
+$lemon-900: #372815;
+$lemon-800: #6b541f;
+$lemon-700: #98800b;
+$lemon-600: #c3c022;
+$lemon-500: #dddf5d;
+$lemon-400: #e8ee77;
+$lemon-300: #eef6b1;
+$lemon-200: #f4facc;
+$lemon-100: #fafde8;
+$lemon-50: #fbfdf1;
+
+@mixin lemon-colors {
+  --color-lemon-900: #{$lemon-900};
+  --color-lemon-800: #{$lemon-800};
+  --color-lemon-700: #{$lemon-700};
+  --color-lemon-600: #{$lemon-600};
+  --color-lemon-500: #{$lemon-500};
+  --color-lemon-400: #{$lemon-400};
+  --color-lemon-300: #{$lemon-300};
+  --color-lemon-200: #{$lemon-200};
+  --color-lemon-100: #{$lemon-100};
+  --color-lemon-50: #{$lemon-50};
+}
+
+$gray-900: #252627;
+$gray-800: #494b4e;
+$gray-700: #6e7175;
+$gray-600: #92969c;
+$gray-500: #b7bcc3;
+$gray-400: #c5c9cf;
+$gray-300: #d4d7db;
+$gray-200: #e2e4e7;
+$gray-100: #f1f2f3;
+$gray-50: #f8f8f9;
+
+@mixin gray-colors {
+  --color-gray-900: #{$gray-900};
+  --color-gray-800: #{$gray-800};
+  --color-gray-700: #{$gray-700};
+  --color-gray-600: #{$gray-600};
+  --color-gray-500: #{$gray-500};
+  --color-gray-400: #{$gray-400};
+  --color-gray-300: #{$gray-300};
+  --color-gray-200: #{$gray-200};
+  --color-gray-100: #{$gray-100};
+  --color-gray-50: #{$gray-50};
+}
+
+@mixin all-colors {
+  @include eggplant-colors;
+  @include kiwi-colors;
+  @include strawberry-colors;
+  @include lemon-colors;
+  @include gray-colors;
+}
+// #endregion Swatches
+
+// #region System State Colors
+$persimmon: #e45d32;
+$sky: #46a5e7;
+$lime: #8bcf00;
+$highlighter: #e7ff36;
+
+$white: #fff;
+$black: #000;
+
+@mixin system-state-colors {
+  --color-persimmon: #{$persimmon};
+  --color-sky: #{$sky};
+  --color-lime: #{$lime};
+
+  --color-white: #{$white};
+  --color-black: #{$black};
+
+  --color-highlighter: #{$highlighter};
+}
+// #endregion System State Colors
+
+// #region MBTA Service Colors
+$mbta-bus: #ffc72c;
+$mbta-silver: #7c878e;
+
+$mbta-green: #00843d;
+$mbta-red: #da291c;
+$mbta-orange: #ed8b00;
+$mbta-blue: #003da5;
+
+$mbta-cr: #80276c;
+
+$mbta-ferry: #008eaa;
+// #endregion MBTA Service Colors
+// #endregion All Colors

@@ -1,4 +1,4 @@
-@use "../../color/tokens" as colors;
+@use "../../color/tokens_2021" as colors;
 
 :export {
   @include colors.strawberry-colors;
