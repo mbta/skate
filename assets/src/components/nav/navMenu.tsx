@@ -46,7 +46,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
         <div className="p-3">
           <Nav className="flex-column" as="ul">
             <Nav.Item>
-              <Nav.Link as={"button"} onClick={reload} className="icon-link">
+              <Nav.Link as="button" onClick={reload} className="icon-link">
                 <BsIcon.ArrowClockwise /> Refresh
               </Nav.Link>
             </Nav.Item>
