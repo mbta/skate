@@ -1,7 +1,8 @@
 @use "../color/tokens_old" as tokens;
+@use "../color/tokens_new_v2" as new_tokens;
+
 
 $component-active-bg: tokens.$eggplant-700;
 $list-group-border-color: tokens.$gray-300;
 
-// Old Border color from before 5.3
-$border-color: rgba(0, 0, 0, 0.25);
+$border-color: new_tokens.$gray-400;
