@@ -91,7 +91,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    expect(screen.getByRole("link", { name: "Logout" })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Logout" })).toBeVisible()
   })
 
   test("doesn't show logout button if the user isn't in the Keycloak test group", async () => {
