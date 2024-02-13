@@ -8,6 +8,9 @@ import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
 import NavMenu from "../../../src/components/nav/navMenu"
 import { BrowserRouter } from "react-router-dom"
+import getTestGroups from "../../../src/userTestGroups"
+import { TestGroups } from "../../../src/userInTestGroup"
+import getEmailAddress from "../../../src/userEmailAddress"
 
 jest.mock("../../../src/helpers/drift", () => ({
   __esModule: true,
@@ -18,6 +21,13 @@ jest.mock("../../../src/helpers/appCue", () => ({
   __esModule: true,
   displayHelp: jest.fn(),
 }))
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
+
+jest.mock("../../../src/userEmailAddress")
 
 describe("NavMenu", () => {
   test("when mobile menu is open, clicking the backdrop toggled the mobile menu", async () => {
@@ -69,6 +79,33 @@ describe("NavMenu", () => {
     )
 
     expect(result.getByTestId("nav-menu")).not.toHaveClass("c-nav-menu--open")
+  })
+
+  test("shows logout button", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
+    jest.mocked(getEmailAddress).mockReturnValue("test@example.localhost")
+
+    render(
+      <BrowserRouter>
+        <NavMenu toggleMobileMenu={jest.fn()} mobileMenuIsOpen={true} />
+      </BrowserRouter>
+    )
+
+    expect(screen.getByRole("link", { name: "Logout" })).toBeInTheDocument()
+  })
+
+  test("doesn't show logout button if the user isn't in the Keycloak test group", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    render(
+      <BrowserRouter>
+        <NavMenu toggleMobileMenu={jest.fn()} mobileMenuIsOpen={true} />
+      </BrowserRouter>
+    )
+
+    expect(
+      screen.queryByRole("link", { name: "Logout" })
+    ).not.toBeInTheDocument()
   })
 
   test("refresh button reloads the page", async () => {
