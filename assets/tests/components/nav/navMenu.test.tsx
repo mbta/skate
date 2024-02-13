@@ -85,7 +85,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("Refresh"))
+    await user.click(result.getByRole("button", { name: "Refresh" }))
 
     expect(reloadSpy).toHaveBeenCalled()
   })
@@ -100,7 +100,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("Support"))
+    await user.click(result.getByRole("button", { name: "Support" }))
 
     expect(openDrift).toHaveBeenCalled()
   })
@@ -115,7 +115,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("Support"))
+    await user.click(result.getByRole("button", { name: "Support" }))
 
     expect(toggleMobileMenu).toHaveBeenCalled()
   })
@@ -130,7 +130,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("Settings"))
+    await user.click(result.getByRole("link", { name: "Settings" }))
 
     expect(toggleMobileMenu).toHaveBeenCalled()
   })
@@ -145,7 +145,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("About Skate"))
+    await user.click(result.getByRole("button", { name: "About Skate" }))
 
     expect(displayHelp).toHaveBeenCalled()
   })
@@ -160,7 +160,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("About Skate"))
+    await user.click(result.getByRole("button", { name: "About Skate" }))
 
     expect(toggleMobileMenu).toHaveBeenCalled()
   })
