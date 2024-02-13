@@ -10,16 +10,16 @@
 }
 
 .c-logged-in-as__text {
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: var(--font-weight-reg);
+  font-size: var(--font-size-s);
   color: #6e7175;
 
   p {
-    line-height: 21px;
+    line-height: 1.5;
     margin: 0px;
   }
 }
 
 .c-logged-in-as__email {
-  font-weight: 600;
+  font-weight: var(--font-weight-semi);
 }
