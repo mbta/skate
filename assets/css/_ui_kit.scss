@@ -1,5 +1,5 @@
 // colors
-@use "./color/tokens" as tokens;
+@use "./color/tokens_old" as tokens;
 
 $white: tokens.$white;
 $black: tokens.$black;

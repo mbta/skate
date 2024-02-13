@@ -1,4 +1,4 @@
-@use "../color/tokens" as tokens;
+@use "../color/tokens_old" as tokens;
 
 $component-active-bg: tokens.$eggplant-700;
 $list-group-border-color: tokens.$gray-300;
