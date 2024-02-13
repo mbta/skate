@@ -1,9 +1,8 @@
 @use "./color/tokens_2024" as tokens;
 
 .c-logged-in-as__container {
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
+  display: flex;
 }
 
 .c-logged-in-as__icon {
@@ -12,9 +11,10 @@
 }
 
 .c-logged-in-as__text {
-  font-weight: var(--font-weight-reg);
-  font-size: var(--font-size-s);
   color: tokens.$gray-700;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-reg);
+  margin-left: 0.5rem;
 
   p {
     line-height: 1.5;
