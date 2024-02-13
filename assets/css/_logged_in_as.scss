@@ -1,12 +1,12 @@
 .c-logged-in-as__container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .c-logged-in-as__icon {
-  height: 32px;
-  width: 32px;
+  height: 2rem;
+  width: 2rem;
 }
 
 .c-logged-in-as__text {
@@ -16,7 +16,7 @@
 
   p {
     line-height: 1.5;
-    margin: 0px;
+    margin: 0;
   }
 }
 
