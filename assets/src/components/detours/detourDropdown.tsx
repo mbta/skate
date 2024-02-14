@@ -40,7 +40,7 @@ export const DetourDropdown = ({
   const dropdownOffset: PointTuple = [140, 97]
 
   if (!routePatternForVehicle || !route) {
-    return <></>
+    return null
   }
 
   const routeName = route.name
@@ -55,7 +55,7 @@ export const DetourDropdown = ({
   const shape = routePatternForVehicle.shape
 
   if (!routeDescription || !shape) {
-    return <></>
+    return null
   }
 
   return (
