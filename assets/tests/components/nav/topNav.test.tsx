@@ -93,11 +93,7 @@ describe("TopNav", () => {
 
       const logoutLink = screen.queryByRole("link", { name: "Log out" })
 
-      expect(logoutLink).toBeVisible()
-
-      expect(logoutLink?.attributes.getNamedItem("href")?.value).toBe(
-        "/auth/keycloak/logout"
-      )
+      expect(logoutLink).toHaveAttribute("href", "/auth/keycloak/logout")
     })
 
     test("clicking the 'User Info' button again makes the 'Logged in as' popover disappear", async () => {
