@@ -93,6 +93,8 @@ describe("TopNav", () => {
 
       const logoutLink = screen.queryByRole("link", { name: "Log out" })
 
+      expect(logoutLink).toBeVisible()
+
       expect(logoutLink).toHaveAttribute("href", "/auth/keycloak/logout")
     })
 
