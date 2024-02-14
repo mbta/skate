@@ -46,6 +46,36 @@ exports[`App renders 1`] = `
                   </span>
                 </button>
               </li>
+              <li>
+                <div>
+                  <button
+                    aria-pressed="false"
+                    class="c-circle-button"
+                    title="User Info"
+                  >
+                    <div
+                      class="c-circle-button__content"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="c-user-avatar"
+                        viewBox="0 0 32 32"
+                      >
+                        <circle
+                          class="c-user-avatar__circle"
+                          cx="16"
+                          cy="16"
+                          r="16"
+                        />
+                        <text
+                          x="16"
+                          y="23"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </li>
             </ul>
           </div>
         </div>
