@@ -55,13 +55,13 @@ const TopNav = (): JSX.Element => {
                     show
                     className="position-static border border-0"
                   >
-                    <Dropdown.ItemText className="w-auto">
+                    <Dropdown.ItemText>
                       <LoggedInAs email={email} />
                     </Dropdown.ItemText>
                     <Dropdown.Divider />
                     <Dropdown.Item
                       href="/auth/keycloak/logout"
-                      className="w-100 icon-link"
+                      className="icon-link"
                     >
                       <BsIcon.BoxArrowRight className="me-2" /> Log out
                     </Dropdown.Item>
