@@ -491,14 +491,16 @@ describe("<MapDisplay />", () => {
             })
 
             render(
-              <MapDisplay
-                selectedEntity={{
-                  type: SelectedEntityType.Vehicle,
-                  vehicleId: selectedVehicle.id,
-                }}
-                setSelection={jest.fn()}
-                fetchedSelectedLocation={null}
-              />
+              <RoutesProvider routes={[route]}>
+                <MapDisplay
+                  selectedEntity={{
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: selectedVehicle.id,
+                  }}
+                  setSelection={jest.fn()}
+                  fetchedSelectedLocation={null}
+                />
+              </RoutesProvider>
             )
 
             await userEvent.pointer({
@@ -508,7 +510,7 @@ describe("<MapDisplay />", () => {
 
             expect(
               screen.getByRole("button", {
-                name: `Start a detour on route ${route.id}`,
+                name: `Start a detour on route ${route.name}`,
               })
             ).toBeVisible()
           })
@@ -532,14 +534,16 @@ describe("<MapDisplay />", () => {
             })
 
             render(
-              <MapDisplay
-                selectedEntity={{
-                  type: SelectedEntityType.Vehicle,
-                  vehicleId: selectedVehicle.id,
-                }}
-                setSelection={jest.fn()}
-                fetchedSelectedLocation={null}
-              />
+              <RoutesProvider routes={[route]}>
+                <MapDisplay
+                  selectedEntity={{
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: selectedVehicle.id,
+                  }}
+                  setSelection={jest.fn()}
+                  fetchedSelectedLocation={null}
+                />
+              </RoutesProvider>
             )
 
             await userEvent.pointer({
@@ -549,7 +553,7 @@ describe("<MapDisplay />", () => {
 
             expect(
               screen.queryByRole("button", {
-                name: `Start a detour on route ${route.id}`,
+                name: `Start a detour on route ${route.name}`,
               })
             ).not.toBeInTheDocument()
           })
@@ -576,14 +580,16 @@ describe("<MapDisplay />", () => {
             })
 
             render(
-              <MapDisplay
-                selectedEntity={{
-                  type: SelectedEntityType.Vehicle,
-                  vehicleId: selectedVehicle.id,
-                }}
-                setSelection={jest.fn()}
-                fetchedSelectedLocation={null}
-              />
+              <RoutesProvider routes={[route]}>
+                <MapDisplay
+                  selectedEntity={{
+                    type: SelectedEntityType.Vehicle,
+                    vehicleId: selectedVehicle.id,
+                  }}
+                  setSelection={jest.fn()}
+                  fetchedSelectedLocation={null}
+                />
+              </RoutesProvider>
             )
 
             await userEvent.pointer({
@@ -593,7 +599,7 @@ describe("<MapDisplay />", () => {
 
             expect(
               screen.queryByRole("button", {
-                name: `Start a detour on route ${route.id}`,
+                name: `Start a detour on route ${route.name}`,
               })
             ).not.toBeInTheDocument()
           })
