@@ -62,3 +62,6 @@
 
 // 8. Add additional custom code here
 @import "./bootstrap/extra_bespoke";
+
+// 9. Add code specifically for adding ad-hoc Reboot functionality untill we add Reboot fully
+@import "./bootstrap/polyfills";

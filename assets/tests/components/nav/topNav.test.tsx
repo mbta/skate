@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import TopNav from "../../../src/components/nav/topNav"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
@@ -24,7 +24,7 @@ describe("TopNav", () => {
 
     const dispatch = jest.fn()
     const user = userEvent.setup()
-    const result = render(
+    render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
           <TopNav />
@@ -32,7 +32,7 @@ describe("TopNav", () => {
       </StateDispatchProvider>
     )
 
-    await user.click(result.getByTitle("Refresh"))
+    await user.click(screen.getByTitle("Refresh"))
 
     expect(reloadSpy).toHaveBeenCalled()
   })
@@ -42,7 +42,7 @@ describe("TopNav", () => {
       jest.mocked(getTestGroups).mockReturnValue([])
 
       const dispatch = jest.fn()
-      const result = render(
+      render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
           <BrowserRouter>
             <TopNav />
@@ -51,7 +51,7 @@ describe("TopNav", () => {
       )
 
       expect(
-        result.queryByRole("button", { name: "User Info" })
+        screen.queryByRole("button", { name: "User Info" })
       ).not.toBeInTheDocument()
     })
 
@@ -59,7 +59,7 @@ describe("TopNav", () => {
       jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
 
       const dispatch = jest.fn()
-      const result = render(
+      render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
           <BrowserRouter>
             <TopNav />
@@ -68,16 +68,16 @@ describe("TopNav", () => {
       )
 
       expect(
-        result.queryByRole("button", { name: "User Info" })
+        screen.queryByRole("button", { name: "User Info" })
       ).toBeInTheDocument()
     })
 
-    test("brings up an element with 'logged in as' text when clicked", async () => {
+    test("brings up an element with 'logged in as' text and a logout link when clicked", async () => {
       jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
 
       const dispatch = jest.fn()
       const user = userEvent.setup()
-      const result = render(
+      render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
           <BrowserRouter>
             <TopNav />
@@ -85,11 +85,17 @@ describe("TopNav", () => {
         </StateDispatchProvider>
       )
 
-      expect(result.queryByText("Logged in as")).not.toBeInTheDocument()
+      expect(screen.queryByText("Logged in as")).not.toBeInTheDocument()
 
-      await user.click(result.getByTitle("User Info"))
+      await user.click(screen.getByTitle("User Info"))
 
-      expect(result.queryByText("Logged in as")).toBeInTheDocument()
+      expect(screen.queryByText("Logged in as")).toBeInTheDocument()
+
+      const logoutLink = screen.queryByRole("link", { name: "Log out" })
+
+      expect(logoutLink).toBeVisible()
+
+      expect(logoutLink).toHaveAttribute("href", "/auth/keycloak/logout")
     })
 
     test("clicking the 'User Info' button again makes the 'Logged in as' popover disappear", async () => {
@@ -97,7 +103,7 @@ describe("TopNav", () => {
 
       const dispatch = jest.fn()
       const user = userEvent.setup()
-      const result = render(
+      render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
           <BrowserRouter>
             <TopNav />
@@ -105,10 +111,10 @@ describe("TopNav", () => {
         </StateDispatchProvider>
       )
 
-      await user.click(result.getByTitle("User Info"))
-      await user.click(result.getByTitle("User Info"))
+      await user.click(screen.getByTitle("User Info"))
+      await user.click(screen.getByTitle("User Info"))
 
-      expect(result.queryByText("Logged in as")).not.toBeInTheDocument()
+      expect(screen.queryByText("Logged in as")).not.toBeInTheDocument()
     })
   })
 })

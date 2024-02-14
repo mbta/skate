@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { LogoIcon, RefreshIcon } from "../../helpers/icon"
+import * as BsIcon from "../../helpers/bsIcons"
 import { reload } from "../../models/browser"
-import { Overlay, Popover } from "react-bootstrap"
+import { Overlay, Popover, Dropdown } from "react-bootstrap"
 import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
 import { CircleButton } from "../circleButton"
@@ -48,9 +49,23 @@ const TopNav = (): JSX.Element => {
               show={showUserPopover}
               placement="bottom"
             >
-              <Popover className="c-top-nav__popover">
-                <Popover.Body>
-                  <LoggedInAs email={email} />
+              <Popover className="c-top-nav__popover inherit-box border-box">
+                <Popover.Body className="p-0">
+                  <Dropdown.Menu
+                    show
+                    className="position-static border border-0"
+                  >
+                    <Dropdown.ItemText>
+                      <LoggedInAs email={email} />
+                    </Dropdown.ItemText>
+                    <Dropdown.Divider />
+                    <Dropdown.Item
+                      href="/auth/keycloak/logout"
+                      className="icon-link"
+                    >
+                      <BsIcon.BoxArrowRight className="me-2" /> Log out
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
                 </Popover.Body>
               </Popover>
             </Overlay>
