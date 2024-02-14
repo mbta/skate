@@ -7,6 +7,7 @@ import { OldCloseIcon, LogoIcon } from "../../helpers/icon"
 import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -14,6 +15,8 @@ interface Props {
 }
 
 const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
+  const keycloakEnabled = inTestGroup(TestGroups.KeycloakSso)
+
   return (
     <>
       <div
@@ -85,6 +88,22 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                 <BsIcon.GearFill /> Settings
               </Nav.Link>
             </Nav.Item>
+            {keycloakEnabled && (
+              <>
+                <Nav.Item>
+                  <hr />
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link
+                    className="icon-link"
+                    as="a"
+                    href="/auth/keycloak/logout"
+                  >
+                    <BsIcon.BoxArrowRight /> Logout
+                  </Nav.Link>
+                </Nav.Item>
+              </>
+            )}
           </Nav>
         </div>
       </div>
