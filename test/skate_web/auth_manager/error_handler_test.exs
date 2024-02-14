@@ -3,7 +3,7 @@ defmodule SkateWeb.AuthManager.ErrorHandlerTest do
 
   describe "auth_error/3" do
     test "redirects to Keycloak login", %{conn: conn} do
-      {:ok, test_group} = Skate.Settings.TestGroup.create("keycloak-sso")
+      {:ok, test_group} = Skate.Settings.TestGroup.create("keycloak-sso-2")
 
       Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
 

@@ -8,7 +8,7 @@ defmodule SkateWeb.AuthManager.ErrorHandler do
   @impl Guardian.Plug.ErrorHandler
   def auth_error(conn, {_type, _reason}, _opts) do
     keycloak_enabled? =
-      "keycloak-sso" in Enum.map(Skate.Settings.TestGroup.get_override_enabled(), & &1.name)
+      "keycloak-sso-2" in Enum.map(Skate.Settings.TestGroup.get_override_enabled(), & &1.name)
 
     if keycloak_enabled? do
       Phoenix.Controller.redirect(conn, to: ~p"/auth/keycloak")
