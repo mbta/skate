@@ -57,11 +57,11 @@
 
 .c-diversion-panel__origin,
 .c-diversion-panel__direction {
-  font-size: 14px;
+  font-size: var(--font-size-s);
 }
 
 .c-diversion-panel__description {
-  font-weight: 600;
+  font-weight: var(--font-weight-semi);
 }
 
 .l-diversion-page__header {
@@ -71,15 +71,15 @@
 }
 
 .c-diversion-panel__h2 {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semi);
 }
 
 .c-diversion-panel__h3 {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-semi);
 }
 
 .c-diversion-panel__help-text {
-  line-height: 24px;
+  line-height: 1.5;
 }
