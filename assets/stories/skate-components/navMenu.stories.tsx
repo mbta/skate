@@ -5,7 +5,7 @@ import React from "react"
 
 const meta = {
   component: NavMenu,
-  title: "Organisms/Nav/Mobile <NavMenu>",
+  title: "Mobile <NavMenu>",
   args: {
     mobileMenuIsOpen: true,
   },
@@ -16,6 +16,9 @@ const meta = {
       </MemoryRouter>
     ),
   ],
+  parameters: {
+    layout: "fullscreen",
+  },
 } satisfies Meta<typeof NavMenu>
 export default meta
 
