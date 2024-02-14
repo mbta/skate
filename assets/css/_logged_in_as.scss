@@ -1,0 +1,27 @@
+@use "./color/tokens_2024" as tokens;
+
+.c-logged-in-as__container {
+  align-items: center;
+  display: flex;
+}
+
+.c-logged-in-as__icon {
+  height: 2rem;
+  width: 2rem;
+}
+
+.c-logged-in-as__text {
+  color: tokens.$gray-700;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-reg);
+  margin-left: 0.5rem;
+
+  p {
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.c-logged-in-as__email {
+  font-weight: var(--font-weight-semi);
+}
