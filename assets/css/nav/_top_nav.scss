@@ -56,13 +56,4 @@
 
 .c-top-nav__popover {
   z-index: map-get($z-page-layout-context, "user-info-popover");
-
-  // Needed because we don't yet pull in Reboot which resets browser hr style
-  // Can't just set border: 0 like Reboot does beause this rule has high
-  // specificity and would override the dropdown divider border-top style
-  hr {
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 0;
-  }
 }
