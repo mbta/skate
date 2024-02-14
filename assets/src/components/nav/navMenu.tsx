@@ -20,7 +20,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
         data-testid="nav-menu"
         className={joinClasses([
           "c-nav-menu",
-          mobileMenuIsOpen ? " c-nav-menu--open" : " c-nav-menu--closed",
+          mobileMenuIsOpen ? "c-nav-menu--open" : "c-nav-menu--closed",
           "inherit-box",
           "border-box",
         ])}
