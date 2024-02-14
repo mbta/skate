@@ -72,7 +72,7 @@ describe("TopNav", () => {
       ).toBeInTheDocument()
     })
 
-    test("brings up an element with 'logged in as' text and a logout ling when clicked", async () => {
+    test("brings up an element with 'logged in as' text and a logout link when clicked", async () => {
       jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
 
       const dispatch = jest.fn()
