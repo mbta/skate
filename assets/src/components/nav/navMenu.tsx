@@ -1,15 +1,11 @@
 import React from "react"
-import { Link, NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { Nav } from "react-bootstrap"
 import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
-import {
-  OldCloseIcon,
-  LogoIcon,
-  QuestionMarkIcon,
-  RefreshIcon,
-  SettingsIcon,
-  SpeechBubbleIcon,
-} from "../../helpers/icon"
+import { OldCloseIcon, LogoIcon } from "../../helpers/icon"
+import * as BsIcon from "../../helpers/bsIcons"
+import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
 
 interface Props {
@@ -22,10 +18,12 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
     <>
       <div
         data-testid="nav-menu"
-        className={
-          "c-nav-menu" +
-          (mobileMenuIsOpen ? " c-nav-menu--open" : " c-nav-menu--closed")
-        }
+        className={joinClasses([
+          "c-nav-menu",
+          mobileMenuIsOpen ? "c-nav-menu--open" : "c-nav-menu--closed",
+          "inherit-box",
+          "border-box",
+        ])}
       >
         <div className="c-nav-menu__header">
           <Link
@@ -45,59 +43,50 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             <OldCloseIcon className="c-nav-menu__close-icon" />
           </button>
         </div>
-        <ul className="c-nav-menu__links">
-          <li>
-            <button
-              className="c-nav-menu__button"
-              onClick={reload}
-              title="Refresh"
-            >
-              <RefreshIcon className="c-nav-menu__icon" />
-              Refresh
-            </button>
-          </li>
-          <li>
-            <button
-              className="c-nav-menu__button"
-              onClick={() => {
-                openDrift()
-                toggleMobileMenu()
-              }}
-              title="Support"
-            >
-              <SpeechBubbleIcon className="c-nav-menu__icon" />
-              Support
-            </button>
-          </li>
-          <li>
-            <button
-              className="c-nav-menu__button"
-              onClick={() => {
-                displayHelp(location)
-                toggleMobileMenu()
-              }}
-              title="About Skate"
-            >
-              <QuestionMarkIcon className="c-nav-menu__icon" />
-              About Skate
-            </button>
-          </li>
-
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-nav-menu__link" +
-                (isActive ? " c-nav-menu__link--active" : "")
-              }
-              title="Settings"
-              to="/settings"
-              onClick={toggleMobileMenu}
-            >
-              <SettingsIcon className="c-nav-menu__icon" />
-              Settings
-            </NavLink>
-          </li>
-        </ul>
+        <div className="p-3">
+          <Nav className="flex-column" as="ul">
+            <Nav.Item>
+              <Nav.Link as="button" onClick={reload} className="icon-link">
+                <BsIcon.ArrowClockwise /> Refresh
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                className="icon-link"
+                as="button"
+                onClick={() => {
+                  openDrift()
+                  toggleMobileMenu()
+                }}
+              >
+                <BsIcon.ChatFill /> Support
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                className="icon-link"
+                as="button"
+                onClick={() => {
+                  displayHelp(location)
+                  toggleMobileMenu()
+                }}
+              >
+                <BsIcon.QuestionFill /> About Skate
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                onClick={toggleMobileMenu}
+                title="Settings"
+                to="/settings"
+                className="icon-link"
+              >
+                <BsIcon.GearFill /> Settings
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </div>
       </div>
       {mobileMenuIsOpen && (
         <div
