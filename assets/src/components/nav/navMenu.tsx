@@ -7,7 +7,9 @@ import { OldCloseIcon, LogoIcon } from "../../helpers/icon"
 import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
+import { LoggedInAs } from "../loggedInAs"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import getEmailAddress from "../../userEmailAddress"
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -16,6 +18,7 @@ interface Props {
 
 const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
   const keycloakEnabled = inTestGroup(TestGroups.KeycloakSso)
+  const email = getEmailAddress()
 
   return (
     <>
@@ -47,6 +50,12 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
           </button>
         </div>
         <div className="p-3">
+          {keycloakEnabled && email && (
+            <>
+              <LoggedInAs email={email} />
+              <hr />
+            </>
+          )}
           <Nav className="flex-column" as="ul">
             <Nav.Item>
               <Nav.Link as="button" onClick={reload} className="icon-link">
