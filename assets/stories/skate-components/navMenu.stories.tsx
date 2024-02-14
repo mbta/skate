@@ -5,6 +5,7 @@ import React from "react"
 
 const meta = {
   component: NavMenu,
+  title: "Organisms/Nav/Mobile <NavMenu>",
   args: {
     mobileMenuIsOpen: true,
   },
