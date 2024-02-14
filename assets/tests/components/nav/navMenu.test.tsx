@@ -81,6 +81,31 @@ describe("NavMenu", () => {
     expect(result.getByTestId("nav-menu")).not.toHaveClass("c-nav-menu--open")
   })
 
+  test("shows who is logged in", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
+    jest.mocked(getEmailAddress).mockReturnValue("test@example.localhost")
+
+    render(
+      <BrowserRouter>
+        <NavMenu toggleMobileMenu={jest.fn()} mobileMenuIsOpen={true} />
+      </BrowserRouter>
+    )
+
+    expect(await screen.findByText("Logged in as")).toBeVisible()
+  })
+
+  test("does not show who is logged in if the user isn't in the Keycloak test group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    render(
+      <BrowserRouter>
+        <NavMenu toggleMobileMenu={jest.fn()} mobileMenuIsOpen={true} />
+      </BrowserRouter>
+    )
+
+    expect(screen.queryByText("Logged in as")).not.toBeInTheDocument()
+  })
+
   test("shows logout button", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
     jest.mocked(getEmailAddress).mockReturnValue("test@example.localhost")
