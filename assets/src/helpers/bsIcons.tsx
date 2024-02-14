@@ -107,6 +107,7 @@ export const BoxArrowRight = (props: SvgProps) => (
     fill="currentColor"
     className="bi bi-box-arrow-right"
     viewBox="0 0 16 16"
+    aria-hidden
     {...props}
   >
     <path
