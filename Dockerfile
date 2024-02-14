@@ -15,7 +15,7 @@ RUN mix local.hex --force && \
   mix local.rebar --force && \
   mix do deps.get --only prod
 
-FROM node:20.7.0-alpine3.17 as assets-builder
+FROM node:20.11.0-alpine3.19 as assets-builder
 
 WORKDIR /root
 ADD . .
