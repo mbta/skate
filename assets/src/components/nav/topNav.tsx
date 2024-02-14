@@ -52,7 +52,7 @@ const TopNav = (): JSX.Element => {
               <Popover className="c-top-nav__popover">
                 <Popover.Body className="p-0">
                   <Dropdown.Menu
-                    show={showUserPopover}
+                    show
                     className="position-static border border-0"
                   >
                     <Dropdown.ItemText className="w-auto">
