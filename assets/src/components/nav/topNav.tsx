@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { LogoIcon, RefreshIcon } from "../../helpers/icon"
+import * as BsIcon from "../../helpers/bsIcons"
 import { reload } from "../../models/browser"
 import { Overlay, Popover, Dropdown } from "react-bootstrap"
 import { LoggedInAs } from "../loggedInAs"
@@ -62,7 +63,9 @@ const TopNav = (): JSX.Element => {
                       href="/auth/keycloak/logout"
                       className="w-auto"
                     >
-                      Log out
+                      <span className="d-flex align-items-center">
+                        <BsIcon.BoxArrowRight className="me-2" /> Log out
+                      </span>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Popover.Body>
