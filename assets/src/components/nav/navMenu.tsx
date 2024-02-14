@@ -52,7 +52,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
         <div className="p-3">
           {keycloakEnabled && email && (
             <>
-              <LoggedInAs email={email} />
+              <LoggedInAs email={email} className="px-3" />
               <hr />
             </>
           )}

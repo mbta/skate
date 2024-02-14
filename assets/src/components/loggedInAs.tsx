@@ -1,8 +1,15 @@
-import React from "react"
+import React, { ComponentPropsWithoutRef } from "react"
 import { UserAvatar } from "./userAvatar"
+import { joinClasses } from "../helpers/dom"
 
-export const LoggedInAs = ({ email }: { email: string }) => (
-  <div className="c-logged-in-as__container">
+export const LoggedInAs = ({
+  email,
+  ...divProps
+}: { email: string } & ComponentPropsWithoutRef<"div">) => (
+  <div
+    {...divProps}
+    className={joinClasses(["c-logged-in-as__container", divProps.className])}
+  >
     <div className="c-logged-in-as__icon">
       <UserAvatar userName={email} />
     </div>
