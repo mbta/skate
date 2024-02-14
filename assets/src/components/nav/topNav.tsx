@@ -49,7 +49,7 @@ const TopNav = (): JSX.Element => {
               show={showUserPopover}
               placement="bottom"
             >
-              <Popover className="c-top-nav__popover">
+              <Popover className="c-top-nav__popover inherit-box border-box">
                 <Popover.Body className="p-0">
                   <Dropdown.Menu
                     show
@@ -61,11 +61,9 @@ const TopNav = (): JSX.Element => {
                     <Dropdown.Divider />
                     <Dropdown.Item
                       href="/auth/keycloak/logout"
-                      className="w-auto"
+                      className="w-100 icon-link"
                     >
-                      <span className="d-flex align-items-center">
-                        <BsIcon.BoxArrowRight className="me-2" /> Log out
-                      </span>
+                      <BsIcon.BoxArrowRight className="me-2" /> Log out
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Popover.Body>
