@@ -110,7 +110,7 @@ defmodule SkateWeb.AuthControllerTest do
     test "redirects to `sign_out_url`", %{conn: conn} do
       redirect_url = "redirect.url.localhost"
 
-      reassign_env(:skate, :logout_url_fn, fn _ ->
+      reassign_env(:skate, :logout_url_fn, fn _, _ ->
         {:ok, redirect_url}
       end)
 
