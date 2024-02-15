@@ -90,6 +90,8 @@ import { recenterControl } from "../testHelpers/selectors/components/map/control
 import { useMinischeduleRun } from "../../src/hooks/useMinischedule"
 import pieceFactory from "../factories/piece"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+import getTestGroups from "../../src/userTestGroups"
+import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   useLocationSearchResults: jest.fn(() => null),
@@ -148,9 +150,9 @@ jest.mock("../../src/hooks/useSearchResultsByCategory", () => ({
 
 jest.mock("../../src/helpers/fullStory")
 
-jest.mock("../../src/userInTestGroup")
-
 jest.mock("../../src/hooks/usePanelState")
+
+jest.mock("../../src/userTestGroups")
 
 const mockVehicleSearchResultsCategory = (
   vehicles: (Vehicle | Ghost)[] | null
@@ -206,6 +208,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
+  jest.mocked(getTestGroups).mockReturnValue([])
   mockScreenSize("desktop")
 })
 
@@ -1664,5 +1667,189 @@ describe("<MapPage />", () => {
     )
 
     expect(screen.getByLabelText("Grouped Search Results")).toBeInTheDocument()
+  })
+
+  describe("detours entrypoint", () => {
+    test("shows the detour dropdown on right-click", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      jest
+        .spyOn(dateTime, "now")
+        .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+
+      jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+      const route = routeFactory.build()
+      const runId = runIdFactory.build()
+
+      const selectedVehicle = randomLocationVehicle.build({
+        routeId: route.id,
+        runId: runId,
+      })
+
+      setHtmlWidthHeightForLeafletMap()
+      mockUseVehicleForId([selectedVehicle])
+      mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+      mockUsePatternsByIdForVehicles([selectedVehicle], {
+        stopCount: 8,
+      })
+
+      const { container } = render(
+        <StateDispatchProvider
+          state={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: selectedVehicle.id,
+              },
+            },
+          })}
+          dispatch={jest.fn()}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </StateDispatchProvider>
+      )
+
+      await userEvent.pointer({
+        keys: "[MouseRight>]",
+        target: within(container.querySelector("#id-vehicle-map")!).getByRole(
+          "button",
+          {
+            name: runId!,
+          }
+        ),
+      })
+
+      expect(
+        screen.getByRole("button", {
+          name: `Start a detour on route ${route.name}`,
+        })
+      ).toBeVisible()
+    })
+
+    test("does not show the detour dropdown if the user isn't in the right test group", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      jest
+        .spyOn(dateTime, "now")
+        .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+
+      jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+      jest.mocked(getTestGroups).mockReturnValue([])
+
+      const route = routeFactory.build()
+      const runId = runIdFactory.build()
+
+      const selectedVehicle = randomLocationVehicle.build({
+        routeId: route.id,
+        runId: runId,
+      })
+
+      setHtmlWidthHeightForLeafletMap()
+      mockUseVehicleForId([selectedVehicle])
+      mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+      mockUsePatternsByIdForVehicles([selectedVehicle], {
+        stopCount: 8,
+      })
+
+      const { container } = render(
+        <StateDispatchProvider
+          state={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: selectedVehicle.id,
+              },
+            },
+          })}
+          dispatch={jest.fn()}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </StateDispatchProvider>
+      )
+
+      await userEvent.pointer({
+        keys: "[MouseRight>]",
+        target: within(container.querySelector("#id-vehicle-map")!).getByRole(
+          "button",
+          {
+            name: runId!,
+          }
+        ),
+      })
+
+      expect(
+        screen.queryByRole("button", {
+          name: `Start a detour on route ${route.name}`,
+        })
+      ).not.toBeInTheDocument()
+    })
+
+    test("shows the detour modal when the user clicks on the detour dropdown", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      jest
+        .spyOn(dateTime, "now")
+        .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+
+      jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+      const route = routeFactory.build()
+      const runId = runIdFactory.build()
+
+      const selectedVehicle = randomLocationVehicle.build({
+        routeId: route.id,
+        runId: runId,
+      })
+
+      setHtmlWidthHeightForLeafletMap()
+      mockUseVehicleForId([selectedVehicle])
+      mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+      mockUsePatternsByIdForVehicles([selectedVehicle], {
+        stopCount: 8,
+      })
+
+      const { container } = render(
+        <StateDispatchProvider
+          state={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: selectedVehicle.id,
+              },
+            },
+          })}
+          dispatch={jest.fn()}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </StateDispatchProvider>
+      )
+
+      await userEvent.pointer({
+        keys: "[MouseRight>]",
+        target: within(container.querySelector("#id-vehicle-map")!).getByRole(
+          "button",
+          {
+            name: runId!,
+          }
+        ),
+      })
+
+      await userEvent.click(
+        screen.getByRole("button", {
+          name: `Start a detour on route ${route.name}`,
+        })
+      )
+
+      expect(screen.getByText("Create Detour")).toBeInTheDocument()
+    })
   })
 })
