@@ -44,6 +44,40 @@ defmodule SkateWeb.AuthManagerTest do
     end
   end
 
+  describe "verify_claims/2" do
+    test "passes with a v2-formatted resource with Keycloak disabled" do
+      claims = %{"sub" => "v2:#{@user_id}"}
+
+      assert {:ok, ^claims} = AuthManager.verify_claims(claims, %{})
+    end
+
+    test "fails with a non-v2-formatted resource with Keycloak disabled" do
+      claims = %{"sub" => "v3:#{@user_id}"}
+
+      assert {:error, :invalid_claims} = AuthManager.verify_claims(claims, %{})
+    end
+
+    test "passes with a v3-formatted resource with Keycloak enabled" do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("keycloak-sso")
+
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
+
+      claims = %{"sub" => "v3:#{@user_id}"}
+
+      assert {:ok, ^claims} = AuthManager.verify_claims(claims, %{})
+    end
+
+    test "fails with a non-v3-formatted resource with Keycloak enabled" do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("keycloak-sso")
+
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
+
+      claims = %{"sub" => "v2:#{@user_id}"}
+
+      assert {:error, :invalid_claims} = AuthManager.verify_claims(claims, %{})
+    end
+  end
+
   describe "username_from_socket!/1" do
     test "extracts the username from the given socket's token" do
       user = User.upsert(@username, "test@email.com")
