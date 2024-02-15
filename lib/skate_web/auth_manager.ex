@@ -38,19 +38,17 @@ defmodule SkateWeb.AuthManager do
   def resource_from_claims(_), do: {:error, :invalid_claims}
 
   def verify_claims(%{"sub" => subject} = claims, _options) do
-    keycloak_enabled? =
-      "keycloak-sso" in Enum.map(Skate.Settings.TestGroup.get_override_enabled(), & &1.name)
+    auth_provider =
+      if "keycloak-sso" in Enum.map(Skate.Settings.TestGroup.get_override_enabled(), & &1.name) do
+        :keycloak
+      else
+        :cognito
+      end
 
-    if keycloak_enabled? do
-      case subject do
-        @v3_resource_prefix <> _user_ -> {:ok, claims}
-        _ -> {:error, :invalid_claims}
-      end
-    else
-      case subject do
-        @v2_resource_prefix <> _user_id -> {:ok, claims}
-        _ -> {:error, :invalid_claims}
-      end
+    case {auth_provider, subject} do
+      {:keycloak, @v3_resource_prefix <> _user_id} -> {:ok, claims}
+      {:cognito, @v2_resource_prefix <> _user_id} -> {:ok, claims}
+      _ -> {:error, :invalid_claims}
     end
   end
 
