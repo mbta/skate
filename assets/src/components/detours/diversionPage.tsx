@@ -1,10 +1,22 @@
-import React from "react"
-import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
+import React, { ReactNode } from "react"
+import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { Shape } from "../../schedule"
 import { useDetour } from "../../hooks/useDetour"
 import { CloseButton } from "react-bootstrap"
 import { LatLngLiteral } from "leaflet"
+
+interface DiversionPageProps {
+  missedStops?: ReactNode
+  routeName: string
+  routeDescription: string
+  routeOrigin: string
+  routeDirection: string
+  shape: Shape
+  onClose?: () => void
+  center: LatLngLiteral
+  zoom: number
+}
 
 export const DiversionPage = ({
   missedStops,
@@ -16,12 +28,7 @@ export const DiversionPage = ({
   onClose,
   center,
   zoom,
-}: DiversionPanelProps & {
-  shape: Shape
-  onClose?: () => void
-  center: LatLngLiteral
-  zoom: number
-}) => {
+}: DiversionPageProps) => {
   const {
     addConnectionPoint,
     addWaypoint,
