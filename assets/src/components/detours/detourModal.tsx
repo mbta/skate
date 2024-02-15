@@ -1,6 +1,7 @@
 import React from "react"
 import { DiversionPage } from "./diversionPage"
 import { StartDetourProps } from "./detourDropdown"
+import { joinClasses } from "../../helpers/dom"
 
 export const DetourModal = ({
   detourInfo,
@@ -12,7 +13,12 @@ export const DetourModal = ({
   show: boolean
 }) => {
   return (
-    <div className={`c-detour-modal${show ? "" : " c-detour-modal__hidden"}`}>
+    <div
+      className={joinClasses([
+        "c-detour-modal",
+        !show && "c-detour-modal__hidden",
+      ])}
+    >
       <DiversionPage
         onClose={onClose}
         routeName={detourInfo.routeName}
