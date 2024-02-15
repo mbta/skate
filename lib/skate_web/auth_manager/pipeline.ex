@@ -8,5 +8,6 @@ defmodule SkateWeb.AuthManager.Pipeline do
 
   plug(Guardian.Plug.VerifySession, claims: %{"typ" => "access"})
   plug(Guardian.Plug.VerifyHeader, claims: %{"typ" => "access"})
+  plug(Guardian.Plug.EnsureAuthenticated, claims: %{"typ" => "access"})
   plug(Guardian.Plug.LoadResource, allow_blank: true)
 end
