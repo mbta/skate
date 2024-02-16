@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { DiversionPage } from "./diversionPage"
 import { joinClasses } from "../../helpers/dom"
 import { OriginalRoute } from "../../detour"
@@ -12,22 +12,15 @@ export const DetourModal = ({
   onClose: () => void
   show: boolean
 }) => {
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose()
-      }
-    }
-
-    window.addEventListener("keydown", handleEscape)
-
-    return () => {
-      window.removeEventListener("keydown", handleEscape)
-    }
-  }, [onClose])
-
   return (
     <div
+      role="dialog"
+      onKeyDown={(event) => {
+        console.log("EVENT!!!", event)
+        if (event.key === "Escape") {
+          onClose()
+        }
+      }}
       className={joinClasses([
         "c-detour-modal",
         !show && "c-detour-modal__hidden",

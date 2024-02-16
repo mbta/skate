@@ -1911,6 +1911,7 @@ describe("<MapPage />", () => {
         })
       )
 
+      await userEvent.click(screen.getByText("Create Detour"))
       await userEvent.keyboard("{Escape}")
 
       expect(container.querySelector(".c-detour-modal")).toHaveClass(
