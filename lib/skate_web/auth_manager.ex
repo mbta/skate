@@ -10,20 +10,49 @@ defmodule SkateWeb.AuthManager do
   @skate_admin_group "skate-admin"
   @skate_dispatcher_group "skate-dispatcher"
   @v2_resource_prefix "v2:"
+  @v3_resource_prefix "v3:"
 
   def v2_resource_prefix, do: @v2_resource_prefix
 
+  def v3_resource_prefix, do: @v3_resource_prefix
+
   def subject_for_token(%{id: user_id}, _claims) do
-    {:ok, "#{@v2_resource_prefix}#{user_id}"}
+    keycloak_enabled? =
+      "keycloak-sso" in Enum.map(Skate.Settings.TestGroup.get_override_enabled(), & &1.name)
+
+    if keycloak_enabled? do
+      {:ok, "#{@v3_resource_prefix}#{user_id}"}
+    else
+      {:ok, "#{@v2_resource_prefix}#{user_id}"}
+    end
   end
 
   def resource_from_claims(%{"sub" => @v2_resource_prefix <> user_id}) do
     {:ok, %{id: String.to_integer(user_id)}}
   end
 
+  def resource_from_claims(%{"sub" => @v3_resource_prefix <> user_id}) do
+    {:ok, %{id: String.to_integer(user_id)}}
+  end
+
   def resource_from_claims(_), do: {:error, :invalid_claims}
 
-  def username_from_socket!(socket) do
+  def verify_claims(%{"sub" => subject} = claims, _options) do
+    auth_provider =
+      if "keycloak-sso" in Enum.map(Skate.Settings.TestGroup.get_override_enabled(), & &1.name) do
+        :keycloak
+      else
+        :cognito
+      end
+
+    case {auth_provider, subject} do
+      {:keycloak, @v3_resource_prefix <> _user_id} -> {:ok, claims}
+      {:cognito, @v2_resource_prefix <> _user_id} -> {:ok, claims}
+      _ -> {:error, :invalid_claims}
+    end
+  end
+
+  def(username_from_socket!(socket)) do
     socket
     |> Guardian.Phoenix.Socket.current_resource()
     |> username_from_resource()

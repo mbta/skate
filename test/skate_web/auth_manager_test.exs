@@ -13,6 +13,15 @@ defmodule SkateWeb.AuthManagerTest do
       assert {:ok, "v2:#{@user_id}"} ==
                AuthManager.subject_for_token(%{id: @user_id}, %{})
     end
+
+    test "returns v3 formatted user id when given user struct with Keycloak enabled" do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("keycloak-sso")
+
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
+
+      assert {:ok, "v3:#{@user_id}"} ==
+               AuthManager.subject_for_token(%{id: @user_id}, %{})
+    end
   end
 
   describe "resource_from_claims/2" do
@@ -23,6 +32,49 @@ defmodule SkateWeb.AuthManagerTest do
                AuthManager.resource_from_claims(%{
                  "sub" => "v2:#{user_id}"
                })
+    end
+
+    test "returns struct when given v3 formatted user id" do
+      %{id: user_id} = User.upsert(@username, "email@test.com")
+
+      assert {:ok, %{id: ^user_id}} =
+               AuthManager.resource_from_claims(%{
+                 "sub" => "v3:#{user_id}"
+               })
+    end
+  end
+
+  describe "verify_claims/2" do
+    test "passes with a v2-formatted resource with Keycloak disabled" do
+      claims = %{"sub" => "v2:#{@user_id}"}
+
+      assert {:ok, ^claims} = AuthManager.verify_claims(claims, %{})
+    end
+
+    test "fails with a non-v2-formatted resource with Keycloak disabled" do
+      claims = %{"sub" => "v3:#{@user_id}"}
+
+      assert {:error, :invalid_claims} = AuthManager.verify_claims(claims, %{})
+    end
+
+    test "passes with a v3-formatted resource with Keycloak enabled" do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("keycloak-sso")
+
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
+
+      claims = %{"sub" => "v3:#{@user_id}"}
+
+      assert {:ok, ^claims} = AuthManager.verify_claims(claims, %{})
+    end
+
+    test "fails with a non-v3-formatted resource with Keycloak enabled" do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("keycloak-sso")
+
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
+
+      claims = %{"sub" => "v2:#{@user_id}"}
+
+      assert {:error, :invalid_claims} = AuthManager.verify_claims(claims, %{})
     end
   end
 
