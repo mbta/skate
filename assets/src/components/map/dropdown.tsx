@@ -14,4 +14,14 @@ export const DropdownMenu = ({ children }: DropdownMenuProps) => {
   )
 }
 
-export const DropdownItem = Dropdown.Item
+interface DropdownItemProps extends PropsWithChildren {
+  onClick?: () => void
+}
+
+export const DropdownItem = ({ children, onClick }: DropdownItemProps) => {
+  return (
+    <Dropdown.Item className="c-dropdown-popup-item" onClick={onClick}>
+      {children}
+    </Dropdown.Item>
+  )
+}
