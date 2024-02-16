@@ -1,5 +1,5 @@
 import { array, Infer, number, string, type } from "superstruct"
-import { DetourShape } from "../detour"
+import { DetourShape } from "./detour"
 
 export const DetourShapeData = type({
   coordinates: array(

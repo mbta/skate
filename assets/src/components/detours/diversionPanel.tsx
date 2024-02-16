@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 import { RoutePill } from "../routePill"
-import { DetourShape } from "../../detour"
+import { DetourShape } from "../../models/detour"
 import { ListGroup } from "react-bootstrap"
 
 export interface DiversionPanelProps {

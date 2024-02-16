@@ -3,7 +3,7 @@ import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
 import { CloseButton } from "react-bootstrap"
-import { OriginalRoute } from "../../detour"
+import { OriginalRoute } from "../../models/detour"
 
 interface DiversionPageProps {
   missedStops?: ReactNode

@@ -1,5 +1,5 @@
 import { LatLngLiteral } from "leaflet"
-import { Shape, ShapePoint } from "./schedule"
+import { Shape, ShapePoint } from "../schedule"
 
 export interface DetourShape {
   coordinates: ShapePoint[]
