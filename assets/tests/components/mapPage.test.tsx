@@ -1849,7 +1849,73 @@ describe("<MapPage />", () => {
         })
       )
 
-      expect(screen.getByText("Create Detour")).toBeInTheDocument()
+      expect(screen.getByText("Create Detour")).toBeVisible()
+    })
+
+    test("dismisses the detour modal on escape key", async () => {
+      jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
+      jest
+        .spyOn(dateTime, "now")
+        .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+
+      jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+      const route = routeFactory.build()
+      const runId = runIdFactory.build()
+
+      const selectedVehicle = randomLocationVehicle.build({
+        routeId: route.id,
+        runId: runId,
+      })
+
+      setHtmlWidthHeightForLeafletMap()
+      mockUseVehicleForId([selectedVehicle])
+      mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
+      mockUsePatternsByIdForVehicles([selectedVehicle], {
+        stopCount: 8,
+      })
+
+      const { container } = render(
+        <StateDispatchProvider
+          state={stateFactory.build({
+            searchPageState: {
+              selectedEntity: {
+                type: SelectedEntityType.Vehicle,
+                vehicleId: selectedVehicle.id,
+              },
+            },
+          })}
+          dispatch={jest.fn()}
+        >
+          <RoutesProvider routes={[route]}>
+            <MapPage />
+          </RoutesProvider>
+        </StateDispatchProvider>
+      )
+
+      await userEvent.pointer({
+        keys: "[MouseRight>]",
+        target: within(container.querySelector("#id-vehicle-map")!).getByRole(
+          "button",
+          {
+            name: runId!,
+          }
+        ),
+      })
+
+      await userEvent.click(
+        screen.getByRole("button", {
+          name: `Start a detour on route ${route.name}`,
+        })
+      )
+
+      await userEvent.keyboard("{Escape}")
+
+      expect(container.querySelector(".c-detour-modal")).toHaveClass(
+        "c-detour-modal__hidden"
+      )
     })
   })
 })
