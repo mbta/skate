@@ -42,7 +42,7 @@ const LeftNavLink = ({
     onClick={linkData.onClick}
   >
     <linkData.navIcon className="c-left-nav__icon" />
-    {collapsed ? null : linkData.title}
+    {linkData.title}
   </NavLink>
 )
 
@@ -183,7 +183,7 @@ const LeftNav = ({
                 title="Support"
               >
                 <SpeechBubbleIcon className="c-left-nav__icon" />
-                {collapsed ? null : "Support"}
+                Support
               </button>
             </li>
             <li>
@@ -193,7 +193,7 @@ const LeftNav = ({
                 title="About Skate"
               >
                 <QuestionMarkIcon className="c-left-nav__icon" />
-                {collapsed ? null : "About Skate"}
+                About Skate
               </button>
             </li>
             <li>
@@ -206,7 +206,7 @@ const LeftNav = ({
                 to="/settings"
               >
                 <SettingsIcon className="c-left-nav__icon" />
-                {collapsed ? null : "Settings"}
+                Settings
               </NavLink>
             </li>
             <li>
@@ -220,7 +220,7 @@ const LeftNav = ({
                 ) : (
                   <DoubleChevronLeftIcon className="c-left-nav__icon" />
                 )}
-                {collapsed ? null : "Collapse"}
+                Collapse
               </button>
             </li>
           </ul>
@@ -257,7 +257,7 @@ const ViewToggle = ({
       aria-disabled={disabled}
     >
       {icon}
-      {collapsed ? null : name}
+      {name}
     </button>
   )
 

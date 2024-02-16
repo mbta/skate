@@ -16,10 +16,6 @@
 
 .c-left-nav--collapsed {
   width: 4.25rem;
-
-  .c-left-nav__icon {
-    padding-right: 0;
-  }
 }
 
 .c-left-nav__modes-and-views {
@@ -80,6 +76,8 @@
   color: $color-gray-600;
   text-decoration: none;
   border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
 
   &:hover {
     background-color: $color-gray-100;
