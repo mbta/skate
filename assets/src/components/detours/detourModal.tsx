@@ -1,14 +1,14 @@
 import React from "react"
 import { DiversionPage } from "./diversionPage"
-import { StartDetourProps } from "./detourDropdown"
 import { joinClasses } from "../../helpers/dom"
+import { OriginalRoute } from "../../detour"
 
 export const DetourModal = ({
-  detourInfo,
+  originalRoute,
   onClose,
   show,
 }: {
-  detourInfo: StartDetourProps
+  originalRoute: OriginalRoute
   onClose: () => void
   show: boolean
 }) => {
@@ -19,16 +19,7 @@ export const DetourModal = ({
         !show && "c-detour-modal__hidden",
       ])}
     >
-      <DiversionPage
-        onClose={onClose}
-        routeName={detourInfo.routeName}
-        routeDescription={detourInfo.routeDescription}
-        routeOrigin={detourInfo.routeOrigin}
-        routeDirection={detourInfo.routeDirection}
-        shape={detourInfo.shape}
-        center={detourInfo.center}
-        zoom={detourInfo.zoom}
-      />
+      <DiversionPage onClose={onClose} originalRoute={originalRoute} />
     </div>
   )
 }

@@ -9,18 +9,24 @@ import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
-) => (
-  <DiversionPageDefault
-    routeName="66"
-    routeDescription="Harvard via Allston"
-    routeOrigin="from Andrew Station"
-    routeDirection="Outbound"
-    shape={shapeFactory.build()}
-    center={latLngLiteralFactory.build()}
-    zoom={16}
-    {...props}
-  />
-)
+) => {
+  const { originalRoute, ...otherProps } = props
+  return (
+    <DiversionPageDefault
+      originalRoute={{
+        routeName: "66",
+        routeDescription: "Harvard via Allston",
+        routeOrigin: "from Andrew Station",
+        routeDirection: "Outbound",
+        shape: shapeFactory.build(),
+        center: latLngLiteralFactory.build(),
+        zoom: 16,
+        ...originalRoute,
+      }}
+      {...otherProps}
+    />
+  )
+}
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())

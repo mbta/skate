@@ -1,26 +1,15 @@
 import React from "react"
 import { DropdownItem, DropdownMenu } from "../map/dropdown"
-import { Route, RoutePattern, Shape } from "../../schedule"
+import { Route, RoutePattern } from "../../schedule"
 import { Popup } from "react-leaflet"
 import { PointTuple } from "leaflet"
 import { LatLngLiteral } from "leaflet"
-
-export interface StartDetourProps {
-  routeName: string
-  routeDescription: string
-  routeOrigin: string
-  routeDirection: string
-  shape: Shape
-  center: LatLngLiteral
-  zoom: number
-}
+import { OriginalRoute } from "../../detour"
 
 export interface DetourDropdownProps {
-  setShouldShowPopup: (newValue: boolean) => void
   routePatternForVehicle: RoutePattern | null
   route: Route | null
-  onStartDetour?: (props: StartDetourProps) => void
-  onClick: (props: StartDetourProps) => void
+  onClick: (props: OriginalRoute) => void
   center: LatLngLiteral
   zoom: number
 }

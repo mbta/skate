@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { DiversionPage } from "../../../src/components/detours/diversionPage"
-import DiversionPanelMeta from "./diversionPanel.stories"
 import { route39shape } from "../__story-data__/shape"
 
 const meta = {
@@ -11,14 +10,18 @@ const meta = {
   },
   args: {
     // Provide default route settings
-    ...DiversionPanelMeta.args,
-    routeName: "39",
-    shape: route39shape,
-    zoom: 14,
-    center: { lat: 42.33, lng: -71.11 },
+    originalRoute: {
+      routeDescription: "Harvard via Allston",
+      routeOrigin: "from Andrew Station",
+      routeDirection: "Outbound",
+      routeName: "39",
+      shape: route39shape,
+      zoom: 14,
+      center: { lat: 42.33, lng: -71.11 },
+    },
   },
   argTypes: {
-    ...DiversionPanelMeta.argTypes,
+    originalRoute: { table: { disable: true } },
   },
 } satisfies Meta<typeof DiversionPage>
 export default meta

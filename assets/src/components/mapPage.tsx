@@ -32,8 +32,8 @@ import LocationCard from "./mapPage/locationCard"
 import { useLocationSearchResultById } from "../hooks/useLocationSearchResultById"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
-import { StartDetourProps } from "./detours/detourDropdown"
 import { DetourModal } from "./detours/detourModal"
+import { OriginalRoute } from "../detour"
 
 const SearchMode = ({
   onSelectVehicleResult,
@@ -288,12 +288,13 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     }
   }
 
-  const [detourInfo, setDetourInfo] = useState<StartDetourProps | null>(null)
+  const [originalRouteForDetour, setOriginalRouteForDetour] =
+    useState<OriginalRoute | null>(null)
   const [showDetourModal, setShowDetourModal] = useState<boolean>(false)
   const [detourModalKey, setDetourModalKey] = useState<number>(0)
 
-  const onStartDetour = (props: StartDetourProps) => {
-    setDetourInfo(props)
+  const onStartDetour = (route: OriginalRoute) => {
+    setOriginalRouteForDetour(route)
     setShowDetourModal(true)
     setDetourModalKey((k) => k + 1)
   }
@@ -372,10 +373,10 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
             />
           </MapSafeAreaContext.Provider>
         </div>
-        {detourInfo && (
+        {originalRouteForDetour && (
           <DetourModal
             key={detourModalKey}
-            detourInfo={detourInfo}
+            originalRoute={originalRouteForDetour}
             show={showDetourModal}
             onClose={() => {
               setShowDetourModal(false)

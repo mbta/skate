@@ -63,7 +63,8 @@ import { RecenterControl } from "../map/controls/recenterControl"
 import useScreenSize from "../../hooks/useScreenSize"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { useRoute } from "../../contexts/routesContext"
-import { DetourDropdown, StartDetourProps } from "../detours/detourDropdown"
+import { DetourDropdown } from "../detours/detourDropdown"
+import { OriginalRoute } from "../../detour"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -251,7 +252,7 @@ const SelectedVehicleDataLayers = ({
   stops: Stop[]
   useCurrentZoom: boolean
   onInterruptFollower?: () => void
-  onStartDetour?: (props: StartDetourProps) => void
+  onStartDetour?: (props: OriginalRoute) => void
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -315,10 +316,8 @@ const SelectedVehicleDataLayers = ({
               >
                 {dropdownEnabled && (
                   <DetourDropdown
-                    setShouldShowPopup={setShouldShowPopup}
                     routePatternForVehicle={routePatternForVehicle}
                     route={route}
-                    onStartDetour={onStartDetour}
                     center={map.getCenter()}
                     zoom={map.getZoom()}
                     onClick={(detourInfo) => {
@@ -462,7 +461,7 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
-  onStartDetour?: (props: StartDetourProps) => void
+  onStartDetour?: (props: OriginalRoute) => void
 }) => {
   const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
     selectedEntity,
@@ -625,7 +624,7 @@ const DataLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
-  onStartDetour?: (props: StartDetourProps) => void
+  onStartDetour?: (props: OriginalRoute) => void
 }): JSX.Element => {
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
@@ -697,7 +696,7 @@ const MapDisplay = ({
   initializeRouteFollowerEnabled?: boolean
   vehicleUseCurrentZoom?: boolean
   onInterruptVehicleFollower?: () => void
-  onStartDetour?: (props: StartDetourProps) => void
+  onStartDetour?: (props: OriginalRoute) => void
 }) => {
   const [
     {
