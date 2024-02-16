@@ -20,7 +20,7 @@ interface DropdownItemProps extends PropsWithChildren {
 
 export const DropdownItem = ({ children, onClick }: DropdownItemProps) => {
   return (
-    <Dropdown.Item className="c-dropdown-popup-item" onClick={onClick}>
+    <Dropdown.Item as="button" onClick={onClick}>
       {children}
     </Dropdown.Item>
   )

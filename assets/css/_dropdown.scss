@@ -1,5 +1,3 @@
-@use "./color/tokens_2024" as tokens;
-
 .c-dropdown-popup-wrapper {
   visibility: hidden;
 }
@@ -7,8 +5,4 @@
 .c-dropdown-popup-menu {
   position: static;
   visibility: visible;
-}
-
-.c-dropdown-popup-item {
-    color: tokens.$gray-900 !important;
 }
