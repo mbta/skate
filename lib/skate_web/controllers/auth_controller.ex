@@ -9,8 +9,6 @@ defmodule SkateWeb.AuthController do
   def callback(%{assigns: %{ueberauth_auth: %{provider: :keycloak} = auth}} = conn, _params) do
     username = auth.uid
     email = auth.info.email
-    credentials = auth.credentials
-    expiration = credentials.expires_at
 
     keycloak_client_id =
       get_in(Application.get_env(:ueberauth_oidcc, :providers), [:keycloak, :client_id])
@@ -19,8 +17,6 @@ defmodule SkateWeb.AuthController do
       get_in(auth.extra.raw_info.userinfo, ["resource_access", keycloak_client_id, "roles"]) || []
 
     if "skate-readonly" in groups do
-      current_time = System.system_time(:second)
-
       %{id: user_id} = User.upsert(username, email)
 
       conn
@@ -28,7 +24,7 @@ defmodule SkateWeb.AuthController do
         AuthManager,
         %{id: user_id},
         %{groups: groups, sign_out_url: sign_out_url(auth)},
-        ttl: {expiration - current_time, :seconds}
+        ttl: {1, :hour}
       )
       |> redirect(to: ~p"/")
     else
