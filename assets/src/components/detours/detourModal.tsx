@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { DiversionPage } from "./diversionPage"
 import { joinClasses } from "../../helpers/dom"
 import { OriginalRoute } from "../../detour"
@@ -12,6 +12,18 @@ export const DetourModal = ({
   onClose: () => void
   show: boolean
 }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    console.log("ATTEMPT FOCUS")
+    if (ref.current) {
+      console.log("ACTUALLY REEALLY ATTEMTP FOCUS")
+      ref.current?.focus()
+      console.log("ref.current", ref.current)
+    } else {
+      console.log("WAIT NEVERMIND")
+    }
+  }, [ref.current])
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -28,6 +40,7 @@ export const DetourModal = ({
 
   return (
     <div
+      ref={ref}
       className={joinClasses([
         "c-detour-modal",
         !show && "c-detour-modal__hidden",
