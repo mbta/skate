@@ -26,13 +26,9 @@ import { LinkData, getNavLinkData } from "../../navLinkData"
 
 interface LeftNavLinkProps {
   linkData: LinkData
-  collapsed: boolean
 }
 
-const LeftNavLink = ({
-  linkData,
-  collapsed,
-}: LeftNavLinkProps): JSX.Element => (
+const LeftNavLink = ({ linkData }: LeftNavLinkProps): JSX.Element => (
   <NavLink
     className={({ isActive }) =>
       "c-left-nav__link" + (isActive ? " c-left-nav__link--active" : "")
@@ -103,7 +99,7 @@ const LeftNav = ({
         <ul className="c-left-nav__links">
           {navLinkData.map((linkData) => (
             <li key={linkData.title}>
-              <LeftNavLink linkData={linkData} collapsed={collapsed} />
+              <LeftNavLink linkData={linkData} />
             </li>
           ))}
           <li>
@@ -129,7 +125,6 @@ const LeftNav = ({
                     dispatch(togglePickerContainer())
                   }
                 }}
-                collapsed={collapsed}
               />
             </li>
           ) : null}
@@ -153,7 +148,6 @@ const LeftNav = ({
                   dispatch(togglePickerContainer())
                 }
               }}
-              collapsed={collapsed}
             />
           </li>
           <li>
@@ -170,7 +164,6 @@ const LeftNav = ({
                 }
               }}
               name="Notifications"
-              collapsed={collapsed}
             />
           </li>
         </ul>
@@ -235,14 +228,12 @@ const ViewToggle = ({
   name,
   viewIsOpen,
   toggleView,
-  collapsed,
   disabled,
 }: {
   icon: JSX.Element
   name: string
   viewIsOpen: boolean
   toggleView: () => void
-  collapsed: boolean
   disabled?: boolean
 }): JSX.Element => {
   const buttonContent = (
