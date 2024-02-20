@@ -5,19 +5,28 @@ import "@testing-library/jest-dom/jest-globals"
 import { fetchDetourDirections } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
+import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
-) => (
-  <DiversionPageDefault
-    routeName="66"
-    routeDescription="Harvard via Allston"
-    routeOrigin="from Andrew Station"
-    routeDirection="Outbound"
-    shape={shapeFactory.build()}
-    {...props}
-  />
-)
+) => {
+  const { originalRoute, ...otherProps } = props
+  return (
+    <DiversionPageDefault
+      originalRoute={{
+        routeName: "66",
+        routeDescription: "Harvard via Allston",
+        routeOrigin: "from Andrew Station",
+        routeDirection: "Outbound",
+        shape: shapeFactory.build(),
+        center: latLngLiteralFactory.build(),
+        zoom: 16,
+        ...originalRoute,
+      }}
+      {...otherProps}
+    />
+  )
+}
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())

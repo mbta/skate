@@ -59,6 +59,12 @@ interface DetourMapProps {
    * Callback fired when the undo button is clicked.
    */
   onUndoLastWaypoint: () => void
+
+  /*
+   * Center and zoom to position the map correctly when it renders
+   */
+  center: LatLngLiteral
+  zoom: number
 }
 
 export const DetourMap = ({
@@ -74,8 +80,11 @@ export const DetourMap = ({
 
   undoDisabled,
   onUndoLastWaypoint,
+
+  center,
+  zoom,
 }: DetourMapProps) => (
-  <Map vehicles={[]} allowStreetView>
+  <Map vehicles={[]} allowStreetView center={center} zoom={zoom}>
     <CustomControl position="topleft" className="leaflet-bar">
       <Button
         variant="primary"

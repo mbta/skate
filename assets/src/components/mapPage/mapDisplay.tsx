@@ -1,4 +1,4 @@
-import Leaflet, { PointTuple } from "leaflet"
+import Leaflet from "leaflet"
 import React, {
   useCallback,
   useContext,
@@ -6,7 +6,7 @@ import React, {
   useState,
   useMemo,
 } from "react"
-import { Pane, Popup, useMap } from "react-leaflet"
+import { Pane, useMap } from "react-leaflet"
 import { SocketContext } from "../../contexts/socketContext"
 import useMostRecentVehicleById from "../../hooks/useMostRecentVehicleById"
 import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
@@ -60,9 +60,11 @@ import { LocationType, RouteType } from "../../models/stopData"
 import usePullbackVehicles from "../../hooks/usePullbackVehicles"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { RecenterControl } from "../map/controls/recenterControl"
-import { DropdownItem, DropdownMenu } from "../map/dropdown"
 import useScreenSize from "../../hooks/useScreenSize"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import { useRoute } from "../../contexts/routesContext"
+import { DetourDropdown } from "../detours/detourDropdown"
+import { OriginalRoute } from "../../detour"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -242,6 +244,7 @@ const SelectedVehicleDataLayers = ({
   stops,
   useCurrentZoom,
   onInterruptFollower,
+  onStartDetour,
 }: {
   vehicleOrGhost: Vehicle | Ghost | null
   routePatterns: ByRoutePatternId<RoutePattern> | null
@@ -249,6 +252,7 @@ const SelectedVehicleDataLayers = ({
   stops: Stop[]
   useCurrentZoom: boolean
   onInterruptFollower?: () => void
+  onStartDetour?: (props: OriginalRoute) => void
 }) => {
   const position =
     (selectedVehicleOrGhost &&
@@ -285,18 +289,15 @@ const SelectedVehicleDataLayers = ({
   )
   const screenSize = useScreenSize()
 
-  // This offset is here because, due to a limitation of Leaflet
-  // popups, we weren't able to render the popup at the bottom-right
-  // corner of the marker, where it's supposed to go. This effectively
-  // renders it centered and above the marker, and then uses the
-  // offset to reposition it to the bottom-right corner.
-  const dropdownOffset: PointTuple = [140, 97]
-
   const dropdownEnabled =
     inTestGroup(TestGroups.DetoursPilot) &&
     ["desktop", "tablet"].includes(screenSize)
 
   const [shouldShowPopup, setShouldShowPopup] = useState<boolean>(false)
+  const routeId = routePatternForVehicle?.routeId
+  const route = useRoute(routeId)
+
+  const map = useMap()
 
   return (
     <>
@@ -314,20 +315,16 @@ const SelectedVehicleDataLayers = ({
                 onShouldShowPopupChange={setShouldShowPopup}
               >
                 {dropdownEnabled && (
-                  <Popup
-                    className="c-dropdown-popup-wrapper"
-                    offset={dropdownOffset}
-                  >
-                    <DropdownMenu>
-                      <DropdownItem
-                        onClick={() => {
-                          setShouldShowPopup(false)
-                        }}
-                      >
-                        Start a detour on route {selectedVehicleOrGhost.routeId}
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Popup>
+                  <DetourDropdown
+                    routePatternForVehicle={routePatternForVehicle}
+                    route={route}
+                    center={map.getCenter()}
+                    zoom={map.getZoom()}
+                    onClick={(detourInfo) => {
+                      setShouldShowPopup(false)
+                      onStartDetour && onStartDetour(detourInfo)
+                    }}
+                  />
                 )}
               </VehicleMarker>
 
@@ -456,6 +453,7 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
+  onStartDetour,
 }: {
   selectedEntity: SelectedEntity | null
   selectVehicle: (vehicleOrGhost: Vehicle | Ghost) => void
@@ -463,6 +461,7 @@ const SelectionLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
+  onStartDetour?: (props: OriginalRoute) => void
 }) => {
   const liveSelectedEntity: LiveSelectedEntity | null = useLiveSelectedEntity(
     selectedEntity,
@@ -487,6 +486,7 @@ const SelectionLayers = ({
           stops={stops}
           useCurrentZoom={vehicleUseCurrentZoom}
           onInterruptFollower={onInterruptVehicleFollower}
+          onStartDetour={onStartDetour}
         />
       )
     case SelectedEntityType.RoutePattern:
@@ -615,6 +615,7 @@ const DataLayers = ({
   initializeRouteFollowerEnabled,
   vehicleUseCurrentZoom,
   onInterruptVehicleFollower,
+  onStartDetour,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -623,6 +624,7 @@ const DataLayers = ({
   initializeRouteFollowerEnabled: boolean
   vehicleUseCurrentZoom: boolean
   onInterruptVehicleFollower?: () => void
+  onStartDetour?: (props: OriginalRoute) => void
 }): JSX.Element => {
   const streetViewActive = useContext(StreetViewModeEnabledContext)
 
@@ -666,6 +668,7 @@ const DataLayers = ({
         initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
         vehicleUseCurrentZoom={vehicleUseCurrentZoom}
         onInterruptVehicleFollower={onInterruptVehicleFollower}
+        onStartDetour={onStartDetour}
       />
       <PullbackVehiclesLayer
         pullbackLayerEnabled={pullbackLayerEnabled}
@@ -684,6 +687,7 @@ const MapDisplay = ({
   streetViewInitiallyEnabled = false,
   initializeRouteFollowerEnabled = true,
   vehicleUseCurrentZoom = true,
+  onStartDetour,
 }: {
   selectedEntity: SelectedEntity | null
   setSelection: (selectedEntity: SelectedEntity | null) => void
@@ -692,6 +696,7 @@ const MapDisplay = ({
   initializeRouteFollowerEnabled?: boolean
   vehicleUseCurrentZoom?: boolean
   onInterruptVehicleFollower?: () => void
+  onStartDetour?: (props: OriginalRoute) => void
 }) => {
   const [
     {
@@ -722,6 +727,7 @@ const MapDisplay = ({
         initializeRouteFollowerEnabled={initializeRouteFollowerEnabled}
         vehicleUseCurrentZoom={vehicleUseCurrentZoom}
         onInterruptVehicleFollower={onInterruptVehicleFollower}
+        onStartDetour={onStartDetour}
       />
       <LayersControlState>
         {(open, setOpen) => (

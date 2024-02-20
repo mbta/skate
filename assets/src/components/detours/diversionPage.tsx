@@ -1,18 +1,21 @@
-import React from "react"
-import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
+import React, { ReactNode } from "react"
+import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
-import { Shape } from "../../schedule"
 import { useDetour } from "../../hooks/useDetour"
-import { ListGroup } from "react-bootstrap"
+import { CloseButton } from "react-bootstrap"
+import { OriginalRoute } from "../../detour"
+
+interface DiversionPageProps {
+  missedStops?: ReactNode
+  originalRoute: OriginalRoute
+  onClose?: () => void
+}
 
 export const DiversionPage = ({
   missedStops,
-  routeName,
-  routeDescription,
-  routeDirection,
-  routeOrigin,
-  shape,
-}: DiversionPanelProps & { shape: Shape }) => {
+  originalRoute,
+  onClose,
+}: DiversionPageProps) => {
   const {
     addConnectionPoint,
     addWaypoint,
@@ -31,29 +34,23 @@ export const DiversionPage = ({
   return (
     <article className="l-diversion-page h-100 border-box">
       <header className="l-diversion-page__header text-bg-light border-bottom">
-        <h1 className="h3 text-center">Create Detour</h1>
+        <CloseButton className="p-4" onClick={onClose} />
       </header>
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
-          directions={
-            <ListGroup as="ol">
-              {directions?.map((d) => (
-                <ListGroup.Item key={d.instruction} as="li">
-                  {d.instruction}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          }
+          directions={directions}
           missedStops={missedStops}
-          routeName={routeName}
-          routeDescription={routeDescription}
-          routeOrigin={routeOrigin}
-          routeDirection={routeDirection}
+          routeName={originalRoute.routeName}
+          routeDescription={originalRoute.routeDescription}
+          routeOrigin={originalRoute.routeOrigin}
+          routeDirection={originalRoute.routeDirection}
         />
       </div>
       <div className="l-diversion-page__map">
         <DetourMap
-          originalShape={shape.points}
+          originalShape={originalRoute.shape.points}
+          center={originalRoute.center}
+          zoom={originalRoute.zoom}
           detourShape={detourShape}
           startPoint={startPoint ?? undefined}
           endPoint={endPoint ?? undefined}

@@ -10,11 +10,13 @@ $shuttle-picker-width: 12.6rem;
 $view-header-height: 2.5rem;
 $vpp-location-padding: 1rem;
 $z-page-layout-context: (
+  "detour-modal-hidden": -1,
   "properties-panel-backdrop": 1000,
   "properties-panel": 1002,
   "view": 1100,
   "navbar": 1200,
-  "user-info-popover": 2000,
+  "user-info-popover": 1201,
+  "detour-modal": 2000,
 );
 
 $z-properties-panel-context: (
@@ -50,6 +52,7 @@ $z-properties-panel-context: (
 @import "cutout_overlay";
 @import "data_status_banner";
 @import "detours/detour_map";
+@import "detours/detour_modal";
 @import "directions_button";
 @import "disconnected_modal";
 @import "diversion_page";
