@@ -23,9 +23,10 @@ defmodule SkateWeb.AuthController do
       |> Guardian.Plug.sign_in(
         AuthManager,
         %{id: user_id},
-        %{groups: groups, sign_out_url: sign_out_url(auth)},
+        %{groups: groups},
         ttl: {1, :hour}
       )
+      |> put_session(:sign_out_url, sign_out_url(auth))
       |> redirect(to: ~p"/")
     else
       send_resp(conn, :forbidden, "forbidden")
@@ -90,20 +91,22 @@ defmodule SkateWeb.AuthController do
 
   @spec logout(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def logout(conn, %{"provider" => "keycloak"}) do
-    case Guardian.Plug.current_claims(conn) do
-      %{"sign_out_url" => sign_out_url} when not is_nil(sign_out_url) ->
-        conn
-        |> session_cleanup()
-        |> redirect(external: sign_out_url)
+    claims = Guardian.Plug.current_claims(conn)
 
+    sign_out_url = get_session(conn, :sign_out_url) || Map.get(claims, "sign_out_url")
+
+    if is_nil(sign_out_url) do
       # The router makes sure we can't call `/auth/:provider/callback`
       # unless we have a session.
       # So the potential `nil` from `current_claims` and the potential map with
       # `sign_out_url=nil` can be handled the same
-      _ ->
-        conn
-        |> session_cleanup()
-        |> redirect(to: "/")
+      conn
+      |> session_cleanup()
+      |> redirect(to: "/")
+    else
+      conn
+      |> session_cleanup()
+      |> redirect(external: sign_out_url)
     end
   end
 
