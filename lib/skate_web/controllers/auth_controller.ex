@@ -95,11 +95,7 @@ defmodule SkateWeb.AuthController do
 
     sign_out_url = get_session(conn, :sign_out_url) || Map.get(claims, "sign_out_url")
 
-    if !is_nil(sign_out_url) do
-      conn
-      |> session_cleanup()
-      |> redirect(external: sign_out_url)
-    else
+    if is_nil(sign_out_url) do
       # The router makes sure we can't call `/auth/:provider/callback`
       # unless we have a session.
       # So the potential `nil` from `current_claims` and the potential map with
@@ -107,6 +103,10 @@ defmodule SkateWeb.AuthController do
       conn
       |> session_cleanup()
       |> redirect(to: "/")
+    else
+      conn
+      |> session_cleanup()
+      |> redirect(external: sign_out_url)
     end
   end
 
