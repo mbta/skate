@@ -42,12 +42,6 @@ const useSocket = (): SocketStatus => {
     )
     initialSocket.connect()
     setSocket(initialSocket)
-
-    return () => {
-      initialSocket.disconnect()
-      setSocket(undefined)
-      setConnectionStatus(ConnectionStatus.Disconnected)
-    }
   }, [userToken])
 
   return { socket, connectionStatus }
