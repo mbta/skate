@@ -3,6 +3,8 @@ defmodule SkateWeb.AuthControllerTest do
 
   import Test.Support.Helpers
 
+  import Skate.Factory
+
   alias Skate.Settings.User
 
   describe "GET /auth/:provider" do
@@ -119,6 +121,31 @@ defmodule SkateWeb.AuthControllerTest do
         |> init_test_session(%{})
         |> assign(:ueberauth_auth, Skate.Factory.build(:ueberauth_auth))
         |> get(~p"/auth/keycloak/callback")
+
+      assert Guardian.Plug.authenticated?(conn)
+
+      conn = get(conn, ~p"/auth/keycloak/logout")
+
+      refute Guardian.Plug.authenticated?(conn)
+
+      assert redirected_to(conn) == redirect_url
+    end
+
+    test "falls back to `sign_out_url` from Guardian claims", %{conn: conn} do
+      redirect_url = "redirect.url.localhost"
+
+      user = insert(:user)
+
+      resource = %{id: user.id}
+
+      reassign_env(:skate, :logout_url_fn, fn _, _ ->
+        {:ok, redirect_url}
+      end)
+
+      conn =
+        conn
+        |> init_test_session(%{})
+        |> Guardian.Plug.sign_in(SkateWeb.AuthManager, resource, %{sign_out_url: redirect_url})
 
       assert Guardian.Plug.authenticated?(conn)
 
