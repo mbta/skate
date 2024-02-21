@@ -11,6 +11,7 @@ jest.mock("phoenix", () => ({
     connect: jest.fn(),
     onOpen: jest.fn(),
     onClose: jest.fn(),
+    disconnect: jest.fn(),
   })),
   __esModule: true,
 }))

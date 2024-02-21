@@ -36,12 +36,18 @@ const useSocket = (): SocketStatus => {
     const initialSocket = new Socket("/socket", {
       params: { token: userToken },
     })
-    initialSocket.connect()
     initialSocket.onOpen(() => setConnectionStatus(ConnectionStatus.Connected))
     initialSocket.onClose(() =>
       setConnectionStatus(ConnectionStatus.Disconnected)
     )
+    initialSocket.connect()
     setSocket(initialSocket)
+
+    return () => {
+      initialSocket.disconnect()
+      setSocket(undefined)
+      setConnectionStatus(ConnectionStatus.Disconnected)
+    }
   }, [userToken])
 
   return { socket, connectionStatus }
