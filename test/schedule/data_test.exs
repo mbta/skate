@@ -666,6 +666,26 @@ defmodule Schedule.DataTest do
     end
   end
 
+  describe "route_pattern/2" do
+    setup do
+      route_patterns = [build(:gtfs_route_pattern, id: "1")]
+
+      data = %Data{
+        route_patterns: route_patterns
+      }
+
+      {:ok, data: data}
+    end
+
+    test "retrieves a route pattern by ID", %{data: data} do
+      assert %RoutePattern{id: "1"} = Data.route_pattern(data, "1")
+    end
+
+    test "returns nil of route pattern isn't found for ID", %{data: data} do
+      assert is_nil(Data.route_pattern(data, "2"))
+    end
+  end
+
   describe "first_route_pattern_for_route_and_direction/3" do
     setup do
       route_patterns = [

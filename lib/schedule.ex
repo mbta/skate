@@ -163,6 +163,11 @@ defmodule Schedule do
     call_with_data(persistent_term_key, [], :all_stops, [])
   end
 
+  @spec route_pattern(RoutePattern.id(), persistent_term_key()) :: RoutePattern.t() | nil
+  def route_pattern(route_pattern_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [route_pattern_id], :route_pattern, nil)
+  end
+
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   @spec first_route_pattern_for_route_and_direction(

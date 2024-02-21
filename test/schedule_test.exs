@@ -896,6 +896,49 @@ defmodule ScheduleTest do
     end
   end
 
+  describe "route_pattern/2" do
+    setup do
+      pid =
+        Schedule.start_mocked(%{
+          gtfs: %{
+            "routes.txt" => [
+              "route_id,route_long_name,route_type,route_desc,route_short_name",
+              "39,Forest Hills - Back Bay Station,3,Key Bus,39"
+            ],
+            "route_patterns.txt" => [
+              "route_pattern_id,route_id,direction_id,representative_trip_id,route_pattern_sort_order",
+              "39-pattern,39,1,39-trip,0"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+              "39,service,39-trip,headsign,0,block,39-pattern"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_sequence",
+              "39-trip,,00:00:00,1",
+              "39-trip,,00:10:00,2"
+            ]
+          }
+        })
+
+      %{pid: pid}
+    end
+
+    test "returns the route pattern by its ID", %{pid: pid} do
+      assert %RoutePattern{
+               id: "39-pattern"
+             } =
+               Schedule.route_pattern(
+                 "39-pattern",
+                 pid
+               )
+    end
+
+    test "returns nil when a route pattern is not found", %{pid: pid} do
+      assert is_nil(Schedule.route_pattern("other-pattern", pid))
+    end
+  end
+
   describe "first_route_pattern_for_route_and_direction" do
     test "returns the first route pattern matching the route and direction" do
       pid =

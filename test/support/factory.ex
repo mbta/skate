@@ -193,6 +193,18 @@ defmodule Skate.Factory do
     }
   end
 
+  def gtfs_route_pattern_factory do
+    %Schedule.Gtfs.RoutePattern{
+      id: "route_pattern",
+      name: "",
+      route_id: "route",
+      direction_id: 0,
+      representative_trip_id: "trip",
+      time_desc: nil,
+      sort_order: 1
+    }
+  end
+
   def trip_factory do
     %Schedule.Trip{
       id: "trip",

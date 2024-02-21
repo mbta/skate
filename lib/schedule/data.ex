@@ -275,6 +275,11 @@ defmodule Schedule.Data do
     end
   end
 
+  @spec route_pattern(t(), RoutePattern.id()) :: RoutePattern.t() | nil
+  def route_pattern(%__MODULE__{route_patterns: route_patterns}, route_pattern_id) do
+    Enum.find(route_patterns, &(&1.id == route_pattern_id))
+  end
+
   @spec first_route_pattern_for_route_and_direction(t(), Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   def first_route_pattern_for_route_and_direction(
