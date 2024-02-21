@@ -18,6 +18,7 @@ const DiversionPage = (
         routeDescription: "Harvard via Allston",
         routeOrigin: "from Andrew Station",
         routeDirection: "Outbound",
+        routePatternId: "66-6-0",
         shape: shapeFactory.build(),
         center: latLngLiteralFactory.build(),
         zoom: 16,

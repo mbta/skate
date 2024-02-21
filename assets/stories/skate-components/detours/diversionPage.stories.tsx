@@ -14,6 +14,7 @@ const meta = {
       routeDescription: "Harvard via Allston",
       routeOrigin: "from Andrew Station",
       routeDirection: "Outbound",
+      routePatternId: "39-3-0",
       routeName: "39",
       shape: route39shape,
       zoom: 14,
