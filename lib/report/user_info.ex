@@ -1,7 +1,7 @@
-defmodule Report.UserNamesAndUuids do
+defmodule Report.UserInfo do
   @moduledoc """
-  Returns usernames and UUIDs for mapping to monitoring tools like
-  Google Analytics.
+  Returns usernames, emails, IDs, and UUIDs for mapping to monitoring
+  tools like Google Analytics and our own logging.
   """
 
   import Ecto.Query
@@ -15,6 +15,7 @@ defmodule Report.UserNamesAndUuids do
      Skate.Repo.all(
        from(u in DbUser,
          select: %{
+           "id" => u.id,
            "username" => u.username,
            "uuid" => u.uuid,
            "email" => u.email
@@ -24,8 +25,8 @@ defmodule Report.UserNamesAndUuids do
   end
 
   @impl Report
-  def short_name(), do: "user_names_and_uuids"
+  def short_name(), do: "user_info"
 
   @impl Report
-  def description(), do: "Usernames and UUIDs"
+  def description(), do: "User Info"
 end

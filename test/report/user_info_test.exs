@@ -1,4 +1,4 @@
-defmodule Report.UserNamesAndUuidsTest do
+defmodule Report.UserInfoTest do
   use Skate.DataCase
 
   alias Skate.Settings.User
@@ -9,10 +9,11 @@ defmodule Report.UserNamesAndUuidsTest do
 
       user = User.upsert(username, "user@test.com")
 
-      {:ok, result} = Report.UserNamesAndUuids.run()
+      {:ok, result} = Report.UserInfo.run()
 
       assert result == [
                %{
+                 "id" => user.id,
                  "username" => username,
                  "uuid" => user.uuid,
                  "email" => user.email
@@ -23,13 +24,13 @@ defmodule Report.UserNamesAndUuidsTest do
 
   describe "short_name/0" do
     test "returns short name" do
-      assert Report.UserNamesAndUuids.short_name() == "user_names_and_uuids"
+      assert Report.UserInfo.short_name() == "user_info"
     end
   end
 
   describe "description/0" do
     test "returns description" do
-      assert Report.UserNamesAndUuids.description() == "Usernames and UUIDs"
+      assert Report.UserInfo.description() == "User Info"
     end
   end
 end
