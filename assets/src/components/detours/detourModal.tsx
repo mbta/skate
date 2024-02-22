@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { DiversionPage } from "./diversionPage"
 import { joinClasses } from "../../helpers/dom"
-import { OriginalRoute } from "../../detour"
+import { OriginalRoute } from "../../models/detour"
 
 export const DetourModal = ({
   originalRoute,

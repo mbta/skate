@@ -1,5 +1,5 @@
 import { Factory } from "fishery"
-import { DetourShape } from "../../src/detour"
+import { DetourShape } from "../../src/models/detour"
 import { shapePointFactory } from "./shapePointFactory"
 
 export const directionsFactory = Factory.define<DetourShape["directions"][0]>(

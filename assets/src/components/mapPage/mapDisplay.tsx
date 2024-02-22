@@ -64,7 +64,7 @@ import useScreenSize from "../../hooks/useScreenSize"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { useRoute } from "../../contexts/routesContext"
 import { DetourDropdown } from "../detours/detourDropdown"
-import { OriginalRoute } from "../../detour"
+import { OriginalRoute } from "../../models/detour"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,

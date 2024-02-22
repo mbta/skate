@@ -39,7 +39,7 @@ import {
 } from "./models/locationSearchSuggestionData"
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
-import { DetourShape } from "./detour"
+import { DetourShape } from "./models/detour"
 
 export interface RouteData {
   id: string

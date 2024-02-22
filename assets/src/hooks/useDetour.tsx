@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections } from "../api"
-import { DetourShape } from "../detour"
+import { DetourShape } from "../models/detour"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
   const [detourShape, setDetourShape] = useState<ShapePoint[]>([])

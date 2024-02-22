@@ -33,7 +33,7 @@ import { useLocationSearchResultById } from "../hooks/useLocationSearchResultByI
 import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import { DetourModal } from "./detours/detourModal"
-import { OriginalRoute } from "../detour"
+import { OriginalRoute } from "../models/detour"
 
 const SearchMode = ({
   onSelectVehicleResult,

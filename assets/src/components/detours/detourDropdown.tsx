@@ -4,7 +4,7 @@ import { Route, RoutePattern } from "../../schedule"
 import { Popup } from "react-leaflet"
 import { PointTuple } from "leaflet"
 import { LatLngLiteral } from "leaflet"
-import { OriginalRoute } from "../../detour"
+import { OriginalRoute } from "../../models/detour"
 
 export interface DetourDropdownProps {
   routePatternForVehicle: RoutePattern | null
@@ -57,6 +57,7 @@ export const DetourDropdown = ({
               routeDescription,
               routeOrigin,
               routeDirection,
+              routePatternId: routePatternForVehicle.id,
               shape,
               center,
               zoom,
