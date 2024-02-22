@@ -100,6 +100,27 @@ describe("useDetour", () => {
     })
   })
 
+  test("when `undoLastWaypoint` is called, removes `start` and `end` points", async () => {
+    const start = { lat: 0, lon: 0 }
+    const end = { lat: 1, lon: 1 }
+
+    const { result } = renderHook(useDetour)
+
+    act(() => result.current.addConnectionPoint(start))
+    act(() => result.current.addConnectionPoint(end))
+
+    expect(result.current.endPoint).not.toBeNull()
+
+    act(() => result.current.undoLastWaypoint())
+
+    expect(result.current.endPoint).toBeNull()
+    expect(result.current.startPoint).not.toBeNull()
+
+    act(() => result.current.undoLastWaypoint())
+
+    expect(result.current.startPoint).toBeNull()
+  })
+
   test("when `undoLastWaypoint` is called, removes the last `waypoint`", async () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
@@ -159,32 +180,29 @@ describe("useDetour", () => {
     expect(result.current.detourShape).toHaveLength(0)
   })
 
-  test("when `waypoints` is empty, `canUndo` is `false`", async () => {
+  test("when `startPoint` is empty, `canUndo` is `false`", async () => {
     const { result } = renderHook(useDetour)
 
-    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
-
-    expect(result.current.waypoints).toHaveLength(0)
+    expect(result.current.startPoint).toBeNull()
     expect(result.current.canUndo).toBe(false)
   })
 
-  test("when `waypoints` is not empty, `canUndo` is `true`", async () => {
+  test("when `startPoint` is set, `canUndo` is `true`", async () => {
     const { result } = renderHook(useDetour)
 
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
-    act(() => result.current.addWaypoint({ lat: 1, lon: 1 }))
 
-    expect(result.current.waypoints).not.toHaveLength(0)
+    expect(result.current.startPoint).not.toBeNull()
     expect(result.current.canUndo).toBe(true)
   })
 
-  test("when `endPoint` is set, `canUndo` is `false`", async () => {
+  test("when `endPoint` is set, `canUndo` is `true`", async () => {
     const { result } = renderHook(useDetour)
 
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
 
     expect(result.current.endPoint).not.toBeNull()
-    expect(result.current.canUndo).toBe(false)
+    expect(result.current.canUndo).toBe(true)
   })
 })
