@@ -23,15 +23,25 @@ defmodule SkateWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(%{"token" => token}, socket, _connect_info) do
+    user_id =
+      with %{claims: claims} <- Guardian.peek(SkateWeb.AuthManager, token),
+           {:ok, %{id: id}} <- SkateWeb.AuthManager.resource_from_claims(claims) do
+        id
+      else
+        _ -> nil
+      end
+
     case Guardian.Phoenix.Socket.authenticate(socket, SkateWeb.AuthManager, token) do
       {:ok, authed_socket} ->
-        user_id = authed_socket |> Guardian.Phoenix.Socket.current_resource() |> Map.get(:id)
-
         Logger.info("#{__MODULE__} socket_authenticated user_id=#{user_id}")
 
         {:ok, authed_socket}
 
       {:error, _reason} ->
+        if !is_nil(user_id) do
+          Logger.info("#{__MODULE__} socket_auth_rejected user_id=#{user_id}")
+        end
+
         :error
     end
   end
