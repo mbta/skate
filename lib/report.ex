@@ -8,7 +8,7 @@ defmodule Report do
 
   @report_modules [
     Report.UserSettings,
-    Report.UserNamesAndUuids,
+    Report.UserInfo,
     Report.UserConfigurations,
     Report.NotificationsCountEstimate,
     Report.NotificationsUsersCountEstimate,

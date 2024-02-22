@@ -54,7 +54,7 @@ defmodule ReportTest do
       assert Report.all_reports() == %{
                "user_configurations" => Report.UserConfigurations,
                "user_settings" => Report.UserSettings,
-               "user_names_and_uuids" => Report.UserNamesAndUuids,
+               "user_info" => Report.UserInfo,
                "notifications_count_estimate" => Report.NotificationsCountEstimate,
                "notifications_users_count_estimate" => Report.NotificationsUsersCountEstimate,
                "max_connections" => Report.MaxConnections,
