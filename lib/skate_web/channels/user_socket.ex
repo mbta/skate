@@ -1,4 +1,5 @@
 defmodule SkateWeb.UserSocket do
+  require Logger
   use Phoenix.Socket
 
   ## Channels
@@ -23,8 +24,15 @@ defmodule SkateWeb.UserSocket do
   # performing token verification on connect.
   def connect(%{"token" => token}, socket, _connect_info) do
     case Guardian.Phoenix.Socket.authenticate(socket, SkateWeb.AuthManager, token) do
-      {:ok, authed_socket} -> {:ok, authed_socket}
-      {:error, _reason} -> :error
+      {:ok, authed_socket} ->
+        user_id = authed_socket |> Guardian.Phoenix.Socket.current_resource() |> Map.get(:id)
+
+        Logger.info("#{__MODULE__} socket_authenticated user_id=#{user_id}")
+
+        {:ok, authed_socket}
+
+      {:error, _reason} ->
+        :error
     end
   end
 

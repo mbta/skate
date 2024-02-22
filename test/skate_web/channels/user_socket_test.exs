@@ -11,13 +11,24 @@ defmodule SkateWeb.UserSocketTest do
   end
 
   describe "connect/2" do
-    test "authenticates when a valid token is given", %{socket: socket, resource: resource} do
+    test "authenticates when a valid token is given and logs", %{
+      socket: socket,
+      resource: resource
+    } do
+      set_log_level(:info)
+
       current_time = System.system_time(:second)
       expiration_time = current_time + 500
 
-      {:ok, token, _claims} = AuthManager.encode_and_sign(resource, %{"exp" => expiration_time})
+      log =
+        capture_log([level: :info], fn ->
+          {:ok, token, _claims} =
+            AuthManager.encode_and_sign(resource, %{"exp" => expiration_time})
 
-      assert {:ok, _authed_socket} = UserSocket.connect(%{"token" => token}, socket, %{})
+          assert {:ok, _authed_socket} = UserSocket.connect(%{"token" => token}, socket, %{})
+        end)
+
+      assert log =~ "socket_authenticated user_id=#{resource.id}"
     end
 
     test "doesn't authenticate when an expired token is given", %{
