@@ -43,6 +43,11 @@ defmodule SkateWeb.Router do
   end
 
   scope "/", SkateWeb do
+    pipe_through([
+      :browser,
+      :accepts_html
+    ])
+
     get "/docs/agency-policies/aup", Redirect, external: :aup
   end
 
