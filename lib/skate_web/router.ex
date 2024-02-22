@@ -42,8 +42,8 @@ defmodule SkateWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  scope "/docs", SkateWeb do
-    get "/agency-policies/aup", Redirect, external: :aup
+  scope "/", SkateWeb do
+    get "/docs/agency-policies/aup", Redirect, external: :aup
   end
 
   scope "/auth", SkateWeb do
