@@ -91,9 +91,7 @@ defmodule SkateWeb.AuthController do
 
   @spec logout(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def logout(conn, %{"provider" => "keycloak"}) do
-    claims = Guardian.Plug.current_claims(conn)
-
-    sign_out_url = get_session(conn, :sign_out_url) || Map.get(claims, "sign_out_url")
+    sign_out_url = get_session(conn, :sign_out_url)
 
     if is_nil(sign_out_url) do
       # The router makes sure we can't call `/auth/:provider/callback`
