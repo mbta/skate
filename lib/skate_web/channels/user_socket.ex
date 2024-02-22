@@ -24,7 +24,7 @@ defmodule SkateWeb.UserSocket do
   # performing token verification on connect.
   def connect(%{"token" => token}, socket, _connect_info) do
     user_id =
-      with %{claims: claims} <- Guardian.peek(SkateWeb.AuthManager, token),
+      with %{claims: claims} <- SkateWeb.AuthManager.peek(token),
            {:ok, %{id: id}} <- SkateWeb.AuthManager.resource_from_claims(claims) do
         id
       else
