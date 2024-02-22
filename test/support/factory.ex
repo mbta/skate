@@ -205,6 +205,38 @@ defmodule Skate.Factory do
     }
   end
 
+  def gtfs_shape_point_factory do
+    %Schedule.Gtfs.Shape.Point{
+      shape_id: "shape1",
+      lat: 42.413560 + sequence(:shape_point_seq, &(&1 * 0.001)),
+      lon: -70.992110 + sequence(:shape_point_seq, &(&1 * 0.001)),
+      sequence: sequence(:shape_point_seq, & &1)
+    }
+  end
+
+  def gtfs_shape_factory(attrs) do
+    shape_id = Map.get(attrs, :id, "shape1")
+
+    shape = %Schedule.Gtfs.Shape{
+      id: shape_id,
+      points: build_list(10, :gtfs_shape_point, %{shape_id: shape_id})
+    }
+
+    merge_attributes(shape, attrs)
+  end
+
+  def shape_with_stops_factory(attrs) do
+    shape = build(:gtfs_shape, Map.take(attrs, [:id, :points]))
+
+    shape_with_stops = %Schedule.ShapeWithStops{
+      id: shape.id,
+      points: shape.points,
+      stops: build_list(3, :gtfs_stop)
+    }
+
+    merge_attributes(shape_with_stops, attrs)
+  end
+
   def trip_factory do
     %Schedule.Trip{
       id: "trip",
