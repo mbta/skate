@@ -28,5 +28,5 @@ defmodule Report.UserInfo do
   def short_name(), do: "user_info"
 
   @impl Report
-  def description(), do: "User Info"
+  def description(), do: "User info"
 end

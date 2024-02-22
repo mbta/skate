@@ -30,7 +30,7 @@ defmodule Report.UserInfoTest do
 
   describe "description/0" do
     test "returns description" do
-      assert Report.UserInfo.description() == "User Info"
+      assert Report.UserInfo.description() == "User info"
     end
   end
 end
