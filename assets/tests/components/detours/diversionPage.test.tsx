@@ -123,7 +123,7 @@ describe("DetourMap", () => {
     ).toBeDisabled()
   })
 
-  test("'Clear Last Waypoint' is disabled when detour drawing has started but no waypoints are present", async () => {
+  test("'Clear Last Waypoint' is enabled when detour drawing has started but no waypoints are present", async () => {
     const { container } = render(<DiversionPage />)
 
     await fireEvent.click(
@@ -132,10 +132,24 @@ describe("DetourMap", () => {
 
     expect(
       screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
+    ).toBeEnabled()
   })
 
-  test("'Clear Last Waypoint' is disabled when detour drawing has finished", async () => {
+  test("clicking on 'Clear Last Waypoint' removes the start point when there are no waypoints", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await fireEvent.click(
+      screen.getByRole("button", { name: "Clear Last Waypoint" })
+    )
+
+    expect(screen.queryByTitle("Detour Start")).toBeNull()
+  })
+
+  test("'Clear Last Waypoint' is enabled when detour drawing has finished", async () => {
     const { container } = render(<DiversionPage />)
 
     await fireEvent.click(
@@ -148,6 +162,25 @@ describe("DetourMap", () => {
 
     expect(
       screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
+    ).toBeEnabled()
+  })
+
+  test("clicking on 'Clear Last Waypoint' removes the end point when the detour is finished", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await fireEvent.click(
+      screen.getByRole("button", { name: "Clear Last Waypoint" })
+    )
+
+    expect(screen.getByTitle("Detour Start")).not.toBeNull()
+    expect(screen.queryByTitle("Detour End")).toBeNull()
   })
 })
