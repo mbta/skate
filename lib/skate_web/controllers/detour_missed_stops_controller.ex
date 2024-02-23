@@ -46,7 +46,7 @@ defmodule SkateWeb.DetourMissedStopsController do
     ).(trip_id)
   end
 
-  defp missed_stops(cfg) do
-    Application.get_env(:skate_web, :missed_stops_fn, &MissedStops.missed_stops/1).(cfg)
+  defp missed_stops(args) do
+    Application.get_env(:skate_web, :missed_stops_fn, &MissedStops.missed_stops/1).(args)
   end
 end
