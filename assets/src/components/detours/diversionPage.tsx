@@ -135,6 +135,7 @@ export const DiversionPage = ({
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}
             onClear={clear ?? (() => {})}
+            stops={originalRoute.shape.stops || []}
           />
         </div>
       </article>
