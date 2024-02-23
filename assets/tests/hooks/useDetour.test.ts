@@ -100,7 +100,7 @@ describe("useDetour", () => {
     })
   })
 
-  test("when `undoLastWaypoint` is called, removes `start` and `end` points", async () => {
+  test("when `undo` is called, removes `start` and `end` points", async () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
 
@@ -111,17 +111,17 @@ describe("useDetour", () => {
 
     expect(result.current.endPoint).not.toBeNull()
 
-    act(() => result.current.undoLastWaypoint())
+    act(() => result.current.undo())
 
     expect(result.current.endPoint).toBeNull()
     expect(result.current.startPoint).not.toBeNull()
 
-    act(() => result.current.undoLastWaypoint())
+    act(() => result.current.undo())
 
     expect(result.current.startPoint).toBeNull()
   })
 
-  test("when `undoLastWaypoint` is called, removes the last `waypoint`", async () => {
+  test("when `undo` is called, removes the last `waypoint`", async () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
 
@@ -132,12 +132,12 @@ describe("useDetour", () => {
 
     expect(result.current.waypoints).toStrictEqual([end])
 
-    act(() => result.current.undoLastWaypoint())
+    act(() => result.current.undo())
 
     expect(result.current.waypoints).toHaveLength(0)
   })
 
-  test("when `undoLastWaypoint` is called, should call API with updated waypoints", async () => {
+  test("when `undo` is called, should call API with updated waypoints", async () => {
     const start = { lat: 0, lon: 0 }
     const mid = { lat: 0.5, lon: 0.5 }
     const end = { lat: 1, lon: 1 }
@@ -147,7 +147,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint(start))
     act(() => result.current.addWaypoint(mid))
     act(() => result.current.addWaypoint(end))
-    act(() => result.current.undoLastWaypoint())
+    act(() => result.current.undo())
 
     expect(jest.mocked(fetchDetourDirections)).toHaveBeenCalledTimes(3)
     expect(jest.mocked(fetchDetourDirections)).toHaveBeenNthCalledWith(3, [
@@ -156,7 +156,7 @@ describe("useDetour", () => {
     ])
   })
 
-  test("when `undoLastWaypoint` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
+  test("when `undo` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
     jest
       .mocked(fetchDetourDirections)
       .mockResolvedValue(detourShapeFactory.build())
@@ -172,8 +172,8 @@ describe("useDetour", () => {
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
-    act(() => result.current.undoLastWaypoint())
-    act(() => result.current.undoLastWaypoint())
+    act(() => result.current.undo())
+    act(() => result.current.undo())
 
     expect(result.current.waypoints).toHaveLength(0)
     expect(result.current.directions).toBeUndefined()

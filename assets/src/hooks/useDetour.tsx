@@ -69,7 +69,7 @@ export const useDetour = () => {
   const canUndo =
     startPoint !== null || endPoint !== null || waypoints.length > 0
 
-  const undoLastWaypoint = () => {
+  const undo = () => {
     if (!canUndo) return
 
     if (endPoint !== null) {
@@ -117,12 +117,12 @@ export const useDetour = () => {
     directions,
 
     /**
-     * Reports if {@link undoLastWaypoint} will do anything.
+     * Reports if {@link undo} will do anything.
      */
     canUndo,
     /**
      * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
      */
-    undoLastWaypoint,
+    undo,
   }
 }
