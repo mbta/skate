@@ -14,6 +14,8 @@ import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 import { DetourFinishedPanel } from "./detourFinishedPanel"
+import { StopMarkers } from "../mapMarkers"
+import ZoomLevelWrapper from "../ZoomLevelWrapper"
 
 interface DiversionPageProps {
   originalRoute: OriginalRoute
@@ -124,7 +126,16 @@ export const DiversionPage = ({
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}
             onClear={clear ?? (() => {})}
-          />
+          >
+          <ZoomLevelWrapper>
+            {(zoomLevel) => (
+              <StopMarkers
+                stops={originalRoute.shape.stops ?? []}
+                zoomLevel={zoomLevel}
+              />
+            )}
+          </ZoomLevelWrapper>
+          </DetourMap>
         </div>
       </article>
       <Modal
