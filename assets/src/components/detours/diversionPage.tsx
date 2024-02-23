@@ -37,7 +37,7 @@ export const DiversionPage = ({
     canUndo,
     undo,
     clear,
-  } = useDetour()
+  } = useDetour(originalRoute.routePatternId)
 
   return (
     <article className="l-diversion-page h-100 border-box inherit-box">

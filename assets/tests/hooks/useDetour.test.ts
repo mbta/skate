@@ -1,23 +1,25 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
-import { fetchDetourDirections } from "../../src/api"
+import { fetchDetourDirections, fetchDetourMissedStops } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
+import { instantPromise } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockResolvedValue(null)
+  jest.mocked(fetchDetourMissedStops).mockResolvedValue(null)
 })
 
 describe("useDetour", () => {
   test("when `addConnectionPoint` is first called, `startPoint` is set", () => {
     const start = { lat: 0, lon: 0 }
 
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     act(() => result.current.addConnectionPoint(start))
 
@@ -28,7 +30,11 @@ describe("useDetour", () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
 
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
+
+    jest
+      .mocked(fetchDetourMissedStops)
+      .mockImplementation(() => instantPromise(null))
 
     act(() => result.current.addConnectionPoint(start))
     act(() => result.current.addConnectionPoint(end))
@@ -38,7 +44,7 @@ describe("useDetour", () => {
   })
 
   test("when `startPoint` is null, `addWaypoint` does nothing", () => {
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     expect(result.current.startPoint).toBeNull()
 
@@ -48,7 +54,11 @@ describe("useDetour", () => {
   })
 
   test("when `endPoint` is set, `addWaypoint` does nothing", () => {
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
+
+    jest
+      .mocked(fetchDetourMissedStops)
+      .mockImplementation(() => instantPromise(null))
 
     expect(result.current.startPoint).toBeNull()
 
@@ -81,7 +91,7 @@ describe("useDetour", () => {
       return Promise.resolve(detourShape)
     })
 
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     act(() => result.current.addConnectionPoint(start))
     act(() => result.current.addWaypoint(end))
@@ -125,7 +135,7 @@ describe("useDetour", () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
 
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     act(() => result.current.addConnectionPoint(start))
     act(() => result.current.addWaypoint(end))
@@ -142,7 +152,7 @@ describe("useDetour", () => {
     const mid = { lat: 0.5, lon: 0.5 }
     const end = { lat: 1, lon: 1 }
 
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     act(() => result.current.addConnectionPoint(start))
     act(() => result.current.addWaypoint(mid))
@@ -161,7 +171,7 @@ describe("useDetour", () => {
       .mocked(fetchDetourDirections)
       .mockResolvedValue(detourShapeFactory.build())
 
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     act(() => result.current.addConnectionPoint(shapePointFactory.build()))
     act(() => result.current.addWaypoint(shapePointFactory.build()))
@@ -238,14 +248,14 @@ describe("useDetour", () => {
   })
 
   test("when `startPoint` is null, `canUndo` is `false`", async () => {
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     expect(result.current.startPoint).toBeNull()
     expect(result.current.canUndo).toBe(false)
   })
 
   test("when `startPoint` is set, `canUndo` is `true`", async () => {
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
 
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
 
@@ -254,7 +264,11 @@ describe("useDetour", () => {
   })
 
   test("when `endPoint` is set, `canUndo` is `true`", async () => {
-    const { result } = renderHook(useDetour)
+    const { result } = renderHook(() => useDetour("routePatternId"))
+
+    jest
+      .mocked(fetchDetourMissedStops)
+      .mockImplementation(() => instantPromise(null))
 
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))

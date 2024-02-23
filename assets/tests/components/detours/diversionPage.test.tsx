@@ -2,7 +2,7 @@ import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import { fireEvent, render, screen } from "@testing-library/react"
 import React, { ComponentProps } from "react"
 import "@testing-library/jest-dom/jest-globals"
-import { fetchDetourDirections } from "../../../src/api"
+import { fetchDetourDirections, fetchDetourMissedStops } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
@@ -37,9 +37,10 @@ jest.mock("../../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockResolvedValue(null)
+  jest.mocked(fetchDetourMissedStops).mockResolvedValue(null)
 })
 
-describe("DetourMap", () => {
+describe("DiversionPage", () => {
   test("can click on route shape to start detour", async () => {
     const { container } = render(<DiversionPage />)
 
