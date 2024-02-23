@@ -16,7 +16,7 @@ import { MapTooltip } from "../map/tooltip"
 import { joinClasses } from "../../helpers/dom"
 import { RouteSegments } from "../../models/detour"
 
-interface DetourMapProps {
+interface DetourMapProps extends PropsWithChildren {
   /**
    * Coordinates to display as the original route.
    */
@@ -103,6 +103,8 @@ export const DetourMap = ({
 
   center,
   zoom,
+
+  children,
 }: DetourMapProps) => {
   const id = useId()
 
@@ -168,6 +170,7 @@ export const DetourMap = ({
           {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
         </OriginalRouteShape>
       )}
+      {children}
     </Map>
   )
 }
