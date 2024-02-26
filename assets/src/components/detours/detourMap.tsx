@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useId } from "react"
+import React, { PropsWithChildren, useId, useState } from "react"
 import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
@@ -219,18 +219,44 @@ const OriginalRouteShape = ({
   children,
   classNames,
   onClick,
-}: OriginalRouteShapeProps) => (
-  <Polyline
-    positions={positions}
-    className={joinClasses([
-      "c-detour_map--original-route-shape",
-      ...classNames,
-    ])}
-    bubblingMouseEvents={false}
-    eventHandlers={{
-      click: onClick,
-    }}
-  >
-    {children}
-  </Polyline>
-)
+}: OriginalRouteShapeProps) => {
+  const [hovered, setHovered] = useState(false)
+
+  const eventHandlers = {
+    click: onClick,
+    mouseover: () => {
+      setHovered(true)
+    },
+    mouseout: () => {
+      setHovered(false)
+    },
+  }
+
+  return (
+    <>
+      <Polyline
+        key={`outline-hovered-${hovered}`}
+        positions={positions}
+        weight={9}
+        opacity={hovered ? 0.35 : 0}
+        className={joinClasses([
+          "c-detour_map--original-route-shape",
+          ...classNames,
+        ])}
+        bubblingMouseEvents={false}
+        eventHandlers={eventHandlers}
+      >
+        {children}
+      </Polyline>
+      <Polyline
+        positions={positions}
+        className={joinClasses([
+          "c-detour_map--original-route-shape",
+          ...classNames,
+        ])}
+        bubblingMouseEvents={false}
+        eventHandlers={eventHandlers}
+      />
+    </>
+  )
+}
