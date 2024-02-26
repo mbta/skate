@@ -207,7 +207,6 @@ interface OriginalRouteShapeProps extends PropsWithChildren {
 }
 
 const OriginalRouteShape = ({
-  key,
   positions,
   children,
   classNames,
@@ -220,7 +219,6 @@ const OriginalRouteShape = ({
         "c-detour_map--original-route-shape",
         ...classNames,
       ])}
-      key={key}
       bubblingMouseEvents={false}
       eventHandlers={{
         click: onClick,
