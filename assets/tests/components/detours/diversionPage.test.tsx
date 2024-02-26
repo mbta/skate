@@ -236,6 +236,24 @@ describe("DiversionPage", () => {
     waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
   })
 
+  test("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    expect(
+      screen.queryByRole("heading", { name: "Create Detour" })
+    ).not.toBeInTheDocument()
+  })
+
   test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
     const { container } = render(<DiversionPage />)
 

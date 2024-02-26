@@ -51,16 +51,18 @@ export const DiversionPage = ({
       </header>
 
       <div className="l-diversion-page__panel bg-light">
-        <DiversionPanel
-          directions={directions}
-          missedStops={missedStops}
-          routeName={originalRoute.routeName}
-          routeDescription={originalRoute.routeDescription}
-          routeOrigin={originalRoute.routeOrigin}
-          routeDirection={originalRoute.routeDirection}
-          detourFinished={endPoint !== null}
-          onFinishDetour={() => setDetourFinished(true)}
-        />
+        {detourFinished === false && (
+          <DiversionPanel
+            directions={directions}
+            missedStops={missedStops}
+            routeName={originalRoute.routeName}
+            routeDescription={originalRoute.routeDescription}
+            routeOrigin={originalRoute.routeOrigin}
+            routeDirection={originalRoute.routeDirection}
+            detourFinished={endPoint !== null}
+            onFinishDetour={() => setDetourFinished(true)}
+          />
+        )}
       </div>
       <div className="l-diversion-page__map position-relative">
         {detourFinished && (
