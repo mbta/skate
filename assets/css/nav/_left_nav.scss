@@ -11,7 +11,9 @@
     padding-right: 0.75rem;
   }
 
-  transition: all 0.3s;
+  @media not (prefers-reduced-motion: reduce) {
+    transition: all 0.3s;
+  }
 }
 
 .c-left-nav--collapsed {
