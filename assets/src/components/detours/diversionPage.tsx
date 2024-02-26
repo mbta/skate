@@ -58,7 +58,7 @@ export const DiversionPage = ({
           onClickMap={addWaypoint}
           onClickOriginalShape={addConnectionPoint}
           undoDisabled={canUndo === false}
-          onUndoLastWaypoint={undo}
+          onUndo={undo}
         />
       </div>
     </article>

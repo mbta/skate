@@ -22,7 +22,7 @@ const DetourMapWithDefaults = (
     undoDisabled={false}
     onClickMap={() => {}}
     onClickOriginalShape={() => {}}
-    onUndoLastWaypoint={() => {}}
+    onUndo={() => {}}
     center={latLngLiteralFactory.build()}
     zoom={16}
     {...props}
@@ -96,13 +96,13 @@ describe("DetourMap", () => {
     })
   })
 
-  test("clicking undo button fires `onUndoLastWaypoint`", async () => {
-    const onUndoLastWaypoint = jest.fn()
-    render(<DetourMapWithDefaults onUndoLastWaypoint={onUndoLastWaypoint} />)
+  test("clicking undo button fires `onUndo`", async () => {
+    const onUndo = jest.fn()
+    render(<DetourMapWithDefaults onUndo={onUndo} />)
 
     await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
-    expect(onUndoLastWaypoint).toHaveBeenCalledTimes(1)
+    expect(onUndo).toHaveBeenCalledTimes(1)
   })
 
   test("displays `startPoint` when provided", async () => {
