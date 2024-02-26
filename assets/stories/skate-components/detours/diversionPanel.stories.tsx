@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
 import { DiversionPanel } from "../../../src/components/detours/diversionPanel"
-import React from "react"
-import { ListGroup } from "react-bootstrap"
+import stopFactory from "../../../tests/factories/stop"
 
 const meta = {
   component: DiversionPanel,
@@ -43,15 +42,10 @@ export const WithDirections: Story = {
 export const WithStops: Story = {
   args: {
     ...WithDirections.args,
-    missedStops: (
-      <>
-        <ListGroup variant="flush" as="ol">
-          <ListGroup.Item as="li">Stop 1</ListGroup.Item>
-          <ListGroup.Item as="li">Stop 2</ListGroup.Item>
-          <ListGroup.Item as="li">Stop 3</ListGroup.Item>
-          <ListGroup.Item as="li">Stop 4</ListGroup.Item>
-        </ListGroup>
-      </>
-    ),
+    missedStops: [
+      stopFactory.build({ name: "Example St @ Sample Ave" }),
+      stopFactory.build({ name: "Example St opp Random Way" }),
+      stopFactory.build({ name: "Example St @ Fake Blvd" }),
+    ],
   },
 }

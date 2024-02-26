@@ -1,12 +1,14 @@
-import React, { ReactNode } from "react"
+import React from "react"
 import { RoutePill } from "../routePill"
 import { DetourShape } from "../../models/detour"
 import { ListGroup } from "react-bootstrap"
 import { Panel } from "./diversionPage"
+import { Stop } from "../../schedule"
+import { uniqBy } from "../../helpers/array"
 
 export interface DiversionPanelProps {
   directions?: DetourShape["directions"]
-  missedStops?: ReactNode
+  missedStops?: Stop[]
   routeName: string
   routeDescription: string
   routeOrigin: string
@@ -68,7 +70,13 @@ export const DiversionPanel = ({
       {missedStops && (
         <section className="pb-3">
           <h2 className="c-diversion-panel__h3">Missed Stops</h2>
-          {missedStops}
+          <ListGroup as="ul">
+            {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
+              <ListGroup.Item key={missedStop.id}>
+                {missedStop.name}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
         </section>
       )}
     </Panel.Body>

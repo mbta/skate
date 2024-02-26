@@ -11,6 +11,7 @@ import {
   Route,
   RouteId,
   RoutePattern,
+  RoutePatternId,
   Shape,
   ShapePoint,
   Stop,
@@ -165,6 +166,30 @@ export const fetchDetourDirections = (
         "x-csrf-token": getCsrfToken(),
       },
       body: JSON.stringify({ coordinates }),
+    },
+  })
+
+export const fetchDetourMissedStops = (
+  routePatternId: RoutePatternId,
+  connectionStart: ShapePoint,
+  connectionEnd: ShapePoint
+): Promise<Stop[] | null> =>
+  checkedApiCall<StopData[], Stop[] | null>({
+    url: "/api/detours/missed_stops",
+    parser: stopsFromData,
+    dataStruct: array(StopData),
+    defaultResult: null,
+    fetchArgs: {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
+      body: JSON.stringify({
+        route_pattern_id: routePatternId,
+        connection_start: connectionStart,
+        connection_end: connectionEnd,
+      }),
     },
   })
 

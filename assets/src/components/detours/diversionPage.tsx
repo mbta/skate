@@ -2,7 +2,6 @@ import React, {
   ComponentProps,
   ComponentPropsWithoutRef,
   PropsWithChildren,
-  ReactNode,
 } from "react"
 import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
@@ -13,13 +12,11 @@ import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 
 interface DiversionPageProps {
-  missedStops?: ReactNode
   originalRoute: OriginalRoute
   onClose?: () => void
 }
 
 export const DiversionPage = ({
-  missedStops,
   originalRoute,
   onClose,
 }: DiversionPageProps) => {
@@ -34,10 +31,12 @@ export const DiversionPage = ({
     detourShape,
     directions,
 
+    missedStops,
+
     canUndo,
     undo,
     clear,
-  } = useDetour()
+  } = useDetour(originalRoute.routePatternId)
 
   return (
     <article className="l-diversion-page h-100 border-box inherit-box">

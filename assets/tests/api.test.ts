@@ -27,18 +27,21 @@ import {
   fetchLocationSearchResultById,
   fetchLocationSearchSuggestions,
   fetchAllStops,
+  fetchDetourMissedStops,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, unknown } from "superstruct"
-import { LocationType, RouteType } from "../src/models/stopData"
+import { LocationType, RouteType, stopsFromData } from "../src/models/stopData"
 import * as Sentry from "@sentry/react"
 import locationSearchResultDataFactory from "./factories/locationSearchResultData"
 import locationSearchResultFactory from "./factories/locationSearchResult"
 import locationSearchSuggestionDataFactory from "./factories/locationSearchSuggestionData"
 import locationSearchSuggestionFactory from "./factories/locationSearchSuggestion"
+import stopDataFactory from "./factories/stopData"
+import { shapePointFactory } from "./factories/shapePointFactory"
 
 jest.mock("@sentry/react", () => ({
   __esModule: true,
@@ -398,6 +401,38 @@ describe("fetchShapeForRoute", () => {
 
     fetchShapeForRoute("28").then((result) => {
       expect(result).toEqual([])
+      done()
+    })
+  })
+})
+
+describe("fetchDetourMissedStops", () => {
+  test("fetches missed stops", (done) => {
+    const stopData = stopDataFactory.buildList(3)
+
+    const stops = stopsFromData(stopData)
+
+    mockFetch(200, { data: stopData })
+
+    fetchDetourMissedStops(
+      "route_pattern_id",
+      shapePointFactory.build(),
+      shapePointFactory.build()
+    ).then((result) => {
+      expect(result).toEqual(stops)
+      done()
+    })
+  })
+
+  test("defaults to null if there's an error", (done) => {
+    mockFetch(500, { data: null })
+
+    fetchDetourMissedStops(
+      "route_pattern_id",
+      shapePointFactory.build(),
+      shapePointFactory.build()
+    ).then((result) => {
+      expect(result).toBeNull()
       done()
     })
   })
