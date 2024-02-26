@@ -42,6 +42,10 @@ export const WithDirections: Story = {
 export const WithStops: Story = {
   args: {
     ...WithDirections.args,
-    missedStops: stopFactory.buildList(4),
+    missedStops: [
+      stopFactory.build({ name: "Example St @ Sample Ave" }),
+      stopFactory.build({ name: "Example St opp Random Way" }),
+      stopFactory.build({ name: "Example St @ Fake Blvd" }),
+    ],
   },
 }
