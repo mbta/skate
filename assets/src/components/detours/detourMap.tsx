@@ -1,5 +1,5 @@
-import React, { useId } from "react"
-import { LatLngLiteral } from "leaflet"
+import React, { PropsWithChildren, useId } from "react"
+import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
@@ -115,30 +115,27 @@ export const DetourMap = ({
       className="c-detour_map--detour-route-shape"
     />
 
-    <Polyline
+    <OriginalRouteShape
       positions={originalShape.map(shapePointToLatLngLiteral)}
-      className={joinClasses([
-        "c-detour_map--original-route-shape",
-        startPoint === undefined &&
-          "c-detour_map--original-route-shape__unstarted",
-      ])}
       key={`detour-map-original-route-shape-${useId()}-${
         startPoint === undefined
       }`}
-      bubblingMouseEvents={false}
-      eventHandlers={{
-        click: (e) => {
-          const { position } =
-            closestPosition(
-              originalShape.map(shapePointToLatLngLiteral),
-              e.latlng
-            ) ?? {}
-          position && onClickOriginalShape(latLngLiteralToShapePoint(position))
-        },
+      classNames={
+        startPoint === undefined
+          ? ["c-detour_map--original-route-shape__unstarted"]
+          : []
+      }
+      onClick={(e) => {
+        const { position } =
+          closestPosition(
+            originalShape.map(shapePointToLatLngLiteral),
+            e.latlng
+          ) ?? {}
+        position && onClickOriginalShape(latLngLiteralToShapePoint(position))
       }}
     >
       {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
-    </Polyline>
+    </OriginalRouteShape>
   </Map>
 )
 
@@ -201,3 +198,35 @@ const DetourPointMarker = ({ position }: { position: LatLngLiteral }) => (
     }
   />
 )
+
+interface OriginalRouteShapeProps extends PropsWithChildren {
+  key: string
+  positions: LatLngLiteral[]
+  classNames: string[]
+  onClick: (e: LeafletMouseEvent) => void
+}
+
+const OriginalRouteShape = ({
+  key,
+  positions,
+  children,
+  classNames,
+  onClick,
+}: OriginalRouteShapeProps) => {
+  return (
+    <Polyline
+      positions={positions}
+      className={joinClasses([
+        "c-detour_map--original-route-shape",
+        ...classNames,
+      ])}
+      key={key}
+      bubblingMouseEvents={false}
+      eventHandlers={{
+        click: onClick,
+      }}
+    >
+      {children}
+    </Polyline>
+  )
+}
