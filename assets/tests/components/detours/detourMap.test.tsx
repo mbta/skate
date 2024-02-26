@@ -23,6 +23,7 @@ const DetourMapWithDefaults = (
     onClickMap={() => {}}
     onClickOriginalShape={() => {}}
     onUndo={() => {}}
+    onClear={() => {}}
     center={latLngLiteralFactory.build()}
     zoom={16}
     {...props}
@@ -103,6 +104,15 @@ describe("DetourMap", () => {
     await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(onUndo).toHaveBeenCalledTimes(1)
+  })
+
+  test("clicking clear button fires `onClear`", async () => {
+    const onClear = jest.fn()
+    render(<DetourMapWithDefaults onClear={onClear} />)
+
+    await fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+
+    expect(onClear).toHaveBeenCalledTimes(1)
   })
 
   test("displays `startPoint` when provided", async () => {

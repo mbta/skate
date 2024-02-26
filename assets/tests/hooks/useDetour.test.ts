@@ -180,6 +180,63 @@ describe("useDetour", () => {
     expect(result.current.detourShape).toHaveLength(0)
   })
 
+  test("when `clear` is called, removes the start and end points", async () => {
+    const start = { lat: 0, lon: 0 }
+    const end = { lat: 1, lon: 1 }
+
+    const { result } = renderHook(useDetour)
+
+    act(() => result.current.addConnectionPoint(start))
+    act(() => result.current.addConnectionPoint(end))
+
+    expect(result.current.endPoint).not.toBeNull()
+    expect(result.current.startPoint).not.toBeNull()
+
+    act(() => result.current.clear())
+
+    expect(result.current.endPoint).toBeNull()
+    expect(result.current.startPoint).toBeNull()
+  })
+
+  test("when `clear` is called, removes all waypoints", async () => {
+    const start = { lat: 0, lon: 0 }
+
+    const { result } = renderHook(useDetour)
+
+    act(() => result.current.addConnectionPoint(start))
+    act(() => result.current.addWaypoint(shapePointFactory.build()))
+    act(() => result.current.addWaypoint(shapePointFactory.build()))
+
+    expect(result.current.waypoints).toHaveLength(2)
+
+    act(() => result.current.clear())
+
+    expect(result.current.waypoints).toHaveLength(0)
+  })
+
+  test("when `clear` is called, `detourShape` and `directions` should be empty", async () => {
+    jest
+      .mocked(fetchDetourDirections)
+      .mockResolvedValue(detourShapeFactory.build())
+
+    const { result } = renderHook(useDetour)
+
+    act(() => result.current.addConnectionPoint(shapePointFactory.build()))
+    act(() => result.current.addWaypoint(shapePointFactory.build()))
+    act(() => result.current.addWaypoint(shapePointFactory.build()))
+
+    await waitFor(() => {
+      expect(result.current.directions).not.toBeUndefined()
+      expect(result.current.detourShape).not.toHaveLength(0)
+    })
+
+    act(() => result.current.clear())
+
+    expect(result.current.waypoints).toHaveLength(0)
+    expect(result.current.directions).toBeUndefined()
+    expect(result.current.detourShape).toHaveLength(0)
+  })
+
   test("when `startPoint` is null, `canUndo` is `false`", async () => {
     const { result } = renderHook(useDetour)
 

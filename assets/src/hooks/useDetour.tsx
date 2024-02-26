@@ -80,6 +80,12 @@ export const useDetour = () => {
     }
   }
 
+  const clear = () => {
+    setEndPoint(null)
+    setStartPoint(null)
+    setWaypoints([])
+  }
+
   return {
     /**
      * Creates a new waypoint if all of the following criteria is met:
@@ -123,5 +129,9 @@ export const useDetour = () => {
      * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
      */
     undo,
+    /**
+     * Clears the entire detour
+     */
+    clear,
   }
 }

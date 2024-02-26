@@ -113,10 +113,11 @@ describe("DetourMap", () => {
     ).toHaveLength(0)
   })
 
-  test("'Undo' is disabled before detour drawing is started", () => {
+  test("'Undo' and 'Clear' are disabled before detour drawing is started", () => {
     render(<DiversionPage />)
 
     expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
+    expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
   })
 
   test("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
@@ -145,6 +146,29 @@ describe("DetourMap", () => {
     await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(screen.getByTitle("Detour Start")).not.toBeNull()
+    expect(screen.queryByTitle("Detour End")).toBeNull()
+  })
+
+  test("clicking on 'Clear' removes the entire detour", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+
+    expect(
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(0)
+
+    expect(screen.queryByTitle("Detour Start")).toBeNull()
     expect(screen.queryByTitle("Detour End")).toBeNull()
   })
 })

@@ -59,6 +59,10 @@ interface DetourMapProps {
    * Callback fired when the undo button is clicked.
    */
   onUndo: () => void
+  /**
+   * Callback fired when the clear button is clicked.
+   */
+  onClear: () => void
 
   /*
    * Center and zoom to position the map correctly when it renders
@@ -80,6 +84,7 @@ export const DetourMap = ({
 
   undoDisabled,
   onUndo,
+  onClear,
 
   center,
   zoom,
@@ -88,6 +93,9 @@ export const DetourMap = ({
     <CustomControl position="topleft" className="leaflet-bar">
       <Button variant="primary" disabled={undoDisabled} onClick={onUndo}>
         Undo
+      </Button>
+      <Button variant="primary" disabled={undoDisabled} onClick={onClear}>
+        Clear
       </Button>
     </CustomControl>
 
