@@ -7,6 +7,7 @@ import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
 import { instantPromise } from "../testHelpers/mockHelpers"
+import stopFactory from "../factories/stop"
 
 jest.mock("../../src/api")
 
@@ -268,12 +269,33 @@ describe("useDetour", () => {
 
     jest
       .mocked(fetchDetourMissedStops)
-      .mockImplementation(() => instantPromise(null))
+      .mockResolvedValue(stopFactory.buildList(3))
 
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+
+    await waitFor(() => {
+      expect(result.current.missedStops).not.toBeNull()
+    })
 
     expect(result.current.endPoint).not.toBeNull()
     expect(result.current.canUndo).toBe(true)
+  })
+
+  test("when `endPoint` is set, `missedStops` is filled in", async () => {
+    const { result } = renderHook(() => useDetour("routePatternId"))
+
+    const missedStops = stopFactory.buildList(3)
+
+    jest.mocked(fetchDetourMissedStops).mockResolvedValue(missedStops)
+
+    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+
+    await waitFor(() => {
+      expect(result.current.missedStops).not.toBeNull()
+    })
+
+    expect(result.current.missedStops).toBe(missedStops)
   })
 })
