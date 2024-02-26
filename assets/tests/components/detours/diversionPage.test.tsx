@@ -189,10 +189,7 @@ describe("DiversionPage", () => {
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await waitFor(() =>
-      expect(screen.getByText(stop.name)).toBeInTheDocument()
-    )
-   
+    await waitFor(() => expect(screen.getByText(stop.name)).toBeInTheDocument())
   })
 
   test("duplicate missed stops are only rendered once", async () => {
@@ -211,8 +208,6 @@ describe("DiversionPage", () => {
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await waitFor(() =>
-      expect(screen.getAllByText(stop.name)).toHaveLength(1)
-    )
+    await waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
   })
 })
