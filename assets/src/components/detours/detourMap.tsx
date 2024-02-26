@@ -91,7 +91,7 @@ export const DetourMap = ({
         disabled={undoDisabled}
         onClick={onUndoLastWaypoint}
       >
-        Clear Last Waypoint
+        Undo
       </Button>
     </CustomControl>
 

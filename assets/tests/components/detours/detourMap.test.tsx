@@ -100,9 +100,7 @@ describe("DetourMap", () => {
     const onUndoLastWaypoint = jest.fn()
     render(<DetourMapWithDefaults onUndoLastWaypoint={onUndoLastWaypoint} />)
 
-    await fireEvent.click(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    )
+    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(onUndoLastWaypoint).toHaveBeenCalledTimes(1)
   })
@@ -153,7 +151,7 @@ describe("DetourMap", () => {
     const { rerender } = render(<DetourMapWithDefaults />)
 
     const undoButton = screen.getByRole("button", {
-      name: "Clear Last Waypoint",
+      name: "Undo",
     })
 
     expect(undoButton).not.toBeDisabled()
