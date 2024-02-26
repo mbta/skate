@@ -35,7 +35,7 @@ export const DiversionPage = ({
     directions,
 
     canUndo,
-    undoLastWaypoint,
+    undo,
   } = useDetour()
 
   return (
@@ -65,7 +65,7 @@ export const DiversionPage = ({
           onClickMap={addWaypoint}
           onClickOriginalShape={addConnectionPoint}
           undoDisabled={canUndo === false}
-          onUndoLastWaypoint={undoLastWaypoint}
+          onUndo={undo}
         />
       </div>
     </article>

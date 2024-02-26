@@ -97,7 +97,7 @@ describe("DetourMap", () => {
     ).toHaveLength(1)
   })
 
-  test("clicking on 'Clear Last Waypoint' removes last point from detour", async () => {
+  test("clicking on 'Undo' removes last point from detour", async () => {
     const { container } = render(<DiversionPage />)
 
     await fireEvent.click(
@@ -106,36 +106,32 @@ describe("DetourMap", () => {
 
     await fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    await fireEvent.click(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    )
+    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
     ).toHaveLength(0)
   })
 
-  test("'Clear Last Waypoint' is disabled before detour drawing is started", () => {
+  test("'Undo' is disabled before detour drawing is started", () => {
     render(<DiversionPage />)
 
-    expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
+    expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
   })
 
-  test("'Clear Last Waypoint' is disabled when detour drawing has started but no waypoints are present", async () => {
+  test("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
     const { container } = render(<DiversionPage />)
 
     await fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
+    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+
+    expect(screen.queryByTitle("Detour Start")).toBeNull()
   })
 
-  test("'Clear Last Waypoint' is disabled when detour drawing has finished", async () => {
+  test("clicking on 'Undo' removes the end point when the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
     await fireEvent.click(
@@ -146,8 +142,9 @@ describe("DetourMap", () => {
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeDisabled()
+    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+
+    expect(screen.getByTitle("Detour Start")).not.toBeNull()
+    expect(screen.queryByTitle("Detour End")).toBeNull()
   })
 })
