@@ -13,6 +13,7 @@ export interface DiversionPanelProps {
   routeDescription: string
   routeOrigin: string
   routeDirection: string
+  detourFinished?: boolean
   onSubmit?: () => void
 }
 
@@ -23,6 +24,7 @@ export const DiversionPanel = ({
   routeDescription,
   routeOrigin,
   routeDirection,
+  detourFinished,
   onSubmit,
 }: DiversionPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
@@ -84,7 +86,7 @@ export const DiversionPanel = ({
         )}
       </Panel.Body.ScrollArea>
 
-      <Panel.Body.Footer>
+      <Panel.Body.Footer hidden={!detourFinished}>
         <Button className="flex-grow-1 m-3" onClick={onSubmit}>
           Finish Detour
         </Button>

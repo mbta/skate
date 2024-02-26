@@ -51,6 +51,7 @@ export const DiversionPage = ({
           routeDescription={originalRoute.routeDescription}
           routeOrigin={originalRoute.routeOrigin}
           routeDirection={originalRoute.routeDirection}
+          detourFinished={endPoint !== null}
         />
       </div>
       <div className="l-diversion-page__map">
