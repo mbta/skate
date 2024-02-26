@@ -8,6 +8,7 @@ import shapeFactory from "../../factories/shape"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 import stopFactory from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
+import { finishDetourButton } from "../../testHelpers/selectors/components/detours/diversionPage"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
@@ -246,7 +247,7 @@ describe("DiversionPage", () => {
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await userEvent.click(screen.getByRole("button", { name: "Finish Detour" }))
+    await userEvent.click(finishDetourButton.get())
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       "Detour is not editable from this screen."
