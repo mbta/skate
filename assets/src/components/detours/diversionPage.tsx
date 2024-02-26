@@ -123,7 +123,39 @@ const DiversionPagePanelBody = ({
   </div>
 )
 
+const DiversionPagePanelScrollArea = ({
+  children,
+  ...props
+}: PropsWithChildren<ComponentPropsWithoutRef<"div">>) => (
+  <div
+    {...props}
+    className={joinClasses([
+      "l-diversion-page-panel__scroll-area",
+      "px-3",
+      props.className,
+    ])}
+  >
+    {children}
+  </div>
+)
+
+const DiversionPagePanelFooter = ({
+  children,
+  className,
+  ...props
+}: PropsWithChildren<ComponentPropsWithoutRef<"div">>) => (
+  <div
+    {...props}
+    className={joinClasses(["border-top", "d-flex", "mt-auto", className])}
+  >
+    {children}
+  </div>
+)
+
 DiversionPagePanel.Header = DiversionPagePanelHeader
+
+DiversionPagePanelBody.ScrollArea = DiversionPagePanelScrollArea
+DiversionPagePanelBody.Footer = DiversionPagePanelFooter
 
 DiversionPagePanel.Body = DiversionPagePanelBody
 

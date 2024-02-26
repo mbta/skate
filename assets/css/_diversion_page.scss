@@ -56,6 +56,13 @@
   }
 }
 
+.l-diversion-page-panel {
+  &__scroll-area {
+    flex: 1 1 0;
+    overflow-y: auto;
+  }
+}
+
 .c-diversion-panel__origin,
 .c-diversion-panel__direction {
   font-size: var(--font-size-s);
