@@ -190,10 +190,9 @@ describe("DiversionPage", () => {
     )
 
     await waitFor(() =>
-      expect(screen.queryByText(stop.name)).toBeInTheDocument()
+      expect(screen.getByText(stop.name)).toBeInTheDocument()
     )
-
-    expect(screen.getByText(stop.name)).toBeInTheDocument()
+   
   })
 
   test("duplicate missed stops are only rendered once", async () => {
@@ -213,9 +212,7 @@ describe("DiversionPage", () => {
     )
 
     await waitFor(() =>
-      expect(screen.queryByText(stop.name)).toBeInTheDocument()
+      expect(screen.getAllByText(stop.name)).toHaveLength(1)
     )
-
-    expect(screen.getAllByText(stop.name)).toHaveLength(1)
   })
 })
