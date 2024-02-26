@@ -1,5 +1,15 @@
 .c-detour_map--original-route-shape {
   stroke: $color-kiwi-500;
+  opacity: 50%;
+}
+
+.c-detour_map--original-route-shape-outline {
+  stroke: $color-kiwi-500;
+  opacity: 0%;
+
+  &:hover {
+    opacity: 35%;
+  }
 }
 
 .c-detour_map--original-route-shape__unstarted {
