@@ -36,6 +36,7 @@ export const DiversionPage = ({
 
     canUndo,
     undo,
+    clear,
   } = useDetour()
 
   return (
@@ -66,6 +67,7 @@ export const DiversionPage = ({
           onClickOriginalShape={addConnectionPoint}
           undoDisabled={canUndo === false}
           onUndo={undo}
+          onClear={clear}
         />
       </div>
     </article>
