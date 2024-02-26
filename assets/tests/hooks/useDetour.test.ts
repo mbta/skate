@@ -277,7 +277,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toBeNull()
+      expect(result.current.missedStops).not.toBeUndefined()
     })
 
     expect(result.current.endPoint).not.toBeNull()
