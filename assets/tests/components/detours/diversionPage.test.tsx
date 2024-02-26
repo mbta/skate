@@ -252,6 +252,9 @@ describe("DiversionPage", () => {
     expect(
       screen.queryByRole("heading", { name: "Create Detour" })
     ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", { name: "Share Detour Details" })
+    ).toBeVisible()
   })
 
   test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
@@ -270,5 +273,63 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("alert")).toHaveTextContent(
       "Detour is not editable from this screen."
     )
+  })
+
+  test("'Share Detour Details' screen has back button to edit detour again", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
+  })
+
+  test("'Share Detour Details' screen has button to copy details", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
+  })
+
+  test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
+    userEvent.setup() // Configure the clipboard API
+
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
+
+    await waitFor(() =>
+      expect(window.navigator.clipboard.readText()).resolves.toBe("")
+    )
+
+    expect(
+      await screen.findByRole("tooltip", { name: "Copied to clipboard!" })
+    ).toBeVisible()
   })
 })

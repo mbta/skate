@@ -15,6 +15,7 @@ import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
+import { DetourFinishedPanel } from "./detourFinishedPanel"
 
 interface DiversionPageProps {
   originalRoute: OriginalRoute
@@ -44,6 +45,8 @@ export const DiversionPage = ({
     clear,
   } = useDetour(originalRoute.routePatternId)
 
+  const [textArea, setTextArea] = useState("")
+
   return (
     <article className="l-diversion-page h-100 border-box inherit-box">
       <header className="l-diversion-page__header text-bg-light border-bottom">
@@ -61,6 +64,13 @@ export const DiversionPage = ({
             routeDirection={originalRoute.routeDirection}
             detourFinished={endPoint !== null}
             onFinishDetour={() => setDetourFinished(true)}
+          />
+        )}
+        {detourFinished === true && (
+          <DetourFinishedPanel
+            onNavigateBack={() => setDetourFinished(false)}
+            detourText={textArea}
+            onChangeDetourText={setTextArea}
           />
         )}
       </div>
