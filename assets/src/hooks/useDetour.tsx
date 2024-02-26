@@ -66,8 +66,7 @@ export const useDetour = () => {
     }
   }
 
-  const canUndo =
-    startPoint !== null || endPoint !== null || waypoints.length > 0
+  const canUndo = startPoint !== null
 
   const undo = () => {
     if (!canUndo) return

@@ -180,7 +180,7 @@ describe("useDetour", () => {
     expect(result.current.detourShape).toHaveLength(0)
   })
 
-  test("when `startPoint` is empty, `canUndo` is `false`", async () => {
+  test("when `startPoint` is null, `canUndo` is `false`", async () => {
     const { result } = renderHook(useDetour)
 
     expect(result.current.startPoint).toBeNull()
