@@ -5,13 +5,9 @@ import { DetourMap } from "../../../src/components/detours/detourMap"
 import "@testing-library/jest-dom/jest-globals"
 import { defaultCenter } from "../../../src/components/map"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
-// import { fetchDetourMissedStops } from "../../../src/api"
-
-// jest.mock("../../../src/api")
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
-  // jest.mocked(fetchDetourMissedStops).mockResolvedValue(null)
 })
 
 const DetourMapWithDefaults = (
