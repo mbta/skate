@@ -45,14 +45,15 @@ describe("Nav", () => {
       .mocked(useScreenSize)
       .mockReturnValueOnce("mobile_landscape_tablet_portrait")
 
-    const result = render(
+    const { container } = render(
       <BrowserRouter>
         <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 
-    expect(result.queryByTitle("Route Ladders")).not.toBeNull()
-    expect(result.queryByText("Route Ladders")).toBeNull()
+    expect(container.querySelector(".c-left-nav")).toHaveClass(
+      "c-left-nav--collapsed"
+    )
   })
 
   test("renders mobile landscape / tablet portrait nav content with nav elements hidden when a view is open", () => {
@@ -74,14 +75,15 @@ describe("Nav", () => {
   test("renders tablet nav content", () => {
     jest.mocked(useScreenSize).mockReturnValueOnce("tablet")
 
-    const result = render(
+    const { container } = render(
       <BrowserRouter>
         <Nav>Hello, world!</Nav>
       </BrowserRouter>
     )
 
-    expect(result.queryByTitle("Route Ladders")).not.toBeNull()
-    expect(result.queryByText("Route Ladders")).toBeNull()
+    expect(container.querySelector(".c-left-nav")).toHaveClass(
+      "c-left-nav--collapsed"
+    )
   })
 
   test("renders nav item with title 'Search Map'", () => {

@@ -65,31 +65,42 @@ describe("LeftNav", () => {
     expect(result.queryByText("Collapse")).not.toBeNull()
   })
 
-  test("renders collapsed state", () => {
+  test("text still appears in collapsed state", () => {
     const result = render(
       <BrowserRouter>
         <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
       </BrowserRouter>
     )
 
-    expect(result.queryByText("Route Ladders")).toBeNull()
+    expect(result.queryByText("Route Ladders")).not.toBeNull()
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()
-    expect(result.queryByText("Late View")).toBeNull()
+    expect(result.queryByText("Late View")).not.toBeNull()
     expect(result.queryByTitle("Late View")).not.toBeNull()
-    expect(result.queryByText("Swings View")).toBeNull()
+    expect(result.queryByText("Swings View")).not.toBeNull()
     expect(result.queryByTitle("Swings View")).not.toBeNull()
-    expect(result.queryByText("Shuttle Map")).toBeNull()
+    expect(result.queryByText("Shuttle Map")).not.toBeNull()
     expect(result.queryByTitle("Shuttle Map")).not.toBeNull()
-    expect(result.queryByText("Search Map")).toBeNull()
+    expect(result.queryByText("Search Map")).not.toBeNull()
     expect(result.queryByTitle("Search Map")).not.toBeNull()
-    expect(result.queryByText("Support")).toBeNull()
+    expect(result.queryByText("Support")).not.toBeNull()
     expect(result.queryByTitle("Support")).not.toBeNull()
-    expect(result.queryByText("About Skate")).toBeNull()
+    expect(result.queryByText("About Skate")).not.toBeNull()
     expect(result.queryByTitle("About Skate")).not.toBeNull()
-    expect(result.queryByText("Settings")).toBeNull()
+    expect(result.queryByText("Settings")).not.toBeNull()
     expect(result.queryByTitle("Settings")).not.toBeNull()
-    expect(result.queryByText("Expand")).toBeNull()
     expect(result.queryByTitle("Expand")).not.toBeNull()
+  })
+
+  test("puts the --collapsed CSS class on a collapsed menu", () => {
+    const { container } = render(
+      <BrowserRouter>
+        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+      </BrowserRouter>
+    )
+
+    expect(container.querySelector(".c-left-nav")).toHaveClass(
+      "c-left-nav--collapsed"
+    )
   })
 
   test("clicking 'Search Map' nav item triggers FullStory event", async () => {
@@ -161,11 +172,15 @@ describe("LeftNav", () => {
 
     await user.click(result.getByTitle("Collapse"))
 
-    expect(result.queryByText("Route Ladders")).toBeNull()
+    expect(result.container.querySelector(".c-left-nav")).toHaveClass(
+      "c-left-nav--collapsed"
+    )
 
     await user.click(result.getByTitle("Expand"))
 
-    expect(result.queryByText("Route Ladders")).not.toBeNull()
+    expect(result.container.querySelector(".c-left-nav")).not.toHaveClass(
+      "c-left-nav--collapsed"
+    )
   })
 
   test("does not render late view option when dispatcher flag is false", () => {

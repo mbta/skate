@@ -10,14 +10,14 @@
   .c-left-nav__icon {
     padding-right: 0.75rem;
   }
+
+  @media not (prefers-reduced-motion: reduce) {
+    transition: all 0.3s;
+  }
 }
 
 .c-left-nav--collapsed {
   width: 4.25rem;
-
-  .c-left-nav__icon {
-    padding-right: 0;
-  }
 }
 
 .c-left-nav__modes-and-views {
@@ -43,7 +43,7 @@
 .c-left-nav__menu-button {
   @include button-icon(1.25rem);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
   width: 100%;
@@ -64,14 +64,6 @@
   }
 }
 
-.c-left-nav--collapsed {
-  .c-left-nav__link {
-    padding: 0;
-    width: 100%;
-    justify-content: center;
-  }
-}
-
 .c-left-nav__link {
   @include button-icon(1.25rem);
   display: flex;
@@ -86,6 +78,8 @@
   color: $color-gray-600;
   text-decoration: none;
   border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
 
   &:hover {
     background-color: $color-gray-100;
