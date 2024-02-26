@@ -4,6 +4,7 @@ import { DetourShape } from "../../models/detour"
 import { ListGroup } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import { Stop } from "../../schedule"
+import { uniqBy } from "../../helpers/array"
 
 export interface DiversionPanelProps {
   directions?: DetourShape["directions"]
@@ -69,8 +70,8 @@ export const DiversionPanel = ({
       {missedStops && (
         <section className="pb-3">
           <h2 className="c-diversion-panel__h3">Missed Stops</h2>
-          <ListGroup as="ol">
-            {missedStops.map((missedStop) => (
+          <ListGroup as="ul">
+            {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
               <ListGroup.Item key={missedStop.id}>
                 {missedStop.name}
               </ListGroup.Item>

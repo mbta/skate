@@ -189,8 +189,33 @@ describe("DiversionPage", () => {
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await waitFor(() => expect(screen.queryByText(stop.name)))
+    await waitFor(() =>
+      expect(screen.queryByText(stop.name)).toBeInTheDocument()
+    )
 
     expect(screen.getByText(stop.name)).toBeInTheDocument()
+  })
+
+  test("duplicate missed stops are only rendered once", async () => {
+    const stop = stopFactory.build()
+    jest
+      .mocked(fetchDetourMissedStops)
+      .mockReturnValue(instantPromise([stop, stop]))
+
+    const { container } = render(<DiversionPage />)
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await waitFor(() =>
+      expect(screen.queryByText(stop.name)).toBeInTheDocument()
+    )
+
+    expect(screen.getAllByText(stop.name)).toHaveLength(1)
   })
 })
