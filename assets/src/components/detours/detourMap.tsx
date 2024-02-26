@@ -225,13 +225,13 @@ const OriginalRouteShape = ({
       <Polyline
         weight={6}
         positions={positions}
-        className={joinClasses(["c-detour_map--original-route-shape"])}
+        className={joinClasses(["c-detour_map--original-route-shape-skeleton"])}
       />
       <Polyline
         positions={positions}
         weight={16}
         className={joinClasses([
-          "c-detour_map--original-route-shape-outline",
+          "c-detour_map--original-route-shape",
           ...classNames,
         ])}
         bubblingMouseEvents={false}
