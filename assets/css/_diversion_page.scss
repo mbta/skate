@@ -34,20 +34,21 @@
         "panel map" auto
         / fit-content(28ch) auto;
 
-      .c-diversion-panel,
-      .l-diversion-page__panel {
+      .l-diversion-page__panel,
+      .l-diversion-page-panel {
         display: grid;
 
         grid-template-rows: subgrid;
-        grid-template-columns: 1fr;
+        grid-template-columns: subgrid;
 
         grid-area: panel;
 
-        .c-diversion-panel__header {
+        .l-diversion-page__header,
+        .l-diversion-page-panel__header {
           grid-row: heading;
         }
 
-        .c-diversion-panel__body {
+        .l-diversion-page-panel__body {
           grid-row: 2/-1;
         }
       }

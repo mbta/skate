@@ -2,6 +2,7 @@ import React, { ReactNode } from "react"
 import { RoutePill } from "../routePill"
 import { DetourShape } from "../../models/detour"
 import { ListGroup } from "react-bootstrap"
+import { Panel } from "./diversionPage"
 
 export interface DiversionPanelProps {
   directions?: DetourShape["directions"]
@@ -20,12 +21,12 @@ export const DiversionPanel = ({
   routeOrigin,
   routeDirection,
 }: DiversionPanelProps) => (
-  <article className="c-diversion-panel h-100 bg-light border-end">
-    <header className="c-diversion-panel__header border-bottom d-flex px-3">
+  <Panel as="article" className="c-diversion-panel">
+    <Panel.Header>
       <h1 className="c-diversion-panel__h2 my-3">Create Detour</h1>
-    </header>
+    </Panel.Header>
 
-    <div className="c-diversion-panel__body overflow-auto px-3">
+    <Panel.Body className="c-diversion-panel__body overflow-auto px-3">
       <section className="pb-3 border-bottom">
         <h2 className="c-diversion-panel__h3">Affected route</h2>
 
@@ -70,8 +71,8 @@ export const DiversionPanel = ({
           {missedStops}
         </section>
       )}
-    </div>
-  </article>
+    </Panel.Body>
+  </Panel>
 )
 
 const DirectionsHelpText = () => (
