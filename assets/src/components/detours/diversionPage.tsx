@@ -2,11 +2,16 @@ import React, {
   ComponentProps,
   ComponentPropsWithoutRef,
   PropsWithChildren,
+  useState,
 } from "react"
 import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
-import { CloseButton } from "react-bootstrap"
+import {
+  Alert,
+  CloseButton,
+} from "react-bootstrap"
+import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
@@ -20,6 +25,7 @@ export const DiversionPage = ({
   originalRoute,
   onClose,
 }: DiversionPageProps) => {
+  const [detourFinished, setDetourFinished] = useState(false)
   const {
     addConnectionPoint,
     addWaypoint,
@@ -43,6 +49,7 @@ export const DiversionPage = ({
       <header className="l-diversion-page__header text-bg-light border-bottom">
         <CloseButton className="p-4" onClick={onClose} />
       </header>
+
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
           directions={directions}
@@ -52,9 +59,19 @@ export const DiversionPage = ({
           routeOrigin={originalRoute.routeOrigin}
           routeDirection={originalRoute.routeDirection}
           detourFinished={endPoint !== null}
+          onFinishDetour={() => setDetourFinished(true)}
         />
       </div>
-      <div className="l-diversion-page__map">
+      <div className="l-diversion-page__map position-relative">
+        {detourFinished && (
+          <Alert
+            variant="info"
+            className="position-absolute top-0 left-0 m-2 icon-link z-1"
+          >
+            <BsIcons.ExclamationCircleFill />
+            Detour is not editable from this screen.
+          </Alert>
+        )}
         <DetourMap
           originalShape={originalRoute.shape.points}
           center={originalRoute.center}

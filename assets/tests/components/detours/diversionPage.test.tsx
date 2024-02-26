@@ -7,6 +7,7 @@ import { DiversionPage as DiversionPageDefault } from "../../../src/components/d
 import shapeFactory from "../../factories/shape"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 import stopFactory from "../../factories/stop"
+import userEvent from "@testing-library/user-event"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
@@ -232,5 +233,23 @@ describe("DiversionPage", () => {
     })
 
     waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
+  })
+
+  test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Finish Detour" }))
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Detour is not editable from this screen."
+    )
   })
 })
