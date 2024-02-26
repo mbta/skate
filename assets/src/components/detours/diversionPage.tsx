@@ -46,7 +46,7 @@ export const DiversionPage = ({
       <div className="l-diversion-page__panel bg-light">
         <DiversionPanel
           directions={directions}
-          missedStops={missedStops || undefined}
+          missedStops={missedStops}
           routeName={originalRoute.routeName}
           routeDescription={originalRoute.routeDescription}
           routeOrigin={originalRoute.routeOrigin}

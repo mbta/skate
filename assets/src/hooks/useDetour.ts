@@ -42,7 +42,7 @@ export const useDetour = (routePatternId: RoutePatternId) => {
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
-  const [missedStops, setMissedStops] = useState<Stop[] | null>(null)
+  const [missedStops, setMissedStops] = useState<Stop[] | undefined>(undefined)
 
   useEffect(() => {
     let shouldUpdate = true
@@ -51,7 +51,7 @@ export const useDetour = (routePatternId: RoutePatternId) => {
       fetchDetourMissedStops(routePatternId, startPoint, endPoint).then(
         (result) => {
           if (shouldUpdate) {
-            setMissedStops(result)
+            setMissedStops(result || undefined)
           }
         }
       )
