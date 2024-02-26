@@ -123,18 +123,6 @@ describe("DetourMap", () => {
     ).toBeDisabled()
   })
 
-  test("'Clear Last Waypoint' is enabled when detour drawing has started but no waypoints are present", async () => {
-    const { container } = render(<DiversionPage />)
-
-    await fireEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeEnabled()
-  })
-
   test("clicking on 'Clear Last Waypoint' removes the start point when there are no waypoints", async () => {
     const { container } = render(<DiversionPage />)
 
@@ -147,22 +135,6 @@ describe("DetourMap", () => {
     )
 
     expect(screen.queryByTitle("Detour Start")).toBeNull()
-  })
-
-  test("'Clear Last Waypoint' is enabled when detour drawing has finished", async () => {
-    const { container } = render(<DiversionPage />)
-
-    await fireEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    await fireEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
-
-    expect(
-      screen.getByRole("button", { name: "Clear Last Waypoint" })
-    ).toBeEnabled()
   })
 
   test("clicking on 'Clear Last Waypoint' removes the end point when the detour is finished", async () => {
