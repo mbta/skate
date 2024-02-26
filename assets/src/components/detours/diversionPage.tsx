@@ -1,9 +1,16 @@
-import React, { ReactNode } from "react"
+import React, {
+  ComponentProps,
+  ComponentPropsWithoutRef,
+  PropsWithChildren,
+  ReactNode,
+} from "react"
 import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
 import { CloseButton } from "react-bootstrap"
 import { OriginalRoute } from "../../models/detour"
+import { joinClasses } from "../../helpers/dom"
+import { AsProp } from "react-bootstrap/esm/helpers"
 
 interface DiversionPageProps {
   missedStops?: ReactNode
@@ -32,7 +39,7 @@ export const DiversionPage = ({
   } = useDetour()
 
   return (
-    <article className="l-diversion-page h-100 border-box">
+    <article className="l-diversion-page h-100 border-box inherit-box">
       <header className="l-diversion-page__header text-bg-light border-bottom">
         <CloseButton className="p-4" onClick={onClose} />
       </header>
@@ -64,3 +71,61 @@ export const DiversionPage = ({
     </article>
   )
 }
+
+type AsProps<As extends React.ElementType> = ComponentProps<As> & AsProp<As>
+
+const DiversionPagePanel = <As extends React.ElementType = "article">({
+  children,
+  as: As = "article",
+  ...props
+}: PropsWithChildren<AsProps<As>>) => (
+  <As
+    {...props}
+    className={joinClasses([
+      "l-diversion-page-panel",
+      "bg-light",
+      "border-end",
+      props.className,
+    ])}
+  >
+    {children}
+  </As>
+)
+
+const DiversionPagePanelHeader = <As extends React.ElementType = "header">({
+  children,
+  as: As = "header",
+  ...props
+}: PropsWithChildren<AsProps<As>>) => (
+  <As
+    {...props}
+    className={joinClasses([
+      "l-diversion-page-panel__header",
+      "border-bottom",
+      "px-3",
+      props.className,
+    ])}
+  >
+    {children}
+  </As>
+)
+
+const DiversionPagePanelBody = ({
+  children,
+  ...props
+}: PropsWithChildren<ComponentPropsWithoutRef<"div">>) => (
+  <div
+    {...props}
+    className={joinClasses(["l-diversion-page-panel__body", props.className])}
+  >
+    {children}
+  </div>
+)
+
+DiversionPagePanel.Header = DiversionPagePanelHeader
+
+DiversionPagePanel.Body = DiversionPagePanelBody
+
+DiversionPage.Panel = DiversionPagePanel
+
+export const Panel = DiversionPagePanel
