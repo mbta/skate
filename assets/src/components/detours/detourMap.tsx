@@ -220,17 +220,25 @@ const OriginalRouteShape = ({
   classNames,
   onClick,
 }: OriginalRouteShapeProps) => (
-  <Polyline
-    positions={positions}
-    className={joinClasses([
-      "c-detour_map--original-route-shape",
-      ...classNames,
-    ])}
-    bubblingMouseEvents={false}
-    eventHandlers={{
-      click: onClick,
-    }}
-  >
-    {children}
-  </Polyline>
+  <>
+    <Polyline
+      weight={6}
+      positions={positions}
+      className="c-detour_map--original-route-shape-core"
+    />
+    <Polyline
+      positions={positions}
+      weight={16}
+      className={joinClasses([
+        "c-detour_map--original-route-shape",
+        ...classNames,
+      ])}
+      bubblingMouseEvents={false}
+      eventHandlers={{
+        click: onClick,
+      }}
+    >
+      {children}
+    </Polyline>
+  </>
 )
