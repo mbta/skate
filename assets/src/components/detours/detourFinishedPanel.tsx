@@ -1,18 +1,16 @@
-import React from "react";
-import {
-  Button, Form,
-  OverlayTrigger,
-  Tooltip
-} from "react-bootstrap";
-import * as BsIcons from "../../helpers/bsIcons";
-import { Panel } from "./diversionPage";
+import React from "react"
+import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap"
+import * as BsIcons from "../../helpers/bsIcons"
+import { Panel } from "./diversionPage"
 
 export const DetourFinishedPanel = ({
-  onNavigateBack, detourText, onChangeDetourText,
+  onNavigateBack,
+  detourText,
+  onChangeDetourText,
 }: {
-  onNavigateBack: () => void;
-  detourText: string;
-  onChangeDetourText: (value: string) => void;
+  onNavigateBack: () => void
+  detourText: string
+  onChangeDetourText: (value: string) => void
 }) => (
   <Panel as="article">
     <Panel.Header className="">
@@ -37,7 +35,8 @@ export const DetourFinishedPanel = ({
           className="flex-grow-1 mb-3"
           style={{
             resize: "none",
-          }} />
+          }}
+        />
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex">
@@ -58,4 +57,4 @@ export const DetourFinishedPanel = ({
       </Panel.Body.Footer>
     </Panel.Body>
   </Panel>
-);
+)

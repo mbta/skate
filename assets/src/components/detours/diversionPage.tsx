@@ -7,10 +7,7 @@ import React, {
 import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
-import {
-  Alert,
-  CloseButton,
-} from "react-bootstrap"
+import { Alert, CloseButton } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
