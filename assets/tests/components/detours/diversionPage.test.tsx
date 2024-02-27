@@ -68,6 +68,24 @@ describe("DiversionPage", () => {
     expect(screen.getByTitle("Detour End")).not.toBeNull()
   })
 
+  test("when end point has been set, finish detour button is visible", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    expect(
+      screen.getByRole("button", { name: "Finish Detour", hidden: true })
+    ).not.toBeVisible()
+
+    await fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    expect(screen.getByRole("button", { name: "Finish Detour" })).toBeVisible()
+  })
+
   test("clicking on map while drawing a detour adds a point", async () => {
     const { container } = render(<DiversionPage />)
 

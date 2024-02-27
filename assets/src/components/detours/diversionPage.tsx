@@ -51,6 +51,7 @@ export const DiversionPage = ({
           routeDescription={originalRoute.routeDescription}
           routeOrigin={originalRoute.routeOrigin}
           routeDirection={originalRoute.routeDirection}
+          detourFinished={endPoint !== null}
         />
       </div>
       <div className="l-diversion-page__map">
@@ -123,7 +124,39 @@ const DiversionPagePanelBody = ({
   </div>
 )
 
+const DiversionPagePanelScrollArea = ({
+  children,
+  ...props
+}: PropsWithChildren<ComponentPropsWithoutRef<"div">>) => (
+  <div
+    {...props}
+    className={joinClasses([
+      "l-diversion-page-panel__scroll-area",
+      "px-3",
+      props.className,
+    ])}
+  >
+    {children}
+  </div>
+)
+
+const DiversionPagePanelFooter = ({
+  children,
+  className,
+  ...props
+}: PropsWithChildren<ComponentPropsWithoutRef<"div">>) => (
+  <div
+    {...props}
+    className={joinClasses(["border-top", "d-flex", "mt-auto", className])}
+  >
+    {children}
+  </div>
+)
+
 DiversionPagePanel.Header = DiversionPagePanelHeader
+
+DiversionPagePanelBody.ScrollArea = DiversionPagePanelScrollArea
+DiversionPagePanelBody.Footer = DiversionPagePanelFooter
 
 DiversionPagePanel.Body = DiversionPagePanelBody
 
