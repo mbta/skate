@@ -73,16 +73,16 @@ export const DiversionPanel = ({
         </section>
 
         {missedStops && (
-        <section className="pb-3">
-          <h2 className="c-diversion-panel__h3">Missed Stops</h2>
-          <ListGroup as="ul">
-            {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
-              <ListGroup.Item key={missedStop.id}>
-                {missedStop.name}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </section>
+          <section className="pb-3">
+            <h2 className="c-diversion-panel__h3">Missed Stops</h2>
+            <ListGroup as="ul">
+              {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
+                <ListGroup.Item key={missedStop.id}>
+                  {missedStop.name}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </section>
         )}
       </Panel.Body.ScrollArea>
 
