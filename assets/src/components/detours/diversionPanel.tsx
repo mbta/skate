@@ -29,13 +29,13 @@ export const DiversionPanel = ({
 }: DiversionPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header>
-      <h1 className="c-diversion-panel__h2 my-3">Create Detour</h1>
+      <h1 className="c-diversion-panel__h1 my-3">Create Detour</h1>
     </Panel.Header>
 
     <Panel.Body className="c-diversion-panel__body d-flex flex-column">
       <Panel.Body.ScrollArea>
         <section className="pb-3 border-bottom">
-          <h2 className="c-diversion-panel__h3">Affected route</h2>
+          <h2 className="c-diversion-panel__h2">Affected route</h2>
 
           <div className="d-flex">
             <RoutePill
@@ -58,7 +58,7 @@ export const DiversionPanel = ({
         </section>
 
         <section className="pb-3">
-          <h2 className="c-diversion-panel__h3">Detour Directions</h2>
+          <h2 className="c-diversion-panel__h2">Detour Directions</h2>
           {directions ? (
             <ListGroup as="ol">
               {directions.map((d) => (
@@ -74,7 +74,7 @@ export const DiversionPanel = ({
 
         {missedStops && (
           <section className="pb-3">
-            <h2 className="c-diversion-panel__h3">
+            <h2 className="c-diversion-panel__h2">
               Missed Stops{" "}
               <Badge bg="missed-stop" className="c-diversion-panel__h3">
                 {missedStops.length}
