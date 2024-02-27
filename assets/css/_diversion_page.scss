@@ -1,3 +1,21 @@
+
+.l-diversion-page-panel {
+  :not(.l-diversion-page) & {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    > .l-diversion-page-panel__body {
+      flex-grow: 1;
+    }
+  }
+
+  &__scroll-area {
+    flex: 1 1 0;
+    overflow-y: auto;
+  }
+}
+
 .l-diversion-page {
   display: grid;
   // Default layout is linear
@@ -53,13 +71,6 @@
         }
       }
     }
-  }
-}
-
-.l-diversion-page-panel {
-  &__scroll-area {
-    flex: 1 1 0;
-    overflow-y: auto;
   }
 }
 
