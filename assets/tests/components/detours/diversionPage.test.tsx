@@ -1,5 +1,5 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import React, { ComponentProps } from "react"
 import "@testing-library/jest-dom/jest-globals"
 import { fetchDetourDirections, fetchDetourMissedStops } from "../../../src/api"
@@ -7,7 +7,6 @@ import { DiversionPage as DiversionPageDefault } from "../../../src/components/d
 import shapeFactory from "../../factories/shape"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 import stopFactory from "../../factories/stop"
-import { instantPromise } from "../../testHelpers/mockHelpers"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
@@ -195,37 +194,43 @@ describe("DiversionPage", () => {
 
   test("missed stops are filled in when detour is complete", async () => {
     const stop = stopFactory.build()
-    jest.mocked(fetchDetourMissedStops).mockReturnValue(instantPromise([stop]))
+    jest.mocked(fetchDetourMissedStops).mockResolvedValue([stop])
 
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
+    await act(async () => {
+      await fireEvent.click(
+        container.querySelector(".c-detour_map--original-route-shape")!
+      )
+    })
 
-    await fireEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
+    await act(async () => {
+      await fireEvent.click(
+        container.querySelector(".c-detour_map--original-route-shape")!
+      )
+    })
 
-    await waitFor(() => expect(screen.getByText(stop.name)).toBeInTheDocument())
+    waitFor(() => expect(screen.getByText(stop.name)).toBeInTheDocument())
   })
 
   test("duplicate missed stops are only rendered once", async () => {
     const stop = stopFactory.build()
-    jest
-      .mocked(fetchDetourMissedStops)
-      .mockReturnValue(instantPromise([stop, stop]))
+    jest.mocked(fetchDetourMissedStops).mockResolvedValue([stop, stop])
 
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
+    await act(async () => {
+      await fireEvent.click(
+        container.querySelector(".c-detour_map--original-route-shape")!
+      )
+    })
 
-    await fireEvent.click(
-      container.querySelector(".c-detour_map--original-route-shape")!
-    )
+    await act(async () => {
+      await fireEvent.click(
+        container.querySelector(".c-detour_map--original-route-shape")!
+      )
+    })
 
-    await waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
+    waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
   })
 })
