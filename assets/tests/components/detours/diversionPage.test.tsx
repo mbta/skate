@@ -45,7 +45,7 @@ describe("DiversionPage", () => {
   test("can click on route shape to start detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -56,11 +56,11 @@ describe("DiversionPage", () => {
   test("can click on route shape again to end detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -70,7 +70,7 @@ describe("DiversionPage", () => {
   test("when end point has been set, finish detour button is visible", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -78,7 +78,7 @@ describe("DiversionPage", () => {
       screen.getByRole("button", { name: "Finish Detour", hidden: true })
     ).not.toBeVisible()
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -88,11 +88,11 @@ describe("DiversionPage", () => {
   test("clicking on map while drawing a detour adds a point", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
@@ -102,13 +102,13 @@ describe("DiversionPage", () => {
   test("detour points are correctly rendered when detour is complete", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -120,13 +120,13 @@ describe("DiversionPage", () => {
   test("clicking on 'Undo' removes last point from detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
@@ -143,11 +143,11 @@ describe("DiversionPage", () => {
   test("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(screen.queryByTitle("Detour Start")).toBeNull()
   })
@@ -155,15 +155,15 @@ describe("DiversionPage", () => {
   test("clicking on 'Undo' removes the end point when the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(screen.getByTitle("Detour Start")).not.toBeNull()
     expect(screen.queryByTitle("Detour End")).toBeNull()
@@ -172,17 +172,17 @@ describe("DiversionPage", () => {
   test("clicking on 'Clear' removes the entire detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    await fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+    fireEvent.click(screen.getByRole("button", { name: "Clear" }))
 
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
@@ -199,13 +199,13 @@ describe("DiversionPage", () => {
     const { container } = render(<DiversionPage />)
 
     await act(async () => {
-      await fireEvent.click(
+      fireEvent.click(
         container.querySelector(".c-detour_map--original-route-shape")!
       )
     })
 
     await act(async () => {
-      await fireEvent.click(
+      fireEvent.click(
         container.querySelector(".c-detour_map--original-route-shape")!
       )
     })
@@ -220,13 +220,13 @@ describe("DiversionPage", () => {
     const { container } = render(<DiversionPage />)
 
     await act(async () => {
-      await fireEvent.click(
+      fireEvent.click(
         container.querySelector(".c-detour_map--original-route-shape")!
       )
     })
 
     await act(async () => {
-      await fireEvent.click(
+      fireEvent.click(
         container.querySelector(".c-detour_map--original-route-shape")!
       )
     })

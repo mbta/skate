@@ -41,7 +41,7 @@ describe("DetourMap", () => {
       />
     )
 
-    await fireEvent.click(
+    fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
@@ -89,7 +89,7 @@ describe("DetourMap", () => {
       <DetourMapWithDefaults onClickMap={onClickMap} />
     )
 
-    await fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
     expect(onClickMap).toHaveBeenNthCalledWith(1, {
       lat: expect.closeTo(defaultCenter.lat),
@@ -101,7 +101,7 @@ describe("DetourMap", () => {
     const onUndo = jest.fn()
     render(<DetourMapWithDefaults onUndo={onUndo} />)
 
-    await fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(onUndo).toHaveBeenCalledTimes(1)
   })
@@ -110,7 +110,7 @@ describe("DetourMap", () => {
     const onClear = jest.fn()
     render(<DetourMapWithDefaults onClear={onClear} />)
 
-    await fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+    fireEvent.click(screen.getByRole("button", { name: "Clear" }))
 
     expect(onClear).toHaveBeenCalledTimes(1)
   })
