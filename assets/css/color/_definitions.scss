@@ -1,4 +1,5 @@
 @use "./tokens_2021" as tokens;
+@use "./tokens_2024" as new_tokens;
 // #region Semantic Colors
 /*
  * A patch-panel which maps semantic colors to actual colors.
@@ -21,6 +22,7 @@ $ui-alert: tokens.$strawberry-500;
 $service-alert: tokens.$lemon-500;
 $light: tokens.$gray-100;
 $dark: tokens.$gray-900;
+$missed-stop: new_tokens.$missed-stop-1;
 
 @mixin theme-colors {
   --color-primary: #{$primary};
@@ -30,6 +32,7 @@ $dark: tokens.$gray-900;
   --color-service-alert: #{$service-alert};
   --color-light: #{$light};
   --color-dark: #{$dark};
+  --color-missed-stop: #{$missed-stop};
 }
 // #endregion Theme Colors
 

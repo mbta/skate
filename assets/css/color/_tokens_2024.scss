@@ -142,10 +142,13 @@ $gray-50: #f8f8f9;
 $persimmon: #e45d32;
 $sky: #46a5e7;
 $lime: #8bcf00;
-$highlighter: #e7ff36;
 
 $white: #fff;
 $black: #000;
+
+$highlighter: #e7ff36;
+
+$missed-stop-1: #e8002a;
 
 @mixin system-state-colors {
   --color-persimmon: #{$persimmon};
@@ -156,6 +159,8 @@ $black: #000;
   --color-black: #{$black};
 
   --color-highlighter: #{$highlighter};
+
+  --color-missed-stop-1: #{$missed-stop-1};
 }
 // #endregion System State Colors
 
