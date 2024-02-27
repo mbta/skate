@@ -7,6 +7,8 @@ import { DiversionPage as DiversionPageDefault } from "../../../src/components/d
 import shapeFactory from "../../factories/shape"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 import stopFactory from "../../factories/stop"
+import userEvent from "@testing-library/user-event"
+import { finishDetourButton } from "../../testHelpers/selectors/components/detours/diversionPage"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
@@ -232,5 +234,102 @@ describe("DiversionPage", () => {
     })
 
     waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
+  })
+
+  test("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    expect(
+      screen.queryByRole("heading", { name: "Create Detour" })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", { name: "Share Detour Details" })
+    ).toBeVisible()
+  })
+
+  test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Detour is not editable from this screen."
+    )
+  })
+
+  test("'Share Detour Details' screen has back button to edit detour again", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
+  })
+
+  test("'Share Detour Details' screen has button to copy details", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
+  })
+
+  test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
+    userEvent.setup() // Configure the clipboard API
+
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    fireEvent.click(
+      container.querySelector(".c-detour_map--original-route-shape")!
+    )
+
+    await userEvent.click(finishDetourButton.get())
+
+    userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
+
+    await waitFor(() =>
+      expect(window.navigator.clipboard.readText()).resolves.toBe("")
+    )
+
+    expect(
+      await screen.findByRole("tooltip", { name: "Copied to clipboard!" })
+    ).toBeVisible()
   })
 })

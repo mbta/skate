@@ -120,3 +120,39 @@ export const BoxArrowRight = (props: SvgProps) => (
     />
   </svg>
 )
+
+/**
+ * @returns https://icons.getbootstrap.com/icons/exclamation-circle-fill/
+ */
+export const ExclamationCircleFill = (props: SvgProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-exclamation-circle-fill"
+    viewBox="0 0 16 16"
+    aria-hidden
+    {...props}
+  >
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
+  </svg>
+)
+
+export const ArrowLeft = (props: SvgProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-arrow-left"
+    viewBox="0 0 16 16"
+    aria-hidden
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
+    />
+  </svg>
+)

@@ -17,6 +17,10 @@
 
   &__map {
     grid-area: map;
+
+    > * {
+      contain: paint;
+    }
   }
 
   @include media-breakpoint-up(md) {
