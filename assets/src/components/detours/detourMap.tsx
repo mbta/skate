@@ -41,6 +41,12 @@ interface DetourMapProps {
   waypoints: ShapePoint[]
 
   /**
+   * User signal to show whether the original shape should be
+   * highlighted
+   */
+  originalShapeClickable: boolean
+
+  /**
    * Callback fired when the {@link originalShape} is clicked.
    */
   onClickOriginalShape: (point: ShapePoint) => void
@@ -79,6 +85,7 @@ export const DetourMap = ({
   endPoint,
   waypoints,
 
+  originalShapeClickable,
   onClickOriginalShape,
   onClickMap,
 
@@ -133,6 +140,7 @@ export const DetourMap = ({
           ? ["c-detour_map--original-route-shape__unstarted"]
           : []
       }
+      clickable={originalShapeClickable}
       onClick={(e) => {
         const { position } =
           closestPosition(
@@ -211,6 +219,7 @@ interface OriginalRouteShapeProps extends PropsWithChildren {
   key: string
   positions: LatLngLiteral[]
   classNames: string[]
+  clickable: boolean
   onClick: (e: LeafletMouseEvent) => void
 }
 
@@ -218,6 +227,7 @@ const OriginalRouteShape = ({
   positions,
   children,
   classNames,
+  clickable,
   onClick,
 }: OriginalRouteShapeProps) => (
   <>
@@ -226,19 +236,21 @@ const OriginalRouteShape = ({
       positions={positions}
       className="c-detour_map--original-route-shape-core"
     />
-    <Polyline
-      positions={positions}
-      weight={16}
-      className={joinClasses([
-        "c-detour_map--original-route-shape",
-        ...classNames,
-      ])}
-      bubblingMouseEvents={false}
-      eventHandlers={{
-        click: onClick,
-      }}
-    >
-      {children}
-    </Polyline>
+    {clickable && (
+      <Polyline
+        positions={positions}
+        weight={16}
+        className={joinClasses([
+          "c-detour_map--original-route-shape",
+          ...classNames,
+        ])}
+        bubblingMouseEvents={false}
+        eventHandlers={{
+          click: onClick,
+        }}
+      >
+        {children}
+      </Polyline>
+    )}
   </>
 )
