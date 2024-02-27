@@ -38,8 +38,12 @@ const meta = {
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added
   decorators: [
-    (StoryFn) => <div className="border-box inherit-box h-100"><StoryFn/></div>
-  ]
+    (StoryFn) => (
+      <div className="border-box inherit-box h-100">
+        <StoryFn />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof DetourFinishedPanel>
 
 export default meta
