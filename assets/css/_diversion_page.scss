@@ -57,6 +57,18 @@
 }
 
 .l-diversion-page-panel {
+  // Try to fill space and expand children when not in
+  // the `l-diversion-page` grid
+  :not(.l-diversion-page__panel) > & {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    > .l-diversion-page-panel__body {
+      flex-grow: 1;
+    }
+  }
+
   &__scroll-area {
     flex: 1 1 0;
     overflow-y: auto;

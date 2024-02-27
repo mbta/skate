@@ -7,6 +7,7 @@ const meta = {
   component: DiversionPanel,
   parameters: {
     layout: "fullscreen",
+    stretch: true,
   },
   args: {
     routeName: "66",
