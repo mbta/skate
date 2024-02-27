@@ -80,7 +80,7 @@ const DirectionsHelpText = () => (
     <i>
       Click a point on the regular route to start drawing your detour. As you
       continue to select points on the map, turn-by-turn directions will appear
-      in this drawer.
+      in this panel.
     </i>
   </p>
 )
