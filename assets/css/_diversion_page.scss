@@ -17,6 +17,7 @@
 
   &__map {
     grid-area: map;
+
     > * {
       contain: paint;
     }
