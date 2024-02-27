@@ -195,8 +195,9 @@ describe("DiversionPage", () => {
   })
 
   test("missed stops are filled in when detour is complete", async () => {
-    const stop = stopFactory.build()
-    jest.mocked(fetchDetourMissedStops).mockResolvedValue([stop])
+    const stop1 = stopFactory.build()
+    const stop2 = stopFactory.build()
+    jest.mocked(fetchDetourMissedStops).mockResolvedValue([stop1, stop2])
 
     const { container } = render(<DiversionPage />)
 
@@ -212,7 +213,11 @@ describe("DiversionPage", () => {
       )
     })
 
-    waitFor(() => expect(screen.getByText(stop.name)).toBeInTheDocument())
+    waitFor(() => {
+      expect(screen.getByText(stop1.name)).toBeInTheDocument()
+      expect(screen.getByText(stop2.name)).toBeInTheDocument()
+      expect(screen.getByText("2")).toBeInTheDocument()
+    })
   })
 
   test("duplicate missed stops are only rendered once", async () => {
