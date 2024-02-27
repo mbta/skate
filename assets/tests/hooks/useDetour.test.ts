@@ -6,7 +6,6 @@ import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
-import { instantPromise } from "../testHelpers/mockHelpers"
 import stopFactory from "../factories/stop"
 
 jest.mock("../../src/api")
@@ -35,15 +34,13 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    jest
-      .mocked(fetchDetourMissedStops)
-      .mockImplementation(() => instantPromise(null))
-
     act(() => result.current.addConnectionPoint(start))
     act(() => result.current.addConnectionPoint(end))
 
-    expect(result.current.startPoint).toBe(start)
-    expect(result.current.endPoint).toBe(end)
+    waitFor(() => {
+      expect(result.current.startPoint).toBe(start)
+      expect(result.current.endPoint).toBe(end)
+    })
   })
 
   test("when `startPoint` is null, `addWaypoint` does nothing", () => {
@@ -59,9 +56,7 @@ describe("useDetour", () => {
   test("when `endPoint` is set, `addWaypoint` does nothing", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    jest
-      .mocked(fetchDetourMissedStops)
-      .mockImplementation(() => instantPromise(null))
+    jest.mocked(fetchDetourMissedStops).mockResolvedValue(null)
 
     expect(result.current.startPoint).toBeNull()
 
@@ -70,7 +65,7 @@ describe("useDetour", () => {
 
     act(() => result.current.addWaypoint({ lat: 0, lon: 0 }))
 
-    expect(result.current.waypoints).toHaveLength(0)
+    waitFor(() => expect(result.current.waypoints).toHaveLength(0))
   })
 
   test("when `addWaypoint` is called, should update `detourShape` and `directions`", async () => {
