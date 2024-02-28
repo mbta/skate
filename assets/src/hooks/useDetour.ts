@@ -38,7 +38,14 @@ const useDetourDirections = (shapePoints: ShapePoint[]) => {
   }
 }
 
+export enum DetourState {
+  Edit,
+  Finished,
+}
+
 export const useDetour = (routePatternId: RoutePatternId) => {
+  const [state, setState] = useState<DetourState>(DetourState.Edit)
+
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
@@ -87,7 +94,7 @@ export const useDetour = (routePatternId: RoutePatternId) => {
     }
   }
 
-  const canUndo = startPoint !== null
+  const canUndo = startPoint !== null && state === DetourState.Edit
 
   const undo = () => {
     if (!canUndo) return
@@ -107,9 +114,19 @@ export const useDetour = (routePatternId: RoutePatternId) => {
     setWaypoints([])
   }
 
+  const finishDetour = () => {
+    setState(DetourState.Finished)
+  }
+
+  const editDetour = () => {
+    setState(DetourState.Edit)
+  }
+
   return {
-    /**
-     * Creates a new waypoint if all of the following criteria is met:
+    /** The current state of the detour machine */
+    state,
+
+    /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
      * - {@link endPoint} is not set.
      */
@@ -158,5 +175,9 @@ export const useDetour = (routePatternId: RoutePatternId) => {
      * Clears the entire detour
      */
     clear,
+    /** When present, puts this detour in "finished mode" */
+    finishDetour: endPoint !== null ? finishDetour : undefined,
+    /** When present, puts this detour in "edit mode" */
+    editDetour: state === DetourState.Finished ? editDetour : undefined,
   }
 }

@@ -6,7 +6,7 @@ import React, {
 } from "react"
 import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
-import { useDetour } from "../../hooks/useDetour"
+import { DetourState, useDetour } from "../../hooks/useDetour"
 import { Alert, CloseButton } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
@@ -23,8 +23,9 @@ export const DiversionPage = ({
   originalRoute,
   onClose,
 }: DiversionPageProps) => {
-  const [detourFinished, setDetourFinished] = useState(false)
   const {
+    state,
+
     addConnectionPoint,
     addWaypoint,
 
@@ -40,6 +41,8 @@ export const DiversionPage = ({
     canUndo,
     undo,
     clear,
+    finishDetour,
+    editDetour,
   } = useDetour(originalRoute.routePatternId)
 
   const [textArea, setTextArea] = useState("")
@@ -51,7 +54,7 @@ export const DiversionPage = ({
       </header>
 
       <div className="l-diversion-page__panel bg-light">
-        {detourFinished === false && (
+        {state === DetourState.Edit && (
           <DiversionPanel
             directions={directions}
             missedStops={missedStops}
@@ -59,20 +62,20 @@ export const DiversionPage = ({
             routeDescription={originalRoute.routeDescription}
             routeOrigin={originalRoute.routeOrigin}
             routeDirection={originalRoute.routeDirection}
-            detourFinished={endPoint !== null}
-            onFinishDetour={() => setDetourFinished(true)}
+            detourFinished={finishDetour !== undefined}
+            onFinishDetour={finishDetour}
           />
         )}
-        {detourFinished === true && (
+        {state === DetourState.Finished && editDetour && (
           <DetourFinishedPanel
-            onNavigateBack={() => setDetourFinished(false)}
+            onNavigateBack={editDetour}
             detourText={textArea}
             onChangeDetourText={setTextArea}
           />
         )}
       </div>
       <div className="l-diversion-page__map position-relative">
-        {detourFinished && (
+        {state === DetourState.Finished && (
           <Alert
             variant="info"
             className="position-absolute top-0 left-0 m-2 icon-link z-1"
