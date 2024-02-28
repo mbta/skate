@@ -2,6 +2,8 @@
 @use "../color/tokens_2021" as tokens;
 @use "../color/tokens_2024" as new_tokens;
 
+@import "../typography/variables";
+
 $component-active-bg: tokens.$eggplant-700;
 $list-group-border-color: tokens.$gray-300;
 
