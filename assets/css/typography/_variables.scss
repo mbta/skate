@@ -1,7 +1,8 @@
 @use "../color/tokens_2021" as tokens;
+@use "../color/definitions" as semantic;
 
 $font-family-sans-serif: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-$body-color: $dark;
+$body-color: semantic.$dark;
 
 $headings-font-weight: 600;
 
