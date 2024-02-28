@@ -55,6 +55,8 @@ export const useDetour = (routePatternId: RoutePatternId) => {
           }
         }
       )
+    } else {
+      setMissedStops(undefined)
     }
 
     return () => {

@@ -295,4 +295,25 @@ describe("useDetour", () => {
 
     expect(result.current.missedStops).toBe(missedStops)
   })
+
+  test("when `endPoint` is undone, `missedStops` is cleared", async () => {
+    const { result } = renderHook(useDetourWithFakeRoutePattern)
+
+    const missedStops = stopFactory.buildList(3)
+
+    jest.mocked(fetchDetourMissedStops).mockResolvedValue(missedStops)
+
+    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+
+    await waitFor(() => {
+      expect(result.current.missedStops).not.toBeUndefined()
+    })
+
+    act(() => result.current.undo())
+
+    await waitFor(() => {
+      expect(result.current.missedStops).toBeUndefined()
+    })
+  })
 })
