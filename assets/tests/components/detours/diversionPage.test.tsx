@@ -1,5 +1,12 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react"
 import React, { ComponentProps } from "react"
 import "@testing-library/jest-dom/jest-globals"
 import { fetchDetourDirections, fetchDetourMissedStops } from "../../../src/api"
@@ -283,5 +290,64 @@ describe("DiversionPage", () => {
     expect(
       await screen.findByRole("tooltip", { name: "Copied to clipboard!" })
     ).toBeVisible()
+  })
+
+  test("Attempting to close the page displays a confirmation modal", () => {
+    render(<DiversionPage />)
+
+    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+
+    expect(screen.getByRole("dialog")).toBeVisible()
+    expect(screen.getByRole("button", { name: /yes/i })).toBeVisible()
+    expect(screen.getByRole("button", { name: /back/i })).toBeVisible()
+  })
+
+  test("can close page from the confirmation modal", async () => {
+    const onClose = jest.fn()
+
+    render(<DiversionPage onClose={onClose} />)
+
+    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /yes/i }))
+    })
+
+    expect(onClose).toHaveBeenCalled()
+
+    expect(screen.queryByRole("dialog")).toBeNull()
+  })
+
+  test("can go back to the detour page from the confirmation modal", async () => {
+    const onClose = jest.fn()
+
+    render(<DiversionPage onClose={onClose} />)
+
+    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /back/i }))
+    })
+
+    expect(onClose).not.toHaveBeenCalled()
+
+    expect(screen.queryByRole("dialog")).toBeNull()
+  })
+
+  test("closing the confirmation modal returns to the detour page", async () => {
+    const onClose = jest.fn()
+
+    render(<DiversionPage onClose={onClose} />)
+
+    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+
+    await act(async () => {
+      const modal = screen.getByRole("dialog")
+      fireEvent.click(within(modal).getByRole("button", { name: "Close" }))
+    })
+
+    expect(onClose).not.toHaveBeenCalled()
+
+    expect(screen.queryByRole("dialog")).toBeNull()
   })
 })

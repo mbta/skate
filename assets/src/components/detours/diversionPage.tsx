@@ -7,7 +7,7 @@ import React, {
 import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
 import { DetourState, useDetour } from "../../hooks/useDetour"
-import { Alert, CloseButton } from "react-bootstrap"
+import { Alert, Button, CloseButton, Modal } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
@@ -47,61 +47,98 @@ export const DiversionPage = ({
   } = useDetour(originalRoute.routePatternId)
 
   const [textArea, setTextArea] = useState("")
+  const [showConfirmCloseModal, setShowConfirmCloseModal] =
+    useState<boolean>(false)
 
   return (
-    <article className="l-diversion-page h-100 border-box inherit-box">
-      <header className="l-diversion-page__header text-bg-light border-bottom">
-        <CloseButton className="p-4" onClick={onClose} />
-      </header>
+    <>
+      <article className="l-diversion-page h-100 border-box inherit-box">
+        <header className="l-diversion-page__header text-bg-light border-bottom">
+          <CloseButton
+            className="p-4"
+            onClick={() => setShowConfirmCloseModal(true)}
+          />
+        </header>
 
-      <div className="l-diversion-page__panel bg-light">
-        {state === DetourState.Edit && (
-          <DiversionPanel
-            directions={directions}
-            missedStops={missedStops}
-            routeName={originalRoute.routeName}
-            routeDescription={originalRoute.routeDescription}
-            routeOrigin={originalRoute.routeOrigin}
-            routeDirection={originalRoute.routeDirection}
-            detourFinished={finishDetour !== undefined}
-            onFinishDetour={finishDetour}
+        <div className="l-diversion-page__panel bg-light">
+          {state === DetourState.Edit && (
+            <DiversionPanel
+              directions={directions}
+              missedStops={missedStops}
+              routeName={originalRoute.routeName}
+              routeDescription={originalRoute.routeDescription}
+              routeOrigin={originalRoute.routeOrigin}
+              routeDirection={originalRoute.routeDirection}
+              detourFinished={finishDetour !== undefined}
+              onFinishDetour={finishDetour}
+            />
+          )}
+          {state === DetourState.Finished && editDetour && (
+            <DetourFinishedPanel
+              onNavigateBack={editDetour}
+              detourText={textArea}
+              onChangeDetourText={setTextArea}
+            />
+          )}
+        </div>
+        <div className="l-diversion-page__map position-relative">
+          {state === DetourState.Finished && (
+            <Alert
+              variant="info"
+              className="position-absolute top-0 left-0 m-2 icon-link z-1"
+            >
+              <BsIcons.ExclamationCircleFill />
+              Detour is not editable from this screen.
+            </Alert>
+          )}
+          <DetourMap
+            originalShape={originalRoute.shape.points}
+            center={originalRoute.center}
+            zoom={originalRoute.zoom}
+            detourShape={detourShape}
+            startPoint={startPoint ?? undefined}
+            endPoint={endPoint ?? undefined}
+            waypoints={waypoints}
+            originalShapeClickable={canAddPoints}
+            onClickMap={addWaypoint}
+            onClickOriginalShape={addConnectionPoint}
+            undoDisabled={canUndo === false}
+            onUndo={undo}
+            onClear={clear}
           />
-        )}
-        {state === DetourState.Finished && editDetour && (
-          <DetourFinishedPanel
-            onNavigateBack={editDetour}
-            detourText={textArea}
-            onChangeDetourText={setTextArea}
-          />
-        )}
-      </div>
-      <div className="l-diversion-page__map position-relative">
-        {state === DetourState.Finished && (
-          <Alert
-            variant="info"
-            className="position-absolute top-0 left-0 m-2 icon-link z-1"
+        </div>
+      </article>
+      <Modal
+        show={showConfirmCloseModal}
+        onHide={() => setShowConfirmCloseModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure you want to exit detour mode?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          When you close out of this screen, you will not be able to access the
+          details of your detour again. You may want to copy and paste these
+          details to another application.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={() => {
+              setShowConfirmCloseModal(false)
+              onClose?.()
+            }}
+            variant="primary"
           >
-            <BsIcons.ExclamationCircleFill />
-            Detour is not editable from this screen.
-          </Alert>
-        )}
-        <DetourMap
-          originalShape={originalRoute.shape.points}
-          center={originalRoute.center}
-          zoom={originalRoute.zoom}
-          detourShape={detourShape}
-          startPoint={startPoint ?? undefined}
-          endPoint={endPoint ?? undefined}
-          waypoints={waypoints}
-          originalShapeClickable={canAddPoints}
-          onClickMap={addWaypoint}
-          onClickOriginalShape={addConnectionPoint}
-          undoDisabled={canUndo === false}
-          onUndo={undo}
-          onClear={clear}
-        />
-      </div>
-    </article>
+            Yes, I&apos;m sure
+          </Button>
+          <Button
+            onClick={() => setShowConfirmCloseModal(false)}
+            variant="outline-primary"
+          >
+            Back to Detour
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
 
