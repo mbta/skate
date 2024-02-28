@@ -27,7 +27,7 @@ import {
   fetchLocationSearchResultById,
   fetchLocationSearchSuggestions,
   fetchAllStops,
-  fetchDetourMissedStops,
+  fetchFinishedDetour,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
@@ -406,20 +406,20 @@ describe("fetchShapeForRoute", () => {
   })
 })
 
-describe("fetchDetourMissedStops", () => {
-  test("fetches missed stops", (done) => {
+describe("fetchFinishedDetour", () => {
+  test("fetches missed stops in finished detour", (done) => {
     const stopData = stopDataFactory.buildList(3)
 
     const stops = stopsFromData(stopData)
 
-    mockFetch(200, { data: stopData })
+    mockFetch(200, { data: { missed_stops: stopData } })
 
-    fetchDetourMissedStops(
+    fetchFinishedDetour(
       "route_pattern_id",
       shapePointFactory.build(),
       shapePointFactory.build()
     ).then((result) => {
-      expect(result).toEqual(stops)
+      expect(result).toEqual({ missedStops: stops })
       done()
     })
   })
@@ -427,7 +427,7 @@ describe("fetchDetourMissedStops", () => {
   test("defaults to null if there's an error", (done) => {
     mockFetch(500, { data: null })
 
-    fetchDetourMissedStops(
+    fetchFinishedDetour(
       "route_pattern_id",
       shapePointFactory.build(),
       shapePointFactory.build()

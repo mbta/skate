@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { RoutePatternId, ShapePoint, Stop } from "../schedule"
-import { fetchDetourDirections, fetchDetourMissedStops } from "../api"
+import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { DetourShape } from "../models/detour"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
@@ -55,10 +55,10 @@ export const useDetour = (routePatternId: RoutePatternId) => {
     let shouldUpdate = true
 
     if (startPoint && endPoint) {
-      fetchDetourMissedStops(routePatternId, startPoint, endPoint).then(
+      fetchFinishedDetour(routePatternId, startPoint, endPoint).then(
         (result) => {
           if (shouldUpdate) {
-            setMissedStops(result || undefined)
+            setMissedStops(result?.missedStops || undefined)
           }
         }
       )

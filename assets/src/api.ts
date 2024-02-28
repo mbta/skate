@@ -40,7 +40,11 @@ import {
 } from "./models/locationSearchSuggestionData"
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
-import { DetourShape } from "./models/detour"
+import { DetourShape, FinishedDetour } from "./models/detour"
+import {
+  FinishedDetourData,
+  finishedDetourFromData,
+} from "./models/finishedDetour"
 
 export interface RouteData {
   id: string
@@ -169,15 +173,15 @@ export const fetchDetourDirections = (
     },
   })
 
-export const fetchDetourMissedStops = (
+export const fetchFinishedDetour = (
   routePatternId: RoutePatternId,
   connectionStart: ShapePoint,
   connectionEnd: ShapePoint
-): Promise<Stop[] | null> =>
-  checkedApiCall<StopData[], Stop[] | null>({
-    url: "/api/detours/missed_stops",
-    parser: stopsFromData,
-    dataStruct: array(StopData),
+): Promise<FinishedDetour | null> =>
+  checkedApiCall<FinishedDetourData, FinishedDetour | null>({
+    url: "/api/detours/finished_detour",
+    parser: finishedDetourFromData,
+    dataStruct: FinishedDetourData,
     defaultResult: null,
     fetchArgs: {
       method: "POST",
