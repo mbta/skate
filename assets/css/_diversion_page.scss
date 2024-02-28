@@ -94,13 +94,13 @@
   align-items: center;
 }
 
-.c-diversion-panel__h2 {
-  font-size: var(--font-size-xl);
+.c-diversion-panel__h1 {
+  font-size: 1.25rem; // h3 font size
   font-weight: var(--font-weight-semi);
 }
 
-.c-diversion-panel__h3 {
-  font-size: var(--font-size-l);
+.c-diversion-panel__h2 {
+  font-size: 1.125rem; // h4 font size
   font-weight: var(--font-weight-semi);
 }
 
