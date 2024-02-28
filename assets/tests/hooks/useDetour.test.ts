@@ -329,7 +329,7 @@ describe("useDetour", () => {
     expect(result.current.editDetour).toBeUndefined()
   })
 
-  test("initially, `state` is `detour`", () => {
+  test("initially, `state` is `Edit`", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     expect(result.current.state).toBe(DetourState.Edit)
@@ -344,7 +344,7 @@ describe("useDetour", () => {
     await waitFor(() => expect(result.current.finishDetour).toBeDefined())
   })
 
-  test("calling `finishDetour`, sets `state` to `finished`", async () => {
+  test("calling `finishDetour`, sets `state` to `Finished`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     act(() => result.current.addConnectionPoint(shapePointFactory.build()))
@@ -357,7 +357,7 @@ describe("useDetour", () => {
     await waitFor(() => expect(result.current.state).toBe(DetourState.Finished))
   })
 
-  test("when `state` is `finished`, `editDetour` is defined", async () => {
+  test("when `state` is `Finished`, `editDetour` is defined", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     act(() => result.current.addConnectionPoint(shapePointFactory.build()))
@@ -373,7 +373,7 @@ describe("useDetour", () => {
     await waitFor(() => expect(result.current.editDetour).toBeDefined())
   })
 
-  test("calling `editDetour`, sets `state` to `detour`", async () => {
+  test("calling `editDetour`, sets `state` to `Edit`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     act(() => result.current.addConnectionPoint(shapePointFactory.build()))
