@@ -1,6 +1,7 @@
 @use "../color/definitions" as semantic;
 @use "../color/tokens_2021" as tokens;
 @use "../color/tokens_2024" as new_tokens;
+@use "../z_indexes" as z_indexes;
 
 $component-active-bg: tokens.$eggplant-700;
 $list-group-border-color: tokens.$gray-300;
@@ -15,5 +16,8 @@ $service-alert: semantic.$service-alert;
 $light: new_tokens.$gray-50;
 $dark: new_tokens.$gray-900;
 
-$zindex-modal: map-get($z-page-layout-context, "modal");
-$zindex-modal-backdrop: map-get($z-page-layout-context, "modal-backdrop");
+$zindex-modal: map-get(z_indexes.$z-page-layout-context, "modal");
+$zindex-modal-backdrop: map-get(
+  z_indexes.$z-page-layout-context,
+  "modal-backdrop"
+);
