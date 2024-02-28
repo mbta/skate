@@ -76,7 +76,7 @@ export const DiversionPanel = ({
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">
               Missed Stops{" "}
-              <Badge bg="missed-stop" className="c-diversion-panel__h3">
+              <Badge bg="missed-stop" className="fs-4">
                 {missedStops.length}
               </Badge>
             </h2>
