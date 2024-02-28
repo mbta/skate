@@ -5,12 +5,22 @@ defmodule Skate.Detours.RouteSegments do
 
   defmodule Params do
     @moduledoc false
+    @type t :: %__MODULE__{
+            connection_start: Util.Location.From.t(),
+            connection_end: Util.Location.From.t(),
+            shape: nonempty_list(Util.Location.From.t())
+          }
     @enforce_keys [:connection_start, :connection_end, :shape]
     defstruct [:connection_start, :connection_end, :shape]
   end
 
   defmodule Result do
     @moduledoc false
+    @type t :: %__MODULE__{
+            before_detour: [Util.Location.From.t()],
+            detour: [Util.Location.From.t()],
+            after_detour: [Util.Location.From.t()]
+          }
     @enforce_keys [:before_detour, :detour, :after_detour]
     defstruct [:before_detour, :detour, :after_detour]
   end
