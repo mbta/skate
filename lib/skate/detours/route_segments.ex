@@ -1,6 +1,6 @@
 defmodule Skate.Detours.RouteSegments do
   @moduledoc """
-  Break a route into segments based on `onnection_start` and `connection_end` points
+  Break a route into segments based on `connection_start` and `connection_end` points
   """
 
   defmodule Params do
