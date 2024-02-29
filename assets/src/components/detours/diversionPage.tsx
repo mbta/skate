@@ -100,11 +100,11 @@ export const DiversionPage = ({
             endPoint={endPoint ?? undefined}
             waypoints={waypoints}
             originalShapeClickable={canAddPoints}
-            onClickMap={addWaypoint}
-            onClickOriginalShape={addConnectionPoint}
+            onClickMap={addWaypoint ?? (() => {})}
+            onClickOriginalShape={addConnectionPoint ?? (() => {})}
             undoDisabled={canUndo === false}
-            onUndo={undo}
-            onClear={clear}
+            onUndo={undo ?? (() => {})}
+            onClear={clear ?? (() => {})}
           />
         </div>
       </article>

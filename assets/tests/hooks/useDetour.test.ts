@@ -422,4 +422,49 @@ describe("useDetour", () => {
 
     await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
   })
+
+  describe("when `state` is `Finished`, controls are locked out", () => {
+    test("`addWaypoint` is undefined", async () => {
+      const { result } = renderFinishedDetour()
+
+      await waitFor(() => expect(result.current.addWaypoint).toBeUndefined())
+    })
+
+    test("`addConnectionPoint` is undefined", async () => {
+      const { result } = renderFinishedDetour()
+
+      await waitFor(() =>
+        expect(result.current.addConnectionPoint).toBeUndefined()
+      )
+    })
+
+    test("`undo` is undefined", async () => {
+      const { result } = renderFinishedDetour()
+
+      await waitFor(() => expect(result.current.undo).toBeUndefined())
+    })
+
+    test("`clear` is undefined", async () => {
+      const { result } = renderFinishedDetour()
+
+      await waitFor(() => expect(result.current.clear).toBeUndefined())
+    })
+  })
 })
+
+const renderFinishedDetour = () => {
+  const renderResult = renderHook(useDetourWithFakeRoutePattern)
+
+  act(() =>
+    renderResult.result.current.addConnectionPoint?.(shapePointFactory.build())
+  )
+  act(() =>
+    renderResult.result.current.addConnectionPoint?.(shapePointFactory.build())
+  )
+
+  act(() => {
+    renderResult.result.current.finishDetour?.()
+  })
+
+  return renderResult
+}
