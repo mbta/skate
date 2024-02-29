@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
-import { fetchDetourDirections, fetchDetourMissedStops } from "../../src/api"
+import { fetchDetourDirections, fetchFinishedDetour } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { DetourState, useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
@@ -12,7 +12,7 @@ jest.mock("../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockResolvedValue(null)
-  jest.mocked(fetchDetourMissedStops).mockResolvedValue(null)
+  jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
 })
 
 const useDetourWithFakeRoutePattern = () => useDetour("routePatternId")
@@ -56,7 +56,7 @@ describe("useDetour", () => {
   test("when `endPoint` is set, `addWaypoint` does nothing", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    jest.mocked(fetchDetourMissedStops).mockResolvedValue(null)
+    jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
 
     expect(result.current.startPoint).toBeNull()
 
@@ -265,8 +265,8 @@ describe("useDetour", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     jest
-      .mocked(fetchDetourMissedStops)
-      .mockResolvedValue(stopFactory.buildList(3))
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue({ missedStops: stopFactory.buildList(3) })
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
@@ -299,8 +299,8 @@ describe("useDetour", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     jest
-      .mocked(fetchDetourMissedStops)
-      .mockResolvedValue(stopFactory.buildList(3))
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue({ missedStops: stopFactory.buildList(3) })
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
@@ -318,7 +318,7 @@ describe("useDetour", () => {
 
     const missedStops = stopFactory.buildList(3)
 
-    jest.mocked(fetchDetourMissedStops).mockResolvedValue(missedStops)
+    jest.mocked(fetchFinishedDetour).mockResolvedValue({ missedStops })
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
@@ -335,7 +335,7 @@ describe("useDetour", () => {
 
     const missedStops = stopFactory.buildList(3)
 
-    jest.mocked(fetchDetourMissedStops).mockResolvedValue(missedStops)
+    jest.mocked(fetchFinishedDetour).mockResolvedValue({ missedStops })
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))

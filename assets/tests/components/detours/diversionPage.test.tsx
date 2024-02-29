@@ -9,7 +9,7 @@ import {
 } from "@testing-library/react"
 import React, { ComponentProps } from "react"
 import "@testing-library/jest-dom/jest-globals"
-import { fetchDetourDirections, fetchDetourMissedStops } from "../../../src/api"
+import { fetchDetourDirections, fetchFinishedDetour } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
@@ -50,7 +50,7 @@ jest.mock("../../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockResolvedValue(null)
-  jest.mocked(fetchDetourMissedStops).mockResolvedValue(null)
+  jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
 })
 
 describe("DiversionPage", () => {
@@ -179,7 +179,9 @@ describe("DiversionPage", () => {
   test("missed stops are filled in when detour is complete", async () => {
     const stop1 = stopFactory.build()
     const stop2 = stopFactory.build()
-    jest.mocked(fetchDetourMissedStops).mockResolvedValue([stop1, stop2])
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue({ missedStops: [stop1, stop2] })
 
     const { container } = render(<DiversionPage />)
 
@@ -200,7 +202,9 @@ describe("DiversionPage", () => {
 
   test("duplicate missed stops are only rendered once", async () => {
     const stop = stopFactory.build()
-    jest.mocked(fetchDetourMissedStops).mockResolvedValue([stop, stop])
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue({ missedStops: [stop, stop] })
 
     const { container } = render(<DiversionPage />)
 
