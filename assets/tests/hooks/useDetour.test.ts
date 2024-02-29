@@ -299,8 +299,8 @@ describe("useDetour", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     jest
-      .mocked(fetchDetourMissedStops)
-      .mockResolvedValue(stopFactory.buildList(3))
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue({ missedStops: stopFactory.buildList(3) })
 
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
