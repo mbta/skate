@@ -31,6 +31,7 @@ module.exports = {
   "rules": {
     "no-console": "error",
     "prefer-rest-params": "off",
+    "no-sparse-arrays": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-unused-vars": [
