@@ -29,6 +29,7 @@ export const DiversionPage = ({
     addConnectionPoint,
     addWaypoint,
 
+    canAddPoints,
     startPoint,
     endPoint,
     waypoints,
@@ -92,6 +93,7 @@ export const DiversionPage = ({
           startPoint={startPoint ?? undefined}
           endPoint={endPoint ?? undefined}
           waypoints={waypoints}
+          originalShapeClickable={canAddPoints}
           onClickMap={addWaypoint}
           onClickOriginalShape={addConnectionPoint}
           undoDisabled={canUndo === false}
