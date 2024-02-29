@@ -75,10 +75,7 @@ export const DiversionPanel = ({
         {missedStops && (
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">
-              Missed Stops{" "}
-              <Badge bg="missed-stop" className="c-diversion-panel__h3">
-                {missedStops.length}
-              </Badge>
+              Missed Stops <Badge bg="missed-stop">{missedStops.length}</Badge>
             </h2>
             <ListGroup as="ul">
               {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (

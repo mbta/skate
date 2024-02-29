@@ -3,6 +3,8 @@
 @use "../color/tokens_2024" as new_tokens;
 @use "../z_indexes" as z_indexes;
 
+@import "../typography/variables";
+
 $component-active-bg: tokens.$eggplant-700;
 $list-group-border-color: tokens.$gray-300;
 
