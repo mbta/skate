@@ -4,8 +4,8 @@ defmodule SkateWeb.DetoursController do
   alias Skate.Detours.MissedStops
   alias Util.Location
 
-  @spec finished_detour_info(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def finished_detour_info(conn, %{
+  @spec finished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def finished_detour(conn, %{
         "route_pattern_id" => route_pattern_id,
         "connection_start" => connection_start,
         "connection_end" => connection_end

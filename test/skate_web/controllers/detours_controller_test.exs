@@ -6,7 +6,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
   alias Skate.Detours.MissedStops
 
-  describe "missed_stops/2" do
+  describe "finished_detour/2" do
     @tag :authenticated
     test "returns missed stops", %{conn: conn} do
       route_pattern = build(:gtfs_route_pattern)
@@ -31,7 +31,7 @@ defmodule SkateWeb.DetoursControllerTest do
       end)
 
       conn =
-        post(conn, ~p"/api/detours/finished_detour_info",
+        post(conn, ~p"/api/detours/finished_detour",
           route_pattern_id: route_pattern.id,
           connection_start: %{
             "lat" => connection_start.latitude,
@@ -57,7 +57,7 @@ defmodule SkateWeb.DetoursControllerTest do
       reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
 
       conn =
-        post(conn, ~p"/api/detours/finished_detour_info",
+        post(conn, ~p"/api/detours/finished_detour",
           route_pattern_id: "nonexistent_route_pattern",
           connection_start: %{
             "lat" => connection_start.latitude,
