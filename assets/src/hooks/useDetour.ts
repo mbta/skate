@@ -131,12 +131,13 @@ export const useDetour = (routePatternId: RoutePatternId) => {
      * - {@link startPoint} is set
      * - {@link endPoint} is not set.
      */
-    addWaypoint,
+    addWaypoint: state === DetourState.Finished ? undefined : addWaypoint,
     /**
      * Sets {@link startPoint} if unset.
      * Otherwise sets {@link endPoint} if unset.
      */
-    addConnectionPoint,
+    addConnectionPoint:
+      state === DetourState.Finished ? undefined : addConnectionPoint,
 
     /**
      * Reports whether it's possible to add points to the detour.
@@ -175,11 +176,11 @@ export const useDetour = (routePatternId: RoutePatternId) => {
     /**
      * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
      */
-    undo,
+    undo: state === DetourState.Finished ? undefined : undo,
     /**
      * Clears the entire detour
      */
-    clear,
+    clear: state === DetourState.Finished ? undefined : clear,
     /** When present, puts this detour in "finished mode" */
     finishDetour: endPoint !== null ? finishDetour : undefined,
     /** When present, puts this detour in "edit mode" */
