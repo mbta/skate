@@ -113,9 +113,11 @@ export const DiversionPage = ({
         onHide={() => setShowConfirmCloseModal(false)}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Are you sure you want to exit detour mode?</Modal.Title>
+          <Modal.Title className="fs-3 fw-medium">
+            Are you sure you want to exit detour mode?
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="lh-base">
           When you close out of this screen, you will not be able to access the
           details of your detour again. You may want to copy and paste these
           details to another application.
