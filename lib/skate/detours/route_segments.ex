@@ -3,13 +3,6 @@ defmodule Skate.Detours.RouteSegments do
   Break a route into segments based on `connection_start` and `connection_end` points
   """
 
-  defmodule Params do
-    @moduledoc false
-    @type t :: %__MODULE__{}
-    @enforce_keys [:connection_start, :connection_end, :shape]
-    defstruct [:connection_start, :connection_end, :shape]
-  end
-
   defmodule Result do
     @moduledoc false
     @type t :: %__MODULE__{
