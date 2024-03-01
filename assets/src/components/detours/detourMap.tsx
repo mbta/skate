@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useId } from "react"
+import React, { PropsWithChildren, ReactNode, useId } from "react"
 import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
@@ -121,7 +121,7 @@ export const DetourMap = ({
       )}
 
       {waypoints.map((position) => (
-        <DetourPointMarker
+        <WaypointMarker
           key={JSON.stringify(position)}
           position={shapePointToLatLngLiteral(position)}
         />
@@ -171,59 +171,82 @@ const MapEvents = (props: Leaflet.LeafletEventHandlerFnMap) => {
   return null
 }
 
-const StartMarker = ({ position }: { position: LatLngLiteral }) => (
+export const StartMarker = ({ position }: { position: LatLngLiteral }) => (
   <StartOrEndMarker
-    classSuffix="start"
     title="Detour Start"
     position={position}
+    icon={<StartIcon />}
   />
 )
 
-const EndMarker = ({ position }: { position: LatLngLiteral }) => (
-  <StartOrEndMarker classSuffix="end" title="Detour End" position={position} />
+export const EndMarker = ({ position }: { position: LatLngLiteral }) => (
+  <StartOrEndMarker
+    title="Detour End"
+    position={position}
+    icon={<StartOrEndIcon classSuffix={"end"} />}
+  />
 )
 
 const StartOrEndMarker = ({
-  classSuffix,
   title,
   position,
+  icon,
 }: {
-  classSuffix: string
   title: string
   position: LatLngLiteral
+  icon: ReactNode
 }) => (
   <ReactMarker
     interactive={false}
     position={position}
     divIconSettings={{
-      iconSize: [20, 20],
-      iconAnchor: new Leaflet.Point(10, 10),
-      className: "c-detour_map-circle-marker--" + classSuffix,
+      iconSize: [16, 16],
+      iconAnchor: new Leaflet.Point(8, 8),
+      className: "",
     }}
     title={title}
-    icon={
-      <svg height="20" width="20">
-        <circle cx={10} cy={10} r={10} />
-      </svg>
-    }
+    icon={icon}
   />
 )
 
-const DetourPointMarker = ({ position }: { position: LatLngLiteral }) => (
+export const StartIcon = () => <StartOrEndIcon classSuffix={"start"} />
+export const EndIcon = () => <StartOrEndIcon classSuffix={"end"} />
+
+const StartOrEndIcon = ({ classSuffix }: { classSuffix: string }) => (
+  <svg
+    height="16"
+    width="16"
+    viewBox="0 0 16 16"
+    className={"c-detour_map-circle-marker--" + classSuffix}
+  >
+    <circle cx={8} cy={8} r={7.5} opacity={0.5} />
+    <circle cx={8} cy={8} r={6} stroke="white" strokeWidth={2} />
+  </svg>
+)
+
+const WaypointMarker = ({ position }: { position: LatLngLiteral }) => (
   <ReactMarker
     interactive={false}
     position={position}
     divIconSettings={{
       iconSize: [10, 10],
       iconAnchor: new Leaflet.Point(5, 5),
-      className: "c-detour_map-circle-marker--detour-point",
+      className: "",
     }}
-    icon={
-      <svg height="10" width="10">
-        <circle cx={5} cy={5} r={5} />
-      </svg>
-    }
+    icon={<WaypointIcon />}
   />
+)
+
+export const WaypointIcon = () => (
+  <svg
+    width="10"
+    height="10"
+    viewBox="0 0 10 10"
+    fill="none"
+    className="c-detour_map-circle-marker--detour-point"
+  >
+    <circle cx={5} cy={5} r={4.5} />
+  </svg>
 )
 
 interface OriginalRouteShapeProps extends PropsWithChildren {
