@@ -150,7 +150,6 @@ defmodule SkateWeb.Router do
     get "/location_search/search", LocationSearchController, :search
     get "/location_search/suggest", LocationSearchController, :suggest
     post "/detours/directions/", DetourRouteController, :directions
-    post "/detours/missed_stops", DetourMissedStopsController, :missed_stops
     post "/detours/finished_detour", DetoursController, :finished_detour
   end
 
