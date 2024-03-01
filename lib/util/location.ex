@@ -68,7 +68,6 @@ defmodule Util.Location do
       28.18270374034632
   """
   @spec distance(line :: [__MODULE__.t()]) :: float()
-  @spec distance(a :: __MODULE__.t(), b :: __MODULE__.t()) :: float()
   def distance(line) when is_list(line) do
     Haversine.distance(Enum.map(line, &into_long_lat_pair/1))
   end
@@ -89,8 +88,13 @@ defmodule Util.Location do
       ...> )
       19.919298890663107
   """
+  @spec distance(a :: __MODULE__.From.t(), b :: __MODULE__.From.t()) :: float()
   def distance(%__MODULE__{} = lhs, %__MODULE__{} = rhs) do
     distance([lhs, rhs])
+  end
+
+  def distance(lhs, rhs) do
+    distance(as_location!(lhs), as_location!(rhs))
   end
 
   @doc """
