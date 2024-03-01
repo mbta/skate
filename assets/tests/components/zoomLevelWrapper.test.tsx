@@ -17,6 +17,23 @@ afterAll(() => {
 
 const renderProps = (zoomLevel: number) => <p>{zoomLevel}</p>
 
+describe("MapZoomLevel.Provider", () => {
+  test.todo("Passes context through multiple providers")
+  test.todo("Updates context when zoom level changes")
+})
+
+describe("MapZoomLevel.Consumer", () => {
+  test.todo("Passes zoom level to child")
+  test.todo("Updates when zoom level changes")
+  test.todo("Throws error if used outside of a `MapZoomLevel.Provider`")
+})
+
+describe("useMapZoomLevel", () => {
+  test.todo("Returns current zoom level")
+  test.todo("Updates when map zoom level changes")
+  test.todo("Throws error if used outside of a `MapZoomLevel.Provider`")
+})
+
 describe("ZoomLevelWrapper", () => {
   test("Passes zoom level to child", () => {
     renderInMap(<ZoomLevelWrapper>{renderProps}</ZoomLevelWrapper>, {

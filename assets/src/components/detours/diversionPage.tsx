@@ -13,7 +13,6 @@ import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 import { DetourFinishedPanel } from "./detourFinishedPanel"
-import { StopMarkers } from "../mapMarkers"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import { StopMarkerWithStopCard } from "../map/markers/stopMarker"
 
