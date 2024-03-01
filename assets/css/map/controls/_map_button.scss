@@ -1,0 +1,30 @@
+@use "../../color/tokens_2024" as tokens;
+
+.c-map-button {
+  box-shadow: 0 0 0 2px rgb($black, 0.15);
+  --bs-btn-border-radius: 0.2rem;
+  --bs-btn-color: #{$black};
+  --bs-btn-hover-color: #{$black};
+  --bs-btn-hover-bg: #{tokens.$eggplant-50};
+  --bs-btn-active-color: #{tokens.$eggplant-500};
+  --bs-btn-active-bg: #{$white};
+  --bs-btn-focus-box-shadow: 0 0 0 2px #{rgb(tokens.$eggplant-500, 0.5)};
+  --bs-btn-disabled-color: #{tokens.$gray-700};
+  --bs-btn-disabled-bg: #{tokens.$gray-100};
+  --bs-btn-disabled-opacity: 1;
+}
+
+.c-map-button--s {
+  width: 2rem;
+  height: 2rem;
+}
+
+.c-map-button--m {
+  width: 2.375rem;
+  height: 2.375rem;
+}
+
+.c-map-button--l {
+  width: 3rem;
+  height: 3rem;
+}
