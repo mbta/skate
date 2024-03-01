@@ -19,6 +19,7 @@ import {
   finishDetourButton,
   originalRouteShape,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
+import { finishedDetourFactory } from "../../factories/finishedDetourFactory"
 
 const DiversionPage = (
   props: Partial<ComponentProps<typeof DiversionPageDefault>>
@@ -181,7 +182,9 @@ describe("DiversionPage", () => {
     const stop2 = stopFactory.build()
     jest
       .mocked(fetchFinishedDetour)
-      .mockResolvedValue({ missedStops: [stop1, stop2] })
+      .mockResolvedValue(
+        finishedDetourFactory.build({ missedStops: [stop1, stop2] })
+      )
 
     const { container } = render(<DiversionPage />)
 
@@ -204,7 +207,9 @@ describe("DiversionPage", () => {
     const stop = stopFactory.build()
     jest
       .mocked(fetchFinishedDetour)
-      .mockResolvedValue({ missedStops: [stop, stop] })
+      .mockResolvedValue(
+        finishedDetourFactory.build({ missedStops: [stop, stop] })
+      )
 
     const { container } = render(<DiversionPage />)
 

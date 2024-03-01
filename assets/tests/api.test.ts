@@ -412,14 +412,34 @@ describe("fetchFinishedDetour", () => {
 
     const stops = stopsFromData(stopData)
 
-    mockFetch(200, { data: { missed_stops: stopData } })
+    const beforeDetour = shapePointFactory.buildList(3)
+    const detour = shapePointFactory.buildList(3)
+    const afterDetour = shapePointFactory.buildList(3)
+
+    mockFetch(200, {
+      data: {
+        missed_stops: stopData,
+        route_segments: {
+          before_detour: beforeDetour,
+          detour: detour,
+          after_detour: afterDetour,
+        },
+      },
+    })
 
     fetchFinishedDetour(
       "route_pattern_id",
       shapePointFactory.build(),
       shapePointFactory.build()
     ).then((result) => {
-      expect(result).toEqual({ missedStops: stops })
+      expect(result).toEqual({
+        missedStops: stops,
+        routeSegments: {
+          beforeDetour,
+          detour,
+          afterDetour,
+        },
+      })
       done()
     })
   })
