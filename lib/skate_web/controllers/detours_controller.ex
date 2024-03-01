@@ -1,8 +1,8 @@
 defmodule SkateWeb.DetoursController do
-  alias Skate.Detours.RouteSegments
   use SkateWeb, :controller
 
   alias Skate.Detours.MissedStops
+  alias Skate.Detours.RouteSegments
   alias Util.Location
 
   @spec finished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
