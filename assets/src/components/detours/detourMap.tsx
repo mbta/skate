@@ -216,7 +216,6 @@ const DetourPointMarker = ({ position }: { position: LatLngLiteral }) => (
 )
 
 interface OriginalRouteShapeProps extends PropsWithChildren {
-  key: string
   positions: LatLngLiteral[]
   classNames: string[]
   clickable: boolean
