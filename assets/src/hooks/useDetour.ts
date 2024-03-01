@@ -96,7 +96,6 @@ export const useDetour = (routePatternId: RoutePatternId) => {
     }
   }
 
-  const canAddPoints = endPoint === null
   const canUndo = startPoint !== null && state === DetourState.Edit
 
   const undo = () => {
@@ -141,10 +140,6 @@ export const useDetour = (routePatternId: RoutePatternId) => {
     addConnectionPoint:
       state === DetourState.Finished ? undefined : addConnectionPoint,
 
-    /**
-     * Reports whether it's possible to add points to the detour.
-     */
-    canAddPoints,
     /**
      * The starting connection point of the detour.
      */

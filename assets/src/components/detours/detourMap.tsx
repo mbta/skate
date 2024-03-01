@@ -42,12 +42,6 @@ interface DetourMapProps {
   waypoints: ShapePoint[]
 
   /**
-   * User signal to show whether the original shape should be
-   * highlighted
-   */
-  originalShapeClickable: boolean
-
-  /**
    * Three partial route-shape segments: before, during, and after the detour
    */
   routeSegments?: RouteSegments
@@ -91,7 +85,6 @@ export const DetourMap = ({
   endPoint,
   waypoints,
 
-  originalShapeClickable,
   onClickOriginalShape,
   onClickMap,
 
@@ -154,7 +147,6 @@ export const DetourMap = ({
               ? ["c-detour_map--original-route-shape__unstarted"]
               : []
           }
-          clickable={originalShapeClickable}
           onClick={(e) => {
             const { position } =
               closestPosition(
@@ -235,7 +227,6 @@ const DetourPointMarker = ({ position }: { position: LatLngLiteral }) => (
 interface OriginalRouteShapeProps extends PropsWithChildren {
   positions: LatLngLiteral[]
   classNames: string[]
-  clickable: boolean
   onClick: (e: LeafletMouseEvent) => void
 }
 
@@ -243,7 +234,6 @@ const OriginalRouteShape = ({
   positions,
   children,
   classNames,
-  clickable,
   onClick,
 }: OriginalRouteShapeProps) => (
   <>
@@ -252,22 +242,20 @@ const OriginalRouteShape = ({
       positions={positions}
       className="c-detour_map--original-route-shape-core"
     />
-    {clickable && (
-      <Polyline
-        positions={positions}
-        weight={16}
-        className={joinClasses([
-          "c-detour_map--original-route-shape",
-          ...classNames,
-        ])}
-        bubblingMouseEvents={false}
-        eventHandlers={{
-          click: onClick,
-        }}
-      >
-        {children}
-      </Polyline>
-    )}
+    <Polyline
+      positions={positions}
+      weight={16}
+      className={joinClasses([
+        "c-detour_map--original-route-shape",
+        ...classNames,
+      ])}
+      bubblingMouseEvents={false}
+      eventHandlers={{
+        click: onClick,
+      }}
+    >
+      {children}
+    </Polyline>
   </>
 )
 
