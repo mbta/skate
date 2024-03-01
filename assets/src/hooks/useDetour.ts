@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { RoutePatternId, ShapePoint, Stop } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
-import { DetourShape } from "../models/detour"
+import { DetourShape, RouteSegments } from "../models/detour"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
   const [detourShape, setDetourShape] = useState<ShapePoint[]>([])
@@ -50,6 +50,9 @@ export const useDetour = (routePatternId: RoutePatternId) => {
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
   const [missedStops, setMissedStops] = useState<Stop[] | undefined>(undefined)
+  const [routeSegments, setRouteSegments] = useState<RouteSegments | undefined>(
+    undefined
+  )
 
   useEffect(() => {
     let shouldUpdate = true
@@ -59,11 +62,13 @@ export const useDetour = (routePatternId: RoutePatternId) => {
         (result) => {
           if (shouldUpdate) {
             setMissedStops(result?.missedStops || undefined)
+            setRouteSegments(result?.routeSegments || undefined)
           }
         }
       )
     } else {
       setMissedStops(undefined)
+      setRouteSegments(undefined)
     }
 
     return () => {
@@ -168,6 +173,10 @@ export const useDetour = (routePatternId: RoutePatternId) => {
      * Stops missed by the detour, determined after the route is completed
      */
     missedStops,
+    /**
+     * Three partial route-shape segments: before, during, and after the detour
+     */
+    routeSegments,
 
     /**
      * Reports if {@link undo} will do anything.
