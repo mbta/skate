@@ -11,6 +11,7 @@ defmodule Skate.Detours.RouteSegments do
             after_detour: [Util.Location.From.t()]
           }
     @enforce_keys [:before_detour, :detour, :after_detour]
+    @derive {Jason.Encoder, only: [:before_detour, :detour, :after_detour]}
     defstruct [:before_detour, :detour, :after_detour]
   end
 

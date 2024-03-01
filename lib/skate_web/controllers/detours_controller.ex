@@ -2,6 +2,7 @@ defmodule SkateWeb.DetoursController do
   use SkateWeb, :controller
 
   alias Skate.Detours.MissedStops
+  alias Skate.Detours.RouteSegments
   alias Util.Location
 
   @spec finished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -26,7 +27,14 @@ defmodule SkateWeb.DetoursController do
           shape: shape_with_stops.points
         })
 
-      json(conn, %{data: %{missed_stops: missed_stops}})
+      {:ok, route_segments} =
+        RouteSegments.route_segments(
+          shape_with_stops.points,
+          connection_start_location,
+          connection_end_location
+        )
+
+      json(conn, %{data: %{missed_stops: missed_stops, route_segments: route_segments}})
     else
       _ -> send_resp(conn, :bad_request, "bad request")
     end
