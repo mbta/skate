@@ -117,10 +117,12 @@ export const DiversionPage = ({
             Are you sure you want to exit detour mode?
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="lh-base pb-4">
-          When you close out of this screen, you will not be able to access the
-          details of your detour again. You may want to copy and paste these
-          details to another application.
+        <Modal.Body>
+          <p className="lh-base mt-0 mb-3">
+            When you close out of this screen, you will not be able to access
+            the details of your detour again. You may want to copy and paste
+            these details to another application.
+          </p>
         </Modal.Body>
         <Modal.Footer>
           <Button
