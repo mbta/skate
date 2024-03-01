@@ -19,6 +19,13 @@ export interface OriginalRoute {
   zoom: number
 }
 
+export interface RouteSegments {
+  beforeDetour: ShapePoint[]
+  detour: ShapePoint[]
+  afterDetour: ShapePoint[]
+}
+
 export interface FinishedDetour {
   missedStops: Stop[]
+  routeSegments: RouteSegments
 }

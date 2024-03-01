@@ -7,12 +7,16 @@ import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
 import stopFactory from "../factories/stop"
+import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 
 jest.mock("../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockResolvedValue(null)
-  jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
+
+  jest
+    .mocked(fetchFinishedDetour)
+    .mockResolvedValue(finishedDetourFactory.build())
 })
 
 const useDetourWithFakeRoutePattern = () => useDetour("routePatternId")
@@ -264,10 +268,6 @@ describe("useDetour", () => {
   test("when `endPoint` is set, `canUndo` is `true`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue({ missedStops: stopFactory.buildList(3) })
-
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
@@ -298,10 +298,6 @@ describe("useDetour", () => {
   test("when `endPoint` is set, `canAddPoints` is `false`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue({ missedStops: stopFactory.buildList(3) })
-
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
@@ -318,7 +314,9 @@ describe("useDetour", () => {
 
     const missedStops = stopFactory.buildList(3)
 
-    jest.mocked(fetchFinishedDetour).mockResolvedValue({ missedStops })
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build({ missedStops }))
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
@@ -335,7 +333,9 @@ describe("useDetour", () => {
 
     const missedStops = stopFactory.buildList(3)
 
-    jest.mocked(fetchFinishedDetour).mockResolvedValue({ missedStops })
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build({ missedStops }))
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
