@@ -2,6 +2,7 @@
 
 .c-map-button {
   box-shadow: 0 0 0 2px rgb($black, 0.15);
+  --bs-btn-font-size: 0.625rem;
   --bs-btn-border-radius: 0.2rem;
   --bs-btn-color: #{$black};
   --bs-btn-bg: #{$white};
@@ -13,19 +14,17 @@
   --bs-btn-disabled-color: #{tokens.$gray-700};
   --bs-btn-disabled-bg: #{tokens.$gray-100};
   --bs-btn-disabled-opacity: 1;
-}
 
-.c-map-button--s {
-  width: 2rem;
-  height: 2rem;
-}
-
-.c-map-button--m {
   width: 2.375rem;
   height: 2.375rem;
 }
 
-.c-map-button--l {
+.c-map-button--sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+.c-map-button--lg {
   width: 3rem;
   height: 3rem;
 }
