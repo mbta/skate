@@ -854,6 +854,7 @@ describe("reducer", () => {
     switch (newState.openInputModal?.type) {
       case "CREATE_PRESET":
         newState.openInputModal.createCallback("Preset name", mockDispatch)
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockDispatch).toHaveBeenCalledWith(
           State.createPreset(routeTab.uuid, "Preset name")
         )
@@ -862,6 +863,7 @@ describe("reducer", () => {
           "uuid",
           mockDispatch
         )
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockDispatch).toHaveBeenCalledWith(
           State.promptToOverwritePreset("Preset name", routeTab, "uuid")
         )
@@ -886,7 +888,9 @@ describe("reducer", () => {
     switch (newState.openInputModal?.type) {
       case "SAVE_PRESET":
         newState.openInputModal.saveCallback(mockDispatch)
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(newState.openInputModal.presetName).toBe("My preset")
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockDispatch).toHaveBeenCalledWith(
           State.savePreset(routeTab.uuid)
         )
@@ -921,7 +925,9 @@ describe("reducer", () => {
     switch (newState.openInputModal?.type) {
       case "DELETE_PRESET":
         newState.openInputModal.deleteCallback(mockDispatch)
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(newState.openInputModal.presetName).toBe("My preset")
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockDispatch).toHaveBeenCalledWith(
           State.deletePreset(routeTab.uuid)
         )
@@ -943,10 +949,13 @@ describe("reducer", () => {
     switch (newState.openInputModal?.type) {
       case "OVERWRITE_PRESET":
         newState.openInputModal.confirmCallback(mockDispatch)
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(newState.openInputModal.presetName).toBe("My Preset")
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockDispatch).toHaveBeenCalledWith(
           State.deletePreset(routeTab.uuid)
         )
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockDispatch).toHaveBeenCalledWith(
           State.createPreset(routeTab.uuid, "My Preset")
         )
