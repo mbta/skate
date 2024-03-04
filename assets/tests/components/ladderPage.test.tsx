@@ -269,7 +269,7 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
     )
-    expect(mockedFSEvent).toBeCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       'User clicked Route Tab "Save" Button',
       {}
     )
@@ -324,7 +324,7 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
     expect(tagManagerEvent).toHaveBeenCalledWith("new_tab_added")
-    expect(mockedFSEvent).toBeCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User added a new Route Ladder Tab",
       {}
     )
