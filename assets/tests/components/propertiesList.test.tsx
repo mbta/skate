@@ -229,7 +229,7 @@ describe("vehicleProperties", () => {
     )
   })
 
-  test("operator information gives last name if that's all that's available", () => {
+  test("only includes operator last name when `operatorLastNameOnly` is set", () => {
     const properties = vehicleProperties(
       vehicleFactory.build({
         operatorFirstName: "JOHN",
