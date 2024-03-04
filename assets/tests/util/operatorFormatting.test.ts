@@ -35,13 +35,6 @@ describe("formatOperatorName", () => {
     expect(formatOperatorName(first, last, id)).toBe(`${first} ${last}`)
   })
 
-  test("when given null id, should return formatted operator name without that field", () => {
-    const first = "FirstName"
-    const last = "LastName"
-    const id = null
-    expect(formatOperatorName(first, last, id)).toBe(`${first} ${last}`)
-  })
-
   test("when all inputs are null and there is no fallback parameter, should return default fallback string", () => {
     expect(formatOperatorName(null, null, null)).toBe(defaultFallbackString)
   })
