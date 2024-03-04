@@ -69,7 +69,7 @@ function CoordinateIntersectionMap(
   }
 }
 
-export const MockIntersectionWithCoordinateIntersectionMap = (
+const MockIntersectionWithCoordinateIntersectionMap = (
   numberOfEntries = 1,
   errorValue: any = null
 ) => {
