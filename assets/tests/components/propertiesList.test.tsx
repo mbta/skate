@@ -213,9 +213,26 @@ describe("vehicleProperties", () => {
   })
 
   test("operator information gives last name if that's all that's available", () => {
+    const vehicleSansOperator = {
+      ...vehicle,
+      operatorId: "1234",
+      operatorFirstName: null,
+      operatorLastName: "SMITH",
+    } as unknown
+
+    const properties = vehicleProperties(
+      vehicleSansOperator as VehicleInScheduledService
+    )
+
+    expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
+      "SMITH #1234"
+    )
+  })
+
+  test("operator information gives last name if that's all that's available", () => {
     const properties = vehicleProperties(
       vehicleFactory.build({
-        operatorFirstName: null,
+        operatorFirstName: "JOHN",
         operatorLastName: "SMITH",
         operatorId: "1234",
       }),
