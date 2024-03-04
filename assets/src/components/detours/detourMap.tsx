@@ -138,6 +138,7 @@ export const DetourMap = ({
 
       <Polyline
         positions={detourShape.map(shapePointToLatLngLiteral)}
+        weight={3}
         className="c-detour_map--detour-route-shape"
       />
 

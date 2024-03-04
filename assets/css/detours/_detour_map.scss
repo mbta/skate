@@ -1,3 +1,5 @@
+@use "../color/definitions" as semantic;
+
 .c-detour_map--original-route-shape-core {
   stroke: $color-kiwi-500;
   opacity: 50%;
@@ -13,9 +15,8 @@
 }
 
 .c-detour_map--original-route-shape-diverted {
-  stroke: $black;
-  stroke-dasharray: 14 28;
-  stroke-linecap: square;
+  stroke: semantic.$missed-stop;
+  stroke-dasharray: 10 20;
   opacity: 50%;
 }
 
