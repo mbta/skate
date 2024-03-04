@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
-import { RoutePatternId, ShapePoint, Stop } from "../schedule"
+import { RoutePatternId, ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
-import { DetourShape, RouteSegments } from "../models/detour"
+import { DetourShape, FinishedDetour } from "../models/detour"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
   const [detourShape, setDetourShape] = useState<ShapePoint[]>([])
@@ -49,9 +49,8 @@ export const useDetour = (routePatternId: RoutePatternId) => {
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
-  const [missedStops, setMissedStops] = useState<Stop[] | undefined>(undefined)
-  const [routeSegments, setRouteSegments] = useState<RouteSegments | undefined>(
-    undefined
+  const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
+    null
   )
 
   useEffect(() => {
@@ -61,14 +60,12 @@ export const useDetour = (routePatternId: RoutePatternId) => {
       fetchFinishedDetour(routePatternId, startPoint, endPoint).then(
         (result) => {
           if (shouldUpdate) {
-            setMissedStops(result?.missedStops || undefined)
-            setRouteSegments(result?.routeSegments || undefined)
+            setFinishedDetour(result)
           }
         }
       )
     } else {
-      setMissedStops(undefined)
-      setRouteSegments(undefined)
+      setFinishedDetour(null)
     }
 
     return () => {
@@ -172,11 +169,11 @@ export const useDetour = (routePatternId: RoutePatternId) => {
     /**
      * Stops missed by the detour, determined after the route is completed
      */
-    missedStops,
+    missedStops: finishedDetour?.missedStops,
     /**
      * Three partial route-shape segments: before, during, and after the detour
      */
-    routeSegments,
+    routeSegments: finishedDetour?.routeSegments,
 
     /**
      * Reports if {@link undo} will do anything.
