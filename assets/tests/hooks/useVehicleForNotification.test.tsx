@@ -89,7 +89,7 @@ describe("useVehicleForNotification", () => {
     expect(result.current).toEqual(ghostFromData(ghostData))
 
     expect(tagManagerEvent).toHaveBeenCalledWith("notification_linked_to_vpp")
-    expect(mockedFSEvent).toBeCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User clicked Notification and linked to VPP",
       {}
     )
@@ -143,7 +143,7 @@ describe("useVehicleForNotification", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "notification_linked_to_inactive_modal"
     )
-    expect(mockedFSEvent).toBeCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User clicked Notification and linked to Inactive Modal",
       {}
     )
@@ -171,7 +171,7 @@ describe("useVehicleForNotification", () => {
     expect(tagManagerEvent).toHaveBeenCalledWith(
       "notification_linked_to_inactive_modal"
     )
-    expect(mockedFSEvent).toBeCalledWith(
+    expect(mockedFSEvent).toHaveBeenCalledWith(
       "User clicked Notification and linked to Inactive Modal",
       {}
     )

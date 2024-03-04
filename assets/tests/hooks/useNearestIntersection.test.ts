@@ -148,7 +148,7 @@ describe("useNearestIntersection", () => {
       rerender(latLng2)
 
       expect(result.current).toEqual(LoadingOk(intersection1))
-      expect(fetchFn).toBeCalledWith(latLng2.latitude, latLng2.longitude)
+      expect(fetchFn).toHaveBeenCalledWith(latLng2.latitude, latLng2.longitude)
 
       await waitFor(async () =>
         expect(result.current).toEqual(Ok(intersection2))
