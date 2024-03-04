@@ -37,7 +37,7 @@ const mockWindowWidth = (value: number) =>
   jest.spyOn(window, "innerWidth", "get").mockReturnValue(value)
 
 describe("useScreenSize", () => {
-  test.only.each([
+  test.each([
     { screenWidth: 0, deviceType: "mobile" },
     { screenWidth: 480, deviceType: "mobile" },
     { screenWidth: 481, deviceType: "mobile_landscape_tablet_portrait" },

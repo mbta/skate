@@ -42,5 +42,6 @@ document.createElementNS = function (namespaceURI, qualifiedName) {
 }
 
 beforeEach(() => {
+  // eslint-disable-next-line jest/no-standalone-expect
   expect.hasAssertions()
 })

@@ -250,11 +250,13 @@ describe("NotificationCard", () => {
       await user.click(result.getByText(/run1/))
 
       if (should_fire_fs_event) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockedFSEvent).toHaveBeenCalledWith(
           "User clicked Chelsea Bridge Notification",
           {}
         )
       } else {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(mockedFSEvent).not.toHaveBeenCalledWith(
           "User clicked Chelsea Bridge Notification",
           {}

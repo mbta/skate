@@ -41,7 +41,7 @@ describe("getTestGroups", () => {
       ;(appData as jest.Mock).mockImplementationOnce(() => ({
         userTestGroups: mockTestGroupData,
       }))
-      expect(() => getTestGroups()).toThrowError(expectedError)
+      expect(() => getTestGroups()).toThrow(expectedError)
     }
   )
 })

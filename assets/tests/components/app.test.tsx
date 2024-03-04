@@ -122,7 +122,7 @@ describe("App", () => {
         ;(useVehicles as jest.Mock).mockReset()
       })
 
-      test("VPP ", () => {
+      test("VPP", () => {
         mockUsePanelState({
           currentView: {
             selectedVehicleOrGhost: vehicle,

@@ -69,7 +69,7 @@ function CoordinateIntersectionMap(
   }
 }
 
-export const MockIntersectionWithCoordinateIntersectionMap = (
+const MockIntersectionWithCoordinateIntersectionMap = (
   numberOfEntries = 1,
   errorValue: any = null
 ) => {
@@ -148,7 +148,7 @@ describe("useNearestIntersection", () => {
       rerender(latLng2)
 
       expect(result.current).toEqual(LoadingOk(intersection1))
-      expect(fetchFn).toBeCalledWith(latLng2.latitude, latLng2.longitude)
+      expect(fetchFn).toHaveBeenCalledWith(latLng2.latitude, latLng2.longitude)
 
       await waitFor(async () =>
         expect(result.current).toEqual(Ok(intersection2))
@@ -163,7 +163,7 @@ describe("useNearestIntersection", () => {
         localGeoCoordinateFactory.build()
       )
 
-      expect(mockNearestIntersection).toBeCalledTimes(1)
+      expect(mockNearestIntersection).toHaveBeenCalledTimes(1)
 
       rerender(localGeoCoordinateFactory.build())
 

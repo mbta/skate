@@ -2,9 +2,6 @@ import { jest, describe, test, expect, afterEach } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import useAppcues, { cleanUsername } from "../../src/hooks/useAppcues"
 
-// Indicate that the file is a module so we can declare global
-export {}
-
 declare global {
   interface Window {
     Appcues?: {

@@ -452,7 +452,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
     ).not.toBeInTheDocument()
   })
 
-  test("sets selected vehicle id as selected ", () => {
+  test("sets selected vehicle id as selected", () => {
     const vehicle = vehicleFactory.build()
 
     const { container } = render(

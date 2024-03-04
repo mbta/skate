@@ -98,7 +98,7 @@ test("openPreviousView returns to the previous view, deselects vehicle", () => {
   )
 
   expect(state.state[state.currentPath].openView).toBe(previousView)
-  expect(state.state[state.currentPath].selectedVehicleOrGhost).toBeUndefined
+  expect(state.state[state.currentPath].selectedVehicleOrGhost).toBeUndefined()
 })
 
 describe("closeView", () => {
