@@ -40,7 +40,7 @@ describe("getMapLimits", () => {
       ;(appData as jest.Mock).mockImplementationOnce(() => ({
         mapLimits: mockTestGroupData,
       }))
-      expect(() => getMapLimits()).toThrowError(expectedError)
+      expect(() => getMapLimits()).toThrow(expectedError)
     }
   )
 })
