@@ -81,7 +81,7 @@ describe("<VehiclePropertiesCard/>", () => {
         screen.getByRole("button", { name: "Route Variant Name" })
       )
 
-      expect(event).toBeCalledTimes(1)
+      expect(event).toHaveBeenCalledTimes(1)
     })
   })
 

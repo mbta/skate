@@ -163,7 +163,7 @@ describe("useNearestIntersection", () => {
         localGeoCoordinateFactory.build()
       )
 
-      expect(mockNearestIntersection).toBeCalledTimes(1)
+      expect(mockNearestIntersection).toHaveBeenCalledTimes(1)
 
       rerender(localGeoCoordinateFactory.build())
 
