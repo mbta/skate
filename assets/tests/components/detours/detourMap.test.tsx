@@ -5,6 +5,7 @@ import { DetourMap } from "../../../src/components/detours/detourMap"
 import "@testing-library/jest-dom/jest-globals"
 import { defaultCenter } from "../../../src/components/map"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
+import { routeSegmentsFactory } from "../../factories/finishedDetourFactory"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -196,5 +197,24 @@ describe("DetourMap", () => {
     expect(
       container.querySelector(".c-detour_map--original-route-shape")
     ).not.toBeInTheDocument()
+  })
+
+  test("when `routeSegments` are present, there should be two core original route shapes and one diverted route shape", () => {
+    const { container } = render(
+      <DetourMapWithDefaults
+        originalShapeClickable={false}
+        routeSegments={routeSegmentsFactory.build()}
+      />
+    )
+
+    expect(
+      container.querySelector(".c-detour_map--original-route-shape-core")
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector(".c-detour_map--original-route-shape")
+    ).not.toBeInTheDocument()
+    expect(
+      container.querySelector(".c-detour_map--original-route-shape-diverted")
+    ).toBeInTheDocument()
   })
 })

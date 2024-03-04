@@ -8,6 +8,7 @@ import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
 import stopFactory from "../factories/stop"
 import { finishedDetourFactory } from "../factories/finishedDetourFactory"
+import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 
 jest.mock("../../src/api")
 
@@ -328,6 +329,25 @@ describe("useDetour", () => {
     expect(result.current.missedStops).toBe(missedStops)
   })
 
+  test("when `endPoint` is set, `routeSegments` is filled in", async () => {
+    const { result } = renderHook(useDetourWithFakeRoutePattern)
+
+    const routeSegments = routeSegmentsFactory.build()
+
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build({ routeSegments }))
+
+    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+
+    await waitFor(() => {
+      expect(result.current.missedStops).not.toBeUndefined()
+    })
+
+    expect(result.current.routeSegments).toEqual(routeSegments)
+  })
+
   test("when `endPoint` is undone, `missedStops` is cleared", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
@@ -348,6 +368,23 @@ describe("useDetour", () => {
 
     await waitFor(() => {
       expect(result.current.missedStops).toBeUndefined()
+    })
+  })
+
+  test("when `endPoint` is undone, `routeSegments` is cleared", async () => {
+    const { result } = renderHook(useDetourWithFakeRoutePattern)
+
+    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+
+    await waitFor(() => {
+      expect(result.current.routeSegments).not.toBeUndefined()
+    })
+
+    act(() => result.current.undo?.())
+
+    await waitFor(() => {
+      expect(result.current.routeSegments).toBeUndefined()
     })
   })
 
