@@ -1,3 +1,4 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "expectIndeterminateValue", "expectCheckedValue"] }] */
 import { jest, describe, test, expect, afterEach } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
