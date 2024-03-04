@@ -2,6 +2,7 @@ import React, {
   ComponentProps,
   ComponentPropsWithoutRef,
   PropsWithChildren,
+  useEffect,
   useState,
 } from "react"
 import { DiversionPanel } from "./diversionPanel"
@@ -48,6 +49,24 @@ export const DiversionPage = ({
   } = useDetour(originalRoute.routePatternId)
 
   const [textArea, setTextArea] = useState("")
+
+  useEffect(() => {
+    setTextArea(
+      [
+        "Detour:",
+        `${originalRoute.routeName} ${originalRoute.routeDescription} from`,
+        originalRoute.routeOrigin,
+        originalRoute.routeDirection,
+        ,
+        "Turn-by-Turn Directions:",
+        ...(directions?.map((v) => v.instruction) ?? []),
+        ,
+        `Missed Stops (${missedStops?.length}):`,
+        ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
+      ].join("\n")
+    )
+  }, [originalRoute, directions, missedStops])
+
   const [showConfirmCloseModal, setShowConfirmCloseModal] =
     useState<boolean>(false)
 

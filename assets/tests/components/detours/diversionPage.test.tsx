@@ -19,10 +19,21 @@ import {
   finishDetourButton,
   originalRouteShape,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
-import { finishedDetourFactory } from "../../factories/finishedDetourFactory"
+import {
+  finishedDetourFactory,
+  routeSegmentsFactory,
+} from "../../factories/finishedDetourFactory"
+import { detourShapeFactory } from "../../factories/detourShapeFactory"
 
 const DiversionPage = (
-  props: Partial<ComponentProps<typeof DiversionPageDefault>>
+  props: Omit<
+    Partial<ComponentProps<typeof DiversionPageDefault>>,
+    "originalRoute"
+  > & {
+    originalRoute?: Partial<
+      ComponentProps<typeof DiversionPageDefault>["originalRoute"]
+    >
+  }
 ) => {
   const { originalRoute, ...otherProps } = props
   return (
@@ -280,9 +291,41 @@ describe("DiversionPage", () => {
   })
 
   test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
+    const stops = stopFactory.buildList(4)
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      detourShapeFactory.build({
+        directions: [
+          { instruction: "Turn left on Main Street" },
+          { instruction: "Turn right on High Street" },
+          { instruction: "Turn sharp right on Broadway" },
+        ],
+      })
+    )
+    jest.mocked(fetchFinishedDetour).mockResolvedValue({
+      missedStops: stops,
+      routeSegments: routeSegmentsFactory.build(),
+    })
+
     userEvent.setup() // Configure the clipboard API
 
-    const { container } = render(<DiversionPage />)
+    const routeName = "route1"
+    const routeOrigin = "Origin Station"
+    const routeDescription = "Headsign via Bus"
+    const routeDirection = "Outbound"
+    const connectionPoint = { lat: 10, lon: 10 }
+    const { container } = render(
+      <DiversionPage
+        originalRoute={{
+          routeName,
+          routeOrigin,
+          routeDescription,
+          routeDirection,
+          shape: shapeFactory.build({
+            points: [connectionPoint],
+          }),
+        }}
+      />
+    )
 
     fireEvent.click(originalRouteShape.get(container))
 
@@ -290,10 +333,25 @@ describe("DiversionPage", () => {
 
     await userEvent.click(finishDetourButton.get())
 
-    userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
+    await userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
 
     await waitFor(() =>
-      expect(window.navigator.clipboard.readText()).resolves.toBe("")
+      expect(window.navigator.clipboard.readText()).resolves.toBe(
+        [
+          "Detour:",
+          `${routeName} ${routeDescription} from`,
+          routeOrigin,
+          routeDirection,
+          ,
+          "Turn-by-Turn Directions:",
+          "Turn left on Main Street",
+          "Turn right on High Street",
+          "Turn sharp right on Broadway",
+          ,
+          `Missed Stops (${stops.length}):`,
+          ...stops.map(({ name }) => name),
+        ].join("\n")
+      )
     )
 
     expect(
