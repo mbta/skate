@@ -120,15 +120,17 @@ describe("statusClasses", () => {
     ).toEqual(["logged-out"])
   })
 
-  test("other statuses have a class", () => {
-    expect(
-      statusClasses("off-course", defaultUserSettings.vehicleAdherenceColors)
-    ).toEqual(["off-course", "early-red"])
-  })
+  describe("other statuses have a class", () => {
+    test("early-red by default", () => {
+      expect(
+        statusClasses("off-course", defaultUserSettings.vehicleAdherenceColors)
+      ).toEqual(["off-course", "early-red"])
+    })
 
-  test("other statuses have a class", () => {
-    expect(
-      statusClasses("off-course", VehicleAdherenceColorsSetting.EarlyBlue)
-    ).toEqual(["off-course", "early-blue"])
+    test("early-blue if user setting is `EarlyBlue`", () => {
+      expect(
+        statusClasses("off-course", VehicleAdherenceColorsSetting.EarlyBlue)
+      ).toEqual(["off-course", "early-blue"])
+    })
   })
 })
