@@ -8,8 +8,9 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
     Type that represents a request made to OpenRouteService's Directions API
   """
   @type t() :: %__MODULE__{
-          coordinates: [[float()]]
+          coordinates: [[float()]],
+          continue_straight: boolean()
         }
 
-  defstruct coordinates: []
+  defstruct coordinates: [], continue_straight: true
 end
