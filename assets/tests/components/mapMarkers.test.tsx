@@ -126,7 +126,7 @@ describe("StationMarker", () => {
 })
 
 describe("StopMarkers", () => {
-  test("When zoom = 14, renders no markers ", () => {
+  test("When zoom = 14, renders no markers", () => {
     const { container } = renderInMap(
       <StopMarkers stops={[stop, station]} zoomLevel={14} />
     )
