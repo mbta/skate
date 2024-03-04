@@ -52,14 +52,12 @@ export const InMap: Story = {
     layout: "fullscreen",
     stretch: true,
   },
-  render(args) {
-    return (
-      <CustomControl position="bottomleft">
-        <MapButton {...args}>
-          <PlusSquare />
-        </MapButton>
-      </CustomControl>
-    )
-  },
+  render: (args) => (
+    <CustomControl position="bottomleft">
+      <MapButton {...args}>
+        <PlusSquare />
+      </MapButton>
+    </CustomControl>
+  ),
   decorators: [inMapDecorator],
 }
