@@ -130,7 +130,7 @@ export const DiversionPage = ({
             endPoint={endPoint ?? undefined}
             waypoints={waypoints}
             routeSegments={routeSegments}
-            onClickMap={addWaypoint ?? (() => {})}
+            onClickMap={addWaypoint}
             onClickOriginalShape={addConnectionPoint ?? (() => {})}
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}

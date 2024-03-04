@@ -56,7 +56,7 @@ interface DetourMapProps {
    * Callback fired when the map is clicked.
    * @param point
    */
-  onClickMap: (point: ShapePoint) => void
+  onClickMap?: (point: ShapePoint) => void
 
   /**
    * User signal to describe the state of the undo button.
@@ -101,81 +101,90 @@ export const DetourMap = ({
   const id = useId()
 
   return (
-    <Map vehicles={[]} allowStreetView center={center} zoom={zoom}>
-      <CustomControl position="bottomleft" className="leaflet-bar">
-        <MapButton
-          disabled={undoDisabled}
-          onClick={onUndo}
-          size="lg"
-          title="Undo"
-        >
-          <ArrowLeftSquare />
-        </MapButton>
-      </CustomControl>
-      <CustomControl position="bottomleft" className="leaflet-bar">
-        <MapButton
-          disabled={undoDisabled}
-          onClick={onClear}
-          size="lg"
-          title="Clear"
-        >
-          <XSquare />
-        </MapButton>
-      </CustomControl>
+    <div
+      className={joinClasses([
+        "h-100",
+        onClickMap && "c-detour_map--map__clickable",
+      ])}
+    >
+      <Map vehicles={[]} allowStreetView center={center} zoom={zoom}>
+        <CustomControl position="bottomleft" className="leaflet-bar">
+          <MapButton
+            disabled={undoDisabled}
+            onClick={onUndo}
+            size="lg"
+            title="Undo"
+          >
+            <ArrowLeftSquare />
+          </MapButton>
+        </CustomControl>
+        <CustomControl position="bottomleft" className="leaflet-bar">
+          <MapButton
+            disabled={undoDisabled}
+            onClick={onClear}
+            size="lg"
+            title="Clear"
+          >
+            <XSquare />
+          </MapButton>
+        </CustomControl>
 
-      <MapEvents
-        click={(e) => {
-          onClickMap(latLngLiteralToShapePoint(e.latlng))
-        }}
-      />
-
-      {startPoint && (
-        <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
-      )}
-
-      {waypoints.map((position) => (
-        <WaypointMarker
-          key={JSON.stringify(position)}
-          position={shapePointToLatLngLiteral(position)}
-        />
-      ))}
-
-      {endPoint && <EndMarker position={shapePointToLatLngLiteral(endPoint)} />}
-
-      <Polyline
-        positions={detourShape.map(shapePointToLatLngLiteral)}
-        weight={6}
-        interactive={false}
-        className="c-detour_map--detour-route-shape"
-      />
-
-      {routeSegments ? (
-        <DivertedRouteShape segments={routeSegments}></DivertedRouteShape>
-      ) : (
-        <OriginalRouteShape
-          positions={originalShape.map(shapePointToLatLngLiteral)}
-          key={`detour-map-original-route-shape-${id}-${
-            startPoint === undefined
-          }`}
-          classNames={
-            startPoint === undefined
-              ? ["c-detour_map--original-route-shape__unstarted"]
-              : ["c-detour_map--original-route-shape__unfinished"]
-          }
-          onClick={(e) => {
-            const { position } =
-              closestPosition(
-                originalShape.map(shapePointToLatLngLiteral),
-                e.latlng
-              ) ?? {}
-            position &&
-              onClickOriginalShape(latLngLiteralToShapePoint(position))
+        <MapEvents
+          click={(e) => {
+            onClickMap?.(latLngLiteralToShapePoint(e.latlng))
           }}
-        >
-          {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
-        </OriginalRouteShape>
-      )}
-    </Map>
+        />
+
+        {startPoint && (
+          <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
+        )}
+
+        {waypoints.map((position) => (
+          <WaypointMarker
+            key={JSON.stringify(position)}
+            position={shapePointToLatLngLiteral(position)}
+          />
+        ))}
+
+        {endPoint && (
+          <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
+        )}
+
+        <Polyline
+          positions={detourShape.map(shapePointToLatLngLiteral)}
+          weight={6}
+          interactive={false}
+          className="c-detour_map--detour-route-shape"
+        />
+
+        {routeSegments ? (
+          <DivertedRouteShape segments={routeSegments}></DivertedRouteShape>
+        ) : (
+          <OriginalRouteShape
+            positions={originalShape.map(shapePointToLatLngLiteral)}
+            key={`detour-map-original-route-shape-${id}-${
+              startPoint === undefined
+            }`}
+            classNames={
+              startPoint === undefined
+                ? ["c-detour_map--original-route-shape__unstarted"]
+                : ["c-detour_map--original-route-shape__unfinished"]
+            }
+            onClick={(e) => {
+              const { position } =
+                closestPosition(
+                  originalShape.map(shapePointToLatLngLiteral),
+                  e.latlng
+                ) ?? {}
+              position &&
+                onClickOriginalShape(latLngLiteralToShapePoint(position))
+            }}
+          >
+            {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
+          </OriginalRouteShape>
+        )}
+      </Map>
+    </div>
   )
 }
 
