@@ -5,6 +5,7 @@ module.exports = {
     "@typescript-eslint",
     "react",
     "jsx-a11y",
+    "jest"
   ],
   extends: [
     "eslint:recommended",
@@ -13,7 +14,8 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "prettier",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "plugin:jest/recommended"
   ],
   "settings": {
     "react": {
