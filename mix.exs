@@ -12,6 +12,7 @@ defmodule Skate.MixProject do
       deps: deps(),
       test_coverage: [tool: LcovEx],
       elixirc_options: [warnings_as_errors: true],
+      consolidate_protocols: Mix.env() != :test,
       dialyzer: [
         plt_add_apps: [:mix]
       ]
