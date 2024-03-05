@@ -39,8 +39,8 @@
 }
 
 .c-detour_map-circle-marker--start {
-  stroke: #03a900;
-  fill: #03a900;
+  stroke: tokens.$detour-start-point;
+  fill: tokens.$detour-start-point;
 }
 
 .c-detour_map-circle-marker--end {
