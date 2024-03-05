@@ -180,11 +180,7 @@ export const StartMarker = ({ position }: { position: LatLngLiteral }) => (
 )
 
 export const EndMarker = ({ position }: { position: LatLngLiteral }) => (
-  <StartOrEndMarker
-    title="Detour End"
-    position={position}
-    icon={<EndIcon />}
-  />
+  <StartOrEndMarker title="Detour End" position={position} icon={<EndIcon />} />
 )
 
 const StartOrEndMarker = ({
