@@ -22,7 +22,6 @@ const meta = {
     startPoint,
     waypoints: [waypoint],
     endPoint,
-    originalShapeClickable: false,
     routeSegments: {
       beforeDetour: shape.slice(0, startPointIndex),
       detour: shape.slice(startPointIndex, endPointIndex),
@@ -43,7 +42,6 @@ const meta = {
     originalShape: { table: { disable: true } },
     detourShape: { table: { disable: true } },
     waypoints: { table: { disable: true } },
-    originalShapeClickable: { table: { disable: true } },
     onClickOriginalShape: { table: { disable: true } },
     onClickMap: { table: { disable: true } },
     undoDisabled: { table: { disable: true } },
@@ -65,7 +63,6 @@ export const WithSomeWaypoints: Story = {
     routeSegments: undefined,
     detourShape: [startPoint, waypoint],
     waypoints: [waypoint],
-    originalShapeClickable: true,
     onClickMap: () => {},
   },
 }
@@ -77,7 +74,6 @@ export const Unstarted: Story = {
     routeSegments: undefined,
     detourShape: [],
     waypoints: [],
-    originalShapeClickable: true,
     undoDisabled: true,
   },
 }
