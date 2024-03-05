@@ -183,7 +183,7 @@ export const EndMarker = ({ position }: { position: LatLngLiteral }) => (
   <StartOrEndMarker
     title="Detour End"
     position={position}
-    icon={<StartOrEndIcon classSuffix={"end"} />}
+    icon={<EndIcon />}
   />
 )
 
