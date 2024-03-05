@@ -16,10 +16,19 @@ defmodule Skate.Detours.MissedStops do
   @enforce_keys [:connection_start, :connection_end, :stops, :shape]
   defstruct [:connection_start, :connection_end, :stops, :shape]
 
+  defmodule Result do
+    @moduledoc false
+    @type t :: %__MODULE__{
+            missed_stops: [Util.Location.From.t()]
+          }
+    @enforce_keys [:missed_stops]
+    defstruct [:missed_stops]
+  end
+
   @doc """
   Returns the contiguous list of stops, from the input parameter `cfg.stops`.
   """
-  @spec missed_stops(cfg :: __MODULE__.t()) :: [Util.Location.From.t()]
+  @spec missed_stops(cfg :: __MODULE__.t()) :: __MODULE__.Result.t()
   def(
     missed_stops(%__MODULE__{
       stops: stops,
@@ -30,9 +39,14 @@ defmodule Skate.Detours.MissedStops do
   ) do
     segmented_shape = segment_shape_by_stops(shape, stops)
 
-    {connection_start, connection_end}
-    |> missed_segments(segmented_shape)
-    |> Enum.map(& &1.stop)
+    missed_stops =
+      {connection_start, connection_end}
+      |> missed_segments(segmented_shape)
+      |> Enum.map(& &1.stop)
+
+    %__MODULE__.Result{
+      missed_stops: missed_stops
+    }
   end
 
   @spec missed_segments(

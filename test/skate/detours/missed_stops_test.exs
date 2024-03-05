@@ -1,6 +1,7 @@
 defmodule Skate.Detours.MissedStopsTest do
   use ExUnit.Case
 
+  alias Skate.Detours.MissedStops
   alias Util.Location
 
   describe "missed_stops" do
@@ -37,9 +38,12 @@ defmodule Skate.Detours.MissedStopsTest do
         ]
       }
 
+      assert %MissedStops.Result{missed_stops: missed_stops} =
+               Skate.Detours.MissedStops.missed_stops(param)
+
       assert [
                Location.new(0.001, 5)
-             ] == Skate.Detours.MissedStops.missed_stops(param)
+             ] == missed_stops
     end
 
     test "given a start and end connection points within the same segment, should return empty list" do
@@ -63,7 +67,8 @@ defmodule Skate.Detours.MissedStopsTest do
         ]
       }
 
-      assert [] == Skate.Detours.MissedStops.missed_stops(param)
+      assert %{missed_stops: [], connection_stop_start: nil, connection_stop_end: nil} =
+               Skate.Detours.MissedStops.missed_stops(param)
     end
 
     test "given a stop that is visited twice, should return missed stops" do
@@ -90,12 +95,15 @@ defmodule Skate.Detours.MissedStopsTest do
         ]
       }
 
+      assert %MissedStops.Result{missed_stops: missed_stops} =
+               Skate.Detours.MissedStops.missed_stops(param)
+
       assert [
                duplicate_stop,
                Location.new(1, 1),
                duplicate_stop
              ] ==
-               Skate.Detours.MissedStops.missed_stops(param)
+               missed_stops
     end
 
     test "can handle real shapes and stops" do
@@ -113,8 +121,11 @@ defmodule Skate.Detours.MissedStopsTest do
         connection_end: Enum.at(stops, connection_end_index)
       }
 
-      assert Enum.slice(stops, connection_start_index..(connection_end_index - 1)) ==
+      assert %MissedStops.Result{missed_stops: missed_stops} =
                Skate.Detours.MissedStops.missed_stops(param)
+
+      assert Enum.slice(stops, connection_start_index..(connection_end_index - 1)) ==
+               missed_stops
     end
   end
 end

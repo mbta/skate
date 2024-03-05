@@ -19,7 +19,7 @@ defmodule SkateWeb.DetoursController do
       connection_start_location = Location.new(connection_start["lat"], connection_start["lon"])
       connection_end_location = Location.new(connection_end["lat"], connection_end["lon"])
 
-      missed_stops =
+      %MissedStops.Result{missed_stops: missed_stops} =
         missed_stops(%MissedStops{
           connection_start: connection_start_location,
           connection_end: connection_end_location,

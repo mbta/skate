@@ -27,7 +27,7 @@ defmodule SkateWeb.DetoursControllerTest do
                                                     }
                                                     when stops == shape_with_stops.stops and
                                                            shape == shape_with_stops.points ->
-        [missed_stop]
+        %MissedStops.Result{missed_stops: [missed_stop]}
       end)
 
       conn =
