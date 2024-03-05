@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { DiversionPage } from "./diversionPage"
-import { joinClasses } from "../../helpers/dom"
 import { OriginalRoute } from "../../models/detour"
+import Modal from "@restart/ui/Modal"
 
 export const DetourModal = ({
   originalRoute,
@@ -27,13 +27,8 @@ export const DetourModal = ({
   }, [onClose])
 
   return (
-    <div
-      className={joinClasses([
-        "c-detour-modal",
-        !show && "c-detour-modal__hidden",
-      ])}
-    >
+    <Modal className="c-detour-modal" show={show}>
       <DiversionPage onClose={onClose} originalRoute={originalRoute} />
-    </div>
+    </Modal>
   )
 }
