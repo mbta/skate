@@ -21,7 +21,6 @@ const DetourMapWithDefaults = (
     endPoint={undefined}
     waypoints={[]}
     undoDisabled={false}
-    originalShapeClickable={true}
     onClickMap={() => {}}
     onClickOriginalShape={() => {}}
     onUndo={() => {}}
@@ -173,10 +172,8 @@ describe("DetourMap", () => {
     expect(undoButton).toBeDisabled()
   })
 
-  test("when `originalShapeClickable` is true, there should be two route shape elements", () => {
-    const { container } = render(
-      <DetourMapWithDefaults originalShapeClickable={true} />
-    )
+  test("when `routeSegments` are absent, there should be two route shape elements", () => {
+    const { container } = render(<DetourMapWithDefaults />)
 
     expect(
       container.querySelector(".c-detour_map--original-route-shape-core")
@@ -184,27 +181,11 @@ describe("DetourMap", () => {
     expect(
       container.querySelector(".c-detour_map--original-route-shape")
     ).toBeInTheDocument()
-  })
-
-  test("when `originalShapeClickable` is false, there should be only be one (non-clickable) route shape element", () => {
-    const { container } = render(
-      <DetourMapWithDefaults originalShapeClickable={false} />
-    )
-
-    expect(
-      container.querySelector(".c-detour_map--original-route-shape-core")
-    ).toBeInTheDocument()
-    expect(
-      container.querySelector(".c-detour_map--original-route-shape")
-    ).not.toBeInTheDocument()
   })
 
   test("when `routeSegments` are present, there should be two core original route shapes and one diverted route shape", () => {
     const { container } = render(
-      <DetourMapWithDefaults
-        originalShapeClickable={false}
-        routeSegments={routeSegmentsFactory.build()}
-      />
+      <DetourMapWithDefaults routeSegments={routeSegmentsFactory.build()} />
     )
 
     expect(

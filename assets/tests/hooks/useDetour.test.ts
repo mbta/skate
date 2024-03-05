@@ -280,36 +280,6 @@ describe("useDetour", () => {
     expect(result.current.canUndo).toBe(true)
   })
 
-  test("when `startPoint` is null, `canAddPoints` is `true`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    expect(result.current.startPoint).toBeNull()
-    expect(result.current.canAddPoints).toBe(true)
-  })
-
-  test("when `startPoint` is set, `canAddPoints` is `true`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-
-    expect(result.current.startPoint).not.toBeNull()
-    expect(result.current.canAddPoints).toBe(true)
-  })
-
-  test("when `endPoint` is set, `canAddPoints` is `false`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-
-    await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
-    })
-
-    expect(result.current.endPoint).not.toBeNull()
-    expect(result.current.canAddPoints).toBe(false)
-  })
-
   test("when `endPoint` is set, `missedStops` is filled in", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
