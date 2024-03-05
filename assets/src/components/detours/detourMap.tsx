@@ -4,7 +4,6 @@ import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
-import { Button } from "react-bootstrap"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
 import { ShapePoint } from "../../schedule"
@@ -15,6 +14,8 @@ import {
 import { MapTooltip } from "../map/tooltip"
 import { joinClasses } from "../../helpers/dom"
 import { RouteSegments } from "../../models/detour"
+import { MapButton } from "../map/controls/mapButton"
+import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
 
 interface DetourMapProps {
   /**
@@ -101,13 +102,25 @@ export const DetourMap = ({
 
   return (
     <Map vehicles={[]} allowStreetView center={center} zoom={zoom}>
-      <CustomControl position="topleft" className="leaflet-bar">
-        <Button variant="primary" disabled={undoDisabled} onClick={onUndo}>
-          Undo
-        </Button>
-        <Button variant="primary" disabled={undoDisabled} onClick={onClear}>
-          Clear
-        </Button>
+      <CustomControl position="bottomleft" className="leaflet-bar">
+        <MapButton
+          disabled={undoDisabled}
+          onClick={onUndo}
+          size="lg"
+          title="Undo"
+        >
+          <ArrowLeftSquare />
+        </MapButton>
+      </CustomControl>
+      <CustomControl position="bottomleft" className="leaflet-bar">
+        <MapButton
+          disabled={undoDisabled}
+          onClick={onClear}
+          size="lg"
+          title="Clear"
+        >
+          <XSquare />
+        </MapButton>
       </CustomControl>
 
       <MapEvents
