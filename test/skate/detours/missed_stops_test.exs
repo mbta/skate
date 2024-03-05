@@ -47,16 +47,18 @@ defmodule Skate.Detours.MissedStopsTest do
     end
 
     test "returns connection points" do
-      connection_stop_start = Location.new(0.001, 0)
-      connection_stop_end = Location.new(0.001, 7)
+      connection_stop_start = Location.new(0.001, 2)
+      connection_stop_end = Location.new(0.001, 6)
 
       param = %Skate.Detours.MissedStops{
-        connection_start: Location.new(-0.001, 1),
-        connection_end: Location.new(-0.001, 6),
+        connection_start: Location.new(-0.001, 3),
+        connection_end: Location.new(-0.001, 5),
         stops: [
+          Location.new(0.001, 1),
           connection_stop_start,
-          Location.new(0.001, 5),
-          connection_stop_end
+          Location.new(0.001, 4),
+          connection_stop_end,
+          Location.new(0.001, 7)
         ],
         shape: [
           Location.new(0, 0),

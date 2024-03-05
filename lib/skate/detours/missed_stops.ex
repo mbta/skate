@@ -84,7 +84,7 @@ defmodule Skate.Detours.MissedStops do
     %{
       missed_stops: missed_stop_segments,
       connection_start_segment: List.last(first_segments),
-      connection_end_segment: List.last(end_segments)
+      connection_end_segment: List.first(end_segments)
     }
   end
 
