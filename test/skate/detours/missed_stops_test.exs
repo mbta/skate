@@ -46,6 +46,92 @@ defmodule Skate.Detours.MissedStopsTest do
              ] == missed_stops
     end
 
+    test "returns connection points" do
+      connection_stop_start = Location.new(0.001, 0)
+      connection_stop_end = Location.new(0.001, 7)
+
+      param = %Skate.Detours.MissedStops{
+        connection_start: Location.new(-0.001, 1),
+        connection_end: Location.new(-0.001, 6),
+        stops: [
+          connection_stop_start,
+          Location.new(0.001, 5),
+          connection_stop_end
+        ],
+        shape: [
+          Location.new(0, 0),
+          Location.new(0, 1),
+          Location.new(0, 2),
+          Location.new(0, 3),
+          Location.new(0, 4),
+          Location.new(0, 5),
+          Location.new(0, 6),
+          Location.new(0, 7)
+        ]
+      }
+
+      assert %MissedStops.Result{
+               connection_stop_start: ^connection_stop_start,
+               connection_stop_end: ^connection_stop_end
+             } = Skate.Detours.MissedStops.missed_stops(param)
+    end
+
+    test "returns nil for connection_start if the first stop is missed" do
+      connection_stop_end = Location.new(0.001, 7)
+
+      param = %Skate.Detours.MissedStops{
+        connection_start: Location.new(-0.001, 1),
+        connection_end: Location.new(-0.001, 6),
+        stops: [
+          Location.new(0.001, 5),
+          connection_stop_end
+        ],
+        shape: [
+          Location.new(0, 0),
+          Location.new(0, 1),
+          Location.new(0, 2),
+          Location.new(0, 3),
+          Location.new(0, 4),
+          Location.new(0, 5),
+          Location.new(0, 6),
+          Location.new(0, 7)
+        ]
+      }
+
+      assert %MissedStops.Result{
+               connection_stop_start: nil,
+               connection_stop_end: ^connection_stop_end
+             } = Skate.Detours.MissedStops.missed_stops(param)
+    end
+
+    test "returns nil for connection_end if the last stop is missed" do
+      connection_stop_start = Location.new(0.001, 0)
+
+      param = %Skate.Detours.MissedStops{
+        connection_start: Location.new(-0.001, 1),
+        connection_end: Location.new(-0.001, 6),
+        stops: [
+          connection_stop_start,
+          Location.new(0.001, 5)
+        ],
+        shape: [
+          Location.new(0, 0),
+          Location.new(0, 1),
+          Location.new(0, 2),
+          Location.new(0, 3),
+          Location.new(0, 4),
+          Location.new(0, 5),
+          Location.new(0, 6),
+          Location.new(0, 7)
+        ]
+      }
+
+      assert %MissedStops.Result{
+               connection_stop_start: ^connection_stop_start,
+               connection_stop_end: nil
+             } = Skate.Detours.MissedStops.missed_stops(param)
+    end
+
     test "given a start and end connection points within the same segment, should return empty list" do
       param = %Skate.Detours.MissedStops{
         connection_start: Location.new(-0.001, 1),
@@ -67,7 +153,7 @@ defmodule Skate.Detours.MissedStopsTest do
         ]
       }
 
-      assert %{missed_stops: [], connection_stop_start: nil, connection_stop_end: nil} =
+      assert %{missed_stops: []} =
                Skate.Detours.MissedStops.missed_stops(param)
     end
 

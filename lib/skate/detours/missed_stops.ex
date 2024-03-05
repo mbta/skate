@@ -19,10 +19,12 @@ defmodule Skate.Detours.MissedStops do
   defmodule Result do
     @moduledoc false
     @type t :: %__MODULE__{
-            missed_stops: [Util.Location.From.t()]
+            missed_stops: [Util.Location.From.t()],
+            connection_stop_start: Util.Location.From.t() | nil,
+            connection_stop_end: Util.Location.From.t() | nil
           }
-    @enforce_keys [:missed_stops]
-    defstruct [:missed_stops]
+    @enforce_keys [:missed_stops, :connection_stop_start, :connection_stop_end]
+    defstruct [:missed_stops, :connection_stop_start, :connection_stop_end]
   end
 
   @doc """
@@ -41,11 +43,23 @@ defmodule Skate.Detours.MissedStops do
 
     %{
       missed_stops: missed_stops,
+      connection_start_segment: connection_start_segment,
+      connection_end_segment: connection_end_segment
     } =
       missed_segments({connection_start, connection_end}, segmented_shape)
 
     %__MODULE__.Result{
       missed_stops: Enum.map(missed_stops, & &1.stop),
+      connection_stop_start:
+        case connection_start_segment do
+          %Skate.Detours.ShapeSegment{stop: stop} when stop != :none -> stop
+          _ -> nil
+        end,
+      connection_stop_end:
+        case connection_end_segment do
+          %Skate.Detours.ShapeSegment{stop: stop} when stop != :none -> stop
+          _ -> nil
+        end
     }
   end
 
