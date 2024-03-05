@@ -1,4 +1,5 @@
 @use "../color/definitions" as semantic;
+@use "../color/tokens_2024" as tokens;
 
 .c-detour_map--original-route-shape-core {
   stroke: $color-kiwi-500;
@@ -48,6 +49,6 @@
 }
 
 .c-detour_map-circle-marker--detour-point {
-  stroke: $color-eggplant-500;
+  stroke: tokens.$eggplant-500;
   fill: white;
 }
