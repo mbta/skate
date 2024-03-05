@@ -1,4 +1,5 @@
 @use "../color/definitions" as semantic;
+@use "../color/tokens_2024" as tokens;
 
 .c-detour_map--original-route-shape-core {
   stroke: $color-kiwi-500;
@@ -38,11 +39,16 @@
 }
 
 .c-detour_map-circle-marker--start {
-  stroke: $color-kiwi-400;
-  fill: $color-kiwi-400;
+  stroke: tokens.$detour-start-point;
+  fill: tokens.$detour-start-point;
 }
 
 .c-detour_map-circle-marker--end {
-  stroke: $color-strawberry-400;
-  fill: $color-strawberry-400;
+  stroke: $color-strawberry-700;
+  fill: $color-strawberry-700;
+}
+
+.c-detour_map-circle-marker--detour-point {
+  stroke: tokens.$eggplant-500;
+  fill: white;
 }
