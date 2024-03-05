@@ -292,6 +292,8 @@ describe("DiversionPage", () => {
 
   test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
     const stops = stopFactory.buildList(4)
+    const [start, end] = stopFactory.buildList(2)
+
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       detourShapeFactory.build({
         directions: [
@@ -303,6 +305,10 @@ describe("DiversionPage", () => {
     )
     jest.mocked(fetchFinishedDetour).mockResolvedValue({
       missedStops: stops,
+      connectionPoint: {
+        start,
+        end,
+      },
       routeSegments: routeSegmentsFactory.build(),
     })
 
@@ -347,6 +353,10 @@ describe("DiversionPage", () => {
           "Turn left on Main Street",
           "Turn right on High Street",
           "Turn sharp right on Broadway",
+          ,
+          "Connection Points:",
+          start.name,
+          end.name,
           ,
           `Missed Stops (${stops.length}):`,
           ...stops.map(({ name }) => name),

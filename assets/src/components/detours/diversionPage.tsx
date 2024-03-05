@@ -39,6 +39,7 @@ export const DiversionPage = ({
 
     missedStops,
     routeSegments,
+    connectionPoints,
 
     canUndo,
     undo,
@@ -60,11 +61,21 @@ export const DiversionPage = ({
         "Turn-by-Turn Directions:",
         ...(directions?.map((v) => v.instruction) ?? []),
         ,
+        "Connection Points:",
+        connectionPoints?.start?.name ?? "N/A",
+        connectionPoints?.end?.name ?? "N/A",
+        ,
         `Missed Stops (${missedStops?.length}):`,
         ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
       ].join("\n")
     )
-  }, [originalRoute, directions, missedStops])
+  }, [
+    originalRoute,
+    directions,
+    missedStops,
+    connectionPoints?.start?.name,
+    connectionPoints?.end?.name,
+  ])
 
   const [showConfirmCloseModal, setShowConfirmCloseModal] =
     useState<boolean>(false)
