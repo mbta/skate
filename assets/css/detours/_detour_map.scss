@@ -26,6 +26,12 @@
     pointer;
 }
 
+.c-detour_map--original-route-shape__unfinished {
+  cursor: url("data:image/svg+xml,%3Csvg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E .color %7B fill: %239C074D; %7D %3C/style%3E%3Ccircle cx='11' cy='11' r='10' class='color' style='filter: opacity(0.5) blur(0.5px)'/%3E%3Ccircle cx='11' cy='11' r='7' class='color' stroke='white' stroke-width='2'/%3E%3C/svg%3E")
+      11 11,
+    pointer;
+}
+
 .c-detour_map--detour-route-shape {
   stroke: $color-eggplant-400;
   opacity: 50%;

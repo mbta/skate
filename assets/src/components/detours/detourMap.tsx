@@ -147,7 +147,7 @@ export const DetourMap = ({
           classNames={
             startPoint === undefined
               ? ["c-detour_map--original-route-shape__unstarted"]
-              : []
+              : ["c-detour_map--original-route-shape__unfinished"]
           }
           onClick={(e) => {
             const { position } =
