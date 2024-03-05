@@ -27,5 +27,9 @@ export interface RouteSegments {
 
 export interface FinishedDetour {
   missedStops: Stop[]
+  connectionPoint: {
+    start?: Stop
+    end?: Stop
+  }
   routeSegments: RouteSegments
 }
