@@ -39,29 +39,39 @@ defmodule Skate.Detours.MissedStops do
   ) do
     segmented_shape = segment_shape_by_stops(shape, stops)
 
-    missed_stops =
-      {connection_start, connection_end}
-      |> missed_segments(segmented_shape)
-      |> Enum.map(& &1.stop)
+    %{
+      missed_stops: missed_stops,
+    } =
+      missed_segments({connection_start, connection_end}, segmented_shape)
 
     %__MODULE__.Result{
-      missed_stops: missed_stops
+      missed_stops: Enum.map(missed_stops, & &1.stop),
     }
   end
 
   @spec missed_segments(
           {connection_start :: Util.Location.From.t(), connection_end :: Util.Location.From.t()},
           segmented_shape :: [Skate.Detours.ShapeSegment.t()]
-        ) :: [Skate.Detours.ShapeSegment.t()]
+        ) :: %{
+          missed_stops: [Skate.Detours.ShapeSegment.t()],
+          connection_start_segment: Skate.Detours.ShapeSegment.t() | nil,
+          connection_end_segment: Skate.Detours.ShapeSegment.t() | nil
+        }
   defp missed_segments({connection_start, connection_end}, segmented_shape) do
     %{index: start_index} = get_index_by_min_dist(segmented_shape, connection_start)
 
-    remaining_segments = Enum.drop(segmented_shape, start_index)
+    {first_segments, remaining_segments} = Enum.split(segmented_shape, start_index)
 
     %{index: end_count} =
       get_index_by_min_dist(remaining_segments, connection_end)
 
-    Enum.take(remaining_segments, end_count)
+    {missed_stop_segments, end_segments} = Enum.split(remaining_segments, end_count)
+
+    %{
+      missed_stops: missed_stop_segments,
+      connection_start_segment: List.last(first_segments),
+      connection_end_segment: List.last(end_segments)
+    }
   end
 
   @spec segment_shape_by_stops(
