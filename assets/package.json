@@ -46,6 +46,7 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.0",
     "react-router-dom": "^6.3.0",
+    "react-transition-group": "^4.4.5",
     "superstruct": "^1.0.3",
     "uuid": "^9.0.0",
     "whatwg-fetch": "^3.6.2"

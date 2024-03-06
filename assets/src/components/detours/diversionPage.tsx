@@ -141,6 +141,7 @@ export const DiversionPage = ({
       <Modal
         show={showConfirmCloseModal}
         onHide={() => setShowConfirmCloseModal(false)}
+        animation={false}
       >
         <Modal.Header closeButton>
           <Modal.Title className="fs-3 fw-medium">

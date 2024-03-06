@@ -1,11 +1,11 @@
 .c-detour-modal {
   inset: 0;
   position: fixed;
-  transition: all 0.3s;
   z-index: map-get($z-page-layout-context, "detour-modal");
 }
 
-.c-detour-modal__hidden {
+.c-detour-modal__transition-exit-active {
+  transition: all 0.3s;
   transform: scale(1.02) translate(0px, -50px);
   opacity: 0;
   z-index: map-get($z-page-layout-context, "detour-modal-hidden");
