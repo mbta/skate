@@ -510,12 +510,12 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                             <input
                               class="form-check-input"
                               id="pull-back-layer-switch-:rk:"
+                              role="switch"
                               type="checkbox"
                             />
                             <label
                               class="form-check-label"
                               for="pull-back-layer-switch-:rk:"
-                              title=""
                             >
                               Show pull-backs
                             </label>
@@ -1098,12 +1098,12 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                             <input
                               class="form-check-input"
                               id="pull-back-layer-switch-:r6:"
+                              role="switch"
                               type="checkbox"
                             />
                             <label
                               class="form-check-label"
                               for="pull-back-layer-switch-:r6:"
-                              title=""
                             >
                               Show pull-backs
                             </label>
@@ -2078,12 +2078,12 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                             <input
                               class="form-check-input"
                               id="pull-back-layer-switch-:rs:"
+                              role="switch"
                               type="checkbox"
                             />
                             <label
                               class="form-check-label"
                               for="pull-back-layer-switch-:rs:"
-                              title=""
                             >
                               Show pull-backs
                             </label>

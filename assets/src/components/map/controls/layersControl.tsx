@@ -149,18 +149,19 @@ const VehicleLayerOptions = ({
   return (
     <div className="c-layers-control__vehicle_layers_control">
       <h2 id={sectionLabelId}>Vehicles</h2>
-      <Form.Check
-        type="switch"
-        id={formCheckId}
-        checked={pullbackLayerEnabled}
-        onChange={onTogglePullbackLayer}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            onTogglePullbackLayer?.()
-          }
-        }}
-        label="Show pull-backs"
-      />
+      <Form.Check type="switch" id={formCheckId}>
+        <Form.Check.Input
+          role="switch"
+          checked={pullbackLayerEnabled}
+          onChange={onTogglePullbackLayer}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              onTogglePullbackLayer?.()
+            }
+          }}
+        />
+        <Form.Check.Label>Show pull-backs</Form.Check.Label>
+      </Form.Check>
     </div>
   )
 }
