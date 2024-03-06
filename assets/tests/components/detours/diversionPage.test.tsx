@@ -417,4 +417,18 @@ describe("DiversionPage", () => {
 
     expect(screen.queryByRole("dialog")).toBeNull()
   })
+
+  test("stop markers are visible", async () => {
+    const { container } = render(
+      <DiversionPage
+        originalRoute={{
+          shape: shapeFactory.build({ stops: stopFactory.buildList(11) }),
+        }}
+      />
+    )
+
+    expect(container.querySelectorAll(".c-stop-icon-container")).toHaveLength(
+      11
+    )
+  })
 })

@@ -19,6 +19,7 @@ const meta = {
   args: {
     originalShape: shape,
     detourShape: [startPoint, waypoint, endPoint],
+    stops: route39shape.stops || [],
     startPoint,
     waypoints: [waypoint],
     endPoint,
