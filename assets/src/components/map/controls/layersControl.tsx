@@ -11,7 +11,7 @@ import { TileType } from "../../../tilesetUrls"
 import { MapLayersIcon } from "../../../helpers/icon"
 import { CustomControl } from "./customControl"
 import { TileTypeContext } from "../../../contexts/tileTypeContext"
-import { Form } from "react-bootstrap"
+import { Form, ListGroup } from "react-bootstrap"
 
 interface LayersButtonStateProps {
   showLayersList: boolean
@@ -73,21 +73,18 @@ const LayersPopoverMenu = ({
 
   return (
     <div className="c-layers-control__content">
-      <ul className="list-group">
-        <li
-          className="list-group-item"
-          aria-labelledby={tileLayerControlLabelId}
-        >
+      <ListGroup as="ul">
+        <ListGroup.Item as="li" aria-labelledby={tileLayerControlLabelId}>
           <TileLayerOptions
             tileType={tileType}
             onChangeTileType={setTileType}
             sectionLabelId={tileLayerControlLabelId}
           />
-        </li>
+        </ListGroup.Item>
         {pullbackLayerEnabled !== undefined &&
           togglePullbackLayerEnabled !== undefined && (
-            <li
-              className="list-group-item"
+            <ListGroup.Item
+              as="li"
               aria-labelledby={vehicleLayersControlLabelId}
             >
               <VehicleLayerOptions
@@ -95,9 +92,9 @@ const LayersPopoverMenu = ({
                 pullbackLayerEnabled={pullbackLayerEnabled}
                 onTogglePullbackLayer={togglePullbackLayerEnabled}
               />
-            </li>
+            </ListGroup.Item>
           )}
-      </ul>
+      </ListGroup>
     </div>
   )
 }
