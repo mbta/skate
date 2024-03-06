@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import { fetchDetourDirections, fetchFinishedDetour } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
-import { Detour, DetourState, useDetour } from "../../src/hooks/useDetour"
+import { DetourInfo, DetourState, useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
@@ -22,42 +22,42 @@ beforeEach(() => {
 
 const useDetourWithFakeRoutePattern = () => useDetour("routePatternId")
 
-const addConnectionPoint = (detourInfo: Detour, point: ShapePoint) => {
+const addConnectionPoint = (detourInfo: DetourInfo, point: ShapePoint) => {
   expect(detourInfo.state).toBe(DetourState.Edit)
 
   if (detourInfo.state === DetourState.Edit) {
     detourInfo.addConnectionPoint?.(point)
   }
 }
-const addWaypoint = (detourInfo: Detour, point: ShapePoint) => {
+const addWaypoint = (detourInfo: DetourInfo, point: ShapePoint) => {
   expect(detourInfo.state).toBe(DetourState.Edit)
 
   if (detourInfo.state === DetourState.Edit) {
     detourInfo.addWaypoint?.(point)
   }
 }
-const undo = (detourInfo: Detour) => {
+const undo = (detourInfo: DetourInfo) => {
   expect(detourInfo.state).toBe(DetourState.Edit)
 
   if (detourInfo.state === DetourState.Edit) {
     detourInfo.undo?.()
   }
 }
-const clear = (detourInfo: Detour) => {
+const clear = (detourInfo: DetourInfo) => {
   expect(detourInfo.state).toBe(DetourState.Edit)
 
   if (detourInfo.state === DetourState.Edit) {
     detourInfo.clear?.()
   }
 }
-const editDetour = (detourInfo: Detour) => {
+const editDetour = (detourInfo: DetourInfo) => {
   expect(detourInfo.state).toBe(DetourState.Finished)
 
   if (detourInfo.state === DetourState.Finished) {
     detourInfo.editDetour()
   }
 }
-const finishDetour = (detourInfo: Detour) => {
+const finishDetour = (detourInfo: DetourInfo) => {
   expect(detourInfo.state).toBe(DetourState.Edit)
 
   if (detourInfo.state === DetourState.Edit) {

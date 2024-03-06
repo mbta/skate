@@ -43,9 +43,10 @@ export enum DetourState {
   Finished,
 }
 
-export type Detour = (EditableDetour | FinishedScreenDetour) & DetourCommon
+export type DetourInfo = (EditableDetourInfo | FinishedDetourInfo) &
+  DetourCommonInfo
 
-interface EditableDetour {
+interface EditableDetourInfo {
   state: DetourState.Edit
 
   /** Creates a new waypoint if all of the following criteria is met:
@@ -76,7 +77,7 @@ interface EditableDetour {
   finishDetour?: () => void
 }
 
-interface FinishedScreenDetour {
+interface FinishedDetourInfo {
   state: DetourState.Finished
 
   /**
@@ -88,7 +89,7 @@ interface FinishedScreenDetour {
   editDetour: () => void
 }
 
-interface DetourCommon {
+interface DetourCommonInfo {
   /**
    * The starting connection point of the detour.
    */
@@ -120,7 +121,7 @@ interface DetourCommon {
   routeSegments?: RouteSegments
 }
 
-export const useDetour = (routePatternId: RoutePatternId): Detour => {
+export const useDetour = (routePatternId: RoutePatternId): DetourInfo => {
   const [state, setState] = useState<DetourState>(DetourState.Edit)
 
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
