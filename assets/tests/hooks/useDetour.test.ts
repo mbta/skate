@@ -64,6 +64,22 @@ const finishDetour = (detourInfo: Detour) => {
     detourInfo.finishDetour?.()
   }
 }
+const renderFinishedDetour = () => {
+  const renderResult = renderHook(useDetourWithFakeRoutePattern)
+
+  act(() =>
+    addConnectionPoint(renderResult.result.current, shapePointFactory.build())
+  )
+  act(() =>
+    addConnectionPoint(renderResult.result.current, shapePointFactory.build())
+  )
+
+  act(() => {
+    finishDetour(renderResult.result.current)
+  })
+
+  return renderResult
+}
 
 describe("useDetour", () => {
   test("when `addConnectionPoint` is first called, `startPoint` is set", () => {
@@ -442,30 +458,12 @@ describe("useDetour", () => {
   })
 
   test("calling `finishedDetour`, sets `state` to `Finished`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
-    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
-
-    await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
-
-    act(() => {
-      finishDetour(result.current)
-    })
-
+    const { result } = renderFinishedDetour()
     await waitFor(() => expect(result.current.state).toBe(DetourState.Finished))
   })
 
   test("calling `editDetour`, sets `state` to `Edit`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
-    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
-
-    act(() => {
-      finishDetour(result.current)
-    })
-    await waitFor(() => expect(result.current.state).toBe(DetourState.Finished))
+    const { result } = renderFinishedDetour()
 
     act(() => {
       editDetour(result.current)
@@ -473,28 +471,3 @@ describe("useDetour", () => {
     await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
   })
 })
-
-/*
-const renderFinishedDetour = () => {
-  const renderResult = renderHook(useDetourWithFakeRoutePattern)
-
-  act(() =>
-    renderResult.addConnectionPoint(
-      renderResult.result.current,
-      shapePointFactory.build()
-    )
-  )
-  act(() =>
-    renderResult.addConnectionPoint(
-      renderResult.result.current,
-      shapePointFactory.build()
-    )
-  )
-
-  act(() => {
-    renderResult.result.current.finishDetour?.()
-  })
-
-  return renderResult
-}
-   */
