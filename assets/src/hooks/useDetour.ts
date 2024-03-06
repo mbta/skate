@@ -169,6 +169,10 @@ export const useDetour = (routePatternId: RoutePatternId) => {
      * Three partial route-shape segments: before, during, and after the detour
      */
     routeSegments: finishedDetour?.routeSegments,
+    /**
+     * Connection Points
+     */
+    connectionPoints: finishedDetour?.connectionPoint,
 
     /**
      * Reports if {@link undo} will do anything.

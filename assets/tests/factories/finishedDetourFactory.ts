@@ -12,4 +12,8 @@ export const routeSegmentsFactory = Factory.define<RouteSegments>(() => ({
 export const finishedDetourFactory = Factory.define<FinishedDetour>(() => ({
   missedStops: stopFactory.buildList(3),
   routeSegments: routeSegmentsFactory.build(),
+  connectionPoint: {
+    start: stopFactory.build(),
+    end: stopFactory.build(),
+  },
 }))

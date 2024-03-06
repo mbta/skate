@@ -34,7 +34,12 @@ import routeTabFactory from "./factories/routeTab"
 import stopFactory from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, unknown } from "superstruct"
-import { LocationType, RouteType, stopsFromData } from "../src/models/stopData"
+import {
+  LocationType,
+  RouteType,
+  stopFromData,
+  stopsFromData,
+} from "../src/models/stopData"
 import * as Sentry from "@sentry/react"
 import locationSearchResultDataFactory from "./factories/locationSearchResultData"
 import locationSearchResultFactory from "./factories/locationSearchResult"
@@ -395,8 +400,10 @@ describe("fetchShapeForRoute", () => {
 })
 
 describe("fetchFinishedDetour", () => {
-  test("fetches missed stops in finished detour", () => {
+  test("fetches a finished detour given a Route Pattern and connection points", () => {
     const stopData = stopDataFactory.buildList(3)
+    const [connection_stop_start, connection_stop_end] =
+      stopDataFactory.buildList(2)
 
     const stops = stopsFromData(stopData)
 
@@ -407,6 +414,8 @@ describe("fetchFinishedDetour", () => {
     mockFetch(200, {
       data: {
         missed_stops: stopData,
+        connection_stop_start,
+        connection_stop_end,
         route_segments: {
           before_detour: beforeDetour,
           detour: detour,
@@ -422,6 +431,52 @@ describe("fetchFinishedDetour", () => {
     ).then((result) => {
       expect(result).toEqual({
         missedStops: stops,
+        connectionPoint: {
+          start: stopFromData(connection_stop_start),
+          end: stopFromData(connection_stop_end),
+        },
+        routeSegments: {
+          beforeDetour,
+          detour,
+          afterDetour,
+        },
+      })
+    })
+  })
+
+  test("returns `undefined` for connection points if API result is `null`", () => {
+    const stopData = stopDataFactory.buildList(3)
+
+    const stops = stopsFromData(stopData)
+
+    const beforeDetour = shapePointFactory.buildList(3)
+    const detour = shapePointFactory.buildList(3)
+    const afterDetour = shapePointFactory.buildList(3)
+
+    mockFetch(200, {
+      data: {
+        missed_stops: stopData,
+        connection_stop_start: null,
+        connection_stop_end: null,
+        route_segments: {
+          before_detour: beforeDetour,
+          detour: detour,
+          after_detour: afterDetour,
+        },
+      },
+    })
+
+    return fetchFinishedDetour(
+      "route_pattern_id",
+      shapePointFactory.build(),
+      shapePointFactory.build()
+    ).then((result) => {
+      expect(result).toEqual({
+        missedStops: stops,
+        connectionPoint: {
+          start: undefined,
+          end: undefined,
+        },
         routeSegments: {
           beforeDetour,
           detour,

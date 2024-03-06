@@ -48,16 +48,18 @@ export const StopData = type({
 })
 export type StopData = Infer<typeof StopData>
 
+export const stopFromData = (stopData: StopData): Stop => ({
+  id: stopData.id,
+  name: stopData.name,
+  lat: stopData.lat,
+  lon: stopData.lon,
+  locationType:
+    stopData.location_type === "station"
+      ? LocationType.Station
+      : LocationType.Stop,
+  vehicleType: stopData.vehicle_type || null,
+  routes: stopData.routes,
+})
+
 export const stopsFromData = (stopsData: StopData[]): Stop[] =>
-  stopsData.map((stopData) => ({
-    id: stopData.id,
-    name: stopData.name,
-    lat: stopData.lat,
-    lon: stopData.lon,
-    locationType:
-      stopData.location_type === "station"
-        ? LocationType.Station
-        : LocationType.Stop,
-    vehicleType: stopData.vehicle_type || null,
-    routes: stopData.routes,
-  }))
+  stopsData.map(stopFromData)
