@@ -18,12 +18,13 @@ defmodule Skate.Detours.MissedStopsTest do
       ##                   (connection_start)                  (connection_end)
       #
       # https://excalidraw.com/#json=OrMM928mw4CR3Qy8sc6oL,sXiFCU1s-K1ugEQvgSvh3g
+      missed_stop = Location.new(0.001, 5)
       param = %Skate.Detours.MissedStops{
         connection_start: Location.new(-0.001, 1),
         connection_end: Location.new(-0.001, 6),
         stops: [
           Location.new(0.001, 0),
-          Location.new(0.001, 5),
+          missed_stop,
           Location.new(0.001, 7)
         ],
         shape: [
@@ -37,13 +38,8 @@ defmodule Skate.Detours.MissedStopsTest do
           Location.new(0, 7)
         ]
       }
-
-      assert %MissedStops.Result{missed_stops: missed_stops} =
+      assert %MissedStops.Result{missed_stops: [^missed_stop]} =
                Skate.Detours.MissedStops.missed_stops(param)
-
-      assert [
-               Location.new(0.001, 5)
-             ] == missed_stops
     end
 
     test "returns connection points" do
