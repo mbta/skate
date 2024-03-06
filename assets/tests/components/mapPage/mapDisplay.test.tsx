@@ -791,7 +791,7 @@ describe("<MapDisplay />", () => {
 
         await userEvent.click(screen.getByRole("button", { name: "Layers" }))
         await userEvent.click(
-          screen.getByRole("switch", { name: "Show pull-backs" })
+          screen.getByRole("checkbox", { name: "Show pull-backs" })
         )
 
         expect(screen.getAllByRole("button", { name: "Pull-B" })).toHaveLength(
@@ -831,7 +831,7 @@ describe("<MapDisplay />", () => {
 
         await userEvent.click(screen.getByRole("button", { name: "Layers" }))
         await userEvent.click(
-          screen.getByRole("switch", { name: "Show pull-backs" })
+          screen.getByRole("checkbox", { name: "Show pull-backs" })
         )
 
         expect(screen.getAllByRole("button", { name: "Pull-B" })).toHaveLength(
@@ -860,7 +860,7 @@ describe("<MapDisplay />", () => {
 
         await userEvent.click(screen.getByRole("button", { name: "Layers" }))
         await userEvent.click(
-          screen.getByRole("switch", { name: "Show pull-backs" })
+          screen.getByRole("checkbox", { name: "Show pull-backs" })
         )
         await userEvent.click(screen.getByRole("button", { name: "Pull-B" }))
 

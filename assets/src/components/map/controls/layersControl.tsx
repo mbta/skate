@@ -11,6 +11,7 @@ import { TileType } from "../../../tilesetUrls"
 import { MapLayersIcon } from "../../../helpers/icon"
 import { CustomControl } from "./customControl"
 import { TileTypeContext } from "../../../contexts/tileTypeContext"
+import { Form } from "react-bootstrap"
 
 interface LayersButtonStateProps {
   showLayersList: boolean
@@ -114,34 +115,24 @@ const TileLayerOptions = ({
 }) => (
   <div className="c-layers-control__tile_layer_control">
     <h2 id={sectionLabelId}>Base Map</h2>
-    <div className="form-check position-relative">
-      <input
-        className="form-check-input"
-        type="radio"
-        name="tileType"
-        value=""
-        id="base"
-        checked={tileType === "base"}
-        onChange={() => onChangeTileType("base")}
-      />
-      <label className="form-check-label stretched-link" htmlFor="base">
-        Map (default)
-      </label>
-    </div>
-    <div className="form-check position-relative">
-      <input
-        className="form-check-input"
-        type="radio"
-        name="tileType"
-        value=""
-        id="satellite"
-        checked={tileType === "satellite"}
-        onChange={() => onChangeTileType("satellite")}
-      />
-      <label className="form-check-label stretched-link" htmlFor="satellite">
-        Satellite
-      </label>
-    </div>
+    <Form.Check
+      type="radio"
+      name="tileType"
+      value=""
+      id="base"
+      checked={tileType === "base"}
+      onChange={() => onChangeTileType("base")}
+      label="Map (default)"
+    />
+    <Form.Check
+      type="radio"
+      name="tileType"
+      value=""
+      id="satellite"
+      checked={tileType === "satellite"}
+      onChange={() => onChangeTileType("satellite")}
+      label="Satellite"
+    />
   </div>
 )
 
@@ -156,29 +147,23 @@ const VehicleLayerOptions = ({
 }: {
   sectionLabelId?: string
 } & VehicleLayerOptionsProps) => {
-  const inputId = "pull-back-layer-switch-" + useId()
+  const formCheckId = "pull-back-layer-switch-" + useId()
 
   return (
     <div className="c-layers-control__vehicle_layers_control">
       <h2 id={sectionLabelId}>Vehicles</h2>
-      <div className="form-check form-switch position-relative">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          role="switch"
-          id={inputId}
-          checked={pullbackLayerEnabled}
-          onChange={onTogglePullbackLayer}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              onTogglePullbackLayer?.()
-            }
-          }}
-        />
-        <label className="form-check-label stretched-link" htmlFor={inputId}>
-          Show pull-backs
-        </label>
-      </div>
+      <Form.Check
+        type="switch"
+        id={formCheckId}
+        checked={pullbackLayerEnabled}
+        onChange={onTogglePullbackLayer}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            onTogglePullbackLayer?.()
+          }
+        }}
+        label="Show pull-backs"
+      />
     </div>
   )
 }

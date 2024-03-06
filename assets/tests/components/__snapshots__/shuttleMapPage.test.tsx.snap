@@ -638,7 +638,7 @@ exports[`Shuttle Map Page renders 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               checked=""
@@ -649,14 +649,15 @@ exports[`Shuttle Map Page renders 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="base"
+                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               class="form-check-input"
@@ -666,8 +667,9 @@ exports[`Shuttle Map Page renders 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="satellite"
+                              title=""
                             >
                               Satellite
                             </label>
@@ -1393,7 +1395,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               checked=""
@@ -1404,14 +1406,15 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="base"
+                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               class="form-check-input"
@@ -1421,8 +1424,9 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="satellite"
+                              title=""
                             >
                               Satellite
                             </label>
@@ -2148,7 +2152,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               checked=""
@@ -2159,14 +2163,15 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="base"
+                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               class="form-check-input"
@@ -2176,8 +2181,9 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="satellite"
+                              title=""
                             >
                               Satellite
                             </label>
@@ -2457,7 +2463,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               checked=""
@@ -2468,14 +2474,15 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="base"
+                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               class="form-check-input"
@@ -2485,8 +2492,9 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="satellite"
+                              title=""
                             >
                               Satellite
                             </label>
@@ -3241,7 +3249,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               checked=""
@@ -3252,14 +3260,15 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="base"
+                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check position-relative"
+                            class="form-check"
                           >
                             <input
                               class="form-check-input"
@@ -3269,8 +3278,9 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label stretched-link"
+                              class="form-check-label"
                               for="satellite"
+                              title=""
                             >
                               Satellite
                             </label>
