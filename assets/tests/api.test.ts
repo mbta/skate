@@ -400,7 +400,7 @@ describe("fetchShapeForRoute", () => {
 })
 
 describe("fetchFinishedDetour", () => {
-  test("fetches missed stops in finished detour", () => {
+  test("fetches a finished detour given a Route Pattern and connection points", () => {
     const stopData = stopDataFactory.buildList(3)
     const [connection_stop_start, connection_stop_end] =
       stopDataFactory.buildList(2)
