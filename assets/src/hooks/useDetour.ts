@@ -43,8 +43,11 @@ export enum DetourState {
   Finished,
 }
 
-interface Detour {
-  state: DetourState
+export type Detour = (EditableDetour | FinishedScreenDetour) & DetourCommon
+
+interface EditableDetour {
+  state: DetourState.Edit
+
   /** Creates a new waypoint if all of the following criteria is met:
    * - {@link startPoint} is set
    * - {@link endPoint} is not set.
@@ -56,6 +59,36 @@ interface Detour {
    */
   addConnectionPoint?: (point: ShapePoint) => void
 
+  /**
+   * Reports if {@link undo} will do anything.
+   */
+  canUndo: boolean
+  /**
+   * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
+   */
+  undo?: () => void
+  /**
+   * Clears the entire detour
+   */
+  clear?: () => void
+
+  /** When present, puts this detour in "finished mode" */
+  finishDetour?: () => void
+}
+
+interface FinishedScreenDetour {
+  state: DetourState.Finished
+
+  /**
+   * Reports if {@link undo} will do anything.
+   */
+  canUndo: false
+
+  /** When present, puts this detour in "edit mode" */
+  editDetour: () => void
+}
+
+interface DetourCommon {
   /**
    * The starting connection point of the detour.
    */
@@ -85,23 +118,6 @@ interface Detour {
    * Three partial route-shape segments: before, during, and after the detour
    */
   routeSegments?: RouteSegments
-
-  /**
-   * Reports if {@link undo} will do anything.
-   */
-  canUndo: boolean
-  /**
-   * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
-   */
-  undo?: () => void
-  /**
-   * Clears the entire detour
-   */
-  clear?: () => void
-  /** When present, puts this detour in "finished mode" */
-  finishDetour?: () => void
-  /** When present, puts this detour in "edit mode" */
-  editDetour?: () => void
 }
 
 export const useDetour = (routePatternId: RoutePatternId): Detour => {
@@ -220,7 +236,7 @@ export const useDetour = (routePatternId: RoutePatternId): Detour => {
       missedStops: finishedDetour?.missedStops,
       routeSegments: finishedDetour?.routeSegments,
 
-      canUndo,
+      canUndo: false,
 
       editDetour,
     }

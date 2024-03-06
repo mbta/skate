@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import { fetchDetourDirections, fetchFinishedDetour } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
-import { DetourState, useDetour } from "../../src/hooks/useDetour"
+import { Detour, DetourState, useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
@@ -22,13 +22,56 @@ beforeEach(() => {
 
 const useDetourWithFakeRoutePattern = () => useDetour("routePatternId")
 
+const addConnectionPoint = (detourInfo: Detour, point: ShapePoint) => {
+  expect(detourInfo.state).toBe(DetourState.Edit)
+
+  if (detourInfo.state === DetourState.Edit) {
+    detourInfo.addConnectionPoint?.(point)
+  }
+}
+const addWaypoint = (detourInfo: Detour, point: ShapePoint) => {
+  expect(detourInfo.state).toBe(DetourState.Edit)
+
+  if (detourInfo.state === DetourState.Edit) {
+    detourInfo.addWaypoint?.(point)
+  }
+}
+const undo = (detourInfo: Detour) => {
+  expect(detourInfo.state).toBe(DetourState.Edit)
+
+  if (detourInfo.state === DetourState.Edit) {
+    detourInfo.undo?.()
+  }
+}
+const clear = (detourInfo: Detour) => {
+  expect(detourInfo.state).toBe(DetourState.Edit)
+
+  if (detourInfo.state === DetourState.Edit) {
+    detourInfo.clear?.()
+  }
+}
+const editDetour = (detourInfo: Detour) => {
+  expect(detourInfo.state).toBe(DetourState.Finished)
+
+  if (detourInfo.state === DetourState.Finished) {
+    detourInfo.editDetour()
+  }
+}
+const finishDetour = (detourInfo: Detour) => {
+  expect(detourInfo.state).toBe(DetourState.Edit)
+
+  if (detourInfo.state === DetourState.Edit) {
+    detourInfo.finishDetour?.()
+  }
+}
+
 describe("useDetour", () => {
   test("when `addConnectionPoint` is first called, `startPoint` is set", () => {
     const start = { lat: 0, lon: 0 }
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
+    act(() => addConnectionPoint(result.current, start))
 
     expect(result.current.startPoint).toBe(start)
   })
@@ -39,8 +82,8 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addConnectionPoint?.(end))
+    act(() => addConnectionPoint(result.current, start))
+    act(() => addConnectionPoint(result.current, end))
 
     waitFor(() => {
       expect(result.current.startPoint).toBe(start)
@@ -53,7 +96,7 @@ describe("useDetour", () => {
 
     expect(result.current.startPoint).toBeNull()
 
-    act(() => result.current.addWaypoint?.({ lat: 0, lon: 0 }))
+    act(() => addWaypoint(result.current, { lat: 0, lon: 0 }))
 
     expect(result.current.waypoints).toHaveLength(0)
   })
@@ -65,10 +108,10 @@ describe("useDetour", () => {
 
     expect(result.current.startPoint).toBeNull()
 
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 1, lon: 1 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 1, lon: 1 }))
 
-    act(() => result.current.addWaypoint?.({ lat: 0, lon: 0 }))
+    act(() => addWaypoint(result.current, { lat: 0, lon: 0 }))
 
     waitFor(() => expect(result.current.waypoints).toHaveLength(0))
   })
@@ -96,8 +139,8 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(end))
+    act(() => addConnectionPoint(result.current, start))
+    act(() => addWaypoint(result.current, end))
 
     expect(result.current.startPoint).toBe(start)
 
@@ -119,17 +162,17 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addConnectionPoint?.(end))
+    act(() => addConnectionPoint(result.current, start))
+    act(() => addConnectionPoint(result.current, end))
 
     expect(result.current.endPoint).not.toBeNull()
 
-    act(() => result.current.undo?.())
+    act(() => undo(result.current))
 
     expect(result.current.endPoint).toBeNull()
     expect(result.current.startPoint).not.toBeNull()
 
-    act(() => result.current.undo?.())
+    act(() => undo(result.current))
 
     expect(result.current.startPoint).toBeNull()
   })
@@ -140,12 +183,12 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(end))
+    act(() => addConnectionPoint(result.current, start))
+    act(() => addWaypoint(result.current, end))
 
     expect(result.current.waypoints).toStrictEqual([end])
 
-    act(() => result.current.undo?.())
+    act(() => undo(result.current))
 
     expect(result.current.waypoints).toHaveLength(0)
   })
@@ -157,10 +200,10 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(mid))
-    act(() => result.current.addWaypoint?.(end))
-    act(() => result.current.undo?.())
+    act(() => addConnectionPoint(result.current, start))
+    act(() => addWaypoint(result.current, mid))
+    act(() => addWaypoint(result.current, end))
+    act(() => undo(result.current))
 
     expect(jest.mocked(fetchDetourDirections)).toHaveBeenCalledTimes(3)
     expect(jest.mocked(fetchDetourDirections)).toHaveBeenNthCalledWith(3, [
@@ -176,17 +219,17 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
+    act(() => addWaypoint(result.current, shapePointFactory.build()))
+    act(() => addWaypoint(result.current, shapePointFactory.build()))
 
     await waitFor(() => {
       expect(result.current.directions).not.toBeUndefined()
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
-    act(() => result.current.undo?.())
-    act(() => result.current.undo?.())
+    act(() => undo(result.current))
+    act(() => undo(result.current))
 
     expect(result.current.waypoints).toHaveLength(0)
     expect(result.current.directions).toBeUndefined()
@@ -199,13 +242,13 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addConnectionPoint?.(end))
+    act(() => addConnectionPoint(result.current, start))
+    act(() => addConnectionPoint(result.current, end))
 
     expect(result.current.endPoint).not.toBeNull()
     expect(result.current.startPoint).not.toBeNull()
 
-    act(() => result.current.clear?.())
+    act(() => clear(result.current))
 
     expect(result.current.endPoint).toBeNull()
     expect(result.current.startPoint).toBeNull()
@@ -216,13 +259,13 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, start))
+    act(() => addWaypoint(result.current, shapePointFactory.build()))
+    act(() => addWaypoint(result.current, shapePointFactory.build()))
 
     expect(result.current.waypoints).toHaveLength(2)
 
-    act(() => result.current.clear?.())
+    act(() => clear(result.current))
 
     expect(result.current.waypoints).toHaveLength(0)
   })
@@ -234,16 +277,16 @@ describe("useDetour", () => {
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
+    act(() => addWaypoint(result.current, shapePointFactory.build()))
+    act(() => addWaypoint(result.current, shapePointFactory.build()))
 
     await waitFor(() => {
       expect(result.current.directions).not.toBeUndefined()
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
-    act(() => result.current.clear?.())
+    act(() => clear(result.current))
 
     expect(result.current.waypoints).toHaveLength(0)
     expect(result.current.directions).toBeUndefined()
@@ -260,7 +303,7 @@ describe("useDetour", () => {
   test("when `startPoint` is set, `canUndo` is `true`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
 
     expect(result.current.startPoint).not.toBeNull()
     expect(result.current.canUndo).toBe(true)
@@ -269,8 +312,8 @@ describe("useDetour", () => {
   test("when `endPoint` is set, `canUndo` is `true`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
 
     await waitFor(() => {
       expect(result.current.missedStops).not.toBeUndefined()
@@ -289,8 +332,8 @@ describe("useDetour", () => {
       .mocked(fetchFinishedDetour)
       .mockResolvedValue(finishedDetourFactory.build({ missedStops }))
 
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
 
     await waitFor(() => {
       expect(result.current.missedStops).not.toBeUndefined()
@@ -308,8 +351,8 @@ describe("useDetour", () => {
       .mocked(fetchFinishedDetour)
       .mockResolvedValue(finishedDetourFactory.build({ routeSegments }))
 
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
 
     await waitFor(() => {
       expect(result.current.missedStops).not.toBeUndefined()
@@ -327,14 +370,14 @@ describe("useDetour", () => {
       .mocked(fetchFinishedDetour)
       .mockResolvedValue(finishedDetourFactory.build({ missedStops }))
 
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
 
     await waitFor(() => {
       expect(result.current.missedStops).not.toBeUndefined()
     })
 
-    act(() => result.current.undo?.())
+    act(() => undo(result.current))
 
     await waitFor(() => {
       expect(result.current.missedStops).toBeUndefined()
@@ -344,14 +387,14 @@ describe("useDetour", () => {
   test("when `endPoint` is undone, `routeSegments` is cleared", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
+    act(() => addConnectionPoint(result.current, { lat: 0, lon: 0 }))
 
     await waitFor(() => {
       expect(result.current.routeSegments).not.toBeUndefined()
     })
 
-    act(() => result.current.undo?.())
+    act(() => undo(result.current))
 
     await waitFor(() => {
       expect(result.current.routeSegments).toBeUndefined()
@@ -361,13 +404,9 @@ describe("useDetour", () => {
   test("initially, `finishDetour` is `undefined`", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    expect(result.current.finishDetour).toBeUndefined()
-  })
-
-  test("initially, `editDetour` is `undefined`", () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    expect(result.current.editDetour).toBeUndefined()
+    expect(
+      result.current.state === DetourState.Edit && result.current.finishDetour
+    ).toBeUndefined()
   })
 
   test("initially, `state` is `Edit`", () => {
@@ -379,94 +418,77 @@ describe("useDetour", () => {
   test("when `endPoint` is set, `finishDetour` is defined", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
 
-    await waitFor(() => expect(result.current.finishDetour).toBeDefined())
+    await waitFor(() =>
+      expect(
+        result.current.state === DetourState.Edit && result.current.finishDetour
+      ).toBeDefined()
+    )
   })
 
   test("calling `finishDetour`, sets `state` to `Finished`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
 
     act(() => {
-      result.current.finishDetour?.()
+      finishDetour(result.current)
     })
 
     await waitFor(() => expect(result.current.state).toBe(DetourState.Finished))
   })
 
-  test("when `state` is `Finished`, `editDetour` is defined", async () => {
+  test("calling `finishedDetour`, sets `state` to `Finished`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
 
-    await waitFor(() => expect(result.current.editDetour).toBeUndefined())
+    await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
 
     act(() => {
-      result.current.finishDetour?.()
-      result.current.editDetour?.()
+      finishDetour(result.current)
     })
 
-    await waitFor(() => expect(result.current.editDetour).toBeDefined())
+    await waitFor(() => expect(result.current.state).toBe(DetourState.Finished))
   })
 
   test("calling `editDetour`, sets `state` to `Edit`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
+    act(() => addConnectionPoint(result.current, shapePointFactory.build()))
 
     act(() => {
-      result.current.finishDetour?.()
+      finishDetour(result.current)
     })
-    act(() => {
-      result.current.editDetour?.()
-    })
+    await waitFor(() => expect(result.current.state).toBe(DetourState.Finished))
 
+    act(() => {
+      editDetour(result.current)
+    })
     await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
-  })
-
-  describe("when `state` is `Finished`, controls are locked out", () => {
-    test("`addWaypoint` is undefined", async () => {
-      const { result } = renderFinishedDetour()
-
-      await waitFor(() => expect(result.current.addWaypoint).toBeUndefined())
-    })
-
-    test("`addConnectionPoint` is undefined", async () => {
-      const { result } = renderFinishedDetour()
-
-      await waitFor(() =>
-        expect(result.current.addConnectionPoint).toBeUndefined()
-      )
-    })
-
-    test("`undo` is undefined", async () => {
-      const { result } = renderFinishedDetour()
-
-      await waitFor(() => expect(result.current.undo).toBeUndefined())
-    })
-
-    test("`clear` is undefined", async () => {
-      const { result } = renderFinishedDetour()
-
-      await waitFor(() => expect(result.current.clear).toBeUndefined())
-    })
   })
 })
 
+/*
 const renderFinishedDetour = () => {
   const renderResult = renderHook(useDetourWithFakeRoutePattern)
 
   act(() =>
-    renderResult.result.current.addConnectionPoint?.(shapePointFactory.build())
+    renderResult.addConnectionPoint(
+      renderResult.result.current,
+      shapePointFactory.build()
+    )
   )
   act(() =>
-    renderResult.result.current.addConnectionPoint?.(shapePointFactory.build())
+    renderResult.addConnectionPoint(
+      renderResult.result.current,
+      shapePointFactory.build()
+    )
   )
 
   act(() => {
@@ -475,3 +497,4 @@ const renderFinishedDetour = () => {
 
   return renderResult
 }
+   */
