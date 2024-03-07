@@ -1913,9 +1913,7 @@ describe("<MapPage />", () => {
 
       await userEvent.keyboard("{Escape}")
 
-      expect(container.querySelector(".c-detour-modal")).toHaveClass(
-        "c-detour-modal__hidden"
-      )
+      expect(container.querySelector(".c-detour-modal")).not.toBeInTheDocument()
     })
   })
 })
