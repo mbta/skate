@@ -112,24 +112,28 @@ const TileLayerOptions = ({
 }) => (
   <div className="c-layers-control__tile_layer_control">
     <h2 id={sectionLabelId}>Base Map</h2>
-    <Form.Check
-      type="radio"
-      name="tileType"
-      value=""
-      id="base"
-      checked={tileType === "base"}
-      onChange={() => onChangeTileType("base")}
-      label="Map (default)"
-    />
-    <Form.Check
-      type="radio"
-      name="tileType"
-      value=""
-      id="satellite"
-      checked={tileType === "satellite"}
-      onChange={() => onChangeTileType("satellite")}
-      label="Satellite"
-    />
+    <Form.Check type="radio" id="base" className="position-relative">
+      <Form.Check.Input
+        type="radio"
+        name="tileType"
+        value=""
+        checked={tileType === "base"}
+        onChange={() => onChangeTileType("base")}
+      />
+      <Form.Check.Label className="stretched-link">
+        Map (default)
+      </Form.Check.Label>
+    </Form.Check>
+    <Form.Check type="radio" id="satellite" className="position-relative">
+      <Form.Check.Input
+        type="radio"
+        name="tileType"
+        value=""
+        checked={tileType === "satellite"}
+        onChange={() => onChangeTileType("satellite")}
+      />
+      <Form.Check.Label className="stretched-link">Satellite</Form.Check.Label>
+    </Form.Check>
   </div>
 )
 

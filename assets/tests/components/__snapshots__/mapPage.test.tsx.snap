@@ -454,7 +454,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check"
+                            class="position-relative form-check"
                           >
                             <input
                               checked=""
@@ -465,15 +465,14 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label"
+                              class="stretched-link form-check-label"
                               for="base"
-                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check"
+                            class="position-relative form-check"
                           >
                             <input
                               class="form-check-input"
@@ -483,9 +482,8 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label"
+                              class="stretched-link form-check-label"
                               for="satellite"
-                              title=""
                             >
                               Satellite
                             </label>
@@ -1042,7 +1040,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check"
+                            class="position-relative form-check"
                           >
                             <input
                               checked=""
@@ -1053,15 +1051,14 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label"
+                              class="stretched-link form-check-label"
                               for="base"
-                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check"
+                            class="position-relative form-check"
                           >
                             <input
                               class="form-check-input"
@@ -1071,9 +1068,8 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label"
+                              class="stretched-link form-check-label"
                               for="satellite"
-                              title=""
                             >
                               Satellite
                             </label>
@@ -2022,7 +2018,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                             Base Map
                           </h2>
                           <div
-                            class="form-check"
+                            class="position-relative form-check"
                           >
                             <input
                               checked=""
@@ -2033,15 +2029,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label"
+                              class="stretched-link form-check-label"
                               for="base"
-                              title=""
                             >
                               Map (default)
                             </label>
                           </div>
                           <div
-                            class="form-check"
+                            class="position-relative form-check"
                           >
                             <input
                               class="form-check-input"
@@ -2051,9 +2046,8 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                               value=""
                             />
                             <label
-                              class="form-check-label"
+                              class="stretched-link form-check-label"
                               for="satellite"
-                              title=""
                             >
                               Satellite
                             </label>
