@@ -1,0 +1,72 @@
+@use "../../color/definitions" as semantic;
+
+.c-missed-stop-icon {
+  transition: 50ms 50ms;
+
+  &,
+  svg {
+    display: block;
+    overflow: visible;
+  }
+
+  &,
+  svg,
+  .c-missed-stop-icon__circle,
+  .c-missed-stop-icon__line,
+  .c-missed-stop-icon__focus-circle {
+    transform-origin: center;
+  }
+
+  .c-missed-stop-icon__circle {
+    fill: $white;
+    stroke-width: 1px;
+  }
+
+  .c-missed-stop-icon__focus-circle {
+    stroke: transparent;
+  }
+
+  .c-missed-stop-icon__line {
+    stroke-width: 2px;
+  }
+
+  .c-missed-stop-icon__circle,
+  .c-missed-stop-icon__line {
+    stroke: semantic.$missed-stop;
+  }
+}
+
+.c-missed-stop-icon-container:not(
+    .c-missed-stop-icon-container--interactions-disabled
+  ) {
+  &:focus-visible {
+    outline-offset: 2px;
+  }
+
+  &:hover .c-missed-stop-icon,
+  &:focus .c-missed-stop-icon,
+  .c-missed-stop-icon[data-selected] {
+    scale: 1.2;
+
+    .c-missed-stop-icon__circle {
+      stroke-width: 2px;
+    }
+
+    .c-missed-stop-icon__line {
+      fill: $color-eggplant-700;
+    }
+  }
+
+  &:focus .c-missed-stop-icon {
+    .c-missed-stop-icon__focus-circle {
+      stroke: $color-eggplant-500;
+    }
+  }
+
+  .c-missed-stop-icon[data-selected] {
+    .c-missed-stop-icon__circle {
+      fill: $color-eggplant-200;
+      stroke: $color-eggplant-700;
+    }
+  }
+}
