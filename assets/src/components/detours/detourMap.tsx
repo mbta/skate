@@ -223,8 +223,8 @@ export const EndIcon = () => <StartOrEndIcon classSuffix={"end"} />
 
 const StartOrEndIcon = ({ classSuffix }: { classSuffix: string }) => (
   <svg
-    height="16"
-    width="16"
+    height="100%"
+    width="100%"
     viewBox="0 0 16 16"
     className={"c-detour_map-circle-marker--" + classSuffix}
   >
@@ -248,8 +248,8 @@ const WaypointMarker = ({ position }: { position: LatLngLiteral }) => (
 
 export const WaypointIcon = () => (
   <svg
-    width="10"
-    height="10"
+    width="100%"
+    height="100%"
     viewBox="0 0 10 10"
     fill="none"
     className="c-detour_map-circle-marker--detour-point"
