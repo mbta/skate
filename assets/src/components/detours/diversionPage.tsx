@@ -24,11 +24,10 @@ export const DiversionPage = ({
   originalRoute,
   onClose,
 }: DiversionPageProps) => {
+  const detourInfo = useDetour(originalRoute.routePatternId)
+
   const {
     state,
-
-    addConnectionPoint,
-    addWaypoint,
 
     startPoint,
     endPoint,
@@ -41,11 +40,27 @@ export const DiversionPage = ({
     routeSegments,
 
     canUndo,
-    undo,
-    clear,
-    finishDetour,
-    editDetour,
-  } = useDetour(originalRoute.routePatternId)
+  } = detourInfo
+
+  const addWaypoint =
+    detourInfo.state === DetourState.Edit ? detourInfo.addWaypoint : undefined
+  const addConnectionPoint =
+    detourInfo.state === DetourState.Edit
+      ? detourInfo.addConnectionPoint
+      : undefined
+
+  const undo =
+    detourInfo.state === DetourState.Edit ? detourInfo.undo : undefined
+  const clear =
+    detourInfo.state === DetourState.Edit ? detourInfo.clear : undefined
+
+  const editDetour =
+    detourInfo.state === DetourState.Finished
+      ? detourInfo.editDetour
+      : undefined
+
+  const finishDetour =
+    detourInfo.state === DetourState.Edit ? detourInfo.finishDetour : undefined
 
   const [textArea, setTextArea] = useState("")
 
