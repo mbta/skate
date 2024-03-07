@@ -9,6 +9,7 @@ import { shapePointFactory } from "../factories/shapePointFactory"
 import stopFactory from "../factories/stop"
 import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
+import { originalRouteFactory } from "../factories/originalRouteFactory"
 
 jest.mock("../../src/api")
 
@@ -20,7 +21,8 @@ beforeEach(() => {
     .mockResolvedValue(finishedDetourFactory.build())
 })
 
-const useDetourWithFakeRoutePattern = () => useDetour("routePatternId")
+const useDetourWithFakeRoutePattern = () =>
+  useDetour(originalRouteFactory.build())
 
 describe("useDetour", () => {
   test("when `addConnectionPoint` is first called, `startPoint` is set", () => {

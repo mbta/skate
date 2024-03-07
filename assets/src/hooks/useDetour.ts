@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
-import { RoutePatternId, ShapePoint } from "../schedule"
+import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
-import { DetourShape, FinishedDetour } from "../models/detour"
+import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
   const [detourShape, setDetourShape] = useState<ShapePoint[]>([])
@@ -43,7 +43,7 @@ export enum DetourState {
   Finished,
 }
 
-export const useDetour = (routePatternId: RoutePatternId) => {
+export const useDetour = ({ routePatternId }: OriginalRoute) => {
   const [state, setState] = useState<DetourState>(DetourState.Edit)
 
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
