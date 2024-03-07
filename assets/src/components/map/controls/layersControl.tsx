@@ -11,6 +11,7 @@ import { TileType } from "../../../tilesetUrls"
 import { MapLayersIcon } from "../../../helpers/icon"
 import { CustomControl } from "./customControl"
 import { TileTypeContext } from "../../../contexts/tileTypeContext"
+import { Form, ListGroup } from "react-bootstrap"
 
 interface LayersButtonStateProps {
   showLayersList: boolean
@@ -72,21 +73,18 @@ const LayersPopoverMenu = ({
 
   return (
     <div className="c-layers-control__content">
-      <ul className="list-group">
-        <li
-          className="list-group-item"
-          aria-labelledby={tileLayerControlLabelId}
-        >
+      <ListGroup as="ul">
+        <ListGroup.Item as="li" aria-labelledby={tileLayerControlLabelId}>
           <TileLayerOptions
             tileType={tileType}
             onChangeTileType={setTileType}
             sectionLabelId={tileLayerControlLabelId}
           />
-        </li>
+        </ListGroup.Item>
         {pullbackLayerEnabled !== undefined &&
           togglePullbackLayerEnabled !== undefined && (
-            <li
-              className="list-group-item"
+            <ListGroup.Item
+              as="li"
               aria-labelledby={vehicleLayersControlLabelId}
             >
               <VehicleLayerOptions
@@ -94,9 +92,9 @@ const LayersPopoverMenu = ({
                 pullbackLayerEnabled={pullbackLayerEnabled}
                 onTogglePullbackLayer={togglePullbackLayerEnabled}
               />
-            </li>
+            </ListGroup.Item>
           )}
-      </ul>
+      </ListGroup>
     </div>
   )
 }
@@ -114,34 +112,28 @@ const TileLayerOptions = ({
 }) => (
   <div className="c-layers-control__tile_layer_control">
     <h2 id={sectionLabelId}>Base Map</h2>
-    <div className="form-check position-relative">
-      <input
-        className="form-check-input"
+    <Form.Check type="radio" id="base" className="position-relative">
+      <Form.Check.Input
         type="radio"
         name="tileType"
         value=""
-        id="base"
         checked={tileType === "base"}
         onChange={() => onChangeTileType("base")}
       />
-      <label className="form-check-label stretched-link" htmlFor="base">
+      <Form.Check.Label className="stretched-link">
         Map (default)
-      </label>
-    </div>
-    <div className="form-check position-relative">
-      <input
-        className="form-check-input"
+      </Form.Check.Label>
+    </Form.Check>
+    <Form.Check type="radio" id="satellite" className="position-relative">
+      <Form.Check.Input
         type="radio"
         name="tileType"
         value=""
-        id="satellite"
         checked={tileType === "satellite"}
         onChange={() => onChangeTileType("satellite")}
       />
-      <label className="form-check-label stretched-link" htmlFor="satellite">
-        Satellite
-      </label>
-    </div>
+      <Form.Check.Label className="stretched-link">Satellite</Form.Check.Label>
+    </Form.Check>
   </div>
 )
 
@@ -156,17 +148,14 @@ const VehicleLayerOptions = ({
 }: {
   sectionLabelId?: string
 } & VehicleLayerOptionsProps) => {
-  const inputId = "pull-back-layer-switch-" + useId()
+  const formCheckId = "pull-back-layer-switch-" + useId()
 
   return (
     <div className="c-layers-control__vehicle_layers_control">
       <h2 id={sectionLabelId}>Vehicles</h2>
-      <div className="form-check form-switch position-relative">
-        <input
-          className="form-check-input"
-          type="checkbox"
+      <Form.Check type="switch" id={formCheckId} className="position-relative">
+        <Form.Check.Input
           role="switch"
-          id={inputId}
           checked={pullbackLayerEnabled}
           onChange={onTogglePullbackLayer}
           onKeyDown={(event) => {
@@ -175,10 +164,10 @@ const VehicleLayerOptions = ({
             }
           }}
         />
-        <label className="form-check-label stretched-link" htmlFor={inputId}>
+        <Form.Check.Label className="stretched-link">
           Show pull-backs
-        </label>
-      </div>
+        </Form.Check.Label>
+      </Form.Check>
     </div>
   )
 }
