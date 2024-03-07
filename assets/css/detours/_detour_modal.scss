@@ -8,5 +8,4 @@
   transition: all 0.3s;
   transform: scale(1.02) translate(0px, -50px);
   opacity: 0;
-  z-index: map-get($z-page-layout-context, "detour-modal-hidden");
 }
