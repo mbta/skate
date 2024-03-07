@@ -37,6 +37,7 @@ export const DiversionPage = ({
     detourShape,
     directions,
 
+    stops,
     missedStops,
     routeSegments,
     connectionPoints,
@@ -135,7 +136,7 @@ export const DiversionPage = ({
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}
             onClear={clear ?? (() => {})}
-            stops={originalRoute.shape.stops || []}
+            stops={stops}
           />
         </div>
       </article>
