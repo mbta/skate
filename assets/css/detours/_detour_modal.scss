@@ -4,6 +4,15 @@
   z-index: map-get($z-page-layout-context, "detour-modal");
 }
 
+.c-detour-modal__transition-enter {
+  opacity: 0;
+}
+
+.c-detour-modal__transition-enter-active {
+  transition: all 0.3s;
+  opacity: 1;
+}
+
 .c-detour-modal__transition-exit-active {
   transition: all 0.3s;
   transform: scale(1.02) translate(0px, -50px);
