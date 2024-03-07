@@ -11,7 +11,7 @@ const waypoint = { lat: 42.33, lon: -71.1 }
 const endPointIndex = 130
 const endPoint: ShapePoint = shape[endPointIndex]
 
-const stops = [
+const stopsBefore = [
   {
     id: "1",
     name: "Huntington @ Main Blvd",
@@ -26,6 +26,9 @@ const stops = [
     vehicleType: RouteType.Bus,
     ...shape[72],
   },
+]
+
+const missedStops = [
   {
     id: "3",
     name: "Huntington @ Coddingsworth",
@@ -48,6 +51,9 @@ const stops = [
     vehicleType: RouteType.Bus,
     ...shape[120],
   },
+]
+
+const stopsAfter = [
   {
     id: "6",
     name: "Huntington @ Heath",
@@ -64,6 +70,9 @@ const stops = [
   },
 ]
 
+const allStops = [...stopsBefore, ...missedStops, ...stopsAfter]
+const visitedStops = [...stopsBefore, ...stopsAfter]
+
 const meta = {
   component: DetourMap,
   parameters: {
@@ -73,7 +82,7 @@ const meta = {
   args: {
     originalShape: shape,
     detourShape: [startPoint, waypoint, endPoint],
-    stops: stops,
+    stops: visitedStops,
     startPoint,
     waypoints: [waypoint],
     endPoint,
@@ -114,6 +123,7 @@ export const Connected: Story = {}
 
 export const WithSomeWaypoints: Story = {
   args: {
+    stops: allStops,
     endPoint: undefined,
     routeSegments: undefined,
     detourShape: [startPoint, waypoint],
@@ -124,6 +134,7 @@ export const WithSomeWaypoints: Story = {
 
 export const Unstarted: Story = {
   args: {
+    stops: allStops,
     startPoint: undefined,
     endPoint: undefined,
     routeSegments: undefined,

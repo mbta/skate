@@ -562,6 +562,39 @@ describe("useDetour", () => {
 
       expect(result.current.stops).toStrictEqual([stop1, stop2, stop3, stop4])
     })
+
+    test("when the detour is finished, `stops` excludes any missed stops", async () => {
+      const stopsBefore = stopFactory.buildList(3)
+      const missedStops = stopFactory.buildList(4)
+      const stopsAfter = stopFactory.buildList(3)
+
+      const allStops = [...stopsBefore, ...missedStops, ...stopsAfter]
+
+      jest
+        .mocked(fetchFinishedDetour)
+        .mockResolvedValue(finishedDetourFactory.build({ missedStops }))
+
+      const { result } = renderHook(() =>
+        useDetour(
+          originalRouteFactory.build({
+            shape: shapeFactory.build({ stops: allStops }),
+          })
+        )
+      )
+      act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+      act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+
+      await waitFor(() => {
+        expect(result.current.missedStops).not.toStrictEqual([])
+      })
+
+      expect(result.current.missedStops).toStrictEqual(missedStops)
+
+      expect(result.current.stops).toStrictEqual([
+        ...stopsBefore,
+        ...stopsAfter,
+      ])
+    })
   })
 })
 
