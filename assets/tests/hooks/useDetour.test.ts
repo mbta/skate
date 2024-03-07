@@ -10,6 +10,7 @@ import stopFactory from "../factories/stop"
 import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
+import shapeFactory from "../factories/shape"
 
 jest.mock("../../src/api")
 
@@ -503,6 +504,22 @@ describe("useDetour", () => {
       const { result } = renderFinishedDetour()
 
       await waitFor(() => expect(result.current.clear).toBeUndefined())
+    })
+  })
+
+  describe("stops", () => {
+    test("`stops` is initially populated with the stops from the original route shape", () => {
+      const stops = stopFactory.buildList(4)
+
+      const { result } = renderHook(() =>
+        useDetour(
+          originalRouteFactory.build({
+            shape: shapeFactory.build({ stops }),
+          })
+        )
+      )
+
+      expect(result.current.stops).toBe(stops)
     })
   })
 })
