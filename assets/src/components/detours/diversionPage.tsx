@@ -46,7 +46,7 @@ export const DiversionPage = ({
     clear,
     finishDetour,
     editDetour,
-  } = useDetour(originalRoute.routePatternId)
+  } = useDetour(originalRoute)
 
   const [textArea, setTextArea] = useState("")
 
