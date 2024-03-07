@@ -125,7 +125,7 @@ export const DiversionPage = ({
             onUndo={undo ?? (() => {})}
             onClear={clear ?? (() => {})}
             stops={originalRoute.shape.stops || []}
-          ></DetourMap>
+          />
         </div>
       </article>
       <Modal
