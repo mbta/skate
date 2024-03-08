@@ -25,6 +25,7 @@ import {
 import { TileType } from "../../tilesetUrls"
 import { setTileType } from "../../state/mapLayersState"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { uniqBy } from "../../helpers/array"
 
 interface DetourMapProps {
   /**
@@ -39,7 +40,7 @@ interface DetourMapProps {
   /*
    * Stops along the original route shape
    */
-  stops: Stop[]
+  stops: (Stop & { missed: boolean })[]
 
   /**
    * Coordinate to display as the beginning connection point.
@@ -230,12 +231,13 @@ export const DetourMap = ({
         <ZoomLevelWrapper>
           {(zoomLevel: number) => (
             <>
-              {stops.map((stop) => (
+              {uniqBy(stops, (stop) => stop.id).map((stop) => (
                 <StopMarkerWithStopCard
                   key={stop.name}
                   stop={stop}
                   zoomLevel={zoomLevel}
                   interactionStatesDisabled={false}
+                  missed={stop.missed}
                 />
               ))}
             </>

@@ -437,8 +437,39 @@ describe("DiversionPage", () => {
       />
     )
 
-    expect(container.querySelectorAll(".c-stop-icon-container")).toHaveLength(
-      11
+    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(11)
+  })
+
+  test("missed stop markers are drawn on the map", async () => {
+    const stop1 = stopFactory.build()
+    const stop2 = stopFactory.build()
+    const stop3 = stopFactory.build()
+    const stop4 = stopFactory.build()
+
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build({ missedStops: [stop2] }))
+
+    const { container } = render(
+      <DiversionPage
+        originalRoute={{
+          shape: shapeFactory.build({ stops: [stop1, stop2, stop3, stop4] }),
+        }}
+      />
     )
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    waitFor(() => {
+      expect(screen.getByText(stop2.name)).toBeInTheDocument()
+    })
+
+    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(3)
+    expect(container.querySelectorAll(".c-missed-stop-icon")).toHaveLength(1)
   })
 })

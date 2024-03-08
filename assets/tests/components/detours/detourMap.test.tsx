@@ -10,6 +10,7 @@ import { RealDispatchWrapper } from "../../testHelpers/wrappers"
 import { layersControlButton } from "../../testHelpers/selectors/components/map"
 import { mockTileUrls } from "../../testHelpers/mockHelpers"
 import { tilesetUrlForType } from "../../../src/tilesetUrls"
+import stopFactory from "../../factories/stop"
 
 beforeEach(() => {
   jest.mocked(tilesetUrlForType).mockReturnValue(undefined)
@@ -223,5 +224,45 @@ describe("DetourMap", () => {
     expect(
       container.querySelector("img[src^=test_satellite_url")
     ).not.toBeNull()
+  })
+
+  test("stops are drawn on the map", () => {
+    const stops = [
+      { ...stopFactory.build(), missed: false },
+      { ...stopFactory.build(), missed: false },
+      { ...stopFactory.build(), missed: false },
+    ]
+
+    const { container } = render(<DetourMapWithDefaults stops={stops} />)
+
+    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(3)
+  })
+
+  test("stops are drawn as missed stop icons when they are missed", () => {
+    const stops = [
+      { ...stopFactory.build(), missed: true },
+      { ...stopFactory.build(), missed: true },
+      { ...stopFactory.build(), missed: false },
+    ]
+
+    const { container } = render(<DetourMapWithDefaults stops={stops} />)
+
+    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(1)
+    expect(container.querySelectorAll(".c-missed-stop-icon")).toHaveLength(2)
+  })
+
+  test("duplicate stops are only drawn once", () => {
+    const duplicateStop = { ...stopFactory.build(), missed: true }
+    const stops = [
+      { ...stopFactory.build(), missed: true },
+      duplicateStop,
+      { ...stopFactory.build(), missed: false },
+      duplicateStop,
+    ]
+
+    const { container } = render(<DetourMapWithDefaults stops={stops} />)
+
+    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(1)
+    expect(container.querySelectorAll(".c-missed-stop-icon")).toHaveLength(2)
   })
 })
