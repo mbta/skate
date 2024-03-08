@@ -34,10 +34,10 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               class="c-search-form__search-input-container"
             >
               <input
-                aria-controls=":re:"
+                aria-controls=":rk:"
                 aria-expanded="false"
                 aria-haspopup="listbox"
-                aria-owns=":re:"
+                aria-owns=":rk:"
                 class="c-search-form__input"
                 placeholder="Search"
                 role="combobox"
@@ -99,27 +99,27 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                 <h2
                   aria-hidden="true"
                   class="visually-hidden"
-                  id=":rf:"
+                  id=":rl:"
                   role="presentation"
                 >
                   Search Suggestions
                 </h2>
                 <div
-                  aria-labelledby=":rf:"
+                  aria-labelledby=":rl:"
                   class="c-autocomplete__list"
-                  id=":re:"
+                  id=":rk:"
                   role="listbox"
                   tabindex="-1"
                 >
                   <div
                     aria-hidden="true"
                     class="c-autocomplete__group-heading"
-                    id=":rg:"
+                    id=":rm:"
                     role="presentation"
                     style="user-select: none;"
                   />
                   <ul
-                    aria-labelledby=":rg:"
+                    aria-labelledby=":rm:"
                     class="c-autocomplete__group-list"
                     role="group"
                   >
@@ -348,7 +348,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:rh:"
+              for="street-view-toggle-:rn:"
               role="presentation"
             >
               <span
@@ -359,7 +359,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:rh:"
+              for="street-view-toggle-:rn:"
             >
               Street View
             </label>
@@ -368,7 +368,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:rh:"
+                id="street-view-toggle-:rn:"
                 role="switch"
                 type="checkbox"
               />
@@ -442,14 +442,14 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                       class="list-group"
                     >
                       <li
-                        aria-labelledby="tile-layer-control-label-:ri:"
+                        aria-labelledby="tile-layer-control-label-:ro:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__tile_layer_control"
                         >
                           <h2
-                            id="tile-layer-control-label-:ri:"
+                            id="tile-layer-control-label-:ro:"
                           >
                             Base Map
                           </h2>
@@ -459,14 +459,14 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:rq:"
+                              name="layers-control-tile-type-:rs:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:rq:"
                             >
                               Map (default)
                             </label>
@@ -476,14 +476,14 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:rr:"
+                              name="layers-control-tile-type-:rs:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:rr:"
                             >
                               Satellite
                             </label>
@@ -491,14 +491,14 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                         </div>
                       </li>
                       <li
-                        aria-labelledby="vehicle-layers-control-label-:rj:"
+                        aria-labelledby="vehicle-layers-control-label-:rp:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__vehicle_layers_control"
                         >
                           <h2
-                            id="vehicle-layers-control-label-:rj:"
+                            id="vehicle-layers-control-label-:rp:"
                           >
                             Vehicles
                           </h2>
@@ -507,13 +507,13 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="pull-back-layer-switch-:rk:"
+                              id="pull-back-layer-switch-:rt:"
                               role="switch"
                               type="checkbox"
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="pull-back-layer-switch-:rk:"
+                              for="pull-back-layer-switch-:rt:"
                             >
                               Show pull-backs
                             </label>
@@ -1045,14 +1045,14 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:r6:"
+                              name="layers-control-tile-type-:r8:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:r6:"
                             >
                               Map (default)
                             </label>
@@ -1062,14 +1062,14 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:r7:"
+                              name="layers-control-tile-type-:r8:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:r7:"
                             >
                               Satellite
                             </label>
@@ -1093,13 +1093,13 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="pull-back-layer-switch-:r6:"
+                              id="pull-back-layer-switch-:r9:"
                               role="switch"
                               type="checkbox"
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="pull-back-layer-switch-:r6:"
+                              for="pull-back-layer-switch-:r9:"
                             >
                               Show pull-backs
                             </label>
@@ -1359,13 +1359,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="run:rl:"
+                      id="run:ru:"
                       scope="row"
                     >
                       run
                     </th>
                     <td
-                      aria-labelledby="run:rl:"
+                      aria-labelledby="run:ru:"
                       class="kv-value font-s-reg"
                     >
                       <button
@@ -1378,13 +1378,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="vehicle:rm:"
+                      id="vehicle:rv:"
                       scope="row"
                     >
                       vehicle
                     </th>
                     <td
-                      aria-labelledby="vehicle:rm:"
+                      aria-labelledby="vehicle:rv:"
                       class="kv-value font-s-reg"
                     >
                       v1-label
@@ -1393,13 +1393,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                   <tr>
                     <th
                       class="kv-key font-s-semi"
-                      id="operator:rn:"
+                      id="operator:r10:"
                       scope="row"
                     >
                       operator
                     </th>
                     <td
-                      aria-labelledby="operator:rn:"
+                      aria-labelledby="operator:r10:"
                       class="kv-value font-s-reg fs-mask"
                     >
                       WILL SMITH #op1
@@ -1416,13 +1416,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               >
                 <label
                   class="c-current-location__label label font-xs-reg title-case"
-                  for="current-location-:ro:"
+                  for="current-location-:r11:"
                 >
                   Current Location
                 </label>
                 <output
                   class="c-current-location__value label font-s-semi"
-                  id="current-location-:ro:"
+                  id="current-location-:r11:"
                 >
                   loading...
                 </output>
@@ -1912,7 +1912,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               aria-hidden="true"
               aria-label=""
               class="c-street-view-switch__label"
-              for="street-view-toggle-:rp:"
+              for="street-view-toggle-:r12:"
               role="presentation"
             >
               <span
@@ -1923,7 +1923,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             </label>
             <label
               class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
-              for="street-view-toggle-:rp:"
+              for="street-view-toggle-:r12:"
             >
               Street View
             </label>
@@ -1932,7 +1932,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <input
                 class="form-check-input"
-                id="street-view-toggle-:rp:"
+                id="street-view-toggle-:r12:"
                 role="switch"
                 type="checkbox"
               />
@@ -2006,14 +2006,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                       class="list-group"
                     >
                       <li
-                        aria-labelledby="tile-layer-control-label-:rq:"
+                        aria-labelledby="tile-layer-control-label-:r13:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__tile_layer_control"
                         >
                           <h2
-                            id="tile-layer-control-label-:rq:"
+                            id="tile-layer-control-label-:r13:"
                           >
                             Base Map
                           </h2>
@@ -2023,14 +2023,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:r15:"
+                              name="layers-control-tile-type-:r17:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:r15:"
                             >
                               Map (default)
                             </label>
@@ -2040,14 +2040,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:r16:"
+                              name="layers-control-tile-type-:r17:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:r16:"
                             >
                               Satellite
                             </label>
@@ -2055,14 +2055,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                         </div>
                       </li>
                       <li
-                        aria-labelledby="vehicle-layers-control-label-:rr:"
+                        aria-labelledby="vehicle-layers-control-label-:r14:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__vehicle_layers_control"
                         >
                           <h2
-                            id="vehicle-layers-control-label-:rr:"
+                            id="vehicle-layers-control-label-:r14:"
                           >
                             Vehicles
                           </h2>
@@ -2071,13 +2071,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="pull-back-layer-switch-:rs:"
+                              id="pull-back-layer-switch-:r18:"
                               role="switch"
                               type="checkbox"
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="pull-back-layer-switch-:rs:"
+                              for="pull-back-layer-switch-:r18:"
                             >
                               Show pull-backs
                             </label>

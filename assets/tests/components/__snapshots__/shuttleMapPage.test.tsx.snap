@@ -643,14 +643,14 @@ exports[`Shuttle Map Page renders 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:r2:"
+                              name="layers-control-tile-type-:r4:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:r2:"
                             >
                               Map (default)
                             </label>
@@ -660,14 +660,14 @@ exports[`Shuttle Map Page renders 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:r3:"
+                              name="layers-control-tile-type-:r4:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:r3:"
                             >
                               Satellite
                             </label>
@@ -1381,14 +1381,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                       class="list-group"
                     >
                       <li
-                        aria-labelledby="tile-layer-control-label-:r8:"
+                        aria-labelledby="tile-layer-control-label-:rk:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__tile_layer_control"
                         >
                           <h2
-                            id="tile-layer-control-label-:r8:"
+                            id="tile-layer-control-label-:rk:"
                           >
                             Base Map
                           </h2>
@@ -1398,14 +1398,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:rm:"
+                              name="layers-control-tile-type-:ro:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:rm:"
                             >
                               Map (default)
                             </label>
@@ -1415,14 +1415,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:rn:"
+                              name="layers-control-tile-type-:ro:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:rn:"
                             >
                               Satellite
                             </label>
@@ -2136,14 +2136,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                       class="list-group"
                     >
                       <li
-                        aria-labelledby="tile-layer-control-label-:ra:"
+                        aria-labelledby="tile-layer-control-label-:rp:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__tile_layer_control"
                         >
                           <h2
-                            id="tile-layer-control-label-:ra:"
+                            id="tile-layer-control-label-:rp:"
                           >
                             Base Map
                           </h2>
@@ -2153,14 +2153,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:rr:"
+                              name="layers-control-tile-type-:rt:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:rr:"
                             >
                               Map (default)
                             </label>
@@ -2170,14 +2170,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:rs:"
+                              name="layers-control-tile-type-:rt:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:rs:"
                             >
                               Satellite
                             </label>
@@ -2445,14 +2445,14 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                       class="list-group"
                     >
                       <li
-                        aria-labelledby="tile-layer-control-label-:r4:"
+                        aria-labelledby="tile-layer-control-label-:ra:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__tile_layer_control"
                         >
                           <h2
-                            id="tile-layer-control-label-:r4:"
+                            id="tile-layer-control-label-:ra:"
                           >
                             Base Map
                           </h2>
@@ -2462,14 +2462,14 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:rc:"
+                              name="layers-control-tile-type-:re:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:rc:"
                             >
                               Map (default)
                             </label>
@@ -2479,14 +2479,14 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:rd:"
+                              name="layers-control-tile-type-:re:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:rd:"
                             >
                               Satellite
                             </label>
@@ -3229,14 +3229,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                       class="list-group"
                     >
                       <li
-                        aria-labelledby="tile-layer-control-label-:r6:"
+                        aria-labelledby="tile-layer-control-label-:rf:"
                         class="list-group-item"
                       >
                         <div
                           class="c-layers-control__tile_layer_control"
                         >
                           <h2
-                            id="tile-layer-control-label-:r6:"
+                            id="tile-layer-control-label-:rf:"
                           >
                             Base Map
                           </h2>
@@ -3246,14 +3246,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                             <input
                               checked=""
                               class="form-check-input"
-                              id="base"
-                              name="tileType"
+                              id="base-layer-radio-:rh:"
+                              name="layers-control-tile-type-:rj:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="base"
+                              for="base-layer-radio-:rh:"
                             >
                               Map (default)
                             </label>
@@ -3263,14 +3263,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                           >
                             <input
                               class="form-check-input"
-                              id="satellite"
-                              name="tileType"
+                              id="satellite-layer-radio-:ri:"
+                              name="layers-control-tile-type-:rj:"
                               type="radio"
                               value=""
                             />
                             <label
                               class="stretched-link form-check-label"
-                              for="satellite"
+                              for="satellite-layer-radio-:ri:"
                             >
                               Satellite
                             </label>
