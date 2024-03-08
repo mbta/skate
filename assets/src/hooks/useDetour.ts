@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
+import { uniqBy } from "../helpers/array"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
   const [detourShape, setDetourShape] = useState<ShapePoint[]>([])
@@ -126,6 +127,13 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     setState(DetourState.Edit)
   }
 
+  const missedStops = uniqBy(
+    finishedDetour?.missedStops || [],
+    (stop) => stop.id
+  )
+
+  const stops = uniqBy(shape.stops || [], (stop) => stop.id)
+
   return {
     /** The current state of the detour machine */
     state,
@@ -167,11 +175,11 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
      */
-    stops: shape.stops || [],
+    stops,
     /**
      * Stops missed by the detour, determined after the route is completed
      */
-    missedStops: finishedDetour?.missedStops,
+    missedStops,
     /**
      * Three partial route-shape segments: before, during, and after the detour
      */
