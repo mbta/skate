@@ -262,3 +262,95 @@ export const StopMarkerWithInfo = ({
   ) : (
     <StopMarkerWithToolTip {...props} />
   )
+
+export const MissedStopIcon = ({ type, selected = false }: StopIconProps) => {
+  const strokeWidthOffset = 3
+
+  return (
+    <svg
+      // Size to container
+      width="100%"
+      height="100%"
+      className="c-missed-stop-icon"
+      data-selected={selected || null} // Remove attribute if `false`
+    >
+      {/* `width` and `height` is not specified on child SVG's so they size to
+       * the parent SVG. This makes `stopIconSizeFromStopIconType` the source of
+       * truth for the size on the map.
+       * Specifying the `viewbox` ensures that the aspect ratio is correct,
+       * and Leaflet specifies the container size on the map via `DivIconOptions.iconSize`,
+       * which the child SVG's fill because `width` and `height` are `auto` by
+       * default, and the parent SVG is explicitly setting `width` and `height`
+       * to `100%`
+       */}
+      {/*
+        It does suck that we're completely replacing the icon when the type
+        changes, because that breaks any animations or states that were applied
+        to the previous element, but in trying to stay as close to the provided
+        art assets as possible, this was easiest.
+       */}
+      {type === StopIconType.Small && (
+        <svg viewBox="0 0 14 14" fill="none">
+          <circle
+            className="c-missed-stop-icon__focus-circle"
+            cx="7"
+            cy="7"
+            r={5 + strokeWidthOffset}
+          />
+          <circle
+            className={joinClasses([
+              "c-missed-stop-icon__circle",
+              "c-missed-stop-icon__circle--small",
+            ])}
+            cx="7"
+            cy="7"
+            r="5"
+          />
+        </svg>
+      )}
+      {type === StopIconType.Medium && (
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle
+            className="c-missed-stop-icon__focus-circle"
+            cx="9"
+            cy="9"
+            r={7 + strokeWidthOffset}
+          />
+          <circle className="c-missed-stop-icon__circle" cx="9" cy="9" r="7" />
+          <line
+            className="c-missed-stop-icon__line"
+            x1="5"
+            y1="9"
+            x2="13"
+            y2="9"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
+      {type === StopIconType.Large && (
+        <svg viewBox="0 0 20 20" fill="none">
+          <circle
+            className="c-missed-stop-icon__focus-circle"
+            cx="10"
+            cy="10"
+            r={8 + strokeWidthOffset}
+          />
+          <circle
+            className="c-missed-stop-icon__circle"
+            cx="10"
+            cy="10"
+            r="8"
+          />
+          <line
+            className="c-missed-stop-icon__line"
+            x1="5.5"
+            y1="10"
+            x2="14.5"
+            y2="10"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
+    </svg>
+  )
+}
