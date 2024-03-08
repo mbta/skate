@@ -6,7 +6,7 @@ import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
-import { ShapePoint } from "../../schedule"
+import { ShapePoint, Stop } from "../../schedule"
 import {
   latLngLiteralToShapePoint,
   shapePointToLatLngLiteral,
@@ -16,6 +16,8 @@ import { joinClasses } from "../../helpers/dom"
 import { RouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
 import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
+import ZoomLevelWrapper from "../ZoomLevelWrapper"
+import { StopMarkerWithStopCard } from "../map/markers/stopMarker"
 
 interface DetourMapProps {
   /**
@@ -26,6 +28,11 @@ interface DetourMapProps {
    * Coordinates to display as the detour line.
    */
   detourShape: ShapePoint[]
+
+  /*
+   * Stops along the original route shape
+   */
+  stops: Stop[]
 
   /**
    * Coordinate to display as the beginning connection point.
@@ -81,6 +88,8 @@ interface DetourMapProps {
 export const DetourMap = ({
   originalShape,
   detourShape,
+
+  stops,
 
   startPoint,
   endPoint,
@@ -183,6 +192,21 @@ export const DetourMap = ({
             {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
           </OriginalRouteShape>
         )}
+
+        <ZoomLevelWrapper>
+          {(zoomLevel: number) => (
+            <>
+              {stops.map((stop) => (
+                <StopMarkerWithStopCard
+                  key={stop.name}
+                  stop={stop}
+                  zoomLevel={zoomLevel}
+                  interactionStatesDisabled={false}
+                />
+              ))}
+            </>
+          )}
+        </ZoomLevelWrapper>
       </Map>
     </div>
   )

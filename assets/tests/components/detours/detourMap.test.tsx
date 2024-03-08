@@ -17,6 +17,7 @@ const DetourMapWithDefaults = (
   <DetourMap
     originalShape={[]}
     detourShape={[]}
+    stops={[]}
     startPoint={undefined}
     endPoint={undefined}
     waypoints={[]}

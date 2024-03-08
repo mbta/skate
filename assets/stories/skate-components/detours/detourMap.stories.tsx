@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { route39shape } from "../__story-data__/shape"
 import { DetourMap } from "../../../src/components/detours/detourMap"
 import { ShapePoint } from "../../../src/schedule"
+import { LocationType, RouteType } from "../../../src/models/stopData"
 
 const shape = route39shape.points
 const startPointIndex = 75
@@ -9,6 +10,59 @@ const startPoint: ShapePoint = shape[startPointIndex]
 const waypoint = { lat: 42.33, lon: -71.1 }
 const endPointIndex = 130
 const endPoint: ShapePoint = shape[endPointIndex]
+
+const stops = [
+  {
+    id: "1",
+    name: "Huntington @ Main Blvd",
+    locationType: LocationType.Stop,
+    vehicleType: RouteType.Bus,
+    ...shape[65],
+  },
+  {
+    id: "2",
+    name: "Huntington @ First Ave",
+    locationType: LocationType.Stop,
+    vehicleType: RouteType.Bus,
+    ...shape[72],
+  },
+  {
+    id: "3",
+    name: "Huntington @ Coddingsworth",
+    locationType: LocationType.Stop,
+    vehicleType: RouteType.Bus,
+    ...shape[90],
+  },
+  {
+    id: "4",
+    name: "Huntington @ Huntington",
+    locationType: LocationType.Stop,
+    vehicleType: RouteType.Bus,
+    routes: [{ type: 0, id: "66", name: "66" }],
+    ...shape[110],
+  },
+  {
+    id: "5",
+    name: "Back of the Hills",
+    locationType: LocationType.Stop,
+    vehicleType: RouteType.Bus,
+    ...shape[120],
+  },
+  {
+    id: "6",
+    name: "Huntington @ Heath",
+    locationType: LocationType.Stop,
+    vehicleType: RouteType.Bus,
+    ...shape[135],
+  },
+  {
+    id: "7",
+    name: "Huntington @ Centre",
+    locationType: LocationType.Stop,
+    vehicleType: RouteType.Bus,
+    ...shape[150],
+  },
+]
 
 const meta = {
   component: DetourMap,
@@ -19,6 +73,7 @@ const meta = {
   args: {
     originalShape: shape,
     detourShape: [startPoint, waypoint, endPoint],
+    stops: stops,
     startPoint,
     waypoints: [waypoint],
     endPoint,
@@ -32,7 +87,7 @@ const meta = {
     undoDisabled: false,
     onUndo: () => {},
     onClear: () => {},
-    zoom: 14,
+    zoom: 15,
     center: { lat: 42.33, lng: -71.11 },
   },
   argTypes: {
