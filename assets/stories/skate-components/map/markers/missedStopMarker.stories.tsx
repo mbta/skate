@@ -9,7 +9,7 @@ const meta = {
   component: MissedStopIcon,
   decorators: [
     (Story) => (
-      <div className="c-missed-stop-icon-container">
+      <div className="c-stop-icon-container">
         <Story />
       </div>
     ),
