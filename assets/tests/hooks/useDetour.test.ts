@@ -305,10 +305,32 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
+      expect(result.current.missedStops).not.toStrictEqual([])
     })
 
-    expect(result.current.missedStops).toBe(missedStops)
+    expect(result.current.missedStops).toStrictEqual(missedStops)
+  })
+
+  test("missedStops is de-duplicated", async () => {
+    const { result } = renderHook(useDetourWithFakeRoutePattern)
+
+    const stop1 = stopFactory.build()
+    const stop2 = stopFactory.build()
+
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(
+        finishedDetourFactory.build({ missedStops: [stop1, stop2, stop1] })
+      )
+
+    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+
+    await waitFor(() => {
+      expect(result.current.missedStops).not.toStrictEqual([])
+    })
+
+    expect(result.current.missedStops).toStrictEqual([stop1, stop2])
   })
 
   test("when `endPoint` is set, `routeSegments` is filled in", async () => {
@@ -324,7 +346,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
+      expect(result.current.missedStops).not.toStrictEqual([])
     })
 
     expect(result.current.routeSegments).toEqual(routeSegments)
@@ -363,13 +385,13 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
+      expect(result.current.missedStops).not.toStrictEqual([])
     })
 
     act(() => result.current.undo?.())
 
     await waitFor(() => {
-      expect(result.current.missedStops).toBeUndefined()
+      expect(result.current.missedStops).toStrictEqual([])
     })
   })
 
@@ -519,7 +541,26 @@ describe("useDetour", () => {
         )
       )
 
-      expect(result.current.stops).toBe(stops)
+      expect(result.current.stops).toStrictEqual(stops)
+    })
+
+    test("`stops` is de-duplicated", () => {
+      const stop1 = stopFactory.build()
+      const stop2 = stopFactory.build()
+      const stop3 = stopFactory.build()
+      const stop4 = stopFactory.build()
+
+      const { result } = renderHook(() =>
+        useDetour(
+          originalRouteFactory.build({
+            shape: shapeFactory.build({
+              stops: [stop1, stop2, stop3, stop2, stop4],
+            }),
+          })
+        )
+      )
+
+      expect(result.current.stops).toStrictEqual([stop1, stop2, stop3, stop4])
     })
   })
 })

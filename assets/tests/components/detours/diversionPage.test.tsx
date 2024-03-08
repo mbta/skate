@@ -214,27 +214,6 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("duplicate missed stops are only rendered once", async () => {
-    const stop = stopFactory.build()
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue(
-        finishedDetourFactory.build({ missedStops: [stop, stop] })
-      )
-
-    const { container } = render(<DiversionPage />)
-
-    await act(async () => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await act(async () => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
-  })
-
   test("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
     const { container } = render(<DiversionPage />)
 
