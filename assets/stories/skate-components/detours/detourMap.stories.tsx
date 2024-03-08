@@ -28,7 +28,7 @@ const meta = {
       afterDetour: shape.slice(endPointIndex, -1),
     },
     onClickOriginalShape: () => {},
-    onClickMap: () => {},
+    onClickMap: undefined,
     undoDisabled: false,
     onUndo: () => {},
     onClear: () => {},

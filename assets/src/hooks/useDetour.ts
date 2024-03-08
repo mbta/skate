@@ -84,9 +84,11 @@ export const useDetour = (routePatternId: RoutePatternId) => {
   )
 
   const canAddWaypoint = () => startPoint !== null && endPoint === null
-  const addWaypoint = (p: ShapePoint) => {
-    canAddWaypoint() && setWaypoints((positions) => [...positions, p])
-  }
+  const addWaypoint = canAddWaypoint()
+    ? (p: ShapePoint) => {
+        setWaypoints((positions) => [...positions, p])
+      }
+    : undefined
 
   const addConnectionPoint = (point: ShapePoint) => {
     if (startPoint === null) {
@@ -132,7 +134,7 @@ export const useDetour = (routePatternId: RoutePatternId) => {
      * - {@link startPoint} is set
      * - {@link endPoint} is not set.
      */
-    addWaypoint: state === DetourState.Finished ? undefined : addWaypoint,
+    addWaypoint,
     /**
      * Sets {@link startPoint} if unset.
      * Otherwise sets {@link endPoint} if unset.

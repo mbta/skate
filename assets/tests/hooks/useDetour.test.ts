@@ -48,17 +48,27 @@ describe("useDetour", () => {
     })
   })
 
-  test("when `startPoint` is null, `addWaypoint` does nothing", () => {
+  test("when `startPoint` is null, `addWaypoint` is undefined", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     expect(result.current.startPoint).toBeNull()
-
-    act(() => result.current.addWaypoint?.({ lat: 0, lon: 0 }))
-
-    expect(result.current.waypoints).toHaveLength(0)
+    expect(result.current.addWaypoint).toBeUndefined()
   })
 
-  test("when `endPoint` is set, `addWaypoint` does nothing", () => {
+  test("when `startPoint` is set and `endPoint` is null, `addWaypoint` is defined", () => {
+    const { result } = renderHook(useDetourWithFakeRoutePattern)
+
+    jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
+
+    expect(result.current.startPoint).toBeNull()
+
+    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
+
+    waitFor(() => expect(result.current.waypoints).toHaveLength(0))
+    expect(result.current.addWaypoint).not.toBeUndefined()
+  })
+
+  test("when `endPoint` is set, `addWaypoint` is undefined", () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
@@ -68,9 +78,8 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 1, lon: 1 }))
 
-    act(() => result.current.addWaypoint?.({ lat: 0, lon: 0 }))
-
     waitFor(() => expect(result.current.waypoints).toHaveLength(0))
+    expect(result.current.addWaypoint).toBeUndefined()
   })
 
   test("when `addWaypoint` is called, should update `detourShape` and `directions`", async () => {
