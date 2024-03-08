@@ -305,7 +305,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toStrictEqual([])
+      expect(result.current.missedStops).not.toHaveLength(0)
     })
 
     expect(result.current.missedStops).toStrictEqual(missedStops)
@@ -327,7 +327,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toStrictEqual([])
+      expect(result.current.missedStops).not.toHaveLength(0)
     })
 
     expect(result.current.missedStops).toStrictEqual([stop1, stop2])
@@ -346,7 +346,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toStrictEqual([])
+      expect(result.current.missedStops).not.toHaveLength(0)
     })
 
     expect(result.current.routeSegments).toEqual(routeSegments)
@@ -385,13 +385,13 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toStrictEqual([])
+      expect(result.current.missedStops).not.toHaveLength(0)
     })
 
     act(() => result.current.undo?.())
 
     await waitFor(() => {
-      expect(result.current.missedStops).toStrictEqual([])
+      expect(result.current.missedStops).toHaveLength(0)
     })
   })
 
