@@ -36,6 +36,20 @@ defmodule SkateWeb.DetourRouteControllerTest do
     end
 
     @tag :authenticated
+    test "formats request correctly", %{conn: conn} do
+      expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn args ->
+        assert args.coordinates == [[0, 0], [1, 1]]
+        assert args.continue_straight == true
+
+        {:ok, build(:ors_directions_json)}
+      end)
+
+      post(conn, ~p"/api/detours/directions",
+        coordinates: [%{"lat" => 0, "lon" => 0}, %{"lat" => 1, "lon" => 1}]
+      )
+    end
+
+    @tag :authenticated
     test "returns directions as a flat list", %{conn: conn} do
       expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
         {:ok,
