@@ -5,7 +5,7 @@ defmodule Skate.OpenRouteServiceAPITest do
   import Mox
 
   setup do
-    expect(
+    stub(
       Skate.OpenRouteServiceAPI.MockClient,
       :get_directions,
       fn
