@@ -528,7 +528,7 @@ describe("useDetour", () => {
       expect(result.current.stops).toStrictEqual(expectedStops)
     })
 
-    test("when the detour is finished, `stops` excludes any missed stops", async () => {
+    test("when the detour is finished, missed stops are marked as missed in `stops`", async () => {
       const stop1 = stopFactory.build()
       const stop2 = stopFactory.build()
       const stop3 = stopFactory.build()
