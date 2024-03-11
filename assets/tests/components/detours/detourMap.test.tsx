@@ -9,6 +9,7 @@ import { routeSegmentsFactory } from "../../factories/finishedDetourFactory"
 import { RealDispatchWrapper } from "../../testHelpers/wrappers"
 import { layersControlButton } from "../../testHelpers/selectors/components/map"
 import { mockTileUrls } from "../../testHelpers/mockHelpers"
+import { tilesetUrlForType } from "../../../src/tilesetUrls"
 
 beforeEach(() => {
   jest.mocked(tilesetUrlForType).mockReturnValue(undefined)
