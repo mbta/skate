@@ -1,7 +1,6 @@
 .c-detour-modal {
   inset: 0;
   position: fixed;
-  z-index: map-get($z-page-layout-context, "detour-modal");
 }
 
 .c-detour-modal__transition-appear {
