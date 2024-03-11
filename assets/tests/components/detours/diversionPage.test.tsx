@@ -458,10 +458,10 @@ describe("DiversionPage", () => {
       />
     )
 
-    await act(async () => {
+    act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
-    await act(async () => {
+    act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
