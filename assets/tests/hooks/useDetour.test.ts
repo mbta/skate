@@ -550,10 +550,6 @@ describe("useDetour", () => {
       act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
       act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
 
-      await waitFor(() => {
-        expect(result.current.missedStops).not.toHaveLength(0)
-      })
-
       const expectedStops = [
         { ...stop1, missed: false },
         { ...stop2, missed: true },
@@ -561,7 +557,9 @@ describe("useDetour", () => {
         { ...stop4, missed: false },
       ]
 
-      expect(result.current.stops).toStrictEqual(expectedStops)
+      await waitFor(() => {
+        expect(result.current.stops).toStrictEqual(expectedStops)
+      })
     })
   })
 })
