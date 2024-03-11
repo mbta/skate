@@ -1,8 +1,11 @@
 defmodule Skate.OpenRouteServiceAPITest do
+  alias Skate.OpenRouteServiceAPI.DirectionsResponse
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
   use ExUnit.Case, async: false
 
   import Mox
+
+  import Skate.Factory
 
   setup do
     stub(
@@ -68,4 +71,62 @@ defmodule Skate.OpenRouteServiceAPITest do
   end
 
   doctest Skate.OpenRouteServiceAPI
+
+  test "Ignores :goal, :depart, and :straight" do
+    expect(
+      Skate.OpenRouteServiceAPI.MockClient,
+      :get_directions,
+      fn _ ->
+        {:ok,
+         build(:ors_directions_json,
+           segments: [
+             %{
+               "steps" => [
+                 %{
+                   "instruction" => "not-in-results",
+                   "type" => 11 # Depart
+                 },
+                 %{
+                   "instruction" => "1",
+                   "type" => 1
+                 },
+                 %{
+                   "instruction" => "not-in-results",
+                   "type" => 10 # Goal
+                 },
+               ]
+             },
+             %{
+               "steps" => [
+                 %{
+                   "instruction" => "not-in-results",
+                   "type" => 11 # Depart
+                 },
+                 %{
+                   "instruction" => "not-in-results",
+                   "type" => 6 # Straight
+                 },
+                 %{
+                   "instruction" => "2",
+                   "type" => 0
+                 }
+               ]
+             }
+           ]
+         )}
+      end
+    )
+
+    assert {:ok,
+            %DirectionsResponse{
+              directions: [
+                %{instruction: "1"},
+                %{instruction: "2"}
+              ]
+            }} =
+             Skate.OpenRouteServiceAPI.directions([
+               %{"lat" => 0, "lon" => 0},
+               %{"lat" => 0, "lon" => 1}
+             ])
+  end
 end
