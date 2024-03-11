@@ -84,7 +84,8 @@ defmodule Skate.OpenRouteServiceAPITest do
                "steps" => [
                  %{
                    "instruction" => "not-in-results",
-                   "type" => 11 # Depart
+                   # Depart
+                   "type" => 11
                  },
                  %{
                    "instruction" => "1",
@@ -92,19 +93,22 @@ defmodule Skate.OpenRouteServiceAPITest do
                  },
                  %{
                    "instruction" => "not-in-results",
-                   "type" => 10 # Goal
-                 },
+                   # Goal
+                   "type" => 10
+                 }
                ]
              },
              %{
                "steps" => [
                  %{
                    "instruction" => "not-in-results",
-                   "type" => 11 # Depart
+                   # Depart
+                   "type" => 11
                  },
                  %{
                    "instruction" => "not-in-results",
-                   "type" => 6 # Straight
+                   # Straight
+                   "type" => 6
                  },
                  %{
                    "instruction" => "2",
