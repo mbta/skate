@@ -14,7 +14,7 @@ export const DetourFinishedPanel = ({
 }) => (
   <Panel as="article">
     <Panel.Header className="">
-      <h1 className="c-diversion-panel__h2 my-3">Share Detour Details</h1>
+      <h1 className="c-diversion-panel__h1 my-3">Share Detour Details</h1>
     </Panel.Header>
 
     <Panel.Body className="d-flex flex-column">
