@@ -24,6 +24,10 @@ import {
   routeSegmentsFactory,
 } from "../../factories/finishedDetourFactory"
 import { detourShapeFactory } from "../../factories/detourShapeFactory"
+import {
+  missedStopIcon,
+  stopIcon,
+} from "../../testHelpers/selectors/components/map/markers/stopIcon"
 
 const DiversionPage = (
   props: Omit<
@@ -469,7 +473,7 @@ describe("DiversionPage", () => {
       expect(screen.getByText(stop2.name)).toBeInTheDocument()
     })
 
-    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(3)
-    expect(container.querySelectorAll(".c-missed-stop-icon")).toHaveLength(1)
+    expect(stopIcon.getAll(container)).toHaveLength(3)
+    expect(missedStopIcon.getAll(container)).toHaveLength(1)
   })
 })

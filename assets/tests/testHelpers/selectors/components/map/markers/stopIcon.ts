@@ -7,4 +7,12 @@ export const stopIcon = {
     expect(maybeStop).not.toBeNull()
     return maybeStop as Element
   },
+
+  getAll: (container: HTMLElement) =>
+    container.querySelectorAll(".c-stop-icon"),
+}
+
+export const missedStopIcon = {
+  getAll: (container: HTMLElement) =>
+    container.querySelectorAll(".c-missed-stop-icon"),
 }
