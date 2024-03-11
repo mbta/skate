@@ -11,13 +11,11 @@ import { layersControlButton } from "../../testHelpers/selectors/components/map"
 import { mockTileUrls } from "../../testHelpers/mockHelpers"
 
 beforeEach(() => {
+  jest.mocked(tilesetUrlForType).mockReturnValue(undefined)
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
-jest.mock("../../../src/tilesetUrls", () => ({
-  __esModule: true,
-  tilesetUrlForType: jest.fn(() => null),
-}))
+jest.mock("../../../src/tilesetUrls")
 
 const DetourMapWithDefaults = (
   props: Partial<ComponentProps<typeof DetourMap>>
