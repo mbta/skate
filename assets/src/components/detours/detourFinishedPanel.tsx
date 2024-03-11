@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap"
+import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { Panel } from "./diversionPage"
 
@@ -45,7 +45,11 @@ export const DetourFinishedPanel = ({
           trigger="click"
           rootClose
           rootCloseEvent="mousedown"
-          overlay={<Tooltip>Copied to clipboard!</Tooltip>}
+          overlay={
+            <Popover>
+              <Popover.Body>Copied to clipboard!</Popover.Body>
+            </Popover>
+          }
         >
           <Button
             className="m-3 flex-grow-1"
