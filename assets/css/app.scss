@@ -113,15 +113,13 @@ $vpp-location-padding: 1rem;
 @import "street_view_button";
 @import "swings_view";
 @import "user_avatar";
-@import "utility_hideable";
 @import "vehicle_icon";
 @import "vehicle_map";
 @import "vehicle_properties_card";
 @import "vehicle_route_summary";
 @import "view_header";
 
-@import "u_isolation";
-@import "u_no_overscroll";
+@import "utilities";
 
 // #region Effects
 @import "demo_mode";
