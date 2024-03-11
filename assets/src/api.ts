@@ -45,6 +45,7 @@ import {
   FinishedDetourData,
   finishedDetourFromData,
 } from "./models/finishedDetour"
+import { FetchResult, ok, fetchError } from "./util/fetchResult"
 
 export interface RouteData {
   id: string
@@ -117,6 +118,32 @@ export const checkedApiCall = <T, U>({
       return defaultResult
     })
 
+export const apiCallWithError = <T, U>({
+  url,
+  dataStruct,
+  parser,
+  fetchArgs,
+}: {
+  url: string
+  dataStruct: Struct<T, any>
+  parser: (data: T) => U
+  fetchArgs?: RequestInit
+}): Promise<FetchResult<U>> =>
+  fetch(url, fetchArgs)
+    .then(checkResponseStatus)
+    .then((response) => parseJson(response) as { data: unknown })
+    .then(({ data: data }) => {
+      assert(data, dataStruct)
+      return ok(parser(data))
+    })
+    .catch((error) => {
+      if (error instanceof StructError) {
+        Sentry.captureException(error)
+      }
+
+      return fetchError()
+    })
+
 export const parseRouteData = ({
   id,
   direction_names,
@@ -157,12 +184,11 @@ export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
 
 export const fetchDetourDirections = (
   coordinates: ShapePoint[]
-): Promise<DetourShape | null> =>
-  checkedApiCall({
+): Promise<FetchResult<DetourShape>> =>
+  apiCallWithError({
     url: "/api/detours/directions",
     parser: detourShapeFromData,
     dataStruct: DetourShapeData,
-    defaultResult: null,
     fetchArgs: {
       method: "POST",
       headers: {

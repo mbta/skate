@@ -11,11 +11,12 @@ import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
 import shapeFactory from "../factories/shape"
+import { ok, fetchError } from "../../src/util/fetchResult"
 
 jest.mock("../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(null)
+  jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
 
   jest
     .mocked(fetchFinishedDetour)
@@ -103,7 +104,7 @@ describe("useDetour", () => {
 
     jest.mocked(fetchDetourDirections).mockImplementation((coordinates) => {
       expect(coordinates).toStrictEqual([start, end])
-      return Promise.resolve(detourShape)
+      return Promise.resolve(ok(detourShape))
     })
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
@@ -184,7 +185,7 @@ describe("useDetour", () => {
   test("when `undo` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
     jest
       .mocked(fetchDetourDirections)
-      .mockResolvedValue(detourShapeFactory.build())
+      .mockResolvedValue(ok(detourShapeFactory.build()))
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
@@ -242,7 +243,7 @@ describe("useDetour", () => {
   test("when `clear` is called, `detourShape` and `directions` should be empty", async () => {
     jest
       .mocked(fetchDetourDirections)
-      .mockResolvedValue(detourShapeFactory.build())
+      .mockResolvedValue(ok(detourShapeFactory.build()))
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 

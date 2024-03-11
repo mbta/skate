@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
+import { isOk } from "../util/fetchResult"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) => {
   const [detourShape, setDetourShape] = useState<ShapePoint[]>([])
@@ -21,9 +22,9 @@ const useDetourDirections = (shapePoints: ShapePoint[]) => {
     }
 
     fetchDetourDirections(shapePoints).then((detourInfo) => {
-      if (detourInfo && shouldUpdate) {
-        setDetourShape(detourInfo.coordinates)
-        setDirections(detourInfo.directions)
+      if (isOk(detourInfo) && shouldUpdate) {
+        setDetourShape(detourInfo.ok.coordinates)
+        setDirections(detourInfo.ok.directions)
       }
     })
 

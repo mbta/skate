@@ -28,6 +28,7 @@ import {
   missedStopIcon,
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
+import { ok, fetchError } from "../../../src/util/fetchResult"
 
 const DiversionPage = (
   props: Omit<
@@ -65,7 +66,7 @@ beforeEach(() => {
 jest.mock("../../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(null)
+  jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
 })
 
@@ -299,14 +300,17 @@ describe("DiversionPage", () => {
     const [start, end] = stopFactory.buildList(2)
 
     jest.mocked(fetchDetourDirections).mockResolvedValue(
-      detourShapeFactory.build({
-        directions: [
-          { instruction: "Turn left on Main Street" },
-          { instruction: "Turn right on High Street" },
-          { instruction: "Turn sharp right on Broadway" },
-        ],
-      })
+      ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
     )
+
     jest.mocked(fetchFinishedDetour).mockResolvedValue({
       missedStops: stops,
       connectionPoint: {
