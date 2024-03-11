@@ -1,11 +1,14 @@
 defmodule Skate.OpenRouteServiceAPITest do
+  alias Skate.OpenRouteServiceAPI.DirectionsResponse
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
   use ExUnit.Case, async: false
 
   import Mox
 
+  import Skate.Factory
+
   setup do
-    expect(
+    stub(
       Skate.OpenRouteServiceAPI.MockClient,
       :get_directions,
       fn
@@ -68,4 +71,66 @@ defmodule Skate.OpenRouteServiceAPITest do
   end
 
   doctest Skate.OpenRouteServiceAPI
+
+  test "Ignores :goal, :depart, and :straight" do
+    expect(
+      Skate.OpenRouteServiceAPI.MockClient,
+      :get_directions,
+      fn _ ->
+        {:ok,
+         build(:ors_directions_json,
+           segments: [
+             %{
+               "steps" => [
+                 %{
+                   "instruction" => "not-in-results",
+                   # Depart
+                   "type" => 11
+                 },
+                 %{
+                   "instruction" => "1",
+                   "type" => 1
+                 },
+                 %{
+                   "instruction" => "not-in-results",
+                   # Goal
+                   "type" => 10
+                 }
+               ]
+             },
+             %{
+               "steps" => [
+                 %{
+                   "instruction" => "not-in-results",
+                   # Depart
+                   "type" => 11
+                 },
+                 %{
+                   "instruction" => "not-in-results",
+                   # Straight
+                   "type" => 6
+                 },
+                 %{
+                   "instruction" => "2",
+                   "type" => 0
+                 }
+               ]
+             }
+           ]
+         )}
+      end
+    )
+
+    assert {:ok,
+            %DirectionsResponse{
+              directions: [
+                %{instruction: "1"},
+                %{instruction: "2"}
+              ]
+            }} =
+             Skate.OpenRouteServiceAPI.directions([
+               %{"lat" => 0, "lon" => 0},
+               %{"lat" => 0, "lon" => 1}
+             ])
+  end
 end
