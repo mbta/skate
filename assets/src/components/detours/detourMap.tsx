@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode, useId } from "react"
+import React, { PropsWithChildren, ReactNode, useContext, useId } from "react"
 import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
@@ -18,6 +18,13 @@ import { MapButton } from "../map/controls/mapButton"
 import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import { StopMarkerWithStopCard } from "../map/markers/stopMarker"
+import {
+  LayersControl,
+  LayersControlState,
+} from "../map/controls/layersControl"
+import { TileType } from "../../tilesetUrls"
+import { setTileType } from "../../state/mapLayersState"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 
 interface DetourMapProps {
   /**
@@ -109,6 +116,15 @@ export const DetourMap = ({
 }: DetourMapProps) => {
   const id = useId()
 
+  const [
+    {
+      mapLayers: {
+        detourMap: { tileType: tileType },
+      },
+    },
+    dispatch,
+  ] = useContext(StateDispatchContext)
+
   return (
     <div
       className={joinClasses([
@@ -116,7 +132,13 @@ export const DetourMap = ({
         onClickMap && "c-detour_map--map__clickable",
       ])}
     >
-      <Map vehicles={[]} allowStreetView center={center} zoom={zoom}>
+      <Map
+        vehicles={[]}
+        allowStreetView
+        center={center}
+        zoom={zoom}
+        tileType={tileType}
+      >
         <CustomControl position="bottomleft" className="leaflet-bar">
           <MapButton
             disabled={undoDisabled}
@@ -137,6 +159,18 @@ export const DetourMap = ({
             <XSquare />
           </MapButton>
         </CustomControl>
+
+        <LayersControlState>
+          {(open, setOpen) => (
+            <LayersControl.WithTileContext
+              showLayersList={open}
+              onChangeLayersListVisibility={setOpen}
+              onChangeTileType={(tileType: TileType) =>
+                dispatch(setTileType("detourMap", tileType))
+              }
+            />
+          )}
+        </LayersControlState>
 
         <MapEvents
           click={(e) => {

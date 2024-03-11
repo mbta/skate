@@ -6,10 +6,17 @@ import "@testing-library/jest-dom/jest-globals"
 import { defaultCenter } from "../../../src/components/map"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 import { routeSegmentsFactory } from "../../factories/finishedDetourFactory"
+import { RealDispatchWrapper } from "../../testHelpers/wrappers"
+import { layersControlButton } from "../../testHelpers/selectors/components/map"
+import { mockTileUrls } from "../../testHelpers/mockHelpers"
+import { tilesetUrlForType } from "../../../src/tilesetUrls"
 
 beforeEach(() => {
+  jest.mocked(tilesetUrlForType).mockReturnValue(undefined)
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
+
+jest.mock("../../../src/tilesetUrls")
 
 const DetourMapWithDefaults = (
   props: Partial<ComponentProps<typeof DetourMap>>
@@ -198,5 +205,23 @@ describe("DetourMap", () => {
     expect(
       container.querySelector(".c-detour_map--original-route-shape-diverted")
     ).toBeInTheDocument()
+  })
+
+  test("Can change tile layer to satellite", async () => {
+    mockTileUrls()
+
+    const { container } = render(
+      <RealDispatchWrapper>
+        <DetourMapWithDefaults />
+      </RealDispatchWrapper>
+    )
+
+    fireEvent.click(layersControlButton.get())
+
+    fireEvent.click(screen.getByLabelText("Satellite"))
+
+    expect(
+      container.querySelector("img[src^=test_satellite_url")
+    ).not.toBeNull()
   })
 })

@@ -109,33 +109,49 @@ const TileLayerOptions = ({
   sectionLabelId,
 }: TileLayerOptionsProps & {
   sectionLabelId?: string
-}) => (
-  <div className="c-layers-control__tile_layer_control">
-    <h2 id={sectionLabelId}>Base Map</h2>
-    <Form.Check type="radio" id="base" className="position-relative">
-      <Form.Check.Input
+}) => {
+  const baseFormCheckId = "base-layer-radio-" + useId()
+  const satelliteFormCheckId = "satellite-layer-radio-" + useId()
+  const fieldName = "layers-control-tile-type-" + useId()
+
+  return (
+    <div className="c-layers-control__tile_layer_control">
+      <h2 id={sectionLabelId}>Base Map</h2>
+      <Form.Check
         type="radio"
-        name="tileType"
-        value=""
-        checked={tileType === "base"}
-        onChange={() => onChangeTileType("base")}
-      />
-      <Form.Check.Label className="stretched-link">
-        Map (default)
-      </Form.Check.Label>
-    </Form.Check>
-    <Form.Check type="radio" id="satellite" className="position-relative">
-      <Form.Check.Input
+        id={baseFormCheckId}
+        className="position-relative"
+      >
+        <Form.Check.Input
+          type="radio"
+          name={fieldName}
+          value=""
+          checked={tileType === "base"}
+          onChange={() => onChangeTileType("base")}
+        />
+        <Form.Check.Label className="stretched-link">
+          Map (default)
+        </Form.Check.Label>
+      </Form.Check>
+      <Form.Check
         type="radio"
-        name="tileType"
-        value=""
-        checked={tileType === "satellite"}
-        onChange={() => onChangeTileType("satellite")}
-      />
-      <Form.Check.Label className="stretched-link">Satellite</Form.Check.Label>
-    </Form.Check>
-  </div>
-)
+        id={satelliteFormCheckId}
+        className="position-relative"
+      >
+        <Form.Check.Input
+          type="radio"
+          name={fieldName}
+          value=""
+          checked={tileType === "satellite"}
+          onChange={() => onChangeTileType("satellite")}
+        />
+        <Form.Check.Label className="stretched-link">
+          Satellite
+        </Form.Check.Label>
+      </Form.Check>
+    </div>
+  )
+}
 
 interface VehicleLayerOptionsProps {
   pullbackLayerEnabled?: boolean

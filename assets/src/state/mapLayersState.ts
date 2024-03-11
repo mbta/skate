@@ -10,6 +10,9 @@ export interface MapLayersState {
   shuttleMap: {
     tileType: TileType
   }
+  detourMap: {
+    tileType: TileType
+  }
   legacySearchMap: {
     tileType: TileType
   }
@@ -23,6 +26,9 @@ export const initialMapLayersState: MapLayersState = {
     pullbackLayerEnabled: false,
   },
   shuttleMap: {
+    tileType: "base",
+  },
+  detourMap: {
     tileType: "base",
   },
   legacySearchMap: {
