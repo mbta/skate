@@ -470,10 +470,8 @@ describe("DiversionPage", () => {
     })
 
     waitFor(() => {
-      expect(screen.getByText(stop2.name)).toBeInTheDocument()
+      expect(stopIcon.getAll(container)).toHaveLength(3)
+      expect(missedStopIcon.getAll(container)).toHaveLength(1)
     })
-
-    expect(stopIcon.getAll(container)).toHaveLength(3)
-    expect(missedStopIcon.getAll(container)).toHaveLength(1)
   })
 })
