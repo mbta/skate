@@ -258,10 +258,10 @@ describe("DetourMap", () => {
   test("duplicate stops are only drawn once", () => {
     const duplicateStop = { ...stopFactory.build(), missed: true }
     const stops = [
+      duplicateStop,
       { ...stopFactory.build(), missed: true },
       duplicateStop,
       { ...stopFactory.build(), missed: false },
-      duplicateStop,
     ]
 
     const { container } = render(<DetourMapWithDefaults stops={stops} />)
