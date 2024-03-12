@@ -47,12 +47,8 @@ const DetourMapWithDefaults = (
 describe("DetourMap", () => {
   test("when `originalShape` is clicked, fires `onClickOriginalShape`", async () => {
     const onClickOriginalShape = jest.fn()
-    const shapePoint = { lat: 0, lon: 0 }
     const { container } = render(
-      <DetourMapWithDefaults
-        originalShape={[shapePoint]}
-        onClickOriginalShape={onClickOriginalShape}
-      />
+      <DetourMapWithDefaults onClickOriginalShape={onClickOriginalShape} />
     )
 
     fireEvent.click(
