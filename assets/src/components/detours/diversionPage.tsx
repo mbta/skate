@@ -26,6 +26,9 @@ export const DiversionPage = ({
   originalRoute,
   onClose,
 }: DiversionPageProps) => {
+  // Note: I manually tried to do this without a extra hook to wrap up the
+  // functionality, but I was having issues with my implementation
+  // [The `setCursorPoint` didn't actually ever seem to do anything]
   function useInterval(callback: () => void, delay: number) {
     const savedCallback = useRef<(() => void) | undefined>(undefined);
 
