@@ -41,7 +41,7 @@ defmodule SkateWeb.DetoursController do
       json(conn, %{
         data: %{
           missed_stops: missed_stops,
-          route_segments: route_segments,
+          route_segments: format(route_segments),
           connection_stop_start: connection_stop_start,
           connection_stop_end: connection_stop_end
         }
@@ -49,6 +49,26 @@ defmodule SkateWeb.DetoursController do
     else
       _ -> send_resp(conn, :bad_request, "bad request")
     end
+  end
+
+  defp format(%RouteSegments.Result{
+         before_detour: before_detour,
+         detour: detour,
+         after_detour: after_detour
+       }) do
+    %{
+      before_detour: format_locations(before_detour),
+      detour: format_locations(detour),
+      after_detour: format_locations(after_detour)
+    }
+  end
+
+  defp format_locations(locations) do
+    locations
+    |> Enum.map(&Location.as_location!/1)
+    |> Enum.map(fn %Util.Location{latitude: latitude, longitude: longitude} ->
+      %{lat: latitude, lon: longitude}
+    end)
   end
 
   defp route_pattern(route_pattern_id) do
