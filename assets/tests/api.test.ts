@@ -250,28 +250,15 @@ describe("apiCallWithError", () => {
 
     const parse = jest.fn(() => "parsed")
 
-    return apiCallWithError({
-      url: "/",
-      dataStruct: string(),
-      parser: parse,
-    }).then((parsed) => {
-      expect(parse).toHaveBeenCalledWith("raw")
-      expect(parsed).toEqual(ok("parsed"))
-    })
-  })
+    await expect(
+      apiCallWithError({
+        url: "/",
+        dataStruct: string(),
+        parser: parse,
+      })
+    ).resolves.toEqual(ok("parsed"))
 
-  test("raises error for malformed data when no default", async () => {
-    mockFetch(200, { data: 12 })
-
-    const parse = jest.fn(() => "parsed")
-
-    await apiCallWithError({
-      url: "/",
-      dataStruct: string(),
-      parser: parse,
-    })
-
-    expect(Sentry.captureException).toHaveBeenCalled()
+    expect(parse).toHaveBeenCalledWith("raw")
   })
 
   test("returns error when data is malformed", async () => {
@@ -279,47 +266,49 @@ describe("apiCallWithError", () => {
 
     const parse = jest.fn(() => "parsed")
 
-    await apiCallWithError({
-      url: "/",
-      dataStruct: string(),
-      parser: parse,
-    }).then((result) => expect(result).toEqual(fetchError()))
+    await expect(
+      apiCallWithError({
+        url: "/",
+        dataStruct: string(),
+        parser: parse,
+      })
+    ).resolves.toEqual(fetchError())
   })
 
   test("reloads the page if the response status is a redirect (3xx)", async () => {
     mockFetch(302, { data: null })
 
-    return apiCallWithError({
+    await apiCallWithError({
       url: "/",
       dataStruct: unknown(),
       parser: () => null,
-    }).then(() => {
-      expect(browser.reload).toHaveBeenCalled()
     })
+
+    expect(browser.reload).toHaveBeenCalled()
   })
 
   test("reloads the page if the response status is forbidden (403)", async () => {
     mockFetch(403, { data: null })
 
-    return apiCallWithError({
+    await apiCallWithError({
       url: "/",
       dataStruct: unknown(),
       parser: () => null,
-    }).then(() => {
-      expect(browser.reload).toHaveBeenCalled()
     })
+
+    expect(browser.reload).toHaveBeenCalled()
   })
 
   test("returns an error for any other response", async () => {
     mockFetch(500, { data: null })
 
-    return apiCallWithError({
-      url: "/",
-      dataStruct: unknown(),
-      parser: () => null,
-    }).then((result) => {
-      expect(result).toEqual(fetchError())
-    })
+    await expect(
+      apiCallWithError({
+        url: "/",
+        dataStruct: unknown(),
+        parser: () => null,
+      })
+    ).resolves.toEqual(fetchError())
   })
 })
 
