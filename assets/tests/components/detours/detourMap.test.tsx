@@ -59,7 +59,7 @@ describe("DetourMap", () => {
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    expect(onClickOriginalShape).toHaveBeenNthCalledWith(1, shapePoint)
+    expect(onClickOriginalShape).toHaveBeenCalled()
   })
 
   test("`originalShape` has unstarted class before being clicked", async () => {

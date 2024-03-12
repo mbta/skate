@@ -5,7 +5,6 @@ import Leaflet from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
 import { ReactMarker } from "../map/utilities/reactMarker"
-import { closestPosition } from "../../util/math"
 import { ShapePoint, Stop } from "../../schedule"
 import {
   latLngLiteralToShapePoint,
@@ -215,13 +214,7 @@ export const DetourMap = ({
                 : ["c-detour_map--original-route-shape__unfinished"]
             }
             onClick={(e) => {
-              const { position } =
-                closestPosition(
-                  originalShape.map(shapePointToLatLngLiteral),
-                  e.latlng
-                ) ?? {}
-              position &&
-                onClickOriginalShape(latLngLiteralToShapePoint(position))
+              onClickOriginalShape(latLngLiteralToShapePoint(e.latlng))
             }}
           >
             {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
