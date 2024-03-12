@@ -171,12 +171,14 @@ interface StopMarkerProps extends Omit<MarkerProps, "position"> {
    * ignore other mouse events.
    */
   interactionStatesDisabled?: boolean
+  missed?: boolean
 }
 export const StopMarker = ({
   stop,
   selected = false,
   zoomLevel = 0,
   interactionStatesDisabled = true,
+  missed = false,
   ...props
 }: StopMarkerProps) => {
   const stopIconType = stopIconTypeFromZoomLevel(zoomLevel)
@@ -194,13 +196,15 @@ export const StopMarker = ({
     [stopIconType, interactionStatesDisabled]
   )
 
+  const StopIconFn = missed ? MissedStopIcon : StopIcon
+
   return (
     <ReactMarker
       {...(props as MarkerProps)}
       position={[stop.lat, stop.lon]}
       divIconSettings={divIconSettings}
       icon={
-        <StopIcon
+        <StopIconFn
           type={stopIconType}
           selected={selected && !interactionStatesDisabled}
         />

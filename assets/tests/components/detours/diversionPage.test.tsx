@@ -24,6 +24,10 @@ import {
   routeSegmentsFactory,
 } from "../../factories/finishedDetourFactory"
 import { detourShapeFactory } from "../../factories/detourShapeFactory"
+import {
+  missedStopIcon,
+  stopIcon,
+} from "../../testHelpers/selectors/components/map/markers/stopIcon"
 
 const DiversionPage = (
   props: Omit<
@@ -437,8 +441,37 @@ describe("DiversionPage", () => {
       />
     )
 
-    expect(container.querySelectorAll(".c-stop-icon-container")).toHaveLength(
-      11
+    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(11)
+  })
+
+  test("missed stop markers are drawn on the map", async () => {
+    const stop1 = stopFactory.build()
+    const stop2 = stopFactory.build()
+    const stop3 = stopFactory.build()
+    const stop4 = stopFactory.build()
+
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build({ missedStops: [stop2] }))
+
+    const { container } = render(
+      <DiversionPage
+        originalRoute={{
+          shape: shapeFactory.build({ stops: [stop1, stop2, stop3, stop4] }),
+        }}
+      />
     )
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    waitFor(() => {
+      expect(stopIcon.getAll(container)).toHaveLength(3)
+      expect(missedStopIcon.getAll(container)).toHaveLength(1)
+    })
   })
 })

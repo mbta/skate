@@ -305,10 +305,10 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
+      expect(result.current.missedStops).not.toHaveLength(0)
     })
 
-    expect(result.current.missedStops).toBe(missedStops)
+    expect(result.current.missedStops).toStrictEqual(missedStops)
   })
 
   test("when `endPoint` is set, `routeSegments` is filled in", async () => {
@@ -324,7 +324,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
+      expect(result.current.missedStops).not.toHaveLength(0)
     })
 
     expect(result.current.routeSegments).toEqual(routeSegments)
@@ -363,13 +363,13 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
     await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
+      expect(result.current.missedStops).not.toHaveLength(0)
     })
 
     act(() => result.current.undo?.())
 
     await waitFor(() => {
-      expect(result.current.missedStops).toBeUndefined()
+      expect(result.current.missedStops).toHaveLength(0)
     })
   })
 
@@ -508,18 +508,58 @@ describe("useDetour", () => {
   })
 
   describe("stops", () => {
-    test("`stops` is initially populated with the stops from the original route shape", () => {
-      const stops = stopFactory.buildList(4)
+    test("`stops` is initially populated with the stops from the original route shape with a `missed` field added", () => {
+      const stop1 = stopFactory.build()
+      const stop2 = stopFactory.build()
 
       const { result } = renderHook(() =>
         useDetour(
           originalRouteFactory.build({
-            shape: shapeFactory.build({ stops }),
+            shape: shapeFactory.build({ stops: [stop1, stop2] }),
           })
         )
       )
 
-      expect(result.current.stops).toBe(stops)
+      const expectedStops = [
+        { ...stop1, missed: false },
+        { ...stop2, missed: false },
+      ]
+
+      expect(result.current.stops).toStrictEqual(expectedStops)
+    })
+
+    test("when the detour is finished, missed stops are marked as missed in `stops`", async () => {
+      const stop1 = stopFactory.build()
+      const stop2 = stopFactory.build()
+      const stop3 = stopFactory.build()
+      const stop4 = stopFactory.build()
+
+      jest
+        .mocked(fetchFinishedDetour)
+        .mockResolvedValue(
+          finishedDetourFactory.build({ missedStops: [stop2, stop3] })
+        )
+
+      const { result } = renderHook(() =>
+        useDetour(
+          originalRouteFactory.build({
+            shape: shapeFactory.build({ stops: [stop1, stop2, stop3, stop4] }),
+          })
+        )
+      )
+      act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+      act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
+
+      const expectedStops = [
+        { ...stop1, missed: false },
+        { ...stop2, missed: true },
+        { ...stop3, missed: true },
+        { ...stop4, missed: false },
+      ]
+
+      await waitFor(() => {
+        expect(result.current.stops).toStrictEqual(expectedStops)
+      })
     })
   })
 })

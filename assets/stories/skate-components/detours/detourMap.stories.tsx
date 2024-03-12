@@ -11,12 +11,13 @@ const waypoint = { lat: 42.33, lon: -71.1 }
 const endPointIndex = 130
 const endPoint: ShapePoint = shape[endPointIndex]
 
-const stops = [
+const stopsBefore = [
   {
     id: "1",
     name: "Huntington @ Main Blvd",
     locationType: LocationType.Stop,
     vehicleType: RouteType.Bus,
+    missed: false,
     ...shape[65],
   },
   {
@@ -24,13 +25,18 @@ const stops = [
     name: "Huntington @ First Ave",
     locationType: LocationType.Stop,
     vehicleType: RouteType.Bus,
+    missed: false,
     ...shape[72],
   },
+]
+
+const missedStops = [
   {
     id: "3",
     name: "Huntington @ Coddingsworth",
     locationType: LocationType.Stop,
     vehicleType: RouteType.Bus,
+    missed: false,
     ...shape[90],
   },
   {
@@ -39,6 +45,7 @@ const stops = [
     locationType: LocationType.Stop,
     vehicleType: RouteType.Bus,
     routes: [{ type: 0, id: "66", name: "66" }],
+    missed: false,
     ...shape[110],
   },
   {
@@ -46,13 +53,18 @@ const stops = [
     name: "Back of the Hills",
     locationType: LocationType.Stop,
     vehicleType: RouteType.Bus,
+    missed: false,
     ...shape[120],
   },
+]
+
+const stopsAfter = [
   {
     id: "6",
     name: "Huntington @ Heath",
     locationType: LocationType.Stop,
     vehicleType: RouteType.Bus,
+    missed: false,
     ...shape[135],
   },
   {
@@ -60,8 +72,16 @@ const stops = [
     name: "Huntington @ Centre",
     locationType: LocationType.Stop,
     vehicleType: RouteType.Bus,
+    missed: false,
     ...shape[150],
   },
+]
+
+const allStops = [...stopsBefore, ...missedStops, ...stopsAfter]
+const allStopsWithMissedMarkers = [
+  ...stopsBefore,
+  ...missedStops.map((stop) => ({ ...stop, missed: true })),
+  ...stopsAfter,
 ]
 
 const meta = {
@@ -73,7 +93,7 @@ const meta = {
   args: {
     originalShape: shape,
     detourShape: [startPoint, waypoint, endPoint],
-    stops: stops,
+    stops: allStopsWithMissedMarkers,
     startPoint,
     waypoints: [waypoint],
     endPoint,
@@ -94,6 +114,7 @@ const meta = {
     startPoint: { table: { disable: true } },
     endPoint: { table: { disable: true } },
     routeSegments: { table: { disable: true } },
+    stops: { table: { disable: true } },
     originalShape: { table: { disable: true } },
     detourShape: { table: { disable: true } },
     waypoints: { table: { disable: true } },
@@ -114,6 +135,7 @@ export const Connected: Story = {}
 
 export const WithSomeWaypoints: Story = {
   args: {
+    stops: allStops,
     endPoint: undefined,
     routeSegments: undefined,
     detourShape: [startPoint, waypoint],
@@ -124,6 +146,7 @@ export const WithSomeWaypoints: Story = {
 
 export const Unstarted: Story = {
   args: {
+    stops: allStops,
     startPoint: undefined,
     endPoint: undefined,
     routeSegments: undefined,
