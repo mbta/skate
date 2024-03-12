@@ -28,6 +28,7 @@ import {
   fetchLocationSearchSuggestions,
   fetchAllStops,
   fetchFinishedDetour,
+  apiCallWithError,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
@@ -47,6 +48,7 @@ import locationSearchSuggestionDataFactory from "./factories/locationSearchSugge
 import locationSearchSuggestionFactory from "./factories/locationSearchSuggestion"
 import stopDataFactory from "./factories/stopData"
 import { shapePointFactory } from "./factories/shapePointFactory"
+import { ok, fetchError } from "../src/util/fetchResult"
 
 jest.mock("@sentry/react", () => ({
   __esModule: true,
@@ -227,6 +229,86 @@ describe("checkedApiCall", () => {
     }).then((result) => {
       expect(result).toEqual("default")
     })
+  })
+})
+
+describe("apiCallWithError", () => {
+  let browserReloadSpy: SpyInstance
+
+  beforeEach(() => {
+    browserReloadSpy = jest
+      .spyOn(browser, "reload")
+      .mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    browserReloadSpy.mockRestore()
+  })
+
+  test("returns parsed data", async () => {
+    mockFetch(200, { data: "raw" })
+
+    const parse = jest.fn(() => "parsed")
+
+    await expect(
+      apiCallWithError({
+        url: "/",
+        dataStruct: string(),
+        parser: parse,
+      })
+    ).resolves.toEqual(ok("parsed"))
+
+    expect(parse).toHaveBeenCalledWith("raw")
+  })
+
+  test("returns error when data is malformed", async () => {
+    mockFetch(200, { data: 12 })
+
+    const parse = jest.fn(() => "parsed")
+
+    await expect(
+      apiCallWithError({
+        url: "/",
+        dataStruct: string(),
+        parser: parse,
+      })
+    ).resolves.toEqual(fetchError())
+  })
+
+  test("reloads the page if the response status is a redirect (3xx)", async () => {
+    mockFetch(302, { data: null })
+
+    await apiCallWithError({
+      url: "/",
+      dataStruct: unknown(),
+      parser: () => null,
+    })
+
+    expect(browser.reload).toHaveBeenCalled()
+  })
+
+  test("reloads the page if the response status is forbidden (403)", async () => {
+    mockFetch(403, { data: null })
+
+    await apiCallWithError({
+      url: "/",
+      dataStruct: unknown(),
+      parser: () => null,
+    })
+
+    expect(browser.reload).toHaveBeenCalled()
+  })
+
+  test("returns an error for any other response", async () => {
+    mockFetch(500, { data: null })
+
+    await expect(
+      apiCallWithError({
+        url: "/",
+        dataStruct: unknown(),
+        parser: () => null,
+      })
+    ).resolves.toEqual(fetchError())
   })
 })
 
