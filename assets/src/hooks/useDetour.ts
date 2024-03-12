@@ -53,7 +53,9 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     null
   )
 
-  const [cursorPoint, setCursorPoint] = useState<ShapePoint | undefined>(undefined)
+  const [cursorPoint, setCursorPoint] = useState<ShapePoint | undefined>(
+    undefined
+  )
 
   useEffect(() => {
     let shouldUpdate = true
@@ -76,15 +78,11 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   }, [routePatternId, startPoint, endPoint])
 
   const { detourShape, directions } = useDetourDirections(
-    useMemo(
-      () =>
-        {
-          return [startPoint, ...waypoints, endPoint ?? cursorPoint].filter(
-            (v): v is ShapePoint => !!v
-          )
-        },
-      [startPoint, waypoints, endPoint, cursorPoint]
-    ) ?? []
+    useMemo(() => {
+      return [startPoint, ...waypoints, endPoint ?? cursorPoint].filter(
+        (v): v is ShapePoint => !!v
+      )
+    }, [startPoint, waypoints, endPoint, cursorPoint]) ?? []
   )
 
   const canAddWaypoint = () => startPoint !== null && endPoint === null

@@ -30,23 +30,23 @@ export const DiversionPage = ({
   // functionality, but I was having issues with my implementation
   // [The `setCursorPoint` didn't actually ever seem to do anything]
   function useInterval(callback: () => void, delay: number) {
-    const savedCallback = useRef<(() => void) | undefined>(undefined);
+    const savedCallback = useRef<(() => void) | undefined>(undefined)
 
     // Remember the latest callback.
     useEffect(() => {
-      savedCallback.current = callback;
-    }, [callback]);
+      savedCallback.current = callback
+    }, [callback])
 
     // Set up the interval.
     useEffect(() => {
       function tick() {
-        savedCallback.current?.();
+        savedCallback.current?.()
       }
       if (delay !== null) {
-        let id = setInterval(tick, delay);
-        return () => clearInterval(id);
+        let id = setInterval(tick, delay)
+        return () => clearInterval(id)
       }
-    }, [delay]);
+    }, [delay])
   }
 
   const {
@@ -81,7 +81,6 @@ export const DiversionPage = ({
   useInterval(() => {
     setCursorPoint(mouseRef.current)
   }, 1200)
-
 
   const [textArea, setTextArea] = useState("")
 
