@@ -3,6 +3,7 @@ import React, {
   ComponentPropsWithoutRef,
   PropsWithChildren,
   useEffect,
+  useRef,
   useState,
 } from "react"
 import { DiversionPanel } from "./diversionPanel"
@@ -14,6 +15,7 @@ import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 import { DetourFinishedPanel } from "./detourFinishedPanel"
+import { ShapePoint } from "../../schedule"
 
 interface DiversionPageProps {
   originalRoute: OriginalRoute
@@ -24,6 +26,26 @@ export const DiversionPage = ({
   originalRoute,
   onClose,
 }: DiversionPageProps) => {
+  function useInterval(callback: () => void, delay: number) {
+    const savedCallback = useRef<(() => void) | undefined>(undefined);
+
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current?.();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  }
+
   const {
     state,
 
@@ -47,7 +69,16 @@ export const DiversionPage = ({
     clear,
     finishDetour,
     editDetour,
+
+    setCursorPoint,
   } = useDetour(originalRoute)
+
+  const mouseRef = useRef<ShapePoint | undefined>(undefined)
+
+  useInterval(() => {
+    setCursorPoint(mouseRef.current)
+  }, 1200)
+
 
   const [textArea, setTextArea] = useState("")
 
@@ -137,6 +168,7 @@ export const DiversionPage = ({
             onUndo={undo ?? (() => {})}
             onClear={clear ?? (() => {})}
             stops={stops}
+            mouseRef={mouseRef}
           />
         </div>
       </article>

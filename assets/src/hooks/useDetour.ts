@@ -53,6 +53,8 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     null
   )
 
+  const [cursorPoint, setCursorPoint] = useState<ShapePoint | undefined>(undefined)
+
   useEffect(() => {
     let shouldUpdate = true
 
@@ -76,10 +78,12 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const { detourShape, directions } = useDetourDirections(
     useMemo(
       () =>
-        [startPoint, ...waypoints, endPoint].filter(
-          (v): v is ShapePoint => !!v
-        ),
-      [startPoint, waypoints, endPoint]
+        {
+          return [startPoint, ...waypoints, endPoint ?? cursorPoint].filter(
+            (v): v is ShapePoint => !!v
+          )
+        },
+      [startPoint, waypoints, endPoint, cursorPoint]
     ) ?? []
   )
 
@@ -102,6 +106,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
 
   const undo = () => {
     if (!canUndo) return
+    // setCursorPoint(undefined)
 
     if (endPoint !== null) {
       setEndPoint(null)
@@ -115,6 +120,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const clear = () => {
     setEndPoint(null)
     setStartPoint(null)
+    // setCursorPoint(undefined)
     setWaypoints([])
   }
 
@@ -197,5 +203,12 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     finishDetour: endPoint !== null ? finishDetour : undefined,
     /** When present, puts this detour in "edit mode" */
     editDetour: state === DetourState.Finished ? editDetour : undefined,
+
+    cursorPoint,
+    setCursorPoint,
+    // setCursorPoint: ((...anya: Parameters<typeof setCursorPoint>) => {
+    //   console.trace("wtf")
+    //   return setCursorPoint(...anya)
+    // })
   }
 }

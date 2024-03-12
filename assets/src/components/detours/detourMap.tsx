@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode, useContext, useId } from "react"
+import React, { MutableRefObject, PropsWithChildren, ReactNode, useContext, useId } from "react"
 import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
@@ -6,7 +6,7 @@ import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
 import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
-import { ShapePoint, Stop } from "../../schedule"
+import { Shape, ShapePoint, Stop } from "../../schedule"
 import {
   latLngLiteralToShapePoint,
   shapePointToLatLngLiteral,
@@ -113,7 +113,8 @@ export const DetourMap = ({
 
   center,
   zoom,
-}: DetourMapProps) => {
+  mouseRef,
+}: DetourMapProps & { mouseRef: MutableRefObject<ShapePoint | undefined> }) => {
   const id = useId()
 
   const [
@@ -175,6 +176,9 @@ export const DetourMap = ({
         <MapEvents
           click={(e) => {
             onClickMap?.(latLngLiteralToShapePoint(e.latlng))
+          }}
+          mousemove={(e) => {
+            mouseRef.current = latLngLiteralToShapePoint(e.latlng)
           }}
         />
 
