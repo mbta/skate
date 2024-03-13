@@ -98,6 +98,89 @@ defmodule Util.Location do
   end
 
   @doc """
+  Returns the distance between the point and the segment defined by
+  segment_start and segment_end, as well as the point on the segment
+  that provides that minimum distance.
+
+  ## Examples
+      iex> Util.Location.distance_from_segment(
+      ...>   Util.Location.new(42.00004, -71.00014),
+      ...>   {Util.Location.new(42, -71.0002), Util.Location.new(42.0001, -71.0001)}
+      ...> )
+      %{
+        closest_point: %Util.Location{latitude: 42.00004711559566, longitude: -71.00015288440434},
+        distance: 1.3264961988869075
+      }
+  """
+  @spec distance_from_segment(
+          point :: __MODULE__.From.t(),
+          {segment_start :: __MODULE__.From.t(), segment_end :: __MODULE__.From.t()}
+        ) :: %{closest_point: __MODULE__.t(), distance: number()}
+
+  def distance_from_segment(
+        %__MODULE__{latitude: latitude, longitude: longitude} = point,
+        {%{latitude: start_latitude, longitude: start_longitude},
+         %{latitude: end_latitude, longitude: end_longitude}}
+      ) do
+    # Scale factors used to transform between lat/long and a coordinate
+    # system based on distance
+    latitude_scale_factor =
+      1000 *
+        distance(
+          new(start_latitude, start_longitude),
+          new(start_latitude + 0.001, start_longitude)
+        )
+
+    longitude_scale_factor =
+      1000 *
+        distance(
+          new(start_latitude, start_longitude),
+          new(start_latitude, start_longitude + 0.001)
+        )
+
+    # Use the above scale factors to transform both the original
+    # segment and the point in question to (x, y) coordinates, where
+    # the origin is the segment start point, x is meters east from
+    # there, and y is meters north
+    segment_end_x = longitude_scale_factor * (end_longitude - start_longitude)
+    segment_end_y = latitude_scale_factor * (end_latitude - start_latitude)
+
+    x = longitude_scale_factor * (longitude - start_longitude)
+    y = latitude_scale_factor * (latitude - start_latitude)
+
+    squared_segment_length = segment_end_x ** 2 + segment_end_y ** 2
+
+    # Transform the coordinates of the non-segment point to (u, v),
+    # where segment_start is at (0, 0) and segment_end is at (1, 0).
+    # We don't bother computing the v coordinate because we don't need
+    # it.
+    u = (x * segment_end_x + y * segment_end_y) / squared_segment_length
+
+    # In (u, v)-space, if the point's u coordinate is between 0 and 1,
+    # then the nearest point on the segment (0, 0) -- (1, 0) is the
+    # point (u, 0). Otherwise, it's whichever is closer of (0, 0) or
+    # (1, 0).
+    closest_u =
+      cond do
+        u < 0 -> 0
+        u > 1 -> 1
+        true -> u
+      end
+
+    # Transform the nearest point back to (x, y) space
+    closest_x = closest_u * segment_end_x
+    closest_y = closest_u * segment_end_y
+
+    # Transform the nearest point back to (lat, long) space
+    closest_longitude = start_longitude + closest_x / longitude_scale_factor
+    closest_latitude = start_latitude + closest_y / latitude_scale_factor
+
+    closest_point = new(closest_latitude, closest_longitude)
+
+    %{closest_point: closest_point, distance: distance(closest_point, point)}
+  end
+
+  @doc """
   Coerces an object into a `%Util.Location{}` struct.
 
   Requires that `self` implements the `Util.Location.From` protocol.
