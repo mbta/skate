@@ -19,6 +19,9 @@
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/utilities";
 
+// 5.5. These need to be added after maps but before other styles based on these colors are generated
+@import "./bootstrap/theme_color_additions";
+
 @import "../node_modules/bootstrap/scss/root";
 
 // 6. Optionally include any other parts as needed
