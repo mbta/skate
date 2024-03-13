@@ -24,7 +24,7 @@ const useDetourDirections = (
     if (shapePoints.length < 2) {
       // We expect not to have any directions or shape if we don't have at
       // least two points to route between
-      setDetourShape(ok({ coordinates: [], directions: [] }))
+      setDetourShape(ok({ coordinates: [], directions: undefined }))
       return
     }
 

@@ -212,7 +212,7 @@ describe("useDetour", () => {
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
 
     await waitFor(() => {
-      expect(result.current.directions).not.toHaveLength(0)
+      expect(result.current.directions).not.toBeUndefined()
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
@@ -220,7 +220,7 @@ describe("useDetour", () => {
     act(() => result.current.undo?.())
 
     expect(result.current.waypoints).toHaveLength(0)
-    expect(result.current.directions).toHaveLength(0)
+    expect(result.current.directions).toBeUndefined()
     expect(result.current.detourShape).toHaveLength(0)
   })
 
@@ -270,14 +270,14 @@ describe("useDetour", () => {
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
 
     await waitFor(() => {
-      expect(result.current.directions).not.toHaveLength(0)
+      expect(result.current.directions).not.toBeUndefined()
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
     act(() => result.current.clear?.())
 
     expect(result.current.waypoints).toHaveLength(0)
-    expect(result.current.directions).toHaveLength(0)
+    expect(result.current.directions).toBeUndefined()
     expect(result.current.detourShape).toHaveLength(0)
   })
 

@@ -1,8 +1,8 @@
 import { Factory } from "fishery"
-import { DetourShape } from "../../src/models/detour"
+import { DetourDirection, DetourShape } from "../../src/models/detour"
 import { shapePointFactory } from "./shapePointFactory"
 
-export const directionsFactory = Factory.define<DetourShape["directions"][0]>(
+export const directionsFactory = Factory.define<DetourDirection>(
   ({ sequence }) => {
     return {
       instruction: `directionInstruction${sequence}`,
