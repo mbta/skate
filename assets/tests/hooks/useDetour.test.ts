@@ -11,12 +11,12 @@ import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
 import shapeFactory from "../factories/shape"
-import { ok, fetchError } from "../../src/util/fetchResult"
+import { ok, loading } from "../../src/util/fetchResult"
 
 jest.mock("../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+  jest.mocked(fetchDetourDirections).mockResolvedValue(loading())
 
   jest
     .mocked(fetchFinishedDetour)
@@ -194,7 +194,7 @@ describe("useDetour", () => {
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
 
     await waitFor(() => {
-      expect(result.current.directions).not.toBeUndefined()
+      expect(result.current.directions).not.toHaveLength(0)
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
@@ -202,7 +202,7 @@ describe("useDetour", () => {
     act(() => result.current.undo?.())
 
     expect(result.current.waypoints).toHaveLength(0)
-    expect(result.current.directions).toBeUndefined()
+    expect(result.current.directions).toHaveLength(0)
     expect(result.current.detourShape).toHaveLength(0)
   })
 
@@ -252,14 +252,14 @@ describe("useDetour", () => {
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
 
     await waitFor(() => {
-      expect(result.current.directions).not.toBeUndefined()
+      expect(result.current.directions).not.toHaveLength(0)
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
     act(() => result.current.clear?.())
 
     expect(result.current.waypoints).toHaveLength(0)
-    expect(result.current.directions).toBeUndefined()
+    expect(result.current.directions).toHaveLength(0)
     expect(result.current.detourShape).toHaveLength(0)
   })
 
