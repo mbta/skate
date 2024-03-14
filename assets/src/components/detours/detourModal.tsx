@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useState } from "react"
 import { DiversionPage } from "./diversionPage"
 import { OriginalRoute } from "../../models/detour"
 import { Modal } from "@restart/ui"
@@ -24,23 +24,26 @@ export const DetourModal = ({
   onClose: () => void
   show: boolean
 }) => {
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose()
-      }
-    }
-
-    window.addEventListener("keydown", handleEscape)
-
-    return () => {
-      window.removeEventListener("keydown", handleEscape)
-    }
-  }, [onClose])
+  const [showConfirmCloseModal, setShowConfirmCloseModal] =
+    useState<boolean>(false)
 
   return (
-    <Modal className="c-detour-modal" show={show} transition={Fade}>
-      <DiversionPage onClose={onClose} originalRoute={originalRoute} />
+    <Modal
+      className="c-detour-modal"
+      show={show}
+      transition={Fade}
+      onHide={() => setShowConfirmCloseModal(true)}
+    >
+      <DiversionPage
+        onClose={() => setShowConfirmCloseModal(true)}
+        onConfirmClose={() => {
+          setShowConfirmCloseModal(false)
+          onClose()
+        }}
+        onCancelClose={() => setShowConfirmCloseModal(false)}
+        originalRoute={originalRoute}
+        showConfirmCloseModal={showConfirmCloseModal}
+      />
     </Modal>
   )
 }

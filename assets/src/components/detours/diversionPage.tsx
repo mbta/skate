@@ -18,11 +18,17 @@ import { DetourFinishedPanel } from "./detourFinishedPanel"
 interface DiversionPageProps {
   originalRoute: OriginalRoute
   onClose?: () => void
+  onConfirmClose?: () => void
+  onCancelClose?: () => void
+  showConfirmCloseModal: boolean
 }
 
 export const DiversionPage = ({
   originalRoute,
   onClose,
+  onConfirmClose,
+  onCancelClose,
+  showConfirmCloseModal,
 }: DiversionPageProps) => {
   const {
     state,
@@ -78,17 +84,11 @@ export const DiversionPage = ({
     connectionPoints?.end?.name,
   ])
 
-  const [showConfirmCloseModal, setShowConfirmCloseModal] =
-    useState<boolean>(false)
-
   return (
     <>
       <article className="l-diversion-page h-100 border-box inherit-box">
         <header className="l-diversion-page__header text-bg-light border-bottom">
-          <CloseButton
-            className="p-4"
-            onClick={() => setShowConfirmCloseModal(true)}
-          />
+          <CloseButton className="p-4" onClick={onClose} />
         </header>
 
         <div className="l-diversion-page__panel bg-light">
@@ -142,7 +142,7 @@ export const DiversionPage = ({
       </article>
       <Modal
         show={showConfirmCloseModal}
-        onHide={() => setShowConfirmCloseModal(false)}
+        onHide={onCancelClose}
         animation={false}
       >
         <Modal.Header closeButton>
@@ -158,19 +158,10 @@ export const DiversionPage = ({
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            onClick={() => {
-              setShowConfirmCloseModal(false)
-              onClose?.()
-            }}
-            variant="primary"
-          >
+          <Button onClick={onConfirmClose} variant="primary">
             Yes, I&apos;m sure
           </Button>
-          <Button
-            onClick={() => setShowConfirmCloseModal(false)}
-            variant="outline-primary"
-          >
+          <Button onClick={onCancelClose} variant="outline-primary">
             Back to Detour
           </Button>
         </Modal.Footer>

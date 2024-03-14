@@ -20,9 +20,14 @@ const meta = {
       zoom: 14,
       center: { lat: 42.33, lng: -71.11 },
     },
+    showConfirmCloseModal: false,
   },
   argTypes: {
     originalRoute: { table: { disable: true } },
+    showConfirmCloseModal: { table: { disable: true } },
+    onClose: { table: { disable: true } },
+    onConfirmClose: { table: { disable: true } },
+    onCancelClose: { table: { disable: true } },
   },
 } satisfies Meta<typeof DiversionPage>
 export default meta
