@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
@@ -12,7 +12,8 @@ import {
 } from "../util/fetchResult"
 
 const useDetourDirections = (
-  shapePoints: ShapePoint[]
+  shapePoints: ShapePoint[],
+  onError: () => void
 ): FetchResult<DetourShape> => {
   const [detourShape, setDetourShape] = useState<FetchResult<DetourShape>>(
     loading()
@@ -32,12 +33,16 @@ const useDetourDirections = (
       if (shouldUpdate && !isLoading(detourInfo)) {
         setDetourShape(detourInfo)
       }
+
+      if (shouldUpdate && isFetchError(detourInfo)) {
+        onError()
+      }
     })
 
     return () => {
       shouldUpdate = false
     }
-  }, [shapePoints])
+  }, [shapePoints, onError])
 
   return detourShape
 }
@@ -77,6 +82,25 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }, [routePatternId, startPoint, endPoint])
 
+  const canUndo = startPoint !== null && state === DetourState.Edit
+
+  const undo = () => {
+    if (!canUndo) return
+
+    if (endPoint !== null) {
+      setEndPoint(null)
+    } else if (waypoints.length > 0) {
+      setWaypoints((positions) => positions.slice(0, positions.length - 1))
+    } else if (startPoint !== null) {
+      setStartPoint(null)
+    }
+  }
+
+  const onError = useCallback(
+    () => setWaypoints((positions) => positions.slice(0, positions.length - 1)),
+    [setWaypoints]
+  )
+
   const detourShape = useDetourDirections(
     useMemo(
       () =>
@@ -84,7 +108,8 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
           (v): v is ShapePoint => !!v
         ),
       [startPoint, waypoints, endPoint]
-    ) ?? []
+    ) ?? [],
+    onError
   )
 
   const coordinates = isOk(detourShape) ? detourShape.ok.coordinates : []
@@ -102,20 +127,6 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
       setStartPoint(point)
     } else if (endPoint === null) {
       setEndPoint(point)
-    }
-  }
-
-  const canUndo = startPoint !== null && state === DetourState.Edit
-
-  const undo = () => {
-    if (!canUndo) return
-
-    if (endPoint !== null) {
-      setEndPoint(null)
-    } else if (waypoints.length > 0) {
-      setWaypoints((positions) => positions.slice(0, positions.length - 1))
-    } else if (startPoint !== null) {
-      setStartPoint(null)
     }
   }
 
