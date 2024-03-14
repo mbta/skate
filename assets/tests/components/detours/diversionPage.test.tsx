@@ -28,7 +28,7 @@ import {
   missedStopIcon,
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
-import { ok, fetchError } from "../../../src/util/fetchResult"
+import { ok, loading } from "../../../src/util/fetchResult"
 
 const DiversionPage = (
   props: Omit<
@@ -66,7 +66,7 @@ beforeEach(() => {
 jest.mock("../../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+  jest.mocked(fetchDetourDirections).mockResolvedValue(loading())
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
 })
 

@@ -11,12 +11,12 @@ import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
 import shapeFactory from "../factories/shape"
-import { ok, fetchError } from "../../src/util/fetchResult"
+import { ok, loading, fetchError } from "../../src/util/fetchResult"
 
 jest.mock("../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+  jest.mocked(fetchDetourDirections).mockResolvedValue(loading())
 
   jest
     .mocked(fetchFinishedDetour)
@@ -123,6 +123,24 @@ describe("useDetour", () => {
     await waitFor(() => {
       expect(result.current.detourShape).toStrictEqual(detourShape.coordinates)
       expect(result.current.directions).toStrictEqual(detourShape.directions)
+    })
+  })
+
+  test("indicates when there is an error with the routing service", async () => {
+    const start: ShapePoint = { lat: -2, lon: -2 }
+    const end: ShapePoint = { lat: -1, lon: -1 }
+
+    jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+
+    const { result } = renderHook(useDetourWithFakeRoutePattern)
+
+    act(() => result.current.addConnectionPoint?.(start))
+    act(() => result.current.addWaypoint?.(end))
+
+    await waitFor(() => {
+      expect(result.current.detourShape).toStrictEqual([])
+      expect(result.current.directions).toStrictEqual(undefined)
+      expect(result.current.routingError).toBeTruthy()
     })
   })
 

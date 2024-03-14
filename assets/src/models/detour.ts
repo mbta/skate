@@ -3,9 +3,11 @@ import { RoutePatternId, Shape, ShapePoint, Stop } from "../schedule"
 
 export interface DetourShape {
   coordinates: ShapePoint[]
-  directions: {
-    instruction: string
-  }[]
+  directions?: DetourDirection[]
+}
+
+export type DetourDirection = {
+  instruction: string
 }
 
 export interface OriginalRoute {
