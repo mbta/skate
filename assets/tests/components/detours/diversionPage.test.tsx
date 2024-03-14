@@ -28,7 +28,7 @@ import {
   missedStopIcon,
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
-import { ok, loading } from "../../../src/util/fetchResult"
+import { ok, loading, fetchError } from "../../../src/util/fetchResult"
 
 const DiversionPage = (
   props: Omit<
@@ -114,6 +114,54 @@ describe("DiversionPage", () => {
     expect(
       container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
     ).toHaveLength(1)
+  })
+
+  test("when adding a point results in a routing error, displays an alert", async () => {
+    jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+
+    const { container } = render(<DiversionPage />)
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await act(async () => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    await waitFor(async () =>
+      expect(
+        screen.getByText("Something went wrong. Please try again.")
+      ).toBeVisible()
+    )
+  })
+
+  test("routing error alert can be dismissed", async () => {
+    jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+
+    const { container } = render(<DiversionPage />)
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await act(async () => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    await waitFor(async () =>
+      expect(
+        screen.getByText("Something went wrong. Please try again.")
+      ).toBeInTheDocument()
+    )
+
+    await act(async () => {
+      fireEvent.click(within(screen.getByRole("alert")).getByRole("button"))
+    })
+
+    await waitFor(async () =>
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument()
+    )
   })
 
   test("detour points are correctly rendered when detour is complete", async () => {
