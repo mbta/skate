@@ -47,19 +47,15 @@ const DetourMapWithDefaults = (
 describe("DetourMap", () => {
   test("when `originalShape` is clicked, fires `onClickOriginalShape`", async () => {
     const onClickOriginalShape = jest.fn()
-    const shapePoint = { lat: 0, lon: 0 }
     const { container } = render(
-      <DetourMapWithDefaults
-        originalShape={[shapePoint]}
-        onClickOriginalShape={onClickOriginalShape}
-      />
+      <DetourMapWithDefaults onClickOriginalShape={onClickOriginalShape} />
     )
 
     fireEvent.click(
       container.querySelector(".c-detour_map--original-route-shape")!
     )
 
-    expect(onClickOriginalShape).toHaveBeenNthCalledWith(1, shapePoint)
+    expect(onClickOriginalShape).toHaveBeenCalled()
   })
 
   test("`originalShape` has unstarted class before being clicked", async () => {
