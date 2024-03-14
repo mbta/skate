@@ -7,8 +7,8 @@ import {
   FetchResult,
   isOk,
   isFetchError,
-  fetchError,
   loading,
+  isLoading,
 } from "../util/fetchResult"
 
 const useDetourDirections = (
@@ -29,10 +29,8 @@ const useDetourDirections = (
     }
 
     fetchDetourDirections(shapePoints).then((detourInfo) => {
-      if (isOk(detourInfo) && shouldUpdate) {
-        setDetourShape(ok(detourInfo.ok))
-      } else if (isFetchError(detourInfo) && shouldUpdate) {
-        setDetourShape(fetchError())
+      if (shouldUpdate && !isLoading(detourInfo)) {
+        setDetourShape(detourInfo)
       }
     })
 
