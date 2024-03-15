@@ -103,7 +103,7 @@ defmodule Util.Location do
   that provides that minimum distance.
 
   ## Examples
-      iex> Util.Location.distance_from_segment(
+      iex> Util.Location.nearest_point_to_segment(
       ...>   Util.Location.new(42.00004, -71.00014),
       ...>   {Util.Location.new(42, -71.0002), Util.Location.new(42.0001, -71.0001)}
       ...> )
@@ -112,12 +112,12 @@ defmodule Util.Location do
         distance: 1.3264961988869075
       }
   """
-  @spec distance_from_segment(
+  @spec nearest_point_to_segment(
           point :: __MODULE__.From.t(),
           {segment_start :: __MODULE__.From.t(), segment_end :: __MODULE__.From.t()}
         ) :: %{closest_point: __MODULE__.t(), distance: number()}
 
-  def distance_from_segment(
+  def nearest_point_to_segment(
         %__MODULE__{latitude: latitude, longitude: longitude} = point,
         {%{latitude: start_latitude, longitude: start_longitude},
          %{latitude: end_latitude, longitude: end_longitude}}
@@ -192,8 +192,8 @@ defmodule Util.Location do
     %{closest_point: closest_point, distance: distance(closest_point, point)}
   end
 
-  def distance_from_segment(point, {segment_start, segment_end}) do
-    distance_from_segment(
+  def nearest_point_to_segment(point, {segment_start, segment_end}) do
+    nearest_point_to_segment(
       as_location!(point),
       {as_location!(segment_start), as_location!(segment_end)}
     )

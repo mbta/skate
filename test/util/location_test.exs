@@ -33,13 +33,13 @@ defmodule Util.LocationTest do
     end
   end
 
-  describe "distance_from_segment/2" do
+  describe "nearest_point_to_segment/2" do
     test "for a horizontal segment, works when the closest_point is near the middle of the segment" do
       %{
         closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
         distance: distance
       } =
-        Location.distance_from_segment(
+        Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00013),
           {Location.new(42, -71.0002), Location.new(42, -71.0001)}
         )
@@ -54,7 +54,7 @@ defmodule Util.LocationTest do
         closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
         distance: distance
       } =
-        Location.distance_from_segment(
+        Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00022),
           {Location.new(42, -71.0002), Location.new(42, -71.0001)}
         )
@@ -69,7 +69,7 @@ defmodule Util.LocationTest do
         closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
         distance: distance
       } =
-        Location.distance_from_segment(
+        Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00008),
           {Location.new(42, -71.0002), Location.new(42, -71.0001)}
         )
@@ -84,7 +84,7 @@ defmodule Util.LocationTest do
         closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
         distance: distance
       } =
-        Location.distance_from_segment(
+        Location.nearest_point_to_segment(
           Location.new(42.00004, -71.0003),
           {Location.new(42, -71.0002), Location.new(42.0001, -71.0002)}
         )
@@ -99,7 +99,7 @@ defmodule Util.LocationTest do
         closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
         distance: distance
       } =
-        Location.distance_from_segment(
+        Location.nearest_point_to_segment(
           Location.new(42.00004, -71.00014),
           {Location.new(42, -71.0002), Location.new(42.0001, -71.0001)}
         )
@@ -114,7 +114,7 @@ defmodule Util.LocationTest do
         closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
         distance: distance
       } =
-        Location.distance_from_segment(
+        Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00008),
           {Location.new(42, -71.0001), Location.new(42, -71.0001)}
         )
@@ -129,7 +129,7 @@ defmodule Util.LocationTest do
         closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
         distance: distance
       } =
-        Location.distance_from_segment(
+        Location.nearest_point_to_segment(
           %SampleLoc{lat: 42.0001, long: -71.00013},
           {%SampleLoc{lat: 42, long: -71.0002}, %SampleLoc{lat: 42, long: -71.0001}}
         )
