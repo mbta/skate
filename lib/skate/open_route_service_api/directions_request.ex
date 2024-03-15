@@ -25,8 +25,8 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
       defstruct [:restrictions]
     end
 
-    @type t :: %{profile_params: ProfileParams.t()}
-    defstruct [:profile_params]
+    @type t :: %{profile_params: ProfileParams.t(), vehicle_type: String.t()}
+    defstruct [:profile_params, :vehicle_type]
   end
 
   @typedoc """
@@ -41,6 +41,7 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
   defstruct coordinates: [],
             continue_straight: true,
             options: %{
+              vehicle_type: "bus",
               profile_params: %{
                 restrictions:
                   Skate.OpenRouteServiceAPI.DirectionsRequest.Options.ProfileParams.HgvRestrictions.bus_40ft()

@@ -40,6 +40,7 @@ defmodule SkateWeb.DetourRouteControllerTest do
       expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn args ->
         assert args.coordinates == [[0, 0], [1, 1]]
         assert args.continue_straight == true
+        assert args.options.vehicle_type == "bus"
 
         assert %{
                  length: 12.192,
