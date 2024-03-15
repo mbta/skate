@@ -150,26 +150,38 @@ defmodule Util.Location do
 
     squared_segment_length = segment_end_x ** 2 + segment_end_y ** 2
 
-    # Transform the coordinates of the non-segment point to (u, v),
-    # where segment_start is at (0, 0) and segment_end is at (1, 0).
-    # We don't bother computing the v coordinate because we don't need
-    # it.
-    u = (x * segment_end_x + y * segment_end_y) / squared_segment_length
-
-    # In (u, v)-space, if the point's u coordinate is between 0 and 1,
-    # then the nearest point on the segment (0, 0) -- (1, 0) is the
-    # point (u, 0). Otherwise, it's whichever is closer of (0, 0) or
-    # (1, 0).
-    closest_u =
+    {closest_x, closest_y} =
       cond do
-        u < 0 -> 0
-        u > 1 -> 1
-        true -> u
-      end
+        squared_segment_length == 0 ->
+          # If squared_segment_length is 0, then that means the whole
+          # segment is actually just a point, located at the origin in
+          # (x, y) space, which means that the nearest point on the
+          # segment must also be that single point. Since otherwise we
+          # divide by squared_segment_length, we need to short-circuit
+          # here in order to avoid a divide-by-zero.
+          {0, 0}
 
-    # Transform the nearest point back to (x, y) space
-    closest_x = closest_u * segment_end_x
-    closest_y = closest_u * segment_end_y
+        squared_segment_length > 0 ->
+          # Transform the coordinates of the non-segment point to (u, v),
+          # where segment_start is at (0, 0) and segment_end is at (1, 0).
+          # We don't bother computing the v coordinate because we don't need
+          # it.
+          u = (x * segment_end_x + y * segment_end_y) / squared_segment_length
+
+          # In (u, v)-space, if the point's u coordinate is between 0 and 1,
+          # then the nearest point on the segment (0, 0) -- (1, 0) is the
+          # point (u, 0). Otherwise, it's whichever is closer of (0, 0) or
+          # (1, 0).
+          closest_u =
+            cond do
+              u < 0 -> 0
+              u > 1 -> 1
+              true -> u
+            end
+
+          # Transform the nearest point back to (x, y) space
+          {closest_u * segment_end_x, closest_u * segment_end_y}
+      end
 
     # Transform the nearest point back to (lat, long) space
     closest_longitude = start_longitude + closest_x / longitude_scale_factor
@@ -178,6 +190,13 @@ defmodule Util.Location do
     closest_point = new(closest_latitude, closest_longitude)
 
     %{closest_point: closest_point, distance: distance(closest_point, point)}
+  end
+
+  def distance_from_segment(point, {segment_start, segment_end}) do
+    distance_from_segment(
+      as_location!(point),
+      {as_location!(segment_start), as_location!(segment_end)}
+    )
   end
 
   @doc """
