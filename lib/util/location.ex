@@ -147,7 +147,7 @@ defmodule Util.Location do
 
     squared_segment_length = segment_end_x ** 2 + segment_end_y ** 2
 
-    {closest_x, closest_y} =
+    {nearest_x, nearest_y} =
       cond do
         squared_segment_length == 0 ->
           # If squared_segment_length is 0, then that means the whole
@@ -169,7 +169,7 @@ defmodule Util.Location do
           # then the nearest point on the segment (0, 0) -- (1, 0) is the
           # point (u, 0). Otherwise, it's whichever is closer of (0, 0) or
           # (1, 0).
-          closest_u =
+          nearest_u =
             cond do
               u < 0 -> 0
               u > 1 -> 1
@@ -177,14 +177,14 @@ defmodule Util.Location do
             end
 
           # Transform the nearest point back to (x, y) space
-          {closest_u * segment_end_x, closest_u * segment_end_y}
+          {nearest_u * segment_end_x, nearest_u * segment_end_y}
       end
 
     # Transform the nearest point back to (lat, long) space
-    closest_longitude = start_longitude + closest_x / longitude_scale_factor
-    closest_latitude = start_latitude + closest_y / latitude_scale_factor
+    nearest_longitude = start_longitude + nearest_x / longitude_scale_factor
+    nearest_latitude = start_latitude + nearest_y / latitude_scale_factor
 
-    new(closest_latitude, closest_longitude)
+    new(nearest_latitude, nearest_longitude)
   end
 
   def nearest_point_to_segment(point, {segment_start, segment_end}) do
