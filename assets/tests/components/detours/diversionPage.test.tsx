@@ -33,12 +33,11 @@ import { ok, loading } from "../../../src/util/fetchResult"
 const DiversionPage = (
   props: Omit<
     Partial<ComponentProps<typeof DiversionPageDefault>>,
-    "originalRoute" | "showConfirmCloseModal"
+    "originalRoute"
   > & {
     originalRoute?: Partial<
       ComponentProps<typeof DiversionPageDefault>["originalRoute"]
     >
-    showConfirmCloseModal?: boolean
   }
 ) => {
   const { originalRoute, showConfirmCloseModal, ...otherProps } = props
