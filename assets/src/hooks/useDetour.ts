@@ -61,6 +61,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
     null
   )
+  const [routingError, setRoutingError] = useState(false)
 
   useEffect(() => {
     let shouldUpdate = true
@@ -85,6 +86,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const canUndo = startPoint !== null && state === DetourState.Edit
 
   const undo = () => {
+    setRoutingError(false)
     if (!canUndo) return
 
     if (endPoint !== null) {
@@ -96,10 +98,10 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }
 
-  const onError = useCallback(
-    () => setWaypoints((positions) => positions.slice(0, positions.length - 1)),
-    [setWaypoints]
-  )
+  const onError = useCallback(() => {
+    setWaypoints((positions) => positions.slice(0, positions.length - 1))
+    setRoutingError(true)
+  }, [setWaypoints])
 
   const detourShape = useDetourDirections(
     useMemo(
@@ -118,11 +120,13 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const canAddWaypoint = () => startPoint !== null && endPoint === null
   const addWaypoint = canAddWaypoint()
     ? (p: ShapePoint) => {
+        setRoutingError(false)
         setWaypoints((positions) => [...positions, p])
       }
     : undefined
 
   const addConnectionPoint = (point: ShapePoint) => {
+    setRoutingError(false)
     if (startPoint === null) {
       setStartPoint(point)
     } else if (endPoint === null) {
@@ -131,12 +135,14 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   }
 
   const clear = () => {
+    setRoutingError(false)
     setEndPoint(null)
     setStartPoint(null)
     setWaypoints([])
   }
 
   const finishDetour = () => {
+    setRoutingError(false)
     setState(DetourState.Finished)
   }
 
@@ -192,7 +198,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * Indicates if there was an error fetching directions from ORS
      */
-    routingError: isFetchError(detourShape),
+    routingError,
 
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
