@@ -12,6 +12,13 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
         @moduledoc false
         @type t :: %{length: float(), width: float(), height: float()}
         defstruct [:length, :width, :height]
+
+        def bus_40ft,
+          do: %{
+            length: 12.192,
+            width: 3.2004,
+            height: 3.5052
+          }
       end
 
       @type t :: %{restrictions: HgvRestrictions.t()}
@@ -35,11 +42,8 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
             continue_straight: true,
             options: %{
               profile_params: %{
-                restrictions: %{
-                  length: 12.192,
-                  width: 3.2004,
-                  height: 3.5052
-                }
+                restrictions:
+                  Skate.OpenRouteServiceAPI.DirectionsRequest.Options.ProfileParams.HgvRestrictions.bus_40ft()
               }
             }
 end
