@@ -61,33 +61,33 @@ defmodule Skate.Detours.RouteSegments do
         connection_start,
         connection_end
       ) do
-    {closest_start_point, start_index} =
-      closest_point_to_shape(shape, connection_start)
+    {nearest_start_point, start_index} =
+      nearest_point_to_shape(shape, connection_start)
 
-    {closest_end_point, end_index} =
-      closest_point_to_shape(shape, connection_end)
+    {nearest_end_point, end_index} =
+      nearest_point_to_shape(shape, connection_end)
 
     {:ok,
      %__MODULE__.Result{
-       before_detour: Enum.slice(shape, 0..start_index) ++ [closest_start_point],
+       before_detour: Enum.slice(shape, 0..start_index) ++ [nearest_start_point],
        detour:
-         [closest_start_point] ++
-           Enum.slice(shape, (start_index + 1)..end_index) ++ [closest_end_point],
-       after_detour: [closest_end_point] ++ Enum.slice(shape, (end_index + 1)..-1)
+         [nearest_start_point] ++
+           Enum.slice(shape, (start_index + 1)..end_index) ++ [nearest_end_point],
+       after_detour: [nearest_end_point] ++ Enum.slice(shape, (end_index + 1)..-1)
      }}
   end
 
-  defp closest_point_to_shape(shape, point) do
-    {%{closest_point: closest_point}, index} =
+  defp nearest_point_to_shape(shape, point) do
+    {%{nearest_point: nearest_point}, index} =
       shape
       |> Enum.zip(Enum.drop(shape, 1))
       |> Enum.map(fn segment -> Util.Location.nearest_point_to_segment(point, segment) end)
-      |> Enum.map(fn closest_point ->
-        %{closest_point: closest_point, distance: Util.Location.distance(closest_point, point)}
+      |> Enum.map(fn nearest_point ->
+        %{nearest_point: nearest_point, distance: Util.Location.distance(nearest_point, point)}
       end)
       |> Enum.with_index()
       |> Enum.min_by(fn {%{distance: distance}, _} -> distance end)
 
-    {closest_point, index}
+    {nearest_point, index}
   end
 end
