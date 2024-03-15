@@ -4,13 +4,31 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
   """
   @derive Jason.Encoder
 
+  defmodule Options do
+    @moduledoc false
+    defmodule ProfileParams do
+      @moduledoc false
+      defmodule HgvRestrictions do
+        @moduledoc false
+        @type t :: %{length: float(), width: float(), height: float()}
+        defstruct [:length, :width, :height]
+      end
+
+      @type t :: %{restrictions: HgvRestrictions.t()}
+      defstruct [:restrictions]
+    end
+
+    @type t :: %{profile_params: ProfileParams.t()}
+    defstruct [:profile_params]
+  end
+
   @typedoc """
     Type that represents a request made to OpenRouteService's Directions API
   """
   @type t() :: %__MODULE__{
           coordinates: [[float()]],
           continue_straight: boolean(),
-          options: map()
+          options: Options.t()
         }
 
   defstruct coordinates: [],
