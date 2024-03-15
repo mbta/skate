@@ -41,6 +41,12 @@ defmodule SkateWeb.DetourRouteControllerTest do
         assert args.coordinates == [[0, 0], [1, 1]]
         assert args.continue_straight == true
 
+        assert %{
+                 length: 12.192,
+                 width: 3.2004,
+                 height: 3.5052
+               } = args.options.profile_params.restrictions
+
         {:ok, build(:ors_directions_json)}
       end)
 

@@ -9,8 +9,19 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsRequest do
   """
   @type t() :: %__MODULE__{
           coordinates: [[float()]],
-          continue_straight: boolean()
+          continue_straight: boolean(),
+          options: map()
         }
 
-  defstruct coordinates: [], continue_straight: true
+  defstruct coordinates: [],
+            continue_straight: true,
+            options: %{
+              profile_params: %{
+                restrictions: %{
+                  length: 12.192,
+                  width: 3.2004,
+                  height: 3.5052
+                }
+              }
+            }
 end
