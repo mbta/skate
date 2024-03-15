@@ -54,9 +54,7 @@ const DiversionPage = (
         zoom: 16,
         ...originalRoute,
       }}
-      showConfirmCloseModal={
-        showConfirmCloseModal ?? false
-      }
+      showConfirmCloseModal={showConfirmCloseModal ?? false}
       {...otherProps}
     />
   )
