@@ -112,7 +112,7 @@ defmodule Util.Location do
   @spec nearest_point_to_segment(
           point :: __MODULE__.From.t(),
           {segment_start :: __MODULE__.From.t(), segment_end :: __MODULE__.From.t()}
-        ) :: %{closest_point: __MODULE__.t(), distance: number()}
+        ) :: __MODULE__.t()
 
   def nearest_point_to_segment(
         %__MODULE__{latitude: latitude, longitude: longitude},
