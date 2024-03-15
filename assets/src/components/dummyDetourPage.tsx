@@ -31,6 +31,7 @@ export const DummyDetourPage = () => {
             center: { lat: 42.36, lng: -71.13 },
             zoom: 16,
           }}
+          showConfirmCloseModal={false}
         />
       )}
     </>

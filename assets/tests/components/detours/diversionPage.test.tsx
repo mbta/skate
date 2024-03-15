@@ -40,7 +40,7 @@ const DiversionPage = (
     >
   }
 ) => {
-  const { originalRoute, ...otherProps } = props
+  const { originalRoute, showConfirmCloseModal, ...otherProps } = props
   return (
     <DiversionPageDefault
       originalRoute={{
@@ -54,6 +54,7 @@ const DiversionPage = (
         zoom: 16,
         ...originalRoute,
       }}
+      showConfirmCloseModal={showConfirmCloseModal ?? false}
       {...otherProps}
     />
   )
@@ -377,63 +378,80 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("Attempting to close the page displays a confirmation modal", () => {
-    render(<DiversionPage />)
+  test("Attempting to close the page calls the onClose callback", () => {
+    const onClose = jest.fn()
+
+    render(<DiversionPage onClose={onClose} />)
 
     fireEvent.click(screen.getByRole("button", { name: "Close" }))
+
+    expect(onClose).toHaveBeenCalled()
+  })
+
+  test("Displays a confirmation modal", () => {
+    render(<DiversionPage showConfirmCloseModal={true} />)
 
     expect(screen.getByRole("dialog")).toBeVisible()
     expect(screen.getByRole("button", { name: /yes/i })).toBeVisible()
     expect(screen.getByRole("button", { name: /back/i })).toBeVisible()
   })
 
-  test("can close page from the confirmation modal", async () => {
-    const onClose = jest.fn()
+  test("calls the onConfirmClose callback from the confirmation modal", async () => {
+    const onConfirmClose = jest.fn()
 
-    render(<DiversionPage onClose={onClose} />)
-
-    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+    render(
+      <DiversionPage
+        showConfirmCloseModal={true}
+        onConfirmClose={onConfirmClose}
+      />
+    )
 
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /yes/i }))
     })
 
-    expect(onClose).toHaveBeenCalled()
-
-    expect(screen.queryByRole("dialog")).toBeNull()
+    expect(onConfirmClose).toHaveBeenCalled()
   })
 
-  test("can go back to the detour page from the confirmation modal", async () => {
-    const onClose = jest.fn()
+  test("canceling close from the confirmation modal calls onCancelClose", async () => {
+    const onCancelClose = jest.fn()
+    const onConfirmClose = jest.fn()
 
-    render(<DiversionPage onClose={onClose} />)
-
-    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+    render(
+      <DiversionPage
+        showConfirmCloseModal={true}
+        onCancelClose={onCancelClose}
+        onConfirmClose={onConfirmClose}
+      />
+    )
 
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /back/i }))
     })
 
-    expect(onClose).not.toHaveBeenCalled()
-
-    expect(screen.queryByRole("dialog")).toBeNull()
+    expect(onCancelClose).toHaveBeenCalled()
+    expect(onConfirmClose).not.toHaveBeenCalled()
   })
 
-  test("closing the confirmation modal returns to the detour page", async () => {
-    const onClose = jest.fn()
+  test("closing the confirmation modal calls onCancelClose", async () => {
+    const onCancelClose = jest.fn()
+    const onConfirmClose = jest.fn()
 
-    render(<DiversionPage onClose={onClose} />)
-
-    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+    render(
+      <DiversionPage
+        showConfirmCloseModal={true}
+        onCancelClose={onCancelClose}
+        onConfirmClose={onConfirmClose}
+      />
+    )
 
     await act(async () => {
       const modal = screen.getByRole("dialog")
       fireEvent.click(within(modal).getByRole("button", { name: "Close" }))
     })
 
-    expect(onClose).not.toHaveBeenCalled()
-
-    expect(screen.queryByRole("dialog")).toBeNull()
+    expect(onCancelClose).toHaveBeenCalled()
+    expect(onConfirmClose).not.toHaveBeenCalled()
   })
 
   test("stop markers are visible", async () => {
