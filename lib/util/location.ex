@@ -3,6 +3,8 @@ defmodule Util.Location do
   Provides functions for dealing with geographic coordinates.
   """
 
+  use Tensor
+
   @type t :: %__MODULE__{
           latitude: float(),
           longitude: float()
@@ -135,19 +137,23 @@ defmodule Util.Location do
           new(start_latitude, start_longitude + 0.001)
         )
 
+    longitude_diff = end_longitude - start_longitude
+    latitude_diff = end_latitude - start_latitude
+    segment_latlng_diff = Vector.new([longitude_diff, latitude_diff])
+
     # Use the above scale factors to transform both the original
     # segment and the point in question to (x, y) coordinates, where
     # the origin is the segment start point, x is meters east from
     # there, and y is meters north
-    segment_end_x = longitude_scale_factor * (end_longitude - start_longitude)
-    segment_end_y = latitude_scale_factor * (end_latitude - start_latitude)
+    scaling_vector = Vector.new([longitude_scale_factor, latitude_scale_factor])
+    segment_vector = Vector.mult(scaling_vector, segment_latlng_diff)
 
-    x = longitude_scale_factor * (longitude - start_longitude)
-    y = latitude_scale_factor * (latitude - start_latitude)
+    point_latlng_diff = Vector.new([longitude - start_longitude, latitude - start_latitude])
+    point_vector = Vector.mult(scaling_vector, point_latlng_diff)
 
-    squared_segment_length = segment_end_x ** 2 + segment_end_y ** 2
+    squared_segment_length = Vector.dot_product(segment_vector, segment_vector)
 
-    {nearest_x, nearest_y} =
+    nearest_vector =
       cond do
         squared_segment_length == 0 ->
           # If squared_segment_length is 0, then that means the whole
@@ -156,16 +162,16 @@ defmodule Util.Location do
           # segment must also be that single point. Since otherwise we
           # divide by squared_segment_length, we need to short-circuit
           # here in order to avoid a divide-by-zero.
-          {0, 0}
+          Vector.new([0.0, 0.0])
 
         squared_segment_length > 0 ->
           # Transform the coordinates of the non-segment point to (u, v),
           # where segment_start is at (0, 0) and segment_end is at (1, 0).
           # We don't bother computing the v coordinate because we don't need
           # it.
-          u = (x * segment_end_x + y * segment_end_y) / squared_segment_length
+          u = Vector.dot_product(point_vector, segment_vector) / squared_segment_length
 
-          # In (u, v)-space, if the point's u coordinate is between 0 and 1,
+          # in (u, v)-space, if the point's u coordinate is between 0 and 1,
           # then the nearest point on the segment (0, 0) -- (1, 0) is the
           # point (u, 0). Otherwise, it's whichever is closer of (0, 0) or
           # (1, 0).
@@ -177,12 +183,23 @@ defmodule Util.Location do
             end
 
           # Transform the nearest point back to (x, y) space
-          {nearest_u * segment_end_x, nearest_u * segment_end_y}
+          Vector.mult(nearest_u, segment_vector)
       end
 
+    # [nearest_x, nearest_y] = nearest_vector |> Vector.to_list()
+
+    scaling_inverse_vector = Vector.new([1 / longitude_scale_factor, 1 / latitude_scale_factor])
+
     # Transform the nearest point back to (lat, long) space
-    nearest_longitude = start_longitude + nearest_x / longitude_scale_factor
-    nearest_latitude = start_latitude + nearest_y / latitude_scale_factor
+    nearest_latlng_vector =
+      nearest_vector
+      |> Vector.mult(scaling_inverse_vector)
+      |> Vector.add(Vector.new([start_longitude, start_latitude]))
+
+    # nearest_longitude = nearest_x / longitude_scale_factor + start_longitude
+    # nearest_latitude = start_latitude + nearest_y / latitude_scale_factor
+
+    [nearest_longitude, nearest_latitude] = Vector.to_list(nearest_latlng_vector)
 
     new(nearest_latitude, nearest_longitude)
   end

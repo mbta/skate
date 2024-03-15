@@ -86,6 +86,7 @@ defmodule Skate.MixProject do
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:ssl_verify_fun, "~> 1.1"},
       {:stream_data, "~> 0.6.0", only: :test},
+      {:tensor, "~> 2.0"},
       {:timex, "~> 3.7.5"},
       {:ueberauth_cognito, "~> 0.4.0"},
       {:ueberauth_oidcc, "~> 0.3.1"},
