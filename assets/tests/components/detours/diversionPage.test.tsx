@@ -55,7 +55,7 @@ const DiversionPage = (
         ...originalRoute,
       }}
       showConfirmCloseModal={
-        showConfirmCloseModal === undefined ? false : showConfirmCloseModal
+        showConfirmCloseModal ?? false
       }
       {...otherProps}
     />
