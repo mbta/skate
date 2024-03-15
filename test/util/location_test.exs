@@ -35,10 +35,7 @@ defmodule Util.LocationTest do
 
   describe "nearest_point_to_segment/2" do
     test "for a horizontal segment, works when the closest_point is near the middle of the segment" do
-      %{
-        closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
-        distance: distance
-      } =
+      %{latitude: closest_latitude, longitude: closest_longitude} =
         Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00013),
           {Location.new(42, -71.0002), Location.new(42, -71.0001)}
@@ -46,14 +43,10 @@ defmodule Util.LocationTest do
 
       assert_in_delta closest_latitude, 42, 0.000001
       assert_in_delta closest_longitude, -71.00013, 0.000001
-      assert_in_delta distance, 11.119, 0.001
     end
 
     test "for a horizontal segment, works when the closest_point is 'off' the segment closer to the start point" do
-      %{
-        closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
-        distance: distance
-      } =
+      %{latitude: closest_latitude, longitude: closest_longitude} =
         Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00022),
           {Location.new(42, -71.0002), Location.new(42, -71.0001)}
@@ -61,14 +54,10 @@ defmodule Util.LocationTest do
 
       assert_in_delta closest_latitude, 42, 0.000001
       assert_in_delta closest_longitude, -71.0002, 0.000001
-      assert_in_delta distance, 11.242, 0.001
     end
 
     test "for a horizontal segment, works when the closest_point is 'off' the segment closer to the end point" do
-      %{
-        closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
-        distance: distance
-      } =
+      %{latitude: closest_latitude, longitude: closest_longitude} =
         Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00008),
           {Location.new(42, -71.0002), Location.new(42, -71.0001)}
@@ -76,14 +65,10 @@ defmodule Util.LocationTest do
 
       assert_in_delta closest_latitude, 42, 0.000001
       assert_in_delta closest_longitude, -71.0001, 0.000001
-      assert_in_delta distance, 11.242, 0.001
     end
 
     test "for a vertical segment, works when the closest_point is near the middle of the segment" do
-      %{
-        closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
-        distance: distance
-      } =
+      %{latitude: closest_latitude, longitude: closest_longitude} =
         Location.nearest_point_to_segment(
           Location.new(42.00004, -71.0003),
           {Location.new(42, -71.0002), Location.new(42.0001, -71.0002)}
@@ -91,14 +76,10 @@ defmodule Util.LocationTest do
 
       assert_in_delta closest_latitude, 42.00004, 0.000001
       assert_in_delta closest_longitude, -71.0002, 0.000001
-      assert_in_delta distance, 8.263, 0.001
     end
 
     test "works for a diagonal segment" do
-      %{
-        closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
-        distance: distance
-      } =
+      %{latitude: closest_latitude, longitude: closest_longitude} =
         Location.nearest_point_to_segment(
           Location.new(42.00004, -71.00014),
           {Location.new(42, -71.0002), Location.new(42.0001, -71.0001)}
@@ -106,14 +87,10 @@ defmodule Util.LocationTest do
 
       assert_in_delta closest_latitude, 42.000047, 0.000001
       assert_in_delta closest_longitude, -71.000153, 0.000001
-      assert_in_delta distance, 1.326, 0.001
     end
 
     test "works for a zero-length segment" do
-      %{
-        closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
-        distance: distance
-      } =
+      %{latitude: closest_latitude, longitude: closest_longitude} =
         Location.nearest_point_to_segment(
           Location.new(42.0001, -71.00008),
           {Location.new(42, -71.0001), Location.new(42, -71.0001)}
@@ -121,14 +98,10 @@ defmodule Util.LocationTest do
 
       assert_in_delta closest_latitude, 42, 0.000001
       assert_in_delta closest_longitude, -71.0001, 0.000001
-      assert_in_delta distance, 11.242, 0.001
     end
 
     test "allows point and segments to be things that implement Location.From" do
-      %{
-        closest_point: %{latitude: closest_latitude, longitude: closest_longitude},
-        distance: distance
-      } =
+      %{latitude: closest_latitude, longitude: closest_longitude} =
         Location.nearest_point_to_segment(
           %SampleLoc{lat: 42.0001, long: -71.00013},
           {%SampleLoc{lat: 42, long: -71.0002}, %SampleLoc{lat: 42, long: -71.0001}}
@@ -136,7 +109,6 @@ defmodule Util.LocationTest do
 
       assert_in_delta closest_latitude, 42, 0.000001
       assert_in_delta closest_longitude, -71.00013, 0.000001
-      assert_in_delta distance, 11.119, 0.001
     end
   end
 end

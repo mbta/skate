@@ -98,19 +98,16 @@ defmodule Util.Location do
   end
 
   @doc """
-  Returns the distance between the point and the segment defined by
-  segment_start and segment_end, as well as the point on the segment
-  that provides that minimum distance.
+  Returns the nearest point on the segment given by the second
+  argument (as a tuple of its two endpoints) to the point given by
+  the first argument.
 
   ## Examples
       iex> Util.Location.nearest_point_to_segment(
       ...>   Util.Location.new(42.00004, -71.00014),
       ...>   {Util.Location.new(42, -71.0002), Util.Location.new(42.0001, -71.0001)}
       ...> )
-      %{
-        closest_point: %Util.Location{latitude: 42.00004711559566, longitude: -71.00015288440434},
-        distance: 1.3264961988869075
-      }
+      %Util.Location{latitude: 42.00004711559566, longitude: -71.00015288440434}
   """
   @spec nearest_point_to_segment(
           point :: __MODULE__.From.t(),
@@ -118,7 +115,7 @@ defmodule Util.Location do
         ) :: %{closest_point: __MODULE__.t(), distance: number()}
 
   def nearest_point_to_segment(
-        %__MODULE__{latitude: latitude, longitude: longitude} = point,
+        %__MODULE__{latitude: latitude, longitude: longitude},
         {%{latitude: start_latitude, longitude: start_longitude},
          %{latitude: end_latitude, longitude: end_longitude}}
       ) do
@@ -187,9 +184,7 @@ defmodule Util.Location do
     closest_longitude = start_longitude + closest_x / longitude_scale_factor
     closest_latitude = start_latitude + closest_y / latitude_scale_factor
 
-    closest_point = new(closest_latitude, closest_longitude)
-
-    %{closest_point: closest_point, distance: distance(closest_point, point)}
+    new(closest_latitude, closest_longitude)
   end
 
   def nearest_point_to_segment(point, {segment_start, segment_end}) do
