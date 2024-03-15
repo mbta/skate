@@ -42,6 +42,7 @@ export const DiversionPage = ({
 
     detourShape,
     directions,
+    routingError,
 
     stops,
     missedStops,
@@ -122,6 +123,7 @@ export const DiversionPage = ({
               Detour is not editable from this screen.
             </Alert>
           )}
+          {routingError && <RoutingErrorAlert />}
           <DetourMap
             originalShape={originalRoute.shape.points}
             center={originalRoute.center}
@@ -248,6 +250,25 @@ const DiversionPagePanelFooter = ({
     {children}
   </div>
 )
+
+// If we just use the `dismissible` prop, the close button is
+// positioned absolutely in a way that looks weird, so we need to wrap
+// the Alert in our own show state logic.
+const RoutingErrorAlert = (): React.ReactElement => {
+  const [show, setShow] = useState<boolean>(true)
+
+  return (
+    <Alert
+      variant="ui-alert"
+      className="position-absolute top-0 left-0 mt-3 start-50 translate-middle-x icon-link z-1"
+      show={show}
+    >
+      <BsIcons.ExclamationTriangleFill />
+      Something went wrong. Please try again.
+      <CloseButton onClick={() => setShow(false)} />
+    </Alert>
+  )
+}
 
 DiversionPagePanel.Header = DiversionPagePanelHeader
 
