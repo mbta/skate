@@ -3,7 +3,7 @@ defmodule Util.Location do
   Provides functions for dealing with geographic coordinates.
   """
 
-  use Tensor
+  alias Util.Vector2d
 
   @type t :: %__MODULE__{
           latitude: float(),
@@ -100,6 +100,85 @@ defmodule Util.Location do
   end
 
   @doc """
+  Returns the displacement from `from` to `to` as a `Util.Vector2d` given in meters.
+
+  The `x` direction is east, and the `y` direction is north.
+
+  ## Examples
+      iex> Util.Location.displacement(
+      ...>    Util.Location.new(42, -71.0002),
+      ...>    Util.Location.new(42, -71.0001)
+      ...> )
+      %Util.Vector2d{x: 8.263404849676181, y: 0.0}
+
+      iex> Util.Location.displacement(
+      ...>    Util.Location.new(42, -71.0002),
+      ...>    Util.Location.new(42.0001, -71.0002)
+      ...> )
+      %Util.Vector2d{x: 0.0, y: 11.119508023696506}
+
+  If the displacement is south and/or west, then the `x` or `y` coordinate will be negative
+
+  ## Example
+      iex> Util.Location.displacement(
+      ...>    Util.Location.new(42.0002, -71.0001),
+      ...>    Util.Location.new(42.0001, -71.0002)
+      ...> )
+      %Util.Vector2d{x: -8.26337887771932, y: -11.119508022906418}
+  """
+  @spec displacement(from :: __MODULE__.From.t(), to :: __MODULE__.From.t()) :: Vector2d.t()
+  def displacement(%__MODULE__{latitude: from_latitude, longitude: from_longitude}, %__MODULE__{
+        latitude: to_latitude,
+        longitude: to_longitude
+      }) do
+    latitude_scale_factor =
+      1000 *
+        distance(
+          new(from_latitude, from_longitude),
+          new(from_latitude + 0.001, from_longitude)
+        )
+
+    longitude_scale_factor =
+      1000 *
+        distance(
+          new(from_latitude, from_longitude),
+          new(from_latitude, from_longitude + 0.001)
+        )
+
+    longitude_diff = to_longitude - from_longitude
+    latitude_diff = to_latitude - from_latitude
+
+    %Vector2d{
+      x: longitude_diff * longitude_scale_factor,
+      y: latitude_diff * latitude_scale_factor
+    }
+  end
+
+  def displace(%__MODULE__{latitude: from_latitude, longitude: from_longitude}, %Vector2d{
+        x: x,
+        y: y
+      }) do
+    latitude_scale_factor =
+      1000 *
+        distance(
+          new(from_latitude, from_longitude),
+          new(from_latitude + 0.001, from_longitude)
+        )
+
+    longitude_scale_factor =
+      1000 *
+        distance(
+          new(from_latitude, from_longitude),
+          new(from_latitude, from_longitude + 0.001)
+        )
+
+    longitude_diff = x / longitude_scale_factor
+    latitude_diff = y / latitude_scale_factor
+
+    new(from_latitude + latitude_diff, from_longitude + longitude_diff)
+  end
+
+  @doc """
   Returns the nearest point on the segment given by the second
   argument (as a tuple of its two endpoints) to the point given by
   the first argument.
@@ -117,91 +196,126 @@ defmodule Util.Location do
         ) :: __MODULE__.t()
 
   def nearest_point_to_segment(
-        %__MODULE__{latitude: latitude, longitude: longitude},
-        {%{latitude: start_latitude, longitude: start_longitude},
-         %{latitude: end_latitude, longitude: end_longitude}}
+        %__MODULE__{} = point,
+        {%__MODULE__{} = start_loc, %__MODULE__{} = end_loc}
       ) do
-    # Scale factors used to transform between lat/long and a coordinate
-    # system based on distance
-    latitude_scale_factor =
-      1000 *
-        distance(
-          new(start_latitude, start_longitude),
-          new(start_latitude + 0.001, start_longitude)
-        )
+    # Convert both the segment end-point and the off-segment point
+    # into vectors representing their displacements from the segment
+    # start-point. For example,
+    #
+    #                      P <-- off-segment point
+    #                     /
+    #                    /
+    #                   /
+    #  start-point --> S--------E <-- end-point
+    #
+    # segment_vector would be the vector pointing from S to E
+    # point_vector would be the vector pointing from S to P
+    #
+    # Ww don't compute it because we don't need to, but (0.0, 0.0)
+    # would be a vector pointing from S to itself.
+    segment_vector = displacement(start_loc, end_loc)
+    point_vector = displacement(start_loc, point)
 
-    longitude_scale_factor =
-      1000 *
-        distance(
-          new(start_latitude, start_longitude),
-          new(start_latitude, start_longitude + 0.001)
-        )
-
-    longitude_diff = end_longitude - start_longitude
-    latitude_diff = end_latitude - start_latitude
-    segment_latlng_diff = Vector.new([longitude_diff, latitude_diff])
-
-    # Use the above scale factors to transform both the original
-    # segment and the point in question to (x, y) coordinates, where
-    # the origin is the segment start point, x is meters east from
-    # there, and y is meters north
-    scaling_vector = Vector.new([longitude_scale_factor, latitude_scale_factor])
-    segment_vector = Vector.mult(scaling_vector, segment_latlng_diff)
-
-    point_latlng_diff = Vector.new([longitude - start_longitude, latitude - start_latitude])
-    point_vector = Vector.mult(scaling_vector, point_latlng_diff)
-
-    squared_segment_length = Vector.dot_product(segment_vector, segment_vector)
-
+    # For ease of computation, we first find the nearest vector - that
+    # is, a vector pointing from the start-point to the closest point
+    # that we're looking for. Then, as the last step, we'll use that
+    # vector to displace from the start-point to find the lat/long
+    # coordinates of the final result
     nearest_vector =
-      cond do
-        squared_segment_length == 0 ->
-          # If squared_segment_length is 0, then that means the whole
-          # segment is actually just a point, located at the origin in
-          # (x, y) space, which means that the nearest point on the
-          # segment must also be that single point. Since otherwise we
-          # divide by squared_segment_length, we need to short-circuit
-          # here in order to avoid a divide-by-zero.
-          Vector.new([0.0, 0.0])
+      case Vector2d.dot_product(segment_vector, segment_vector) do
+        # If the segment happens to be zero-length (that is, if the
+        # start and end points coincide), then the nearest point on
+        # the segment is the segment start-point (and the end-point,
+        # since they're the same point), so the vector displacement
+        # from the start-point will be zero. For example, in the
+        # diagram below, regardless of where P is, S (and E) is the
+        # closest point, because it's the only point.
+        #
+        #      P
+        #     /
+        #    /
+        #   /
+        #  SE
+        #
+        0.0 ->
+          Vector2d.zero()
 
-        squared_segment_length > 0 ->
-          # Transform the coordinates of the non-segment point to (u, v),
-          # where segment_start is at (0, 0) and segment_end is at (1, 0).
-          # We don't bother computing the v coordinate because we don't need
-          # it.
-          u = Vector.dot_product(point_vector, segment_vector) / squared_segment_length
+        # Otherwise we project the off-segment vector onto the line
+        # containing the segment, and figure the nearest point from
+        # there. For example, in the diagrams below, Q is what you get
+        # by projecting P onto the line. Notice that Q doesn't always
+        # fall onto the actual segment, because the segment doesn't go
+        # on forever.
+        #
+        #           P                           P
+        #          /                             \
+        #         /                               \
+        #        /                                 \
+        #       S---Q----E                      Q   S--------E
+        #
+        squared_segment_length ->
+          projected_vector = Vector2d.project_onto(point_vector, segment_vector)
 
-          # in (u, v)-space, if the point's u coordinate is between 0 and 1,
-          # then the nearest point on the segment (0, 0) -- (1, 0) is the
-          # point (u, 0). Otherwise, it's whichever is closer of (0, 0) or
-          # (1, 0).
-          nearest_u =
-            cond do
-              u < 0 -> 0
-              u > 1 -> 1
-              true -> u
-            end
+          # We can find out whether the project vector falls on the
+          # segment, or "off" in one direction or the other, by taking
+          # the dot product of the projected vector and the
+          # segment-vector, and comparing it to the square of the
+          # segment length.
+          case Vector2d.dot_product(projected_vector, segment_vector) do
+            # If the dot product is larger than
+            # squared_segment_length, then the projected vector is
+            # longer than the segment, which means it falls off on the
+            # side closer to the end-point. Notice that in the diagram
+            # below, E is the cloest point on the segment S--E to both
+            # P and Q, which means that S--E, or our original
+            # segment_vector, is our nearest vector.
+            #
+            #             P
+            #        ____/
+            #   ____/       <-- (please forgive the ASCII art wiggles)
+            #  /
+            # S--------E  Q
+            #
+            p when p > squared_segment_length ->
+              segment_vector
 
-          # Transform the nearest point back to (x, y) space
-          Vector.mult(nearest_u, segment_vector)
+            # If the dot product is negative, then that means the
+            # projected vector points in the opposite direction from
+            # the segment vector, so the closest point on the segment
+            # is the start-point. Notice that in the diagram below, S
+            # is the closest point on the segment S--E to both P and
+            # Q, which means that the nearest vector is S--S, or the
+            # zero vector.
+            #
+            #  P
+            #   \
+            #    \
+            #     \
+            #  Q   S--------E
+            #
+            p when p < 0 ->
+              Vector2d.zero()
+
+            # If the dot product is between zero and
+            # squared_segment_length, then that means the projected
+            # vector will fall onto the segment there. For example, in
+            # the diagram below, Q itself is the closest looking for,
+            # which means that S--Q, or our projected_vector, is the
+            # nearest vector.
+            #
+            #      P
+            #     /
+            #    /
+            #   /
+            #  S---Q----E
+            #
+            _ ->
+              projected_vector
+          end
       end
 
-    # [nearest_x, nearest_y] = nearest_vector |> Vector.to_list()
-
-    scaling_inverse_vector = Vector.new([1 / longitude_scale_factor, 1 / latitude_scale_factor])
-
-    # Transform the nearest point back to (lat, long) space
-    nearest_latlng_vector =
-      nearest_vector
-      |> Vector.mult(scaling_inverse_vector)
-      |> Vector.add(Vector.new([start_longitude, start_latitude]))
-
-    # nearest_longitude = nearest_x / longitude_scale_factor + start_longitude
-    # nearest_latitude = start_latitude + nearest_y / latitude_scale_factor
-
-    [nearest_longitude, nearest_latitude] = Vector.to_list(nearest_latlng_vector)
-
-    new(nearest_latitude, nearest_longitude)
+    displace(start_loc, nearest_vector)
   end
 
   def nearest_point_to_segment(point, {segment_start, segment_end}) do
