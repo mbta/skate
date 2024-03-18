@@ -80,7 +80,7 @@ defmodule Skate.Detours.RouteSegments do
   defp nearest_point_to_shape(shape, point) do
     {%{nearest_point: nearest_point}, index} =
       shape
-      |> Enum.zip(Enum.drop(shape, 1))
+      |> Enum.chunk_every(2, 1, :discard)
       |> Enum.map(fn segment -> Util.Location.nearest_point_to_segment(point, segment) end)
       |> Enum.map(fn nearest_point ->
         %{nearest_point: nearest_point, distance: Util.Location.distance(nearest_point, point)}
