@@ -78,18 +78,12 @@ defmodule Skate.Detours.RouteSegments do
   end
 
   defp nearest_point_to_shape(shape, point) do
-    {%{nearest_point: nearest_point}, index} =
-      shape
-      |> Enum.chunk_every(2, 1, :discard)
-      |> Enum.map(fn [segment_start, segment_end] ->
-        Util.Location.nearest_point_to_segment(point, {segment_start, segment_end})
-      end)
-      |> Enum.map(fn nearest_point ->
-        %{nearest_point: nearest_point, distance: Util.Location.distance(nearest_point, point)}
-      end)
-      |> Enum.with_index()
-      |> Enum.min_by(fn {%{distance: distance}, _} -> distance end)
-
-    {nearest_point, index}
+    shape
+    |> Enum.chunk_every(2, 1, :discard)
+    |> Enum.map(fn [segment_start, segment_end] ->
+      Util.Location.nearest_point_to_segment(point, {segment_start, segment_end})
+    end)
+    |> Enum.with_index()
+    |> Enum.min_by(fn {nearest_point, _} -> Util.Location.distance(nearest_point, point) end)
   end
 end
