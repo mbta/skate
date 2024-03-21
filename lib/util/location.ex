@@ -155,7 +155,8 @@ defmodule Util.Location do
   end
 
   @doc """
-  Returns the coordinates you get by displacing `loc` `x` meters east and `y` meters north.
+  Returns the coordinates you get by displacing the first argument (a lat/long coordinate pair)
+  `x` meters east and `y` meters north.
 
   ## Examples
       iex> Util.Location.displace_by(
@@ -179,10 +180,11 @@ defmodule Util.Location do
       ...> )
       %Util.Location{latitude: 41.999910067963626, longitude: -71.00012101549159}
   """
-  def displace_by(%__MODULE__{latitude: from_latitude, longitude: from_longitude}, %Vector2d{
-        x: x,
-        y: y
-      }) do
+  @spec displace_by(loc :: __MODULE__.t(), displacement :: Util.Vector2d.t()) :: __MODULE__.t()
+  def displace_by(
+        %__MODULE__{latitude: from_latitude, longitude: from_longitude},
+        %Vector2d{x: x, y: y}
+      ) do
     latitude_scale_factor =
       1000 *
         distance(
