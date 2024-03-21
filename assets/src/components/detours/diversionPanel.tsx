@@ -68,11 +68,11 @@ export const DiversionPanel = ({
               ))}
               {detourFinished && (
                 <ListGroup.Item
-                  key="return-to-route"
                   as="li"
-                  className="c-diversion-panel__conclude-detour-text"
                 >
-                  Return to Regular Route
+                  <strong className="fw-medium">
+                    Return to Regular Route
+                  </strong>
                 </ListGroup.Item>
               )}
             </ListGroup>
