@@ -38,12 +38,6 @@ export ERL_FLAGS="+MIscs 2048"
 ## Source of extended schedule data
 # export SKATE_HASTUS_URL=
 
-## URL for map tile images, including {x} {y} coordinate and {z} zoom level placeholders
-# export BASE_TILESET_URL=
-
-## URL for satellite map tile images, including {x} {y} coordinate and {z} zoom level placeholders
-# export SATELLITE_TILESET_URL=
-
 ## Authentication/authorization secret. Generate a value using mix phx.gen.secret
 # export GUARDIAN_SECRET_KEY
 
@@ -54,6 +48,12 @@ export ERL_FLAGS="+MIscs 2048"
 
 ## Location of map tile images
 # export TILESET_URL=
+
+## URL for map tile images, including {x} {y} coordinate and {z} zoom level placeholders
+# export BASE_TILESET_URL=
+
+## URL for satellite map tile images, including {x} {y} coordinate and {z} zoom level placeholders
+# export SATELLITE_TILESET_URL=
 
 ## Used by Erlang (only required in production)
 # export RELEASE_COOKIE=
