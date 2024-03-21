@@ -410,6 +410,7 @@ describe("DiversionPage", () => {
           "Turn left on Main Street",
           "Turn right on High Street",
           "Turn sharp right on Broadway",
+          "Return to Regular Route",
           ,
           "Connection Points:",
           start.name,

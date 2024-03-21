@@ -68,6 +68,7 @@ export const DiversionPage = ({
         ,
         "Turn-by-Turn Directions:",
         ...(directions?.map((v) => v.instruction) ?? []),
+        "Return to Regular Route",
         ,
         "Connection Points:",
         connectionPoints?.start?.name ?? "N/A",
