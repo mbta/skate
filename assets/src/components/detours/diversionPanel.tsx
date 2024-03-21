@@ -67,12 +67,8 @@ export const DiversionPanel = ({
                 </ListGroup.Item>
               ))}
               {detourFinished && (
-                <ListGroup.Item
-                  as="li"
-                >
-                  <strong className="fw-medium">
-                    Return to Regular Route
-                  </strong>
+                <ListGroup.Item as="li">
+                  <strong className="fw-medium">Return to Regular Route</strong>
                 </ListGroup.Item>
               )}
             </ListGroup>
