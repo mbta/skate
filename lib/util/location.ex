@@ -100,37 +100,37 @@ defmodule Util.Location do
   end
 
   @doc """
-  Returns the displacement from `from` to `to` as a `Util.Vector2d` given in meters.
+  Returns the displacement to `to` from `from` as a `Util.Vector2d` given in meters.
 
   The `x` direction is east, and the `y` direction is north.
 
   ## Examples
-      iex> Util.Location.displacement(
-      ...>    Util.Location.new(42, -71.0002),
-      ...>    Util.Location.new(42, -71.0001)
+      iex> Util.Location.displacement_from(
+      ...>    Util.Location.new(42, -71.0001),
+      ...>    Util.Location.new(42, -71.0002)
       ...> )
       %Util.Vector2d{x: 8.263404849676181, y: 0.0}
 
-      iex> Util.Location.displacement(
-      ...>    Util.Location.new(42, -71.0002),
-      ...>    Util.Location.new(42.0001, -71.0002)
+      iex> Util.Location.displacement_from(
+      ...>    Util.Location.new(42.0001, -71.0002),
+      ...>    Util.Location.new(42, -71.0002)
       ...> )
       %Util.Vector2d{x: 0.0, y: 11.119508023696506}
 
   If the displacement is south and/or west, then the `x` or `y` coordinate will be negative
 
   ## Example
-      iex> Util.Location.displacement(
-      ...>    Util.Location.new(42.0002, -71.0001),
-      ...>    Util.Location.new(42.0001, -71.0002)
+      iex> Util.Location.displacement_from(
+      ...>    Util.Location.new(42.0001, -71.0002),
+      ...>    Util.Location.new(42.0002, -71.0001)
       ...> )
       %Util.Vector2d{x: -8.26337887771932, y: -11.119508022906418}
   """
-  @spec displacement(from :: __MODULE__.From.t(), to :: __MODULE__.From.t()) :: Vector2d.t()
-  def displacement(%__MODULE__{latitude: from_latitude, longitude: from_longitude}, %__MODULE__{
-        latitude: to_latitude,
-        longitude: to_longitude
-      }) do
+  @spec displacement_from(to :: __MODULE__.From.t(), from :: __MODULE__.From.t()) :: Vector2d.t()
+  def displacement_from(
+        %__MODULE__{latitude: to_latitude, longitude: to_longitude},
+        %__MODULE__{latitude: from_latitude, longitude: from_longitude}
+      ) do
     latitude_scale_factor =
       1000 *
         distance(
@@ -154,7 +154,32 @@ defmodule Util.Location do
     }
   end
 
-  def displace(%__MODULE__{latitude: from_latitude, longitude: from_longitude}, %Vector2d{
+  @doc """
+  Returns the coordinates you get by displacing `loc` `x` meters east and `y` meters north.
+
+  ## Examples
+      iex> Util.Location.displace_by(
+      ...>    Util.Location.new(42.0, -71.0),
+      ...>    %Util.Vector2d{x: 10.0, y: 0.0}
+      ...> )
+      %Util.Location{latitude: 42.0, longitude: -70.99987898450841}
+
+      iex> Util.Location.displace_by(
+      ...>    Util.Location.new(42.0, -71.0),
+      ...>    %Util.Vector2d{x: 0.0, y: 10.0}
+      ...> )
+      %Util.Location{latitude: 42.000089932036374, longitude: -71.0}
+
+  Negative values of `x` and `y` correspond to west and south displacements.
+
+  ## Example
+      iex> Util.Location.displace_by(
+      ...>    Util.Location.new(42.0, -71.0),
+      ...>    %Util.Vector2d{x: -10.0, y: -10.0}
+      ...> )
+      %Util.Location{latitude: 41.999910067963626, longitude: -71.00012101549159}
+  """
+  def displace_by(%__MODULE__{latitude: from_latitude, longitude: from_longitude}, %Vector2d{
         x: x,
         y: y
       }) do
@@ -214,8 +239,8 @@ defmodule Util.Location do
     #
     # Ww don't compute it because we don't need to, but (0.0, 0.0)
     # would be a vector pointing from S to itself.
-    segment_vector = displacement(start_loc, end_loc)
-    point_vector = displacement(start_loc, point)
+    segment_vector = displacement_from(end_loc, start_loc)
+    point_vector = displacement_from(point, start_loc)
 
     # For ease of computation, we first find the nearest vector - that
     # is, a vector pointing from the start-point to the closest point
@@ -315,7 +340,7 @@ defmodule Util.Location do
           end
       end
 
-    displace(start_loc, nearest_vector)
+    displace_by(start_loc, nearest_vector)
   end
 
   def nearest_point_to_segment(point, {segment_start, segment_end}) do
