@@ -65,6 +65,10 @@ If you see the “data outage” banner when you open your local version of Skat
 - Run Elixir tests with `` mix test ``
 - Run Javascript tests with `cd assets && npm test`
 
+## Running Storybook
+
+Storybook is a tool to create and test UI components in isolation. To run: `cd assets && npm run storybook`
+
 ## Browser Support Policy
 
 We strive to support all users – but the variety of browsers, operating systems and devices available necessitates a more intentioned approach. These differences could potentially cause bugs and harm your experience with Skate. Ensure you have the best possible experience with Skate by updating your browser to the latest version.

@@ -35,10 +35,16 @@ export AWS_PLACE_INDEX=
 ## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 export ERL_FLAGS="+MIscs 2048"
 
-## Optional Variables
-
 ## Source of extended schedule data
 # export SKATE_HASTUS_URL=
+
+## Authentication/authorization secret. Generate a value using mix phx.gen.secret
+# export GUARDIAN_SECRET_KEY
+
+## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret (only required in production)
+# export SECRET_KEY_BASE
+
+## Optional Variables
 
 ## Location of map tile images
 # export TILESET_URL=
@@ -77,12 +83,6 @@ export ERL_FLAGS="+MIscs 2048"
 ## Credentials for the API that gets drawbridge status
 # export BRIDGE_API_USERNAME
 # export BRIDGE_API_PASSWORD
-
-## Authentication/authorization secret. Generate a value using mix phx.gen.secret
-# export GUARDIAN_SECRET_KEY
-
-## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret (only required in production)
-# export SECRET_KEY_BASE
 
 ## Used for locally building (and eventually testing) Storybook and Snapshot tests
 ## The project token can be found in Chromatic, (Manage > Configure > Project > Project Token)
