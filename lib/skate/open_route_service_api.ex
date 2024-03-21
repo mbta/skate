@@ -65,7 +65,7 @@ defmodule Skate.OpenRouteServiceAPI do
       {:ok, payload} ->
         parse_directions(payload)
 
-      {:error, error} ->
+      error ->
         parse_error(error)
     end
   end
@@ -97,13 +97,9 @@ defmodule Skate.OpenRouteServiceAPI do
      }}
   end
 
-  # Convert API Error codes into specific errors for the frontend to handle
-  # https://giscience.github.io/openrouteservice/api-reference/error-codes
-
-  # 2010: Point was not found.
-  defp parse_error(%{"code" => 2010}), do: {:error, %{type: :no_route}}
-
-  defp parse_error(_error), do: {:error, %{type: :unknown}}
+  defp parse_error(error) do
+    error
+  end
 
   defp client(), do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:client]
 
