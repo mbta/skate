@@ -68,7 +68,6 @@ export const DiversionPanel = ({
               ))}
               {detourFinished && (
                 <ListGroup.Item
-                  key="return-to-route"
                   as="li"
                   className="c-diversion-panel__conclude-detour-text"
                 >
