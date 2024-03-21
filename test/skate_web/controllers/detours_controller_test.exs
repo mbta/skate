@@ -125,11 +125,11 @@ defmodule SkateWeb.DetoursControllerTest do
         post(conn, ~p"/api/detours/finished_detour",
           route_pattern_id: route_pattern.id,
           connection_start: %{
-            "lat" => 42.42,
+            "lat" => 42.425,
             "lon" => -70.99
           },
           connection_end: %{
-            "lat" => 42.44,
+            "lat" => 42.445,
             "lon" => -70.99
           }
         )
@@ -139,15 +139,17 @@ defmodule SkateWeb.DetoursControllerTest do
                  "route_segments" => %{
                    "before_detour" => [
                      %{"lat" => 42.41, "lon" => -70.99},
-                     %{"lat" => 42.42, "lon" => -70.99}
+                     %{"lat" => 42.42, "lon" => -70.99},
+                     %{"lat" => 42.425, "lon" => -70.99}
                    ],
                    "detour" => [
-                     %{"lat" => 42.42, "lon" => -70.99},
+                     %{"lat" => 42.425, "lon" => -70.99},
                      %{"lat" => 42.43, "lon" => -70.99},
-                     %{"lat" => 42.44, "lon" => -70.99}
+                     %{"lat" => 42.44, "lon" => -70.99},
+                     %{"lat" => 42.445, "lon" => -70.99}
                    ],
                    "after_detour" => [
-                     %{"lat" => 42.44, "lon" => -70.99},
+                     %{"lat" => 42.445, "lon" => -70.99},
                      %{"lat" => 42.45, "lon" => -70.99}
                    ]
                  }
