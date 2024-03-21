@@ -66,6 +66,11 @@ export const DiversionPanel = ({
                   {d.instruction}
                 </ListGroup.Item>
               ))}
+              {detourFinished && (
+                <ListGroup.Item key="return-to-route" as="li">
+                  Return to Regular Route
+                </ListGroup.Item>
+              )}
             </ListGroup>
           ) : (
             <DirectionsHelpText />
