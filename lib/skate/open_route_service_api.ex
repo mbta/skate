@@ -66,7 +66,7 @@ defmodule Skate.OpenRouteServiceAPI do
         parse_directions(payload)
 
       error ->
-        parse_error(error)
+        error
     end
   end
 
@@ -95,10 +95,6 @@ defmodule Skate.OpenRouteServiceAPI do
            }
          )
      }}
-  end
-
-  defp parse_error(error) do
-    error
   end
 
   defp client(), do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:client]
