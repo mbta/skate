@@ -69,11 +69,16 @@ defmodule Skate.Detours.RouteSegments do
 
     {:ok,
      %__MODULE__.Result{
-       before_detour: Enum.slice(shape, 0..start_index) ++ [nearest_start_point],
+       before_detour:
+         Enum.slice(shape, 0..start_index) ++
+           [nearest_start_point],
        detour:
          [nearest_start_point] ++
-           Enum.slice(shape, (start_index + 1)..end_index) ++ [nearest_end_point],
-       after_detour: [nearest_end_point] ++ Enum.slice(shape, (end_index + 1)..-1)
+           Enum.slice(shape, (start_index + 1)..end_index) ++
+           [nearest_end_point],
+       after_detour:
+         [nearest_end_point] ++
+           Enum.slice(shape, (end_index + 1)..-1)
      }}
   end
 
