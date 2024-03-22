@@ -80,12 +80,15 @@ defmodule Skate.OpenRouteServiceAPI.Client do
   end
 
   defp directions_api do
-    api_url()
-    |> URI.merge("/v2/directions/driving-hgv/geojson")
+    api_base_url()
+    |> URI.merge(directions_path())
     |> URI.to_string()
   end
 
-  defp api_url, do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:api_base_url]
+  defp api_base_url, do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:api_base_url]
+
+  defp directions_path,
+    do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:directions_path]
 
   defp api_key, do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:api_key]
 end

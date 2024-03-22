@@ -14,6 +14,7 @@ config :skate,
 config :skate, Skate.OpenRouteServiceAPI,
   api_base_url: System.get_env("OPEN_ROUTE_SERVICE_API_URL"),
   api_key: System.get_env("OPEN_ROUTE_SERVICE_API_KEY"),
+  directions_path: System.get_env("OPEN_ROUTE_SERVICE_DIRECTIONS_PATH"),
   client: Skate.OpenRouteServiceAPI.Client
 
 config :ueberauth, Ueberauth.Strategy.Cognito,
