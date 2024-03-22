@@ -54,6 +54,8 @@ export const DiversionPage = ({
     clear,
     finishDetour,
     editDetour,
+
+    lastHeading
   } = useDetour(originalRoute)
 
   const [textArea, setTextArea] = useState("")
@@ -139,6 +141,7 @@ export const DiversionPage = ({
             onUndo={undo ?? (() => {})}
             onClear={clear ?? (() => {})}
             stops={stops}
+            lastHeading={lastHeading}
           />
         </div>
       </article>

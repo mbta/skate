@@ -141,6 +141,64 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     missed: missedStopIds.has(stop.id),
   }))
 
+  type Radian = number
+  type RadianShapePoint = {
+    lat: Radian
+    lon: Radian
+  }
+
+  const bearing = (
+    { lon: λ1, lat: φ1 }: RadianShapePoint,
+    { lon: λ2, lat: φ2 }: RadianShapePoint
+  ) => {
+    // Formula:
+    //          θ = atan2( sin Δλ ⋅ cos φ2 , cos φ1 ⋅ sin φ2 − sin φ1 ⋅ cos φ2 ⋅ cos Δλ )
+    // where
+    // φ1,λ1:
+    //              is the start point,
+    // φ2,λ2:
+    //              the end point
+    // (Δλ is the difference in longitude)
+    // (all angles in radians)
+    const y = Math.sin(λ2 - λ1) * Math.cos(φ2)
+    const x =
+      Math.cos(φ1) * Math.sin(φ2) -
+      Math.sin(φ1) * Math.cos(φ2) * Math.cos(λ2 - λ1)
+    const θ = Math.atan2(y, x)
+    // const brng = ((θ * 180) / Math.PI + 360) % 360 // in degrees
+    return θ
+  }
+
+  const shapePointToRadianShapePoint = ({
+    lat,
+    lon,
+  }: ShapePoint): RadianShapePoint => ({
+    lat: lat * (Math.PI / 180),
+    lon: lon * (Math.PI / 180),
+  })
+
+  const bearingDeg = (start: RadianShapePoint, end: RadianShapePoint) => {
+
+    const brng = -bearing(
+      start,
+      end,
+    )
+
+    const radToDeg = (v: number) => v * (180/Math.PI)
+
+    const raddegToWorldDeg = (v: number) => (v - 180) % 360
+
+    return -raddegToWorldDeg(radToDeg(brng))
+  }
+
+  const lastHeading =
+    coordinates.length > 0
+      ? bearingDeg(
+          shapePointToRadianShapePoint(coordinates[coordinates.length - 1]),
+          shapePointToRadianShapePoint(coordinates[coordinates.length - 2])
+        )
+      : undefined
+
   return {
     /** The current state of the detour machine */
     state,
@@ -216,5 +274,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     finishDetour: endPoint !== null ? finishDetour : undefined,
     /** When present, puts this detour in "edit mode" */
     editDetour: state === DetourState.Finished ? editDetour : undefined,
+
+    lastHeading,
   }
 }

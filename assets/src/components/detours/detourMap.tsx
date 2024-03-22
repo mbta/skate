@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactNode, useContext, useId } from "react"
-import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
-import { Polyline, useMapEvents } from "react-leaflet"
+import { LatLngLiteral, LeafletMouseEvent, PointTuple } from "leaflet"
+import { Marker, Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
@@ -90,6 +90,8 @@ interface DetourMapProps {
    */
   center: LatLngLiteral
   zoom: number
+
+  lastHeading: number | undefined
 }
 
 export const DetourMap = ({
@@ -113,6 +115,7 @@ export const DetourMap = ({
 
   center,
   zoom,
+  lastHeading,
 }: DetourMapProps) => {
   const id = useId()
 
@@ -188,6 +191,10 @@ export const DetourMap = ({
             position={shapePointToLatLngLiteral(position)}
           />
         ))}
+
+        {lastHeading && <>
+          <ReactMarker position={shapePointToLatLngLiteral(detourShape[detourShape.length - 1]!)} divIconSettings={{iconAnchor: [-20, 30] as PointTuple}} icon={<>{lastHeading}</>}>{lastHeading}</ReactMarker>
+        </>}
 
         {endPoint && (
           <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
