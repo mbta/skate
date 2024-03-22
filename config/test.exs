@@ -1,6 +1,8 @@
 import Config
 
-config :skate, start_data_processes: false
+config :skate,
+  start_data_processes: false,
+  secret_key_base: "local_secret_key_base_at_least_64_bytes_________________________________"
 
 config :skate, Schedule.CacheFile, cache_filename: "test_cache.terms"
 
