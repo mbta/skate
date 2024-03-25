@@ -99,6 +99,27 @@ defmodule Util.Location do
     distance(as_location!(lhs), as_location!(rhs))
   end
 
+  @spec lat_long_scale_factors(loc :: __MODULE__.t()) :: %{
+          latitude: number(),
+          longitude: number()
+        }
+  defp lat_long_scale_factors(%__MODULE__{latitude: latitude, longitude: longitude}) do
+    small_increment = 0.001
+
+    %{
+      latitude:
+        distance(
+          new(latitude, longitude),
+          new(latitude + small_increment, longitude)
+        ) / small_increment,
+      longitude:
+        distance(
+          new(latitude, longitude),
+          new(latitude, longitude + small_increment)
+        ) / small_increment
+    }
+  end
+
   @doc """
   Returns the displacement between `to` and `from` as a `Util.Vector2d` given in meters.
 
@@ -129,21 +150,10 @@ defmodule Util.Location do
   @spec displacement_from(to :: __MODULE__.From.t(), from :: __MODULE__.From.t()) :: Vector2d.t()
   def displacement_from(
         %__MODULE__{latitude: to_latitude, longitude: to_longitude},
-        %__MODULE__{latitude: from_latitude, longitude: from_longitude}
+        %__MODULE__{latitude: from_latitude, longitude: from_longitude} = from
       ) do
-    latitude_scale_factor =
-      1000 *
-        distance(
-          new(from_latitude, from_longitude),
-          new(from_latitude + 0.001, from_longitude)
-        )
-
-    longitude_scale_factor =
-      1000 *
-        distance(
-          new(from_latitude, from_longitude),
-          new(from_latitude, from_longitude + 0.001)
-        )
+    %{latitude: latitude_scale_factor, longitude: longitude_scale_factor} =
+      lat_long_scale_factors(from)
 
     longitude_diff = to_longitude - from_longitude
     latitude_diff = to_latitude - from_latitude
@@ -182,22 +192,11 @@ defmodule Util.Location do
   """
   @spec displace_by(loc :: __MODULE__.t(), displacement :: Util.Vector2d.t()) :: __MODULE__.t()
   def displace_by(
-        %__MODULE__{latitude: from_latitude, longitude: from_longitude},
+        %__MODULE__{latitude: from_latitude, longitude: from_longitude} = from,
         %Vector2d{x: x, y: y}
       ) do
-    latitude_scale_factor =
-      1000 *
-        distance(
-          new(from_latitude, from_longitude),
-          new(from_latitude + 0.001, from_longitude)
-        )
-
-    longitude_scale_factor =
-      1000 *
-        distance(
-          new(from_latitude, from_longitude),
-          new(from_latitude, from_longitude + 0.001)
-        )
+    %{latitude: latitude_scale_factor, longitude: longitude_scale_factor} =
+      lat_long_scale_factors(from)
 
     longitude_diff = x / longitude_scale_factor
     latitude_diff = y / latitude_scale_factor
