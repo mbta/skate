@@ -239,7 +239,7 @@ defmodule Util.Location do
     # segment_vector would be the vector pointing from S to E
     # point_vector would be the vector pointing from S to P
     #
-    # Ww don't compute it because we don't need to, but (0.0, 0.0)
+    # We don't compute it because we don't need to, but (0.0, 0.0)
     # would be a vector pointing from S to itself.
     segment_vector = displacement_from(end_loc, start_loc)
     point_vector = displacement_from(point, start_loc)
