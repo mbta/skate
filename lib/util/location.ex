@@ -235,39 +235,32 @@ defmodule Util.Location do
     # everything to vectors, using the input data to find the vector
     # S->N, and then using that to find the lat/long coordinates of N
     # itself.
-
-    # Convert both the segment end-point and the off-segment point
-    # into vectors representing their displacements from the segment
-    # start-point. For example,
     #
-    #                      P <-- off-segment point
-    #                     /
-    #                    /
+    #                    P <-- "point"
     #                   /
-    #  start-point --> S--------E <-- end-point
+    #                  /   /---- nearest point (what we're looking for)
+    #                 /   /
+    #  start_loc --> S---N----E <-- end_loc
     #
-    # segment_vector would be the vector S->E
-    # point_vector would be the vector S->P
+
+    # We start by converting start_loc, end_loc, and point into
+    # vectors. Location.displacement_from/2 will take two points E and
+    # S (in that order) and return the vector S->E.
     #
-    # We don't compute it because we don't need to, but (0.0, 0.0)
-    # would be a vector pointing from S to itself (S->S).
+    # segment_vector is the vector S->E
+    # point_vector is the vector S->P
+    #
+    # We don't compute it because we don't need to, but
+    # Vector2d.zero(), which equals (0.0, 0.0) is a vector pointing
+    # from S to itself (S->S).
 
     segment_vector = displacement_from(end_loc, start_loc)
     point_vector = displacement_from(point, start_loc)
 
-    # Our goal is to find N, the point on the segment S--E that is
-    # closest to P.
+    # nearest_vector below is the vector S->N, and much of the rest of
+    # this algorithm is devoted to figuring out what its value is.
     #
-    #                      P <-- off-segment point
-    #                     /
-    #                    /   /---- nearest point (what we're looking for)
-    #                   /   /
-    #  start-point --> S---N----E <-- end-point
-    #
-    # The easiest way to find N is to first find the vector S->N
-    # and then find N based on that.
-    #
-    # nearest_vector below is the vector S->N
+    # Once we find S->N (nearest_vector), finding N is quite easy.
     nearest_vector =
       case Vector2d.dot_product(segment_vector, segment_vector) do
         # If the start and end points coincide then the formula for
