@@ -100,7 +100,7 @@ defmodule Util.Location do
   end
 
   @doc """
-  Returns the displacement to `to` from `from` as a `Util.Vector2d` given in meters.
+  Returns the displacement between `to` and `from` as a `Util.Vector2d` given in meters.
 
   The `x` direction is east, and the `y` direction is north.
 
