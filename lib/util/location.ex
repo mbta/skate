@@ -276,17 +276,16 @@ defmodule Util.Location do
         #    /
         #  SNE
         #
-        # nearest_vector, the vector S->N, is zero, so that's what we
-        # return.
+        # S->N is zero, so that's what we assign to nearest_vector.
         0.0 ->
           Vector2d.zero()
 
-        # Otherwise we project point_vector onto the line containing
-        # the segment, and figure nearest_vector from there. For
-        # example, in the diagrams below, S->Q is the vector you get
-        # by projecting S->P onto the line. Notice that Q doesn't
-        # always fall onto the actual segment, because the segment
-        # doesn't go on forever.
+        # If the start and end points don't coincide, then we can
+        # project the vector S->P onto the line containing the segment
+        # S--E. We'll call the new projected vector S->Q (and the tip
+        # of that new vector Q). We can use S->Q to find S->N. Notice
+        # that Q doesn't always fall onto the actual segment, because
+        # the segment doesn't go on forever.
         #
         #           P                           P
         #          /                             \
@@ -294,10 +293,11 @@ defmodule Util.Location do
         #        /                                 \
         #       S---Q----E                      Q   S--------E
         #
+        # projected_vector is the vector S->Q
         squared_segment_length ->
           projected_vector = Vector2d.project_onto(point_vector, segment_vector)
 
-          # We can find out whether the project vector falls on the
+          # We can find out whether projected_vector falls on the
           # segment, or "off" in one direction or the other, by taking
           # the dot product of projected_vector and segment_vector,
           # and comparing it to the square of the segment length.
