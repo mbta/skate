@@ -231,9 +231,9 @@ defmodule Util.Location do
     # meters east of start_loc, and Δy is meters north of start_loc.
     #
     # In broad strokes, if the nearest point we're looking for is
-    # called Q, and start_loc is called S, then we start by converting
+    # called N, and start_loc is called S, then we start by converting
     # everything to vectors, using the input data to find the vector
-    # S->Q, and then using that to find the lat/long coordinates of Q
+    # S->N, and then using that to find the lat/long coordinates of N
     # itself.
 
     # Convert both the segment end-point and the off-segment point
