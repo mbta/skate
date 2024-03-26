@@ -11,6 +11,8 @@ config :skate,
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
   aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
+config :skate, SkateWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
+
 config :skate, Skate.OpenRouteServiceAPI,
   api_base_url: System.get_env("OPEN_ROUTE_SERVICE_API_URL"),
   api_key: System.get_env("OPEN_ROUTE_SERVICE_API_KEY"),
