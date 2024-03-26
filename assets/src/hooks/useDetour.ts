@@ -88,7 +88,11 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   )
 
   const coordinates = isOk(detourShape) ? detourShape.ok.coordinates : []
-  const directions = isOk(detourShape) ? detourShape.ok.directions : undefined
+  const directions = isOk(detourShape)
+    ? detourShape.ok.directions?.concat({
+        instruction: "Return to Regular Route",
+      })
+    : undefined
 
   const canAddWaypoint = () => startPoint !== null && endPoint === null
   const addWaypoint = canAddWaypoint()
