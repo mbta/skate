@@ -63,7 +63,7 @@ export const DiversionPanel = ({
             <ListGroup as="ol">
               {directions.map((d) => (
                 <ListGroup.Item key={d.instruction} as="li">
-                  {d.instruction == "Return to Regular Route" ? (
+                  {d.instruction == "Regular Route" ? (
                     <strong className="fw-medium">{d.instruction}</strong>
                   ) : (
                     d.instruction

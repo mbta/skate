@@ -92,7 +92,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const directions = isOk(detourShape)
     ? finishedDetour
       ? detourShape.ok.directions?.concat({
-          instruction: "Return to Regular Route",
+          instruction: "Regular Route",
         })
       : detourShape.ok.directions
     : undefined
