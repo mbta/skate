@@ -13,7 +13,7 @@ const defaultText = [
   "Turn-by-Turn Directions:",
   "From Harvard St & Babcock St",
   "Right on Babcock St.",
-  "Regular Route",
+  "Return to Regular Route",
   "",
   "Connection Points:",
   "Harvard St @ Beacon St",
