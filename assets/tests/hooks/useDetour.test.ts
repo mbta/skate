@@ -388,7 +388,7 @@ describe("useDetour", () => {
     act(() => result.current.undo?.())
 
     await waitFor(() => {
-      expect(result.current.missedStops).toHaveLength(0)
+      expect(result.current.missedStops).toBeUndefined()
     })
   })
 

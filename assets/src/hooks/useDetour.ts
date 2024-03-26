@@ -133,9 +133,11 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     setState(DetourState.Edit)
   }
 
-  const missedStops = finishedDetour?.missedStops || []
+  const missedStops = finishedDetour?.missedStops || undefined
 
-  const missedStopIds = new Set(missedStops.map((stop) => stop.id))
+  const missedStopIds = missedStops
+    ? new Set(missedStops.map((stop) => stop.id))
+    : new Set()
   const stops = (shape.stops || []).map((stop) => ({
     ...stop,
     missed: missedStopIds.has(stop.id),
