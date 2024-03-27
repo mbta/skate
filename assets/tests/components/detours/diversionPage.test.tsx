@@ -257,10 +257,8 @@ describe("DiversionPage", () => {
 
     jest
       .mocked(fetchFinishedDetour)
-      .mockResolvedValue(
-        finishedDetourFactory.build()
-      )
-    
+      .mockResolvedValue(finishedDetourFactory.build())
+
     const { container } = render(<DiversionPage />)
 
     await act(async () => {
@@ -271,7 +269,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect((await screen.findByText("Regular Route"))).toBeVisible()
+    expect(await screen.findByText("Regular Route")).toBeVisible()
   })
 
   test("does not show 'Regular Route' when detour not finished", async () => {
@@ -289,10 +287,8 @@ describe("DiversionPage", () => {
 
     jest
       .mocked(fetchFinishedDetour)
-      .mockResolvedValue(
-        finishedDetourFactory.build()
-      )
-    
+      .mockResolvedValue(finishedDetourFactory.build())
+
     const { container } = render(<DiversionPage />)
 
     expect(screen.queryByText("Regular Route")).toBeNull()
