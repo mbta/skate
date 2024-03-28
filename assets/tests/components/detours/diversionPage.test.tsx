@@ -293,11 +293,11 @@ describe("DiversionPage", () => {
 
     expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
 
-    await act(async () => {
+    act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await act(async () => {
+    act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
