@@ -29,7 +29,7 @@ const LoadingOk = (v: any) => {
   return { is_loading: true, ok: v }
 }
 const Err = () => {
-  return { is_error: true }
+  return fetchError(true)
 }
 
 const renderUseNearestIntersection = (location: GeographicCoordinate) =>

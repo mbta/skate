@@ -204,9 +204,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
         const vehicle = vehicleFactory.build()
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
-          is_error: true,
-        })
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(fetchError())
 
         render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 

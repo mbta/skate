@@ -20,7 +20,7 @@ export const useNearestIntersection = (
         if (result) {
           setResult({ ok: result })
         } else {
-          setResult({ is_error: true })
+          setResult(fetchError())
         }
       }
     })
