@@ -40,12 +40,12 @@ const useSearchResultsByCategory = (
 
   const limitedLocationResults: LocationResultsType = !shouldSearchLocation
     ? null
-    : (rawLocationResults && {
-        ok: {
+    : (rawLocationResults &&
+        ok({
           matches: rawLocationResults.slice(0, categoryLimits.location),
           hasMoreMatches: rawLocationResults.length > categoryLimits.location,
-        },
-      }) || { is_loading: true }
+        })) || { is_loading: true }
+
   return {
     vehicle: useSearchResults(
       socket,

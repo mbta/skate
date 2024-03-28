@@ -159,12 +159,12 @@ const mockVehicleSearchResultsCategory = (
 ) => {
   jest.mocked(useSearchResultsByCategory).mockReturnValue({
     location: null,
-    vehicle: vehicles && {
-      ok: {
+    vehicle:
+      vehicles &&
+      ok({
         hasMoreMatches: false,
         matches: vehicles,
-      },
-    },
+      }),
   })
 
   jest.mocked(useLocationSearchSuggestions).mockReturnValue(null)

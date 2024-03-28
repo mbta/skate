@@ -29,12 +29,11 @@ export type LimitedSearchResults<T> = {
 
 const parseLimitedSearchResults = (
   data: LimitedSearchResultsData
-): Ok<LimitedSearchResults<Vehicle | Ghost>> => ({
-  ok: {
+): Ok<LimitedSearchResults<Vehicle | Ghost>> =>
+  ok({
     matches: parser(data.matching_vehicles),
     hasMoreMatches: data.has_more_matches,
-  },
-})
+  })
 
 const loadingState: Loading = { is_loading: true }
 

@@ -79,12 +79,12 @@ describe("useSearchResults", () => {
       })
     )
 
-    expect(result.current).toEqual({
-      ok: {
+    expect(result.current).toEqual(
+      ok({
         matches: [vehicleFromData(vehicleData)],
         hasMoreMatches: false,
-      },
-    })
+      })
+    )
   })
 
   test("when the limit changes, stays subscribed to the existing topic and pushes message to increase limit", () => {
@@ -136,11 +136,11 @@ describe("useSearchResults", () => {
     expect(channel1.push).toHaveBeenCalledWith("update_search_query", {
       limit: 30,
     })
-    expect(result.current).toEqual({
-      ok: {
+    expect(result.current).toEqual(
+      ok({
         hasMoreMatches: true,
         matches: [vehicleFromData(vehicleDataAfterLimitIncrease)],
-      },
-    })
+      })
+    )
   })
 })

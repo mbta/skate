@@ -23,7 +23,7 @@ const Loading = () => {
   return { is_loading: true }
 }
 const Ok = (v: any) => {
-  return { ok: v }
+  return ok(v)
 }
 const LoadingOk = (v: any) => {
   return { is_loading: true, ok: v }

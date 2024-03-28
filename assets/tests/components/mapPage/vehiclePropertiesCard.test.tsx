@@ -31,8 +31,8 @@ describe("<VehiclePropertiesCard/>", () => {
       const intersection = "Massachusetts Ave @ 1"
       const intersection2 = "Massachusetts Ave @ 2"
       ;(useNearestIntersection as jest.Mock)
-        .mockReturnValueOnce({ ok: intersection })
-        .mockReturnValueOnce({ ok: intersection2 })
+        .mockReturnValueOnce(ok(intersection))
+        .mockReturnValueOnce(ok(intersection2))
 
       const { rerender } = render(
         <VehiclePropertiesCard vehicleOrGhost={vehicle} />
@@ -100,9 +100,9 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
-          ok: intersection,
-        })
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(
+          ok(intersection)
+        )
 
         render(
           <RoutesProvider routes={[route]}>
@@ -176,9 +176,9 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
-          ok: intersection,
-        })
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(
+          ok(intersection)
+        )
 
         render(
           <RoutesProvider routes={[route]}>
@@ -222,7 +222,7 @@ describe("<VehiclePropertiesCard/>", () => {
         const intersection = "intersection ave @ street"
         ;(useNearestIntersection as jest.Mock)
           .mockReturnValueOnce({ is_loading: true })
-          .mockReturnValueOnce({ ok: intersection })
+          .mockReturnValueOnce(ok(intersection))
 
         render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
         const currentLocation = screen.getByRole("status", {
@@ -340,9 +340,9 @@ describe("<VehiclePropertiesCard/>", () => {
       })
 
       const intersection = "Massachusetts Ave @ Marlborough St"
-      ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
-        ok: intersection,
-      })
+      ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(
+        ok(intersection)
+      )
 
       render(
         <RoutesProvider routes={[route]}>

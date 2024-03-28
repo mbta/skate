@@ -296,9 +296,9 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("shows the nearest intersection", () => {
-    ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
-      ok: "Atlantic Ave & Summer St",
-    })
+    ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(
+      ok("Atlantic Ave & Summer St")
+    )
     const result = render(
       <VehiclePropertiesPanel
         selectedVehicle={vehicle}

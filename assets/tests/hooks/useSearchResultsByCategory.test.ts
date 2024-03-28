@@ -77,20 +77,14 @@ describe("useSearchResultsByCategory", () => {
   test("when query property is 'all', returns all vehicle matches and location matches", () => {
     const mockSocket = makeMockSocket()
     mockSearchResults({
-      all: {
-        ok: {
-          matches: [vehicleMatch, operatorMatch, runMatch],
-          hasMoreMatches: true,
-        },
-      },
+      all: ok({
+        matches: [vehicleMatch, operatorMatch, runMatch],
+        hasMoreMatches: true,
+      }),
 
-      vehicle: {
-        ok: { matches: [vehicleFactory.build()], hasMoreMatches: true },
-      },
-      operator: {
-        ok: { matches: [vehicleFactory.build()], hasMoreMatches: true },
-      },
-      run: { ok: { matches: [vehicleFactory.build()], hasMoreMatches: true } },
+      vehicle: ok({ matches: [vehicleFactory.build()], hasMoreMatches: true }),
+      operator: ok({ matches: [vehicleFactory.build()], hasMoreMatches: true }),
+      run: ok({ matches: [vehicleFactory.build()], hasMoreMatches: true }),
       location: [locationMatch],
     })
 
@@ -101,22 +95,18 @@ describe("useSearchResultsByCategory", () => {
       })
     )
     expect(result.current).toEqual({
-      vehicle: {
-        ok: {
-          matches: [vehicleMatch, operatorMatch, runMatch],
-          hasMoreMatches: true,
-        },
-      },
-      location: {
-        ok: { matches: [locationMatch], hasMoreMatches: false },
-      },
+      vehicle: ok({
+        matches: [vehicleMatch, operatorMatch, runMatch],
+        hasMoreMatches: true,
+      }),
+      location: ok({ matches: [locationMatch], hasMoreMatches: false }),
     })
   })
 
   test("when query property is a vehicle property, returns only vehicle matches", () => {
     const mockSocket = makeMockSocket()
     mockSearchResults({
-      vehicle: { ok: { matches: [vehicleMatch], hasMoreMatches: true } },
+      vehicle: ok({ matches: [vehicleMatch], hasMoreMatches: true }),
       location: [locationMatch],
     })
 
@@ -127,12 +117,10 @@ describe("useSearchResultsByCategory", () => {
       })
     )
     expect(result.current).toEqual({
-      vehicle: {
-        ok: {
-          matches: [vehicleMatch],
-          hasMoreMatches: true,
-        },
-      },
+      vehicle: ok({
+        matches: [vehicleMatch],
+        hasMoreMatches: true,
+      }),
       location: null,
     })
   })
@@ -140,9 +128,9 @@ describe("useSearchResultsByCategory", () => {
   test("when query property is 'location', returns only location matches", () => {
     const mockSocket = makeMockSocket()
     mockSearchResults({
-      vehicle: { ok: { matches: [vehicleMatch], hasMoreMatches: true } },
-      operator: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
-      run: { ok: { matches: [operatorMatch], hasMoreMatches: true } },
+      vehicle: ok({ matches: [vehicleMatch], hasMoreMatches: true }),
+      operator: ok({ matches: [operatorMatch], hasMoreMatches: true }),
+      run: ok({ matches: [operatorMatch], hasMoreMatches: true }),
       location: [locationMatch],
     })
 
@@ -154,12 +142,10 @@ describe("useSearchResultsByCategory", () => {
     )
     expect(result.current).toEqual({
       vehicle: null,
-      location: {
-        ok: {
-          matches: [locationMatch],
-          hasMoreMatches: false,
-        },
-      },
+      location: ok({
+        matches: [locationMatch],
+        hasMoreMatches: false,
+      }),
     })
   })
 })

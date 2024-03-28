@@ -194,7 +194,7 @@ describe("usePersistedStateReducer", () => {
   test("sends updated route tabs to backend on changes", () => {
     ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => ({
       then: (callback: (data: any) => void) => {
-        callback({ ok: true })
+        callback(ok(true))
         return { catch: jest.fn() }
       },
     }))
@@ -244,7 +244,7 @@ describe("usePersistedStateReducer", () => {
   })
 
   test("retries on HTTP error if not outdated", () => {
-    const badResponse = { ok: false }
+    const badResponse = ok(false)
     const fakePromise = {
       then: (callback: (data: any) => void) => {
         callback(badResponse)
@@ -306,7 +306,7 @@ describe("usePersistedStateReducer", () => {
   })
 
   test("retries at most two more times, with final failure being a bad status code", async () => {
-    const badResponse = { ok: false }
+    const badResponse = ok(false)
 
     const fakePromise = new Promise((resolve) => {
       resolve(badResponse)
