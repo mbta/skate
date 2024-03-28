@@ -272,7 +272,7 @@ describe("DiversionPage", () => {
     expect(await screen.findByText("Regular Route")).toBeVisible()
   })
 
-  test("does not show 'Regular Route' when detour not finished", async () => {
+  test("does not show 'Regular Route' when detour is not finished", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       ok(
         detourShapeFactory.build({
