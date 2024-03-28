@@ -23,7 +23,7 @@ export const isFetchError = <T>(r: FetchResult<T>): r is FetchError =>
 /**
  * Creates a {@link FetchResult} representing a loading state
  */
-export const loading = <T>(): FetchResult<T> => ({ is_loading: true })
+export const loading = <T>(): FetchResult<T> => loading()
 
 /**
  * Creates a {@link FetchResult} representing a success state, along

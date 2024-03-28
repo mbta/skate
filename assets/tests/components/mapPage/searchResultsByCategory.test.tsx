@@ -182,7 +182,7 @@ describe("searchResultsByProperty", () => {
       run: null,
       vehicle: null,
       operator: null,
-      location: { is_loading: true },
+      location: loading(),
     })
     render(
       <StateDispatchProvider

@@ -20,7 +20,7 @@ describe("useSearchResults", () => {
         limit: 5,
       })
     )
-    expect(result.current).toEqual({ is_loading: true })
+    expect(result.current).toEqual(loading())
   })
   test("when no query given, returns null", () => {
     const mockSocket = makeMockSocket()

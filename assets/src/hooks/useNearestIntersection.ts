@@ -6,9 +6,7 @@ export const useNearestIntersection = (
   latitude: number,
   longitude: number
 ): FetchResult<string> => {
-  const [result, setResult] = useState<FetchResult<string>>({
-    is_loading: true,
-  })
+  const [result, setResult] = useState<FetchResult<string>>(loading())
 
   useEffect(() => {
     let shouldUpdate = true

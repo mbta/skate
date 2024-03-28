@@ -44,7 +44,8 @@ const useSearchResultsByCategory = (
         ok({
           matches: rawLocationResults.slice(0, categoryLimits.location),
           hasMoreMatches: rawLocationResults.length > categoryLimits.location,
-        })) || { is_loading: true }
+        })) ||
+      loading()
 
   return {
     vehicle: useSearchResults(

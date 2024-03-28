@@ -68,9 +68,7 @@ jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => {
-    return {
-      is_loading: true,
-    }
+    return loading()
   }),
 }))
 

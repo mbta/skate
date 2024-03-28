@@ -59,7 +59,7 @@ describe("useSearchResultsByCategory", () => {
   test("when results are loading, returns loading", () => {
     const mockSocket = makeMockSocket()
     mockSearchResults({
-      all: { is_loading: true },
+      all: loading(),
       location: null,
     })
 
@@ -70,8 +70,8 @@ describe("useSearchResultsByCategory", () => {
       })
     )
     expect(result.current).toEqual({
-      vehicle: { is_loading: true },
-      location: { is_loading: true },
+      vehicle: loading(),
+      location: loading(),
     })
   })
   test("when query property is 'all', returns all vehicle matches and location matches", () => {

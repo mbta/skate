@@ -20,7 +20,7 @@ afterEach(() => {
 })
 
 const Loading = () => {
-  return { is_loading: true }
+  return loading()
 }
 const Ok = (v: any) => {
   return ok(v)

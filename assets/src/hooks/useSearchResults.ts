@@ -35,7 +35,7 @@ const parseLimitedSearchResults = (
     hasMoreMatches: data.has_more_matches,
   })
 
-const loadingState: Loading = { is_loading: true }
+const loadingState: Loading = loading()
 
 export const useSearchResults = (
   socket: Socket | undefined,

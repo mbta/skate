@@ -15,7 +15,7 @@ import userEvent from "@testing-library/user-event"
 jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => {
-    return { is_loading: true }
+    return loading()
   }),
 }))
 
@@ -193,9 +193,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location is initially loading, should show `loading...` backup text", () => {
         const vehicle = vehicleFactory.build()
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
-          is_loading: true,
-        })
+        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce(loading())
 
         render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
 
@@ -221,7 +219,7 @@ describe("<VehiclePropertiesCard/>", () => {
         const vehicle = vehicleFactory.build()
         const intersection = "intersection ave @ street"
         ;(useNearestIntersection as jest.Mock)
-          .mockReturnValueOnce({ is_loading: true })
+          .mockReturnValueOnce(loading())
           .mockReturnValueOnce(ok(intersection))
 
         render(<VehiclePropertiesCard vehicleOrGhost={vehicle} />)
