@@ -177,7 +177,24 @@ defmodule SkateWeb.DetourRouteControllerTest do
           coordinates: [%{"lat" => 1, "lon" => 100}, %{"lat" => 2, "lon" => 101}]
         )
 
-      assert json_response(conn, 500)
+      assert %{"error" => %{"type" => "unknown"}} = json_response(conn, 500)
+    end
+
+    @tag :authenticated
+    test "returns a 500-level response with type: :no_route when ORS reports point not found error",
+         %{
+           conn: conn
+         } do
+      expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
+        {:error, %{"code" => 2010}}
+      end)
+
+      conn =
+        post(conn, ~p"/api/detours/directions",
+          coordinates: [%{"lat" => 1, "lon" => 100}, %{"lat" => 2, "lon" => 101}]
+        )
+
+      assert %{"error" => %{"type" => "no_route"}} = json_response(conn, 500)
     end
   end
 end
