@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
@@ -12,7 +12,8 @@ import {
 } from "../util/fetchResult"
 
 const useDetourDirections = (
-  shapePoints: ShapePoint[]
+  shapePoints: ShapePoint[],
+  onError: () => void
 ): FetchResult<DetourShape> => {
   const [detourShape, setDetourShape] = useState<FetchResult<DetourShape>>(
     loading()
@@ -32,12 +33,16 @@ const useDetourDirections = (
       if (shouldUpdate && !isLoading(detourInfo)) {
         setDetourShape(detourInfo)
       }
+
+      if (shouldUpdate && isFetchError(detourInfo)) {
+        onError()
+      }
     })
 
     return () => {
       shouldUpdate = false
     }
-  }, [shapePoints])
+  }, [shapePoints, onError])
 
   return detourShape
 }
@@ -56,6 +61,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
     null
   )
+  const [routingError, setRoutingError] = useState(false)
 
   useEffect(() => {
     let shouldUpdate = true
@@ -77,37 +83,10 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }, [routePatternId, startPoint, endPoint])
 
-  const detourShape = useDetourDirections(
-    useMemo(
-      () =>
-        [startPoint, ...waypoints, endPoint].filter(
-          (v): v is ShapePoint => !!v
-        ),
-      [startPoint, waypoints, endPoint]
-    ) ?? []
-  )
-
-  const coordinates = isOk(detourShape) ? detourShape.ok.coordinates : []
-  const directions = isOk(detourShape) ? detourShape.ok.directions : undefined
-
-  const canAddWaypoint = () => startPoint !== null && endPoint === null
-  const addWaypoint = canAddWaypoint()
-    ? (p: ShapePoint) => {
-        setWaypoints((positions) => [...positions, p])
-      }
-    : undefined
-
-  const addConnectionPoint = (point: ShapePoint) => {
-    if (startPoint === null) {
-      setStartPoint(point)
-    } else if (endPoint === null) {
-      setEndPoint(point)
-    }
-  }
-
   const canUndo = startPoint !== null && state === DetourState.Edit
 
   const undo = () => {
+    setRoutingError(false)
     if (!canUndo) return
 
     if (endPoint !== null) {
@@ -119,13 +98,51 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }
 
+  const onError = useCallback(() => {
+    setWaypoints((positions) => positions.slice(0, positions.length - 1))
+    setRoutingError(true)
+  }, [setWaypoints])
+
+  const detourShape = useDetourDirections(
+    useMemo(
+      () =>
+        [startPoint, ...waypoints, endPoint].filter(
+          (v): v is ShapePoint => !!v
+        ),
+      [startPoint, waypoints, endPoint]
+    ) ?? [],
+    onError
+  )
+
+  const coordinates = isOk(detourShape) ? detourShape.ok.coordinates : []
+  const directions = isOk(detourShape) ? detourShape.ok.directions : undefined
+
+  const canAddWaypoint = () => startPoint !== null && endPoint === null
+  const addWaypoint = canAddWaypoint()
+    ? (p: ShapePoint) => {
+        setRoutingError(false)
+        setWaypoints((positions) => [...positions, p])
+      }
+    : undefined
+
+  const addConnectionPoint = (point: ShapePoint) => {
+    setRoutingError(false)
+    if (startPoint === null) {
+      setStartPoint(point)
+    } else if (endPoint === null) {
+      setEndPoint(point)
+    }
+  }
+
   const clear = () => {
+    setRoutingError(false)
     setEndPoint(null)
     setStartPoint(null)
     setWaypoints([])
   }
 
   const finishDetour = () => {
+    setRoutingError(false)
     setState(DetourState.Finished)
   }
 
@@ -183,7 +200,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * Indicates if there was an error fetching directions from ORS
      */
-    routingError: isFetchError(detourShape),
+    routingError,
 
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
