@@ -20,7 +20,7 @@ Skate also requires Postgres. If you don't already have Postgres installed, and 
 
 There are a number of configuration details defined in environment variables. These define where data sources live, as well as authentication and CDN details. In our AWS environments these are all set and managed via Terraform.
 
-To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A [`.envrc.template` file](.envrc.template) is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the [direnv documentation](https://direnv.net/#getting-started) to load it.
+To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A [`.envrc.template` file](.envrc.template) is provided to fill out; simply copy it over to `.envrc.private` and fill in the values, then follow the [direnv documentation](https://direnv.net/#getting-started) to load it.
 
 The environment variables are documented in the [Skate `.envrc.template` file](.envrc.template).
 
@@ -33,7 +33,7 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 
 1. Install language dependencies with `asdf install`
 1. Setup project with `mix setup`
-	- This command will create the database, so you must first ensure your Postgres server is running and you've updated your credentials in `.envrc` as described in "Configuration" above.
+	- This command will create the database, so you must first ensure your Postgres server is running and you've updated your credentials in `.envrc.private` as described in "Configuration" above.
 1. (not necessary to run the application) 
 	- The `test` command will automatically setup the database when run. 
 	- You can setup the the testing database manually by running `mix ecto.setup` in the `test` envrionment 
