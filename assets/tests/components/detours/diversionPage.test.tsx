@@ -291,7 +291,7 @@ describe("DiversionPage", () => {
 
     const { container } = render(<DiversionPage />)
 
-    expect(screen.queryByText("Regular Route")).toBeNull()
+    expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
 
     await act(async () => {
       fireEvent.click(originalRouteShape.get(container))
@@ -303,7 +303,7 @@ describe("DiversionPage", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
-    expect(screen.queryByText("Regular Route")).toBeNull()
+    expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
   })
 
   test("missed stops are filled in when detour is complete", async () => {
