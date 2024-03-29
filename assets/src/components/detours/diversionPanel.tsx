@@ -61,8 +61,8 @@ export const DiversionPanel = ({
           <h2 className="c-diversion-panel__h2">Detour Directions</h2>
           {directions ? (
             <ListGroup as="ol">
-              {directions.map((d) => (
-                <ListGroup.Item key={d.instruction} as="li">
+              {directions.map((d, i) => (
+                <ListGroup.Item key={i} as="li">
                   {d.instruction == "Regular Route" ? (
                     <strong className="fw-medium">{d.instruction}</strong>
                   ) : (
