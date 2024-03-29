@@ -54,8 +54,8 @@ node_modules
 # dev and test cache files for faster loading
 *.terms
 
-# ENV variables
-.envrc
+# User ENV variables
+.envrc.private
 
 .DS_Store
 assets/build-storybook.log
