@@ -63,14 +63,13 @@ export const DiversionPanel = ({
             <ListGroup as="ol">
               {directions.map((d) => (
                 <ListGroup.Item key={d.instruction} as="li">
-                  {d.instruction}
+                  {d.instruction == "Regular Route" ? (
+                    <strong className="fw-medium">{d.instruction}</strong>
+                  ) : (
+                    d.instruction
+                  )}
                 </ListGroup.Item>
               ))}
-              {detourFinished && (
-                <ListGroup.Item as="li">
-                  <strong className="fw-medium">Return to Regular Route</strong>
-                </ListGroup.Item>
-              )}
             </ListGroup>
           ) : (
             <DirectionsHelpText />

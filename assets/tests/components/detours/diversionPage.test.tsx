@@ -242,6 +242,72 @@ describe("DiversionPage", () => {
     expect(screen.queryByTitle("Detour End")).toBeNull()
   })
 
+  test("shows 'Regular Route' text when the detour is finished", async () => {
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
+    )
+
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build())
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    expect(await screen.findByText("Regular Route")).toBeVisible()
+  })
+
+  test("does not show 'Regular Route' when detour is not finished", async () => {
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
+    )
+
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build())
+
+    const { container } = render(<DiversionPage />)
+
+    expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    expect(await screen.findByText("Regular Route")).toBeVisible()
+
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+
+    expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
+  })
+
   test("missed stops are filled in when detour is complete", async () => {
     const stop1 = stopFactory.build()
     const stop2 = stopFactory.build()
@@ -410,7 +476,7 @@ describe("DiversionPage", () => {
           "Turn left on Main Street",
           "Turn right on High Street",
           "Turn sharp right on Broadway",
-          "Return to Regular Route",
+          "Regular Route",
           ,
           "Connection Points:",
           start.name,
