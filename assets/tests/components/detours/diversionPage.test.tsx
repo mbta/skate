@@ -301,6 +301,8 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
+    expect(await screen.findByText("Regular Route")).toBeVisible()
+
     fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
     expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
