@@ -24,12 +24,13 @@ To avoid having to set these manually in your local development environment, [di
 
 The environment variables are documented in the [Skate `.envrc.template` file](.envrc.template).
 
-Some of these configuration values are shared between Skate team members.
-While there are still some values which are not shared and need to be configured in
-`.envrc.private`, to facilitate easier setup and to reduce the amount of work done when cloning
-for team members, the [`.envrc`](./.envrc) file is configured to source the shared
-configuration values from 1Password using the 
-[.env.1p.skate file](./.env.1p.skate) and the [1Password CLI](https://developer.1password.com/docs/cli/get-started/) (which you must also have on your system).
+> [!NOTE]
+> Some of these configuration values are shared between Skate team members.
+> While there are still some values which are not shared and need to be configured in
+> `.envrc.private`, to facilitate easier setup and to reduce the amount of work done when cloning
+> for team members, the [`.envrc`](./.envrc) file is configured to source the shared
+> configuration values from 1Password using the 
+> [.env.1p.skate file](./.env.1p.skate) and the [1Password CLI](https://developer.1password.com/docs/cli/get-started/) (which you must also have on your system).
 
 Here are the values you'll need to be prepared to update to run Skate locally:
 * Your local Postgres server username and password
