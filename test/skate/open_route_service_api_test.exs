@@ -133,4 +133,36 @@ defmodule Skate.OpenRouteServiceAPITest do
                %{"lat" => 0, "lon" => 1}
              ])
   end
+
+  test "unknown errors from ORS return `type: :unknown`" do
+    expect(
+      Skate.OpenRouteServiceAPI.MockClient,
+      :get_directions,
+      fn _ ->
+        {:error, %{"code" => -1}}
+      end
+    )
+
+    assert {:error, %{type: :unknown}} =
+             Skate.OpenRouteServiceAPI.directions([
+               %{"lat" => 0, "lon" => 0},
+               %{"lat" => 0, "lon" => 1}
+             ])
+  end
+
+  test "point not found errors from ORS return `type: :no_route`" do
+    expect(
+      Skate.OpenRouteServiceAPI.MockClient,
+      :get_directions,
+      fn _ ->
+        {:error, %{"code" => 2010}}
+      end
+    )
+
+    assert {:error, %{type: :no_route}} =
+             Skate.OpenRouteServiceAPI.directions([
+               %{"lat" => 0, "lon" => 0},
+               %{"lat" => 0, "lon" => 1}
+             ])
+  end
 end

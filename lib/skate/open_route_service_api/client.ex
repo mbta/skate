@@ -74,6 +74,9 @@ defmodule Skate.OpenRouteServiceAPI.Client do
       {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
         {:error, Jason.decode!(body)["error"]}
 
+      {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
+        {:error, Jason.decode!(body)["error"]}
+
       {:error, %HTTPoison.Error{}} ->
         {:error, "unknown"}
     end
