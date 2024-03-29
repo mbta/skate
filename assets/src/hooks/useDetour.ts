@@ -13,33 +13,40 @@ import {
 
 const useDetourDirections = (
   shapePoints: ShapePoint[]
-): FetchResult<DetourShape> => {
+): { finishedDirections: boolean; detourShape: FetchResult<DetourShape> } => {
   const [detourShape, setDetourShape] = useState<FetchResult<DetourShape>>(
     loading()
   )
+  const [finishedDirections, setFinishedDirections] = useState(false)
 
   useEffect(() => {
     let shouldUpdate = true
 
-    if (shapePoints.length < 2) {
-      // We expect not to have any directions or shape if we don't have at
-      // least two points to route between
-      setDetourShape(ok({ coordinates: [], directions: undefined }))
-      return
+    const fetchDirections = async () => {
+      setFinishedDirections(false)
+
+      if (shapePoints.length < 2) {
+        // We expect not to have any directions or shape if we don't have at
+        // least two points to route between
+        setDetourShape(ok({ coordinates: [], directions: undefined }))
+        return
+      }
+      await fetchDetourDirections(shapePoints).then((detourInfo) => {
+        if (shouldUpdate && !isLoading(detourInfo)) {
+          setDetourShape(detourInfo)
+        }
+      })
+      setFinishedDirections(true)
     }
 
-    fetchDetourDirections(shapePoints).then((detourInfo) => {
-      if (shouldUpdate && !isLoading(detourInfo)) {
-        setDetourShape(detourInfo)
-      }
-    })
+    fetchDirections()
 
     return () => {
       shouldUpdate = false
     }
   }, [shapePoints])
 
-  return detourShape
+  return { finishedDirections: finishedDirections, detourShape: detourShape }
 }
 
 export enum DetourState {
@@ -77,7 +84,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }, [routePatternId, startPoint, endPoint])
 
-  const detourShape = useDetourDirections(
+  const { finishedDirections, detourShape } = useDetourDirections(
     useMemo(
       () =>
         [startPoint, ...waypoints, endPoint].filter(
@@ -90,7 +97,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const coordinates = isOk(detourShape) ? detourShape.ok.coordinates : []
   // Only append direction "Regular Route" after detour is finished
   const directions = isOk(detourShape)
-    ? finishedDetour
+    ? finishedDetour && finishedDirections
       ? detourShape.ok.directions?.concat({
           instruction: "Regular Route",
         })
