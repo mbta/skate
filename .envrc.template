@@ -41,10 +41,10 @@ export ERL_FLAGS="+MIscs 2048"
 # export SKATE_HASTUS_URL=
 
 ## Authentication/authorization secret. Generate a value using mix phx.gen.secret
-# export GUARDIAN_SECRET_KEY
+export GUARDIAN_SECRET_KEY=$(mix phx.gen.secret)
 
-## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret (only required in production)
-# export SECRET_KEY_BASE
+## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret
+export SECRET_KEY_BASE=$(mix phx.gen.secret)
 
 ## Optional Variables
 
