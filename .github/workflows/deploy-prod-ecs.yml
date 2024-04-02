@@ -3,7 +3,7 @@ name: Deploy to Prod (ECS)
 on:
   workflow_dispatch:
   release:
-    types: [published]
+    types: [released]
 
 jobs:
   deploy:
