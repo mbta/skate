@@ -3,42 +3,8 @@
 ## Required Variables
 ## * These are the values you'll need to be prepared to update to run Skate locally
 
-## URL of the [MBTA v3 API](https://github.com/mbta/api) for retrieving live train positions
-export API_URL=
-
-## Access key for the MBTA v3 API
-## * Request your personal API key from [MBTA Realtime API](https://api-v3.mbta.com/)
-export API_KEY=
-
-## Postgres configuration: username, password, and hostname
-## * Your local Postgres server should go here
-export POSTGRES_USERNAME=
-export POSTGRES_PASSWORD=
-export POSTGRES_HOSTNAME=
-
-## API key from [Swiftly Transitime API](https://swiftly-inc.stoplight.io/docs/realtime-standalone/YXBpOjI4NDM2MDU3-swiftly-api-reference)
-export SWIFTLY_AUTHORIZATION_KEY=
-
-## Source of Swiftly vehicle data
-export SWIFTLY_REALTIME_VEHICLES_URL=
-
-## Location of the GTFS zip file
-export GTFS_URL=
-
-## Source of GTFS-realtime enhanced VehiclePositions json data file
-export BUSLOC_URL=
-
-## Source of GTFS-realtime enhanced TripUpdates json data file (optional)
-export TRIP_UPDATES_URL=
-
-## Amazon Location Service place index to use for location search
-export AWS_PLACE_INDEX=
-
 ## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 export ERL_FLAGS="+MIscs 2048"
-
-## Source of extended schedule data
-# export SKATE_HASTUS_URL=
 
 ## Authentication/authorization secret. Generate a value using mix phx.gen.secret
 export GUARDIAN_SECRET_KEY=$(mix phx.gen.secret)
@@ -46,16 +12,43 @@ export GUARDIAN_SECRET_KEY=$(mix phx.gen.secret)
 ## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret
 export SECRET_KEY_BASE=$(mix phx.gen.secret)
 
+## Postgres configuration: username, password, and hostname
+## * Your local Postgres server should go here
+# export POSTGRES_USERNAME=
+# export POSTGRES_PASSWORD=
+# export POSTGRES_HOSTNAME=
+
+## URL of the [MBTA v3 API](https://github.com/mbta/api) for retrieving live train positions
+# export API_URL=
+
+## Access key for the MBTA v3 API
+## * Request your personal API key from [MBTA Realtime API](https://api-v3.mbta.com/)
+# export API_KEY=
+
+### The following variables are imported by 1Password in `.env.1p.skate`
+
+## API key from [Swiftly Transitime API](https://swiftly-inc.stoplight.io/docs/realtime-standalone/YXBpOjI4NDM2MDU3-swiftly-api-reference)
+# export SWIFTLY_AUTHORIZATION_KEY=
+
+## Source of Swiftly vehicle data
+# export SWIFTLY_REALTIME_VEHICLES_URL=
+
+## Location of the GTFS zip file
+# export GTFS_URL=
+
+## Source of GTFS-realtime enhanced VehiclePositions json data file
+# export BUSLOC_URL=
+
+## Source of GTFS-realtime enhanced TripUpdates json data file (optional)
+# export TRIP_UPDATES_URL=
+
+## Source of extended schedule data
+# export SKATE_HASTUS_URL=
+
+## Amazon Location Service place index to use for location search
+# export AWS_PLACE_INDEX=
+
 ## Optional Variables
-
-## Location of map tile images
-# export TILESET_URL=
-
-## URL for map tile images, including {x} {y} coordinate and {z} zoom level placeholders
-# export BASE_TILESET_URL=
-
-## URL for satellite map tile images, including {x} {y} coordinate and {z} zoom level placeholders
-# export SATELLITE_TILESET_URL=
 
 ## Used by Erlang (only required in production)
 # export RELEASE_COOKIE=
@@ -86,10 +79,21 @@ export SECRET_KEY_BASE=$(mix phx.gen.secret)
 # export BRIDGE_API_USERNAME
 # export BRIDGE_API_PASSWORD
 
-## Used for locally building (and eventually testing) Storybook and Snapshot tests
-## The project token can be found in Chromatic, (Manage > Configure > Project > Project Token)
-# export CHROMATIC_PROJECT_TOKEN=
-
 ## Open Route Service (API URL will usually be https://api.openrouteservice.org/; you can your API Key from the ORS console once you create an account)
 # export OPEN_ROUTE_SERVICE_API_URL=
 # export OPEN_ROUTE_SERVICE_API_KEY=
+
+### The following variables are imported by 1Password in `.env.1p.skate`
+
+## Location of map tile images
+# export TILESET_URL=
+
+## URL for map tile images, including {x} {y} coordinate and {z} zoom level placeholders
+# export BASE_TILESET_URL=
+
+## URL for satellite map tile images, including {x} {y} coordinate and {z} zoom level placeholders
+# export SATELLITE_TILESET_URL=
+
+## Used for locally building (and eventually testing) Storybook and Snapshot tests
+## The project token can be found in Chromatic, (Manage > Configure > Project > Project Token)
+# export CHROMATIC_PROJECT_TOKEN=
