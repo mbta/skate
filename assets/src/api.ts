@@ -20,7 +20,16 @@ import {
   TripId,
 } from "./schedule.d"
 import { RouteTab } from "./models/routeTab"
-import { array, assert, Struct, StructError } from "superstruct"
+import {
+  any,
+  array,
+  assert,
+  create,
+  is,
+  object,
+  Struct,
+  StructError,
+} from "superstruct"
 import { ShapeData, shapeFromData, shapesFromData } from "./models/shapeData"
 import { StopData, stopsFromData } from "./models/stopData"
 import {
@@ -46,6 +55,7 @@ import {
   finishedDetourFromData,
 } from "./models/finishedDetour"
 import { FetchResult, ok, fetchError } from "./util/fetchResult"
+import { Ok, Err, Result } from "./util/result"
 
 export interface RouteData {
   id: string
@@ -142,6 +152,32 @@ export const apiCallWithError = <T, U>({
       }
 
       return fetchError()
+    })
+
+export const apiCallResult = async <T, E>(
+  url: Parameters<typeof fetch>[0],
+  OkStruct: Struct<T, unknown>,
+  ErrStruct: Struct<E, unknown>,
+  requestInit?: Parameters<typeof fetch>[1]
+): Promise<Result<T, E>> =>
+  fetch(url, requestInit)
+    .then(async (response) => {
+      const json: unknown = await response.json()
+
+      if (response.ok && is(json, object({ data: any() }))) {
+        return Ok(create(json.data, OkStruct))
+      } else {
+        assert(json, object({ error: any() }))
+        return Err(create(json.error, ErrStruct))
+      }
+    })
+    .catch((error) => {
+      if (error instanceof StructError) {
+        Sentry.captureException(error)
+      }
+      // We throw within the returned promise because downstream consumers
+      // should handle errors themselves
+      throw error
     })
 
 export const parseRouteData = ({
