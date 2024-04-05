@@ -91,7 +91,7 @@ defmodule Skate.OpenRouteServiceAPI.Client do
   defp api_base_url, do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:api_base_url]
 
   defp directions_path,
-    do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:directions_path]
+    do: "v2/directions/driving-hgv/geojson"
 
   defp api_key, do: Application.get_env(:skate, Skate.OpenRouteServiceAPI)[:api_key]
 end
