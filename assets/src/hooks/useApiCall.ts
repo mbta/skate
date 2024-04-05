@@ -52,6 +52,10 @@ export const useApiCall = <T>({
       setApiResult(value)
       setIsLoading(false)
     })
+    .catch((reason) => {
+      setIsLoading(false)
+      throw reason
+    })
 
     return () => {
       controller.abort()

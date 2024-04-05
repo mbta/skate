@@ -187,3 +187,41 @@ describe("when unmounted", () => {
     unmount()
   })
 })
+
+describe("when function throws an error", () => {
+  test.failing("should return isLoading=false", async () => {
+    const fn = jest.fn(() =>
+      // Create a rejected promise
+      Promise.reject("my reason")
+      // It's the callers job to catch it
+      // .catch(() => {})
+    )
+
+    const { result } =
+     renderUseApiCall({
+      apiCall: fn,
+    })
+
+    await waitFor(() => expect(result.current.isLoading).toBe(true))
+    await waitFor(() => expect(result.current.isLoading).toBe(false))
+  })
+
+  test.skip("previous functions that resolve out of order should not change the return value", async () => {
+    const fn = jest.fn(() => Promise.reject("my reason"))
+
+    const { result } = renderUseApiCall({
+      apiCall: fn,
+    })
+
+
+
+    await waitFor(() => expect(result.current.result).toBe("second result"), {
+      interval: 1,
+    })
+
+    expect(result.current.result).toBe("second result")
+
+    expect(fn).toHaveBeenCalledTimes(1)
+  })
+})
+
