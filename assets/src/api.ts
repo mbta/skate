@@ -182,6 +182,15 @@ export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
     defaultResult: [],
   })
 
+const postJsonParameter = (content: unknown): Parameters<typeof fetch>[1] => ({
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "x-csrf-token": getCsrfToken(),
+  },
+  body: JSON.stringify(content),
+})
+
 export const fetchDetourDirections = (
   coordinates: ShapePoint[]
 ): Promise<FetchResult<DetourShape>> =>
@@ -189,14 +198,7 @@ export const fetchDetourDirections = (
     url: "/api/detours/directions",
     parser: detourShapeFromData,
     dataStruct: DetourShapeData,
-    fetchArgs: {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-csrf-token": getCsrfToken(),
-      },
-      body: JSON.stringify({ coordinates }),
-    },
+    fetchArgs: postJsonParameter({ coordinates }),
   })
 
 export const fetchFinishedDetour = (
@@ -209,18 +211,11 @@ export const fetchFinishedDetour = (
     parser: finishedDetourFromData,
     dataStruct: FinishedDetourData,
     defaultResult: null,
-    fetchArgs: {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-csrf-token": getCsrfToken(),
-      },
-      body: JSON.stringify({
-        route_pattern_id: routePatternId,
-        connection_start: connectionStart,
-        connection_end: connectionEnd,
-      }),
-    },
+    fetchArgs: postJsonParameter({
+      route_pattern_id: routePatternId,
+      connection_start: connectionStart,
+      connection_end: connectionEnd,
+    }),
   })
 
 export const fetchShapeForTrip = (tripId: TripId): Promise<Shape | null> =>
