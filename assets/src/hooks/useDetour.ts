@@ -1,46 +1,23 @@
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
-import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
-import {
-  ok,
-  FetchResult,
-  isOk,
-  isFetchError,
-  loading,
-  isLoading,
-} from "../util/fetchResult"
+import { FinishedDetour, OriginalRoute } from "../models/detour"
 
-const useDetourDirections = (
-  shapePoints: ShapePoint[]
-): FetchResult<DetourShape> => {
-  const [detourShape, setDetourShape] = useState<FetchResult<DetourShape>>(
-    loading()
-  )
+import { useApiCall } from "./useApiCall"
+import { Ok, isErr, isOk } from "../util/result"
 
-  useEffect(() => {
-    let shouldUpdate = true
-
-    if (shapePoints.length < 2) {
+const useDetourDirections = (shapePoints: ShapePoint[]) =>
+  useApiCall({
+    apiCall: useCallback(async () => {
       // We expect not to have any directions or shape if we don't have at
       // least two points to route between
-      setDetourShape(ok({ coordinates: [], directions: undefined }))
-      return
-    }
-
-    fetchDetourDirections(shapePoints).then((detourInfo) => {
-      if (shouldUpdate && !isLoading(detourInfo)) {
-        setDetourShape(detourInfo)
+      if (shapePoints.length < 2) {
+        return Ok({ coordinates: [], directions: undefined })
       }
-    })
 
-    return () => {
-      shouldUpdate = false
-    }
-  }, [shapePoints])
-
-  return detourShape
-}
+      return fetchDetourDirections(shapePoints)
+    }, [shapePoints]),
+  })
 
 export enum DetourState {
   Edit,
@@ -87,15 +64,22 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     ) ?? []
   )
 
-  const coordinates = isOk(detourShape) ? detourShape.ok.coordinates : []
+  const coordinates =
+    detourShape.result && isOk(detourShape.result)
+      ? detourShape.result.ok.coordinates
+      : []
+
+  let directions =
+    detourShape.result && isOk(detourShape.result)
+      ? detourShape.result.ok.directions
+      : undefined
+
   // Only append direction "Regular Route" after detour is finished
-  const directions = isOk(detourShape)
-    ? finishedDetour
-      ? detourShape.ok.directions?.concat({
-          instruction: "Regular Route",
-        })
-      : detourShape.ok.directions
-    : undefined
+  if (!detourShape.isLoading && directions && finishedDetour) {
+    directions = directions.concat({
+      instruction: "Regular Route",
+    })
+  }
 
   const canAddWaypoint = () => startPoint !== null && endPoint === null
   const addWaypoint = canAddWaypoint()
@@ -190,7 +174,10 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * Indicates if there was an error fetching directions from ORS
      */
-    routingError: isFetchError(detourShape),
+    routingError:
+      detourShape.result && isErr(detourShape.result)
+        ? detourShape.result.err
+        : undefined,
 
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
