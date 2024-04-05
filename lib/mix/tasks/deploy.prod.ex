@@ -9,8 +9,13 @@ defmodule Mix.Tasks.Deploy.Prod do
   def run(_) do
     IO.puts("Running the task!")
 
-    {tag, 0} = System.cmd("git", ["describe", "--tags", "--abbrev=0"])
-    latest_tag = tag |> String.trim()
+    latest_tag =
+      System.cmd("git", ["describe", "--tags", "--abbrev=0"])
+      |> case do
+        {tag, 0} -> tag
+      end
+      |> String.trim()
+
     IO.inspect(latest_tag, label: "Latest Release")
 
     %{"previous_date" => previous_date, "previous_count" => previous_count} =
