@@ -5,13 +5,14 @@ Application.ensure_all_started(:hackney)
 Application.ensure_all_started(:ex_aws)
 
 config :skate,
-  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   restrict_environment_access?: System.get_env("RESTRICT_ENVIRONMENT_ACCESS") == "true",
   base_tileset_url: System.get_env("BASE_TILESET_URL"),
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
   aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
-config :skate, SkateWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
+if config_env() != :test do
+  config :skate, SkateWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
+end
 
 config :skate, Skate.OpenRouteServiceAPI,
   api_base_url: System.get_env("OPEN_ROUTE_SERVICE_API_URL"),
