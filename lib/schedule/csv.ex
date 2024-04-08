@@ -59,12 +59,5 @@ defmodule Schedule.Csv do
 
   @spec format_opts(format()) :: Keyword.t()
   defp format_opts(:gtfs), do: [headers: true]
-
-  defp format_opts(:hastus) do
-    [
-      headers: true,
-      separator: ?;,
-      field_transform: &String.trim/1
-    ]
-  end
+  defp format_opts(:hastus), do: [headers: true, separator: ?;, field_transform: &String.trim/1]
 end
