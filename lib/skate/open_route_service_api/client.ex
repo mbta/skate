@@ -26,7 +26,7 @@ defmodule Skate.OpenRouteServiceAPI.Client do
         "Content-Type": "application/json"
       )
 
-    Logger.info("ORS Directions Response: #{response}")
+    Logger.info("ORS Directions Response: #{inspect(response)}")
     parse_response(response)
   end
 

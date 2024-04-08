@@ -59,7 +59,7 @@ config :ueberauth_oidcc,
     ]
   ]
 
-config :logger, level: :notice
+config :logger, level: :info
 
 # Watch static and templates for browser reloading.
 config :skate, SkateWeb.Endpoint,
