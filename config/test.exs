@@ -1,7 +1,6 @@
 import Config
 
-config :skate,
-  start_data_processes: false
+config :skate, start_data_processes: false
 
 config :skate, Schedule.CacheFile, cache_filename: "test_cache.terms"
 
