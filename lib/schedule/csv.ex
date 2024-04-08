@@ -45,8 +45,7 @@ defmodule Schedule.Csv do
     parser = Keyword.get(options, :parse, & &1)
 
     file_binary
-    |> String.split("\n")
-    |> Enum.reject(&(&1 == ""))
+    |> String.codepoints()
     |> CSV.decode!(format_opts(format))
     |> Stream.flat_map(fn csv_row ->
       if Enum.all?(filters, fn filter -> filter.(csv_row) end) do
@@ -60,5 +59,12 @@ defmodule Schedule.Csv do
 
   @spec format_opts(format()) :: Keyword.t()
   defp format_opts(:gtfs), do: [headers: true]
-  defp format_opts(:hastus), do: [headers: true, separator: ?;, strip_fields: true]
+
+  defp format_opts(:hastus) do
+    [
+      headers: true,
+      separator: ?;,
+      field_transform: &String.trim/1
+    ]
+  end
 end

@@ -35,8 +35,7 @@ defmodule ReportTest do
 
       decoded_csv =
         csv
-        |> String.split("\r\n")
-        |> Enum.filter(&(&1 != ""))
+        |> String.codepoints()
         |> CSV.decode(headers: true)
         |> Stream.map(fn {:ok, row} -> row end)
         |> Enum.to_list()
