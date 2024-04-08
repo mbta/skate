@@ -26,6 +26,7 @@ defmodule Skate.OpenRouteServiceAPI.Client do
         "Content-Type": "application/json"
       )
 
+    Logger.info("ORS Directions Response: #{response}")
     parse_response(response)
   end
 
@@ -82,7 +83,6 @@ defmodule Skate.OpenRouteServiceAPI.Client do
         {:error, Jason.decode!(body)["error"]}
 
       {:error, %HTTPoison.Error{}} ->
-        Logger.error(response)
         {:error, "unknown"}
     end
   end
