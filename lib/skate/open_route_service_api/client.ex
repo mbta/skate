@@ -4,6 +4,7 @@ defmodule Skate.OpenRouteServiceAPI.Client do
   An HTTP Client that reaches out to Open Route Service
   """
 
+  require Logger
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
 
   @callback get_directions(DirectionsRequest.t()) :: {:ok, map()} | {:error, any()}
@@ -14,9 +15,12 @@ defmodule Skate.OpenRouteServiceAPI.Client do
   """
   @spec get_directions(DirectionsRequest.t()) :: {:ok, map()} | {:error, any()}
   def get_directions(request) do
+    url = directions_api()
+    Logger.info("ORS Directions URL: #{url}")
+
     response =
       HTTPoison.post(
-        directions_api(),
+        url,
         Jason.encode!(request),
         Authorization: api_key(),
         "Content-Type": "application/json"
@@ -78,6 +82,7 @@ defmodule Skate.OpenRouteServiceAPI.Client do
         {:error, Jason.decode!(body)["error"]}
 
       {:error, %HTTPoison.Error{}} ->
+        Logger.error(response)
         {:error, "unknown"}
     end
   end
