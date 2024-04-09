@@ -11,12 +11,12 @@ import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
 import shapeFactory from "../factories/shape"
-import { ok, loading, fetchError } from "../../src/util/fetchResult"
+import { Err, Ok } from "../../src/util/result"
 
 jest.mock("../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(loading())
+  jest.mocked(fetchDetourDirections).mockReturnValue(new Promise(() => {}))
 
   jest
     .mocked(fetchFinishedDetour)
@@ -106,7 +106,7 @@ describe("useDetour", () => {
 
     jest.mocked(fetchDetourDirections).mockImplementation((coordinates) => {
       expect(coordinates).toStrictEqual([start, end])
-      return Promise.resolve(ok(detourShape))
+      return Promise.resolve(Ok(detourShape))
     })
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
@@ -132,7 +132,9 @@ describe("useDetour", () => {
     const start: ShapePoint = { lat: -2, lon: -2 }
     const end: ShapePoint = { lat: -1, lon: -1 }
 
-    jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+    jest
+      .mocked(fetchDetourDirections)
+      .mockResolvedValue(Err({ type: "unknown" }))
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
@@ -205,7 +207,7 @@ describe("useDetour", () => {
   test("when `undo` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
     jest
       .mocked(fetchDetourDirections)
-      .mockResolvedValue(ok(detourShapeFactory.build()))
+      .mockResolvedValue(Ok(detourShapeFactory.build()))
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
@@ -267,7 +269,7 @@ describe("useDetour", () => {
   test("when `clear` is called, `detourShape` and `directions` should be empty", async () => {
     jest
       .mocked(fetchDetourDirections)
-      .mockResolvedValue(ok(detourShapeFactory.build()))
+      .mockResolvedValue(Ok(detourShapeFactory.build()))
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
