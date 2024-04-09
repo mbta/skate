@@ -44,8 +44,7 @@ defmodule Schedule.Csv do
     filters = Keyword.get_values(options, :filter)
     parser = Keyword.get(options, :parse, & &1)
 
-    file_binary
-    |> String.codepoints()
+    [file_binary]
     |> CSV.decode!(format_opts(format))
     |> Stream.flat_map(fn csv_row ->
       if Enum.all?(filters, fn filter -> filter.(csv_row) end) do
