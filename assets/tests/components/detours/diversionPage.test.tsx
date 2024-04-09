@@ -75,10 +75,12 @@ describe("DiversionPage", () => {
   test("can click on route shape to start detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    fireEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
 
-    expect(screen.getByTitle("Detour Start")).not.toBeNull()
-    expect(screen.queryByTitle("Detour End")).toBeNull()
+    expect(await screen.findByTitle("Detour Start")).not.toBeNull()
+    expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
   })
 
   test("can click on route shape again to end detour", async () => {
