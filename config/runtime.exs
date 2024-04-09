@@ -10,7 +10,7 @@ config :skate,
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
   aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
-if config_env() != :test do
+if System.get_env("SECRET_KEY_BASE") do
   config :skate, SkateWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
 end
 
