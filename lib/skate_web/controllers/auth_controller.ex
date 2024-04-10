@@ -2,6 +2,8 @@ defmodule SkateWeb.AuthController do
   use SkateWeb, :controller
   plug(Ueberauth)
 
+  require Logger
+
   import Plug.Conn
   alias Skate.Settings.User
   alias SkateWeb.AuthManager
@@ -65,7 +67,14 @@ defmodule SkateWeb.AuthController do
     |> redirect(to: ~p"/")
   end
 
-  def callback(%{assigns: %{ueberauth_failure: %{provider: :keycloak}}} = conn, _params) do
+  def callback(
+        %{assigns: %{ueberauth_failure: %{provider: :keycloak} = auth_struct}} = conn,
+        _params
+      ) do
+    Logger.error(
+      "#{__MODULE__} keycloak callback ueberauth_failure struct=#{Kernel.inspect(auth_struct)}"
+    )
+
     send_resp(conn, :unauthorized, "unauthenticated")
   end
 
