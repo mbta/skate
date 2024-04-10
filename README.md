@@ -146,6 +146,25 @@ Use Github Actions to deploy a specific branch to [Skate-Dev-Blue](https://skate
 
 ## Production Deploys
 
+The deploy process is as follows:
+
+1. Check [skate-dev](https://skate-dev.mbtace.com) to ensure that it's in a good state. Also check the Sentry [skate-backend](https://mbtace.sentry.io/issues/?environment=dev&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?project=5303927&statsPeriod=14d) projects' `dev` environments to make sure there are no surprising errors.
+
+If there are, remedy those before deploying.
+
+2. Check Splunk and Sentry to get a baseline for production.
+
+For Splunk, start by loading [this search](https://mbta.splunkcloud.com/en-US/app/search/search?q=search%20index%3D%22skate-prod-application%22%20%22%5Berror%5D%22%20OR%20%22%5Bexit%5D%22%20OR%20%22%5Bwarning%5D%22&display.page.search.mode=smart&dispatch.sample_ratio=1&workload_pool=&earliest=-30m%40m&latest=now), and then exclude terms related to errors or warnings that seem to happen a lot (`Geonames` is a common culprit to ignore) until you see no results. This is your baseline search query.
+
+For Sentry, check both the [skate-backend](https://mbtace.sentry.io/issues/?environment=production&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?environment=production&project=5303927&statsPeriod=14d) projects.
+
+3. Actually perform the deploy.
+
+The 
+
+
+### Old Process (delete this before merging)
+
 Prior to releasing a new version to prod, we create an annotated Git tag documenting what's being deployed. 
 
 1. Find all the git commit logs since the last production update for the body of the description. This will be the output of the following command:
