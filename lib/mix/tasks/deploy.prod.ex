@@ -45,5 +45,9 @@ defmodule Mix.Tasks.Deploy.Prod do
     new_release = "#{today}-#{count}"
 
     IO.inspect(new_release, label: "New Release")
+
+    System.cmd("open", [
+      "https://github.com/mbta/skate/releases/new?tag=#{new_release}&generate-release-notes=true"
+    ])
   end
 end
