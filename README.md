@@ -166,10 +166,12 @@ The simplest way to deploy is as follows:
 
 1. Run the script `mix deploy.prod`. This will open a release page in the browser.
 1. Click `Generate release notes`
-..1. Double-check that the tag is correct. It should be in the format `YYYY-MM-DD-N`, where `N` is used to differentiate between multiple releases in a given day and starts at 1.
-..1. Double-check that the release notes reflect the PR's that had been merged since the last release.
+   - Double-check that the tag is correct. It should be in the format `YYYY-MM-DD-N`, where `N` is used to differentiate between multiple releases in a given day and starts at 1.
+   - Double-check that the release notes reflect the PR's that had been merged since the last release.
 1. Click `Publish release`
-1. Approve the release. You can do this by navigating to the ["Deploy to Prod (ECS)" GitHub Action page](https://github.com/mbta/skate/actions/workflows/deploy-prod-ecs.yml), selecting the latest release (which should match the tag that you just created), and approving it. You also will have gotten an email that links directly to the release.
+1. Approve the release. You can do this in one of two ways:
+   - Navigate to the ["Deploy to Prod (ECS)" GitHub Action page](https://github.com/mbta/skate/actions/workflows/deploy-prod-ecs.yml), select the latest release (which should match the tag that you just created), and approve it. OR
+   - Check your email for an email about a release needing approval. Click the link in that email and approve the deploy from the GitHub page that it brings you to.
 1. Watch it go! (This will take a while, so make sure you have a nice cup of coffee or beverage of your choice.)
 
 ### 4. Monitor the new version
