@@ -32,14 +32,13 @@ describe("Result<T, E>::isErr", () => {
 })
 
 describe("Result<T, E>::map", () => {
-  test("applies function if Ok<T>", () => {
-    const fn = jest.fn(() => true)
+  test("if Ok<T> applies function and returns Ok<U>", () => {
+    const value = Symbol("unique value")
 
-    expect(map(Ok(undefined), fn)).toEqual(Ok(true))
-    expect(fn).toHaveBeenCalledWith(undefined)
+    expect(map(Ok(value), (x) => x === value)).toEqual(Ok(true))
   })
 
-  test("returns input if Err<E>", () => {
+  test("if Err<E> returns input", () => {
     const fn = jest.fn(() => false)
 
     expect(map(Err(true), fn)).toEqual(Err(true))
