@@ -148,52 +148,35 @@ Use Github Actions to deploy a specific branch to [Skate-Dev-Blue](https://skate
 
 The deploy process is as follows:
 
-1. Check [skate-dev](https://skate-dev.mbtace.com) to ensure that it's in a good state. Also check the Sentry [skate-backend](https://mbtace.sentry.io/issues/?environment=dev&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?project=5303927&statsPeriod=14d) projects' `dev` environments to make sure there are no surprising errors.
+### 1. Check that dev is in a good state
+
+Check [skate-dev](https://skate-dev.mbtace.com) to ensure that it's in a good state. Also check the Sentry [skate-backend](https://mbtace.sentry.io/issues/?environment=dev&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?project=5303927&statsPeriod=14d) projects' `dev` environments to make sure there are no surprising errors.
 
 If there are, remedy those before deploying.
 
-2. Check Splunk and Sentry to get a baseline for production.
+### 2. Check Splunk and Sentry to get a baseline for production
 
 For Splunk, start by loading [this search](https://mbta.splunkcloud.com/en-US/app/search/search?q=search%20index%3D%22skate-prod-application%22%20%22%5Berror%5D%22%20OR%20%22%5Bexit%5D%22%20OR%20%22%5Bwarning%5D%22&display.page.search.mode=smart&dispatch.sample_ratio=1&workload_pool=&earliest=-30m%40m&latest=now), and then exclude terms related to errors or warnings that seem to happen a lot (`Geonames` is a common culprit to ignore) until you see no results. This is your baseline search query.
 
 For Sentry, check both the [skate-backend](https://mbtace.sentry.io/issues/?environment=production&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?environment=production&project=5303927&statsPeriod=14d) projects.
 
-3. Actually perform the deploy.
+### 3. Actually perform the deploy
 
-The 
+The simplest way to deploy is as follows:
 
+1. Run the script `mix deploy.prod`. This will open a release page in the browser.
+1. Click `Generate release notes`
+  a. Double-check that the tag is correct and that the release notes reflect the PR's that had been merged since the last release.
+1. Click `Publish release`
+1. Approve the release. You can do this by navigating to the ["Deploy to Prod (ECS)" GitHub Action page](https://github.com/mbta/skate/actions/workflows/deploy-prod-ecs.yml), selecting the latest release (which should match the tag that you just created), and approving it. You also will have gotten an email that links directly to the release.
+1. Watch it go! (This will take a while, so make sure you have a nice cup of coffee or beverage of your choice.)
 
-### Old Process (delete this before merging)
+### 4. Monitor the new version
 
-Prior to releasing a new version to prod, we create an annotated Git tag documenting what's being deployed. 
+Click around in [Skate](https://skate.mbta.com) and double-check that things still look like they're working, especially any pages or components that were updated.
 
-1. Find all the git commit logs since the last production update for the body of the description. This will be the output of the following command:
-```
-git log --abbrev-commit --pretty=format:'%h:%s' [tag name or hash of previous prod version]..HEAD
-```
-To find out the tag name of the [most recent production release](https://github.com/mbta/skate/releases):
-```
-git describe --tags --abbrev=0
-```
-Or, to run both commands as one line:
-```
-git log --abbrev-commit --pretty=format:'%h:%s' $(git describe --tags --abbrev=0)..HEAD
-```
-2. The tag name should be in the format `YYYY-MM-DD-N`, where `N` is used to differentiate between multiple releases in a given day and starts at 1. Create the tag with this command: 
-```
-git tag -a [tag name]
-```
-This will prompt you to enter the annotation from the previous step via your editor. 
+Return to your Splunk query created in step 1. You should continue to see no new results.
 
-3. Once this is done, you can push using:
-```
-git push origin --tags
-```
-4. In [Skate's GitHub Releases Page](https://github.com/mbta/skate/releases)
-   1. Click the "[`Draft new release`](https://github.com/mbta/skate/releases/new)" button.
-   2. Select the tag you just made.
-   3. Click "`Generate release notes`" to auto-generate a description of the release.
-   4. Click "`Publish Release`."
-5. Deploy the created tag to `production` using the ["Deploy to Prod (ECS)" GitHub Action](https://github.com/mbta/skate/actions/workflows/deploy-prod-ecs.yml).
-6. Mark the Asana Tickets related to the released PR's as completed.
-7. Find the new changes live at [skate.mbta.com](https://skate.mbta.com)
+In Sentry, check the [skate-backend](https://mbtace.sentry.io/issues/?environment=production&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?environment=production&project=5303927&statsPeriod=14d) projects again. You shouldn't see any new errors.
+
+If you go a half hour without seeing any issues, then you're good to consider the deploy successful. Mark any Asana tickets associated with this release as completed.
