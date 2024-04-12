@@ -37,7 +37,7 @@ describe("useDetour", () => {
     expect(result.current.startPoint).toBe(start)
   })
 
-  test("when `addConnectionPoint` is called a second time, `endPoint` is set", () => {
+  test("when `addConnectionPoint` is called a second time, `endPoint` is set", async () => {
     const start = { lat: 0, lon: 0 }
     const end = { lat: 1, lon: 1 }
 
@@ -46,7 +46,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.(start))
     act(() => result.current.addConnectionPoint?.(end))
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(result.current.startPoint).toBe(start)
       expect(result.current.endPoint).toBe(end)
     })
@@ -59,7 +59,7 @@ describe("useDetour", () => {
     expect(result.current.addWaypoint).toBeUndefined()
   })
 
-  test("when `startPoint` is set and `endPoint` is null, `addWaypoint` is defined", () => {
+  test("when `startPoint` is set and `endPoint` is null, `addWaypoint` is defined", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
@@ -68,11 +68,11 @@ describe("useDetour", () => {
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
-    waitFor(() => expect(result.current.waypoints).toHaveLength(0))
+    await waitFor(() => expect(result.current.waypoints).toHaveLength(0))
     expect(result.current.addWaypoint).not.toBeUndefined()
   })
 
-  test("when `endPoint` is set, `addWaypoint` is undefined", () => {
+  test("when `endPoint` is set, `addWaypoint` is undefined", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
@@ -82,7 +82,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 1, lon: 1 }))
 
-    waitFor(() => expect(result.current.waypoints).toHaveLength(0))
+    await waitFor(() => expect(result.current.waypoints).toHaveLength(0))
     expect(result.current.addWaypoint).toBeUndefined()
   })
 
