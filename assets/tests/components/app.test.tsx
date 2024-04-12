@@ -205,7 +205,6 @@ describe("App", () => {
           <AppRoutes />
         </MemoryRouter>
       </StateDispatchProvider>
-      // <App></App>
     )
 
     await userEvent.click(screen.getByRole("link", { name: "Shuttle Map" }))
