@@ -190,16 +190,20 @@ describe("DiversionPage", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(0)
+    await waitFor(() =>
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(0)
+    )
   })
 
-  test("'Undo' and 'Clear' are disabled before detour drawing is started", () => {
+  test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
     render(<DiversionPage />)
 
-    expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
-    expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
+      expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
+    })
   })
 
   test("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
@@ -209,36 +213,54 @@ describe("DiversionPage", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Undo" }))
 
-    expect(screen.queryByTitle("Detour Start")).toBeNull()
+    await waitFor(() => expect(screen.queryByTitle("Detour Start")).toBeNull())
   })
 
   test("clicking on 'Undo' removes the end point when the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
-    fireEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
 
-    fireEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
 
-    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    })
 
-    expect(screen.getByTitle("Detour Start")).not.toBeNull()
-    expect(screen.queryByTitle("Detour End")).toBeNull()
+    await waitFor(() => {
+      expect(screen.getByTitle("Detour Start")).not.toBeNull()
+      expect(screen.queryByTitle("Detour End")).toBeNull()
+    })
   })
 
   test("clicking on 'Clear' removes the entire detour", async () => {
     const { container } = render(<DiversionPage />)
 
-    fireEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
 
-    fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
 
-    fireEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
 
-    fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+    })
 
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(0)
+    await waitFor(() =>
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(0)
+    )
 
     expect(screen.queryByTitle("Detour Start")).toBeNull()
     expect(screen.queryByTitle("Detour End")).toBeNull()
@@ -305,9 +327,13 @@ describe("DiversionPage", () => {
 
     expect(await screen.findByText("Regular Route")).toBeVisible()
 
-    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    })
 
-    expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
+    )
   })
 
   test("missed stops are filled in when detour is complete", async () => {
@@ -495,22 +521,26 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("Attempting to close the page calls the onClose callback", () => {
+  test("Attempting to close the page calls the onClose callback", async () => {
     const onClose = jest.fn()
 
     render(<DiversionPage onClose={onClose} />)
 
-    fireEvent.click(screen.getByRole("button", { name: "Close" }))
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Close" }))
+    })
 
-    expect(onClose).toHaveBeenCalled()
+    await waitFor(() => expect(onClose).toHaveBeenCalled())
   })
 
-  test("Displays a confirmation modal", () => {
+  test("Displays a confirmation modal", async () => {
     render(<DiversionPage showConfirmCloseModal={true} />)
 
-    expect(screen.getByRole("dialog")).toBeVisible()
-    expect(screen.getByRole("button", { name: /yes/i })).toBeVisible()
-    expect(screen.getByRole("button", { name: /back/i })).toBeVisible()
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeVisible()
+      expect(screen.getByRole("button", { name: /yes/i })).toBeVisible()
+      expect(screen.getByRole("button", { name: /back/i })).toBeVisible()
+    })
   })
 
   test("calls the onConfirmClose callback from the confirmation modal", async () => {
@@ -580,7 +610,9 @@ describe("DiversionPage", () => {
       />
     )
 
-    expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(11)
+    await waitFor(() =>
+      expect(container.querySelectorAll(".c-stop-icon")).toHaveLength(11)
+    )
   })
 
   test("missed stop markers are drawn on the map", async () => {

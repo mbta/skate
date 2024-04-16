@@ -27,14 +27,14 @@ const useDetourWithFakeRoutePattern = () =>
   useDetour(originalRouteFactory.build())
 
 describe("useDetour", () => {
-  test("when `addConnectionPoint` is first called, `startPoint` is set", () => {
+  test("when `addConnectionPoint` is first called, `startPoint` is set", async () => {
     const start = { lat: 0, lon: 0 }
 
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     act(() => result.current.addConnectionPoint?.(start))
 
-    expect(result.current.startPoint).toBe(start)
+    await waitFor(() => expect(result.current.startPoint).toBe(start))
   })
 
   test("when `addConnectionPoint` is called a second time, `endPoint` is set", async () => {
@@ -52,11 +52,13 @@ describe("useDetour", () => {
     })
   })
 
-  test("when `startPoint` is null, `addWaypoint` is undefined", () => {
+  test("when `startPoint` is null, `addWaypoint` is undefined", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    expect(result.current.startPoint).toBeNull()
-    expect(result.current.addWaypoint).toBeUndefined()
+    await waitFor(() => {
+      expect(result.current.startPoint).toBeNull()
+      expect(result.current.addWaypoint).toBeUndefined()
+    })
   })
 
   test("when `startPoint` is set and `endPoint` is null, `addWaypoint` is defined", async () => {
@@ -162,7 +164,7 @@ describe("useDetour", () => {
 
     act(() => result.current.undo?.())
 
-    expect(result.current.startPoint).toBeNull()
+    await waitFor(() => expect(result.current.startPoint).toBeNull())
   })
 
   test("when `undo` is called, removes the last `waypoint`", async () => {
@@ -178,7 +180,7 @@ describe("useDetour", () => {
 
     act(() => result.current.undo?.())
 
-    expect(result.current.waypoints).toHaveLength(0)
+    await waitFor(() => expect(result.current.waypoints).toHaveLength(0))
   })
 
   test("when `undo` is called, should call API with updated waypoints", async () => {
@@ -219,9 +221,11 @@ describe("useDetour", () => {
     act(() => result.current.undo?.())
     act(() => result.current.undo?.())
 
-    expect(result.current.waypoints).toHaveLength(0)
-    expect(result.current.directions).toBeUndefined()
-    expect(result.current.detourShape).toHaveLength(0)
+    await waitFor(() => {
+      expect(result.current.waypoints).toHaveLength(0)
+      expect(result.current.directions).toBeUndefined()
+      expect(result.current.detourShape).toHaveLength(0)
+    })
   })
 
   test("when `clear` is called, removes the start and end points", async () => {
@@ -238,8 +242,10 @@ describe("useDetour", () => {
 
     act(() => result.current.clear?.())
 
-    expect(result.current.endPoint).toBeNull()
-    expect(result.current.startPoint).toBeNull()
+    await waitFor(() => {
+      expect(result.current.endPoint).toBeNull()
+      expect(result.current.startPoint).toBeNull()
+    })
   })
 
   test("when `clear` is called, removes all waypoints", async () => {
@@ -255,7 +261,7 @@ describe("useDetour", () => {
 
     act(() => result.current.clear?.())
 
-    expect(result.current.waypoints).toHaveLength(0)
+    await waitFor(() => expect(result.current.waypoints).toHaveLength(0))
   })
 
   test("when `clear` is called, `detourShape` and `directions` should be empty", async () => {
@@ -276,16 +282,20 @@ describe("useDetour", () => {
 
     act(() => result.current.clear?.())
 
-    expect(result.current.waypoints).toHaveLength(0)
-    expect(result.current.directions).toBeUndefined()
-    expect(result.current.detourShape).toHaveLength(0)
+    await waitFor(() => {
+      expect(result.current.waypoints).toHaveLength(0)
+      expect(result.current.directions).toBeUndefined()
+      expect(result.current.detourShape).toHaveLength(0)
+    })
   })
 
   test("when `startPoint` is null, `canUndo` is `false`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    expect(result.current.startPoint).toBeNull()
-    expect(result.current.canUndo).toBe(false)
+    await waitFor(() => {
+      expect(result.current.startPoint).toBeNull()
+      expect(result.current.canUndo).toBe(false)
+    })
   })
 
   test("when `startPoint` is set, `canUndo` is `true`", async () => {
@@ -293,8 +303,10 @@ describe("useDetour", () => {
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
-    expect(result.current.startPoint).not.toBeNull()
-    expect(result.current.canUndo).toBe(true)
+    await waitFor(() => {
+      expect(result.current.startPoint).not.toBeNull()
+      expect(result.current.canUndo).toBe(true)
+    })
   })
 
   test("when `endPoint` is set, `canUndo` is `true`", async () => {
@@ -426,22 +438,22 @@ describe("useDetour", () => {
     })
   })
 
-  test("initially, `finishDetour` is `undefined`", () => {
+  test("initially, `finishDetour` is `undefined`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    expect(result.current.finishDetour).toBeUndefined()
+    await waitFor(() => expect(result.current.finishDetour).toBeUndefined())
   })
 
-  test("initially, `editDetour` is `undefined`", () => {
+  test("initially, `editDetour` is `undefined`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    expect(result.current.editDetour).toBeUndefined()
+    await waitFor(() => expect(result.current.editDetour).toBeUndefined())
   })
 
-  test("initially, `state` is `Edit`", () => {
+  test("initially, `state` is `Edit`", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
-    expect(result.current.state).toBe(DetourState.Edit)
+    await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
   })
 
   test("when `endPoint` is set, `finishDetour` is defined", async () => {
@@ -527,7 +539,7 @@ describe("useDetour", () => {
   })
 
   describe("stops", () => {
-    test("`stops` is initially populated with the stops from the original route shape with a `missed` field added", () => {
+    test("`stops` is initially populated with the stops from the original route shape with a `missed` field added", async () => {
       const stop1 = stopFactory.build()
       const stop2 = stopFactory.build()
 
@@ -544,7 +556,9 @@ describe("useDetour", () => {
         { ...stop2, missed: false },
       ]
 
-      expect(result.current.stops).toStrictEqual(expectedStops)
+      await waitFor(() =>
+        expect(result.current.stops).toStrictEqual(expectedStops)
+      )
     })
 
     test("when the detour is finished, missed stops are marked as missed in `stops`", async () => {
