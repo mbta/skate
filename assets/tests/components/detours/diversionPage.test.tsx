@@ -9,7 +9,11 @@ import {
 } from "@testing-library/react"
 import React, { ComponentProps } from "react"
 import "@testing-library/jest-dom/jest-globals"
-import { fetchDetourDirections, fetchFinishedDetour } from "../../../src/api"
+import {
+  FetchDetourDirectionsError,
+  fetchDetourDirections,
+  fetchFinishedDetour,
+} from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
 import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
@@ -121,27 +125,40 @@ describe("DiversionPage", () => {
     ).toHaveLength(1)
   })
 
-  test("when adding a point results in a routing error, displays an alert", async () => {
-    jest
-      .mocked(fetchDetourDirections)
-      .mockResolvedValue(Err({ type: "unknown" }))
+  test.each<{
+    title: string
+    directionsResult: Err<FetchDetourDirectionsError>
+    alertError: string
+  }>([
+    {
+      title: "No Route",
+      directionsResult: Err({ type: "no_route" }),
+      alertError:
+        "You can't route to this location. Please try a different point.",
+    },
+    {
+      title: "Unknown",
+      directionsResult: Err({ type: "unknown" }),
+      alertError: "Something went wrong. Please try again.",
+    },
+  ])(
+    "when adding a point results in a `$title` routing error, displays an alert",
+    async ({ alertError, directionsResult }) => {
+      jest.mocked(fetchDetourDirections).mockResolvedValue(directionsResult)
 
-    const { container } = render(<DiversionPage />)
+      const { container } = render(<DiversionPage />)
 
-    await act(async () => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
+      act(() => {
+        fireEvent.click(originalRouteShape.get(container))
+      })
 
-    await act(async () => {
-      fireEvent.click(container.querySelector(".c-vehicle-map")!)
-    })
+      act(() => {
+        fireEvent.click(container.querySelector(".c-vehicle-map")!)
+      })
 
-    await waitFor(async () =>
-      expect(
-        screen.getByText("Something went wrong. Please try again.")
-      ).toBeVisible()
-    )
-  })
+      expect(await screen.findByRole("alert")).toHaveTextContent(alertError)
+    }
+  )
 
   test("routing error alert can be dismissed", async () => {
     jest
