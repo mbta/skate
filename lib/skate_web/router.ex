@@ -50,6 +50,7 @@ defmodule SkateWeb.Router do
 
     get "/docs/agency-policies/aup", Redirect, external: :aup
     get "/user-guide", Redirect, external: :user_guide
+    get "/training", Redirect, external: :training
   end
 
   scope "/auth", SkateWeb do

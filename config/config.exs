@@ -92,7 +92,9 @@ config :skate,
   acceptable_use_policy:
     "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn",
   user_guide_url:
-    "https://mbta.sharepoint.com/:b:/s/CTD/EaGzb7ta6GtBjfwSiUiO014B7qVDfSEIkCWMlpqomH7_cA?e=BHOpjY"
+    "https://mbta.sharepoint.com/:b:/s/CTD/EaGzb7ta6GtBjfwSiUiO014B7qVDfSEIkCWMlpqomH7_cA?e=BHOpjY",
+  training_url:
+    "https://massdot.csod.com/ui/lms-learning-details/app/course/6287548c-c6a2-4e1e-9ed2-d6e4a445c855"
 
 config :skate, Schedule.CacheFile, cache_filename: nil
 

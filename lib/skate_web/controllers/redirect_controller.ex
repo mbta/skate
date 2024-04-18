@@ -29,5 +29,9 @@ defmodule SkateWeb.Redirect do
   defp allowed_url_from_atom(:user_guide),
     do: {:ok, @user_guide_url}
 
+  @training_url Application.compile_env(:skate, :training_url)
+  defp allowed_url_from_atom(:training),
+    do: {:ok, @training_url}
+
   defp allowed_url_from_atom(_), do: {:error, :not_found}
 end
