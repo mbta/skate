@@ -15,7 +15,6 @@ defmodule SkateWeb.Redirect do
   @spec call(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
   def call(conn, external: atom) do
     case allowed_url_from_atom(atom) do
-      {:ok, nil} -> Plug.Conn.send_resp(conn, :not_found, "URL is null??")
       {:ok, url} -> redirect(conn, external: url)
       {:error, :not_found} -> Plug.Conn.send_resp(conn, :not_found, "URL not found")
     end
