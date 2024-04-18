@@ -28,7 +28,7 @@ import {
   missedStopIcon,
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
-import { ok, loading, fetchError } from "../../../src/util/fetchResult"
+import { Err, Ok } from "../../../src/util/result"
 
 const DiversionPage = (
   props: Omit<
@@ -67,7 +67,9 @@ beforeEach(() => {
 jest.mock("../../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetourDirections).mockResolvedValue(loading())
+  jest
+    .mocked(fetchDetourDirections)
+    .mockImplementation(() => new Promise(() => {}))
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
 })
 
@@ -120,7 +122,9 @@ describe("DiversionPage", () => {
   })
 
   test("when adding a point results in a routing error, displays an alert", async () => {
-    jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+    jest
+      .mocked(fetchDetourDirections)
+      .mockResolvedValue(Err({ type: "unknown" }))
 
     const { container } = render(<DiversionPage />)
 
@@ -140,7 +144,9 @@ describe("DiversionPage", () => {
   })
 
   test("routing error alert can be dismissed", async () => {
-    jest.mocked(fetchDetourDirections).mockResolvedValue(fetchError())
+    jest
+      .mocked(fetchDetourDirections)
+      .mockResolvedValue(Err({ type: "unknown" }))
 
     const { container } = render(<DiversionPage />)
 
@@ -268,7 +274,7 @@ describe("DiversionPage", () => {
 
   test("shows 'Regular Route' text when the detour is finished", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
-      ok(
+      Ok(
         detourShapeFactory.build({
           directions: [
             { instruction: "Turn left on Main Street" },
@@ -298,7 +304,7 @@ describe("DiversionPage", () => {
 
   test("does not show 'Regular Route' when detour is not finished", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
-      ok(
+      Ok(
         detourShapeFactory.build({
           directions: [
             { instruction: "Turn left on Main Street" },
@@ -443,7 +449,7 @@ describe("DiversionPage", () => {
     const [start, end] = stopFactory.buildList(2)
 
     jest.mocked(fetchDetourDirections).mockResolvedValue(
-      ok(
+      Ok(
         detourShapeFactory.build({
           directions: [
             { instruction: "Turn left on Main Street" },

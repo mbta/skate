@@ -25,6 +25,8 @@ import {
   array,
   assert,
   create,
+  enums,
+  Infer,
   is,
   object,
   Struct,
@@ -55,7 +57,7 @@ import {
   finishedDetourFromData,
 } from "./models/finishedDetour"
 import { FetchResult, ok, fetchError } from "./util/fetchResult"
-import { Ok, Err, Result } from "./util/result"
+import { Ok, Err, Result, map } from "./util/result"
 
 export interface RouteData {
   id: string
@@ -227,15 +229,25 @@ const postJsonParameter = (content: unknown): Parameters<typeof fetch>[1] => ({
   body: JSON.stringify(content),
 })
 
+const FetchDetourDirectionsError = object({
+  type: enums(["unknown", "no_route"]),
+})
+
+export type FetchDetourDirectionsError = Infer<
+  typeof FetchDetourDirectionsError
+>
+
 export const fetchDetourDirections = (
   coordinates: ShapePoint[]
-): Promise<FetchResult<DetourShape>> =>
-  apiCallWithError({
-    url: "/api/detours/directions",
-    parser: detourShapeFromData,
-    dataStruct: DetourShapeData,
-    fetchArgs: postJsonParameter({ coordinates }),
-  })
+): Promise<Result<DetourShape, FetchDetourDirectionsError>> =>
+  apiCallResult(
+    "/api/detours/directions",
+    DetourShapeData,
+    FetchDetourDirectionsError,
+    postJsonParameter({
+      coordinates,
+    })
+  ).then((v) => map(v, detourShapeFromData))
 
 export const fetchFinishedDetour = (
   routePatternId: RoutePatternId,
