@@ -320,7 +320,7 @@ const WaypointMarker = ({ position }: { position: LatLngLiteral }) => (
     position={position}
     divIconSettings={{
       iconSize: [10, 10],
-      iconAnchor: new Leaflet.Point(5, 5),
+      iconAnchor: new Leaflet.Point(5, 10),
       className: "",
     }}
     icon={<WaypointIcon />}
