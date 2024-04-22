@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
-import { fetchDetourDirections, fetchFinishedDetour, fetchNearestIntersection } from "../api"
+import {
+  fetchDetourDirections,
+  fetchFinishedDetour,
+  fetchNearestIntersection,
+} from "../api"
 import { FinishedDetour, OriginalRoute } from "../models/detour"
 
 import { useApiCall } from "./useApiCall"
@@ -33,7 +37,9 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
     null
   )
-  const [nearestIntersection, setNearestIntersection] = useState<string | null>()
+  const [nearestIntersection, setNearestIntersection] = useState<string | null>(
+    null
+  )
 
   useEffect(() => {
     let shouldUpdate = true
@@ -57,8 +63,8 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
 
   useEffect(() => {
     if (startPoint) {
-      fetchNearestIntersection(startPoint.lat, startPoint.lon).then(
-        result => setNearestIntersection(result)
+      fetchNearestIntersection(startPoint.lat, startPoint.lon).then((result) =>
+        setNearestIntersection(result)
       )
     }
   }, [startPoint])

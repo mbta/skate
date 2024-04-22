@@ -59,8 +59,12 @@ export const DiversionPage = ({
 
   const [textArea, setTextArea] = useState("")
 
-  const nearestIntersectionDirection = [{instruction: "From " + nearestIntersection}]
-  const extendedDirections = directions ? nearestIntersectionDirection.concat(directions) : undefined
+  const nearestIntersectionDirection = [
+    { instruction: "From " + nearestIntersection },
+  ]
+  const extendedDirections = directions
+    ? nearestIntersectionDirection.concat(directions)
+    : undefined
 
   useEffect(() => {
     setTextArea(
@@ -83,7 +87,7 @@ export const DiversionPage = ({
     )
   }, [
     originalRoute,
-    directions,
+    extendedDirections,
     missedStops,
     connectionPoints?.start?.name,
     connectionPoints?.end?.name,
