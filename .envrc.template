@@ -97,3 +97,6 @@ export SECRET_KEY_BASE=$(mix phx.gen.secret)
 ## Used for locally building (and eventually testing) Storybook and Snapshot tests
 ## The project token can be found in Chromatic, (Manage > Configure > Project > Project Token)
 # export CHROMATIC_PROJECT_TOKEN=
+
+## Indicates to Sentry and other places what version is currently running
+export SENTRY_RELEASE=local
