@@ -13,6 +13,7 @@ import {
   FetchDetourDirectionsError,
   fetchDetourDirections,
   fetchFinishedDetour,
+  fetchNearestIntersection,
 } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
@@ -75,6 +76,7 @@ beforeEach(() => {
     .mocked(fetchDetourDirections)
     .mockImplementation(() => new Promise(() => {}))
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
+  jest.mocked(fetchNearestIntersection).mockResolvedValue(null)
 })
 
 describe("DiversionPage", () => {
@@ -486,6 +488,10 @@ describe("DiversionPage", () => {
       routeSegments: routeSegmentsFactory.build(),
     })
 
+    jest
+      .mocked(fetchNearestIntersection)
+      .mockResolvedValue("Avenue 1 & Street 2")
+
     userEvent.setup() // Configure the clipboard API
 
     const routeName = "route1"
@@ -524,6 +530,7 @@ describe("DiversionPage", () => {
           routeDirection,
           ,
           "Turn-by-Turn Directions:",
+          "From Avenue 1 & Street 2",
           "Turn left on Main Street",
           "Turn right on High Street",
           "Turn sharp right on Broadway",
