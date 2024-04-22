@@ -1,6 +1,5 @@
 defmodule SkateWeb.VersionControllerTest do
   use SkateWeb.ConnCase
-  import Skate.Factory
   import Test.Support.Helpers
 
   describe "GET /" do
