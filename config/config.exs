@@ -89,7 +89,7 @@ config :skate,
       }
     ]
   },
-  version: System.get_env("SENTRY_RELEASE"),
+  version: System.fetch_env!("SENTRY_RELEASE"),
   acceptable_use_policy:
     "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn",
   user_guide_url:
