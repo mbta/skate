@@ -74,7 +74,7 @@ interface DetourMapProps {
   onClickOriginalShape: (point: ShapePoint) => void
 
   /**
-   * Callback fired when the map tries to add a waypoint.
+   * Callback fired when the map is clicked in a mode that should lead to adding a waypoint.
    * @param point
    */
   onAddWaypoint?: (point: ShapePoint) => void
