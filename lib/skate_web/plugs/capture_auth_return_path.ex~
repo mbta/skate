@@ -1,0 +1,2 @@
+defmodule SkateWeb.Plugs.CaptureAuthReturnPath do
+end

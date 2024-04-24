@@ -42,6 +42,10 @@ defmodule SkateWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :capture_auth_return_path do
+    plug(SkateWeb.Plugs.CaptureAuthReturnPath)
+  end
+
   scope "/", SkateWeb do
     pipe_through([
       :browser,
@@ -75,6 +79,7 @@ defmodule SkateWeb.Router do
       :redirect_prod_http,
       :accepts_html,
       :browser,
+      :capture_auth_return_path,
       :auth,
       :ensure_auth,
       :put_user_token
@@ -88,6 +93,7 @@ defmodule SkateWeb.Router do
       :redirect_prod_http,
       :accepts_html,
       :browser,
+      :capture_auth_return_path,
       :auth,
       :ensure_auth,
       :ensure_environment_access,
@@ -108,6 +114,7 @@ defmodule SkateWeb.Router do
       :redirect_prod_http,
       :accepts_html,
       :browser,
+      :capture_auth_return_path,
       :auth,
       :ensure_auth,
       :ensure_environment_access,
