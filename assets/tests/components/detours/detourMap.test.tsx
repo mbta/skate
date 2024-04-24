@@ -35,7 +35,7 @@ const DetourMapWithDefaults = (
     endPoint={undefined}
     waypoints={[]}
     undoDisabled={false}
-    onClickMap={() => {}}
+    onAddWaypoint={() => {}}
     onClickOriginalShape={() => {}}
     onUndo={() => {}}
     onClear={() => {}}
@@ -94,9 +94,9 @@ describe("DetourMap", () => {
     ).toBeNull()
   })
 
-  test("when `onClickMap` is present, map has a waypoint cursor, given by the __clickable class", async () => {
+  test("when `onAddWaypoint` is present, map has a waypoint cursor, given by the __clickable class", async () => {
     const { container } = render(
-      <DetourMapWithDefaults onClickMap={() => {}} />
+      <DetourMapWithDefaults onAddWaypoint={() => {}} />
     )
 
     expect(
@@ -104,9 +104,9 @@ describe("DetourMap", () => {
     ).toBeInTheDocument()
   })
 
-  test("when `onClickMap` is absent, map has a normal cursor", async () => {
+  test("when `onAddWaypoint` is absent, map has a normal cursor", async () => {
     const { container } = render(
-      <DetourMapWithDefaults onClickMap={undefined} />
+      <DetourMapWithDefaults onAddWaypoint={undefined} />
     )
 
     expect(
@@ -114,9 +114,9 @@ describe("DetourMap", () => {
     ).not.toBeInTheDocument()
   })
 
-  test("when `onClickMap` is present and street view mode is enabled, map has a normal cursor", async () => {
+  test("when `onAddWaypoint` is present and street view mode is enabled, map has a normal cursor", async () => {
     const { container } = render(
-      <DetourMapWithDefaults onClickMap={() => {}} />
+      <DetourMapWithDefaults onAddWaypoint={() => {}} />
     )
 
     fireEvent.click(streetViewModeSwitch.get())
@@ -126,35 +126,35 @@ describe("DetourMap", () => {
     ).not.toBeInTheDocument()
   })
 
-  test("when map is clicked, fires `onClickMap`", async () => {
-    const onClickMap = jest.fn()
+  test("when map is clicked, fires `onAddWaypoint`", async () => {
+    const onAddWaypoint = jest.fn()
     const { container } = render(
-      <DetourMapWithDefaults onClickMap={onClickMap} />
+      <DetourMapWithDefaults onAddWaypoint={onAddWaypoint} />
     )
 
     fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    expect(onClickMap).toHaveBeenNthCalledWith(1, {
+    expect(onAddWaypoint).toHaveBeenNthCalledWith(1, {
       lat: expect.closeTo(defaultCenter.lat),
       lon: expect.closeTo(defaultCenter.lng),
     })
   })
 
-  test("when map is clicked in street view mode, does not fire `onClickMap`", async () => {
+  test("when map is clicked in street view mode, does not fire `onAddWaypoint`", async () => {
     const openSpy = jest
       .spyOn(window, "open")
       .mockImplementationOnce(jest.fn<typeof window.open>())
 
-    const onClickMap = jest.fn()
+    const onAddWaypoint = jest.fn()
     const { container } = render(
-      <DetourMapWithDefaults onClickMap={onClickMap} />
+      <DetourMapWithDefaults onAddWaypoint={onAddWaypoint} />
     )
 
     fireEvent.click(streetViewModeSwitch.get())
 
     fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    expect(onClickMap).not.toHaveBeenCalled()
+    expect(onAddWaypoint).not.toHaveBeenCalled()
     expect(openSpy).toHaveBeenCalled()
   })
 

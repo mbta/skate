@@ -77,7 +77,7 @@ interface DetourMapProps {
    * Callback fired when the map is clicked.
    * @param point
    */
-  onClickMap?: (point: ShapePoint) => void
+  onAddWaypoint?: (point: ShapePoint) => void
 
   /**
    * User signal to describe the state of the undo button.
@@ -110,7 +110,7 @@ export const DetourMap = ({
   waypoints,
 
   onClickOriginalShape,
-  onClickMap,
+  onAddWaypoint,
 
   routeSegments,
 
@@ -134,11 +134,13 @@ export const DetourMap = ({
 
   const [streetViewEnabled, setStreetViewEnabled] = useState(false)
 
+  const onClickMap = streetViewEnabled ? undefined : onAddWaypoint
+
   return (
     <div
       className={joinClasses([
         "h-100",
-        !streetViewEnabled && onClickMap && "c-detour_map--map__clickable",
+        onClickMap && "c-detour_map--map__clickable",
       ])}
     >
       <Map
@@ -190,9 +192,7 @@ export const DetourMap = ({
 
         <MapEvents
           click={(e) => {
-            if (!streetViewEnabled) {
-              onClickMap?.(latLngLiteralToShapePoint(e.latlng))
-            }
+            onClickMap?.(latLngLiteralToShapePoint(e.latlng))
           }}
         />
 
