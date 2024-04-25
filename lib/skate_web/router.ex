@@ -127,6 +127,7 @@ defmodule SkateWeb.Router do
     post "/test_groups/:id/remove_user", TestGroupController, :remove_user
     post "/test_groups/:id/enable_override", TestGroupController, :enable_override
     post "/test_groups/:id/remove_override", TestGroupController, :remove_override
+    get "/version", VersionController, :version
   end
 
   scope "/api", SkateWeb do

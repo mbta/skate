@@ -148,7 +148,7 @@ Use Github Actions to deploy a specific branch to [Skate-Dev-Blue](https://skate
 
 ### 1. Check that dev is in a good state
 
-Check [skate-dev](https://skate-dev.mbtace.com) to ensure that it's in a good state. Also check the Sentry [skate-backend](https://mbtace.sentry.io/issues/?environment=dev&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?project=5303927&statsPeriod=14d) projects' `dev` environments to make sure there are no surprising errors.
+Check [skate-dev](https://skate-dev.mbtace.com) to ensure that it's in a good state. Also check the Sentry [skate-backend](https://mbtace.sentry.io/issues/?environment=dev&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?environment=dev&project=5303927&statsPeriod=14d) projects' `dev` environments to make sure there are no surprising errors.
 
 If there are, remedy those before deploying.
 
