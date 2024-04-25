@@ -433,7 +433,7 @@ describe("DiversionPage", () => {
     await userEvent.click(finishDetourButton.get())
 
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Detour is not editable from this screen."
+      "Detour shape is not editable from this screen."
     )
   })
 
