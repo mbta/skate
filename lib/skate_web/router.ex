@@ -79,7 +79,6 @@ defmodule SkateWeb.Router do
       :redirect_prod_http,
       :accepts_html,
       :browser,
-      :capture_auth_return_path,
       :auth,
       :ensure_auth,
       :put_user_token
