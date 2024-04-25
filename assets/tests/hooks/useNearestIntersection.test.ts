@@ -20,13 +20,13 @@ afterEach(() => {
 })
 
 const Loading = () => {
-  return { is_loading: true }
+  return { isLoading: true }
 }
 const Ok = (v: any) => {
-  return { ok: v }
+  return { isLoading: false, result: v }
 }
 const LoadingOk = (v: any) => {
-  return { is_loading: true, ok: v }
+  return { isLoading: true, result: v }
 }
 const Err = () => {
   return { is_error: true }
@@ -34,7 +34,7 @@ const Err = () => {
 
 const renderUseNearestIntersection = (location: GeographicCoordinate) =>
   renderHook(
-    ({ latitude, longitude }) => useNearestIntersection(latitude, longitude),
+    ({ latitude, longitude }) => useNearestIntersection({lat: latitude, lon: longitude}),
     {
       initialProps: location,
     }
@@ -57,6 +57,7 @@ function CoordinateIntersectionMap(
   const lookupFn = (coordinate: GeographicCoordinate) =>
     map.get(JSON.stringify(coordinate)) ?? errorValue
 
+  // Mocks the api call
   const mockImplementation = (latitude: number, longitude: number) =>
     Promise.resolve(lookupFn({ latitude, longitude }))
 

@@ -63,3 +63,5 @@ export const useApiCall = <T>({
     result: apiResult,
   }
 }
+
+export const isLoading = <T>(r: ApiLoadingResult<T>) => r.isLoading === true

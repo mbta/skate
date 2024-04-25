@@ -48,7 +48,7 @@ jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   __esModule: true,
   useNearestIntersection: jest.fn(() => {
     return {
-      is_loading: true,
+      isLoading: true,
     }
   }),
 }))
@@ -297,7 +297,7 @@ describe("VehiclePropertiesPanel", () => {
 
   test("shows the nearest intersection", () => {
     ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
-      ok: "Atlantic Ave & Summer St",
+      result: "Atlantic Ave & Summer St",
     })
     const result = render(
       <VehiclePropertiesPanel

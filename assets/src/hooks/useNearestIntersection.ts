@@ -1,36 +1,16 @@
-import { useEffect, useState } from "react"
+import { useCallback } from "react"
 import { fetchNearestIntersection } from "../api"
-import { FetchResult } from "../util/fetchResult"
+import { useApiCall } from "./useApiCall"
+import { ShapePoint } from "../schedule"
 
 export const useNearestIntersection = (
-  latitude: number,
-  longitude: number
-): FetchResult<string> => {
-  const [result, setResult] = useState<FetchResult<string>>({
-    is_loading: true,
-  })
-
-  useEffect(() => {
-    let shouldUpdate = true
-
-    setResult((oldResult) => {
-      return { ...oldResult, is_loading: true }
-    })
-
-    fetchNearestIntersection(latitude, longitude).then((result) => {
-      if (shouldUpdate) {
-        if (result) {
-          setResult({ ok: result })
-        } else {
-          setResult({ is_error: true })
-        }
-      }
-    })
-
-    return () => {
-      shouldUpdate = false
+  startPoint: ShapePoint | null
+) => useApiCall({
+  apiCall: useCallback(async () => {
+    if (startPoint) {
+      return fetchNearestIntersection(startPoint.lat, startPoint.lon)
+    } else {
+      return null
     }
-  }, [latitude, longitude])
-
-  return result
-}
+  }, [startPoint])
+})

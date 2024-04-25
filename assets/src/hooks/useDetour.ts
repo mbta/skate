@@ -3,12 +3,12 @@ import { ShapePoint } from "../schedule"
 import {
   fetchDetourDirections,
   fetchFinishedDetour,
-  fetchNearestIntersection,
 } from "../api"
 import { FinishedDetour, OriginalRoute } from "../models/detour"
 
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
+import { useNearestIntersection } from "./useNearestIntersection"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -37,9 +37,6 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
     null
   )
-  const [nearestIntersection, setNearestIntersection] = useState<string | null>(
-    null
-  )
 
   useEffect(() => {
     let shouldUpdate = true
@@ -61,13 +58,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }, [routePatternId, startPoint, endPoint])
 
-  useEffect(() => {
-    if (startPoint) {
-      fetchNearestIntersection(startPoint.lat, startPoint.lon).then((result) =>
-        setNearestIntersection(result)
-      )
-    }
-  }, [startPoint])
+  const nearestIntersection = useNearestIntersection(startPoint)
 
   const detourShape = useDetourDirections(
     useMemo(
@@ -189,7 +180,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * The nearest intersection to the detour start.
      */
-    nearestIntersection,
+    nearestIntersection: nearestIntersection.result,
     /**
      * Indicates if there was an error fetching directions from ORS
      */

@@ -14,7 +14,6 @@ import {
   Ghost,
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
-import { isOk } from "../../util/fetchResult"
 import { Card, CardBody } from "../card"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
@@ -87,10 +86,7 @@ const Location = ({
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
 
-  const nearestIntersectionResult = useNearestIntersection(latitude, longitude)
-  const nearestIntersection = isOk(nearestIntersectionResult)
-    ? nearestIntersectionResult.ok
-    : null
+  const nearestIntersection = useNearestIntersection({lat: latitude, lon: longitude})
 
   return (
     <div className="c-vehicle-properties-panel__location">
@@ -98,9 +94,9 @@ const Location = ({
         <div className="c-vehicle-properties-panel__label">
           Current Location
         </div>
-        {nearestIntersection ? (
+        {nearestIntersection.result ? (
           <div className="c-vehicle-properties-panel__value">
-            {nearestIntersection}
+            {nearestIntersection.result}
           </div>
         ) : null}
         <DirectionsButton latitude={latitude} longitude={longitude} />

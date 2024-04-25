@@ -5,7 +5,6 @@ import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { isGhost, isLoggedOut, isVehicle } from "../../models/vehicle"
 import { Ghost, Vehicle } from "../../realtime"
 import { formattedDate, formattedTime } from "../../util/dateTime"
-import { isLoading, isOk } from "../../util/fetchResult"
 import Loading from "../loading"
 import {
   VehicleRouteSummary,
@@ -13,6 +12,7 @@ import {
 } from "../vehicleRouteSummary"
 import { ScheduleAdherence } from "../scheduleAdherence"
 import { DirectionsButton } from "../directionsButton"
+import { isLoading } from "../../hooks/useApiCall"
 
 const maxAgeToShowInSeconds = 5 * 60
 
@@ -162,15 +162,12 @@ const VehicleWorkInfo = ({
 
 // #region Vehicle Location
 const CurrentLocation = ({ vehicle }: VehicleProp): React.ReactElement => {
-  const intersection = useNearestIntersection(
-    vehicle.latitude,
-    vehicle.longitude
-  )
+  const intersection = useNearestIntersection({lat: vehicle.latitude, lon: vehicle.longitude})
 
-  if (isLoading(intersection) && !isOk(intersection)) {
+  if (isLoading(intersection) && !intersection.result) {
     return <Loading />
-  } else if (isOk(intersection)) {
-    return <>{intersection.ok}</>
+  } else if (intersection.result) {
+    return <>{intersection.result}</>
   }
 
   return <>Exact location cannot be determined</>

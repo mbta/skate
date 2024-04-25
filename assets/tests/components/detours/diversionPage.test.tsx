@@ -13,7 +13,6 @@ import {
   FetchDetourDirectionsError,
   fetchDetourDirections,
   fetchFinishedDetour,
-  fetchNearestIntersection,
 } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
@@ -34,6 +33,7 @@ import {
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
+import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
 
 const DiversionPage = (
   props: Omit<
@@ -71,12 +71,18 @@ beforeEach(() => {
 
 jest.mock("../../../src/api")
 
+jest.mock("../../../src/hooks/useNearestIntersection", () => ({
+  __esModule: true,
+  useNearestIntersection: jest.fn(() => {
+    return { isLoading: true }
+  }),
+}))
+
 beforeEach(() => {
   jest
     .mocked(fetchDetourDirections)
     .mockImplementation(() => new Promise(() => {}))
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
-  jest.mocked(fetchNearestIntersection).mockResolvedValue(null)
 })
 
 describe("DiversionPage", () => {
@@ -488,9 +494,13 @@ describe("DiversionPage", () => {
       routeSegments: routeSegmentsFactory.build(),
     })
 
-    jest
-      .mocked(fetchNearestIntersection)
-      .mockResolvedValue("Avenue 1 & Street 2")
+    const intersection = "Massachusetts Ave @ Marlborough St"
+    ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+      result: intersection,
+    })
+
+    // jest.mocked(useNearestIntersection)
+    //   .mockResolvedValue({isLoading: false, result: "Avenue 1 & Street 2"})
 
     userEvent.setup() // Configure the clipboard API
 
