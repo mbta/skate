@@ -9,6 +9,7 @@ defmodule Skate.Application do
   @impl true
   def start(_type, _args) do
     Logger.info("Skate application starting")
+    raise "Application Fault"
 
     load_runtime_config()
 
