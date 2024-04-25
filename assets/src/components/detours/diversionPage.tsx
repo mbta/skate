@@ -120,7 +120,7 @@ export const DiversionPage = ({
               className="position-absolute top-0 left-0 m-2 icon-link z-1"
             >
               <BsIcons.ExclamationCircleFill />
-              Detour is not editable from this screen.
+              Detour shape is not editable from this screen.
             </Alert>
           )}
           {routingError?.type === "no_route" && (
