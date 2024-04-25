@@ -1,4 +1,10 @@
-import React, { PropsWithChildren, ReactNode, useContext, useId } from "react"
+import React, {
+  PropsWithChildren,
+  ReactNode,
+  useContext,
+  useId,
+  useState,
+} from "react"
 import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
 import { Polyline, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
@@ -25,6 +31,7 @@ import { TileType } from "../../tilesetUrls"
 import { setTileType } from "../../state/mapLayersState"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { uniqBy } from "../../helpers/array"
+import { StreetViewControl } from "../map/controls/StreetViewSwitch"
 
 interface DetourMapProps {
   /**
@@ -67,10 +74,10 @@ interface DetourMapProps {
   onClickOriginalShape: (point: ShapePoint) => void
 
   /**
-   * Callback fired when the map is clicked.
+   * Callback fired when the map is clicked in a mode that should lead to adding a waypoint.
    * @param point
    */
-  onClickMap?: (point: ShapePoint) => void
+  onAddWaypoint?: (point: ShapePoint) => void
 
   /**
    * User signal to describe the state of the undo button.
@@ -103,7 +110,7 @@ export const DetourMap = ({
   waypoints,
 
   onClickOriginalShape,
-  onClickMap,
+  onAddWaypoint,
 
   routeSegments,
 
@@ -125,6 +132,10 @@ export const DetourMap = ({
     dispatch,
   ] = useContext(StateDispatchContext)
 
+  const [streetViewEnabled, setStreetViewEnabled] = useState(false)
+
+  const onClickMap = streetViewEnabled ? undefined : onAddWaypoint
+
   return (
     <div
       className={joinClasses([
@@ -134,11 +145,18 @@ export const DetourMap = ({
     >
       <Map
         vehicles={[]}
-        allowStreetView
         center={center}
         zoom={zoom}
         tileType={tileType}
+        stateClasses={
+          streetViewEnabled ? "c-vehicle-map-state--street-view-enabled" : ""
+        }
       >
+        <StreetViewControl
+          position="topright"
+          streetViewEnabled={streetViewEnabled}
+          setStreetViewEnabled={setStreetViewEnabled}
+        />
         <CustomControl position="bottomleft" className="leaflet-bar">
           <MapButton
             disabled={undoDisabled}
@@ -208,6 +226,7 @@ export const DetourMap = ({
             key={`detour-map-original-route-shape-${id}-${
               startPoint === undefined
             }`}
+            interactive={!streetViewEnabled}
             classNames={
               startPoint === undefined
                 ? ["c-detour_map--original-route-shape__unstarted"]
@@ -324,6 +343,7 @@ interface OriginalRouteShapeProps extends PropsWithChildren {
   positions: LatLngLiteral[]
   classNames: string[]
   onClick: (e: LeafletMouseEvent) => void
+  interactive: boolean
 }
 
 const OriginalRouteShape = ({
@@ -331,27 +351,31 @@ const OriginalRouteShape = ({
   children,
   classNames,
   onClick,
+  interactive,
 }: OriginalRouteShapeProps) => (
   <>
     <Polyline
+      interactive={false}
       weight={6}
       positions={positions}
       className="c-detour_map--original-route-shape-core"
     />
-    <Polyline
-      positions={positions}
-      weight={16}
-      className={joinClasses([
-        "c-detour_map--original-route-shape",
-        ...classNames,
-      ])}
-      bubblingMouseEvents={false}
-      eventHandlers={{
-        click: onClick,
-      }}
-    >
-      {children}
-    </Polyline>
+    {interactive && (
+      <Polyline
+        positions={positions}
+        weight={16}
+        className={joinClasses([
+          "c-detour_map--original-route-shape",
+          ...classNames,
+        ])}
+        bubblingMouseEvents={false}
+        eventHandlers={{
+          click: onClick,
+        }}
+      >
+        {children}
+      </Polyline>
+    )}
   </>
 )
 
