@@ -61,7 +61,7 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      - uses: mbta/actions/deploy-ecs@kf/fix/deploy-missed-rename
+      - uses: mbta/actions/deploy-ecs@v2.4.2
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           ecs-cluster: ${{ env.ECS_CLUSTER }}
