@@ -369,7 +369,8 @@ describe("VehiclePropertiesPanel", () => {
       </VehiclesByRouteIdProvider>
     )
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = jest.mocked(map.MapFollowingPrimaryVehicles).mock.calls[0][0]
+    const mapArgs: map.Props = jest.mocked(map.MapFollowingPrimaryVehicles).mock
+      .calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
@@ -392,7 +393,8 @@ describe("VehiclePropertiesPanel", () => {
     )
     expect(useVehiclesForRoute).toHaveBeenCalled()
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = jest.mocked(map.MapFollowingPrimaryVehicles).mock.calls[0][0]
+    const mapArgs: map.Props = jest.mocked(map.MapFollowingPrimaryVehicles).mock
+      .calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 

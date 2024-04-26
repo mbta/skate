@@ -1055,8 +1055,7 @@ describe("putUserSetting", () => {
     mockFetch(200, "")
     putUserSetting("name", "value")
     expect(window.fetch).toHaveBeenCalledTimes(1)
-    const args = jest.mocked(window.fetch).mock
-      .calls[0][1]
+    const args = jest.mocked(window.fetch).mock.calls[0][1]
     expect(args!.method).toEqual("PUT")
     expect(args!.headers).toHaveProperty("x-csrf-token")
   })
@@ -1091,8 +1090,7 @@ describe("putRouteTabs", () => {
     putRouteTabs(routeTabs)
 
     expect(window.fetch).toHaveBeenCalledTimes(1)
-    const args = jest.mocked(window.fetch).mock
-      .calls[0][1]
+    const args = jest.mocked(window.fetch).mock.calls[0][1]
     expect(args!.method).toEqual("PUT")
     expect(args!.headers).toHaveProperty("x-csrf-token")
     expect(args!.body).toEqual(JSON.stringify({ route_tabs: routeTabs }))

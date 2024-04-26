@@ -75,7 +75,9 @@ const MockIntersectionWithCoordinateIntersectionMap = (
 ) => {
   const result = CoordinateIntersectionMap(numberOfEntries, errorValue)
 
-  ;jest.mocked(Api.fetchNearestIntersection).mockImplementation(result.mockImplementation)
+  jest
+    .mocked(Api.fetchNearestIntersection)
+    .mockImplementation(result.mockImplementation)
 
   return result
 }
