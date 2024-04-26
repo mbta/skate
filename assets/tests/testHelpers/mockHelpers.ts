@@ -58,7 +58,7 @@ export const mockUsePatternsByIdForVehicles = (
     )
   )
 
-  ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue(
+  jest.mocked(usePatternsByIdForRoute).mockReturnValue(
     routePatternIdentifiers
       .map(([routePatternId, routeId]) =>
         routePatternFactory.build({
@@ -85,9 +85,7 @@ export const mockGeolocation = (): void => {
 }
 
 export const mockTileUrls = (): void => {
-  ;(
-    tilesetUrlForType as jest.Mock<typeof tilesetUrlForType>
-  ).mockImplementation((type: TileType) => {
+  jest.mocked(tilesetUrlForType).mockImplementation((type: TileType) => {
     switch (type) {
       case "base":
         return "test_base_url/{z}/{x}/{y}"
