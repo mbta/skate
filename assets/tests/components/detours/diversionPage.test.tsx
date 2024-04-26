@@ -93,8 +93,35 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(await screen.findByTitle("Detour Start")).not.toBeNull()
+    expect(await screen.findByTitle("Detour Start")).toBeVisible()
     expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+  })
+
+  test("directions start with origin intersection when second waypoint is added", async () => {
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      Ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
+    )
+
+    const intersection = "Avenue 1 & Street 2"
+    jest.mocked(useNearestIntersection).mockReturnValue({
+      ok: intersection,
+    })
+
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    expect(await screen.findByText("From Avenue 1 & Street 2")).toBeVisible()
   })
 
   test("can click on route shape again to end detour", async () => {
@@ -495,9 +522,9 @@ describe("DiversionPage", () => {
     })
 
     const intersection = "Avenue 1 & Street 2"
-jest.mocked(useNearestIntersection).mockReturnValue({
-  ok: intersection,
-})
+    jest.mocked(useNearestIntersection).mockReturnValue({
+      ok: intersection,
+    })
 
     userEvent.setup() // Configure the clipboard API
 
