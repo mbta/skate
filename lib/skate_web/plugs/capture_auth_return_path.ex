@@ -7,9 +7,12 @@ defmodule SkateWeb.Plugs.CaptureAuthReturnPath do
   import Plug.Conn
 
   use SkateWeb, :verified_routes
+  @behaviour Plug
 
+  @impl Plug
   def init(default), do: default
 
+  @impl Plug
   def call(conn, _default) do
     conn
     |> fetch_session()
