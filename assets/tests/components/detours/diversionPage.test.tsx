@@ -495,8 +495,9 @@ describe("DiversionPage", () => {
     })
 
     const intersection = "Avenue 1 & Street 2"
-    ;(useNearestIntersection as jest.Mock)
-        .mockReturnValueOnce({ ok: intersection })
+jest.mocked(useNearestIntersection).mockReturnValue({
+  ok: intersection,
+})
 
     userEvent.setup() // Configure the clipboard API
 
