@@ -21,7 +21,7 @@ jest.mock("../../src/hooks/useMinischedule", () => ({
 
 describe("Modal", () => {
   test("renders inactive notification modal when appropriate", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [])
+    ;jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [])
     const notification: Notification = {
       id: "123",
       createdAt: new Date(),

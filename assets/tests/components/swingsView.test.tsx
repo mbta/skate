@@ -95,7 +95,7 @@ const routes: Route[] = [
 
 describe("SwingsView", () => {
   test("renders loading message", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce(() => null)
+    ;jest.mocked(useSwings).mockImplementationOnce(() => null)
     const tree = renderer
       .create(
         <RoutesProvider routes={routes}>
@@ -107,7 +107,7 @@ describe("SwingsView", () => {
   })
 
   test("omits swings more than 15 minutes in the past", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+    ;jest.mocked(useSwings).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 18000 - 900 }),
     ])
 
@@ -122,7 +122,7 @@ describe("SwingsView", () => {
   })
 
   test("includes swings less than 15 minutes in the past", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+    ;jest.mocked(useSwings).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 18000 - 900 + 1 }),
     ])
 
@@ -138,7 +138,7 @@ describe("SwingsView", () => {
 
   test("can click to show / hide past swings", async () => {
     const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
-    ;(useSwings as jest.Mock)
+    ;jest.mocked(useSwings)
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
 
@@ -159,7 +159,7 @@ describe("SwingsView", () => {
 
   test("shows past swings", async () => {
     const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
-    ;(useSwings as jest.Mock)
+    ;jest.mocked(useSwings)
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
 
@@ -180,7 +180,7 @@ describe("SwingsView", () => {
 
   test("hides past swings", async () => {
     const swing = swingFactory.build({ time: 1000, fromRunId: "123-4567" })
-    ;(useSwings as jest.Mock)
+    ;jest.mocked(useSwings)
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
 
@@ -200,7 +200,7 @@ describe("SwingsView", () => {
   })
 
   test("renders future swings, active and inactive", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+    ;jest.mocked(useSwings).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 19000 }),
       swingFactory.build({
         blockId: "B12-34",
@@ -223,10 +223,10 @@ describe("SwingsView", () => {
         time: 21000,
       }),
     ])
-    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForRunIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [vehicle, ghost]
     )
-    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForBlockIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
 
@@ -241,13 +241,13 @@ describe("SwingsView", () => {
   })
 
   test("ignores vehicles without run ID (for linking to VPP)", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+    ;jest.mocked(useSwings).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 19000 }),
     ])
-    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForRunIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [{ ...vehicle, runId: null }]
     )
-    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForBlockIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [{ ...vehicle, runId: null }]
     )
 
@@ -306,17 +306,17 @@ describe("SwingsView", () => {
       toRunId: "123-456",
       time: 19000,
     })
-    ;(useSwings as jest.Mock)
+    ;jest.mocked(useSwings)
       .mockImplementationOnce((): Swing[] => [swing])
       .mockImplementationOnce((): Swing[] => [swing])
-    ;(useVehiclesForRunIds as jest.Mock)
+    ;jest.mocked(useVehiclesForRunIds)
       .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
         vehicle,
       ])
       .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
         vehicle,
       ])
-    ;(useVehiclesForBlockIds as jest.Mock)
+    ;jest.mocked(useVehiclesForBlockIds)
       .mockImplementationOnce((): (VehicleInScheduledService | Ghost)[] => [
         vehicle,
       ])
@@ -347,15 +347,15 @@ describe("SwingsView", () => {
   })
 
   test("links to both swing-on and swing-off if both are active", () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+    ;jest.mocked(useSwings).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 19000 }),
     ])
 
     const vehicle2 = vehicleFactory.build({ runId: "123-789" })
-    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForRunIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [vehicle, vehicle2]
     )
-    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForBlockIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
 
@@ -370,13 +370,13 @@ describe("SwingsView", () => {
   })
 
   test("can close the swings view", async () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+    ;jest.mocked(useSwings).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 19000 }),
     ])
-    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForRunIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
-    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useVehiclesForBlockIds).mockImplementationOnce(
       (): (VehicleInScheduledService | Ghost)[] => [vehicle]
     )
 
@@ -396,7 +396,7 @@ describe("SwingsView", () => {
   })
 
   test("remembers scroll position when unmounting", async () => {
-    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [])
+    ;jest.mocked(useSwings).mockImplementationOnce((): Swing[] => [])
 
     const dispatch = jest.fn()
     const result = render(

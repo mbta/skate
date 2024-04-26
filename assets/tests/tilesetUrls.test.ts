@@ -8,7 +8,7 @@ describe("tilesetUrlForType", () => {
   test("returns the url of the requested type", () => {
     const satelliteUrl = "satellite_url"
     const baseUrl = "base_url"
-    ;(appData as jest.Mock).mockImplementation(() => ({
+    ;jest.mocked(appData).mockImplementation(() => ({
       tilesetUrls: JSON.stringify({
         base: baseUrl,
         satellite: satelliteUrl,
@@ -19,7 +19,7 @@ describe("tilesetUrlForType", () => {
   })
 
   test("returns undefined if config is missing", () => {
-    ;(appData as jest.Mock).mockImplementation(() => undefined)
+    ;jest.mocked(appData).mockImplementation(() => undefined)
 
     expect(tilesetUrlForType("satellite")).toEqual(undefined)
     expect(tilesetUrlForType("base")).toEqual(undefined)

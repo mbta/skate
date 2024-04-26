@@ -75,7 +75,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-  ;(getTestGroups as jest.Mock).mockReturnValue([])
+  ;jest.mocked(getTestGroups).mockReturnValue([])
 })
 
 beforeEach(() => {
@@ -314,7 +314,7 @@ describe("<MapFollowingPrimaryVehicles />", () => {
   })
 
   test("does not render street view link from stop if not in maps test group", async () => {
-    ;(getTestGroups as jest.Mock).mockReturnValue([])
+    ;jest.mocked(getTestGroups).mockReturnValue([])
 
     const { container } = render(
       <MapFollowingPrimaryVehicles vehicles={[]} shapes={[shape]} />

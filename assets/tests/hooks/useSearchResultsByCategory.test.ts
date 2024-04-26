@@ -48,7 +48,7 @@ const mockSearchResults = (rawResults: {
       }
     }
   )
-  ;(useLocationSearchResults as jest.Mock).mockReturnValue(rawResults.location)
+  ;jest.mocked(useLocationSearchResults).mockReturnValue(rawResults.location)
 }
 
 afterEach(() => {

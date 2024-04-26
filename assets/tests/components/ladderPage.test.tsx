@@ -421,7 +421,7 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    ;(useTimepoints as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useTimepoints).mockImplementationOnce(
       () => timepointsByRouteId
     )
     const result = render(
@@ -437,10 +437,10 @@ describe("LadderPage", () => {
   })
 
   test("can click a vehicle to select it", async () => {
-    ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
+    ;jest.mocked(useVehicles).mockImplementationOnce(() => ({
       ["1"]: [vehicle],
     }))
-    ;(useTimepoints as jest.Mock).mockImplementationOnce(
+    ;jest.mocked(useTimepoints).mockImplementationOnce(
       () => timepointsByRouteId
     )
 

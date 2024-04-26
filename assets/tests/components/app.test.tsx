@@ -74,7 +74,7 @@ describe("App", () => {
   })
 
   test("shows data outage banner if there's a data outage", () => {
-    ;(useDataStatus as jest.Mock).mockReturnValueOnce("outage")
+    ;jest.mocked(useDataStatus).mockReturnValueOnce("outage")
     const result = render(<App />)
     expect(result.queryByText(/Ongoing MBTA Data Outage/)).toBeVisible()
   })
@@ -113,13 +113,13 @@ describe("App", () => {
 
     describe.each(pagesWithRightPanel)("All views render on %s", (path) => {
       beforeAll(() => {
-        ;(useVehicles as jest.Mock).mockReturnValue({
+        ;jest.mocked(useVehicles).mockReturnValue({
           [vehicle.routeId!]: [vehicle],
         })
       })
 
       afterAll(() => {
-        ;(useVehicles as jest.Mock).mockReset()
+        ;jest.mocked(useVehicles).mockReset()
       })
 
       test("VPP", () => {

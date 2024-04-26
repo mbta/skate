@@ -30,7 +30,7 @@ describe("<VehiclePropertiesCard/>", () => {
       const vehicle = vehicleFactory.build()
       const intersection = "Massachusetts Ave @ 1"
       const intersection2 = "Massachusetts Ave @ 2"
-      ;(useNearestIntersection as jest.Mock)
+      ;jest.mocked(useNearestIntersection)
         .mockReturnValueOnce({ ok: intersection })
         .mockReturnValueOnce({ ok: intersection2 })
 
@@ -100,7 +100,7 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        ;jest.mocked(useNearestIntersection).mockReturnValueOnce({
           ok: intersection,
         })
 
@@ -176,7 +176,7 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        ;jest.mocked(useNearestIntersection).mockReturnValueOnce({
           ok: intersection,
         })
 
@@ -193,7 +193,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location is initially loading, should show `loading...` backup text", () => {
         const vehicle = vehicleFactory.build()
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        ;jest.mocked(useNearestIntersection).mockReturnValueOnce({
           is_loading: true,
         })
 
@@ -206,7 +206,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
         const vehicle = vehicleFactory.build()
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        ;jest.mocked(useNearestIntersection).mockReturnValueOnce({
           is_error: true,
         })
 
@@ -220,7 +220,7 @@ describe("<VehiclePropertiesCard/>", () => {
       test("when location is loading a new vehicle, should show loading text", () => {
         const vehicle = vehicleFactory.build()
         const intersection = "intersection ave @ street"
-        ;(useNearestIntersection as jest.Mock)
+        ;jest.mocked(useNearestIntersection)
           .mockReturnValueOnce({ is_loading: true })
           .mockReturnValueOnce({ ok: intersection })
 
@@ -340,7 +340,7 @@ describe("<VehiclePropertiesCard/>", () => {
       })
 
       const intersection = "Massachusetts Ave @ Marlborough St"
-      ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+      ;jest.mocked(useNearestIntersection).mockReturnValueOnce({
         ok: intersection,
       })
 

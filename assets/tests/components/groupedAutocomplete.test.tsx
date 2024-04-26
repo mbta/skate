@@ -648,7 +648,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
           run: [],
         })
     )
-    ;(useLocationSearchSuggestions as jest.Mock).mockImplementation(() => [
+    ;jest.mocked(useLocationSearchSuggestions).mockImplementation(() => [
       locationSuggestion,
     ])
 
@@ -708,7 +708,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
           run: [],
         })
     )
-    ;(useLocationSearchSuggestions as jest.Mock).mockImplementation(() =>
+    ;jest.mocked(useLocationSearchSuggestions).mockImplementation(() =>
       locationSearchSuggestionFactory.buildList(maxLength + 2)
     )
 

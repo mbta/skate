@@ -19,7 +19,7 @@ describe("useAllStops", () => {
       stopFactory.build({ locationType: LocationType.Stop }),
       stopFactory.build({ locationType: LocationType.Station }),
     ]
-    ;(fetchAllStops as jest.Mock).mockReturnValueOnce(instantPromise(stops))
+    ;jest.mocked(fetchAllStops).mockReturnValueOnce(instantPromise(stops))
 
     const { result } = renderHook(() => {
       return useAllStops()
