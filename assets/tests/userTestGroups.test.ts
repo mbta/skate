@@ -9,7 +9,7 @@ describe("getTestGroups", () => {
   test("returns all tests groups when properly formatted", () => {
     const group_1 = "user-test-group-1"
     const group_2 = "user-test-group-2"
-    jest.mocked(appData).mockImplementation(() => ({
+    ;(appData as jest.Mock).mockImplementation(() => ({
       userTestGroups: JSON.stringify([group_1, group_2]),
     }))
 
@@ -38,7 +38,7 @@ describe("getTestGroups", () => {
   ])(
     "raise error when test group data is not the correct type: case %#",
     ({ mockTestGroupData, expectedError: expectedError }) => {
-      jest.mocked(appData).mockImplementationOnce(() => ({
+      ;(appData as jest.Mock).mockImplementationOnce(() => ({
         userTestGroups: mockTestGroupData,
       }))
       expect(() => getTestGroups()).toThrow(expectedError)

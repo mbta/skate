@@ -296,7 +296,7 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("shows the nearest intersection", () => {
-    jest.mocked(useNearestIntersection).mockReturnValueOnce({
+    ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
       ok: "Atlantic Ave & Summer St",
     })
     const result = render(
@@ -369,8 +369,11 @@ describe("VehiclePropertiesPanel", () => {
       </VehiclesByRouteIdProvider>
     )
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = jest.mocked(map.MapFollowingPrimaryVehicles).mock
-      .calls[0][0]
+    const mapArgs: map.Props = (
+      map.MapFollowingPrimaryVehicles as jest.Mock<
+        typeof map.MapFollowingPrimaryVehicles
+      >
+    ).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
@@ -379,9 +382,11 @@ describe("VehiclePropertiesPanel", () => {
     const otherVehicle = { ...vehicle, id: "other" }
     const ghost = { id: "ghost" } as Ghost
     jest.spyOn(map, "MapFollowingPrimaryVehicles")
-    jest
-      .mocked(useVehiclesForRoute)
-      .mockImplementationOnce(() => [thisVehicle, otherVehicle, ghost])
+    ;(useVehiclesForRoute as jest.Mock).mockImplementationOnce(() => [
+      thisVehicle,
+      otherVehicle,
+      ghost,
+    ])
     renderer.create(
       <VehiclePropertiesPanel
         selectedVehicle={thisVehicle}
@@ -393,13 +398,16 @@ describe("VehiclePropertiesPanel", () => {
     )
     expect(useVehiclesForRoute).toHaveBeenCalled()
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = jest.mocked(map.MapFollowingPrimaryVehicles).mock
-      .calls[0][0]
+    const mapArgs: map.Props = (
+      map.MapFollowingPrimaryVehicles as jest.Mock<
+        typeof map.MapFollowingPrimaryVehicles
+      >
+    ).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
   test("map includes station icons", () => {
-    jest.mocked(useStations).mockReturnValue([
+    ;(useStations as jest.Mock).mockReturnValue([
       {
         id: "station-id",
         locationType: "station",
@@ -479,9 +487,9 @@ describe("VehiclePropertiesPanel", () => {
   ])(
     "when active tab changes to '$tab', fires fullstory event",
     async ({ tab, clickTarget, initialTab }) => {
-      jest.mocked(useTripShape).mockReturnValue([])
-      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
-      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+      ;(useTripShape as jest.Mock).mockReturnValue([])
+      ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
+      ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
 
       const mockedFSEvent = jest.mocked(fullStoryEvent)
 
@@ -512,9 +520,9 @@ describe("VehiclePropertiesPanel", () => {
   ])(
     "when active tab '$initialTab' is clicked, does not fire fullstory event",
     async ({ clickTarget, initialTab }) => {
-      jest.mocked(useTripShape).mockReturnValue([])
-      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
-      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+      ;(useTripShape as jest.Mock).mockReturnValue([])
+      ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
+      ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
 
       const mockedFSEvent = jest.mocked(fullStoryEvent)
 

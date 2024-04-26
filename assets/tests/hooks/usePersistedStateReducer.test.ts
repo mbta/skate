@@ -86,7 +86,11 @@ describe("usePersistedStateReducer", () => {
     expect(state.selectedShuttleRunIds).toEqual(["123"])
 
     // last call is persisting the edit we're testing
-    const calls = jest.mocked(window.localStorage.setItem).mock.calls
+    const calls = (
+      window.localStorage.setItem as jest.Mock<
+        typeof window.localStorage.setItem
+      >
+    ).mock.calls
     const lastCallIndex = calls.length - 1
     const persistedState = JSON.parse(calls[lastCallIndex][1])
     expect(persistedState.selectedShuttleRunIds).toEqual(["123"])
@@ -112,9 +116,9 @@ describe("usePersistedStateReducer", () => {
         },
       ]),
     }
-    jest.mocked(appData).mockImplementationOnce(() => mockSettings)
-    jest.mocked(appData).mockImplementationOnce(() => mockSettings)
-    jest.mocked(appData).mockImplementationOnce(() => mockSettings)
+    ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
+    ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
+    ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
     const { result } = renderHook(() => usePersistedStateReducer())
     const [state] = result.current
     expect(state.userSettings.shuttleVehicleLabel).toEqual(
@@ -155,7 +159,7 @@ describe("usePersistedStateReducer", () => {
     // settings were saved to the database
     expect(putUserSetting).toHaveBeenCalled()
     // settings were removed from local storage
-    const setItemParam = jest.mocked(window.localStorage.setItem).mock
+    const setItemParam = (window.localStorage.setItem as jest.Mock).mock
       .calls[0][1]
     expect(setItemParam).not.toContain("settings")
     expect(setItemParam).not.toContain("selectedRouteIds")
@@ -182,13 +186,13 @@ describe("usePersistedStateReducer", () => {
     // settings were saved to the database
     expect(putUserSetting).toHaveBeenCalled()
     // settings were removed from local storage
-    const setItemParam = jest.mocked(window.localStorage.setItem).mock
+    const setItemParam = (window.localStorage.setItem as jest.Mock).mock
       .calls[0][1]
     expect(setItemParam).not.toContain("settings")
   })
 
   test("sends updated route tabs to backend on changes", () => {
-    jest.mocked(putRouteTabs).mockImplementationOnce(() => ({
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => ({
       then: (callback: (data: any) => void) => {
         callback({ ok: true })
         return { catch: jest.fn() }
@@ -251,7 +255,7 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    jest.mocked(putRouteTabs).mockImplementationOnce(() => fakePromise)
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => fakePromise)
 
     act(() => {
       dispatch(createRouteTab())
@@ -282,7 +286,7 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    jest.mocked(putRouteTabs).mockImplementationOnce(() => fakePromise)
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => fakePromise)
 
     act(() => {
       dispatch(createRouteTab())
@@ -311,8 +315,7 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    jest
-      .mocked(putRouteTabs)
+    ;(putRouteTabs as jest.Mock)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
@@ -343,8 +346,7 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    jest
-      .mocked(putRouteTabs)
+    ;(putRouteTabs as jest.Mock)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)

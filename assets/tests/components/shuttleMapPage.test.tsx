@@ -95,7 +95,7 @@ const shape: Shape = shapeFactory.build({
 
 describe("Shuttle Map Page", () => {
   test("renders", () => {
-    jest.mocked(useShuttleVehicles).mockImplementationOnce(() => [shuttle])
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const result = render(
       <BrowserRouter>
         <ShuttleMapPage />
@@ -116,8 +116,8 @@ describe("Shuttle Map Page", () => {
   // TODO: based on the snapshot, this test does not appear to be correctly testing
   // the intended functionality
   test("renders with shapes selected", () => {
-    jest.mocked(useRouteShapes).mockImplementationOnce(() => [shape])
-    jest.mocked(useTripShape).mockImplementationOnce(() => [shape])
+    ;(useRouteShapes as jest.Mock).mockImplementationOnce(() => [shape])
+    ;(useTripShape as jest.Mock).mockImplementationOnce(() => [shape])
     const result = render(
       <BrowserRouter>
         <ShuttleMapPage />
@@ -127,14 +127,14 @@ describe("Shuttle Map Page", () => {
   })
 
   test("renders with train vehicles", () => {
-    jest.mocked(useShuttleVehicles).mockImplementationOnce(() => [shuttle])
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const trainVehicle: TrainVehicle = {
       id: "R-5463D2D3",
       latitude: 42.24615,
       longitude: -71.00369,
       bearing: 15,
     }
-    jest.mocked(useTrainVehicles).mockImplementationOnce(() => ({
+    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({
       [trainVehicle.id]: trainVehicle,
     }))
 
@@ -148,7 +148,7 @@ describe("Shuttle Map Page", () => {
 
   test("renders selected shuttle routes", () => {
     const dispatch = jest.fn()
-    jest.mocked(useShuttleVehicles).mockImplementationOnce(() => [shuttle])
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const result = render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
@@ -164,7 +164,7 @@ describe("Shuttle Map Page", () => {
 
   test("renders with all shuttles selected", () => {
     const dispatch = jest.fn()
-    jest.mocked(useShuttleVehicles).mockImplementationOnce(() => [shuttle])
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const result = render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
@@ -180,7 +180,7 @@ describe("Shuttle Map Page", () => {
 
   test("changing selected shuttles re-enabled map centering", async () => {
     const dispatch = jest.fn()
-    jest.mocked(useShuttleVehicles).mockImplementationOnce(() => [shuttle])
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const result = render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
@@ -217,9 +217,9 @@ describe("Shuttle Map Page", () => {
 
   test("clicking a shuttle on the map dispatches select event", async () => {
     const label = "clickMe"
-    jest
-      .mocked(useShuttleVehicles)
-      .mockImplementationOnce(() => [{ ...shuttle, label: label }])
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [
+      { ...shuttle, label: label },
+    ])
     const mockDispatch = jest.fn()
     render(
       <StateDispatchProvider

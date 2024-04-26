@@ -23,7 +23,7 @@ describe("useStations", () => {
         lon: -71,
       },
     ]
-    jest.mocked(fetchStations).mockReturnValueOnce(instantPromise(stations))
+    ;(fetchStations as jest.Mock).mockReturnValueOnce(instantPromise(stations))
 
     const { result } = renderHook(() => {
       return useStations()

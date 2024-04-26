@@ -39,7 +39,7 @@ const vehicleMatch = vehicleFactory.build()
 const locationMatch = locationSearchResultFactory.build()
 
 beforeEach(() => {
-  jest.mocked(useSearchResultsByCategory).mockReturnValue({
+  ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
     vehicle: {
       ok: {
         matches: [vehicleMatch, runMatch, operatorMatch],
@@ -61,7 +61,7 @@ afterEach(() => {
 
 describe("searchResultsByProperty", () => {
   test("Includes only sections that have results", () => {
-    jest.mocked(useSearchResultsByCategory).mockReturnValue({
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       run: { ok: { matches: [], hasMoreMatches: false } },
       vehicle: {
         ok: {
@@ -186,7 +186,7 @@ describe("searchResultsByProperty", () => {
   })
 
   test("Shows loading indication for locations", () => {
-    jest.mocked(useSearchResultsByCategory).mockReturnValue({
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       run: null,
       vehicle: null,
       operator: null,
@@ -212,7 +212,7 @@ describe("searchResultsByProperty", () => {
   })
 
   test("When there are more vehicle matches, includes a 'Show more' button which updates the vehicle result limit on click", async () => {
-    jest.mocked(useSearchResultsByCategory).mockReturnValue({
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       vehicle: {
         ok: {
           matches: [vehicleMatch],
@@ -266,7 +266,7 @@ describe("searchResultsByProperty", () => {
       locations.push(locationSearchResultFactory.build())
     }
 
-    jest.mocked(useSearchResultsByCategory).mockReturnValue({
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       vehicle: null,
       location: { ok: { matches: locations, hasMoreMatches: true } },
     })
@@ -323,7 +323,7 @@ describe("searchResultsByProperty", () => {
   })
 
   test("when there are no results for the given properties, display no results message", () => {
-    jest.mocked(useSearchResultsByCategory).mockReturnValue({
+    ;(useSearchResultsByCategory as jest.Mock).mockReturnValue({
       vehicle: {
         ok: {
           matches: [],

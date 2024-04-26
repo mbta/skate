@@ -32,21 +32,23 @@ const mockSearchResults = (rawResults: {
   run?: VehicleResultType
   location?: LocationSearchResult[] | null
 }) => {
-  jest.mocked(useSearchResults).mockImplementation((_socket, query) => {
-    switch (query?.property) {
-      case "vehicle":
-        return rawResults.vehicle || null
-      case "run":
-        return rawResults.run || null
-      case "operator":
-        return rawResults.operator || null
-      case "all":
-        return rawResults.all || null
-      default:
-        return null
+  ;(useSearchResults as jest.Mock<typeof useSearchResults>).mockImplementation(
+    (_socket, query) => {
+      switch (query?.property) {
+        case "vehicle":
+          return rawResults.vehicle || null
+        case "run":
+          return rawResults.run || null
+        case "operator":
+          return rawResults.operator || null
+        case "all":
+          return rawResults.all || null
+        default:
+          return null
+      }
     }
-  })
-  jest.mocked(useLocationSearchResults).mockReturnValue(rawResults.location)
+  )
+  ;(useLocationSearchResults as jest.Mock).mockReturnValue(rawResults.location)
 }
 
 afterEach(() => {
