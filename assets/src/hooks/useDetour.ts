@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
-import {
-  fetchDetourDirections,
-  fetchFinishedDetour,
-  fetchNearestIntersection,
-} from "../api"
+import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { FinishedDetour, OriginalRoute } from "../models/detour"
 
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
+import { isOk as FetchIsOk } from "../util/fetchResult"
+import { useNearestIntersection } from "./useNearestIntersection"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -37,9 +35,6 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
     null
   )
-  const [nearestIntersection, setNearestIntersection] = useState<string | null>(
-    null
-  )
 
   useEffect(() => {
     let shouldUpdate = true
@@ -61,13 +56,14 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }, [routePatternId, startPoint, endPoint])
 
-  useEffect(() => {
-    if (startPoint) {
-      fetchNearestIntersection(startPoint.lat, startPoint.lon).then((result) =>
-        setNearestIntersection(result)
-      )
-    }
-  }, [startPoint])
+  const nearestIntersectionResult = useNearestIntersection(
+    startPoint?.lat,
+    startPoint?.lon
+  )
+
+  const nearestIntersection = FetchIsOk(nearestIntersectionResult)
+    ? nearestIntersectionResult.ok
+    : null
 
   const detourShape = useDetourDirections(
     useMemo(
