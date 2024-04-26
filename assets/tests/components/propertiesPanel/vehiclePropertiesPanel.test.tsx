@@ -296,7 +296,7 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("shows the nearest intersection", () => {
-    ;jest.mocked(useNearestIntersection).mockReturnValueOnce({
+    jest.mocked(useNearestIntersection).mockReturnValueOnce({
       ok: "Atlantic Ave & Summer St",
     })
     const result = render(
@@ -382,11 +382,9 @@ describe("VehiclePropertiesPanel", () => {
     const otherVehicle = { ...vehicle, id: "other" }
     const ghost = { id: "ghost" } as Ghost
     jest.spyOn(map, "MapFollowingPrimaryVehicles")
-    ;jest.mocked(useVehiclesForRoute).mockImplementationOnce(() => [
-      thisVehicle,
-      otherVehicle,
-      ghost,
-    ])
+    jest
+      .mocked(useVehiclesForRoute)
+      .mockImplementationOnce(() => [thisVehicle, otherVehicle, ghost])
     renderer.create(
       <VehiclePropertiesPanel
         selectedVehicle={thisVehicle}
@@ -407,7 +405,7 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("map includes station icons", () => {
-    ;jest.mocked(useStations).mockReturnValue([
+    jest.mocked(useStations).mockReturnValue([
       {
         id: "station-id",
         locationType: "station",
@@ -487,9 +485,9 @@ describe("VehiclePropertiesPanel", () => {
   ])(
     "when active tab changes to '$tab', fires fullstory event",
     async ({ tab, clickTarget, initialTab }) => {
-      ;jest.mocked(useTripShape).mockReturnValue([])
-      ;jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
-      ;jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+      jest.mocked(useTripShape).mockReturnValue([])
+      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
+      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
 
       const mockedFSEvent = jest.mocked(fullStoryEvent)
 
@@ -520,9 +518,9 @@ describe("VehiclePropertiesPanel", () => {
   ])(
     "when active tab '$initialTab' is clicked, does not fire fullstory event",
     async ({ clickTarget, initialTab }) => {
-      ;jest.mocked(useTripShape).mockReturnValue([])
-      ;jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
-      ;jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+      jest.mocked(useTripShape).mockReturnValue([])
+      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
+      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
 
       const mockedFSEvent = jest.mocked(fullStoryEvent)
 

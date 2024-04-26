@@ -23,7 +23,7 @@ jest.mock("../../src/hooks/usePanelState")
 
 beforeEach(() => {
   mockUsePanelState({ isViewOpen: false })
-  ;jest.mocked(getTestGroups).mockReturnValue([])
+  jest.mocked(getTestGroups).mockReturnValue([])
 })
 
 describe("Nav", () => {

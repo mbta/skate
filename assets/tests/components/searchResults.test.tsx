@@ -24,7 +24,7 @@ jest.mock("userTestGroups", () => ({
 }))
 
 beforeEach(() => {
-  ;jest.mocked(getTestGroups).mockReturnValue([])
+  jest.mocked(getTestGroups).mockReturnValue([])
 })
 
 jest

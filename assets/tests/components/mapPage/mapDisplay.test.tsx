@@ -141,7 +141,7 @@ function mockUsePullbackVehicles(vehicles: Vehicle[]) {
 describe("<MapDisplay />", () => {
   test("renders nearby stations only on zoom = 15", async () => {
     setHtmlWidthHeightForLeafletMap()
-    ;jest.mocked(useAllStops).mockReturnValue([
+    jest.mocked(useAllStops).mockReturnValue([
       // 2 stations at map center should be visible
       stopFactory.build({
         locationType: LocationType.Station,
@@ -182,7 +182,7 @@ describe("<MapDisplay />", () => {
 
   test("renders all nearby stations and bus stops only on zoom = 17", async () => {
     setHtmlWidthHeightForLeafletMap()
-    ;jest.mocked(useAllStops).mockReturnValue([
+    jest.mocked(useAllStops).mockReturnValue([
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
@@ -256,10 +256,10 @@ describe("<MapDisplay />", () => {
 
     mockUseVehicleForId([selectedVehicle])
     mockUseVehiclesForRouteMap({ [route.id]: [selectedVehicle] })
-    ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+    jest.mocked(usePatternsByIdForRoute).mockReturnValue({
       [routePattern.id]: routePattern,
     })
-    ;jest.mocked(useAllStops).mockReturnValue([stop])
+    jest.mocked(useAllStops).mockReturnValue([stop])
 
     const { container } = render(
       <MapDisplay
@@ -296,10 +296,10 @@ describe("<MapDisplay />", () => {
       shape: shapeFactory.build({ stops: [stop] }),
     })
 
-    ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+    jest.mocked(usePatternsByIdForRoute).mockReturnValue({
       [routePattern.id]: routePattern,
     })
-    ;jest.mocked(useAllStops).mockReturnValue([stop])
+    jest.mocked(useAllStops).mockReturnValue([stop])
 
     const { container } = render(
       <MapDisplay
@@ -672,7 +672,7 @@ describe("<MapDisplay />", () => {
 
           mockUseVehiclesForRouteMap({ [route.id]: vehicles })
           const routePattern = routePatternFactory.build({ routeId: route.id })
-          ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+          jest.mocked(usePatternsByIdForRoute).mockReturnValue({
             [routePattern.id]: routePattern,
           })
 
@@ -701,7 +701,7 @@ describe("<MapDisplay />", () => {
 
           mockUseVehiclesForRouteMap({ [route.id]: vehicles })
           const routePattern = routePatternFactory.build({ routeId: route.id })
-          ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+          jest.mocked(usePatternsByIdForRoute).mockReturnValue({
             [routePattern.id]: routePattern,
           })
           render(
@@ -955,11 +955,11 @@ describe("<MapDisplay />", () => {
           }),
         ],
       })
-      ;jest.mocked(useRouteShapes).mockReturnValue([shape])
+      jest.mocked(useRouteShapes).mockReturnValue([shape])
 
       // Ensure shape and stop are associated with selected route
       const route = routeFactory.build()
-      ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+      jest.mocked(usePatternsByIdForRoute).mockReturnValue({
         [route.id]: routePatternFactory.build({
           shape: shape,
         }),

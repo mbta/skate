@@ -74,7 +74,7 @@ describe("StopMarkerWithInfo", () => {
   })
 
   test("Stop name displayed on click when hover not supported", async () => {
-    ;jest.mocked(useDeviceSupportsHover).mockReturnValue(false)
+    jest.mocked(useDeviceSupportsHover).mockReturnValue(false)
 
     const { container } = renderInMap(
       <StopMarkerWithInfo stop={stop} includeStopCard={false} />
@@ -96,7 +96,7 @@ describe("StopMarkerWithInfo", () => {
 
 describe("StationMarker", () => {
   test("Station icon with name on hover", async () => {
-    ;jest.mocked(useDeviceSupportsHover).mockReturnValueOnce(true)
+    jest.mocked(useDeviceSupportsHover).mockReturnValueOnce(true)
 
     const mockedFSEvent = jest.mocked(fullStoryEvent)
 
@@ -113,7 +113,7 @@ describe("StationMarker", () => {
 
   test("Station icon with name on click when hover not supported", async () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
-    ;jest.mocked(useDeviceSupportsHover).mockReturnValueOnce(false)
+    jest.mocked(useDeviceSupportsHover).mockReturnValueOnce(false)
 
     const { container } = renderInMap(
       <StationMarker station={station} zoomLevel={13} />

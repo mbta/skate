@@ -421,9 +421,7 @@ describe("LadderPage", () => {
         }),
       ],
     }
-    ;jest.mocked(useTimepoints).mockImplementationOnce(
-      () => timepointsByRouteId
-    )
+    jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
@@ -437,12 +435,10 @@ describe("LadderPage", () => {
   })
 
   test("can click a vehicle to select it", async () => {
-    ;jest.mocked(useVehicles).mockImplementationOnce(() => ({
+    jest.mocked(useVehicles).mockImplementationOnce(() => ({
       ["1"]: [vehicle],
     }))
-    ;jest.mocked(useTimepoints).mockImplementationOnce(
-      () => timepointsByRouteId
-    )
+    jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
 
     const vehicle: VehicleInScheduledService | Ghost = vehicleFactory.build({
       runId: "clickMe",

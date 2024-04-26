@@ -439,9 +439,9 @@ describe("SearchForm", () => {
       placeId: location.id,
     })
 
-    ;jest.mocked(useLocationSearchSuggestions).mockReturnValue([
-      locationSuggestion,
-    ])
+    jest
+      .mocked(useLocationSearchSuggestions)
+      .mockReturnValue([locationSuggestion])
 
     render(
       <SearchForm
@@ -472,9 +472,9 @@ describe("SearchForm", () => {
       placeId: null,
     })
 
-    ;jest.mocked(useLocationSearchSuggestions).mockReturnValue([
-      locationSuggestion,
-    ])
+    jest
+      .mocked(useLocationSearchSuggestions)
+      .mockReturnValue([locationSuggestion])
 
     render(
       <SearchForm

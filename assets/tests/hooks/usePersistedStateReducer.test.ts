@@ -116,9 +116,9 @@ describe("usePersistedStateReducer", () => {
         },
       ]),
     }
-    ;jest.mocked(appData).mockImplementationOnce(() => mockSettings)
-    ;jest.mocked(appData).mockImplementationOnce(() => mockSettings)
-    ;jest.mocked(appData).mockImplementationOnce(() => mockSettings)
+    jest.mocked(appData).mockImplementationOnce(() => mockSettings)
+    jest.mocked(appData).mockImplementationOnce(() => mockSettings)
+    jest.mocked(appData).mockImplementationOnce(() => mockSettings)
     const { result } = renderHook(() => usePersistedStateReducer())
     const [state] = result.current
     expect(state.userSettings.shuttleVehicleLabel).toEqual(
@@ -192,7 +192,7 @@ describe("usePersistedStateReducer", () => {
   })
 
   test("sends updated route tabs to backend on changes", () => {
-    ;jest.mocked(putRouteTabs).mockImplementationOnce(() => ({
+    jest.mocked(putRouteTabs).mockImplementationOnce(() => ({
       then: (callback: (data: any) => void) => {
         callback({ ok: true })
         return { catch: jest.fn() }
@@ -255,7 +255,7 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    ;jest.mocked(putRouteTabs).mockImplementationOnce(() => fakePromise)
+    jest.mocked(putRouteTabs).mockImplementationOnce(() => fakePromise)
 
     act(() => {
       dispatch(createRouteTab())
@@ -286,7 +286,7 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    ;jest.mocked(putRouteTabs).mockImplementationOnce(() => fakePromise)
+    jest.mocked(putRouteTabs).mockImplementationOnce(() => fakePromise)
 
     act(() => {
       dispatch(createRouteTab())
@@ -315,7 +315,8 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    ;jest.mocked(putRouteTabs)
+    jest
+      .mocked(putRouteTabs)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
@@ -346,7 +347,8 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
-    ;jest.mocked(putRouteTabs)
+    jest
+      .mocked(putRouteTabs)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)
       .mockImplementationOnce(() => fakePromise)

@@ -8,7 +8,7 @@ jest.mock("appData")
 describe("getMapLimits", () => {
   test("returns map limits when properly formatted", () => {
     const limits = { north: 1, south: 2, east: 3, west: 4 }
-    ;jest.mocked(appData).mockImplementation(() => ({
+    jest.mocked(appData).mockImplementation(() => ({
       mapLimits: JSON.stringify(limits),
     }))
 
@@ -37,7 +37,7 @@ describe("getMapLimits", () => {
   ])(
     "raise error when test group data is not the correct type: case %#",
     ({ mockTestGroupData, expectedError: expectedError }) => {
-      ;jest.mocked(appData).mockImplementationOnce(() => ({
+      jest.mocked(appData).mockImplementationOnce(() => ({
         mapLimits: mockTestGroupData,
       }))
       expect(() => getMapLimits()).toThrow(expectedError)

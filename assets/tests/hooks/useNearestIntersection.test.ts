@@ -106,9 +106,9 @@ describe("useNearestIntersection", () => {
   describe("when coordinate input is unchanged", () => {
     test("should return the last result", async () => {
       const intersection = gridIntersectionFactory.build()
-      ;jest.mocked(Api.fetchNearestIntersection).mockReturnValueOnce(
-        Promise.resolve(intersection)
-      )
+      jest
+        .mocked(Api.fetchNearestIntersection)
+        .mockReturnValueOnce(Promise.resolve(intersection))
       const location = localGeoCoordinateFactory.build()
 
       const { result, rerender } = renderUseNearestIntersection(location)
@@ -179,16 +179,16 @@ describe("useNearestIntersection", () => {
       } = MockIntersectionWithCoordinateIntersectionMap(2, null)
 
       let resolveFn: (v: string | null) => any
-      ;jest.mocked(Api.fetchNearestIntersection).mockReturnValue({
+      jest.mocked(Api.fetchNearestIntersection).mockReturnValue({
         then: (onFulfilled: (v: string | null) => any) =>
           (resolveFn = onFulfilled),
       })
 
       const { rerender, result } = renderUseNearestIntersection(latLng1)
 
-      ;jest.mocked(Api.fetchNearestIntersection).mockReturnValue(
-        instantPromise(intersection2)
-      )
+      jest
+        .mocked(Api.fetchNearestIntersection)
+        .mockReturnValue(instantPromise(intersection2))
 
       rerender(latLng2)
 
@@ -200,9 +200,9 @@ describe("useNearestIntersection", () => {
 
   describe("when api call returns error", () => {
     test("should return error value", async () => {
-      ;jest.mocked(Api.fetchNearestIntersection).mockReturnValueOnce(
-        instantPromise(null)
-      )
+      jest
+        .mocked(Api.fetchNearestIntersection)
+        .mockReturnValueOnce(instantPromise(null))
       const location = localGeoCoordinateFactory.build()
 
       const { result } = renderUseNearestIntersection(location)

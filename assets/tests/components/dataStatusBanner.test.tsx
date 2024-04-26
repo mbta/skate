@@ -11,13 +11,13 @@ jest.mock("../../src/hooks/useDataStatus", () => ({
 
 describe("DataStatusBanner", () => {
   test("doesn't show anything when status is good", () => {
-    ;jest.mocked(useDataStatus).mockImplementationOnce(() => "good")
+    jest.mocked(useDataStatus).mockImplementationOnce(() => "good")
     const tree = renderer.create(<DataStatusBanner />).toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("shows outage banner when there's an outage", () => {
-    ;jest.mocked(useDataStatus).mockImplementationOnce(() => "outage")
+    jest.mocked(useDataStatus).mockImplementationOnce(() => "outage")
     const tree = renderer.create(<DataStatusBanner />).toJSON()
     expect(tree).toMatchSnapshot()
   })

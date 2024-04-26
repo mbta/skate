@@ -24,7 +24,7 @@ describe("useMostRecentVehicleById", () => {
 
   test("returns vehicle once loaded", () => {
     const vehicleForId = vehicleFactory.build()
-    ;jest.mocked(useVehicleForId).mockReturnValueOnce(vehicleForId)
+    jest.mocked(useVehicleForId).mockReturnValueOnce(vehicleForId)
     const mockSocket = makeMockSocket()
 
     const { result } = renderHook(() =>
@@ -38,7 +38,7 @@ describe("useMostRecentVehicleById", () => {
     const firstVehicle = vehicleFactory.build({ id: "y1093" })
     const secondVehicle = vehicleFactory.build({ id: "y2088" })
 
-    ;jest.mocked(useVehicleForId).mockReturnValueOnce(firstVehicle)
+    jest.mocked(useVehicleForId).mockReturnValueOnce(firstVehicle)
     const mockSocket = makeMockSocket()
 
     const { result, rerender } = renderHook(
@@ -48,7 +48,7 @@ describe("useMostRecentVehicleById", () => {
     rerender(secondVehicle.id)
 
     expect(result.current).toBe(firstVehicle)
-    ;jest.mocked(useVehicleForId).mockReturnValueOnce(secondVehicle)
+    jest.mocked(useVehicleForId).mockReturnValueOnce(secondVehicle)
     rerender(secondVehicle.id)
     expect(result.current).toBe(secondVehicle)
   })
@@ -56,7 +56,7 @@ describe("useMostRecentVehicleById", () => {
   test("returns null when passed a null vehicle id", () => {
     const firstVehicle = vehicleFactory.build({ id: "y1093" })
 
-    ;jest.mocked(useVehicleForId).mockReturnValueOnce(firstVehicle)
+    jest.mocked(useVehicleForId).mockReturnValueOnce(firstVehicle)
     const mockSocket = makeMockSocket()
 
     const { result, rerender } = renderHook<
@@ -75,7 +75,7 @@ describe("useMostRecentVehicleById", () => {
     const firstVehicle = vehicleFactory.build({ id: "y1093" })
     const secondVehicle = vehicleFactory.build({ id: "y2088" })
 
-    ;jest.mocked(useVehicleForId).mockReturnValueOnce(firstVehicle)
+    jest.mocked(useVehicleForId).mockReturnValueOnce(firstVehicle)
     const mockSocket = makeMockSocket()
 
     const { result, rerender } = renderHook<
@@ -94,7 +94,7 @@ describe("useMostRecentVehicleById", () => {
     expect(result.current).toBe(null)
 
     // second vehicle has loaded
-    ;jest.mocked(useVehicleForId).mockReturnValueOnce(secondVehicle)
+    jest.mocked(useVehicleForId).mockReturnValueOnce(secondVehicle)
     rerender(secondVehicle.id)
     expect(result.current).toBe(secondVehicle)
   })

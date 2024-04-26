@@ -299,7 +299,7 @@ describe("<MapPage />", () => {
 
   test("renders nearby stations on zoom = 15", async () => {
     setHtmlWidthHeightForLeafletMap()
-    ;jest.mocked(useAllStops).mockReturnValue([
+    jest.mocked(useAllStops).mockReturnValue([
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
@@ -338,7 +338,7 @@ describe("<MapPage />", () => {
 
   test("renders all nearby stops and stations only on zoom = 17", async () => {
     setHtmlWidthHeightForLeafletMap()
-    ;jest.mocked(useAllStops).mockReturnValue([
+    jest.mocked(useAllStops).mockReturnValue([
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
@@ -761,7 +761,7 @@ describe("<MapPage />", () => {
     const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
       routeId: vehicle.routeId!,
     })
-    ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+    jest.mocked(usePatternsByIdForRoute).mockReturnValue({
       [routePattern1.id]: routePattern1,
       [routePattern2.id]: routePattern2,
     })
@@ -796,7 +796,7 @@ describe("<MapPage />", () => {
 
     const location = locationSearchResultFactory.build()
 
-    ;jest.mocked(useLocationSearchResults).mockReturnValue([location])
+    jest.mocked(useLocationSearchResults).mockReturnValue([location])
 
     const { container } = render(
       <StateDispatchProvider
@@ -843,7 +843,7 @@ describe("<MapPage />", () => {
 
     const location = locationSearchResultFactory.build()
 
-    ;jest.mocked(useLocationSearchResults).mockReturnValue([location])
+    jest.mocked(useLocationSearchResults).mockReturnValue([location])
 
     render(
       <StateDispatchProvider
@@ -871,7 +871,7 @@ describe("<MapPage />", () => {
 
     const location = locationSearchResultFactory.build()
 
-    ;jest.mocked(useLocationSearchResultById).mockImplementation((id) => {
+    jest.mocked(useLocationSearchResultById).mockImplementation((id) => {
       if (id === location.id) {
         return location
       }
@@ -1173,7 +1173,7 @@ describe("<MapPage />", () => {
       mockUseVehiclesForRouteMap({
         [route.id]: [vehicle],
       })
-      ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+      jest.mocked(usePatternsByIdForRoute).mockReturnValue({
         [routePattern.id]: routePattern,
       })
 
@@ -1266,7 +1266,7 @@ describe("<MapPage />", () => {
       mockUseVehiclesForRouteMap({
         [route.id]: [vehicle],
       })
-      ;jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+      jest.mocked(usePatternsByIdForRoute).mockReturnValue({
         [routePattern.id]: routePattern,
       })
 

@@ -58,7 +58,7 @@ export const mockUsePatternsByIdForVehicles = (
     )
   )
 
-  ;jest.mocked(usePatternsByIdForRoute).mockReturnValue(
+  jest.mocked(usePatternsByIdForRoute).mockReturnValue(
     routePatternIdentifiers
       .map(([routePatternId, routeId]) =>
         routePatternFactory.build({

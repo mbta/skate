@@ -313,7 +313,7 @@ const vehicleWithOffset: VehicleInScheduledService = {
 
 describe("MinischeduleRun", () => {
   test("renders the loading state", () => {
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => undefined)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => undefined)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -322,7 +322,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a not found state", () => {
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => null)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => null)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -331,7 +331,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run", () => {
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [paidBreakBefore, multiTripPiece],
     }))
@@ -343,7 +343,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run with a schedule offset", () => {
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [paidBreakBefore, multiTripPiece],
     }))
@@ -355,7 +355,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run using origin trip label mode", () => {
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [paidBreakBefore, multiTripPiece],
     }))
@@ -381,7 +381,7 @@ describe("MinischeduleRun", () => {
       trips: [revenueTrip, immediatelyFollowingTrip],
     }
 
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [noLayoverPiece],
     }))
@@ -399,7 +399,7 @@ describe("MinischeduleRun", () => {
       routeStatus: "laying_over",
     }
 
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [multiTripPiece],
     }))
@@ -417,7 +417,7 @@ describe("MinischeduleRun", () => {
       routeStatus: "on_route",
     }
 
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [multiTripPiece],
     }))
@@ -454,7 +454,7 @@ describe("MinischeduleRun", () => {
       routeStatus: "laying_over",
     }
 
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [threeTripPiece],
     }))
@@ -477,7 +477,7 @@ describe("MinischeduleRun", () => {
       routeStatus: "laying_over",
     }
 
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
       id: "run",
       activities: [asDirectedPieceWithLayover],
     }))
@@ -494,7 +494,7 @@ describe("MinischeduleRun", () => {
       activities: [asDirectedPiece],
     }
 
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -507,7 +507,7 @@ describe("MinischeduleRun", () => {
       id: "run2",
       activities: [midRouteSwingPiece2],
     }
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -526,7 +526,7 @@ describe("MinischeduleRun", () => {
         }),
       ],
     })
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
 
     render(<MinischeduleRun vehicleOrGhost={vehicle} />)
 
@@ -539,7 +539,7 @@ describe("MinischeduleRun", () => {
       id: "run1",
       activities: [midRouteSwingPiece1],
     }
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -548,9 +548,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders duty details of run", () => {
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(
-      () => multiPieceRun
-    )
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => multiPieceRun)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -559,9 +557,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders duty details of run with overload offset", () => {
-    ;jest.mocked(useMinischeduleRun).mockImplementationOnce(
-      () => multiPieceRun
-    )
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => multiPieceRun)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleWithOffset} />)
       .toJSON()
@@ -572,7 +568,7 @@ describe("MinischeduleRun", () => {
 
 describe("MinischeduleBlock", () => {
   test("renders the loading state", () => {
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => undefined)
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => undefined)
     const tree = renderer
       .create(<MinischeduleBlock vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -581,7 +577,7 @@ describe("MinischeduleBlock", () => {
   })
 
   test("renders a not found state", () => {
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => null)
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => null)
     const tree = renderer
       .create(<MinischeduleBlock vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -590,7 +586,7 @@ describe("MinischeduleBlock", () => {
   })
 
   test("renders a block", () => {
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [piece],
     }))
@@ -610,7 +606,7 @@ describe("MinischeduleBlock", () => {
         { ...nonrevenueTrip, id: "pullback", startTime: 840, endTime: 960 },
       ],
     }
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [deadheadPiece],
     }))
@@ -631,7 +627,7 @@ describe("MinischeduleBlock", () => {
         { ...nonrevenueTrip, id: "pullback", startTime: 840, endTime: 960 },
       ],
     }
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [deadheadPiece],
     }))
@@ -647,7 +643,7 @@ describe("MinischeduleBlock", () => {
       ...piece,
       trips: [revenueTrip, revenueTrip2, tripWithoutDirection],
     }
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [multiDirectionPiece],
     }))
@@ -660,7 +656,7 @@ describe("MinischeduleBlock", () => {
   })
 
   test("renders a mid route swing", () => {
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
     }))
@@ -673,7 +669,7 @@ describe("MinischeduleBlock", () => {
   })
 
   test("renders a mid route swing with offset", () => {
-    ;jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
+    jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
     }))

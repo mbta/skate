@@ -159,7 +159,7 @@ describe("PropertiesPanel", () => {
   })
 
   test("renders a vehicle with updated live information", () => {
-    ;jest.mocked(useVehicleForId).mockImplementationOnce(() => vehicle)
+    jest.mocked(useVehicleForId).mockImplementationOnce(() => vehicle)
 
     const result = render(
       <MemoryRouter initialEntries={["/"]}>
@@ -179,7 +179,8 @@ describe("PropertiesPanel", () => {
   })
 
   test("renders stale data message", () => {
-    ;jest.mocked(useVehicleForId)
+    jest
+      .mocked(useVehicleForId)
       .mockImplementationOnce(() => null)
       .mockImplementationOnce(() => null)
 
@@ -196,7 +197,8 @@ describe("PropertiesPanel", () => {
       operatorLogonTime: null,
     }
 
-    ;jest.mocked(useVehicleForId)
+    jest
+      .mocked(useVehicleForId)
       .mockImplementationOnce(() => loggedOutVehicle)
       .mockImplementationOnce(() => loggedOutVehicle)
 
