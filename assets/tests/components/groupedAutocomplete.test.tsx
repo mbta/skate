@@ -632,9 +632,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
     const [idVehicle, runVehicle, operatorVehicle] = vehicleFactory.buildList(3)
     const locationSuggestion = locationSearchSuggestionFactory.build()
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation(
+    ;jest.mocked(useAutocompleteResults).mockImplementation(
       (_socket, text: string, _filters) =>
         ({
           [searchText]: {
@@ -692,9 +690,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
     const searchText = "12345"
     const maxLength = 5
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation(
+    ;jest.mocked(useAutocompleteResults).mockImplementation(
       (_socket, text: string, _) =>
         ({
           [searchText]: {
@@ -746,9 +742,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
 
     const [vehicle, nextVehicle] = vehicleFactory.buildList(2)
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation((_socket, searchText) => {
+    ;jest.mocked(useAutocompleteResults).mockImplementation((_socket, searchText) => {
       switch (searchText) {
         case inputText: {
           return {
@@ -808,9 +802,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
   test("when showing results, should not show a category if there are no results", () => {
     const [vehicle, runVehicle] = vehicleFactory.buildList(2)
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockReturnValue({
+    ;jest.mocked(useAutocompleteResults).mockReturnValue({
       vehicle: [vehicle],
       operator: [],
       run: [runVehicle],
@@ -837,9 +829,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
 
     expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
     expect(runOption.get(runOptions)).toBeInTheDocument()
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation(() => {
+    ;jest.mocked(useAutocompleteResults).mockImplementation(() => {
       return {
         vehicle: [vehicle],
         operator: [],
@@ -856,9 +846,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
   test("when supplied with search filters, should not show disabled categories", () => {
     const [vehicle, runVehicle] = vehicleFactory.buildList(2)
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation((_socket, _searchText, filters) => {
+    ;jest.mocked(useAutocompleteResults).mockImplementation((_socket, _searchText, filters) => {
       return {
         vehicle: filters.vehicle ? [vehicle] : [],
         operator: [],

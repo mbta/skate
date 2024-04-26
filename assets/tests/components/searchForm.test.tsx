@@ -390,9 +390,7 @@ describe("SearchForm", () => {
     const inputText = "123"
     const vehicle = vehicleFactory.build()
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation(((_socket, searchText) => {
+    ;jest.mocked(useAutocompleteResults).mockImplementation(((_socket, searchText) => {
       if (inputText === searchText) {
         return {
           vehicle: [vehicle],
@@ -503,9 +501,7 @@ describe("SearchForm", () => {
     const inputText = "123"
     const [vehicle, runVehicle] = vehicleFactory.buildList(2)
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation(((_socket, searchText, filters) => {
+    ;jest.mocked(useAutocompleteResults).mockImplementation(((_socket, searchText, filters) => {
       if (inputText === searchText) {
         return {
           vehicle: filters.vehicle ? [vehicle] : [],
@@ -539,9 +535,7 @@ describe("SearchForm", () => {
     const inputText = "123"
     const [vehicle, runVehicle, operatorVehicle] = vehicleFactory.buildList(3)
 
-    ;(
-      useAutocompleteResults as jest.Mock<typeof useAutocompleteResults>
-    ).mockImplementation(((_socket, searchText) => {
+    ;jest.mocked(useAutocompleteResults).mockImplementation(((_socket, searchText) => {
       if (inputText === searchText) {
         return {
           vehicle: [vehicle],

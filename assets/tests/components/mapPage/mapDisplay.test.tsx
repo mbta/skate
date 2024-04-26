@@ -111,7 +111,7 @@ type VehicleIdToVehicle = {
 }
 
 function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
-  ;(useVehicleForId as jest.Mock<typeof useVehicleForId>).mockImplementation(
+  ;jest.mocked(useVehicleForId).mockImplementation(
     (_, vehicleId) => map[vehicleId!] || null
   )
 }
@@ -127,15 +127,11 @@ function mockUseVehicleForId(vehicles: (VehicleInScheduledService | Ghost)[]) {
 function mockUseVehiclesForRouteMap(map: {
   [routeId: RouteId]: (VehicleInScheduledService | Ghost)[]
 }) {
-  ;(
-    useVehiclesForRoute as jest.Mock<typeof useVehiclesForRoute>
-  ).mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
+  ;jest.mocked(useVehiclesForRoute).mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
 }
 
 function mockUsePullbackVehicles(vehicles: Vehicle[]) {
-  ;(
-    usePullbackVehicles as jest.Mock<typeof usePullbackVehicles>
-  ).mockImplementation(() => vehicles)
+  ;jest.mocked(usePullbackVehicles).mockImplementation(() => vehicles)
 }
 
 describe("<MapDisplay />", () => {

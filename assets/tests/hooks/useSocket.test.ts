@@ -27,9 +27,7 @@ describe("useSocket", () => {
   test("connectionStatus is set to Connected when the socket connects", () => {
     const { result } = renderHook(() => useSocket())
     const mockSocket = result.current.socket
-    const [[onOpenHandler]] = (
-      mockSocket!.onOpen as jest.Mock<Socket["onOpen"]>
-    ).mock.calls
+    const [[onOpenHandler]] = jest.mocked(mockSocket!.onOpen).mock.calls
     act(() => {
       onOpenHandler()
     })
@@ -39,9 +37,7 @@ describe("useSocket", () => {
   test("connectionStatus is set to Disconnected when the socket closes", () => {
     const { result } = renderHook(() => useSocket())
     const mockSocket = result.current.socket
-    const [[onCloseHandler]] = (
-      mockSocket!.onClose as jest.Mock<Socket["onClose"]>
-    ).mock.calls
+    const [[onCloseHandler]] = jest.mocked(mockSocket!.onClose).mock.calls
     act(() => {
       onCloseHandler({
         code: 500,

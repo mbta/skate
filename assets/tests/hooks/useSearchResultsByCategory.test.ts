@@ -32,7 +32,7 @@ const mockSearchResults = (rawResults: {
   run?: VehicleResultType
   location?: LocationSearchResult[] | null
 }) => {
-  ;(useSearchResults as jest.Mock<typeof useSearchResults>).mockImplementation(
+  ;jest.mocked(useSearchResults).mockImplementation(
     (_socket, query) => {
       switch (query?.property) {
         case "vehicle":
