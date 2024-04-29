@@ -34,7 +34,7 @@ import {
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
 import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
-import { loading } from "../../../src/util/fetchResult"
+import { loading, ok } from "../../../src/util/fetchResult"
 
 const DiversionPage = (
   props: Omit<
