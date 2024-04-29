@@ -114,9 +114,13 @@ describe("DiversionPage", () => {
 
     const { container } = render(<DiversionPage />)
 
-    fireEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
 
-    fireEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
 
     expect(await screen.findByText("From Avenue 1 & Street 2")).toBeVisible()
   })
