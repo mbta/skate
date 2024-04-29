@@ -518,10 +518,8 @@ describe("DiversionPage", () => {
     await waitFor(() =>
       expect(window.navigator.clipboard.readText()).resolves.toBe(
         [
-          "Detour:",
-          `${routeName} ${routeDescription} from`,
+          `Detour ${routeName} ${routeDirection}`,
           routeOrigin,
-          routeDirection,
           ,
           "Turn-by-Turn Directions:",
           "Turn left on Main Street",

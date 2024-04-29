@@ -61,10 +61,8 @@ export const DiversionPage = ({
   useEffect(() => {
     setTextArea(
       [
-        "Detour:",
-        `${originalRoute.routeName} ${originalRoute.routeDescription} from`,
+        `Detour ${originalRoute.routeName} ${originalRoute.routeDirection}`,
         originalRoute.routeOrigin,
-        originalRoute.routeDirection,
         ,
         "Turn-by-Turn Directions:",
         ...(directions?.map((v) => v.instruction) ?? []),
