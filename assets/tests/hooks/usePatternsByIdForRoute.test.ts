@@ -1,15 +1,17 @@
-import { jest, describe, test, expect } from "@jest/globals"
-import { renderHook, waitFor } from "@testing-library/react"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
+import { act, renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"
 import { instantPromise } from "../testHelpers/mockHelpers"
+import { PromiseWithResolvers } from "../testHelpers/PromiseWithResolvers"
+import routeFactory from "../factories/route"
 
-jest.mock("../../src/api", () => ({
-  __esModule: true,
+jest.mock("../../src/api")
 
-  fetchRoutePatterns: jest.fn(() => new Promise(() => [])),
-}))
+beforeEach(() => {
+  jest.mocked(Api.fetchRoutePatterns).mockReturnValue(new Promise(() => {}))
+})
 
 describe("usePatternsByIdForRoute", () => {
   test("returns null while loading", () => {
@@ -22,7 +24,7 @@ describe("usePatternsByIdForRoute", () => {
     expect(result.current).toEqual(null)
   })
 
-  test("returns result when loaded", () => {
+  test("returns result when loaded", async () => {
     const routePatterns = routePatternFactory.buildList(2, { routeId: "66" })
     const [rp1, rp2] = routePatterns
     const mockFetchRoutePatterns: jest.Mock =
@@ -32,10 +34,12 @@ describe("usePatternsByIdForRoute", () => {
       return usePatternsByIdForRoute("66")
     })
     expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(1)
-    expect(result.current).toEqual({ [rp1.id]: rp1, [rp2.id]: rp2 })
+    await waitFor(() =>
+      expect(result.current).toEqual({ [rp1.id]: rp1, [rp2.id]: rp2 })
+    )
   })
 
-  test("doesn't fetch routes when passed null id", () => {
+  test("doesn't fetch routes when passed null id", async () => {
     const mockFetchRoutePatterns: jest.Mock =
       Api.fetchRoutePatterns as jest.Mock
     mockFetchRoutePatterns.mockReturnValueOnce(
@@ -45,76 +49,68 @@ describe("usePatternsByIdForRoute", () => {
       return usePatternsByIdForRoute(null)
     })
     rerender()
-    expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(0)
+    await waitFor(() => expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(0))
   })
 
-  test("doesn't refetch routes on every render", () => {
-    const mockFetchRoutePatterns: jest.Mock =
-      Api.fetchRoutePatterns as jest.Mock
-    mockFetchRoutePatterns.mockReturnValueOnce(
-      instantPromise([routePatternFactory.buildList(2)])
-    )
-    const { rerender } = renderHook(() => {
-      return usePatternsByIdForRoute("66")
+  test("doesn't refetch routes on every render", async () => {
+    jest
+      .mocked(Api.fetchRoutePatterns)
+      .mockResolvedValueOnce(routePatternFactory.buildList(2))
+
+    const { rerender, result } = renderHook(usePatternsByIdForRoute, {
+      initialProps: "66",
     })
-    rerender()
-    expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(1)
+
+    rerender("66")
+
+    await waitFor(() => expect(result.current).not.toBeNull())
+    expect(jest.mocked(Api.fetchRoutePatterns)).toHaveBeenCalledTimes(1)
   })
 
-  test("refetches when routeId changes", () => {
-    const mockFetchRoutePatterns: jest.Mock =
-      Api.fetchRoutePatterns as jest.Mock
-    mockFetchRoutePatterns.mockReturnValueOnce(
-      instantPromise([routePatternFactory.buildList(2)])
-    )
-    const { rerender } = renderHook(
-      (id) => {
-        return usePatternsByIdForRoute(id)
-      },
-      { initialProps: "66" }
-    )
-    expect(mockFetchRoutePatterns).toHaveBeenLastCalledWith("66")
+  test("refetches when routeId changes", async () => {
+    const { rerender } = renderHook(usePatternsByIdForRoute, {
+      initialProps: "66",
+    })
+
+    expect(jest.mocked(Api.fetchRoutePatterns)).toHaveBeenLastCalledWith("66")
+
     rerender("39")
-    expect(mockFetchRoutePatterns).toHaveBeenLastCalledWith("39")
+
+    expect(jest.mocked(Api.fetchRoutePatterns)).toHaveBeenLastCalledWith("39")
   })
 
   test("Keeps most recently requested route patterns if previous resolves finishes later", async () => {
-    const patternFor66 = routePatternFactory.build({ routeId: "66" })
-    // const patternsFor66ById = { [patternFor66.id]: patternFor66 }
+    const { promise, resolve } =
+      PromiseWithResolvers<Awaited<ReturnType<typeof Api.fetchRoutePatterns>>>()
+
     const patternFor39 = routePatternFactory.build({ routeId: "39" })
     const patternsFor39ById = { [patternFor39.id]: patternFor39 }
 
-    let patternsFor66DidResolve = false
+    const routeId1 = routeFactory.build()
 
-    const mockFetchRoutePatterns: jest.Mock =
-      Api.fetchRoutePatterns as jest.Mock
+    jest.mocked(Api.fetchRoutePatterns).mockReturnValue(promise)
 
-    mockFetchRoutePatterns
-      .mockReturnValueOnce(
-        new Promise((res) =>
-          setTimeout(() => {
-            patternsFor66DidResolve = true
-            return res([patternFor66])
-          }, 250)
-        )
-      )
-      .mockReturnValueOnce(instantPromise([patternFor39]))
-    const { rerender, result } = renderHook(
-      (id) => {
-        return usePatternsByIdForRoute(id)
-      },
-      { initialProps: "66" }
+    const { rerender, result } = renderHook(usePatternsByIdForRoute, {
+      initialProps: routeId1.id,
+    })
+
+    expect(jest.mocked(Api.fetchRoutePatterns)).toHaveBeenLastCalledWith(
+      routeId1.id
     )
-    expect(mockFetchRoutePatterns).toHaveBeenLastCalledWith("66")
+
     expect(result.current).toBeNull()
+
+    jest.mocked(Api.fetchRoutePatterns).mockResolvedValue([patternFor39])
+
     rerender("39")
-    expect(mockFetchRoutePatterns).toHaveBeenLastCalledWith("39")
-    expect(result.current).toEqual(patternsFor39ById)
 
-    expect(patternsFor66DidResolve).toBe(false)
+    expect(jest.mocked(Api.fetchRoutePatterns)).toHaveBeenLastCalledWith("39")
+    await waitFor(() => expect(result.current).toEqual(patternsFor39ById))
 
-    await waitFor(() => expect(patternsFor66DidResolve).toBe(true))
+    act(() =>
+      resolve(routePatternFactory.buildList(2, { routeId: routeId1.id }))
+    )
 
-    expect(result.current).toEqual(patternsFor39ById)
+    await waitFor(() => expect(result.current).toEqual(patternsFor39ById))
   })
 })
