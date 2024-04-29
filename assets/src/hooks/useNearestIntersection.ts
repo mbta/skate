@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { fetchNearestIntersection } from "../api"
-import { FetchResult } from "../util/fetchResult"
+import { FetchResult, loading } from "../util/fetchResult"
 
 export const useNearestIntersection = (
   latitude: number | undefined,
@@ -27,7 +27,7 @@ export const useNearestIntersection = (
           }
         }
       })
-    } else setResult({ ok: null })
+    } else setResult(loading())
 
     return () => {
       shouldUpdate = false

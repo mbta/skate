@@ -34,6 +34,7 @@ import {
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
 import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { loading } from "../../../src/util/fetchResult"
 
 const DiversionPage = (
   props: Omit<
@@ -71,18 +72,14 @@ beforeEach(() => {
 
 jest.mock("../../../src/api")
 
-jest.mock("../../../src/hooks/useNearestIntersection", () => ({
-  __esModule: true,
-  useNearestIntersection: jest.fn(() => {
-    return { is_loading: true }
-  }),
-}))
+jest.mock("../../../src/hooks/useNearestIntersection")
 
 beforeEach(() => {
   jest
     .mocked(fetchDetourDirections)
     .mockImplementation(() => new Promise(() => {}))
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
+  jest.mocked(useNearestIntersection).mockReturnValue(loading())
 })
 
 describe("DiversionPage", () => {
