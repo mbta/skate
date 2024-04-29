@@ -51,11 +51,13 @@
 .c-detour_map-circle-marker--start {
   stroke: tokens.$detour-start-point;
   fill: tokens.$detour-start-point;
+  display: block;
 }
 
 .c-detour_map-circle-marker--end {
   stroke: $color-strawberry-700;
   fill: $color-strawberry-700;
+  display: block;
 }
 
 .c-detour_map-circle-marker--detour-point {
