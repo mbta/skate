@@ -6,10 +6,12 @@
 ## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 export ERL_FLAGS="+MIscs 2048"
 
-## Authentication/authorization secret. Generate a value using mix phx.gen.secret
+## Authentication/authorization secret. 
+## You _can_ generate a value using `mix phx.gen.secret`
 export GUARDIAN_SECRET_KEY=$(openssl rand -base64 48)
 
-## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret
+## Used for writing encrypted cookies.
+## You _can_ generate a value using `mix phx.gen.secret`
 export SECRET_KEY_BASE=$(openssl rand -base64 48)
 
 ## Postgres configuration: username, password, and hostname
