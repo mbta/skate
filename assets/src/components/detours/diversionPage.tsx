@@ -43,6 +43,7 @@ export const DiversionPage = ({
     detourShape,
     directions,
     routingError,
+    nearestIntersection,
 
     stops,
     missedStops,
@@ -58,6 +59,13 @@ export const DiversionPage = ({
 
   const [textArea, setTextArea] = useState("")
 
+  const nearestIntersectionDirection = [
+    { instruction: "From " + nearestIntersection },
+  ]
+  const extendedDirections = directions
+    ? nearestIntersectionDirection.concat(directions)
+    : undefined
+
   useEffect(() => {
     setTextArea(
       [
@@ -65,7 +73,7 @@ export const DiversionPage = ({
         originalRoute.routeOrigin,
         ,
         "Turn-by-Turn Directions:",
-        ...(directions?.map((v) => v.instruction) ?? []),
+        ...(extendedDirections?.map((v) => v.instruction) ?? []),
         ,
         "Connection Points:",
         connectionPoints?.start?.name ?? "N/A",
@@ -77,7 +85,7 @@ export const DiversionPage = ({
     )
   }, [
     originalRoute,
-    directions,
+    extendedDirections,
     missedStops,
     connectionPoints?.start?.name,
     connectionPoints?.end?.name,
@@ -93,7 +101,7 @@ export const DiversionPage = ({
         <div className="l-diversion-page__panel bg-light">
           {state === DetourState.Edit && (
             <DiversionPanel
-              directions={directions}
+              directions={extendedDirections}
               missedStops={missedStops}
               routeName={originalRoute.routeName}
               routeDescription={originalRoute.routeDescription}

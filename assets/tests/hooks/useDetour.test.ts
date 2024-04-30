@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
-import { fetchDetourDirections, fetchFinishedDetour } from "../../src/api"
+import {
+  fetchDetourDirections,
+  fetchFinishedDetour,
+  fetchNearestIntersection,
+} from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { DetourState, useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
@@ -21,6 +25,8 @@ beforeEach(() => {
   jest
     .mocked(fetchFinishedDetour)
     .mockResolvedValue(finishedDetourFactory.build())
+
+  jest.mocked(fetchNearestIntersection).mockReturnValue(new Promise(() => {}))
 })
 
 const useDetourWithFakeRoutePattern = () =>
