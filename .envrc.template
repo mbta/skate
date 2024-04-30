@@ -7,10 +7,10 @@
 export ERL_FLAGS="+MIscs 2048"
 
 ## Authentication/authorization secret. Generate a value using mix phx.gen.secret
-export GUARDIAN_SECRET_KEY=$(mix phx.gen.secret)
+export GUARDIAN_SECRET_KEY=$(openssl rand -base64 48)
 
 ## Used for writing encrypted cookies. Generate a value using mix phx.gen.secret
-export SECRET_KEY_BASE=$(mix phx.gen.secret)
+export SECRET_KEY_BASE=$(openssl rand -base64 48)
 
 ## Postgres configuration: username, password, and hostname
 ## * Your local Postgres server should go here
