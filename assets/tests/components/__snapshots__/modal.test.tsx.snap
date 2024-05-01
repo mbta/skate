@@ -135,29 +135,36 @@ exports[`Modal renders inactive notification modal when appropriate 1`] = `
 exports[`Modal renders loading modal when appropriate 1`] = `
 [
   <div
+    className="c-modal-backdrop"
+    onClick={[Function]}
+  />,
+  <div
+    aria-modal={true}
     className="c-modal c-notification-loading-modal"
+    role="dialog"
+    tabIndex={-1}
   >
     <div
-      className="c-notification-loading-modal__spinner-wrapper"
+      role="document"
     >
-      <span
-        className="c-loading-spinner"
-        dangerouslySetInnerHTML={
-          {
-            "__html": "<svg/>",
+      <div
+        className="c-notification-loading-modal__spinner-wrapper"
+      >
+        <span
+          className="c-loading-spinner"
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
-    </div>
-    <div
-      className="c-notification-loading-modal__text-wrapper"
-    >
-      Loading...
+        />
+      </div>
+      <div
+        className="c-notification-loading-modal__text-wrapper"
+      >
+        Loading...
+      </div>
     </div>
   </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
 ]
 `;

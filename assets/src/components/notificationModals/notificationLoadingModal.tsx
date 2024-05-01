@@ -1,9 +1,14 @@
 import React, { ReactElement } from "react"
 import { LoadingIcon } from "../../helpers/icon"
+import { Modal } from "@restart/ui"
 
 const NotificationLoadingModal = (): ReactElement => (
-  <>
-    <div className="c-modal c-notification-loading-modal">
+  <Modal
+    className="c-modal c-notification-loading-modal"
+    show
+    renderBackdrop={(props) => <div {...props} className="c-modal-backdrop" />}
+  >
+    <div>
       <div className="c-notification-loading-modal__spinner-wrapper">
         <LoadingIcon className="c-loading-spinner" />
       </div>
@@ -11,8 +16,7 @@ const NotificationLoadingModal = (): ReactElement => (
         Loading...
       </div>
     </div>
-    <div className="c-modal-backdrop" aria-hidden={true} />
-  </>
+  </Modal>
 )
 
 export default NotificationLoadingModal

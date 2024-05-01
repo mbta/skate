@@ -3,7 +3,14 @@
 exports[`DisconnectedModal renders 1`] = `
 [
   <div
+    className="c-modal-backdrop"
+    onClick={[Function]}
+  />,
+  <div
+    aria-modal={true}
     className="c-modal"
+    role="dialog"
+    tabIndex={-1}
   >
     <div>
       Your connection to Skate has expired. Refresh the page to continue.
@@ -15,9 +22,5 @@ exports[`DisconnectedModal renders 1`] = `
       Refresh
     </button>
   </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
 ]
 `;
