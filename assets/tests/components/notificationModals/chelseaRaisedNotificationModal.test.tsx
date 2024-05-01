@@ -1,11 +1,19 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React from "react"
+import React, { ReactNode, ReactPortal } from "react"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState, setNotification } from "../../../src/state"
 import { Notification, NotificationState } from "../../../src/realtime.d"
 import ChelseaRaisedNotificationModal from "../../../src/components/notificationModals/chelseaRaisedNotificationModal"
+import ReactDOM from "react-dom"
+
+jest.mock("react-dom", () => {
+  return {
+    ...(jest.requireActual("react-dom") as typeof ReactDOM),
+    createPortal: (node: ReactNode): ReactPortal => node as ReactPortal,
+  }
+})
 
 describe("ChelseaRaisedNotificationModal", () => {
   const notification: Notification = {

@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React from "react"
+import React, { ReactNode, ReactPortal } from "react"
 import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
 import Modal from "../../src/components/modal"
@@ -13,11 +13,19 @@ import {
 import { initialState, State } from "../../src/state"
 import stateFactory from "../factories/applicationState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
+import ReactDOM from "react-dom"
 
 jest.mock("../../src/hooks/useMinischedule", () => ({
   __esModule: true,
   useMinischeduleRuns: jest.fn(),
 }))
+
+jest.mock("react-dom", () => {
+  return {
+    ...(jest.requireActual("react-dom") as typeof ReactDOM),
+    createPortal: (node: ReactNode): ReactPortal => node as ReactPortal,
+  }
+})
 
 describe("Modal", () => {
   test("renders inactive notification modal when appropriate", () => {

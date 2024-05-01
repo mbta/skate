@@ -3,12 +3,21 @@
 exports[`Modal renders Chelsea Lowered modal 1`] = `
 [
   <div
+    className="c-modal-backdrop"
+    onClick={[Function]}
+  />,
+  <div
+    aria-modal={true}
     className="c-modal"
+    role="dialog"
+    tabIndex={-1}
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      className="c-basic-notification-modal"
+      role="document"
     >
       <button
+        className="c-basic-notification-modal__close-button"
         onClick={[Function]}
         title="Close"
       >
@@ -20,34 +29,39 @@ exports[`Modal renders Chelsea Lowered modal 1`] = `
           }
         />
       </button>
-    </div>
-    <div
-      className="c-notification__title"
-    >
-      Chelsea St Bridge Lowered
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      OCC reported that the Chelsea St Bridge has been lowered.
+      <div
+        className="c-notification__title"
+      >
+        Chelsea St Bridge Lowered
+      </div>
+      <div
+        className="c-basic-notification-modal__body"
+      >
+        OCC reported that the Chelsea St Bridge has been lowered.
+      </div>
     </div>
   </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
 ]
 `;
 
 exports[`Modal renders Chelsea Raised modal 1`] = `
 [
   <div
+    className="c-modal-backdrop"
+    onClick={[Function]}
+  />,
+  <div
+    aria-modal={true}
     className="c-modal"
+    role="dialog"
+    tabIndex={-1}
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      className="c-basic-notification-modal"
+      role="document"
     >
       <button
+        className="c-basic-notification-modal__close-button"
         onClick={[Function]}
         title="Close"
       >
@@ -59,34 +73,39 @@ exports[`Modal renders Chelsea Raised modal 1`] = `
           }
         />
       </button>
-    </div>
-    <div
-      className="c-notification__title"
-    >
-      Chelsea St Bridge Raised
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      OCC reported that the Chelsea St Bridge will be raised until 7:45 AM.
+      <div
+        className="c-notification__title"
+      >
+        Chelsea St Bridge Raised
+      </div>
+      <div
+        className="c-basic-notification-modal__body"
+      >
+        OCC reported that the Chelsea St Bridge will be raised until 7:45 AM.
+      </div>
     </div>
   </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
 ]
 `;
 
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
 [
   <div
+    className="c-modal-backdrop"
+    onClick={[Function]}
+  />,
+  <div
+    aria-modal={true}
     className="c-modal"
+    role="dialog"
+    tabIndex={-1}
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      className="c-basic-notification-modal"
+      role="document"
     >
       <button
+        className="c-basic-notification-modal__close-button"
         onClick={[Function]}
         title="Close"
       >
@@ -98,23 +117,18 @@ exports[`Modal renders inactive notification modal when appropriate 1`] = `
           }
         />
       </button>
-    </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Sorry, there's no additional information that we can provide you about this notification.
+      <div
+        className="c-notification__title"
+      >
+        Other NOTIFICATION
+      </div>
+      <div
+        className="c-basic-notification-modal__body"
+      >
+        Sorry, there's no additional information that we can provide you about this notification.
+      </div>
     </div>
   </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
 ]
 `;
 

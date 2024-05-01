@@ -1,13 +1,11 @@
-import React, { useContext } from "react"
+import React from "react"
 import Loading from "../loading"
-import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { useMinischeduleRuns } from "../../hooks/useMinischedule"
-import { OldCloseIcon } from "../../helpers/icon"
 import { Activity, Run, Piece, Trip } from "../../minischedule"
 import { Notification, RunId } from "../../realtime.d"
-import { setNotification } from "../../state"
 import { now, serviceDaySeconds } from "../../util/dateTime"
 import { title } from "../notificationCard"
+import BasicNotificationModal from "./basicNotificationModal"
 
 type RunScheduleRelationship = "current" | "break" | "past"
 
@@ -16,15 +14,9 @@ const InactiveNotificationModal = ({
 }: {
   notification: Notification
 }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
-
   const runs: (Run | null)[] | undefined = useMinischeduleRuns(
     notification.tripIds
   )
-
-  const closeModal = () => {
-    dispatch(setNotification())
-  }
 
   if (runs !== undefined) {
     const uniqueRuns = Object.values(
@@ -38,22 +30,10 @@ const InactiveNotificationModal = ({
     )
 
     return (
-      <>
-        <div className="c-modal">
-          <div className="c-inactive-notification-modal__close-button">
-            <button title="Close" onClick={closeModal}>
-              <OldCloseIcon />
-            </button>
-          </div>
-          <div className="c-notification__title">
-            {title(notification.reason)} NOTIFICATION
-          </div>
-          <div className="c-inactive-notification-modal__body">
-            {bodyCopy(notification, uniqueRuns)}
-          </div>
-        </div>
-        <div className="c-modal-backdrop" aria-hidden={true} />
-      </>
+      <BasicNotificationModal
+        title={title(notification.reason) + " NOTIFICATION"}
+        body={bodyCopy(notification, uniqueRuns)}
+      />
     )
   }
 
