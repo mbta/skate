@@ -1,18 +1,10 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React, { ReactNode, ReactPortal } from "react"
+import React from "react"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState, setNotification } from "../../../src/state"
 import ChelseaLoweredNotificationModal from "../../../src/components/notificationModals/chelseaLoweredNotificationModal"
-import ReactDOM from "react-dom"
-
-jest.mock("react-dom", () => {
-  return {
-    ...(jest.requireActual("react-dom") as typeof ReactDOM),
-    createPortal: (node: ReactNode): ReactPortal => node as ReactPortal,
-  }
-})
 
 describe("ChelseaLoweredNotificationModal", () => {
   const mockDispatch = jest.fn()
