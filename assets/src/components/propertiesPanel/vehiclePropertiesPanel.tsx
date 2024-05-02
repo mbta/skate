@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
-import { useNearestIntersection } from "../../hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
@@ -87,7 +87,10 @@ const Location = ({
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
 
-  const nearestIntersectionResult = useNearestIntersection(latitude, longitude)
+  const nearestIntersectionResult = useNearestIntersectionFetchResult(
+    latitude,
+    longitude
+  )
   const nearestIntersection = isOk(nearestIntersectionResult)
     ? nearestIntersectionResult.ok
     : null

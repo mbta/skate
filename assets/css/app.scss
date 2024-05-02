@@ -31,6 +31,7 @@ $vpp-location-padding: 1rem;
 @import "leaflet";
 @import "skate_ui";
 
+@import "basic_notification_modal";
 @import "circle_x_icon";
 @import "card";
 @import "circle_button";
@@ -48,7 +49,6 @@ $vpp-location-padding: 1rem;
 @import "filter_accordion";
 @import "garage_filter";
 @import "icon_alert_circle";
-@import "inactive_notification_modal";
 @import "incoming_box";
 @import "input_modal";
 @import "ladder_page";

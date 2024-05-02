@@ -92,6 +92,8 @@ import pieceFactory from "../factories/piece"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
+import { loading } from "../../src/util/fetchResult"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   useLocationSearchResults: jest.fn(() => null),
@@ -111,13 +113,7 @@ jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../src/hooks/useNearestIntersection", () => ({
-  useNearestIntersection: jest.fn(() => {
-    return {
-      is_loading: true,
-    }
-  }),
-}))
+jest.mock("../../src/hooks/useNearestIntersection")
 
 jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
@@ -154,6 +150,10 @@ jest.mock("../../src/hooks/usePanelState")
 
 jest.mock("../../src/userTestGroups")
 
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
+
 const mockVehicleSearchResultsCategory = (
   vehicles: (Vehicle | Ghost)[] | null
 ) => {
@@ -175,9 +175,9 @@ type VehicleIdToVehicle = {
 }
 
 function mockUseVehicleForIdMap(map: VehicleIdToVehicle) {
-  ;(useVehicleForId as jest.Mock<typeof useVehicleForId>).mockImplementation(
-    (_, vehicleId) => map[vehicleId!] || null
-  )
+  jest
+    .mocked(useVehicleForId)
+    .mockImplementation((_, vehicleId) => map[vehicleId!] || null)
 }
 
 function mockUseVehicleForId(vehicles: (VehicleInScheduledService | Ghost)[]) {
@@ -191,9 +191,9 @@ function mockUseVehicleForId(vehicles: (VehicleInScheduledService | Ghost)[]) {
 function mockUseVehiclesForRouteMap(map: {
   [routeId: RouteId]: (VehicleInScheduledService | Ghost)[]
 }) {
-  ;(
-    useVehiclesForRoute as jest.Mock<typeof useVehiclesForRoute>
-  ).mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
+  jest
+    .mocked(useVehiclesForRoute)
+    .mockImplementation((_, routeId: RouteId | null) => map[routeId!] || null)
 }
 
 function getMapSearchPanel() {
@@ -299,7 +299,7 @@ describe("<MapPage />", () => {
 
   test("renders nearby stations on zoom = 15", async () => {
     setHtmlWidthHeightForLeafletMap()
-    ;(useAllStops as jest.Mock).mockReturnValue([
+    jest.mocked(useAllStops).mockReturnValue([
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
@@ -338,7 +338,7 @@ describe("<MapPage />", () => {
 
   test("renders all nearby stops and stations only on zoom = 17", async () => {
     setHtmlWidthHeightForLeafletMap()
-    ;(useAllStops as jest.Mock).mockReturnValue([
+    jest.mocked(useAllStops).mockReturnValue([
       // 2 stations at map center which should be visible
       stopFactory.build({
         locationType: LocationType.Station,
@@ -761,7 +761,7 @@ describe("<MapPage />", () => {
     const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
       routeId: vehicle.routeId!,
     })
-    ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+    jest.mocked(usePatternsByIdForRoute).mockReturnValue({
       [routePattern1.id]: routePattern1,
       [routePattern2.id]: routePattern2,
     })
@@ -796,7 +796,7 @@ describe("<MapPage />", () => {
 
     const location = locationSearchResultFactory.build()
 
-    ;(useLocationSearchResults as jest.Mock).mockReturnValue([location])
+    jest.mocked(useLocationSearchResults).mockReturnValue([location])
 
     const { container } = render(
       <StateDispatchProvider
@@ -843,7 +843,7 @@ describe("<MapPage />", () => {
 
     const location = locationSearchResultFactory.build()
 
-    ;(useLocationSearchResults as jest.Mock).mockReturnValue([location])
+    jest.mocked(useLocationSearchResults).mockReturnValue([location])
 
     render(
       <StateDispatchProvider
@@ -871,7 +871,7 @@ describe("<MapPage />", () => {
 
     const location = locationSearchResultFactory.build()
 
-    ;(useLocationSearchResultById as jest.Mock).mockImplementation((id) => {
+    jest.mocked(useLocationSearchResultById).mockImplementation((id) => {
       if (id === location.id) {
         return location
       }
@@ -1173,7 +1173,7 @@ describe("<MapPage />", () => {
       mockUseVehiclesForRouteMap({
         [route.id]: [vehicle],
       })
-      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+      jest.mocked(usePatternsByIdForRoute).mockReturnValue({
         [routePattern.id]: routePattern,
       })
 
@@ -1266,7 +1266,7 @@ describe("<MapPage />", () => {
       mockUseVehiclesForRouteMap({
         [route.id]: [vehicle],
       })
-      ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue({
+      jest.mocked(usePatternsByIdForRoute).mockReturnValue({
         [routePattern.id]: routePattern,
       })
 

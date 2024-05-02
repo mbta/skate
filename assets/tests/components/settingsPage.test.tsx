@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import { render, waitFor } from "@testing-library/react"
@@ -18,16 +18,19 @@ import {
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
 import userEvent from "@testing-library/user-event"
+import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
+import { loading } from "../../src/util/fetchResult"
 
-jest.mock("../../src/hooks/useNearestIntersection", () => ({
-  __esModule: true,
-  useNearestIntersection: jest.fn(() => null),
-}))
+jest.mock("../../src/hooks/useNearestIntersection")
 
 jest.mock("../../src/hooks/useShapes", () => ({
   __esModule: true,
   useTripShape: jest.fn(() => null),
 }))
+
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
 
 const mockDispatch = jest.fn()
 
@@ -90,7 +93,7 @@ describe("SettingsPage", () => {
       )
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+    expect(jest.mocked(window.fetch).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=ladder_page_vehicle_label&value=vehicle_id"
     )
   })
@@ -134,7 +137,7 @@ describe("SettingsPage", () => {
       setShuttleVehicleLabelSetting(VehicleLabelSetting.RunNumber)
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+    expect(jest.mocked(window.fetch).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=shuttle_page_vehicle_label&value=run_id"
     )
   })

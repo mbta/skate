@@ -1,4 +1,11 @@
-import { jest, describe, test, expect, afterEach } from "@jest/globals"
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  afterEach,
+  beforeEach,
+} from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import { render, screen } from "@testing-library/react"
@@ -18,6 +25,8 @@ import { TabMode } from "../../src/components/propertiesPanel/tabPanels"
 import userEvent from "@testing-library/user-event"
 import { closeButton } from "../testHelpers/selectors/components/closeButton"
 import { MemoryRouter } from "react-router-dom"
+import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
+import { loading } from "../../src/util/fetchResult"
 
 jest
   .spyOn(dateTime, "now")
@@ -35,13 +44,7 @@ jest.mock("../../src/hooks/useVehiclesForRoute", () => ({
   default: jest.fn(),
 }))
 
-jest.mock("../../src/hooks/useNearestIntersection", () => ({
-  useNearestIntersection: jest.fn(() => {
-    return {
-      is_loading: true,
-    }
-  }),
-}))
+jest.mock("../../src/hooks/useNearestIntersection")
 
 jest.mock("../../src/hooks/useStations", () => ({
   useStations: jest.fn(() => []),
@@ -52,6 +55,10 @@ jest.mock("../../src/hooks/useShapes", () => ({
 }))
 
 jest.mock("../../src/hooks/useMinischedule")
+
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
 
 const route: Route = routeFactory.build({
   id: "39",
@@ -159,7 +166,7 @@ describe("PropertiesPanel", () => {
   })
 
   test("renders a vehicle with updated live information", () => {
-    ;(useVehicleForId as jest.Mock).mockImplementationOnce(() => vehicle)
+    jest.mocked(useVehicleForId).mockImplementationOnce(() => vehicle)
 
     const result = render(
       <MemoryRouter initialEntries={["/"]}>
@@ -179,7 +186,8 @@ describe("PropertiesPanel", () => {
   })
 
   test("renders stale data message", () => {
-    ;(useVehicleForId as jest.Mock)
+    jest
+      .mocked(useVehicleForId)
       .mockImplementationOnce(() => null)
       .mockImplementationOnce(() => null)
 
@@ -196,7 +204,8 @@ describe("PropertiesPanel", () => {
       operatorLogonTime: null,
     }
 
-    ;(useVehicleForId as jest.Mock)
+    jest
+      .mocked(useVehicleForId)
       .mockImplementationOnce(() => loggedOutVehicle)
       .mockImplementationOnce(() => loggedOutVehicle)
 

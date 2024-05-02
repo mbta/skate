@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import { render, screen, waitFor } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
@@ -6,23 +6,23 @@ import * as dateTime from "../../../src/util/dateTime"
 import vehicleFactory, { shuttleFactory } from "../../factories/vehicle"
 import routeFactory from "../../factories/route"
 import VehiclePropertiesCard from "../../../src/components/mapPage/vehiclePropertiesCard"
-import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../../src/hooks/useNearestIntersection"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import ghostFactory from "../../factories/ghost"
 import { runIdFactory } from "../../factories/run"
 import userEvent from "@testing-library/user-event"
+import { loading } from "../../../src/util/fetchResult"
 
-jest.mock("../../../src/hooks/useNearestIntersection", () => ({
-  __esModule: true,
-  useNearestIntersection: jest.fn(() => {
-    return { is_loading: true }
-  }),
-}))
+jest.mock("../../../src/hooks/useNearestIntersection")
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
   default: jest.fn(() => []),
 }))
+
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
 
 describe("<VehiclePropertiesCard/>", () => {
   describe("logic constraints", () => {
@@ -30,7 +30,8 @@ describe("<VehiclePropertiesCard/>", () => {
       const vehicle = vehicleFactory.build()
       const intersection = "Massachusetts Ave @ 1"
       const intersection2 = "Massachusetts Ave @ 2"
-      ;(useNearestIntersection as jest.Mock)
+      jest
+        .mocked(useNearestIntersectionFetchResult)
         .mockReturnValueOnce({ ok: intersection })
         .mockReturnValueOnce({ ok: intersection2 })
 
@@ -100,7 +101,7 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        jest.mocked(useNearestIntersectionFetchResult).mockReturnValueOnce({
           ok: intersection,
         })
 
@@ -176,7 +177,7 @@ describe("<VehiclePropertiesCard/>", () => {
         })
 
         const intersection = "Massachusetts Ave @ Marlborough St"
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        jest.mocked(useNearestIntersectionFetchResult).mockReturnValueOnce({
           ok: intersection,
         })
 
@@ -193,7 +194,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location is initially loading, should show `loading...` backup text", () => {
         const vehicle = vehicleFactory.build()
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        jest.mocked(useNearestIntersectionFetchResult).mockReturnValueOnce({
           is_loading: true,
         })
 
@@ -206,7 +207,7 @@ describe("<VehiclePropertiesCard/>", () => {
 
       test("when location not available, should show `exact location cannot be determined` backup text", () => {
         const vehicle = vehicleFactory.build()
-        ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+        jest.mocked(useNearestIntersectionFetchResult).mockReturnValueOnce({
           is_error: true,
         })
 
@@ -220,7 +221,8 @@ describe("<VehiclePropertiesCard/>", () => {
       test("when location is loading a new vehicle, should show loading text", () => {
         const vehicle = vehicleFactory.build()
         const intersection = "intersection ave @ street"
-        ;(useNearestIntersection as jest.Mock)
+        jest
+          .mocked(useNearestIntersectionFetchResult)
           .mockReturnValueOnce({ is_loading: true })
           .mockReturnValueOnce({ ok: intersection })
 
@@ -340,7 +342,7 @@ describe("<VehiclePropertiesCard/>", () => {
       })
 
       const intersection = "Massachusetts Ave @ Marlborough St"
-      ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+      jest.mocked(useNearestIntersectionFetchResult).mockReturnValueOnce({
         ok: intersection,
       })
 

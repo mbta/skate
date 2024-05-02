@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React, { ReactNode, ReactPortal } from "react"
-import renderer from "react-test-renderer"
+import React from "react"
+import { render } from "@testing-library/react"
 import InactiveNotificationModal from "../../../src/components/notificationModals/inactiveNotificationModal"
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { useMinischeduleRuns } from "../../../src/hooks/useMinischedule"
@@ -76,40 +76,38 @@ describe("InactiveNotificationModal", () => {
   }
 
   test("renders loading message", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => undefined)
-    const tree = renderer
-      .create(<InactiveNotificationModal notification={notification} />)
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => undefined)
+    const { baseElement } = render(
+      <InactiveNotificationModal notification={notification} />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with no runs", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [])
-    const tree = renderer
-      .create(<InactiveNotificationModal notification={notification} />)
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [])
+    const { baseElement } = render(
+      <InactiveNotificationModal notification={notification} />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with one current run", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [piece],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...notification, runIds: ["111"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...notification, runIds: ["111"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with multiple current runs", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [piece],
@@ -119,35 +117,31 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1200, endTime: 1400 }],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...notification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...notification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with one upcoming run", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with multiple upcoming runs", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
@@ -157,35 +151,31 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1400, endTime: 1600 }],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run currently on break", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [breakk],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...notification, runIds: ["111"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...notification, runIds: ["111"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run that finished in the past", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [
@@ -209,18 +199,16 @@ describe("InactiveNotificationModal", () => {
         ],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run that has only nonrevenue work left", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "222",
         activities: [
@@ -236,13 +224,11 @@ describe("InactiveNotificationModal", () => {
         ],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 })

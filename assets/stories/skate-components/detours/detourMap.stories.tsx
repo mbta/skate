@@ -103,7 +103,7 @@ const meta = {
       afterDetour: shape.slice(endPointIndex, -1),
     },
     onClickOriginalShape: () => {},
-    onClickMap: undefined,
+    onAddWaypoint: undefined,
     undoDisabled: false,
     onUndo: () => {},
     onClear: () => {},
@@ -119,7 +119,7 @@ const meta = {
     detourShape: { table: { disable: true } },
     waypoints: { table: { disable: true } },
     onClickOriginalShape: { table: { disable: true } },
-    onClickMap: { table: { disable: true } },
+    onAddWaypoint: { table: { disable: true } },
     undoDisabled: { table: { disable: true } },
     onUndo: { table: { disable: true } },
     onClear: { table: { disable: true } },
@@ -140,7 +140,7 @@ export const WithSomeWaypoints: Story = {
     routeSegments: undefined,
     detourShape: [startPoint, waypoint],
     waypoints: [waypoint],
-    onClickMap: () => {},
+    onAddWaypoint: () => {},
   },
 }
 

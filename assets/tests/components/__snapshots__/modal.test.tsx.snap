@@ -1,170 +1,152 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Modal renders Chelsea Lowered modal 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal-backdrop"
-    onClick={[Function]}
-  />,
+    class="c-modal-backdrop"
+  />
   <div
-    aria-modal={true}
-    className="c-modal"
+    aria-modal="true"
+    class="c-modal"
     role="dialog"
-    tabIndex={-1}
+    tabindex="-1"
   >
     <div
-      className="c-basic-notification-modal"
+      class="c-basic-notification-modal"
       role="document"
     >
       <button
-        className="c-basic-notification-modal__close-button"
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
-      <div
-        className="c-notification__title"
-      >
+      <div>
         Chelsea St Bridge Lowered
       </div>
       <div
-        className="c-basic-notification-modal__body"
+        class="c-basic-notification-modal__body"
       >
         OCC reported that the Chelsea St Bridge has been lowered.
       </div>
     </div>
-  </div>,
-]
+  </div>
+</body>
 `;
 
 exports[`Modal renders Chelsea Raised modal 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal-backdrop"
-    onClick={[Function]}
-  />,
+    class="c-modal-backdrop"
+  />
   <div
-    aria-modal={true}
-    className="c-modal"
+    aria-modal="true"
+    class="c-modal"
     role="dialog"
-    tabIndex={-1}
+    tabindex="-1"
   >
     <div
-      className="c-basic-notification-modal"
+      class="c-basic-notification-modal"
       role="document"
     >
       <button
-        className="c-basic-notification-modal__close-button"
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
-      <div
-        className="c-notification__title"
-      >
+      <div>
         Chelsea St Bridge Raised
       </div>
       <div
-        className="c-basic-notification-modal__body"
+        class="c-basic-notification-modal__body"
       >
         OCC reported that the Chelsea St Bridge will be raised until 7:45 AM.
       </div>
     </div>
-  </div>,
-]
+  </div>
+</body>
 `;
 
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 1024px;"
+>
+  <div />
   <div
-    className="c-modal-backdrop"
-    onClick={[Function]}
-  />,
+    class="c-modal-backdrop"
+  />
   <div
-    aria-modal={true}
-    className="c-modal"
+    aria-modal="true"
+    class="c-modal"
     role="dialog"
-    tabIndex={-1}
+    tabindex="-1"
   >
     <div
-      className="c-basic-notification-modal"
+      class="c-basic-notification-modal"
       role="document"
     >
       <button
-        className="c-basic-notification-modal__close-button"
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
-      <div
-        className="c-notification__title"
-      >
+      <div>
         Other NOTIFICATION
       </div>
       <div
-        className="c-basic-notification-modal__body"
+        class="c-basic-notification-modal__body"
       >
         Sorry, there's no additional information that we can provide you about this notification.
       </div>
     </div>
-  </div>,
-]
+  </div>
+</body>
 `;
 
 exports[`Modal renders loading modal when appropriate 1`] = `
-[
-  <div
-    className="c-modal-backdrop"
-    onClick={[Function]}
-  />,
-  <div
-    aria-modal={true}
-    className="c-modal c-notification-loading-modal"
-    role="dialog"
-    tabIndex={-1}
-  >
+<body
+  style="padding-right: 1024px;"
+>
+  <div>
     <div
-      role="document"
+      class="c-modal c-notification-loading-modal"
     >
       <div
-        className="c-notification-loading-modal__spinner-wrapper"
+        class="c-notification-loading-modal__spinner-wrapper"
       >
         <span
-          className="c-loading-spinner"
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+          class="c-loading-spinner"
+        >
+          <svg />
+        </span>
       </div>
       <div
-        className="c-notification-loading-modal__text-wrapper"
+        class="c-notification-loading-modal__text-wrapper"
       >
         Loading...
       </div>
     </div>
-  </div>,
-]
+    <div
+      aria-hidden="true"
+      class="c-modal-backdrop"
+    />
+  </div>
+</body>
 `;
