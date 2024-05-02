@@ -21,7 +21,7 @@ export const instantPromise = <T>(value: T): Promise<T> =>
 /**
  * A promise that never resolves.
  */
-export const neverPromise = (): Promise<any> => new Promise(() => {})
+export const neverPromise = <T>(): Promise<T> => new Promise<T>(() => {})
 
 /**
  * Injects a custom state into the next call to useState by replacing its initial value.
