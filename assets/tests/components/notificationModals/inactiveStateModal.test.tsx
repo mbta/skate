@@ -12,7 +12,6 @@ jest.mock("../../../src/hooks/useMinischedule", () => ({
   useMinischeduleRuns: jest.fn(),
 }))
 
-
 jest.spyOn(dateTime, "serviceDaySeconds").mockImplementation(() => 1000)
 
 describe("InactiveNotificationModal", () => {
