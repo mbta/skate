@@ -4,15 +4,15 @@ import { FetchResult, loading, ok, fetchError } from "../util/fetchResult"
 import { useApiCall } from "./useApiCall"
 
 /**
- * @deprecated use {@linkcode useNearestIntersection2}
+ * @deprecated use {@linkcode useNearestIntersection}
  *
- * [Refactor `useNearestIntersection` away from `FetchResult`](https://app.asana.com/0/1148853526253420/1207213296687090/f)
+ * [⚙️ Refactor `useNearestIntersectionFetchResult` away from `FetchResult`](https://app.asana.com/0/1148853526253420/1207213296687090/f)
  */
-export const useNearestIntersection = (
+export const useNearestIntersectionFetchResult = (
   latitude: number | undefined,
   longitude: number | undefined
 ): FetchResult<string> => {
-  const result = useNearestIntersection2({ latitude, longitude })
+  const result = useNearestIntersection({ latitude, longitude })
 
   // Temporary code to convert to the old function shape
   if (result.isLoading) {
@@ -30,7 +30,7 @@ export const useNearestIntersection = (
   }
 }
 
-const useNearestIntersection2 = ({
+const useNearestIntersection = ({
   latitude,
   longitude,
 }: {

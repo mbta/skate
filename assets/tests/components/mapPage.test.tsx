@@ -92,6 +92,8 @@ import pieceFactory from "../factories/piece"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
+import { loading } from "../../src/util/fetchResult"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   useLocationSearchResults: jest.fn(() => null),
@@ -111,13 +113,7 @@ jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../src/hooks/useNearestIntersection", () => ({
-  useNearestIntersection: jest.fn(() => {
-    return {
-      is_loading: true,
-    }
-  }),
-}))
+jest.mock("../../src/hooks/useNearestIntersection")
 
 jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
@@ -153,6 +149,10 @@ jest.mock("../../src/helpers/fullStory")
 jest.mock("../../src/hooks/usePanelState")
 
 jest.mock("../../src/userTestGroups")
+
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
 
 const mockVehicleSearchResultsCategory = (
   vehicles: (Vehicle | Ghost)[] | null

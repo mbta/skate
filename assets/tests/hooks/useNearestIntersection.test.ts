@@ -8,7 +8,7 @@ import {
 } from "@jest/globals"
 import { renderHook, waitFor, act } from "@testing-library/react"
 import * as Api from "../../src/api"
-import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
 import { gridIntersectionFactory } from "../factories/gridIntersection"
 import { localGeoCoordinateFactory } from "../factories/geoCoordinate"
 import { GeographicCoordinate } from "../../src/components/streetViewButton"
@@ -41,7 +41,8 @@ const Err = () => {
 
 const renderUseNearestIntersection = (location: GeographicCoordinate) =>
   renderHook(
-    ({ latitude, longitude }) => useNearestIntersection(latitude, longitude),
+    ({ latitude, longitude }) =>
+      useNearestIntersectionFetchResult(latitude, longitude),
     {
       initialProps: location,
     }

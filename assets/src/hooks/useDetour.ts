@@ -6,7 +6,7 @@ import { FinishedDetour, OriginalRoute } from "../models/detour"
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
 import { isOk as FetchIsOk } from "../util/fetchResult"
-import { useNearestIntersection } from "./useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "./useNearestIntersection"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -56,7 +56,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }, [routePatternId, startPoint, endPoint])
 
-  const nearestIntersectionResult = useNearestIntersection(
+  const nearestIntersectionResult = useNearestIntersectionFetchResult(
     startPoint?.lat,
     startPoint?.lon
   )
