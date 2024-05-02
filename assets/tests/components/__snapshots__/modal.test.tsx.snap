@@ -122,11 +122,21 @@ exports[`Modal renders inactive notification modal when appropriate 1`] = `
 
 exports[`Modal renders loading modal when appropriate 1`] = `
 <body
-  style="padding-right: 1024px;"
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
 >
-  <div>
+  <div />
+  <div
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal c-notification-loading-modal"
+    role="dialog"
+    tabindex="-1"
+  >
     <div
-      class="c-modal c-notification-loading-modal"
+      role="document"
     >
       <div
         class="c-notification-loading-modal__spinner-wrapper"
@@ -143,10 +153,6 @@ exports[`Modal renders loading modal when appropriate 1`] = `
         Loading...
       </div>
     </div>
-    <div
-      aria-hidden="true"
-      class="c-modal-backdrop"
-    />
   </div>
 </body>
 `;
