@@ -33,6 +33,8 @@ import {
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
+import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { loading, ok } from "../../../src/util/fetchResult"
 
 const DiversionPage = (
   props: Omit<
@@ -70,11 +72,14 @@ beforeEach(() => {
 
 jest.mock("../../../src/api")
 
+jest.mock("../../../src/hooks/useNearestIntersection")
+
 beforeEach(() => {
   jest
     .mocked(fetchDetourDirections)
     .mockImplementation(() => new Promise(() => {}))
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
+  jest.mocked(useNearestIntersection).mockReturnValue(loading())
 })
 
 describe("DiversionPage", () => {
@@ -85,8 +90,39 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(await screen.findByTitle("Detour Start")).not.toBeNull()
+    expect(await screen.findByTitle("Detour Start")).toBeVisible()
     expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+  })
+
+  test("directions start with origin intersection when second waypoint is added", async () => {
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      Ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
+    )
+
+    const intersection = "Avenue 1 & Street 2"
+    jest.mocked(useNearestIntersection).mockReturnValue({
+      ok: intersection,
+    })
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    expect(await screen.findByText("From Avenue 1 & Street 2")).toBeVisible()
   })
 
   test("can click on route shape again to end detour", async () => {
@@ -433,7 +469,7 @@ describe("DiversionPage", () => {
     await userEvent.click(finishDetourButton.get())
 
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Detour is not editable from this screen."
+      "Detour shape is not editable from this screen."
     )
   })
 
@@ -486,6 +522,9 @@ describe("DiversionPage", () => {
       routeSegments: routeSegmentsFactory.build(),
     })
 
+    const intersection = "Avenue 1 & Street 2"
+    jest.mocked(useNearestIntersection).mockReturnValue(ok(intersection))
+
     userEvent.setup() // Configure the clipboard API
 
     const routeName = "route1"
@@ -518,12 +557,11 @@ describe("DiversionPage", () => {
     await waitFor(() =>
       expect(window.navigator.clipboard.readText()).resolves.toBe(
         [
-          "Detour:",
-          `${routeName} ${routeDescription} from`,
+          `Detour ${routeName} ${routeDirection}`,
           routeOrigin,
-          routeDirection,
           ,
           "Turn-by-Turn Directions:",
+          "From Avenue 1 & Street 2",
           "Turn left on Main Street",
           "Turn right on High Street",
           "Turn sharp right on Broadway",

@@ -7,10 +7,13 @@ defmodule SkateWeb.AuthController do
   import Plug.Conn
   alias Skate.Settings.User
   alias SkateWeb.AuthManager
+  alias SkateWeb.Plugs.CaptureAuthReturnPath
 
   def callback(%{assigns: %{ueberauth_auth: %{provider: :keycloak} = auth}} = conn, _params) do
     username = auth.uid
     email = auth.info.email
+
+    post_auth_redirect = CaptureAuthReturnPath.get_post_auth_return_to_path(conn)
 
     keycloak_client_id =
       get_in(Application.get_env(:ueberauth_oidcc, :providers), [:keycloak, :client_id])
@@ -29,7 +32,7 @@ defmodule SkateWeb.AuthController do
         ttl: {1, :hour}
       )
       |> put_session(:sign_out_url, sign_out_url(auth))
-      |> redirect(to: ~p"/")
+      |> redirect(to: post_auth_redirect)
     else
       send_resp(conn, :forbidden, "forbidden")
     end

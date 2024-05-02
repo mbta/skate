@@ -1,30 +1,12 @@
 import { describe, expect, jest, test } from "@jest/globals"
 import { act, renderHook, waitFor } from "@testing-library/react"
 import { useApiCall } from "../../src/hooks/useApiCall"
+import { PromiseWithResolvers } from "../testHelpers/PromiseWithResolvers"
 
 const renderUseApiCall = (initialProps: Parameters<typeof useApiCall>[0]) =>
   renderHook(useApiCall, {
     initialProps,
   })
-
-const PromiseWithResolvers = <T>(): {
-  promise: Promise<T>
-  resolve: (value: T | PromiseLike<T>) => void
-  reject: (reason?: any) => void
-} => {
-  let resolve: ((value: T | PromiseLike<T>) => void) | undefined = undefined
-  let reject: ((reason?: any) => void) | undefined = undefined
-  const promise = new Promise<T>((res, rej) => {
-    resolve = res
-    reject = rej
-  })
-
-  if (resolve === undefined || reject === undefined) {
-    throw Error("Promise failed to assign `resolve` and/or `reject`")
-  }
-
-  return { promise, resolve, reject }
-}
 
 describe("when first rendered", () => {
   test("should return loading state", () => {

@@ -68,7 +68,7 @@ describe("InactiveNotificationModal", () => {
   }
 
   test("renders loading message", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => undefined)
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => undefined)
     const { baseElement } = render(
       <InactiveNotificationModal notification={notification} />
     )
@@ -76,7 +76,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with no runs", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [])
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [])
     const { baseElement } = render(
       <InactiveNotificationModal notification={notification} />
     )
@@ -84,7 +84,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with one current run", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [piece],
@@ -99,7 +99,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with multiple current runs", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [piece],
@@ -118,7 +118,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with one upcoming run", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
@@ -133,7 +133,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with multiple upcoming runs", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
@@ -152,7 +152,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with a run currently on break", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [breakk],
@@ -167,7 +167,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with a run that finished in the past", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "111",
         activities: [
@@ -200,7 +200,7 @@ describe("InactiveNotificationModal", () => {
   })
 
   test("renders for a notification with a run that has only nonrevenue work left", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
       {
         id: "222",
         activities: [

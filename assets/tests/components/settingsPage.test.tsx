@@ -90,7 +90,7 @@ describe("SettingsPage", () => {
       )
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+    expect(jest.mocked(window.fetch).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=ladder_page_vehicle_label&value=vehicle_id"
     )
   })
@@ -134,7 +134,7 @@ describe("SettingsPage", () => {
       setShuttleVehicleLabelSetting(VehicleLabelSetting.RunNumber)
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+    expect(jest.mocked(window.fetch).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=shuttle_page_vehicle_label&value=run_id"
     )
   })
