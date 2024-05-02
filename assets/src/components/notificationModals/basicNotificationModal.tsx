@@ -34,7 +34,7 @@ const BasicNotificationModal = ({
         >
           <OldCloseIcon />
         </button>
-        <div className="c-notification__title">{title}</div>
+        <div>{title}</div>
         <div className="c-basic-notification-modal__body">{body}</div>
       </div>
     </Modal>

@@ -29,9 +29,7 @@ exports[`Modal renders Chelsea Lowered modal 1`] = `
           }
         />
       </button>
-      <div
-        className="c-notification__title"
-      >
+      <div>
         Chelsea St Bridge Lowered
       </div>
       <div
@@ -73,9 +71,7 @@ exports[`Modal renders Chelsea Raised modal 1`] = `
           }
         />
       </button>
-      <div
-        className="c-notification__title"
-      >
+      <div>
         Chelsea St Bridge Raised
       </div>
       <div
@@ -117,9 +113,7 @@ exports[`Modal renders inactive notification modal when appropriate 1`] = `
           }
         />
       </button>
-      <div
-        className="c-notification__title"
-      >
+      <div>
         Other NOTIFICATION
       </div>
       <div
