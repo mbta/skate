@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React, { ReactNode } from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../../factories/route"
@@ -6,7 +6,7 @@ import * as map from "../../../src/components/map"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
-import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../../src/hooks/useNearestIntersection"
 import { useStations } from "../../../src/hooks/useStations"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import {
@@ -30,6 +30,7 @@ import { useTripShape } from "../../../src/hooks/useShapes"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
 import { closeButton } from "../../testHelpers/selectors/components/closeButton"
 import { MemoryRouter } from "react-router-dom"
+import { loading } from "../../../src/util/fetchResult"
 
 jest
   .spyOn(dateTime, "now")
@@ -44,14 +45,7 @@ jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
   default: jest.fn(),
 }))
 
-jest.mock("../../../src/hooks/useNearestIntersection", () => ({
-  __esModule: true,
-  useNearestIntersection: jest.fn(() => {
-    return {
-      is_loading: true,
-    }
-  }),
-}))
+jest.mock("../../../src/hooks/useNearestIntersection")
 
 jest.mock("../../../src/hooks/useStations", () => ({
   __esModule: true,
@@ -70,6 +64,10 @@ jest.mock("../../../src/hooks/useShapes", () => ({
 }))
 
 jest.mock("../../../src/helpers/fullStory")
+
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
@@ -296,7 +294,7 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("shows the nearest intersection", () => {
-    ;(useNearestIntersection as jest.Mock).mockReturnValueOnce({
+    ;(useNearestIntersectionFetchResult as jest.Mock).mockReturnValueOnce({
       ok: "Atlantic Ave & Summer St",
     })
     const result = render(
