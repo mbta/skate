@@ -203,11 +203,13 @@ describe("useDetour", () => {
     act(() => result.current.addWaypoint?.(end))
     act(() => result.current.undo?.())
 
-    expect(jest.mocked(fetchDetourDirections)).toHaveBeenCalledTimes(3)
-    expect(jest.mocked(fetchDetourDirections)).toHaveBeenNthCalledWith(3, [
-      start,
-      mid,
-    ])
+    await waitFor(() => {
+      expect(jest.mocked(fetchDetourDirections)).toHaveBeenCalledTimes(3)
+      expect(jest.mocked(fetchDetourDirections)).toHaveBeenNthCalledWith(3, [
+        start,
+        mid,
+      ])
+    })
   })
 
   test("when `undo` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
