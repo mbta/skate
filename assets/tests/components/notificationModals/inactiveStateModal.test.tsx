@@ -69,18 +69,18 @@ describe("InactiveNotificationModal", () => {
 
   test("renders loading message", () => {
     ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => undefined)
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal notification={notification} />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with no runs", () => {
     ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal notification={notification} />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with one current run", () => {
@@ -90,12 +90,12 @@ describe("InactiveNotificationModal", () => {
         activities: [piece],
       } as Run,
     ])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal
         notification={{ ...notification, runIds: ["111"] }}
       />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with multiple current runs", () => {
@@ -109,12 +109,12 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1200, endTime: 1400 }],
       } as Run,
     ])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal
         notification={{ ...notification, runIds: ["111", "222"] }}
       />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with one upcoming run", () => {
@@ -124,12 +124,12 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
       } as Run,
     ])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal
         notification={{ ...futureNotification, runIds: ["111"] }}
       />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with multiple upcoming runs", () => {
@@ -143,12 +143,12 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1400, endTime: 1600 }],
       } as Run,
     ])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal
         notification={{ ...futureNotification, runIds: ["111", "222"] }}
       />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run currently on break", () => {
@@ -158,12 +158,12 @@ describe("InactiveNotificationModal", () => {
         activities: [breakk],
       } as Run,
     ])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal
         notification={{ ...notification, runIds: ["111"] }}
       />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run that finished in the past", () => {
@@ -191,12 +191,12 @@ describe("InactiveNotificationModal", () => {
         ],
       } as Run,
     ])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal
         notification={{ ...futureNotification, runIds: ["111", "222"] }}
       />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run that has only nonrevenue work left", () => {
@@ -216,11 +216,11 @@ describe("InactiveNotificationModal", () => {
         ],
       } as Run,
     ])
-    const result = render(
+    const { baseElement } = render(
       <InactiveNotificationModal
         notification={{ ...futureNotification, runIds: ["111", "222"] }}
       />
     )
-    expect(result.baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 })
