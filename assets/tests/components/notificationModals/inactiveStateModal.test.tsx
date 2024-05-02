@@ -6,19 +6,12 @@ import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { useMinischeduleRuns } from "../../../src/hooks/useMinischedule"
 import { Notification, NotificationState } from "../../../src/realtime.d"
 import * as dateTime from "../../../src/util/dateTime"
-import ReactDOM from "react-dom"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
   useMinischeduleRuns: jest.fn(),
 }))
 
-jest.mock("react-dom", () => {
-  return {
-    ...(jest.requireActual("react-dom") as typeof ReactDOM),
-    createPortal: (node: ReactNode): ReactPortal => node as ReactPortal,
-  }
-})
 
 jest.spyOn(dateTime, "serviceDaySeconds").mockImplementation(() => 1000)
 

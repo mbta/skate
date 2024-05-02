@@ -12,19 +12,11 @@ import {
 import { initialState, State } from "../../src/state"
 import stateFactory from "../factories/applicationState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
-import ReactDOM from "react-dom"
 
 jest.mock("../../src/hooks/useMinischedule", () => ({
   __esModule: true,
   useMinischeduleRuns: jest.fn(),
 }))
-
-jest.mock("react-dom", () => {
-  return {
-    ...(jest.requireActual("react-dom") as typeof ReactDOM),
-    createPortal: (node: ReactNode): ReactPortal => node as ReactPortal,
-  }
-})
 
 describe("Modal", () => {
   test("renders inactive notification modal when appropriate", () => {
