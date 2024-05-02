@@ -65,7 +65,7 @@ describe("NotificationsProvider", () => {
 
   test("receives incoming notifications and logs a tag manager event", () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
-    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
     }))
@@ -77,7 +77,7 @@ describe("NotificationsProvider", () => {
       }
     )
     expect(result.current.notifications).toHaveLength(0)
-    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
       type: "new",
       payload: notification,
     }))
@@ -94,7 +94,7 @@ describe("NotificationsProvider", () => {
 
   test("when receiving a bridge notification, should trigger FS event", () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
-    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
       type: "initial",
       payload: [],
     }))
@@ -106,7 +106,7 @@ describe("NotificationsProvider", () => {
       }
     )
     expect(result.current.notifications).toHaveLength(0)
-    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
       type: "new",
       payload: notificationFactory.build({
         reason: "chelsea_st_bridge_raised",
@@ -131,10 +131,10 @@ describe("NotificationsProvider", () => {
     const { result } = renderHook(() => useContext(NotificationsContext), {
       wrapper: NotificationsProvider,
     })
-    ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
+    jest.mocked(useCurrentTime).mockImplementationOnce(() => {
       return new Date(0)
     })
-    ;(useNotifications as jest.Mock).mockImplementationOnce(() => ({
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
       type: "new",
       payload: notification,
     }))
@@ -143,7 +143,7 @@ describe("NotificationsProvider", () => {
       jest.runOnlyPendingTimers()
       // This seems like it should work if we put the mock outside the
       // act block, but it doesn't.
-      ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
+      jest.mocked(useCurrentTime).mockImplementationOnce(() => {
         return new Date(maxAge)
       })
     })

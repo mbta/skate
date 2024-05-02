@@ -21,7 +21,7 @@ export const instantPromise = <T>(value: T): Promise<T> =>
 /**
  * A promise that never resolves.
  */
-export const neverPromise = (): Promise<any> => new Promise(() => {})
+export const neverPromise = <T>(): Promise<T> => new Promise<T>(() => {})
 
 /**
  * Injects a custom state into the next call to useState by replacing its initial value.
@@ -58,7 +58,7 @@ export const mockUsePatternsByIdForVehicles = (
     )
   )
 
-  ;(usePatternsByIdForRoute as jest.Mock).mockReturnValue(
+  jest.mocked(usePatternsByIdForRoute).mockReturnValue(
     routePatternIdentifiers
       .map(([routePatternId, routeId]) =>
         routePatternFactory.build({
@@ -85,9 +85,7 @@ export const mockGeolocation = (): void => {
 }
 
 export const mockTileUrls = (): void => {
-  ;(
-    tilesetUrlForType as jest.Mock<typeof tilesetUrlForType>
-  ).mockImplementation((type: TileType) => {
+  jest.mocked(tilesetUrlForType).mockImplementation((type: TileType) => {
     switch (type) {
       case "base":
         return "test_base_url/{z}/{x}/{y}"

@@ -15,6 +15,7 @@ import {
   missedStopIcon,
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
+import { streetViewModeSwitch } from "../../testHelpers/selectors/components/mapPage/map"
 
 beforeEach(() => {
   jest.mocked(tilesetUrlForType).mockReturnValue(undefined)
@@ -34,7 +35,7 @@ const DetourMapWithDefaults = (
     endPoint={undefined}
     waypoints={[]}
     undoDisabled={false}
-    onClickMap={() => {}}
+    onAddWaypoint={() => {}}
     onClickOriginalShape={() => {}}
     onUndo={() => {}}
     onClear={() => {}}
@@ -93,18 +94,68 @@ describe("DetourMap", () => {
     ).toBeNull()
   })
 
-  test("when map is clicked, fires `onClickMap`", async () => {
-    const onClickMap = jest.fn()
+  test("when `onAddWaypoint` is present, map has a waypoint cursor, given by the __clickable class", async () => {
     const { container } = render(
-      <DetourMapWithDefaults onClickMap={onClickMap} />
+      <DetourMapWithDefaults onAddWaypoint={() => {}} />
+    )
+
+    expect(
+      container.querySelector(".c-detour_map--map__clickable")
+    ).toBeInTheDocument()
+  })
+
+  test("when `onAddWaypoint` is absent, map has a normal cursor", async () => {
+    const { container } = render(
+      <DetourMapWithDefaults onAddWaypoint={undefined} />
+    )
+
+    expect(
+      container.querySelector(".c-detour_map--map__clickable")
+    ).not.toBeInTheDocument()
+  })
+
+  test("when `onAddWaypoint` is present and street view mode is enabled, map has a normal cursor", async () => {
+    const { container } = render(
+      <DetourMapWithDefaults onAddWaypoint={() => {}} />
+    )
+
+    fireEvent.click(streetViewModeSwitch.get())
+
+    expect(
+      container.querySelector(".c-detour_map--map__clickable")
+    ).not.toBeInTheDocument()
+  })
+
+  test("when map is clicked, fires `onAddWaypoint`", async () => {
+    const onAddWaypoint = jest.fn()
+    const { container } = render(
+      <DetourMapWithDefaults onAddWaypoint={onAddWaypoint} />
     )
 
     fireEvent.click(container.querySelector(".c-vehicle-map")!)
 
-    expect(onClickMap).toHaveBeenNthCalledWith(1, {
+    expect(onAddWaypoint).toHaveBeenNthCalledWith(1, {
       lat: expect.closeTo(defaultCenter.lat),
       lon: expect.closeTo(defaultCenter.lng),
     })
+  })
+
+  test("when map is clicked in street view mode, does not fire `onAddWaypoint`", async () => {
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementationOnce(jest.fn<typeof window.open>())
+
+    const onAddWaypoint = jest.fn()
+    const { container } = render(
+      <DetourMapWithDefaults onAddWaypoint={onAddWaypoint} />
+    )
+
+    fireEvent.click(streetViewModeSwitch.get())
+
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
+
+    expect(onAddWaypoint).not.toHaveBeenCalled()
+    expect(openSpy).toHaveBeenCalled()
   })
 
   test("clicking undo button fires `onUndo`", async () => {
@@ -190,6 +241,19 @@ describe("DetourMap", () => {
     expect(
       container.querySelector(".c-detour_map--original-route-shape")
     ).toBeInTheDocument()
+  })
+
+  test("when `routeSegments` are absent and street view is enabled, only the `-core` route shape should be present", () => {
+    const { container } = render(<DetourMapWithDefaults />)
+
+    fireEvent.click(streetViewModeSwitch.get())
+
+    expect(
+      container.querySelector(".c-detour_map--original-route-shape-core")
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector(".c-detour_map--original-route-shape")
+    ).not.toBeInTheDocument()
   })
 
   test("when `routeSegments` are present, there should be two core original route shapes and one diverted route shape", () => {

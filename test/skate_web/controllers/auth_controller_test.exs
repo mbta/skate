@@ -43,6 +43,36 @@ defmodule SkateWeb.AuthControllerTest do
       assert Guardian.Plug.current_claims(conn)["groups"] == ["test1", "skate-readonly"]
     end
 
+    test "redirects to the post_auth_return_to path if available", %{conn: conn} do
+      mock_auth = %Ueberauth.Auth{
+        provider: :keycloak,
+        uid: "test_username",
+        credentials: %Ueberauth.Auth.Credentials{
+          expires_at: System.system_time(:second) + 1_000,
+          refresh_token: "test_refresh_token"
+        },
+        info: %{email: "test@mbta.com"},
+        extra: %Ueberauth.Auth.Extra{
+          raw_info: %UeberauthOidcc.RawInfo{
+            userinfo: %{
+              "resource_access" => %{
+                "test-client" => %{"roles" => ["test1", "skate-readonly"]}
+              }
+            }
+          }
+        }
+      }
+
+      conn =
+        conn
+        |> assign(:ueberauth_auth, mock_auth)
+        |> init_test_session(%{post_auth_return_to: ~p"/detours"})
+        |> get(~p"/auth/keycloak/callback")
+
+      assert redirected_to(conn) == "/detours"
+      assert Guardian.Plug.current_claims(conn)["groups"] == ["test1", "skate-readonly"]
+    end
+
     test "creates user record if it doesn't already exist", %{conn: conn} do
       mock_auth = %Ueberauth.Auth{
         provider: :keycloak,

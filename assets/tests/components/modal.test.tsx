@@ -1,6 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import React, { ReactNode, ReactPortal } from "react"
-import renderer from "react-test-renderer"
+import React from "react"
 import { render } from "@testing-library/react"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -29,7 +28,7 @@ jest.mock("react-dom", () => {
 
 describe("Modal", () => {
   test("renders inactive notification modal when appropriate", () => {
-    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [])
+    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [])
     const notification: Notification = {
       id: "123",
       createdAt: new Date(),
@@ -53,12 +52,12 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders loading modal when appropriate", () => {
@@ -85,12 +84,12 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders create preset modal", () => {
@@ -198,12 +197,12 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders Chelsea Lowered modal", () => {
@@ -230,11 +229,11 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 })

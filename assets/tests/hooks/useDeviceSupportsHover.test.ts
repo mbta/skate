@@ -13,13 +13,13 @@ jest.mock("@react-hook/media-query", () => ({
 
 describe("useDeviceSupports", () => {
   test("returns true when media query for hover matches", () => {
-    ;(useMediaQuery as jest.Mock).mockReturnValueOnce(true)
+    jest.mocked(useMediaQuery).mockReturnValueOnce(true)
 
     expect(useDeviceSupportsHover()).toBe(true)
   })
 
   test("returns false when media query for hover doesn't match", () => {
-    ;(useMediaQuery as jest.Mock).mockReturnValueOnce(false)
+    jest.mocked(useMediaQuery).mockReturnValueOnce(false)
 
     expect(useDeviceSupportsHover()).toBe(false)
   })

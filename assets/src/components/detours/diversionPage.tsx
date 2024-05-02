@@ -43,6 +43,7 @@ export const DiversionPage = ({
     detourShape,
     directions,
     routingError,
+    nearestIntersection,
 
     stops,
     missedStops,
@@ -58,16 +59,21 @@ export const DiversionPage = ({
 
   const [textArea, setTextArea] = useState("")
 
+  const nearestIntersectionDirection = [
+    { instruction: "From " + nearestIntersection },
+  ]
+  const extendedDirections = directions
+    ? nearestIntersectionDirection.concat(directions)
+    : undefined
+
   useEffect(() => {
     setTextArea(
       [
-        "Detour:",
-        `${originalRoute.routeName} ${originalRoute.routeDescription} from`,
+        `Detour ${originalRoute.routeName} ${originalRoute.routeDirection}`,
         originalRoute.routeOrigin,
-        originalRoute.routeDirection,
         ,
         "Turn-by-Turn Directions:",
-        ...(directions?.map((v) => v.instruction) ?? []),
+        ...(extendedDirections?.map((v) => v.instruction) ?? []),
         ,
         "Connection Points:",
         connectionPoints?.start?.name ?? "N/A",
@@ -79,7 +85,7 @@ export const DiversionPage = ({
     )
   }, [
     originalRoute,
-    directions,
+    extendedDirections,
     missedStops,
     connectionPoints?.start?.name,
     connectionPoints?.end?.name,
@@ -95,7 +101,7 @@ export const DiversionPage = ({
         <div className="l-diversion-page__panel bg-light">
           {state === DetourState.Edit && (
             <DiversionPanel
-              directions={directions}
+              directions={extendedDirections}
               missedStops={missedStops}
               routeName={originalRoute.routeName}
               routeDescription={originalRoute.routeDescription}
@@ -120,7 +126,7 @@ export const DiversionPage = ({
               className="position-absolute top-0 left-0 m-2 icon-link z-1"
             >
               <BsIcons.ExclamationCircleFill />
-              Detour is not editable from this screen.
+              Detour shape is not editable from this screen.
             </Alert>
           )}
           {routingError?.type === "no_route" && (
@@ -139,7 +145,7 @@ export const DiversionPage = ({
             endPoint={endPoint ?? undefined}
             waypoints={waypoints}
             routeSegments={routeSegments}
-            onClickMap={addWaypoint}
+            onAddWaypoint={addWaypoint}
             onClickOriginalShape={addConnectionPoint ?? (() => {})}
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}
