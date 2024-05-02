@@ -1,6 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
-import renderer from "react-test-renderer"
 import { render } from "@testing-library/react"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -45,12 +44,12 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders loading modal when appropriate", () => {
@@ -77,12 +76,12 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders create preset modal", () => {
@@ -190,12 +189,12 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders Chelsea Lowered modal", () => {
@@ -222,11 +221,11 @@ describe("Modal", () => {
         })
         .build(),
     })
-    const tree = renderer.create(
+    const { baseElement } = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot()
   })
 })

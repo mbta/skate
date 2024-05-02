@@ -1,323 +1,329 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`InactiveNotificationModal renders for a notification with a run currently on break 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Sorry, we can't show you details for run 111 because it is on a scheduled break.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Sorry, we can't show you details for run 111 because it is on a scheduled break.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
 exports[`InactiveNotificationModal renders for a notification with a run that finished in the past 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Run 222 has ended and is no longer active in Skate.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Run 222 has ended and is no longer active in Skate.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
 exports[`InactiveNotificationModal renders for a notification with a run that has only nonrevenue work left 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Run 222 has ended and is no longer active in Skate.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Run 222 has ended and is no longer active in Skate.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
 exports[`InactiveNotificationModal renders for a notification with multiple current runs 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Sorry, we can't show you details for runs 111, 222 because nobody is logged into them.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Sorry, we can't show you details for runs 111, 222 because nobody is logged into them.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
 exports[`InactiveNotificationModal renders for a notification with multiple upcoming runs 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Runs 111, 222 are upcoming and not yet active in Skate. Please check back later to see details for these runs.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Runs 111, 222 are upcoming and not yet active in Skate. Please check back later to see details for these runs.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
 exports[`InactiveNotificationModal renders for a notification with no runs 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 1024px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Sorry, there's no additional information that we can provide you about this notification.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Sorry, there's no additional information that we can provide you about this notification.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
 exports[`InactiveNotificationModal renders for a notification with one current run 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Sorry, we can't show you details for run 111 because nobody is logged into it.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Sorry, we can't show you details for run 111 because nobody is logged into it.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
 exports[`InactiveNotificationModal renders for a notification with one upcoming run 1`] = `
-[
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="c-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
         title="Close"
       >
-        <span
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Run 111 is upcoming and not yet active in Skate. Please check back later to see details for this run.
+      </div>
     </div>
-    <div
-      className="c-notification__title"
-    >
-      Other
-       NOTIFICATION
-    </div>
-    <div
-      className="c-inactive-notification-modal__body"
-    >
-      Run 111 is upcoming and not yet active in Skate. Please check back later to see details for this run.
-    </div>
-  </div>,
-  <div
-    aria-hidden={true}
-    className="c-modal-backdrop"
-  />,
-]
+  </div>
+</body>
 `;
 
-exports[`InactiveNotificationModal renders loading message 1`] = `"loading..."`;
+exports[`InactiveNotificationModal renders loading message 1`] = `
+<body>
+  <div>
+    loading...
+  </div>
+</body>
+`;

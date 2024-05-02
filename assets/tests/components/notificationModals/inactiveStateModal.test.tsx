@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
-import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import InactiveNotificationModal from "../../../src/components/notificationModals/inactiveNotificationModal"
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { useMinischeduleRuns } from "../../../src/hooks/useMinischedule"
@@ -69,18 +69,18 @@ describe("InactiveNotificationModal", () => {
 
   test("renders loading message", () => {
     jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => undefined)
-    const tree = renderer
-      .create(<InactiveNotificationModal notification={notification} />)
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal notification={notification} />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with no runs", () => {
     jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [])
-    const tree = renderer
-      .create(<InactiveNotificationModal notification={notification} />)
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal notification={notification} />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with one current run", () => {
@@ -90,14 +90,12 @@ describe("InactiveNotificationModal", () => {
         activities: [piece],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...notification, runIds: ["111"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...notification, runIds: ["111"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with multiple current runs", () => {
@@ -111,14 +109,12 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1200, endTime: 1400 }],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...notification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...notification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with one upcoming run", () => {
@@ -128,14 +124,12 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with multiple upcoming runs", () => {
@@ -149,14 +143,12 @@ describe("InactiveNotificationModal", () => {
         activities: [{ ...piece, startTime: 1400, endTime: 1600 }],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run currently on break", () => {
@@ -166,14 +158,12 @@ describe("InactiveNotificationModal", () => {
         activities: [breakk],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...notification, runIds: ["111"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...notification, runIds: ["111"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run that finished in the past", () => {
@@ -201,14 +191,12 @@ describe("InactiveNotificationModal", () => {
         ],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with a run that has only nonrevenue work left", () => {
@@ -228,13 +216,11 @@ describe("InactiveNotificationModal", () => {
         ],
       } as Run,
     ])
-    const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={{ ...futureNotification, runIds: ["111", "222"] }}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <InactiveNotificationModal
+        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+      />
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 })
