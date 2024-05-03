@@ -174,18 +174,6 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Finish Detour" })).toBeVisible()
   })
 
-  test.skip("clicking on map while drawing a detour adds a point", async () => {
-    const { container } = render(<DiversionPage />)
-
-    fireEvent.click(originalRouteShape.get(container))
-
-    fireEvent.click(container.querySelector(".c-vehicle-map")!)
-
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(1)
-  })
-
   test.skip.each<{
     title: string
     directionsResult: Err<FetchDetourDirectionsError>
