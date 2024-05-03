@@ -66,8 +66,14 @@ export const AppRoutes = () => {
       </div>
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
         <div className="l-app__main">
-          <Nav>
-            <Routes>
+          <Routes>
+            <Route
+              element={
+                <Nav>
+                  <Outlet />
+                </Nav>
+              }
+            >
               <Route
                 element={
                   <RouteElement
@@ -102,8 +108,9 @@ export const AppRoutes = () => {
               >
                 <BrowserRoute path="/map" element={<MapPage />} />
               </Route>
-            </Routes>
-          </Nav>
+            </Route>
+          </Routes>
+
           <Modal />
         </div>
       </VehiclesByRouteIdProvider>
