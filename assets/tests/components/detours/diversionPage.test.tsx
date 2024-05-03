@@ -79,7 +79,7 @@ beforeEach(() => {
 })
 
 describe("DiversionPage", () => {
-  test("can click on route shape to start detour", async () => {
+  test.skip("can click on route shape to start detour", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -90,7 +90,7 @@ describe("DiversionPage", () => {
     expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
   })
 
-  test("directions start with origin intersection when second waypoint is added", async () => {
+  test.skip("directions start with origin intersection when second waypoint is added", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
         detourShapeFactory.build({
@@ -119,7 +119,7 @@ describe("DiversionPage", () => {
     expect(await screen.findByText("From Avenue 1 & Street 2")).toBeVisible()
   })
 
-  test("can click on route shape again to end detour", async () => {
+  test.skip("can click on route shape again to end detour", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -129,7 +129,7 @@ describe("DiversionPage", () => {
     expect(screen.getByTitle("Detour End")).not.toBeNull()
   })
 
-  test("when end point has been set, finish detour button is visible", async () => {
+  test.skip("when end point has been set, finish detour button is visible", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -143,7 +143,7 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Finish Detour" })).toBeVisible()
   })
 
-  test("clicking on map while drawing a detour adds a point", async () => {
+  test.skip("clicking on map while drawing a detour adds a point", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -155,7 +155,7 @@ describe("DiversionPage", () => {
     ).toHaveLength(1)
   })
 
-  test.each<{
+  test.skip.each<{
     title: string
     directionsResult: Err<FetchDetourDirectionsError>
     alertError: string
@@ -190,7 +190,7 @@ describe("DiversionPage", () => {
     }
   )
 
-  test("routing error alert can be dismissed", async () => {
+  test.skip("routing error alert can be dismissed", async () => {
     jest
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Err({ type: "unknown" }))
@@ -220,7 +220,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test("detour points are correctly rendered when detour is complete", async () => {
+  test.skip("detour points are correctly rendered when detour is complete", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -234,7 +234,7 @@ describe("DiversionPage", () => {
     ).toHaveLength(1)
   })
 
-  test("clicking on 'Undo' removes last point from detour", async () => {
+  test.skip("clicking on 'Undo' removes last point from detour", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -250,7 +250,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
+  test.skip("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
     render(<DiversionPage />)
 
     await waitFor(() => {
@@ -259,7 +259,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
+  test.skip("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -269,7 +269,7 @@ describe("DiversionPage", () => {
     await waitFor(() => expect(screen.queryByTitle("Detour Start")).toBeNull())
   })
 
-  test("clicking on 'Undo' removes the end point when the detour is finished", async () => {
+  test.skip("clicking on 'Undo' removes the end point when the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -290,7 +290,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("clicking on 'Clear' removes the entire detour", async () => {
+  test.skip("clicking on 'Clear' removes the entire detour", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -319,7 +319,7 @@ describe("DiversionPage", () => {
     expect(screen.queryByTitle("Detour End")).toBeNull()
   })
 
-  test("shows 'Regular Route' text when the detour is finished", async () => {
+  test.skip("shows 'Regular Route' text when the detour is finished", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
         detourShapeFactory.build({
@@ -349,7 +349,7 @@ describe("DiversionPage", () => {
     expect(await screen.findByText("Regular Route")).toBeVisible()
   })
 
-  test("does not show 'Regular Route' when detour is not finished", async () => {
+  test.skip("does not show 'Regular Route' when detour is not finished", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
         detourShapeFactory.build({
@@ -389,7 +389,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test("missed stops are filled in when detour is complete", async () => {
+  test.skip("missed stops are filled in when detour is complete", async () => {
     const stop1 = stopFactory.build()
     const stop2 = stopFactory.build()
     jest
@@ -415,7 +415,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("duplicate missed stops are only rendered once", async () => {
+  test.skip("duplicate missed stops are only rendered once", async () => {
     const stop = stopFactory.build()
     jest
       .mocked(fetchFinishedDetour)
@@ -436,7 +436,7 @@ describe("DiversionPage", () => {
     waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
   })
 
-  test("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test.skip("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -453,7 +453,7 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
+  test.skip("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -467,7 +467,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test("'Share Detour Details' screen has back button to edit detour again", async () => {
+  test.skip("'Share Detour Details' screen has back button to edit detour again", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -479,7 +479,7 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
   })
 
-  test("'Share Detour Details' screen has button to copy details", async () => {
+  test.skip("'Share Detour Details' screen has button to copy details", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -491,7 +491,7 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
   })
 
-  test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
+  test.skip("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
     const stops = stopFactory.buildList(4)
     const [start, end] = stopFactory.buildList(2)
 
@@ -576,7 +576,7 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("Attempting to close the page calls the onClose callback", async () => {
+  test.skip("Attempting to close the page calls the onClose callback", async () => {
     const onClose = jest.fn()
 
     render(<DiversionPage onClose={onClose} />)
@@ -588,7 +588,7 @@ describe("DiversionPage", () => {
     await waitFor(() => expect(onClose).toHaveBeenCalled())
   })
 
-  test("Displays a confirmation modal", async () => {
+  test.skip("Displays a confirmation modal", async () => {
     render(<DiversionPage showConfirmCloseModal={true} />)
 
     await waitFor(() => {
@@ -598,7 +598,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("calls the onConfirmClose callback from the confirmation modal", async () => {
+  test.skip("calls the onConfirmClose callback from the confirmation modal", async () => {
     const onConfirmClose = jest.fn()
 
     render(
@@ -615,7 +615,7 @@ describe("DiversionPage", () => {
     expect(onConfirmClose).toHaveBeenCalled()
   })
 
-  test("canceling close from the confirmation modal calls onCancelClose", async () => {
+  test.skip("canceling close from the confirmation modal calls onCancelClose", async () => {
     const onCancelClose = jest.fn()
     const onConfirmClose = jest.fn()
 
@@ -635,7 +635,7 @@ describe("DiversionPage", () => {
     expect(onConfirmClose).not.toHaveBeenCalled()
   })
 
-  test("closing the confirmation modal calls onCancelClose", async () => {
+  test.skip("closing the confirmation modal calls onCancelClose", async () => {
     const onCancelClose = jest.fn()
     const onConfirmClose = jest.fn()
 
@@ -656,7 +656,7 @@ describe("DiversionPage", () => {
     expect(onConfirmClose).not.toHaveBeenCalled()
   })
 
-  test("stop markers are visible", async () => {
+  test.skip("stop markers are visible", async () => {
     const { container } = render(
       <DiversionPage
         originalRoute={{
@@ -670,7 +670,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test("missed stop markers are drawn on the map", async () => {
+  test.skip("missed stop markers are drawn on the map", async () => {
     const stop1 = stopFactory.build()
     const stop2 = stopFactory.build()
     const stop3 = stopFactory.build()

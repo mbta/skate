@@ -4,6 +4,7 @@ import { ShapePoint, Stop } from "../schedule"
 // import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
 
 import { DetourShape, OriginalRoute } from "../models/detour"
+import { FetchDetourDirectionsError } from "../api"
 
 // import { useApiCall } from "./useApiCall"
 // import { Ok, isErr, isOk } from "../util/result"
@@ -166,15 +167,15 @@ export const useDetour = ({}: OriginalRoute) => {
      */
     directions: [] as DetourShape["directions"],
 
-    //   /**
-    //    * The nearest intersection to the detour start.
-    //    */
-    //   nearestIntersection,
+    /**
+     * The nearest intersection to the detour start.
+     */
+    nearestIntersection: undefined,
 
     /**
      * Indicates if there was an error fetching directions from ORS
      */
-    routingError: undefined,
+    routingError: undefined as undefined | FetchDetourDirectionsError,
     //     detourShape.result && isErr(detourShape.result)
     //       ? detourShape.result.err
     //       : undefined,
@@ -182,12 +183,12 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
      */
-    stops: [] as Stop[],
+    stops: [] as (Stop & { missed: boolean })[],
 
     /**
      * Stops missed by the detour, determined after the route is completed
      */
-    missedStops: undefined,
+    missedStops: undefined as undefined | Stop[],
 
     /**
      * Three partial route-shape segments: before, during, and after the detour
@@ -198,7 +199,7 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * Connection Points
      */
-    connectionPoints: undefined,
+    connectionPoints: undefined as undefined | { start?: Stop; end?: Stop },
     // connectionPoints: finishedDetour?.connectionPoint,
 
     /**
