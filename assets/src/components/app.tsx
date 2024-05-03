@@ -31,7 +31,6 @@ import { TabMode } from "./propertiesPanel/tabPanels"
 import { DummyDetourPage } from "./dummyDetourPage"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { MinimalLadderPage } from "./minimalLadderPage"
-import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 export const AppRoutes = () => {
   useAppcues()
