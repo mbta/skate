@@ -9,7 +9,7 @@ import { useState } from "react"
 
 // import { useApiCall } from "./useApiCall"
 // import { Ok, isErr, isOk } from "../util/result"
-// import { useNearestIntersection } from "./useNearestIntersection"
+import { useNearestIntersection } from "./useNearestIntersection"
 
 // const useDetourDirections = (shapePoints: ShapePoint[]) =>
 //   useApiCall({
@@ -54,10 +54,12 @@ export const useDetour = ({}: OriginalRoute) => {
   //     shouldUpdate = false
   //   }
   // }, [routePatternId, startPoint, endPoint])
-  // const { result: nearestIntersection } = useNearestIntersection({
-  //   latitude: startPoint?.lat,
-  //   longitude: startPoint?.lon,
-  // })
+
+  const { result: nearestIntersection } = useNearestIntersection({
+    latitude: startPoint?.lat,
+    longitude: startPoint?.lon,
+  })
+
   // const detourShape = useDetourDirections(
   //   useMemo(
   //     () =>
@@ -132,7 +134,7 @@ export const useDetour = ({}: OriginalRoute) => {
 
   return {
     /** The current state of the detour machine */
-    state: undefined,
+    state: DetourState.Edit,
 
     /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
@@ -176,7 +178,7 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * The nearest intersection to the detour start.
      */
-    nearestIntersection: undefined,
+    nearestIntersection,
 
     /**
      * Indicates if there was an error fetching directions from ORS

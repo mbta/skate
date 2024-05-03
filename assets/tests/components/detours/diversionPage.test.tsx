@@ -121,7 +121,7 @@ describe("DiversionPage", () => {
     ).toHaveLength(1)
   })
 
-  test.skip("directions start with origin intersection when second waypoint is added", async () => {
+  test("directions start with origin intersection when second waypoint is added", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
         detourShapeFactory.build({
