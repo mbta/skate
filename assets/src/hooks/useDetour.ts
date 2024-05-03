@@ -5,6 +5,7 @@ import { ShapePoint, Stop } from "../schedule"
 
 import { DetourShape, OriginalRoute } from "../models/detour"
 import { FetchDetourDirectionsError } from "../api"
+import { useState } from "react"
 
 // import { useApiCall } from "./useApiCall"
 // import { Ok, isErr, isOk } from "../util/result"
@@ -30,7 +31,7 @@ export enum DetourState {
 
 export const useDetour = ({}: OriginalRoute) => {
   // const [state, setState] = useState<DetourState>(DetourState.Edit)
-  // const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
+  const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   // const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   // const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
   // const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
@@ -86,13 +87,13 @@ export const useDetour = ({}: OriginalRoute) => {
   //       setWaypoints((positions) => [...positions, p])
   //     }
   //   : undefined
-  // const addConnectionPoint = (point: ShapePoint) => {
-  //   if (startPoint === null) {
-  //     setStartPoint(point)
-  //   } else if (endPoint === null) {
-  //     setEndPoint(point)
-  //   }
-  // }
+  const addConnectionPoint = (point: ShapePoint) => {
+    // if (startPoint === null) {
+    setStartPoint(point)
+    // } else if (endPoint === null) {
+    //   setEndPoint(point)
+    // }
+  }
   // const canUndo = startPoint !== null && state === DetourState.Edit
   // const undo = () => {
   //   if (!canUndo) return
@@ -138,13 +139,13 @@ export const useDetour = ({}: OriginalRoute) => {
      * Sets {@link startPoint} if unset.
      * Otherwise sets {@link endPoint} if unset.
      */
-    addConnectionPoint: undefined as undefined | ((pt: ShapePoint) => void),
+    addConnectionPoint,
     //     state === DetourState.Finished ? undefined : addConnectionPoint,
 
     /**
      * The starting connection point of the detour.
      */
-    startPoint: null,
+    startPoint,
 
     /**
      * The ending connection point of the detour.

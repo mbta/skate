@@ -79,7 +79,7 @@ beforeEach(() => {
 })
 
 describe("DiversionPage", () => {
-  test.skip("can click on route shape to start detour", async () => {
+  test("can click on route shape to start detour", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
