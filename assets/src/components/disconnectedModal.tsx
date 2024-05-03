@@ -6,7 +6,9 @@ const DisconnectedModal = () => (
   <Modal
     className="c-modal"
     show
-    renderBackdrop={(props) => <div {...props} className="c-modal-backdrop" />}
+    renderBackdrop={(props) => (
+      <div {...props} className="c-modal-backdrop" aria-hidden />
+    )}
   >
     <>
       <div>
