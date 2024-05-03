@@ -33,7 +33,7 @@ import {
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
-import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../../src/hooks/useNearestIntersection"
 import { loading, ok } from "../../../src/util/fetchResult"
 
 const DiversionPage = (
@@ -79,7 +79,7 @@ beforeEach(() => {
     .mocked(fetchDetourDirections)
     .mockImplementation(() => new Promise(() => {}))
   jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
-  jest.mocked(useNearestIntersection).mockReturnValue(loading())
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
 })
 
 describe("DiversionPage", () => {
@@ -108,7 +108,7 @@ describe("DiversionPage", () => {
     )
 
     const intersection = "Avenue 1 & Street 2"
-    jest.mocked(useNearestIntersection).mockReturnValue({
+    jest.mocked(useNearestIntersectionFetchResult).mockReturnValue({
       ok: intersection,
     })
 
@@ -523,7 +523,9 @@ describe("DiversionPage", () => {
     })
 
     const intersection = "Avenue 1 & Street 2"
-    jest.mocked(useNearestIntersection).mockReturnValue(ok(intersection))
+    jest
+      .mocked(useNearestIntersectionFetchResult)
+      .mockReturnValue(ok(intersection))
 
     userEvent.setup() // Configure the clipboard API
 

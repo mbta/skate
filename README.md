@@ -122,6 +122,7 @@ Use of Skate on these browsers will potentially lead to bugs and a poor experien
 
 All new features are required to be reviewed by a team member. To request a code review after checking in a new branch:
 1. Create a pull request on your new branch. Edit the description to include a link to the Asana ticket describing the change.
+    - To trigger the Asana integration to move the related ticket across the `Skate Dev` board, each ticket on the PR must have the form `Asana Ticket: <ticket url>` and the particular ticket must be on the `Skate Dev` board (so if it's a subtask you'll need to manually add it to the board)
 1. New pull requests will automatically kick off testing. Wait for the tests to finish (about 10 minutes.)
 1. Once all the the automated tests pass, request a review from a team member. Update the Asana ticket to "In Review."
 

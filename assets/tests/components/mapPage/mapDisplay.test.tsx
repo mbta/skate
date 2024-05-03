@@ -54,6 +54,8 @@ import { fullStoryEvent } from "../../../src/helpers/fullStory"
 import { recenterControl } from "../../testHelpers/selectors/components/map/controls/recenterControl"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
+import { useNearestIntersectionFetchResult } from "../../../src/hooks/useNearestIntersection"
+import { loading } from "../../../src/util/fetchResult"
 
 jest.mock("userTestGroups", () => ({
   __esModule: true,
@@ -65,14 +67,7 @@ jest.mock("../../../src/hooks/usePatternsByIdForRoute", () => ({
   default: jest.fn(() => null),
 }))
 
-jest.mock("../../../src/hooks/useNearestIntersection", () => ({
-  __esModule: true,
-  useNearestIntersection: jest.fn(() => {
-    return {
-      is_loading: true,
-    }
-  }),
-}))
+jest.mock("../../../src/hooks/useNearestIntersection")
 
 jest.mock("../../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
@@ -104,8 +99,9 @@ jest.mock("../../../src/helpers/fullStory")
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
   mockScreenSize("desktop")
-})
 
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
 type VehicleIdToVehicle = {
   [vehicleId: VehicleId]: VehicleInScheduledService | Ghost
 }

@@ -1,7 +1,7 @@
 import React, { ReactNode, useId } from "react"
 import { joinTruthy, joinClasses } from "../../helpers/dom"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
-import { useNearestIntersection } from "../../hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../hooks/useNearestIntersection"
 import { isGhost, isLoggedOut, isVehicle } from "../../models/vehicle"
 import { Ghost, Vehicle } from "../../realtime"
 import { formattedDate, formattedTime } from "../../util/dateTime"
@@ -162,7 +162,7 @@ const VehicleWorkInfo = ({
 
 // #region Vehicle Location
 const CurrentLocation = ({ vehicle }: VehicleProp): React.ReactElement => {
-  const intersection = useNearestIntersection(
+  const intersection = useNearestIntersectionFetchResult(
     vehicle.latitude,
     vehicle.longitude
   )
