@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
-import { render, fireEvent } from "@testing-library/react"
+import { render, fireEvent, act } from "@testing-library/react"
 import InputModal from "../../src/components/inputModal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState, closeInputModal } from "../../src/state"
@@ -16,9 +16,9 @@ describe("InputModal", () => {
         </InputModal>
       </StateDispatchProvider>
     )
-
-    fireEvent.keyDown(result.getByText("Hello, world!"), { key: "Escape" })
-
+    act(() => {
+      fireEvent.keyDown(result.getByText("Hello, world!"), { key: "Escape" })
+    })
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
   })
 })
