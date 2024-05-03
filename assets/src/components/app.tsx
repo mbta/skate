@@ -30,6 +30,7 @@ import { isGhost, isVehicle } from "../models/vehicle"
 import { TabMode } from "./propertiesPanel/tabPanels"
 import { DummyDetourPage } from "./dummyDetourPage"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { MinimalLadderPage } from "./minimalLadderPage"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -68,6 +69,9 @@ export const AppRoutes = () => {
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
         <div className="l-app__main">
           <Routes>
+            {inTestGroup(TestGroups.MinimalLadderPage) && (
+              <BrowserRoute path="/minimal" element={<MinimalLadderPage />} />
+            )}
             <Route
               element={
                 <Nav>
