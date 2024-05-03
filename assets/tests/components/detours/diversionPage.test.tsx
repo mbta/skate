@@ -160,7 +160,7 @@ describe("DiversionPage", () => {
     expect(screen.getByTitle("Detour End")).not.toBeNull()
   })
 
-  test.skip("when end point has been set, finish detour button is visible", async () => {
+  test("when end point has been set, finish detour button is visible", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
