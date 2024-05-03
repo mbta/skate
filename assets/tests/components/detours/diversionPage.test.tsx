@@ -90,6 +90,37 @@ describe("DiversionPage", () => {
     expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
   })
 
+  test("has no waypoints at the beginning or when placing the start point", async () => {
+    const { container } = render(<DiversionPage />)
+
+    expect(
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(0)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    expect(
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(0)
+  })
+
+  test("can click on map to add a waypoint", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    expect(
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(1)
+  })
+
   test.skip("directions start with origin intersection when second waypoint is added", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
@@ -113,7 +144,7 @@ describe("DiversionPage", () => {
     })
 
     act(() => {
-      fireEvent.click(originalRouteShape.get(container))
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
     })
 
     expect(await screen.findByText("From Avenue 1 & Street 2")).toBeVisible()

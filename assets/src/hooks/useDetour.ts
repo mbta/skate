@@ -33,7 +33,7 @@ export const useDetour = ({}: OriginalRoute) => {
   // const [state, setState] = useState<DetourState>(DetourState.Edit)
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   // const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
-  // const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
+  const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
   // const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
   //   null
   // )
@@ -82,6 +82,11 @@ export const useDetour = ({}: OriginalRoute) => {
   //   })
   // }
   // const canAddWaypoint = () => startPoint !== null && endPoint === null
+
+  const addWaypoint = (p: ShapePoint) => {
+    setWaypoints((positions) => [...positions, p])
+  }
+
   // const addWaypoint = canAddWaypoint()
   //   ? (p: ShapePoint) => {
   //       setWaypoints((positions) => [...positions, p])
@@ -133,7 +138,7 @@ export const useDetour = ({}: OriginalRoute) => {
      * - {@link startPoint} is set
      * - {@link endPoint} is not set.
      */
-    addWaypoint: undefined as undefined | ((pt: ShapePoint) => void),
+    addWaypoint,
 
     /**
      * Sets {@link startPoint} if unset.
@@ -155,7 +160,7 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * The waypoints that connect {@link startPoint} and {@link endPoint}.
      */
-    waypoints: [] as ShapePoint[],
+    waypoints,
 
     /**
      * The routing API generated detour shape.
