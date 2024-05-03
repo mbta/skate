@@ -6,7 +6,9 @@ const NotificationLoadingModal = (): ReactElement => (
   <Modal
     className="c-modal c-notification-loading-modal"
     show
-    renderBackdrop={(props) => <div {...props} className="c-modal-backdrop" />}
+    renderBackdrop={(props) => (
+      <div {...props} className="c-modal-backdrop" aria-hidden />
+    )}
   >
     <div>
       <div className="c-notification-loading-modal__spinner-wrapper">

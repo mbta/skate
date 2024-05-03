@@ -22,7 +22,7 @@ const BasicNotificationModal = ({
       className="c-modal"
       show
       renderBackdrop={(props) => (
-        <div {...props} className="c-modal-backdrop" />
+        <div {...props} className="c-modal-backdrop" aria-hidden />
       )}
     >
       <div className="c-basic-notification-modal">

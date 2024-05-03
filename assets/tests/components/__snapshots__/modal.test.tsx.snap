@@ -7,6 +7,7 @@ exports[`Modal renders Chelsea Lowered modal 1`] = `
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -47,6 +48,7 @@ exports[`Modal renders Chelsea Raised modal 1`] = `
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -87,6 +89,7 @@ exports[`Modal renders inactive notification modal when appropriate 1`] = `
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -127,6 +130,7 @@ exports[`Modal renders loading modal when appropriate 1`] = `
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
