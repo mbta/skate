@@ -150,7 +150,7 @@ describe("DiversionPage", () => {
     expect(await screen.findByText("From Avenue 1 & Street 2")).toBeVisible()
   })
 
-  test.skip("can click on route shape again to end detour", async () => {
+  test("can click on route shape again to end detour", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))

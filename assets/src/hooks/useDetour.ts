@@ -32,7 +32,7 @@ export enum DetourState {
 export const useDetour = ({}: OriginalRoute) => {
   // const [state, setState] = useState<DetourState>(DetourState.Edit)
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
-  // const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
+  const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
   // const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
   //   null
@@ -95,11 +95,11 @@ export const useDetour = ({}: OriginalRoute) => {
   //     }
   //   : undefined
   const addConnectionPoint = (point: ShapePoint) => {
-    // if (startPoint === null) {
-    setStartPoint(point)
-    // } else if (endPoint === null) {
-    //   setEndPoint(point)
-    // }
+    if (startPoint === null) {
+      setStartPoint(point)
+    } else if (endPoint === null) {
+      setEndPoint(point)
+    }
   }
   // const canUndo = startPoint !== null && state === DetourState.Edit
   // const undo = () => {
@@ -157,7 +157,7 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * The ending connection point of the detour.
      */
-    endPoint: null,
+    endPoint,
 
     /**
      * The waypoints that connect {@link startPoint} and {@link endPoint}.
