@@ -30,7 +30,7 @@ export const useNearestIntersectionFetchResult = (
   }
 }
 
-const useNearestIntersection = ({
+export const useNearestIntersection = ({
   latitude,
   longitude,
 }: {
