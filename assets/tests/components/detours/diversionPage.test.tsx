@@ -257,7 +257,7 @@ describe("DiversionPage", () => {
     ).toHaveLength(1)
   })
 
-  test.skip("clicking on 'Undo' removes last point from detour", async () => {
+  test("clicking on 'Undo' removes last point from detour", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -273,7 +273,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test.skip("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
+  test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
     render(<DiversionPage />)
 
     await waitFor(() => {
@@ -282,7 +282,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test.skip("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
+  test("clicking on 'Undo' removes the start point when there are no waypoints", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -292,7 +292,7 @@ describe("DiversionPage", () => {
     await waitFor(() => expect(screen.queryByTitle("Detour Start")).toBeNull())
   })
 
-  test.skip("clicking on 'Undo' removes the end point when the detour is finished", async () => {
+  test("clicking on 'Undo' removes the end point when the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {

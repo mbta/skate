@@ -107,17 +107,19 @@ export const useDetour = ({}: OriginalRoute) => {
       setEndPoint(point)
     }
   }
-  // const canUndo = startPoint !== null && state === DetourState.Edit
-  // const undo = () => {
-  //   if (!canUndo) return
-  //   if (endPoint !== null) {
-  //     setEndPoint(null)
-  //   } else if (waypoints.length > 0) {
-  //     setWaypoints((positions) => positions.slice(0, positions.length - 1))
-  //   } else if (startPoint !== null) {
-  //     setStartPoint(null)
-  //   }
-  // }
+  const canUndo = startPoint !== null // && state === DetourState.Edit
+  const undo = () => {
+    // if (!canUndo) return
+    if (endPoint !== null) {
+      setEndPoint(null)
+      // } else if (waypoints.length > 0) {
+      // setWaypoints((positions) => positions.slice(0, positions.length - 1))
+    } else if (startPoint !== null) {
+      setStartPoint(null)
+    }
+
+    setWaypoints((positions) => positions.slice(0, positions.length - 1))
+  }
   // const clear = () => {
   //   setEndPoint(null)
   //   setStartPoint(null)
@@ -221,13 +223,12 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * Reports if {@link undo} will do anything.
      */
-    canUndo: false,
-    // canUndo,
+    canUndo,
 
     /**
      * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
      */
-    undo: undefined as undefined | (() => void),
+    undo,
     //   undo: state === DetourState.Finished ? undefined : undo,
 
     /**
