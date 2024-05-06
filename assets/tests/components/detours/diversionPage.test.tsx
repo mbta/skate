@@ -73,10 +73,8 @@ beforeEach(() => {
 jest.mock("../../../src/api")
 
 beforeEach(() => {
-  jest
-    .mocked(fetchDetourDirections)
-    .mockImplementation(() => new Promise(() => {}))
-  jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
+  jest.mocked(fetchDetourDirections).mockReturnValue(neverPromise())
+  jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
 })
 
