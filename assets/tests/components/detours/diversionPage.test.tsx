@@ -320,7 +320,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test.skip("clicking on 'Clear' removes the entire detour", async () => {
+  test("clicking on 'Clear' removes the entire detour", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {

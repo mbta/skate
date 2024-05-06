@@ -118,11 +118,11 @@ export const useDetour = ({}: OriginalRoute) => {
       setStartPoint(null)
     }
   }
-  // const clear = () => {
-  //   setEndPoint(null)
-  //   setStartPoint(null)
-  //   setWaypoints([])
-  // }
+  const clear = () => {
+    setEndPoint(null)
+    setStartPoint(null)
+    setWaypoints([])
+  }
 
   const finishDetour = () => {
     // setState(DetourState.Finished)
@@ -232,7 +232,7 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * Clears the entire detour
      */
-    clear: undefined as undefined | (() => void),
+    clear,
     //   clear: state === DetourState.Finished ? undefined : clear,
 
     /** When present, puts this detour in "finished mode" */
