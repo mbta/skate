@@ -271,6 +271,8 @@ describe("DiversionPage", () => {
         container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
       ).toHaveLength(0)
     )
+
+    expect(screen.queryByTitle("Detour Start")).not.toBeNull()
   })
 
   test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
@@ -298,7 +300,9 @@ describe("DiversionPage", () => {
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
-
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
@@ -310,6 +314,9 @@ describe("DiversionPage", () => {
     await waitFor(() => {
       expect(screen.getByTitle("Detour Start")).not.toBeNull()
       expect(screen.queryByTitle("Detour End")).toBeNull()
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(1)
     })
   })
 

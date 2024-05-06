@@ -112,13 +112,11 @@ export const useDetour = ({}: OriginalRoute) => {
     // if (!canUndo) return
     if (endPoint !== null) {
       setEndPoint(null)
-      // } else if (waypoints.length > 0) {
-      // setWaypoints((positions) => positions.slice(0, positions.length - 1))
+    } else if (waypoints.length > 0) {
+      setWaypoints((positions) => positions.slice(0, positions.length - 1))
     } else if (startPoint !== null) {
       setStartPoint(null)
     }
-
-    setWaypoints((positions) => positions.slice(0, positions.length - 1))
   }
   // const clear = () => {
   //   setEndPoint(null)
