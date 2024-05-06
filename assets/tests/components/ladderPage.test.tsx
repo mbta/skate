@@ -4,7 +4,6 @@ import { render, fireEvent, within } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { BrowserRouter } from "react-router-dom"
 import LadderPage, {
-  findRouteById,
   findSelectedVehicleOrGhost,
 } from "../../src/components/ladderPage"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -33,6 +32,7 @@ import userEvent from "@testing-library/user-event"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
 import stateFactory from "../factories/applicationState"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { findRouteById } from "../../src/components/routeLadders"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,

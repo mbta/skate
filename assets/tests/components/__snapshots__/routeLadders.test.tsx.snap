@@ -1,350 +1,327 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RouteLadders renders a route ladder 1`] = `
-<div
-  className="c-route-ladders"
-  data-testid="route-ladders-div"
-  onWheel={[Function]}
->
+<DocumentFragment>
   <div
-    className="c-route-ladder__header"
+    class="c-route-ladders"
+    data-testid="route-ladders-div"
   >
     <div
-      className="c-route-ladder__close-button-container"
+      class="c-route-ladder__header"
+    >
+      <div
+        class="c-route-ladder__close-button-container"
+      >
+        <button
+          aria-label="Close"
+          class="c-close-button c-close-button--large c-close-button--darker"
+        >
+          <span
+            aria-hidden="true"
+            aria-label=""
+            role="img"
+          >
+            <svg />
+          </span>
+        </button>
+      </div>
+      <div
+        class="c-route-ladder__route-name"
+      >
+        1
+      </div>
+    </div>
+    <div
+      class="c-route-ladder__controls"
     >
       <button
-        aria-label="Close"
-        className="c-close-button c-close-button--large c-close-button--darker"
-        onClick={[Function]}
+        class="c-route-ladder__reverse"
       >
         <span
-          aria-hidden={true}
-          aria-label=""
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-          role="img"
-        />
+          class="c-route-ladder__reverse-icon"
+        >
+          <svg />
+        </span>
+        Reverse
       </button>
     </div>
     <div
-      className="c-route-ladder__route-name"
+      class="c-ladder"
+      style="width: 184px;"
     >
-      1
-    </div>
-  </div>
-  <div
-    className="c-route-ladder__controls"
-  >
-    <button
-      className="c-route-ladder__reverse"
-      onClick={[Function]}
-    >
-      <span
-        className="c-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          {
-            "__html": "<svg/>",
-          }
-        }
-      />
-      Reverse
-    </button>
-  </div>
-  <div
-    className="c-ladder"
-    style={
-      {
-        "width": 184,
-      }
-    }
-  >
-    <svg
-      className="c-ladder__svg"
-      height={0}
-      viewBox="-92 -55 184 0"
-      width={184}
-    >
-      <line
-        className="c-ladder__line"
-        x1={-40}
-        x2={-40}
-        y1="0"
-        y2={-110}
-      />
-      <line
-        className="c-ladder__line"
-        x1={40}
-        x2={40}
-        y1="0"
-        y2={-110}
-      />
-      <circle
-        className="c-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
-        r="3"
-      />
-      <circle
-        className="c-ladder__stop-circle"
-        cx={40}
-        cy={-0}
-        r="3"
-      />
+      <svg
+        class="c-ladder__svg"
+        height="0"
+        viewBox="-92 -55 184 0"
+        width="184"
+      >
+        <line
+          class="c-ladder__line"
+          x1="-40"
+          x2="-40"
+          y1="0"
+          y2="-110"
+        />
+        <line
+          class="c-ladder__line"
+          x1="40"
+          x2="40"
+          y1="0"
+          y2="-110"
+        />
+        <circle
+          class="c-ladder__stop-circle"
+          cx="-40"
+          cy="0"
+          r="3"
+        />
+        <circle
+          class="c-ladder__stop-circle"
+          cx="40"
+          cy="0"
+          r="3"
+        />
+      </svg>
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WASMA Name
         </div>
         <text
-          className="c-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="c-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           WASMA
         </text>
       </div>
       <circle
-        className="c-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="c-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="c-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="c-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MELWA Name
         </div>
         <text
-          className="c-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="c-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           MELWA
         </text>
       </div>
       <circle
-        className="c-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="c-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="c-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="c-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           HHGAT Name
         </div>
         <text
-          className="c-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="c-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           HHGAT
         </text>
       </div>
-    </svg>
-  </div>
-  <div
-    className="c-incoming-box"
-  />
-  <div
-    className="c-route-ladder__header"
-  >
+    </div>
     <div
-      className="c-route-ladder__close-button-container"
+      class="c-incoming-box"
+    />
+    <div
+      class="c-route-ladder__header"
+    >
+      <div
+        class="c-route-ladder__close-button-container"
+      >
+        <button
+          aria-label="Close"
+          class="c-close-button c-close-button--large c-close-button--darker"
+        >
+          <span
+            aria-hidden="true"
+            aria-label=""
+            role="img"
+          >
+            <svg />
+          </span>
+        </button>
+      </div>
+      <div
+        class="c-route-ladder__route-name"
+      >
+        28
+      </div>
+    </div>
+    <div
+      class="c-route-ladder__controls"
     >
       <button
-        aria-label="Close"
-        className="c-close-button c-close-button--large c-close-button--darker"
-        onClick={[Function]}
+        class="c-route-ladder__reverse"
       >
         <span
-          aria-hidden={true}
-          aria-label=""
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<svg/>",
-            }
-          }
-          role="img"
-        />
+          class="c-route-ladder__reverse-icon"
+        >
+          <svg />
+        </span>
+        Reverse
       </button>
     </div>
     <div
-      className="c-route-ladder__route-name"
+      class="c-ladder"
+      style="width: 184px;"
     >
-      28
-    </div>
-  </div>
-  <div
-    className="c-route-ladder__controls"
-  >
-    <button
-      className="c-route-ladder__reverse"
-      onClick={[Function]}
-    >
-      <span
-        className="c-route-ladder__reverse-icon"
-        dangerouslySetInnerHTML={
-          {
-            "__html": "<svg/>",
-          }
-        }
-      />
-      Reverse
-    </button>
-  </div>
-  <div
-    className="c-ladder"
-    style={
-      {
-        "width": 184,
-      }
-    }
-  >
-    <svg
-      className="c-ladder__svg"
-      height={0}
-      viewBox="-92 -55 184 0"
-      width={184}
-    >
-      <line
-        className="c-ladder__line"
-        x1={-40}
-        x2={-40}
-        y1="0"
-        y2={-110}
-      />
-      <line
-        className="c-ladder__line"
-        x1={40}
-        x2={40}
-        y1="0"
-        y2={-110}
-      />
-      <circle
-        className="c-ladder__stop-circle"
-        cx={-40}
-        cy={-0}
-        r="3"
-      />
-      <circle
-        className="c-ladder__stop-circle"
-        cx={40}
-        cy={-0}
-        r="3"
-      />
+      <svg
+        class="c-ladder__svg"
+        height="0"
+        viewBox="-92 -55 184 0"
+        width="184"
+      >
+        <line
+          class="c-ladder__line"
+          x1="-40"
+          x2="-40"
+          y1="0"
+          y2="-110"
+        />
+        <line
+          class="c-ladder__line"
+          x1="40"
+          x2="40"
+          y1="0"
+          y2="-110"
+        />
+        <circle
+          class="c-ladder__stop-circle"
+          cx="-40"
+          cy="0"
+          r="3"
+        />
+        <circle
+          class="c-ladder__stop-circle"
+          cx="40"
+          cy="0"
+          r="3"
+        />
+      </svg>
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MATPN Name
         </div>
         <text
-          className="c-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="c-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-0}
+          y="0"
         >
           MATPN
         </text>
       </div>
       <circle
-        className="c-ladder__stop-circle"
-        cx={-40}
-        cy={-55}
+        class="c-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
         r="3"
       />
       <circle
-        className="c-ladder__stop-circle"
-        cx={40}
-        cy={-55}
+        class="c-ladder__stop-circle"
+        cx="40"
+        cy="-55"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           WELLH Name
         </div>
         <text
-          className="c-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="c-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-55}
+          y="-55"
         >
           WELLH
         </text>
       </div>
       <circle
-        className="c-ladder__stop-circle"
-        cx={-40}
-        cy={-110}
+        class="c-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
         r="3"
       />
       <circle
-        className="c-ladder__stop-circle"
-        cx={40}
-        cy={-110}
+        class="c-ladder__stop-circle"
+        cx="40"
+        cy="-110"
         r="3"
       />
       <div
-        className="mock-tippy"
+        class="mock-tippy"
       >
         <div
-          className="mock-tippy-content"
+          class="mock-tippy-content"
         >
           MORTN Name
         </div>
         <text
-          className="c-ladder__timepoint-name"
-          dominantBaseline="middle"
-          textAnchor="middle"
+          class="c-ladder__timepoint-name"
+          dominant-baseline="middle"
+          text-anchor="middle"
           x="0"
-          y={-110}
+          y="-110"
         >
           MORTN
         </text>
       </div>
-    </svg>
+    </div>
+    <div
+      class="c-incoming-box"
+    />
   </div>
-  <div
-    className="c-incoming-box"
-  />
-</div>
+</DocumentFragment>
 `;
