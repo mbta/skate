@@ -63,6 +63,7 @@ import {
   mockScreenSize,
   mockTileUrls,
   mockUsePatternsByIdForVehicles,
+  neverPromise,
 } from "../testHelpers/mockHelpers"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"
@@ -92,8 +93,7 @@ import pieceFactory from "../factories/piece"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
-import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
-import { loading } from "../../src/util/fetchResult"
+import { fetchNearestIntersection } from "../../src/api"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   useLocationSearchResults: jest.fn(() => null),
@@ -112,8 +112,6 @@ jest.mock("../../src/hooks/usePatternsByIdForRoute", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }))
-
-jest.mock("../../src/hooks/useNearestIntersection")
 
 jest.mock("../../src/hooks/useVehicleForId", () => ({
   __esModule: true,
@@ -150,8 +148,10 @@ jest.mock("../../src/hooks/usePanelState")
 
 jest.mock("../../src/userTestGroups")
 
+jest.mock("../../src/api")
+
 beforeEach(() => {
-  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+  jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
 })
 
 const mockVehicleSearchResultsCategory = (
