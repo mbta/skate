@@ -6,7 +6,7 @@ import { useApiCall } from "./useApiCall"
 /**
  * @deprecated use {@linkcode useNearestIntersection}
  *
- * [⚙️ Refactor `useNearestIntersectionFetchResult` away from `FetchResult`](https://app.asana.com/0/1148853526253420/1207213296687090/f)
+ * [Refactor `useNearestIntersectionFetchResult` away from `FetchResult`](https://app.asana.com/0/1148853526253420/1207213296687090/f)
  */
 export const useNearestIntersectionFetchResult = (
   latitude: number | undefined,
