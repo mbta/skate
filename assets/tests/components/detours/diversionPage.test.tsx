@@ -349,22 +349,24 @@ describe("DiversionPage", () => {
     expect(screen.queryByTitle("Detour End")).toBeNull()
   })
 
-  test.skip("shows 'Regular Route' text when the detour is finished", async () => {
-    jest.mocked(fetchDetourDirections).mockResolvedValue(
-      Ok(
-        detourShapeFactory.build({
-          directions: [
-            { instruction: "Turn left on Main Street" },
-            { instruction: "Turn right on High Street" },
-            { instruction: "Turn sharp right on Broadway" },
-          ],
-        })
-      )
-    )
+  test("shows 'Regular Route' text when the detour is finished", async () => {
+    // jest.mocked(fetchDetourDirections).mockReturnValue(
+    //   Promise.resolve(
+    //     Ok(
+    //       detourShapeFactory.build({
+    //         directions: [
+    //           { instruction: "Turn left on Main Street" },
+    //           { instruction: "Turn right on High Street" },
+    //           { instruction: "Turn sharp right on Broadway" },
+    //         ],
+    //       })
+    //     )
+    //   )
+    // )
 
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue(finishedDetourFactory.build())
+    // jest
+    //   .mocked(fetchFinishedDetour)
+    //   .mockReturnValue(Promise.resolve(finishedDetourFactory.build()))
 
     const { container } = render(<DiversionPage />)
 
@@ -376,39 +378,47 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(await screen.findByText("Regular Route")).toBeVisible()
+    await waitFor(() => {
+      expect(screen.getByText("Regular Route")).toBeVisible()
+    })
   })
 
-  test.skip("does not show 'Regular Route' when detour is not finished", async () => {
-    jest.mocked(fetchDetourDirections).mockResolvedValue(
-      Ok(
-        detourShapeFactory.build({
-          directions: [
-            { instruction: "Turn left on Main Street" },
-            { instruction: "Turn right on High Street" },
-            { instruction: "Turn sharp right on Broadway" },
-          ],
-        })
+  test("does not show 'Regular Route' when detour is not finished", async () => {
+    jest.mocked(fetchDetourDirections).mockReturnValue(
+      Promise.resolve(
+        Ok(
+          detourShapeFactory.build({
+            directions: [
+              { instruction: "Turn left on Main Street" },
+              { instruction: "Turn right on High Street" },
+              { instruction: "Turn sharp right on Broadway" },
+            ],
+          })
+        )
       )
     )
 
     jest
       .mocked(fetchFinishedDetour)
-      .mockResolvedValue(finishedDetourFactory.build())
+      .mockReturnValue(Promise.resolve(finishedDetourFactory.build()))
 
     const { container } = render(<DiversionPage />)
 
-    expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
+    await waitFor(() => {
+      expect(screen.queryByText("Regular Route")).not.toBeInTheDocument()
     })
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(await screen.findByText("Regular Route")).toBeVisible()
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText("Regular Route")).toBeVisible()
+    })
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: "Undo" }))
