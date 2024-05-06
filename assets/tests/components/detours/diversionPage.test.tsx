@@ -243,7 +243,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test.skip("detour points are correctly rendered when detour is complete", async () => {
+  test("detour points are correctly rendered when detour is complete", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
