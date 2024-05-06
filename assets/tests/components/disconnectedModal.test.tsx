@@ -2,7 +2,6 @@ import { jest, describe, test, expect } from "@jest/globals"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
-import renderer from "react-test-renderer"
 import DisconnectedModal from "../../src/components/disconnectedModal"
 import { reload } from "../../src/models/browser"
 
@@ -13,8 +12,8 @@ jest.mock("../../src/models/browser", () => ({
 
 describe("DisconnectedModal", () => {
   test("renders", () => {
-    const tree = renderer.create(<DisconnectedModal />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(<DisconnectedModal />)
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("refreshes when you click the button", async () => {

@@ -7,6 +7,7 @@ exports[`InactiveNotificationModal renders for a notification with a run current
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -47,6 +48,7 @@ exports[`InactiveNotificationModal renders for a notification with a run that fi
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -87,6 +89,7 @@ exports[`InactiveNotificationModal renders for a notification with a run that ha
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -127,6 +130,7 @@ exports[`InactiveNotificationModal renders for a notification with multiple curr
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -167,6 +171,7 @@ exports[`InactiveNotificationModal renders for a notification with multiple upco
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -207,6 +212,7 @@ exports[`InactiveNotificationModal renders for a notification with no runs 1`] =
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -247,6 +253,7 @@ exports[`InactiveNotificationModal renders for a notification with one current r
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
@@ -287,6 +294,7 @@ exports[`InactiveNotificationModal renders for a notification with one upcoming 
 >
   <div />
   <div
+    aria-hidden="true"
     class="c-modal-backdrop"
   />
   <div
