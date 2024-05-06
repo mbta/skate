@@ -4,25 +4,30 @@ import { ShapePoint, Stop } from "../schedule"
 // import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
 
 import { DetourShape, OriginalRoute } from "../models/detour"
-import { FetchDetourDirectionsError } from "../api"
-import { useState } from "react"
+import { fetchDetourDirections } from "../api"
+import { useCallback, useMemo, useState } from "react"
 
 // import { useApiCall } from "./useApiCall"
-// import { Ok, isErr, isOk } from "../util/result"
+import {
+  Ok,
+  isErr, // isErr, isOk
+} from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
 
-// const useDetourDirections = (shapePoints: ShapePoint[]) =>
-//   useApiCall({
-//     apiCall: useCallback(async () => {
-//       // We expect not to have any directions or shape if we don't have at
-//       // least two points to route between
-//       if (shapePoints.length < 2) {
-//         return Ok({ coordinates: [], directions: undefined })
-//       }
+import { useApiCall } from "./useApiCall"
 
-//       return fetchDetourDirections(shapePoints)
-//     }, [shapePoints]),
-//   })
+const useDetourDirections = (shapePoints: ShapePoint[]) =>
+  useApiCall({
+    apiCall: useCallback(async () => {
+      // We expect not to have any directions or shape if we don't have at
+      // least two points to route between
+      if (shapePoints.length < 2) {
+        return Ok({ coordinates: [], directions: undefined })
+      }
+
+      return fetchDetourDirections(shapePoints)
+    }, [shapePoints]),
+  })
 
 export enum DetourState {
   Edit,
@@ -60,15 +65,16 @@ export const useDetour = ({}: OriginalRoute) => {
     longitude: startPoint?.lon,
   })
 
-  // const detourShape = useDetourDirections(
-  //   useMemo(
-  //     () =>
-  //       [startPoint, ...waypoints, endPoint].filter(
-  //         (v): v is ShapePoint => !!v
-  //       ),
-  //     [startPoint, waypoints, endPoint]
-  //   ) ?? []
-  // )
+  const detourShape = useDetourDirections(
+    useMemo(
+      () =>
+        [startPoint, ...waypoints, endPoint].filter(
+          (v): v is ShapePoint => !!v
+        ),
+      [startPoint, waypoints, endPoint]
+    ) ?? []
+  )
+
   // const coordinates =
   //   detourShape.result && isOk(detourShape.result)
   //     ? detourShape.result.ok.coordinates
@@ -185,10 +191,10 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * Indicates if there was an error fetching directions from ORS
      */
-    routingError: undefined as undefined | FetchDetourDirectionsError,
-    //     detourShape.result && isErr(detourShape.result)
-    //       ? detourShape.result.err
-    //       : undefined,
+    routingError:
+      detourShape.result && isErr(detourShape.result)
+        ? detourShape.result.err
+        : undefined,
 
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)

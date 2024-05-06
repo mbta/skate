@@ -101,9 +101,11 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(0)
+    await waitFor(() => {
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(0)
+    })
   })
 
   test("can click on map to add a waypoint", async () => {
@@ -116,9 +118,11 @@ describe("DiversionPage", () => {
       fireEvent.click(container.querySelector(".c-vehicle-map")!)
     })
 
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(1)
+    await waitFor(() => {
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(1)
+    })
   })
 
   test("directions start with origin intersection when second waypoint is added", async () => {
@@ -174,7 +178,7 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Finish Detour" })).toBeVisible()
   })
 
-  test.skip.each<{
+  test.each<{
     title: string
     directionsResult: Err<FetchDetourDirectionsError>
     alertError: string
@@ -209,7 +213,7 @@ describe("DiversionPage", () => {
     }
   )
 
-  test.skip("routing error alert can be dismissed", async () => {
+  test("routing error alert can be dismissed", async () => {
     jest
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Err({ type: "unknown" }))
