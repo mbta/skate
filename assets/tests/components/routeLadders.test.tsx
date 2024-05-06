@@ -82,11 +82,11 @@ describe("RouteLadders", () => {
         })
       )
     })
-  
+
     test("returns undefined if the route isn't found", () => {
       expect(findRouteById(routes, "missing")).toEqual(undefined)
     })
-  
+
     test("returns undefined if routes is null", () => {
       expect(findRouteById(null, "does not matter")).toEqual(undefined)
     })
