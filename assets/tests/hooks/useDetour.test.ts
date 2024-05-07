@@ -88,64 +88,6 @@ describe("useDetour", () => {
     })
   })
 
-  test.skip("when `undo` is called, removes `start` and `end` points", async () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
-
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addConnectionPoint?.(end))
-
-    expect(result.current.endPoint).not.toBeNull()
-
-    act(() => result.current.undo?.())
-
-    expect(result.current.endPoint).toBeNull()
-    expect(result.current.startPoint).not.toBeNull()
-
-    act(() => result.current.undo?.())
-
-    await waitFor(() => expect(result.current.startPoint).toBeNull())
-  })
-
-  test.skip("when `undo` is called, removes the last `waypoint`", async () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
-
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(end))
-
-    expect(result.current.waypoints).toStrictEqual([end])
-
-    act(() => result.current.undo?.())
-
-    await waitFor(() => expect(result.current.waypoints).toHaveLength(0))
-  })
-
-  test.skip("when `undo` is called, should call API with updated waypoints", async () => {
-    const start = { lat: 0, lon: 0 }
-    const mid = { lat: 0.5, lon: 0.5 }
-    const end = { lat: 1, lon: 1 }
-
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(mid))
-    act(() => result.current.addWaypoint?.(end))
-    act(() => result.current.undo?.())
-
-    await waitFor(() => {
-      expect(jest.mocked(fetchDetourDirections)).toHaveBeenCalledTimes(3)
-      expect(jest.mocked(fetchDetourDirections)).toHaveBeenNthCalledWith(3, [
-        start,
-        mid,
-      ])
-    })
-  })
-
   test.skip("when `undo` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
     jest
       .mocked(fetchDetourDirections)
