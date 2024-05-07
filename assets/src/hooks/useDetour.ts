@@ -34,7 +34,7 @@ export enum DetourState {
   Finished,
 }
 
-export const useDetour = ({ routePatternId }: OriginalRoute) => {
+export const useDetour = ({ shape, routePatternId }: OriginalRoute) => {
   const [state, setState] = useState<DetourState>(DetourState.Edit)
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
@@ -135,13 +135,13 @@ export const useDetour = ({ routePatternId }: OriginalRoute) => {
     //   setState(DetourState.Edit)
   }
   const missedStops = finishedDetour?.missedStops || []
-  // const missedStopIds = missedStops
-  //   ? new Set(missedStops.map((stop) => stop.id))
-  //   : new Set()
-  // const stops = (shape.stops || []).map((stop) => ({
-  //   ...stop,
-  //   missed: missedStopIds.has(stop.id),
-  // }))
+  const missedStopIds = missedStops
+    ? new Set(missedStops.map((stop) => stop.id))
+    : new Set()
+  const stops = (shape.stops || []).map((stop) => ({
+    ...stop,
+    missed: missedStopIds.has(stop.id),
+  }))
 
   return {
     /** The current state of the detour machine */
@@ -202,7 +202,7 @@ export const useDetour = ({ routePatternId }: OriginalRoute) => {
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
      */
-    stops: [] as (Stop & { missed: boolean })[],
+    stops,
 
     /**
      * Stops missed by the detour, determined after the route is completed

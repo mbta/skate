@@ -696,7 +696,7 @@ describe("DiversionPage", () => {
     expect(onConfirmClose).not.toHaveBeenCalled()
   })
 
-  test.skip("stop markers are visible", async () => {
+  test("stop markers are visible", async () => {
     const { container } = render(
       <DiversionPage
         originalRoute={{
@@ -710,7 +710,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test.skip("missed stop markers are drawn on the map", async () => {
+  test("missed stop markers are drawn on the map", async () => {
     const stop1 = stopFactory.build()
     const stop2 = stopFactory.build()
     const stop3 = stopFactory.build()
