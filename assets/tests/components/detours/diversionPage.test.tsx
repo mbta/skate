@@ -476,7 +476,7 @@ describe("DiversionPage", () => {
     await waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
   })
 
-  test.skip("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -493,7 +493,7 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test.skip("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
+  test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -507,7 +507,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test.skip("'Share Detour Details' screen has back button to edit detour again", async () => {
+  test("'Share Detour Details' screen has back button to edit detour again", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))
@@ -519,7 +519,7 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
   })
 
-  test.skip("'Share Detour Details' screen has button to copy details", async () => {
+  test("'Share Detour Details' screen has button to copy details", async () => {
     const { container } = render(<DiversionPage />)
 
     fireEvent.click(originalRouteShape.get(container))

@@ -35,7 +35,7 @@ export enum DetourState {
 }
 
 export const useDetour = ({ routePatternId }: OriginalRoute) => {
-  // const [state, setState] = useState<DetourState>(DetourState.Edit)
+  const [state, setState] = useState<DetourState>(DetourState.Edit)
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
@@ -128,12 +128,12 @@ export const useDetour = ({ routePatternId }: OriginalRoute) => {
   }
 
   const finishDetour = () => {
-    // setState(DetourState.Finished)
+    setState(DetourState.Finished)
   }
 
-  // const editDetour = () => {
-  //   setState(DetourState.Edit)
-  // }
+  const editDetour = () => {
+    //   setState(DetourState.Edit)
+  }
   const missedStops = finishedDetour?.missedStops || []
   // const missedStopIds = missedStops
   //   ? new Set(missedStops.map((stop) => stop.id))
@@ -145,7 +145,7 @@ export const useDetour = ({ routePatternId }: OriginalRoute) => {
 
   return {
     /** The current state of the detour machine */
-    state: DetourState.Edit,
+    state,
 
     /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
@@ -242,7 +242,7 @@ export const useDetour = ({ routePatternId }: OriginalRoute) => {
     finishDetour: endPoint !== null ? finishDetour : undefined,
 
     /** When present, puts this detour in "edit mode" */
-    editDetour: undefined as undefined | (() => void),
+    editDetour,
     // editDetour: state === DetourState.Finished ? editDetour : undefined,
   }
 }
