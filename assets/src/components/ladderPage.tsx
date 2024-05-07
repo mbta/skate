@@ -8,10 +8,7 @@ import {
   isPreset,
   tabName,
 } from "../models/routeTab"
-import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
-import { Ghost, VehicleId, VehicleInScheduledService } from "../realtime.d"
-import { ByRouteId } from "../schedule.d"
 import { Notifications } from "./notifications"
 import Presets from "./presets"
 import RouteLadders from "./routeLadders"
@@ -33,16 +30,6 @@ import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 type DrawerContent = "route_picker" | "presets"
-
-// This is tested but never used?
-export const findSelectedVehicleOrGhost = (
-  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>,
-  selectedVehicleId: VehicleId | undefined
-): VehicleInScheduledService | Ghost | undefined => {
-  return allVehiclesAndGhosts(vehiclesByRouteId).find(
-    (bus) => bus.id === selectedVehicleId
-  )
-}
 
 const LadderTab = ({
   tab,
