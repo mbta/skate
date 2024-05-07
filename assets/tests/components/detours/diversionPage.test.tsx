@@ -149,7 +149,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("directions start with origin intersection when second waypoint is added", async () => {
+  test("directions is populated with the origin intersection and directions from the backend when second waypoint is added", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
         detourShapeFactory.build({
@@ -175,7 +175,16 @@ describe("DiversionPage", () => {
       fireEvent.click(container.querySelector(".c-vehicle-map")!)
     })
 
-    expect(await screen.findByText("From Avenue 1 & Street 2")).toBeVisible()
+    await waitFor(() => {
+      const { getByText } = within(
+        container.querySelector("#diversion-panel__directions")!
+      )
+
+      expect(getByText("From Avenue 1 & Street 2")).toBeVisible()
+      expect(getByText("Turn left on Main Street")).toBeVisible()
+      expect(getByText("Turn right on High Street")).toBeVisible()
+      expect(getByText("Turn sharp right on Broadway")).toBeVisible()
+    })
   })
 
   test("can click on route shape again to end detour", async () => {

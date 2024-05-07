@@ -33,7 +33,7 @@ const useDetourWithFakeRoutePattern = () =>
   useDetour(originalRouteFactory.build())
 
 describe("useDetour", () => {
-  test.skip("when `addWaypoint` is called, should update `detourShape` and `directions`", async () => {
+  test.skip("when `addWaypoint` is called, should update `detourShape`", async () => {
     const start: ShapePoint = { lat: -2, lon: -2 }
     const end: ShapePoint = { lat: -1, lon: -1 }
 
@@ -42,10 +42,6 @@ describe("useDetour", () => {
         { lat: 0, lon: 0 },
         { lat: 1, lon: 1 },
         { lat: 2, lon: 2 },
-      ],
-      directions: [
-        { instruction: "Turn Left onto Main St" },
-        { instruction: "Turn Right onto High St" },
       ],
     })
 
@@ -69,7 +65,6 @@ describe("useDetour", () => {
 
     await waitFor(() => {
       expect(result.current.detourShape).toStrictEqual(detourShape.coordinates)
-      expect(result.current.directions).toStrictEqual(detourShape.directions)
     })
   })
 

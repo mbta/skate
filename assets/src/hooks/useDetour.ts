@@ -3,15 +3,12 @@ import { ShapePoint, Stop } from "../schedule"
 // import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 // import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
 
-import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
+import { FinishedDetour, OriginalRoute } from "../models/detour"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 // import { useApiCall } from "./useApiCall"
-import {
-  Ok,
-  isErr, // isErr, isOk
-} from "../util/result"
+import { Ok, isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
 
 import { useApiCall } from "./useApiCall"
@@ -80,14 +77,18 @@ export const useDetour = ({ shape, routePatternId }: OriginalRoute) => {
   //   detourShape.result && isOk(detourShape.result)
   //     ? detourShape.result.ok.coordinates
   //     : []
-  let directions: DetourShape["directions"] = []
+  let directions =
+    (detourShape.result &&
+      isOk(detourShape.result) &&
+      detourShape.result?.ok?.directions) ||
+    []
   // let directions =
   //   detourShape.result && isOk(detourShape.result)
   //     ? detourShape.result.ok.directions
   //     : undefined
   // // Only append direction "Regular Route" after detour is finished
   // if (!detourShape.isLoading && directions && finishedDetour) {
-  if (finishedDetour) {
+  if (directions && finishedDetour) {
     directions = directions.concat({
       instruction: "Regular Route",
     })
