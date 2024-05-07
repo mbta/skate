@@ -30,6 +30,7 @@ import userEvent from "@testing-library/user-event"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
 import stateFactory from "../factories/applicationState"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import useAlerts from "../../src/hooks/useAlerts"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -419,6 +420,30 @@ describe("LadderPage", () => {
       ],
     }
     jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
+  })
+
+  test("renders with alerts", () => {
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["28", "1"],
+          ordering: 0,
+          isCurrentTab: true,
+        }),
+      ],
+    }
+    jest.mocked(useAlerts).mockReturnValue({ 28: [], 1: ["Route 1 detour"] })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <BrowserRouter>
