@@ -92,17 +92,14 @@ export const useDetour = ({ shape, routePatternId }: OriginalRoute) => {
       instruction: "Regular Route",
     })
   }
-  // const canAddWaypoint = () => startPoint !== null && endPoint === null
 
-  const addWaypoint = (p: ShapePoint) => {
-    setWaypoints((positions) => [...positions, p])
-  }
+  const canAddWaypoint = () => startPoint !== null && endPoint === null
+  const addWaypoint = canAddWaypoint()
+    ? (p: ShapePoint) => {
+        setWaypoints((positions) => [...positions, p])
+      }
+    : undefined
 
-  // const addWaypoint = canAddWaypoint()
-  //   ? (p: ShapePoint) => {
-  //       setWaypoints((positions) => [...positions, p])
-  //     }
-  //   : undefined
   const addConnectionPoint = (point: ShapePoint) => {
     if (startPoint === null) {
       setStartPoint(point)

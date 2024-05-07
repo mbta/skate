@@ -90,6 +90,30 @@ describe("DiversionPage", () => {
     expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
   })
 
+  test("has a normal cursor before placing the start point", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await waitFor(() => {
+      expect(
+        container.querySelector(".c-detour_map--map__clickable")
+      ).not.toBeInTheDocument()
+    })
+  })
+
+  test("has a waypoint cursor, given by the __clickable class, once the start point is placed", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(
+        container.querySelector(".c-detour_map--map__clickable")
+      ).toBeInTheDocument()
+    })
+  })
+
   test("has no waypoints at the beginning or when placing the start point", async () => {
     const { container } = render(<DiversionPage />)
 
@@ -162,6 +186,26 @@ describe("DiversionPage", () => {
     fireEvent.click(originalRouteShape.get(container))
 
     expect(screen.getByTitle("Detour End")).not.toBeNull()
+  })
+
+  test("when end point has been set, has a normal cursor again", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await waitFor(() => {
+      expect(
+        container.querySelector(".c-detour_map--map__clickable")
+      ).toBeInTheDocument()
+    })
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await waitFor(() => {
+      expect(
+        container.querySelector(".c-detour_map--map__clickable")
+      ).not.toBeInTheDocument()
+    })
   })
 
   test("when end point has been set, finish detour button is visible", async () => {
