@@ -113,20 +113,22 @@ describe("Modal", () => {
     const confirmOverwriteCallback = jest.fn()
 
     render(
-      <RealDispatchWrapper initialState={stateFactory.build({openInputModal: {
-        type: "CREATE_PRESET",
-        createCallback,
-        confirmOverwriteCallback,
-      }})}>
+      <RealDispatchWrapper
+        initialState={stateFactory.build({
+          openInputModal: {
+            type: "CREATE_PRESET",
+            createCallback,
+            confirmOverwriteCallback,
+          },
+        })}
+      >
         <Modal />
       </RealDispatchWrapper>
     )
     const modal = screen.getByText("Save open routes as preset")
     expect(modal).toBeVisible()
     userEvent.keyboard("{Escape}")
-    await waitFor(() =>
-      expect(modal).not.toBeInTheDocument()
-    )
+    await waitFor(() => expect(modal).not.toBeInTheDocument())
   })
 
   test("renders save preset modal", () => {
