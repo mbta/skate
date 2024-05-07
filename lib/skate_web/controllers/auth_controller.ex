@@ -86,9 +86,14 @@ defmodule SkateWeb.AuthController do
       "#{__MODULE__} keycloak callback csrf ueberauth_failure struct=#{Kernel.inspect(auth_struct)}"
     )
 
-    conn
-    |> Guardian.Plug.sign_out(AuthManager, [])
-    |> redirect(to: ~p"/auth/keycloak")
+    if get_session(conn, :keycloak_csrf_retry) == 1 do
+      send_resp(conn, :unauthorized, "unauthenticated")
+    else
+      conn
+      |> put_session(:keycloak_csrf_retry, 1)
+      |> Guardian.Plug.sign_out(AuthManager, [])
+      |> redirect(to: ~p"/auth/keycloak")
+    end
   end
 
   def callback(
