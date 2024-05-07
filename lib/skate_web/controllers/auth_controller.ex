@@ -71,6 +71,27 @@ defmodule SkateWeb.AuthController do
   end
 
   def callback(
+        %{
+          assigns: %{
+            ueberauth_failure:
+              %Ueberauth.Failure{
+                provider: :keycloak,
+                errors: [%Ueberauth.Failure.Error{message_key: "csrf_attack"}]
+              } = auth_struct
+          }
+        } = conn,
+        _params
+      ) do
+    Logger.error(
+      "#{__MODULE__} keycloak callback csrf ueberauth_failure struct=#{Kernel.inspect(auth_struct)}"
+    )
+
+    conn
+    |> Guardian.Plug.sign_out(AuthManager, [])
+    |> redirect(to: ~p"/auth/keycloak")
+  end
+
+  def callback(
         %{assigns: %{ueberauth_failure: %{provider: :keycloak} = auth_struct}} = conn,
         _params
       ) do
