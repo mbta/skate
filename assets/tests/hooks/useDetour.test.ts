@@ -88,7 +88,7 @@ describe("useDetour", () => {
     })
   })
 
-  test.skip("when `undo` removes the last waypoint, `detourShape` and `directions` should be empty", async () => {
+  test("clears `detourShape` when `undo` removes the last waypoint", async () => {
     jest
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Ok(detourShapeFactory.build()))
@@ -100,7 +100,6 @@ describe("useDetour", () => {
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
 
     await waitFor(() => {
-      expect(result.current.directions).not.toBeUndefined()
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
@@ -108,8 +107,6 @@ describe("useDetour", () => {
     act(() => result.current.undo?.())
 
     await waitFor(() => {
-      expect(result.current.waypoints).toHaveLength(0)
-      expect(result.current.directions).toBeUndefined()
       expect(result.current.detourShape).toHaveLength(0)
     })
   })

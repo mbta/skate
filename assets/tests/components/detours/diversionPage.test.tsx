@@ -149,6 +149,22 @@ describe("DiversionPage", () => {
     })
   })
 
+  test("directions starts out with placeholder text", async () => {
+    const { container } = render(<DiversionPage />)
+
+    const { getByText } = within(
+      container.querySelector("#diversion-panel__directions")!
+    )
+
+    await waitFor(() => {
+      expect(
+        getByText(
+          "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
+        )
+      ).toBeVisible()
+    })
+  })
+
   test("directions is populated with the origin intersection and directions from the backend when second waypoint is added", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
@@ -326,6 +342,52 @@ describe("DiversionPage", () => {
     )
 
     expect(screen.queryByTitle("Detour Start")).not.toBeNull()
+  })
+
+  test("clicking on 'Undo' restores the placeholder text when appropriate", async () => {
+    jest.mocked(fetchDetourDirections).mockReturnValue(
+      Promise.resolve(
+        Ok(
+          detourShapeFactory.build({
+            directions: [
+              { instruction: "Turn left on Main Street" },
+              { instruction: "Turn right on High Street" },
+              { instruction: "Turn sharp right on Broadway" },
+            ],
+          })
+        )
+      )
+    )
+
+    jest
+      .mocked(fetchNearestIntersection)
+      .mockReturnValue(Promise.resolve("Avenue 1 & Street 2"))
+
+    const { container } = render(<DiversionPage />)
+    const { getByText } = within(
+      container.querySelector("#diversion-panel__directions")!
+    )
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+    await waitFor(() => {
+      expect(getByText("Turn left on Main Street")).toBeVisible()
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    })
+    await waitFor(() => {
+      expect(
+        getByText(
+          "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
+        )
+      ).toBeVisible()
+    })
   })
 
   test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {

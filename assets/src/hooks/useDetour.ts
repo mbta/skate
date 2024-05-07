@@ -78,14 +78,9 @@ export const useDetour = ({ shape, routePatternId }: OriginalRoute) => {
       ? detourShape.result.ok.coordinates
       : []
   let directions =
-    (detourShape.result &&
-      isOk(detourShape.result) &&
-      detourShape.result?.ok?.directions) ||
-    []
-  // let directions =
-  //   detourShape.result && isOk(detourShape.result)
-  //     ? detourShape.result.ok.directions
-  //     : undefined
+    detourShape.result && isOk(detourShape.result)
+      ? detourShape.result.ok.directions
+      : undefined
   // // Only append direction "Regular Route" after detour is finished
   // if (!detourShape.isLoading && directions && finishedDetour) {
   if (directions && finishedDetour) {
