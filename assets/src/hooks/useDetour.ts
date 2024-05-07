@@ -3,8 +3,8 @@ import { ShapePoint, Stop } from "../schedule"
 // import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 // import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
 
-import { DetourShape, OriginalRoute } from "../models/detour"
-import { fetchDetourDirections } from "../api"
+import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
+import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 // import { useApiCall } from "./useApiCall"
@@ -34,35 +34,32 @@ export enum DetourState {
   Finished,
 }
 
-export const useDetour = ({}: OriginalRoute) => {
+export const useDetour = ({ routePatternId }: OriginalRoute) => {
   // const [state, setState] = useState<DetourState>(DetourState.Edit)
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
-  // const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
-  //   null
-  // )
-  const [finishedDetour, setFinishedDetour] = useState<boolean>(false)
+  const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
+    null
+  )
+
   useEffect(() => {
     let shouldUpdate = true
     if (startPoint && endPoint) {
-      // fetchFinishedDetour(routePatternId, startPoint, endPoint).then(
-      //   (result) => {
-      if (shouldUpdate) {
-        //       setFinishedDetour(result)
-        setFinishedDetour(true)
-      }
-      //   }
-      // )
+      fetchFinishedDetour(routePatternId, startPoint, endPoint).then(
+        (result) => {
+          if (shouldUpdate) {
+            setFinishedDetour(result)
+          }
+        }
+      )
     } else {
-      // setFinishedDetour(null)
-      setFinishedDetour(false)
+      setFinishedDetour(null)
     }
     return () => {
       shouldUpdate = false
     }
-  }, [startPoint, endPoint])
-  // }, [routePatternId, startPoint, endPoint])
+  }, [routePatternId, startPoint, endPoint])
 
   const { result: nearestIntersection } = useNearestIntersection({
     latitude: startPoint?.lat,
@@ -137,7 +134,7 @@ export const useDetour = ({}: OriginalRoute) => {
   // const editDetour = () => {
   //   setState(DetourState.Edit)
   // }
-  // const missedStops = finishedDetour?.missedStops || undefined
+  const missedStops = finishedDetour?.missedStops || []
   // const missedStopIds = missedStops
   //   ? new Set(missedStops.map((stop) => stop.id))
   //   : new Set()
@@ -210,7 +207,7 @@ export const useDetour = ({}: OriginalRoute) => {
     /**
      * Stops missed by the detour, determined after the route is completed
      */
-    missedStops: undefined as undefined | Stop[],
+    missedStops,
 
     /**
      * Three partial route-shape segments: before, during, and after the detour
