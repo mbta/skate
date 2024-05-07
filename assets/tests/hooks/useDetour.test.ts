@@ -33,7 +33,7 @@ const useDetourWithFakeRoutePattern = () =>
   useDetour(originalRouteFactory.build())
 
 describe("useDetour", () => {
-  test.skip("when `addWaypoint` is called, should update `detourShape`", async () => {
+  test("when `addWaypoint` is called, should update `detourShape`", async () => {
     const start: ShapePoint = { lat: -2, lon: -2 }
     const end: ShapePoint = { lat: -1, lon: -1 }
 
