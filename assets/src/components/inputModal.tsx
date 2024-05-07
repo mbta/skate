@@ -17,7 +17,7 @@ const InputModal = ({
       }}
       show
       renderBackdrop={(props) => (
-        <div {...props} className="c-modal-backdrop" aria-hidden />
+        <div {...props} className="c-input-modal-backdrop" aria-hidden />
       )}
     >
       <>{children}</>
