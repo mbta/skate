@@ -33,31 +33,6 @@ const useDetourWithFakeRoutePattern = () =>
   useDetour(originalRouteFactory.build())
 
 describe("useDetour", () => {
-  test.skip("when `addConnectionPoint` is first called, `startPoint` is set", async () => {
-    const start = { lat: 0, lon: 0 }
-
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(start))
-
-    await waitFor(() => expect(result.current.startPoint).toBe(start))
-  })
-
-  test.skip("when `addConnectionPoint` is called a second time, `endPoint` is set", async () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
-
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addConnectionPoint?.(end))
-
-    await waitFor(() => {
-      expect(result.current.startPoint).toBe(start)
-      expect(result.current.endPoint).toBe(end)
-    })
-  })
-
   test.skip("when `startPoint` is null, `addWaypoint` is undefined", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
