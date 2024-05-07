@@ -616,7 +616,7 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test.skip("Attempting to close the page calls the onClose callback", async () => {
+  test("Attempting to close the page calls the onClose callback", async () => {
     const onClose = jest.fn()
 
     render(<DiversionPage onClose={onClose} />)
@@ -628,7 +628,7 @@ describe("DiversionPage", () => {
     await waitFor(() => expect(onClose).toHaveBeenCalled())
   })
 
-  test.skip("Displays a confirmation modal", async () => {
+  test("Displays a confirmation modal", async () => {
     render(<DiversionPage showConfirmCloseModal={true} />)
 
     await waitFor(() => {
@@ -638,7 +638,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test.skip("calls the onConfirmClose callback from the confirmation modal", async () => {
+  test("calls the onConfirmClose callback from the confirmation modal", async () => {
     const onConfirmClose = jest.fn()
 
     render(
@@ -655,7 +655,7 @@ describe("DiversionPage", () => {
     expect(onConfirmClose).toHaveBeenCalled()
   })
 
-  test.skip("canceling close from the confirmation modal calls onCancelClose", async () => {
+  test("canceling close from the confirmation modal calls onCancelClose", async () => {
     const onCancelClose = jest.fn()
     const onConfirmClose = jest.fn()
 
@@ -675,7 +675,7 @@ describe("DiversionPage", () => {
     expect(onConfirmClose).not.toHaveBeenCalled()
   })
 
-  test.skip("closing the confirmation modal calls onCancelClose", async () => {
+  test("closing the confirmation modal calls onCancelClose", async () => {
     const onCancelClose = jest.fn()
     const onConfirmClose = jest.fn()
 
