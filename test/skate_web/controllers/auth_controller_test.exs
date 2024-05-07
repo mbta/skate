@@ -134,6 +134,19 @@ defmodule SkateWeb.AuthControllerTest do
 
       assert response(conn, :unauthorized) == "unauthenticated"
     end
+
+    test "retries login on first ueberauth CSRF failure", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{username: "test_username"})
+        |> assign(:ueberauth_failure, %Ueberauth.Failure{
+          provider: :keycloak,
+          errors: [%Ueberauth.Failure.Error{message_key: "csrf_attack"}]
+        })
+        |> get(~p"/auth/keycloak/callback")
+
+      assert redirected_to(conn, :found) == ~p"/auth/keycloak"
+    end
   end
 
   describe "GET /auth/keycloak/logout" do
