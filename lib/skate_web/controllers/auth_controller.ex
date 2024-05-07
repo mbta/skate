@@ -87,7 +87,9 @@ defmodule SkateWeb.AuthController do
     )
 
     if get_session(conn, :keycloak_csrf_retry) == 1 do
-      send_resp(conn, :unauthorized, "unauthenticated")
+      conn
+      |> delete_session(:keycloak_csrf_retry)
+      |> send_resp(:unauthorized, "unauthenticated")
     else
       conn
       |> put_session(:keycloak_csrf_retry, 1)
