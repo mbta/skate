@@ -104,9 +104,7 @@ describe("DiversionPage", () => {
     )
 
     const intersection = "Avenue 1 & Street 2"
-    jest
-      .mocked(fetchNearestIntersection)
-      .mockReturnValue(Promise.resolve(intersection))
+    jest.mocked(fetchNearestIntersection).mockResolvedValue(intersection)
 
     const { container } = render(<DiversionPage />)
 
@@ -519,9 +517,7 @@ describe("DiversionPage", () => {
     })
 
     const intersection = "Avenue 1 & Street 2"
-    jest
-      .mocked(fetchNearestIntersection)
-      .mockReturnValue(Promise.resolve(intersection))
+    jest.mocked(fetchNearestIntersection).mockResolvedValue(intersection)
 
     userEvent.setup() // Configure the clipboard API
 
