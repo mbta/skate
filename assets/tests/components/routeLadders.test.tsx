@@ -1,10 +1,16 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
-import renderer from "react-test-renderer"
 import { render, fireEvent } from "@testing-library/react"
 import routeFactory from "../factories/route"
-import RouteLadders from "../../src/components/routeLadders"
+import RouteLadders, { findRouteById } from "../../src/components/routeLadders"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
+import useTimepoints from "../../src/hooks/useTimepoints"
+import { RoutesProvider } from "../../src/contexts/routesContext"
+
+jest.mock("../../src/hooks/useTimepoints", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
+}))
 
 const routes: Route[] = [
   routeFactory.build({ id: "1", name: "1" }),
@@ -27,37 +33,35 @@ const timepointsByRouteId: TimepointsByRouteId = {
 
 describe("RouteLadders", () => {
   test("renders a route ladder", () => {
-    const tree = renderer
-      .create(
+    jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
+
+    const { asFragment } = render(
+      <RoutesProvider routes={routes}>
         <RouteLadders
-          routes={routes}
-          timepointsByRouteId={timepointsByRouteId}
+          selectedRouteIds={routes.map((route) => route.id)}
           selectedVehicleId={undefined}
           deselectRoute={jest.fn()}
           reverseLadder={jest.fn()}
           toggleCrowding={jest.fn()}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
-          routesWithAlerts={[]}
         />
-      )
-      .toJSON()
+      </RoutesProvider>
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(asFragment()).toMatchSnapshot()
   })
 
   test("can scroll horizontally with mouse wheel", () => {
     const result = render(
       <RouteLadders
-        routes={routes}
-        timepointsByRouteId={timepointsByRouteId}
+        selectedRouteIds={routes.map((route) => route.id)}
         selectedVehicleId={undefined}
         deselectRoute={jest.fn()}
         reverseLadder={jest.fn()}
         toggleCrowding={jest.fn()}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
-        routesWithAlerts={[]}
       />
     )
 
@@ -67,5 +71,24 @@ describe("RouteLadders", () => {
     fireEvent.wheel(routeLaddersDiv, { deltaY: 10 })
 
     expect(routeLaddersDiv.scrollTo).toHaveBeenCalled()
+  })
+
+  describe("findRouteById", () => {
+    test("finds a route in a list by its id", () => {
+      expect(findRouteById(routes, "28")).toEqual(
+        routeFactory.build({
+          id: "28",
+          name: "28",
+        })
+      )
+    })
+
+    test("returns undefined if the route isn't found", () => {
+      expect(findRouteById(routes, "missing")).toEqual(undefined)
+    })
+
+    test("returns undefined if routes is null", () => {
+      expect(findRouteById(null, "does not matter")).toEqual(undefined)
+    })
   })
 })

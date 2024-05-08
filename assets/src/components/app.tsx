@@ -52,7 +52,9 @@ export const AppRoutes = () => {
   }, [path, setPath])
 
   const vehiclesByRouteIdNeeded =
-    openView === OpenView.Late || location.pathname === "/"
+    openView === OpenView.Late ||
+    location.pathname === "/" ||
+    location.pathname === "/minimal"
 
   const { socket } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =

@@ -3,10 +3,7 @@ import React from "react"
 import { render, fireEvent, within } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { BrowserRouter } from "react-router-dom"
-import LadderPage, {
-  findRouteById,
-  findSelectedVehicleOrGhost,
-} from "../../src/components/ladderPage"
+import LadderPage from "../../src/components/ladderPage"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useTimepoints from "../../src/hooks/useTimepoints"
@@ -16,7 +13,7 @@ import {
   Notification,
   VehicleInScheduledService,
 } from "../../src/realtime"
-import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
+import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 import {
   initialState,
   State,
@@ -530,63 +527,6 @@ describe("LadderPage", () => {
   })
 })
 
-describe("findRouteById", () => {
-  test("finds a route in a list by its id", () => {
-    expect(findRouteById(routes, "28")).toEqual(
-      routeFactory.build({
-        id: "28",
-        name: "28",
-      })
-    )
-  })
-
-  test("returns undefined if the route isn't found", () => {
-    expect(findRouteById(routes, "missing")).toEqual(undefined)
-  })
-
-  test("returns undefined if routes is null", () => {
-    expect(findRouteById(null, "does not matter")).toEqual(undefined)
-  })
-})
-
-describe("findSelectedVehicleOrGhost", () => {
-  test("returns the requested vehicle if it is on the route", () => {
-    expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, "on-route-39")
-    ).toEqual({
-      id: "on-route-39",
-      routeStatus: "on_route",
-    })
-  })
-
-  test("returns the requested vehicle if it is pulling out", () => {
-    expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, "pulling-out-39")
-    ).toEqual({
-      id: "pulling-out-39",
-      routeStatus: "pulling_out",
-    })
-  })
-
-  test("returns the requested vehicle if it is a ghost bus", () => {
-    expect(findSelectedVehicleOrGhost(vehiclesByRouteId, "ghost-39")).toEqual({
-      id: "ghost-39",
-    })
-  })
-
-  test("returns undefined if the vehicle is not found", () => {
-    expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, "missing-23")
-    ).toBeUndefined()
-  })
-
-  test("returns undefined if selectedVehicleId is undefined", () => {
-    expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, undefined)
-    ).toBeUndefined()
-  })
-})
-
 const routes: Route[] = [
   routeFactory.build({ id: "1", name: "1" }),
   routeFactory.build({ id: "28", name: "28" }),
@@ -604,33 +544,4 @@ const timepointsByRouteId: TimepointsByRouteId = {
   ],
   "71": undefined,
   "73": null,
-}
-
-const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> = {
-  "23": [
-    {
-      id: "on-route-23",
-      routeStatus: "on_route",
-    } as VehicleInScheduledService,
-    {
-      id: "pulling-out-23",
-      routeStatus: "pulling_out",
-    } as VehicleInScheduledService,
-    {
-      id: "ghost-23",
-    } as Ghost,
-  ],
-  "39": [
-    {
-      id: "on-route-39",
-      routeStatus: "on_route",
-    } as VehicleInScheduledService,
-    {
-      id: "pulling-out-39",
-      routeStatus: "pulling_out",
-    } as VehicleInScheduledService,
-    {
-      id: "ghost-39",
-    } as Ghost,
-  ],
 }

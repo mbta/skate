@@ -1,7 +1,5 @@
 import React, { ReactElement, useContext, useState, useEffect } from "react"
-import RoutesContext from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import useTimepoints from "../hooks/useTimepoints"
 import {
   RouteTab,
   currentRouteTab,
@@ -10,10 +8,7 @@ import {
   isPreset,
   tabName,
 } from "../models/routeTab"
-import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
-import { Ghost, VehicleId, VehicleInScheduledService } from "../realtime.d"
-import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import { Notifications } from "./notifications"
 import Presets from "./presets"
 import RouteLadders from "./routeLadders"
@@ -31,26 +26,10 @@ import {
 import OldCloseButton from "./oldCloseButton"
 import { SaveIcon, PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
-import useAlerts from "../hooks/useAlerts"
-import { SocketContext } from "../contexts/socketContext"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 type DrawerContent = "route_picker" | "presets"
-
-export const findRouteById = (
-  routes: Route[] | null,
-  routeId: RouteId
-): Route | undefined => (routes || []).find((route) => route.id === routeId)
-
-export const findSelectedVehicleOrGhost = (
-  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>,
-  selectedVehicleId: VehicleId | undefined
-): VehicleInScheduledService | Ghost | undefined => {
-  return allVehiclesAndGhosts(vehiclesByRouteId).find(
-    (bus) => bus.id === selectedVehicleId
-  )
-}
 
 const LadderTab = ({
   tab,
@@ -156,27 +135,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
       ladderCrowdingToggles: {},
     }
 
-  const routes: Route[] | null = useContext(RoutesContext)
-  const timepointsByRouteId: TimepointsByRouteId =
-    useTimepoints(selectedRouteIds)
-
-  const { socket } = useContext(SocketContext)
-  const alerts = useAlerts(socket, selectedRouteIds)
-  const routesWithAlerts = []
-
-  for (const routeId in alerts) {
-    if (alerts[routeId].length > 0) {
-      routesWithAlerts.push(routeId)
-    }
-  }
-
   const [currentDrawerContent, setCurrentDrawerContent] =
     useState<DrawerContent>("route_picker")
-
-  const selectedRoutes: Route[] = selectedRouteIds
-    .map((routeId) => findRouteById(routes, routeId))
-    .filter((route) => route) as Route[]
-
   const pickerContainerVisibleClass = pickerContainerIsVisible
     ? "c-ladder-page--picker-container-visible"
     : "c-ladder-page--picker-container-hidden"
@@ -248,8 +208,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
         </div>
 
         <RouteLadders
-          routes={selectedRoutes}
-          timepointsByRouteId={timepointsByRouteId}
+          selectedRouteIds={selectedRouteIds}
           selectedVehicleId={selectedVehicleOrGhost?.id}
           deselectRoute={(routeId) => dispatch(deselectRouteInTab(routeId))}
           reverseLadder={(routeId) => dispatch(flipLadderInTab(routeId))}
@@ -258,7 +217,6 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           }
           ladderDirections={ladderDirections}
           ladderCrowdingToggles={ladderCrowdingToggles}
-          routesWithAlerts={routesWithAlerts}
         />
       </div>
     </div>
