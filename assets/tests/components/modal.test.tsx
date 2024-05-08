@@ -1,6 +1,7 @@
 import { jest, describe, test, expect } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { useMinischeduleRuns } from "../../src/hooks/useMinischedule"
@@ -12,6 +13,8 @@ import {
 import { initialState, State } from "../../src/state"
 import stateFactory from "../factories/applicationState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
+import userEvent from "@testing-library/user-event"
+import { RealDispatchWrapper } from "../testHelpers/wrappers"
 
 jest.mock("../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -103,6 +106,29 @@ describe("Modal", () => {
       </StateDispatchProvider>
     )
     expect(result.getByText("Save open routes as preset")).not.toBeNull()
+  })
+
+  test("create preset modal closes on escape", async () => {
+    const createCallback = jest.fn()
+    const confirmOverwriteCallback = jest.fn()
+
+    render(
+      <RealDispatchWrapper
+        initialState={stateFactory.build({
+          openInputModal: {
+            type: "CREATE_PRESET",
+            createCallback,
+            confirmOverwriteCallback,
+          },
+        })}
+      >
+        <Modal />
+      </RealDispatchWrapper>
+    )
+    const modal = screen.getByText("Save open routes as preset")
+    expect(modal).toBeVisible()
+    userEvent.keyboard("{Escape}")
+    await waitFor(() => expect(modal).not.toBeInTheDocument())
   })
 
   test("renders save preset modal", () => {
