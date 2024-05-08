@@ -13,6 +13,7 @@ import {
   FetchDetourDirectionsError,
   fetchDetourDirections,
   fetchFinishedDetour,
+  fetchNearestIntersection,
 } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import shapeFactory from "../../factories/shape"
@@ -33,8 +34,7 @@ import {
   stopIcon,
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
-import { useNearestIntersectionFetchResult } from "../../../src/hooks/useNearestIntersection"
-import { loading, ok } from "../../../src/util/fetchResult"
+import { neverPromise } from "../../testHelpers/mockHelpers"
 
 const DiversionPage = (
   props: Omit<
@@ -72,14 +72,10 @@ beforeEach(() => {
 
 jest.mock("../../../src/api")
 
-jest.mock("../../../src/hooks/useNearestIntersection")
-
 beforeEach(() => {
-  jest
-    .mocked(fetchDetourDirections)
-    .mockImplementation(() => new Promise(() => {}))
-  jest.mocked(fetchFinishedDetour).mockResolvedValue(null)
-  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+  jest.mocked(fetchDetourDirections).mockReturnValue(neverPromise())
+  jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
+  jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
 })
 
 describe("DiversionPage", () => {
@@ -108,9 +104,7 @@ describe("DiversionPage", () => {
     )
 
     const intersection = "Avenue 1 & Street 2"
-    jest.mocked(useNearestIntersectionFetchResult).mockReturnValue({
-      ok: intersection,
-    })
+    jest.mocked(fetchNearestIntersection).mockResolvedValue(intersection)
 
     const { container } = render(<DiversionPage />)
 
@@ -523,9 +517,7 @@ describe("DiversionPage", () => {
     })
 
     const intersection = "Avenue 1 & Street 2"
-    jest
-      .mocked(useNearestIntersectionFetchResult)
-      .mockReturnValue(ok(intersection))
+    jest.mocked(fetchNearestIntersection).mockResolvedValue(intersection)
 
     userEvent.setup() // Configure the clipboard API
 
