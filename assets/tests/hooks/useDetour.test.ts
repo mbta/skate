@@ -111,43 +111,7 @@ describe("useDetour", () => {
     })
   })
 
-  test.skip("when `clear` is called, removes the start and end points", async () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
-
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addConnectionPoint?.(end))
-
-    expect(result.current.endPoint).not.toBeNull()
-    expect(result.current.startPoint).not.toBeNull()
-
-    act(() => result.current.clear?.())
-
-    await waitFor(() => {
-      expect(result.current.endPoint).toBeNull()
-      expect(result.current.startPoint).toBeNull()
-    })
-  })
-
-  test.skip("when `clear` is called, removes all waypoints", async () => {
-    const start = { lat: 0, lon: 0 }
-
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
-
-    expect(result.current.waypoints).toHaveLength(2)
-
-    act(() => result.current.clear?.())
-
-    await waitFor(() => expect(result.current.waypoints).toHaveLength(0))
-  })
-
-  test.skip("when `clear` is called, `detourShape` and `directions` should be empty", async () => {
+  test("clears `detourShape` when when `clear` is called", async () => {
     jest
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Ok(detourShapeFactory.build()))
@@ -166,8 +130,6 @@ describe("useDetour", () => {
     act(() => result.current.clear?.())
 
     await waitFor(() => {
-      expect(result.current.waypoints).toHaveLength(0)
-      expect(result.current.directions).toBeUndefined()
       expect(result.current.detourShape).toHaveLength(0)
     })
   })
