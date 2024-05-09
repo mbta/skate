@@ -227,20 +227,3 @@ describe("useDetour", () => {
     })
   })
 })
-
-const renderFinishedDetour = () => {
-  const renderResult = renderHook(useDetourWithFakeRoutePattern)
-
-  act(() =>
-    renderResult.result.current.addConnectionPoint?.(shapePointFactory.build())
-  )
-  act(() =>
-    renderResult.result.current.addConnectionPoint?.(shapePointFactory.build())
-  )
-
-  act(() => {
-    renderResult.result.current.finishDetour?.()
-  })
-
-  return renderResult
-}
