@@ -6,9 +6,11 @@ defmodule Skate.Application do
   use Application
   require Logger
 
+  @version Application.compile_env(:skate, :version)
+
   @impl true
   def start(_type, _args) do
-    Logger.info("Skate application starting")
+    Logger.info("Skate application starting, deployment_id=#{@version}")
 
     load_runtime_config()
 
