@@ -79,8 +79,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     detourShape.result && isOk(detourShape.result)
       ? detourShape.result.ok.directions
       : undefined
-  // // Only append direction "Regular Route" after detour is finished
-  // if (!detourShape.isLoading && directions && finishedDetour) {
+  // Only append direction "Regular Route" after detour is finished
   if (directions && finishedDetour) {
     directions = directions.concat({
       instruction: "Regular Route",
@@ -105,8 +104,6 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const canUndo = startPoint !== null && state === DetourState.Edit
 
   const undo = () => {
-    // if (!canUndo) return
-
     if (endPoint !== null) {
       setEndPoint(null)
     } else if (waypoints.length > 0) {
@@ -154,7 +151,6 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
      * Otherwise sets {@link endPoint} if unset.
      */
     addConnectionPoint,
-    //     state === DetourState.Finished ? undefined : addConnectionPoint,
 
     /**
      * The starting connection point of the detour.
@@ -214,17 +210,14 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
      * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
      */
     undo,
-    //   undo: state === DetourState.Finished ? undefined : undo,
     /**
      * Clears the entire detour
      */
     clear,
-    //   clear: state === DetourState.Finished ? undefined : clear,
 
     /** When present, puts this detour in "finished mode" */
     finishDetour: endPoint !== null ? finishDetour : undefined,
     /** When present, puts this detour in "edit mode" */
     editDetour,
-    // editDetour: state === DetourState.Finished ? editDetour : undefined,
   }
 }
