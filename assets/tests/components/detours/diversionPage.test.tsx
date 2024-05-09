@@ -213,6 +213,25 @@ describe("DiversionPage", () => {
     expect(screen.getByTitle("Detour End")).not.toBeNull()
   })
 
+  test("clicking on route shape after the detour is ended doesn't do anything", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await waitFor(() => {
+      expect(screen.getByTitle("Detour End")).not.toBeNull()
+    })
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await waitFor(() => {
+      expect(screen.getAllByTitle("Detour Start")).toHaveLength(1)
+      expect(screen.getAllByTitle("Detour End")).toHaveLength(1)
+    })
+  })
+
   test("when end point has been set, has a normal cursor again", async () => {
     const { container } = render(<DiversionPage />)
 

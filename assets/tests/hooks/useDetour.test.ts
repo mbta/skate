@@ -170,14 +170,6 @@ describe("useDetour", () => {
   })
 
   describe("when `state` is `Finished`, controls are locked out", () => {
-    test.skip("`addConnectionPoint` is undefined", async () => {
-      const { result } = renderFinishedDetour()
-
-      await waitFor(() =>
-        expect(result.current.addConnectionPoint).toBeUndefined()
-      )
-    })
-
     test.skip("`undo` is undefined", async () => {
       const { result } = renderFinishedDetour()
 
