@@ -534,6 +534,30 @@ describe("DiversionPage", () => {
     )
   })
 
+  test("missed stops section is absent before detour is complete", async () => {
+    const stop1 = stopFactory.build()
+    const stop2 = stopFactory.build()
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(
+        finishedDetourFactory.build({ missedStops: [stop1, stop2] })
+      )
+
+    const { container } = render(<DiversionPage />)
+
+    expect(screen.queryByText("Missed Stops")).not.toBeInTheDocument()
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTitle("Detour Start")).toBeVisible()
+    })
+
+    expect(screen.queryByText("Missed Stops")).not.toBeInTheDocument()
+  })
+
   test("missed stops are filled in when detour is complete", async () => {
     const stop1 = stopFactory.build()
     const stop2 = stopFactory.build()
@@ -554,10 +578,16 @@ describe("DiversionPage", () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByText(stop1.name)).toBeInTheDocument()
-      expect(screen.getByText(stop2.name)).toBeInTheDocument()
-      expect(screen.getByText("2")).toBeInTheDocument()
+      expect(screen.getByText("Missed Stops")).toBeVisible()
     })
+
+    const { getByText } = within(
+      container.querySelector("#diversion-panel__missed-stops")!
+    )
+
+    expect(getByText(stop1.name)).toBeInTheDocument()
+    expect(getByText(stop2.name)).toBeInTheDocument()
+    expect(getByText("2")).toBeInTheDocument()
   })
 
   test("duplicate missed stops are only rendered once", async () => {
@@ -579,6 +609,38 @@ describe("DiversionPage", () => {
     })
 
     await waitFor(() => expect(screen.getAllByText(stop.name)).toHaveLength(1))
+  })
+
+  test("missed stops are absent after a completed detour is 'undo'ne", async () => {
+    const stop1 = stopFactory.build()
+    const stop2 = stopFactory.build()
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(
+        finishedDetourFactory.build({ missedStops: [stop1, stop2] })
+      )
+
+    const { container } = render(<DiversionPage />)
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText("Missed Stops")).toBeVisible()
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText("Missed Stops")).not.toBeInTheDocument()
+    })
   })
 
   test("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {

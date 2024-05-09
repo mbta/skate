@@ -134,25 +134,6 @@ describe("useDetour", () => {
     })
   })
 
-  test.skip("when `endPoint` is set, `missedStops` is filled in", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    const missedStops = stopFactory.buildList(3)
-
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue(finishedDetourFactory.build({ missedStops }))
-
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-
-    await waitFor(() => {
-      expect(result.current.missedStops).not.toHaveLength(0)
-    })
-
-    expect(result.current.missedStops).toStrictEqual(missedStops)
-  })
-
   test.skip("when `endPoint` is set, `routeSegments` is filled in", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
@@ -189,29 +170,6 @@ describe("useDetour", () => {
 
     await waitFor(() => {
       expect(result.current.connectionPoints).toEqual(connectionPoint)
-    })
-  })
-
-  test.skip("when `endPoint` is undone, `missedStops` is cleared", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    const missedStops = stopFactory.buildList(3)
-
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue(finishedDetourFactory.build({ missedStops }))
-
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-
-    await waitFor(() => {
-      expect(result.current.missedStops).not.toHaveLength(0)
-    })
-
-    act(() => result.current.undo?.())
-
-    await waitFor(() => {
-      expect(result.current.missedStops).toBeUndefined()
     })
   })
 
