@@ -2,21 +2,21 @@ import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import routeFactory from "../factories/route"
-import { Route, TimepointsByRouteId } from "../../src/schedule.d"
+import { Route as RouteType, TimepointsByRouteId } from "../../src/schedule.d"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { MinimalLadderPage } from "../../src/components/minimalLadderPage"
 import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
-import { BrowserRouter } from "react-router-dom"
+import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { MinimalLadder } from "../../src/components/minimalLadder"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }))
 
-const routes: Route[] = [
+const routes: RouteType[] = [
   routeFactory.build({ id: "1", name: "1" }),
   routeFactory.build({ id: "28", name: "28" }),
   routeFactory.build({ id: "39", name: "39" }),
@@ -36,8 +36,8 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "73": null,
 }
 
-describe("MinimalLadderPage", () => {
-  test("renders the preset selection page", () => {
+describe("MinimalLadders", () => {
+  test("renders route ladders", () => {
     jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
 
     const mockState = {
@@ -65,13 +65,30 @@ describe("MinimalLadderPage", () => {
       ],
     }
     const { asFragment } = render(
+      // <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
+      //   <Route path="/minimal/:id">
+      //   <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
+      // <RoutesProvider routes={routes}>
+      // <MinimalLadder />
+      // </RoutesProvider>
+      // </StateDispatchProvider>
+      //   </Route>
+      // </MemoryRouter>
       <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RoutesProvider routes={routes}>
-            <MinimalLadderPage />
-          </RoutesProvider>
-        </BrowserRouter>
-      </StateDispatchProvider>
+      <RoutesProvider routes={routes}>
+
+      <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
+        <Routes>
+        <Route path="/minimal/:id" element={<MinimalLadder />}>
+{/* <RoutesProvider routes={routes}>
+          <MinimalLadder />
+        </RoutesProvider> */}
+        </Route>
+        </Routes>
+        
+      </MemoryRouter>
+      </RoutesProvider>
+    </StateDispatchProvider>
     )
 
     expect(asFragment()).toMatchSnapshot()
