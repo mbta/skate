@@ -169,20 +169,6 @@ describe("useDetour", () => {
     })
   })
 
-  describe("when `state` is `Finished`, controls are locked out", () => {
-    test.skip("`undo` is undefined", async () => {
-      const { result } = renderFinishedDetour()
-
-      await waitFor(() => expect(result.current.undo).toBeUndefined())
-    })
-
-    test.skip("`clear` is undefined", async () => {
-      const { result } = renderFinishedDetour()
-
-      await waitFor(() => expect(result.current.clear).toBeUndefined())
-    })
-  })
-
   describe("stops", () => {
     test.skip("`stops` is initially populated with the stops from the original route shape with a `missed` field added", async () => {
       const stop1 = stopFactory.build()

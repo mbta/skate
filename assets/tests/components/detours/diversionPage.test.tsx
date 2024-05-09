@@ -693,6 +693,21 @@ describe("DiversionPage", () => {
     )
   })
 
+  test("'Share Detour Details' screen disables the 'Undo' and 'Clear' buttons", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await userEvent.click(finishDetourButton.get())
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
+      expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
+    })
+  })
+
   test("'Share Detour Details' screen has back button to edit detour again", async () => {
     const { container } = render(<DiversionPage />)
 

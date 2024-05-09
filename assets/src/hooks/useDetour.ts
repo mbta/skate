@@ -103,7 +103,7 @@ export const useDetour = ({ shape, routePatternId }: OriginalRoute) => {
       setEndPoint(point)
     }
   }
-  const canUndo = startPoint !== null // && state === DetourState.Edit
+  const canUndo = startPoint !== null && state === DetourState.Edit
   const undo = () => {
     // if (!canUndo) return
     if (endPoint !== null) {
