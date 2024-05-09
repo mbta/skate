@@ -345,26 +345,12 @@ describe("DiversionPage", () => {
   })
 
   test("clicking on 'Undo' restores the placeholder text when appropriate", async () => {
-    jest.mocked(fetchDetourDirections).mockReturnValue(
-      Promise.resolve(
-        Ok(
-          detourShapeFactory.build({
-            directions: [
-              { instruction: "Turn left on Main Street" },
-              { instruction: "Turn right on High Street" },
-              { instruction: "Turn sharp right on Broadway" },
-            ],
-          })
-        )
-      )
-    )
-
     jest
-      .mocked(fetchNearestIntersection)
-      .mockReturnValue(Promise.resolve("Avenue 1 & Street 2"))
+      .mocked(fetchDetourDirections)
+      .mockResolvedValue(Ok(detourShapeFactory.build()))
 
     const { container } = render(<DiversionPage />)
-    const { getByText } = within(
+    const { queryByText, getByText } = within(
       container.querySelector("#diversion-panel__directions")!
     )
 
@@ -375,7 +361,11 @@ describe("DiversionPage", () => {
       fireEvent.click(container.querySelector(".c-vehicle-map")!)
     })
     await waitFor(() => {
-      expect(getByText("Turn left on Main Street")).toBeVisible()
+      expect(
+        queryByText(
+          "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
+        )
+      ).not.toBeInTheDocument()
     })
 
     act(() => {
