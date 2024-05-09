@@ -10,11 +10,9 @@ import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
-import stopFactory from "../factories/stop"
 import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
-import shapeFactory from "../factories/shape"
 import { Err, Ok } from "../../src/util/result"
 
 jest.mock("../../src/api")
@@ -166,64 +164,6 @@ describe("useDetour", () => {
 
     await waitFor(() => {
       expect(result.current.routeSegments).toBeUndefined()
-    })
-  })
-
-  describe("stops", () => {
-    test.skip("`stops` is initially populated with the stops from the original route shape with a `missed` field added", async () => {
-      const stop1 = stopFactory.build()
-      const stop2 = stopFactory.build()
-
-      const { result } = renderHook(() =>
-        useDetour(
-          originalRouteFactory.build({
-            shape: shapeFactory.build({ stops: [stop1, stop2] }),
-          })
-        )
-      )
-
-      const expectedStops = [
-        { ...stop1, missed: false },
-        { ...stop2, missed: false },
-      ]
-
-      await waitFor(() =>
-        expect(result.current.stops).toStrictEqual(expectedStops)
-      )
-    })
-
-    test.skip("when the detour is finished, missed stops are marked as missed in `stops`", async () => {
-      const stop1 = stopFactory.build()
-      const stop2 = stopFactory.build()
-      const stop3 = stopFactory.build()
-      const stop4 = stopFactory.build()
-
-      jest
-        .mocked(fetchFinishedDetour)
-        .mockResolvedValue(
-          finishedDetourFactory.build({ missedStops: [stop2, stop3] })
-        )
-
-      const { result } = renderHook(() =>
-        useDetour(
-          originalRouteFactory.build({
-            shape: shapeFactory.build({ stops: [stop1, stop2, stop3, stop4] }),
-          })
-        )
-      )
-      act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-      act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-
-      const expectedStops = [
-        { ...stop1, missed: false },
-        { ...stop2, missed: true },
-        { ...stop3, missed: true },
-        { ...stop4, missed: false },
-      ]
-
-      await waitFor(() => {
-        expect(result.current.stops).toStrictEqual(expectedStops)
-      })
     })
   })
 })
