@@ -134,40 +134,6 @@ describe("useDetour", () => {
     })
   })
 
-  test.skip("when `startPoint` is null, `canUndo` is `false`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    await waitFor(() => {
-      expect(result.current.startPoint).toBeNull()
-      expect(result.current.canUndo).toBe(false)
-    })
-  })
-
-  test.skip("when `startPoint` is set, `canUndo` is `true`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-
-    await waitFor(() => {
-      expect(result.current.startPoint).not.toBeNull()
-      expect(result.current.canUndo).toBe(true)
-    })
-  })
-
-  test.skip("when `endPoint` is set, `canUndo` is `true`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
-
-    await waitFor(() => {
-      expect(result.current.missedStops).not.toBeUndefined()
-    })
-
-    expect(result.current.endPoint).not.toBeNull()
-    expect(result.current.canUndo).toBe(true)
-  })
-
   test.skip("when `endPoint` is set, `missedStops` is filled in", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
