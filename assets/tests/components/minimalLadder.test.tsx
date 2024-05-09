@@ -75,20 +75,18 @@ describe("MinimalLadders", () => {
       //   </Route>
       // </MemoryRouter>
       <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
-      <RoutesProvider routes={routes}>
-
-      <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
-        <Routes>
-        <Route path="/minimal/:id" element={<MinimalLadder />}>
-{/* <RoutesProvider routes={routes}>
+        <RoutesProvider routes={routes}>
+          <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
+            <Routes>
+              <Route path="/minimal/:id" element={<MinimalLadder />}>
+                {/* <RoutesProvider routes={routes}>
           <MinimalLadder />
         </RoutesProvider> */}
-        </Route>
-        </Routes>
-        
-      </MemoryRouter>
-      </RoutesProvider>
-    </StateDispatchProvider>
+              </Route>
+            </Routes>
+          </MemoryRouter>
+        </RoutesProvider>
+      </StateDispatchProvider>
     )
 
     expect(asFragment()).toMatchSnapshot()
