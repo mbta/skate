@@ -133,7 +133,7 @@ describe("useDetour", () => {
     })
   })
 
-  test.skip("when `endPoint` is set, `routeSegments` is filled in", async () => {
+  test("when `endPoint` is set, `routeSegments` is filled in", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     const routeSegments = routeSegmentsFactory.build()
@@ -172,7 +172,7 @@ describe("useDetour", () => {
     })
   })
 
-  test.skip("when `endPoint` is undone, `routeSegments` is cleared", async () => {
+  test("when `endPoint` is undone, `routeSegments` is cleared", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))

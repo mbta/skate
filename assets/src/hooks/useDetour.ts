@@ -204,8 +204,7 @@ export const useDetour = ({ shape, routePatternId }: OriginalRoute) => {
     /**
      * Three partial route-shape segments: before, during, and after the detour
      */
-    routeSegments: undefined,
-    // routeSegments: finishedDetour?.routeSegments,
+    routeSegments: finishedDetour?.routeSegments,
 
     /**
      * Connection Points
