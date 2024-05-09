@@ -1,5 +1,5 @@
 // import { useCallback, useEffect, useMemo, useState } from "react"
-import { ShapePoint, Stop } from "../schedule"
+import { ShapePoint } from "../schedule"
 // import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 // import { DetourShape, FinishedDetour, OriginalRoute } from "../models/detour"
 
@@ -209,8 +209,7 @@ export const useDetour = ({ shape, routePatternId }: OriginalRoute) => {
     /**
      * Connection Points
      */
-    connectionPoints: undefined as undefined | { start?: Stop; end?: Stop },
-    // connectionPoints: finishedDetour?.connectionPoint,
+    connectionPoints: finishedDetour?.connectionPoint,
 
     /**
      * Reports if {@link undo} will do anything.

@@ -152,26 +152,6 @@ describe("useDetour", () => {
     expect(result.current.routeSegments).toEqual(routeSegments)
   })
 
-  test.skip("when `endPoint` is set, `connectionPoints` is filled in", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    const connectionPoint = {
-      start: stopFactory.build(),
-      end: stopFactory.build(),
-    }
-
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue(finishedDetourFactory.build({ connectionPoint }))
-
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-
-    await waitFor(() => {
-      expect(result.current.connectionPoints).toEqual(connectionPoint)
-    })
-  })
-
   test("when `endPoint` is undone, `routeSegments` is cleared", async () => {
     const { result } = renderHook(useDetourWithFakeRoutePattern)
 
@@ -186,23 +166,6 @@ describe("useDetour", () => {
 
     await waitFor(() => {
       expect(result.current.routeSegments).toBeUndefined()
-    })
-  })
-
-  test.skip("when `endPoint` is undone, `connectionPoints` is cleared", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-
-    await waitFor(() => {
-      expect(result.current.connectionPoints).not.toBeUndefined()
-    })
-
-    act(() => result.current.undo?.())
-
-    await waitFor(() => {
-      expect(result.current.connectionPoints).toBeUndefined()
     })
   })
 

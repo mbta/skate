@@ -698,7 +698,7 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
   })
 
-  test.skip("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
+  test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
     const stops = stopFactory.buildList(4)
     const [start, end] = stopFactory.buildList(2)
 
