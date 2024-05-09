@@ -686,6 +686,31 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
   })
 
+  test("'Share Detour Details' screen returns to editing screen when edit detour button is clicked", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await userEvent.click(finishDetourButton.get())
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
+    })
+
+    await userEvent.click(screen.getByRole("button", { name: "Edit Detour" }))
+
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("button", { name: "Edit Detour" })
+      ).not.toBeInTheDocument()
+      expect(
+        screen.getByRole("button", { name: "Finish Detour" })
+      ).toBeVisible()
+    })
+  })
+
   test("'Share Detour Details' screen has button to copy details", async () => {
     const { container } = render(<DiversionPage />)
 

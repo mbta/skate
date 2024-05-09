@@ -5,7 +5,7 @@ import {
   fetchNearestIntersection,
 } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
-import { DetourState, useDetour } from "../../src/hooks/useDetour"
+import { useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
@@ -167,41 +167,6 @@ describe("useDetour", () => {
     await waitFor(() => {
       expect(result.current.routeSegments).toBeUndefined()
     })
-  })
-
-  test.skip("initially, `state` is `Edit`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
-  })
-
-  test.skip("calling `finishDetour`, sets `state` to `Finished`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-
-    act(() => {
-      result.current.finishDetour?.()
-    })
-
-    await waitFor(() => expect(result.current.state).toBe(DetourState.Finished))
-  })
-
-  test.skip("calling `editDetour`, sets `state` to `Edit`", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
-
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-
-    act(() => {
-      result.current.finishDetour?.()
-    })
-    act(() => {
-      result.current.editDetour?.()
-    })
-
-    await waitFor(() => expect(result.current.state).toBe(DetourState.Edit))
   })
 
   describe("when `state` is `Finished`, controls are locked out", () => {
