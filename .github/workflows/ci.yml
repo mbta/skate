@@ -145,4 +145,4 @@ jobs:
       - name: Check types / linting / formatting
         run: npm --prefix=assets run check
       - name: Run tests
-        run: npm --prefix=assets test
+        run: npm --prefix=assets test -- --detectOpenHandles
