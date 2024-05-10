@@ -181,8 +181,10 @@ exports[`renders 1`] = `
                   </button>
                 </li>
                 <li>
-                  <button
+                  <a
                     class="c-left-nav__link"
+                    href="/user-guide"
+                    target="_blank"
                     title="About Skate"
                   >
                     <span
@@ -191,7 +193,7 @@ exports[`renders 1`] = `
                       <svg />
                     </span>
                     About Skate
-                  </button>
+                  </a>
                 </li>
                 <li>
                   <a

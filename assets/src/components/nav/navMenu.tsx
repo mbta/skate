@@ -1,7 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { Nav } from "react-bootstrap"
-import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
 import { OldCloseIcon, LogoIcon } from "../../helpers/icon"
 import * as BsIcon from "../../helpers/bsIcons"
@@ -76,12 +75,12 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             </Nav.Item>
             <Nav.Item>
               <Nav.Link
+                as={Link}
+                onClick={toggleMobileMenu}
+                title="About Skate"
+                to="/user-guide"
+                target="_blank"
                 className="icon-link"
-                as="button"
-                onClick={() => {
-                  displayHelp(location)
-                  toggleMobileMenu()
-                }}
               >
                 <BsIcon.QuestionFill /> About Skate
               </Nav.Link>

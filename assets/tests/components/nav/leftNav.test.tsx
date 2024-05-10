@@ -6,7 +6,6 @@ import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import LeftNav from "../../../src/components/nav/leftNav"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { displayHelp } from "../../../src/helpers/appCue"
 import { openDrift } from "../../../src/helpers/drift"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 import { initialState, togglePickerContainer } from "../../../src/state"
@@ -307,19 +306,6 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Support"))
 
     expect(openDrift).toHaveBeenCalled()
-  })
-
-  test("clicking About Skate button displays help", async () => {
-    const user = userEvent.setup()
-    const result = render(
-      <BrowserRouter>
-        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
-      </BrowserRouter>
-    )
-
-    await user.click(result.getByTitle("About Skate"))
-
-    expect(displayHelp).toHaveBeenCalled()
   })
 
   test("clicking notifications icon toggles notifications drawer and logs a tag manager event", async () => {

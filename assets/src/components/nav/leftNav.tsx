@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react"
-import { NavLink, useLocation } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { displayHelp } from "../../helpers/appCue"
 import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
@@ -65,7 +64,6 @@ const LeftNav = ({
   } = usePanelStateFromStateDispatchContext()
 
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
-  const location = useLocation()
 
   const bellIconClasses =
     openView == OpenView.NotificationDrawer
@@ -180,14 +178,18 @@ const LeftNav = ({
               </button>
             </li>
             <li>
-              <button
-                className="c-left-nav__link"
-                onClick={() => displayHelp(location)}
+              <NavLink
+                className={({ isActive }) =>
+                  "c-left-nav__link" +
+                  (isActive ? " c-left-nav__link--active" : "")
+                }
                 title="About Skate"
+                target="_blank"
+                to="/user-guide"
               >
                 <QuestionMarkIcon className="c-left-nav__icon" />
                 About Skate
-              </button>
+              </NavLink>
             </li>
             <li>
               <NavLink
