@@ -29,14 +29,33 @@
     />
 
     <style>
-      .error-tag {
-        color: red;
-        font-style: italic;
-      }
+                body {
+                  margin: 0;
+                }
+
+                .container {
+                  margin: 8px;
+                }
+
+                .error-tag {
+                  color: red;
+                  font-style: italic;
+                }
+
+                .banner {
+                  width: 100vw;
+            text-align: center;
+            justify-content: center;
+      height: 48px;
+      line-height: 48px;
+                }
+              
+          
     </style>
   </head>
 
   <body>
+    <.admin_banner />
     <main role="main" class="container">
       <%= @inner_content %>
     </main>

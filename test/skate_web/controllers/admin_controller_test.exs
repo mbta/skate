@@ -1,4 +1,5 @@
 defmodule SkateWeb.AdminControllerTest do
+  import Test.Support.Helpers
   use SkateWeb.ConnCase
 
   describe "index/2" do
@@ -16,6 +17,15 @@ defmodule SkateWeb.AdminControllerTest do
       assert html_response(conn, 200) =~ "Admin Tools"
       assert html_response(conn, 200) =~ "Test Groups"
       assert html_response(conn, 200) =~ "Reports"
+    end
+
+    @tag :authenticated_admin
+    test "returns page with a banner indicating the environment", %{conn: conn} do
+      reassign_env(:skate, :environment_name, "dev")
+
+      conn = get(conn, ~p"/admin")
+
+      assert html_response(conn, 200) =~ "Environment: dev"
     end
   end
 end

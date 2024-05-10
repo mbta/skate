@@ -27,4 +27,41 @@ defmodule SkateWeb.CoreComponents do
     <% end %>
     """
   end
+
+  defp banner_background_color("missing-env"), do: "gray"
+  defp banner_background_color("local"), do: "gray"
+  defp banner_background_color("dev"), do: "orange"
+  defp banner_background_color("dev-blue"), do: "blue"
+  defp banner_background_color("dev-green"), do: "green"
+  defp banner_background_color("production"), do: "red"
+
+  defp banner_font_color("missing-env"), do: "white"
+  defp banner_font_color("local"), do: "white"
+  defp banner_font_color("dev"), do: "black"
+  defp banner_font_color("dev-blue"), do: "white"
+  defp banner_font_color("dev-green"), do: "white"
+  defp banner_font_color("production"), do: "white"
+
+  @doc """
+  Generates a banner for the top of the admin page
+  """
+  def admin_banner(assigns) do
+    env = Application.get_env(:skate, :environment_name)
+
+    attributes = %{
+      class: "banner",
+      style: "background-color: #{banner_background_color(env)}; color: #{banner_font_color(env)}"
+    }
+
+    assigns =
+      assigns
+      |> assign(:env, env)
+      |> assign(:attributes, attributes)
+
+    ~H"""
+    <div {@attributes}>
+      Environment: <%= @env %>
+    </div>
+    """
+  end
 end
