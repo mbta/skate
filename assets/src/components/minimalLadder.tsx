@@ -13,8 +13,11 @@ export const MinimalLadder = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
   const id = useParams().id as string
 
+  const routeTab = routeTabById(routeTabs, id)
+  if (!routeTab) window.location.href = "/minimal"
+
   const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
-    routeTabById(routeTabs, id) || {
+    routeTab || {
       selectedRouteIds: [] as string[],
       ladderDirections: {},
       ladderCrowdingToggles: {},
