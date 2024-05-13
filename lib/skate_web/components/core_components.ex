@@ -29,17 +29,17 @@ defmodule SkateWeb.CoreComponents do
   end
 
   defp banner_background_color("skate-local"), do: "gray"
-  defp banner_background_color("dev"), do: "orange"
-  defp banner_background_color("dev-blue"), do: "blue"
-  defp banner_background_color("dev-green"), do: "green"
-  defp banner_background_color("production"), do: "red"
+  defp banner_background_color("skate-dev"), do: "orange"
+  defp banner_background_color("skate-dev-blue"), do: "blue"
+  defp banner_background_color("skate-dev-green"), do: "green"
+  defp banner_background_color("skate-prod"), do: "red"
   defp banner_background_color(_), do: "gray"
 
   defp banner_font_color("skate-local"), do: "white"
-  defp banner_font_color("dev"), do: "black"
-  defp banner_font_color("dev-blue"), do: "white"
-  defp banner_font_color("dev-green"), do: "white"
-  defp banner_font_color("production"), do: "white"
+  defp banner_font_color("skate-dev"), do: "black"
+  defp banner_font_color("skate-dev-blue"), do: "white"
+  defp banner_font_color("skate-dev-green"), do: "white"
+  defp banner_font_color("skate-prod"), do: "white"
   defp banner_font_color(_), do: "white"
 
   @doc """
