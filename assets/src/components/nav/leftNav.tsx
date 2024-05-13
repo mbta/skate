@@ -178,18 +178,15 @@ const LeftNav = ({
               </button>
             </li>
             <li>
-              <NavLink
-                className={({ isActive }) =>
-                  "c-left-nav__link" +
-                  (isActive ? " c-left-nav__link--active" : "")
-                }
+              <a
+                className="c-left-nav__link"
                 title="About Skate"
                 target="_blank"
-                to="/user-guide"
+                href="/user-guide"
               >
                 <QuestionMarkIcon className="c-left-nav__icon" />
                 About Skate
-              </NavLink>
+              </a>
             </li>
             <li>
               <NavLink
