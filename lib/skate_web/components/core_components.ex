@@ -28,19 +28,19 @@ defmodule SkateWeb.CoreComponents do
     """
   end
 
-  defp banner_background_color("skate-local"), do: "gray"
-  defp banner_background_color("skate-dev"), do: "orange"
-  defp banner_background_color("skate-dev-blue"), do: "blue"
-  defp banner_background_color("skate-dev-green"), do: "green"
-  defp banner_background_color("skate-prod"), do: "red"
-  defp banner_background_color(_), do: "gray"
+  defp banner_background_color("skate-local"), do: "var(--color-mbta-silver)"
+  defp banner_background_color("skate-dev"), do: "var(--color-mbta-cr)"
+  defp banner_background_color("skate-dev-blue"), do: "var(--color-mbta-blue)"
+  defp banner_background_color("skate-dev-green"), do: "var(--color-mbta-green)"
+  defp banner_background_color("skate-prod"), do: "var(--color-mbta-red)"
+  defp banner_background_color(_), do: "var(--color-mbta-bus)"
 
   defp banner_font_color("skate-local"), do: "white"
-  defp banner_font_color("skate-dev"), do: "black"
+  defp banner_font_color("skate-dev"), do: "white"
   defp banner_font_color("skate-dev-blue"), do: "white"
   defp banner_font_color("skate-dev-green"), do: "white"
   defp banner_font_color("skate-prod"), do: "white"
-  defp banner_font_color(_), do: "white"
+  defp banner_font_color(_), do: "black"
 
   @doc """
   Generates a banner for the top of the admin page
