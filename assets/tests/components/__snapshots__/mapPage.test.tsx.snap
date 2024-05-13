@@ -298,7 +298,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             >
               <div
                 class="leaflet-tile-container leaflet-zoom-animated"
-                style="z-index: 18; left: 0px; top: 0px;"
+                style="z-index: 21; left: 0px; top: 0px;"
               >
                 <img
                   alt=""
@@ -884,7 +884,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             >
               <div
                 class="leaflet-tile-container leaflet-zoom-animated"
-                style="z-index: 18; left: 0px; top: 0px;"
+                style="z-index: 21; left: 0px; top: 0px;"
               >
                 <img
                   alt=""
@@ -1471,7 +1471,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <div
                 class="leaflet-tile-container leaflet-zoom-animated"
-                style="z-index: 18; left: 0px; top: 0px;"
+                style="z-index: 21; left: 0px; top: 0px;"
               >
                 <img
                   alt=""
