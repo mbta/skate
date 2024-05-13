@@ -5,11 +5,11 @@ import routeFactory from "../factories/route"
 import { Route as RouteType, TimepointsByRouteId } from "../../src/schedule.d"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { MinimalLadder } from "../../src/components/minimalLadder"
+import stateFactory from "../factories/applicationState"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -40,8 +40,7 @@ describe("MinimalLadders", () => {
   test("renders route ladders", () => {
     jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
 
-    const mockState = {
-      ...initialState,
+    const initialState = stateFactory.build({
       routeTabs: [
         routeTabFactory.build({
           uuid: "abcdef",
@@ -63,7 +62,7 @@ describe("MinimalLadders", () => {
           selectedRouteIds: ["39"],
         }),
       ],
-    }
+    })
     const { asFragment } = render(
       // <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
       //   <Route path="/minimal/:id">
@@ -74,7 +73,7 @@ describe("MinimalLadders", () => {
       // </StateDispatchProvider>
       //   </Route>
       // </MemoryRouter>
-      <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
             <Routes>
