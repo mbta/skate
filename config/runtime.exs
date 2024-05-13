@@ -8,8 +8,7 @@ config :skate,
   restrict_environment_access?: System.get_env("RESTRICT_ENVIRONMENT_ACCESS") == "true",
   base_tileset_url: System.get_env("BASE_TILESET_URL"),
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
-  aws_place_index: System.get_env("AWS_PLACE_INDEX"),
-  environment_name: System.get_env("SENTRY_ENV", "missing-env")
+  aws_place_index: System.get_env("AWS_PLACE_INDEX")
 
 if System.get_env("SECRET_KEY_BASE") do
   config :skate, SkateWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
