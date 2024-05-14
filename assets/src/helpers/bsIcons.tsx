@@ -2,7 +2,7 @@ import React from "react"
 import { ComponentPropsWithoutRef } from "react"
 
 /*!
- * This file contains icons exported from https://icons.getbootstrap.com/icons/ using the `Copy HTML` button.
+ * This file contains icons exported from https://icons.getbootstrap.com/#icons using the `Copy HTML` button.
  *
  * The process of adding a icon is as follows
  *  1. Create a new exported constant with the title case name of the icon
