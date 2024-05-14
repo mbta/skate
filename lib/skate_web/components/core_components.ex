@@ -36,8 +36,8 @@ defmodule SkateWeb.CoreComponents do
   defp banner_background_color(_), do: "var(--color-mbta-bus)"
 
   @envs ["skate-local", "skate-dev", "skate-dev-blue", "skate-dev-green", "skate-prod"]
-  
-  defp banner_font_color(env) when env not in envs, do: "white"
+
+  defp banner_font_color(env) when env in @envs, do: "white"
   defp banner_font_color(_), do: "black"
 
   @doc """
