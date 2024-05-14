@@ -42,7 +42,7 @@ interface Props {
   hasAlert: boolean
 }
 
-const Header = ({
+export const Header = ({
   route,
   deselectRoute,
   hasAlert,
