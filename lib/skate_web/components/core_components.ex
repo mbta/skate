@@ -35,11 +35,9 @@ defmodule SkateWeb.CoreComponents do
   defp banner_background_color("skate-prod"), do: "var(--color-mbta-red)"
   defp banner_background_color(_), do: "var(--color-mbta-bus)"
 
-  defp banner_font_color("skate-local"), do: "white"
-  defp banner_font_color("skate-dev"), do: "white"
-  defp banner_font_color("skate-dev-blue"), do: "white"
-  defp banner_font_color("skate-dev-green"), do: "white"
-  defp banner_font_color("skate-prod"), do: "white"
+  @envs ["skate-local", "skate-dev", "skate-dev-blue", "skate-dev-green", "skate-prod"]
+  
+  defp banner_font_color(env) when env not in envs, do: "white"
   defp banner_font_color(_), do: "black"
 
   @doc """
