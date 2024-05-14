@@ -5,7 +5,6 @@ import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import * as browser from "../../../src/models/browser"
 import { openDrift } from "../../../src/helpers/drift"
-import { displayHelp } from "../../../src/helpers/appCue"
 import NavMenu from "../../../src/components/nav/navMenu"
 import { BrowserRouter } from "react-router-dom"
 import getTestGroups from "../../../src/userTestGroups"
@@ -197,21 +196,6 @@ describe("NavMenu", () => {
     expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
-  test("clicking About Skate button displays help", async () => {
-    const toggleMobileMenu = jest.fn()
-
-    const user = userEvent.setup()
-    const result = render(
-      <BrowserRouter>
-        <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={false} />
-      </BrowserRouter>
-    )
-
-    await user.click(result.getByRole("button", { name: "About Skate" }))
-
-    expect(displayHelp).toHaveBeenCalled()
-  })
-
   test("clicking the About button closes the mobile menu", async () => {
     const toggleMobileMenu = jest.fn()
 
@@ -222,7 +206,7 @@ describe("NavMenu", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByRole("button", { name: "About Skate" }))
+    await user.click(result.getByRole("link", { name: "About Skate" }))
 
     expect(toggleMobileMenu).toHaveBeenCalled()
   })
