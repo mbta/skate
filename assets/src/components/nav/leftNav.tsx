@@ -4,13 +4,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
-import {
-  LateIcon,
-  SwingIcon,
-  DoubleChevronRightIcon,
-  DoubleChevronLeftIcon,
-  HamburgerIcon,
-} from "../../helpers/icon"
+import { LateIcon, SwingIcon, HamburgerIcon } from "../../helpers/icon"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { togglePickerContainer } from "../../state"
 import NavMenu from "./navMenu"
@@ -19,7 +13,13 @@ import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 import { LinkData, getNavLinkData } from "../../navLinkData"
-import { ChatFill, GearFill, QuestionFill } from "../../helpers/bsIcons"
+import {
+  ChatFill,
+  ChevronDoubleLeft,
+  ChevronDoubleRight,
+  GearFill,
+  QuestionFill,
+} from "../../helpers/bsIcons"
 
 interface LeftNavLinkProps {
   linkData: LinkData
@@ -206,9 +206,9 @@ const LeftNav = ({
                 title={collapsed ? "Expand" : "Collapse"}
               >
                 {collapsed ? (
-                  <DoubleChevronRightIcon className="c-left-nav__icon" />
+                  <ChevronDoubleRight className="c-left-nav__icon" />
                 ) : (
-                  <DoubleChevronLeftIcon className="c-left-nav__icon" />
+                  <ChevronDoubleLeft className="c-left-nav__icon" />
                 )}
                 Collapse
               </button>
