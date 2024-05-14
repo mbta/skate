@@ -9,9 +9,6 @@ import {
   SwingIcon,
   DoubleChevronRightIcon,
   DoubleChevronLeftIcon,
-  QuestionMarkIcon,
-  SpeechBubbleIcon,
-  SettingsIcon,
   HamburgerIcon,
 } from "../../helpers/icon"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
@@ -22,6 +19,7 @@ import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 import { LinkData, getNavLinkData } from "../../navLinkData"
+import { ChatFill, GearFill, QuestionFill } from "../../helpers/bsIcons"
 
 interface LeftNavLinkProps {
   linkData: LinkData
@@ -173,7 +171,7 @@ const LeftNav = ({
                 onClick={openDrift}
                 title="Support"
               >
-                <SpeechBubbleIcon className="c-left-nav__icon" />
+                <ChatFill className="c-left-nav__icon" />
                 Support
               </button>
             </li>
@@ -184,7 +182,7 @@ const LeftNav = ({
                 target="_blank"
                 href="/user-guide"
               >
-                <QuestionMarkIcon className="c-left-nav__icon" />
+                <QuestionFill className="c-left-nav__icon" />
                 About Skate
               </a>
             </li>
@@ -197,7 +195,7 @@ const LeftNav = ({
                 title="Settings"
                 to="/settings"
               >
-                <SettingsIcon className="c-left-nav__icon" />
+                <GearFill className="c-left-nav__icon" />
                 Settings
               </NavLink>
             </li>
