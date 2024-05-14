@@ -1,14 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
 import { Header as RouteLadderHeader } from "../../src/components/routeLadder"
-import routeFactory from "../../tests/factories/route"
 
 const meta = {
   component: RouteLadderHeader,
   args: {
-    route: routeFactory.build({ name: "39" }),
-    deselectRoute: () => {},
+    routeName: "39",
+    onClose: () => {},
     hasAlert: false,
+  },
+  argTypes: {
+    onClose: { table: { disable: true } },
   },
 } satisfies Meta<typeof RouteLadderHeader>
 
