@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { OriginalRoute } from "../models/detour"
@@ -30,34 +30,54 @@ export enum DetourState {
 export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [snapshot, send] = useMachine(createDetourMachine)
 
-  const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
-  const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
-  const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
-
   const { result: finishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
-      if (startPoint && endPoint) {
-        return fetchFinishedDetour(routePatternId, startPoint, endPoint)
-      } else {
+      /*
+       * There's probably a better way to do this? Tags or maybe context?
+       * Tags seem more appropriate, but weird to manage Out-Of-Bounds state via tags.
+       * Maybe this entire API call could be moved to and managed by an actor
+       * combined with parallel child states within the state machine?
+       * -- https://stately.ai/docs/promise-actors */
+      const isSharingDetour = snapshot.matches({
+        "Detour Drawing": "Share Detour",
+      })
+      const isFinishedDrawing = snapshot.matches({
+        "Detour Drawing": { Editing: "Finished Drawing" },
+      })
+      const isInFinishedDetourState = isFinishedDrawing || isSharingDetour
+      if (!isInFinishedDetourState) {
         return null
       }
-    }, [startPoint, endPoint, routePatternId]),
+
+      /* Until we have "typegen" in XState,
+       * we need to validate these exist for typescript
+       *
+       * > [Warning] XState Typegen does not fully support XState v5 yet. However,
+       * > strongly-typed machines can still be achieved without Typegen.
+       * > -- https://stately.ai/docs/migration#use-typestypegen-instead-of-tstypes
+       */
+      const firstWaypoint = snapshot.context.waypoints.at(0)
+      const lastWaypoint = snapshot.context.waypoints.at(-1)
+      // Lets also just assert that we're not operating on the same array element
+      const has2Waypoints = snapshot.context.waypoints.length >= 2
+      if (
+        !has2Waypoints ||
+        firstWaypoint === undefined ||
+        lastWaypoint === undefined
+      ) {
+        return null
+      }
+
+      return fetchFinishedDetour(routePatternId, firstWaypoint, lastWaypoint)
+    }, [snapshot, routePatternId]),
   })
 
   const { result: nearestIntersection } = useNearestIntersection({
-    latitude: startPoint?.lat,
-    longitude: startPoint?.lon,
+    latitude: snapshot.context.waypoints.at(0)?.lat,
+    longitude: snapshot.context.waypoints.at(0)?.lon,
   })
 
-  const detourShape = useDetourDirections(
-    useMemo(
-      () =>
-        [startPoint, ...waypoints, endPoint].filter(
-          (v): v is ShapePoint => !!v
-        ),
-      [startPoint, waypoints, endPoint]
-    ) ?? []
-  )
+  const detourShape = useDetourDirections(snapshot.context.waypoints)
 
   const coordinates =
     detourShape.result && isOk(detourShape.result)
@@ -75,38 +95,32 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     })
   }
 
-  const canAddWaypoint = () => startPoint !== null && endPoint === null
+  const canAddWaypoint = () =>
+    snapshot.can({
+      type: "detour.edit.place-waypoint",
+      location: { lat: 0, lon: 0 },
+    })
+
   const addWaypoint = canAddWaypoint()
-    ? (p: ShapePoint) => {
-        setWaypoints((positions) => [...positions, p])
+    ? (location: ShapePoint) => {
+        send({ type: "detour.edit.place-waypoint", location })
       }
     : undefined
 
-  const addConnectionPoint = (point: ShapePoint) => {
-    if (startPoint === null) {
-      setStartPoint(point)
-    } else if (endPoint === null) {
-      setEndPoint(point)
-    }
-  }
+  const addConnectionPoint = (point: ShapePoint) =>
+    send({
+      type: "detour.edit.place-connection-point",
+      location: point,
+    })
 
-  const canUndo =
-    startPoint !== null && snapshot.matches({ "Detour Drawing": "Editing" })
+  const canUndo = snapshot.can({ type: "detour.edit.undo" })
 
   const undo = () => {
-    if (endPoint !== null) {
-      setEndPoint(null)
-    } else if (waypoints.length > 0) {
-      setWaypoints((positions) => positions.slice(0, positions.length - 1))
-    } else if (startPoint !== null) {
-      setStartPoint(null)
-    }
+    send({ type: "detour.edit.undo" })
   }
 
   const clear = () => {
-    setEndPoint(null)
-    setStartPoint(null)
-    setWaypoints([])
+    send({ type: "detour.edit.clear-detour" })
   }
 
   const finishDetour = () => {
@@ -147,15 +161,26 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * The starting connection point of the detour.
      */
-    startPoint,
+    startPoint: snapshot.context.waypoints.at(0),
     /**
      * The ending connection point of the detour.
      */
-    endPoint,
+    endPoint:
+      (snapshot.matches({
+        "Detour Drawing": { Editing: "Finished Drawing" },
+      }) &&
+        snapshot.context.waypoints.at(-1)) ||
+      undefined,
     /**
      * The waypoints that connect {@link startPoint} and {@link endPoint}.
      */
-    waypoints,
+    waypoints: snapshot.matches({
+      "Detour Drawing": { Editing: "Finished Drawing" },
+    })
+      ? snapshot.context.waypoints.slice(1, -1)
+      : snapshot.matches({ "Detour Drawing": { Editing: "Place Waypoint" } })
+      ? snapshot.context.waypoints.slice(1)
+      : [],
 
     /**
      * The routing API generated detour shape.
@@ -208,7 +233,9 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     clear,
 
     /** When present, puts this detour in "finished mode" */
-    finishDetour: endPoint !== null ? finishDetour : undefined,
+    finishDetour: snapshot.can({ type: "detour.edit.done" })
+      ? finishDetour
+      : undefined,
     /** When present, puts this detour in "edit mode" */
     editDetour,
   }
