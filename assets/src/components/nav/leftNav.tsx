@@ -171,7 +171,7 @@ const LeftNav = ({
                 onClick={openDrift}
                 title="Support"
               >
-                <ChatFill className="c-left-nav__icon" />
+                <ChatFill height={20} width={20} className="c-left-nav__icon" />
                 Support
               </button>
             </li>
@@ -182,7 +182,11 @@ const LeftNav = ({
                 target="_blank"
                 href="/user-guide"
               >
-                <QuestionFill className="c-left-nav__icon" />
+                <QuestionFill
+                  height={20}
+                  width={20}
+                  className="c-left-nav__icon"
+                />
                 About Skate
               </a>
             </li>
@@ -195,7 +199,7 @@ const LeftNav = ({
                 title="Settings"
                 to="/settings"
               >
-                <GearFill className="c-left-nav__icon" />
+                <GearFill height={20} width={20} className="c-left-nav__icon" />
                 Settings
               </NavLink>
             </li>
@@ -206,9 +210,17 @@ const LeftNav = ({
                 title={collapsed ? "Expand" : "Collapse"}
               >
                 {collapsed ? (
-                  <ChevronDoubleRight className="c-left-nav__icon" />
+                  <ChevronDoubleRight
+                    height={20}
+                    width={20}
+                    className="c-left-nav__icon"
+                  />
                 ) : (
-                  <ChevronDoubleLeft className="c-left-nav__icon" />
+                  <ChevronDoubleLeft
+                    height={20}
+                    width={20}
+                    className="c-left-nav__icon"
+                  />
                 )}
                 Collapse
               </button>
