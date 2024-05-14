@@ -9,9 +9,8 @@ import {
 } from "../state"
 import { useParams } from "react-router-dom"
 
-export const MinimalLadder = () => {
+export const MinimalLadder = ({ id }: { id: string }) => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
-  const id = useParams().id as string
 
   const routeTab = routeTabById(routeTabs, id)
   if (!routeTab) window.location.href = "/minimal"
@@ -39,3 +38,10 @@ export const MinimalLadder = () => {
     </div>
   )
 }
+
+const MinimalLadderFromRouterParam = () => {
+	const { id } = useParams()
+	return <>{id && <MinimalLadder id={id} />}</>
+}
+
+MinimalLadder.FromRouterParam = MinimalLadderFromRouterParam
