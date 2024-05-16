@@ -886,11 +886,9 @@ describe("DiversionPage", () => {
 
     await userEvent.click(finishDetourButton.get())
 
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
-    })
-
-    await userEvent.click(screen.getByRole("button", { name: "Edit Detour" }))
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Edit Detour" })
+    )
 
     await waitFor(() => {
       expect(
