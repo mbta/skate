@@ -762,12 +762,10 @@ describe("DiversionPage", () => {
   })
 
   test("missed stops are absent after a completed detour is 'undo'ne", async () => {
-    const stop1 = stopFactory.build()
-    const stop2 = stopFactory.build()
     jest
       .mocked(fetchFinishedDetour)
       .mockResolvedValue(
-        finishedDetourFactory.build({ missedStops: [stop1, stop2] })
+        finishedDetourFactory.build({ missedStops: stopFactory.buildList(2) })
       )
 
     const { container } = render(<DiversionPage />)
