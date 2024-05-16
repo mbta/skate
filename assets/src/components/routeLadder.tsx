@@ -43,12 +43,12 @@ interface Props {
 }
 
 export const Header = ({
-  route,
-  deselectRoute,
+  routeName,
+  onClose,
   hasAlert,
 }: {
-  route: Route
-  deselectRoute: (routeId: RouteId) => void
+  routeName: string
+  onClose: () => void
   hasAlert: boolean
 }) => {
   return (
@@ -66,13 +66,10 @@ export const Header = ({
         </Tippy>
       )}
       <div className="c-route-ladder__close-button-container">
-        <CloseButton
-          closeButtonType="l_darker"
-          onClick={() => deselectRoute(route.id)}
-        />
+        <CloseButton closeButtonType="l_darker" onClick={onClose} />
       </div>
 
-      <div className="c-route-ladder__route-name">{route.name}</div>
+      <div className="c-route-ladder__route-name">{routeName}</div>
     </div>
   )
 }
@@ -177,7 +174,13 @@ const RouteLadder = ({
 
   return (
     <>
-      <Header route={route} deselectRoute={deselectRoute} hasAlert={hasAlert} />
+      <Header
+        routeName={route.name}
+        hasAlert={hasAlert}
+        onClose={() => {
+          deselectRoute(route.id)
+        }}
+      />
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}
