@@ -11,10 +11,10 @@ import { useNavigate, useParams } from "react-router-dom"
 
 export const MinimalLadder = ({ id }: { id: string }) => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const routeTab = routeTabById(routeTabs, id)
-  navigate("/minimal");
+  navigate("/minimal")
   if (!routeTab) window.location.href = "/minimal"
 
   const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
@@ -42,8 +42,8 @@ export const MinimalLadder = ({ id }: { id: string }) => {
 }
 
 const MinimalLadderFromRouterParam = () => {
-	const { id } = useParams()
-	return <>{id && <MinimalLadder id={id} />}</>
+  const { id } = useParams()
+  return <>{id && <MinimalLadder id={id} />}</>
 }
 
 MinimalLadder.FromRouterParam = MinimalLadderFromRouterParam

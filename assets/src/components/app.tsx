@@ -75,7 +75,10 @@ export const AppRoutes = () => {
             {inTestGroup(TestGroups.MinimalLadderPage) && (
               <>
                 <BrowserRoute path="/minimal" element={<MinimalLadderPage />} />
-                <BrowserRoute path="/minimal/:id" element={<MinimalLadder.FromRouterParam />} />
+                <BrowserRoute
+                  path="/minimal/:id"
+                  element={<MinimalLadder.FromRouterParam />}
+                />
               </>
             )}
             <Route
