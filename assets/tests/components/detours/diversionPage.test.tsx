@@ -513,23 +513,21 @@ describe("DiversionPage", () => {
   })
 
   test("shows 'Regular Route' text when the detour is finished", async () => {
-    jest.mocked(fetchDetourDirections).mockReturnValue(
-      Promise.resolve(
-        Ok(
-          detourShapeFactory.build({
-            directions: [
-              { instruction: "Turn left on Main Street" },
-              { instruction: "Turn right on High Street" },
-              { instruction: "Turn sharp right on Broadway" },
-            ],
-          })
-        )
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      Ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
       )
     )
 
     jest
       .mocked(fetchFinishedDetour)
-      .mockReturnValue(Promise.resolve(finishedDetourFactory.build()))
+      .mockResolvedValue(finishedDetourFactory.build())
 
     const { container } = render(<DiversionPage />)
 
@@ -547,23 +545,21 @@ describe("DiversionPage", () => {
   })
 
   test("does not show 'Regular Route' when detour is not finished", async () => {
-    jest.mocked(fetchDetourDirections).mockReturnValue(
-      Promise.resolve(
-        Ok(
-          detourShapeFactory.build({
-            directions: [
-              { instruction: "Turn left on Main Street" },
-              { instruction: "Turn right on High Street" },
-              { instruction: "Turn sharp right on Broadway" },
-            ],
-          })
-        )
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      Ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
       )
     )
 
     jest
       .mocked(fetchFinishedDetour)
-      .mockReturnValue(Promise.resolve(finishedDetourFactory.build()))
+      .mockResolvedValue(finishedDetourFactory.build())
 
     const { container } = render(<DiversionPage />)
 
