@@ -222,6 +222,8 @@ describe("DiversionPage", () => {
 
     fireEvent.click(originalRouteShape.get(container))
 
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
+
     fireEvent.click(originalRouteShape.get(container))
 
     await waitFor(() => {
@@ -232,6 +234,37 @@ describe("DiversionPage", () => {
 
     await waitFor(() => {
       expect(screen.getAllByTitle("Detour Start")).toHaveLength(1)
+
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(1)
+
+      expect(screen.getAllByTitle("Detour End")).toHaveLength(1)
+    })
+  })
+
+  test("clicking on the map after the detour is ended doesn't do anything", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await waitFor(() => {
+      expect(screen.getByTitle("Detour End")).not.toBeNull()
+    })
+
+    fireEvent.click(container.querySelector(".c-vehicle-map")!)
+
+    await waitFor(() => {
+      expect(screen.getAllByTitle("Detour Start")).toHaveLength(1)
+
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(1)
+
       expect(screen.getAllByTitle("Detour End")).toHaveLength(1)
     })
   })
