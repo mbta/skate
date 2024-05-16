@@ -17,12 +17,8 @@ export const MinimalLadder = ({ id }: { id: string }) => {
   navigate("/minimal");
   if (!routeTab) window.location.href = "/minimal"
 
-  const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
-    routeTab || {
-      selectedRouteIds: [] as string[],
-      ladderDirections: {},
-      ladderCrowdingToggles: {},
-    }
+  const { selectedRouteIds = [], ladderDirections = {}, ladderCrowdingToggles = {} } =
+    routeTab || {}
 
   return (
     <div className="c-ladder-page__tab-bar-and-ladders">
