@@ -3,7 +3,6 @@ import { act, renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"
-import { instantPromise } from "../testHelpers/mockHelpers"
 import { PromiseWithResolvers } from "../testHelpers/PromiseWithResolvers"
 import routeFactory from "../factories/route"
 
@@ -27,29 +26,33 @@ describe("usePatternsByIdForRoute", () => {
   test("returns result when loaded", async () => {
     const routePatterns = routePatternFactory.buildList(2, { routeId: "66" })
     const [rp1, rp2] = routePatterns
-    const mockFetchRoutePatterns: jest.Mock =
-      Api.fetchRoutePatterns as jest.Mock
-    mockFetchRoutePatterns.mockReturnValueOnce(instantPromise(routePatterns))
+
+    jest.mocked(Api.fetchRoutePatterns).mockResolvedValue(routePatterns)
+
     const { result } = renderHook(() => {
       return usePatternsByIdForRoute("66")
     })
-    expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(1)
+
+    expect(jest.mocked(Api.fetchRoutePatterns)).toHaveBeenCalledTimes(1)
+
     await waitFor(() =>
       expect(result.current).toEqual({ [rp1.id]: rp1, [rp2.id]: rp2 })
     )
   })
 
   test("doesn't fetch routes when passed null id", async () => {
-    const mockFetchRoutePatterns: jest.Mock =
-      Api.fetchRoutePatterns as jest.Mock
-    mockFetchRoutePatterns.mockReturnValueOnce(
-      instantPromise([routePatternFactory.buildList(2)])
-    )
+    jest
+      .mocked(Api.fetchRoutePatterns)
+      .mockResolvedValue(routePatternFactory.buildList(2))
+
     const { rerender } = renderHook(() => {
       return usePatternsByIdForRoute(null)
     })
     rerender()
-    await waitFor(() => expect(mockFetchRoutePatterns).toHaveBeenCalledTimes(0))
+
+    await waitFor(() =>
+      expect(jest.mocked(Api.fetchRoutePatterns)).toHaveBeenCalledTimes(0)
+    )
   })
 
   test("doesn't refetch routes on every render", async () => {
