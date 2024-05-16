@@ -13,6 +13,10 @@ export const Default: Story = {
   args: { routeName: "66" },
 }
 
+export const BlueLine: Story = {
+  args: { routeName: "Blue Line" },
+}
+
 export const LargeFormat: Story = {
   args: { routeName: "66", className: "c-route-pill--large-format" },
 }
