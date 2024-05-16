@@ -6,10 +6,10 @@ import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { MinimalLadderPage } from "../../src/components/minimalLadderPage"
-import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import { BrowserRouter } from "react-router-dom"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import stateFactory from "../factories/applicationState"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -40,8 +40,7 @@ describe("MinimalLadderPage", () => {
   test("renders the preset selection page", () => {
     jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
 
-    const mockState = {
-      ...initialState,
+    const initialState = stateFactory.build({
       routeTabs: [
         routeTabFactory.build({
           uuid: "abcdef",
@@ -63,9 +62,9 @@ describe("MinimalLadderPage", () => {
           selectedRouteIds: ["39"],
         }),
       ],
-    }
+    })
     const { asFragment } = render(
-      <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
             <MinimalLadderPage />

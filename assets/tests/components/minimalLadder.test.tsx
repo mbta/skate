@@ -64,24 +64,14 @@ describe("MinimalLadders", () => {
       ],
     })
     const { asFragment } = render(
-      // <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
-      //   <Route path="/minimal/:id">
-      //   <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
-      // <RoutesProvider routes={routes}>
-      // <MinimalLadder />
-      // </RoutesProvider>
-      // </StateDispatchProvider>
-      //   </Route>
-      // </MemoryRouter>
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
             <Routes>
-              <Route path="/minimal/:id" element={<MinimalLadder />}>
-                {/* <RoutesProvider routes={routes}>
-          <MinimalLadder />
-        </RoutesProvider> */}
-              </Route>
+              <Route
+                path="/minimal/:id"
+                element={<MinimalLadder.FromRouterParam />}
+              ></Route>
             </Routes>
           </MemoryRouter>
         </RoutesProvider>

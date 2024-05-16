@@ -19,10 +19,13 @@ export const MinimalLadder = ({ id }: { id: string }) => {
     if (!routeTab) {
       navigate("/minimal")
     }
-  }, [routeTab]);
+  }, [routeTab])
 
-  const { selectedRouteIds = [], ladderDirections = {}, ladderCrowdingToggles = {} } =
-    routeTab || {}
+  const {
+    selectedRouteIds = [],
+    ladderDirections = {},
+    ladderCrowdingToggles = {},
+  } = routeTab || {}
 
   return (
     <div className="c-ladder-page__tab-bar-and-ladders">
