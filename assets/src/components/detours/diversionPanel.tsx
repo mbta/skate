@@ -57,7 +57,7 @@ export const DiversionPanel = ({
           </div>
         </section>
 
-        <section id="diversion-panel__directions" className="pb-3">
+        <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Detour Directions</h2>
           {directions ? (
             <ListGroup as="ol">
@@ -77,7 +77,7 @@ export const DiversionPanel = ({
         </section>
 
         {missedStops && (
-          <section id="diversion-panel__missed-stops" className="pb-3">
+          <section className="pb-3">
             <h2 className="c-diversion-panel__h2">
               Missed Stops <Badge bg="missed-stop">{missedStops.length}</Badge>
             </h2>

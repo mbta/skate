@@ -150,10 +150,12 @@ describe("DiversionPage", () => {
   })
 
   test("directions starts out with placeholder text", async () => {
-    const { container } = render(<DiversionPage />)
+    render(<DiversionPage />)
 
     const { getByText } = within(
-      container.querySelector("#diversion-panel__directions")!
+      screen
+        .getByRole("heading", { name: "Detour Directions" })
+        .closest("section")!
     )
 
     await waitFor(() => {
@@ -193,7 +195,9 @@ describe("DiversionPage", () => {
 
     await waitFor(() => {
       const { getByText } = within(
-        container.querySelector("#diversion-panel__directions")!
+        screen
+          .getByRole("heading", { name: "Detour Directions" })
+          .closest("section")!
       )
 
       expect(getByText("From Avenue 1 & Street 2")).toBeVisible()
@@ -370,7 +374,9 @@ describe("DiversionPage", () => {
 
     const { container } = render(<DiversionPage />)
     const { queryByText, getByText } = within(
-      container.querySelector("#diversion-panel__directions")!
+      screen
+        .getByRole("heading", { name: "Detour Directions" })
+        .closest("section")!
     )
 
     act(() => {
@@ -600,8 +606,16 @@ describe("DiversionPage", () => {
       expect(screen.getByText("Missed Stops")).toBeVisible()
     })
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: "Missed Stops 2" })
+      ).toBeVisible()
+    })
+
     const { getByText } = within(
-      container.querySelector("#diversion-panel__missed-stops")!
+      screen
+        .getByRole("heading", { name: "Missed Stops 2" })
+        .closest("section")!
     )
 
     expect(getByText(stop1.name)).toBeInTheDocument()
