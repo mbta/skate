@@ -19,7 +19,7 @@ export const MinimalLadder = ({ id }: { id: string }) => {
     if (!routeTab) {
       navigate("/minimal")
     }
-  }, [routeTab])
+  }, [navigate, routeTab])
 
   const {
     selectedRouteIds = [],
