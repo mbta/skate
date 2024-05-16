@@ -903,6 +903,9 @@ describe("DiversionPage", () => {
       expect(
         screen.getByRole("button", { name: "Finish Detour" })
       ).toBeVisible()
+
+      expect(screen.getByRole("button", { name: "Undo" })).not.toBeDisabled()
+      expect(screen.getByRole("button", { name: "Clear" })).not.toBeDisabled()
     })
   })
 
