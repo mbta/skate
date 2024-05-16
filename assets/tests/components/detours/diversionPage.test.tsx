@@ -493,6 +493,23 @@ describe("DiversionPage", () => {
     await waitFor(() => expect(screen.queryByTitle("Detour Start")).toBeNull())
   })
 
+  test("when clicking on 'Undo' removes the start point, then 'Undo' becomes disabled", async () => {
+    const { container } = render(<DiversionPage />)
+
+    fireEvent.click(originalRouteShape.get(container))
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Undo" })).not.toBeDisabled()
+    })
+
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
+      expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
+    })
+  })
+
   test("clicking on 'Undo' removes the end point when the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
@@ -546,6 +563,31 @@ describe("DiversionPage", () => {
 
     expect(screen.queryByTitle("Detour Start")).toBeNull()
     expect(screen.queryByTitle("Detour End")).toBeNull()
+  })
+
+  test("clicking on 'Clear' disables 'Undo' and 'Clear'", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
+      expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
+    })
   })
 
   test("shows 'Regular Route' text when the detour is finished", async () => {
