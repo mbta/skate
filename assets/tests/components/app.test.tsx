@@ -122,7 +122,7 @@ describe("App", () => {
         jest.mocked(useVehicles).mockReset()
       })
 
-      test("VPP", () => {
+      test("VPP", async () => {
         mockUsePanelState({
           currentView: {
             selectedVehicleOrGhost: vehicle,
@@ -131,6 +131,7 @@ describe("App", () => {
             previousView: OpenView.None,
           },
         })
+
         render(
           <StateDispatchProvider
             state={stateFactory.build({
@@ -147,8 +148,10 @@ describe("App", () => {
             </MemoryRouter>
           </StateDispatchProvider>
         )
-        expect(vehiclePropertiesPanelHeader.get()).toBeInTheDocument()
+
+        expect(await vehiclePropertiesPanelHeader.find()).toBeInTheDocument()
       })
+
       test.each([
         ["Late View", OpenView.Late],
         ["Swings", OpenView.Swings],
@@ -183,7 +186,7 @@ describe("App", () => {
     })
   })
 
-  test("renders search map page", () => {
+  test("renders search map page", async () => {
     render(
       <MemoryRouter initialEntries={["/map"]}>
         <AppRoutes />
@@ -191,7 +194,7 @@ describe("App", () => {
     )
 
     expect(
-      screen.getByRole("generic", { name: /search map page/i })
+      await screen.findByRole("generic", { name: /search map page/i })
     ).toBeInTheDocument()
   })
 
