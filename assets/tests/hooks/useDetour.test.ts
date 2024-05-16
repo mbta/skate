@@ -66,7 +66,7 @@ describe("useDetour", () => {
     })
   })
 
-  test("clears `detourShape` there is an error with the routing service", async () => {
+  test("clears `detourShape` when there is an error with the routing service", async () => {
     const start: ShapePoint = { lat: -2, lon: -2 }
     const end: ShapePoint = { lat: -1, lon: -1 }
 
