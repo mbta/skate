@@ -80,7 +80,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
       ? detourShape.result.ok.directions
       : undefined
   // Only append direction "Regular Route" after detour is finished
-  if (directions && finishedDetour) {
+  if (!detourShape.isLoading && directions && finishedDetour) {
     directions = directions.concat({
       instruction: "Regular Route",
     })
