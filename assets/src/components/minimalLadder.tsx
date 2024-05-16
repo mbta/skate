@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import RouteLadders from "./routeLadders"
 import { routeTabById } from "../models/routeTab"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -14,8 +14,12 @@ export const MinimalLadder = ({ id }: { id: string }) => {
   const navigate = useNavigate()
 
   const routeTab = routeTabById(routeTabs, id)
-  navigate("/minimal")
-  if (!routeTab) window.location.href = "/minimal"
+
+  useEffect(() => {
+    if (!routeTab) {
+      navigate("/minimal")
+    }
+  }, [routeTab]);
 
   const { selectedRouteIds = [], ladderDirections = {}, ladderCrowdingToggles = {} } =
     routeTab || {}
