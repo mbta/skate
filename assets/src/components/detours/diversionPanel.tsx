@@ -38,10 +38,7 @@ export const DiversionPanel = ({
           <h2 className="c-diversion-panel__h2">Affected route</h2>
 
           <div className="d-flex">
-            <RoutePill
-              className="me-2 align-top"
-              routeName={routeName}
-            />
+            <RoutePill className="me-2 align-top" routeName={routeName} />
 
             <div className="d-inline-block">
               <p className="my-0 c-diversion-panel__description">
