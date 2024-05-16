@@ -167,6 +167,42 @@ describe("DiversionPage", () => {
     })
   })
 
+  test("calls the API when the first waypoint is added", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    await waitFor(() => {
+      expect(fetchDetourDirections).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  test("calls the API twice when a waypoint is added and then the detour is finished", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(fetchDetourDirections).toHaveBeenCalledTimes(2)
+    })
+  })
+
   test("directions is populated with the origin intersection and directions from the backend when second waypoint is added", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
@@ -702,6 +738,36 @@ describe("DiversionPage", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Missed Stops")).not.toBeInTheDocument()
+    })
+  })
+
+  test("calls the API after undo'ing if there is still at least one waypoint left", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Undo" }))
+    })
+
+    await waitFor(() => {
+      /**
+       * Three calls:
+       * 1. Adding the first waypoint
+       * 2. Adding the end point
+       * 3. Removing the end point, and mapping just to the first waypoint again
+       **/
+      expect(fetchDetourDirections).toHaveBeenCalledTimes(3)
     })
   })
 
