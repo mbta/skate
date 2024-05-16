@@ -1,6 +1,5 @@
 .c-route-pill {
-  min-width: 2.875rem;
-  max-width: 2.875rem;
+  width: 2.875rem;
   height: 1.5rem;
 
   border-radius: 0.8125rem;
@@ -10,6 +9,18 @@
   line-height: 1.5rem;
   font-weight: 700;
   font-family: $font-family-route-pill;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  &--large-format {
+    width: 4.5rem;
+    height: 2.25rem;
+    border-radius: 1.875rem;
+    font-size: $h3-font-size;
+    font-weight: 600;
+  }
 }
 
 .c-route-pill--bus {

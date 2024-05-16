@@ -39,7 +39,7 @@ export const DiversionPanel = ({
 
           <div className="d-flex">
             <RoutePill
-              className="d-inline-block me-2 align-top"
+              className="me-2 align-top"
               routeName={routeName}
             />
 
