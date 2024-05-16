@@ -260,7 +260,7 @@ describe("DiversionPage", () => {
 
     fireEvent.click(originalRouteShape.get(container))
 
-    expect(screen.getByTitle("Detour End")).not.toBeNull()
+    expect(screen.getByTitle("Detour End")).toBeVisible()
   })
 
   test("clicking on route shape after the detour is ended doesn't do anything", async () => {
@@ -273,7 +273,7 @@ describe("DiversionPage", () => {
     fireEvent.click(originalRouteShape.get(container))
 
     await waitFor(() => {
-      expect(screen.getByTitle("Detour End")).not.toBeNull()
+      expect(screen.getByTitle("Detour End")).toBeVisible()
     })
 
     fireEvent.click(originalRouteShape.get(container))
@@ -299,7 +299,7 @@ describe("DiversionPage", () => {
     fireEvent.click(originalRouteShape.get(container))
 
     await waitFor(() => {
-      expect(screen.getByTitle("Detour End")).not.toBeNull()
+      expect(screen.getByTitle("Detour End")).toBeVisible()
     })
 
     fireEvent.click(container.querySelector(".c-vehicle-map")!)
@@ -443,7 +443,7 @@ describe("DiversionPage", () => {
       ).toHaveLength(0)
     )
 
-    expect(screen.queryByTitle("Detour Start")).not.toBeNull()
+    expect(screen.queryByTitle("Detour Start")).toBeVisible()
   })
 
   test("clicking on 'Undo' restores the placeholder text when appropriate", async () => {
@@ -538,7 +538,7 @@ describe("DiversionPage", () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByTitle("Detour Start")).not.toBeNull()
+      expect(screen.getByTitle("Detour Start")).toBeVisible()
       expect(screen.queryByTitle("Detour End")).toBeNull()
       expect(
         container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
