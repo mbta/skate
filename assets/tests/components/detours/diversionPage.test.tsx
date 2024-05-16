@@ -79,6 +79,18 @@ beforeEach(() => {
 })
 
 describe("DiversionPage", () => {
+  test("starts out with no start point, end point, or waypoints", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await waitFor(() => {
+      expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
+      expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(0)
+    })
+  })
+
   test("can click on route shape to start detour", async () => {
     const { container } = render(<DiversionPage />)
 
@@ -114,22 +126,20 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("has no waypoints at the beginning or when placing the start point", async () => {
+  test("has no waypoints when placing the start point", async () => {
     const { container } = render(<DiversionPage />)
-
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(0)
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
     await waitFor(() => {
-      expect(
-        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-      ).toHaveLength(0)
+      expect(screen.getByTitle("Detour Start")).toBeVisible()
     })
+
+    expect(
+      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+    ).toHaveLength(0)
   })
 
   test("can click on map to add a waypoint", async () => {
