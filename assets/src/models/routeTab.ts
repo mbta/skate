@@ -62,6 +62,11 @@ export const highestExistingOrdering = (routeTabs: RouteTab[]): number =>
 export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab | undefined =>
   routeTabs.find((routeTab) => routeTab.isCurrentTab)
 
+export const routeTabById = (
+  routeTabs: RouteTab[],
+  uuid: string
+): RouteTab | undefined => routeTabs.find((routeTab) => routeTab.uuid == uuid)
+
 export const parseRouteTabData = (
   routeTabsData: RouteTabData[]
 ): RouteTab[] => {
