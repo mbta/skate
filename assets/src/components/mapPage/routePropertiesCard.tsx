@@ -224,14 +224,16 @@ const VariantPicker = ({
   }
 }
 
-const RoutePropertiesCard = ({
+export const RoutePropertiesCardRender = ({
   routePatterns,
-  selectedRoutePatternId,
+  route,
+  selectedRoutePattern,
   selectRoutePattern,
   onClose,
 }: {
   routePatterns: ByRoutePatternId<RoutePattern>
-  selectedRoutePatternId: RoutePatternId
+  route: Route
+  selectedRoutePattern: RoutePattern
   selectRoutePattern: (routePattern: RoutePattern) => void
   onClose?: () => void
 }) => {
@@ -239,12 +241,6 @@ const RoutePropertiesCard = ({
     "variants" | "stops" | null
   >(null)
 
-  const selectedRoutePattern = routePatterns[selectedRoutePatternId]
-  const route: Route | null = useRoute(selectedRoutePattern?.routeId)
-
-  if (!route || selectedRoutePattern === undefined) {
-    return <></>
-  }
   const { name, description } = patternDisplayName(selectedRoutePattern)
 
   return (
@@ -315,6 +311,35 @@ const RoutePropertiesCard = ({
         </div>
       </DetailSection>
     </div>
+  )
+}
+
+const RoutePropertiesCard = ({
+  routePatterns,
+  selectedRoutePatternId,
+  selectRoutePattern,
+  onClose,
+}: {
+  routePatterns: ByRoutePatternId<RoutePattern>
+  selectedRoutePatternId: RoutePatternId
+  selectRoutePattern: (routePattern: RoutePattern) => void
+  onClose?: () => void
+}) => {
+  const selectedRoutePattern = routePatterns[selectedRoutePatternId]
+  const route: Route | null = useRoute(selectedRoutePattern?.routeId)
+
+  if (!route || selectedRoutePattern === undefined) {
+    return <></>
+  }
+
+  return (
+    <RoutePropertiesCardRender
+      routePatterns={routePatterns}
+      route={route}
+      selectedRoutePattern={selectedRoutePattern}
+      selectRoutePattern={selectRoutePattern}
+      onClose={onClose}
+    />
   )
 }
 
