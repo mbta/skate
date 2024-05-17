@@ -4,16 +4,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
-import {
-  LateIcon,
-  SwingIcon,
-  DoubleChevronRightIcon,
-  DoubleChevronLeftIcon,
-  QuestionMarkIcon,
-  SpeechBubbleIcon,
-  SettingsIcon,
-  HamburgerIcon,
-} from "../../helpers/icon"
+import { LateIcon, SwingIcon, HamburgerIcon } from "../../helpers/icon"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { togglePickerContainer } from "../../state"
 import NavMenu from "./navMenu"
@@ -22,6 +13,13 @@ import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 import { LinkData, getNavLinkData } from "../../navLinkData"
+import {
+  ChatFill,
+  ChevronDoubleLeft,
+  ChevronDoubleRight,
+  GearFill,
+  QuestionFill,
+} from "../../helpers/bsIcons"
 
 interface LeftNavLinkProps {
   linkData: LinkData
@@ -173,7 +171,7 @@ const LeftNav = ({
                 onClick={openDrift}
                 title="Support"
               >
-                <SpeechBubbleIcon className="c-left-nav__icon" />
+                <ChatFill className="c-left-nav__icon" />
                 Support
               </button>
             </li>
@@ -184,7 +182,7 @@ const LeftNav = ({
                 target="_blank"
                 href="/user-guide"
               >
-                <QuestionMarkIcon className="c-left-nav__icon" />
+                <QuestionFill className="c-left-nav__icon" />
                 About Skate
               </a>
             </li>
@@ -197,7 +195,7 @@ const LeftNav = ({
                 title="Settings"
                 to="/settings"
               >
-                <SettingsIcon className="c-left-nav__icon" />
+                <GearFill className="c-left-nav__icon" />
                 Settings
               </NavLink>
             </li>
@@ -208,9 +206,9 @@ const LeftNav = ({
                 title={collapsed ? "Expand" : "Collapse"}
               >
                 {collapsed ? (
-                  <DoubleChevronRightIcon className="c-left-nav__icon" />
+                  <ChevronDoubleRight className="c-left-nav__icon" />
                 ) : (
-                  <DoubleChevronLeftIcon className="c-left-nav__icon" />
+                  <ChevronDoubleLeft className="c-left-nav__icon" />
                 )}
                 Collapse
               </button>

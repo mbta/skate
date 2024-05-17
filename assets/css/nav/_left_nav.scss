@@ -8,6 +8,9 @@
   border-right: 1px solid $color-gray-300;
 
   .c-left-nav__icon {
+    height: 1.25rem;
+    width: 1.25rem;
+    flex-shrink: 0;
     padding-right: 0.75rem;
   }
 
