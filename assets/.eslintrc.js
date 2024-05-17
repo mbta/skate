@@ -32,6 +32,16 @@ module.exports = {
     "no-console": "error",
     "prefer-rest-params": "off",
     "no-sparse-arrays": "off",
+    "no-restricted-exports": ["warn",
+      {
+        "restrictDefaultExports": {
+          "direct": true,
+          "named": true,
+          "defaultFrom": true,
+          "namedFrom": true,
+          "namespaceFrom": true
+        }
+      }],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-unused-vars": [
