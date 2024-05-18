@@ -30,21 +30,25 @@ export enum DetourState {
 export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [snapshot, send] = useMachine(createDetourMachine)
 
+  /*
+   * There's probably a better way to do this? Tags or maybe context?
+   * Tags seem more appropriate, but weird to manage Out-Of-Bounds state via tags.
+   * Maybe this entire API call could be moved to and managed by an actor
+   * combined with parallel child states within the state machine?
+   * -- https://stately.ai/docs/promise-actors */
+  const isFinishedDrawing = snapshot.matches({
+    "Detour Drawing": { Editing: "Finished Drawing" },
+  })
+  const isSharingDetour = snapshot.matches({ "Detour Drawing": "Share Detour" })
+  const isInFinishedDetourState = isFinishedDrawing || isSharingDetour
+
+  const firstWaypoint = snapshot.context.waypoints.at(0)
+  const lastWaypoint = snapshot.context.waypoints.at(-1)
+  // Lets also just assert that we're not operating on the same array element
+  const has2Waypoints = snapshot.context.waypoints.length >= 2
+
   const { result: finishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
-      /*
-       * There's probably a better way to do this? Tags or maybe context?
-       * Tags seem more appropriate, but weird to manage Out-Of-Bounds state via tags.
-       * Maybe this entire API call could be moved to and managed by an actor
-       * combined with parallel child states within the state machine?
-       * -- https://stately.ai/docs/promise-actors */
-      const isSharingDetour = snapshot.matches({
-        "Detour Drawing": "Share Detour",
-      })
-      const isFinishedDrawing = snapshot.matches({
-        "Detour Drawing": { Editing: "Finished Drawing" },
-      })
-      const isInFinishedDetourState = isFinishedDrawing || isSharingDetour
       if (!isInFinishedDetourState) {
         return null
       }
@@ -56,10 +60,6 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
        * > strongly-typed machines can still be achieved without Typegen.
        * > -- https://stately.ai/docs/migration#use-typestypegen-instead-of-tstypes
        */
-      const firstWaypoint = snapshot.context.waypoints.at(0)
-      const lastWaypoint = snapshot.context.waypoints.at(-1)
-      // Lets also just assert that we're not operating on the same array element
-      const has2Waypoints = snapshot.context.waypoints.length >= 2
       if (
         !has2Waypoints ||
         firstWaypoint === undefined ||
@@ -69,7 +69,13 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
       }
 
       return fetchFinishedDetour(routePatternId, firstWaypoint, lastWaypoint)
-    }, [snapshot, routePatternId]),
+    }, [
+      isInFinishedDetourState,
+      firstWaypoint,
+      lastWaypoint,
+      has2Waypoints,
+      routePatternId,
+    ]),
   })
 
   const { result: nearestIntersection } = useNearestIntersection({
