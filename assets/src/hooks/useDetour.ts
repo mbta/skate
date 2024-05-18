@@ -30,20 +30,18 @@ export enum DetourState {
 
 const selectFinishedState = (
   snapshot: SnapshotFrom<typeof createDetourMachine>
-) => {
+) =>
   /*
-   * There's probably a better way to do this? Tags or maybe context?
-   * Tags seem more appropriate, but weird to manage Out-Of-Bounds state via tags.
+   * There's probably a better way to do this? maybe context or sub-machines?
+   * It seems okay to manage this state via tags if we can keep things documented,
+   * but it feels slightly leaky to have the concern for this API call to be
+   * distinguished as a tag within the machine, I think it works temporarily
+   * and while the machine is small though
+   *
    * Maybe this entire API call could be moved to and managed by an actor
    * combined with parallel child states within the state machine?
    * -- https://stately.ai/docs/promise-actors */
-  const isFinishedDrawing = snapshot.matches({
-    "Detour Drawing": { Editing: "Finished Drawing" },
-  })
-  const isSharingDetour = snapshot.matches({ "Detour Drawing": "Share Detour" })
-  const isInFinishedDetourState = isFinishedDrawing || isSharingDetour
-  return isInFinishedDetourState
-}
+  snapshot.hasTag("is-finished-drawing")
 
 /** This selects the detour waypoints in-between the detour start and end points  */
 const selectWaypoints = (snapshot: SnapshotFrom<typeof createDetourMachine>) =>

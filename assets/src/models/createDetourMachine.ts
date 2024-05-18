@@ -6,6 +6,7 @@ export const createDetourMachine = setup({
     context: {
       waypoints: ShapePoint[]
     }
+
     events:
       | { type: "detour.edit.clear-detour" }
       | { type: "detour.edit.done" }
@@ -14,6 +15,11 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
+
+    tags:
+      | "" // Placeholder for the formatter
+      // When we should fetch finished detour details
+      | "is-finished-drawing"
   },
   actions: {
     "detour.add-waypoint": assign({
@@ -100,6 +106,7 @@ export const createDetourMachine = setup({
               },
             },
             "Finished Drawing": {
+              tags: ["is-finished-drawing"],
               on: {
                 "detour.edit.undo": {
                   actions: "detour.remove-last-waypoint",
@@ -120,6 +127,7 @@ export const createDetourMachine = setup({
           },
         },
         "Share Detour": {
+          tags: ["is-finished-drawing"],
           on: {
             "detour.edit.resume": {
               target: "Editing.Finished Drawing",
