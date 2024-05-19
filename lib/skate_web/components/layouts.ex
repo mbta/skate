@@ -14,5 +14,8 @@ defmodule SkateWeb.Layouts do
   @spec record_sentry?() :: boolean
   def record_sentry?, do: !is_nil(Application.get_env(:skate, :sentry_frontend_dsn))
 
+  @spec drift_enabled?() :: boolean
+  def drift_enabled?, do: Application.get_env(:skate, :enable_drift, true)
+
   embed_templates("layouts/*")
 end

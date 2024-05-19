@@ -2,7 +2,8 @@ import Config
 
 config :skate,
   geonames_url_base: "http://api.geonames.org",
-  log_duration_timing: false
+  log_duration_timing: false,
+  enable_drift: false
 
 config :skate, Schedule.CacheFile, cache_filename: "dev_cache.terms"
 
