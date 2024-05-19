@@ -1,4 +1,4 @@
-import { setup, ActorLogicFrom, InputFrom } from "xstate"
+import { setup, assign, ActorLogicFrom, InputFrom } from "xstate"
 import { Route, RoutePattern } from "../schedule"
 
 export const createDetourMachine = setup({
@@ -25,7 +25,25 @@ export const createDetourMachine = setup({
           routePattern: undefined
         }
 
-    events: { type: "detour.edit.done" } | { type: "detour.edit.resume" }
+    events:
+      | { type: "detour.edit.done" }
+      | { type: "detour.edit.resume" }
+      | { type: "detour.route-pattern.open" }
+      | { type: "detour.route-pattern.done" }
+      | { type: "detour.route-pattern.select-route"; route: Route }
+      | {
+          type: "detour.route-pattern.select-pattern"
+          routePattern: RoutePattern
+        }
+  },
+  actions: {
+    "set.route-pattern": assign({
+      routePattern: (_, params: { routePattern: RoutePattern }) =>
+        params.routePattern,
+    }),
+    "set.route-id": assign({
+      route: (_, params: { route: Route }) => params.route,
+    }),
   },
 }).createMachine({
   id: "Detours Machine",
@@ -40,10 +58,38 @@ export const createDetourMachine = setup({
       states: {
         "Pick Route Pattern": {
           initial: "Pick Route ID",
+          on: {
+            "detour.route-pattern.select-route": {
+              target: ".Pick Route Pattern",
+              actions: assign({
+                route: ({ event }) => event.route,
+              }),
+            },
+          },
           states: {
             "Pick Route ID": {
+              /**
+               * This is intentionally left empty because the only way to
+               * "Pick Route Pattern" is to pick a Route ID, but the Route ID
+               * is allowed to change at any point while inside the
+               * "#Detours Machine.Detour Drawing.Pick Route Pattern" state.
+               */
             },
             "Pick Route Pattern": {
+              on: {
+                "detour.route-pattern.done": {
+                  guard: ({ context }) => context.routePattern !== undefined,
+                  target: "Done",
+                },
+                "detour.route-pattern.select-pattern": {
+                  actions: {
+                    type: "set.route-pattern",
+                    params: ({ event: { routePattern } }) => ({
+                      routePattern,
+                    }),
+                  },
+                },
+              },
             },
             Done: {
               type: "final",
