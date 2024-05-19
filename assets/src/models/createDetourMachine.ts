@@ -4,15 +4,27 @@ import { Route, RoutePattern } from "../schedule"
 export const createDetourMachine = setup({
   types: {} as {
     context: {
-      route: Route
-      routePattern: RoutePattern
+      route?: Route
+      routePattern?: RoutePattern
     }
 
-    input: {
-      // Caller has target route pattern
-      route: Route
-      routePattern: RoutePattern
-    }
+    input:
+      | {
+          // Caller has target route pattern
+          route: Route
+          routePattern: RoutePattern
+        }
+      | {
+          // Caller has target route
+          route: Route
+          routePattern: undefined
+        }
+      | {
+          // Caller has no prior selection
+          route: undefined
+          routePattern: undefined
+        }
+
     events: { type: "detour.edit.done" } | { type: "detour.edit.resume" }
   },
 }).createMachine({
