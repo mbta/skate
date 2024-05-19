@@ -26,6 +26,10 @@ type SelectedRouteInfo =
 interface DetourRouteSelectionPanelProps {
   allRoutes: Route[]
   selectedRouteInfo: SelectedRouteInfo
+
+  onConfirm?: () => void
+  onSelectRoute?: (routeId: Route | undefined) => void
+  onSelectRoutePattern?: (routePatternId: RoutePattern | undefined) => void
 }
 
 const selectedRoutePatternFromInfo = (
@@ -40,6 +44,9 @@ const selectedRoutePatternFromInfo = (
 export const DetourRouteSelectionPanel = ({
   allRoutes,
   selectedRouteInfo,
+  onConfirm,
+  onSelectRoute,
+  onSelectRoutePattern = () => {},
 }: DetourRouteSelectionPanelProps) => (
   <Panel as="article">
     <Panel.Header className="">
@@ -50,7 +57,14 @@ export const DetourRouteSelectionPanel = ({
       <Panel.Body.ScrollArea className="d-flex flex-column">
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Choose route</h2>
-          <FormSelect defaultValue={selectedRouteInfo.selectedRoute?.id}>
+          <FormSelect
+            defaultValue={selectedRouteInfo.selectedRoute?.id}
+            onChange={(changeEvent) => {
+              onSelectRoute?.(
+                allRoutes.find((route) => route.id === changeEvent.target.value)
+              )
+            }}
+          >
             <option>Select a route</option>
             {allRoutes.map((route) => (
               <option key={route.id} value={route.id}>
@@ -68,7 +82,7 @@ export const DetourRouteSelectionPanel = ({
               selectedRoutePatternId={selectedRoutePatternFromInfo(
                 selectedRouteInfo
               )}
-              selectRoutePattern={() => {}}
+              selectRoutePattern={onSelectRoutePattern}
               defaultOpened="variants"
             />
           ) : (
@@ -80,7 +94,7 @@ export const DetourRouteSelectionPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex">
-        <Button className="m-3 flex-grow-1" onClick={() => {}}>
+        <Button className="m-3 flex-grow-1" onClick={onConfirm}>
           Start drawing detour
         </Button>
       </Panel.Body.Footer>
