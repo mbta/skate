@@ -38,6 +38,21 @@ export const createDetourMachine = setup({
     "Detour Drawing": {
       initial: "Editing",
       states: {
+        "Pick Route Pattern": {
+          initial: "Pick Route ID",
+          states: {
+            "Pick Route ID": {
+            },
+            "Pick Route Pattern": {
+            },
+            Done: {
+              type: "final",
+            },
+          },
+          onDone: {
+            target: "Editing",
+          },
+        },
         Editing: {
           on: {
             "detour.edit.done": {
