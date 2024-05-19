@@ -72,8 +72,19 @@ export const createDetourMachine = setup({
   initial: "Detour Drawing",
   states: {
     "Detour Drawing": {
-      initial: "Editing",
+      initial: "Begin",
       states: {
+        Begin: {
+          always: [
+            {
+              guard: ({ context }) =>
+                context.routePattern !== undefined &&
+                context.route !== undefined,
+              target: "Editing",
+            },
+            { target: "Pick Route Pattern" },
+          ],
+        },
         "Pick Route Pattern": {
           initial: "Pick Route ID",
           on: {
