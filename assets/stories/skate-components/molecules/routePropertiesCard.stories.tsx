@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { RoutePropertiesCardRender } from "../../../src/components/mapPage/routePropertiesCard"
+import { RoutePropertiesCard } from "../../../src/components/mapPage/routePropertiesCard"
 import { routePatternFactory } from "../../../tests/factories/routePattern"
 import routeFactory from "../../../tests/factories/route"
 
@@ -49,16 +49,16 @@ const routePatterns = {
 const route = routeFactory.build({ id: "52" })
 
 const meta = {
-  component: RoutePropertiesCardRender,
+  component: RoutePropertiesCard,
   args: {
     routePatterns: routePatterns,
     selectedRoutePattern: routePattern0,
     route,
   },
-} satisfies Meta<typeof RoutePropertiesCardRender>
+} satisfies Meta<typeof RoutePropertiesCard>
 export default meta
 
-type Story = StoryObj<typeof RoutePropertiesCardRender>
+type Story = StoryObj<typeof RoutePropertiesCard>
 
 export const Default: Story = {}
 export const WithInboundSelected: Story = {

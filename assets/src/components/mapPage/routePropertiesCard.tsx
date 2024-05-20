@@ -224,7 +224,7 @@ const VariantPicker = ({
   }
 }
 
-export const RoutePropertiesCardRender = ({
+export const RoutePropertiesCard = ({
   routePatterns,
   route,
   selectedRoutePattern,
@@ -314,7 +314,7 @@ export const RoutePropertiesCardRender = ({
   )
 }
 
-const RoutePropertiesCard = ({
+const RoutePropertiesCardFromPatternId = ({
   routePatterns,
   selectedRoutePatternId,
   selectRoutePattern,
@@ -333,7 +333,7 @@ const RoutePropertiesCard = ({
   }
 
   return (
-    <RoutePropertiesCardRender
+    <RoutePropertiesCard
       routePatterns={routePatterns}
       route={route}
       selectedRoutePattern={selectedRoutePattern}
@@ -343,4 +343,4 @@ const RoutePropertiesCard = ({
   )
 }
 
-export default RoutePropertiesCard
+export default RoutePropertiesCardFromPatternId
