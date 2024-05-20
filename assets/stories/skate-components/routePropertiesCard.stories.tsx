@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 
-import RoutePropertiesCard from "../../../src/components/mapPage/routePropertiesCard"
-import { routePatternFactory } from "../../../tests/factories/routePattern"
-import routeFactory from "../../../tests/factories/route"
-import { RoutesProvider } from "../../../src/contexts/routesContext"
-import stopFactory from "../../../tests/factories/stop"
-import shapeFactory from "../../../tests/factories/shape"
+import RoutePropertiesCard from "../../src/components/mapPage/routePropertiesCard"
+import { routePatternFactory } from "../../tests/factories/routePattern"
+import routeFactory from "../../tests/factories/route"
+import { RoutesProvider } from "../../src/contexts/routesContext"
+import stopFactory from "../../tests/factories/stop"
+import shapeFactory from "../../tests/factories/shape"
 
 const outboundStops = [
   stopFactory.build({ name: "Watertown Square" }),
