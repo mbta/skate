@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
-import { FinishedDetour, OriginalRoute } from "../models/detour"
+import { OriginalRoute } from "../models/detour"
 
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
@@ -31,29 +31,16 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
-  const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
-    null
-  )
 
-  useEffect(() => {
-    let shouldUpdate = true
-
-    if (startPoint && endPoint) {
-      fetchFinishedDetour(routePatternId, startPoint, endPoint).then(
-        (result) => {
-          if (shouldUpdate) {
-            setFinishedDetour(result)
-          }
-        }
-      )
-    } else {
-      setFinishedDetour(null)
-    }
-
-    return () => {
-      shouldUpdate = false
-    }
-  }, [routePatternId, startPoint, endPoint])
+  const { result: finishedDetour } = useApiCall({
+    apiCall: useCallback(async () => {
+      if (startPoint && endPoint) {
+        return fetchFinishedDetour(routePatternId, startPoint, endPoint)
+      } else {
+        return null
+      }
+    }, [startPoint, endPoint, routePatternId]),
+  })
 
   const { result: nearestIntersection } = useNearestIntersection({
     latitude: startPoint?.lat,
