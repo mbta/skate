@@ -57,6 +57,6 @@
     </main>
     <script type="text/javascript" src={static_content_route(@conn, "/js/app.js")}>
     </script>
-    <._drift />
+    <._drift :if={drift_enabled?()} />
   </body>
 </html>
