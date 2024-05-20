@@ -55,6 +55,13 @@ const meta = {
     selectedRoutePattern: routePattern0,
     route,
   },
+  argTypes: {
+    routePatterns: { table: { disable: true } },
+    selectedRoutePattern: { table: { disable: true } },
+    route: { table: { disable: true } },
+    selectRoutePattern: { table: { disable: true } },
+    onClose: { table: { disable: true } },
+  },
 } satisfies Meta<typeof RoutePropertiesCard>
 export default meta
 
