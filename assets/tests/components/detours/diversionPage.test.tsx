@@ -457,9 +457,11 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(
-      container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
-    ).toHaveLength(1)
+    await waitFor(() =>
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(1)
+    )
   })
 
   test("clicking on 'Undo' removes last point from detour", async () => {
