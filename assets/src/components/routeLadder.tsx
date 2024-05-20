@@ -25,9 +25,13 @@ import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
-import CloseButton from "./closeButton"
+import { CloseButton as OldCloseButton } from "./closeButton"
 import Tippy from "@tippyjs/react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { ExclamationTriangleFill } from "../helpers/bsIcons"
+import { RoutePill } from "./routePill"
+import { CloseButton } from "react-bootstrap"
 
 interface Props {
   route: Route
@@ -66,10 +70,47 @@ export const Header = ({
         </Tippy>
       )}
       <div className="c-route-ladder__close-button-container">
-        <CloseButton closeButtonType="l_darker" onClick={onClose} />
+        <OldCloseButton closeButtonType="l_darker" onClick={onClose} />
       </div>
 
       <div className="c-route-ladder__route-name">{routeName}</div>
+    </div>
+  )
+}
+
+// TODO: delete old header after roll-out
+export const NewHeader = ({
+  routeName,
+  onClose,
+  hasAlert,
+}: {
+  routeName: string
+  onClose: () => void
+  hasAlert: boolean
+}) => {
+  return (
+    <div className="c-new-route-ladder__header">
+      <div className="c-new-route-ladder__fake-dropdown" />
+      {hasAlert && (
+        <Tippy
+          content="Active detour"
+          trigger="click"
+          onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+        >
+          <ExclamationTriangleFill
+            className="c-route-ladder__alert-icon"
+            aria-label="Route Alert"
+          />
+        </Tippy>
+      )}
+      <RoutePill
+        routeName={routeName}
+        className="c-route-ladder__route-pill c-route-pill--large-format"
+      />
+      {hasAlert && <div className="c-route-ladder__alert-icon" />}
+      <div className="c-route-ladder__close-button-container">
+        <CloseButton className="p-2" onClick={onClose} />
+      </div>
     </div>
   )
 }
@@ -174,13 +215,23 @@ const RouteLadder = ({
 
   return (
     <>
-      <Header
-        routeName={route.name}
-        hasAlert={hasAlert}
-        onClose={() => {
-          deselectRoute(route.id)
-        }}
-      />
+      {inTestGroup(TestGroups.RouteLadderHeaderUpdate) ? (
+        <NewHeader
+          routeName={route.name}
+          hasAlert={hasAlert}
+          onClose={() => {
+            deselectRoute(route.id)
+          }}
+        />
+      ) : (
+        <Header
+          routeName={route.name}
+          hasAlert={hasAlert}
+          onClose={() => {
+            deselectRoute(route.id)
+          }}
+        />
+      )}
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}
