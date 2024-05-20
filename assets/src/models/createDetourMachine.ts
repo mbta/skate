@@ -2,7 +2,9 @@ import { setup } from "xstate"
 
 export const createDetourMachine = setup({
   types: {} as {
-    events: { type: "detour.edit.done" } | { type: "detour.edit.resume" }
+    events:
+      | { type: "detour.edit.done" }
+      | { type: "detour.edit.resume" }
   },
 }).createMachine({
   id: "Detours Machine",
