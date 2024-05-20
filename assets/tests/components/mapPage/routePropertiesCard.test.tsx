@@ -3,6 +3,7 @@ import React from "react"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import RoutePropertiesCard, {
+  RoutePropertiesCardOpened,
   patternDisplayName,
 } from "../../../src/components/mapPage/routePropertiesCard"
 import { routePatternFactory } from "../../factories/routePattern"
@@ -34,12 +35,14 @@ const RoutePropertiesCardWithDefaults = ({
   selectedRoutePatternId = routePattern1.id,
   onClose = () => {},
   selectRoutePattern = (_routePattern) => {},
+  defaultOpened,
 }: {
   routes?: Route[]
   routePatterns?: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId?: RoutePatternId
   onClose?: () => void
   selectRoutePattern?: (routePattern: RoutePattern) => void
+  defaultOpened?: RoutePropertiesCardOpened
 }) => {
   const thing = (
     <RoutesProvider routes={routes}>
@@ -48,6 +51,7 @@ const RoutePropertiesCardWithDefaults = ({
         selectedRoutePatternId={selectedRoutePatternId}
         selectRoutePattern={selectRoutePattern}
         onClose={onClose}
+        defaultOpened={defaultOpened}
       />
     </RoutesProvider>
   )
@@ -335,14 +339,50 @@ describe("<RoutePropertiesCard/>", () => {
       )
       expect(mockOnClose).toHaveBeenCalled()
     })
+  })
 
-    test("Only one details section is open at a time", async () => {
+  describe("Sections", () => {
+    test("Starts out with no sections open", async () => {
+      render(<RoutePropertiesCardWithDefaults />)
+
+      expect(screen.getByText("Show outbound stops")).toBeInTheDocument()
+      expect(screen.getByText("Show variants")).toBeInTheDocument()
+    })
+
+    test("Can open the sections", async () => {
       render(<RoutePropertiesCardWithDefaults />)
 
       await userEvent.click(screen.getByText("Show variants"))
       expect(screen.getByText("Hide variants")).toBeInTheDocument()
 
       await userEvent.click(screen.getByText("Show outbound stops"))
+      expect(screen.getByText("Hide outbound stops")).toBeInTheDocument()
+    })
+
+    test("Opening one section closes the other one", async () => {
+      render(<RoutePropertiesCardWithDefaults />)
+
+      await userEvent.click(screen.getByText("Show variants"))
+      expect(screen.getByText("Hide variants")).toBeInTheDocument()
+
+      await userEvent.click(screen.getByText("Show outbound stops"))
+      expect(screen.getByText("Show variants")).toBeInTheDocument()
+      expect(screen.getByText("Hide outbound stops")).toBeInTheDocument()
+
+      await userEvent.click(screen.getByText("Show variants"))
+      expect(screen.getByText("Show outbound stops")).toBeInTheDocument()
+    })
+
+    test("Can have the variants section open by default", async () => {
+      render(<RoutePropertiesCardWithDefaults defaultOpened="variants" />)
+
+      expect(screen.getByText("Show outbound stops")).toBeInTheDocument()
+      expect(screen.getByText("Hide variants")).toBeInTheDocument()
+    })
+
+    test("Can have the stops section open by default", async () => {
+      render(<RoutePropertiesCardWithDefaults defaultOpened="stops" />)
+
       expect(screen.getByText("Hide outbound stops")).toBeInTheDocument()
       expect(screen.getByText("Show variants")).toBeInTheDocument()
     })

@@ -95,3 +95,14 @@ export const WithInboundSelected: Story = {
     selectedRoutePatternId: routePattern3.id,
   },
 }
+
+export const WithVariantsOpenedByDefault: Story = {
+  args: {
+    defaultOpened: "variants",
+  },
+}
+export const WithStopsOpenedByDefault: Story = {
+  args: {
+    defaultOpened: "stops",
+  },
+}
