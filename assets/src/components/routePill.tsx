@@ -3,12 +3,19 @@ import { joinClasses } from "../helpers/dom"
 
 export const RoutePill = ({
   routeName,
+  largeFormat,
   className,
 }: {
   routeName: string
+  largeFormat?: boolean
   className?: string
 }): JSX.Element => {
-  const classes = joinClasses(["c-route-pill", modeClass(routeName), className])
+  const classes = joinClasses([
+    "c-route-pill",
+    modeClass(routeName),
+    largeFormat ? "c-route-pill--large-format" : "",
+    className,
+  ])
 
   return <div className={classes}>{routeNameTransform(routeName)}</div>
 }

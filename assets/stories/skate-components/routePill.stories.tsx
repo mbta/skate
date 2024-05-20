@@ -18,5 +18,5 @@ export const BlueLine: Story = {
 }
 
 export const LargeFormat: Story = {
-  args: { routeName: "66", className: "c-route-pill--large-format" },
+  args: { routeName: "66", largeFormat: true },
 }
