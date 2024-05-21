@@ -12,7 +12,7 @@ import RoutePropertiesCard from "../mapPage/routePropertiesCard"
 interface SelectedRouteInfoWithRoute {
   selectedRoute: Route
   routePatterns: ByRoutePatternId<RoutePattern>
-  selectedRoutePatternId: RoutePatternId
+  selectedRoutePatternId: RoutePatternId | null
 }
 
 interface SelectedRouteInfoWithoutRoute {
@@ -60,7 +60,12 @@ export const DetourRouteSelectionPanel = ({
           {selectedRouteInfo.selectedRoute ? (
             <RoutePropertiesCard
               routePatterns={selectedRouteInfo.routePatterns}
-              selectedRoutePatternId={selectedRouteInfo.selectedRoutePatternId}
+              selectedRoutePatternId={
+                selectedRouteInfo.selectedRoutePatternId ||
+                Object.values(selectedRouteInfo.routePatterns).find(
+                  (rp) => rp.directionId === 1
+                )?.id
+              }
               selectRoutePattern={() => {}}
             />
           ) : (

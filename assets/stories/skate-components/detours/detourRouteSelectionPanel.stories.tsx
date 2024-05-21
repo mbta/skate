@@ -57,7 +57,7 @@ const meta = {
         [routePattern2.id]: routePattern2,
         [routePattern3.id]: routePattern3,
       },
-      selectedRoutePatternId: routePattern0.id,
+      selectedRoutePatternId: routePattern1.id,
     },
   },
   argTypes: {
@@ -86,5 +86,20 @@ export const Default: Story = {}
 export const NoRouteSelected: Story = {
   args: {
     selectedRouteInfo: { selectedRoute: null },
+  },
+}
+
+export const NoRoutePatternSelected: Story = {
+  args: {
+    selectedRouteInfo: {
+      selectedRoute: route39,
+      routePatterns: {
+        [routePattern0.id]: routePattern0,
+        [routePattern1.id]: routePattern1,
+        [routePattern2.id]: routePattern2,
+        [routePattern3.id]: routePattern3,
+      },
+      selectedRoutePatternId: null,
+    },
   },
 }
