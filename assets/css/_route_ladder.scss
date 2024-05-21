@@ -62,7 +62,8 @@
   }
 
   .c-route-ladder__alert-icon {
-    height: 100%;
+    display: grid;
+    align-items: center;
     width: 1.6rem;
     margin-right: 0.5rem;
 
