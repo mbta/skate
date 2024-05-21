@@ -1,4 +1,4 @@
-import React from "react"
+import React, { forwardRef } from "react"
 import {
   AlertIcon,
   CrowdingIcon,
@@ -29,7 +29,7 @@ import { CloseButton as OldCloseButton } from "./closeButton"
 import Tippy from "@tippyjs/react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
-import { ExclamationTriangleFill } from "../helpers/bsIcons"
+import { ExclamationTriangleFill, ExclamationTriangleFillJustSvg, ExclamationTriangleFillWithRef } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { CloseButton } from "react-bootstrap"
 
@@ -78,6 +78,15 @@ export const Header = ({
   )
 }
 
+const AlertThing = forwardRef((props: any, ref: any) => (
+  <ExclamationTriangleFill
+      className="c-route-ladder__alert-icon"
+      aria-label="Route Alert"
+      ref={ref}
+      {...props}
+    />
+))
+
 // TODO: delete old header after roll-out
 export const NewHeader = ({
   routeName,
@@ -97,10 +106,7 @@ export const NewHeader = ({
           trigger="click"
           onShow={() => tagManagerEvent("alert_tooltip_clicked")}
         >
-          <ExclamationTriangleFill
-            className="c-route-ladder__alert-icon"
-            aria-label="Route Alert"
-          />
+          <AlertThing />
         </Tippy>
       )}
       <RoutePill
