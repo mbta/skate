@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 import { Button, FormSelect } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import {
@@ -9,52 +9,19 @@ import {
 } from "../../schedule"
 import RoutePropertiesCard from "../mapPage/routePropertiesCard"
 
-interface SelectedRouteInfo {
-  selectedRoute: Route | null
-  getRoutePicker: () => ReactElement
-}
-
-export class SelectedRouteInfoWithRoute implements SelectedRouteInfo {
+interface SelectedRouteInfoWithRoute {
   selectedRoute: Route
   routePatterns: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId: RoutePatternId
-
-  constructor({
-    selectedRoute,
-    routePatterns,
-    selectedRoutePatternId,
-  }: {
-    selectedRoute: Route
-    routePatterns: ByRoutePatternId<RoutePattern>
-    selectedRoutePatternId: RoutePatternId
-  }) {
-    this.selectedRoute = selectedRoute
-    this.routePatterns = routePatterns
-    this.selectedRoutePatternId = selectedRoutePatternId
-  }
-
-  getRoutePicker = () => {
-    return (
-      <RoutePropertiesCard
-        routePatterns={this.routePatterns}
-        selectedRoutePatternId={this.selectedRoutePatternId}
-        selectRoutePattern={() => {}}
-      />
-    )
-  }
 }
 
-export class SelectedRouteInfoWithoutRoute implements SelectedRouteInfo {
-  selectedRoute = null
-
-  getRoutePicker = () => {
-    return (
-      <p className="fst-italic">
-        Select a route in order to choose a direction.
-      </p>
-    )
-  }
+interface SelectedRouteInfoWithoutRoute {
+  selectedRoute: null
 }
+
+type SelectedRouteInfo =
+  | SelectedRouteInfoWithRoute
+  | SelectedRouteInfoWithoutRoute
 
 interface DetourRouteSelectionPanelProps {
   allRoutes: Route[]
@@ -90,7 +57,17 @@ export const DetourRouteSelectionPanel = ({
 
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Choose direction</h2>
-          {selectedRouteInfo.getRoutePicker()}
+          {selectedRouteInfo.selectedRoute ? (
+            <RoutePropertiesCard
+              routePatterns={selectedRouteInfo.routePatterns}
+              selectedRoutePatternId={selectedRouteInfo.selectedRoutePatternId}
+              selectRoutePattern={() => {}}
+            />
+          ) : (
+            <p className="fst-italic">
+              Select a route in order to choose a direction.
+            </p>
+          )}
         </section>
       </Panel.Body.ScrollArea>
 

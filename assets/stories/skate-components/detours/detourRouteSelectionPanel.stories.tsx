@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 
-import {
-  DetourRouteSelectionPanel,
-  SelectedRouteInfoWithRoute,
-  SelectedRouteInfoWithoutRoute,
-} from "../../../src/components/detours/detourRouteSelectionPanel"
+import { DetourRouteSelectionPanel } from "../../../src/components/detours/detourRouteSelectionPanel"
 import { routePatternFactory } from "../../../tests/factories/routePattern"
 import routeFactory from "../../../tests/factories/route"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
@@ -53,7 +49,7 @@ const meta = {
   },
   args: {
     allRoutes,
-    selectedRouteInfo: new SelectedRouteInfoWithRoute({
+    selectedRouteInfo: {
       selectedRoute: route39,
       routePatterns: {
         [routePattern0.id]: routePattern0,
@@ -62,7 +58,7 @@ const meta = {
         [routePattern3.id]: routePattern3,
       },
       selectedRoutePatternId: routePattern0.id,
-    }),
+    },
   },
   argTypes: {
     allRoutes: { table: { disable: true } },
@@ -89,6 +85,6 @@ export const Default: Story = {}
 
 export const NoRouteSelected: Story = {
   args: {
-    selectedRouteInfo: new SelectedRouteInfoWithoutRoute(),
+    selectedRouteInfo: { selectedRoute: null },
   },
 }

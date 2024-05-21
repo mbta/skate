@@ -235,16 +235,12 @@ const RoutePropertiesCard = ({
   selectRoutePattern: (routePattern: RoutePattern) => void
   onClose?: () => void
 }) => {
-  console.log("Route Patterns", routePatterns)
   const [openedDetails, setOpenedDetails] = useState<
     "variants" | "stops" | null
   >(null)
 
   const selectedRoutePattern = routePatterns[selectedRoutePatternId]
   const route: Route | null = useRoute(selectedRoutePattern?.routeId)
-
-  console.log("Route", route)
-  console.log("Selected Route Pattern", selectedRoutePattern)
 
   if (!route || selectedRoutePattern === undefined) {
     return <></>
