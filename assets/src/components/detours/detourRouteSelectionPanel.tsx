@@ -28,6 +28,15 @@ interface DetourRouteSelectionPanelProps {
   selectedRouteInfo: SelectedRouteInfo
 }
 
+const selectedRoutePatternForInfo = (
+  selectedRouteInfo: SelectedRouteInfoWithRoute
+): RoutePatternId =>
+  selectedRouteInfo.selectedRoutePatternId ||
+  Object.values(selectedRouteInfo.routePatterns).find(
+    (rp) => rp.directionId === 1
+  )?.id ||
+  Object.values(selectedRouteInfo.routePatterns)[0].id
+
 export const DetourRouteSelectionPanel = ({
   allRoutes,
   selectedRouteInfo,
@@ -60,12 +69,9 @@ export const DetourRouteSelectionPanel = ({
           {selectedRouteInfo.selectedRoute ? (
             <RoutePropertiesCard
               routePatterns={selectedRouteInfo.routePatterns}
-              selectedRoutePatternId={
-                selectedRouteInfo.selectedRoutePatternId ||
-                Object.values(selectedRouteInfo.routePatterns).find(
-                  (rp) => rp.directionId === 1
-                )?.id
-              }
+              selectedRoutePatternId={selectedRoutePatternForInfo(
+                selectedRouteInfo
+              )}
               selectRoutePattern={() => {}}
             />
           ) : (
