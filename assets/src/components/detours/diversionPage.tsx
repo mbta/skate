@@ -7,7 +7,7 @@ import React, {
 } from "react"
 import { DiversionPanel } from "./diversionPanel"
 import { DetourMap } from "./detourMap"
-import { DetourState, useDetour } from "../../hooks/useDetour"
+import { useDetour } from "../../hooks/useDetour"
 import { Alert, Button, CloseButton, Modal } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
@@ -31,7 +31,7 @@ export const DiversionPage = ({
   showConfirmCloseModal,
 }: DiversionPageProps) => {
   const {
-    state,
+    snapshot,
 
     addConnectionPoint,
     addWaypoint,
@@ -99,7 +99,7 @@ export const DiversionPage = ({
         </header>
 
         <div className="l-diversion-page__panel bg-light">
-          {state === DetourState.Edit && (
+          {snapshot.matches({ "Detour Drawing": "Editing" }) ? (
             <DiversionPanel
               directions={extendedDirections}
               missedStops={missedStops}
@@ -110,17 +110,17 @@ export const DiversionPage = ({
               detourFinished={finishDetour !== undefined}
               onFinishDetour={finishDetour}
             />
-          )}
-          {state === DetourState.Finished && editDetour && (
+          ) : snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
+            editDetour ? (
             <DetourFinishedPanel
               onNavigateBack={editDetour}
               detourText={textArea}
               onChangeDetourText={setTextArea}
             />
-          )}
+          ) : null}
         </div>
         <div className="l-diversion-page__map position-relative">
-          {state === DetourState.Finished && (
+          {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
             <Alert
               variant="info"
               className="position-absolute top-0 left-0 m-2 icon-link z-1"

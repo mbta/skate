@@ -22,11 +22,6 @@ const useDetourDirections = (shapePoints: ShapePoint[]) =>
     }, [shapePoints]),
   })
 
-export enum DetourState {
-  Edit,
-  Finished,
-}
-
 export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [snapshot, send] = useMachine(createDetourMachine)
 
@@ -128,12 +123,8 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   }))
 
   return {
-    /** The current state of the detour machine */
-    state: snapshot.matches({ "Detour Drawing": "Editing" })
-      ? DetourState.Edit
-      : snapshot.matches({ "Detour Drawing": "Share Detour" })
-      ? DetourState.Finished
-      : DetourState.Edit,
+    /** The current state machine snapshot */
+    snapshot,
 
     /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
