@@ -1,6 +1,7 @@
 import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
 import { ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
+import { semver } from "./semver"
 import { fetchRoutePatterns } from "../api"
 
 export const createDetourMachine = setup({
@@ -102,6 +103,28 @@ export const createDetourMachine = setup({
   },
 }).createMachine({
   id: "Detours Machine",
+  meta: {
+    /**
+     * This should be changed according to semver when we make changes.
+     * If we intend to use the persisted snapshot functionality of state charts,
+     * then we need to keep track of the "version" of the snapshot, in case
+     * they're likely to be incompatible.
+     *
+     * -- https://stately.ai/docs/persistence#caveats
+     *
+     * If we version according to [semver](https://semver.org/)
+     *
+     * > Given a version number MAJOR.MINOR.PATCH, increment the:
+     * > 1. `MAJOR` version when you make incompatible API changes
+     * > 2. `MINOR` version when you add functionality in a backward compatible manner
+     * > 3. `PATCH` version when you make backward compatible bug fixes
+     * > --https://semver.org/
+     *
+     * then we can make changes and attempt to recover from incompatible states.
+     */
+    version: semver(0, 0, 1),
+  },
+
   context: ({ input }) => ({
     ...input,
     waypoints: [],
