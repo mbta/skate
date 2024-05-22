@@ -60,8 +60,8 @@ export const createDetourMachine = setup({
                   target: "Place Waypoint",
                   actions: {
                     type: "detour.add-waypoint",
-                    params: ({ event }) => ({
-                      location: event.location,
+                    params: ({ event: { location } }) => ({
+                      location,
                     }),
                   },
                 },
@@ -72,8 +72,8 @@ export const createDetourMachine = setup({
                 "detour.edit.place-waypoint": {
                   actions: {
                     type: "detour.add-waypoint",
-                    params: ({ event }) => ({
-                      location: event.location,
+                    params: ({ event: { location } }) => ({
+                      location,
                     }),
                   },
                 },

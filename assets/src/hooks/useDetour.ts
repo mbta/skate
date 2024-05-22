@@ -6,8 +6,9 @@ import { OriginalRoute } from "../models/detour"
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
-import { useMachine } from "@xstate/react"
+import { useMachine, useSelector } from "@xstate/react"
 import { createDetourMachine } from "../models/createDetourMachine"
+import { SnapshotFrom } from "xstate"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -27,9 +28,9 @@ export enum DetourState {
   Finished,
 }
 
-export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
-  const [snapshot, send] = useMachine(createDetourMachine)
-
+const selectFinishedState = (
+  snapshot: SnapshotFrom<typeof createDetourMachine>
+) => {
   /*
    * There's probably a better way to do this? Tags or maybe context?
    * Tags seem more appropriate, but weird to manage Out-Of-Bounds state via tags.
@@ -41,18 +42,41 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   })
   const isSharingDetour = snapshot.matches({ "Detour Drawing": "Share Detour" })
   const isInFinishedDetourState = isFinishedDrawing || isSharingDetour
+  return isInFinishedDetourState
+}
 
-  const firstWaypoint = snapshot.context.waypoints.at(0)
-  const lastWaypoint = snapshot.context.waypoints.at(-1)
-  // Lets also just assert that we're not operating on the same array element
-  const has2Waypoints = snapshot.context.waypoints.length >= 2
+/** This selects the detour waypoints in-between the detour start and end points  */
+const selectWaypoints = (snapshot: SnapshotFrom<typeof createDetourMachine>) =>
+  snapshot.matches({
+    "Detour Drawing": { Editing: "Finished Drawing" },
+  })
+    ? snapshot.context.waypoints.slice(1, -1)
+    : snapshot.matches({ "Detour Drawing": { Editing: "Place Waypoint" } })
+    ? snapshot.context.waypoints.slice(1)
+    : []
+
+const selectStartPoint = (snapshot: SnapshotFrom<typeof createDetourMachine>) =>
+  snapshot.context.waypoints.at(0)
+
+const selectEndPoint = (snapshot: SnapshotFrom<typeof createDetourMachine>) =>
+  (selectFinishedState(snapshot) && snapshot.context.waypoints.at(-1)) ||
+  undefined
+
+export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
+  const [snapshot, send, createDetourActor] = useMachine(createDetourMachine)
+  const startPoint = useSelector(createDetourActor, selectStartPoint)
+  const endPoint = useSelector(createDetourActor, selectEndPoint)
+  /** The detour waypoints in-between the start and end point */
+  const waypoints = useSelector(createDetourActor, selectWaypoints)
+  const allPoints = snapshot.context.waypoints
+
+  const isInFinishedDetourState = useSelector(
+    createDetourActor,
+    selectFinishedState
+  )
 
   const { result: finishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
-      if (!isInFinishedDetourState) {
-        return null
-      }
-
       /* Until we have "typegen" in XState,
        * we need to validate these exist for typescript
        *
@@ -60,30 +84,20 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
        * > strongly-typed machines can still be achieved without Typegen.
        * > -- https://stately.ai/docs/migration#use-typestypegen-instead-of-tstypes
        */
-      if (
-        !has2Waypoints ||
-        firstWaypoint === undefined ||
-        lastWaypoint === undefined
-      ) {
-        return null
+      if (isInFinishedDetourState && startPoint && endPoint) {
+        return fetchFinishedDetour(routePatternId, startPoint, endPoint)
       }
 
-      return fetchFinishedDetour(routePatternId, firstWaypoint, lastWaypoint)
-    }, [
-      isInFinishedDetourState,
-      firstWaypoint,
-      lastWaypoint,
-      has2Waypoints,
-      routePatternId,
-    ]),
+      return null
+    }, [isInFinishedDetourState, startPoint, endPoint, routePatternId]),
   })
 
   const { result: nearestIntersection } = useNearestIntersection({
-    latitude: snapshot.context.waypoints.at(0)?.lat,
-    longitude: snapshot.context.waypoints.at(0)?.lon,
+    latitude: startPoint?.lat,
+    longitude: startPoint?.lon,
   })
 
-  const detourShape = useDetourDirections(snapshot.context.waypoints)
+  const detourShape = useDetourDirections(allPoints)
 
   const coordinates =
     detourShape.result && isOk(detourShape.result)
@@ -167,26 +181,15 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * The starting connection point of the detour.
      */
-    startPoint: snapshot.context.waypoints.at(0),
+    startPoint,
     /**
      * The ending connection point of the detour.
      */
-    endPoint:
-      (snapshot.matches({
-        "Detour Drawing": { Editing: "Finished Drawing" },
-      }) &&
-        snapshot.context.waypoints.at(-1)) ||
-      undefined,
+    endPoint,
     /**
      * The waypoints that connect {@link startPoint} and {@link endPoint}.
      */
-    waypoints: snapshot.matches({
-      "Detour Drawing": { Editing: "Finished Drawing" },
-    })
-      ? snapshot.context.waypoints.slice(1, -1)
-      : snapshot.matches({ "Detour Drawing": { Editing: "Place Waypoint" } })
-      ? snapshot.context.waypoints.slice(1)
-      : [],
+    waypoints,
 
     /**
      * The routing API generated detour shape.
