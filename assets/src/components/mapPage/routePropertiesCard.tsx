@@ -291,7 +291,6 @@ const RoutePropertiesCard = ({
           selectedRoutePatternId={selectedRoutePattern.id}
           selectRoutePattern={(routePattern: RoutePattern) => {
             selectRoutePattern(routePattern)
-            setOpenedDetails(null)
           }}
         />
       </DetailSection>
