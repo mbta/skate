@@ -6,6 +6,8 @@ import { OriginalRoute } from "../models/detour"
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
+import { useMachine } from "@xstate/react"
+import { createDetourMachine } from "../models/createDetourMachine"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -26,7 +28,7 @@ export enum DetourState {
 }
 
 export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
-  const [state, setState] = useState<DetourState>(DetourState.Edit)
+  const [snapshot, send] = useMachine(createDetourMachine)
 
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
@@ -88,7 +90,8 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }
 
-  const canUndo = startPoint !== null && state === DetourState.Edit
+  const canUndo =
+    startPoint !== null && snapshot.matches({ "Detour Drawing": "Editing" })
 
   const undo = () => {
     if (endPoint !== null) {
@@ -107,11 +110,11 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   }
 
   const finishDetour = () => {
-    setState(DetourState.Finished)
+    send({ type: "detour.edit.done" })
   }
 
   const editDetour = () => {
-    setState(DetourState.Edit)
+    send({ type: "detour.edit.resume" })
   }
 
   const missedStops = finishedDetour?.missedStops || undefined
@@ -126,7 +129,9 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
 
   return {
     /** The current state of the detour machine */
-    state,
+    state: snapshot.matches({ "Detour Drawing": "Editing" })
+      ? DetourState.Edit
+      : DetourState.Finished,
 
     /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
