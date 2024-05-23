@@ -26,6 +26,7 @@ import "@testing-library/jest-dom/jest-globals"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+import getTestGroups from "../../src/userTestGroups"
 
 jest.mock("../../src/hooks/usePanelState")
 
@@ -34,8 +35,14 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
   tagManagerEvent: jest.fn(),
 }))
 
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
+
 beforeEach(() => {
   mockUsePanelState()
+  jest.mocked(getTestGroups).mockReturnValue([])
 })
 
 const vehicles: VehicleInScheduledService[] = [
@@ -159,6 +166,37 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder", () => {
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).container
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a route ladder with the new header format", () => {
+    jest.mocked(getTestGroups).mockReturnValue(["route-ladder-header-update"])
+
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
