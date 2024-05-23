@@ -302,7 +302,7 @@ describe("<RoutePropertiesCard/>", () => {
       )
     })
 
-    test("Clicking a different route pattern calls selectRoutePattern and closes the variants list", async () => {
+    test("Clicking a different route pattern calls selectRoutePattern", async () => {
       const mockSelectRoutePattern = jest.fn()
 
       render(
@@ -321,7 +321,27 @@ describe("<RoutePropertiesCard/>", () => {
 
       await userEvent.click(routePattern2Radio)
       expect(mockSelectRoutePattern).toHaveBeenCalledWith(routePattern2)
-      expect(routePattern2Radio).not.toBeVisible()
+    })
+
+    test("Clicking a different route pattern does not close the variants list", async () => {
+      const mockSelectRoutePattern = jest.fn()
+
+      render(
+        <RoutePropertiesCardWithDefaults
+          selectRoutePattern={mockSelectRoutePattern}
+        />
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Show variants" })
+      )
+
+      const routePattern2Radio = screen.getByRole("radio", {
+        name: new RegExp(patternDisplayName(routePattern2).name),
+      })
+
+      await userEvent.click(routePattern2Radio)
+      expect(routePattern2Radio).toBeVisible()
     })
 
     test("Clicking the close button calls onClose prop", async () => {
