@@ -66,7 +66,7 @@ const routePatterns = {
 const route = routeFactory.build({ id: "52" })
 
 const meta = {
-  component: RoutePropertiesCard,
+  component: RoutePropertiesCard.WithSectionState,
   args: {
     routePatterns: routePatterns,
     selectedRoutePatternId: routePattern0.id,
@@ -84,10 +84,10 @@ const meta = {
       </RoutesProvider>
     ),
   ],
-} satisfies Meta<typeof RoutePropertiesCard>
+} satisfies Meta<typeof RoutePropertiesCard.WithSectionState>
 export default meta
 
-type Story = StoryObj<typeof RoutePropertiesCard>
+type Story = StoryObj<typeof RoutePropertiesCard.WithSectionState>
 
 export const Default: Story = {}
 export const WithInboundSelected: Story = {
@@ -98,11 +98,11 @@ export const WithInboundSelected: Story = {
 
 export const WithVariantsOpenedByDefault: Story = {
   args: {
-    defaultOpened: "variants",
+    defaultOpenSection: "variants",
   },
 }
 export const WithStopsOpenedByDefault: Story = {
   args: {
-    defaultOpened: "stops",
+    defaultOpenSection: "stops",
   },
 }

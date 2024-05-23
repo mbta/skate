@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { ComponentPropsWithoutRef, useState } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { CircleCheckIcon } from "../../helpers/icon"
 import {
@@ -231,17 +231,19 @@ const RoutePropertiesCard = ({
   selectedRoutePatternId,
   selectRoutePattern,
   onClose,
-  defaultOpened = null,
+
+  openSection,
+  onChangeSection,
 }: {
   routePatterns: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId: RoutePatternId
   selectRoutePattern: (routePattern: RoutePattern) => void
-  onClose?: () => void
-  defaultOpened?: RoutePropertiesCardOpened
-}) => {
-  const [openedDetails, setOpenedDetails] =
-    useState<RoutePropertiesCardOpened>(defaultOpened)
 
+  onClose?: () => void
+
+  openSection?: RoutePropertiesCardOpened
+  onChangeSection?: (newSection: RoutePropertiesCardOpened) => void
+}) => {
   const selectedRoutePattern = routePatterns[selectedRoutePatternId]
   const route: Route | null = useRoute(selectedRoutePattern?.routeId)
 
@@ -274,11 +276,9 @@ const RoutePropertiesCard = ({
       />
       <DetailSection
         title="variants"
-        isOpen={openedDetails === "variants"}
+        isOpen={openSection === "variants"}
         toggleOpen={() =>
-          setOpenedDetails((prevValue) =>
-            prevValue === "variants" ? null : "variants"
-          )
+          onChangeSection?.(openSection === "variants" ? null : "variants")
         }
         className="variant-picker"
         toggleClassName="c-route-properties-card__disclosure_toggle--variants"
@@ -299,11 +299,9 @@ const RoutePropertiesCard = ({
         title={`${(
           route.directionNames[selectedRoutePattern.directionId] || ""
         ).toLowerCase()} stops`}
-        isOpen={openedDetails === "stops"}
+        isOpen={openSection === "stops"}
         toggleOpen={() =>
-          setOpenedDetails((prevValue) =>
-            prevValue === "stops" ? null : "stops"
-          )
+          onChangeSection?.(openSection === "stops" ? null : "stops")
         }
         className="variant-stop-list"
       >
@@ -319,5 +317,31 @@ const RoutePropertiesCard = ({
     </div>
   )
 }
+
+interface RPCSectionStateProps
+  extends Omit<
+    ComponentPropsWithoutRef<typeof RoutePropertiesCard>,
+    "openSection" | "onChangeSection"
+  > {
+  defaultOpenSection?: RoutePropertiesCardOpened
+}
+
+const RoutePropertiesCardWithSectionState = ({
+  defaultOpenSection: openSectionDefault,
+  ...props
+}: RPCSectionStateProps) => {
+  const [openSection, setOpenSection] = useState<RoutePropertiesCardOpened>(
+    openSectionDefault ?? null
+  )
+
+  return (
+    <RoutePropertiesCard
+      openSection={openSection}
+      onChangeSection={setOpenSection}
+      {...props}
+    />
+  )
+}
+RoutePropertiesCard.WithSectionState = RoutePropertiesCardWithSectionState
 
 export default RoutePropertiesCard

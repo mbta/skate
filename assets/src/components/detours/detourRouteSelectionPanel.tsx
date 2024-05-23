@@ -63,7 +63,7 @@ export const DetourRouteSelectionPanel = ({
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Choose direction</h2>
           {selectedRouteInfo.selectedRoute ? (
-            <RoutePropertiesCard
+            <RoutePropertiesCard.WithSectionState
               routePatterns={selectedRouteInfo.routePatterns}
               selectedRoutePatternId={selectedRoutePatternFromInfo(
                 selectedRouteInfo

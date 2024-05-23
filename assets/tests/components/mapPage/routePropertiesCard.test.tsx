@@ -46,12 +46,12 @@ const RoutePropertiesCardWithDefaults = ({
 }) => {
   const thing = (
     <RoutesProvider routes={routes}>
-      <RoutePropertiesCard
+      <RoutePropertiesCard.WithSectionState
         routePatterns={routePatterns}
         selectedRoutePatternId={selectedRoutePatternId}
         selectRoutePattern={selectRoutePattern}
         onClose={onClose}
-        defaultOpened={defaultOpened}
+        defaultOpenSection={defaultOpened}
       />
     </RoutesProvider>
   )

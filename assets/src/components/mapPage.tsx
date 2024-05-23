@@ -121,7 +121,7 @@ const SelectedRoute = ({
   const routePatterns = usePatternsByIdForRoute(selectedRoutePattern.routeId)
 
   return routePatterns ? (
-    <RoutePropertiesCard
+    <RoutePropertiesCard.WithSectionState
       routePatterns={routePatterns}
       selectedRoutePatternId={selectedRoutePattern.routePatternId}
       selectRoutePattern={selectRoutePattern}
