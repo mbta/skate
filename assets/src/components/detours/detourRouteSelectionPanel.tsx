@@ -69,6 +69,7 @@ export const DetourRouteSelectionPanel = ({
                 selectedRouteInfo
               )}
               selectRoutePattern={() => {}}
+              defaultOpened="variants"
             />
           ) : (
             <p className="fst-italic">
