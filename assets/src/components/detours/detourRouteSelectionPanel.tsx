@@ -50,19 +50,14 @@ export const DetourRouteSelectionPanel = ({
       <Panel.Body.ScrollArea className="d-flex flex-column">
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Choose route</h2>
-          <Form.Select
-            defaultValue={selectedRouteInfo.selectedRoute?.id}
-          >
+          <FormSelect defaultValue={selectedRouteInfo.selectedRoute?.id}>
             <option>Select a route</option>
             {allRoutes.map((route) => (
-              <option
-                key={route.id}
-                value={route.id}
-              >
+              <option key={route.id} value={route.id}>
                 {route.name}
               </option>
             ))}
-          </Form.Select>
+          </FormSelect>
         </section>
 
         <section className="pb-3">
