@@ -1324,24 +1324,28 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
 exports[`routeLadder renders a route ladder with the new header format 1`] = `
 <div>
   <div
-    class="c-new-route-ladder__header"
+    class="c-new-route-ladder__header card"
   >
     <div
-      class="c-new-route-ladder__fake-dropdown"
-    />
-    <div
-      class="c-route-pill c-route-pill--bus c-route-ladder__route-pill c-route-pill--large-format"
+      class="card-body"
     >
-      28
-    </div>
-    <div
-      class="c-route-ladder__close-button-container"
-    >
-      <button
-        aria-label="Close"
-        class="btn-close p-2"
-        type="button"
+      <div
+        class="c-new-route-ladder__fake-dropdown"
       />
+      <div
+        class="c-route-pill c-route-pill--bus c-route-ladder__route-pill c-route-pill--large-format"
+      >
+        28
+      </div>
+      <div
+        class="c-route-ladder__close-button-container"
+      >
+        <button
+          aria-label="Close"
+          class="btn-close p-2"
+          type="button"
+        />
+      </div>
     </div>
   </div>
   <div
