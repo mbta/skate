@@ -43,21 +43,17 @@ const RoutePropertiesCardWithDefaults = ({
   onClose?: () => void
   selectRoutePattern?: (routePattern: RoutePattern) => void
   defaultOpened?: RoutePropertiesCardOpened
-}) => {
-  const thing = (
-    <RoutesProvider routes={routes}>
-      <RoutePropertiesCard
-        routePatterns={routePatterns}
-        selectedRoutePatternId={selectedRoutePatternId}
-        selectRoutePattern={selectRoutePattern}
-        onClose={onClose}
-        defaultOpened={defaultOpened}
-      />
-    </RoutesProvider>
-  )
-
-  return thing
-}
+}) => (
+  <RoutesProvider routes={routes}>
+    <RoutePropertiesCard
+      routePatterns={routePatterns}
+      selectedRoutePatternId={selectedRoutePatternId}
+      selectRoutePattern={selectRoutePattern}
+      onClose={onClose}
+      defaultOpened={defaultOpened}
+    />
+  </RoutesProvider>
+)
 
 describe("patternDisplayName", () => {
   test("When not formatted correctly with ' - '", () => {
