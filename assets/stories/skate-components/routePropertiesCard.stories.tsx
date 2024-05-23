@@ -70,6 +70,7 @@ const meta = {
   args: {
     routePatterns: routePatterns,
     selectedRoutePatternId: routePattern0.id,
+    selectRoutePattern: () => {},
   },
   argTypes: {
     routePatterns: { table: { disable: true } },
