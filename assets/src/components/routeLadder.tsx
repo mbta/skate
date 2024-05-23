@@ -31,7 +31,7 @@ import { tagManagerEvent } from "../helpers/googleTagManager"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { ExclamationTriangleFill } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
-import { CloseButton } from "react-bootstrap"
+import { Card, CloseButton } from "react-bootstrap"
 
 interface Props {
   route: Route
@@ -89,28 +89,30 @@ export const NewHeader = ({
   hasAlert: boolean
 }) => {
   return (
-    <div className="c-new-route-ladder__header">
-      <div className="c-new-route-ladder__fake-dropdown" />
-      {hasAlert && (
-        <Tippy
-          content="Active detour"
-          trigger="click"
-          onShow={() => tagManagerEvent("alert_tooltip_clicked")}
-        >
-          <div className="c-route-ladder__alert-icon">
-            <ExclamationTriangleFill aria-label="Route Alert" />
-          </div>
-        </Tippy>
-      )}
-      <RoutePill
-        routeName={routeName}
-        className="c-route-ladder__route-pill c-route-pill--large-format"
-      />
-      {hasAlert && <div className="c-route-ladder__alert-icon" />}
-      <div className="c-route-ladder__close-button-container">
-        <CloseButton className="p-2" onClick={onClose} />
-      </div>
-    </div>
+    <Card className="c-new-route-ladder__header">
+      <Card.Body>
+        <div className="c-new-route-ladder__fake-dropdown" />
+        {hasAlert && (
+          <Tippy
+            content="Active detour"
+            trigger="click"
+            onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+          >
+            <div className="c-route-ladder__alert-icon">
+              <ExclamationTriangleFill aria-label="Route Alert" />
+            </div>
+          </Tippy>
+        )}
+        <RoutePill
+          routeName={routeName}
+          className="c-route-ladder__route-pill c-route-pill--large-format"
+        />
+        {hasAlert && <div className="c-route-ladder__alert-icon" />}
+        <div className="c-route-ladder__close-button-container">
+          <CloseButton className="p-2" onClick={onClose} />
+        </div>
+      </Card.Body>
+    </Card>
   )
 }
 
