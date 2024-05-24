@@ -225,6 +225,37 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders a route ladder with the new header and detour dropdown", () => {
+    jest.mocked(getTestGroups).mockReturnValue(["route-ladder-header-update", "detours-pilot"])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).container
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders a route ladder with vehicles", () => {
     const route: Route = routeFactory.build({
       id: "28",

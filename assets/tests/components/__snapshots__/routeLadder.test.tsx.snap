@@ -1321,7 +1321,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
 </DocumentFragment>
 `;
 
-exports[`routeLadder renders a route ladder with the new header format 1`] = `
+exports[`routeLadder renders a route ladder with the new header and detour dropdown 1`] = `
 <div>
   <div
     class="c-new-route-ladder__header card"
@@ -1339,6 +1339,139 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
           type="button"
         />
       </div>
+      <div
+        class="c-route-pill c-route-pill--bus c-route-ladder__route-pill c-route-pill--large-format"
+      >
+        28
+      </div>
+      <div
+        class="c-route-ladder__close-button-container"
+      >
+        <button
+          aria-label="Close"
+          class="btn-close p-2"
+          type="button"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="c-route-ladder__controls"
+  >
+    <button
+      class="c-route-ladder__reverse"
+    >
+      <span
+        class="c-route-ladder__reverse-icon"
+      >
+        <svg />
+      </span>
+      Reverse
+    </button>
+  </div>
+  <div
+    class="c-ladder"
+    style="width: 184px;"
+  >
+    <svg
+      class="c-ladder__svg"
+      height="0"
+      viewBox="-92 -55 184 0"
+      width="184"
+    >
+      <line
+        class="c-ladder__line"
+        x1="-40"
+        x2="-40"
+        y1="0"
+        y2="-110"
+      />
+      <line
+        class="c-ladder__line"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="-110"
+      />
+      <circle
+        class="c-ladder__stop-circle"
+        cx="-40"
+        cy="0"
+        r="3"
+      />
+      <circle
+        class="c-ladder__stop-circle"
+        cx="40"
+        cy="0"
+        r="3"
+      />
+      <text
+        class="c-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="0"
+      >
+        MATPN
+      </text>
+      <circle
+        class="c-ladder__stop-circle"
+        cx="-40"
+        cy="-55"
+        r="3"
+      />
+      <circle
+        class="c-ladder__stop-circle"
+        cx="40"
+        cy="-55"
+        r="3"
+      />
+      <text
+        class="c-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-55"
+      >
+        WELLH
+      </text>
+      <circle
+        class="c-ladder__stop-circle"
+        cx="-40"
+        cy="-110"
+        r="3"
+      />
+      <circle
+        class="c-ladder__stop-circle"
+        cx="40"
+        cy="-110"
+        r="3"
+      />
+      <text
+        class="c-ladder__timepoint-name"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        x="0"
+        y="-110"
+      >
+        MORTN
+      </text>
+    </svg>
+  </div>
+  <div
+    class="c-incoming-box"
+  />
+</div>
+`;
+
+exports[`routeLadder renders a route ladder with the new header format 1`] = `
+<div>
+  <div
+    class="c-new-route-ladder__header card"
+  >
+    <div
+      class="card-body"
+    >
       <div
         class="c-route-pill c-route-pill--bus c-route-ladder__route-pill c-route-pill--large-format"
       >

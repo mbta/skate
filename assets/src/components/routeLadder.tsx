@@ -91,15 +91,17 @@ export const NewHeader = ({
   return (
     <Card className="c-new-route-ladder__header">
       <Card.Body>
-        { inTestGroup(TestGroups.DetoursPilot) && <Dropdown>
-          <Dropdown.Toggle className="c-route-ladder__dropdown-button"></Dropdown.Toggle>
-          <Dropdown.Menu className="c-route-ladder__dropdown">
-            <Dropdown.Item>
-              <PlusSquare className="c-route-ladder__dropdown-item__icon" />
-              Add detour
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown> }
+        {inTestGroup(TestGroups.DetoursPilot) && (
+          <Dropdown>
+            <Dropdown.Toggle className="c-route-ladder__dropdown-button"></Dropdown.Toggle>
+            <Dropdown.Menu className="c-route-ladder__dropdown">
+              <Dropdown.Item>
+                <PlusSquare className="c-route-ladder__dropdown-item__icon" />
+                Add detour
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
         {hasAlert && (
           <Tippy
             content="Active detour"
