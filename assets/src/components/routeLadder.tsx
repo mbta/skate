@@ -91,7 +91,7 @@ export const NewHeader = ({
   return (
     <Card className="c-new-route-ladder__header">
       <Card.Body>
-        <Dropdown>
+        { inTestGroup(TestGroups.DetoursPilot) && <Dropdown>
           <Dropdown.Toggle className="c-route-ladder__dropdown-button"></Dropdown.Toggle>
           <Dropdown.Menu className="c-route-ladder__dropdown">
             <Dropdown.Item>
@@ -99,7 +99,7 @@ export const NewHeader = ({
               Add detour
             </Dropdown.Item>
           </Dropdown.Menu>
-        </Dropdown>
+        </Dropdown> }
         {hasAlert && (
           <Tippy
             content="Active detour"

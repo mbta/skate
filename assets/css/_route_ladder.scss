@@ -49,14 +49,14 @@
 
   .card-body {
     display: inline-grid;
-    padding: 0;
+    grid-template-columns: 1fr 1fr auto 1fr 1fr;
+    padding: 6px 8px;
     align-items: center;
   }
 
   .c-route-ladder__dropdown-button {
     height: 36px;
     width: 36px;
-    margin: 6px 8px;
   }
 
   .c-route-ladder__dropdown .dropdown-item {
@@ -90,8 +90,7 @@
 
   .c-route-ladder__close-button-container {
     grid-column: 5/6;
-    margin-right: 8px;
-    margin-left: auto;
+    margin: 2px 0 2px auto;
   }
 }
 
