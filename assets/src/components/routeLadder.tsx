@@ -29,9 +29,9 @@ import { CloseButton as OldCloseButton } from "./closeButton"
 import Tippy from "@tippyjs/react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
-import { ExclamationTriangleFill } from "../helpers/bsIcons"
+import { ExclamationTriangleFill, PlusSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
-import { Card, CloseButton } from "react-bootstrap"
+import { Card, CloseButton, Dropdown } from "react-bootstrap"
 
 interface Props {
   route: Route
@@ -91,7 +91,15 @@ export const NewHeader = ({
   return (
     <Card className="c-new-route-ladder__header">
       <Card.Body>
-        <div className="c-new-route-ladder__fake-dropdown" />
+        <Dropdown>
+          <Dropdown.Toggle className="c-route-ladder__dropdown-button"></Dropdown.Toggle>
+          <Dropdown.Menu className="c-route-ladder__dropdown">
+            <Dropdown.Item>
+              <PlusSquare className="c-route-ladder__dropdown-item__icon" />
+              Add detour
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
         {hasAlert && (
           <Tippy
             content="Active detour"

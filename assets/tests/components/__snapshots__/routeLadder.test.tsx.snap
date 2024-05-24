@@ -1330,8 +1330,15 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
       class="card-body"
     >
       <div
-        class="c-new-route-ladder__fake-dropdown"
-      />
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          class="c-route-ladder__dropdown-button dropdown-toggle btn btn-primary"
+          id="react-aria-:r0:"
+          type="button"
+        />
+      </div>
       <div
         class="c-route-pill c-route-pill--bus c-route-ladder__route-pill c-route-pill--large-format"
       >

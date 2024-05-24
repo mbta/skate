@@ -53,12 +53,20 @@
     align-items: center;
   }
 
-  .c-new-route-ladder__fake-dropdown {
+  .c-route-ladder__dropdown-button {
     height: 36px;
     width: 36px;
-    border-radius: 4px;
-    background-color: $color-eggplant-500;
     margin: 6px 8px;
+  }
+
+  .c-route-ladder__dropdown .dropdown-item {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .c-route-ladder__dropdown-item__icon {
+    margin-right: 6px;
   }
 
   .c-route-ladder__alert-icon {
