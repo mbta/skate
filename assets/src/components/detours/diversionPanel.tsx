@@ -5,6 +5,8 @@ import { Badge, Button, ListGroup } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import { Stop } from "../../schedule"
 import { uniqBy } from "../../helpers/array"
+import { ArrowLeft } from "../../helpers/bsIcons"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 export interface DiversionPanelProps {
   directions?: DetourShape["directions"]
@@ -34,9 +36,19 @@ export const DiversionPanel = ({
 
     <Panel.Body className="c-diversion-panel__body d-flex flex-column">
       <Panel.Body.ScrollArea>
+        {inTestGroup(TestGroups.RouteLadderHeaderUpdate) && (
+          <Button
+            className="align-self-start icon-link my-3"
+            variant="outline-primary"
+            onClick={() => {}}
+          >
+            <ArrowLeft />
+            Change route or direction
+          </Button>
+        )}
+
         <section className="pb-3 border-bottom">
           <h2 className="c-diversion-panel__h2">Affected route</h2>
-
           <div className="d-flex">
             <RoutePill className="me-2 align-top" routeName={routeName} />
 
