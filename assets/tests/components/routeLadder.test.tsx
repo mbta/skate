@@ -226,7 +226,9 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with the new header and detour dropdown", () => {
-    jest.mocked(getTestGroups).mockReturnValue(["route-ladder-header-update", "detours-pilot"])
+    jest
+      .mocked(getTestGroups)
+      .mockReturnValue(["route-ladder-header-update", "detours-pilot"])
 
     const route: Route = routeFactory.build({
       id: "28",
