@@ -1214,4 +1214,22 @@ describe("DiversionPage", () => {
       expect(missedStopIcon.getAll(container)).toHaveLength(1)
     })
   })
+
+  describe("'Change route or direction' button", () => {
+    /*
+     * This test is here because this button is now part of one of the
+     * components, and we want to make sure that we don't accidentally
+     * render it when we didn't intend to.
+     */
+    test("the button doesn't render yet in context", async () => {
+      render(<DiversionPage />)
+
+      expect(
+        await screen.findByRole("heading", { name: "Create Detour" })
+      ).toBeInTheDocument()
+      expect(
+        screen.queryByRole("button", { name: "Change route or direction" })
+      ).not.toBeInTheDocument()
+    })
+  })
 })
