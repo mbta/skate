@@ -14,6 +14,7 @@ import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 import { DetourFinishedPanel } from "./detourFinishedPanel"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 interface DiversionPageProps {
   originalRoute: OriginalRoute
@@ -91,6 +92,10 @@ export const DiversionPage = ({
     connectionPoints?.end?.name,
   ])
 
+  const changeRoute = inTestGroup(TestGroups.RouteLadderHeaderUpdate)
+    ? () => {}
+    : undefined
+
   return (
     <>
       <article className="l-diversion-page h-100 border-box inherit-box">
@@ -109,6 +114,7 @@ export const DiversionPage = ({
               routeDirection={originalRoute.routeDirection}
               detourFinished={finishDetour !== undefined}
               onFinishDetour={finishDetour}
+              onChangeRoute={changeRoute}
             />
           )}
           {state === DetourState.Finished && editDetour && (

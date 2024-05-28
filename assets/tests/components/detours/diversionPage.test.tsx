@@ -35,6 +35,8 @@ import {
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
+import getTestGroups from "../../../src/userTestGroups"
+import { TestGroups } from "../../../src/userInTestGroup"
 
 const DiversionPage = (
   props: Omit<
@@ -71,11 +73,15 @@ beforeEach(() => {
 })
 
 jest.mock("../../../src/api")
+jest.mock("../../../src/userTestGroups")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockReturnValue(neverPromise())
   jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
+  jest
+    .mocked(getTestGroups)
+    .mockReturnValue([TestGroups.RouteLadderHeaderUpdate])
 })
 
 describe("DiversionPage", () => {
@@ -1216,12 +1222,19 @@ describe("DiversionPage", () => {
   })
 
   describe("'Change route or direction' button", () => {
-    /*
-     * This test is here because this button is now part of one of the
-     * components, and we want to make sure that we don't accidentally
-     * render it when we didn't intend to.
-     */
-    test("the button doesn't render yet in context", async () => {
+    test("there is a button saying 'Change route or direction'", async () => {
+      render(<DiversionPage />)
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Change route or direction" })
+        ).toBeVisible()
+      })
+    })
+
+    test("the button is not there if the user isn't in the right test group", async () => {
+      jest.mocked(getTestGroups).mockReturnValue([])
+
       render(<DiversionPage />)
 
       expect(
