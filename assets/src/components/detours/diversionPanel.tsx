@@ -40,7 +40,6 @@ export const DiversionPanel = ({
           <Button
             className="align-self-start icon-link my-3"
             variant="outline-primary"
-            onClick={() => {}}
           >
             <ArrowLeft />
             Change route or direction
