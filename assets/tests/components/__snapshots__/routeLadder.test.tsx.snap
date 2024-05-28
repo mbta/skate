@@ -1330,7 +1330,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
       class="card-body"
     >
       <div
-        class="dropdown"
+        class="border-box inherit-box dropdown"
       >
         <button
           aria-expanded="false"
