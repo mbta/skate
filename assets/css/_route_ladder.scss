@@ -49,16 +49,14 @@
 
   .card-body {
     display: inline-grid;
-    padding: 0;
+    grid-template-columns: 1fr 1fr auto 1fr 1fr;
+    padding: 6px 8px;
     align-items: center;
   }
 
-  .c-new-route-ladder__fake-dropdown {
-    height: 36px;
-    width: 36px;
-    border-radius: 4px;
-    background-color: $color-eggplant-500;
-    margin: 6px 8px;
+  .c-route-ladder__dropdown-button {
+    height: 2.25rem;
+    width: 2.25rem;
   }
 
   .c-route-ladder__alert-icon {
@@ -82,8 +80,7 @@
 
   .c-route-ladder__close-button-container {
     grid-column: 5/6;
-    margin-right: 8px;
-    margin-left: auto;
+    margin: 2px 0 2px auto;
   }
 }
 
