@@ -1237,11 +1237,12 @@ describe("DiversionPage", () => {
 
       render(<DiversionPage />)
 
-      await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: "Change route or direction" })
-        ).not.toBeInTheDocument()
-      })
+      expect(
+        await screen.findByRole("heading", { name: "Create Detour" })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole("button", { name: "Change route or direction" })
+      ).not.toBeInTheDocument()
     })
   })
 })
