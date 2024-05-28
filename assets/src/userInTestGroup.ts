@@ -7,7 +7,6 @@ export enum TestGroups {
   KeycloakSso = "keycloak-sso",
   MinimalLadderPage = "minimal-ladder-page",
   LateView = "late-view",
-  RouteLadderHeaderUpdate = "route-ladder-header-update",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {
