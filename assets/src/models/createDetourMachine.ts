@@ -4,8 +4,8 @@ import { ShapePoint } from "../schedule"
 export const createDetourMachine = setup({
   types: {} as {
     context: {
-      startPoint: ShapePoint | null
-      endPoint: ShapePoint | null
+      startPoint: ShapePoint | undefined
+      endPoint: ShapePoint | undefined
       waypoints: ShapePoint[]
     }
     events:
@@ -22,7 +22,7 @@ export const createDetourMachine = setup({
       startPoint: (_, params: { location: ShapePoint }) => params.location,
     }),
     "detour.remove-start-point": assign({
-      startPoint: null,
+      startPoint: undefined,
     }),
     "detour.add-waypoint": assign({
       waypoints: ({ context }, params: { location: ShapePoint }) => [
@@ -37,11 +37,11 @@ export const createDetourMachine = setup({
       endPoint: (_, params: { location: ShapePoint }) => params.location,
     }),
     "detour.remove-end-point": assign({
-      endPoint: null,
+      endPoint: undefined,
     }),
     "detour.clear": assign({
-      startPoint: null,
-      endPoint: null,
+      startPoint: undefined,
+      endPoint: undefined,
       waypoints: [],
     }),
 
@@ -53,8 +53,8 @@ export const createDetourMachine = setup({
   id: "Detours Machine",
   context: () => ({
     waypoints: [],
-    startPoint: null,
-    endPoint: null,
+    startPoint: undefined,
+    endPoint: undefined,
   }),
 
   initial: "Detour Drawing",

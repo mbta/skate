@@ -34,9 +34,9 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   /** The detour waypoints in-between the start and end point */
   const waypoints = snapshot.context.waypoints
   const allPoints = useMemo(() => {
-    if (startPoint === null) {
+    if (!startPoint) {
       return []
-    } else if (endPoint === null) {
+    } else if (!endPoint) {
       return [startPoint].concat(waypoints)
     } else {
       return [startPoint].concat(waypoints).concat([endPoint])
