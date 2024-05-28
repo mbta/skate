@@ -27,6 +27,7 @@ import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 import getTestGroups from "../../src/userTestGroups"
+import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/usePanelState")
 
@@ -228,7 +229,10 @@ describe("routeLadder", () => {
   test("renders a route ladder with the new header and detour dropdown", () => {
     jest
       .mocked(getTestGroups)
-      .mockReturnValue(["route-ladder-header-update", "detours-pilot"])
+      .mockReturnValue([
+        TestGroups.RouteLadderHeaderUpdate,
+        TestGroups.DetoursPilot,
+      ])
 
     const route: Route = routeFactory.build({
       id: "28",
