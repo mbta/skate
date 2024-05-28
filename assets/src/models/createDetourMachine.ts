@@ -4,6 +4,8 @@ import { ShapePoint } from "../schedule"
 export const createDetourMachine = setup({
   types: {} as {
     context: {
+      startPoint: ShapePoint | null
+      endPoint: ShapePoint | null
       waypoints: ShapePoint[]
     }
     events:
@@ -16,6 +18,12 @@ export const createDetourMachine = setup({
       | { type: "detour.share.copy-detour"; detourText: string }
   },
   actions: {
+    "detour.add-start-point": assign({
+      startPoint: (_, params: { location: ShapePoint }) => params.location,
+    }),
+    "detour.remove-start-point": assign({
+      startPoint: null,
+    }),
     "detour.add-waypoint": assign({
       waypoints: ({ context }, params: { location: ShapePoint }) => [
         ...context.waypoints,
@@ -25,7 +33,15 @@ export const createDetourMachine = setup({
     "detour.remove-last-waypoint": assign({
       waypoints: ({ context }) => context.waypoints.slice(0, -1),
     }),
+    "detour.add-end-point": assign({
+      endPoint: (_, params: { location: ShapePoint }) => params.location,
+    }),
+    "detour.remove-end-point": assign({
+      endPoint: null,
+    }),
     "detour.clear": assign({
+      startPoint: null,
+      endPoint: null,
       waypoints: [],
     }),
 
@@ -37,6 +53,8 @@ export const createDetourMachine = setup({
   id: "Detours Machine",
   context: () => ({
     waypoints: [],
+    startPoint: null,
+    endPoint: null,
   }),
 
   initial: "Detour Drawing",
@@ -59,7 +77,7 @@ export const createDetourMachine = setup({
                 "detour.edit.place-connection-point": {
                   target: "Place Waypoint",
                   actions: {
-                    type: "detour.add-waypoint",
+                    type: "detour.add-start-point",
                     params: ({ event: { location } }) => ({
                       location,
                     }),
@@ -80,7 +98,7 @@ export const createDetourMachine = setup({
                 "detour.edit.place-connection-point": {
                   target: "Finished Drawing",
                   actions: {
-                    type: "detour.add-waypoint",
+                    type: "detour.add-end-point",
                     params: ({ event: { location } }) => ({
                       location,
                     }),
@@ -88,8 +106,8 @@ export const createDetourMachine = setup({
                 },
                 "detour.edit.undo": [
                   {
-                    guard: ({ context }) => context.waypoints.length === 1,
-                    actions: "detour.remove-last-waypoint",
+                    guard: ({ context }) => context.waypoints.length === 0,
+                    actions: "detour.remove-start-point",
                     target: "Pick Start Point",
                   },
                   {
@@ -102,7 +120,7 @@ export const createDetourMachine = setup({
             "Finished Drawing": {
               on: {
                 "detour.edit.undo": {
-                  actions: "detour.remove-last-waypoint",
+                  actions: "detour.remove-end-point",
                   target: "Place Waypoint",
                 },
                 "detour.edit.done": {

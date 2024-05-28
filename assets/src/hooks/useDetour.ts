@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 import { OriginalRoute } from "../models/detour"
@@ -6,9 +6,8 @@ import { OriginalRoute } from "../models/detour"
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
-import { useMachine, useSelector } from "@xstate/react"
+import { useMachine } from "@xstate/react"
 import { createDetourMachine } from "../models/createDetourMachine"
-import { SnapshotFrom } from "xstate"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -28,52 +27,21 @@ export enum DetourState {
   Finished,
 }
 
-const selectFinishedState = (
-  snapshot: SnapshotFrom<typeof createDetourMachine>
-) => {
-  /*
-   * There's probably a better way to do this? Tags or maybe context?
-   * Tags seem more appropriate, but weird to manage Out-Of-Bounds state via tags.
-   * Maybe this entire API call could be moved to and managed by an actor
-   * combined with parallel child states within the state machine?
-   * -- https://stately.ai/docs/promise-actors */
-  const isFinishedDrawing = snapshot.matches({
-    "Detour Drawing": { Editing: "Finished Drawing" },
-  })
-  const isSharingDetour = snapshot.matches({ "Detour Drawing": "Share Detour" })
-  const isInFinishedDetourState = isFinishedDrawing || isSharingDetour
-  return isInFinishedDetourState
-}
-
-/** This selects the detour waypoints in-between the detour start and end points  */
-const selectWaypoints = (snapshot: SnapshotFrom<typeof createDetourMachine>) =>
-  snapshot.matches({
-    "Detour Drawing": { Editing: "Finished Drawing" },
-  })
-    ? snapshot.context.waypoints.slice(1, -1)
-    : snapshot.matches({ "Detour Drawing": { Editing: "Place Waypoint" } })
-    ? snapshot.context.waypoints.slice(1)
-    : []
-
-const selectStartPoint = (snapshot: SnapshotFrom<typeof createDetourMachine>) =>
-  snapshot.context.waypoints.at(0)
-
-const selectEndPoint = (snapshot: SnapshotFrom<typeof createDetourMachine>) =>
-  (selectFinishedState(snapshot) && snapshot.context.waypoints.at(-1)) ||
-  undefined
-
 export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
-  const [snapshot, send, createDetourActor] = useMachine(createDetourMachine)
-  const startPoint = useSelector(createDetourActor, selectStartPoint)
-  const endPoint = useSelector(createDetourActor, selectEndPoint)
+  const [snapshot, send] = useMachine(createDetourMachine)
+  const startPoint = snapshot.context.startPoint
+  const endPoint = snapshot.context.endPoint
   /** The detour waypoints in-between the start and end point */
-  const waypoints = useSelector(createDetourActor, selectWaypoints)
-  const allPoints = snapshot.context.waypoints
-
-  const isInFinishedDetourState = useSelector(
-    createDetourActor,
-    selectFinishedState
-  )
+  const waypoints = snapshot.context.waypoints
+  const allPoints = useMemo(() => {
+    if (startPoint === null) {
+      return []
+    } else if (endPoint === null) {
+      return [startPoint].concat(waypoints)
+    } else {
+      return [startPoint].concat(waypoints).concat([endPoint])
+    }
+  }, [startPoint, waypoints, endPoint])
 
   const { result: finishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
@@ -84,12 +52,12 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
        * > strongly-typed machines can still be achieved without Typegen.
        * > -- https://stately.ai/docs/migration#use-typestypegen-instead-of-tstypes
        */
-      if (isInFinishedDetourState && startPoint && endPoint) {
+      if (startPoint && endPoint) {
         return fetchFinishedDetour(routePatternId, startPoint, endPoint)
       }
 
       return null
-    }, [isInFinishedDetourState, startPoint, endPoint, routePatternId]),
+    }, [startPoint, endPoint, routePatternId]),
   })
 
   const { result: nearestIntersection } = useNearestIntersection({
