@@ -92,11 +92,11 @@ export const NewHeader = ({
     <Card className="c-new-route-ladder__header">
       <Card.Body>
         {inTestGroup(TestGroups.DetoursPilot) && (
-          <Dropdown>
-            <Dropdown.Toggle className="c-route-ladder__dropdown-button"></Dropdown.Toggle>
-            <Dropdown.Menu className="c-route-ladder__dropdown">
-              <Dropdown.Item>
-                <PlusSquare className="c-route-ladder__dropdown-item__icon" />
+          <Dropdown className="border-box inherit-box">
+            <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
+            <Dropdown.Menu>
+              <Dropdown.Item className="icon-link">
+                <PlusSquare />
                 Add detour
               </Dropdown.Item>
             </Dropdown.Menu>
