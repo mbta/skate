@@ -1241,7 +1241,7 @@ describe("DiversionPage", () => {
         await screen.findByRole("heading", { name: "Create Detour" })
       ).toBeInTheDocument()
       expect(
-        screen.getByRole("button", { name: "Change route or direction" })
+        screen.queryByRole("button", { name: "Change route or direction" })
       ).not.toBeInTheDocument()
     })
   })
