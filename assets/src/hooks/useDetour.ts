@@ -29,10 +29,7 @@ export enum DetourState {
 
 export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const [snapshot, send] = useMachine(createDetourMachine)
-  const startPoint = snapshot.context.startPoint
-  const endPoint = snapshot.context.endPoint
-  /** The detour waypoints in-between the start and end point */
-  const waypoints = snapshot.context.waypoints
+  const { startPoint, endPoint, waypoints } = snapshot.context
   const allPoints = useMemo(() => {
     if (!startPoint) {
       return []
