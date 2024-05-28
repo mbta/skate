@@ -240,7 +240,7 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const tree = render(
+    const { container: tree } = render(
       <RouteLadder
         route={route}
         timepoints={timepoints}
@@ -253,7 +253,7 @@ describe("routeLadder", () => {
         ladderCrowdingToggles={{}}
         hasAlert={false}
       />
-    ).container
+    )
 
     expect(tree).toMatchSnapshot()
   })
