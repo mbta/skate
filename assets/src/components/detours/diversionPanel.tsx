@@ -6,7 +6,6 @@ import { Panel } from "./diversionPage"
 import { Stop } from "../../schedule"
 import { uniqBy } from "../../helpers/array"
 import { ArrowLeft } from "../../helpers/bsIcons"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 export interface DiversionPanelProps {
   directions?: DetourShape["directions"]
@@ -17,6 +16,7 @@ export interface DiversionPanelProps {
   routeDirection: string
   detourFinished?: boolean
   onFinishDetour?: () => void
+  onChangeRoute?: () => void
 }
 
 export const DiversionPanel = ({
@@ -28,6 +28,7 @@ export const DiversionPanel = ({
   routeDirection,
   detourFinished,
   onFinishDetour,
+  onChangeRoute,
 }: DiversionPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header>
@@ -36,11 +37,8 @@ export const DiversionPanel = ({
 
     <Panel.Body className="c-diversion-panel__body d-flex flex-column">
       <Panel.Body.ScrollArea>
-        {inTestGroup(TestGroups.RouteLadderHeaderUpdate) && (
-          <Button
-            className="align-self-start icon-link my-3"
-            variant="outline-primary"
-          >
+        {onChangeRoute && (
+          <Button className="icon-link my-3" variant="outline-primary">
             <ArrowLeft />
             Change route or direction
           </Button>

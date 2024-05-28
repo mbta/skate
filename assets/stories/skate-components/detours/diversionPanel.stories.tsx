@@ -50,3 +50,9 @@ export const WithStops: Story = {
     ],
   },
 }
+
+export const WithChangeRouteButton: Story = {
+  args: {
+    onChangeRoute: () => {},
+  },
+}
