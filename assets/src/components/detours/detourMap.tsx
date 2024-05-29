@@ -421,7 +421,7 @@ const UnfinishedDiversionRouteShape = ({
       className="c-detour_map--original-route-shape-core"
     />
     <Polyline
-      weight={6}
+      weight={3}
       interactive={false}
       positions={afterStartPoint.map(shapePointToLatLngLiteral)}
       className="c-detour_map--original-route-shape-after-start-point"
@@ -429,7 +429,7 @@ const UnfinishedDiversionRouteShape = ({
     {interactive && (
       <Polyline
         positions={afterStartPoint.map(shapePointToLatLngLiteral)}
-        weight={16}
+        weight={13}
         className={joinClasses([
           "c-detour_map--original-route-shape-after-start-point--interactive",
           "c-detour_map--original-route-shape__unfinished",
@@ -438,7 +438,9 @@ const UnfinishedDiversionRouteShape = ({
         eventHandlers={{
           click: onClick,
         }}
-      />
+      >
+        <MapTooltip>Click to complete detour</MapTooltip>
+      </Polyline>
     )}
   </>
 )
