@@ -14,6 +14,7 @@ const meta = {
     routeDescription: "Harvard via Allston",
     routeOrigin: "from Andrew Station",
     routeDirection: "Outbound",
+    onChangeRoute: undefined,
   },
   argTypes: {
     // Since there's not a good way to expose JSX to the Storybook frontend yet:
