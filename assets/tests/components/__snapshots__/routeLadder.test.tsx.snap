@@ -1330,14 +1330,18 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
       class="card-body"
     >
       <div
-        class="border-box inherit-box dropdown"
+        class="c-route-ladder__header__action-container"
       >
-        <button
-          aria-expanded="false"
-          class="c-route-ladder__dropdown-button dropdown-toggle btn btn-primary"
-          id="react-aria-:r0:"
-          type="button"
-        />
+        <div
+          class="border-box inherit-box dropdown"
+        >
+          <button
+            aria-expanded="false"
+            class="c-route-ladder__dropdown-button dropdown-toggle btn btn-primary"
+            id="react-aria-:r0:"
+            type="button"
+          />
+        </div>
       </div>
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
@@ -1472,6 +1476,9 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
     <div
       class="card-body"
     >
+      <div
+        class="c-route-ladder__header__action-container"
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
       >

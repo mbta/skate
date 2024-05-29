@@ -49,9 +49,15 @@
 
   .card-body {
     display: inline-grid;
-    grid-template-columns: 1fr auto auto auto 1fr;
+    grid-template-columns: 1fr auto 1fr;
     padding: 6px 8px;
-    align-items: center;
+  }
+
+  .c-route-ladder__header__action-container {
+    display: inline-flex;
+    div {
+      padding-right: 0.5rem;
+    }
   }
 
   .c-route-ladder__dropdown-button {
@@ -60,10 +66,9 @@
   }
 
   .c-route-ladder__alert-icon {
-    display: grid;
+    display: flex;
     align-items: center;
     width: 1.6rem;
-    margin: 0 0.5rem;
 
     cursor: pointer;
 
@@ -74,12 +79,11 @@
   }
 
   .c-route-ladder__route-pill {
-    grid-column: 3/4;
-    justify-self: center;
+    grid-column: 2/3;
   }
 
   .c-route-ladder__close-button-container {
-    grid-column: 5/6;
+    grid-column: 3/4;
     margin: 2px 0 2px auto;
   }
 }
