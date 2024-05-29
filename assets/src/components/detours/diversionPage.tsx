@@ -2,6 +2,7 @@ import React, {
   ComponentProps,
   ComponentPropsWithoutRef,
   PropsWithChildren,
+  useContext,
   useEffect,
   useState,
 } from "react"
@@ -14,7 +15,9 @@ import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 import { DetourFinishedPanel } from "./detourFinishedPanel"
+import { DetourRouteSelectionPanel } from "./detourRouteSelectionPanel"
 import { Route, RoutePattern } from "../../schedule"
+import RoutesContext from "../../contexts/routesContext"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -51,6 +54,7 @@ export const DiversionPage = ({
 }: DiversionPageProps) => {
   const {
     snapshot,
+    send,
 
     addConnectionPoint,
     addWaypoint,
@@ -85,7 +89,11 @@ export const DiversionPage = ({
     ? nearestIntersectionDirection.concat(directions)
     : undefined
 
-  const { route, routePattern } = snapshot.context
+  const { route, routePattern, routePatterns } = snapshot.context
+  const routePatternsById = Object.fromEntries(
+    routePatterns?.map((rp) => [rp.id, rp]) ?? []
+  )
+
   const {
     routeName = undefined,
     routeDirection = undefined,
@@ -123,6 +131,8 @@ export const DiversionPage = ({
     connectionPoints?.end?.name,
   ])
 
+  const routes = useContext(RoutesContext)
+
   return (
     <>
       <article className="l-diversion-page h-100 border-box inherit-box">
@@ -131,7 +141,38 @@ export const DiversionPage = ({
         </header>
 
         <div className="l-diversion-page__panel bg-light">
-          {snapshot.matches({ "Detour Drawing": "Editing" }) ? (
+          {snapshot.matches({ "Detour Drawing": "Pick Route Pattern" }) ? (
+            <DetourRouteSelectionPanel
+              allRoutes={routes ?? []}
+              selectedRouteInfo={
+                route && routePatterns && routePatternsById
+                  ? {
+                      routePatterns: routePatternsById,
+                      selectedRoute: route,
+                      selectedRoutePatternId: routePattern?.id ?? null,
+                    }
+                  : { selectedRoute: null }
+              }
+              onSelectRoute={(route) => {
+                return (
+                  route &&
+                  send({
+                    type: "detour.route-pattern.select-route",
+                    route,
+                  })
+                )
+              }}
+              onSelectRoutePattern={(routePattern) => {
+                routePattern &&
+                  send({
+                    type: "detour.route-pattern.select-pattern",
+                    routePattern,
+                  })
+              }}
+              onConfirm={() => send({ type: "detour.route-pattern.done" })}
+            />
+          ) : snapshot.matches({ "Detour Drawing": "Editing" }) &&
+            routePattern ? (
             <DiversionPanel
               directions={extendedDirections}
               missedStops={missedStops}
