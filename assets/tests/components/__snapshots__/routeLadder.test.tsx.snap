@@ -1340,7 +1340,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
         />
       </div>
       <div
-        class="c-route-pill c-route-pill--bus c-route-ladder__route-pill c-route-pill--large-format"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
       >
         28
       </div>
@@ -1473,7 +1473,7 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
       class="card-body"
     >
       <div
-        class="c-route-pill c-route-pill--bus c-route-ladder__route-pill c-route-pill--large-format"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
       >
         28
       </div>
