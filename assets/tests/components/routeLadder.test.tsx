@@ -196,7 +196,9 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with the new header format", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.RouteLadderHeaderUpdate])
+    jest
+      .mocked(getTestGroups)
+      .mockReturnValue([TestGroups.RouteLadderHeaderUpdate])
 
     const route: Route = routeFactory.build({
       id: "28",
