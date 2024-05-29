@@ -1,36 +1,26 @@
 import React, { useContext } from "react"
-import RouteLadders from "./routeLadders"
-import { currentRouteTab } from "../models/routeTab"
+import { isPreset } from "../models/routeTab"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import {
-  deselectRouteInTab,
-  flipLadderInTab,
-  toggleLadderCrowdingInTab,
-} from "../state"
+import { NavLink } from "react-router-dom"
 
 export const MinimalLadderPage = () => {
-  const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
-
-  const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
-    currentRouteTab(routeTabs) || {
-      selectedRouteIds: [] as string[],
-      ladderDirections: {},
-      ladderCrowdingToggles: {},
-    }
+  const [{ routeTabs }] = useContext(StateDispatchContext)
+  const presets = routeTabs
+    .filter(isPreset)
+    .sort((a, b) => (a.presetName || "").localeCompare(b.presetName || ""))
 
   return (
-    <div className="c-ladder-page__tab-bar-and-ladders">
-      <RouteLadders
-        selectedRouteIds={selectedRouteIds}
-        selectedVehicleId={undefined}
-        deselectRoute={(routeId) => dispatch(deselectRouteInTab(routeId))}
-        reverseLadder={(routeId) => dispatch(flipLadderInTab(routeId))}
-        toggleCrowding={(routeId) =>
-          dispatch(toggleLadderCrowdingInTab(routeId))
-        }
-        ladderDirections={ladderDirections}
-        ladderCrowdingToggles={ladderCrowdingToggles}
-      />
+    <div className="c-minimal-ladder-page">
+      <h3>Select a preset to display</h3>
+      {presets.map((preset) => (
+        <NavLink
+          key={preset.uuid}
+          to={"/minimal/" + preset.uuid}
+          className="btn btn-primary c-minimal-ladder-page__button"
+        >
+          {preset.presetName}
+        </NavLink>
+      ))}
     </div>
   )
 }

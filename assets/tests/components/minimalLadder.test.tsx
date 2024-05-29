@@ -2,13 +2,13 @@ import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import routeFactory from "../factories/route"
-import { Route, TimepointsByRouteId } from "../../src/schedule.d"
+import { Route as RouteType, TimepointsByRouteId } from "../../src/schedule.d"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { MinimalLadderPage } from "../../src/components/minimalLadderPage"
 import routeTabFactory from "../factories/routeTab"
-import { BrowserRouter } from "react-router-dom"
+import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { MinimalLadder } from "../../src/components/minimalLadder"
 import stateFactory from "../factories/applicationState"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
@@ -16,7 +16,7 @@ jest.mock("../../src/hooks/useTimepoints", () => ({
   default: jest.fn(() => ({})),
 }))
 
-const routes: Route[] = [
+const routes: RouteType[] = [
   routeFactory.build({ id: "1", name: "1" }),
   routeFactory.build({ id: "28", name: "28" }),
   routeFactory.build({ id: "39", name: "39" }),
@@ -36,8 +36,8 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "73": null,
 }
 
-describe("MinimalLadderPage", () => {
-  test("renders the preset selection page", () => {
+describe("MinimalLadders", () => {
+  test("renders route ladders", () => {
     jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
 
     const initialState = stateFactory.build({
@@ -65,11 +65,16 @@ describe("MinimalLadderPage", () => {
     })
     const { asFragment } = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <BrowserRouter>
-          <RoutesProvider routes={routes}>
-            <MinimalLadderPage />
-          </RoutesProvider>
-        </BrowserRouter>
+        <RoutesProvider routes={routes}>
+          <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
+            <Routes>
+              <Route
+                path="/minimal/:id"
+                element={<MinimalLadder.FromRouterParam />}
+              ></Route>
+            </Routes>
+          </MemoryRouter>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 

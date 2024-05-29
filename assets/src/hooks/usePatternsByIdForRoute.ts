@@ -1,34 +1,34 @@
-import { useEffect, useState } from "react"
+import { useCallback } from "react"
 import { fetchRoutePatterns } from "../api"
 import { ByRoutePatternId, RouteId, RoutePattern } from "../schedule"
+import { useApiCall } from "./useApiCall"
+
+/**
+ * It may be useful to export this at some point in the future,
+ * right now {@linkcode usePatternsByIdForRoute} has a nicer interface,
+ * unless you need a list.
+ */
+const usePatternsForRoute = (routeId: RouteId | undefined) =>
+  useApiCall({
+    apiCall: useCallback(async () => {
+      if (routeId === undefined) {
+        return null
+      }
+
+      return fetchRoutePatterns(routeId)
+    }, [routeId]),
+  })
 
 const usePatternsByIdForRoute = (
   routeId: RouteId | null
 ): ByRoutePatternId<RoutePattern> | null => {
-  const [routePatterns, setRoutePatterns] = useState<RoutePattern[] | null>(
-    null
-  )
-  useEffect(() => {
-    let canceled = false
-    if (routeId === null) {
-      setRoutePatterns([])
-    } else {
-      fetchRoutePatterns(routeId).then((routePatterns) => {
-        if (!canceled) {
-          setRoutePatterns(routePatterns)
-        }
-      })
-    }
-    return () => {
-      canceled = true
-    }
-  }, [routeId])
+  const { result: routePatterns } = usePatternsForRoute(routeId ?? undefined)
 
-  return routePatterns == null
-    ? null
-    : routePatterns.reduce((map, rp) => {
-        return { ...map, [rp.id]: rp }
-      }, {})
+  if (routePatterns === undefined || routePatterns === null) {
+    return null
+  }
+
+  return Object.fromEntries(routePatterns.map((rp) => [rp.id, rp]))
 }
 
 export default usePatternsByIdForRoute

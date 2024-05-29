@@ -224,20 +224,23 @@ const VariantPicker = ({
   }
 }
 
+export type RoutePropertiesCardOpened = "variants" | "stops" | null
+
 const RoutePropertiesCard = ({
   routePatterns,
   selectedRoutePatternId,
   selectRoutePattern,
   onClose,
+  defaultOpened = null,
 }: {
   routePatterns: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId: RoutePatternId
   selectRoutePattern: (routePattern: RoutePattern) => void
   onClose?: () => void
+  defaultOpened?: RoutePropertiesCardOpened
 }) => {
-  const [openedDetails, setOpenedDetails] = useState<
-    "variants" | "stops" | null
-  >(null)
+  const [openedDetails, setOpenedDetails] =
+    useState<RoutePropertiesCardOpened>(defaultOpened)
 
   const selectedRoutePattern = routePatterns[selectedRoutePatternId]
   const route: Route | null = useRoute(selectedRoutePattern?.routeId)
@@ -288,7 +291,6 @@ const RoutePropertiesCard = ({
           selectedRoutePatternId={selectedRoutePattern.id}
           selectRoutePattern={(routePattern: RoutePattern) => {
             selectRoutePattern(routePattern)
-            setOpenedDetails(null)
           }}
         />
       </DetailSection>

@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
-import { FinishedDetour, OriginalRoute } from "../models/detour"
+import { OriginalRoute } from "../models/detour"
 
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
+import { useMachine } from "@xstate/react"
+import { createDetourMachine } from "../models/createDetourMachine"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -26,34 +28,21 @@ export enum DetourState {
 }
 
 export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
-  const [state, setState] = useState<DetourState>(DetourState.Edit)
+  const [snapshot, send] = useMachine(createDetourMachine)
 
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
   const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
-  const [finishedDetour, setFinishedDetour] = useState<FinishedDetour | null>(
-    null
-  )
 
-  useEffect(() => {
-    let shouldUpdate = true
-
-    if (startPoint && endPoint) {
-      fetchFinishedDetour(routePatternId, startPoint, endPoint).then(
-        (result) => {
-          if (shouldUpdate) {
-            setFinishedDetour(result)
-          }
-        }
-      )
-    } else {
-      setFinishedDetour(null)
-    }
-
-    return () => {
-      shouldUpdate = false
-    }
-  }, [routePatternId, startPoint, endPoint])
+  const { result: finishedDetour } = useApiCall({
+    apiCall: useCallback(async () => {
+      if (startPoint && endPoint) {
+        return fetchFinishedDetour(routePatternId, startPoint, endPoint)
+      } else {
+        return null
+      }
+    }, [startPoint, endPoint, routePatternId]),
+  })
 
   const { result: nearestIntersection } = useNearestIntersection({
     latitude: startPoint?.lat,
@@ -79,7 +68,6 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     detourShape.result && isOk(detourShape.result)
       ? detourShape.result.ok.directions
       : undefined
-
   // Only append direction "Regular Route" after detour is finished
   if (!detourShape.isLoading && directions && finishedDetour) {
     directions = directions.concat({
@@ -102,11 +90,10 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     }
   }
 
-  const canUndo = startPoint !== null && state === DetourState.Edit
+  const canUndo =
+    startPoint !== null && snapshot.matches({ "Detour Drawing": "Editing" })
 
   const undo = () => {
-    if (!canUndo) return
-
     if (endPoint !== null) {
       setEndPoint(null)
     } else if (waypoints.length > 0) {
@@ -123,11 +110,11 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   }
 
   const finishDetour = () => {
-    setState(DetourState.Finished)
+    send({ type: "detour.edit.done" })
   }
 
   const editDetour = () => {
-    setState(DetourState.Edit)
+    send({ type: "detour.edit.resume" })
   }
 
   const missedStops = finishedDetour?.missedStops || undefined
@@ -142,7 +129,9 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
 
   return {
     /** The current state of the detour machine */
-    state,
+    state: snapshot.matches({ "Detour Drawing": "Editing" })
+      ? DetourState.Edit
+      : DetourState.Finished,
 
     /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
@@ -153,8 +142,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
      * Sets {@link startPoint} if unset.
      * Otherwise sets {@link endPoint} if unset.
      */
-    addConnectionPoint:
-      state === DetourState.Finished ? undefined : addConnectionPoint,
+    addConnectionPoint,
 
     /**
      * The starting connection point of the detour.
@@ -213,14 +201,15 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
     /**
      * Removes the last waypoint in {@link waypoints} if {@link canUndo} is `true`.
      */
-    undo: state === DetourState.Finished ? undefined : undo,
+    undo,
     /**
      * Clears the entire detour
      */
-    clear: state === DetourState.Finished ? undefined : clear,
+    clear,
+
     /** When present, puts this detour in "finished mode" */
     finishDetour: endPoint !== null ? finishDetour : undefined,
     /** When present, puts this detour in "edit mode" */
-    editDetour: state === DetourState.Finished ? editDetour : undefined,
+    editDetour,
   }
 }

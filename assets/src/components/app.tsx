@@ -31,6 +31,7 @@ import { TabMode } from "./propertiesPanel/tabPanels"
 import { DummyDetourPage } from "./dummyDetourPage"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { MinimalLadderPage } from "./minimalLadderPage"
+import { MinimalLadder } from "./minimalLadder"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -54,7 +55,7 @@ export const AppRoutes = () => {
   const vehiclesByRouteIdNeeded =
     openView === OpenView.Late ||
     location.pathname === "/" ||
-    location.pathname === "/minimal"
+    location.pathname.includes("/minimal")
 
   const { socket } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
@@ -72,7 +73,13 @@ export const AppRoutes = () => {
         <div className="l-app__main">
           <Routes>
             {inTestGroup(TestGroups.MinimalLadderPage) && (
-              <BrowserRoute path="/minimal" element={<MinimalLadderPage />} />
+              <>
+                <BrowserRoute path="/minimal" element={<MinimalLadderPage />} />
+                <BrowserRoute
+                  path="/minimal/:id"
+                  element={<MinimalLadder.FromRouterParam />}
+                />
+              </>
             )}
             <Route
               element={

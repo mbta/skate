@@ -3,6 +3,7 @@ import React from "react"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import RoutePropertiesCard, {
+  RoutePropertiesCardOpened,
   patternDisplayName,
 } from "../../../src/components/mapPage/routePropertiesCard"
 import { routePatternFactory } from "../../factories/routePattern"
@@ -12,8 +13,47 @@ import stopFactory from "../../factories/stop"
 
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import userEvent from "@testing-library/user-event"
+import {
+  ByRoutePatternId,
+  Route,
+  RoutePattern,
+  RoutePatternId,
+} from "../../../src/schedule"
 
 const route66 = routeFactory.build({ id: "66", name: "66Name" })
+const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
+  routeId: "66",
+  directionId: 0,
+})
+
+const RoutePropertiesCardWithDefaults = ({
+  routes = [route66],
+  routePatterns = {
+    [routePattern1.id]: routePattern1,
+    [routePattern2.id]: routePattern2,
+  },
+  selectedRoutePatternId = routePattern1.id,
+  onClose = () => {},
+  selectRoutePattern = (_routePattern) => {},
+  defaultOpened,
+}: {
+  routes?: Route[]
+  routePatterns?: ByRoutePatternId<RoutePattern>
+  selectedRoutePatternId?: RoutePatternId
+  onClose?: () => void
+  selectRoutePattern?: (routePattern: RoutePattern) => void
+  defaultOpened?: RoutePropertiesCardOpened
+}) => (
+  <RoutesProvider routes={routes}>
+    <RoutePropertiesCard
+      routePatterns={routePatterns}
+      selectedRoutePatternId={selectedRoutePatternId}
+      selectRoutePattern={selectRoutePattern}
+      onClose={onClose}
+      defaultOpened={defaultOpened}
+    />
+  </RoutesProvider>
+)
 
 describe("patternDisplayName", () => {
   test("When not formatted correctly with ' - '", () => {
@@ -68,14 +108,11 @@ describe("<RoutePropertiesCard/>", () => {
     test("No route data", () => {
       const routePattern = routePatternFactory.build({ routeId: "66" })
       render(
-        <RoutesProvider routes={[]}>
-          <RoutePropertiesCard
-            routePatterns={{ [routePattern.id]: routePattern }}
-            selectedRoutePatternId={routePattern.id}
-            selectRoutePattern={jest.fn()}
-            onClose={jest.fn()}
-          />
-        </RoutesProvider>
+        <RoutePropertiesCardWithDefaults
+          routes={[]}
+          routePatterns={{ [routePattern.id]: routePattern }}
+          selectedRoutePatternId={routePattern.id}
+        />
       )
 
       expect(
@@ -85,11 +122,9 @@ describe("<RoutePropertiesCard/>", () => {
     test("Selected route pattern not among route patterns", () => {
       const routePattern = routePatternFactory.build({ routeId: "66" })
       render(
-        <RoutePropertiesCard
+        <RoutePropertiesCardWithDefaults
           routePatterns={{ [routePattern.id]: routePattern }}
           selectedRoutePatternId={"missingRoutePatternId"}
-          selectRoutePattern={jest.fn()}
-          onClose={jest.fn()}
         />
       )
 
@@ -103,14 +138,12 @@ describe("<RoutePropertiesCard/>", () => {
     test("Shows the selected pattern's name", () => {
       const routePattern = routePatternFactory.build({ routeId: "66" })
       render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{ [routePattern.id]: routePattern }}
-            selectedRoutePatternId={routePattern.id}
-            selectRoutePattern={jest.fn()}
-            onClose={jest.fn()}
-          />
-        </RoutesProvider>
+        <RoutePropertiesCardWithDefaults
+          routePatterns={{ [routePattern.id]: routePattern }}
+          selectedRoutePatternId={routePattern.id}
+          selectRoutePattern={jest.fn()}
+          onClose={jest.fn()}
+        />
       )
 
       expect(
@@ -121,27 +154,19 @@ describe("<RoutePropertiesCard/>", () => {
     })
 
     test("Shows the route's other patterns in the same direction", async () => {
-      const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
-        routeId: "66",
-        directionId: 0,
-      })
       const routePatternOtherDirection = routePatternFactory.build({
         routeId: "66",
         directionId: 1,
       })
       render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{
-              [routePattern1.id]: routePattern1,
-              [routePattern2.id]: routePattern2,
-              [routePatternOtherDirection.id]: routePatternOtherDirection,
-            }}
-            selectedRoutePatternId={routePattern1.id}
-            selectRoutePattern={jest.fn()}
-            onClose={jest.fn()}
-          />
-        </RoutesProvider>
+        <RoutePropertiesCardWithDefaults
+          routePatterns={{
+            [routePattern1.id]: routePattern1,
+            [routePattern2.id]: routePattern2,
+            [routePatternOtherDirection.id]: routePatternOtherDirection,
+          }}
+          selectedRoutePatternId={routePattern1.id}
+        />
       )
       await userEvent.click(
         screen.getByRole("button", { name: "Show variants" })
@@ -180,17 +205,13 @@ describe("<RoutePropertiesCard/>", () => {
       })
 
       render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{
-              [routePattern1.id]: routePattern1,
-              [routePattern2.id]: routePattern2,
-            }}
-            selectedRoutePatternId={routePattern1.id}
-            selectRoutePattern={jest.fn()}
-            onClose={jest.fn()}
-          />
-        </RoutesProvider>
+        <RoutePropertiesCardWithDefaults
+          routePatterns={{
+            [routePattern1.id]: routePattern1,
+            [routePattern2.id]: routePattern2,
+          }}
+          selectedRoutePatternId={routePattern1.id}
+        />
       )
 
       await userEvent.click(
@@ -223,18 +244,15 @@ describe("<RoutePropertiesCard/>", () => {
       })
       const mockSelectRoutePattern = jest.fn()
       render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{
-              [routePatternBDirection0.id]: routePatternBDirection0,
-              [routePatternBDirection1.id]: routePatternBDirection1,
-              [routePattern7Direction1.id]: routePattern7Direction1,
-            }}
-            selectedRoutePatternId={routePatternBDirection0.id}
-            selectRoutePattern={mockSelectRoutePattern}
-            onClose={jest.fn()}
-          />
-        </RoutesProvider>
+        <RoutePropertiesCardWithDefaults
+          routePatterns={{
+            [routePatternBDirection0.id]: routePatternBDirection0,
+            [routePatternBDirection1.id]: routePatternBDirection1,
+            [routePattern7Direction1.id]: routePattern7Direction1,
+          }}
+          selectedRoutePatternId={routePatternBDirection0.id}
+          selectRoutePattern={mockSelectRoutePattern}
+        />
       )
 
       await userEvent.click(
@@ -263,18 +281,15 @@ describe("<RoutePropertiesCard/>", () => {
       })
       const mockSelectRoutePattern = jest.fn()
       render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{
-              [routePatternDirection0.id]: routePatternDirection0,
-              [routePatternDirection1_1.id]: routePatternDirection1_1,
-              [routePatternDirection1_0.id]: routePatternDirection1_0,
-            }}
-            selectedRoutePatternId={routePatternDirection0.id}
-            selectRoutePattern={mockSelectRoutePattern}
-            onClose={jest.fn()}
-          />
-        </RoutesProvider>
+        <RoutePropertiesCardWithDefaults
+          routePatterns={{
+            [routePatternDirection0.id]: routePatternDirection0,
+            [routePatternDirection1_1.id]: routePatternDirection1_1,
+            [routePatternDirection1_0.id]: routePatternDirection1_0,
+          }}
+          selectedRoutePatternId={routePatternDirection0.id}
+          selectRoutePattern={mockSelectRoutePattern}
+        />
       )
 
       await userEvent.click(
@@ -287,24 +302,13 @@ describe("<RoutePropertiesCard/>", () => {
       )
     })
 
-    test("Clicking a different route pattern calls selectRoutePattern and closes the variants list", async () => {
-      const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
-        routeId: "66",
-        directionId: 0,
-      })
+    test("Clicking a different route pattern calls selectRoutePattern", async () => {
       const mockSelectRoutePattern = jest.fn()
+
       render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{
-              [routePattern1.id]: routePattern1,
-              [routePattern2.id]: routePattern2,
-            }}
-            selectedRoutePatternId={routePattern1.id}
-            selectRoutePattern={mockSelectRoutePattern}
-            onClose={jest.fn()}
-          />
-        </RoutesProvider>
+        <RoutePropertiesCardWithDefaults
+          selectRoutePattern={mockSelectRoutePattern}
+        />
       )
 
       await userEvent.click(
@@ -317,28 +321,32 @@ describe("<RoutePropertiesCard/>", () => {
 
       await userEvent.click(routePattern2Radio)
       expect(mockSelectRoutePattern).toHaveBeenCalledWith(routePattern2)
-      expect(routePattern2Radio).not.toBeVisible()
+    })
+
+    test("Clicking a different route pattern does not close the variants list", async () => {
+      const mockSelectRoutePattern = jest.fn()
+
+      render(
+        <RoutePropertiesCardWithDefaults
+          selectRoutePattern={mockSelectRoutePattern}
+        />
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Show variants" })
+      )
+
+      const routePattern2Radio = screen.getByRole("radio", {
+        name: new RegExp(patternDisplayName(routePattern2).name),
+      })
+
+      await userEvent.click(routePattern2Radio)
+      expect(routePattern2Radio).toBeVisible()
     })
 
     test("Clicking the close button calls onClose prop", async () => {
-      const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
-        routeId: "66",
-        directionId: 0,
-      })
       const mockOnClose = jest.fn()
-      render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{
-              [routePattern1.id]: routePattern1,
-              [routePattern2.id]: routePattern2,
-            }}
-            selectedRoutePatternId={routePattern1.id}
-            selectRoutePattern={jest.fn()}
-            onClose={mockOnClose}
-          />
-        </RoutesProvider>
-      )
+      render(<RoutePropertiesCardWithDefaults onClose={mockOnClose} />)
 
       await userEvent.click(
         screen.getByRole("button", {
@@ -347,35 +355,51 @@ describe("<RoutePropertiesCard/>", () => {
       )
       expect(mockOnClose).toHaveBeenCalled()
     })
+  })
 
-    test("Only one details section is open at a time", async () => {
-      const [routePattern1, routePattern2] = routePatternFactory.buildList(2, {
-        routeId: "66",
-        directionId: 0,
-      })
-      const mockOnClose = jest.fn()
-      render(
-        <RoutesProvider routes={[route66]}>
-          <RoutePropertiesCard
-            routePatterns={{
-              [routePattern1.id]: routePattern1,
-              [routePattern2.id]: routePattern2,
-            }}
-            selectedRoutePatternId={routePattern1.id}
-            selectRoutePattern={jest.fn()}
-            onClose={mockOnClose}
-          />
-        </RoutesProvider>
-      )
+  describe("Sections", () => {
+    test("Starts out with no sections open", async () => {
+      render(<RoutePropertiesCardWithDefaults />)
+
+      expect(screen.getByText("Show outbound stops")).toBeInTheDocument()
+      expect(screen.getByText("Show variants")).toBeInTheDocument()
+    })
+
+    test("Can open the sections", async () => {
+      render(<RoutePropertiesCardWithDefaults />)
 
       await userEvent.click(screen.getByText("Show variants"))
-
       expect(screen.getByText("Hide variants")).toBeInTheDocument()
 
       await userEvent.click(screen.getByText("Show outbound stops"))
+      expect(screen.getByText("Hide outbound stops")).toBeInTheDocument()
+    })
 
+    test("Opening one section closes the other one", async () => {
+      render(<RoutePropertiesCardWithDefaults />)
+
+      await userEvent.click(screen.getByText("Show variants"))
+      expect(screen.getByText("Hide variants")).toBeInTheDocument()
+
+      await userEvent.click(screen.getByText("Show outbound stops"))
+      expect(screen.getByText("Show variants")).toBeInTheDocument()
       expect(screen.getByText("Hide outbound stops")).toBeInTheDocument()
 
+      await userEvent.click(screen.getByText("Show variants"))
+      expect(screen.getByText("Show outbound stops")).toBeInTheDocument()
+    })
+
+    test("Can have the variants section open by default", async () => {
+      render(<RoutePropertiesCardWithDefaults defaultOpened="variants" />)
+
+      expect(screen.getByText("Show outbound stops")).toBeInTheDocument()
+      expect(screen.getByText("Hide variants")).toBeInTheDocument()
+    })
+
+    test("Can have the stops section open by default", async () => {
+      render(<RoutePropertiesCardWithDefaults defaultOpened="stops" />)
+
+      expect(screen.getByText("Hide outbound stops")).toBeInTheDocument()
       expect(screen.getByText("Show variants")).toBeInTheDocument()
     })
   })
