@@ -115,7 +115,8 @@ export const NewHeader = ({
         )}
         <RoutePill
           routeName={routeName}
-          className="c-route-ladder__route-pill c-route-pill--large-format"
+          largeFormat
+          className="c-route-ladder__route-pill c-route-pill"
         />
         {hasAlert && <div className="c-route-ladder__alert-icon" />}
         <div className="c-route-ladder__close-button-container">
