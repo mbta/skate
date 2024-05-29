@@ -45,6 +45,8 @@ export const DiversionPage = ({
     routingError,
     nearestIntersection,
 
+    unfinishedRouteSegments,
+
     stops,
     missedStops,
     routeSegments,
@@ -144,6 +146,7 @@ export const DiversionPage = ({
             startPoint={startPoint ?? undefined}
             endPoint={endPoint ?? undefined}
             waypoints={waypoints}
+            unfinishedRouteSegments={unfinishedRouteSegments}
             routeSegments={routeSegments}
             onAddWaypoint={addWaypoint}
             onClickOriginalShape={addConnectionPoint ?? (() => {})}
