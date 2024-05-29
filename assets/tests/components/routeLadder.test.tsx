@@ -27,6 +27,7 @@ import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 import getTestGroups from "../../src/userTestGroups"
+import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/usePanelState")
 
@@ -195,7 +196,7 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with the new header format", () => {
-    jest.mocked(getTestGroups).mockReturnValue(["route-ladder-header-update"])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.RouteLadderHeaderUpdate])
 
     const route: Route = routeFactory.build({
       id: "28",
@@ -207,7 +208,7 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const tree = render(
+    const { container: tree } = render(
       <RouteLadder
         route={route}
         timepoints={timepoints}
@@ -220,7 +221,7 @@ describe("routeLadder", () => {
         ladderCrowdingToggles={{}}
         hasAlert={false}
       />
-    ).container
+    )
 
     expect(tree).toMatchSnapshot()
   })
