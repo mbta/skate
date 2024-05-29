@@ -19,6 +19,7 @@ import { DetourRouteSelectionPanel } from "./detourRouteSelectionPanel"
 import { Route, RoutePattern } from "../../schedule"
 import RoutesContext from "../../contexts/routesContext"
 import { Snapshot } from "xstate"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -83,6 +84,8 @@ export const DiversionPage = ({
     directions,
     routingError,
     nearestIntersection,
+
+    unfinishedRouteSegments,
 
     stops,
     missedStops,
@@ -266,6 +269,11 @@ export const DiversionPage = ({
             startPoint={startPoint ?? undefined}
             endPoint={endPoint ?? undefined}
             waypoints={waypoints}
+            unfinishedRouteSegments={
+              inTestGroup(TestGroups.BackwardsDetourPrevention)
+                ? unfinishedRouteSegments
+                : undefined
+            }
             routeSegments={routeSegments}
             onAddWaypoint={addWaypoint}
             onClickOriginalShape={addConnectionPoint ?? (() => {})}

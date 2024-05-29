@@ -1,8 +1,23 @@
 import { Factory } from "fishery"
-import { FinishedDetour, RouteSegments } from "../../src/models/detour"
+import {
+  FinishedDetour,
+  RouteSegments,
+  UnfinishedDetour,
+  UnfinishedRouteSegments,
+} from "../../src/models/detour"
 import { shapePointFactory } from "./shapePointFactory"
 import stopFactory from "./stop"
 import { detourShapeFactory } from "./detourShapeFactory"
+
+export const unfinishedRouteSegmentsFactory =
+  Factory.define<UnfinishedRouteSegments>(() => ({
+    beforeStartPoint: shapePointFactory.buildList(3),
+    afterStartPoint: shapePointFactory.buildList(3),
+  }))
+
+export const unfinishedDetourFactory = Factory.define<UnfinishedDetour>(() => ({
+  unfinishedRouteSegments: unfinishedRouteSegmentsFactory.build(),
+}))
 
 export const routeSegmentsFactory = Factory.define<RouteSegments>(() => ({
   beforeDetour: shapePointFactory.buildList(3),
