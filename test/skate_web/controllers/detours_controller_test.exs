@@ -6,6 +6,57 @@ defmodule SkateWeb.DetoursControllerTest do
 
   alias Skate.Detours.MissedStops
 
+  describe "unfinished_detour/2" do
+    @tag :authenticated
+    test "returns unfinished route segments", %{conn: conn} do
+      points = [
+        build(:gtfs_shape_point, lat: 42.41, lon: -70.99),
+        build(:gtfs_shape_point, lat: 42.42, lon: -70.99),
+        build(:gtfs_shape_point, lat: 42.43, lon: -70.99),
+        build(:gtfs_shape_point, lat: 42.44, lon: -70.99),
+        build(:gtfs_shape_point, lat: 42.45, lon: -70.99)
+      ]
+
+      route_pattern = build(:gtfs_route_pattern)
+
+      shape_with_stops =
+        build(
+          :shape_with_stops,
+          %{points: points}
+        )
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
+
+      conn =
+        post(conn, ~p"/api/detours/unfinished_detour",
+          route_pattern_id: route_pattern.id,
+          connection_start: %{
+            "lat" => 42.425,
+            "lon" => -70.99
+          }
+        )
+
+      assert %{
+               "data" => %{
+                 "unfinished_route_segments" => %{
+                   "before_start_point" => [
+                     %{"lat" => 42.41, "lon" => -70.99},
+                     %{"lat" => 42.42, "lon" => -70.99},
+                     %{"lat" => 42.425, "lon" => -70.99}
+                   ],
+                   "after_start_point" => [
+                     %{"lat" => 42.425, "lon" => -70.99},
+                     %{"lat" => 42.43, "lon" => -70.99},
+                     %{"lat" => 42.44, "lon" => -70.99},
+                     %{"lat" => 42.45, "lon" => -70.99}
+                   ]
+                 }
+               }
+             } = json_response(conn, 200)
+    end
+  end
+
   describe "finished_detour/2" do
     @tag :authenticated
     test "returns missed stops", %{conn: conn} do

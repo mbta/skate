@@ -6,6 +6,136 @@ defmodule Skate.Detours.RouteSegmentsTest do
 
   alias Util.Location
 
+  describe "unfinished_route_segments" do
+    test "divides a shape into segments based on the start and end points of a detour" do
+      result =
+        RouteSegments.unfinished_route_segments(
+          [
+            Location.new(0, 0),
+            Location.new(0, 1),
+            Location.new(0, 2),
+            Location.new(0, 3)
+          ],
+          Location.new(0, 2.5)
+        )
+
+      assert {:ok,
+              %RouteSegments.UnfinishedResult{
+                before_start_point: [
+                  Location.new(0, 0),
+                  Location.new(0, 1),
+                  Location.new(0, 2),
+                  Location.new(0, 2.5)
+                ],
+                after_start_point: [
+                  Location.new(0, 2.5),
+                  Location.new(0, 3)
+                ]
+              }} == result
+    end
+
+    test "works even if the start point is not on the shape" do
+      result =
+        RouteSegments.unfinished_route_segments(
+          [
+            Location.new(0, 0),
+            Location.new(0, 1),
+            Location.new(0, 2),
+            Location.new(0, 3)
+          ],
+          Location.new(0.1, 2.3)
+        )
+
+      assert {:ok,
+              %RouteSegments.UnfinishedResult{
+                before_start_point: [
+                  Location.new(0, 0),
+                  Location.new(0, 1),
+                  Location.new(0, 2),
+                  Location.new(0, 2.3)
+                ],
+                after_start_point: [
+                  Location.new(0, 2.3),
+                  Location.new(0, 3)
+                ]
+              }} == result
+    end
+
+    test "has an infinitely-small 'before' segment if the start point is before the beginning of the shape" do
+      result =
+        RouteSegments.unfinished_route_segments(
+          [
+            Location.new(0, 0),
+            Location.new(0, 1),
+            Location.new(0, 2),
+            Location.new(0, 3)
+          ],
+          Location.new(0, -0.1)
+        )
+
+      assert {:ok,
+              %RouteSegments.UnfinishedResult{
+                before_start_point: [
+                  Location.new(0, 0),
+                  Location.new(0, 0)
+                ],
+                after_start_point: [
+                  Location.new(0, 0),
+                  Location.new(0, 1),
+                  Location.new(0, 2),
+                  Location.new(0, 3)
+                ]
+              }} == result
+    end
+
+    test "has an infinitely-small 'after' segment if the start point is after the end of the shape" do
+      result =
+        RouteSegments.unfinished_route_segments(
+          [
+            Location.new(0, 0),
+            Location.new(0, 1),
+            Location.new(0, 2),
+            Location.new(0, 3)
+          ],
+          Location.new(0, 3.1)
+        )
+
+      assert {:ok,
+              %RouteSegments.UnfinishedResult{
+                before_start_point: [
+                  Location.new(0, 0),
+                  Location.new(0, 1),
+                  Location.new(0, 2),
+                  Location.new(0, 3)
+                ],
+                after_start_point: [
+                  Location.new(0, 3),
+                  Location.new(0, 3)
+                ]
+              }} == result
+    end
+
+    test "returns :error if 'shape' is empty" do
+      result =
+        RouteSegments.unfinished_route_segments(
+          [],
+          Location.new(0, 3.1)
+        )
+
+      assert :error == result
+    end
+
+    test "returns :error if 'shape' has one point" do
+      result =
+        RouteSegments.unfinished_route_segments(
+          [Location.new(0, 6)],
+          Location.new(0, 3.1)
+        )
+
+      assert :error == result
+    end
+  end
+
   describe "route_segments" do
     test "divides a shape into segments based on the start and end points of a detour" do
       result =
