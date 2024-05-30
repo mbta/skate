@@ -1,11 +1,14 @@
-import { setup, assign, ActorLogicFrom, InputFrom } from "xstate"
-import { Route, RoutePattern } from "../schedule"
+import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
+import { Route, RouteId, RoutePattern } from "../schedule"
+import { fetchRoutePatterns } from "../api"
 
 export const createDetourMachine = setup({
   types: {} as {
     context: {
       route?: Route
       routePattern?: RoutePattern
+
+      routePatterns?: RoutePattern[]
     }
 
     input:
@@ -36,6 +39,21 @@ export const createDetourMachine = setup({
           routePattern: RoutePattern
         }
   },
+  actors: {
+    "fetch-route-patterns": fromPromise<
+      Awaited<ReturnType<typeof fetchRoutePatterns>>,
+      { routeId?: RouteId }
+    >(async ({ input: { routeId } }) => {
+      if (routeId) {
+        return fetchRoutePatterns(routeId)
+      } else {
+        // Hmm, this could leave us in the lurch if we don't handle it,
+        // I'd like to make this impossible but I can't get typescript to infer
+        // the context types but it's not letting me
+        throw "No Route ID"
+      }
+    }),
+  },
   actions: {
     "set.route-pattern": assign({
       routePattern: (_, params: { routePattern: RoutePattern }) =>
@@ -60,7 +78,7 @@ export const createDetourMachine = setup({
           initial: "Pick Route ID",
           on: {
             "detour.route-pattern.select-route": {
-              target: ".Pick Route Pattern",
+              target: ".Pick Route ID",
               actions: assign({
                 route: ({ event }) => event.route,
               }),
@@ -74,8 +92,33 @@ export const createDetourMachine = setup({
                * is allowed to change at any point while inside the
                * "#Detours Machine.Detour Drawing.Pick Route Pattern" state.
                */
+
+              invoke: {
+                src: "fetch-route-patterns",
+
+                input: ({ context: { route } }) => ({ routeId: route?.id }),
+                onDone: {
+                  target: "Finalize Route Pattern",
+                  actions: assign({
+                    routePatterns: ({ event }) => event.output,
+                    routePattern: ({ context, event }) =>
+                      // If we currently have a route pattern
+                      context.routePattern &&
+                      // And the current route pattern matches the current route ID
+                      context.routePattern.routeId === context.route?.id
+                        ? // Return the current route pattern
+                          context.routePattern
+                        : // Otherwise: Find the first pattern that's "Inbound"
+                          event.output.find(
+                            (pattern) => pattern.directionId === 1
+                          ) ??
+                          // Otherwise fallback to the first pattern in the list (which _could_ be empty)
+                          event.output.at(0),
+                  }),
+                },
+              },
             },
-            "Pick Route Pattern": {
+            "Finalize Route Pattern": {
               on: {
                 "detour.route-pattern.done": {
                   guard: ({ context }) => context.routePattern !== undefined,
