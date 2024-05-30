@@ -1,5 +1,5 @@
-import React from "react"
-import { Button, FormSelect } from "react-bootstrap"
+import React, { useState } from "react"
+import { Button, Form, FormSelect } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import {
   ByRoutePatternId,
@@ -40,7 +40,14 @@ const selectedRoutePatternFromInfo = (
 export const DetourRouteSelectionPanel = ({
   allRoutes,
   selectedRouteInfo,
-}: DetourRouteSelectionPanelProps) => (
+}: DetourRouteSelectionPanelProps) => {
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = () => {
+    setValidated(true);
+  };
+
+  return (
   <Panel as="article">
     <Panel.Header className="">
       <h1 className="c-diversion-panel__h1 my-3">Create Detour</h1>
@@ -50,14 +57,20 @@ export const DetourRouteSelectionPanel = ({
       <Panel.Body.ScrollArea className="d-flex flex-column">
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Choose route</h2>
-          <FormSelect defaultValue={selectedRouteInfo.selectedRoute?.id}>
-            <option>Select a route</option>
-            {allRoutes.map((route) => (
-              <option key={route.id} value={route.id}>
-                {route.name}
-              </option>
-            ))}
-          </FormSelect>
+          <Form validated={validated}>
+            <FormSelect required defaultValue={selectedRouteInfo.selectedRoute?.id}>
+              <option value="">Select a route</option>
+              {allRoutes.map((route) => (
+                <option key={route.id} value={route.id}>
+                  {route.name}
+                </option>
+              ))}
+            </FormSelect>
+            <Form.Control.Feedback type="invalid">
+              Select a route to continue.
+            </Form.Control.Feedback>
+          </Form>
+          
         </section>
 
         <section className="pb-3">
@@ -80,10 +93,11 @@ export const DetourRouteSelectionPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex">
-        <Button className="m-3 flex-grow-1" onClick={() => {}}>
+        <Button className="m-3 flex-grow-1" onClick={handleSubmit}>
           Start drawing detour
         </Button>
       </Panel.Body.Footer>
     </Panel.Body>
   </Panel>
-)
+  )
+}
