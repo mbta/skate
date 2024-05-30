@@ -168,4 +168,51 @@ defmodule Util.NearestPoint do
       {Location.as_location!(segment_start), Location.as_location!(segment_end)}
     )
   end
+
+  @doc """
+  Computes the nearest point on the shape given by the first argument
+  (as a list of the points on the shape) to the point given by the second
+  argument, and returns a tuple containing the nearest point as well as the
+  index indicating which segment the nearest point is on.
+
+  ## Examples
+      iex> NearestPoint.nearest_point_on_shape(
+      ...>   [
+      ...>     Location.new(42, -71.0002),
+      ...>     Location.new(42.0001, -71.0001),
+      ...>     Location.new(42.0002, -71.0002)
+      ...>   ],
+      ...>   Location.new(42.00004, -71.00014)
+      ...> )
+      {
+        %Location{latitude: 42.00004711559566, longitude: -71.00015288440434},
+        0
+      }
+
+      iex> NearestPoint.nearest_point_on_shape(
+      ...>   [
+      ...>     Location.new(42, -71.0002),
+      ...>     Location.new(42.0001, -71.0001),
+      ...>     Location.new(42.0002, -71.0002)
+      ...>   ],
+      ...>   Location.new(42.00014, -71.00004)
+      ...> )
+      {
+        %Location{latitude: 42.00010442209373, longitude: -71.00010442209373},
+        1
+      }
+  """
+  @spec nearest_point_on_shape(
+          nonempty_list(Util.Location.From.t()),
+          Util.Location.From.t()
+        ) :: {Util.Location.t(), integer()}
+  def nearest_point_on_shape(shape, point) do
+    shape
+    |> Enum.chunk_every(2, 1, :discard)
+    |> Enum.map(fn [segment_start, segment_end] ->
+      nearest_point_on_segment(point, {segment_start, segment_end})
+    end)
+    |> Enum.with_index()
+    |> Enum.min_by(fn {nearest_point, _} -> Util.Location.distance(nearest_point, point) end)
+  end
 end

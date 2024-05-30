@@ -2,6 +2,7 @@ defmodule Skate.Detours.RouteSegments do
   @moduledoc """
   Break a route into segments based on `connection_start` and `connection_end` points
   """
+  alias Util.NearestPoint
 
   defmodule Result do
     @moduledoc false
@@ -62,10 +63,10 @@ defmodule Skate.Detours.RouteSegments do
         connection_end
       ) do
     {nearest_start_point, start_index} =
-      nearest_point_to_shape(shape, connection_start)
+      NearestPoint.nearest_point_on_shape(shape, connection_start)
 
     {nearest_end_point, end_index} =
-      nearest_point_to_shape(shape, connection_end)
+      NearestPoint.nearest_point_on_shape(shape, connection_end)
 
     {:ok,
      %__MODULE__.Result{
@@ -80,15 +81,5 @@ defmodule Skate.Detours.RouteSegments do
          [nearest_end_point] ++
            Enum.slice(shape, (end_index + 1)..-1)
      }}
-  end
-
-  defp nearest_point_to_shape(shape, point) do
-    shape
-    |> Enum.chunk_every(2, 1, :discard)
-    |> Enum.map(fn [segment_start, segment_end] ->
-      Util.NearestPoint.nearest_point_on_segment(point, {segment_start, segment_end})
-    end)
-    |> Enum.with_index()
-    |> Enum.min_by(fn {nearest_point, _} -> Util.Location.distance(nearest_point, point) end)
   end
 end
