@@ -66,24 +66,29 @@ export const DetourRouteSelectionPanel = ({
             <h2 className="c-diversion-panel__h2" id={selectId}>
               Choose route
             </h2>
-            <Form.Select
-              aria-labelledby={selectId}
-              value={selectedRouteInfo.selectedRoute?.id}
-              onChange={(changeEvent) => {
-                onSelectRoute?.(
-                  allRoutes.find(
-                    (route) => route.id === changeEvent.target.value
+            <Form>
+              <Form.Select
+                aria-labelledby={selectId}
+                value={selectedRouteInfo.selectedRoute?.id}
+                onChange={(changeEvent) => {
+                  onSelectRoute?.(
+                    allRoutes.find(
+                      (route) => route.id === changeEvent.target.value
+                    )
                   )
-                )
-              }}
-            >
-              <option>Select a route</option>
-              {allRoutes.map((route) => (
-                <option key={route.id} value={route.id}>
-                  {route.name}
-                </option>
-              ))}
-            </Form.Select>
+                }}
+              >
+                <option>Select a route</option>
+                {allRoutes.map((route) => (
+                  <option key={route.id} value={route.id}>
+                    {route.name}
+                  </option>
+                ))}
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                Select a route to continue.
+              </Form.Control.Feedback>
+            </Form>
           </section>
 
           <section className="pb-3">
