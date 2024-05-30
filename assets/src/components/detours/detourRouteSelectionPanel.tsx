@@ -54,6 +54,7 @@ export const DetourRouteSelectionPanel = ({
   isLoadingRoutePatterns,
 }: DetourRouteSelectionPanelProps) => {
   const selectId = "choose-route-select" + useId()
+
   return (
     <Panel as="article">
       <Panel.Header className="">
@@ -68,6 +69,7 @@ export const DetourRouteSelectionPanel = ({
             </h2>
             <Form>
               <Form.Select
+                required
                 aria-labelledby={selectId}
                 value={selectedRouteInfo.selectedRoute?.id}
                 onChange={(changeEvent) => {
