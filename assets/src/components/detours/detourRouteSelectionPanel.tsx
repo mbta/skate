@@ -78,7 +78,7 @@ export const DetourRouteSelectionPanel = ({
                   )
                 }}
               >
-                <option>Select a route</option>
+                <option value="">Select a route</option>
                 {allRoutes.map((route) => (
                   <option key={route.id} value={route.id}>
                     {route.name}
