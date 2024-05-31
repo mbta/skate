@@ -38,7 +38,11 @@ export const DiversionPanel = ({
     <Panel.Body className="c-diversion-panel__body d-flex flex-column">
       <Panel.Body.ScrollArea>
         {onChangeRoute && (
-          <Button className="icon-link my-3" variant="outline-primary">
+          <Button
+            className="icon-link my-3"
+            variant="outline-primary"
+            onClick={onChangeRoute}
+          >
             <ArrowLeft />
             Change route or direction
           </Button>
