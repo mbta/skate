@@ -1,4 +1,5 @@
 .c-route-ladder__header,
+.c-new-route-ladder__header,
 .c-route-ladder__controls {
   margin: 0 0.5rem;
 }
@@ -40,6 +41,59 @@
       height: 1.6rem;
       width: 1.6rem;
     }
+  }
+}
+
+.c-new-route-ladder__header {
+  min-width: max-content;
+
+  .card-body {
+    display: inline-grid;
+    grid-template-columns: 1fr auto 1fr;
+    padding: 6px 8px;
+  }
+
+  .c-route-ladder__header__action-container {
+    display: inline-flex;
+    div {
+      padding-right: 0.5rem;
+    }
+  }
+
+  .c-route-ladder__dropdown-button {
+    height: 2.25rem;
+    width: 2.25rem;
+    // TODO All of this is bad and should be reverted when we fix the left nav button colors
+    &.btn-primary {
+      --bs-btn-bg: #451b83;
+      --bs-btn-border-color: #451b83;
+      --bs-btn-hover-bg: #260f54;
+      --bs-btn-hover-border-color: #260f54;
+      --bs-btn-active-bg: #260f54;
+      --bs-btn-active-border-color: #260f54;
+    }
+  }
+
+  .c-route-ladder__alert-icon {
+    display: flex;
+    align-items: center;
+    width: 1.6rem;
+
+    cursor: pointer;
+
+    svg {
+      height: 1.6rem;
+      width: 1.6rem;
+    }
+  }
+
+  .c-route-ladder__route-pill {
+    grid-column: 2/3;
+  }
+
+  .c-route-ladder__close-button-container {
+    grid-column: 3/4;
+    margin: 2px 0 2px auto;
   }
 }
 

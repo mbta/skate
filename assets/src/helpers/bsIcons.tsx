@@ -1,5 +1,4 @@
-import React from "react"
-import { ComponentPropsWithoutRef } from "react"
+import React, { ComponentPropsWithoutRef } from "react"
 
 /*!
  * This file contains icons exported from https://icons.getbootstrap.com/#icons using the `Copy HTML` button.

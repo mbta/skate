@@ -25,9 +25,13 @@ import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
-import CloseButton from "./closeButton"
+import { CloseButton as OldCloseButton } from "./closeButton"
 import Tippy from "@tippyjs/react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { ExclamationTriangleFill, PlusSquare } from "../helpers/bsIcons"
+import { RoutePill } from "./routePill"
+import { Card, CloseButton, Dropdown } from "react-bootstrap"
 
 interface Props {
   route: Route
@@ -66,11 +70,61 @@ export const Header = ({
         </Tippy>
       )}
       <div className="c-route-ladder__close-button-container">
-        <CloseButton closeButtonType="l_darker" onClick={onClose} />
+        <OldCloseButton closeButtonType="l_darker" onClick={onClose} />
       </div>
 
       <div className="c-route-ladder__route-name">{routeName}</div>
     </div>
+  )
+}
+
+// TODO: delete old header after roll-out
+export const NewHeader = ({
+  routeName,
+  onClose,
+  hasAlert,
+}: {
+  routeName: string
+  onClose: () => void
+  hasAlert: boolean
+}) => {
+  return (
+    <Card className="c-new-route-ladder__header">
+      <Card.Body>
+        <div className="c-route-ladder__header__action-container">
+          {inTestGroup(TestGroups.DetoursPilot) && (
+            <Dropdown className="border-box inherit-box">
+              <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
+              <Dropdown.Menu>
+                <Dropdown.Item className="icon-link">
+                  <PlusSquare />
+                  Add detour
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
+          {hasAlert && (
+            <Tippy
+              content="Active detour"
+              trigger="click"
+              onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+            >
+              <div className="c-route-ladder__alert-icon">
+                <ExclamationTriangleFill aria-label="Route Alert" />
+              </div>
+            </Tippy>
+          )}
+        </div>
+        <RoutePill
+          routeName={routeName}
+          largeFormat
+          className="c-route-ladder__route-pill c-route-pill"
+        />
+        <div className="c-route-ladder__close-button-container">
+          <CloseButton className="p-2" onClick={onClose} />
+        </div>
+      </Card.Body>
+    </Card>
   )
 }
 
@@ -174,13 +228,23 @@ const RouteLadder = ({
 
   return (
     <>
-      <Header
-        routeName={route.name}
-        hasAlert={hasAlert}
-        onClose={() => {
-          deselectRoute(route.id)
-        }}
-      />
+      {inTestGroup(TestGroups.RouteLadderHeaderUpdate) ? (
+        <NewHeader
+          routeName={route.name}
+          hasAlert={hasAlert}
+          onClose={() => {
+            deselectRoute(route.id)
+          }}
+        />
+      ) : (
+        <Header
+          routeName={route.name}
+          hasAlert={hasAlert}
+          onClose={() => {
+            deselectRoute(route.id)
+          }}
+        />
+      )}
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}
