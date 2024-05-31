@@ -38,7 +38,7 @@ defmodule Skate.Detours.RouteSegments do
         shape,
         start_point
       ) do
-    {nearest_point, index} = nearest_point_to_shape(shape, start_point)
+    {nearest_point, index} = NearestPoint.nearest_point_on_shape(shape, start_point)
 
     {:ok,
      %__MODULE__.UnfinishedResult{
