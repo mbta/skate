@@ -91,33 +91,35 @@ export const NewHeader = ({
   return (
     <Card className="c-new-route-ladder__header">
       <Card.Body>
-        {inTestGroup(TestGroups.DetoursPilot) && (
-          <Dropdown className="border-box inherit-box">
-            <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
-            <Dropdown.Menu>
-              <Dropdown.Item className="icon-link">
-                <PlusSquare />
-                Add detour
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )}
-        {hasAlert && (
-          <Tippy
-            content="Active detour"
-            trigger="click"
-            onShow={() => tagManagerEvent("alert_tooltip_clicked")}
-          >
-            <div className="c-route-ladder__alert-icon">
-              <ExclamationTriangleFill aria-label="Route Alert" />
-            </div>
-          </Tippy>
-        )}
+        <div className="c-route-ladder__header__action-container">
+          {inTestGroup(TestGroups.DetoursPilot) && (
+            <Dropdown className="border-box inherit-box">
+              <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
+              <Dropdown.Menu>
+                <Dropdown.Item className="icon-link">
+                  <PlusSquare />
+                  Add detour
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
+          {hasAlert && (
+            <Tippy
+              content="Active detour"
+              trigger="click"
+              onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+            >
+              <div className="c-route-ladder__alert-icon">
+                <ExclamationTriangleFill aria-label="Route Alert" />
+              </div>
+            </Tippy>
+          )}
+        </div>
         <RoutePill
           routeName={routeName}
-          className="c-route-ladder__route-pill c-route-pill--large-format"
+          largeFormat
+          className="c-route-ladder__route-pill c-route-pill"
         />
-        {hasAlert && <div className="c-route-ladder__alert-icon" />}
         <div className="c-route-ladder__close-button-container">
           <CloseButton className="p-2" onClick={onClose} />
         </div>
