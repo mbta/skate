@@ -3,13 +3,23 @@ import { byRole } from "testing-library-selector"
 
 export const finishDetourButton = byRole("button", { name: "Finish Detour" })
 
-export const originalRouteShape = {
+const customSelector = (selector: string) => ({
   get(container: HTMLElement): Element {
-    const maybeShape = container.querySelector(
-      ".c-detour_map--original-route-shape"
-    )
+    const maybeElement = container.querySelector(selector)
+
     // eslint-disable-next-line jest/no-standalone-expect
-    expect(maybeShape).not.toBeNull()
-    return maybeShape as Element
+    expect(maybeElement).not.toBeNull()
+    return maybeElement as Element
   },
-}
+
+  query(container: HTMLElement): Element | null {
+    return container.querySelector(selector)
+  },
+})
+
+export const originalRouteShape = customSelector(
+  ".c-detour_map--original-route-shape"
+)
+export const divertedRouteShape = customSelector(
+  ".c-detour_map--original-route-shape-diverted"
+)

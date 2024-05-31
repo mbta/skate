@@ -21,6 +21,7 @@ import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 import stopFactory from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
+  divertedRouteShape,
   finishDetourButton,
   originalRouteShape,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
@@ -849,6 +850,52 @@ describe("DiversionPage", () => {
     await waitFor(() => {
       expect(screen.queryByText("Missed Stops")).not.toBeInTheDocument()
     })
+  })
+
+  test("has (only) an original route shape at the beginning", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await waitFor(() => {
+      expect(originalRouteShape.get(container)).toBeVisible()
+    })
+
+    expect(divertedRouteShape.query(container)).not.toBeInTheDocument()
+  })
+
+  test("has an original route shape after the start point is added", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(originalRouteShape.get(container)).toBeVisible()
+    })
+  })
+
+  test("replaces the original route shape with core and diverted segments after the end point is added", async () => {
+    jest.mocked(fetchFinishedDetour).mockResolvedValue(
+      finishedDetourFactory.build({
+        routeSegments: routeSegmentsFactory.build(),
+      })
+    )
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(originalRouteShape.query(container)).not.toBeInTheDocument()
+    })
+
+    expect(divertedRouteShape.get(container)).toBeVisible()
   })
 
   test("calls the API after undo'ing if there is still at least one waypoint left", async () => {
