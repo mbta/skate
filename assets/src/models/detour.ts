@@ -21,6 +21,15 @@ export interface OriginalRoute {
   zoom: number
 }
 
+export interface UnfinishedRouteSegments {
+  beforeStartPoint: ShapePoint[]
+  afterStartPoint: ShapePoint[]
+}
+
+export interface UnfinishedDetour {
+  unfinishedRouteSegments: UnfinishedRouteSegments
+}
+
 export interface RouteSegments {
   beforeDetour: ShapePoint[]
   detour: ShapePoint[]
