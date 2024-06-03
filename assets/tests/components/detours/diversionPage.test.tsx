@@ -862,7 +862,7 @@ describe("DiversionPage", () => {
     expect(divertedRouteShape.query(container)).not.toBeInTheDocument()
   })
 
-  test("has an original route shape after the start point is added", async () => {
+  test("keeps the original route shape after the start point is added", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
