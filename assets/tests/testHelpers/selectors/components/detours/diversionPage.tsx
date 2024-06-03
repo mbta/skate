@@ -7,7 +7,6 @@ const customSelector = (selector: string) => ({
   get(container: HTMLElement): Element {
     const maybeElement = container.querySelector(selector)
 
-    // eslint-disable-next-line jest/no-standalone-expect
     expect(maybeElement).not.toBeNull()
     return maybeElement as Element
   },
