@@ -27,9 +27,9 @@ interface DetourRouteSelectionPanelProps {
   allRoutes: Route[]
   selectedRouteInfo: SelectedRouteInfo
 
-  onConfirm?: () => void
-  onSelectRoute?: (routeId: Route | undefined) => void
-  onSelectRoutePattern?: (routePatternId: RoutePattern | undefined) => void
+  onConfirm: () => void
+  onSelectRoute: (routeId: Route | undefined) => void
+  onSelectRoutePattern: (routePatternId: RoutePattern | undefined) => void
 }
 
 const selectedRoutePatternFromInfo = (
@@ -46,7 +46,7 @@ export const DetourRouteSelectionPanel = ({
   selectedRouteInfo,
   onConfirm,
   onSelectRoute,
-  onSelectRoutePattern = () => {},
+  onSelectRoutePattern,
 }: DetourRouteSelectionPanelProps) => (
   <Panel as="article">
     <Panel.Header className="">

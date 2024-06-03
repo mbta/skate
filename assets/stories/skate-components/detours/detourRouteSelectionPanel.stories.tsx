@@ -59,10 +59,17 @@ const meta = {
       },
       selectedRoutePatternId: routePattern1.id,
     },
+    // TODO: Replace with `@storybook/test.fn()`
+    onConfirm: () => {},
+    onSelectRoute: () => {},
+    onSelectRoutePattern: () => {},
   },
   argTypes: {
     allRoutes: { table: { disable: true } },
     selectedRouteInfo: { table: { disable: true } },
+    onConfirm: { table: { disable: true } },
+    onSelectRoute: { table: { disable: true } },
+    onSelectRoutePattern: { table: { disable: true } },
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added
