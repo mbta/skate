@@ -874,7 +874,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("replaces the original route shape with core and diverted segments after the end point is added", async () => {
+  test("replaces the original route shape with a diverted segment after the end point is added", async () => {
     jest.mocked(fetchFinishedDetour).mockResolvedValue(
       finishedDetourFactory.build({
         routeSegments: routeSegmentsFactory.build(),
