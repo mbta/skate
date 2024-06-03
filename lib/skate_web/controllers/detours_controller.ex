@@ -5,6 +5,32 @@ defmodule SkateWeb.DetoursController do
   alias Skate.Detours.RouteSegments
   alias Util.Location
 
+  @spec unfinished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def unfinished_detour(conn, %{
+        "route_pattern_id" => route_pattern_id,
+        "connection_start" => connection_start
+      }) do
+    with route_pattern <- route_pattern(route_pattern_id),
+         false <- is_nil(route_pattern),
+         shape_with_stops <-
+           shape_with_stops(route_pattern.representative_trip_id),
+         false <- is_nil(shape_with_stops) do
+      connection_start_location = Location.new(connection_start["lat"], connection_start["lon"])
+
+      {:ok, route_segments} =
+        RouteSegments.unfinished_route_segments(
+          shape_with_stops.points,
+          connection_start_location
+        )
+
+      json(conn, %{
+        data: %{
+          unfinished_route_segments: format(route_segments)
+        }
+      })
+    end
+  end
+
   @spec finished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def finished_detour(conn, %{
         "route_pattern_id" => route_pattern_id,
@@ -49,6 +75,16 @@ defmodule SkateWeb.DetoursController do
     else
       _ -> send_resp(conn, :bad_request, "bad request")
     end
+  end
+
+  defp format(%RouteSegments.UnfinishedResult{
+         before_start_point: before_start_point,
+         after_start_point: after_start_point
+       }) do
+    %{
+      before_start_point: format_locations(before_start_point),
+      after_start_point: format_locations(after_start_point)
+    }
   end
 
   defp format(%RouteSegments.Result{

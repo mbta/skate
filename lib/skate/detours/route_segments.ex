@@ -4,6 +4,17 @@ defmodule Skate.Detours.RouteSegments do
   """
   alias Util.NearestPoint
 
+  defmodule UnfinishedResult do
+    @moduledoc false
+    @type t :: %__MODULE__{
+            before_start_point: [Util.Location.From.t()],
+            after_start_point: [Util.Location.From.t()]
+          }
+    @enforce_keys [:before_start_point, :after_start_point]
+    @derive {Jason.Encoder, only: [:before_start_point, :after_start_point]}
+    defstruct [:before_start_point, :after_start_point]
+  end
+
   defmodule Result do
     @moduledoc false
     @type t :: %__MODULE__{
@@ -16,8 +27,28 @@ defmodule Skate.Detours.RouteSegments do
     defstruct [:before_detour, :detour, :after_detour]
   end
 
+  @spec unfinished_route_segments(
+          nonempty_list(Util.Location.From.t()),
+          Util.Location.From.t()
+        ) :: {:ok, UnfinishedResult.t()}
+  def unfinished_route_segments([], _start_point), do: :error
+  def unfinished_route_segments([_], _start_point), do: :error
+
+  def unfinished_route_segments(
+        shape,
+        start_point
+      ) do
+    {nearest_point, index} = NearestPoint.nearest_point_on_shape(shape, start_point)
+
+    {:ok,
+     %__MODULE__.UnfinishedResult{
+       before_start_point: Enum.slice(shape, 0..index) ++ [nearest_point],
+       after_start_point: [nearest_point] ++ Enum.slice(shape, (index + 1)..-1)
+     }}
+  end
+
   @doc """
-  Break a route shape into segments.
+  Break a completed detour's route shape into segments based on its start and end points.
 
   ## Examples
       iex> alias Util.Location
