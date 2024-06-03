@@ -14,6 +14,7 @@ import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 import { DetourFinishedPanel } from "./detourFinishedPanel"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 interface DiversionPageProps {
   originalRoute: OriginalRoute
@@ -146,7 +147,11 @@ export const DiversionPage = ({
             startPoint={startPoint ?? undefined}
             endPoint={endPoint ?? undefined}
             waypoints={waypoints}
-            unfinishedRouteSegments={unfinishedRouteSegments}
+            unfinishedRouteSegments={
+              inTestGroup(TestGroups.BackwardsDetourPrevention)
+                ? unfinishedRouteSegments
+                : undefined
+            }
             routeSegments={routeSegments}
             onAddWaypoint={addWaypoint}
             onClickOriginalShape={addConnectionPoint ?? (() => {})}

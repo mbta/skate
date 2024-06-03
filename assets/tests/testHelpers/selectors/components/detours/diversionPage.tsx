@@ -19,6 +19,9 @@ const customSelector = (selector: string) => ({
 export const originalRouteShape = customSelector(
   ".c-detour_map--original-route-shape"
 )
+export const unfinishedDiversionRouteShape = customSelector(
+  ".c-detour_map--original-route-shape-unfinished-diversion"
+)
 export const divertedRouteShape = customSelector(
   ".c-detour_map--original-route-shape-diverted"
 )

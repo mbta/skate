@@ -403,36 +403,39 @@ const UnfinishedDiversionRouteShape = ({
   interactive,
   segments: { beforeStartPoint, afterStartPoint },
   onClick,
-}: UnfinishedDiversionRouteShapeProps) => (
-  <>
-    <Polyline
-      weight={6}
-      interactive={false}
-      positions={beforeStartPoint.map(shapePointToLatLngLiteral)}
-      className="c-detour_map--original-route-shape-core"
-    />
-    <Polyline
-      weight={6}
-      interactive={false}
-      positions={afterStartPoint.map(shapePointToLatLngLiteral)}
-      className="c-detour_map--original-route-shape-core"
-    />
-    {interactive && (
+}: UnfinishedDiversionRouteShapeProps) => {
+  // console.log("SDLFKJSDLKF", interactive)
+  return (
+    <>
       <Polyline
-        positions={afterStartPoint.map(shapePointToLatLngLiteral)}
-        weight={16}
-        className={joinClasses([
-          "c-detour_map--original-route-shape",
-          "c-detour_map--original-route-shape__unfinished",
-        ])}
-        bubblingMouseEvents={false}
-        eventHandlers={{
-          click: onClick,
-        }}
+        weight={6}
+        interactive={false}
+        positions={beforeStartPoint.map(shapePointToLatLngLiteral)}
+        className="c-detour_map--original-route-shape-core"
       />
-    )}
-  </>
-)
+      <Polyline
+        weight={6}
+        interactive={false}
+        positions={afterStartPoint.map(shapePointToLatLngLiteral)}
+        className="c-detour_map--original-route-shape-core"
+      />
+      {interactive && (
+        <Polyline
+          positions={afterStartPoint.map(shapePointToLatLngLiteral)}
+          weight={16}
+          className={joinClasses([
+            "c-detour_map--original-route-shape-unfinished-diversion",
+            "c-detour_map--original-route-shape__unfinished",
+          ])}
+          bubblingMouseEvents={false}
+          eventHandlers={{
+            click: onClick,
+          }}
+        />
+      )}
+    </>
+  )
+}
 
 interface DivertedRouteShapeProps extends PropsWithChildren {
   segments: RouteSegments
