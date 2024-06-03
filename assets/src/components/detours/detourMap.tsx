@@ -403,39 +403,36 @@ const UnfinishedDiversionRouteShape = ({
   interactive,
   segments: { beforeStartPoint, afterStartPoint },
   onClick,
-}: UnfinishedDiversionRouteShapeProps) => {
-  // console.log("SDLFKJSDLKF", interactive)
-  return (
-    <>
+}: UnfinishedDiversionRouteShapeProps) => (
+  <>
+    <Polyline
+      weight={6}
+      interactive={false}
+      positions={beforeStartPoint.map(shapePointToLatLngLiteral)}
+      className="c-detour_map--original-route-shape-core"
+    />
+    <Polyline
+      weight={6}
+      interactive={false}
+      positions={afterStartPoint.map(shapePointToLatLngLiteral)}
+      className="c-detour_map--original-route-shape-core"
+    />
+    {interactive && (
       <Polyline
-        weight={6}
-        interactive={false}
-        positions={beforeStartPoint.map(shapePointToLatLngLiteral)}
-        className="c-detour_map--original-route-shape-core"
-      />
-      <Polyline
-        weight={6}
-        interactive={false}
         positions={afterStartPoint.map(shapePointToLatLngLiteral)}
-        className="c-detour_map--original-route-shape-core"
+        weight={16}
+        className={joinClasses([
+          "c-detour_map--original-route-shape-unfinished-diversion",
+          "c-detour_map--original-route-shape__unfinished",
+        ])}
+        bubblingMouseEvents={false}
+        eventHandlers={{
+          click: onClick,
+        }}
       />
-      {interactive && (
-        <Polyline
-          positions={afterStartPoint.map(shapePointToLatLngLiteral)}
-          weight={16}
-          className={joinClasses([
-            "c-detour_map--original-route-shape-unfinished-diversion",
-            "c-detour_map--original-route-shape__unfinished",
-          ])}
-          bubblingMouseEvents={false}
-          eventHandlers={{
-            click: onClick,
-          }}
-        />
-      )}
-    </>
-  )
-}
+    )}
+  </>
+)
 
 interface DivertedRouteShapeProps extends PropsWithChildren {
   segments: RouteSegments
