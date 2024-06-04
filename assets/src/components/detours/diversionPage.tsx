@@ -14,6 +14,25 @@ import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
 import { DetourFinishedPanel } from "./detourFinishedPanel"
+import { Route, RoutePattern } from "../../schedule"
+
+const displayFieldsFromRouteAndPattern = (
+  route: Route,
+  routePattern: RoutePattern
+) => {
+  const routeName = route.name
+
+  const routeDescription = routePattern.headsign ?? ""
+
+  const routeOrigin = routePattern?.name
+
+  const routeDirection =
+    routePattern && route.directionNames[routePattern.directionId]
+
+  const shape = routePattern.shape
+
+  return { routeName, routeDirection, routeOrigin, routeDescription, shape }
+}
 
 interface DiversionPageProps {
   originalRoute: OriginalRoute
@@ -66,11 +85,22 @@ export const DiversionPage = ({
     ? nearestIntersectionDirection.concat(directions)
     : undefined
 
+  const { route, routePattern } = snapshot.context
+  const {
+    routeName = undefined,
+    routeDirection = undefined,
+    routeOrigin = undefined,
+    routeDescription = undefined,
+    shape = undefined,
+  } = route && routePattern
+    ? displayFieldsFromRouteAndPattern(route, routePattern)
+    : {}
+
   useEffect(() => {
     setTextArea(
       [
-        `Detour ${originalRoute.routeName} ${originalRoute.routeDirection}`,
-        originalRoute.routeOrigin,
+        `Detour ${routeName} ${routeDirection}`,
+        routeOrigin,
         ,
         "Connection Points:",
         connectionPoints?.start?.name ?? "N/A",
@@ -84,7 +114,9 @@ export const DiversionPage = ({
       ].join("\n")
     )
   }, [
-    originalRoute,
+    routeName,
+    routeDirection,
+    routeOrigin,
     extendedDirections,
     missedStops,
     connectionPoints?.start?.name,
@@ -103,10 +135,10 @@ export const DiversionPage = ({
             <DiversionPanel
               directions={extendedDirections}
               missedStops={missedStops}
-              routeName={originalRoute.routeName}
-              routeDescription={originalRoute.routeDescription}
-              routeOrigin={originalRoute.routeOrigin}
-              routeDirection={originalRoute.routeDirection}
+              routeName={routeName}
+              routeDescription={routeDescription}
+              routeOrigin={routeOrigin}
+              routeDirection={routeDirection}
               detourFinished={finishDetour !== undefined}
               onFinishDetour={finishDetour}
             />
@@ -137,7 +169,7 @@ export const DiversionPage = ({
           )}
           {routingError?.type === "unknown" && <RoutingErrorAlert />}
           <DetourMap
-            originalShape={originalRoute.shape.points}
+            originalShape={shape?.points ?? []}
             center={originalRoute.center}
             zoom={originalRoute.zoom}
             detourShape={detourShape}
