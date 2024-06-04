@@ -12,13 +12,6 @@ const meta = {
   args: {
     // Provide default route settings
     originalRoute: originalRouteFactory.build({
-      routeDescription: "Harvard via Allston",
-      routeOrigin: "from Andrew Station",
-      routeDirection: "Outbound",
-      routePatternId: "39-3-0",
-      routeName: "39",
-      shape: route39shape,
-
       routePattern: {
         id: "39-3-0",
         headsign: "Harvard via Allston",

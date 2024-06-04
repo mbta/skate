@@ -36,11 +36,6 @@ export const DetourDropdown = ({
 
   const routeDescription = routePatternForVehicle.headsign
 
-  const routeOrigin = routePatternForVehicle.name
-
-  const routeDirection =
-    route.directionNames[routePatternForVehicle.directionId]
-
   const shape = routePatternForVehicle.shape
 
   if (!routeDescription || !shape) {
@@ -53,12 +48,6 @@ export const DetourDropdown = ({
         <DropdownItem
           onClick={() => {
             onClick({
-              routeName,
-              routeDescription,
-              routeOrigin,
-              routeDirection,
-              routePatternId: routePatternForVehicle.id,
-              shape,
               route,
               routePattern: routePatternForVehicle,
               center,
