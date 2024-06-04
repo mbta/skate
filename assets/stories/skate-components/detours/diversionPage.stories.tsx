@@ -10,7 +10,7 @@ const meta = {
   },
   args: {
     // Provide default route settings
-    originalRoute: {
+    originalRoute: originalRouteFactory.build({
       routeDescription: "Harvard via Allston",
       routeOrigin: "from Andrew Station",
       routeDirection: "Outbound",
@@ -19,7 +19,7 @@ const meta = {
       shape: route39shape,
       zoom: 14,
       center: { lat: 42.33, lng: -71.11 },
-    },
+    }),
     showConfirmCloseModal: false,
   },
   argTypes: {
