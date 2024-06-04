@@ -55,7 +55,8 @@
 
   .c-route-ladder__header__action-container {
     display: inline-flex;
-    .dropdown, .c-route-ladder__alert-icon {
+    .dropdown,
+    .c-route-ladder__alert-icon {
       padding-right: 0.5rem;
     }
   }
