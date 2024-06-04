@@ -28,8 +28,8 @@ interface DetourRouteSelectionPanelProps {
   selectedRouteInfo: SelectedRouteInfo
 
   onConfirm: () => void
-  onSelectRoute: (routeId: Route | undefined) => void
-  onSelectRoutePattern: (routePatternId: RoutePattern | undefined) => void
+  onSelectRoute: (route: Route | undefined) => void
+  onSelectRoutePattern: (routePattern: RoutePattern | undefined) => void
 }
 
 const selectedRoutePatternFromInfo = (
