@@ -16,8 +16,6 @@ import {
   fetchNearestIntersection,
 } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
-import shapeFactory from "../../factories/shape"
-import { latLngLiteralFactory } from "../../factories/latLngLiteralFactory"
 import stopFactory from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
@@ -35,13 +33,15 @@ import {
 } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { Err, Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
+import { originalRouteFactory } from "../../factories/originalRouteFactory"
+import { DeepPartial } from "fishery"
 
 const DiversionPage = (
   props: Omit<
     Partial<ComponentProps<typeof DiversionPageDefault>>,
     "originalRoute"
   > & {
-    originalRoute?: Partial<
+    originalRoute?: DeepPartial<
       ComponentProps<typeof DiversionPageDefault>["originalRoute"]
     >
   }
@@ -49,17 +49,7 @@ const DiversionPage = (
   const { originalRoute, showConfirmCloseModal, ...otherProps } = props
   return (
     <DiversionPageDefault
-      originalRoute={{
-        routeName: "66",
-        routeDescription: "Harvard via Allston",
-        routeOrigin: "from Andrew Station",
-        routeDirection: "Outbound",
-        routePatternId: "66-6-0",
-        shape: shapeFactory.build(),
-        center: latLngLiteralFactory.build(),
-        zoom: 16,
-        ...originalRoute,
-      }}
+      originalRoute={originalRouteFactory.build(originalRoute)}
       showConfirmCloseModal={showConfirmCloseModal ?? false}
       {...otherProps}
     />
@@ -1039,13 +1029,16 @@ describe("DiversionPage", () => {
     const { container } = render(
       <DiversionPage
         originalRoute={{
-          routeName,
-          routeOrigin,
-          routeDescription,
-          routeDirection,
-          shape: shapeFactory.build({
-            points: [connectionPoint],
-          }),
+          route: {
+            name: routeName,
+          },
+          routePattern: {
+            headsign: routeDescription,
+            name: routeOrigin,
+            shape: {
+              points: [connectionPoint],
+            },
+          },
         }}
       />
     )
@@ -1174,7 +1167,11 @@ describe("DiversionPage", () => {
     const { container } = render(
       <DiversionPage
         originalRoute={{
-          shape: shapeFactory.build({ stops: stopFactory.buildList(11) }),
+          routePattern: {
+            shape: {
+              stops: stopFactory.buildList(11),
+            },
+          },
         }}
       />
     )
@@ -1197,7 +1194,11 @@ describe("DiversionPage", () => {
     const { container } = render(
       <DiversionPage
         originalRoute={{
-          shape: shapeFactory.build({ stops: [stop1, stop2, stop3, stop4] }),
+          routePattern: {
+            shape: {
+              stops: [stop1, stop2, stop3, stop4],
+            },
+          },
         }}
       />
     )
