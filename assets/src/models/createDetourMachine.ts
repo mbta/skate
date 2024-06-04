@@ -155,6 +155,9 @@ export const createDetourMachine = setup({
         },
         Editing: {
           on: {
+            "detour.route-pattern.open": {
+              target: "Pick Route Pattern",
+            },
             "detour.edit.done": {
               target: "Share Detour",
             },

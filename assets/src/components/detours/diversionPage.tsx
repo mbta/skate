@@ -18,6 +18,7 @@ import { DetourFinishedPanel } from "./detourFinishedPanel"
 import { DetourRouteSelectionPanel } from "./detourRouteSelectionPanel"
 import { Route, RoutePattern } from "../../schedule"
 import RoutesContext from "../../contexts/routesContext"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -182,6 +183,11 @@ export const DiversionPage = ({
               routeDirection={routeDirection ?? "??"}
               detourFinished={finishDetour !== undefined}
               onFinishDetour={finishDetour}
+              onChangeRoute={
+                inTestGroup(TestGroups.DetourRoutePicker)
+                  ? () => send({ type: "detour.route-pattern.open" })
+                  : undefined
+              }
             />
           ) : snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
             editDetour ? (
