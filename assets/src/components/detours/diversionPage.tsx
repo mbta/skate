@@ -155,13 +155,16 @@ export const DiversionPage = ({
                   : { selectedRoute: null }
               }
               onSelectRoute={(route) => {
-                return (
-                  route &&
+                if (route) {
                   send({
                     type: "detour.route-pattern.select-route",
                     route,
                   })
-                )
+                } else {
+                  send({
+                    type: "detour.route-pattern.delete-route",
+                  })
+                }
               }}
               onSelectRoutePattern={(routePattern) => {
                 routePattern &&

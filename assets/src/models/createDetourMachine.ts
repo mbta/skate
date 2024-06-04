@@ -33,6 +33,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.resume" }
       | { type: "detour.route-pattern.open" }
       | { type: "detour.route-pattern.done" }
+      | { type: "detour.route-pattern.delete-route" }
       | { type: "detour.route-pattern.select-route"; route: Route }
       | {
           type: "detour.route-pattern.select-pattern"
@@ -92,6 +93,23 @@ export const createDetourMachine = setup({
               target: ".Pick Route ID",
               actions: assign({
                 route: ({ event }) => event.route,
+              }),
+            },
+            /** This seems like it's needed, since it's possible to select
+             * ["Select a route"](https://github.com/mbta/skate/blame/e14d100c1db7df8bbf3c24ca4f8dbbe100d24d1e/assets/src/components/detours/detourRouteSelectionPanel.tsx#L68)
+             * But the `select` is "controlled"(in react terms),
+             * then we need a way to represent that state?
+             * Otherwise there's no way to see the "select a route" help message
+             *
+             * There is not yet a test for this because this is not a project requirement (yet. tbd).
+             * This also depends on the combobox implementation decisions.
+             */
+            "detour.route-pattern.delete-route": {
+              target: ".Pick Route ID",
+              actions: assign({
+                route: undefined,
+                routePattern: undefined,
+                routePatterns: undefined,
               }),
             },
           },
