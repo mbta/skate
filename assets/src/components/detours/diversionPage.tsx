@@ -115,10 +115,10 @@ export const DiversionPage = ({
             <DiversionPanel
               directions={extendedDirections}
               missedStops={missedStops}
-              routeName={routeName}
-              routeDescription={routeDescription}
-              routeOrigin={routeOrigin}
-              routeDirection={routeDirection}
+              routeName={routeName ?? "??"}
+              routeDescription={routeDescription ?? "??"}
+              routeOrigin={routeOrigin ?? "??"}
+              routeDirection={routeDirection ?? "??"}
               detourFinished={finishDetour !== undefined}
               onFinishDetour={finishDetour}
             />
