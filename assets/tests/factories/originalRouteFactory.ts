@@ -7,7 +7,7 @@ import shapeFactory from "./shape"
 
 export const originalRouteFactory = Factory.define<OriginalRoute>(() => {
   const route = routeFactory.build()
-  const routePattern = routePatternFactory.build()
+  const routePattern = routePatternFactory.build({ routeId: route.id })
   return {
     routeName: route.name,
     routeDescription: routePattern.headsign || "",
@@ -15,6 +15,8 @@ export const originalRouteFactory = Factory.define<OriginalRoute>(() => {
     routeDirection: "Outbound",
     routePatternId: routePattern.id,
     shape: shapeFactory.build(),
+    route,
+    routePattern,
     center: latLngLiteralFactory.build(),
     zoom: 16,
   }

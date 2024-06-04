@@ -59,6 +59,8 @@ export const DetourDropdown = ({
               routeDirection,
               routePatternId: routePatternForVehicle.id,
               shape,
+              route,
+              routePattern: routePatternForVehicle,
               center,
               zoom,
             })
