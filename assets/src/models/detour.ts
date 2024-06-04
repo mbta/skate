@@ -1,5 +1,5 @@
 import { LatLngLiteral } from "leaflet"
-import { RoutePatternId, Shape, ShapePoint, Stop } from "../schedule"
+import { Route, RoutePattern, RoutePatternId, Shape, ShapePoint, Stop } from "../schedule"
 
 export interface DetourShape {
   coordinates: ShapePoint[]
@@ -17,6 +17,8 @@ export interface OriginalRoute {
   routeDirection: string
   routePatternId: RoutePatternId
   shape: Shape
+  route: Route
+  routePattern: RoutePattern
   center: LatLngLiteral
   zoom: number
 }
