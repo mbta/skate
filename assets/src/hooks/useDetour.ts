@@ -1,13 +1,15 @@
 import { useCallback, useMemo, useState } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
-import { OriginalRoute } from "../models/detour"
 
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
 import { useMachine } from "@xstate/react"
-import { createDetourMachine } from "../models/createDetourMachine"
+import {
+  CreateDetourMachineInput,
+  createDetourMachine,
+} from "../models/createDetourMachine"
 
 const useDetourDirections = (shapePoints: ShapePoint[]) =>
   useApiCall({
@@ -22,8 +24,12 @@ const useDetourDirections = (shapePoints: ShapePoint[]) =>
     }, [shapePoints]),
   })
 
-export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
-  const [snapshot, send] = useMachine(createDetourMachine)
+export const useDetour = (input: CreateDetourMachineInput) => {
+  const [snapshot, send] = useMachine(createDetourMachine, {
+    input,
+  })
+
+  const { routePattern } = snapshot.context
 
   const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
   const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
@@ -31,12 +37,12 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
 
   const { result: finishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
-      if (startPoint && endPoint) {
-        return fetchFinishedDetour(routePatternId, startPoint, endPoint)
+      if (routePattern && startPoint && endPoint) {
+        return fetchFinishedDetour(routePattern.id, startPoint, endPoint)
       } else {
         return null
       }
-    }, [startPoint, endPoint, routePatternId]),
+    }, [startPoint, endPoint, routePattern]),
   })
 
   const { result: nearestIntersection } = useNearestIntersection({
@@ -117,7 +123,7 @@ export const useDetour = ({ routePatternId, shape }: OriginalRoute) => {
   const missedStopIds = missedStops
     ? new Set(missedStops.map((stop) => stop.id))
     : new Set()
-  const stops = (shape.stops || []).map((stop) => ({
+  const stops = (routePattern?.shape?.stops || []).map((stop) => ({
     ...stop,
     missed: missedStopIds.has(stop.id),
   }))

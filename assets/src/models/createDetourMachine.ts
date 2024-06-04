@@ -1,4 +1,4 @@
-import { setup } from "xstate"
+import { setup, ActorLogicFrom, InputFrom } from "xstate"
 import { Route, RoutePattern } from "../schedule"
 
 export const createDetourMachine = setup({
@@ -44,3 +44,11 @@ export const createDetourMachine = setup({
     },
   },
 })
+
+/**
+ * This refers to the type of `input` provided in
+ * {@linkcode createDetourMachine}'s {@linkcode setup} call
+ */
+export type CreateDetourMachineInput = InputFrom<
+  ActorLogicFrom<typeof createDetourMachine>
+>
