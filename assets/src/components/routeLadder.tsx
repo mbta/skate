@@ -83,16 +83,18 @@ export const NewHeader = ({
   routeName,
   onClose,
   hasAlert,
+  showDropdown
 }: {
   routeName: string
   onClose: () => void
   hasAlert: boolean
+  showDropdown: boolean
 }) => {
   return (
     <Card className="c-new-route-ladder__header">
       <Card.Body>
         <div className="c-route-ladder__header__action-container">
-          {inTestGroup(TestGroups.DetoursPilot) && (
+          {showDropdown && (
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
               <Dropdown.Menu>
@@ -235,6 +237,7 @@ const RouteLadder = ({
           onClose={() => {
             deselectRoute(route.id)
           }}
+          showDropdown={inTestGroup(TestGroups.DetoursPilot)}
         />
       ) : (
         <Header

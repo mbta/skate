@@ -8,6 +8,7 @@ const meta = {
     routeName: "39",
     onClose: () => {},
     hasAlert: false,
+    showDropdown: false
   },
   argTypes: {
     onClose: { table: { disable: true } },
@@ -21,5 +22,16 @@ export const Default: Story = {}
 export const WithAlert: Story = {
   args: {
     hasAlert: true,
+  },
+}
+export const WithDetourDropdown: Story = {
+  args: {
+    showDropdown: true,
+  },
+}
+export const WithAlertAndDropdown: Story = {
+  args: {
+    hasAlert: true,
+    showDropdown: true
   },
 }
