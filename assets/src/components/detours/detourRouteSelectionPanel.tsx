@@ -27,6 +27,8 @@ interface DetourRouteSelectionPanelProps {
   allRoutes: Route[]
   selectedRouteInfo: SelectedRouteInfo
 
+  isLoadingRoutePatterns: boolean
+
   onConfirm: () => void
   onSelectRoute: (route: Route | undefined) => void
   onSelectRoutePattern: (routePattern: RoutePattern | undefined) => void
@@ -47,6 +49,7 @@ export const DetourRouteSelectionPanel = ({
   onConfirm,
   onSelectRoute,
   onSelectRoutePattern,
+  isLoadingRoutePatterns,
 }: DetourRouteSelectionPanelProps) => {
   const selectId = "choose-route-select" + useId()
   return (
@@ -94,7 +97,7 @@ export const DetourRouteSelectionPanel = ({
                   defaultOpened="variants"
                 />
                 <div
-                  hidden={selectedRouteInfo.selectedRoutePatternId !== null}
+                  hidden={!isLoadingRoutePatterns}
                   className="position-absolute inset-0 bg-light opacity-75 d-flex justify-content-center align-items-center"
                 >
                   <Spinner />

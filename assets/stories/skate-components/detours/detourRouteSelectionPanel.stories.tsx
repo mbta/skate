@@ -59,6 +59,7 @@ const meta = {
       },
       selectedRoutePatternId: routePattern1.id,
     },
+    isLoadingRoutePatterns: false,
     // TODO: Replace with `@storybook/test.fn()`
     onConfirm: () => {},
     onSelectRoute: () => {},
@@ -108,5 +109,15 @@ export const NoRoutePatternSelected: Story = {
       },
       selectedRoutePatternId: null,
     },
+  },
+}
+
+export const LoadingRoutePatterns: Story = {
+  args: {
+    selectedRouteInfo: {
+      ...meta.args.selectedRouteInfo,
+      selectedRoute: route66,
+    },
+    isLoadingRoutePatterns: true,
   },
 }

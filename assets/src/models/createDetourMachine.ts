@@ -128,6 +128,17 @@ export const createDetourMachine = setup({
                   }),
                 },
               },
+              initial: "Idle",
+              states: {
+                Idle: {
+                  after: {
+                    100: {
+                      target: "Loading",
+                    },
+                  },
+                },
+                Loading: {},
+              },
             },
             "Finalize Route Pattern": {
               on: {

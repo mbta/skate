@@ -144,6 +144,11 @@ export const DiversionPage = ({
         <div className="l-diversion-page__panel bg-light">
           {snapshot.matches({ "Detour Drawing": "Pick Route Pattern" }) ? (
             <DetourRouteSelectionPanel
+              isLoadingRoutePatterns={snapshot.matches({
+                "Detour Drawing": {
+                  "Pick Route Pattern": { "Pick Route ID": "Loading" },
+                },
+              })}
               allRoutes={routes ?? []}
               selectedRouteInfo={
                 route && routePatterns && routePatternsById
