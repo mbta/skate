@@ -1,5 +1,5 @@
 import React, { useId } from "react"
-import { Button, FormSelect } from "react-bootstrap"
+import { Button, FormSelect, Spinner } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import {
   ByRoutePatternId,
@@ -27,6 +27,8 @@ interface DetourRouteSelectionPanelProps {
   allRoutes: Route[]
   selectedRouteInfo: SelectedRouteInfo
 
+  isLoadingRoutePatterns: boolean
+
   onConfirm: () => void
   onSelectRoute: (route: Route | undefined) => void
   onSelectRoutePattern: (routePattern: RoutePattern | undefined) => void
@@ -47,6 +49,7 @@ export const DetourRouteSelectionPanel = ({
   onConfirm,
   onSelectRoute,
   onSelectRoutePattern,
+  isLoadingRoutePatterns,
 }: DetourRouteSelectionPanelProps) => {
   const selectId = "choose-route-select" + useId()
   return (
@@ -84,14 +87,22 @@ export const DetourRouteSelectionPanel = ({
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">Choose direction</h2>
             {selectedRouteInfo.selectedRoute ? (
-              <RoutePropertiesCard
-                routePatterns={selectedRouteInfo.routePatterns}
-                selectedRoutePatternId={selectedRoutePatternFromInfo(
-                  selectedRouteInfo
-                )}
-                selectRoutePattern={onSelectRoutePattern}
-                defaultOpened="variants"
-              />
+              <div className="position-relative">
+                <RoutePropertiesCard
+                  routePatterns={selectedRouteInfo.routePatterns}
+                  selectedRoutePatternId={selectedRoutePatternFromInfo(
+                    selectedRouteInfo
+                  )}
+                  selectRoutePattern={onSelectRoutePattern}
+                  defaultOpened="variants"
+                />
+                <div
+                  hidden={!isLoadingRoutePatterns}
+                  className="position-absolute inset-0 bg-light opacity-75 d-flex justify-content-center align-items-center"
+                >
+                  <Spinner />
+                </div>
+              </div>
             ) : (
               <p className="fst-italic">
                 Select a route in order to choose a direction.
