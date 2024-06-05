@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useId, useState } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { CircleCheckIcon } from "../../helpers/icon"
 import {
@@ -208,18 +208,24 @@ const VariantPicker = ({
   selectedRoutePatternId: RoutePatternId
   selectRoutePattern: (routePattern: RoutePattern) => void
 }): JSX.Element => {
+  const id = "variant-picker" + useId()
   {
     return (
-      <fieldset>
-        {sortRoutePatterns(routePatterns).map((routePattern) => (
-          <VariantOption
-            key={routePattern.id}
-            routePattern={routePattern}
-            isSelected={routePattern.id === selectedRoutePatternId}
-            selectRoutePattern={selectRoutePattern}
-          />
-        ))}
-      </fieldset>
+      <>
+        <span id={id} className="visually-hidden">
+          Variants
+        </span>
+        <fieldset aria-labelledby={id}>
+          {sortRoutePatterns(routePatterns).map((routePattern) => (
+            <VariantOption
+              key={routePattern.id}
+              routePattern={routePattern}
+              isSelected={routePattern.id === selectedRoutePatternId}
+              selectRoutePattern={selectRoutePattern}
+            />
+          ))}
+        </fieldset>
+      </>
     )
   }
 }
