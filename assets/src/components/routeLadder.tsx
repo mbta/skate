@@ -83,7 +83,7 @@ export const NewHeader = ({
   routeName,
   onClose,
   hasAlert,
-  showDropdown
+  showDropdown,
 }: {
   routeName: string
   onClose: () => void
