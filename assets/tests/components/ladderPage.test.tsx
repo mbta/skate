@@ -1,6 +1,6 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import { render, fireEvent, within } from "@testing-library/react"
+import { render, fireEvent, within, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { BrowserRouter } from "react-router-dom"
 import LadderPage from "../../src/components/ladderPage"
@@ -31,6 +31,8 @@ import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdC
 import stateFactory from "../factories/applicationState"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import useAlerts from "../../src/hooks/useAlerts"
+import getTestGroups from "../../src/userTestGroups"
+import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -54,8 +56,13 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
 }))
 
 jest.mock("../../src/helpers/fullStory")
+jest.mock("../../src/userTestGroups")
 
 const mockDispatch = jest.fn()
+
+beforeEach(() => {
+  jest.mocked(getTestGroups).mockReturnValue([])
+})
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
@@ -524,6 +531,50 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
     expect(result.queryByText("Vehicles")).toBeNull()
+  })
+
+  test("opens the detour modal", async () => {
+    jest
+      .mocked(getTestGroups)
+      .mockReturnValue([
+        TestGroups.DetourRouteSelection,
+        TestGroups.DetoursPilot,
+        TestGroups.RouteLadderHeaderUpdate,
+      ])
+
+    const mockState = stateFactory.build({
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["1"],
+          isCurrentTab: true,
+        }),
+      ],
+    })
+    const { container } = render(
+      <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(container.querySelector(".c-new-route-ladder__header")).toBeVisible()
+
+    expect(
+      container.querySelector(".c-route-ladder__dropdown-button")
+    ).toBeVisible()
+
+    await userEvent.click(
+      container.querySelector(".c-route-ladder__dropdown-button")!
+    )
+
+    expect(screen.getByRole("button", { name: "Add detour" })).toBeVisible()
+
+    await userEvent.click(screen.getByRole("button", { name: "Add detour" }))
+
+    expect(screen.getByRole("heading", { name: "Create Detour" })).toBeVisible()
   })
 })
 

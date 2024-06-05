@@ -12,9 +12,9 @@ export type DetourDirection = {
 
 export interface OriginalRoute {
   route: Route
-  routePattern: RoutePattern
-  center: LatLngLiteral
-  zoom: number
+  routePattern?: RoutePattern
+  center?: LatLngLiteral
+  zoom?: number
 }
 
 export interface RouteSegments {

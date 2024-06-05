@@ -9,19 +9,21 @@ import {
 } from "../../schedule"
 import RoutePropertiesCard from "../mapPage/routePropertiesCard"
 
-interface SelectedRouteInfoWithRoute {
+interface SelectedRouteInfoWithRoutePatterns {
   selectedRoute: Route
   routePatterns: ByRoutePatternId<RoutePattern>
   selectedRoutePatternId: RoutePatternId | null
 }
 
-interface SelectedRouteInfoWithoutRoute {
-  selectedRoute: null
+interface SelectedRouteInfoWithoutRoutePatterns {
+  selectedRoute: null | Route
+  routePatterns: undefined
+  selectedRoutePatternId: undefined
 }
 
 type SelectedRouteInfo =
-  | SelectedRouteInfoWithRoute
-  | SelectedRouteInfoWithoutRoute
+  | SelectedRouteInfoWithRoutePatterns
+  | SelectedRouteInfoWithoutRoutePatterns
 
 interface DetourRouteSelectionPanelProps {
   allRoutes: Route[]
@@ -35,7 +37,7 @@ interface DetourRouteSelectionPanelProps {
 }
 
 const selectedRoutePatternFromInfo = (
-  selectedRouteInfo: SelectedRouteInfoWithRoute
+  selectedRouteInfo: SelectedRouteInfoWithRoutePatterns
 ): RoutePatternId =>
   selectedRouteInfo.selectedRoutePatternId ||
   Object.values(selectedRouteInfo.routePatterns).find(
@@ -86,7 +88,7 @@ export const DetourRouteSelectionPanel = ({
 
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">Choose direction</h2>
-            {selectedRouteInfo.selectedRoute ? (
+            {selectedRouteInfo.routePatterns ? (
               <div className="position-relative">
                 <RoutePropertiesCard
                   routePatterns={selectedRouteInfo.routePatterns}

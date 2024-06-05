@@ -28,6 +28,8 @@ import { SaveIcon, PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import { DetourModal } from "./detours/detourModal"
+import { Route } from "../schedule"
 
 type DrawerContent = "route_picker" | "presets"
 
@@ -143,6 +145,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
+  const [routeForDetour, setRouteForDetour] = useState<Route | null>(null)
+
   return (
     <div
       className={`c-ladder-page ${pickerContainerVisibleClass} ${mobileMenuClass}`}
@@ -217,8 +221,20 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           }
           ladderDirections={ladderDirections}
           ladderCrowdingToggles={ladderCrowdingToggles}
+          onAddDetour={(route) => {
+            setRouteForDetour(route)
+          }}
         />
       </div>
+      {routeForDetour && (
+        <DetourModal
+          originalRoute={{ route: routeForDetour }}
+          show={!!routeForDetour}
+          onClose={() => {
+            setRouteForDetour(null)
+          }}
+        />
+      )}
     </div>
   )
 }

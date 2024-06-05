@@ -93,7 +93,11 @@ export const Default: Story = {}
 
 export const NoRouteSelected: Story = {
   args: {
-    selectedRouteInfo: { selectedRoute: null },
+    selectedRouteInfo: {
+      selectedRoute: null,
+      routePatterns: undefined,
+      selectedRoutePatternId: undefined,
+    },
   },
 }
 
