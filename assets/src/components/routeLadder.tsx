@@ -237,7 +237,10 @@ const RouteLadder = ({
           onClose={() => {
             deselectRoute(route.id)
           }}
-          showDropdown={inTestGroup(TestGroups.DetoursPilot)}
+          showDropdown={
+            inTestGroup(TestGroups.DetoursPilot) &&
+            inTestGroup(TestGroups.DetourRouteSelection)
+          }
         />
       ) : (
         <Header
