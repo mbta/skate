@@ -192,7 +192,7 @@ export const DiversionPage = ({
               detourFinished={finishDetour !== undefined}
               onFinishDetour={finishDetour}
               onChangeRoute={
-                inTestGroup(TestGroups.DetourRoutePicker)
+                inTestGroup(TestGroups.DetourRouteSelection)
                   ? () => send({ type: "detour.route-pattern.open" })
                   : undefined
               }

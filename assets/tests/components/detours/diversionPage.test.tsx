@@ -1246,7 +1246,9 @@ describe("DiversionPage", () => {
     })
 
     test("when in test group, is visible", async () => {
-      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetourRoutePicker])
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
       jest
         .mocked(fetchRoutePatterns)
         .mockResolvedValue(routePatternFactory.buildList(1, { id: "66_666" }))
@@ -1264,7 +1266,9 @@ describe("DiversionPage", () => {
     })
 
     test("when clicked, shows the route selection panel", async () => {
-      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetourRoutePicker])
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
 
       const routePatterns = routePatternFactory.buildList(1, { id: "66_666" })
       const [routePattern] = routePatterns
@@ -1285,7 +1289,9 @@ describe("DiversionPage", () => {
   describe("'Route Selection Panel'", () => {
     beforeEach(() => {
       // Access to this panel via the "Change route or direction" button requires a test group currently
-      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetourRoutePicker])
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
     })
 
     test("can change route", async () => {

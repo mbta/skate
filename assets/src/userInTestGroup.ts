@@ -9,7 +9,6 @@ export enum TestGroups {
   MinimalLadderPage = "minimal-ladder-page",
   LateView = "late-view",
   RouteLadderHeaderUpdate = "route-ladder-header-update",
-  DetourRoutePicker = "detour-route-picker",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {
