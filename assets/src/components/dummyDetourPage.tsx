@@ -18,16 +18,11 @@ export const DummyDetourPage = () => {
 
   return (
     <>
-      {routePattern && routePattern.shape && (
+      {route && routePattern && routePattern.shape && (
         <DiversionPage
           originalRoute={{
-            shape: routePattern.shape,
-            routeName: routePattern.routeId,
-            routeDescription: routePattern.headsign || "?",
-            routeOrigin: routePattern.name,
-            routeDirection:
-              route?.directionNames[routePattern.directionId] || "?",
-            routePatternId: routePattern.id,
+            route,
+            routePattern,
             center: { lat: 42.36, lng: -71.13 },
             zoom: 16,
           }}

@@ -56,9 +56,12 @@ export const DetourRouteSelectionPanel = ({
     <Panel.Body className="d-flex flex-column">
       <Panel.Body.ScrollArea className="d-flex flex-column">
         <section className="pb-3">
-          <h2 className="c-diversion-panel__h2">Choose route</h2>
+          <h2 className="c-diversion-panel__h2" id="choose-route-select">
+            Choose route
+          </h2>
           <FormSelect
-            defaultValue={selectedRouteInfo.selectedRoute?.id}
+            aria-labelledby="choose-route-select"
+            value={selectedRouteInfo.selectedRoute?.id}
             onChange={(changeEvent) => {
               onSelectRoute?.(
                 allRoutes.find((route) => route.id === changeEvent.target.value)

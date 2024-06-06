@@ -180,7 +180,7 @@ const VariantOption = ({
         type="radio"
         id={`variant-radio-${routePattern.id}`}
         name="variant"
-        defaultChecked={isSelected}
+        checked={isSelected}
         onChange={() => selectRoutePattern(routePattern)}
       />
 
