@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useId } from "react"
 import { Button, FormSelect } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import {
@@ -48,6 +48,7 @@ export const DetourRouteSelectionPanel = ({
   onSelectRoute,
   onSelectRoutePattern,
 }: DetourRouteSelectionPanelProps) => {
+  const selectId = "choose-route-select" + useId()
   return (
     <Panel as="article">
       <Panel.Header className="">
@@ -57,11 +58,11 @@ export const DetourRouteSelectionPanel = ({
       <Panel.Body className="d-flex flex-column">
         <Panel.Body.ScrollArea className="d-flex flex-column">
           <section className="pb-3">
-            <h2 className="c-diversion-panel__h2" id="choose-route-select">
+            <h2 className="c-diversion-panel__h2" id={selectId}>
               Choose route
             </h2>
             <FormSelect
-              aria-labelledby="choose-route-select"
+              aria-labelledby={selectId}
               value={selectedRouteInfo.selectedRoute?.id}
               onChange={(changeEvent) => {
                 onSelectRoute?.(
