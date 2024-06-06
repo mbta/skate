@@ -2,6 +2,7 @@ import getTestGroups from "./userTestGroups"
 
 export enum TestGroups {
   DemoMode = "demo-mode",
+  DetourRouteSelection = "detour-route-selection",
   DetoursPilot = "detours-pilot",
   DummyDetourPage = "dummy-detour-page",
   KeycloakSso = "keycloak-sso",
