@@ -1499,7 +1499,7 @@ describe("DiversionPage", () => {
       })
     })
 
-    test("when route is changed from a route, to empty, can still select another route", async () => {
+    test("when route is changed from a route to empty, can still select another route", async () => {
       const route = routeFactory.build()
 
       const routePatterns = routePatternFactory.buildList(3, {
