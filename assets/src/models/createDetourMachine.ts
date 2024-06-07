@@ -219,6 +219,7 @@ export const createDetourMachine = setup({
           on: {
             "detour.route-pattern.open": {
               target: "Pick Route Pattern",
+              actions: "detour.clear",
             },
             "detour.edit.clear-detour": {
               target: ".Pick Start Point",

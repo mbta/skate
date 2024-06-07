@@ -1283,6 +1283,78 @@ describe("DiversionPage", () => {
         await screen.getByRole("heading", { name: "Choose route" })
       ).toBeVisible()
     })
+
+    test("when clicked, clears any existing detour state", async () => {
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
+
+      const route = routeFactory.build()
+      const routePatterns = routePatternFactory.buildList(2, {
+        routeId: route.id,
+      })
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      const { container } = render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage
+            originalRoute={{
+              route,
+              routePattern: routePatterns[0],
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      act(() => {
+        fireEvent.click(originalRouteShape.get(container))
+      })
+      act(() => {
+        fireEvent.click(container.querySelector(".c-vehicle-map")!)
+      })
+      act(() => {
+        fireEvent.click(originalRouteShape.get(container))
+      })
+
+      // Assert that we have detour points
+      expect(await screen.findByTitle("Detour Start")).toBeVisible()
+      expect(screen.getByTitle("Detour End")).toBeVisible()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).toBeVisible()
+
+      // Assert that drawing is gone on route selection mode
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
+      expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).not.toBeInTheDocument()
+
+      // Assert that detour is still cleared when returning to drawing detours
+      await userEvent.click(
+        screen.getByRole("button", { name: "Start drawing detour" })
+      )
+
+      expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
+      expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).not.toBeInTheDocument()
+
+      // Assert that route is still clickable
+      act(() => {
+        fireEvent.click(originalRouteShape.get(container))
+      })
+      expect(await screen.findByTitle("Detour Start")).toBeVisible()
+      expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).not.toBeInTheDocument()
+    })
   })
 
   describe("'Route Selection Panel'", () => {
