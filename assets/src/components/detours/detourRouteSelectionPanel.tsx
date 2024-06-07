@@ -68,28 +68,30 @@ export const DetourRouteSelectionPanel = ({
               Choose route
             </h2>
             <Form>
-              <Form.Select
-                required
-                aria-labelledby={selectId}
-                value={selectedRouteInfo.selectedRoute?.id}
-                onChange={(changeEvent) => {
-                  onSelectRoute?.(
-                    allRoutes.find(
-                      (route) => route.id === changeEvent.target.value
+              <Form.Group>
+                <Form.Select
+                  required
+                  aria-labelledby={selectId}
+                  value={selectedRouteInfo.selectedRoute?.id}
+                  onChange={(changeEvent) => {
+                    onSelectRoute?.(
+                      allRoutes.find(
+                        (route) => route.id === changeEvent.target.value
+                      )
                     )
-                  )
-                }}
-              >
-                <option value="">Select a route</option>
-                {allRoutes.map((route) => (
-                  <option key={route.id} value={route.id}>
-                    {route.name}
-                  </option>
-                ))}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Select a route to continue.
-              </Form.Control.Feedback>
+                  }}
+                >
+                  <option value="">Select a route</option>
+                  {allRoutes.map((route) => (
+                    <option key={route.id} value={route.id}>
+                      {route.name}
+                    </option>
+                  ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Select a route to continue.
+                </Form.Control.Feedback>
+              </Form.Group>
             </Form>
           </section>
 
