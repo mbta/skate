@@ -416,7 +416,7 @@ export const autocompleteOption = (
  */
 type AutocompleteDataGroup = {
   group: {
-    title: ReactNode | null
+    title: ReactNode
     options: AutocompleteOptionData[]
   }
 }
