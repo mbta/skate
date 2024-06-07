@@ -64,11 +64,11 @@ export const DetourRouteSelectionPanel = ({
       <Panel.Body className="d-flex flex-column">
         <Panel.Body.ScrollArea className="d-flex flex-column">
           <section className="pb-3">
-            <h2 className="c-diversion-panel__h2" id={selectId}>
-              Choose route
-            </h2>
             <Form>
               <Form.Group>
+                <h2 className="c-diversion-panel__h2" id={selectId}>
+                  Choose route
+                </h2>
                 <Form.Select
                   required
                   aria-labelledby={selectId}
