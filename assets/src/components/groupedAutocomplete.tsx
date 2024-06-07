@@ -781,7 +781,7 @@ export const GrouplessAutocompleteFromArray = ({
   fallbackOption: AutocompleteOptionData
   options: AutocompleteOptionData[]
 }) => {
-  const groups = [{ group: { title: null, options } }]
+  const groups = [autocompleteGroup(null, ...options)]
   return (
     <GroupedAutocomplete
       controlName={controlName}
