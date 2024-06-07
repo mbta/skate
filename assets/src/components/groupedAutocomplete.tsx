@@ -392,7 +392,7 @@ interface AutocompleteCursorEventProps {
 /**
  * Use {@link autocompleteOption} to construct this type.
  */
-type AutocompleteOptionData = {
+export type AutocompleteOptionData = {
   option: {
     label: ReactNode
     onSelectOption?: ReactEventHandler
@@ -416,7 +416,7 @@ export const autocompleteOption = (
  */
 type AutocompleteDataGroup = {
   group: {
-    title: ReactNode
+    title: ReactNode | null
     options: AutocompleteOptionData[]
   }
 }
@@ -666,7 +666,7 @@ interface GroupedAutocompleteFromSearchTextResultsProps
 
 export interface GroupedAutocompleteFromSearchTextEventProps {
   /**
-   * Callback when a autocomplete vehicle option is selected.
+   * Callback when an autocomplete vehicle option is selected.
    * @param selectedOption The selected option vehicle
    *
    * ---
@@ -679,12 +679,12 @@ export interface GroupedAutocompleteFromSearchTextEventProps {
   onSelectVehicleOption: (selectedOption: Vehicle | Ghost) => void
 
   /**
-   * Fired when a autocomplete option with a PlaceId is selected.
+   * Fired when an autocomplete option with a PlaceId is selected.
    * @param selectedPlaceId Suggested PlaceId.
    */
   onSelectedLocationId: (selectedPlaceId: string) => void
   /**
-   * Fired when a autocomplete option without a PlaceId is selected.
+   * Fired when an autocomplete option without a PlaceId is selected.
    * @param selectedLocationText Suggested Location Search Text.
    */
   onSelectedLocationText: (selectedLocationText: string) => void
@@ -771,4 +771,18 @@ export const GroupedAutocompleteFromSearchTextResults = ({
 
   return <GroupedAutocomplete {...props} optionGroups={groups} />
 }
+
+export const GrouplessAutocompleteFromArray = ({
+  controlName,
+  fallbackOption,
+  options,
+}: {
+  controlName: ReactNode
+  fallbackOption: AutocompleteOptionData
+  options: AutocompleteOptionData[]
+}) => {
+  const groups = [{ group: { title: null, options } }]
+  return <GroupedAutocomplete controlName={controlName} fallbackOption={fallbackOption} optionGroups={groups} />
+}
+
 // #endregion Autocomplete From Search Context
