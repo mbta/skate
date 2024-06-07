@@ -54,6 +54,7 @@ export const DetourRouteSelectionPanel = ({
   isLoadingRoutePatterns,
 }: DetourRouteSelectionPanelProps) => {
   const selectId = "choose-route-select" + useId()
+  const routeErrorId = "route-select-error" + useId()
 
   return (
     <Panel as="article">
@@ -71,6 +72,7 @@ export const DetourRouteSelectionPanel = ({
                 </h2>
                 <Form.Select
                   required
+                  aria-errormessage={routeErrorId}
                   aria-labelledby={selectId}
                   value={selectedRouteInfo.selectedRoute?.id}
                   onChange={(changeEvent) => {
@@ -88,7 +90,7 @@ export const DetourRouteSelectionPanel = ({
                     </option>
                   ))}
                 </Form.Select>
-                <Form.Control.Feedback type="invalid">
+                <Form.Control.Feedback type="invalid" id={routeErrorId}>
                   Select a route to continue.
                 </Form.Control.Feedback>
               </Form.Group>
