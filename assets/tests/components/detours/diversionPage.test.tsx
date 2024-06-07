@@ -1500,6 +1500,59 @@ describe("DiversionPage", () => {
       })
     })
 
+    test("when route is changed from a route, to empty, can still select another route", async () => {
+      const route = routeFactory.build()
+
+      const routePatterns = routePatternFactory.buildList(3, {
+        routeId: route.id,
+      })
+
+      const [routePattern] = routePatterns
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage
+            originalRoute={{
+              route,
+              routePattern,
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        route.name
+      )
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        "Select a route"
+      )
+
+      expect(
+        screen.getByText("Select a route in order to choose a direction.")
+      ).toBeVisible()
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        route.name
+      )
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("radio", {
+            name: rpcRadioButtonName(routePattern),
+          })
+        ).toBeChecked()
+      })
+    })
+
     test("when route is changed, selects first route pattern otherwise", async () => {
       const routes = routeFactory.buildList(2)
       const [route1, route2] = routes

@@ -117,6 +117,8 @@ export const createDetourMachine = setup({
                 src: "fetch-route-patterns",
 
                 input: ({ context: { route } }) => ({ routeId: route?.id }),
+                /** If this is not present, then this error propagates and causes the machine to stop receiving events */
+                onError: {},
                 onDone: {
                   target: "Finalize Route Pattern",
                   actions: assign({
