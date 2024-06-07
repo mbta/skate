@@ -66,8 +66,7 @@ const DiversionPage = (
 
 function rpcRadioButtonName(rp: RoutePattern) {
   const { name, description } = patternDisplayName(rp)
-  const radioName = name + " " + description
-  return radioName
+  return name + " " + description
 }
 
 beforeEach(() => {
