@@ -145,6 +145,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
+  const [showDetourModal, setShowDetourModal] = useState(false)
   const [routeForDetour, setRouteForDetour] = useState<Route | null>(null)
 
   return (
@@ -223,15 +224,16 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           ladderCrowdingToggles={ladderCrowdingToggles}
           onAddDetour={(route) => {
             setRouteForDetour(route)
+            setShowDetourModal(true)
           }}
         />
       </div>
       {routeForDetour && (
         <DetourModal
           originalRoute={{ route: routeForDetour }}
-          show={!!routeForDetour}
+          show={showDetourModal}
           onClose={() => {
-            setRouteForDetour(null)
+            setShowDetourModal(false)
           }}
         />
       )}
