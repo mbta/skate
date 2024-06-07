@@ -174,6 +174,27 @@ export const ChevronDoubleRight = (props: SvgProps) => (
 )
 
 /**
+ * @returns https://icons.getbootstrap.com/icons/chevron-down/
+ */
+export const ChevronDown = (props: SvgProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-chevron-down"
+    viewBox="0 0 16 16"
+    aria-hidden
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+    />
+  </svg>
+)
+
+/**
  * @returns https://icons.getbootstrap.com/icons/exclamation-circle-fill/
  */
 export const ExclamationCircleFill = (props: SvgProps) => (
