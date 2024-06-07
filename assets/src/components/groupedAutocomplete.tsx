@@ -455,14 +455,7 @@ export const GroupedAutocomplete = ({
 
   // Fallback option and group
   if (optionGroups.length === 0) {
-    optionGroups = [
-      {
-        group: {
-          title: null,
-          options: [fallbackOption],
-        },
-      },
-    ]
+    optionGroups = [autocompleteGroup(null, fallbackOption)]
   }
 
   const { cursorLocation, updateCursorLocation, setCursorLocation } =
