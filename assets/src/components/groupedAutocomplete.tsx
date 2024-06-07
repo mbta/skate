@@ -782,7 +782,13 @@ export const GrouplessAutocompleteFromArray = ({
   options: AutocompleteOptionData[]
 }) => {
   const groups = [{ group: { title: null, options } }]
-  return <GroupedAutocomplete controlName={controlName} fallbackOption={fallbackOption} optionGroups={groups} />
+  return (
+    <GroupedAutocomplete
+      controlName={controlName}
+      fallbackOption={fallbackOption}
+      optionGroups={groups}
+    />
+  )
 }
 
 // #endregion Autocomplete From Search Context
