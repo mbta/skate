@@ -30,6 +30,7 @@ interface DetourRouteSelectionPanelProps {
   selectedRouteInfo: SelectedRouteInfo
 
   isLoadingRoutePatterns: boolean
+  isRouteInvalid?: boolean
 
   onConfirm: () => void
   onSelectRoute: (route: Route | undefined) => void
@@ -52,6 +53,7 @@ export const DetourRouteSelectionPanel = ({
   onSelectRoute,
   onSelectRoutePattern,
   isLoadingRoutePatterns,
+  isRouteInvalid = false,
 }: DetourRouteSelectionPanelProps) => {
   const selectId = "choose-route-select" + useId()
   const routeErrorId = "route-select-error" + useId()
@@ -65,13 +67,20 @@ export const DetourRouteSelectionPanel = ({
       <Panel.Body className="d-flex flex-column">
         <Panel.Body.ScrollArea className="d-flex flex-column">
           <section className="pb-3">
-            <Form>
+            <Form
+              // We're doing js validation, so disable HTML validation
+              noValidate={true}
+            >
               <Form.Group>
                 <h2 className="c-diversion-panel__h2" id={selectId}>
                   Choose route
                 </h2>
                 <Form.Select
-                  required
+                  // Never show the "valid" style
+                  isValid={false}
+                  // Show invalid when no route and after "submit"" is pressed
+                  isInvalid={isRouteInvalid}
+                  aria-invalid={isRouteInvalid}
                   aria-errormessage={routeErrorId}
                   aria-labelledby={selectId}
                   value={selectedRouteInfo.selectedRoute?.id}
