@@ -131,6 +131,7 @@ export const useDetour = (input: CreateDetourMachineInput) => {
   return {
     /** The current state machine snapshot */
     snapshot,
+    send,
 
     /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
