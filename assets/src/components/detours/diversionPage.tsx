@@ -149,6 +149,13 @@ export const DiversionPage = ({
                   "Pick Route Pattern": { "Pick Route ID": "Loading" },
                 },
               })}
+              isRouteInvalid={snapshot.matches({
+                "Detour Drawing": {
+                  "Pick Route Pattern": {
+                    "Pick Route ID": "Error: No Route",
+                  },
+                },
+              })}
               allRoutes={routes ?? []}
               selectedRouteInfo={
                 route && routePatterns && routePatternsById
