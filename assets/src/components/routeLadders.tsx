@@ -23,6 +23,7 @@ interface Props {
   toggleCrowding: (routeId: RouteId) => void
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
+  onAddDetour?: (route: Route) => void
 }
 
 const RouteLadders = ({
@@ -33,6 +34,7 @@ const RouteLadders = ({
   toggleCrowding,
   ladderDirections,
   ladderCrowdingToggles,
+  onAddDetour,
 }: Props) => {
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
     useContext(VehiclesByRouteIdContext)
@@ -83,6 +85,7 @@ const RouteLadders = ({
           ladderDirections={ladderDirections}
           ladderCrowdingToggles={ladderCrowdingToggles}
           hasAlert={routesWithAlerts.includes(route.id)}
+          onAddDetour={onAddDetour}
         />
       ))}
     </div>

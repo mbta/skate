@@ -95,8 +95,8 @@ interface DetourMapProps {
   /*
    * Center and zoom to position the map correctly when it renders
    */
-  center: LatLngLiteral
-  zoom: number
+  center?: LatLngLiteral
+  zoom?: number
 }
 
 export const DetourMap = ({
