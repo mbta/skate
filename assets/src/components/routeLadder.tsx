@@ -96,7 +96,9 @@ export const NewHeader = ({
         <div className="c-route-ladder__header__action-container">
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
-              <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
+              <Dropdown.Toggle className="c-route-ladder__dropdown-button">
+                <span className="visually-hidden">Route Options</span>
+              </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item className="icon-link">
                   <PlusSquare />
