@@ -7,7 +7,7 @@ import {
   afterEach,
 } from "@jest/globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
@@ -261,6 +261,8 @@ describe("routeLadder", () => {
         hasAlert={false}
       />
     )
+
+    expect(screen.getByRole("button", { name: "Route Options" })).toBeVisible()
 
     expect(tree).toMatchSnapshot()
   })
