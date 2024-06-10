@@ -17,8 +17,8 @@ interface SelectedRouteInfoWithRoutePatterns {
 
 interface SelectedRouteInfoWithoutRoutePatterns {
   selectedRoute: null | Route
-  routePatterns: undefined
-  selectedRoutePatternId: undefined
+  routePatterns?: undefined
+  selectedRoutePatternId?: undefined
 }
 
 type SelectedRouteInfo =

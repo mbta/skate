@@ -158,9 +158,7 @@ export const DiversionPage = ({
                       selectedRoutePatternId: routePattern?.id ?? null,
                     }
                   : {
-                      routePatterns: undefined,
                       selectedRoute: route ?? null,
-                      selectedRoutePatternId: undefined,
                     }
               }
               onSelectRoute={(route) => {
