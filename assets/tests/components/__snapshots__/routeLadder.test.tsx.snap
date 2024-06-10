@@ -326,6 +326,7 @@ exports[`routeLadder does not include the detour dropdown if the 'RouteLadderHea
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        id="route-pill:r5:"
       >
         28
       </div>
@@ -1473,12 +1474,14 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
         >
           <button
             aria-expanded="false"
+            aria-labelledby="route-pill:r2: route-options-toggle:r3:"
             class="c-route-ladder__dropdown-button dropdown-toggle btn btn-primary"
-            id="react-aria-:r0:"
+            id="react-aria-:r4:"
             type="button"
           >
             <span
               class="visually-hidden"
+              id="route-options-toggle:r3:"
             >
               Route Options
             </span>
@@ -1487,6 +1490,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
       </div>
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        id="route-pill:r2:"
       >
         28
       </div>
@@ -1623,6 +1627,7 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        id="route-pill:r0:"
       >
         28
       </div>

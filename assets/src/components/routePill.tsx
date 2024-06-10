@@ -1,15 +1,16 @@
-import React from "react"
+import React, { ComponentPropsWithoutRef } from "react"
 import { joinClasses } from "../helpers/dom"
 
 export const RoutePill = ({
   routeName,
   largeFormat,
   className,
+  ...props
 }: {
   routeName: string
   largeFormat?: boolean
   className?: string
-}): JSX.Element => {
+} & ComponentPropsWithoutRef<"div">): JSX.Element => {
   const classes = joinClasses([
     "c-route-pill",
     modeClass(routeName),
@@ -17,7 +18,11 @@ export const RoutePill = ({
     className,
   ])
 
-  return <div className={classes}>{routeNameTransform(routeName)}</div>
+  return (
+    <div {...props} className={classes}>
+      {routeNameTransform(routeName)}
+    </div>
+  )
 }
 
 const modeClass = (routeName: string): string => {
