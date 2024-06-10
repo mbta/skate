@@ -1668,5 +1668,50 @@ describe("DiversionPage", () => {
         ).toBeChecked()
       })
     })
+
+    test("when no route is selected, clicking the finish button shows error message", async () => {
+      const routes = routeFactory.buildList(2)
+
+      render(
+        <RoutesProvider routes={routes}>
+          <DiversionPage
+            originalRoute={{
+              routePattern: undefined,
+              route: undefined,
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      // Originally, this test tried the matcher `toBeVisible` instead of
+      // `toHaveAccessibleErrorMessage`. This would cause issues where the
+      // `toBeVisible` assertion would pass even if the start button wasn't
+      // clicked or the form was valid. That meant that this test didn't assert
+      // that the error was _reactive_.
+      //
+      // To assert that the test was reactive, a `not.toBeVisible` assertion was
+      // added before the click event, which ensured that it wasn't otherwise
+      // present.  This also failed because the (react-)bootstrap component
+      // which provides this text uses CSS for controlling visibility, which we
+      // don't have access to in our tests at this time.
+      //
+      // So instead, `toHaveAccessibleErrorMessage` was chosen because it
+      // asserted both the content of the error and that it was linked to the
+      // combobox semantically at the correct [point in time/state].
+      //
+      // Additionally, `toBeVisible` doesn't test the accessibility semantics of
+      // the form component, so `toHaveAccessibleErrorMessage` is better anyway.
+      expect(
+        screen.getByRole("combobox", { name: "Choose route" })
+      ).not.toHaveAccessibleErrorMessage()
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Start drawing detour" })
+      )
+
+      expect(
+        screen.getByRole("combobox", { name: "Choose route" })
+      ).toHaveAccessibleErrorMessage("Select a route to continue.")
+    })
   })
 })
