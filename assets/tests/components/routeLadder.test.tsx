@@ -262,7 +262,9 @@ describe("routeLadder", () => {
       />
     )
 
-    expect(screen.getByRole("button", { name: "Route Options" })).toBeVisible()
+    expect(
+      screen.getByRole("button", { name: "28 Route Options" })
+    ).toBeVisible()
 
     expect(tree).toMatchSnapshot()
   })
