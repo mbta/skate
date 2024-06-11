@@ -1,5 +1,5 @@
 import React, { useId } from "react"
-import { Button, FormSelect, Spinner } from "react-bootstrap"
+import { Button, Form, Spinner } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import {
   ByRoutePatternId,
@@ -66,7 +66,7 @@ export const DetourRouteSelectionPanel = ({
             <h2 className="c-diversion-panel__h2" id={selectId}>
               Choose route
             </h2>
-            <FormSelect
+            <Form.Select
               aria-labelledby={selectId}
               value={selectedRouteInfo.selectedRoute?.id}
               onChange={(changeEvent) => {
@@ -83,7 +83,7 @@ export const DetourRouteSelectionPanel = ({
                   {route.name}
                 </option>
               ))}
-            </FormSelect>
+            </Form.Select>
           </section>
 
           <section className="pb-3">
