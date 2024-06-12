@@ -100,91 +100,40 @@ defmodule Skate.Detours.MissedStops do
     do: [%Skate.Detours.ShapeSegment{points: shape, stop: :none}]
 
   def segment_shape_by_stops(shape, stops) do
-    [_stop | more_stops] = stops
-
-    %{index: anchor_index, anchor_point: anchor_point} =
+    %{stop_index: anchor_stop_index, anchor_point: anchor_point, shape_index: anchor_shape_index} =
       stops
-      |> Enum.with_index(fn stop, index ->
-        {anchor_point, _} = NearestPoint.nearest_point_on_shape(shape, stop)
+      |> Enum.with_index(fn stop, stop_index ->
+        {anchor_point, shape_index} = NearestPoint.nearest_point_on_shape(shape, stop)
 
         %{
           stop: stop,
-          index: index,
+          stop_index: stop_index,
           anchor_point: anchor_point,
+          shape_index: shape_index,
           dist: Location.distance(anchor_point, stop)
         }
       end)
       |> Enum.min_by(fn %{dist: dist} -> dist end)
 
     {stops_before_anchor, [anchor_stop | stops_after_anchor]} =
-      Enum.split(stops, anchor_index)
+      Enum.split(stops, anchor_stop_index)
 
-    index = anchor_index
+    {points_before_anchor, points_after_anchor} = Enum.split(shape, anchor_shape_index + 1)
 
-    {points_before_anchor, points_after_anchor} = Enum.split(shape, index + 1)
     shape_before_anchor = points_before_anchor ++ [anchor_point]
     shape_after_anchor = [anchor_point] ++ points_after_anchor
 
-    # segments_before_stop = [
-    #   %Skate.Detours.ShapeSegment{points: shape_before_stop, stop: anchor_stop}
-    # ]
+    {segments_before_anchor, [incomplete_anchor_segment]} =
+      segment_shape_by_stops(shape_before_anchor, stops_before_anchor) |> Enum.split(-1)
 
-    segments_before_anchor = segment_shape_by_stops(shape_before_anchor, stops_before_anchor)
+    anchor_segment = %Skate.Detours.ShapeSegment{incomplete_anchor_segment | stop: anchor_stop}
+
     segments_after_anchor = segment_shape_by_stops(shape_after_anchor, stops_after_anchor)
 
-    segments_before_stop ++
-      segments_after_stop
+    segments_before_anchor ++
+      [anchor_segment] ++
+      segments_after_anchor
   end
-
-  #   # Find the stop closest to the shape
-  #   %{index: anchor_stop_index, shape_dist: %{index: shape_point_anchor_index}} =
-  #     find_stop_closest_to_shape(shape, stops)
-
-  #   # Split the shape and stops at the anchor point
-  #   # Add one to the Shape Point Anchor Index so that the point ends up in `left_shape`
-  #   {left_shape, right_shape} = Enum.split(shape, shape_point_anchor_index + 1)
-
-  #   {left_stops, [anchor | right_stops]} = Enum.split(stops, anchor_stop_index)
-
-  #   # Process `left_shape` into segments
-  #   {left_segments, [anchor_segment]} =
-  #     Enum.split(segment_shape_by_stops(left_shape, left_stops), -1)
-
-  #   # Take last segment, which should not have a stop,
-  #   # and reconnect it with the anchor stop
-  #   anchor_segment = %Skate.Detours.ShapeSegment{
-  #     (%Skate.Detours.ShapeSegment{stop: :none} = anchor_segment)
-  #     | stop: anchor
-  #   }
-
-  #   left_segments ++ [anchor_segment] ++ segment_shape_by_stops(right_shape, right_stops)
-  # end
-
-  # @spec find_stop_closest_to_shape(
-  #         shape :: [Util.Location.From.t()],
-  #         stops :: [Util.Location.From.t()]
-  #       ) ::
-  #         %{
-  #           stop: Util.Location.From.t(),
-  #           index: non_neg_integer(),
-  #           shape_dist: point_dist_index()
-  #         }
-
-  # defp find_stop_closest_to_shape(shape, stops) do
-  #   stops
-  #   |> Enum.with_index(fn stop, index ->
-  #     {nearest_point, _idx} = NearestPoint.nearest_point_on_shape(shape, stop)
-  #     dist = Location.distance(nearest_point, stop)
-
-  #     %{
-  #       stop: stop,
-  #       index: index,
-  #       # shape_dist: closest_point(shape, stop),
-  #       shape_dist: %{elem: nearest_point, dist: dist, index: index}
-  #     }
-  #   end)
-  #   |> Enum.min_by(fn %{shape_dist: %{dist: dist}} -> dist end)
-  # end
 
   @spec get_index_by_min_dist(
           shape_segments :: [Skate.Detours.ShapeSegment.t()],

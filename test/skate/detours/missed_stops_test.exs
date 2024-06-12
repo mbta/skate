@@ -446,12 +446,12 @@ defmodule Skate.Detours.MissedStopsTest do
                [Location.new(0.003, 1.001), Location.new(1, 1)]
              ) == [
                %ShapeSegment{
-                 points: [Location.new(0, 0), Location.new(0, 1.001)],
+                 points: [Location.new(0, 0), Location.new(0, 1.0009999999999997)],
                  stop: Location.new(0.003, 1.001)
                },
                %ShapeSegment{
                  points: [
-                   Location.new(0, 1.001),
+                   Location.new(0, 1.0009999999999997),
                    Location.new(0, 2),
                    Location.new(1, 1),
                    Location.new(1, 1)
