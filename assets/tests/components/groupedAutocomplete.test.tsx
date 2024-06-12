@@ -28,6 +28,7 @@ import {
 import { searchFiltersFactory } from "../factories/searchProperties"
 import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 import locationSearchSuggestionFactory from "../factories/locationSearchSuggestion"
+import locationSearchResultFactory from "../factories/locationSearchResult"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest
@@ -892,5 +893,108 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
 
     expect(vehicleOption.get(vehicleOptions)).toBeInTheDocument()
     expect(runOption.query()).not.toBeInTheDocument()
+  })
+
+  test("when an autocomplete option is clicked, should fire event 'onSelectVehicleOption'", async () => {
+    const onSelectVehicleOption = jest.fn()
+    const searchText = "123"
+    const vehicle = vehicleFactory.build()
+
+    jest.mocked(useAutocompleteResults).mockImplementation(((
+      _socket,
+      searchText
+    ) => {
+      if (searchText === searchText) {
+        return {
+          vehicle: [vehicle],
+          operator: [],
+          run: [],
+        }
+      }
+      return {
+        operator: [],
+        run: [],
+        vehicle: [],
+      }
+    }) as typeof useAutocompleteResults)
+
+    render(
+      <GroupedAutocompleteFromSearchTextResults
+        controlName="Search Suggestions"
+        fallbackOption={autocompleteOption(null)}
+        onSelectVehicleOption={onSelectVehicleOption}
+        searchText={searchText}
+        searchFilters={searchFiltersFactory.build()}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={() => {}}
+      />
+    )
+
+    await userEvent.click(option(vehicle.label!).get())
+
+    expect(onSelectVehicleOption).toHaveBeenCalledWith(vehicle)
+  })
+
+  test("when a location autocomplete option is clicked, should fire event 'onSelectedLocationId'", async () => {
+    const onSelectLocationId = jest.fn()
+    const searchText = "123 Test St"
+    const location = locationSearchResultFactory.build({
+      name: "Search Suggestion",
+    })
+    const locationSuggestion = locationSearchSuggestionFactory.build({
+      text: location.name!,
+      placeId: location.id,
+    })
+
+    jest
+      .mocked(useLocationSearchSuggestions)
+      .mockReturnValue([locationSuggestion])
+
+    render(
+      <GroupedAutocompleteFromSearchTextResults
+        controlName="Search Suggestions"
+        fallbackOption={autocompleteOption(null)}
+        onSelectVehicleOption={() => {}}
+        searchText={searchText}
+        searchFilters={searchFiltersFactory.build()}
+        onSelectedLocationId={onSelectLocationId}
+        onSelectedLocationText={() => {}}
+      />
+    )
+
+    await userEvent.click(option(location.name!).get())
+
+    expect(onSelectLocationId).toHaveBeenCalledWith(location.id)
+  })
+
+  test("when a text-only location autocomplete option is clicked, should fire event 'onSelectedLocationText' and close autocomplete", async () => {
+    const onSelectLocationText = jest.fn()
+    const searchText = "123 Test St"
+    const locationSuggestion = locationSearchSuggestionFactory.build({
+      text: "Suggested Search Term",
+      placeId: null,
+    })
+
+    jest
+      .mocked(useLocationSearchSuggestions)
+      .mockReturnValue([locationSuggestion])
+
+    render(
+      <GroupedAutocompleteFromSearchTextResults
+        controlName="Search Suggestions"
+        fallbackOption={autocompleteOption(null)}
+        onSelectVehicleOption={() => {}}
+        searchText={searchText}
+        searchFilters={searchFiltersFactory.build()}
+        onSelectedLocationId={() => {}}
+        onSelectedLocationText={onSelectLocationText}
+      />
+    )
+
+    await userEvent.click(option(locationSuggestion.text).get())
+
+    expect(onSelectLocationText).toHaveBeenCalledWith(locationSuggestion.text)
+
+    expect(listbox().get()).not.toBeVisible()
   })
 })

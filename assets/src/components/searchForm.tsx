@@ -1,4 +1,5 @@
 import React, {
+  MutableRefObject,
   SyntheticEvent,
   useContext,
   useId,
@@ -11,6 +12,7 @@ import { SearchIcon } from "../helpers/icon"
 import {
   SearchProperties,
   SearchPropertyQuery,
+  SearchQuery,
   isValidSearchText,
   searchPropertyDisplayConfig,
 } from "../models/searchQuery"
@@ -24,14 +26,18 @@ import {
 
 import { CircleXIcon } from "./circleXIcon"
 import {
+  AutocompleteOptionData,
   GroupedAutocompleteControls,
-  GroupedAutocompleteFromSearchTextEventProps,
   GroupedAutocompleteFromSearchTextResults,
+  GrouplessAutocompleteFromArray,
   autocompleteOption,
 } from "./groupedAutocomplete"
 import { SocketContext } from "../contexts/socketContext"
 import useSocket from "../hooks/useSocket"
 import { FilterAccordion } from "./filterAccordion"
+import { Ghost, Vehicle } from "../realtime"
+import { ChevronDown } from "../helpers/bsIcons"
+import { Dispatch } from "../state"
 
 // #region Search Filters
 
@@ -44,9 +50,9 @@ export type SearchFiltersState = SearchProperties<boolean>
 // #endregion search filters
 
 /**
- * Non-Essential configuration props related to {@link SearchForm}.
+ * Non-Essential configuration props related to {@link Combobox}.
  */
-type SearchFormConfigProps = {
+type ComboboxConfigProps = {
   /**
    * Whether to show the autocomplete box or not
    */
@@ -54,9 +60,9 @@ type SearchFormConfigProps = {
 }
 
 /**
- * Event props related to {@link SearchForm}.
+ * Event props related to {@link Combobox}.
  */
-type SearchFormEventProps = {
+type ComboboxEventProps = {
   /**
    * Callback to run when the form is submitted.
    */
@@ -67,9 +73,8 @@ type SearchFormEventProps = {
   onClear?: React.ReactEventHandler
 }
 
-type SearchFormProps = SearchFormEventProps &
-  SearchFormConfigProps &
-  GroupedAutocompleteFromSearchTextEventProps & {
+type ComboboxProps = ComboboxEventProps &
+  ComboboxConfigProps & {
     /**
      * Text to show in the search input box.
      */
@@ -78,16 +83,21 @@ type SearchFormProps = SearchFormEventProps &
      * Callback to run when {@link inputText} should be updated.
      */
     onInputTextChange?: React.ChangeEventHandler<HTMLInputElement>
-
-    /**
-     * The property being searched
-     */
-    property: SearchPropertyQuery
-    /**
-     * Callback to run when {@link property} should be updated.
-     */
-    onPropertyChange: (property: SearchPropertyQuery) => void
   }
+
+type SearchComboboxProps = ComboboxProps & {
+  comboboxType: "map_search"
+  dispatch: Dispatch
+  query: SearchQuery
+  options: null
+}
+
+type SelectComboboxProps = ComboboxProps & {
+  comboboxType: "select"
+  dispatch: null
+  query: null
+  options: AutocompleteOptionData[]
+}
 
 const allFiltersOn: SearchFiltersState = {
   vehicle: true,
@@ -104,10 +114,10 @@ const allFiltersOff: SearchFiltersState = {
 
 const Filters = ({
   selectedProperty,
-  onSelectProperty,
+  dispatch,
 }: {
   selectedProperty: SearchPropertyQuery
-  onSelectProperty: (property: SearchPropertyQuery) => void
+  dispatch: Dispatch
 }) => {
   const filters: SearchPropertyQuery[] = [
     "all",
@@ -116,6 +126,10 @@ const Filters = ({
     "run",
     "location",
   ]
+  const onSelectProperty = (property: SearchPropertyQuery) => {
+    dispatch(setOldSearchProperty(property))
+    dispatch(submitSearch())
+  }
   return (
     <FilterAccordion.WithExpansionState heading="Filter results">
       {filters.map((property) => (
@@ -146,25 +160,93 @@ const Filters = ({
   )
 }
 
+export const MapSearchCombobox = ({
+  autocompleteController,
+  autocompleteId,
+  dispatch,
+  formSearchInput,
+  onSubmit,
+  query,
+  setAutocompleteEnabled,
+}: {
+  autocompleteController: MutableRefObject<GroupedAutocompleteControls | null>
+  autocompleteId: string
+  dispatch: Dispatch
+  formSearchInput: React.MutableRefObject<HTMLInputElement | null>
+  onSubmit: (e: SyntheticEvent) => void
+  query: SearchQuery
+  setAutocompleteEnabled: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
+  const onSelectVehicleOption = (vehicle: Vehicle | Ghost) => {
+    dispatch(
+      setSelectedEntity({
+        type: SelectedEntityType.Vehicle,
+        vehicleId: vehicle.id,
+      })
+    )
+  }
+
+  const onSelectedLocationId = (id: string) => {
+    dispatch(
+      setSelectedEntity({
+        type: SelectedEntityType.LocationByPlaceId,
+        placeId: id,
+      })
+    )
+  }
+
+  const onSelectedLocationText = (text: string) => {
+    dispatch(setSearchText(text))
+    dispatch(submitSearch())
+  }
+
+  return (
+    <SocketContext.Provider value={useSocket()}>
+      <GroupedAutocompleteFromSearchTextResults
+        id={autocompleteId}
+        controlName="Search Suggestions"
+        maxElementsPerGroup={5}
+        searchFilters={
+          query.property === "all"
+            ? allFiltersOn
+            : { ...allFiltersOff, [query.property]: true }
+        }
+        searchText={query.text}
+        fallbackOption={autocompleteOption(query.text, onSubmit)}
+        onSelectVehicleOption={onSelectVehicleOption}
+        onSelectedLocationId={onSelectedLocationId}
+        onSelectedLocationText={(text) => {
+          setAutocompleteEnabled(false)
+          onSelectedLocationText(text)
+        }}
+        controllerRef={autocompleteController}
+        onCursor={{
+          onCursorExitEdge: () => formSearchInput.current?.focus(),
+        }}
+      />
+    </SocketContext.Provider>
+  )
+}
+
 /**
- * Search form which exposes all configurable state and callbacks via {@link SearchFormProps props}.
+ * Form which exposes all configurable state and callbacks via {@link ComboboxProps props}.
  */
-export const SearchForm = ({
+export const Combobox = ({
   inputText,
   onInputTextChange,
-  property,
-  onPropertyChange,
   onClear: onClearProp,
   onSubmit: onSubmitProp,
-  onSelectVehicleOption,
-  onSelectedLocationId,
-  onSelectedLocationText,
+  comboboxType,
   showAutocomplete: showAutocompleteProp = true,
-}: SearchFormProps) => {
+  dispatch,
+  query,
+  options,
+}: SearchComboboxProps | SelectComboboxProps) => {
   const formSearchInput = useRef<HTMLInputElement | null>(null)
   const [autocompleteEnabled, setAutocompleteEnabled] = useState(true)
 
   const onSubmit = (e: SyntheticEvent) => {
+    e.preventDefault()
     // Hide autocomplete on submit, should show when next character is entered
     // or next time the input is focused.
     setAutocompleteEnabled(false)
@@ -181,8 +263,12 @@ export const SearchForm = ({
     null
   )
 
+  const minimumInputLength = comboboxType == "map_search" ? 3 : 0
+
   const autocompleteVisible =
-    autocompleteEnabled && showAutocompleteProp && inputText.length >= 3
+    autocompleteEnabled &&
+    showAutocompleteProp &&
+    inputText.length >= minimumInputLength
   const autocompleteId = useId()
 
   return (
@@ -257,64 +343,75 @@ export const SearchForm = ({
           >
             <CircleXIcon />
           </button>
-          <button
-            type="submit"
-            title="Submit"
-            className="c-search-form__submit"
-            onClick={onSubmit}
-            // TODO(design): add error states instead of using `disabled`
-            disabled={!isValidSearchText(inputText)}
-          >
-            <SearchIcon />
-          </button>
+          {comboboxType == "map_search" && (
+            <button
+              type="submit"
+              title="Submit"
+              className="c-search-form__submit"
+              onClick={onSubmit}
+              // TODO(design): add error states instead of using `disabled`
+              disabled={!isValidSearchText(inputText)}
+            >
+              <SearchIcon />
+            </button>
+          )}
+          {comboboxType == "select" && (
+            <button
+              // TODO: rename this class (follow-up PR)
+              // TODO: for some reason, this button is still submitting???
+              className="c-search-form__submit"
+              onClick={() =>
+                setAutocompleteEnabled(
+                  (autocompleteEnabled) => !autocompleteEnabled
+                )
+              }
+            >
+              <ChevronDown />
+            </button>
+          )}
         </div>
         <div
           className="c-search-form__autocomplete-container"
           hidden={!autocompleteVisible}
         >
-          <SocketContext.Provider value={useSocket()}>
-            <GroupedAutocompleteFromSearchTextResults
-              id={autocompleteId}
-              controlName="Search Suggestions"
-              maxElementsPerGroup={5}
-              searchFilters={
-                property === "all"
-                  ? allFiltersOn
-                  : { ...allFiltersOff, [property]: true }
-              }
-              searchText={inputText}
-              fallbackOption={autocompleteOption(inputText, onSubmit)}
-              onSelectVehicleOption={onSelectVehicleOption}
-              onSelectedLocationId={onSelectedLocationId}
-              onSelectedLocationText={(text) => {
-                setAutocompleteEnabled(false)
-                onSelectedLocationText(text)
-              }}
-              controllerRef={autocompleteController}
-              onCursor={{
-                onCursorExitEdge: () => formSearchInput.current?.focus(),
-              }}
+          {comboboxType == "map_search" ? (
+            <MapSearchCombobox
+              autocompleteController={autocompleteController}
+              autocompleteId={autocompleteId}
+              dispatch={dispatch}
+              formSearchInput={formSearchInput}
+              onSubmit={onSubmit}
+              query={query}
+              setAutocompleteEnabled={setAutocompleteEnabled}
             />
-          </SocketContext.Provider>
+          ) : (
+            <GrouplessAutocompleteFromArray
+              controlName=""
+              fallbackOption={autocompleteOption(
+                "No matching routes",
+                undefined
+              )}
+              options={options}
+            />
+          )}
         </div>
       </div>
-      <Filters
-        selectedProperty={property}
-        onSelectProperty={onPropertyChange}
-      />
+      {comboboxType == "map_search" && (
+        <Filters selectedProperty={query.property} dispatch={dispatch} />
+      )}
     </form>
   )
 }
 
 /**
- * {@link SearchForm `SearchForm`} which gets and saves it's state into the
+ * {@link Combobox `Combobox`} which gets and saves it's state into the
  * {@link StateDispatchContext}.
  */
 const SearchFormFromStateDispatchContext = ({
   onSubmit,
   onClear,
   ...props
-}: SearchFormEventProps & SearchFormConfigProps) => {
+}: ComboboxEventProps & ComboboxConfigProps) => {
   const [
     {
       searchPageState: { query },
@@ -323,10 +420,9 @@ const SearchFormFromStateDispatchContext = ({
   ] = useContext(StateDispatchContext)
 
   return (
-    <SearchForm
+    <Combobox
       {...props}
       inputText={query.text}
-      property={query.property}
       onInputTextChange={({ currentTarget: { value } }) => {
         dispatch(setSearchText(value))
       }}
@@ -342,30 +438,10 @@ const SearchFormFromStateDispatchContext = ({
         dispatch(setSearchText(""))
         onClear?.(event)
       }}
-      onPropertyChange={(property: SearchPropertyQuery) => {
-        dispatch(setOldSearchProperty(property))
-        dispatch(submitSearch())
-      }}
-      onSelectVehicleOption={(vehicle) => {
-        dispatch(
-          setSelectedEntity({
-            type: SelectedEntityType.Vehicle,
-            vehicleId: vehicle.id,
-          })
-        )
-      }}
-      onSelectedLocationId={(id) => {
-        dispatch(
-          setSelectedEntity({
-            type: SelectedEntityType.LocationByPlaceId,
-            placeId: id,
-          })
-        )
-      }}
-      onSelectedLocationText={(text) => {
-        dispatch(setSearchText(text))
-        dispatch(submitSearch())
-      }}
+      comboboxType="map_search"
+      dispatch={dispatch}
+      query={query}
+      options={null}
     />
   )
 }

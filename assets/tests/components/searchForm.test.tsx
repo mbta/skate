@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import SearchFormFromStateDispatchContext, {
-  SearchForm,
+  Combobox,
 } from "../../src/components/searchForm"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
@@ -39,9 +39,6 @@ import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import vehicleFactory from "../factories/vehicle"
 import { SearchPropertyQuery } from "../../src/models/searchQuery"
 import { formatOperatorName } from "../../src/util/operatorFormatting"
-import locationSearchResultFactory from "../factories/locationSearchResult"
-import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
-import locationSearchSuggestionFactory from "../factories/locationSearchSuggestion"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -57,7 +54,7 @@ jest.mock("../../src/hooks/useLocationSearchSuggestions", () => ({
 
 const mockDispatch = jest.fn()
 
-describe("SearchForm", () => {
+describe("Combobox", () => {
   test("renders", () => {
     const tree = renderer
       .create(
@@ -331,171 +328,59 @@ describe("SearchForm", () => {
     })
   })
 
-  test("when the search text length is greater than or equal to the minium character count, should show autocomplete", () => {
-    render(
-      <SearchForm
-        inputText="123"
-        property="all"
-        onPropertyChange={jest.fn()}
-        onSelectVehicleOption={() => {}}
-        onSelectedLocationId={() => {}}
-        onSelectedLocationText={() => {}}
+  /**
+   * Testing just the combobox component ###
+   * Here's a wrapper with all the redundant props for a map_search combobox
+   */
+  const ComboboxWrapper: React.FC<{
+    inputText?: string
+    property?: "all" | "run"
+    onSubmit?: React.ReactEventHandler<Element>
+  }> = ({ inputText, property, onSubmit }) => {
+    const testDispatch = jest.fn()
+    const query = emptySearchQueryFactory.build({
+      text: "123",
+      property: property || "all",
+    })
+
+    return (
+      <Combobox
+        inputText={inputText || "123"}
+        onSubmit={onSubmit}
+        comboboxType="map_search"
+        dispatch={testDispatch}
+        query={query}
+        options={null}
       />
     )
+  }
+
+  test("when the search text length is greater than or equal to the minium character count, should show autocomplete", () => {
+    render(<ComboboxWrapper />)
 
     expect(autocompleteListbox().get()).toBeInTheDocument()
   })
 
   test("when the search text length is less than the minium character count, should not show autocomplete", () => {
-    render(
-      <SearchForm
-        inputText="12"
-        property="all"
-        onPropertyChange={jest.fn()}
-        onSelectVehicleOption={() => {}}
-        onSelectedLocationId={() => {}}
-        onSelectedLocationText={() => {}}
-      />
-    )
+    render(<ComboboxWrapper inputText="12" />)
 
     expect(autocompleteListbox().get()).not.toBeVisible()
   })
 
   test("when the search is submitted, should not show autocomplete", async () => {
     render(
-      <SearchForm
-        inputText="123"
-        property="all"
-        onPropertyChange={jest.fn()}
+      <ComboboxWrapper
         // Prevent the following error by preventing default event.
         // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        onSelectVehicleOption={() => {}}
-        onSelectedLocationId={() => {}}
-        onSelectedLocationText={() => {}}
       />
     )
 
     expect(autocompleteListbox().get()).toBeInTheDocument()
 
     await userEvent.click(submitButton.get())
-
-    expect(autocompleteListbox().get()).not.toBeVisible()
-  })
-
-  test("when a autocomplete option is clicked, should fire event 'onSelectVehicleOption'", async () => {
-    const onSelectVehicleOption = jest.fn()
-    const inputText = "123"
-    const vehicle = vehicleFactory.build()
-
-    jest.mocked(useAutocompleteResults).mockImplementation(((
-      _socket,
-      searchText
-    ) => {
-      if (inputText === searchText) {
-        return {
-          vehicle: [vehicle],
-          operator: [],
-          run: [],
-        }
-      }
-      return {
-        operator: [],
-        run: [],
-        vehicle: [],
-      }
-    }) as typeof useAutocompleteResults)
-
-    render(
-      <SearchForm
-        inputText={inputText}
-        property="all"
-        onPropertyChange={jest.fn()}
-        // Prevent the following error by preventing default event.
-        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
-        onSubmit={(e) => {
-          e.preventDefault()
-        }}
-        onSelectVehicleOption={onSelectVehicleOption}
-        onSelectedLocationId={() => {}}
-        onSelectedLocationText={() => {}}
-      />
-    )
-
-    await userEvent.click(autocompleteOption(vehicle.label!).get())
-
-    expect(onSelectVehicleOption).toHaveBeenCalledWith(vehicle)
-  })
-
-  test("when a location autocomplete option is clicked, should fire event 'onSelectedLocationId'", async () => {
-    const onSelectLocationId = jest.fn()
-    const inputText = "123 Test St"
-    const location = locationSearchResultFactory.build({
-      name: "Search Suggestion",
-    })
-    const locationSuggestion = locationSearchSuggestionFactory.build({
-      text: location.name!,
-      placeId: location.id,
-    })
-
-    jest
-      .mocked(useLocationSearchSuggestions)
-      .mockReturnValue([locationSuggestion])
-
-    render(
-      <SearchForm
-        inputText={inputText}
-        property="all"
-        onPropertyChange={jest.fn()}
-        // Prevent the following error by preventing default event.
-        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
-        onSubmit={(e) => {
-          e.preventDefault()
-        }}
-        onSelectVehicleOption={() => {}}
-        onSelectedLocationId={onSelectLocationId}
-        onSelectedLocationText={() => {}}
-      />
-    )
-
-    await userEvent.click(autocompleteOption(location.name!).get())
-
-    expect(onSelectLocationId).toHaveBeenCalledWith(location.id)
-  })
-
-  test("when a text-only location autocomplete option is clicked, should fire event 'onSelectedLocationText' and close autocomplete", async () => {
-    const onSelectLocationText = jest.fn()
-    const inputText = "123 Test St"
-    const locationSuggestion = locationSearchSuggestionFactory.build({
-      text: "Suggested Search Term",
-      placeId: null,
-    })
-
-    jest
-      .mocked(useLocationSearchSuggestions)
-      .mockReturnValue([locationSuggestion])
-
-    render(
-      <SearchForm
-        inputText={inputText}
-        property="all"
-        onPropertyChange={jest.fn()}
-        // Prevent the following error by preventing default event.
-        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
-        onSubmit={(e) => {
-          e.preventDefault()
-        }}
-        onSelectVehicleOption={() => {}}
-        onSelectedLocationId={() => {}}
-        onSelectedLocationText={onSelectLocationText}
-      />
-    )
-
-    await userEvent.click(autocompleteOption(locationSuggestion.text).get())
-
-    expect(onSelectLocationText).toHaveBeenCalledWith(locationSuggestion.text)
 
     expect(autocompleteListbox().get()).not.toBeVisible()
   })
@@ -523,16 +408,7 @@ describe("SearchForm", () => {
       }
     }) as typeof useAutocompleteResults)
 
-    render(
-      <SearchForm
-        inputText={inputText}
-        property="run"
-        onPropertyChange={jest.fn()}
-        onSelectVehicleOption={() => {}}
-        onSelectedLocationId={() => {}}
-        onSelectedLocationText={() => {}}
-      />
-    )
+    render(<ComboboxWrapper inputText={inputText} property="run" />)
 
     expect(autocompleteOption(vehicle.label!).query()).not.toBeInTheDocument()
     expect(autocompleteOption(runVehicle.runId!).get()).toBeInTheDocument()
@@ -560,16 +436,7 @@ describe("SearchForm", () => {
       }
     }) as typeof useAutocompleteResults)
 
-    render(
-      <SearchForm
-        inputText={inputText}
-        property="all"
-        onPropertyChange={jest.fn()}
-        onSelectVehicleOption={() => {}}
-        onSelectedLocationId={() => {}}
-        onSelectedLocationText={() => {}}
-      />
-    )
+    render(<ComboboxWrapper inputText={inputText} property="all" />)
 
     expect(autocompleteOption(vehicle.label!).query()).toBeInTheDocument()
     expect(
