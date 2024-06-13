@@ -217,23 +217,23 @@ defmodule Skate.Detours.MissedStopsTest do
 
     test "counts stops as missed if they're just inside the detour" do
       #                               Both stops are missed
-      #         Stops:         v(0.001, 1.1)             v(0.001, 4.9)
-      #                        o                         o
+      #         Stops:         v(0.001, 1.6)             v(0.001, 5.4)
+      #                           o                         o
       # 
       #                o------o------o------o------o------o------o------o
       #  Shape Points: ^(0,0) ^(0,1) ^(0,2) ^(0,3) ^(0,4) ^(0,5) ^(0,6) ^(0,7)
       # 
-      #  Connection Points : o                             o
-      #                      ^(-0.001, 0.9)                ^(-0.001, 5.1)
-      #                   (connection_start)               (connection_end)
+      #  Connection Points :    o                             o
+      #                         ^(-0.001, 1.4)                ^(-0.001, 5.6)
+      #                      (connection_start)               (connection_end)
       stops = [
-        Location.new(0.001, 1.1),
-        Location.new(0.001, 4.9)
+        Location.new(0.001, 1.6),
+        Location.new(0.001, 5.4)
       ]
 
       param = %MissedStops{
-        connection_start: Location.new(-0.001, 0.9),
-        connection_end: Location.new(-0.001, 5.1),
+        connection_start: Location.new(-0.001, 1.4),
+        connection_end: Location.new(-0.001, 5.6),
         stops: stops,
         shape: [
           Location.new(0, 0),
@@ -257,22 +257,22 @@ defmodule Skate.Detours.MissedStopsTest do
 
     test "does not count stops as missed if they're just outside the detour" do
       #                              Neither stop is missed
-      #         Stops:       v(0.001, 0.9)                 v(0.001, 5.1)
-      #                      o                             o
+      #         Stops:          v(0.001, 1.4)                 v(0.001, 5.6)
+      #                         o                             o
       # 
       #                o------o------o------o------o------o------o------o
       #  Shape Points: ^(0,0) ^(0,1) ^(0,2) ^(0,3) ^(0,4) ^(0,5) ^(0,6) ^(0,7)
       # 
-      #  Connection Points :   o                         o
-      #                        ^(-0.001, 1.1)            ^(-0.001, 4.9)
-      #                     (connection_start)           (connection_end)
+      #  Connection Points :      o                         o
+      #                           ^(-0.001, 1.6)            ^(-0.001, 5.4)
+      #                        (connection_start)           (connection_end)
 
-      connection_stop_start = Location.new(0.001, 0.9)
-      connection_stop_end = Location.new(0.001, 5.1)
+      connection_stop_start = Location.new(0.001, 1.4)
+      connection_stop_end = Location.new(0.001, 5.6)
 
       param = %MissedStops{
-        connection_start: Location.new(-0.001, 1.1),
-        connection_end: Location.new(-0.001, 4.9),
+        connection_start: Location.new(-0.001, 1.6),
+        connection_end: Location.new(-0.001, 5.4),
         stops: [
           connection_stop_start,
           connection_stop_end
@@ -297,7 +297,6 @@ defmodule Skate.Detours.MissedStopsTest do
                MissedStops.missed_stops(param)
     end
 
-    @tag :skip
     test "works even if the route shape has a long segment that includes multiple stops" do
       #
       #         Stops:   (0.001, 0.9)    (0.001, 2.5)     v(0.001, 5.1)

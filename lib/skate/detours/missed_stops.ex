@@ -124,7 +124,7 @@ defmodule Skate.Detours.MissedStops do
     shape_after_anchor = [anchor_point] ++ points_after_anchor
 
     {segments_before_anchor, [incomplete_anchor_segment]} =
-      segment_shape_by_stops(shape_before_anchor, stops_before_anchor) |> Enum.split(-1)
+      shape_before_anchor |> segment_shape_by_stops(stops_before_anchor) |> Enum.split(-1)
 
     anchor_segment = %Skate.Detours.ShapeSegment{incomplete_anchor_segment | stop: anchor_stop}
 
@@ -141,35 +141,12 @@ defmodule Skate.Detours.MissedStops do
         ) :: non_neg_integer()
   defp get_index_by_min_dist(shape_segments, reference) do
     shape_segments
-    |> Enum.with_index(fn %Skate.Detours.ShapeSegment{points: points} = segment, idx ->
-      %{segment: segment, closest: closest_point(points, reference), index: idx}
-    end)
-    |> Enum.min_by(fn %{closest: %{dist: dist}} -> dist end)
-    |> Map.fetch!(:index)
-  end
+    |> Enum.with_index(fn %Skate.Detours.ShapeSegment{points: points}, index ->
+      {point, _} = NearestPoint.nearest_point_on_shape(points, reference)
 
-  @type point_dist_index :: %{
-          elem: Util.Location.From.t(),
-          dist: float(),
-          index: non_neg_integer()
-        }
-  @spec closest_point(
-          coordinates :: [Util.Location.From.t()],
-          reference :: Util.Location.From.t()
-        ) ::
-          point_dist_index()
-
-  defp closest_point(coordinates, reference) do
-    reference = Util.Location.as_location!(reference)
-
-    dist_from_reference = fn point ->
-      Location.distance(reference, Util.Location.as_location!(point))
-    end
-
-    coordinates
-    |> Enum.with_index(fn point, idx ->
-      %{elem: point, dist: dist_from_reference.(point), index: idx}
+      %{index: index, dist: Location.distance(reference, point)}
     end)
     |> Enum.min_by(& &1.dist)
+    |> Map.fetch!(:index)
   end
 end
