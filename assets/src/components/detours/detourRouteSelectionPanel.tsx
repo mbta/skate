@@ -1,5 +1,5 @@
 import React, { useId } from "react"
-import { Button, FormSelect, Spinner } from "react-bootstrap"
+import { Button, Form, Spinner } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import {
   ByRoutePatternId,
@@ -30,6 +30,7 @@ interface DetourRouteSelectionPanelProps {
   selectedRouteInfo: SelectedRouteInfo
 
   isLoadingRoutePatterns: boolean
+  isRouteInvalid?: boolean
 
   onConfirm: () => void
   onSelectRoute: (route: Route | undefined) => void
@@ -52,8 +53,11 @@ export const DetourRouteSelectionPanel = ({
   onSelectRoute,
   onSelectRoutePattern,
   isLoadingRoutePatterns,
+  isRouteInvalid = false,
 }: DetourRouteSelectionPanelProps) => {
   const selectId = "choose-route-select" + useId()
+  const routeErrorId = "route-select-error" + useId()
+
   return (
     <Panel as="article">
       <Panel.Header className="">
@@ -63,27 +67,43 @@ export const DetourRouteSelectionPanel = ({
       <Panel.Body className="d-flex flex-column">
         <Panel.Body.ScrollArea className="d-flex flex-column">
           <section className="pb-3">
-            <h2 className="c-diversion-panel__h2" id={selectId}>
-              Choose route
-            </h2>
-            <FormSelect
-              aria-labelledby={selectId}
-              value={selectedRouteInfo.selectedRoute?.id}
-              onChange={(changeEvent) => {
-                onSelectRoute?.(
-                  allRoutes.find(
-                    (route) => route.id === changeEvent.target.value
-                  )
-                )
-              }}
+            <Form
+              // We're doing js validation, so disable HTML validation
+              noValidate={true}
             >
-              <option>Select a route</option>
-              {allRoutes.map((route) => (
-                <option key={route.id} value={route.id}>
-                  {route.name}
-                </option>
-              ))}
-            </FormSelect>
+              <Form.Group>
+                <h2 className="c-diversion-panel__h2" id={selectId}>
+                  Choose route
+                </h2>
+                <Form.Select
+                  // Never show the "valid" style
+                  isValid={false}
+                  // Show invalid when no route and after "submit"" is pressed
+                  isInvalid={isRouteInvalid}
+                  aria-invalid={isRouteInvalid}
+                  aria-errormessage={routeErrorId}
+                  aria-labelledby={selectId}
+                  value={selectedRouteInfo.selectedRoute?.id}
+                  onChange={(changeEvent) => {
+                    onSelectRoute?.(
+                      allRoutes.find(
+                        (route) => route.id === changeEvent.target.value
+                      )
+                    )
+                  }}
+                >
+                  <option value="">Select a route</option>
+                  {allRoutes.map((route) => (
+                    <option key={route.id} value={route.id}>
+                      {route.name}
+                    </option>
+                  ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid" id={routeErrorId}>
+                  Select a route to continue.
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Form>
           </section>
 
           <section className="pb-3">

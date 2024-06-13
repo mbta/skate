@@ -188,6 +188,15 @@ export const createDetourMachine = setup({
                   },
                 },
                 Loading: {},
+                // Note/Idea: if more "error" states are added, consider if
+                // making them child states of a `Error` parent state would
+                // be a worthwhile grouping
+                "Error: No Route": {},
+              },
+              on: {
+                "detour.route-pattern.done": {
+                  target: ".Error: No Route",
+                },
               },
             },
             "Finalize Route Pattern": {
