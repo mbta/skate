@@ -967,7 +967,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
     expect(onSelectLocationId).toHaveBeenCalledWith(location.id)
   })
 
-  test("when a text-only location autocomplete option is clicked, should fire event 'onSelectedLocationText' and close autocomplete", async () => {
+  test("when a text-only location autocomplete option is clicked, should fire event 'onSelectedLocationText'", async () => {
     const onSelectLocationText = jest.fn()
     const searchText = "123 Test St"
     const locationSuggestion = locationSearchSuggestionFactory.build({
@@ -994,7 +994,5 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
     await userEvent.click(option(locationSuggestion.text).get())
 
     expect(onSelectLocationText).toHaveBeenCalledWith(locationSuggestion.text)
-
-    expect(listbox().get()).not.toBeVisible()
   })
 })

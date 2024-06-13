@@ -39,6 +39,8 @@ import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import vehicleFactory from "../factories/vehicle"
 import { SearchPropertyQuery } from "../../src/models/searchQuery"
 import { formatOperatorName } from "../../src/util/operatorFormatting"
+import locationSearchSuggestionFactory from "../factories/locationSearchSuggestion"
+import { useLocationSearchSuggestions } from "../../src/hooks/useLocationSearchSuggestions"
 
 jest.mock("../../src/hooks/useAutocompleteResults", () => ({
   useAutocompleteResults: jest.fn().mockImplementation(() => ({
@@ -382,6 +384,33 @@ describe("Combobox", () => {
 
     await userEvent.click(submitButton.get())
 
+    expect(autocompleteListbox().get()).not.toBeVisible()
+  })
+
+  test("when a text-only location autocomplete option is clicked, should close autocomplete", async () => {
+    const inputText = "123 Test St"
+    const locationSuggestion = locationSearchSuggestionFactory.build({
+      text: "Suggested Search Term",
+      placeId: null,
+    })
+
+    jest
+      .mocked(useLocationSearchSuggestions)
+      .mockReturnValue([locationSuggestion])
+
+    render(
+      <ComboboxWrapper
+        inputText={inputText}
+        property="all"
+        // Prevent the following error by preventing default event.
+        // `Error: Not implemented: HTMLFormElement.prototype.requestSubmit`
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}
+      />
+    )
+    expect(autocompleteListbox().get()).toBeVisible()
+    await userEvent.click(autocompleteOption(locationSuggestion.text).get())
     expect(autocompleteListbox().get()).not.toBeVisible()
   })
 

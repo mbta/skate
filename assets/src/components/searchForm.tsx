@@ -229,7 +229,7 @@ export const MapSearchCombobox = ({
 }
 
 /**
- * Form which exposes all configurable state and callbacks via {@link ComboboxProps props}.
+ * Search form which exposes all configurable state and callbacks via {@link ComboboxProps props}.
  */
 export const Combobox = ({
   inputText,
@@ -358,13 +358,9 @@ export const Combobox = ({
           {comboboxType == "select" && (
             <button
               // TODO: rename this class (follow-up PR)
-              // TODO: for some reason, this button is still submitting???
+              type="button"
               className="c-search-form__submit"
-              onClick={() =>
-                setAutocompleteEnabled(
-                  (autocompleteEnabled) => !autocompleteEnabled
-                )
-              }
+              onClick={() => setAutocompleteEnabled(true)}
             >
               <ChevronDown />
             </button>
