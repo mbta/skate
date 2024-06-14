@@ -89,13 +89,13 @@ type SearchComboboxProps = ComboboxProps & {
   comboboxType: "map_search"
   dispatch: Dispatch
   query: SearchQuery
-  options: null
+  options?: undefined
 }
 
 type SelectComboboxProps = ComboboxProps & {
   comboboxType: "select"
-  dispatch: null
-  query: null
+  dispatch?: undefined
+  query?: undefined
   options: AutocompleteOptionData[]
 }
 
@@ -437,7 +437,6 @@ const SearchFormFromStateDispatchContext = ({
       comboboxType="map_search"
       dispatch={dispatch}
       query={query}
-      options={null}
     />
   )
 }

@@ -352,7 +352,6 @@ describe("Combobox", () => {
         comboboxType="map_search"
         dispatch={testDispatch}
         query={query}
-        options={null}
       />
     )
   }
