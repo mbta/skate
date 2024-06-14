@@ -900,23 +900,22 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
     const searchText = "123"
     const vehicle = vehicleFactory.build()
 
-    jest.mocked(useAutocompleteResults).mockImplementation(((
-      _socket,
-      searchText
-    ) => {
-      if (searchText === searchText) {
+    jest
+      .mocked(useAutocompleteResults)
+      .mockImplementation((_socket, searchText) => {
+        if (searchText === searchText) {
+          return {
+            vehicle: [vehicle],
+            operator: [],
+            run: [],
+          }
+        }
         return {
-          vehicle: [vehicle],
           operator: [],
           run: [],
+          vehicle: [],
         }
-      }
-      return {
-        operator: [],
-        run: [],
-        vehicle: [],
-      }
-    }))
+      })
 
     render(
       <GroupedAutocompleteFromSearchTextResults
