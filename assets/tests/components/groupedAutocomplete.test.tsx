@@ -916,7 +916,7 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
         run: [],
         vehicle: [],
       }
-    }) as typeof useAutocompleteResults)
+    }))
 
     render(
       <GroupedAutocompleteFromSearchTextResults
