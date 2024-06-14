@@ -109,7 +109,7 @@ const meta = {
     onClear: () => {},
     zoom: 15,
     center: { lat: 42.33, lng: -71.11 },
-    editing: false
+    editing: false,
   },
   argTypes: {
     startPoint: { table: { disable: true } },
