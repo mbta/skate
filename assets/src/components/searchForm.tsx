@@ -246,7 +246,6 @@ export const Combobox = ({
   const [autocompleteEnabled, setAutocompleteEnabled] = useState(true)
 
   const onSubmit = (e: SyntheticEvent) => {
-    e.preventDefault()
     // Hide autocomplete on submit, should show when next character is entered
     // or next time the input is focused.
     setAutocompleteEnabled(false)
@@ -357,10 +356,10 @@ export const Combobox = ({
           )}
           {comboboxType == "select" && (
             <button
-              // TODO: rename this class (follow-up PR)
               type="button"
+              // TODO: rename this class (follow-up PR)
               className="c-search-form__submit"
-              onClick={() => setAutocompleteEnabled(true)}
+              onClick={onSubmit}
             >
               <ChevronDown />
             </button>
@@ -388,6 +387,7 @@ export const Combobox = ({
                 undefined
               )}
               options={options}
+              controllerRef={autocompleteController}
             />
           )}
         </div>
