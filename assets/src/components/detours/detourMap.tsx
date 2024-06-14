@@ -97,6 +97,11 @@ interface DetourMapProps {
    */
   center?: LatLngLiteral
   zoom?: number
+
+  /*
+   * Map is in editing state, and is therefore interactive
+   */
+  editing: boolean
 }
 
 export const DetourMap = ({
@@ -120,6 +125,8 @@ export const DetourMap = ({
 
   center,
   zoom,
+
+  editing,
 }: DetourMapProps) => {
   const id = useId()
 
@@ -135,6 +142,8 @@ export const DetourMap = ({
   const [streetViewEnabled, setStreetViewEnabled] = useState(false)
 
   const onClickMap = streetViewEnabled ? undefined : onAddWaypoint
+
+  const canDraw = !streetViewEnabled && editing
 
   return (
     <div
@@ -226,7 +235,7 @@ export const DetourMap = ({
             key={`detour-map-original-route-shape-${id}-${
               startPoint === undefined
             }`}
-            interactive={!streetViewEnabled}
+            interactive={canDraw}
             classNames={
               startPoint === undefined
                 ? ["c-detour_map--original-route-shape__unstarted"]

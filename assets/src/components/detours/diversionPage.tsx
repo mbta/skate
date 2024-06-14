@@ -247,6 +247,7 @@ export const DiversionPage = ({
             onUndo={undo ?? (() => {})}
             onClear={clear ?? (() => {})}
             stops={stops}
+            editing={snapshot.matches({ "Detour Drawing": "Editing" })}
           />
         </div>
       </article>
