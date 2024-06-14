@@ -769,7 +769,7 @@ export const GrouplessAutocompleteFromArray = ({
   controlName,
   fallbackOption,
   options,
-  controllerRef
+  controllerRef,
 }: {
   controlName: ReactNode
   fallbackOption: AutocompleteOptionData
