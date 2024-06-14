@@ -769,10 +769,12 @@ export const GrouplessAutocompleteFromArray = ({
   controlName,
   fallbackOption,
   options,
+  controllerRef,
 }: {
   controlName: ReactNode
   fallbackOption: AutocompleteOptionData
   options: AutocompleteOptionData[]
+  controllerRef: MutableRefObject<GroupedAutocompleteControls | null>
 }) => {
   const groups = [autocompleteGroup(null, ...options)]
   return (
@@ -780,6 +782,7 @@ export const GrouplessAutocompleteFromArray = ({
       controlName={controlName}
       fallbackOption={fallbackOption}
       optionGroups={groups}
+      controllerRef={controllerRef}
     />
   )
 }

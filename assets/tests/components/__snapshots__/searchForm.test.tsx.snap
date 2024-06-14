@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchForm renders 1`] = `
+exports[`Combobox renders 1`] = `
 <form
   autoComplete="off"
   className="c-search-form"
