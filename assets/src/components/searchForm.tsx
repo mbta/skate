@@ -382,7 +382,7 @@ export const Combobox = ({
             />
           ) : (
             <GrouplessAutocompleteFromArray
-              controlName=""
+              controlName="Search Suggestions"
               fallbackOption={autocompleteOption(
                 "No matching routes",
                 undefined
