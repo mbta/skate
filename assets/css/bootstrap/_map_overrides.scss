@@ -11,3 +11,14 @@ $theme-colors: (
   "dark": new_tokens.$gray-900,
   "missed-stop": semantic.$missed-stop,
 );
+
+$utilities: (
+  // Shorthand for specifying utility classes `top-0 start-0 bottom-0 end-0`
+  "inset":
+    (
+      property: inset,
+      values: (
+        0: 0,
+      ),
+    )
+);

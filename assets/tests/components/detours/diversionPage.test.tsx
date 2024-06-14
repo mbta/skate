@@ -14,6 +14,7 @@ import {
   fetchDetourDirections,
   fetchFinishedDetour,
   fetchNearestIntersection,
+  fetchRoutePatterns,
 } from "../../../src/api"
 import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
 import stopFactory from "../../factories/stop"
@@ -35,6 +36,13 @@ import { Err, Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { DeepPartial } from "fishery"
+import getTestGroups from "../../../src/userTestGroups"
+import { TestGroups } from "../../../src/userInTestGroup"
+import { routePatternFactory } from "../../factories/routePattern"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
+import routeFactory from "../../factories/route"
+import { patternDisplayName } from "../../../src/components/mapPage/routePropertiesCard"
+import { RoutePattern } from "../../../src/schedule"
 
 const DiversionPage = (
   props: Omit<
@@ -56,16 +64,24 @@ const DiversionPage = (
   )
 }
 
+function rpcRadioButtonName(rp: RoutePattern) {
+  const { name, description } = patternDisplayName(rp)
+  return name + " " + description
+}
+
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
 jest.mock("../../../src/api")
+jest.mock("../../../src/userTestGroups")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockReturnValue(neverPromise())
   jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
+  jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
+  jest.mocked(getTestGroups).mockReturnValue([])
 })
 
 describe("DiversionPage", () => {
@@ -1217,12 +1233,7 @@ describe("DiversionPage", () => {
   })
 
   describe("'Change route or direction' button", () => {
-    /*
-     * This test is here because this button is now part of one of the
-     * components, and we want to make sure that we don't accidentally
-     * render it when we didn't intend to.
-     */
-    test("the button doesn't render yet in context", async () => {
+    test("when not in test group, is not present", async () => {
       render(<DiversionPage />)
 
       expect(
@@ -1231,6 +1242,476 @@ describe("DiversionPage", () => {
       expect(
         screen.queryByRole("button", { name: "Change route or direction" })
       ).not.toBeInTheDocument()
+    })
+
+    test("when in test group, is visible", async () => {
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
+      jest
+        .mocked(fetchRoutePatterns)
+        .mockResolvedValue(routePatternFactory.buildList(1, { id: "66_666" }))
+
+      render(
+        <DiversionPage originalRoute={{ routePattern: { id: "66_666" } }} />
+      )
+
+      expect(
+        await screen.findByRole("heading", { name: "Create Detour" })
+      ).toBeInTheDocument()
+      expect(
+        screen.queryByRole("button", { name: "Change route or direction" })
+      ).toBeInTheDocument()
+    })
+
+    test("when clicked, shows the route selection panel", async () => {
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
+
+      const routePatterns = routePatternFactory.buildList(1, { id: "66_666" })
+      const [routePattern] = routePatterns
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(<DiversionPage originalRoute={{ routePattern }} />)
+
+      await userEvent.click(
+        await screen.findByRole("button", { name: "Change route or direction" })
+      )
+
+      expect(
+        await screen.getByRole("heading", { name: "Choose route" })
+      ).toBeVisible()
+    })
+
+    test("when clicked, clears any existing detour state", async () => {
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
+
+      const route = routeFactory.build()
+      const routePatterns = routePatternFactory.buildList(2, {
+        routeId: route.id,
+      })
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      const { container } = render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage
+            originalRoute={{
+              route,
+              routePattern: routePatterns[0],
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      act(() => {
+        fireEvent.click(originalRouteShape.get(container))
+      })
+      act(() => {
+        fireEvent.click(container.querySelector(".c-vehicle-map")!)
+      })
+      act(() => {
+        fireEvent.click(originalRouteShape.get(container))
+      })
+
+      // Assert that we have detour points
+      expect(await screen.findByTitle("Detour Start")).toBeVisible()
+      expect(screen.getByTitle("Detour End")).toBeVisible()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).toBeVisible()
+
+      // Assert that drawing is gone on route selection mode
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
+      expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).not.toBeInTheDocument()
+
+      // Assert that detour is still cleared when returning to drawing detours
+      await userEvent.click(
+        screen.getByRole("button", { name: "Start drawing detour" })
+      )
+
+      expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
+      expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).not.toBeInTheDocument()
+
+      // Assert that route is still clickable
+      act(() => {
+        fireEvent.click(originalRouteShape.get(container))
+      })
+      expect(await screen.findByTitle("Detour Start")).toBeVisible()
+      expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+      expect(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")
+      ).not.toBeInTheDocument()
+    })
+  })
+
+  describe("'Route Selection Panel'", () => {
+    beforeEach(() => {
+      // Access to this panel via the "Change route or direction" button requires a test group currently
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetourRouteSelection])
+    })
+
+    test("can change route", async () => {
+      const routes = routeFactory.buildList(2)
+      const [initialRoute, targetRoute] = routes
+
+      const initialRoutePatterns = routePatternFactory.buildList(2, {
+        routeId: initialRoute.id,
+      })
+      const [initialRoutePattern] = initialRoutePatterns
+
+      const numberOfTargetRoutePatterns = 10
+      const targetRoutePatterns = routePatternFactory.buildList(
+        numberOfTargetRoutePatterns,
+        {
+          routeId: targetRoute.id,
+          directionId: 1,
+        }
+      )
+
+      jest.mocked(fetchRoutePatterns).mockImplementation(async (routeId) => {
+        switch (routeId) {
+          case initialRoute.id: {
+            return initialRoutePatterns
+          }
+          case targetRoute.id: {
+            return targetRoutePatterns
+          }
+          default: {
+            return []
+          }
+        }
+      })
+
+      render(
+        <RoutesProvider routes={routes}>
+          <DiversionPage
+            originalRoute={{
+              routePattern: initialRoutePattern,
+              route: initialRoute,
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        await screen.findByRole("button", { name: "Change route or direction" })
+      )
+
+      expect(
+        await within(
+          screen.getByRole("group", { name: "Variants" })
+        ).findAllByRole("radio")
+      ).toHaveLength(2)
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        targetRoute.id
+      )
+
+      expect(
+        await within(
+          screen.getByRole("group", { name: "Variants" })
+        ).findAllByRole("radio")
+      ).toHaveLength(numberOfTargetRoutePatterns)
+    })
+
+    test("can change route pattern", async () => {
+      const route = routeFactory.build()
+      const routePatterns = routePatternFactory.buildList(4, {
+        routeId: route.id,
+      })
+      const [, startingRoutePattern, , targetRoutePattern] = routePatterns
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage
+            originalRoute={{ routePattern: startingRoutePattern, route }}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        await screen.findByRole("button", { name: "Change route or direction" })
+      )
+
+      const targetPatternRadioButton = screen.getByRole("radio", {
+        name: rpcRadioButtonName(targetRoutePattern),
+      })
+
+      await userEvent.click(targetPatternRadioButton)
+
+      expect(targetPatternRadioButton).toBeChecked()
+    })
+
+    test("when finish button is clicked, returns to detour creation screen", async () => {
+      const route = routeFactory.build({ id: "66" })
+      const routePatterns = routePatternFactory.buildList(2, {
+        routeId: route.id,
+      })
+      const [rp1] = routePatterns
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage originalRoute={{ routePattern: rp1, route }} />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Start drawing detour" })
+      )
+
+      expect(
+        await screen.findByRole("heading", { name: "Affected route" })
+      ).toBeVisible()
+      expect(screen.getByText(route.name)).toBeVisible()
+      expect(screen.getByText(rp1.headsign!)).toBeVisible()
+    })
+
+    test("when a route pattern is already selected, opens to selected pattern", async () => {
+      const route = routeFactory.build()
+      const routePatterns = routePatternFactory.buildList(20, {
+        routeId: route.id,
+      })
+      const selectedRoutePattern = routePatterns.at(-1)!
+      expect(selectedRoutePattern).not.toBeUndefined()
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage
+            originalRoute={{ route, routePattern: selectedRoutePattern }}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      expect(
+        screen.getByRole("combobox", { name: "Choose route" })
+      ).toHaveValue(selectedRoutePattern.routeId)
+      expect(
+        screen.getByRole("radio", {
+          name: rpcRadioButtonName(selectedRoutePattern),
+        })
+      ).toBeChecked()
+    })
+
+    test("when route is changed, selects first 'inbound' route pattern first", async () => {
+      const routes = routeFactory.buildList(2)
+      const [route1, route2] = routes
+
+      const inboundRoutePatterns = routePatternFactory.buildList(2, {
+        routeId: route2.id,
+        directionId: 1,
+      })
+      const outboundRoutePatterns = routePatternFactory.buildList(2, {
+        routeId: route2.id,
+        directionId: 0,
+      })
+      const routePatterns = outboundRoutePatterns.concat(inboundRoutePatterns)
+
+      const [selectedRoutePattern] = inboundRoutePatterns
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(
+        <RoutesProvider routes={routes}>
+          <DiversionPage
+            originalRoute={{
+              route: route1,
+              routePattern: routePatternFactory.build({ routeId: route1.id }),
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        route2.name
+      )
+
+      expect(screen.getByRole("radio", { name: "Inbound" })).toBeChecked()
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("radio", {
+            name: rpcRadioButtonName(selectedRoutePattern),
+          })
+        ).toBeChecked()
+      })
+    })
+
+    test("when route is changed from a route to empty, can still select another route", async () => {
+      const route = routeFactory.build()
+
+      const routePatterns = routePatternFactory.buildList(3, {
+        routeId: route.id,
+      })
+
+      const [routePattern] = routePatterns
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage
+            originalRoute={{
+              route,
+              routePattern,
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        route.name
+      )
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        "Select a route"
+      )
+
+      expect(
+        screen.getByText("Select a route in order to choose a direction.")
+      ).toBeVisible()
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        route.name
+      )
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("radio", {
+            name: rpcRadioButtonName(routePattern),
+          })
+        ).toBeChecked()
+      })
+    })
+
+    test("when route is changed, selects first route pattern otherwise", async () => {
+      const routes = routeFactory.buildList(2)
+      const [route1, route2] = routes
+
+      const outboundRoutePatterns = routePatternFactory.buildList(2, {
+        routeId: route2.id,
+        directionId: 0,
+      })
+      const routePatterns = outboundRoutePatterns
+
+      const [selectedRoutePattern] = outboundRoutePatterns
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
+
+      render(
+        <RoutesProvider routes={routes}>
+          <DiversionPage
+            originalRoute={{
+              route: route1,
+              routePattern: routePatternFactory.build({ routeId: route1.id }),
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Choose route" }),
+        route2.name
+      )
+
+      expect(screen.getByRole("radio", { name: "Outbound" })).toBeChecked()
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("radio", {
+            name: rpcRadioButtonName(selectedRoutePattern),
+          })
+        ).toBeChecked()
+      })
+    })
+
+    test("when no route is selected, clicking the finish button shows error message", async () => {
+      const routes = routeFactory.buildList(2)
+
+      render(
+        <RoutesProvider routes={routes}>
+          <DiversionPage
+            originalRoute={{
+              routePattern: undefined,
+              route: undefined,
+            }}
+          />
+        </RoutesProvider>
+      )
+
+      // Originally, this test tried the matcher `toBeVisible` instead of
+      // `toHaveAccessibleErrorMessage`. This would cause issues where the
+      // `toBeVisible` assertion would pass even if the start button wasn't
+      // clicked or the form was valid. That meant that this test didn't assert
+      // that the error was _reactive_.
+      //
+      // To assert that the test was reactive, a `not.toBeVisible` assertion was
+      // added before the click event, which ensured that it wasn't otherwise
+      // present.  This also failed because the (react-)bootstrap component
+      // which provides this text uses CSS for controlling visibility, which we
+      // don't have access to in our tests at this time.
+      //
+      // So instead, `toHaveAccessibleErrorMessage` was chosen because it
+      // asserted both the content of the error and that it was linked to the
+      // combobox semantically at the correct [point in time/state].
+      //
+      // Additionally, `toBeVisible` doesn't test the accessibility semantics of
+      // the form component, so `toHaveAccessibleErrorMessage` is better anyway.
+      expect(
+        screen.getByRole("combobox", { name: "Choose route" })
+      ).not.toHaveAccessibleErrorMessage()
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Start drawing detour" })
+      )
+
+      expect(
+        screen.getByRole("combobox", { name: "Choose route" })
+      ).toHaveAccessibleErrorMessage("Select a route to continue.")
     })
   })
 })

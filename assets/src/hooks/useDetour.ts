@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchDetourDirections, fetchFinishedDetour } from "../api"
 
@@ -29,19 +29,31 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     input,
   })
 
-  const { routePattern } = snapshot.context
-
-  const [startPoint, setStartPoint] = useState<ShapePoint | null>(null)
-  const [endPoint, setEndPoint] = useState<ShapePoint | null>(null)
-  const [waypoints, setWaypoints] = useState<ShapePoint[]>([])
+  const { routePattern, startPoint, endPoint, waypoints } = snapshot.context
+  const allPoints = useMemo(() => {
+    if (!startPoint) {
+      return []
+    } else if (!endPoint) {
+      return [startPoint].concat(waypoints)
+    } else {
+      return [startPoint].concat(waypoints).concat([endPoint])
+    }
+  }, [startPoint, waypoints, endPoint])
 
   const { result: finishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
+      /* Until we have "typegen" in XState,
+       * we need to validate these exist for typescript
+       *
+       * > [Warning] XState Typegen does not fully support XState v5 yet. However,
+       * > strongly-typed machines can still be achieved without Typegen.
+       * > -- https://stately.ai/docs/migration#use-typestypegen-instead-of-tstypes
+       */
       if (routePattern && startPoint && endPoint) {
         return fetchFinishedDetour(routePattern.id, startPoint, endPoint)
-      } else {
-        return null
       }
+
+      return null
     }, [startPoint, endPoint, routePattern]),
   })
 
@@ -50,15 +62,7 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     longitude: startPoint?.lon,
   })
 
-  const detourShape = useDetourDirections(
-    useMemo(
-      () =>
-        [startPoint, ...waypoints, endPoint].filter(
-          (v): v is ShapePoint => !!v
-        ),
-      [startPoint, waypoints, endPoint]
-    ) ?? []
-  )
+  const detourShape = useDetourDirections(allPoints)
 
   const coordinates =
     detourShape.result && isOk(detourShape.result)
@@ -76,38 +80,32 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     })
   }
 
-  const canAddWaypoint = () => startPoint !== null && endPoint === null
+  const canAddWaypoint = () =>
+    snapshot.can({
+      type: "detour.edit.place-waypoint",
+      location: { lat: 0, lon: 0 },
+    })
+
   const addWaypoint = canAddWaypoint()
-    ? (p: ShapePoint) => {
-        setWaypoints((positions) => [...positions, p])
+    ? (location: ShapePoint) => {
+        send({ type: "detour.edit.place-waypoint", location })
       }
     : undefined
 
-  const addConnectionPoint = (point: ShapePoint) => {
-    if (startPoint === null) {
-      setStartPoint(point)
-    } else if (endPoint === null) {
-      setEndPoint(point)
-    }
-  }
+  const addConnectionPoint = (point: ShapePoint) =>
+    send({
+      type: "detour.edit.place-waypoint-on-route",
+      location: point,
+    })
 
-  const canUndo =
-    startPoint !== null && snapshot.matches({ "Detour Drawing": "Editing" })
+  const canUndo = snapshot.can({ type: "detour.edit.undo" })
 
   const undo = () => {
-    if (endPoint !== null) {
-      setEndPoint(null)
-    } else if (waypoints.length > 0) {
-      setWaypoints((positions) => positions.slice(0, positions.length - 1))
-    } else if (startPoint !== null) {
-      setStartPoint(null)
-    }
+    send({ type: "detour.edit.undo" })
   }
 
   const clear = () => {
-    setEndPoint(null)
-    setStartPoint(null)
-    setWaypoints([])
+    send({ type: "detour.edit.clear-detour" })
   }
 
   const finishDetour = () => {
@@ -131,6 +129,7 @@ export const useDetour = (input: CreateDetourMachineInput) => {
   return {
     /** The current state machine snapshot */
     snapshot,
+    send,
 
     /** Creates a new waypoint if all of the following criteria is met:
      * - {@link startPoint} is set
@@ -207,7 +206,9 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     clear,
 
     /** When present, puts this detour in "finished mode" */
-    finishDetour: endPoint !== null ? finishDetour : undefined,
+    finishDetour: snapshot.can({ type: "detour.edit.done" })
+      ? finishDetour
+      : undefined,
     /** When present, puts this detour in "edit mode" */
     editDetour,
   }

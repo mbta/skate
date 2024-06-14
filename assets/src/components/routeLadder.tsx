@@ -44,6 +44,7 @@ interface Props {
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
   hasAlert: boolean
+  onAddDetour?: (route: Route) => void
 }
 
 export const Header = ({
@@ -84,11 +85,16 @@ export const NewHeader = ({
   onClose,
   hasAlert,
   showDropdown,
+
+  onClickAddDetour,
 }: {
   routeName: string
   onClose: () => void
   hasAlert: boolean
+
   showDropdown: boolean
+
+  onClickAddDetour?: () => void
 }) => {
   return (
     <Card className="c-new-route-ladder__header">
@@ -98,7 +104,7 @@ export const NewHeader = ({
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
               <Dropdown.Menu>
-                <Dropdown.Item className="icon-link">
+                <Dropdown.Item className="icon-link" onClick={onClickAddDetour}>
                   <PlusSquare />
                   Add detour
                 </Dropdown.Item>
@@ -205,6 +211,7 @@ const RouteLadder = ({
   ladderDirections,
   ladderCrowdingToggles,
   hasAlert,
+  onAddDetour,
 }: Props) => {
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
 
@@ -241,6 +248,9 @@ const RouteLadder = ({
             inTestGroup(TestGroups.DetoursPilot) &&
             inTestGroup(TestGroups.DetourRouteSelection)
           }
+          onClickAddDetour={() => {
+            onAddDetour?.(route)
+          }}
         />
       ) : (
         <Header

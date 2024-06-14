@@ -89,13 +89,13 @@ type SearchComboboxProps = ComboboxProps & {
   comboboxType: "map_search"
   dispatch: Dispatch
   query: SearchQuery
-  options: null
+  options?: undefined
 }
 
 type SelectComboboxProps = ComboboxProps & {
   comboboxType: "select"
-  dispatch: null
-  query: null
+  dispatch?: undefined
+  query?: undefined
   options: AutocompleteOptionData[]
 }
 
@@ -357,10 +357,10 @@ export const Combobox = ({
           )}
           {comboboxType == "select" && (
             <button
-              // TODO: rename this class (follow-up PR)
               type="button"
+              // TODO: rename this class (follow-up PR)
               className="c-search-form__submit"
-              onClick={() => setAutocompleteEnabled(true)}
+              onClick={onSubmit}
             >
               <ChevronDown />
             </button>
@@ -382,12 +382,13 @@ export const Combobox = ({
             />
           ) : (
             <GrouplessAutocompleteFromArray
-              controlName=""
+              controlName="Search Suggestions"
               fallbackOption={autocompleteOption(
                 "No matching routes",
                 undefined
               )}
               options={options}
+              controllerRef={autocompleteController}
             />
           )}
         </div>
@@ -437,7 +438,6 @@ const SearchFormFromStateDispatchContext = ({
       comboboxType="map_search"
       dispatch={dispatch}
       query={query}
-      options={null}
     />
   )
 }
