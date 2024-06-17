@@ -76,8 +76,7 @@ defmodule Skate.Detours.MissedStops do
 
     {first_segments, remaining_segments} = Enum.split(segmented_shape, start_index)
 
-    end_count =
-      get_index_by_min_dist(remaining_segments, connection_end)
+    end_count = get_index_by_min_dist(remaining_segments, connection_end)
 
     {missed_stop_segments, end_segments} = Enum.split(remaining_segments, end_count)
 
@@ -149,8 +148,7 @@ defmodule Skate.Detours.MissedStops do
   @spec get_index_by_min_dist(
           shape_segments :: [Skate.Detours.ShapeSegment.t()],
           reference :: Util.Location.From.t()
-        ) ::
-          non_neg_integer()
+        ) :: non_neg_integer()
   defp get_index_by_min_dist(shape_segments, reference) do
     shape_segments
     |> Enum.with_index(fn %Skate.Detours.ShapeSegment{points: points} = segment, idx ->
