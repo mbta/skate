@@ -126,7 +126,10 @@ defmodule Skate.Detours.MissedStops do
     {segments_before_anchor, [incomplete_anchor_segment]} =
       shape_before_anchor |> segment_shape_by_stops(stops_before_anchor) |> Enum.split(-1)
 
-    anchor_segment = %Skate.Detours.ShapeSegment{incomplete_anchor_segment | stop: anchor_stop}
+    anchor_segment = %Skate.Detours.ShapeSegment{
+      (%Skate.Detours.ShapeSegment{stop: :none} = incomplete_anchor_segment)
+      | stop: anchor_stop
+    }
 
     segments_after_anchor = segment_shape_by_stops(shape_after_anchor, stops_after_anchor)
 
