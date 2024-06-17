@@ -4,11 +4,14 @@ defmodule Skate.Detours.TripModificationTest do
 
   doctest TripModification
 
-  defmodule Input do
-    @moduledoc false
-  end
+  import Skate.Factory
 
   test "can take detour info" do
-    TripModification.for()
+    route_pattern = build(:gtfs_route_pattern, representative_trip_id: "39-0-0-1")
+
+    assert TripModification.for(%TripModification.Input{route_pattern: route_pattern}) ==
+             %TripModification{
+               selected_trips: [%TripModification.SelectedTrip{trip_ids: ["39-0-0-1"]}]
+             }
   end
 end
