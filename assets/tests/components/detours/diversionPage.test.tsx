@@ -1713,5 +1713,34 @@ describe("DiversionPage", () => {
         screen.getByRole("combobox", { name: "Choose route" })
       ).toHaveAccessibleErrorMessage("Select a route to continue.")
     })
+
+    test("while on this panel, route is not interactive", async () => {
+      const route = routeFactory.build()
+      const routePattern = routePatternFactory.build({
+        routeId: route.id,
+      })
+
+      jest.mocked(fetchRoutePatterns).mockResolvedValue([routePattern])
+
+      const { container } = render(
+        <RoutesProvider routes={[route]}>
+          <DiversionPage originalRoute={{ route, routePattern }} />
+        </RoutesProvider>
+      )
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change route or direction" })
+      )
+
+      // Non-Interactive route shape
+      expect(
+        container.querySelectorAll(".c-detour_map--original-route-shape-core")
+      ).toHaveLength(1)
+
+      // Interactive route shape
+      expect(
+        container.querySelectorAll(".c-detour_map--original-route-shape")
+      ).toHaveLength(0)
+    })
   })
 })

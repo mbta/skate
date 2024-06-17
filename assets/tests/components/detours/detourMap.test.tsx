@@ -41,6 +41,7 @@ const DetourMapWithDefaults = (
     onClear={() => {}}
     center={latLngLiteralFactory.build()}
     zoom={16}
+    editing={true}
     {...props}
   />
 )
