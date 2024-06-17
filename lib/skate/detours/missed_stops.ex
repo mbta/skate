@@ -72,12 +72,11 @@ defmodule Skate.Detours.MissedStops do
           connection_end_segment: Skate.Detours.ShapeSegment.t() | nil
         }
   defp missed_segments({connection_start, connection_end}, segmented_shape) do
-    %{index: start_index} = get_index_by_min_dist(segmented_shape, connection_start)
+    start_index = get_index_by_min_dist(segmented_shape, connection_start)
 
     {first_segments, remaining_segments} = Enum.split(segmented_shape, start_index)
 
-    %{index: end_count} =
-      get_index_by_min_dist(remaining_segments, connection_end)
+    end_count = get_index_by_min_dist(remaining_segments, connection_end)
 
     {missed_stop_segments, end_segments} = Enum.split(remaining_segments, end_count)
 
@@ -149,18 +148,14 @@ defmodule Skate.Detours.MissedStops do
   @spec get_index_by_min_dist(
           shape_segments :: [Skate.Detours.ShapeSegment.t()],
           reference :: Util.Location.From.t()
-        ) ::
-          %{
-            segment: Skate.Detours.ShapeSegment.t(),
-            closest: Util.Location.From.t(),
-            index: non_neg_integer()
-          }
+        ) :: non_neg_integer()
   defp get_index_by_min_dist(shape_segments, reference) do
     shape_segments
     |> Enum.with_index(fn %Skate.Detours.ShapeSegment{points: points} = segment, idx ->
       %{segment: segment, closest: closest_point(points, reference), index: idx}
     end)
     |> Enum.min_by(fn %{closest: %{dist: dist}} -> dist end)
+    |> Map.fetch!(:index)
   end
 
   @type point_dist_index :: %{
