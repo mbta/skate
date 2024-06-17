@@ -4,6 +4,17 @@ import { byRole } from "testing-library-selector"
 export const finishDetourButton = byRole("button", { name: "Finish Detour" })
 
 export const originalRouteShape = {
+  interactive: {
+    getAll: (container: HTMLElement) =>
+      container.querySelectorAll(".c-detour_map--original-route-shape"),
+  },
+  not: {
+    interactive: {
+      getAll: (container: HTMLElement) =>
+        container.querySelectorAll(".c-detour_map--original-route-shape-core"),
+    },
+  },
+
   get(container: HTMLElement): Element {
     const maybeShape = container.querySelector(
       ".c-detour_map--original-route-shape"
