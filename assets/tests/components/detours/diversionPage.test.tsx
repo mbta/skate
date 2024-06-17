@@ -1733,14 +1733,12 @@ describe("DiversionPage", () => {
       )
 
       // Non-Interactive route shape
-      expect(
-        container.querySelectorAll(".c-detour_map--original-route-shape-core")
-      ).toHaveLength(1)
+      expect(originalRouteShape.not.interactive.getAll(container)).toHaveLength(
+        1
+      )
 
       // Interactive route shape
-      expect(
-        container.querySelectorAll(".c-detour_map--original-route-shape")
-      ).toHaveLength(0)
+      expect(originalRouteShape.interactive.getAll(container)).toHaveLength(0)
     })
   })
 })
