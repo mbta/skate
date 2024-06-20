@@ -22,8 +22,19 @@ defmodule Skate.MqttConnection do
 
   @spec publish(server(), EmqttFailover.Message.t()) :: :ok | {:error, term()}
   def publish(connection, message) do
-    EmqttFailover.Connection.publish(connection, message)
+    EmqttFailover.Connection.publish(connection, prefix_topic(message))
   end
+
+  @spec prefix_topic(EmqttFailover.Message.t()) :: EmqttFailover.Message.t()
+  @spec prefix_topic(binary()) :: binary()
+  def prefix_topic(%EmqttFailover.Message{topic: topic} = message) do
+    %{
+      message
+      | topic: prefix_topic(topic)
+    }
+  end
+
+  def prefix_topic(topic) when is_binary(topic), do: (topic_prefix() || "") <> topic
 
   def topic_prefix, do: app_config()[:broker_topic_prefix]
 
