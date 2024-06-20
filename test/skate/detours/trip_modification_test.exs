@@ -2,9 +2,9 @@ defmodule Skate.Detours.TripModificationTest do
   use ExUnit.Case
   alias Skate.Detours.TripModification
 
-  doctest TripModification
-
   import Skate.Factory
+
+  doctest TripModification
 
   test "can take detour info" do
     route_pattern = build(:gtfs_route_pattern, representative_trip_id: "39-0-0-1")
