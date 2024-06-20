@@ -19,14 +19,15 @@ defmodule Skate.Detours.TripModificationTest do
              route_pattern: route_pattern,
              missed_stops: missed_stops
            }) ==
-             %TripModification{
-               selected_trips: [%TripModification.SelectedTrip{trip_ids: ["39-0-0-1"]}],
-               modifications: [
-                 %TripModification.Modification{
-                   start_stop_selector: "1234",
-                   end_stop_selector: "1236"
-                 }
-               ]
-             }
+             {:ok,
+              %TripModification{
+                selected_trips: [%TripModification.SelectedTrip{trip_ids: ["39-0-0-1"]}],
+                modifications: [
+                  %TripModification.Modification{
+                    start_stop_selector: "1234",
+                    end_stop_selector: "1236"
+                  }
+                ]
+              }}
   end
 end

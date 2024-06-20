@@ -73,34 +73,36 @@ defmodule Skate.Detours.TripModification do
       ...>     ]
       ...>   }
       ...> )
-      %Skate.Detours.TripModification{
-        selected_trips: [
-          %Skate.Detours.TripModification.SelectedTrip{
-            trip_ids: ["01-00"]
-          }
-        ],
-        modifications: [
-          %Skate.Detours.TripModification.Modification{
-            start_stop_selector: "ABC123",
-            end_stop_selector: "ABC129"
-          }
-        ]
-      }
+      {:ok,
+       %Skate.Detours.TripModification{
+         selected_trips: [
+           %Skate.Detours.TripModification.SelectedTrip{
+             trip_ids: ["01-00"]
+           }
+         ],
+         modifications: [
+           %Skate.Detours.TripModification.Modification{
+             start_stop_selector: "ABC123",
+             end_stop_selector: "ABC129"
+           }
+         ]
+       }}
   """
   def for(%Input{
         route_pattern: %RoutePattern{representative_trip_id: trip_id},
         missed_stops: missed_stops
       }) do
-    %__MODULE__{
-      selected_trips: [
-        %SelectedTrip{trip_ids: [trip_id]}
-      ],
-      modifications: [
-        %Modification{
-          start_stop_selector: missed_stops |> List.first() |> Map.get(:id),
-          end_stop_selector: missed_stops |> List.last() |> Map.get(:id)
-        }
-      ]
-    }
+    {:ok,
+     %__MODULE__{
+       selected_trips: [
+         %SelectedTrip{trip_ids: [trip_id]}
+       ],
+       modifications: [
+         %Modification{
+           start_stop_selector: missed_stops |> List.first() |> Map.get(:id),
+           end_stop_selector: missed_stops |> List.last() |> Map.get(:id)
+         }
+       ]
+     }}
   end
 end
