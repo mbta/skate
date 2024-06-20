@@ -4,6 +4,39 @@ defmodule Skate.Detours.TripModificationPublisher do
   to the Broker.
 
   References: https://github.com/mbta/ride_along/blob/fb440fb15dce22921fc4a141a125f3645da98b26/lib/ride_along/sql_publisher.ex
+
+  ## Testing
+  To "unit test" this code, you must have an MQTT broker running locally, or
+  configure URL's for a MQTT Broker which you have access too.
+
+  By default, these "integration tests" are excluded from the test suite,
+  under the tag `"Test.Integration": :mqtt`. So to run these tests
+  `--include 'Test.Integration:mqtt'` to run only the MQTT tests;
+  or you can use `--include 'Test.Integration'` to target all instances of
+  this tag.
+
+  ### Example:
+
+  > #### Note {: .tip}
+  > This example requires that you have the `mosquitto` mqtt broker binary in
+  > your `$PATH`.
+  >
+  > Ex: `brew install mosquitto`
+
+  ```sh
+  # Start and run `mosquitto` broker in the background
+  mosquitto &
+  # Wait for `mosquitto` to launch then launch integration tests with
+  mix test --include 'Test.Integration' test/skate/detours/trip_modification_publisher_test.exs
+  ```
+
+  Alternatively, instead of running something locally with the default
+  `config :skate, Skate.MqttConnection` config in `config/config.exs` configuration;
+  You can configure the `config :skate, Skate.MqttConnection` in
+  `config/runtime.exs` to run in the `Mix` env `:dev` and configure those
+  environment variables locally to connect to a different Broker;
+  Or you can edit the config `config/dev.exs` to statically configure it for
+  local development
   """
   use GenServer
 
