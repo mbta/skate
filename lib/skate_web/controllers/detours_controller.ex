@@ -57,6 +57,8 @@ defmodule SkateWeb.DetoursController do
           shape: shape_with_stops.points
         })
 
+      missed_stops |> dbg()
+
       {:ok, route_segments} =
         RouteSegments.route_segments(
           shape_with_stops.points,
