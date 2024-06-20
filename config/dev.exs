@@ -7,6 +7,9 @@ config :skate,
 
 config :skate, Schedule.CacheFile, cache_filename: "dev_cache.terms"
 
+# Don't require local MQTT setup by default
+config :skate, Skate.Detours.TripModificationPublisher, start: false
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

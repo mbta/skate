@@ -40,7 +40,9 @@ defmodule Skate.Application do
           {Phoenix.PubSub, name: Skate.PubSub},
           SkateWeb.Endpoint,
           Skate.Migrate,
-          {Oban, Application.fetch_env!(:skate, Oban)}
+          {Oban, Application.fetch_env!(:skate, Oban)},
+          {Skate.Detours.TripModificationPublisher,
+           Application.get_env(:skate, Skate.Detours.TripModificationPublisher)}
         ]
 
     Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
