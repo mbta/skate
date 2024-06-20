@@ -88,6 +88,7 @@ if config_env() == :prod do
       broker_configs: configs,
       broker_topic_prefix: topic_prefix
 
+    # Configure TripModifications to publish if the env var is present
     config :skate, Skate.Detours.TripModificationPublisher, start: true
   end
 end
