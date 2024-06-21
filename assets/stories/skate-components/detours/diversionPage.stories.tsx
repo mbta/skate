@@ -14,9 +14,9 @@ const meta = {
     originalRoute: originalRouteFactory.build({
       routePattern: {
         id: "39-3-0",
-        headsign: "Harvard via Allston",
-        name: "Andrew Station",
-        directionId: 0,
+        headsign: "Back Bay",
+        name: "Forest Hills Station - Back Bay Station",
+        directionId: 1,
         shape: route39shape,
       },
       route: {
