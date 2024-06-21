@@ -98,7 +98,7 @@ defmodule Realtime.TripModification do
   A function that takes data about a detour and stitches it together to form a GTFS-flavored
   struct.
 
-  ## Examples
+  ## Example
       iex> Realtime.TripModification.new(
       ...>   %Realtime.TripModification.Input{
       ...>     route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
@@ -107,7 +107,16 @@ defmodule Realtime.TripModification do
       ...>       build(:gtfs_stop, id: "ABC124"),
       ...>       build(:gtfs_stop, id: "ABC129"),
       ...>     ],
-      ...>     shape_with_stops: build(:shape_with_stops, id: "010128"),
+      ...>     shape_with_stops: build(:shape_with_stops,
+      ...>       id: "010128",
+      ...>       stops: [
+      ...>         build(:gtfs_stop, id: "ABC123"),
+      ...>         build(:gtfs_stop, id: "ABC124"),
+      ...>         build(:gtfs_stop, id: "ABC126"),
+      ...>         build(:gtfs_stop, id: "ABC127"),
+      ...>         build(:gtfs_stop, id: "ABC129"),
+      ...>       ]
+      ...>     ),
       ...>     service_date: ~D[2024-06-20],
       ...>     last_modified_time: ~U[2024-06-18 12:00:00Z]
       ...>   }
@@ -133,31 +142,71 @@ defmodule Realtime.TripModification do
            }
          ]
        }}
+
+  If there are any duplicate stops, `new/1` will return an error, since using stop_id's as
+  stop selectors isn't valid when the trip in question visits the same stop twice.
+
+  ## Example
+      iex> Realtime.TripModification.new(
+      ...>   %Realtime.TripModification.Input{
+      ...>     route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
+      ...>     missed_stops: [
+      ...>       build(:gtfs_stop, id: "ABC123"),
+      ...>       build(:gtfs_stop, id: "ABC124"),
+      ...>       build(:gtfs_stop, id: "ABC129"),
+      ...>     ],
+      ...>     shape_with_stops: build(:shape_with_stops,
+      ...>       id: "010128",
+      ...>       stops: [
+      ...>         build(:gtfs_stop, id: "ABC123"),
+      ...>         build(:gtfs_stop, id: "ABC124"),
+      ...>         build(:gtfs_stop, id: "ABC126"),
+      ...>         build(:gtfs_stop, id: "ABC124"),
+      ...>         build(:gtfs_stop, id: "ABC129"),
+      ...>       ]
+      ...>     ),
+      ...>     service_date: ~D[2024-06-20],
+      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z]
+      ...>   }
+      ...> )
+      {:error, :duplicate_stops_in_shape}
   """
   def new(%Input{
         route_pattern: %RoutePattern{representative_trip_id: trip_id},
         missed_stops: missed_stops,
-        shape_with_stops: shape_with_stops,
+        shape_with_stops:
+          shape_with_stops = %Schedule.ShapeWithStops{stops: original_shape_stops},
         service_date: service_date,
         last_modified_time: last_modified_time
       }) do
-    {:ok,
-     %__MODULE__{
-       selected_trips: [
-         %SelectedTrip{trip_ids: [trip_id], shape_id: shape_with_stops.id}
-       ],
-       service_dates: [Date.to_iso8601(service_date, :basic)],
-       modifications: [
-         %Modification{
-           start_stop_selector: %StopSelector{
-             stop_id: missed_stops |> List.first() |> Map.get(:id)
-           },
-           end_stop_selector: %StopSelector{
-             stop_id: missed_stops |> List.last() |> Map.get(:id)
-           },
-           last_modified_time: DateTime.to_unix(last_modified_time)
-         }
-       ]
-     }}
+    has_duplicate_stops =
+      original_shape_stops
+      |> Enum.group_by(fn %Schedule.Gtfs.Stop{id: id} -> id end)
+      |> Enum.any?(fn {_, stops_for_id} -> Enum.count(stops_for_id) > 1 end)
+
+    case has_duplicate_stops do
+      true ->
+        {:error, :duplicate_stops_in_shape}
+
+      false ->
+        {:ok,
+         %__MODULE__{
+           selected_trips: [
+             %SelectedTrip{trip_ids: [trip_id], shape_id: shape_with_stops.id}
+           ],
+           service_dates: [Date.to_iso8601(service_date, :basic)],
+           modifications: [
+             %Modification{
+               start_stop_selector: %StopSelector{
+                 stop_id: missed_stops |> List.first() |> Map.get(:id)
+               },
+               end_stop_selector: %StopSelector{
+                 stop_id: missed_stops |> List.last() |> Map.get(:id)
+               },
+               last_modified_time: DateTime.to_unix(last_modified_time)
+             }
+           ]
+         }}
+    end
   end
 end
