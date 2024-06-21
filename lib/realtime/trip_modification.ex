@@ -12,16 +12,30 @@ defmodule Realtime.TripModification do
     @moduledoc """
     Input for `Realtime.TripModification.new/1`.
     """
+    alias Schedule.ShapeWithStops
 
     @type t :: %__MODULE__{
             route_pattern: RoutePattern.t(),
             missed_stops: [Stop.t()],
+            shape_with_stops: ShapeWithStops.t(),
             service_date: Date.t(),
             last_modified_time: DateTime.t()
           }
 
-    @enforce_keys [:route_pattern, :missed_stops, :service_date, :last_modified_time]
-    defstruct [:route_pattern, :missed_stops, :service_date, :last_modified_time]
+    @enforce_keys [
+      :route_pattern,
+      :missed_stops,
+      :shape_with_stops,
+      :service_date,
+      :last_modified_time
+    ]
+    defstruct [
+      :route_pattern,
+      :missed_stops,
+      :shape_with_stops,
+      :service_date,
+      :last_modified_time
+    ]
   end
 
   defmodule SelectedTrip do
@@ -32,11 +46,12 @@ defmodule Realtime.TripModification do
     """
 
     @type t :: %__MODULE__{
-            trip_ids: [String.t()]
+            trip_ids: [String.t()],
+            shape_id: String.t()
           }
 
-    @enforce_keys [:trip_ids]
-    defstruct [:trip_ids]
+    @enforce_keys [:trip_ids, :shape_id]
+    defstruct [:trip_ids, :shape_id]
   end
 
   defmodule Modification do
@@ -92,6 +107,7 @@ defmodule Realtime.TripModification do
       ...>       build(:gtfs_stop, id: "ABC124"),
       ...>       build(:gtfs_stop, id: "ABC129"),
       ...>     ],
+      ...>     shape_with_stops: build(:shape_with_stops, id: "010128"),
       ...>     service_date: ~D[2024-06-20],
       ...>     last_modified_time: ~U[2024-06-18 12:00:00Z]
       ...>   }
@@ -100,7 +116,8 @@ defmodule Realtime.TripModification do
        %Realtime.TripModification{
          selected_trips: [
            %Realtime.TripModification.SelectedTrip{
-             trip_ids: ["01-00"]
+             trip_ids: ["01-00"],
+             shape_id: "010128"
            }
          ],
          service_dates: ["20240620"],
@@ -120,13 +137,14 @@ defmodule Realtime.TripModification do
   def new(%Input{
         route_pattern: %RoutePattern{representative_trip_id: trip_id},
         missed_stops: missed_stops,
+        shape_with_stops: shape_with_stops,
         service_date: service_date,
         last_modified_time: last_modified_time
       }) do
     {:ok,
      %__MODULE__{
        selected_trips: [
-         %SelectedTrip{trip_ids: [trip_id]}
+         %SelectedTrip{trip_ids: [trip_id], shape_id: shape_with_stops.id}
        ],
        service_dates: [Date.to_iso8601(service_date, :basic)],
        modifications: [
