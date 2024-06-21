@@ -1,4 +1,4 @@
-defmodule Skate.Detours.TripModification do
+defmodule Realtime.TripModification do
   @moduledoc """
   A module that produces GTFS-flavored TripModification structs for a detour
 
@@ -10,7 +10,7 @@ defmodule Skate.Detours.TripModification do
 
   defmodule Input do
     @moduledoc """
-    Input for `Skate.Detours.TripModification.new/1`.
+    Input for `Realtime.TripModification.new/1`.
     """
 
     @type t :: %__MODULE__{
@@ -24,7 +24,7 @@ defmodule Skate.Detours.TripModification do
 
   defmodule SelectedTrip do
     @moduledoc """
-    Struct representing the `selected_trips` part of `Skate.Detours.TripModification`.
+    Struct representing the `selected_trips` part of `Realtime.TripModification`.
 
     More info: https://gtfs.org/realtime/reference/#message-selectedtrips
     """
@@ -39,7 +39,7 @@ defmodule Skate.Detours.TripModification do
 
   defmodule Modification do
     @moduledoc """
-    Struct representing the `modifications` part of `Skate.Detours.TripModification`.
+    Struct representing the `modifications` part of `Realtime.TripModification`.
 
     More info: https://gtfs.org/realtime/reference/#message-modification
     """
@@ -67,8 +67,8 @@ defmodule Skate.Detours.TripModification do
 
 
   ## Examples
-      iex> Skate.Detours.TripModification.new(
-      ...>   %Skate.Detours.TripModification.Input{
+      iex> Realtime.TripModification.new(
+      ...>   %Realtime.TripModification.Input{
       ...>     route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
       ...>     missed_stops: [
       ...>       build(:gtfs_stop, id: "ABC123"),
@@ -79,14 +79,14 @@ defmodule Skate.Detours.TripModification do
       ...>   }
       ...> )
       {:ok,
-       %Skate.Detours.TripModification{
+       %Realtime.TripModification{
          selected_trips: [
-           %Skate.Detours.TripModification.SelectedTrip{
+           %Realtime.TripModification.SelectedTrip{
              trip_ids: ["01-00"]
            }
          ],
          modifications: [
-           %Skate.Detours.TripModification.Modification{
+           %Realtime.TripModification.Modification{
              start_stop_selector: "ABC123",
              end_stop_selector: "ABC129",
              last_modified_time: ~U[2024-06-21 12:00:00Z]

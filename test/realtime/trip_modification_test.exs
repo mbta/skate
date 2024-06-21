@@ -1,6 +1,6 @@
-defmodule Skate.Detours.TripModificationTest do
+defmodule Realtime.TripModificationTest do
   use ExUnit.Case
-  alias Skate.Detours.TripModification
+  alias Realtime.TripModification
 
   import Skate.Factory
 
