@@ -64,15 +64,6 @@
   .c-route-ladder__dropdown-button {
     height: 2.25rem;
     width: 2.25rem;
-    // TODO All of this is bad and should be reverted when we fix the left nav button colors
-    &.btn-primary {
-      --bs-btn-bg: #451b83;
-      --bs-btn-border-color: #451b83;
-      --bs-btn-hover-bg: #260f54;
-      --bs-btn-hover-border-color: #260f54;
-      --bs-btn-active-bg: #260f54;
-      --bs-btn-active-border-color: #260f54;
-    }
   }
 
   .c-route-ladder__alert-icon {
