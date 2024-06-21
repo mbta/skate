@@ -60,11 +60,10 @@ defmodule Realtime.TripModification do
   @enforce_keys [:selected_trips, :modifications]
   defstruct [:selected_trips, :modifications]
 
-  @spec new(input :: Input.t()) :: __MODULE__.t()
+  @spec new(input :: Input.t()) :: {:ok, __MODULE__.t()}
   @doc """
   A function that takes data about a detour and stitches it together to form a GTFS-flavored
   struct.
-
 
   ## Examples
       iex> Realtime.TripModification.new(
