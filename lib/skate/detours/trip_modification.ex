@@ -10,7 +10,7 @@ defmodule Skate.Detours.TripModification do
 
   defmodule Input do
     @moduledoc """
-    Input for `Skate.Detours.TripModification.for/1`.
+    Input for `Skate.Detours.TripModification.new/1`.
     """
 
     @type t :: %__MODULE__{
@@ -60,14 +60,14 @@ defmodule Skate.Detours.TripModification do
   @enforce_keys [:selected_trips, :modifications]
   defstruct [:selected_trips, :modifications]
 
-  @spec for(input :: Input.t()) :: __MODULE__.t()
+  @spec new(input :: Input.t()) :: __MODULE__.t()
   @doc """
   A function that takes data about a detour and stitches it together to form a GTFS-flavored
   struct.
 
 
   ## Examples
-      iex> Skate.Detours.TripModification.for(
+      iex> Skate.Detours.TripModification.new(
       ...>   %Skate.Detours.TripModification.Input{
       ...>     route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
       ...>     missed_stops: [
@@ -94,7 +94,7 @@ defmodule Skate.Detours.TripModification do
          ]
        }}
   """
-  def for(%Input{
+  def new(%Input{
         route_pattern: %RoutePattern{representative_trip_id: trip_id},
         missed_stops: missed_stops,
         last_modified_time: last_modified_time

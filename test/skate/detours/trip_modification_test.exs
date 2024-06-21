@@ -17,7 +17,7 @@ defmodule Skate.Detours.TripModificationTest do
 
     last_modified_time = DateTime.utc_now()
 
-    assert TripModification.for(%TripModification.Input{
+    assert TripModification.new(%TripModification.Input{
              route_pattern: route_pattern,
              missed_stops: missed_stops,
              last_modified_time: last_modified_time
