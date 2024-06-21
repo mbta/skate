@@ -49,7 +49,7 @@ defmodule Realtime.TripModification do
     @type t :: %__MODULE__{
             start_stop_selector: String.t(),
             end_stop_selector: String.t(),
-            last_modified_time: DateTime.t()
+            last_modified_time: integer()
           }
 
     @enforce_keys [:start_stop_selector, :end_stop_selector, :last_modified_time]
@@ -112,7 +112,7 @@ defmodule Realtime.TripModification do
              end_stop_selector: %TripModification.StopSelector{
                stop_id: "ABC129"
              },
-             last_modified_time: ~U[2024-06-18 12:00:00Z]
+             last_modified_time: 1718712000
            }
          ]
        }}
@@ -137,7 +137,7 @@ defmodule Realtime.TripModification do
            end_stop_selector: %StopSelector{
              stop_id: missed_stops |> List.last() |> Map.get(:id)
            },
-           last_modified_time: last_modified_time
+           last_modified_time: DateTime.to_unix(last_modified_time)
          }
        ]
      }}

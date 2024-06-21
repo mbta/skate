@@ -32,7 +32,7 @@ defmodule Realtime.TripModificationTest do
                   %TripModification.Modification{
                     start_stop_selector: %TripModification.StopSelector{stop_id: "1234"},
                     end_stop_selector: %TripModification.StopSelector{stop_id: "1236"},
-                    last_modified_time: last_modified_time
+                    last_modified_time: DateTime.to_unix(last_modified_time)
                   }
                 ]
               }}
