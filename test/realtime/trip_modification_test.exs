@@ -16,15 +16,18 @@ defmodule Realtime.TripModificationTest do
     ]
 
     last_modified_time = DateTime.utc_now()
+    service_date = Date.utc_today()
 
     assert TripModification.new(%TripModification.Input{
              route_pattern: route_pattern,
              missed_stops: missed_stops,
+             service_date: service_date,
              last_modified_time: last_modified_time
            }) ==
              {:ok,
               %TripModification{
                 selected_trips: [%TripModification.SelectedTrip{trip_ids: ["39-0-0-1"]}],
+                service_dates: [Date.to_iso8601(service_date, :basic)],
                 modifications: [
                   %TripModification.Modification{
                     start_stop_selector: "1234",

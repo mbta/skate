@@ -18,8 +18,8 @@ defmodule Realtime.TripModification do
             missed_stops: [Stop.t()]
           }
 
-    @enforce_keys [:route_pattern, :missed_stops, :last_modified_time]
-    defstruct [:route_pattern, :missed_stops, :last_modified_time]
+    @enforce_keys [:route_pattern, :missed_stops, :service_date, :last_modified_time]
+    defstruct [:route_pattern, :missed_stops, :service_date, :last_modified_time]
   end
 
   defmodule SelectedTrip do
@@ -55,10 +55,11 @@ defmodule Realtime.TripModification do
 
   @type t :: %__MODULE__{
           selected_trips: [SelectedTrip.t()],
+          service_dates: [String.t()],
           modifications: [Modification.t()]
         }
-  @enforce_keys [:selected_trips, :modifications]
-  defstruct [:selected_trips, :modifications]
+  @enforce_keys [:selected_trips, :service_dates, :modifications]
+  defstruct [:selected_trips, :service_dates, :modifications]
 
   @spec new(input :: Input.t()) :: {:ok, __MODULE__.t()}
   @doc """
@@ -74,7 +75,8 @@ defmodule Realtime.TripModification do
       ...>       build(:gtfs_stop, id: "ABC124"),
       ...>       build(:gtfs_stop, id: "ABC129"),
       ...>     ],
-      ...>     last_modified_time: ~U[2024-06-21 12:00:00Z]
+      ...>     service_date: ~D[2024-06-20],
+      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z]
       ...>   }
       ...> )
       {:ok,
@@ -84,11 +86,12 @@ defmodule Realtime.TripModification do
              trip_ids: ["01-00"]
            }
          ],
+         service_dates: ["20240620"],
          modifications: [
            %Realtime.TripModification.Modification{
              start_stop_selector: "ABC123",
              end_stop_selector: "ABC129",
-             last_modified_time: ~U[2024-06-21 12:00:00Z]
+             last_modified_time: ~U[2024-06-18 12:00:00Z]
            }
          ]
        }}
@@ -96,6 +99,7 @@ defmodule Realtime.TripModification do
   def new(%Input{
         route_pattern: %RoutePattern{representative_trip_id: trip_id},
         missed_stops: missed_stops,
+        service_date: service_date,
         last_modified_time: last_modified_time
       }) do
     {:ok,
@@ -103,6 +107,7 @@ defmodule Realtime.TripModification do
        selected_trips: [
          %SelectedTrip{trip_ids: [trip_id]}
        ],
+       service_dates: [Date.to_iso8601(service_date, :basic)],
        modifications: [
          %Modification{
            start_stop_selector: missed_stops |> List.first() |> Map.get(:id),
