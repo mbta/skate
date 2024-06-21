@@ -26,7 +26,7 @@ defmodule Realtime.TripModification do
 
   defmodule SelectedTrip do
     @moduledoc """
-    Struct representing the `selected_trips` part of `Realtime.TripModification`.
+    Struct representing the `selected_trips` field of `Realtime.TripModification`.
 
     More info: https://gtfs.org/realtime/reference/#message-selectedtrips
     """
@@ -41,7 +41,7 @@ defmodule Realtime.TripModification do
 
   defmodule Modification do
     @moduledoc """
-    Struct representing the `modifications` part of `Realtime.TripModification`.
+    Struct representing the `modifications` field of `Realtime.TripModification`.
 
     More info: https://gtfs.org/realtime/reference/#message-modification
     """
@@ -54,6 +54,20 @@ defmodule Realtime.TripModification do
 
     @enforce_keys [:start_stop_selector, :end_stop_selector, :last_modified_time]
     defstruct [:start_stop_selector, :end_stop_selector, :last_modified_time]
+  end
+
+  defmodule StopSelector do
+    @moduledoc """
+    Struct representing the two `stop_selector` fields of `Realtime.TripModification.Modification`.
+
+    More info: https://gtfs.org/realtime/reference/#message-stopselector
+    """
+
+    @type t :: %__MODULE__{
+            stop_id: String.t()
+          }
+
+    defstruct [:stop_id]
   end
 
   @type t :: %__MODULE__{
@@ -92,8 +106,12 @@ defmodule Realtime.TripModification do
          service_dates: ["20240620"],
          modifications: [
            %Realtime.TripModification.Modification{
-             start_stop_selector: "ABC123",
-             end_stop_selector: "ABC129",
+             start_stop_selector: %TripModification.StopSelector{
+               stop_id: "ABC123",
+             },
+             end_stop_selector: %TripModification.StopSelector{
+               stop_id: "ABC129"
+             },
              last_modified_time: ~U[2024-06-18 12:00:00Z]
            }
          ]
@@ -113,8 +131,12 @@ defmodule Realtime.TripModification do
        service_dates: [Date.to_iso8601(service_date, :basic)],
        modifications: [
          %Modification{
-           start_stop_selector: missed_stops |> List.first() |> Map.get(:id),
-           end_stop_selector: missed_stops |> List.last() |> Map.get(:id),
+           start_stop_selector: %StopSelector{
+             stop_id: missed_stops |> List.first() |> Map.get(:id)
+           },
+           end_stop_selector: %StopSelector{
+             stop_id: missed_stops |> List.last() |> Map.get(:id)
+           },
            last_modified_time: last_modified_time
          }
        ]

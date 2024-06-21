@@ -30,8 +30,8 @@ defmodule Realtime.TripModificationTest do
                 service_dates: [Date.to_iso8601(service_date, :basic)],
                 modifications: [
                   %TripModification.Modification{
-                    start_stop_selector: "1234",
-                    end_stop_selector: "1236",
+                    start_stop_selector: %TripModification.StopSelector{stop_id: "1234"},
+                    end_stop_selector: %TripModification.StopSelector{stop_id: "1236"},
                     last_modified_time: last_modified_time
                   }
                 ]
