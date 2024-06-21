@@ -18,7 +18,8 @@ defmodule Skate.Detours.TripModification do
             missed_stops: [Stop.t()]
           }
 
-    defstruct [:route_pattern, :missed_stops]
+    @enforce_keys [:route_pattern, :missed_stops, :last_modified_time]
+    defstruct [:route_pattern, :missed_stops, :last_modified_time]
   end
 
   defmodule SelectedTrip do
@@ -32,6 +33,7 @@ defmodule Skate.Detours.TripModification do
             trip_ids: [String.t()]
           }
 
+    @enforce_keys [:trip_ids]
     defstruct [:trip_ids]
   end
 
@@ -47,13 +49,15 @@ defmodule Skate.Detours.TripModification do
             end_stop_selector: String.t()
           }
 
-    defstruct [:start_stop_selector, :end_stop_selector]
+    @enforce_keys [:start_stop_selector, :end_stop_selector, :last_modified_time]
+    defstruct [:start_stop_selector, :end_stop_selector, :last_modified_time]
   end
 
   @type t :: %__MODULE__{
           selected_trips: [SelectedTrip.t()],
           modifications: [Modification.t()]
         }
+  @enforce_keys [:selected_trips, :modifications]
   defstruct [:selected_trips, :modifications]
 
   @spec for(input :: Input.t()) :: __MODULE__.t()
@@ -70,7 +74,8 @@ defmodule Skate.Detours.TripModification do
       ...>       build(:gtfs_stop, id: "ABC123"),
       ...>       build(:gtfs_stop, id: "ABC124"),
       ...>       build(:gtfs_stop, id: "ABC129"),
-      ...>     ]
+      ...>     ],
+      ...>     last_modified_time: ~U[2024-06-21 12:00:00Z]
       ...>   }
       ...> )
       {:ok,
@@ -83,14 +88,16 @@ defmodule Skate.Detours.TripModification do
          modifications: [
            %Skate.Detours.TripModification.Modification{
              start_stop_selector: "ABC123",
-             end_stop_selector: "ABC129"
+             end_stop_selector: "ABC129",
+             last_modified_time: ~U[2024-06-21 12:00:00Z]
            }
          ]
        }}
   """
   def for(%Input{
         route_pattern: %RoutePattern{representative_trip_id: trip_id},
-        missed_stops: missed_stops
+        missed_stops: missed_stops,
+        last_modified_time: last_modified_time
       }) do
     {:ok,
      %__MODULE__{
@@ -100,7 +107,8 @@ defmodule Skate.Detours.TripModification do
        modifications: [
          %Modification{
            start_stop_selector: missed_stops |> List.first() |> Map.get(:id),
-           end_stop_selector: missed_stops |> List.last() |> Map.get(:id)
+           end_stop_selector: missed_stops |> List.last() |> Map.get(:id),
+           last_modified_time: last_modified_time
          }
        ]
      }}

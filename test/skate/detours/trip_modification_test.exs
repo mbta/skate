@@ -15,9 +15,12 @@ defmodule Skate.Detours.TripModificationTest do
       build(:gtfs_stop, id: "1236")
     ]
 
+    last_modified_time = DateTime.utc_now()
+
     assert TripModification.for(%TripModification.Input{
              route_pattern: route_pattern,
-             missed_stops: missed_stops
+             missed_stops: missed_stops,
+             last_modified_time: last_modified_time
            }) ==
              {:ok,
               %TripModification{
@@ -25,7 +28,8 @@ defmodule Skate.Detours.TripModificationTest do
                 modifications: [
                   %TripModification.Modification{
                     start_stop_selector: "1234",
-                    end_stop_selector: "1236"
+                    end_stop_selector: "1236",
+                    last_modified_time: last_modified_time
                   }
                 ]
               }}
