@@ -15,7 +15,17 @@ defmodule Realtime.TripModificationTest do
       build(:gtfs_stop, id: "1236")
     ]
 
-    shape_with_stops = build(:shape_with_stops, id: "id-of-the-shape")
+    shape_with_stops =
+      build(:shape_with_stops,
+        id: "id-of-the-shape",
+        stops: [
+          build(:gtfs_stop, id: "1233"),
+          build(:gtfs_stop, id: "1234"),
+          build(:gtfs_stop, id: "1235"),
+          build(:gtfs_stop, id: "1236"),
+          build(:gtfs_stop, id: "1237")
+        ]
+      )
 
     last_modified_time = DateTime.utc_now()
     service_date = Date.utc_today()
@@ -44,5 +54,25 @@ defmodule Realtime.TripModificationTest do
                   }
                 ]
               }}
+  end
+
+  test "returns an error if there are duplicate stops in the original shape" do
+    shape_with_stops =
+      build(:shape_with_stops,
+        stops: [
+          build(:gtfs_stop, id: "1234"),
+          build(:gtfs_stop, id: "1235"),
+          build(:gtfs_stop, id: "1236"),
+          build(:gtfs_stop, id: "1235")
+        ]
+      )
+
+    assert TripModification.new(%TripModification.Input{
+             route_pattern: build(:gtfs_route_pattern),
+             missed_stops: build_list(3, :gtfs_stop),
+             shape_with_stops: shape_with_stops,
+             service_date: Date.utc_today(),
+             last_modified_time: DateTime.utc_now()
+           }) == {:error, :duplicate_stops_in_shape}
   end
 end
