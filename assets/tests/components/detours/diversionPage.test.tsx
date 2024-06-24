@@ -20,8 +20,8 @@ import { DiversionPage as DiversionPageDefault } from "../../../src/components/d
 import stopFactory from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
-  finishDetourButton,
   originalRouteShape,
+  reviewDetourButton,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import {
   finishedDetourFactory,
@@ -898,7 +898,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await userEvent.click(finishDetourButton.get())
+    await userEvent.click(reviewDetourButton.get())
 
     expect(
       screen.queryByRole("heading", { name: "Create Detour" })
@@ -919,7 +919,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await userEvent.click(finishDetourButton.get())
+    await userEvent.click(reviewDetourButton.get())
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       "Detour shape is not editable from this screen."
@@ -937,7 +937,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await userEvent.click(finishDetourButton.get())
+    await userEvent.click(reviewDetourButton.get())
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
@@ -956,7 +956,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await userEvent.click(finishDetourButton.get())
+    await userEvent.click(reviewDetourButton.get())
 
     expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
   })
@@ -972,7 +972,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await userEvent.click(finishDetourButton.get())
+    await userEvent.click(reviewDetourButton.get())
 
     await userEvent.click(
       await screen.findByRole("button", { name: "Edit Detour" })
@@ -1002,7 +1002,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await userEvent.click(finishDetourButton.get())
+    await userEvent.click(reviewDetourButton.get())
 
     expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
   })
@@ -1067,7 +1067,7 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await userEvent.click(finishDetourButton.get())
+    await userEvent.click(reviewDetourButton.get())
 
     await userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
 
