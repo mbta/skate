@@ -104,7 +104,7 @@ export const DiversionPanel = ({
 
       <Panel.Body.Footer hidden={!detourFinished}>
         <Button className="flex-grow-1 m-3" onClick={onFinishDetour}>
-          Finish Detour
+          Review Detour
         </Button>
       </Panel.Body.Footer>
     </Panel.Body>
