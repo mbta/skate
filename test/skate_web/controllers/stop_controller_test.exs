@@ -4,7 +4,12 @@ defmodule SkateWeb.StopControllerTest do
   import Skate.Factory
 
   @stations [
-    build(:gtfs_stop, %{location_type: :station, routes: [build(:gtfs_route)]}),
+    build(:gtfs_stop, %{
+      id: "stop1",
+      name: "Stop 1",
+      location_type: :station,
+      routes: [build(:gtfs_route)]
+    }),
     build(:gtfs_stop, %{
       id: "stop2",
       name: "Stop 2",
@@ -64,7 +69,12 @@ defmodule SkateWeb.StopControllerTest do
     setup do
       reassign_env(:skate_web, :stops_fn, fn ->
         [
-          build(:gtfs_stop, %{location_type: :station, routes: [build(:gtfs_route)]}),
+          build(:gtfs_stop, %{
+            id: "stop1",
+            name: "Stop 1",
+            location_type: :station,
+            routes: [build(:gtfs_route)]
+          }),
           build(:gtfs_stop, %{
             id: "stop2",
             name: "Stop 2",

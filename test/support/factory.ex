@@ -174,9 +174,11 @@ defmodule Skate.Factory do
   end
 
   def gtfs_stop_factory do
+    stop_id = sequence("Schedule.Gtfs.Stop.id:")
+
     %Schedule.Gtfs.Stop{
-      id: "stop1",
-      name: "Stop 1",
+      id: stop_id,
+      name: "Stop #{stop_id}",
       location_type: :stop,
       latitude: 42.01,
       longitude: -71.01
