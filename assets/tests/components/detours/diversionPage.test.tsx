@@ -373,14 +373,14 @@ describe("DiversionPage", () => {
     })
 
     expect(
-      screen.getByRole("button", { name: "Finish Detour", hidden: true })
+      screen.getByRole("button", { name: "Review Detour", hidden: true })
     ).not.toBeVisible()
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(screen.getByRole("button", { name: "Finish Detour" })).toBeVisible()
+    expect(screen.getByRole("button", { name: "Review Detour" })).toBeVisible()
   })
 
   test.each<{
@@ -887,7 +887,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("When 'Finish Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -983,7 +983,7 @@ describe("DiversionPage", () => {
         screen.queryByRole("button", { name: "Edit Detour" })
       ).not.toBeInTheDocument()
       expect(
-        screen.getByRole("button", { name: "Finish Detour" })
+        screen.getByRole("button", { name: "Review Detour" })
       ).toBeVisible()
 
       expect(screen.getByRole("button", { name: "Undo" })).not.toBeDisabled()
