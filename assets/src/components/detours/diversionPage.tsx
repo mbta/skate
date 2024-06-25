@@ -77,7 +77,7 @@ export const DiversionPage = ({
     canUndo,
     undo,
     clear,
-    finishDetour,
+    reviewDetour,
     editDetour,
   } = useDetour(originalRoute)
 
@@ -198,8 +198,8 @@ export const DiversionPage = ({
               routeDescription={routeDescription ?? "??"}
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
-              detourFinished={finishDetour !== undefined}
-              onFinishDetour={finishDetour}
+              detourFinished={reviewDetour !== undefined}
+              onReviewDetour={reviewDetour}
               onChangeRoute={
                 inTestGroup(TestGroups.DetourRouteSelection)
                   ? () => send({ type: "detour.route-pattern.open" })

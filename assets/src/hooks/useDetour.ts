@@ -108,7 +108,7 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     send({ type: "detour.edit.clear-detour" })
   }
 
-  const finishDetour = () => {
+  const reviewDetour = () => {
     send({ type: "detour.edit.done" })
   }
 
@@ -206,8 +206,8 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     clear,
 
     /** When present, puts this detour in "finished mode" */
-    finishDetour: snapshot.can({ type: "detour.edit.done" })
-      ? finishDetour
+    reviewDetour: snapshot.can({ type: "detour.edit.done" })
+      ? reviewDetour
       : undefined,
     /** When present, puts this detour in "edit mode" */
     editDetour,
