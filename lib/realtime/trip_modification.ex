@@ -105,17 +105,11 @@ defmodule Realtime.TripModification do
       ...>     missed_stops: [
       ...>       build(:gtfs_stop, id: "ABC123"),
       ...>       build(:gtfs_stop, id: "ABC124"),
-      ...>       build(:gtfs_stop, id: "ABC129"),
+      ...>       build(:gtfs_stop, id: "ABC129")
       ...>     ],
       ...>     shape_with_stops: build(:shape_with_stops,
       ...>       id: "010128",
-      ...>       stops: [
-      ...>         build(:gtfs_stop, id: "ABC123"),
-      ...>         build(:gtfs_stop, id: "ABC124"),
-      ...>         build(:gtfs_stop, id: "ABC126"),
-      ...>         build(:gtfs_stop, id: "ABC127"),
-      ...>         build(:gtfs_stop, id: "ABC129"),
-      ...>       ]
+      ...>       stops: build_list(5, :gtfs_stop)
       ...>     ),
       ...>     service_date: ~D[2024-06-20],
       ...>     last_modified_time: ~U[2024-06-18 12:00:00Z]
@@ -151,18 +145,19 @@ defmodule Realtime.TripModification do
       ...>   %Realtime.TripModification.Input{
       ...>     route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
       ...>     missed_stops: [
-      ...>       build(:gtfs_stop, id: "ABC123"),
-      ...>       build(:gtfs_stop, id: "ABC124"),
-      ...>       build(:gtfs_stop, id: "ABC129"),
+      ...>       build(:gtfs_stop),
+      ...>       build(:gtfs_stop),
+      ...>       build(:gtfs_stop),
       ...>     ],
       ...>     shape_with_stops: build(:shape_with_stops,
       ...>       id: "010128",
       ...>       stops: [
-      ...>         build(:gtfs_stop, id: "ABC123"),
-      ...>         build(:gtfs_stop, id: "ABC124"),
-      ...>         build(:gtfs_stop, id: "ABC126"),
-      ...>         build(:gtfs_stop, id: "ABC124"),
-      ...>         build(:gtfs_stop, id: "ABC129"),
+      ...>         build(:gtfs_stop),
+      ...>         build(:gtfs_stop, id: "duplicate_stop_id"),
+      ...>         build(:gtfs_stop),
+      ...>         build(:gtfs_stop, id: "duplicate_stop_id"),
+      ...>         build(:gtfs_stop),
+      ...>         build(:gtfs_stop),
       ...>       ]
       ...>     ),
       ...>     service_date: ~D[2024-06-20],

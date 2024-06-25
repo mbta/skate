@@ -18,13 +18,7 @@ defmodule Realtime.TripModificationTest do
     shape_with_stops =
       build(:shape_with_stops,
         id: "id-of-the-shape",
-        stops: [
-          build(:gtfs_stop, id: "1233"),
-          build(:gtfs_stop, id: "1234"),
-          build(:gtfs_stop, id: "1235"),
-          build(:gtfs_stop, id: "1236"),
-          build(:gtfs_stop, id: "1237")
-        ]
+        stops: build_list(5, :gtfs_stop)
       )
 
     last_modified_time = DateTime.utc_now()
