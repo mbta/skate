@@ -80,6 +80,7 @@ defmodule Skate.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix, "~> 1.7.0"},
       {:plug_cowboy, "~> 2.1"},
+      {:polyline, "~> 1.4.0"},
       {:postgrex, "~> 0.15"},
       {:sentry, "~> 10.0"},
       {:server_sent_event_stage, "~> 1.1.0"},
