@@ -1,5 +1,6 @@
 // colors
 @use "./color/tokens_2021" as tokens;
+@use "./color/tokens_2024" as new_tokens;
 
 $white: tokens.$white;
 $black: tokens.$black;
@@ -275,6 +276,27 @@ $color-tooltip-background: #333333;
 
   &:disabled {
     background-color: $color-gray-500;
+  }
+}
+
+@mixin button-primary-new {
+  color: $white;
+  padding: 8px;
+  background-color: new_tokens.$eggplant-500;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #5d3092;
+  }
+
+  &:focus-visible {
+    background-color: new_tokens.$eggplant-500;
+    outline: 2px solid new_tokens.$eggplant-500;
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    background-color: new_tokens.$gray-400;
   }
 }
 

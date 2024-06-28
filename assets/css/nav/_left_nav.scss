@@ -1,3 +1,5 @@
+@use "../color/tokens_2024" as tokens;
+
 .c-left-nav {
   width: calc(11.5rem + 1px);
   height: 100%;
@@ -91,12 +93,12 @@
   }
 
   &.c-left-nav__link--active {
-    background-color: $color-eggplant-700;
+    background-color: tokens.$eggplant-500;
     font-weight: 500;
     color: $white;
   }
   &:focus-visible {
-    outline: 2px solid $color-eggplant-500;
+    outline: 2px solid tokens.$eggplant-400;
     border: 1px solid $white;
   }
 }
