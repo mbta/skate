@@ -857,6 +857,36 @@ describe("DiversionPage", () => {
     })
   })
 
+  test("missed stops are absent after a completed detour is 'clear'ed", async () => {
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(
+        finishedDetourFactory.build({ missedStops: stopFactory.buildList(2) })
+      )
+
+    const { container } = render(<DiversionPage />)
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await act(async () => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText("Missed Stops")).toBeVisible()
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText("Missed Stops")).not.toBeInTheDocument()
+    })
+  })
+
   test("calls the API after undo'ing if there is still at least one waypoint left", async () => {
     const { container } = render(<DiversionPage />)
 

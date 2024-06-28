@@ -1,7 +1,8 @@
 import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
-import { ShapePoint } from "../schedule"
+import { RoutePatternId, ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
-import { fetchRoutePatterns } from "../api"
+import { fetchFinishedDetour, fetchRoutePatterns } from "../api"
+import { FinishedDetour } from "./detour"
 
 export const createDetourMachine = setup({
   types: {} as {
@@ -14,6 +15,8 @@ export const createDetourMachine = setup({
       waypoints: ShapePoint[]
       startPoint: ShapePoint | undefined
       endPoint: ShapePoint | undefined
+
+      finishedDetour: FinishedDetour | undefined | null
     }
 
     input:
@@ -64,6 +67,21 @@ export const createDetourMachine = setup({
         throw "No Route ID"
       }
     }),
+
+    "fetch-finished-detour": fromPromise<
+      Awaited<ReturnType<typeof fetchFinishedDetour>>,
+      {
+        routePatternId?: RoutePatternId
+        startPoint?: ShapePoint
+        endPoint?: ShapePoint
+      }
+    >(async ({ input: { routePatternId, startPoint, endPoint } }) => {
+      if (routePatternId && startPoint && endPoint) {
+        return fetchFinishedDetour(routePatternId, startPoint, endPoint)
+      } else {
+        throw "Missing finished detour inputs"
+      }
+    }),
   },
   actions: {
     "set.route-pattern": assign({
@@ -93,11 +111,13 @@ export const createDetourMachine = setup({
     }),
     "detour.remove-end-point": assign({
       endPoint: undefined,
+      finishedDetour: undefined,
     }),
     "detour.clear": assign({
       startPoint: undefined,
       waypoints: [],
       endPoint: undefined,
+      finishedDetour: undefined,
     }),
   },
 }).createMachine({
@@ -107,6 +127,7 @@ export const createDetourMachine = setup({
     waypoints: [],
     startPoint: undefined,
     endPoint: undefined,
+    finishedDetour: undefined,
   }),
 
   initial: "Detour Drawing",
@@ -282,6 +303,22 @@ export const createDetourMachine = setup({
               },
             },
             "Finished Drawing": {
+              invoke: {
+                src: "fetch-finished-detour",
+                input: ({
+                  context: { routePattern, startPoint, endPoint },
+                }) => ({
+                  routePatternId: routePattern?.id,
+                  startPoint,
+                  endPoint,
+                }),
+
+                onDone: {
+                  actions: assign({
+                    finishedDetour: ({ event }) => event.output,
+                  }),
+                },
+              },
               on: {
                 "detour.edit.undo": {
                   actions: "detour.remove-end-point",
