@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useMemo } from "react"
 
-import L, { DivIcon, DivIconOptions as LeafletDivIconOptions } from "leaflet"
+import L, { DivIconOptions as LeafletDivIconOptions } from "leaflet"
 
 // Prevent user from setting parameters we intend to provide
 export type DivIconOptions = Omit<LeafletDivIconOptions, "html">
@@ -23,26 +23,14 @@ const defaultOptions = {}
 export function useReactDivIcon(options?: DivIconOptions) {
   const opts = options || defaultOptions
   // Persistent element for react portal to use between `divIcon` recreations
-  const [iconContainer, setIconContainer] = useState<HTMLDivElement | null>(
-    null
+  const iconContainer = useMemo(() => createPortalElement(), [])
+  // Leaflet by default doesn't support updating a `divIcon` in place.
+  // To ensure that the `divIcon` updates when `opts` change
+  // regenerate the `divIcon` with the portal element and provided `opts`
+  const divIcon = useMemo(
+    () => L.divIcon({ ...opts, html: iconContainer }),
+    [iconContainer, opts]
   )
-  const [divIcon, setDivIcon] = useState<DivIcon>()
-
-  // Create portal element and divIcon on creation and when divIcon `opts` change
-  useEffect(() => {
-    let element = iconContainer
-    if (element === null) {
-      element = createPortalElement()
-      setIconContainer(element)
-    }
-
-    // Leaflet by default doesn't support updating a `divIcon` in place.
-    // To ensure that the `divIcon` updates when `opts` change
-    // regenerate the `divIcon` with the portal element and provided `opts`
-    if (element !== null) {
-      setDivIcon(L.divIcon({ ...opts, html: element }))
-    }
-  }, [opts, iconContainer])
 
   return {
     divIcon,
