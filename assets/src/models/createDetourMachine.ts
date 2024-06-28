@@ -1,8 +1,14 @@
 import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
 import { RoutePatternId, ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
-import { fetchFinishedDetour, fetchRoutePatterns } from "../api"
-import { FinishedDetour } from "./detour"
+import { Ok, Result, isOk } from "../util/result"
+import {
+  FetchDetourDirectionsError,
+  fetchDetourDirections,
+  fetchFinishedDetour,
+  fetchRoutePatterns,
+} from "../api"
+import { DetourShape, FinishedDetour } from "./detour"
 
 export const createDetourMachine = setup({
   types: {} as {
@@ -15,6 +21,12 @@ export const createDetourMachine = setup({
       waypoints: ShapePoint[]
       startPoint: ShapePoint | undefined
       endPoint: ShapePoint | undefined
+
+      detourDirections:
+        | Result<DetourShape, FetchDetourDirectionsError>
+        | undefined
+
+      showRegularRouteText: boolean
 
       finishedDetour: FinishedDetour | undefined | null
     }
@@ -68,6 +80,23 @@ export const createDetourMachine = setup({
       }
     }),
 
+    "fetch-detour-directions": fromPromise<
+      Awaited<ReturnType<typeof fetchDetourDirections>>,
+      {
+        points?: ShapePoint[]
+      }
+    >(async ({ input: { points } }) => {
+      if (points) {
+        if (points.length < 2) {
+          return Ok({ coordinates: [], directions: undefined })
+        } else {
+          return fetchDetourDirections(points)
+        }
+      } else {
+        throw "Missing detour direction inputs"
+      }
+    }),
+
     "fetch-finished-detour": fromPromise<
       Awaited<ReturnType<typeof fetchFinishedDetour>>,
       {
@@ -96,6 +125,7 @@ export const createDetourMachine = setup({
     }),
     "detour.remove-start-point": assign({
       startPoint: undefined,
+      detourDirections: undefined,
     }),
     "detour.add-waypoint": assign({
       waypoints: ({ context }, params: { location: ShapePoint }) => [
@@ -112,12 +142,14 @@ export const createDetourMachine = setup({
     "detour.remove-end-point": assign({
       endPoint: undefined,
       finishedDetour: undefined,
+      showRegularRouteText: false,
     }),
     "detour.clear": assign({
       startPoint: undefined,
       waypoints: [],
       endPoint: undefined,
       finishedDetour: undefined,
+      detourDirections: undefined,
     }),
   },
 }).createMachine({
@@ -128,6 +160,8 @@ export const createDetourMachine = setup({
     startPoint: undefined,
     endPoint: undefined,
     finishedDetour: undefined,
+    detourDirections: undefined,
+    showRegularRouteText: false,
   }),
 
   initial: "Detour Drawing",
@@ -271,13 +305,31 @@ export const createDetourMachine = setup({
               },
             },
             "Place Waypoint": {
+              invoke: {
+                src: "fetch-detour-directions",
+                input: ({ context: { startPoint, waypoints } }) => ({
+                  points: (startPoint ? [startPoint] : []).concat(
+                    waypoints || []
+                  ),
+                }),
+
+                onDone: {
+                  actions: assign({
+                    detourDirections: ({ event }) => event.output,
+                  }),
+                },
+              },
               on: {
                 "detour.edit.place-waypoint": {
+                  target: "Place Waypoint",
+                  reenter: true,
                   actions: {
                     type: "detour.add-waypoint",
-                    params: ({ event: { location } }) => ({
-                      location,
-                    }),
+                    params: ({ event: { location } }) => {
+                      return {
+                        location,
+                      }
+                    },
                   },
                 },
                 "detour.edit.place-waypoint-on-route": {
@@ -297,30 +349,74 @@ export const createDetourMachine = setup({
                   },
                   {
                     actions: "detour.remove-last-waypoint",
+                    reenter: true,
                     target: "Place Waypoint",
                   },
                 ],
               },
             },
             "Finished Drawing": {
-              invoke: {
-                src: "fetch-finished-detour",
-                input: ({
-                  context: { routePattern, startPoint, endPoint },
-                }) => ({
-                  routePatternId: routePattern?.id,
-                  startPoint,
-                  endPoint,
-                }),
-
-                onDone: {
-                  actions: assign({
-                    finishedDetour: ({ event }) => event.output,
+              invoke: [
+                {
+                  src: "fetch-finished-detour",
+                  input: ({
+                    context: { routePattern, startPoint, endPoint },
+                  }) => ({
+                    routePatternId: routePattern?.id,
+                    startPoint,
+                    endPoint,
                   }),
+
+                  onDone: {
+                    actions: assign({
+                      finishedDetour: ({ event }) => event.output,
+                    }),
+                  },
+
+                  onError: {},
                 },
 
-                onError: {},
-              },
+                {
+                  src: "fetch-detour-directions",
+                  input: ({
+                    context: { startPoint, waypoints, endPoint },
+                  }) => ({
+                    points: (startPoint ? [startPoint] : [])
+                      .concat(waypoints || [])
+                      .concat(endPoint ? [endPoint] : []),
+                  }),
+
+                  onDone: {
+                    actions: assign({
+                      detourDirections: ({ event }) => {
+                        const detourShape = event.output
+
+                        if (isOk(detourShape)) {
+                          const directions =
+                            detourShape && isOk(detourShape)
+                              ? detourShape.ok.directions
+                              : undefined
+
+                          if (directions) {
+                            return Ok({
+                              ...detourShape.ok,
+                              directions: directions.concat({
+                                instruction: "Regular Route",
+                              }),
+                            })
+                          } else {
+                            return detourShape
+                          }
+                        } else {
+                          return detourShape
+                        }
+                      },
+                      showRegularRouteText: false,
+                    }),
+                  },
+                },
+              ],
+
               on: {
                 "detour.edit.undo": {
                   actions: "detour.remove-end-point",

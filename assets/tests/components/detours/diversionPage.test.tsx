@@ -544,6 +544,56 @@ describe("DiversionPage", () => {
     })
   })
 
+  test("clicking on 'Clear' restores the placeholder text when appropriate", async () => {
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      Ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
+    )
+
+    const { container } = render(<DiversionPage />)
+    const { queryByText, getByText } = within(
+      screen
+        .getByRole("heading", { name: "Detour Directions" })
+        .closest("section")!
+    )
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+    await waitFor(() => {
+      expect(
+        queryByText(
+          "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
+        )
+      ).not.toBeInTheDocument()
+
+      expect(getByText("Turn left on Main Street")).toBeVisible()
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Clear" }))
+    })
+    await waitFor(() => {
+      expect(
+        getByText(
+          "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
+        )
+      ).toBeVisible()
+
+      expect(queryByText("Turn left on Main Street")).not.toBeInTheDocument()
+    })
+  })
+
   test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
     render(<DiversionPage />)
 
