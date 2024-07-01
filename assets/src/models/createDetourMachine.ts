@@ -24,8 +24,6 @@ export const createDetourMachine = setup({
 
       detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
 
-      showRegularRouteText: boolean
-
       finishedDetour: FinishedDetour | undefined | null
     }
 
@@ -140,7 +138,6 @@ export const createDetourMachine = setup({
     "detour.remove-end-point": assign({
       endPoint: undefined,
       finishedDetour: undefined,
-      showRegularRouteText: false,
     }),
     "detour.clear": assign({
       startPoint: undefined,
@@ -159,7 +156,6 @@ export const createDetourMachine = setup({
     endPoint: undefined,
     finishedDetour: undefined,
     detourShape: undefined,
-    showRegularRouteText: false,
   }),
 
   initial: "Detour Drawing",
@@ -398,7 +394,6 @@ export const createDetourMachine = setup({
                           }
                         })
                       },
-                      showRegularRouteText: false,
                     }),
                   },
                 },
