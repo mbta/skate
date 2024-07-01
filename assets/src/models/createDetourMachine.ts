@@ -312,6 +312,8 @@ export const createDetourMachine = setup({
                     detourShape: ({ event }) => event.output,
                   }),
                 },
+
+                onError: {},
               },
               on: {
                 "detour.edit.place-waypoint": {
@@ -394,6 +396,8 @@ export const createDetourMachine = setup({
                       },
                     }),
                   },
+
+                  onError: {},
                 },
               ],
 

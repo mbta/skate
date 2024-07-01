@@ -988,8 +988,31 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("When the API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When the finished-detour API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
     jest.mocked(fetchFinishedDetour).mockRejectedValue("NOPE")
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(
+      screen.queryByRole("heading", { name: "Create Detour" })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", { name: "Share Detour Details" })
+    ).toBeVisible()
+  })
+
+  test("When the detour-directions API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+    jest.mocked(fetchDetourDirections).mockRejectedValue("NOPE")
 
     const { container } = render(<DiversionPage />)
 
