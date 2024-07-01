@@ -1,7 +1,7 @@
 import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
 import { RoutePatternId, ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
-import { Ok, Result, isOk } from "../util/result"
+import { Ok, Result, map } from "../util/result"
 import {
   FetchDetourDirectionsError,
   fetchDetourDirections,
@@ -22,9 +22,7 @@ export const createDetourMachine = setup({
       startPoint: ShapePoint | undefined
       endPoint: ShapePoint | undefined
 
-      detourDirections:
-        | Result<DetourShape, FetchDetourDirectionsError>
-        | undefined
+      detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
 
       showRegularRouteText: boolean
 
@@ -125,7 +123,7 @@ export const createDetourMachine = setup({
     }),
     "detour.remove-start-point": assign({
       startPoint: undefined,
-      detourDirections: undefined,
+      detourShape: undefined,
     }),
     "detour.add-waypoint": assign({
       waypoints: ({ context }, params: { location: ShapePoint }) => [
@@ -149,7 +147,7 @@ export const createDetourMachine = setup({
       waypoints: [],
       endPoint: undefined,
       finishedDetour: undefined,
-      detourDirections: undefined,
+      detourShape: undefined,
     }),
   },
 }).createMachine({
@@ -160,7 +158,7 @@ export const createDetourMachine = setup({
     startPoint: undefined,
     endPoint: undefined,
     finishedDetour: undefined,
-    detourDirections: undefined,
+    detourShape: undefined,
     showRegularRouteText: false,
   }),
 
@@ -315,7 +313,7 @@ export const createDetourMachine = setup({
 
                 onDone: {
                   actions: assign({
-                    detourDirections: ({ event }) => event.output,
+                    detourShape: ({ event }) => event.output,
                   }),
                 },
               },
@@ -388,28 +386,17 @@ export const createDetourMachine = setup({
 
                   onDone: {
                     actions: assign({
-                      detourDirections: ({ event }) => {
+                      detourShape: ({ event }) => {
                         const detourShape = event.output
 
-                        if (isOk(detourShape)) {
-                          const directions =
-                            detourShape && isOk(detourShape)
-                              ? detourShape.ok.directions
-                              : undefined
-
-                          if (directions) {
-                            return Ok({
-                              ...detourShape.ok,
-                              directions: directions.concat({
-                                instruction: "Regular Route",
-                              }),
-                            })
-                          } else {
-                            return detourShape
+                        return map(detourShape, (shape) => {
+                          return {
+                            ...shape,
+                            directions: shape.directions?.concat({
+                              instruction: "Regular Route",
+                            }),
                           }
-                        } else {
-                          return detourShape
-                        }
+                        })
                       },
                       showRegularRouteText: false,
                     }),

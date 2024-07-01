@@ -18,7 +18,7 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     endPoint,
     waypoints,
     finishedDetour,
-    detourDirections,
+    detourShape,
   } = snapshot.context
 
   const { result: nearestIntersection } = useNearestIntersection({
@@ -27,14 +27,10 @@ export const useDetour = (input: CreateDetourMachineInput) => {
   })
 
   const coordinates =
-    detourDirections && isOk(detourDirections)
-      ? detourDirections.ok.coordinates
-      : []
+    detourShape && isOk(detourShape) ? detourShape.ok.coordinates : []
 
   const directions =
-    detourDirections && isOk(detourDirections)
-      ? detourDirections.ok.directions
-      : undefined
+    detourShape && isOk(detourShape) ? detourShape.ok.directions : undefined
 
   const canAddWaypoint = () =>
     snapshot.can({
@@ -127,9 +123,7 @@ export const useDetour = (input: CreateDetourMachineInput) => {
      * Indicates if there was an error fetching directions from ORS
      */
     routingError:
-      detourDirections && isErr(detourDirections)
-        ? detourDirections.err
-        : undefined,
+      detourShape && isErr(detourShape) ? detourShape.err : undefined,
 
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
