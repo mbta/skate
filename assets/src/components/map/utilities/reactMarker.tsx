@@ -3,7 +3,6 @@ import { createPortal } from "react-dom"
 
 import { Marker, MarkerProps } from "react-leaflet"
 
-import Loading from "../../loading"
 import { DivIconOptions, useReactDivIcon } from "./reactDivIcon"
 
 /**
@@ -17,12 +16,6 @@ export interface ReactMarkerProps extends Omit<MarkerProps, "icon"> {
    * React Element to use as {@link Marker} Icon
    */
   icon?: ReactNode
-  /**
-   * Element to show before `divIcon` is ready
-   *
-   * Defaults to {@link Loading `<Loading/>`}
-   */
-  loadingState?: ReactNode
   /**
    * Options to pass to {@link useReactDivIcon}
    */
@@ -40,16 +33,11 @@ export interface ReactMarkerProps extends Omit<MarkerProps, "icon"> {
  */
 export const ReactMarker = ({
   icon,
-  loadingState,
   divIconSettings,
   children,
   ...markerProps
 }: ReactMarkerProps) => {
   const { divIcon, iconContainer } = useReactDivIcon(divIconSettings)
-
-  if (!(divIcon && iconContainer)) {
-    return <>{loadingState || <Loading />}</>
-  }
 
   return (
     <Marker {...(markerProps as MarkerProps)} icon={divIcon}>
