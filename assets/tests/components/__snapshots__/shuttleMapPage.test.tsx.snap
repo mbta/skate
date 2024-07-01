@@ -285,70 +285,6 @@ exports[`Shuttle Map Page renders 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
@@ -369,6 +305,14 @@ exports[`Shuttle Map Page renders 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -393,6 +337,14 @@ exports[`Shuttle Map Page renders 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
@@ -413,6 +365,14 @@ exports[`Shuttle Map Page renders 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -437,6 +397,14 @@ exports[`Shuttle Map Page renders 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
@@ -457,6 +425,14 @@ exports[`Shuttle Map Page renders 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -481,6 +457,14 @@ exports[`Shuttle Map Page renders 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
@@ -503,6 +487,14 @@ exports[`Shuttle Map Page renders 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
@@ -523,6 +515,14 @@ exports[`Shuttle Map Page renders 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1040,70 +1040,6 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
@@ -1124,6 +1060,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1148,6 +1092,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
@@ -1168,6 +1120,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1192,6 +1152,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
@@ -1212,6 +1180,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1236,6 +1212,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
@@ -1258,6 +1242,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
@@ -1278,6 +1270,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1795,70 +1795,6 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
@@ -1879,6 +1815,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1903,6 +1847,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
@@ -1923,6 +1875,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1947,6 +1907,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
@@ -1967,6 +1935,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1991,6 +1967,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
@@ -2013,6 +1997,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
@@ -2033,6 +2025,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -2888,70 +2888,6 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
@@ -2972,6 +2908,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -2996,6 +2940,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
@@ -3016,6 +2968,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -3040,6 +3000,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
@@ -3060,6 +3028,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -3084,6 +3060,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
@@ -3106,6 +3090,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
@@ -3126,6 +3118,14 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"

@@ -1512,70 +1512,6 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 <svg />
               </div>
               <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2115px; top: 3617px; z-index: 3617;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 273px; top: 1319px; z-index: 1319;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -456px; top: -1720px; z-index: -1720;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1173px; top: -3823px; z-index: -3823;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 4158px; top: -5947px; z-index: -5947;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3032px; top: -2266px; z-index: -2266;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2539px; top: 6390px; z-index: 6390;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
-                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
-                role="button"
-                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -65px; top: 1854px; z-index: 1854;"
-                tabindex="0"
-              >
-                <svg />
-              </div>
-              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -57px; top: 1295px; z-index: 1295;"
@@ -1596,6 +1532,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2115px; top: 3617px; z-index: 3617;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1620,6 +1564,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 273px; top: 1319px; z-index: 1319;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 273px; top: 1319px; z-index: 1319;"
@@ -1640,6 +1592,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -456px; top: -1720px; z-index: -1720;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1664,6 +1624,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1173px; top: -3823px; z-index: -3823;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1173px; top: -3823px; z-index: -3823;"
@@ -1684,6 +1652,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 4158px; top: -5947px; z-index: -5947;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
@@ -1708,6 +1684,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3032px; top: -2266px; z-index: -2266;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3032px; top: -2266px; z-index: -2266;"
@@ -1730,6 +1714,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 </div>
               </div>
               <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2539px; top: 6390px; z-index: 6390;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
                 role="button"
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2539px; top: 6390px; z-index: 6390;"
@@ -1750,6 +1742,14 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                     </text>
                   </svg>
                 </div>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -65px; top: 1854px; z-index: 1854;"
+                tabindex="0"
+              >
+                <svg />
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
