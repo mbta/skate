@@ -381,18 +381,13 @@ export const createDetourMachine = setup({
 
                   onDone: {
                     actions: assign({
-                      detourShape: ({ event }) => {
-                        const detourShape = event.output
-
-                        return map(detourShape, (shape) => {
-                          return {
-                            ...shape,
-                            directions: shape.directions?.concat({
-                              instruction: "Regular Route",
-                            }),
-                          }
-                        })
-                      },
+                      detourShape: ({ event: { output: detourShape } }) =>
+                        map(detourShape, (shape) => ({
+                          ...shape,
+                          directions: shape.directions?.concat({
+                            instruction: "Regular Route",
+                          }),
+                        })),
                     }),
                   },
 
