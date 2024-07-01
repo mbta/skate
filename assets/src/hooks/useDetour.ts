@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react"
 import { ShapePoint } from "../schedule"
-import { fetchDetourDirections, fetchFinishedDetour } from "../api"
+import { fetchDetourDirections } from "../api"
 
 import { useApiCall } from "./useApiCall"
 import { Ok, isErr, isOk } from "../util/result"
@@ -29,7 +29,9 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     input,
   })
 
-  const { routePattern, startPoint, endPoint, waypoints } = snapshot.context
+  const { routePattern, startPoint, endPoint, waypoints, finishedDetour } =
+    snapshot.context
+
   const allPoints = useMemo(() => {
     if (!startPoint) {
       return []
@@ -39,23 +41,6 @@ export const useDetour = (input: CreateDetourMachineInput) => {
       return [startPoint].concat(waypoints).concat([endPoint])
     }
   }, [startPoint, waypoints, endPoint])
-
-  const { result: finishedDetour } = useApiCall({
-    apiCall: useCallback(async () => {
-      /* Until we have "typegen" in XState,
-       * we need to validate these exist for typescript
-       *
-       * > [Warning] XState Typegen does not fully support XState v5 yet. However,
-       * > strongly-typed machines can still be achieved without Typegen.
-       * > -- https://stately.ai/docs/migration#use-typestypegen-instead-of-tstypes
-       */
-      if (routePattern && startPoint && endPoint) {
-        return fetchFinishedDetour(routePattern.id, startPoint, endPoint)
-      }
-
-      return null
-    }, [startPoint, endPoint, routePattern]),
-  })
 
   const { result: nearestIntersection } = useNearestIntersection({
     latitude: startPoint?.lat,
