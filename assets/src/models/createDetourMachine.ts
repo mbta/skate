@@ -319,11 +319,9 @@ export const createDetourMachine = setup({
                   reenter: true,
                   actions: {
                     type: "detour.add-waypoint",
-                    params: ({ event: { location } }) => {
-                      return {
-                        location,
-                      }
-                    },
+                    params: ({ event: { location } }) => ({
+                      location,
+                    }),
                   },
                 },
                 "detour.edit.place-waypoint-on-route": {
