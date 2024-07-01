@@ -7,19 +7,6 @@ import {
   createDetourMachine,
 } from "../models/createDetourMachine"
 
-// const useDetourDirections = (shapePoints: ShapePoint[]) =>
-//   useApiCall({
-//     apiCall: useCallback(async () => {
-//       // We expect not to have any directions or shape if we don't have at
-//       // least two points to route between
-//       if (shapePoints.length < 2) {
-//         return Ok({ coordinates: [], directions: undefined })
-//       }
-
-//       return fetchDetourDirections(shapePoints)
-//     }, [shapePoints]),
-//   })
-
 export const useDetour = (input: CreateDetourMachineInput) => {
   const [snapshot, send] = useMachine(createDetourMachine, {
     input,
@@ -34,56 +21,20 @@ export const useDetour = (input: CreateDetourMachineInput) => {
     detourDirections,
   } = snapshot.context
 
-  // const allPoints = useMemo(() => {
-  //   if (!startPoint) {
-  //     return []
-  //   } else if (!endPoint) {
-  //     return [startPoint].concat(waypoints)
-  //   } else {
-  //     return [startPoint].concat(waypoints).concat([endPoint])
-  //   }
-  // }, [startPoint, waypoints, endPoint])
-
   const { result: nearestIntersection } = useNearestIntersection({
     latitude: startPoint?.lat,
     longitude: startPoint?.lon,
   })
-
-  // const detourShape = useDetourDirections(allPoints)
-
-  // const coordinates =
-  //   detourShape.result && isOk(detourShape.result)
-  //     ? detourShape.result.ok.coordinates
-  //     : []
 
   const coordinates =
     detourDirections && isOk(detourDirections)
       ? detourDirections.ok.coordinates
       : []
 
-  const directionsFromApi =
+  const directions =
     detourDirections && isOk(detourDirections)
       ? detourDirections.ok.directions
       : undefined
-  // Only append direction "Regular Route" after detour is finished
-
-  const directions = directionsFromApi
-
-  // const directions = useMemo(
-  //   () =>
-  //     showRegularRouteText && directionsFromApi
-  //       ? directionsFromApi.concat({
-  //           instruction: "Regular Route",
-  //         })
-  //       : directionsFromApi,
-  //   [showRegularRouteText, directionsFromApi]
-  // )
-
-  // if (showRegularRouteText && directions) {
-  //   directions = directions.concat({
-  //     instruction: "Regular Route",
-  //   })
-  // }
 
   const canAddWaypoint = () =>
     snapshot.can({
