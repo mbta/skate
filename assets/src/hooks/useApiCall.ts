@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 /**
  * Return type of {@linkcode useApiCall}
  */
-export interface ApiLoadingResult<T> {
+interface ApiLoadingResult<T> {
   /**
    * Indicates if {@linkcode useApiCall} is in the process of computing a new
    * value
